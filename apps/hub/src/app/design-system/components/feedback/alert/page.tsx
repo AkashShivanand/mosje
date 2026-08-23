@@ -53,7 +53,7 @@ export default function AlertPage(): React.JSX.Element {
           Alert
         </h1>
         <p className="ds-lead" style={leadStyle}>
-          Alerts display important, prominently placed messages that require the user’s attention. They communicate status, warnings, errors, or info without interrupting the user’s flow.
+          Alerts display important, prominently placed messages that require the user&apos;s attention. They communicate status, warnings, errors, or info without interrupting the user&apos;s flow.
         </p>
       </header>
 

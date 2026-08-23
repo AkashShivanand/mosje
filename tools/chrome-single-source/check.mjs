@@ -38,7 +38,7 @@ const EXEMPT = new Map([
   ["packages/design-system/components/navigation/header/brand-lockup.tsx", "IS the lockup"],
   ["packages/design-system/components/navigation/header/site-header.tsx", "IS the masthead"],
   ["packages/design-system/components/navigation/header/nav-sheet.tsx", "composes BrandLockup"],
-  ["packages/design-system/components/navigation/accessibility-bar.tsx", "IS the accessibility bar"],
+  ["packages/design-system/components/utilities/accessibility-bar.tsx", "IS the accessibility bar"],
   // Documentation ABOUT the chrome quotes it; that is the page's subject.
   ["apps/hub/src/app/design-system/", "design-system documentation — quoting the chrome is the subject"],
   ["apps/storybook/stories/", "stories demonstrate the components"],

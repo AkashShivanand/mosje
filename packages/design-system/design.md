@@ -1255,9 +1255,28 @@ All components are exported from `@mosje/design-system`. Import from the package
 **Accessibility — DECORATIVE BY DEFAULT (changed v0.18.2)**: the glyph is real text, so an unmarked icon is announced by a screen reader as its ligature ("arrow back"). The component therefore hides itself: no `aria-label` ⇒ `aria-hidden="true"`; `aria-label` given ⇒ `role="img"` and announced; an explicit `aria-hidden={false}` still wins. **Do not add `aria-hidden` to decorative icons — it is already the default.** For an icon-only control the label belongs on the **button**, not the glyph: `<button aria-label="Search"><Icon name="search" /></button>`. This replaced a convention that was being missed at **533 of 718** call sites.  
 **Rules**:
 - Use the Material Symbols Rounded **font glyph** for any icon in the Material set — never inline SVG for those.
-- Brand/social marks (National Emblem, Digital India, etc.) that are **not** in Material Symbols use inline SVG.
+- Brand/social marks are **not** in Material Symbols. **Social platform marks come from `BrandGlyph`** (below) — do not paste vendor path data at a call site. Other brand artwork (National Emblem, Digital India, NeGD) is a hyperlinked asset, not an icon.
 - **Org/scheme logos** (NCSC, NMBA, SMILE, PM-AJAY, …) come from the shared **`org-logo`** component (Figma: `org-logo` set, instance-swap; code: `<OrgLogo org="…" />` when built) — a single source of truth. Never paste an org logo as a raster image; instance the component so a logo fix in one place updates every consumer.
 - **Hover-revealed icons (house pattern):** keep the glyph **always visible at low opacity (~0.4)** and raise it to `1` on hover/focus — *not* `opacity: 0`. Persistent-faint keeps the affordance discoverable, avoids a blank reserved gap, and causes **no layout shift**. Mark the glyph `aria-hidden`; respect `prefers-reduced-motion` on the fade.
+
+#### BrandGlyph
+**Purpose**: A **third-party brand mark** — Facebook, X, Instagram, YouTube, WhatsApp — optically normalised against its siblings. `BRAND_GLYPHS` lists the names; `brandGlyphTitle(name)` returns the vendor's own name for docs and stories.
+**Why it exists**: Material Symbols cannot supply a company's logo, and a logo may not be redrawn to match a stroke weight, so brand marks arrive as the vendors' own artwork. Five companies draw to five containment rules, and dropping them into one row at 24px does **not** make them a set.
+**The three problems, which are different problems and need different fixes**:
+1. **The wrong asset.** Facebook was supplied as its app **badge** — the "f" already inside a filled disc — while the other four were bare marks. A solid blob beside four open marks is a *different kind of object* and no amount of scaling fixes it. The same badge was also drawn *inside* a pale tinted chip on the homepage feed: a disc inside a disc. Now the bare "f" in both.
+2. **Size.** Each mark's **longest side** is normalised to a shared optical square. Longest side — not bounding box, not area: YouTube is wide and short, so area-matching *inflates* it past the box edge. Measured, not guessed; the first attempt made the ink spread **worse**, 2.37× → 2.51×, before the metric was fixed.
+3. **Shape — and this is the one sizing cannot touch.** Optical heights of 16.9–24 and an ink spread of 2.37× came down to 1.52×, and the rail *still* read as unbalanced. That is because the objection was never to the measurement: a letterform, a bare X, a hollow camera, a filled slab and a bubble are five different silhouettes, and no scaling makes them siblings. **Give them one repeating circle** and the circle becomes the unit the eye reads, the marks become its contents, and the variance stops mattering. Both rails in the estate now do this.
+**Tuning belongs to the containment, not to the mark.** Before the chip, the corrections pulled hard toward equal *ink* (YouTube down to 0.86) because with nothing to compare against, the eye judges a mark by how dark it is. Inside a chip that reverses — the frame is constant, so the eye compares mark-to-chip and reads *extent*, and the hard correction left YouTube looking undersized in its circle. The shipped values are therefore light: YouTube 0.94, Instagram 0.98, the rest 1.0. Marks fill **47–50%** of the 40px chip; at 55% the chip stops reading as a frame and becomes a tight collar.
+**Key props**: `name` (required) · `size` (default 24, on the DBIM 3.7 scale) · `aria-label`
+**Colour**: always `currentColor` — set it on the parent. Brand colours belong to the brands, so they are **not** SAMAVESH tokens and a coloured treatment names its own value at the call site. This is the one sanctioned place a raw brand hex may appear.
+**The chip is a proportion of the ground, not a ramp rung.** In the footer rail it is `color-mix(in srgb, primaryScale-100 12%, primaryScale-800)`. Rung 700 on the 800 ground looked right in blue, but the lift it produces depends on how each brand spaces its ramp — measured across the eight modes it ran from **1.13:1 in navy (invisible) to 1.39:1**. The mix gives **1.30–1.36 everywhere**. A rung fallback sits outside an `@supports` block: a custom property is substituted lazily, so an unsupported `color-mix` does not fall back to an earlier declaration, it makes the *using* property invalid and the chip vanishes. `@supports` is the only pattern that actually degrades.
+**When NOT to reach for it**: anything in the Material set is `Icon`. Organisational and scheme logos (NeGD, Digital India, NCSC, SMILE) are **hyperlinked image assets**, not glyphs — they carry attribution and must stay clickable. And never add a mark for an account the estate does not actually publish on.
+**Rules**:
+- **Never paste vendor path data at a call site.** That is how the same five marks ended up duplicated across `SiteFooter` and the homepage social feed, drifting independently. `SiteFooterSocial.icon` takes a **name**, not a `d` attribute, for exactly this reason.
+- **Decorative by default, like `Icon`.** The accessible name belongs on the wrapping link or button, so an unlabelled glyph is `aria-hidden`. Pass `aria-label` only for a standalone mark with no control to carry the name.
+- **`box` and `path` are updated together.** `box` is the measured bounding box of `path` inside its own `viewBox`; a stale one misplaces the mark visibly, which is the intended failure mode.
+- **Tune a new mark in its chip, in the row, never alone.** Start at `optical: 1`, render at 4× beside the others and adjust in steps of 0.02. A single mark always looks fine — the defect only exists in a set.
+- **UX4G is not the reference here.** Its social set (node 14500:15582) has the same defect: bare marks at mixed weights with Facebook supplied as the badge. Per `.claude/rules/standards-precedence.md` UX4G is rank 4 and recommended, not mandatory, and quality wins where it would force a worse interface. Divergence recorded.
 
 #### Divider
 **Purpose**: The estate's thin rule — a 1px hairline between sections or between controls in a row. Code counterpart of the SAMAVESH Figma master `Divider` (`55061:700`, Orientation × Tone = 6 variants).  
@@ -1499,6 +1518,21 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **Quick replies use `bg/brand/primary/base`, not the mock's `#EFE8FF`.** Nothing in the ramp resolves near that lavender; the pale brand tint is the same *role*. Per `.claude/rules/documentation-ds-linkage.md`, a value that is not a design-system colour means the design moves — not that the system grows a one-off variable.
 - **The transcript sits on a 16px bottom gutter, not the mock's 57px.** The mock floats the message stack 56.68px above the panel floor — space that holds nothing in any of its four frames. An unexplained gap at the foot of a chat panel reads as a composer that failed to render; matching the panel's other gutters reads as intentional. Every other measurement is reproduced exactly (panel 400×719, radius 16, mark 84 / disc 60 / wordmark 73.7×76.7 / figure 55.4, bubble capped at 67%).
 
+#### ActionBanner
+**Purpose**: A call to action — a title, an optional sentence, **one** control. The website uses it for the "need help?" invitation that sits above the footer.
+**Variants**: `variant` = `banner` (default) | `card`
+- **`banner`** — full width, text left, action right. The strip that closes a page section. Stacks below 640px with the action full width, because a button floating alone on a narrow screen reads as orphaned.
+- **`card`** — the same content in a column, for a grid of two or three parallel offers. **It stretches to its grid cell and pins the action to the bottom**, so a row of cards is one height and the buttons land on one line whatever length the descriptions run to. That single rule is most of what makes a card grid look composed rather than assembled.
+**Why variants and not two components**: the content model is identical and only the axis changes. A second component is a second thing to keep in step, and the first symptom of that is two CTAs on one estate with different padding — which is exactly what happened when the footer grew its own support strip alongside this. There is now one way to render a CTA.
+**Key props**: `title` · `description` · `action` · `variant` · `as` (heading level, default `h3`)
+**Colour**: resolves through `--sa-color-primaryScale-*`, so the panel follows `data-brand` across all eight modes. It previously painted `bg-gradient-to-r from-blue-50 to-indigo-50` with a `blue-100` border and `neutral-900/600` text. That was wrong three ways: **`indigo` is not a SAMAVESH colour** and appears nowhere else in the estate; a **literal palette cannot answer to the brand mode**, so the panel stayed blue in navy, burgundy and green — the same defect the footer had when it painted `bg-navy`; and **grey text on a coloured ground** reads as washed out, where the secondary line should be a deeper shade of the same tint. The gradient went too: two near-identical tints a fraction apart is not a gradient anyone perceives, it is a second colour to keep in sync for no visible return.
+**When NOT to reach for it**: not for a statutory or compliance notice — that is `Alert`. Not as a page hero. And not inside `SiteFooter`: a CTA is page content and the footer is statutory chrome, so the website puts this on a **light band above** the footer, where the change of ground says the two are different registers.
+**Rules**:
+- **One action.** `action` is a slot and will hold whatever it is given, but a banner with two equal buttons has no call to action — it has a decision. If a secondary path is genuinely needed, make it a text link beside the button, not a second button.
+- **The action never shrinks.** A long sentence wraps instead; the button is the point of the component and is the last thing that should give way.
+- **The title is a real heading** so the CTA appears in the document outline. Pass `as` so the page's outline does not skip a level. The panel is **not** a landmark and must not be given a `region` role — it is a paragraph and a button, and naming it adds a stop to the landmark list that leads nowhere.
+- **Keep the sentence short.** Past ~60ch it is a paragraph, and a paragraph beside a button reads as an article with a button stuck on it.
+
 #### Modal
 **Purpose**: Blocking overlay for confirmations, destructive prompts, and detail views.  
 **Props**: `open`, `onClose`, `title`, `size` (`sm` | `md` | `lg`)  
@@ -1644,6 +1678,26 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Props**: `events: ApprovalTimelineEvent[]` (oldest-first), `pendingLabel`.
 **Rules**: Use for any workflow that moves through tiers of sign-off (Block → District → State). Show the **whole** history, not just the current status: a returned-then-resubmitted record must display both. Remarks are mandatory on a `RETURNED` event.
 
+#### Accordion
+**Purpose**: A stack of disclosures. Each `AccordionItem` hides its body until the reader asks for it.
+**Props**: `AccordionItem` takes `title`, `defaultOpen`. `AccordionItem` is a sub-part of `Accordion` and is not used alone.
+**Rules**: Use where a page carries several sections a reader wants *one* of — an FAQ, a scheme's eligibility rules, a form's optional detail. Never hide something every reader needs: a step nobody opens is a step nobody completes. Open the first item with `defaultOpen` only when it shows the shape of what is in the rest.
+
+#### ActionBanner
+**Purpose**: A full-width band naming one thing the reader can do next, with the control to do it.
+**Props**: `title`, `description`, `action`.
+**Rules**: One per page, at the foot of a section. Two banners cancel each other out — if everything is the call to action, nothing is. It is not a status message: a warning or an error is `Alert`, which carries a semantic colour and a role screen readers announce. Drop `description` when the title already says everything.
+
+#### ProfileCard
+**Purpose**: A portrait, a name and a role — the ministers, secretaries and officers pages.
+**Props**: `title`, `subtitle`, `image` (a slot, not a src), `tag`.
+**Rules**: Use when a person's face is what the reader is scanning for. When they are scanning *names* — a directory, a contact list, a committee roster — a table or plain list finds the answer faster and reads far better on a phone. Keep `tag` to one short phrase; it overlays the portrait.
+
+#### VerticalTimeline
+**Purpose**: Dated entries down a single rule. `VerticalTimelineItem` carries one entry.
+**Props**: `VerticalTimelineItem` takes `title`, `date`. `VerticalTimelineItem` is a sub-part of `VerticalTimeline`.
+**Rules**: Use where the *order* of events is the content — a ministry's milestones, a scheme's history. Do not use it for a list that merely has dates on it; a table sorts, filters and scans, and a timeline does none of those. For an application moving through an approval chain use `ApprovalTimeline`, which knows about actors and outcomes. `date` is optional, so an entry whose date is unknown still gets its marker.
+
 ---
 
 ### Data Visualization
@@ -1735,23 +1789,23 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
   WCAG 2.4.1 outranks a structural preference. Recorded in the component spec.
 
 #### SiteFooter
-**Purpose**: The statutory footer of a PUBLIC INFORMATION SITE — two bands: the working footer (identity, address, CTA, social, four link columns) and the statutory bar (lineage, policies, related links, credits, copyright, last-updated).
-**Key props**: `emblem`, `organisation`, `address`, `cta`, `social`, `colophonSlot`, `columns`, `lineage`, `credits`, `policyLinks`, `relatedLinks`, `copyright`, `lastUpdated`, `linkAs`, `maxWidth`
+**Purpose**: The statutory footer for the estate, in two variants. `website` (default) renders an optional support strip, the working footer (identity, address, social, four link columns) and the statutory bar; `portal` renders the statutory bar alone.
+**Key props**: `variant`, `supportStrip`, `emblem`, `organisation`, `address`, `social`, `columns`, `lineage`, `credits`, `policyLinks`, `relatedLinks`, `copyright`, `lastUpdated`, `colophonSlot`, `linkAs`, `maxWidth`
 **Rules**:
-- **This is NOT `Footer`.** `Footer` is the slim single-band app-shell strip under an authenticated portal workflow; this is the statutory footer of a public site. They answer to different clauses and must not be merged.
-- **It is structural, not content-bound.** Every label, href, logo and sentence arrives as a prop, so a second site gets the same footer by passing its own content. Never fork it to change wording.
-- **NEVER pass a background through `className`.** Colour binds to the mode-aware `--sa-color-primaryScale-*` family — ground = rung 800 (`bg/brand/primary/boldest`), statutory bar = rung 900, hairlines = rung 600 — so the footer repaints for `blue`, `navy`, `dbim` and the five DBIM hues with no work at the call site. In `dbim` the ground resolves to **#162F6A**, which is DBIM's own published Blue shade 1, satisfying **[DBIM 5.6]** ("footer background = the key colour, darkest shade") by construction rather than by coincidence.
-- **Ink is same-hue, never white-alpha.** The three levels are rungs 100 and 200 plus `on/bg/brand/primary/boldest`. `rgba(255,255,255,.8)` on a coloured ground desaturates to a dirty grey; the ramp's own rungs stay in the family and measure better — worst case across all seven modes is **5.88:1**, against the 4.5:1 AA asks for. This replaced a `bg-navy` literal that could not answer to `data-brand` at all.
-- **`lineage` and `lastUpdated` are DBIM 5.6 elements, not decoration.** `lineage` must be the mandated wording for the organisation type. `lastUpdated` must be the CURRENT PAGE's date — pass it down from the page layout, never the site-wide build date, or the footer will contradict the page hero.
-- **`policyLinks` must carry the GIGW mandatory pages** — terms, privacy, copyright, hyperlinking, accessibility, feedback, sitemap. `relatedLinks` is a DBIM 5.6 required element and is also where the GIGW-mandated india.gov.in link lives on every page.
-- `linkAs` takes the router's link component for internal hrefs. External links always render as a plain anchor with `rel="noreferrer"` plus a visually-hidden "(opens in a new window)" — set `external: true` and nothing else.
-- Social entries take a **human** `label` ("X (formerly Twitter)"), never a CSS class name. The glyph is `aria-hidden`; the accessible name sits on the link.
-- Every `<nav>` is `aria-labelledby` its own visible heading, and the whole footer is named by a visually-hidden `<h2>`. One focus ring is defined once for the subtree — do not add per-control rings.
-- **The CTA is an OUTLINE, and reverting it to a fill is a hierarchy regression.** A white fill made a tertiary call to action the single brightest object in the footer, out-shouting the National Emblem and the department name above it. The outline is not a compliance compromise: the border measures 6.18:1 against the ground (1.4.11 wants 3:1) and the label 11.4:1 (1.4.3 wants 4.5:1).
-- **Social marks carry no ring at rest.** The 40px target is unchanged and WCAG 2.5.8 is satisfied by the box, which does not have to be visible to be clickable. Five outlined circles put five hard shapes in the quietest part of the footer at the weight of the button above them; the circle returns on hover, where it means something.
-- **No visible eyebrows on the policy and related navs.** They are named by `aria-label`, which is where the label was doing real work. Two uppercase micro-labels inside one small band is the most templated thing a footer can do.
-- **One rule in the statutory band, at its boundary.** It carried three inside ~100px of height and read as ruled paper. Spacing separates the rows now, and separates them by meaning.
-- **The statutory band is a declared two-column grid**, statute and navigation left, organisational marks right. `space-between` pinned the marks to the far edge and left a ~340px void; stacking everything left-aligned instead just moved the void to the right side.
+- **`variant="portal"` is why this is one component and not two.** The statutory bar is the half that must stay DBIM-compliant, and a separate portal footer is a second thing to keep compliant that will drift. The DS still ships `Footer`, a slim strip written for portals that **no portal ever adopted** — prefer `variant="portal"` for new work and do not extend `Footer`.
+- On `portal`, `columns` / `social` / `address` / `supportStrip` are **ignored rather than erroring**, so one content object can drive both variants.
+- **`lineage`, `policyLinks` and `copyright` are REQUIRED PROPS on both variants.** A footer without them is not a government footer, and making them optional would let a caller ship one that is not.
+- **`supportStrip` is opt-in and absent from the DOM when omitted.** It is a band, not an item in the identity column: a call to action needs the sentence that explains it, and folded into the column it became a naked button between an address and a row of social marks. Omitting the prop is how a site switches it off — there is no empty state.
+- **It is structural, not content-bound.** Every label, href, logo and sentence arrives as a prop. Never fork it to change wording.
+- **NEVER pass a background through `className`.** Colour binds to the mode-aware `--sa-color-primaryScale-*` family — ground = rung 800, hairlines = rung 600, the support strip = rung 900 — so the footer repaints for `blue`, `navy`, `dbim` and the five DBIM hues with no work at the call site. In `dbim` the ground resolves to **#162F6A**, DBIM's own published Blue shade 1, satisfying **[DBIM 5.6]** by construction.
+- **ONE ground, ONE hairline.** The two bands ran rungs 800 and 900 for a while; a 1.28:1 step is not a distinction, it is a smudge. The support strip is the deliberate exception, because it is the one element that is a different kind of thing and the one a site can switch off.
+- **Ink is same-hue, never white-alpha.** Three levels: rungs 100 and 200 plus `on/bg/brand/primary/boldest`. Worst case across all **eight** brand modes the tokens define is 5.37:1 (dbim-green, dim ink) against the 4.5:1 AA asks for.
+- **The CTA is an OUTLINE, and reverting it to a fill is a hierarchy regression.** A white fill made a tertiary action the brightest object in the footer, out-shouting the National Emblem. Border 6.18:1 (1.4.11 wants 3:1), label 11.4:1 (1.4.3 wants 4.5:1).
+- **Social marks carry no ring at rest.** The 40px target is unchanged; WCAG 2.5.8 is satisfied by the box, which does not have to be visible to be clickable.
+- **No visible eyebrows on the policy and related navs**, which share one wrapped row. Both keep their `aria-label`. Two uppercase micro-labels inside one small band is the most templated thing a footer can do.
+- **`lastUpdated` must be the CURRENT PAGE's date** — pass it down from the page layout, never the site-wide build date, or the footer contradicts the page hero.
+- **Do not put the same destination behind two labels.** The link graph is deduplicated deliberately: "Vision & Mission" and "Help & Support" both pointed at pages already linked one line above them. The two remaining shared destinations are role-distinct and intended (the support CTA vs the Help nav entry; the Digital India related-link vs its mandated credit logo).
+- Every `<nav>` is labelled, the footer is named by a visually-hidden `<h2>`, and one focus ring is defined once for the subtree — do not add per-control rings.
 
 #### SiteHeader
 **Purpose**: The SAMAVESH Navbar. **One component serves every placement in the estate** — there is no second masthead to reach for and none to write.  
@@ -2057,7 +2111,7 @@ switched on from outside via four custom properties — `--ds-flask-play`
 (a `<time>`), `--ds-flask-level` (a `<length>`) — so the consumer owns the
 selectors, because only the consumer knows its own markup. Colour is
 `currentColor` throughout (the liquid via `fill-opacity`), so it re-tones
-with its container in all seven brand modes with no token of its own.
+with its container in all eight brand modes with no token of its own.
 Decorative and `aria-hidden`; the accessible name belongs to the containing
 control. Under `prefers-reduced-motion` nothing moves but state survives —
 a raised level stays raised and the bubbles hold a static frame.

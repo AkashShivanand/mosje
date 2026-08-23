@@ -33,6 +33,15 @@ import {
  * Lifecycle: **Stable**.
  *
  * @covers MenuToggle, SheetToggle, NavItemLink, NavDropdown, DropdownItem, MegaMenu, MegaMenuItem
+ *
+ * Wiring props, deliberately not given stories of their own because they change
+ * nothing you can see: `controlsId` on `MenuToggle` and `SheetToggle` is the id
+ * of the panel each button controls, and it is what makes `aria-controls` and
+ * `aria-expanded` point somewhere real — omit it and the toggle announces a
+ * relationship that does not exist. `id` on `NavDropdown` and `MegaMenu` is the
+ * other end of that pair. `onSelect` on `NavDropdown`, `DropdownItem`, `MegaMenu`
+ * and `MegaMenuItem` fires with the chosen item so the caller can close the menu
+ * and route; without it the menu opens and never resolves.
  */
 const meta = {
   title: "Components/Navigation/Navbar parts",
@@ -43,6 +52,10 @@ const meta = {
      eight stories. */
   args: { expanded: false, onToggle: () => {} },
   parameters: { layout: "padded" },
+  // This file showcases several navbar parts, so most stories are render-only and pass no
+  // args. MenuToggle's props are required, so without defaults here every one of those
+  // stories fails to typecheck.
+  args: { expanded: false, onToggle: () => {} },
 } satisfies Meta<typeof MenuToggle>;
 
 export default meta;

@@ -15,7 +15,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Icon } from "../icon";
+import { Icon } from "./icon";
 import { Divider } from "../layout/divider";
 import "./accessibility-bar.css";
 

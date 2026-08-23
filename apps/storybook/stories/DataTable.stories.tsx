@@ -157,3 +157,22 @@ export const CompactColumns: Story = {
     caption: "Applications by district",
   },
 };
+
+/**
+ * `showPageSizes={false}` swaps the page-size buttons for the government
+ * register's range label — "Showing 1–10 of 71" — and fixes the page size at
+ * the first entry of `pageSizes`.
+ *
+ * Use it where the reader is working through a register in order and the
+ * question is "where am I in this list?", not "how much can I see at once".
+ * Leave it on (the default) for a queue an officer triages, where changing the
+ * page size is a real part of the job.
+ */
+export const GovernmentRangeLabel: Story = {
+  args: {
+    showPageSizes: false,
+    total: 71,
+    caption: "My applications",
+  },
+};
+

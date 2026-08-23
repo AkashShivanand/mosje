@@ -17,7 +17,7 @@ export interface VerticalTimelineItemProps extends Omit<React.HTMLAttributes<HTM
 export const VerticalTimelineItem = React.forwardRef<HTMLDivElement, VerticalTimelineItemProps>(
   ({ title, date, children, className, ...props }, ref) => {
     return (
-      <div ref={ref} className={cn("sa-vertical-timeline-item", className)} {...props}>
+      <div ref={ref} className={cn("sa-vertical-timeline-item", "group", className)} {...props}>
         <div className="sa-vertical-timeline-item__marker-container">
           <div className="sa-vertical-timeline-item__marker" />
         </div>

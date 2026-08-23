@@ -22,6 +22,12 @@ const EMBLEM = "/images/National-Emblem-logo.svg";
  * here, because a 344px sheet has no room for a grid.
  *
  * Lifecycle: **Stable**.
+ *
+ * Three props carry no visual variant and so have no story: `id` pairs with the
+ * opening toggle's `controlsId` to make `aria-controls` real, `emblemAlt` is the
+ * emblem's alt text and must name the emblem rather than repeat the ministry
+ * line beside it, and `actions` slots a login or account control into the foot
+ * of the sheet for surfaces whose masthead is not rendered.
  */
 const meta = {
   title: "Components/Navigation/NavSheet",

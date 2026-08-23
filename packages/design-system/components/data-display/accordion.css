@@ -1,89 +1,103 @@
-/* ── Accordion ────────────────────────────────────────────────────────────
-   Plain CSS on `--sa-*` tokens, which is the house pattern and here it is
-   load-bearing rather than a preference.
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-   This file used `@apply`. The design system is consumed by more than one
-   build — Next/Turbopack for the hub, Vite for Storybook — and only the hub
-   runs Tailwind. In Storybook the `@apply` lines survived into the bundle as
-   literal text, which a browser discards as an unknown at-rule, so the
-   component rendered with NO STYLES AT ALL in the estate's own shared
-   reference. In the hub the same lines broke the production build outright.
-   One root cause, two symptoms, and neither is visible from the About Us page
-   where the component happens to work.
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / UX4G — Accordion
+     Semantic CSS classes only; all colours reference design tokens (--sa-*).
+     Plain CSS on purpose: this file is imported from accordion.tsx, so Tailwind
+     processes it as its own root and `@apply` cannot see the estate's theme.
+     Sub-parts: .sa-accordion-item / __trigger / __title / __icon / __content
+     ============================================================================ */
 
-   Values are carried over from the Tailwind utilities they replace, so the
-   rendered result is unchanged. */
-
-.sa-accordion {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-12);
-}
-
-.sa-accordion-item {
-  overflow: hidden;
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-12);
-  background-color: var(--sa-bg-neutral-base);
-  box-shadow: var(--sa-elevation-card);
-  transition: box-shadow var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-}
-
-.sa-accordion-item:hover {
-  box-shadow: var(--sa-elevation-raised);
-}
-
-.sa-accordion-item__trigger {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sa-inline-12);
-  padding: var(--sa-padding-16) var(--sa-padding-20);
-  border: 0;
-  /* The lightest surface token. `--sa-bg-neutral-subtle` is #dcdee1, which
-     turns the closed row into a solid grey bar; the utility this replaces was
-     `bg-neutral-50/50`, i.e. barely there. */
-  background-color: var(--sa-bg-neutral-subtler);
-  text-align: start;
-  cursor: pointer;
-  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-}
-
-/* A faint brand tint on hover, as `hover:bg-blue-50/30` intended — and this
-   one follows `data-brand` instead of being blue in every mode. */
-.sa-accordion-item__trigger:hover {
-  background-color: var(--sa-bg-brand-primary-base);
-}
-
-/* The ring is the estate's focus treatment, and it is `:focus-visible` only —
-   a mouse click on a disclosure should not leave a ring behind it. */
-.sa-accordion-item__trigger:focus-visible {
-  outline: 2px solid var(--sa-color-primaryScale-500);
-  outline-offset: -2px;
-}
-
-.sa-accordion-item__title {
-  font-size: var(--sa-type-body-2-size);
-  font-weight: 700;
-  line-height: 1.4;
-  color: var(--sa-text-neutral-bolder);
-}
-
-@media (min-width: 640px) {
-  .sa-accordion-item__title {
-    font-size: var(--sa-type-body-1-size);
+  .sa-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
   }
-}
 
-.sa-accordion-item__icon {
-  flex-shrink: 0;
-  color: var(--sa-text-neutral-subtle);
-}
+  .sa-accordion-item {
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    overflow: hidden;
+    box-shadow: var(--sa-elevation-card);
+    transition: box-shadow 150ms ease;
+  }
 
-.sa-accordion-item__content {
-  padding: var(--sa-padding-16) var(--sa-padding-20);
-  border-top: 1px solid var(--sa-border-neutral-subtle);
-  background-color: var(--sa-bg-neutral-base);
-  color: var(--sa-text-neutral-base);
+  .sa-accordion-item:hover {
+    box-shadow: var(--sa-elevation-raised);
+  }
+
+  .sa-accordion-item__trigger {
+    width: 100%;
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-bolder);
+    font-family: var(--sa-font-latin);
+    text-align: left;
+    cursor: pointer;
+    border: 0;
+    transition: background-color 150ms ease;
+  }
+
+  .sa-accordion-item__trigger:hover {
+    background-color: var(--sa-bg-brand-primary-subtler);
+  }
+
+  .sa-accordion-item__trigger:focus {
+    outline: none;
+  }
+
+  .sa-accordion-item__trigger:focus-visible {
+    outline: 2px solid var(--sa-color-action-primary-default);
+    outline-offset: -2px;
+  }
+
+  .sa-accordion-item__title {
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-accordion-item__icon {
+    color: var(--sa-text-neutral-subtle);
+    flex-shrink: 0;
+    transition: transform 200ms ease;
+  }
+
+  .sa-accordion-item__content {
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    background-color: var(--sa-bg-neutral-base);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    color: var(--sa-text-neutral-base);
+  }
+
+  @media (min-width: 640px) {
+    .sa-accordion-item__title {
+      font-size: var(--sa-type-body-1-size);
+    }
+  }
 }

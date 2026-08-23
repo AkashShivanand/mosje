@@ -72,7 +72,7 @@ export default function PasswordInputPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
-          Typing a password blind is a major cause of failed sign-ins. Always provide a way for the user to verify what they’ve typed. This component suppresses the native browser reveal buttons (which vary wildly and can overlap) in favour of a consistent, accessible DS toggle.
+          Typing a password blind is a major cause of failed sign-ins. Always provide a way for the user to verify what they&apos;ve typed. This component suppresses the native browser reveal buttons (which vary wildly and can overlap) in favour of a consistent, accessible DS toggle.
         </p>
         <div
           style={{
@@ -119,8 +119,8 @@ export default function PasswordInputPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Button Type:</strong> The toggle is explicitly set to <code>type=“button”</code> to prevent it from accidentally submitting the form.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria Labels:</strong> The toggle’s <code>aria-label</code> announces the <em>action</em> (“Show password” or “Hide password”), while <code>aria-pressed</code> conveys the current state.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Button Type:</strong> The toggle is explicitly set to <code>type=&quot;button&quot;</code> to prevent it from accidentally submitting the form.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria Labels:</strong> The toggle&apos;s <code>aria-label</code> announces the <em>action</em> (&quot;Show password&quot; or &quot;Hide password&quot;), while <code>aria-pressed</code> conveys the current state.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Focus Management:</strong> Tabbing moves from the input to the toggle logically. Clicking the toggle prevents focus loss on the input using <code>onMouseDown</code>, keeping the keyboard user exactly where they were.</li>
         </ul>
       </section>

@@ -1,127 +1,120 @@
-/* ── VerticalTimeline ─────────────────────────────────────────────────────
-   Plain CSS on `--sa-*` tokens. See the note at the top of accordion.css for
-   why `@apply` had to go: only the hub runs Tailwind, so in Storybook these
-   rules reached the browser as literal text and the component rendered
-   unstyled, while in the hub the same lines broke the production build.
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-   The brand colour is a token here, not `#0373DF`. That literal is gov-blue in
-   BLUE mode only, so a hardcoded copy froze the rule, the marker and the date
-   pill to one brand and ignored the other seven. `primaryScale-500` is the
-   same value in blue and follows `data-brand` everywhere else. */
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / UX4G — VerticalTimeline
+     Semantic CSS classes only; all colours reference design tokens (--sa-*).
+     Plain CSS on purpose: imported from vertical-timeline.tsx, so Tailwind
+     processes it as its own root and `@apply` cannot see the estate's theme.
+     ============================================================================ */
 
-.sa-vertical-timeline {
-  position: relative;
-  margin-inline-start: var(--sa-inline-12);
-  padding-block-end: var(--sa-padding-16);
-  border-inline-start: 2px solid
-    color-mix(in srgb, var(--sa-color-primaryScale-500) 20%, transparent);
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-48);
-}
-
-@media (min-width: 640px) {
   .sa-vertical-timeline {
-    margin-inline-start: var(--sa-inline-16);
+    position: relative;
+    border-left: 2px solid var(--sa-bg-brand-primary-subtle);
+    margin-left: var(--sa-stack-12);
+    padding-bottom: var(--sa-padding-16);
   }
-}
 
-.sa-vertical-timeline-item {
-  position: relative;
-  padding-inline-start: var(--sa-padding-32);
-}
+  .sa-vertical-timeline > * + * {
+    margin-top: var(--sa-stack-48);
+  }
 
-@media (min-width: 640px) {
   .sa-vertical-timeline-item {
-    padding-inline-start: var(--sa-padding-48);
+    position: relative;
+    padding-left: var(--sa-padding-32);
   }
-}
 
-/* A white disc that masks the rule behind the marker, so the line appears to
-   pass behind each event rather than through it. */
-.sa-vertical-timeline-item__marker-container {
-  position: absolute;
-  inset-inline-start: -29px;
-  margin-block-start: 6px;
-  display: flex;
-  height: 56px;
-  width: 56px;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--sa-shape-full);
-  background-color: var(--sa-bg-neutral-base);
-}
+  .sa-vertical-timeline-item__marker-container {
+    position: absolute;
+    left: -29px;
+    margin-top: var(--sa-stack-6);
+    height: 56px;
+    width: 56px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.sa-vertical-timeline-item__marker {
-  height: 10px;
-  width: 10px;
-  border-radius: var(--sa-shape-full);
-  background-color: var(--sa-color-primaryScale-500);
-  box-shadow:
-    0 0 0 4px var(--sa-bg-neutral-base),
-    var(--sa-elevation-card);
-}
+  .sa-vertical-timeline-item__marker {
+    height: 10px;
+    width: 10px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-action-primary-default);
+    box-shadow: 0 0 0 4px var(--sa-bg-neutral-base), var(--sa-elevation-card);
+  }
 
-.sa-vertical-timeline-item__content {
-  position: relative;
-  padding: var(--sa-padding-24);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-16);
-  background-color: var(--sa-bg-neutral-base);
-  box-shadow: var(--sa-elevation-card);
-  transition: box-shadow var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-}
-
-.sa-vertical-timeline-item__content:hover {
-  box-shadow: var(--sa-elevation-raised);
-}
-
-@media (min-width: 640px) {
   .sa-vertical-timeline-item__content {
-    padding: var(--sa-padding-32);
+    position: relative;
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-16);
+    padding: var(--sa-padding-24);
+    box-shadow: var(--sa-elevation-card);
+    transition: box-shadow 150ms ease;
   }
-}
 
-.sa-vertical-timeline-item__header {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: var(--sa-stack-8);
-  margin-block-end: var(--sa-stack-16);
-}
+  .sa-vertical-timeline-item__content:hover {
+    box-shadow: var(--sa-elevation-raised);
+  }
 
-@media (min-width: 640px) {
   .sa-vertical-timeline-item__header {
-    flex-direction: row;
-    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    margin-bottom: var(--sa-stack-16);
   }
-}
 
-.sa-vertical-timeline-item__title {
-  margin: 0;
-  padding-inline-end: var(--sa-padding-16);
-  font-size: var(--sa-type-title-2-size);
-  font-weight: 700;
-  line-height: 1.3;
-  color: var(--sa-text-neutral-bolder);
-}
+  .sa-vertical-timeline-item__title {
+    font-size: var(--sa-type-body-1-size);
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+    padding-right: var(--sa-padding-16);
+  }
 
-/* Short by contract — a long date wraps and pushes the title around, which is
-   why the prop is documented as "keep it short". */
-.sa-vertical-timeline-item__date {
-  flex: none;
-  align-self: flex-start;
-  padding: var(--sa-padding-4) var(--sa-padding-12);
-  border-radius: var(--sa-shape-full);
-  background-color: var(--sa-bg-brand-primary-base);
-  font-size: var(--sa-type-body-2-size);
-  font-weight: 700;
-  white-space: nowrap;
-  color: var(--sa-color-primaryScale-700);
-}
+  .sa-vertical-timeline-item__date {
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 700;
+    color: var(--sa-text-brand-primary-base);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    padding: var(--sa-padding-4) var(--sa-padding-12);
+    border-radius: var(--sa-shape-full);
+    white-space: nowrap;
+  }
 
-.sa-vertical-timeline-item__body {
-  font-size: var(--sa-type-body-2-size);
-  line-height: 1.7;
-  color: var(--sa-text-neutral-base);
+  .sa-vertical-timeline-item__body {
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-2-size);
+    line-height: 1.625;
+  }
+
+  @media (min-width: 640px) {
+    .sa-vertical-timeline { margin-left: var(--sa-stack-16); }
+    .sa-vertical-timeline-item { padding-left: var(--sa-padding-48); }
+    .sa-vertical-timeline-item__content { padding: var(--sa-padding-32); }
+    .sa-vertical-timeline-item__header { flex-direction: row; align-items: flex-start; }
+    .sa-vertical-timeline-item__title { font-size: var(--sa-type-title-1-size); }
+    .sa-vertical-timeline-item__body { font-size: var(--sa-type-body-1-size); }
+  }
 }

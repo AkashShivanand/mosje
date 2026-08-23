@@ -128,9 +128,9 @@ function RegistrationForm() {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Described By:</strong> Wire the meter’s ID to the password input’s <code>aria-describedby</code> attribute so screen readers know they are linked.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Region:</strong> The text label (e.g., “Weak”, “Strong”) has <code>aria-live=“polite”</code>. As the user types and the score changes, screen readers will announce the new strength politely without interrupting the user mid-keystroke.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Colour Independence:</strong> The component relies on the text word to convey meaning, not just the bar’s colour, ensuring it is fully accessible to users with colour vision deficiencies.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Described By:</strong> Wire the meter&apos;s ID to the password input&apos;s <code>aria-describedby</code> attribute so screen readers know they are linked.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Region:</strong> The text label (e.g., &quot;Weak&quot;, &quot;Strong&quot;) has <code>aria-live=&quot;polite&quot;</code>. As the user types and the score changes, screen readers will announce the new strength politely without interrupting the user mid-keystroke.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Colour Independence:</strong> The component relies on the text word to convey meaning, not just the bar&apos;s colour, ensuring it is fully accessible to users with colour vision deficiencies.</li>
         </ul>
       </section>
 

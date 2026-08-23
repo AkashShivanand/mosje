@@ -85,7 +85,7 @@ import { UX4GAccessibilityWidget } from "@mosje/design-system";
 // …render once near the end of the root layout, like AppSwitcher:
 <UX4GAccessibilityWidget />
 ```
-- Component: `packages/design-system/components/a11y/ux4g-accessibility-widget.tsx`
+- Component: `packages/design-system/components/utilities/ux4g-accessibility-widget.tsx`
 - Framework-agnostic (injects a plain `<script data-ux4g-a11y="true" defer>`; no `next/script` dependency), idempotent (loads once per document), version-pinnable via the `src` prop.
 - Reference integration: **`apps/dosje/src/app/layout.tsx`** (live).
 
@@ -98,7 +98,7 @@ import { UX4GAccessibilityWidget } from "@mosje/design-system";
 | # | Implementation | Location | Verdict |
 |---|---|---|---|
 | **★** | **Official UX4G widget** via `UX4GAccessibilityWidget` | `packages/design-system/.../ux4g-accessibility-widget.tsx` | ✅ **CANONICAL — adopt everywhere** |
-| A | Bespoke `AccessibilityWidget` (React reimplementation) | *(removed)* | ✅ **DELETED** — replaced by the official widget everywhere; component and CSS removed from `packages/design-system/components/a11y/` |
+| A | Bespoke `AccessibilityWidget` (React reimplementation) | *(removed)* | ✅ **DELETED** — replaced by the official widget everywhere; component and CSS removed from `packages/design-system/components/utilities/` |
 | B | `useA11yToolbar()` + `data-theme="hc"` token overlay | `packages/design-system/.../header/a11y-controls.ts` + `packages/tokens` | ⚠️ **DEPRECATED** — orphaned; retire the hook (keep the `hc` token values only if still referenced) |
 | C | App-context HC toggle `data-highcontrast` + local CSS | `apps/portals/smile-admin` | ⚠️ **DEPRECATED** — remove; replace with the official widget |
 | — | Dead contrast buttons | `apps/portals/scw/.../gov-chrome.tsx` | ❌ **Non-functional** — remove; the widget provides contrast |
@@ -173,7 +173,7 @@ init path the widget expects from a static `<script defer>` placed before `</bod
 without changing the widget's own code. Verified live in Chrome: Bigger Text now actually
 zooms the page and shows its step indicator + checkmark; the panel's × button now closes it.
 
-**Where:** `packages/design-system/components/a11y/ux4g-accessibility-widget.tsx`.
+**Where:** `packages/design-system/components/utilities/ux4g-accessibility-widget.tsx`.
 
 ## 8. Brand skin (look matches DS, functionality stays official)
 

@@ -19,7 +19,7 @@ export function TextareaPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={invalid} 
@@ -28,7 +28,7 @@ export function TextareaPlayground() {
           <strong>Invalid (Error State)</strong>
         </label>
         
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={disabled} 
@@ -37,13 +37,13 @@ export function TextareaPlayground() {
           <strong>Disabled</strong>
         </label>
 
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <strong>Rows:</strong>
           <input 
             type="number" 
             value={rows} 
             onChange={(e) => setRows(Number(e.target.value))}
-            style={{ padding: "4px 8px", borderRadius: "4px", border: "1px solid var(--sa-border-neutral-subtle)", width: "60px" }}
+            style={{ padding: "var(--sa-padding-4) var(--sa-padding-8)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)", width: "60px" }}
           />
         </label>
       </div>

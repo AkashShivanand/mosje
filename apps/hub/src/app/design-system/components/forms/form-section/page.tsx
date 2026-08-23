@@ -72,7 +72,7 @@ export default function FormSectionPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
-          Use <code>FormSection</code> to group related form fields logically (e.g., “Personal Details”, “Address”, “Banking Information”). This is the standard way to build forms across the SAMAVESH estate, ensuring a consistent rhythm and responsive behaviour.
+          Use <code>FormSection</code> to group related form fields logically (e.g., &quot;Personal Details&quot;, &quot;Address&quot;, &quot;Banking Information&quot;). This is the standard way to build forms across the SAMAVESH estate, ensuring a consistent rhythm and responsive behaviour.
         </p>
         <div
           style={{

@@ -765,17 +765,17 @@ export function ApplicationForm() {
           }}
         >
           <RelatedCard
-            href="/design-system/components/input#form-field"
+            href="/design-system/components/forms/form-field"
             title="Form Field"
             blurb="Buttons submit the forms that form fields build."
           />
           <RelatedCard
-            href="/design-system/components/badge"
+            href="/design-system/components/feedback/badge"
             title="Badge"
             blurb="For status and counts — never use a button to display state."
           />
           <RelatedCard
-            href="/design-system/components/card"
+            href="/design-system/components/data-display/card"
             title="Card"
             blurb="Cards often end with one primary button as their action."
           />

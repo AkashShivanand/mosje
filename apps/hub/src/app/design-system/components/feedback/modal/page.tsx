@@ -55,7 +55,7 @@ export default function ModalPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
-          Modals are highly disruptive. They halt the user’s current context and require an action before they can return. Use them sparingly, only when an action is irreversible, or when a sub-flow is required to complete the main flow.
+          Modals are highly disruptive. They halt the user&apos;s current context and require an action before they can return. Use them sparingly, only when an action is irreversible, or when a sub-flow is required to complete the main flow.
         </p>
         <div
           style={{
@@ -71,9 +71,9 @@ export default function ModalPage(): React.JSX.Element {
             <li>When you must interrupt the user with urgent information.</li>
           </UseCard>
           <UseCard tone="dont" title="When NOT to use">
-            <li>Don’t use for complex forms that require referencing the underlying page.</li>
-            <li>Don’t stack modals on top of other modals.</li>
-            <li>Don’t use for simple feedback (use a Toast or Alert instead).</li>
+            <li>Don&apos;t use for complex forms that require referencing the underlying page.</li>
+            <li>Don&apos;t stack modals on top of other modals.</li>
+            <li>Don&apos;t use for simple feedback (use a Toast or Alert instead).</li>
           </UseCard>
         </div>
       </section>
@@ -123,11 +123,11 @@ export default function ModalPage(): React.JSX.Element {
           SAMAVESH Modals handle complex accessibility requirements internally.
         </p>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Focus Trap:</strong> When opened, focus is automatically moved to the first focusable element inside the modal. Tabbing will cycle through the modal’s elements and will not escape to the background page.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Focus Trap:</strong> When opened, focus is automatically moved to the first focusable element inside the modal. Tabbing will cycle through the modal&apos;s elements and will not escape to the background page.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Focus Restoration:</strong> When closed, focus is automatically returned to the exact element that originally opened the modal, preventing keyboard users from losing their place.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Scroll Locking:</strong> The <code>&lt;body&gt;</code> is locked from scrolling while the modal is open.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Escape Key:</strong> Hitting the <code>Escape</code> key triggers the <code>onClose</code> handler.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>ARIA Roles:</strong> The modal panel has <code>role=“dialog”</code>, <code>aria-modal=“true”</code>, and <code>aria-labelledby</code> pointing to the auto-generated ID of the title.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>ARIA Roles:</strong> The modal panel has <code>role=&quot;dialog&quot;</code>, <code>aria-modal=&quot;true&quot;</code>, and <code>aria-labelledby</code> pointing to the auto-generated ID of the title.</li>
         </ul>
       </section>
     </main>

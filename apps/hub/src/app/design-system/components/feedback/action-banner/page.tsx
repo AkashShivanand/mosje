@@ -115,7 +115,7 @@ export default function ActionBannerPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Heading Structure:</strong> The title is rendered as an <code>&lt;h3&gt;</code> element. Ensure this fits logically within your page’s heading hierarchy.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Heading Structure:</strong> The title is rendered as an <code>&lt;h3&gt;</code> element. Ensure this fits logically within your page&apos;s heading hierarchy.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Contrast:</strong> The gradient background and text colours are selected from the SAMAVESH tokens to ensure WCAG AA compliance.</li>
         </ul>
       </section>

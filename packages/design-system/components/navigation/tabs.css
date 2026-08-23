@@ -1,631 +1,654 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — Tabs
-   WAI-ARIA tablist. Three indicators (underline / rail / pill), three sizes,
-   two tracks, two orientations. Token-driven; no raw values.
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-   HEIGHT IS ALWAYS A HUG — padding + line-height, never a fixed number. A tab
-   with a pinned height stops growing when a citizen raises their browser font
-   size, which is how a "compliant" control becomes an unreadable one. The
-   documented heights (36 / 44 / 48) are what the hug RESOLVES to at the 16px
-   default, not what is set.
-   ============================================================================ */
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Tabs
+     WAI-ARIA tablist. Three indicators (underline / rail / pill), three sizes,
+     two tracks, two orientations. Token-driven; no raw values.
 
-.ds-tabs {
-  position: relative;
-  display: flex;
-  font-family: var(--sa-font-latin);
-}
+     HEIGHT IS ALWAYS A HUG — padding + line-height, never a fixed number. A tab
+     with a pinned height stops growing when a citizen raises their browser font
+     size, which is how a "compliant" control becomes an unreadable one. The
+     documented heights (36 / 44 / 48) are what the hug RESOLVES to at the 16px
+     default, not what is set.
+     ============================================================================ */
 
-/* ---- size: padding + type. Everything else derives from these. ------------ */
+  .ds-tabs {
+    position: relative;
+    display: flex;
+    font-family: var(--sa-font-latin);
+  }
 
-.ds-tabs--s {
-  --ds-tabs-pad-y: var(--sa-padding-8);
-  --ds-tabs-pad-x: var(--sa-padding-12);
-  --ds-tabs-type-size: var(--sa-type-label-1-size);
-  --ds-tabs-type-lh: var(--sa-type-label-1-lh);
-}
+  /* ---- size: padding + type. Everything else derives from these. ------------ */
 
-.ds-tabs--m {
-  --ds-tabs-pad-y: var(--sa-padding-12);
-  --ds-tabs-pad-x: var(--sa-padding-16);
-  --ds-tabs-type-size: var(--sa-type-label-1-size);
-  --ds-tabs-type-lh: var(--sa-type-label-1-lh);
-}
+  .ds-tabs--s {
+    --ds-tabs-pad-y: var(--sa-padding-8);
+    --ds-tabs-pad-x: var(--sa-padding-12);
+    --ds-tabs-type-size: var(--sa-type-label-1-size);
+    --ds-tabs-type-lh: var(--sa-type-label-1-lh);
+  }
 
-/* L steps the type up to body-1 rather than the padding — a larger tab reads as
-   larger because its label does, and padding alone would only make it emptier. */
-.ds-tabs--l {
-  --ds-tabs-pad-y: var(--sa-padding-12);
-  --ds-tabs-pad-x: var(--sa-padding-20);
-  --ds-tabs-type-size: var(--sa-type-body-1-size);
-  --ds-tabs-type-lh: var(--sa-type-body-1-lh);
-}
+  .ds-tabs--m {
+    --ds-tabs-pad-y: var(--sa-padding-12);
+    --ds-tabs-pad-x: var(--sa-padding-16);
+    --ds-tabs-type-size: var(--sa-type-label-1-size);
+    --ds-tabs-type-lh: var(--sa-type-label-1-lh);
+  }
 
-/* ---- orientation --------------------------------------------------------- */
+  /* L steps the type up to body-1 rather than the padding — a larger tab reads as
+     larger because its label does, and padding alone would only make it emptier. */
+  .ds-tabs--l {
+    --ds-tabs-pad-y: var(--sa-padding-12);
+    --ds-tabs-pad-x: var(--sa-padding-20);
+    --ds-tabs-type-size: var(--sa-type-body-1-size);
+    --ds-tabs-type-lh: var(--sa-type-body-1-lh);
+  }
 
-.ds-tabs--horizontal {
-  flex-direction: row;
-  overflow-x: auto;
-}
+  /* ---- orientation --------------------------------------------------------- */
 
-.ds-tabs--vertical {
-  flex-direction: column;
-  align-items: stretch;
-}
+  .ds-tabs--horizontal {
+    flex-direction: row;
+    overflow-x: auto;
+  }
 
-/* ---- track --------------------------------------------------------------- */
+  .ds-tabs--vertical {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-/* An open list, optionally carrying the rule the indicator sits IN — coplanar,
-   not stacked above: the selected segment replaces that stretch of the rule
-   rather than drawing a second line beside it. `control/border/width` is the
-   system's only Tier-2 border width, and it is the right one: this is a control
-   edge. `layout/tab/indicator` is deliberately NOT used here — that token is the
-   selection mark, and the two must be free to move independently. */
-.ds-tabs--track-none.ds-tabs--divider.ds-tabs--horizontal {
-  border-bottom: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
-}
+  /* ---- track --------------------------------------------------------------- */
 
-.ds-tabs--track-none.ds-tabs--divider.ds-tabs--vertical {
-  border-left: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
-}
+  /* An open list, optionally carrying the rule the indicator sits IN — coplanar,
+     not stacked above: the selected segment replaces that stretch of the rule
+     rather than drawing a second line beside it. `control/border/width` is the
+     system's only Tier-2 border width, and it is the right one: this is a control
+     edge. `layout/tab/indicator` is deliberately NOT used here — that token is the
+     selection mark, and the two must be free to move independently. */
+  .ds-tabs--track-none.ds-tabs--divider.ds-tabs--horizontal {
+    border-bottom: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+  }
 
-/* The filled track. `layout/tab/track` is both its padding and the indicator's
-   inset, so the pill always clears the border by the same amount on every edge. */
-.ds-tabs--track-enclosed {
-  /* 2, not 4 — measured off the master, whose three tabs sit at 0 / 104.67 /
-     209.33 in a 312 slot. `inline`, not `stack`: this is horizontal rhythm
-     between siblings, and it stays 2 in the vertical track so the segments read
-     as one control rather than as a stack of separate pills. */
-  gap: var(--sa-inline-2);
-  padding: var(--sa-layout-tab-track);
-  border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-12);
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  .ds-tabs--track-none.ds-tabs--divider.ds-tabs--vertical {
+    border-left: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+  }
 
-/* ---- the sliding indicator ------------------------------------------------
-   One element that moves, rather than each tab painting its own chrome. Its
-   main-axis position and size are written inline by tabs.tsx; the cross-axis
-   geometry is the stylesheet's job and differs per indicator. */
+  /* The filled track. `layout/tab/track` is both its padding and the indicator's
+     inset, so the pill always clears the border by the same amount on every edge. */
+  .ds-tabs--track-enclosed {
+    /* 2, not 4 — measured off the master, whose three tabs sit at 0 / 104.67 /
+       209.33 in a 312 slot. `inline`, not `stack`: this is horizontal rhythm
+       between siblings, and it stays 2 in the vertical track so the segments read
+       as one control rather than as a stack of separate pills. */
+    gap: var(--sa-inline-2);
+    padding: var(--sa-layout-tab-track);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-.ds-tabs__indicator {
-  position: absolute;
-  z-index: 0;
-  pointer-events: none;
-  transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-    width var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-    height var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
-}
+  /* ---- the sliding indicator ------------------------------------------------
+     One element that moves, rather than each tab painting its own chrome. Its
+     main-axis position and size are written inline by tabs.tsx; the cross-axis
+     geometry is the stylesheet's job and differs per indicator. */
 
-/* Underline — a 2px mark on the bottom edge. */
-.ds-tabs--underline .ds-tabs__indicator {
-  left: 0;
-  bottom: 0;
-  height: var(--sa-layout-tab-indicator);
-  background-color: var(--sa-border-brand-primary-base);
-}
-
-/* Rail — the same mark on the leading edge. Vertical lists only. */
-.ds-tabs--rail .ds-tabs__indicator {
-  top: 0;
-  left: 0;
-  width: var(--sa-layout-tab-indicator);
-  background-color: var(--sa-border-brand-primary-base);
-}
-
-/* With a rule present, the mark is pulled OUT over it by exactly the rule's own
-   width, so the two are coplanar and the selected segment replaces the rule
-   instead of stacking a second line against it. */
-.ds-tabs--divider.ds-tabs--underline .ds-tabs__indicator {
-  bottom: calc(-1 * var(--sa-control-border-width));
-}
-
-.ds-tabs--divider.ds-tabs--rail .ds-tabs__indicator {
-  left: calc(-1 * var(--sa-control-border-width));
-}
-
-/* Pill — a filled shape inset from the track by `layout/tab/track` on the two
-   cross-axis edges; the main axis is measured from the selected button. */
-.ds-tabs--pill .ds-tabs__indicator {
-  border-radius: var(--sa-shape-8);
-  background-color: var(--sa-bg-brand-primary-bolder);
-  box-shadow: var(--sa-elevation-card);
-}
-
-.ds-tabs--pill.ds-tabs--horizontal .ds-tabs__indicator {
-  top: var(--sa-layout-tab-track);
-  bottom: var(--sa-layout-tab-track);
-  left: 0;
-}
-
-.ds-tabs--pill.ds-tabs--vertical .ds-tabs__indicator {
-  left: var(--sa-layout-tab-track);
-  right: var(--sa-layout-tab-track);
-  top: 0;
-}
-
-@media (prefers-reduced-motion: reduce) {
   .ds-tabs__indicator {
-    transition: none;
-  }
-}
-
-/* ---- the tab ------------------------------------------------------------- */
-
-.ds-tabs__tab {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: var(--sa-inline-8);
-  min-width: 0;
-  white-space: nowrap;
-  padding: var(--ds-tabs-pad-y) var(--ds-tabs-pad-x);
-  border: none;
-  background: transparent;
-  color: var(--sa-text-neutral-subtle);
-  font-size: var(--ds-tabs-type-size);
-  line-height: var(--ds-tabs-type-lh);
-  font-weight: 600;
-  cursor: pointer;
-  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-    color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
-}
-
-/* Enclosed tabs share the track evenly; an open list is content-width, which is
-   what keeps an underline the width of its own label rather than of a column. */
-.ds-tabs--track-enclosed .ds-tabs__tab {
-  flex: 1 1 0;
-  border-radius: var(--sa-shape-8);
-}
-
-.ds-tabs--track-none .ds-tabs__tab {
-  flex: 0 0 auto;
-  /* Invisible on its own — these tabs have no resting fill. It exists so the
-     focus ring, which is a spread shadow and therefore inherits this radius,
-     resolves to shape/md (4 + 4) instead of a hard square corner. */
-  border-radius: var(--sa-shape-4);
-}
-
-.ds-tabs--horizontal .ds-tabs__tab {
-  justify-content: center;
-}
-
-/* A column of tabs is a list, and a list reads down its leading edge. */
-.ds-tabs--vertical .ds-tabs__tab {
-  justify-content: flex-start;
-  text-align: left;
-}
-
-/* Equal-width tabs (`flex: 1 1 0`) hand every tab the same slot regardless of how
-   long its label is, and `white-space: nowrap` means a label that does not fit
-   PAINTS OVER ITS NEIGHBOUR — "Application details" ran through "Documents" in a
-   720px track. Ellipsis is the fallback, not the intent: a tab label should be
-   short enough not to need it, and tabs.tsx pairs a clipped label with a Tooltip
-   so it stays recoverable on hover AND on keyboard focus. The two inputs a
-   tooltip cannot serve are handled below by not clipping at all. */
-.ds-tabs__label {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* TOUCH — there is no hover, so a tooltip cannot rescue anything. The predicate
-   is `hover: none` and not `pointer: coarse` deliberately: what decides this is
-   whether the RESCUE works, not how precise the finger is. A stylus reports
-   `hover: none, pointer: fine` and needs the same treatment.
-
-   So the label is never clipped here. Enclosed tabs stop sharing the width
-   equally and size to their content instead; `flex-grow: 1` keeps the track
-   full-width when everything fits, and `overflow-x: auto` on the list lets it
-   scroll when it does not. Equal width is the lesser value — a segmented control
-   whose segments are unreadable is not a segmented control. */
-@media (hover: none) {
-  .ds-tabs--horizontal.ds-tabs--track-enclosed .ds-tabs__tab {
-    flex: 1 0 auto;
-  }
-}
-
-/* VERTICAL — a column's items size independently and the rail is measured from
-   the button at runtime, so a wrapped label costs nothing structurally: no row
-   baseline to break, no sibling height to drag along. Wrapping therefore beats
-   truncating outright — it needs no affordance, works on every input including
-   touch, and hides nothing. This is why "never wrap" is a rule about ROWS.
-
-   The documented heights (36 / 44 / 48) describe a single-line tab; a wrapped
-   label makes a taller one, which is still a hug of padding plus line-height. */
-.ds-tabs--vertical .ds-tabs__tab {
-  white-space: normal;
-}
-
-.ds-tabs--vertical .ds-tabs__label {
-  overflow: visible;
-  text-overflow: clip;
-}
-
-/* The unread dot. It binds to `cmp/badge/dotSize` — the SAME token `.ds-badge__dot`
-   uses — so the estate has one definition of this affordance rather than one per
-   component. It steps up beside 16px body text for the same reason the Badge's
-   does: a dot is sized against the type it annotates, not against its container.
-   `currentColor` makes it track the tab's own state, so it greys out with a
-   disabled tab and goes white on a selected pill. */
-.ds-tabs__badge {
-  flex: 0 0 auto;
-  width: var(--sa-cmp-badge-dotSize);
-  height: var(--sa-cmp-badge-dotSize);
-  border-radius: var(--sa-shape-full);
-  background-color: currentColor;
-}
-
-.ds-tabs--l .ds-tabs__badge {
-  width: var(--sa-cmp-badge-dotSizeLg);
-  height: var(--sa-cmp-badge-dotSizeLg);
-}
-
-/* ---- states -------------------------------------------------------------- */
-
-/* Hover paints a fill only where there is a shape to fill. On an open list the
-   affordance is the rule going dark, drawn by the tab's own border so it lands
-   exactly where the selected indicator will. */
-.ds-tabs--track-enclosed .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
-  background-color: var(--sa-bg-neutral-subtle);
-  color: var(--sa-text-neutral-base);
-}
-
-.ds-tabs--underline .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
-  box-shadow: inset 0 calc(-1 * var(--sa-layout-tab-indicator)) 0 0
-    var(--sa-border-neutral-bolder-default);
-  color: var(--sa-text-neutral-base);
-}
-
-.ds-tabs--rail .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
-  box-shadow: inset var(--sa-layout-tab-indicator) 0 0 0
-    var(--sa-border-neutral-bolder-default);
-  color: var(--sa-text-neutral-base);
-}
-
-/* Selected. The mark itself is `.ds-tabs__indicator` behind the tab; this is
-   only the ink that reads on top of it. `text/brand/primary/bolder` — NOT
-   `/base` — because the brand key colour measures 4.07:1 on the track and fails
-   AA there. On a filled pill the `on/*` pair takes over. */
-.ds-tabs__tab.is-selected {
-  color: var(--sa-text-brand-primary-bolder);
-}
-
-.ds-tabs__tab.is-selected .ds-tabs__icon {
-  color: var(--sa-icon-brand-primary-bolder);
-}
-
-.ds-tabs--pill .ds-tabs__tab.is-selected,
-.ds-tabs--pill .ds-tabs__tab.is-selected .ds-tabs__icon {
-  color: var(--sa-on-bg-brand-primary-bolder);
-}
-
-.ds-tabs__tab.is-disabled {
-  color: var(--sa-text-neutral-disabled);
-  cursor: not-allowed;
-}
-
-.ds-tabs__tab.is-disabled .ds-tabs__icon {
-  color: var(--sa-icon-neutral-disabled);
-}
-
-/* Focus. Two layers: `focus/offset` (2) of the surface colour, then
-   `focus/width` (2) of the ring — a 4px outset with a 2px transparent-reading
-   gap. The ring is a SHADOW and not a drawn frame on purpose: a drop shadow in
-   Figma renders from the fill silhouette, so a ring built that way is invisible
-   on Underline and Rail, which have no fill at all. */
-.ds-tabs__tab:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 var(--sa-focus-offset) var(--ds-tabs-focus-gap),
-    0 0 0 calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
-}
-
-.ds-tabs--track-enclosed {
-  --ds-tabs-focus-gap: var(--sa-bg-neutral-subtler);
-}
-
-.ds-tabs--track-none {
-  --ds-tabs-focus-gap: var(--sa-bg-neutral-base);
-}
-
-.ds-tabpanel:focus-visible {
-  outline: none;
-}
-
-/* Tab-body cross-fade. `.ds-tabpanel` is freshly mounted every time the
-   active tab changes (the parent conditionally renders one panel at a
-   time), so a plain CSS `animation` — which always plays on insertion —
-   is enough; no JS orchestration needed. Kept short and restrained: this
-   is a utility switching state, not a showpiece. */
-@media (prefers-reduced-motion: no-preference) {
-  .ds-tabpanel {
-    animation: ds-tabpanel-fade-in var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+      width var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+      height var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
   }
 
-  @keyframes ds-tabpanel-fade-in {
-    from {
-      opacity: 0;
-      transform: translateY(4px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+  /* Underline — a 2px mark on the bottom edge. */
+  .ds-tabs--underline .ds-tabs__indicator {
+    left: 0;
+    bottom: 0;
+    height: var(--sa-layout-tab-indicator);
+    background-color: var(--sa-border-brand-primary-base);
+  }
+
+  /* Rail — the same mark on the leading edge. Vertical lists only. */
+  .ds-tabs--rail .ds-tabs__indicator {
+    top: 0;
+    left: 0;
+    width: var(--sa-layout-tab-indicator);
+    background-color: var(--sa-border-brand-primary-base);
+  }
+
+  /* With a rule present, the mark is pulled OUT over it by exactly the rule's own
+     width, so the two are coplanar and the selected segment replaces the rule
+     instead of stacking a second line against it. */
+  .ds-tabs--divider.ds-tabs--underline .ds-tabs__indicator {
+    bottom: calc(-1 * var(--sa-control-border-width));
+  }
+
+  .ds-tabs--divider.ds-tabs--rail .ds-tabs__indicator {
+    left: calc(-1 * var(--sa-control-border-width));
+  }
+
+  /* Pill — a filled shape inset from the track by `layout/tab/track` on the two
+     cross-axis edges; the main axis is measured from the selected button. */
+  .ds-tabs--pill .ds-tabs__indicator {
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-brand-primary-bolder);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  .ds-tabs--pill.ds-tabs--horizontal .ds-tabs__indicator {
+    top: var(--sa-layout-tab-track);
+    bottom: var(--sa-layout-tab-track);
+    left: 0;
+  }
+
+  .ds-tabs--pill.ds-tabs--vertical .ds-tabs__indicator {
+    left: var(--sa-layout-tab-track);
+    right: var(--sa-layout-tab-track);
+    top: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-tabs__indicator {
+      transition: none;
     }
   }
-}
 
-/* Visually-hidden live region (self-contained so the announcer never shows). */
-.ds-tabs ~ .ds-sr-only,
-.ds-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: calc(-1 * var(--sa-padding-2));
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+  /* ---- the tab ------------------------------------------------------------- */
 
-/* OVERFLOW IMPLIES CONTENT WIDTH, and it has to.
-   `flex: 1 1 0` makes every enclosed tab share the track equally, which means
-   the row can NEVER overflow — add tabs and they simply get narrower and
-   truncate harder, so the More trigger would never appear and the labels would
-   get less readable, which is the opposite of the intent. Turning `overflow` on
-   therefore stops the tabs shrinking: each takes its content width, the row
-   genuinely overflows, and what does not fit goes in the menu. Labels stay
-   fully readable, so the truncation tooltip has nothing to do here either. */
-.ds-tabs--overflow.ds-tabs--track-enclosed .ds-tabs__tab {
-  flex: 0 0 auto;
-}
+  .ds-tabs__tab {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-width: 0;
+    white-space: nowrap;
+    padding: var(--ds-tabs-pad-y) var(--ds-tabs-pad-x);
+    border: none;
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--ds-tabs-type-size);
+    line-height: var(--ds-tabs-type-lh);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+      color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+  }
 
-/* THE NATIVE SCROLLBAR IS HIDDEN, and only here.
-   A scrollbar drawn THROUGH a filled segmented control is not chrome, it is
-   damage: it overlapped the tabs, cut the track's rounded corner and made a
-   finished control look broken. It is hidden ONLY under `overflow`, because
-   that is the one case where a better affordance exists — the trigger and its
-   menu reach every tab. With `overflow` off the scrollbar is the only pointer
-   affordance there is, so it stays. */
-.ds-tabs--overflow {
-  scrollbar-width: none;
-}
+  /* Enclosed tabs share the track evenly; an open list is content-width, which is
+     what keeps an underline the width of its own label rather than of a column. */
+  .ds-tabs--track-enclosed .ds-tabs__tab {
+    flex: 1 1 0;
+    border-radius: var(--sa-shape-8);
+  }
 
-.ds-tabs--overflow::-webkit-scrollbar {
-  display: none;
-}
+  .ds-tabs--track-none .ds-tabs__tab {
+    flex: 0 0 auto;
+    /* Invisible on its own — these tabs have no resting fill. It exists so the
+       focus ring, which is a spread shadow and therefore inherits this radius,
+       resolves to shape/md (4 + 4) instead of a hard square corner. */
+    border-radius: var(--sa-shape-4);
+  }
 
-/* SNAP, so a tab is never sliced mid-word.
-   Free scrolling let the row rest anywhere, which is how "Overview" rendered as
-   "rview" and "Skill development" as "Skill d" — a half-cut word reads as a
-   rendering bug, not as scrollable content. Snapping to the tab edge means the
-   row always rests on a whole tab. `proximity`, not `mandatory`: mandatory
-   fights `scrollIntoView` when the menu jumps to a tab, and can strand the last
-   tab when it is narrower than the remaining track. */
-.ds-tabs--overflow {
-  scroll-snap-type: inline proximity;
-  /* MUST equal the fade width below, and that is a WCAG 2.4.11 requirement, not
-     a nicety. `scroll-padding` is the inset `scrollIntoView` respects, so it is
-     what decides where a keyboard-focused tab comes to rest. At 4px against a
-     16px fade a focused tab could park underneath it, leaving its focus ring
-     half transparent — "focus not obscured" failed by a decoration. Same value,
-     so a focused tab always lands clear of the fade. */
-  scroll-padding-inline: var(--sa-inline-16);
-}
+  .ds-tabs--horizontal .ds-tabs__tab {
+    justify-content: center;
+  }
 
-.ds-tabs--overflow .ds-tabs__tab {
-  scroll-snap-align: start;
-}
+  /* A column of tabs is a list, and a list reads down its leading edge. */
+  .ds-tabs--vertical .ds-tabs__tab {
+    justify-content: flex-start;
+    text-align: left;
+  }
 
-/* EDGE FADES, so the trailing cut reads as "more this way" and not as damage.
-   Snapping can only align ONE edge: the leading tab lands flush, and whatever
-   sits at the trailing edge is still sliced mid-word ("Grievance redressal" ->
-   "Grievar"), which is exactly the thing that made the first build look broken.
-   A mask fades that tab out instead of guillotining it.
+  /* Equal-width tabs (`flex: 1 1 0`) hand every tab the same slot regardless of how
+     long its label is, and `white-space: nowrap` means a label that does not fit
+     PAINTS OVER ITS NEIGHBOUR — "Application details" ran through "Documents" in a
+     720px track. Ellipsis is the fallback, not the intent: a tab label should be
+     short enough not to need it, and tabs.tsx pairs a clipped label with a Tooltip
+     so it stays recoverable on hover AND on keyboard focus. The two inputs a
+     tooltip cannot serve are handled below by not clipping at all. */
+  .ds-tabs__label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-   It is a MASK, not an overlay gradient: an overlay would need to know the
-   surface colour behind it, and this component sits on two different ones
-   (`bg/neutral/subtler` inside the enclosed track, the page behind an open
-   list). Masking is colour-agnostic and therefore correct in both.
+  /* TOUCH — there is no hover, so a tooltip cannot rescue anything. The predicate
+     is `hover: none` and not `pointer: coarse` deliberately: what decides this is
+     whether the RESCUE works, not how precise the finger is. A stylus reports
+     `hover: none, pointer: fine` and needs the same treatment.
 
-   OPEN TRACK ONLY (`track="none"`). The fade exists to explain a cut that
-   nothing else explains. An ENCLOSED track already explains it: it is a bordered,
-   rounded container, and content clipped by a container reads as clipped, not as
-   damaged — which is how Material and Carbon treat their bounded scrollable tab
-   rows. Worse, the fade cannot be confined to the tabs there: the border, the
-   fill and the corner radius are all painted by the scrolling element, so a mask
-   dissolves the container itself. Measured at 200% zoom, the enclosed track lost
-   its rounded corner and read as a smudge; unmasked, the same row clips crisply
-   against its own border. So the enclosed track keeps its edge and the fade is
-   scoped away from it.
+     So the label is never clipped here. Enclosed tabs stop sharing the width
+     equally and size to their content instead; `flex-grow: 1` keeps the track
+     full-width when everything fits, and `overflow-x: auto` on the list lets it
+     scroll when it does not. Equal width is the lesser value — a segmented control
+     whose segments are unreadable is not a segmented control. */
+  @media (hover: none) {
+    .ds-tabs--horizontal.ds-tabs--track-enclosed .ds-tabs__tab {
+      flex: 1 0 auto;
+    }
+  }
 
-   Applied per direction, driven by measured scroll position, so a row scrolled
-   fully to one end does not fade an edge that has nothing beyond it. That is
-   also what keeps WCAG 2.4.11 intact: the first tab can only rest at the start
-   edge when the start fade is OFF, and the last at the end edge when the end
-   fade is OFF, so a focused tab is never under one. `scroll-padding-inline`
-   above matches the fade width for the same reason.
+  /* VERTICAL — a column's items size independently and the rail is measured from
+     the button at runtime, so a wrapped label costs nothing structurally: no row
+     baseline to break, no sibling height to drag along. Wrapping therefore beats
+     truncating outright — it needs no affordance, works on every input including
+     touch, and hides nothing. This is why "never wrap" is a rule about ROWS.
 
-   The opaque stops are `currentColor`, and that is not a cosmetic choice. A
-   mask consumes only the ALPHA channel — opaque means "keep this pixel",
-   transparent means "drop it", and the hue is never painted. Writing a literal
-   there (`#000`) is both meaningless and a raw colour, which the token-lint and
-   ds-linkage gates correctly reject; binding a colour TOKEN would be worse,
-   implying the fade re-themes when it cannot. `currentColor` says the true
-   thing: any opaque value will do, because only its alpha is read. */
-.ds-tabs--track-none.ds-tabs--overflow.is-scrollable-end {
-  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-16)), transparent);
-  mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-16)), transparent);
-}
+     The documented heights (36 / 44 / 48) describe a single-line tab; a wrapped
+     label makes a taller one, which is still a hug of padding plus line-height. */
+  .ds-tabs--vertical .ds-tabs__tab {
+    white-space: normal;
+  }
 
-.ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start {
-  -webkit-mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-16)), transparent);
-  mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-16)), transparent);
-}
+  .ds-tabs--vertical .ds-tabs__label {
+    overflow: visible;
+    text-overflow: clip;
+  }
 
-/* RTL flips which PHYSICAL edge is the start. `scroll-padding-inline` and
-   `scroll-snap-align: start` are already logical and need no help, but a CSS
-   gradient has no logical direction keyword, so the two single-edge masks swap.
-   The both-edges mask below is symmetric and is correct in either direction. */
-[dir="rtl"] .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-end {
-  -webkit-mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-16)), transparent);
-  mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-16)), transparent);
-}
+  /* The unread dot. It binds to `cmp/badge/dotSize` — the SAME token `.ds-badge__dot`
+     uses — so the estate has one definition of this affordance rather than one per
+     component. It steps up beside 16px body text for the same reason the Badge's
+     does: a dot is sized against the type it annotates, not against its container.
+     `currentColor` makes it track the tab's own state, so it greys out with a
+     disabled tab and goes white on a selected pill. */
+  .ds-tabs__badge {
+    flex: 0 0 auto;
+    width: var(--sa-cmp-badge-dotSize);
+    height: var(--sa-cmp-badge-dotSize);
+    border-radius: var(--sa-shape-full);
+    background-color: currentColor;
+  }
 
-[dir="rtl"] .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start {
-  -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-16)), transparent);
-  mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-16)), transparent);
-}
+  .ds-tabs--l .ds-tabs__badge {
+    width: var(--sa-cmp-badge-dotSizeLg);
+    height: var(--sa-cmp-badge-dotSizeLg);
+  }
 
-.ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start.is-scrollable-end {
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent,
-    currentColor var(--sa-inline-16),
-    currentColor calc(100% - var(--sa-inline-16)),
-    transparent
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent,
-    currentColor var(--sa-inline-16),
-    currentColor calc(100% - var(--sa-inline-16)),
-    transparent
-  );
-}
+  /* ---- states -------------------------------------------------------------- */
 
-/* ---- the overflow trigger and its menu ------------------------------------
-   Rendered only when `overflow` is on and tabs are actually hidden. The bar is
-   the positioning context: the trigger must sit OUTSIDE the tablist, both
-   because a tablist owns tabs and because anything inside it scrolls away with
-   the content — the opposite of what a pinned trigger is for. */
+  /* Hover paints a fill only where there is a shape to fill. On an open list the
+     affordance is the rule going dark, drawn by the tab's own border so it lands
+     exactly where the selected indicator will. */
+  .ds-tabs--track-enclosed .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-base);
+  }
 
-.ds-tabs-bar {
-  display: flex;
-  align-items: center;
-  /* `inline/8`, not `inline/2`. At 2px the trigger crowded the track edge and read as
-     part of it; the gap has to say "this control is not one of the tabs". (This was
-     `inline/s` before the spacing ladder was value-named — same 8px.) */
-  gap: var(--sa-inline-8);
-  min-width: 0;
-}
+  .ds-tabs--underline .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
+    box-shadow: inset 0 calc(-1 * var(--sa-layout-tab-indicator)) 0 0
+      var(--sa-border-neutral-bolder-default);
+    color: var(--sa-text-neutral-base);
+  }
 
-/* The tablist takes the room that is left; `min-width: 0` is what allows it to
-   shrink below its content and therefore to scroll at all. */
-.ds-tabs-bar > .ds-tabs {
-  flex: 1 1 auto;
-  min-width: 0;
-}
+  .ds-tabs--rail .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
+    box-shadow: inset var(--sa-layout-tab-indicator) 0 0 0
+      var(--sa-border-neutral-bolder-default);
+    color: var(--sa-text-neutral-base);
+  }
 
-/* Geometry from the master: S 44x36, M 44x44, L 48x48, radius shape/md. The
-   width is a hug of the icon plus padding, so it never needs pinning. */
-.ds-tabs__more {
-  flex: 0 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--ds-tabs-pad-y) var(--sa-padding-12);
-  border: none;
-  border-radius: var(--sa-shape-8);
-  background: transparent;
-  color: var(--sa-icon-neutral-subtle);
-  cursor: pointer;
-  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-    color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
-}
+  /* Selected. The mark itself is `.ds-tabs__indicator` behind the tab; this is
+     only the ink that reads on top of it. `text/brand/primary/bolder` — NOT
+     `/base` — because the brand key colour measures 4.07:1 on the track and fails
+     AA there. On a filled pill the `on/*` pair takes over. */
+  .ds-tabs__tab.is-selected {
+    color: var(--sa-text-brand-primary-bolder);
+  }
 
-.ds-tabs__more:hover {
-  background-color: var(--sa-bg-neutral-subtle);
-  color: var(--sa-icon-neutral-base);
-}
+  .ds-tabs__tab.is-selected .ds-tabs__icon {
+    color: var(--sa-icon-brand-primary-bolder);
+  }
 
-/* Open carries NO fill in the master — only the brand ink. The menu itself is
-   the thing that reads as open, so a filled trigger would double the signal. */
-.ds-tabs__more.is-open {
-  background: transparent;
-  color: var(--sa-icon-brand-primary-bolder);
-}
+  .ds-tabs--pill .ds-tabs__tab.is-selected,
+  .ds-tabs--pill .ds-tabs__tab.is-selected .ds-tabs__icon {
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
 
-/* Same two-layer ring as a tab, over the surface the trigger sits on. */
-.ds-tabs__more:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 var(--sa-focus-offset) var(--ds-tabs-focus-gap),
-    0 0 0 calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
-}
+  .ds-tabs__tab.is-disabled {
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
 
-/* The bar sits outside `.ds-tabs`, so it does not inherit the track's own
-   focus-gap colour — it takes the page surface instead. */
-.ds-tabs-bar {
-  --ds-tabs-focus-gap: var(--sa-bg-neutral-base);
-}
+  .ds-tabs__tab.is-disabled .ds-tabs__icon {
+    color: var(--sa-icon-neutral-disabled);
+  }
 
-/* Portalled and fixed, so neither the tablist's own `overflow-x: auto` nor a
-   card's `overflow: hidden` can clip it. */
-.ds-tabs__menu {
-  position: fixed;
-  /* The estate has no z-index TOKEN — the ladder is literals in component CSS
-     (Modal 50, Toast 60, Lightbox 80, Tooltip 90). 70 sits above the surfaces a
-     tablist can realistically be inside and below Lightbox and Tooltip, so a
-     tooltip on a menu item still wins. Matching the existing practice rather
-     than minting the estate's first z token in a tabs change. */
-  z-index: 70;
-  display: flex;
-  flex-direction: column;
-  /* HUGS its content — a menu of tab labels has no natural minimum, and §1
-     prefers a hug to a pinned width. The cap stops one long label making a
-     menu the width of the page. */
-  width: max-content;
-  max-width: var(--sa-container-narrow);
-  padding: var(--sa-padding-4);
-  border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-8);
-  background-color: var(--sa-bg-neutral-base);
-  box-shadow: var(--sa-elevation-dropdown);
-  font-family: var(--sa-font-latin);
-}
+  /* Focus. Two layers: `focus/offset` (2) of the surface colour, then
+     `focus/width` (2) of the ring — a 4px outset with a 2px transparent-reading
+     gap. The ring is a SHADOW and not a drawn frame on purpose: a drop shadow in
+     Figma renders from the fill silhouette, so a ring built that way is invisible
+     on Underline and Rail, which have no fill at all. */
+  .ds-tabs__tab:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 var(--sa-focus-offset) var(--ds-tabs-focus-gap),
+      0 0 0 calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
+  }
 
-.ds-tabs__menu-item {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-inline-8);
-  padding: var(--sa-padding-8) var(--sa-padding-12);
-  border: none;
-  border-radius: var(--sa-shape-4);
-  background: transparent;
-  color: var(--sa-text-neutral-base);
-  font-size: var(--sa-type-label-1-size);
-  line-height: var(--sa-type-label-1-lh);
-  font-weight: 600;
-  text-align: left;
-  cursor: pointer;
-}
+  .ds-tabs--track-enclosed {
+    --ds-tabs-focus-gap: var(--sa-bg-neutral-subtler);
+  }
 
-.ds-tabs__menu-item:hover:not(.is-disabled) {
-  background-color: var(--sa-bg-neutral-subtle);
-}
+  .ds-tabs--track-none {
+    --ds-tabs-focus-gap: var(--sa-bg-neutral-base);
+  }
 
-/* The current section, marked rather than omitted, so the menu reads as a
-   complete picture of the set and doubles as a position indicator. Weight and
-   ink carry it — no fill, which would read as a hover or a selection the user
-   just made. */
-.ds-tabs__menu-item.is-current {
-  color: var(--sa-text-brand-primary-bolder);
-}
+  .ds-tabpanel:focus-visible {
+    outline: none;
+  }
 
-.ds-tabs__menu-item:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 var(--sa-focus-width) var(--sa-focus-ring);
-}
+  /* Tab-body cross-fade. `.ds-tabpanel` is freshly mounted every time the
+     active tab changes (the parent conditionally renders one panel at a
+     time), so a plain CSS `animation` — which always plays on insertion —
+     is enough; no JS orchestration needed. Kept short and restrained: this
+     is a utility switching state, not a showpiece. */
+  @media (prefers-reduced-motion: no-preference) {
+    .ds-tabpanel {
+      animation: ds-tabpanel-fade-in var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    }
 
-/* Consistent with a disabled TAB: dimmed and inert, but still announced, so a
-   user learns the section exists rather than that it is missing. */
-.ds-tabs__menu-item.is-disabled {
-  color: var(--sa-text-neutral-disabled);
-  cursor: not-allowed;
-}
+    @keyframes ds-tabpanel-fade-in {
+      from {
+        opacity: 0;
+        transform: translateY(4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
 
-.ds-tabs__menu-label {
-  flex: 1 1 auto;
-  min-width: 0;
+  /* Visually-hidden live region (self-contained so the announcer never shows). */
+  .ds-tabs ~ .ds-sr-only,
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: calc(-1 * var(--sa-padding-2));
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* OVERFLOW IMPLIES CONTENT WIDTH, and it has to.
+     `flex: 1 1 0` makes every enclosed tab share the track equally, which means
+     the row can NEVER overflow — add tabs and they simply get narrower and
+     truncate harder, so the More trigger would never appear and the labels would
+     get less readable, which is the opposite of the intent. Turning `overflow` on
+     therefore stops the tabs shrinking: each takes its content width, the row
+     genuinely overflows, and what does not fit goes in the menu. Labels stay
+     fully readable, so the truncation tooltip has nothing to do here either. */
+  .ds-tabs--overflow.ds-tabs--track-enclosed .ds-tabs__tab {
+    flex: 0 0 auto;
+  }
+
+  /* THE NATIVE SCROLLBAR IS HIDDEN, and only here.
+     A scrollbar drawn THROUGH a filled segmented control is not chrome, it is
+     damage: it overlapped the tabs, cut the track's rounded corner and made a
+     finished control look broken. It is hidden ONLY under `overflow`, because
+     that is the one case where a better affordance exists — the trigger and its
+     menu reach every tab. With `overflow` off the scrollbar is the only pointer
+     affordance there is, so it stays. */
+  .ds-tabs--overflow {
+    scrollbar-width: none;
+  }
+
+  .ds-tabs--overflow::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* SNAP, so a tab is never sliced mid-word.
+     Free scrolling let the row rest anywhere, which is how "Overview" rendered as
+     "rview" and "Skill development" as "Skill d" — a half-cut word reads as a
+     rendering bug, not as scrollable content. Snapping to the tab edge means the
+     row always rests on a whole tab. `proximity`, not `mandatory`: mandatory
+     fights `scrollIntoView` when the menu jumps to a tab, and can strand the last
+     tab when it is narrower than the remaining track. */
+  .ds-tabs--overflow {
+    scroll-snap-type: inline proximity;
+    /* MUST equal the fade width below, and that is a WCAG 2.4.11 requirement, not
+       a nicety. `scroll-padding` is the inset `scrollIntoView` respects, so it is
+       what decides where a keyboard-focused tab comes to rest. At 4px against a
+       16px fade a focused tab could park underneath it, leaving its focus ring
+       half transparent — "focus not obscured" failed by a decoration. Same value,
+       so a focused tab always lands clear of the fade. */
+    scroll-padding-inline: var(--sa-inline-16);
+  }
+
+  .ds-tabs--overflow .ds-tabs__tab {
+    scroll-snap-align: start;
+  }
+
+  /* EDGE FADES, so the trailing cut reads as "more this way" and not as damage.
+     Snapping can only align ONE edge: the leading tab lands flush, and whatever
+     sits at the trailing edge is still sliced mid-word ("Grievance redressal" ->
+     "Grievar"), which is exactly the thing that made the first build look broken.
+     A mask fades that tab out instead of guillotining it.
+
+     It is a MASK, not an overlay gradient: an overlay would need to know the
+     surface colour behind it, and this component sits on two different ones
+     (`bg/neutral/subtler` inside the enclosed track, the page behind an open
+     list). Masking is colour-agnostic and therefore correct in both.
+
+     OPEN TRACK ONLY (`track="none"`). The fade exists to explain a cut that
+     nothing else explains. An ENCLOSED track already explains it: it is a bordered,
+     rounded container, and content clipped by a container reads as clipped, not as
+     damaged — which is how Material and Carbon treat their bounded scrollable tab
+     rows. Worse, the fade cannot be confined to the tabs there: the border, the
+     fill and the corner radius are all painted by the scrolling element, so a mask
+     dissolves the container itself. Measured at 200% zoom, the enclosed track lost
+     its rounded corner and read as a smudge; unmasked, the same row clips crisply
+     against its own border. So the enclosed track keeps its edge and the fade is
+     scoped away from it.
+
+     Applied per direction, driven by measured scroll position, so a row scrolled
+     fully to one end does not fade an edge that has nothing beyond it. That is
+     also what keeps WCAG 2.4.11 intact: the first tab can only rest at the start
+     edge when the start fade is OFF, and the last at the end edge when the end
+     fade is OFF, so a focused tab is never under one. `scroll-padding-inline`
+     above matches the fade width for the same reason.
+
+     The opaque stops are `currentColor`, and that is not a cosmetic choice. A
+     mask consumes only the ALPHA channel — opaque means "keep this pixel",
+     transparent means "drop it", and the hue is never painted. Writing a literal
+     there (`#000`) is both meaningless and a raw colour, which the token-lint and
+     ds-linkage gates correctly reject; binding a colour TOKEN would be worse,
+     implying the fade re-themes when it cannot. `currentColor` says the true
+     thing: any opaque value will do, because only its alpha is read. */
+  .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-end {
+    -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-16)), transparent);
+    mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-16)), transparent);
+  }
+
+  .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start {
+    -webkit-mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-16)), transparent);
+    mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-16)), transparent);
+  }
+
+  /* RTL flips which PHYSICAL edge is the start. `scroll-padding-inline` and
+     `scroll-snap-align: start` are already logical and need no help, but a CSS
+     gradient has no logical direction keyword, so the two single-edge masks swap.
+     The both-edges mask below is symmetric and is correct in either direction. */
+  [dir="rtl"] .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-end {
+    -webkit-mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-16)), transparent);
+    mask-image: linear-gradient(to left, currentColor calc(100% - var(--sa-inline-16)), transparent);
+  }
+
+  [dir="rtl"] .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start {
+    -webkit-mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-16)), transparent);
+    mask-image: linear-gradient(to right, currentColor calc(100% - var(--sa-inline-16)), transparent);
+  }
+
+  .ds-tabs--track-none.ds-tabs--overflow.is-scrollable-start.is-scrollable-end {
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent,
+      currentColor var(--sa-inline-16),
+      currentColor calc(100% - var(--sa-inline-16)),
+      transparent
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent,
+      currentColor var(--sa-inline-16),
+      currentColor calc(100% - var(--sa-inline-16)),
+      transparent
+    );
+  }
+
+  /* ---- the overflow trigger and its menu ------------------------------------
+     Rendered only when `overflow` is on and tabs are actually hidden. The bar is
+     the positioning context: the trigger must sit OUTSIDE the tablist, both
+     because a tablist owns tabs and because anything inside it scrolls away with
+     the content — the opposite of what a pinned trigger is for. */
+
+  .ds-tabs-bar {
+    display: flex;
+    align-items: center;
+    /* `inline/8`, not `inline/2`. At 2px the trigger crowded the track edge and read as
+       part of it; the gap has to say "this control is not one of the tabs". (This was
+       `inline/s` before the spacing ladder was value-named — same 8px.) */
+    gap: var(--sa-inline-8);
+    min-width: 0;
+  }
+
+  /* The tablist takes the room that is left; `min-width: 0` is what allows it to
+     shrink below its content and therefore to scroll at all. */
+  .ds-tabs-bar > .ds-tabs {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* Geometry from the master: S 44x36, M 44x44, L 48x48, radius shape/md. The
+     width is a hug of the icon plus padding, so it never needs pinning. */
+  .ds-tabs__more {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--ds-tabs-pad-y) var(--sa-padding-12);
+    border: none;
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: var(--sa-icon-neutral-subtle);
+    cursor: pointer;
+    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+      color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+  }
+
+  .ds-tabs__more:hover {
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-icon-neutral-base);
+  }
+
+  /* Open carries NO fill in the master — only the brand ink. The menu itself is
+     the thing that reads as open, so a filled trigger would double the signal. */
+  .ds-tabs__more.is-open {
+    background: transparent;
+    color: var(--sa-icon-brand-primary-bolder);
+  }
+
+  /* Same two-layer ring as a tab, over the surface the trigger sits on. */
+  .ds-tabs__more:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 var(--sa-focus-offset) var(--ds-tabs-focus-gap),
+      0 0 0 calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
+  }
+
+  /* The bar sits outside `.ds-tabs`, so it does not inherit the track's own
+     focus-gap colour — it takes the page surface instead. */
+  .ds-tabs-bar {
+    --ds-tabs-focus-gap: var(--sa-bg-neutral-base);
+  }
+
+  /* Portalled and fixed, so neither the tablist's own `overflow-x: auto` nor a
+     card's `overflow: hidden` can clip it. */
+  .ds-tabs__menu {
+    position: fixed;
+    /* The estate has no z-index TOKEN — the ladder is literals in component CSS
+       (Modal 50, Toast 60, Lightbox 80, Tooltip 90). 70 sits above the surfaces a
+       tablist can realistically be inside and below Lightbox and Tooltip, so a
+       tooltip on a menu item still wins. Matching the existing practice rather
+       than minting the estate's first z token in a tabs change. */
+    z-index: 70;
+    display: flex;
+    flex-direction: column;
+    /* HUGS its content — a menu of tab labels has no natural minimum, and §1
+       prefers a hug to a pinned width. The cap stops one long label making a
+       menu the width of the page. */
+    width: max-content;
+    max-width: var(--sa-container-narrow);
+    padding: var(--sa-padding-4);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-dropdown);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-tabs__menu-item {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border: none;
+    border-radius: var(--sa-shape-4);
+    background: transparent;
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ds-tabs__menu-item:hover:not(.is-disabled) {
+    background-color: var(--sa-bg-neutral-subtle);
+  }
+
+  /* The current section, marked rather than omitted, so the menu reads as a
+     complete picture of the set and doubles as a position indicator. Weight and
+     ink carry it — no fill, which would read as a hover or a selection the user
+     just made. */
+  .ds-tabs__menu-item.is-current {
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .ds-tabs__menu-item:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 var(--sa-focus-width) var(--sa-focus-ring);
+  }
+
+  /* Consistent with a disabled TAB: dimmed and inert, but still announced, so a
+     user learns the section exists rather than that it is missing. */
+  .ds-tabs__menu-item.is-disabled {
+    color: var(--sa-text-neutral-disabled);
+    cursor: not-allowed;
+  }
+
+  .ds-tabs__menu-label {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
 }

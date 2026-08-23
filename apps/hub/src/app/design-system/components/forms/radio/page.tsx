@@ -41,8 +41,8 @@ export default function RadioPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="features" style={h2Style}>2. Features & Accessibility</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Radio Cards:</strong> The <code>variant=“card”</code> prop renders the radio as a large, tappable block with an optional description. This is highly recommended for mobile-first portal flows where options represent major pathways.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Native Grouping:</strong> Because it uses an underlying <code>&lt;input type=“radio”&gt;</code>, the browser handles standard arrow-key navigation between options when the <code>name</code> prop matches.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Radio Cards:</strong> The <code>variant=&quot;card&quot;</code> prop renders the radio as a large, tappable block with an optional description. This is highly recommended for mobile-first portal flows where options represent major pathways.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Native Grouping:</strong> Because it uses an underlying <code>&lt;input type=&quot;radio&quot;&gt;</code>, the browser handles standard arrow-key navigation between options when the <code>name</code> prop matches.</li>
         </ul>
       </section>
 

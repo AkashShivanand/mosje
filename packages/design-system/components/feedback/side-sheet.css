@@ -1,114 +1,137 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — SideSheet / Drawer
-   Edge-anchored panel for multi-field forms, file-upload flows, navigation
-   drawers, and any task where the user benefits from seeing the context behind.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-sheet__backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  background-color: var(--sa-overlay-neutral-boldest);
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — SideSheet / Drawer
+     Edge-anchored panel for multi-field forms, file-upload flows, navigation
+     drawers, and any task where the user benefits from seeing the context behind.
+     ============================================================================ */
 
-.ds-sheet {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  display: flex;
-  flex-direction: column;
-  background-color: var(--sa-bg-neutral-base);
-  box-shadow: -4px 0 32px color-mix(in oklab, var(--sa-text-neutral-bolder) 16%, transparent);
-  z-index: 51;
-  font-family: var(--sa-font-latin);
-  animation: ds-sheet-in 0.22s cubic-bezier(0.4, 0, 0.2, 1);
-}
+  .ds-sheet__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: var(--sa-overlay-neutral-boldest);
+  }
 
-@keyframes ds-sheet-in {
-  from { transform: translateX(100%); }
-  to   { transform: translateX(0); }
-}
+  .ds-sheet {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: -4px 0 32px color-mix(in oklab, var(--sa-text-neutral-bolder) 16%, transparent);
+    z-index: 51;
+    font-family: var(--sa-font-latin);
+    animation: ds-sheet-in 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-.ds-sheet--sm { width: min(400px, 100vw); }
-.ds-sheet--md { width: min(480px, 100vw); }
-.ds-sheet--lg { width: min(560px, 100vw); }
+  @keyframes ds-sheet-in {
+    from { transform: translateX(100%); }
+    to   { transform: translateX(0); }
+  }
 
-.ds-sheet__header {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sa-stack-12);
-  padding: var(--sa-padding-20) var(--sa-padding-24);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-}
+  .ds-sheet--sm { width: min(400px, 100vw); }
+  .ds-sheet--md { width: min(480px, 100vw); }
+  .ds-sheet--lg { width: min(560px, 100vw); }
 
-.ds-sheet__title {
-  margin: 0;
-  font-size: var(--sa-type-title-1-size);
-  font-weight: 700;
-  color: var(--sa-text-neutral-base);
-  line-height: 1.3;
-}
+  .ds-sheet__header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-20) var(--sa-padding-24);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
 
-.ds-sheet__close {
-  appearance: none;
-  border: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  flex-shrink: 0;
-  border-radius: var(--sa-shape-6);
-  background: transparent;
-  color: var(--sa-text-neutral-subtle);
-  transition: background-color 0.12s ease, color 0.12s ease;
-}
+  .ds-sheet__title {
+    margin: 0;
+    font-size: var(--sa-type-title-1-size);
+    font-weight: 700;
+    color: var(--sa-text-neutral-base);
+    line-height: 1.3;
+  }
 
-.ds-sheet__close:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-text-neutral-base);
-}
+  .ds-sheet__close {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+    border-radius: var(--sa-shape-6);
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    transition: background-color 0.12s ease, color 0.12s ease;
+  }
 
-.ds-sheet__close:focus-visible {
-  outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
-  outline-offset: var(--sa-focus-offset);
-}
+  .ds-sheet__close:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-base);
+  }
 
-.ds-sheet__body {
-  flex: 1;
-  overflow-y: auto;
-  padding: var(--sa-padding-24);
-}
+  .ds-sheet__close:focus-visible {
+    outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
+    outline-offset: var(--sa-focus-offset);
+  }
 
-.ds-sheet__footer {
-  flex-shrink: 0;
-  display: flex;
-  justify-content: flex-end;
-  gap: var(--sa-stack-8);
-  padding: var(--sa-padding-16) var(--sa-padding-24);
-  border-top: 1px solid var(--sa-border-neutral-subtle);
-  background-color: var(--sa-bg-neutral-base);
-}
+  .ds-sheet__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sa-padding-24);
+  }
 
-/* ---- Anchoring ------------------------------------------------------------
-   Right is the default for task panels. Left exists for navigation drawers,
-   where the left edge is the convention users already expect. */
-.ds-sheet--left {
-  right: auto;
-  left: 0;
-  box-shadow: 4px 0 32px color-mix(in oklab, var(--sa-text-neutral-bolder) 16%, transparent);
-  animation-name: ds-sheet-in-left;
-}
+  .ds-sheet__footer {
+    flex-shrink: 0;
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    background-color: var(--sa-bg-neutral-base);
+  }
 
-@keyframes ds-sheet-in-left {
-  from { transform: translateX(-100%); }
-  to   { transform: translateX(0); }
-}
+  /* ---- Anchoring ------------------------------------------------------------
+     Right is the default for task panels. Left exists for navigation drawers,
+     where the left edge is the convention users already expect. */
+  .ds-sheet--left {
+    right: auto;
+    left: 0;
+    box-shadow: 4px 0 32px color-mix(in oklab, var(--sa-text-neutral-bolder) 16%, transparent);
+    animation-name: ds-sheet-in-left;
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .ds-sheet--left { animation: none; }
+  @keyframes ds-sheet-in-left {
+    from { transform: translateX(-100%); }
+    to   { transform: translateX(0); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-sheet--left { animation: none; }
+  }
 }

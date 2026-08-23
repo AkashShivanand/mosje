@@ -4,8 +4,16 @@ import * as React from "react";
 import Link from "next/link";
 import { Alert, Badge, Button, DonutChart, Icon, MetricCard } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { ngoApplications, statusTone } from "@/lib/e-anudaan/selectors";
+import { ngoApplications, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
 import type { AppStatus } from "@/lib/e-anudaan/types";
+
+/** Display names for the four schemes the NGO portal offers. */
+const SCHEME_TITLES: Record<string, { title: string; subtitle: string }> = {
+  SHRESHTA_M2: { title: "SHRESHTA Mode 2", subtitle: "Grant-in-aid for SC Residential Schools" },
+  AVYAY: { title: "AVYAY (Atal Vayo Abhyuday Yojana)", subtitle: "Integrated Programme for Senior Citizens" },
+  NAPDDR: { title: "NAPDDR", subtitle: "Drug Demand Reduction & Social Re-integration" },
+  SMILE: { title: "SMILE (Garima Greh)", subtitle: "Shelter Homes for Transgender Persons" },
+};
 
 function getTimeGreeting(): string {
   const hour = new Date().getHours();
@@ -17,59 +25,96 @@ function getTimeGreeting(): string {
 export default function NgoDashboardPage() {
   const { state } = useEAnudaan();
   const ngo = state.ngos[0];
-  const apps = ngo ? ngoApplications(state, ngo.id) : [];
+  // Memoised so the aggregations below keep a stable dependency across renders.
+  const apps = React.useMemo(() => (ngo ? ngoApplications(state, ngo.id) : []), [state, ngo]);
 
   const ngoName = ngo?.name ?? "Sankalp Seva Sansthan";
   const ngoFirstName = ngoName.split(" ")[0] ?? "Sankalp";
 
-  // Data aggregations derived from store applications
-  const totalAppsCount = Math.max(apps.length, 71);
-  const inReviewCount = Math.max(apps.filter((a) => a.holder.kind === "chain" || a.holder.kind === "pd").length, 34);
-  const needsActionCount = apps.filter((a) => a.status === "DeficiencyRaised").length || 1;
-  const sanctionedCount = Math.max(apps.filter((a) => a.sanction).length, 36);
+  // Everything below is DERIVED, never hardcoded. Submitting an application on the live portal
+  // moves the KPI row, the donut and the money at once (verified 2026-08-22: 71 → 72 total,
+  // Submitted 4 → 5), so the clone recomputes from the store rather than printing fixed figures.
+  const totalAppsCount = apps.length;
+  const inReviewCount = apps.filter((a) => a.holder.kind === "chain" || a.holder.kind === "pd").length;
+  const needsActionCount = apps.filter((a) => a.status === "DeficiencyRaised").length;
+  const sanctionedCount = apps.filter((a) => a.sanction).length;
 
-  // Donut chart interactive data using SAMAVESH DS chart palette
-  const donutChartData = [
-    { label: "Sanctioned", value: 36 },
-    { label: "In Review", value: 17 },
-    { label: "Draft", value: 13 },
-    { label: "Submitted", value: 4 },
-    { label: "Rejected", value: 1 },
-  ];
+  const donutChartData = React.useMemo(() => {
+    const buckets = new Map<string, number>([
+      ["Sanctioned", 0],
+      ["In Review", 0],
+      ["Draft", 0],
+      ["Submitted", 0],
+      ["Query / Returned", 0],
+      ["Closed / Rejected", 0],
+    ]);
+    for (const a of apps) {
+      const label = ngoStatusLabel(a) === "Approved" ? "Sanctioned" : ngoStatusLabel(a);
+      buckets.set(label, (buckets.get(label) ?? 0) + 1);
+    }
+    return [...buckets.entries()].filter(([, v]) => v > 0).map(([label, value]) => ({ label, value }));
+  }, [apps]);
 
-  // Financial summary aggregations
-  const totalRequestedCr = "25.86";
-  const totalSanctionedCr = "13.70";
-  const inReviewAmountCr = "12.16";
-  const avgSanctionLakhs = "38.05";
-  const sanctionedPercent = 53;
+  /** Applications submitted in the current calendar month — the KPI row's delta. */
+  const submittedThisMonth = React.useMemo(() => {
+    const now = new Date();
+    return apps.filter((a) => {
+      if (!a.submittedAt) return false;
+      const d = new Date(a.submittedAt);
+      return d.getFullYear() === now.getFullYear() && d.getMonth() === now.getMonth();
+    }).length;
+  }, [apps]);
 
-  // Active vs. Available Schemes
-  const activeSchemes = [
-    {
-      code: "SHRESHTA_M2",
-      title: "SHRESHTA Mode 2",
-      subtitle: "Grant-in-aid for SC Residential Schools",
-      count: 69,
-      requestedCr: "23.38",
-      sanctionedCr: "12.80",
-      percent: 92,
-    },
-    {
-      code: "AVYAY",
-      title: "AVYAY (Atal Vayo Abhyuday Yojana)",
-      subtitle: "Integrated Programme for Senior Citizens",
-      count: 2,
-      requestedCr: "2.48",
-      sanctionedCr: "0.90",
-      percent: 15,
-    },
-  ];
+  const decidedCount = apps.filter((a) => a.sanction || a.status === "Rejected").length;
+  const approvalRate = decidedCount ? Math.round((sanctionedCount / decidedCount) * 1000) / 10 : 0;
+  const topBucket = [...donutChartData].sort((a, b) => b.value - a.value)[0];
 
-  const idleSchemes = [
-    { code: "NAPDDR", title: "NAPDDR", subtitle: "Drug Demand Reduction & Social Re-integration" },
-    { code: "SMILE_GG", title: "SMILE (Garima Greh)", subtitle: "Shelter Homes for Transgender Persons" },
-  ];
+  /** The oldest deficiency still awaiting the applicant — drives the action banner. */
+  const openDeficiency = React.useMemo(
+    () => apps.find((a) => a.status === "DeficiencyRaised"),
+    [apps],
+  );
+
+  const CRORE = 1_00_00_000;
+  const LAKH = 1_00_000;
+  const totalRequested = apps.reduce((a, x) => a + x.total, 0);
+  const totalSanctioned = apps.reduce((a, x) => a + (x.sanction?.total ?? 0), 0);
+  const inReviewAmount = apps
+    .filter((a) => a.holder.kind === "chain" || a.holder.kind === "pd")
+    .reduce((a, x) => a + x.total, 0);
+
+  const totalRequestedCr = (totalRequested / CRORE).toFixed(2);
+  const totalSanctionedCr = (totalSanctioned / CRORE).toFixed(2);
+  const inReviewAmountCr = (inReviewAmount / CRORE).toFixed(2);
+  const avgSanctionLakhs = sanctionedCount ? (totalSanctioned / sanctionedCount / LAKH).toFixed(2) : "0.00";
+  const sanctionedPercent = totalRequested ? Math.round((totalSanctioned / totalRequested) * 100) : 0;
+
+  // One card per scheme the applicant has actually applied under, in descending volume.
+  const activeSchemes = React.useMemo(() => {
+    const byScheme = new Map<string, { count: number; requested: number; sanctioned: number }>();
+    for (const a of apps) {
+      const cur = byScheme.get(a.schemeCode) ?? { count: 0, requested: 0, sanctioned: 0 };
+      cur.count += 1;
+      cur.requested += a.total;
+      cur.sanctioned += a.sanction?.total ?? 0;
+      byScheme.set(a.schemeCode, cur);
+    }
+    return [...byScheme.entries()]
+      .sort((a, b) => b[1].count - a[1].count)
+      .map(([code, v]) => ({
+        code,
+        title: SCHEME_TITLES[code]?.title ?? code,
+        subtitle: SCHEME_TITLES[code]?.subtitle ?? "",
+        count: v.count,
+        requestedCr: (v.requested / CRORE).toFixed(2),
+        sanctionedCr: (v.sanctioned / CRORE).toFixed(2),
+        percent: v.requested ? Math.round((v.sanctioned / v.requested) * 100) : 0,
+      }));
+  }, [apps]);
+
+  const idleSchemes = Object.entries(SCHEME_TITLES)
+    .filter(([code]) => !activeSchemes.some((s) => s.code === code))
+    .map(([code, v]) => ({ code, title: v.title, subtitle: v.subtitle }));
 
   return (
     <div className="space-y-6 pb-8">
@@ -90,7 +135,9 @@ export default function NgoDashboardPage() {
             <span className="text-line">•</span>
             <span className="flex items-center gap-1">
               <Icon name="schedule" size={16} className="text-ink-muted shrink-0" aria-hidden />
-              Last sync: 18 August 2026 at 7:50 pm
+              Last updated{" "}
+              {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} at{" "}
+              {new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: true }).toLowerCase()}
             </span>
           </p>
         </div>
@@ -110,27 +157,35 @@ export default function NgoDashboardPage() {
       </header>
 
       {/* ── 2. EXECUTIVE ACTION NOTICE BANNER ────────────────────────────── */}
-      <Alert status="warning" title="1 Action Item Pending Review">
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-0.5">
-          <p className="text-xs leading-relaxed text-ink">
-            Deficiency response requested for application{" "}
-            <strong className="font-mono text-ink">GIA/2026-27/SHRESHTA_M2/83387</strong>. Please upload audited financial statements by{" "}
-            <strong>25 August 2026</strong>.
-          </p>
-          <Link href="/portals/e-anudaan/ngo/deficiencies">
-            <Button appearance="filled" size="sm">
-              Respond Now <Icon name="arrow_forward" size={16} aria-hidden />
-            </Button>
-          </Link>
-        </div>
-      </Alert>
+      {/* Shown only when something is actually waiting on the applicant, and it names the real
+          application — the banner is a live signal, not decoration. */}
+      {openDeficiency && (
+        <Alert
+          status="warning"
+          title={`${needsActionCount} Action Item${needsActionCount === 1 ? "" : "s"} Pending Review`}
+        >
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-0.5">
+            <p className="text-xs leading-relaxed text-ink">
+              Deficiency response requested for application{" "}
+              <strong className="font-mono text-ink">{openDeficiency.id}</strong>.{" "}
+              {openDeficiency.deficiencies[0]?.detail ??
+                "Please respond from the Deficiencies screen."}
+            </p>
+            <Link href="/portals/e-anudaan/ngo/my-applications/deficiencies">
+              <Button appearance="filled" size="sm">
+                Respond Now <Icon name="arrow_forward" size={16} aria-hidden />
+              </Button>
+            </Link>
+          </div>
+        </Alert>
+      )}
 
       {/* ── 3. KPI METRIC CARDS ROW (100% UNIFIED SAMAVESH COMPONENTS) ────── */}
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <MetricCard
           label="Total Applications"
           value={String(totalAppsCount)}
-          changeValue="+4"
+          changeValue={`+${submittedThisMonth}`}
           changeLabel="this month"
           changeDirection="up"
           icon={<Icon name="description" size={20} aria-hidden />}
@@ -138,7 +193,7 @@ export default function NgoDashboardPage() {
         <MetricCard
           label="In Review"
           value={String(inReviewCount)}
-          changeValue="34 active"
+          changeValue={`${inReviewCount} active`}
           changeLabel="in chain"
           changeDirection="flat"
           icon={<Icon name="schedule" size={20} aria-hidden />}
@@ -146,7 +201,7 @@ export default function NgoDashboardPage() {
         <MetricCard
           label="Needs Action"
           value={String(needsActionCount)}
-          changeValue="1 pending"
+          changeValue={`${needsActionCount} pending`}
           changeLabel="deficiency"
           changeDirection="down"
           icon={<Icon name="error" size={20} aria-hidden />}
@@ -154,7 +209,7 @@ export default function NgoDashboardPage() {
         <MetricCard
           label="Sanctioned Grants"
           value={String(sanctionedCount)}
-          changeValue="₹13.70 Cr"
+          changeValue={`₹${totalSanctionedCr} Cr`}
           changeLabel="approved"
           changeDirection="up"
           icon={<Icon name="verified" size={20} aria-hidden />}
@@ -215,10 +270,13 @@ export default function NgoDashboardPage() {
 
           <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs border-t border-line/60">
             <span className="text-ink-muted">
-              Highest Allocation: <strong className="text-ink">Sanctioned (50.7%)</strong>
+              Highest Allocation:{" "}
+              <strong className="text-ink">
+                {topBucket ? `${topBucket.label} (${Math.round((topBucket.value / Math.max(totalAppsCount, 1)) * 1000) / 10}%)` : "—"}
+              </strong>
             </span>
             <span className="text-ink-muted">
-              Approval Rate: <strong className="text-emerald-700 font-bold">67.9%</strong>
+              Approval Rate: <strong className="font-bold text-status-success">{approvalRate}%</strong>
             </span>
           </div>
         </section>
@@ -254,7 +312,7 @@ export default function NgoDashboardPage() {
             <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
               <span className="block text-xs font-semibold text-ink-muted">Pending Review</span>
               <span className="mt-1 block text-xl font-bold text-sky-700 tracking-tight">₹{inReviewAmountCr} Cr</span>
-              <span className="mt-0.5 block text-[11px] text-sky-800">34 active files in chain</span>
+              <span className="mt-0.5 block text-[11px] text-sky-800">{inReviewCount} active files in chain</span>
             </div>
 
             {/* Avg Sanction */}
@@ -299,53 +357,33 @@ export default function NgoDashboardPage() {
             <Badge status="neutral">DARPAN Synced</Badge>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 text-xs">
-            <div className="space-y-3">
-              <div>
-                <span className="text-ink-muted block text-[11px]">Organisation Name</span>
-                <span className="font-bold text-ink block mt-0.5">{ngoName}</span>
+          {/* Thirteen separate rows, exactly as the live DARPAN read-back lists them — State and
+              District, Registration No. and Date, and Secretary and Treasurer are each their own
+              row on the live portal rather than being paired up. */}
+          <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-xs sm:grid-cols-2">
+            {(
+              [
+                ["Organisation", ngoName],
+                ["DARPAN ID", ngo?.darpanId ?? "MH/2016/100000"],
+                ["State", ngo?.state ?? "Maharashtra"],
+                ["District", ngo?.district ?? "Pune"],
+                ["Registration No.", ngo?.registrationNo ?? "51-54"],
+                ["Registration Date", ngo?.registrationDate ?? "12 Mar 1978"],
+                ["Registered Under", ngo?.registeredUnder ?? "Registrar of Societies"],
+                ["Chairman", ngo?.chairman ?? "—"],
+                ["Secretary", ngo?.secretary ?? "—"],
+                ["Treasurer", ngo?.treasurer ?? "—"],
+                ["Authorised User", ngo?.authorisedUser ?? ngoName],
+                ["Email", ngo?.email ?? "—"],
+                ["Mobile", ngo?.mobile ?? "—"],
+              ] as const
+            ).map(([label, value]) => (
+              <div key={label} className="border-b border-line/40 pb-1.5">
+                <dt className="block text-[11px] text-ink-muted">{label}</dt>
+                <dd className="mt-0.5 block font-bold text-ink break-words">{value}</dd>
               </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">DARPAN ID</span>
-                <span className="font-mono font-bold text-ink block mt-0.5">{ngo?.darpanId ?? "MH/2016/100000"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">State &amp; District</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.state ?? "Maharashtra"} · {ngo?.district ?? "Pune"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Email Address</span>
-                <span className="font-bold text-ink block mt-0.5 break-all">{ngo?.email ?? "sankalpsevasansthan@gmail.com"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Mobile Number</span>
-                <span className="font-mono font-bold text-ink block mt-0.5">{ngo?.mobile ?? "9441747200"}</span>
-              </div>
-            </div>
-
-            <div className="space-y-3 border-l border-line/60 pl-4">
-              <div>
-                <span className="text-ink-muted block text-[11px]">Registration No. &amp; Date</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.registrationNo ?? "51-54"} ({ngo?.registrationDate ?? "06 Aug 1934"})</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Registered Under</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.registeredUnder ?? "Registrar of Societies"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Chairman</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.chairman ?? "Shankar Kumar Sanyal"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Secretary &amp; Treasurer</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.secretary ?? "Rajneesh Kumar"} / {ngo?.treasurer ?? "Phool Chand Sharma"}</span>
-              </div>
-              <div>
-                <span className="text-ink-muted block text-[11px]">Authorised User</span>
-                <span className="font-bold text-ink block mt-0.5">{ngo?.authorisedUser ?? ngoName}</span>
-              </div>
-            </div>
-          </div>
+            ))}
+          </dl>
         </section>
 
         {/* Applications by Scheme Box */}
@@ -375,7 +413,7 @@ export default function NgoDashboardPage() {
                     <span className="text-[11px] text-ink-muted block">{s.subtitle}</span>
                   </div>
                   <span className="text-xs font-bold text-ink shrink-0 bg-surface px-2 py-1 rounded border border-line">
-                    {s.count} apps
+                    {s.count} {s.count === 1 ? "app" : "apps"}
                   </span>
                 </div>
 

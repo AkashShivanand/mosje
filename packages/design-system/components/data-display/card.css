@@ -1,108 +1,131 @@
-/* ============================================================================
-   MoSJE / UX4G — Card atom
-   Semantic CSS classes only; all colours reference design tokens (--sa-*).
-   Combine: .ds-card  +  .ds-card--<variant>  +  .ds-card--<orientation>
-   Variants: outlined | elevated
-   Orientations: vertical | horizontal
-   Sub-parts: .ds-card__header / __body / __footer / __title / __subtitle
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-card {
-  display: flex;
-  flex-direction: column;
-  background-color: var(--sa-bg-neutral-base);
-  border: 1px solid transparent;
-  border-radius: var(--sa-cmp-card-radius);
-  color: var(--sa-text-neutral-bolder);
-  font-family: var(--sa-font-latin);
-  overflow: hidden;
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / UX4G — Card atom
+     Semantic CSS classes only; all colours reference design tokens (--sa-*).
+     Combine: .ds-card  +  .ds-card--<variant>  +  .ds-card--<orientation>
+     Variants: outlined | elevated
+     Orientations: vertical | horizontal
+     Sub-parts: .ds-card__header / __body / __footer / __title / __subtitle
+     ============================================================================ */
 
-/* --------------------------------------------------------------------------
-   Variants
-   -------------------------------------------------------------------------- */
-.ds-card--outlined {
-  border-color: var(--sa-border-neutral-subtle);
-  box-shadow: none;
-}
+  .ds-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid transparent;
+    border-radius: var(--sa-cmp-card-radius);
+    color: var(--sa-text-neutral-bolder);
+    font-family: var(--sa-font-latin);
+    overflow: hidden;
+  }
 
-.ds-card--elevated {
-  border-color: transparent;
-  box-shadow: var(--sa-elevation-modal);
-}
+  /* --------------------------------------------------------------------------
+     Variants
+     -------------------------------------------------------------------------- */
+  .ds-card--outlined {
+    border-color: var(--sa-border-neutral-subtle);
+    box-shadow: none;
+  }
 
-/* --------------------------------------------------------------------------
-   Orientation
-   -------------------------------------------------------------------------- */
-.ds-card--vertical {
-  flex-direction: column;
-}
+  .ds-card--elevated {
+    border-color: transparent;
+    box-shadow: var(--sa-elevation-modal);
+  }
 
-/* Horizontal: media (img/figure/first child) sits beside the content. */
-.ds-card--horizontal {
-  flex-direction: row;
-  align-items: stretch;
-}
+  /* --------------------------------------------------------------------------
+     Orientation
+     -------------------------------------------------------------------------- */
+  .ds-card--vertical {
+    flex-direction: column;
+  }
 
-/* --------------------------------------------------------------------------
-   Sub-sections
-   -------------------------------------------------------------------------- */
-.ds-card__header {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-12);
-  padding: var(--sa-padding-16);
-}
+  /* Horizontal: media (img/figure/first child) sits beside the content. */
+  .ds-card--horizontal {
+    flex-direction: row;
+    align-items: stretch;
+  }
 
-.ds-card__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-8);
-  padding: var(--sa-padding-16);
-  flex: 1 1 auto;
-}
+  /* --------------------------------------------------------------------------
+     Sub-sections
+     -------------------------------------------------------------------------- */
+  .ds-card__header {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-16);
+  }
 
-.ds-card__footer {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  padding: var(--sa-padding-16);
-}
+  .ds-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-16);
+    flex: 1 1 auto;
+  }
 
-/* Collapse doubled padding when sections stack directly. */
-.ds-card__header + .ds-card__body {
-  padding-top: 0;
-}
+  .ds-card__footer {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-16);
+  }
 
-.ds-card__body + .ds-card__footer {
-  padding-top: 0;
-}
+  /* Collapse doubled padding when sections stack directly. */
+  .ds-card__header + .ds-card__body {
+    padding-top: 0;
+  }
 
-/* --------------------------------------------------------------------------
-   Typography sub-parts
-   -------------------------------------------------------------------------- */
-/* Title 1 — "section headings, page titles" in the design.md scale (20px on the
-   portal surface). This previously read `--sa-type-headline-1-size`, whose own 20px
-   fallback shows the intent, but that alias resolves to the Headline 1 role and
-   painted card titles at 32–40px.
+  .ds-card__body + .ds-card__footer {
+    padding-top: 0;
+  }
 
-   Use the CANONICAL `--sa-type-<role>-*` tokens here. The hyphenated `--ds-text-*`
-   alias family that used to sit alongside them — named for the pre-Portal-DS scale,
-   so `--ds-text-title-1` resolved to the headline-2 role rather than Title 1 — was
-   RETIRED on 2026-08-12 along with the rest of the `--ds-*` vocabulary. The trap it
-   created is gone; a `--sa-type-<role>-*` name now means the role it says. */
-.ds-card__title {
-  margin: 0;
-  font-size: var(--sa-type-title-1-size);
-  line-height: var(--sa-type-title-1-lh);
-  font-weight: 600;
-  color: var(--sa-text-neutral-bolder);
-}
+  /* --------------------------------------------------------------------------
+     Typography sub-parts
+     -------------------------------------------------------------------------- */
+  /* Title 1 — "section headings, page titles" in the design.md scale (20px on the
+     portal surface). This previously read `--sa-type-headline-1-size`, whose own 20px
+     fallback shows the intent, but that alias resolves to the Headline 1 role and
+     painted card titles at 32–40px.
 
-.ds-card__subtitle {
-  margin: 0;
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  font-weight: 400;
-  color: var(--sa-text-neutral-subtle);
+     Use the CANONICAL `--sa-type-<role>-*` tokens here. The hyphenated `--ds-text-*`
+     alias family that used to sit alongside them — named for the pre-Portal-DS scale,
+     so `--ds-text-title-1` resolved to the headline-2 role rather than Title 1 — was
+     RETIRED on 2026-08-12 along with the rest of the `--ds-*` vocabulary. The trap it
+     created is gone; a `--sa-type-<role>-*` name now means the role it says. */
+  .ds-card__title {
+    margin: 0;
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-card__subtitle {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 400;
+    color: var(--sa-text-neutral-subtle);
+  }
 }

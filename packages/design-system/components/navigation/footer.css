@@ -1,67 +1,90 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — Footer
-   Slim dark-navy app-shell footer with credit line + optional policy links.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-footer {
-  background-color: var(--sa-color-brand-navy);
-  color: var(--sa-on-bg-brand-primary-bolder);
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Footer
+     Slim dark-navy app-shell footer with credit line + optional policy links.
+     ============================================================================ */
 
-.ds-footer__in {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sa-stack-8) var(--sa-padding-20);
-  margin: 0 auto;
-  padding: var(--sa-padding-16) var(--sa-padding-24);
-  font-family: var(--sa-font-latin);
-}
+  .ds-footer {
+    background-color: var(--sa-color-brand-navy);
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
 
-.ds-footer__copy {
-  margin: 0;
-  font-size: var(--sa-type-body-3-size);
-  line-height: 1.5;
-  color: color-mix(in srgb, var(--sa-on-bg-brand-primary-bolder) 82%, transparent);
-}
+  .ds-footer__in {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-8) var(--sa-padding-20);
+    margin: 0 auto;
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    font-family: var(--sa-font-latin);
+  }
 
-.ds-footer__copy strong {
-  font-weight: 700;
-  color: var(--sa-on-bg-brand-primary-bolder);
-}
+  .ds-footer__copy {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: 1.5;
+    color: color-mix(in srgb, var(--sa-on-bg-brand-primary-bolder) 82%, transparent);
+  }
 
-.ds-footer__links {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sa-padding-2) var(--sa-padding-16);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
+  .ds-footer__copy strong {
+    font-weight: 700;
+    color: var(--sa-on-bg-brand-primary-bolder);
+  }
 
-.ds-footer__link {
-  appearance: none;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  font: inherit;
-  font-size: var(--sa-type-body-3-size);
-  color: color-mix(in srgb, var(--sa-on-bg-brand-primary-bolder) 82%, transparent);
-  text-decoration: none;
-  transition: color 0.15s ease;
-}
+  .ds-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-padding-2) var(--sa-padding-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 
-.ds-footer__link:hover {
-  color: var(--sa-on-bg-brand-primary-bolder);
-  text-decoration: underline;
-}
+  .ds-footer__link {
+    appearance: none;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--sa-type-body-3-size);
+    color: color-mix(in srgb, var(--sa-on-bg-brand-primary-bolder) 82%, transparent);
+    text-decoration: none;
+    transition: color 0.15s ease;
+  }
 
-.ds-footer__link:focus-visible {
-  outline: 2px solid var(--sa-color-text-onPrimary);
-  outline-offset: 3px;
-  border-radius: var(--sa-shape-4);
+  .ds-footer__link:hover {
+    color: var(--sa-on-bg-brand-primary-bolder);
+    text-decoration: underline;
+  }
+
+  .ds-footer__link:focus-visible {
+    outline: 2px solid var(--sa-color-text-onPrimary);
+    outline-offset: 3px;
+    border-radius: var(--sa-shape-4);
+  }
 }

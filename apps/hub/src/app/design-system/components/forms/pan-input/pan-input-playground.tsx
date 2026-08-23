@@ -19,7 +19,7 @@ export function PanInputPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={invalid} 
@@ -28,7 +28,7 @@ export function PanInputPlayground() {
           <strong>Simulate external error</strong>
         </label>
         
-        <label style={{ display: "flex", gap: "8px", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
           <input 
             type="checkbox" 
             checked={disabled} 
@@ -56,8 +56,8 @@ export function PanInputPlayground() {
         </FormField>
       </div>
       
-      <div style={{ marginTop: "16px", padding: "16px", background: "var(--sa-bg-neutral-subtler)", borderRadius: "8px", fontSize: "14px", fontFamily: "monospace" }}>
-        <strong>Internal State:</strong> “{pan}”
+      <div style={{ marginTop: "var(--sa-stack-16)", padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", fontSize: "14px", fontFamily: "monospace" }}>
+        <strong>Internal State:</strong> &quot;{pan}&quot;
       </div>
     </div>
   );

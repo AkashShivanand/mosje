@@ -124,7 +124,7 @@ export default function TooltipPage(): React.JSX.Element {
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Dismissible:</strong> Pressing <code>Escape</code> closes the tooltip without moving focus away from the trigger.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Hoverable:</strong> The bubble stays open while the pointer is over it, so users who are zoomed in can move onto it to read it.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Persistent:</strong> The tooltip remains visible until the user moves the pointer away, removes focus, or presses Escape.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria-describedby:</strong> The tooltip automatically sets <code>aria-describedby</code> on the trigger to announce the tooltip text. Set <code>duplicatesTriggerName=true</code> if the tooltip simply repeats the trigger’s accessible name (e.g., an icon-only button), avoiding double announcement.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria-describedby:</strong> The tooltip automatically sets <code>aria-describedby</code> on the trigger to announce the tooltip text. Set <code>duplicatesTriggerName=true</code> if the tooltip simply repeats the trigger&apos;s accessible name (e.g., an icon-only button), avoiding double announcement.</li>
         </ul>
       </section>
 

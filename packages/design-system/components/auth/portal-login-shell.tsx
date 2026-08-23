@@ -21,7 +21,7 @@
 
 import * as React from "react";
 import { Divider } from "../layout/divider";
-import { AccessibilityBar } from "../navigation/accessibility-bar";
+import { AccessibilityBar } from "../utilities/accessibility-bar";
 import { BrandLockup } from "../navigation/header/brand-lockup";
 import { cn } from "../../utils/cn";
 // The chrome rows use the estate content container, so the emblem lines up with

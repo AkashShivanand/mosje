@@ -53,7 +53,7 @@ export default function SearchPage(): React.JSX.Element {
           Search
         </h1>
         <p className="ds-lead" style={leadStyle}>
-          A native <code>type=“search”</code> input featuring a leading search icon, an optional clear button, and an integrated submit handler.
+          A native <code>type=&quot;search&quot;</code> input featuring a leading search icon, an optional clear button, and an integrated submit handler.
         </p>
       </header>
 
@@ -137,7 +137,7 @@ export default function SearchPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>4. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Type:</strong> Uses <code>type=“search”</code>, which triggers the appropriate keyboard layout on mobile devices.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Type:</strong> Uses <code>type=&quot;search&quot;</code>, which triggers the appropriate keyboard layout on mobile devices.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria Label:</strong> Automatically falls back to the placeholder text if an explicit <code>aria-label</code> is not provided.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Clear Button:</strong> The clear button is fully keyboard accessible and has a descriptive <code>aria-label</code>.</li>
         </ul>

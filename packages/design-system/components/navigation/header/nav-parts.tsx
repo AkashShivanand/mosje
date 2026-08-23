@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { Icon } from "../../icon";
+import { Icon } from "../../utilities/icon";
 import type { NavColumn, NavItem, NavLink, NavMegaItem } from "./types";
 import "./header.css";
 

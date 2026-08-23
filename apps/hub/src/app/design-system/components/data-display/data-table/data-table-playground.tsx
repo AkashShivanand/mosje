@@ -28,11 +28,11 @@ const columns: DataTableColumn<Scheme>[] = [
       <span style={{
         display: "inline-flex",
         padding: "var(--sa-padding-4) var(--sa-padding-8)",
-        borderRadius: "9999px",
+        borderRadius: "var(--sa-shape-full)",
         fontSize: "var(--sa-type-body-3-size)",
         fontWeight: 600,
-        backgroundColor: row.status === "Active" ? "#d1fae5" : "var(--sa-bg-neutral-subtler)",
-        color: row.status === "Active" ? "#065f46" : "var(--sa-text-neutral-subtle)",
+        backgroundColor: row.status === "Active" ? "var(--sa-bg-status-success-subtler)" : "var(--sa-bg-neutral-subtler)",
+        color: row.status === "Active" ? "var(--sa-text-status-success-base)" : "var(--sa-text-neutral-subtle)",
       }}>
         {row.status}
       </span>

@@ -53,7 +53,7 @@ export default function GeoPhotoInputPage(): React.JSX.Element {
           GeoPhotoInput
         </h1>
         <p className="ds-lead" style={leadStyle}>
-          An advanced image uploader for field reporting. It extracts GPS coordinates from the photo’s EXIF data, falling back to the browser’s Geolocation API if necessary, and compresses images client-side before upload.
+          An advanced image uploader for field reporting. It extracts GPS coordinates from the photo&apos;s EXIF data, falling back to the browser&apos;s Geolocation API if necessary, and compresses images client-side before upload.
         </p>
       </header>
 
@@ -127,8 +127,8 @@ export default function GeoPhotoInputPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Dropzone:</strong> The primary upload dropzone and “Add more” buttons are fully operable via keyboard.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Action Feedback:</strong> Status updates like “Adding...” and errors regarding file size limits are announced effectively.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Dropzone:</strong> The primary upload dropzone and &quot;Add more&quot; buttons are fully operable via keyboard.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Action Feedback:</strong> Status updates like &quot;Adding...&quot; and errors regarding file size limits are announced effectively.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Clear Focus:</strong> Removed thumbnails can be easily deleted using a dedicated, accessible <code>&lt;button&gt;</code> with an explicit <code>aria-label</code>.</li>
         </ul>
       </section>

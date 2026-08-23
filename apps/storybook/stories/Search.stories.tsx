@@ -20,6 +20,11 @@ import { Search } from "@mosje/design-system";
  * the default, `lg` (56px) for a page-level search hero.
  *
  * Lifecycle: **Stable**.
+ *
+ * `onSubmit` fires on Enter and on the submit glyph, with the current value. Wire
+ * it when the search leaves the page — a results route, a server query. Leave it
+ * off when the box filters a list in place, because a submit that reloads what is
+ * already filtered is a step the reader did not need.
  */
 const meta = {
   title: "Components/Forms/Search",

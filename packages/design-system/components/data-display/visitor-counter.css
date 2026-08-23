@@ -1,42 +1,65 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — VisitorCounter
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-   Inherits its colours from whatever band it sits in (the footer sets
-   `--ds-footer-ink*`); falls back to the ambient text colour elsewhere, so the
-   component can be dropped on a light surface without carrying a dark-only
-   palette with it.
-   ============================================================================ */
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — VisitorCounter
 
-.ds-visits {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-padding-6);
-  font-family: var(--sa-font-latin);
-  /* INHERITS its size. It is a metadata line and belongs at whatever size the
-     row it sits in runs at — pinned to body-2 it rendered 14px inside a 12px
-     colophon and stood out for no reason. */
-  font-size: inherit;
-  line-height: 1.4;
-  color: var(--ds-footer-ink-muted, currentColor);
-}
+     Inherits its colours from whatever band it sits in (the footer sets
+     `--ds-footer-ink*`); falls back to the ambient text colour elsewhere, so the
+     component can be dropped on a light surface without carrying a dark-only
+     palette with it.
+     ============================================================================ */
 
-/* There is no icon, deliberately. An eye glyph in front of a number turns a
-   metadata line into a statistic, and this is the least consequential figure
-   in the footer — it sat beside the copyright out-weighing it. It was briefly
-   hidden with `display: none` instead, which did nothing: `Icon` writes its
-   layout inline, and an inline style beats a class. Removed at the source. */
+  .ds-visits {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-padding-6);
+    font-family: var(--sa-font-latin);
+    /* INHERITS its size. It is a metadata line and belongs at whatever size the
+       row it sits in runs at — pinned to body-2 it rendered 14px inside a 12px
+       colophon and stood out for no reason. */
+    font-size: inherit;
+    line-height: 1.4;
+    color: var(--ds-footer-ink-muted, currentColor);
+  }
 
-.ds-visits__label::after {
-  content: ":";
-}
+  /* There is no icon, deliberately. An eye glyph in front of a number turns a
+     metadata line into a statistic, and this is the least consequential figure
+     in the footer — it sat beside the copyright out-weighing it. It was briefly
+     hidden with `display: none` instead, which did nothing: `Icon` writes its
+     layout inline, and an inline style beats a class. Removed at the source. */
 
-.ds-visits__value {
-  /* Tabular figures so the count does not shift the line as digits change.
-     Weight 500, not 600: it sits in a row with the copyright and the
-     last-updated date and has no business being heavier than either. */
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
-  color: var(--ds-footer-ink-muted, currentColor);
-  /* Reserve the widest plausible figure so the first tick cannot reflow the row. */
-  min-width: 7ch;
+  .ds-visits__label::after {
+    content: ":";
+  }
+
+  .ds-visits__value {
+    /* Tabular figures so the count does not shift the line as digits change.
+       Weight 500, not 600: it sits in a row with the copyright and the
+       last-updated date and has no business being heavier than either. */
+    font-variant-numeric: tabular-nums;
+    font-weight: 500;
+    color: var(--ds-footer-ink-muted, currentColor);
+    /* Reserve the widest plausible figure so the first tick cannot reflow the row. */
+    min-width: 7ch;
+  }
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon } from "../icon/icon";
+import { Icon } from "../utilities/icon";
 import { Tooltip } from "../feedback/tooltip";
 import { TabsOverflow } from "./tabs-overflow";
 import "./tabs.css";

@@ -103,7 +103,7 @@ export default function FormFieldPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <p style={proseStyle}>
-          The <code>FormField</code> component expects a function as its child, commonly known as a “render prop”. This function provides the necessary accessibility properties that must be spread onto the actual input element.
+          The <code>FormField</code> component expects a function as its child, commonly known as a &quot;render prop&quot;. This function provides the necessary accessibility properties that must be spread onto the actual input element.
         </p>
         <Playground
           code={`<FormField 
@@ -124,7 +124,7 @@ export default function FormFieldPage(): React.JSX.Element {
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Automatic Linking:</strong> Generates a unique <code>id</code> for the input and links the <code>&lt;label&gt;</code> to it via <code>htmlFor</code>.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Described By:</strong> Links the hint and error messages to the input using <code>aria-describedby</code>, so screen readers announce them when the input receives focus.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Errors:</strong> The error message container has <code>role=“alert”</code>. When an error appears, it is immediately announced by assistive technologies.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Errors:</strong> The error message container has <code>role=&quot;alert&quot;</code>. When an error appears, it is immediately announced by assistive technologies.</li>
         </ul>
       </section>
 

@@ -57,11 +57,9 @@ export default function AadhaarInputPage(): React.JSX.Element {
         </p>
       </header>
 
-      <div style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <Callout title="Privacy & DPDP Act 2023" type="warning">
+      <Callout title="Privacy & DPDP Act 2023" type="warning">
         Aadhaar numbers are sensitive personal data. UIDAI guidelines require masking the first 8 digits when displaying an Aadhaar number on screen. The `AadhaarInput` handles this automatically. Do not disable the `mask` prop without explicit authorization.
       </Callout>
-      </div>
 
       {/* ============ PLAYGROUND ============ */}
       <section style={sectionStyle}>
@@ -131,8 +129,8 @@ export default function AadhaarInputPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode:</strong> Sets <code>inputMode=“numeric”</code> so mobile users are presented with a numeric keypad, while remaining a <code>type=“text”</code> input to avoid native number input quirks.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Internal Validation:</strong> When exactly 12 digits are entered, it runs the Verhoeff algorithm. If the checksum fails, it automatically sets <code>aria-invalid=“true”</code>.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode:</strong> Sets <code>inputMode=&quot;numeric&quot;</code> so mobile users are presented with a numeric keypad, while remaining a <code>type=&quot;text&quot;</code> input to avoid native number input quirks.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Internal Validation:</strong> When exactly 12 digits are entered, it runs the Verhoeff algorithm. If the checksum fails, it automatically sets <code>aria-invalid=&quot;true&quot;</code>.</li>
         </ul>
       </section>
 

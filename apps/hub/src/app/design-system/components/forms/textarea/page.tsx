@@ -119,7 +119,7 @@ export default function TextareaPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>aria-invalid:</strong> When the <code>invalid</code> prop is true, it sets <code>aria-invalid=“true”</code>, alerting screen readers to the validation error.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>aria-invalid:</strong> When the <code>invalid</code> prop is true, it sets <code>aria-invalid=&quot;true&quot;</code>, alerting screen readers to the validation error.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Focus Ring:</strong> Uses the global SAMAVESH focus ring token on keyboard focus, ensuring WCAG AA compliant focus visibility.</li>
         </ul>
       </section>

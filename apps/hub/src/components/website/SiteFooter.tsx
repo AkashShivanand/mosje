@@ -37,13 +37,33 @@ import { getContentSyncedDate } from "@/lib/website/content";
  * known gap in docs/guidelines rather than linked to something it is not.
  */
 
+/**
+ * Where "Help & Support" points.
+ *
+ * A citizen support portal is being built — the place to raise an issue WITH
+ * the website or a portal, as distinct from contacting the department about a
+ * scheme. Until it ships this aliases the contact page, which is the only real
+ * destination that exists today.
+ *
+ * IT IS A CONSTANT SO THE SWITCH IS ONE LINE. When the portal lands, change
+ * this and nothing else: the footer already models Help and Contact as two
+ * separate entries precisely because they are about to become two separate
+ * things. Linking both to the same page in the meantime is a transitional
+ * alias with a stated end, not the duplication that was removed earlier —
+ * that one had no end.
+ */
+const SUPPORT_PORTAL_HREF = "/website/contact-us";
+
 const columns: SiteFooterColumn[] = [
   {
     heading: "Department",
     id: "footer-department",
     links: [
+      // "Vision & Mission" was here pointing at /website/about-us — the SAME
+      // page as "About Ministry" above it. Two labels, one destination, is a
+      // link that promises somewhere new and delivers the reader back where
+      // they were. Removed rather than re-pointed: there is no vision page.
       { label: "About Ministry", href: "/website/about-us" },
-      { label: "Vision & Mission", href: "/website/about-us" },
       { label: "Organisational Chart", href: "/website/whos-who" },
       { label: "Ministers & Officials", href: "/website/mosje-directory" },
     ],
@@ -61,7 +81,11 @@ const columns: SiteFooterColumn[] = [
     heading: "Support",
     id: "footer-support",
     links: [
-      { label: "Help & Support", href: "/website/contact-us" },
+      // TWO entries, and they are about to be two destinations. "Help &
+      // Support" is where you report a problem WITH the site; "Contact Us" is
+      // where you reach the department about a scheme. DBIM 5.6 names Help as
+      // a required element in its own right, so it keeps its own row.
+      { label: "Help & Support", href: SUPPORT_PORTAL_HREF },
       { label: "Contact Us", href: "/website/contact-us" },
       { label: "RTI", href: "/website/rti" },
       { label: "Sitemap", href: "/website/sitemap" },
@@ -97,40 +121,39 @@ const policyLinks: SiteFooterLink[] = [
   { label: "Hyperlinking", href: "/website/hyperlinking-policy" },
   { label: "Accessibility", href: "/website/accessibility" },
   { label: "Feedback", href: "/website/contact-us#feedback" },
-  { label: "Sitemap", href: "/website/sitemap" },
+  // "Sitemap" is NOT repeated here — it is in the Support column, and DBIM 5.6
+  // asks for the element to be present in the footer, not present twice.
 ];
 
+/*
+ * The marks themselves are NOT here. `icon` names one from the DS brand-glyph
+ * set, which normalises all five to one optical size — see the note in
+ * packages/design-system/components/icon/brand-glyph.tsx. What belongs in this
+ * file is the estate's handles and the accessible names, and nothing else.
+ */
 const social: SiteFooterSocial[] = [
-  {
-    label: "Facebook",
-    href: "https://www.facebook.com/goimsje",
-    path: "M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.026 4.388 11.02 10.125 11.927v-8.437H7.078v-3.49h3.047V9.43c0-3.022 1.792-4.69 4.533-4.69 1.312 0 2.686.235 2.686.235v2.969h-1.514c-1.491 0-1.956.93-1.956 1.886v2.243h3.328l-.532 3.49h-2.796V24C19.612 23.093 24 18.099 24 12.073z",
-  },
-  {
-    label: "X (formerly Twitter)",
-    href: "https://x.com/msjegoi",
-    path: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z",
-  },
-  {
-    label: "Instagram",
-    href: "https://www.instagram.com/msjegoi",
-    path: "M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z",
-  },
+  { label: "Facebook", href: "https://www.facebook.com/goimsje", icon: "facebook" },
+  { label: "X (formerly Twitter)", href: "https://x.com/msjegoi", icon: "x" },
+  { label: "Instagram", href: "https://www.instagram.com/msjegoi", icon: "instagram" },
   {
     label: "YouTube",
     href: "https://www.youtube.com/@ministryofsocialjustice511",
-    path: "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
+    icon: "youtube",
   },
   {
     label: "WhatsApp Channel",
     href: "https://whatsapp.com/channel/0029Vb7GfwH6mYPMHOvTd51W",
-    path: "M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 0 1 6.988 2.896 9.82 9.82 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.8 11.8 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.9 11.9 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.8 11.8 0 0 0 20.465 3.49",
+    icon: "whatsapp",
   },
 ];
 
 /** [DBIM 5.6] "Hyperlinked logos" — the maintainer and the platform. */
 const credits: SiteFooterCredit[] = [
   {
+    // Labelled, where it previously carried nothing. One mark with a prefix and
+    // one without read as "Powered by [A] [B]" — the label appeared to govern
+    // both, and the attribution the prose used to carry was left unsaid.
+    prefix: "Developed & maintained by",
     src: "/website/images/NeGD-Logo.svg",
     alt: "National e-Governance Division (NeGD)",
     href: "https://negd.gov.in/",
@@ -148,14 +171,25 @@ const credits: SiteFooterCredit[] = [
 ];
 
 /**
- * [DBIM 5.6] The lineage sentence, in the mandated Central-Government-Department
- * form. The live site's "Contents owned and managed by…" states ownership but is
- * not this sentence, so both are carried: lineage here, ownership in the credits.
+ * [DBIM 5.6] The lineage sentence, and NOTHING ELSE.
+ *
+ * It used to run on: "…Government of India. Developed and maintained by Digital
+ * India Corporation, MeitY." Two things were wrong with that tail. It said in
+ * prose what the credit logos beside it already say in marks, so the same fact
+ * was on screen twice. And it named only ONE of the two organisations the
+ * footer credits — the sentence sat immediately before a Digital India logo
+ * while crediting Digital India Corporation and omitting NeGD, which reads as
+ * an inconsistency rather than a statement.
+ *
+ * DBIM 5.6 prescribes the lineage wording for a Central Government Department
+ * and the prescribed sentence stops at "Government of India". Attribution is a
+ * separate element, and the clause has one for it: hyperlinked logos. So the
+ * sentence is now exactly the mandated one — shorter, non-duplicative, and
+ * closer to the clause than the longer version was.
  */
 const LINEAGE =
   "This website belongs to the Department of Social Justice & Empowerment, " +
-  "Ministry of Social Justice & Empowerment, Government of India. Developed and " +
-  "maintained by Digital India Corporation, MeitY.";
+  "Ministry of Social Justice & Empowerment, Government of India.";
 
 export interface SiteFooterProps {
   /**
@@ -169,14 +203,24 @@ export interface SiteFooterProps {
 export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
   return (
     <>
+      {/* The support CTA is an ActionBanner on a light band ABOVE the footer,
+          not a strip inside it. Two reasons. It is page content — an invitation
+          to act — and the footer below it is statutory chrome; they are
+          different registers and the light ground says so at a glance. And
+          `ActionBanner` is the estate's component for exactly this, so the
+          footer does not need a second way to render a call to action.
+
+          The copy names the situation the reader is in. "Need Support?" is a
+          category; "Need help with a scheme or an application?" tells someone
+          in thirty seconds whether this is for them. */}
       <Band spacing="l" className="bg-white">
         <ActionBanner
-          title="Need Support?"
-          description="Reach out to our 24x7 citizen helpline or connect directly with our key officers."
+          title="Need help with a scheme or an application?"
+          description="Write to the department and an officer will respond."
           action={
             <Link
               href="/website/contact-us"
-              className={`${buttonClasses("primary", "filled", "md")} whitespace-nowrap px-6 py-3`}
+              className={`${buttonClasses("primary", "filled", "md")} whitespace-nowrap`}
             >
               Get in Touch
             </Link>
@@ -203,7 +247,6 @@ export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
         "Department of Social Justice & Empowerment",
       ]}
       address="8th Floor, GPOA-3, Netaji Nagar, New Delhi - 110023"
-      cta={{ label: "Get in Touch", href: "/website/contact-us" }}
       social={social}
       colophonSlot={<VisitorCounter />}
       columns={columns}
