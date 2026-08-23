@@ -84,9 +84,9 @@ code { overflow-wrap: anywhere; }
 
 p { line-height: var(--sa-type-body-1-lh); }
 
-a { color: var(--sa-text-link-brand-default); text-decoration: none; }
-a:hover { text-decoration: underline; }
-a:focus-visible {
+a:not([class]) { color: var(--sa-text-link-brand-default); text-decoration: none; }
+a:not([class]):hover { text-decoration: underline; }
+a:not([class]):focus-visible {
   outline: 3px solid var(--sa-focus-ring);
   outline-offset: var(--sa-focus-offset);
   border-radius: var(--sa-shape-4);

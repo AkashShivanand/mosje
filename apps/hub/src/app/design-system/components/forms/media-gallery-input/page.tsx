@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { MediaGalleryInputPlayground } from "./media-gallery-input-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "MediaGalleryInput - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function MediaGalleryInputPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function MediaGalleryInputPage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Upload multiple images or videos. Notice how the initial dropzone transforms into a thumbnail grid with a trailing &quot;Add more&quot; button once files are present.
@@ -67,9 +72,7 @@ export default function MediaGalleryInputPage(): React.JSX.Element {
           <MediaGalleryInputPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Use <code>MediaGalleryInput</code> when you need the user to provide multiple visual files, such as supporting documents, event photos, or inspection videos. It reads the files locally, generates previews, and enforces capacity limits without hitting the server.
@@ -98,9 +101,7 @@ export default function MediaGalleryInputPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <Playground
           code={`function InspectionGallery() {
@@ -123,18 +124,15 @@ export default function MediaGalleryInputPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ============ 3. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Dropzone:</strong> Both the empty full-width dropzone and the &quot;Add more&quot; tile are native buttons, fully operable via keyboard.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Clear Removal:</strong> Each item in the gallery grid has a dedicated remove button with a descriptive <code>aria-label</code> (e.g., &quot;Remove document.pdf&quot;).</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Error Feedback:</strong> Validation errors (wrong file type, exceeded capacity) are rendered in a <code>role=&quot;alert&quot;</code> container to immediately notify screen reader users.</li>
-        </ul>
-      </section>
-
-      {/* ============ 4. API ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>4. API Reference</h2>
         <PropsTable
           props={[
@@ -146,6 +144,30 @@ export default function MediaGalleryInputPage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Dropzone:</strong> Both the empty full-width dropzone and the &quot;Add more&quot; tile are native buttons, fully operable via keyboard.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Clear Removal:</strong> Each item in the gallery grid has a dedicated remove button with a descriptive <code>aria-label</code> (e.g., &quot;Remove document.pdf&quot;).</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Error Feedback:</strong> Validation errors (wrong file type, exceeded capacity) are rendered in a <code>role=&quot;alert&quot;</code> container to immediately notify screen reader users.</li>
+        </ul>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

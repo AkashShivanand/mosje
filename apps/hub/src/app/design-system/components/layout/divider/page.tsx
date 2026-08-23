@@ -1,4 +1,5 @@
 import * as React from "react";
+import { DocsTabs } from "@/components/design-system/docs-kit";
 import type { Metadata } from "next";
 import {
   PropsTable,
@@ -16,7 +17,6 @@ export const metadata: Metadata = {
     "The estate's thin rule — a 1px hairline between sections, or between controls in a row. Six variants: Orientation × Tone.",
 };
 
-const sectionStyle: React.CSSProperties = { marginBottom: "var(--sa-section-48)" };
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
@@ -74,7 +74,15 @@ export default function DividerPage(): React.JSX.Element {
       </header>
 
       {/* ── Why ── */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="why" style={h2Style}>Why it exists</h2>
         <p style={leadStyle}>
           The SAMAVESH Figma library has had a <code>Divider</code> master since the
@@ -92,9 +100,7 @@ export default function DividerPage(): React.JSX.Element {
           component instead.</strong>
         </Callout>
       </section>
-
-      {/* ── Orientation ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="orientation" style={h2Style}>Orientation</h2>
         <p style={leadStyle}>
           <code>horizontal</code> (the default) separates stacked sections. <code>vertical</code>{" "}
@@ -116,9 +122,7 @@ export default function DividerPage(): React.JSX.Element {
           <code>align-self: stretch</code>, which in a flex row matches the tallest sibling.
         </Callout>
       </section>
-
-      {/* ── Tone ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="tone" style={h2Style}>Tone follows the surface, not the taste</h2>
         <p style={leadStyle}>
           Three tones, and the choice is decided by what the rule sits on and what it separates —
@@ -142,9 +146,7 @@ export default function DividerPage(): React.JSX.Element {
           whole sections on a dark panel.
         </Callout>
       </section>
-
-      {/* ── Length ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="length" style={h2Style}>Leave the length alone</h2>
         <p style={leadStyle}>
           <code>length</code> exists, and it is usually the wrong thing to set. Omit it and the rule
@@ -168,46 +170,7 @@ export default function DividerPage(): React.JSX.Element {
           passes <code>length={20}</code> deliberately; nothing else should need to.
         </Callout>
       </section>
-
-      {/* ── Accessibility ── */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>Accessibility</h2>
-        <p style={leadStyle}>
-          <code>decorative</code> decides whether assistive technology hears the rule, and the
-          default is deliberate.
-        </p>
-        <A11yChecklist
-          items={[
-            {
-              criterion: "Decorative by default — aria-hidden, no role",
-              level: "A",
-              description:
-                "A rule between toolbar controls is presentation. Announcing “separator” between every pair of buttons in the accessibility bar is noise, so the default is hidden from assistive technology.",
-            },
-            {
-              criterion: "decorative={false} renders a real <hr>",
-              level: "A",
-              description:
-                "For a genuine thematic break between sections. <hr> already carries role=\"separator\", so no role override is needed; a vertical one adds aria-orientation.",
-            },
-            {
-              criterion: "Never the only signal",
-              level: "A",
-              description:
-                "WCAG 1.4.1 — a rule is a visual cue. If the separation carries meaning (a new section, a changed state), it must also be conveyed by a heading, a label or structure.",
-            },
-            {
-              criterion: "Contrast is not required of a decorative rule",
-              level: "AA",
-              description:
-                "WCAG 1.4.11 applies to elements needed to understand content. A decorative hairline is exempt — which is exactly why inverse-subtle at 40% is legitimate rather than a contrast failure.",
-            },
-          ]}
-        />
-      </section>
-
-      {/* ── Do / Don't ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="guidelines" style={h2Style}>Do &amp; Don&apos;t</h2>
         <DoDont
           cards={[
@@ -253,8 +216,15 @@ export default function DividerPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ── Tokens ── */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="tokens" style={h2Style}>Token map</h2>
         <p style={leadStyle}>
           Only the <strong>thickness</strong> is component-scoped. The tones bind straight to{" "}
@@ -279,9 +249,7 @@ export default function DividerPage(): React.JSX.Element {
           <code>bolder/default</code> and <code>bolder/hover</code> that way.
         </Callout>
       </section>
-
-      {/* ── Migration ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="migration" style={h2Style}>Migration status</h2>
         <p style={leadStyle}>
           All 22 of the estate&apos;s hand-rolled separator rules now render this component — 14 on
@@ -296,9 +264,7 @@ export default function DividerPage(): React.JSX.Element {
           ]}
         />
       </section>
-
-      {/* ── API ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>API</h2>
         <TerminalCode title="tsx" codeText={USAGE}>
           <pre style={{ margin: 0, whiteSpace: "pre-wrap" }}>{USAGE}</pre>
@@ -313,6 +279,57 @@ export default function DividerPage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>Accessibility</h2>
+        <p style={leadStyle}>
+          <code>decorative</code> decides whether assistive technology hears the rule, and the
+          default is deliberate.
+        </p>
+        <A11yChecklist
+          items={[
+            {
+              criterion: "Decorative by default — aria-hidden, no role",
+              level: "A",
+              description:
+                "A rule between toolbar controls is presentation. Announcing “separator” between every pair of buttons in the accessibility bar is noise, so the default is hidden from assistive technology.",
+            },
+            {
+              criterion: "decorative={false} renders a real <hr>",
+              level: "A",
+              description:
+                "For a genuine thematic break between sections. <hr> already carries role=\"separator\", so no role override is needed; a vertical one adds aria-orientation.",
+            },
+            {
+              criterion: "Never the only signal",
+              level: "A",
+              description:
+                "WCAG 1.4.1 — a rule is a visual cue. If the separation carries meaning (a new section, a changed state), it must also be conveyed by a heading, a label or structure.",
+            },
+            {
+              criterion: "Contrast is not required of a decorative rule",
+              level: "AA",
+              description:
+                "WCAG 1.4.11 applies to elements needed to understand content. A decorative hairline is exempt — which is exactly why inverse-subtle at 40% is legitimate rather than a contrast failure.",
+            },
+          ]}
+        />
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </>
   );
 }

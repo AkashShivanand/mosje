@@ -1,3 +1,4 @@
+import { DocsTabs } from "@/components/design-system/docs-kit";
 import type { Metadata } from "next";
 import {
   PropsTable,
@@ -17,10 +18,6 @@ export const metadata: Metadata = {
  * Layout primitives
  * ------------------------------------------------------------------ */
 
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--sa-section-48)",
-};
 
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
@@ -126,16 +123,22 @@ export default function SidebarPage(): React.JSX.Element {
       </header>
 
       {/* ============ 1. IMPORT ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="import" style={h2Style}>
           1. Import
         </h2>
         <CodeBlock>{`import { SidebarNav } from "@mosje/design-system";
 import type { SidebarNavGroup } from "@mosje/design-system";`}</CodeBlock>
       </section>
-
-      {/* ============ 2. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>
           2. Usage
         </h2>
@@ -201,9 +204,104 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
   footer={<StatusFooter />}
 />`}</CodeBlock>
       </section>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="behaviour" style={h2Style}>
+          5. Behaviour
+        </h2>
 
-      {/* ============ 3. PROPS ============ */}
-      <section style={sectionStyle}>
+        <h3 style={h3Style}>Active detection</h3>
+        <p style={proseStyle}>
+          An item is active when <code>pathname === item.href</code> or{" "}
+          <code>pathname.startsWith(item.href + &quot;/&quot;)</code>. A parent group is
+          highlighted when any of its children is active; the group also
+          auto-expands in that case.
+        </p>
+
+        <h3 style={h3Style}>Collapsed mode</h3>
+        <p style={proseStyle}>
+          Labels, badges, chevrons, children, and group labels are hidden. Each
+          icon-only button carries a <code>title</code> and{" "}
+          <code>aria-label</code> equal to the item label, satisfying WCAG 1.1.1
+          for non-text content.
+        </p>
+
+        <h3 style={h3Style}>Connector visual</h3>
+        <p style={proseStyle}>
+          Child items within an expanded group are connected by a curved
+          border-bottom-left-radius elbow drawn via CSS <code>::before</code>{" "}
+          and <code>::after</code> pseudo-elements. The colour is{" "}
+          <code>--sa-color-primaryScale-50</code> so it automatically stays in sync with
+          the portal brand colour mode. The connector is decorative and is not
+          announced by screen readers.
+        </p>
+
+        <Callout type="info" title="No children in collapsed mode">
+          Child items are always hidden in collapsed mode. The parent icon
+          still reflects the active state when a child route is current.
+        </Callout>
+      </section>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="portals" style={h2Style}>
+          6. Portal usage
+        </h2>
+        <p style={proseStyle}>
+          All MoSJE portals use <strong>SidebarNav</strong> — do not build
+          custom sidebars in individual apps. The two key portals are:
+        </p>
+        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
+          <table className="props-table">
+            <thead>
+              <tr>
+                <th scope="col">Portal</th>
+                <th scope="col">Collapse state</th>
+                <th scope="col">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                [
+                  "SMILE Admin",
+                  "AppContext (persisted to localStorage)",
+                  "Role-filtered groups via navForRole(). Status footer. Header provides the toggle; showCollapseControl omitted.",
+                ],
+                [
+                  "SCW",
+                  "Local useState",
+                  "Flat ADMIN_NAV / USER_NAV arrays wrapped in a single group. showCollapseControl enabled.",
+                ],
+                [
+                  "NMBA",
+                  "Local useState",
+                  "Treatment-Centre uses a role-switched sidebar pattern; evaluate for migration separately.",
+                ],
+                [
+                  "PM-AJAY",
+                  "—",
+                  "MIS dashboard — no persistent sidebar required; uses a top-nav pattern.",
+                ],
+              ].map(([portal, state, notes]) => (
+                <tr key={portal}>
+                  <td style={{ fontWeight: 600, color: "var(--sa-color-text-default)" }}>{portal}</td>
+                  <td style={{ fontFamily: "var(--sa-font-mono)", fontSize: "0.9em", color: "var(--sa-color-text-muted)" }}>
+                    {state}
+                  </td>
+                  <td style={{ color: "var(--sa-text-neutral-subtle)", fontSize: "0.9em" }}>{notes}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="props" style={h2Style}>
           3. Props
         </h2>
@@ -334,9 +432,7 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
           ]}
         />
       </section>
-
-      {/* ============ 4. TOKENS ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="tokens" style={h2Style}>
           4. Design tokens
         </h2>
@@ -384,100 +480,15 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
         </div>
       </section>
 
-      {/* ============ 5. BEHAVIOUR ============ */}
-      <section style={sectionStyle}>
-        <h2 id="behaviour" style={h2Style}>
-          5. Behaviour
-        </h2>
-
-        <h3 style={h3Style}>Active detection</h3>
-        <p style={proseStyle}>
-          An item is active when <code>pathname === item.href</code> or{" "}
-          <code>pathname.startsWith(item.href + &quot;/&quot;)</code>. A parent group is
-          highlighted when any of its children is active; the group also
-          auto-expands in that case.
-        </p>
-
-        <h3 style={h3Style}>Collapsed mode</h3>
-        <p style={proseStyle}>
-          Labels, badges, chevrons, children, and group labels are hidden. Each
-          icon-only button carries a <code>title</code> and{" "}
-          <code>aria-label</code> equal to the item label, satisfying WCAG 1.1.1
-          for non-text content.
-        </p>
-
-        <h3 style={h3Style}>Connector visual</h3>
-        <p style={proseStyle}>
-          Child items within an expanded group are connected by a curved
-          border-bottom-left-radius elbow drawn via CSS <code>::before</code>{" "}
-          and <code>::after</code> pseudo-elements. The colour is{" "}
-          <code>--sa-color-primaryScale-50</code> so it automatically stays in sync with
-          the portal brand colour mode. The connector is decorative and is not
-          announced by screen readers.
-        </p>
-
-        <Callout type="info" title="No children in collapsed mode">
-          Child items are always hidden in collapsed mode. The parent icon
-          still reflects the active state when a child route is current.
-        </Callout>
-      </section>
-
-      {/* ============ 6. PORTALS ============ */}
-      <section style={sectionStyle}>
-        <h2 id="portals" style={h2Style}>
-          6. Portal usage
-        </h2>
-        <p style={proseStyle}>
-          All MoSJE portals use <strong>SidebarNav</strong> — do not build
-          custom sidebars in individual apps. The two key portals are:
-        </p>
-        <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
-          <table className="props-table">
-            <thead>
-              <tr>
-                <th scope="col">Portal</th>
-                <th scope="col">Collapse state</th>
-                <th scope="col">Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {[
-                [
-                  "SMILE Admin",
-                  "AppContext (persisted to localStorage)",
-                  "Role-filtered groups via navForRole(). Status footer. Header provides the toggle; showCollapseControl omitted.",
-                ],
-                [
-                  "SCW",
-                  "Local useState",
-                  "Flat ADMIN_NAV / USER_NAV arrays wrapped in a single group. showCollapseControl enabled.",
-                ],
-                [
-                  "NMBA",
-                  "Local useState",
-                  "Treatment-Centre uses a role-switched sidebar pattern; evaluate for migration separately.",
-                ],
-                [
-                  "PM-AJAY",
-                  "—",
-                  "MIS dashboard — no persistent sidebar required; uses a top-nav pattern.",
-                ],
-              ].map(([portal, state, notes]) => (
-                <tr key={portal}>
-                  <td style={{ fontWeight: 600, color: "var(--sa-color-text-default)" }}>{portal}</td>
-                  <td style={{ fontFamily: "var(--sa-font-mono)", fontSize: "0.9em", color: "var(--sa-color-text-muted)" }}>
-                    {state}
-                  </td>
-                  <td style={{ color: "var(--sa-text-neutral-subtle)", fontSize: "0.9em" }}>{notes}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      {/* ============ 7. A11Y ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="a11y" style={h2Style}>
           7. Accessibility
         </h2>
@@ -528,6 +539,13 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
           ]}
         />
       </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

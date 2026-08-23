@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { CardPlayground } from "./card-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont, A11yChecklist, Callout, StatusBadge } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 import { buttonClasses } from "@mosje/design-system";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 
@@ -12,7 +14,6 @@ export const metadata: Metadata = {
     "Card is a surface for grouping related content — a styled container composed of header, body and footer sections, with outlined and elevated variants.",
 };
 
-const sectionStyle: React.CSSProperties = { marginBottom: "var(--sa-section-48)" };
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
@@ -47,7 +48,15 @@ export default function CardPage(): React.JSX.Element {
       </div>
 
       {/* ── Overview ── */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="overview" style={h2Style}>Overview</h2>
         <p style={leadStyle}>
           A <strong>Card</strong> is a styled surface container that visually groups a piece of
@@ -61,9 +70,7 @@ export default function CardPage(): React.JSX.Element {
           a news item, or a settings panel. Keep each card focused on a single subject.
         </p>
       </section>
-
-      {/* ── Playground ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={leadStyle}>
           A card composed of a header (title + subtitle), a body, and a footer with one primary
@@ -71,9 +78,7 @@ export default function CardPage(): React.JSX.Element {
         </p>
         <CardPlayground />
       </section>
-
-      {/* ── Variants ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="variants" style={h2Style}>Variants</h2>
         <p style={leadStyle}>
           The card surface comes in two built-in variants. A &ldquo;default&rdquo; flat surface (no
@@ -112,9 +117,7 @@ export default function CardPage(): React.JSX.Element {
           layouts so card edges stay visible.
         </Callout>
       </section>
-
-      {/* ── Do / Don't ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="guidelines" style={h2Style}>Do &amp; Don&apos;t</h2>
         <DoDont
           cards={[
@@ -146,30 +149,15 @@ export default function CardPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ── Accessibility ── */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>Accessibility</h2>
-        <Callout type="warning" title="Clickable cards must wrap, not listen">
-          If a whole card navigates somewhere, wrap the entire card in an <code>&lt;a href&gt;</code>{" "}
-          (or render the card <em>as</em> a link) so the full surface is a single, keyboard-focusable
-          link. Do <strong>not</strong> attach <code>onClick</code> to a <code>&lt;div&gt;</code> — a
-          div is not focusable, not announced as a link, and not keyboard-operable.
-        </Callout>
-        <div style={{ marginTop: "var(--sa-padding-20)" }}>
-          <A11yChecklist
-            items={[
-              { criterion: "Whole-card links use a real anchor", level: "A", description: "If the card is clickable, wrap it in <a href> (not just the title). The entire surface becomes one focusable, keyboard-operable link." },
-              { criterion: "No onClick on non-interactive elements", level: "A", description: "Never put onClick on a <div>. Divs are not focusable and screen readers don't announce them as actionable." },
-              { criterion: "Single interactive target per card", level: "A", description: "Avoid nesting buttons or links inside a clickable card — nested interactive elements are an invalid, confusing pattern." },
-              { criterion: "Title uses a heading element", level: "AA", description: "CardTitle renders an <h3>; ensure the heading level fits the surrounding document outline so structure stays logical." },
-              { criterion: "Visible focus indicator", level: "AA", description: "A focusable card or its action must show a clear focus ring meeting AA contrast against the card surface." },
-            ]}
-          />
-        </div>
-      </section>
-
-      {/* ── API ── */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>API</h2>
         <h3 style={{ fontSize: "var(--sa-type-body-1-size)", fontWeight: 600, margin: "var(--sa-stack-16) 0 var(--sa-stack-8)" }}>Card</h3>
         <PropsTable
@@ -191,6 +179,42 @@ export default function CardPage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>Accessibility</h2>
+        <Callout type="warning" title="Clickable cards must wrap, not listen">
+          If a whole card navigates somewhere, wrap the entire card in an <code>&lt;a href&gt;</code>{" "}
+          (or render the card <em>as</em> a link) so the full surface is a single, keyboard-focusable
+          link. Do <strong>not</strong> attach <code>onClick</code> to a <code>&lt;div&gt;</code> — a
+          div is not focusable, not announced as a link, and not keyboard-operable.
+        </Callout>
+        <div style={{ marginTop: "var(--sa-padding-20)" }}>
+          <A11yChecklist
+            items={[
+              { criterion: "Whole-card links use a real anchor", level: "A", description: "If the card is clickable, wrap it in <a href> (not just the title). The entire surface becomes one focusable, keyboard-operable link." },
+              { criterion: "No onClick on non-interactive elements", level: "A", description: "Never put onClick on a <div>. Divs are not focusable and screen readers don't announce them as actionable." },
+              { criterion: "Single interactive target per card", level: "A", description: "Avoid nesting buttons or links inside a clickable card — nested interactive elements are an invalid, confusing pattern." },
+              { criterion: "Title uses a heading element", level: "AA", description: "CardTitle renders an <h3>; ensure the heading level fits the surrounding document outline so structure stays logical." },
+              { criterion: "Visible focus indicator", level: "AA", description: "A focusable card or its action must show a clear focus ring meeting AA contrast against the card surface." },
+            ]}
+          />
+        </div>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </>
   );
 }

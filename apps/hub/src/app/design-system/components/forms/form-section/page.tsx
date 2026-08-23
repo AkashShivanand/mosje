@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { FormSectionPlayground } from "./form-section-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "FormSection - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function FormSectionPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function FormSectionPage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Adjust the column count to see how the internal grid adapts. Note that on smaller screens, it will automatically collapse to a single column.
@@ -67,9 +72,7 @@ export default function FormSectionPage(): React.JSX.Element {
           <FormSectionPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Use <code>FormSection</code> to group related form fields logically (e.g., &quot;Personal Details&quot;, &quot;Address&quot;, &quot;Banking Information&quot;). This is the standard way to build forms across the SAMAVESH estate, ensuring a consistent rhythm and responsive behaviour.
@@ -98,9 +101,7 @@ export default function FormSectionPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <Playground
           code={`<FormSection title="Address Details" columns={2}>
@@ -120,17 +121,15 @@ export default function FormSectionPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ============ 3. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Section:</strong> Uses the native <code>&lt;section&gt;</code> element, creating a structural landmark for assistive tech.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>aria-labelledby:</strong> Automatically links the section to its internal <code>&lt;h2&gt;</code> title, so screen readers can easily identify the grouping.</li>
-        </ul>
-      </section>
-
-      {/* ============ 4. API ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>4. API Reference</h2>
         <PropsTable
           props={[
@@ -142,6 +141,29 @@ export default function FormSectionPage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Section:</strong> Uses the native <code>&lt;section&gt;</code> element, creating a structural landmark for assistive tech.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>aria-labelledby:</strong> Automatically links the section to its internal <code>&lt;h2&gt;</code> title, so screen readers can easily identify the grouping.</li>
+        </ul>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }
