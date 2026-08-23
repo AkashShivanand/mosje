@@ -510,8 +510,19 @@
      drawn mid-hover has to hover; a still one is uncanny. */
 
   @media (prefers-reduced-motion: no-preference) {
-    /* The seal: thinking only. Nothing else starts or stops it. */
-    .ds-chatbot[data-thinking] .ds-chatbot-mascot__ring,
+    /* THE SEAL NO LONGER TURNS ON `data-thinking`, BECAUSE NOBODY COULD SEE IT.
+       The widget only ever thinks while it is OPEN, and while it is open the
+       launcher has already crossfaded the mark to the close x at opacity 0 — so
+       the one loop specified as the thinking cue was, in practice, animating
+       behind the thing that replaced it. The cue that actually reads is the
+       typing indicator, which is in the log where the reply is coming.
+
+       The alternative was to move the spin to the 40px avatar. It was rejected on
+       legibility: the wordmark is already small on an 84px launcher, and at 40px
+       it is a grey smudge. A seal you cannot read is not a seal.
+
+       `--spin` stays, so documentation and specimens can still show the motion
+       deliberately. It is now the ONLY thing that starts it. */
     .ds-chatbot-mascot--spin .ds-chatbot-mascot__ring {
       animation: ds-chatbot-ring 10s linear infinite;
     }
@@ -670,8 +681,8 @@
     display: grid;
     flex: none;
     place-items: center;
-    width: 32px;
-    height: 32px;
+    width: var(--sa-icon-size-32);
+    height: var(--sa-icon-size-32);
     padding: var(--sa-padding-0);
     border: 0;
     border-radius: var(--sa-shape-8);
@@ -684,9 +695,11 @@
       transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
   }
 
+  /* 20, not 18. The icon scale runs 16 · 20 · 24 · 32 · 40 · 48 · 64 and 18 is
+     not on it — it was a number, not a size. */
   .ds-chatbot__icon-btn svg {
-    width: 18px;
-    height: 18px;
+    width: var(--sa-icon-size-20);
+    height: var(--sa-icon-size-20);
   }
 
   @media (hover: hover) and (pointer: fine) {
@@ -711,41 +724,10 @@
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
     font-weight: 500;
-    color: var(--sa-color-text-muted);
-  }
-
-  .ds-chatbot__end {
-    padding: var(--sa-padding-4) var(--sa-padding-8);
-    /* -8px of the padding above, so the label still sits flush with the panel's
-       16px gutter while the tappable box stays over 24px (WCAG 2.2 · 2.5.8). */
-    margin-inline-end: calc(var(--sa-padding-8) * -1);
-    border: 0;
-    border-radius: var(--sa-shape-4);
-    background: transparent;
-    font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-label-1-size);
-    line-height: var(--sa-type-label-1-lh);
-    /* Figma specifies #ff0004, which measures 4.00:1 on white and fails AA for
-       text. The design system's error ink is the same signal at 9.10:1, so it
-       wins — accessibility is not traded against fidelity. */
-    color: var(--sa-text-status-error-base);
-    cursor: pointer;
-    transition:
-      background-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
-      transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
-  }
-
-  .ds-chatbot__end:hover {
-    background: var(--sa-bg-status-error-subtler);
-  }
-
-  .ds-chatbot__end:active {
-    transform: scale(0.97);
-  }
-
-  .ds-chatbot__end:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
+    /* The title outranks the subtitle beneath it, so it cannot be the same ink.
+       Both were `muted`, which left the header with no hierarchy at all — the
+       Devanagari name read as equal in weight to the invitation above it. */
+    color: var(--sa-color-text-default);
   }
 
   /* -- transcript ----------------------------------------------------------- */
@@ -833,10 +815,17 @@
     color: var(--sa-color-text-default);
   }
 
+  /* THE CITIZEN'S OWN WORDS ARE BRAND-COLOURED, NOT NAVY.
+     `--sa-color-brand-navy` is a LITERAL, not a themed slot, so this bubble
+     painted #003366 in every brand mode — including the default blue one, where
+     everything around it is #0373DF. It was the one element on the panel that
+     ignored `data-brand` entirely. `bolder` is the step that carries white text:
+     6.36:1 in blue, and in navy mode it resolves to #003366, so that mode renders
+     byte-identical to before. Only the mode that was wrong changes. */
   .ds-chatbot__bubble--user {
     border-radius: var(--sa-shape-16) var(--sa-shape-0) var(--sa-shape-16) var(--sa-shape-16);
-    background: var(--sa-color-brand-navy);
-    color: var(--sa-color-text-onPrimary);
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
   }
 
   /* A bubble grows out of its own tail — the corner nearest the speaker — so the
@@ -870,11 +859,19 @@
      Four dots, as drawn. A loop, so keyframes are correct here — there is no
      interruption to retarget, and the wave has to be able to run forever. */
 
+  /* IT SITS IN A BUBBLE, AND THAT IS WHAT MAKES THE ANSWER ARRIVE PROPERLY.
+     Bare dots beside an avatar read as the whole panel loading. In a bubble they
+     occupy the exact place the reply will occupy, so the reply GROWS OUT OF the
+     indicator instead of appearing next to it — the same spatial-continuity
+     argument that makes the panel grow out of the launcher. It hugs, so it is a
+     small pill rather than an empty slab of the full bubble width. */
   .ds-chatbot__typing {
-    display: flex;
+    display: inline-flex;
     gap: var(--sa-inline-4);
     align-items: center;
-    padding: var(--sa-padding-4) var(--sa-padding-2);
+    padding: var(--sa-padding-12);
+    border-radius: var(--sa-shape-0) var(--sa-shape-16) var(--sa-shape-16) var(--sa-shape-16);
+    background: var(--sa-bg-neutral-subtler);
   }
 
   .ds-chatbot__typing i {
@@ -1104,13 +1101,16 @@
     display: grid;
     flex: none;
     place-items: center;
-    width: 32px;
-    height: 32px;
+    width: var(--sa-icon-size-32);
+    height: var(--sa-icon-size-32);
     padding: var(--sa-padding-0);
     border: 0;
     border-radius: var(--sa-shape-full);
-    background: var(--sa-color-brand-navy);
-    color: var(--sa-color-text-onPrimary);
+    /* Same literal, same consequence as the user bubble: a primary ACTION that
+       stayed navy while the brand around it changed. Not artwork — the mascot
+       disc and the close disc are, and those two keep the literal on purpose. */
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
     cursor: pointer;
     transition:
       opacity var(--ds-chatbot-press) var(--ds-chatbot-ease),
@@ -1118,8 +1118,8 @@
   }
 
   .ds-chatbot__send svg {
-    width: 16px;
-    height: 16px;
+    width: var(--sa-icon-size-16);
+    height: var(--sa-icon-size-16);
   }
 
   /* Dimmed, never hidden. A send button that vanishes when the field is empty
@@ -1129,13 +1129,13 @@
     cursor: default;
   }
 
-  .ds-chatbot__send:not(:disabled):active {
-    transform: scale(0.94);
-  }
-
   .ds-chatbot__send:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-chatbot__send:not(:disabled):active {
+    transform: scale(0.94);
   }
 
   .ds-chatbot__note {
@@ -1147,21 +1147,53 @@
   }
 
   /* Quiet, and in the footer rather than the close slot. Destructive actions do
-     not belong where people reach to dismiss something. */
+     not belong where people reach to dismiss something.
+
+     THIS RULE WAS DECLARED TWICE, AND THE SECOND ONE WAS SILENTLY WINNING.
+     One declaration up in the header block carried the padding and the type; this
+     one, further down the file, re-declared `padding: 0` and `font: inherit` and
+     therefore overrode both. The result rendered 49x16 — UNDER the 24px WCAG 2.2
+     (2.5.8) target minimum — while the documentation claimed a 24px box, and the
+     negative margin left behind was pulling the label out of the gutter to
+     compensate for padding that no longer existed. Merged here, in the footer
+     section where the control actually lives.
+
+     Do not re-split it: `no-duplicate-selectors` is on for exactly this reason. */
   .ds-chatbot__end {
-    padding: var(--sa-padding-0);
+    padding: var(--sa-padding-4) var(--sa-padding-8);
+    /* -8px of the padding above, so the label still sits flush with the panel's
+       16px gutter while the tappable box clears 24px (WCAG 2.2 · 2.5.8):
+       label-1's 20px line-height + 4 + 4 = 28. */
+    margin-inline-end: calc(var(--sa-padding-8) * -1);
     border: 0;
+    border-radius: var(--sa-shape-4);
     background: transparent;
-    font: inherit;
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    /* Figma specifies #ff0004, which measures 4.00:1 on white and fails AA for
+       text. The design system's error ink is the same signal at 9.10:1, so it
+       wins — accessibility is not traded against fidelity. */
     color: var(--sa-text-status-error-base);
     text-decoration: underline;
     text-underline-offset: 2px;
     cursor: pointer;
+    transition:
+      background-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
+      transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
   }
 
   .ds-chatbot__end:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-chatbot__end:hover {
+    background: var(--sa-bg-status-error-subtler);
+  }
+
+  .ds-chatbot__end:active {
+    transform: scale(0.97);
   }
 
   /* ---------------------------------------------------------------------------

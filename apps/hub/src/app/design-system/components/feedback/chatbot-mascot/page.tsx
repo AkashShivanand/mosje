@@ -95,11 +95,18 @@ export default function ChatbotMascotPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="motion" style={h2Style}>4. Motion</h2>
         <p style={proseStyle}>
-          The seal turns for exactly one reason: the assistant is thinking. It used to start on
-          pointer-enter and stop on leave, and an animation snapping from stopped to full speed
-          is inherently abrupt — there is no CSS way to ease into a keyframe loop. Hover is
-          carried entirely by lift and shadow, which are transitions, and transitions reverse
-          cleanly by construction.
+          The seal turns for exactly one reason: a caller passed <code>spin</code>. It never
+          starts by itself. It used to start on pointer-enter and stop on leave, and an animation
+          snapping from stopped to full speed is inherently abrupt — there is no CSS way to ease
+          into a keyframe loop. Hover is carried entirely by lift and shadow, which are
+          transitions, and transitions reverse cleanly by construction.
+        </p>
+        <p style={proseStyle}>
+          It was then wired to the chatbot&apos;s thinking state, which was worse in a quieter
+          way: the widget only thinks while it is open, and while it is open the launcher has
+          already crossfaded this mark to a close ×. The loop ran at full speed behind something
+          opaque. <code>spin</code> is now the only trigger, and the honest use for it is
+          documentation and specimens — including the one below.
         </p>
       </section>
 

@@ -444,6 +444,10 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
       // lets the NEXT corner widget stack above us instead of on top.
       data-sa-corner-occupant=""
       data-state={open ? "open" : "closed"}
+      // Kept as a state hook for consumers and end-to-end tests. Nothing in this
+      // stylesheet reads it any more: it used to spin the seal, which turned out
+      // to be invisible at exactly the moment it fired — see the note beside
+      // `--spin` in chatbot.css.
       data-thinking={typing || undefined}
       {...rest}
     >

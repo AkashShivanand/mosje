@@ -202,7 +202,7 @@ export default function ChatbotPage(): React.JSX.Element {
           <li><strong>Enter, 240ms</strong> — the panel grows out of the launcher, so closing visibly returns there.</li>
           <li><strong>Exit, 160ms</strong> — shorter, because the user has already decided.</li>
           <li><strong>Hover, 200ms</strong> — its own symmetric curve. The strong ease-out used for arrivals reads as a jerk on mouse-leave.</li>
-          <li><strong>Seal, 10s</strong> — rotates only while the assistant is thinking, never at rest.</li>
+          <li><strong>Seal, 10s</strong> — runs only when it is explicitly asked for, via the mascot&apos;s <code>spin</code> prop. It is no longer wired to the thinking state; see below.</li>
           <li><strong>Float, 5s</strong> — the mascot drifts 2.5px, constantly and everywhere. A legless robot drawn mid-hover has to hover.</li>
         </ul>
         <p style={proseStyle}>
@@ -212,12 +212,14 @@ export default function ChatbotPage(): React.JSX.Element {
           the seal — are <strong>keyframes</strong>, because there is nothing to retarget and they
           have to be able to run forever.
         </p>
-        <Callout type="warning" title="The seal turns where nobody can see it">
-          It rotates on <code>[data-thinking]</code>, but the widget is only ever thinking while it
-          is open — and when it is open the launcher has already crossfaded the mark to a close ×.
-          So the estate&apos;s most carefully specified loop is, in practice, behind the thing that
-          replaced it. The signal that actually reads is the typing indicator. Worth deciding
-          whether the seal moves to the avatar or stops being specified as a thinking cue.
+        <Callout type="info" title="The seal used to turn where nobody could see it">
+          It rotated on <code>[data-thinking]</code> — but the widget only ever thinks while it is
+          open, and while it is open the launcher has already crossfaded the mark to a close ×. The
+          one loop specified as the thinking cue was animating behind the thing that replaced it.
+          Moving it to the 40px avatar was rejected on legibility: the wordmark is already small at
+          84px and at 40px it is a grey smudge, and a seal you cannot read is not a seal. The
+          trigger is gone; the cue that actually reads is the typing indicator, which sits in the
+          log where the reply is coming from.
         </Callout>
       </section>
 
@@ -252,8 +254,8 @@ export default function ChatbotPage(): React.JSX.Element {
         <div style={{ marginTop: "var(--sa-padding-20)" }}>
           <A11yChecklist
             items={[
-              { criterion: "Target sizes", level: "AA", description: "The 84px launcher and 32px header controls both clear the 24px minimum (2.5.8). End chat keeps a 24px box inside a smaller visual footprint." },
-              { criterion: "Nothing loops at rest", level: "A", description: "The seal turns only while the assistant is thinking and stops on its own, so there is nothing for a Pause/Stop/Hide control to pause (2.2.2)." },
+              { criterion: "Target sizes", level: "AA", description: "The 84px launcher and 32px header controls both clear the 24px minimum (2.5.8). End chat measures 28px tall — its padding used to be zeroed by a duplicate rule further down the stylesheet, which rendered it 16px while this page claimed otherwise." },
+              { criterion: "Nothing loops at rest", level: "A", description: "The seal no longer turns by itself at all — only a caller passing spin starts it — so the widget presents nothing for a Pause/Stop/Hide control to pause (2.2.2). The mascot's 2.5px float is the one continuous movement, and it collapses under prefers-reduced-motion." },
               { criterion: "Contrast on every surface", level: "AA", description: "End chat uses the system error ink at 9.10:1 rather than the lighter red the reference used." },
               { criterion: "Live region on the log", level: "A", description: "New turns are announced. On minimise, focus returns to the launcher rather than the top of the page (4.1.2)." },
               { criterion: "Reduced motion honoured", level: "AA", description: "The cascade, the typing dots and the seal all stop. The panel appears without growing, rather than not appearing." },

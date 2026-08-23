@@ -136,8 +136,10 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
 5. **End chat is a footer text link**, in the system error ink at 9.10:1 — deliberately not a
    button beside the close control, because destructive intent does not belong where people
    reach to dismiss.
-6. **The seal rotates only while thinking.** A perpetual spin would be the estate's most-seen
-   animation and its least useful, and would pull WCAG 2.2.2 in for no gain.
+6. **The seal never turns on its own.** It runs only when a caller asks for it (`spin`), for
+   documentation and specimens. A perpetual spin would be the estate's most-seen animation and
+   its least useful, and would pull WCAG 2.2.2 in for no gain — and the thinking trigger it used
+   to carry fired only while the mark was hidden behind the close ×, so it signalled to nobody.
 7. **Open, the widget outranks everything** (`z-index: 2147483001`), including the demo dock,
    Important Links and the accessibility widget. Closed, it sits at `1010`.
 
@@ -146,13 +148,16 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
 | # | Finding | Status |
 |---|---|---|
 | 1 | **Mascot artwork.** Was blocked on a cross-file move the Plugin API cannot do. | **Closed 2026-08-23** — pasted by hand; the placeholder slots are deleted and the artwork now SCALEs (it was pinned CENTER/CENTER and overflowed the 40px avatar by 3px a side) |
-| 2 | **The user bubble is hard-coded navy.** `--sa-color-brand-navy` is a literal, so in the default `blue` brand the user bubble is `#003366` while everything else is `#0373DF`. Figma binds `bg/brand/primary/bolder`. | **Figma corrected; code change proposed** |
-| 3 | **Panel title and subtitle are the same ink.** Both resolve to `#404040`, so the header has no hierarchy. Figma uses `text/neutral/base` for the title. | **Figma corrected; code change proposed** |
-| 4 | **Raw pixels in the component CSS.** `.ds-chatbot__icon-btn` is `32px` and its glyph `18px` — 18 is not on the icon scale. Figma binds `icon/size/32` and `icon/size/20`. | **Figma corrected; code change proposed** |
+| 2 | **The user bubble was hard-coded navy.** `--sa-color-brand-navy` is a literal, not a themed slot, so the bubble painted `#003366` in every brand mode — including the default blue one, where everything around it is `#0373DF`. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` + its `on/` pair. White measures 6.36:1 in blue; navy mode resolves to `#003366` and renders byte-identical, so only the mode that was wrong changed |
+| 3 | **Panel title and subtitle were the same ink**, leaving the header with no hierarchy. | **Fixed 2026-08-23** — the title takes `text/default`, the subtitle keeps `text/muted` |
+| 4 | **Raw pixels in the component CSS.** `.ds-chatbot__icon-btn` was `32px` with an `18px` glyph, and 18 is not on the icon scale at all. | **Fixed 2026-08-23** — `icon/size/32` and `icon/size/20` |
 | 5 | The seal wordmark in Figma is **live text on a path**, where the web ships flattened outlines. | Recorded, no action |
-| 6 | **The typing indicator has no bubble in code** — a bare `<span>` of four 5px dots. Figma drew three 6px dots in a 246×96 slab, which was the bot bubble's geometry copied over. Figma is now a **hugging 56×29 pill** with the four dots the code ships. The pill is the deliberate improvement: it occupies the position the answer will occupy, so the answer grows out of it instead of appearing beside it. | **Figma leads; code change proposed** |
-| 7 | **The seal turns where nobody can see it.** It rotates on `[data-thinking]`, but the widget only thinks while open, and while open the launcher has already crossfaded the mark to a close ×. The estate's most carefully specified loop is behind the thing that replaced it; the signal that actually reads is the typing indicator. | **Open — needs a design decision**: move the spin to the avatar, or stop specifying it as a thinking cue |
-| 8 | **`State`'s variant option order cannot be rewritten.** Figma reports `Greeting, Closed, Typing, Transcript` — a stored registration order, not child order. A child reorder and a temp-rename cycle both no-op'd. Canvas order and `defaultValue` are correct; only the properties-panel dropdown reads oddly. | Recorded, cosmetic |
+| 6 | **The typing indicator had no bubble in code** — a bare `<span>` of four 5px dots, so it read as the whole panel loading rather than one turn arriving. | **Fixed 2026-08-23** — a hugging pill on the bot bubble's own tail geometry, so the reply grows out of the indicator instead of appearing beside it |
+| 7 | **The seal turned where nobody could see it.** It rotated on `[data-thinking]`, but the widget only thinks while open, and while open the launcher has already crossfaded the mark to the close ×. | **Resolved 2026-08-23** — trigger removed. Moving it to the 40px avatar was rejected on legibility (the wordmark is a grey smudge at that size). `--spin` remains for documentation and specimens, and is now the only thing that starts it. `data-thinking` stays as a state hook for consumers and tests |
+| 8 | **The send button had BOTH defects at once** — hard-coded navy and a raw `32px` box. Found while fixing the others; not in the original audit. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` and `icon/size/32`, matching what the Figma master already bound |
+| 9 | **`State`'s variant option order cannot be rewritten.** Figma reports `Greeting, Closed, Typing, Transcript` — a stored registration order, not child order. A child reorder and a temp-rename cycle both no-op'd. Canvas order and `defaultValue` are correct; only the properties-panel dropdown reads oddly. | Recorded, cosmetic |
+| 10 | **`.ds-chatbot__end` was declared twice and the second one silently won.** The later block re-declared `padding: 0` and `font: inherit`, overriding the first block's WCAG padding, so the control rendered **49×16 — under the 24px 2.5.8 minimum** — while this spec and the docs page both claimed a 24px box. The orphaned negative margin was pulling it out of the gutter to compensate for padding that no longer existed. Found because stylelint's `no-duplicate-selectors` blocks any commit touching this file. | **Fixed 2026-08-23** — merged into one rule in the footer section; now 73×28 |
+| 11 | **The unread nudge ring is still `--sa-color-brand-navy`.** Left deliberately: it rings the mascot disc, which is artwork and stays navy in every mode, so a brand-coloured ring would be the odd one out. Flagged because it is the same literal, used correctly. | Recorded, no action |
 
 ## The strategic question, unchanged
 
