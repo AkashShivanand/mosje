@@ -5,149 +5,28 @@ import Image from "next/image";
 import Link from "next/link";
 import { Card, Icon } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
+import {
+  ORGANISATIONS,
+  organisationCategoryTabs,
+  type OrganisationCategory,
+} from "@/data/website";
 
-type CategoryKey = "all" | "commissions" | "corporations" | "foundations" | "training";
-
-interface Organisation {
-  abbr: string;
-  name: string;
-  category: CategoryKey;
-  href: string;
-  iconSrc?: string;
-}
-
-const CATEGORIES: { key: CategoryKey; label: string; count: number }[] = [
-  { key: "all", label: "All", count: 17 },
-  { key: "commissions", label: "Commissions", count: 3 },
-  { key: "corporations", label: "Corporations", count: 3 },
-  { key: "foundations", label: "Foundations & Autonomous Bodies", count: 3 },
-  { key: "training", label: "Training & Capacity Building", count: 1 },
-];
-
-const ORGANISATIONS: Organisation[] = [
-  {
-    abbr: "NCSC",
-    name: "National Commission for Scheduled Castes",
-    category: "commissions",
-    href: "/website/organisation/national-commission-for-scheduled-castes",
-    iconSrc: "/website/images/org-logos/ncsc.png",
-  },
-  {
-    abbr: "NCSK",
-    name: "National Commission for Safai Karamcharis",
-    category: "commissions",
-    href: "/website/organisation/national-commission-for-safai-karamcharis",
-    iconSrc: "/website/images/org-logos/ncsk.png",
-  },
-  {
-    abbr: "NCBC",
-    name: "National Commission for Backward Classes",
-    category: "commissions",
-    href: "/website/organisation/national-commission-for-backward-classes-ncbc",
-    iconSrc: "/website/images/org-logos/ncbc.png",
-  },
-  {
-    abbr: "DAF",
-    name: "Dr. Ambedkar Foundation",
-    category: "foundations",
-    href: "/website/organisation/dr-ambedkar-foundation",
-    iconSrc: "/website/images/org-logos/daf.png",
-  },
-  {
-    abbr: "DAIC",
-    name: "Dr Ambedkar International Centre",
-    category: "foundations",
-    href: "/website/organisation/dr-ambedkar-international-centre",
-    iconSrc: "/website/images/org-logos/daic.png",
-  },
-  {
-    abbr: "BJRNF",
-    name: "Babu Jagjivan Ram National Foundation",
-    category: "foundations",
-    href: "/website/organisation/babu-jagjivan-ram-national-foundation-jrf",
-    iconSrc: "/website/images/org-logos/jrf.png",
-  },
-  {
-    abbr: "NSFDC",
-    name: "National Scheduled Castes Finance and Development Corporation",
-    category: "corporations",
-    href: "/website/organisation/national-scheduled-castes-finance-and-development-corporation",
-    iconSrc: "/website/images/org-logos/nsfdc.png",
-  },
-  {
-    abbr: "NSKFDC",
-    name: "National Safai Karamcharis Finance and Development Corporation",
-    category: "corporations",
-    href: "/website/organisation/national-safai-karamcharis-finance-development-corporation",
-    iconSrc: "/website/images/org-logos/nskfdc.png",
-  },
-  {
-    abbr: "NBCFDC",
-    name: "National Backward Classes Finance and Development Corporation",
-    category: "corporations",
-    href: "/website/organisation/national-backward-classes-financeand-development-corporationnbcfdc",
-    iconSrc: "/website/images/org-logos/nbcfdc.png",
-  },
-  {
-    abbr: "NISD",
-    name: "National Institute of Social Defence",
-    category: "training",
-    href: "/website/organisation/national-institute-of-social-defence",
-    iconSrc: "/website/images/org-logos/nisd.png",
-  },
-  {
-    abbr: "DWBDNC",
-    name: "Development and Welfare Board for De-notified, Nomadic, and Semi-Nomadic Communities",
-    category: "foundations",
-    href: "/website/organisation/development-and-welfare-board-for-de-notified-nomadic-and-semi-nomadic",
-    iconSrc: "/website/images/org-logos/dwbdnc.png",
-  },
-  {
-    abbr: "SCW",
-    name: "Senior Citizens Welfare",
-    category: "all",
-    href: "/website/organisation/senior-citizens-welfarescw",
-    iconSrc: "/website/images/org-logos/scw.png",
-  },
-  {
-    abbr: "PM-AJAY",
-    name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojna",
-    category: "all",
-    href: "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay",
-    iconSrc: "/website/images/org-logos/pm-ajay.png",
-  },
-  {
-    abbr: "SMILE",
-    name: "National Portal for Transgender Persons",
-    category: "all",
-    href: "/website/organisation/national-portal-for-transgender-persons",
-    iconSrc: "/website/images/org-logos/smile.png",
-  },
-  {
-    abbr: "NOS",
-    name: "National Overseas Scholarship",
-    category: "all",
-    href: "/website/organisation/national-overseas-scholarship",
-    iconSrc: "/website/images/org-logos/nos.png",
-  },
-  {
-    abbr: "NMBA",
-    name: "Nasha Mukt Bharat Abhiyaan",
-    category: "all",
-    href: "/website/organisation/nasha-mukt-bharat-abhiyaan",
-    iconSrc: "/website/images/org-logos/nmba.png",
-  },
-  {
-    abbr: "NHAA",
-    name: "National Helpline Against Atrocities",
-    category: "all",
-    href: "/website/organisation/national-helpline-against-atrocities",
-    iconSrc: "/website/images/National-Emblem-logo.svg",
-  },
-];
+/**
+ * The 17 organisations and the category tabs both come from the data layer now.
+ *
+ * This file used to own the registry, and three other surfaces kept their own copies of it
+ * — LogoStrip, samavesh-citizen-portals and whos-who — which had already drifted apart on
+ * logos, names and hrefs.
+ *
+ * Two defects went with it. The tab counts were hand-written and one was simply wrong
+ * (foundations said 3; there are 4), so they are derived now and cannot go stale. And six
+ * organisations carried `category: "all"` — a filter sentinel written into the data — which
+ * meant the comparison below could never match them and no tab could reach them. They are
+ * `"schemes"`, and the tab list picks them up on its own.
+ */
 
 export function Organisations() {
-  const [activeCategory, setActiveCategory] = useState<CategoryKey>("all");
+  const [activeCategory, setActiveCategory] = useState<OrganisationCategory | "all">("all");
 
   const filtered =
     activeCategory === "all"
@@ -170,7 +49,7 @@ export function Organisations() {
 
         {/* Category Pills */}
         <div className="mt-8 flex flex-wrap justify-center gap-2">
-          {CATEGORIES.map((cat) => {
+          {organisationCategoryTabs().map((cat) => {
             const isActive = cat.key === activeCategory;
             return (
               <button
@@ -192,17 +71,17 @@ export function Organisations() {
 
         <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {filtered.map((org) => (
-            <li key={org.abbr + org.name}>
-              <Link href={org.href} className="group block h-full">
+            <li key={org.id}>
+              <Link href={org.profileHref} className="group block h-full">
                 <Card className="flex h-full flex-col justify-between p-5 transition hover:shadow-md hover:border-primary/40">
                   <div>
                     <div className="flex items-center justify-between gap-3">
                       <span className="inline-block rounded bg-primary px-2 py-0.5 text-[11px] font-bold text-white uppercase">
                         {org.abbr}
                       </span>
-                      {org.iconSrc && (
+                      {org.logoSrc && (
                         <Image
-                          src={org.iconSrc}
+                          src={org.logoSrc}
                           alt={org.abbr}
                           width={32}
                           height={32}

@@ -112,6 +112,9 @@ const NAV: NavItem[] = [
       { label: "CPIO", href: "/website/contact-us" },
       { label: "Directory", href: "/website/mosje-directory" },
       { label: "Contact Us", href: "/website/contact-us" },
+      // Ministry-level contact, including the Public Grievance Officer. Distinct from
+      // Contact Us, which is the Department's. The page existed and nothing linked to it.
+      { label: "Ministry Contact", href: "/website/mosje-contact" },
     ],
   },
 ];
