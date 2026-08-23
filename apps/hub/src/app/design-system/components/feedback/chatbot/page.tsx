@@ -232,10 +232,16 @@ export default function ChatbotPage(): React.JSX.Element {
           re-linking anything.
         </p>
         <ul style={listStyle}>
-          <li><strong>Five frames</strong> — Closed → Thinking → Greeting → Asked → Answered, with both the minimise control and the close disc returning to the launcher from anywhere.</li>
+          <li><strong>The master is an interactive component.</strong> Drop one instance into any frame, press play, and it walks its own lifecycle — no frame-level wiring at all.</li>
+          <li><strong>Five frames</strong> show it in page context — Closed → Thinking → Greeting → Asked → Answered, with both the minimise control and the close disc returning to the launcher from anywhere.</li>
           <li><strong>Anchored bottom-right</strong>, so Smart Animate grows the panel out of the launcher and shrinks it back into the same place.</li>
           <li><strong>Real timings</strong> — 240ms enter, 160ms exit, and the 900ms <code>typingDelayMs</code> beat, all read from <code>chatbot.css</code> rather than chosen in Figma.</li>
         </ul>
+        <Callout type="info" title="Two mechanisms, on purpose">
+          The interactive component answers &quot;how does this widget behave?&quot; anywhere it is
+          used. The five frames answer &quot;what does it look like on a page, growing out of the
+          corner?&quot; — which an instance switching variants in place cannot show. Keep both.
+        </Callout>
         <Callout type="info" title="Why the loops live on a separate frame">
           Figma refuses keyframes on instance sublayers. The typing wave, the float and the seal are
           therefore keyframed on detached specimens in <em>06 · Motion specimen</em>, beside the

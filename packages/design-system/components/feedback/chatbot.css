@@ -320,8 +320,11 @@
     display: grid;
     place-items: center;
     border-radius: var(--sa-shape-full);
-    background: var(--sa-color-brand-navy);
-    color: var(--sa-color-text-onPrimary);
+    /* Brand, not the navy literal. This disc replaces the mascot's, so if one
+       follows `data-brand` the other has to or the launcher changes colour when
+       it changes glyph. */
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-on-bg-brand-primary-bolder);
     opacity: 0;
     transform: scale(0.9) rotate(-45deg);
     filter: blur(3px);
@@ -392,7 +395,7 @@
     position: absolute;
     inset: 0;
     border-radius: var(--sa-shape-full);
-    border: 2px solid var(--sa-color-brand-navy);
+    border: 2px solid var(--sa-bg-brand-primary-bolder);
     pointer-events: none;
   }
 
@@ -442,11 +445,21 @@
 
   /* The navy disc. Inset by the ring's width when there is a ring, edge to edge
      when there is not. */
+  /* THE DISC FOLLOWS THE BRAND. It used to be the `--sa-color-brand-navy`
+     LITERAL on the argument that a mascot is artwork and artwork does not
+     re-tone — the same reasoning that keeps the National Emblem un-recoloured.
+     That argument does not survive contact with the disc: the artwork is the
+     ROBOT, and the disc is the surface it is mounted on, which is ordinary
+     brand chrome. Leaving it fixed made the launcher the one control on the
+     page that ignored `data-brand`.
+
+     In navy mode this token resolves to #003366, so that mode renders exactly
+     as before; only blue changes, and only because blue was wrong. */
   .ds-chatbot-mascot__disc {
     position: absolute;
     inset: 0;
     border-radius: var(--sa-shape-full);
-    background: var(--sa-color-brand-navy);
+    background: var(--sa-bg-brand-primary-bolder);
   }
 
   .ds-chatbot-mascot--ring .ds-chatbot-mascot__disc {

@@ -438,11 +438,17 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
       // `useWallRailOffset` something is here, so the demo dock's rail places
       // itself clear of it instead of on top of it.
       // See .claude/rules/portal-appswitcher.md → Placement.
-      data-sa-wall-occupant=""
-      // ...and the corner. Two attributes because they are two different
-      // contracts: the wall one keeps the demo dock's rail off us, this one
-      // lets the NEXT corner widget stack above us instead of on top.
-      data-sa-corner-occupant=""
+      //
+      // BOTH ARE GATED ON `fixed`, because an INLINE instance is not in the
+      // corner and is not on the wall — it is a specimen sitting in the page
+      // flow, and this docs page renders one. It claimed both anyway. Nothing
+      // moved, because the rail's own guards rejected it twice over (outside
+      // the corner zone, and 811px tall against a 200px ceiling) — but a widget
+      // that has to be saved by someone else's guard is a defect waiting for
+      // the day a specimen happens to be small and bottom-right.
+      {...(placement === "fixed"
+        ? { "data-sa-wall-occupant": "", "data-sa-corner-occupant": "" }
+        : {})}
       data-state={open ? "open" : "closed"}
       // Kept as a state hook for consumers and end-to-end tests. Nothing in this
       // stylesheet reads it any more: it used to spin the seal, which turned out

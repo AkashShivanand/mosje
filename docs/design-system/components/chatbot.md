@@ -73,8 +73,8 @@ all three open variants:
 | Bot bubble | `bg/neutral/subtler`, corners `shape/0 · 16 · 16 · 16` |
 | User bubble | `bg/brand/primary/bolder` + `on/bg/brand/primary/bolder`, corners mirrored |
 | Quick reply | `bg/brand/primary/base`, `shape/8`, `padding/8`×`padding/12` |
-| Mascot disc | `ref/brand/samavesh/navy` (#003366) — **added** |
-| Close disc | `ref/brand/samavesh/navy` + `on/bg/brand/primary/bolder`, `shape/full` |
+| Mascot disc | `bg/brand/primary/bolder` — follows `data-brand` |
+| Close disc | `bg/brand/primary/bolder` + `on/bg/brand/primary/bolder`, `shape/full` |
 | Seal ring | `bg/neutral/base` ground, wordmark `text/neutral/subtle` |
 | Rhythm | `padding/16`, `stack/8`, `inline/8`, `inline/12` |
 
@@ -82,8 +82,12 @@ all three open variants:
 
 - `layout/chatbot/width` · `height` · `launcher` — Space collection, scoped `WIDTH_HEIGHT`,
   code syntax `var(--sa-layout-chatbot-*)`. Precedent: `layout/bar/height`, `layout/flag/width`.
-- `ref/brand/samavesh/navy` — Static collection. The mascot disc is **artwork**, so it must not
-  follow `data-brand`; this mirrors the existing `--sa-color-brand-navy` literal.
+- `ref/brand/samavesh/navy` — Static collection, **added then abandoned**. It was created on the
+  argument that a mascot is artwork and artwork does not re-tone. That argument does not survive
+  contact with the disc: the artwork is the **robot**, and the disc is the surface it is mounted
+  on, which is ordinary brand chrome. Every blue surface in the widget now binds
+  `bg/brand/primary/bolder`, in code and in Figma. The variable is left in place rather than
+  deleted — deleting a library variable orphans any node that later takes it.
 
 ## Motion — two mechanisms, and the split is not a style choice
 
@@ -107,8 +111,16 @@ frame. Verified by `export_video` + frame sampling, not by assertion.
 
 ## Prototype
 
+**The master is an interactive component.** Its variants are wired to each other, so an instance
+dropped into any frame walks the lifecycle on its own — launcher opens, the bot composes for
+900ms, the greeting lands, a suggestion is answered, and close returns it. No frame-level
+prototyping needed.
+
 `3 · Prototype` — five 1440×900 frames on a neutral stage, wired on **instances of the master**
-so a fix to the component propagates without re-linking:
+so a fix to the component propagates without re-linking. The two mechanisms answer different
+questions: the interactive component shows how the widget *behaves* anywhere; the frames show
+what it looks like *on a page*, growing out of the corner — which variant-switching in place
+cannot show.
 
 `01 Closed` → `02 Thinking` → `03 Greeting` → `04 Asked` → `05 Answered`
 
@@ -151,13 +163,16 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
 | 2 | **The user bubble was hard-coded navy.** `--sa-color-brand-navy` is a literal, not a themed slot, so the bubble painted `#003366` in every brand mode — including the default blue one, where everything around it is `#0373DF`. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` + its `on/` pair. White measures 6.36:1 in blue; navy mode resolves to `#003366` and renders byte-identical, so only the mode that was wrong changed |
 | 3 | **Panel title and subtitle were the same ink**, leaving the header with no hierarchy. | **Fixed 2026-08-23** — the title takes `text/default`, the subtitle keeps `text/muted` |
 | 4 | **Raw pixels in the component CSS.** `.ds-chatbot__icon-btn` was `32px` with an `18px` glyph, and 18 is not on the icon scale at all. | **Fixed 2026-08-23** — `icon/size/32` and `icon/size/20` |
-| 5 | The seal wordmark in Figma is **live text on a path**, where the web ships flattened outlines. | Recorded, no action |
+| 5 | **The code's seal is a flattened outline that bakes in a `~` separator** where Figma uses `·`, and it repeats the wordmark twice where Figma repeats it once. `chatbot-assets.ts` states plainly that the 40,888-character path must not be hand-edited — it is re-exported. Now that the master lives in SAMAVESH, that is the node to re-export from (`55825:701`). | **Open — needs a Figma-UI export**: copy the seal as SVG from the master and replace `CHATBOT_RING_PATH` |
 | 6 | **The typing indicator had no bubble in code** — a bare `<span>` of four 5px dots, so it read as the whole panel loading rather than one turn arriving. | **Fixed 2026-08-23** — a hugging pill on the bot bubble's own tail geometry, so the reply grows out of the indicator instead of appearing beside it |
 | 7 | **The seal turned where nobody could see it.** It rotated on `[data-thinking]`, but the widget only thinks while open, and while open the launcher has already crossfaded the mark to the close ×. | **Resolved 2026-08-23** — trigger removed. Moving it to the 40px avatar was rejected on legibility (the wordmark is a grey smudge at that size). `--spin` remains for documentation and specimens, and is now the only thing that starts it. `data-thinking` stays as a state hook for consumers and tests |
 | 8 | **The send button had BOTH defects at once** — hard-coded navy and a raw `32px` box. Found while fixing the others; not in the original audit. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` and `icon/size/32`, matching what the Figma master already bound |
 | 9 | **`State`'s variant option order cannot be rewritten.** Figma reports `Greeting, Closed, Typing, Transcript` — a stored registration order, not child order. A child reorder and a temp-rename cycle both no-op'd. Canvas order and `defaultValue` are correct; only the properties-panel dropdown reads oddly. | Recorded, cosmetic |
 | 10 | **`.ds-chatbot__end` was declared twice and the second one silently won.** The later block re-declared `padding: 0` and `font: inherit`, overriding the first block's WCAG padding, so the control rendered **49×16 — under the 24px 2.5.8 minimum** — while this spec and the docs page both claimed a 24px box. The orphaned negative margin was pulling it out of the gutter to compensate for padding that no longer existed. Found because stylelint's `no-duplicate-selectors` blocks any commit touching this file. | **Fixed 2026-08-23** — merged into one rule in the footer section; now 73×28 |
-| 11 | **The unread nudge ring is still `--sa-color-brand-navy`.** Left deliberately: it rings the mascot disc, which is artwork and stays navy in every mode, so a brand-coloured ring would be the odd one out. Flagged because it is the same literal, used correctly. | Recorded, no action |
+| 11 | **The unread nudge ring was the last navy literal.** It rings the mascot disc, which now follows the brand, so a fixed navy ring would have been the odd one out. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` |
+| 12 | **The Figma seal was 6.6px off-centre**, so its glyphs overran the 84px frame at the top and the `·` separators rendered as half-dots — the semicircle that was reported. The path circle was centred on (35.4, 35.4) while the disc is centred on (42, 42). The wordmark also covered only ~60% of the ring, because it was set at zero tracking. | **Fixed 2026-08-23** — centred, and tracked to 2.59px so the string closes the circle exactly |
+| 13 | **The Figma mascot was drawn far too small.** `chatbot.css` sizes the figure at 71.5% of the mark without the ring and 66% with it; Figma had 54.8% and 39.3%. | **Fixed 2026-08-23** — both derived from the CSS percentages and the image's own crop aspect |
+| 14 | **The bottom half of the seal reads inverted.** That is inherent to a single circular path and the shipped component does the same, so Figma matches it. A seal that reads upright top AND bottom needs two arcs with the lower one reversed. | Recorded — a design decision, not a defect |
 
 ## The strategic question, unchanged
 
