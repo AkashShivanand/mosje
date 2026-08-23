@@ -1,0 +1,73 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  .sa-carousel-indicators {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-0);
+  }
+
+  /* The 24x24 target WCAG 2.2 AA 2.5.8 asks for. It is transparent: the painted
+     dot inside keeps the size the design specified, and the extra area is what
+     makes the control reachable. Do not shrink this to tighten the spacing. */
+  .sa-carousel-indicators__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--sa-inline-24);
+    min-block-size: var(--sa-inline-24);
+    padding: var(--sa-inline-0);
+    border: 0;
+    background: none;
+    cursor: pointer;
+  }
+
+  .sa-carousel-indicators__button:focus-visible {
+    outline: 2px solid var(--sa-text-neutral-inverse);
+    outline-offset: 2px;
+    border-radius: var(--sa-shape-full);
+  }
+
+  /* The dot is 8px in both sizes. The scale has no 10, and HeroCarousel's
+     hand-written 10px was a literal rather than a decision — snapping it to 8
+     is the on-scale reading of the same intent. The sizes differ in how wide
+     the active bar grows: 40px in the persona card, 24px in the hero. */
+  .sa-carousel-indicators__dot {
+    display: block;
+    inline-size: var(--sa-inline-8);
+    block-size: var(--sa-inline-8);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-text-neutral-inverse);
+    opacity: 0.32;
+    transition: inline-size 200ms ease, opacity 200ms ease;
+  }
+
+  .sa-carousel-indicators__dot[data-active] {
+    opacity: 1;
+  }
+
+  /* Presentational variant: no button wrapper, so the dots space themselves. */
+  .sa-carousel-indicators[aria-hidden="true"] {
+    gap: var(--sa-inline-8);
+  }
+
+  .sa-carousel-indicators--md .sa-carousel-indicators__dot[data-active] {
+    inline-size: var(--sa-inline-40);
+  }
+
+  .sa-carousel-indicators--sm .sa-carousel-indicators__dot[data-active] {
+    inline-size: var(--sa-inline-24);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sa-carousel-indicators__dot {
+      transition: none;
+    }
+  }
+}
