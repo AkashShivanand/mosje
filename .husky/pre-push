@@ -16,8 +16,19 @@
 # about 3 seconds, which is the whole reason it is affordable here: a missing
 # module is caught before the push instead of after the deploy.
 #
-# Deliberately NOT the full build (~3 min) — too slow for a hook, and CI already
-# covers it. This catches the class that actually broke: unresolved imports.
+# Deliberately NOT the full build (~3 min) — too slow for a hook.
+#
+# That reasoning used to end "and CI already covers it". READ THAT AGAIN BEFORE
+# TRUSTING IT: while GitHub Actions is blocked on billing, every workflow dies in
+# about three seconds and covers nothing. On 2026-08-23 a `useSearchParams()`
+# without a Suspense boundary reached main that way and production served a
+# four-hour-old build, because a prerender error is invisible to typecheck, to
+# lint and to `npm run check` — only `next build` sees it.
+#
+# So while CI is red for billing, run `npm run verify` before merging a PR. It is
+# lint + lint:css + check + build, which is what Apps CI runs when it can run.
+# Vercel still builds every PR and is the only check that catches this class
+# automatically — a red Vercel is never noise.
 #
 # Only guards main. Feature branches push freely; their PR runs the full CI.
 # Genuinely need to bypass: `git push --no-verify`.

@@ -5,11 +5,7 @@
 /* ── Shell ── */
 .docs-shell {
   display: grid;
-  grid-template-columns: var(--docs-sidebar-w) 1fr;
-  grid-template-rows: var(--docs-header-h) 1fr;
-  grid-template-areas:
-    "sidebar header"
-    "sidebar main";
+  grid-template: "sidebar header" var(--docs-header-h) "sidebar main" 1fr / var(--docs-sidebar-w) 1fr;
   min-height: 100vh;
 }
 
@@ -19,8 +15,7 @@
   position: sticky;
   top: 0;
   height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden auto;
   border-right: 1px solid var(--sa-border-neutral-subtle);
   background-color: var(--sa-bg-neutral-subtler);
   display: flex;

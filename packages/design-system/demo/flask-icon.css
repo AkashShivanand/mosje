@@ -146,7 +146,7 @@
 }
 
 .ds-flask__liquid-group {
-  transform: translateY(var(--ds-flask-level, 0px));
+  transform: translateY(var(--ds-flask-level, 0));
   transition: transform var(--sa-motion-emphasis-duration) var(--sa-motion-emphasis-easing);
 }
 

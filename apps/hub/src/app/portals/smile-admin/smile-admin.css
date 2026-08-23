@@ -181,8 +181,8 @@ kbd {
 .beta-chip {
   display: inline-flex;
   align-items: center;
-  background: #fef3c7;
-  color: #92400e;
+  background: var(--sa-color-status-warningTonal);
+  color: var(--sa-text-status-warning-base);
   font-size: 9px;
   line-height: 1;
   letter-spacing: 0.12em;
@@ -249,7 +249,7 @@ select:focus {
   transform: translateX(-50%);
   top: 8px;
   background: var(--primary);
-  color: #fff;
+  color: var(--sa-text-neutral-inverse);
   padding: 8px 16px;
   border-radius: 6px;
 }

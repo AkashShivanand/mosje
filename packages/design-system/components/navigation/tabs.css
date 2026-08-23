@@ -289,18 +289,18 @@
   /* Hover paints a fill only where there is a shape to fill. On an open list the
      affordance is the rule going dark, drawn by the tab's own border so it lands
      exactly where the selected indicator will. */
-  .ds-tabs--track-enclosed .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
+  .ds-tabs--track-enclosed .ds-tabs__tab:hover:not(.is-selected, .is-disabled) {
     background-color: var(--sa-bg-neutral-subtle);
     color: var(--sa-text-neutral-base);
   }
 
-  .ds-tabs--underline .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
+  .ds-tabs--underline .ds-tabs__tab:hover:not(.is-selected, .is-disabled) {
     box-shadow: inset 0 calc(-1 * var(--sa-layout-tab-indicator)) 0 0
       var(--sa-border-neutral-bolder-default);
     color: var(--sa-text-neutral-base);
   }
 
-  .ds-tabs--rail .ds-tabs__tab:hover:not(.is-selected):not(.is-disabled) {
+  .ds-tabs--rail .ds-tabs__tab:hover:not(.is-selected, .is-disabled) {
     box-shadow: inset var(--sa-layout-tab-indicator) 0 0 0
       var(--sa-border-neutral-bolder-default);
     color: var(--sa-text-neutral-base);

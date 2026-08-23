@@ -140,8 +140,7 @@
     gap: var(--sa-stack-8);
   }
   .ds-chart__legend--horizontal {
-    flex-direction: row;
-    flex-wrap: wrap;
+    flex-flow: row wrap;
   }
   .ds-chart__legend-item {
     display: flex;

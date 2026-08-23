@@ -62,7 +62,7 @@ body {
 /* thin custom scrollbars inside scroll panels */
 .nha-scroll {
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
+  scrollbar-color: var(--sa-border-neutral-base) transparent;
 }
 .nha-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
 .nha-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
