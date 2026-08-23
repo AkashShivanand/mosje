@@ -11,7 +11,15 @@ export interface PageHeroProps {
   actions?: React.ReactNode;
 }
 
-/** Title band for inner pages: breadcrumb + optional badge/logo + H1 + optional intro + "Last Updated" stamp (GIGW / DBIM). */
+/**
+ * Title band for inner pages: breadcrumb + optional badge/logo + H1 + optional intro.
+ *
+ * `lastUpdated` is part of the props because `PageLayout` reads it off the same
+ * hero object and hands it to `SiteFooter`; the hero itself stopped rendering a
+ * stamp when it was redesigned to the Figma treatment. DBIM 5.6 still requires
+ * "Last Updated On" for the respective page and the footer is where it now
+ * appears — so the prop stays, and this component does not destructure it.
+ */
 export function PageHero({
   title,
   breadcrumb,

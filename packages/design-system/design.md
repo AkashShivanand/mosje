@@ -1644,6 +1644,35 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Props**: `columns: DataTableColumn[]`, `data`, `pagination`  
 **Rules**: Always supply a `caption` prop or `aria-label`. Right-align numeric columns. Support keyboard sort via column header buttons.
 
+#### Accordion / AccordionItem
+**Purpose**: A stack of disclosures, for reference content that is long, list-shaped, and mostly **not** what the reader came for. The estate's case is the About Us bureau breakdown — nine officials with four to six responsibilities each, which printed flat is sixty bullets nobody reads and behind disclosures is a scannable list of nine names.
+**Props**: `AccordionItem` — `title`, `defaultOpen`. `Accordion` is the wrapper and takes only HTML attributes.
+**The test**: **the headings must be useful closed**, because closed is the state the reader spends most of their time in. If someone has to open every panel to find what they want, the accordion is hiding content rather than organising it and a plain list is better.
+**When NOT to reach for it**: not for content the reader definitely needs — a disclosure adds a click to everything it contains. **Never for form fields**: hidden fields get skipped, and browser validation cannot focus an unmounted control. Not as a substitute for a page — five accordions on one screen is a table of contents made harder to use. Not for a single item, which is a native `<details>`.
+**Rules**:
+- **`defaultOpen` should usually stay false.** Opening the first item by habit makes the row heights uneven and quietly says the first one matters most. Set it when that panel genuinely is the common case.
+- **Items open independently.** This is an accordion, not a radio group; closing one to open another loses a comparison the reader may be mid-way through.
+- **Known accessibility gaps, recorded rather than hidden.** The trigger carries `aria-expanded` and an accessible name, so it is operable and its state is announced — but it diverges from the WAI-ARIA Authoring Practices accordion pattern in three ways: the trigger is **not wrapped in a heading**, so screen reader users cannot move between panels by heading; there is no `aria-controls` / `role="region"` association between trigger and panel; and the panel is **unmounted** when closed rather than hidden, so browser find-in-page cannot reach it. None is a WCAG failure on its own and all three are fixable without changing the API. Fix them before this component carries statutory content.
+
+#### VerticalTimeline / VerticalTimelineItem
+**Purpose**: A **narrative chronology** — dated events on a public information page, written as prose, where the reader is learning history. The estate's case is the About Us page: eight events from the 1985–86 bifurcation of the Ministry of Welfare to the 2012 split into DoSJE and DEPwD.
+**Props**: `VerticalTimelineItem` — `title`, `date`. `VerticalTimeline` is the wrapper and takes only HTML attributes.
+**THE ESTATE HAS TWO TIMELINES AND THEY ARE NOT INTERCHANGEABLE.** This one is editorial. **`ApprovalTimeline` is a record** — the audit trail of one application moving Block → District → State, where marker colour encodes the action and a returned step must never be dropped. If the thing you are rendering has a status, an actor and consequences, it is ApprovalTimeline. If it is something that happened and is being recounted, it is this one.
+**When NOT to reach for it**: not for a process the reader is currently moving through — that is `Stepper`, which shows where you *are*. Not past roughly a dozen entries, where the vertical rule becomes a long walk and a table sorts, filters and scans better. Not for undated items: `date` is what makes a timeline a timeline, and without it you have a list of cards with a decorative line down the side.
+**Rules**:
+- **`date` is free text, deliberately.** Real government chronology does not fit an ISO date — the estate ships "1985-1986", "May 1998" and "11th Five Year Plan Period" as legitimate entries. It renders as a pill beside the title, so keep it short; a long date wraps and pushes the title around.
+- **`title` renders as a fixed `h3`.** It suits a section already introduced by an `h2`. There is no prop to change the level, so a deeper section will produce a heading skip.
+- Items are `div`s, not an ordered list, so the chronology is carried visually and by the dates rather than structurally.
+
+#### ProfileCard
+**Purpose**: A person as a portrait card — photograph, name, role, optional tag over the image. The estate's case is the About Us political leadership row: the Minister and Ministers of State shown together as a set of equal standing, where the portrait does real work because the reader may be trying to recognise a face.
+**Props**: `title`, `subtitle`, `image`, `tag`
+**When NOT to reach for it**: **not for a directory.** Who's Who lists dozens of officials with designation, division and contact details, and a grid of 320px-tall portraits is the wrong tool for a list you scan or search — that is a table. Not for one person alone, where a portrait card floating in a section reads as an advertisement. Not for organisations or schemes — the subtitle is a *role*, and `Card` is the general container. And not without a real photograph: a placeholder avatar in a portrait frame draws attention to the gap it is filling.
+**Rules**:
+- **`image` is a slot with a contract.** Pass a rendered `<img>` or a `next/image` with `fill`; the wrapper is `position: relative` at a fixed height. The stylesheet styles a direct `> img` child — object-fit, top cropping and the hover zoom — so **the image needs no classes of its own**. `object-position: top`, because a portrait cropped from the centre takes the top off people's heads.
+- **`tag` is text over an uncontrolled photograph.** One short qualifier only (the estate uses "MoSJE GOI"). White on a translucent dark pill is legible over most portraits, but check it against the real images, not a grey box. Omit it rather than repeating what the title already says.
+- **`title` is a fixed `h3`, `subtitle` a paragraph** — sized for a name and one line, not a biography.
+
 #### ApprovalTimeline
 **Purpose**: Renders the full audit trail of a multi-tier approval chain — who acted, in what role, when, and what they said when returning something for correction. Marker colour encodes the action (submitted / approved / returned), and `pendingLabel` shows the step still being waited on.
 **Props**: `events: ApprovalTimelineEvent[]` (oldest-first), `pendingLabel`.
