@@ -14,7 +14,7 @@ export default function Page() {
       <PageHero
         title="Find a De-addiction Centre near you"
         breadcrumb={[
-          { label: "Drug De-Addiction Division", href: "/drug-division" },
+          { label: "Drug De-Addiction Division", href: "/website/drug-division" },
           { label: "De-addiction Centres" },
         ]}
         description="Locate a Nasha Mukti Kendra across India — search by name, state, district or centre type, or use your location to find the nearest one. No login required."

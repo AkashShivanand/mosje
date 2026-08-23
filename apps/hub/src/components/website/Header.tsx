@@ -91,6 +91,7 @@ const NAV: NavItem[] = [
       { label: "Publications", href: "/website/publications" },
       { label: "Notices", href: "/website/notices" },
       { label: "RTI", href: "/website/rti" },
+      { label: "Suo Moto Disclosure", href: "/website/suo-moto-disclosure" },
       { label: "MOU", href: "/website/mou" },
       { label: "Advices", href: "/website/advices" },
       { label: "Miscellaneous", href: "/website/miscellaneous" },
