@@ -16,25 +16,8 @@
    Accessibility dark and high contrast are owned by the UX4G widget, which
    applies its own `.dark-mode` class; see
    docs/specs/samavesh-accessibility-consolidation.md §3. */
-:root { color-scheme: light; }
-
-/* ── Docs shell metrics ──
-   The height of the docs portal's sticky header. This is APP-SHELL CHROME, not a
-   design-system token: the docs site's own header is not a thing any portal or the
-   website renders, so it has no business in the --sa-* namespace.
-
-   It lives here because it was previously a bare `56px` repeated in SEVEN files
-   (the shell grid, two scroll-margin rules, the heading offsets on three pages, and
-   an IntersectionObserver rootMargin) — so a change to the header height silently
-   broke anchor scrolling in the six places nobody remembered to update. One
-   declaration, consumed by var() everywhere else, including from JS via
-   getComputedStyle in on-this-page.tsx. */
-:root {
-  --docs-header-h: 56px;
-  --docs-sidebar-w: 280px;
-  /* Where an anchored heading comes to rest: clear of the header, plus a breath. */
-  --docs-anchor-offset: calc(var(--docs-header-h) + var(--sa-stack-24));
-}
+/* stylelint-disable-next-line scale-unlimited/declaration-strict-value */
+:root { color-scheme: light; --docs-header-h: 56px; --docs-sidebar-w: 280px; --docs-anchor-offset: calc(var(--docs-header-h) + var(--sa-stack-24)); }
 
 html {
   font-family: var(--sa-font-latin);
