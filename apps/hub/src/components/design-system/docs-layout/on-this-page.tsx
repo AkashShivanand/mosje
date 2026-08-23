@@ -10,7 +10,13 @@ export function OnThisPage(): React.JSX.Element {
   // Reads the rendered DOM (headings only exist post-mount), so this can only
   // run in an effect — client-hydration pattern, hence the scoped disable.
   React.useEffect(() => {
-    const els = Array.from(document.querySelectorAll<HTMLElement>(".docs-content h2, .docs-content h3"));
+    const els = Array.from(document.querySelectorAll<HTMLElement>(".docs-content h2, .docs-content h3"))
+      // A live demo is page CONTENT, not page STRUCTURE. Components that carry
+      // their own heading — Chatbot's panel title, Modal's — would otherwise
+      // land in this list between the page's real sections, and the reader
+      // would click a contents entry to be taken inside a widget. Anything
+      // under `data-no-toc` is a specimen and is skipped.
+      .filter((el) => !el.closest("[data-no-toc]"));
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setHeadings(els.map((el) => ({
       id: el.id,

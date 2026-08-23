@@ -6,7 +6,18 @@
 @import "../../components/design-system/docs-kit/docs-kit.css";
 
 @layer base {
-/* Base reset */
+/* Base reset — IN `base`, AND THAT IS THE WHOLE POINT.
+   Unlayered, this sat above every cascade layer, so `* { padding: 0 }` outranked
+   every rule in `@layer components` and stripped the padding off ALL of the
+   design system on its own documentation pages. `.ds-chatbot__header` computed
+   to `padding: 0` while `gap`, `display` and `border-bottom` from the very same
+   rule applied — that asymmetry is the signature.
+   It was invisible for two reasons: the page still looked deliberate, and it
+   only started losing when the component CSS moved INTO `@layer components`
+   (see .claude/rules/design-system-architecture.md §2a) — the layering fix that
+   solved the sidebar problem is what handed this reset the win.
+   Tailwind's own Preflight already does exactly this in `base`; naming the layer
+   keeps the intent stated rather than relying on that. */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* ── Appearance ──
@@ -16,6 +27,18 @@
    Accessibility dark and high contrast are owned by the UX4G widget, which
    applies its own `.dark-mode` class; see
    docs/specs/samavesh-accessibility-consolidation.md §3. */
+/* ── Docs shell metrics ──
+   `--docs-header-h` is the height of the docs portal's sticky header. This is
+   APP-SHELL CHROME, not a design-system token: the docs site's own header is not
+   a thing any portal or the website renders, so it has no business in the --sa-*
+   namespace. It lives here because it was previously a bare `56px` repeated in
+   SEVEN files (the shell grid, two scroll-margin rules, the heading offsets on
+   three pages, and an IntersectionObserver rootMargin) — so a change to the
+   header height silently broke anchor scrolling in the six places nobody
+   remembered to update. One declaration, consumed by var() everywhere else,
+   including from JS via getComputedStyle in on-this-page.tsx.
+   `color-scheme` takes a KEYWORD, not a colour — the strict-value rule matches on
+   the property name alone, which is why the disable below is needed. */
 /* stylelint-disable-next-line scale-unlimited/declaration-strict-value */
 :root { color-scheme: light; --docs-header-h: 56px; --docs-sidebar-w: 280px; --docs-anchor-offset: calc(var(--docs-header-h) + var(--sa-stack-24)); }
 

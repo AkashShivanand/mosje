@@ -1,75 +1,78 @@
-// url=https://www.figma.com/design/SVMfm1KApR7KYHSbwNBnOM/MoSJE--WIP-?node-id=2175-79096
-
-// ─────────────────────────────────────────────────────────────────────────────
-// NOT PUBLISHED YET — excluded in figma.config.json.
-//
-// This is the ONE template that does not target the SAMAVESH library. Its node
-// lives in MoSJE (WIP), file SVMfm1KApR7KYHSbwNBnOM, which the publishing token
-// cannot write. `code connect publish` uploads every template in a SINGLE request,
-// so that one file failed the whole batch:
-//
-//     Failed to upload to Figma (400): 400 Insufficient permissions for SVMfm1KApR7KYHSbwNBnOM
-//
-// All 19 templates validated; none published. Excluding this one lets the other 18
-// through untouched.
-//
-// TO RE-ENABLE, once Chatbot is rebuilt in the SAMAVESH library:
-//   1. change the `// url=` line above to `<SAMAVESH>?node-id=<new-node-id>`
-//   2. delete the `exclude` entry in figma.config.json
-//   3. capture a fixture for `Chatbot` in tools/code-connect-parity/figma-properties.json
-//      (check:code-connect reports it as unverified until you do)
-// Do not leave the exclude in place with a SAMAVESH url — that is a silent no-op.
-// ─────────────────────────────────────────────────────────────────────────────
+// url=<SAMAVESH>?node-id=55826-37003
 // source=packages/design-system/components/feedback/chatbot.tsx
 // component=Chatbot
 //
-// NOTE ON THE URL. Every other template in this package points at `<SAMAVESH>`
-// (the published library). This one cannot: the chatbot exists only in the
-// **MoSJE (WIP)** file as a loose component set, and has not been promoted into
-// the SAMAVESH library. When it is, swap this line for
-// `// url=<SAMAVESH>?node-id=<new-id>` — and remember a promoted component gets
-// a NEW key, so the mapping has to be disconnected in the Figma UI and
-// reconnected rather than edited in place.
+// ─────────────────────────────────────────────────────────────────────────────
+// Promoted into the SAMAVESH library on 2026-08-23. It used to live only in
+// MoSJE (WIP) (file SVMfm1KApR7KYHSbwNBnOM) as a loose set of 475x852 screen
+// mockups, which the publishing token could not write:
+//
+//     Failed to upload to Figma (400): 400 Insufficient permissions for SVMfm1KApR7KYHSbwNBnOM
+//
+// `code connect publish` uploads every template in ONE request, so that single
+// file took all 19 templates down with it and this one had to be excluded.
+// It now targets <SAMAVESH> like every other template and the exclude is gone.
+//
+// The promoted master is a NEW component with a NEW key. Any mapping ever
+// attached to the WIP node must be disconnected in the Figma UI rather than
+// edited in place.
+// ─────────────────────────────────────────────────────────────────────────────
 import figma from "figma";
 
 const instance = figma.selectedInstance;
 
 /**
- * Figma `Property 1` → `defaultOpen`. Exhaustive: all 4 values mapped.
+ * Figma `State` → `defaultOpen`. Exhaustive: all 4 values mapped.
  *
  * The four values are NOT four configurations — they are four moments of the
- * widget's own opening sequence, drawn as separate frames because a static file
- * cannot show motion:
+ * widget's own lifecycle, drawn as separate frames because a static file cannot
+ * show motion. The order is the one `chatbot.tsx` actually runs:
  *
- *   Open → launcher only, panel shut   (the name is misleading; it means closed)
- *   1    → panel open, bot typing, no messages yet
- *   2    → greeting has landed, bot still typing
- *   3    → suggestions have cascaded in
+ *   Closed     → launcher only, panel shut
+ *   Typing     → the bot is composing; nothing said yet
+ *   Greeting   → the opening line has landed, suggestions cascade in 320ms later
+ *   Transcript → turns have accumulated
  *
- * Only the first distinction is a prop. States 1–3 are transient internals that
- * `Chatbot` walks through on its own — roughly 260ms, 1160ms and 1480ms after
- * opening. Emitting them as props would invent an API for something the
- * component deliberately owns, and would let a consumer freeze the widget in a
- * state it is supposed to pass through.
+ * TYPING COMES BEFORE GREETING, which is the opposite of how this was first
+ * documented. The opening effect is `after(OPENING_BEAT_MS, typing on)` and then
+ * `after(OPENING_BEAT_MS + typingDelayMs, typing off + greeting)` — so the dots
+ * are what the greeting arrives *out of*, not something that follows it.
+ *
+ * Only the first distinction is a prop. Typing and Transcript are transient
+ * internals `Chatbot` walks through on its own. Emitting them as props would
+ * invent an API for something the component deliberately owns, and would let a
+ * consumer freeze the widget in a state it is supposed to pass through.
  */
-const defaultOpen = instance.getEnum("Property 1", {
-  Open: false,
-  "1": true,
-  "2": true,
-  "3": true,
+const defaultOpen = instance.getEnum("State", {
+  Closed: false,
+  Typing: true,
+  Greeting: true,
+  Transcript: true,
 });
+
+const title = instance.getString("Title");
+const note = instance.getString("Note");
+const placeholder = instance.getString("Placeholder");
+const composer = instance.getBoolean("Show composer");
+
+// The code has no `showSubtitle` flag — passing an empty string is how you
+// suppress it. The Figma boolean is that same decision, made switchable.
+const subtitle = instance.getBoolean("Show subtitle") ? instance.getString("Subtitle") : "";
 
 export default {
   example: figma.code`
     <Chatbot
       ${defaultOpen ? "defaultOpen" : ""}
+      title="${title}"
+      subtitle="${subtitle}"
+      note="${note}"
+      composerPlaceholder="${placeholder}"
+      composer={${composer}}
       greeting="This is an assistant for the Ministry of Social Justice. How can I help you?"
       quickReplies={[
-        { id: "otp", label: "I'm not receiving OTP." },
-        { id: "docs", label: "Didn't find API documentation" },
-        { id: "register", label: "How to register as a developer." },
-        { id: "navigate", label: "Portal navigation help" },
-        { id: "other", label: "Others" },
+        { id: "scheme", label: "Find a scheme" },
+        { id: "status", label: "Check application status" },
+        { id: "otp", label: "I'm not receiving OTP" },
       ]}
       onQuickReply={(reply) => ({ text: answerFor(reply.id) })}
     />

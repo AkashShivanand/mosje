@@ -95,9 +95,14 @@ for (const file of templates) {
 
   // 4 — props emitted must exist on the Props interface.
   const example = (src.match(/example:\s*figma\.code`([\s\S]*?)`,\s*$/m) || src.match(/example:\s*figma\.code`([\s\S]*?)`/))?.[1] ?? "";
-  const emitted = [...new Set([...example.matchAll(/^\s{2}([a-zA-Z][\w]*)=/gm)].map((m) => m[1]))];
+  // `\s{2}` only ever matched a prop indented EXACTLY two spaces, and no template
+  // in this repo indents that shallowly — so check 4 was passing vacuously on all 19.
+  const emitted = [...new Set([...example.matchAll(/^\s+([a-zA-Z][\w]*)=/gm)].map((m) => m[1]))];
   const componentSrc = readFileSync(join(ROOT, sourcePath), "utf8");
-  const iface = componentSrc.match(new RegExp(`interface\\s+${componentName}Props\\s*\\{([\\s\\S]*?)\\n\\}`));
+  // `[^{]*` steps over an `extends ...` clause, which may sit on its own line.
+  // Without it any interface that extends something was silently unverified —
+  // Chatbot, Button and TabDef all were.
+  const iface = componentSrc.match(new RegExp(`interface\\s+${componentName}Props\\b[^{]*\\{([\\s\\S]*?)\\n\\}`));
   if (!iface) {
     notes.push(`${rel}: no \`${componentName}Props\` interface found in ${sourcePath} — prop names NOT verified`);
   } else {

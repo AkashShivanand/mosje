@@ -40,6 +40,12 @@ export const FIGMA_NODES = {
   toggle: "2141:323883",
   dropdown: "2141:296718", // Select
   alerts: "2141:296701",
+  chatbot: "55827:730", // "Chatbot — Documentation" on the Chatbot page (55813:941),
+  //                          authored 2026-08-23 under Feedback & Status
+  chatbotMascot: "55830:731", // "2 · Chatbot Mascot" section on the same page
+  chatbotPrototype: "55846:731", // "01 · Closed", the flow's starting point in
+  //                          "3 · Prototype" (55846:730). Opens straight into Present.
+  chatbotMotion: "55852:893", // "06 · Motion specimen" — the three keyframed loops
   loader: "2141:323879",
   avatars: "2141:296702",
   emptyState: "2141:296719",
