@@ -1008,6 +1008,32 @@ export const OFFICIALS: Record<string, Official[]> = {
  * The office-holders are real, externally checkable people; the secretariat rows are mock.
  * Reconciling them is a content decision, not a refactor, so nothing has been merged and no
  * rendered page changed. Resolve it and these two records can become one.
+ *
+ * CHECKED AGAINST LIVE DATA, 2026-08-23, using dosje.gov.in's own register
+ * (`/wp-json/wp/v2/official`, 497 records, organisation read from `organisation_cat`):
+ *
+ *   confirmed, organisation agrees (7)  Dr. Virendra Kumar, Shri Ramdas Athawale and
+ *                                       Shri B. L. Verma under MoSJE; Mr. Nandu Shaw under
+ *                                       DAIC; Shri Kishor Makwana, Shri Love Kush Kumar and
+ *                                       Shri Vaddepalli Ramchander under NCSC
+ *   name matches, ORGANISATION DIFFERS  Shri Rajesh Kumar — under NCBC here, under DAIC on
+ *                                       the live register. NOT changed: it is a very common
+ *                                       name and these may be two different people. Needs a
+ *                                       human to confirm before either entry moves.
+ *   absent from the live register (6)   Shri V. Appa Rao, Shri Vikas Trivedi and
+ *                                       Hemant Kumar Srivastava (DAIC); Shri Hansraj
+ *                                       Gangaram Ahir, Shri Bhuvan Bhushan Kamal and
+ *                                       Ms. Meeta Rajivlochan (NCBC)
+ *
+ * The NCBC Secretary conflict CANNOT be settled this way, and that is the finding. Neither
+ * Ms. Meeta Rajivlochan nor Renuka Patil appears in the live register, and NCBC holds only
+ * two records there — Shri Kiran Umesh Mahalle and Sadhvi Niranjan Jyoti — with no
+ * designation recorded against either. The live Who's Who renders client-side from an
+ * endpoint its HTML does not expose, so the roster behind it is not reachable. Settling this
+ * needs NCBC's own published list, not another pass at the API.
+ *
+ * What the same check DID settle: every abbreviation in organisations.ts exists as a live
+ * `organisation_cat` term, SCW included — the registry's names are the Department's own.
  */
 export const OFFICE_HOLDERS: Record<string, Official[]> = {
   "ministry-leadership": [
