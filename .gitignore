@@ -58,3 +58,19 @@ apps/hub/public/reports/eutthan-admin/figures/
 
 .vercel
 .env*
+
+# One-off scratch scripts at the repo root.
+#
+# Nine of these reached main during the docs work — fix_tabs.py, migrate_all.py,
+# transform.py, four numbered test-css*.mjs and a test-color.js that required a
+# puppeteer the repo does not even depend on. All unreferenced, none runnable.
+# Codemods worth keeping belong in scripts/ or tools/ with a name that says what
+# they do; anything genuinely throwaway belongs in a scratch directory outside
+# the repo. This pattern only covers the ROOT, so scripts/ and tools/ are
+# unaffected.
+/fix_*.py
+/migrate_*.py
+/transform.py
+/test-*.js
+/test-*.mjs
+/test-*.py
