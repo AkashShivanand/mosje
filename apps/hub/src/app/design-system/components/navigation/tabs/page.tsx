@@ -1,3 +1,4 @@
+import { DocsTabs } from "@/components/design-system/docs-kit";
 import type { Metadata } from "next";
 import {
   PropsTable,
@@ -19,10 +20,6 @@ export const metadata: Metadata = {
  * Layout primitives (shared shape with the other component pages)
  * ------------------------------------------------------------------ */
 
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--sa-section-48)",
-};
 
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
@@ -97,7 +94,15 @@ export default function TabsPage(): React.JSX.Element {
       </header>
 
       {/* ============ Live demo ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="demo" style={h2Style}>
           Live demo
         </h2>
@@ -109,18 +114,14 @@ export default function TabsPage(): React.JSX.Element {
           <TabsDemo />
         </div>
       </section>
-
-      {/* ============ 1. Import ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="import" style={h2Style}>
           1. Import
         </h2>
         <CodeBlock>{`import { Tabs, TabPanel } from "@mosje/design-system";
 import type { TabDef } from "@mosje/design-system";`}</CodeBlock>
       </section>
-
-      {/* ============ 2. Usage ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>
           2. Usage
         </h2>
@@ -130,6 +131,8 @@ import type { TabDef } from "@mosje/design-system";`}</CodeBlock>
         </p>
         <CodeBlock>{`"use client";
 import * as React from "react";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
 import { Tabs, TabPanel, type TabDef } from "@mosje/design-system";
 
 const SECTIONS: TabDef[] = [
@@ -163,9 +166,7 @@ function ClinicalRecord() {
           tab&apos;s data before moving (the clinical-record wizard saves each section on switch).
         </Callout>
       </section>
-
-      {/* ============ 3. Chrome ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="chrome" style={h2Style}>
           3. Indicator and track pair — only two of six combinations are correct
         </h2>
@@ -222,9 +223,7 @@ function ClinicalRecord() {
           <code>track=&quot;enclosed&quot;</code>, which has its own border.
         </Callout>
       </section>
-
-      {/* ============ 4. Size ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="size" style={h2Style}>
           4. Size
         </h2>
@@ -247,9 +246,7 @@ function ClinicalRecord() {
           mobile recommendation. <code>s</code> is not an AA failure.
         </Callout>
       </section>
-
-      {/* ============ 5. Content ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="content" style={h2Style}>
           5. Icons, badges and disabled tabs
         </h2>
@@ -271,9 +268,50 @@ function ClinicalRecord() {
           entirely has the same effect.
         </Callout>
       </section>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="guidelines" style={h2Style}>
+          10. Guidelines
+        </h2>
+        <Callout type="info" title="✓ Do">
+          <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-4)" }}>
+            <li>Use Tabs for non-linear sections a user revisits in any order (records, settings, detail facets).</li>
+            <li>Run save / validation inside <code>onChange</code> so switching tabs never loses data.</li>
+            <li>Give the tablist a meaningful <code>ariaLabel</code> describing what the sections are.</li>
+            <li>Pair <code>indicator</code> and <code>track</code> as §3 sets out, and keep <code>size</code> on the list.</li>
+            <li>Write labels short enough that nothing truncates — check the Hindi rendering, not only the English.</li>
+          </ul>
+        </Callout>
+        <div style={{ marginTop: "var(--sa-stack-16)" }}>
+          <Callout type="warning" title="✕ Don't">
+            <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-4)" }}>
+              <li>
+                Don&apos;t use Tabs for an ordered, must-complete-in-sequence flow — use <code>&lt;Wizard&gt;</code> (a linear
+                stepper) instead.
+              </li>
+              <li>Never hand-roll tab <code>&lt;button&gt;</code>s — that drops the role / keyboard contract this component guarantees.</li>
+              <li>
+                Don&apos;t render every <code>TabPanel</code> and hide the inactive ones with CSS — they stay in the
+                accessibility tree and the tab order, so a keyboard user walks through controls they cannot see.
+              </li>
+              <li>
+                Don&apos;t remove a tab to disable it, and don&apos;t reach for the native <code>disabled</code>{" "}
+                attribute — both hide the fact that the section exists.
+              </li>
+              <li>Don&apos;t pin a tab height, and don&apos;t let a label wrap to two lines.</li>
+            </ul>
+          </Callout>
+        </div>
+      </section>
 
-      {/* ============ 6. Labels ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="labels" style={h2Style}>
           6. Writing tab labels
         </h2>
@@ -396,9 +434,7 @@ function ClinicalRecord() {
         </Callout>
         </div>
       </section>
-
-      {/* ============ 7. Props ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="props" style={h2Style}>
           7. Props
         </h2>
@@ -440,9 +476,7 @@ function ClinicalRecord() {
           ]}
         />
       </section>
-
-      {/* ============ 8. Tokens ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="tokens" style={h2Style}>
           8. Tokens
         </h2>
@@ -466,8 +500,15 @@ function ClinicalRecord() {
         />
       </section>
 
-      {/* ============ 9. Accessibility ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="accessibility" style={h2Style}>
           9. Accessibility
         </h2>
@@ -490,41 +531,12 @@ function ClinicalRecord() {
         </Callout>
       </section>
 
-      {/* ============ 10. Do / Don't ============ */}
-      <section style={sectionStyle}>
-        <h2 id="guidelines" style={h2Style}>
-          10. Guidelines
-        </h2>
-        <Callout type="info" title="✓ Do">
-          <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-4)" }}>
-            <li>Use Tabs for non-linear sections a user revisits in any order (records, settings, detail facets).</li>
-            <li>Run save / validation inside <code>onChange</code> so switching tabs never loses data.</li>
-            <li>Give the tablist a meaningful <code>ariaLabel</code> describing what the sections are.</li>
-            <li>Pair <code>indicator</code> and <code>track</code> as §3 sets out, and keep <code>size</code> on the list.</li>
-            <li>Write labels short enough that nothing truncates — check the Hindi rendering, not only the English.</li>
-          </ul>
-        </Callout>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <Callout type="warning" title="✕ Don't">
-            <ul style={{ margin: 0, paddingLeft: "1.2em", display: "flex", flexDirection: "column", gap: "var(--sa-stack-4)" }}>
-              <li>
-                Don&apos;t use Tabs for an ordered, must-complete-in-sequence flow — use <code>&lt;Wizard&gt;</code> (a linear
-                stepper) instead.
-              </li>
-              <li>Never hand-roll tab <code>&lt;button&gt;</code>s — that drops the role / keyboard contract this component guarantees.</li>
-              <li>
-                Don&apos;t render every <code>TabPanel</code> and hide the inactive ones with CSS — they stay in the
-                accessibility tree and the tab order, so a keyboard user walks through controls they cannot see.
-              </li>
-              <li>
-                Don&apos;t remove a tab to disable it, and don&apos;t reach for the native <code>disabled</code>{" "}
-                attribute — both hide the fact that the section exists.
-              </li>
-              <li>Don&apos;t pin a tab height, and don&apos;t let a label wrap to two lines.</li>
-            </ul>
-          </Callout>
-        </div>
-      </section>
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

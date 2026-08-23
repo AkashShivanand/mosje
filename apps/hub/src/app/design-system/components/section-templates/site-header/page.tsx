@@ -23,6 +23,7 @@ export const metadata: Metadata = {
  * Shared layout primitives (inline styles, --sa-* tokens only)
  * ------------------------------------------------------------------ */
 
+
 const sectionStyle: React.CSSProperties = {
   marginTop: "var(--sa-section-48)",
   scrollMarginTop: "var(--sa-section-48)",

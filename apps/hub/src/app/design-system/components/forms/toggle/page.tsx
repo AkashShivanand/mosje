@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { TogglePlayground } from "./toggle-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "Toggle - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function TogglePage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function TogglePage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Interact with the Toggle and adjust its size.
@@ -67,9 +72,7 @@ export default function TogglePage(): React.JSX.Element {
           <TogglePlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Use Toggles for binary settings that take effect immediately (or when a settings form is saved). They are a more modern, prominent alternative to a standard checkbox.
@@ -98,9 +101,7 @@ export default function TogglePage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. SIZES ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="sizes" style={h2Style}>2. Sizes</h2>
         <p style={proseStyle}>
           The Toggle component comes in two sizes:
@@ -110,9 +111,7 @@ export default function TogglePage(): React.JSX.Element {
           <li><strong>Small:</strong> Compact size, suitable for dense layouts, toolbars, or data tables.</li>
         </ul>
       </section>
-
-      {/* ============ 3. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>3. Code Example</h2>
         <Playground
           code={`function NotificationsSettings() {
@@ -129,17 +128,15 @@ export default function TogglePage(): React.JSX.Element {
         />
       </section>
 
-      {/* ============ 4. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>4. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Role:</strong> The visually hidden input uses <code>type=&quot;checkbox&quot;</code> and <code>role=&quot;switch&quot;</code> so screen readers announce it as a toggle switch.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Associated Label:</strong> When the <code>label</code> prop is provided, the component automatically generates an <code>id</code> and correctly wires up the <code>&lt;label htmlFor=&quot;...&quot;&gt;</code>.</li>
-        </ul>
-      </section>
-
-      {/* ============ 5. API ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>5. API Reference</h2>
         <PropsTable
           props={[
@@ -151,6 +148,29 @@ export default function TogglePage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>4. Accessibility (A11y)</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Role:</strong> The visually hidden input uses <code>type=&quot;checkbox&quot;</code> and <code>role=&quot;switch&quot;</code> so screen readers announce it as a toggle switch.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Associated Label:</strong> When the <code>label</code> prop is provided, the component automatically generates an <code>id</code> and correctly wires up the <code>&lt;label htmlFor=&quot;...&quot;&gt;</code>.</li>
+        </ul>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { DocsTabs } from "@/components/design-system/docs-kit";
 import type { Metadata } from "next";
 import { CheckboxPlayground } from "./checkbox-playground";
 
@@ -8,8 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function CheckboxPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = { marginTop: "var(--sa-stack-48)", paddingTop: "var(--sa-stack-48)", borderTop: "1px solid var(--sa-border-neutral-subtle)" };
-  const h2Style: React.CSSProperties = { fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, margin: "0 0 var(--sa-stack-24) 0", color: "var(--sa-text-neutral-bolder)" };
+    const h2Style: React.CSSProperties = { fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, margin: "0 0 var(--sa-stack-24) 0", color: "var(--sa-text-neutral-bolder)" };
   const proseStyle: React.CSSProperties = { color: "var(--sa-text-neutral-base)", fontSize: "var(--sa-type-body-1-size)", lineHeight: 1.6 };
 
   return (
@@ -23,7 +23,15 @@ export default function CheckboxPage(): React.JSX.Element {
 
       <CheckboxPlayground />
 
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--sa-inline-24)", marginTop: "var(--sa-stack-24)" }}>
           <UseCard tone="do" title="When to use">
@@ -37,8 +45,7 @@ export default function CheckboxPage(): React.JSX.Element {
           </UseCard>
         </div>
       </section>
-
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="features" style={h2Style}>2. Features & Accessibility</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Indeterminate State:</strong> Supports the mixed/indeterminate state natively, which is crucial for &quot;Select All&quot; parent checkboxes when only some children are selected.</li>
@@ -46,8 +53,7 @@ export default function CheckboxPage(): React.JSX.Element {
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Hit Area:</strong> The clickable label is inextricably linked to the input via <code>htmlFor</code>, vastly increasing the accessible tap target size.</li>
         </ul>
       </section>
-
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code" style={h2Style}>3. Code Example</h2>
         <CodeBlock>{`import { Checkbox } from "@mosje/design-system";
 
@@ -57,6 +63,31 @@ export default function CheckboxPage(): React.JSX.Element {
   onChange={(e) => setAgreed(e.target.checked)}
 />`}</CodeBlock>
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

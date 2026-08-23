@@ -1,4 +1,5 @@
 import * as React from "react";
+import { DocsTabs } from "@/components/design-system/docs-kit";
 import type { Metadata } from "next";
 import { DataTablePlayground } from "./data-table-playground";
 
@@ -8,8 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function DataTablePage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = { marginTop: "var(--sa-stack-48)", paddingTop: "var(--sa-stack-48)", borderTop: "1px solid var(--sa-border-neutral-subtle)" };
-  const h2Style: React.CSSProperties = { fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, margin: "0 0 var(--sa-stack-24) 0", color: "var(--sa-text-neutral-bolder)" };
+    const h2Style: React.CSSProperties = { fontSize: "var(--sa-type-headline-2-size)", fontWeight: 600, margin: "0 0 var(--sa-stack-24) 0", color: "var(--sa-text-neutral-bolder)" };
   const proseStyle: React.CSSProperties = { color: "var(--sa-text-neutral-base)", fontSize: "var(--sa-type-body-1-size)", lineHeight: 1.6 };
 
   return (
@@ -23,7 +23,15 @@ export default function DataTablePage(): React.JSX.Element {
 
       <DataTablePlayground />
 
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>The SAMAVESH DataTable standardizes how we display tabular data across all MoSJE portals (NMBA, SCW, SMILE, PM-AJAY). It includes built-in pagination, accessible structure, and standardized Figma treatments.</p>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--sa-inline-24)", marginTop: "var(--sa-stack-24)" }}>
@@ -38,8 +46,7 @@ export default function DataTablePage(): React.JSX.Element {
           </UseCard>
         </div>
       </section>
-
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="features" style={h2Style}>2. Features & Best Practices</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Pagination:</strong> Built-in controls for page sizes (10, 50, 100) and an intelligent ellipsis pager that prevents UI overflow on large datasets.</li>
@@ -48,8 +55,7 @@ export default function DataTablePage(): React.JSX.Element {
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Accessibility:</strong> Pass a descriptive <code>caption</code> to the table (it renders visually hidden, but screen readers read it to provide context). Table headers use <code>scope=&quot;col&quot;</code> automatically.</li>
         </ul>
       </section>
-      
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code" style={h2Style}>3. Code Example</h2>
         <CodeBlock>{`import { DataTable, type DataTableColumn } from "@mosje/design-system";
 
@@ -75,6 +81,31 @@ export function ApplicantList({ data }) {
   );
 }`}</CodeBlock>
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

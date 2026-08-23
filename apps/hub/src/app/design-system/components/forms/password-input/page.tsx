@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { PasswordInputPlayground } from "./password-input-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "Password Input - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function PasswordInputPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function PasswordInputPage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Type into the field and click the eye icon to reveal the password. Notice how the caret position is maintained when toggling.
@@ -67,9 +72,7 @@ export default function PasswordInputPage(): React.JSX.Element {
           <PasswordInputPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Typing a password blind is a major cause of failed sign-ins. Always provide a way for the user to verify what they&apos;ve typed. This component suppresses the native browser reveal buttons (which vary wildly and can overlap) in favour of a consistent, accessible DS toggle.
@@ -98,9 +101,7 @@ export default function PasswordInputPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <Playground
           code={`<FormField label="Create Password" required>
@@ -115,18 +116,15 @@ export default function PasswordInputPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ============ 3. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Button Type:</strong> The toggle is explicitly set to <code>type=&quot;button&quot;</code> to prevent it from accidentally submitting the form.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria Labels:</strong> The toggle&apos;s <code>aria-label</code> announces the <em>action</em> (&quot;Show password&quot; or &quot;Hide password&quot;), while <code>aria-pressed</code> conveys the current state.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Focus Management:</strong> Tabbing moves from the input to the toggle logically. Clicking the toggle prevents focus loss on the input using <code>onMouseDown</code>, keeping the keyboard user exactly where they were.</li>
-        </ul>
-      </section>
-
-      {/* ============ 4. API ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>4. API Reference</h2>
         <PropsTable
           props={[
@@ -137,6 +135,30 @@ export default function PasswordInputPage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Button Type:</strong> The toggle is explicitly set to <code>type=&quot;button&quot;</code> to prevent it from accidentally submitting the form.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria Labels:</strong> The toggle&apos;s <code>aria-label</code> announces the <em>action</em> (&quot;Show password&quot; or &quot;Hide password&quot;), while <code>aria-pressed</code> conveys the current state.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Focus Management:</strong> Tabbing moves from the input to the toggle logically. Clicking the toggle prevents focus loss on the input using <code>onMouseDown</code>, keeping the keyboard user exactly where they were.</li>
+        </ul>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { DocsTabs } from "@/components/design-system/docs-kit";
 import type { Metadata } from "next";
 import {
   PropsTable,
@@ -23,7 +24,6 @@ export const metadata: Metadata = {
     "The government top utility bar (UX4G / GIGW) — Government of India link plus the accessibility controls (skip to content, font size, accessibility, language). The a11y surface itself, fully keyboard-operable and tokenised.",
 };
 
-const sectionStyle: React.CSSProperties = { marginBottom: "var(--sa-section-48)" };
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-2-size)",
   fontWeight: 600,
@@ -76,7 +76,15 @@ export default function AccessibilityBarPage(): React.JSX.Element {
       </div>
 
       {/* ── Overview ── */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="overview" style={h2Style}>Overview</h2>
         <p style={leadStyle}>
           The <strong>Accessibility Bar</strong> is the thin band that sits above the masthead on
@@ -95,9 +103,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           <AccessibilityBarPreview />
         </div>
       </section>
-
-      {/* ── Anatomy / tone ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="tone" style={h2Style}>Tone</h2>
         <p style={leadStyle}>
           <strong>Tone is not a prop.</strong> Blue and Navy are the <em>brand axis</em>: put{" "}
@@ -110,9 +116,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
         <div style={previewLabel}>Navy · via data-brand=&quot;navy&quot;</div>
         <AccessibilityBarNavyPreview />
       </section>
-
-      {/* ── Font size ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="font-size" style={h2Style}>Font size</h2>
         <p style={leadStyle}>
           The A−/A/A+ stepper sets <code>--sa-font-scale</code> and{" "}
@@ -152,9 +156,56 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           <AccessibilityBarFontSizePreview />
         </div>
       </section>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="guidelines" style={h2Style}>Do &amp; Don&apos;t</h2>
+        <DoDont
+          cards={[
+            {
+              type: "do",
+              label: "Keep the skip link the first interactive element, pointing at a real #main-content landmark on the page.",
+              preview: (
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    padding: "var(--sa-stack-8) var(--sa-stack-12)",
+                    borderRadius: "var(--sa-shape-4)",
+                    background: "var(--sa-color-action-primary-default)",
+                    color: "var(--sa-on-bg-brand-primary-bolder)",
+                    fontSize: "var(--sa-type-label-2-size)",
+                    fontWeight: 600,
+                    outline: "2px solid var(--sa-text-neutral-inverse)",
+                    outlineOffset: "2px",
+                  }}
+                >
+                  Skip to Main Content
+                </span>
+              ),
+            },
+            {
+              type: "dont",
+              label: "Don't surface the same property in both the bar and the widget's floating button. One property, one visible door: text size is the bar's, contrast and spacing are the widget's, and the FAB is hidden (not unmounted) where the bar already offers the entry.",
+              preview: (
+                <div style={{ display: "flex", gap: "var(--sa-stack-12)", alignItems: "center", color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-label-2-size)" }}>
+                  <span style={{ display: "inline-flex", gap: "var(--sa-stack-8)", padding: "var(--sa-stack-8) var(--sa-stack-12)", borderRadius: "var(--sa-shape-4)", background: "var(--sa-bg-neutral-subtler)" }}>A− A A+</span>
+                  <span aria-hidden="true">+</span>
+                  <span style={{ padding: "var(--sa-stack-8) var(--sa-stack-12)", borderRadius: "var(--sa-shape-4)", background: "var(--sa-bg-neutral-subtler)" }}>Widget: text size</span>
+                </div>
+              ),
+            },
+          ]}
+        />
+      </section>
 
-      {/* ── Interaction states ── */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="states" style={h2Style}>Interaction states</h2>
         <p style={leadStyle}>
           Every <strong>clickable</strong> control on the bar resolves through four states, defined
@@ -209,9 +260,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           them would invent a control affordance the master does not have.
         </Callout>
       </section>
-
-      {/* ── Layout ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="layout" style={h2Style}>Layout (content width)</h2>
         <p style={leadStyle}>
           <code>layout</code> sets the inner content container&apos;s max-width, centred inside the
@@ -229,9 +278,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           the most inset. The names are kept from UX4G for parity.
         </Callout>
       </section>
-
-      {/* ── Usage ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>Usage</h2>
         <p style={leadStyle}>
           Set <code>onAccessibility</code> <em>or</em> <code>accessibilityHref</code>, not both:
@@ -241,9 +288,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           <pre style={{ margin: 0, whiteSpace: "pre-wrap" }}>{USAGE}</pre>
         </TerminalCode>
       </section>
-
-      {/* ── Token map ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="tokens" style={h2Style}>Token map</h2>
         <p style={leadStyle}>
           Every value binds to an <code>--sa-*</code> token — no raw hex or px.
@@ -260,64 +305,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           ]}
         />
       </section>
-
-      {/* ── Do / Don't ── */}
-      <section style={sectionStyle}>
-        <h2 id="guidelines" style={h2Style}>Do &amp; Don&apos;t</h2>
-        <DoDont
-          cards={[
-            {
-              type: "do",
-              label: "Keep the skip link the first interactive element, pointing at a real #main-content landmark on the page.",
-              preview: (
-                <span
-                  style={{
-                    display: "inline-flex",
-                    alignItems: "center",
-                    padding: "var(--sa-stack-8) var(--sa-stack-12)",
-                    borderRadius: "var(--sa-shape-4)",
-                    background: "var(--sa-color-action-primary-default)",
-                    color: "var(--sa-on-bg-brand-primary-bolder)",
-                    fontSize: "var(--sa-type-label-2-size)",
-                    fontWeight: 600,
-                    outline: "2px solid var(--sa-text-neutral-inverse)",
-                    outlineOffset: "2px",
-                  }}
-                >
-                  Skip to Main Content
-                </span>
-              ),
-            },
-            {
-              type: "dont",
-              label: "Don't surface the same property in both the bar and the widget's floating button. One property, one visible door: text size is the bar's, contrast and spacing are the widget's, and the FAB is hidden (not unmounted) where the bar already offers the entry.",
-              preview: (
-                <div style={{ display: "flex", gap: "var(--sa-stack-12)", alignItems: "center", color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-label-2-size)" }}>
-                  <span style={{ display: "inline-flex", gap: "var(--sa-stack-8)", padding: "var(--sa-stack-8) var(--sa-stack-12)", borderRadius: "var(--sa-shape-4)", background: "var(--sa-bg-neutral-subtler)" }}>A− A A+</span>
-                  <span aria-hidden="true">+</span>
-                  <span style={{ padding: "var(--sa-stack-8) var(--sa-stack-12)", borderRadius: "var(--sa-shape-4)", background: "var(--sa-bg-neutral-subtler)" }}>Widget: text size</span>
-                </div>
-              ),
-            },
-          ]}
-        />
-      </section>
-
-      {/* ── Accessibility ── */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>Accessibility</h2>
-        <A11yChecklist
-          items={[
-            { criterion: "Skip link is first in the tab order", level: "A", description: "WCAG 2.4.1 — the skip link is the page's first interactive element and must target an id that exists, or a keyboard user lands nowhere." },
-            { criterion: "Text/UI contrast meets AA", level: "AA", description: "WCAG 1.4.3 — white on the brand fill is 6.36:1; the brand ink #0373DF (4.64:1) was rejected as a fill for this reason." },
-            { criterion: "Every control keyboard-operable & labelled", level: "A", description: "WCAG 2.1.1 / 4.1.2 — the font-size buttons, accessibility entry and language selector are real buttons/links with aria-labels; the font-size group is a labelled group." },
-            { criterion: "Visible focus is never removed", level: "AA", description: "WCAG 2.4.7 — every control shows a 2px inverse-ink outline on focus-visible, offset 2. Not --sa-focus-ring: that is #0373DF and measures 1.37:1 on this bar's #005EB9 fill, failing 1.4.11. Inverse ink is 6.36:1." },
-          ]}
-        />
-      </section>
-
-      {/* ── API ── */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>API</h2>
         <PropsTable
           props={[
@@ -338,6 +326,33 @@ export default function AccessibilityBarPage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>Accessibility</h2>
+        <A11yChecklist
+          items={[
+            { criterion: "Skip link is first in the tab order", level: "A", description: "WCAG 2.4.1 — the skip link is the page's first interactive element and must target an id that exists, or a keyboard user lands nowhere." },
+            { criterion: "Text/UI contrast meets AA", level: "AA", description: "WCAG 1.4.3 — white on the brand fill is 6.36:1; the brand ink #0373DF (4.64:1) was rejected as a fill for this reason." },
+            { criterion: "Every control keyboard-operable & labelled", level: "A", description: "WCAG 2.1.1 / 4.1.2 — the font-size buttons, accessibility entry and language selector are real buttons/links with aria-labels; the font-size group is a labelled group." },
+            { criterion: "Visible focus is never removed", level: "AA", description: "WCAG 2.4.7 — every control shows a 2px inverse-ink outline on focus-visible, offset 2. Not --sa-focus-ring: that is #0373DF and measures 1.37:1 on this bar's #005EB9 fill, failing 1.4.11. Inverse ink is 6.36:1." },
+          ]}
+        />
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </>
   );
 }

@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { LoaderPlayground } from "./loader-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont, A11yChecklist } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "Loader - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function LoaderPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function LoaderPage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Try out the Loader component in different sizes and colour variants.
@@ -67,9 +72,7 @@ export default function LoaderPage(): React.JSX.Element {
           <LoaderPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Loaders reassure the user that the system is processing their request. Use them for actions that take more than a second to complete.
@@ -98,9 +101,7 @@ export default function LoaderPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <Playground
           code={`<div style={{ display: "flex", gap: "var(--sa-stack-16)", alignItems: "center" }}>
@@ -111,8 +112,36 @@ export default function LoaderPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ============ 3. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="api" style={h2Style}>4. API Reference</h2>
+        <PropsTable
+          props={[
+            { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The diameter of the spinner." },
+            { name: "variant", type: '"primary" | "secondary"', default: '"primary"', description: "The colour role." },
+            { name: "label", type: "string", default: '"Loading…"', description: "Accessible label, visually hidden but read by screen readers." },
+            { name: "className", type: "string", description: "Additional classes merged onto the root element." },
+            { name: "...rest", type: "HTMLAttributes<HTMLSpanElement>", description: "All standard span props are forwarded." },
+          ]}
+        />
+      </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
         <p style={proseStyle}>
           A visual spinner is not enough; assistive technologies need to know that loading is occurring.
@@ -127,19 +156,12 @@ export default function LoaderPage(): React.JSX.Element {
         </div>
       </section>
 
-      {/* ============ 4. API ============ */}
-      <section style={sectionStyle}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "size", type: '"sm" | "md" | "lg"', default: '"md"', description: "The diameter of the spinner." },
-            { name: "variant", type: '"primary" | "secondary"', default: '"primary"', description: "The colour role." },
-            { name: "label", type: "string", default: '"Loading…"', description: "Accessible label, visually hidden but read by screen readers." },
-            { name: "className", type: "string", description: "Additional classes merged onto the root element." },
-            { name: "...rest", type: "HTMLAttributes<HTMLSpanElement>", description: "All standard span props are forwarded." },
-          ]}
-        />
-      </section>
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

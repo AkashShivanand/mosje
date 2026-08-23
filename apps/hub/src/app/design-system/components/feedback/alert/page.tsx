@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { AlertPlayground } from "./alert-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont, A11yChecklist, Callout } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "Alert - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function AlertPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function AlertPage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Try out the Alert component across its various semantic statuses.
@@ -67,9 +72,7 @@ export default function AlertPage(): React.JSX.Element {
           <AlertPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Use Alerts sparingly so users do not experience banner fatigue. Place them strategically at the top of a page or immediately above the section they relate to.
@@ -98,9 +101,7 @@ export default function AlertPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. ANATOMY ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="anatomy" style={h2Style}>2. Anatomy</h2>
         <p style={proseStyle}>
           The Alert consists of a tonal background, a status icon, an optional title, body content, an optional action, and an optional dismiss button.
@@ -117,9 +118,7 @@ export default function AlertPage(): React.JSX.Element {
 </Alert>`}
         />
       </section>
-
-      {/* ============ 3. STATUS VARIANTS ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="variants" style={h2Style}>3. Status Variants</h2>
         <p style={proseStyle}>
           Alerts convey meaning through four semantic roles. Use them consistently to map to system states.
@@ -132,8 +131,38 @@ export default function AlertPage(): React.JSX.Element {
         </ul>
       </section>
 
-      {/* ============ 4. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="api" style={h2Style}>5. API Reference</h2>
+        <PropsTable
+          props={[
+            { name: "status", type: '"info" | "success" | "warning" | "error"', default: '"info"', description: "Semantic colour role and corresponding icon." },
+            { name: "title", type: "ReactNode", description: "Bold heading line." },
+            { name: "children", type: "ReactNode", description: "Description or body content of the alert." },
+            { name: "dismissible", type: "boolean", default: "false", description: "Whether to render a close button." },
+            { name: "onDismiss", type: "() => void", description: "Callback when the dismiss button is clicked." },
+            { name: "action", type: "ReactNode", description: "Optional inline action(s) shown under the body." },
+            { name: "timestamp", type: "string", description: "Optional timestamp shown in the top right." },
+          ]}
+        />
+      </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="accessibility" style={h2Style}>4. Accessibility (A11y)</h2>
         <Callout type="warning" title="Don't rely on colour alone">
           Ensure that the textual content of the Alert clearly describes its meaning and intent. The visual colour coding (green for success, red for error) is helpful for sighted users but meaningless to screen readers or colour-blind individuals.
@@ -149,21 +178,12 @@ export default function AlertPage(): React.JSX.Element {
         </div>
       </section>
 
-      {/* ============ 5. API ============ */}
-      <section style={sectionStyle}>
-        <h2 id="api" style={h2Style}>5. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "status", type: '"info" | "success" | "warning" | "error"', default: '"info"', description: "Semantic colour role and corresponding icon." },
-            { name: "title", type: "ReactNode", description: "Bold heading line." },
-            { name: "children", type: "ReactNode", description: "Description or body content of the alert." },
-            { name: "dismissible", type: "boolean", default: "false", description: "Whether to render a close button." },
-            { name: "onDismiss", type: "() => void", description: "Callback when the dismiss button is clicked." },
-            { name: "action", type: "ReactNode", description: "Optional inline action(s) shown under the body." },
-            { name: "timestamp", type: "string", description: "Optional timestamp shown in the top right." },
-          ]}
-        />
-      </section>
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

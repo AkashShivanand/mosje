@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { PasswordStrengthMeterPlayground } from "./password-strength-meter-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "PasswordStrengthMeter - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function PasswordStrengthMeterPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function PasswordStrengthMeterPage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Type a password to see how the meter fills and updates its status word.
@@ -67,9 +72,7 @@ export default function PasswordStrengthMeterPage(): React.JSX.Element {
           <PasswordStrengthMeterPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           This component expects a score between <code>0</code> and <code>4</code> from a library like <code>zxcvbn</code>. It should only be used when a user is <strong>creating</strong> a password (e.g. registration or reset), never when they are logging in.
@@ -98,9 +101,7 @@ export default function PasswordStrengthMeterPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <Playground
           code={`import zxcvbn from "zxcvbn";
@@ -124,18 +125,15 @@ function RegistrationForm() {
         />
       </section>
 
-      {/* ============ 3. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Described By:</strong> Wire the meter&apos;s ID to the password input&apos;s <code>aria-describedby</code> attribute so screen readers know they are linked.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Region:</strong> The text label (e.g., &quot;Weak&quot;, &quot;Strong&quot;) has <code>aria-live=&quot;polite&quot;</code>. As the user types and the score changes, screen readers will announce the new strength politely without interrupting the user mid-keystroke.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Colour Independence:</strong> The component relies on the text word to convey meaning, not just the bar&apos;s colour, ensuring it is fully accessible to users with colour vision deficiencies.</li>
-        </ul>
-      </section>
-
-      {/* ============ 4. API ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>4. API Reference</h2>
         <PropsTable
           props={[
@@ -145,6 +143,30 @@ function RegistrationForm() {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Described By:</strong> Wire the meter&apos;s ID to the password input&apos;s <code>aria-describedby</code> attribute so screen readers know they are linked.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Region:</strong> The text label (e.g., &quot;Weak&quot;, &quot;Strong&quot;) has <code>aria-live=&quot;polite&quot;</code>. As the user types and the score changes, screen readers will announce the new strength politely without interrupting the user mid-keystroke.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Colour Independence:</strong> The component relies on the text word to convey meaning, not just the bar&apos;s colour, ensuring it is fully accessible to users with colour vision deficiencies.</li>
+        </ul>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }
