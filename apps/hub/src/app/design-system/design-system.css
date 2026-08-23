@@ -5,6 +5,7 @@
    pages that render a PropsTable). */
 @import "../../components/design-system/docs-kit/docs-kit.css";
 
+@layer base {
 /* Base reset — IN `base`, AND THAT IS THE WHOLE POINT.
    Unlayered, this sat above every cascade layer, so `* { padding: 0 }` outranked
    every rule in `@layer components` and stripped the padding off ALL of the
@@ -17,9 +18,7 @@
    solved the sidebar problem is what handed this reset the win.
    Tailwind's own Preflight already does exactly this in `base`; naming the layer
    keeps the intent stated rather than relying on that. */
-@layer base {
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 /* ── Appearance ──
    There is ONE appearance: light. The `data-theme` axis (light/dark/hc) was
@@ -29,28 +28,19 @@
    applies its own `.dark-mode` class; see
    docs/specs/samavesh-accessibility-consolidation.md §3. */
 /* ── Docs shell metrics ──
-   The height of the docs portal's sticky header. This is APP-SHELL CHROME, not a
-   design-system token: the docs site's own header is not a thing any portal or the
-   website renders, so it has no business in the --sa-* namespace.
-
-   It lives here because it was previously a bare `56px` repeated in SEVEN files
-   (the shell grid, two scroll-margin rules, the heading offsets on three pages, and
-   an IntersectionObserver rootMargin) — so a change to the header height silently
-   broke anchor scrolling in the six places nobody remembered to update. One
-   declaration, consumed by var() everywhere else, including from JS via
-   getComputedStyle in on-this-page.tsx. */
-:root {
-  /* One appearance, per the note above. `color-scheme` takes a KEYWORD, not a
-     colour — the strict-value rule matches on the property name alone, which is
-     why this needs saying rather than fixing. */
-  /* stylelint-disable-next-line scale-unlimited/declaration-strict-value */
-  color-scheme: light;
-
-  --docs-header-h: 56px;
-  --docs-sidebar-w: 280px;
-  /* Where an anchored heading comes to rest: clear of the header, plus a breath. */
-  --docs-anchor-offset: calc(var(--docs-header-h) + var(--sa-stack-24));
-}
+   `--docs-header-h` is the height of the docs portal's sticky header. This is
+   APP-SHELL CHROME, not a design-system token: the docs site's own header is not
+   a thing any portal or the website renders, so it has no business in the --sa-*
+   namespace. It lives here because it was previously a bare `56px` repeated in
+   SEVEN files (the shell grid, two scroll-margin rules, the heading offsets on
+   three pages, and an IntersectionObserver rootMargin) — so a change to the
+   header height silently broke anchor scrolling in the six places nobody
+   remembered to update. One declaration, consumed by var() everywhere else,
+   including from JS via getComputedStyle in on-this-page.tsx.
+   `color-scheme` takes a KEYWORD, not a colour — the strict-value rule matches on
+   the property name alone, which is why the disable below is needed. */
+/* stylelint-disable-next-line scale-unlimited/declaration-strict-value */
+:root { color-scheme: light; --docs-header-h: 56px; --docs-sidebar-w: 280px; --docs-anchor-offset: calc(var(--docs-header-h) + var(--sa-stack-24)); }
 
 html {
   font-family: var(--sa-font-latin);
@@ -103,6 +93,8 @@ a:focus-visible {
 }
 
 /* Prose content (used in page bodies) */
+.ds-prose { max-width: 72ch; }
+.ds-prose p, .ds-prose ul, .ds-prose ol { max-width: 72ch; line-height: 1.6; color: var(--sa-text-neutral-subtle); }
 .ds-prose p + p { margin-top: var(--sa-stack-16); }
 .ds-prose ul, .ds-prose ol { padding-left: var(--sa-padding-24); margin-top: var(--sa-stack-12); }
 .ds-prose li + li { margin-top: var(--sa-stack-8); }
@@ -123,7 +115,9 @@ code:not([class]) {
   padding: var(--sa-padding-2) var(--sa-padding-4);
   color: var(--sa-text-neutral-base);
 }
+}
 
+@layer components {
 /* Skip to content */
 .skip-link {
   position: absolute;
@@ -262,4 +256,5 @@ code:not([class]) {
 @media (max-width: 560px) {
   .home-cards { grid-template-columns: 1fr; }
   .home-stat { min-width: 50%; }
+}
 }
