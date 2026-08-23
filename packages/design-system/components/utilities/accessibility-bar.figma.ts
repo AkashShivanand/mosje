@@ -1,5 +1,5 @@
 // url=<SAMAVESH>?node-id=55065-33766
-// source=packages/design-system/components/navigation/accessibility-bar.tsx
+// source=packages/design-system/components/utilities/accessibility-bar.tsx
 // component=AccessibilityBar
 //
 // Code Connect template for the SAMAVESH AccessibilityBar — the government top

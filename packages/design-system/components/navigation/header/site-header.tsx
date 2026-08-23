@@ -2,8 +2,8 @@
 
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { AccessibilityBar } from "../accessibility-bar";
-import { Icon } from "../../icon";
+import { AccessibilityBar } from "../../utilities/accessibility-bar";
+import { Icon } from "../../utilities/icon";
 import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
 import { MenuToggle, NavItemLink, SheetToggle } from "./nav-parts";

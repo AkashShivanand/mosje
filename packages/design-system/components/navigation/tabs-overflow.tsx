@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
-import { Icon } from "../icon/icon";
+import { Icon } from "../utilities/icon";
 import type { TabDef, TabSize } from "./tabs";
 
 /**

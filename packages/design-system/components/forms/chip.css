@@ -1,153 +1,176 @@
-/* ============================================================================
-   MoSJE / UX4G — Chip atom
-   Semantic CSS classes only; all colours reference design tokens (--sa-*).
-   Base: .ds-chip
-   Modifiers: .ds-chip--interactive / --selected / --disabled
-   Sub-parts: .ds-chip__icon / __label / __dismiss
-   Default (unselected): stroke-strong border, ink-strong label, ~32px, radius-md.
-   Selected: primary-tonal bg + primary-dark text + primary border.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  min-height: 32px;
-  box-sizing: border-box;
-  padding: var(--sa-padding-8) var(--sa-padding-12);
-  font-family: var(--sa-font-latin);
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  font-weight: 500;
-  color: var(--sa-text-neutral-bolder);
-  background-color: var(--sa-bg-neutral-base);
-  border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-8);
-  user-select: none;
-  transition:
-    background-color 0.15s ease,
-    border-color 0.15s ease,
-    color 0.15s ease,
-    box-shadow 0.15s ease;
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / UX4G — Chip atom
+     Semantic CSS classes only; all colours reference design tokens (--sa-*).
+     Base: .ds-chip
+     Modifiers: .ds-chip--interactive / --selected / --disabled
+     Sub-parts: .ds-chip__icon / __label / __dismiss
+     Default (unselected): stroke-strong border, ink-strong label, ~32px, radius-md.
+     Selected: primary-tonal bg + primary-dark text + primary border.
+     ============================================================================ */
 
-.ds-chip__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-}
+  .ds-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    min-height: 32px;
+    box-sizing: border-box;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 500;
+    color: var(--sa-text-neutral-bolder);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-8);
+    user-select: none;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
 
-.ds-chip__label {
-  display: inline-flex;
-  align-items: center;
-}
+  .ds-chip__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
 
-/* --------------------------------------------------------------------------
-   Interactive (toggleable) chip
-   -------------------------------------------------------------------------- */
-.ds-chip--interactive {
-  cursor: pointer;
-}
+  .ds-chip__label {
+    display: inline-flex;
+    align-items: center;
+  }
 
-.ds-chip--interactive:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-  border-color: var(--sa-border-neutral-base);
-}
+  /* --------------------------------------------------------------------------
+     Interactive (toggleable) chip
+     -------------------------------------------------------------------------- */
+  .ds-chip--interactive {
+    cursor: pointer;
+  }
 
-.ds-chip--interactive:active {
-  background-color: color-mix(in srgb, var(--sa-color-text-default) 6%, transparent);
-}
+  .ds-chip--interactive:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    border-color: var(--sa-border-neutral-base);
+  }
 
-.ds-chip:focus-visible {
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-  outline: none;
-}
+  .ds-chip--interactive:active {
+    background-color: color-mix(in srgb, var(--sa-color-text-default) 6%, transparent);
+  }
 
-/* --------------------------------------------------------------------------
-   Selected
-   -------------------------------------------------------------------------- */
-.ds-chip--selected {
-  background-color: var(--sa-bg-brand-primary-subtler);
-  color: var(--sa-text-link-brand-hover);
-  border-color: var(--sa-border-brand-primary-base);
-}
+  .ds-chip:focus-visible {
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: none;
+  }
 
-.ds-chip--selected.ds-chip--interactive:hover {
-  background-color: color-mix(
-    in srgb,
-    var(--sa-color-action-primary-default) 22%,
-    var(--sa-bg-neutral-base)
-  );
-  border-color: var(--sa-border-brand-primary-base);
-}
+  /* --------------------------------------------------------------------------
+     Selected
+     -------------------------------------------------------------------------- */
+  .ds-chip--selected {
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-link-brand-hover);
+    border-color: var(--sa-border-brand-primary-base);
+  }
 
-.ds-chip--selected.ds-chip--interactive:active {
-  background-color: color-mix(
-    in srgb,
-    var(--sa-color-action-primary-default) 30%,
-    var(--sa-bg-neutral-base)
-  );
-}
+  .ds-chip--selected.ds-chip--interactive:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--sa-color-action-primary-default) 22%,
+      var(--sa-bg-neutral-base)
+    );
+    border-color: var(--sa-border-brand-primary-base);
+  }
 
-/* --------------------------------------------------------------------------
-   Trailing dismiss button
-   -------------------------------------------------------------------------- */
-.ds-chip__dismiss {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 18px;
-  height: 18px;
-  margin: 0 calc(-1 * var(--sa-padding-4)) 0 0;
-  padding: 0;
-  color: inherit;
-  background: transparent;
-  border: none;
-  border-radius: var(--sa-shape-full);
-  cursor: pointer;
-  -webkit-appearance: none;
-  appearance: none;
-  transition: background-color 0.15s ease;
-}
+  .ds-chip--selected.ds-chip--interactive:active {
+    background-color: color-mix(
+      in srgb,
+      var(--sa-color-action-primary-default) 30%,
+      var(--sa-bg-neutral-base)
+    );
+  }
 
-.ds-chip__dismiss:hover {
-  background-color: color-mix(in srgb, var(--sa-color-text-default) 12%, transparent);
-}
+  /* --------------------------------------------------------------------------
+     Trailing dismiss button
+     -------------------------------------------------------------------------- */
+  .ds-chip__dismiss {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+    margin: 0 calc(-1 * var(--sa-padding-4)) 0 0;
+    padding: 0;
+    color: inherit;
+    background: transparent;
+    border: none;
+    border-radius: var(--sa-shape-full);
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: background-color 0.15s ease;
+  }
 
-.ds-chip__dismiss:focus-visible {
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-  outline: none;
-}
+  .ds-chip__dismiss:hover {
+    background-color: color-mix(in srgb, var(--sa-color-text-default) 12%, transparent);
+  }
 
-/* --------------------------------------------------------------------------
-   Disabled (dims; neutralises interactive feedback)
-   -------------------------------------------------------------------------- */
-.ds-chip--disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  box-shadow: none;
-}
+  .ds-chip__dismiss:focus-visible {
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: none;
+  }
 
-.ds-chip--disabled.ds-chip--interactive:hover,
-.ds-chip--disabled.ds-chip--interactive:active,
-.ds-chip--disabled.ds-chip--selected.ds-chip--interactive:hover,
-.ds-chip--disabled.ds-chip--selected.ds-chip--interactive:active {
-  background-color: var(--sa-bg-neutral-base);
-  border-color: var(--sa-border-neutral-base);
-}
+  /* --------------------------------------------------------------------------
+     Disabled (dims; neutralises interactive feedback)
+     -------------------------------------------------------------------------- */
+  .ds-chip--disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
 
-.ds-chip--disabled.ds-chip--selected.ds-chip--interactive:hover,
-.ds-chip--disabled.ds-chip--selected.ds-chip--interactive:active {
-  background-color: var(--sa-bg-brand-primary-subtler);
-  border-color: var(--sa-border-brand-primary-base);
-}
+  .ds-chip--disabled.ds-chip--interactive:hover,
+  .ds-chip--disabled.ds-chip--interactive:active,
+  .ds-chip--disabled.ds-chip--selected.ds-chip--interactive:hover,
+  .ds-chip--disabled.ds-chip--selected.ds-chip--interactive:active {
+    background-color: var(--sa-bg-neutral-base);
+    border-color: var(--sa-border-neutral-base);
+  }
 
-.ds-chip--disabled .ds-chip__dismiss {
-  cursor: not-allowed;
-}
+  .ds-chip--disabled.ds-chip--selected.ds-chip--interactive:hover,
+  .ds-chip--disabled.ds-chip--selected.ds-chip--interactive:active {
+    background-color: var(--sa-bg-brand-primary-subtler);
+    border-color: var(--sa-border-brand-primary-base);
+  }
 
-.ds-chip--disabled .ds-chip__dismiss:hover {
-  background-color: transparent;
+  .ds-chip--disabled .ds-chip__dismiss {
+    cursor: not-allowed;
+  }
+
+  .ds-chip--disabled .ds-chip__dismiss:hover {
+    background-color: transparent;
+  }
 }

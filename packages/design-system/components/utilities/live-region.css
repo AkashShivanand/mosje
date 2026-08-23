@@ -21,52 +21,25 @@
  */
 @layer components {
   /* ============================================================================
-     MoSJE / UX4G — ActionBanner
-     Semantic CSS classes only; all colours reference design tokens (--sa-*).
-     Plain CSS on purpose: imported from action-banner.tsx, so Tailwind processes
-     it as its own root and `@apply` cannot see the estate's theme.
+     MoSJE / SAMAVESH — visually-hidden utility
+     Used by <LiveRegion>, and available to any DS component that needs to expose
+     text to assistive tech without painting it.
+
+     This is the standard "sr-only" recipe: it keeps the node in the accessibility
+     tree (unlike display:none / visibility:hidden, which remove it) while giving
+     it no visual footprint. `white-space: nowrap` stops a 1px-wide box from
+     wrapping its text into a tall invisible column that can still be scrolled to.
      ============================================================================ */
 
-  .sa-action-banner {
-    background-image: linear-gradient(
-      to right,
-      var(--sa-bg-brand-primary-subtler),
-      var(--sa-bg-brand-accent-subtler)
-    );
-    border: 1px solid var(--sa-border-brand-primary-base);
-    border-radius: var(--sa-shape-16);
-    padding: var(--sa-padding-32);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--sa-stack-24);
-    box-shadow: var(--sa-elevation-card);
-  }
-
-  .sa-action-banner__content {
-    text-align: center;
-  }
-
-  .sa-action-banner__content > * + * {
-    margin-top: var(--sa-stack-4);
-  }
-
-  .sa-action-banner__title {
-    font-size: var(--sa-type-title-1-size);
-    font-weight: 700;
-    color: var(--sa-text-neutral-bolder);
-  }
-
-  .sa-action-banner__description {
-    font-size: var(--sa-type-body-2-size);
-    color: var(--sa-text-neutral-base);
-  }
-
-  @media (min-width: 640px) {
-    .sa-action-banner { flex-direction: row; }
-    .sa-action-banner__content { text-align: left; }
-    .sa-action-banner__title { font-size: var(--sa-type-headline-3-size); }
-    .sa-action-banner__description { font-size: var(--sa-type-body-1-size); }
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: calc(-1 * var(--sa-padding-2));
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
   }
 }

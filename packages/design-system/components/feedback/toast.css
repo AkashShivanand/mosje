@@ -1,78 +1,101 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — Toast
-   Transient notifications, bottom-right, auto-dismiss.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-toast__viewport {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 60;
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-8);
-  font-family: var(--sa-font-latin);
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Toast
+     Transient notifications, bottom-right, auto-dismiss.
+     ============================================================================ */
+
+  .ds-toast__viewport {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 60;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-toast {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-stack-12);
+    min-width: 280px;
+    max-width: 24rem;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border: 1px solid transparent;
+    border-radius: var(--sa-shape-12);
+    box-shadow: var(--sa-elevation-modal);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .ds-toast__icon {
+    margin-top: var(--sa-padding-2);
+    flex-shrink: 0;
+  }
+
+  .ds-toast__msg {
+    flex: 1;
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    font-weight: 500;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-toast__close {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    flex-shrink: 0;
+    padding: var(--sa-padding-2);
+    border-radius: var(--sa-shape-4);
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    transition: color 0.12s ease;
+  }
+
+  .ds-toast__close:hover { color: var(--sa-text-neutral-base); }
+  .ds-toast__close:focus-visible {
+    outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* Variant accents (border + icon colour). */
+  .ds-toast--success { border-color: color-mix(in srgb, var(--sa-border-status-success-base) 30%, transparent); background-color: var(--sa-bg-status-success-subtler); }
+  .ds-toast--success .ds-toast__icon { color: var(--sa-text-status-success-base); }
+
+  .ds-toast--info { border-color: color-mix(in srgb, var(--sa-border-brand-primary-base) 25%, transparent); background-color: var(--sa-color-primaryScale-50); }
+  .ds-toast--info .ds-toast__icon { color: var(--sa-text-brand-primary-base); }
+
+  .ds-toast--warning { border-color: color-mix(in srgb, var(--sa-border-status-warning-base) 35%, transparent); background-color: var(--sa-bg-status-warning-base); }
+  /* `status/warningStrong` DOES NOT EXIST — it is the one absent member of the four-token
+     Strong family, and the closed legacy allow-list in packages/tokens may only shrink, so
+     it cannot be added. The fallback is therefore what has always painted this icon. Bound
+     to it directly: identical pixels (#704b00, 7.00:1 on the warning surface), one fewer
+     dangling name. A darker icon would need a token the grammar forbids — a design
+     decision, not a defect fix. */
+  .ds-toast--warning .ds-toast__icon { color: var(--sa-text-status-warning-base); }
+
+  .ds-toast--error { border-color: color-mix(in srgb, var(--sa-border-status-error-base) 30%, transparent); background-color: var(--sa-bg-status-error-base); }
+  .ds-toast--error .ds-toast__icon { color: var(--sa-color-status-dangerStrong); }
 }
-
-.ds-toast {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--sa-stack-12);
-  min-width: 280px;
-  max-width: 24rem;
-  padding: var(--sa-padding-12) var(--sa-padding-16);
-  border: 1px solid transparent;
-  border-radius: var(--sa-shape-12);
-  box-shadow: var(--sa-elevation-modal);
-  background-color: var(--sa-bg-neutral-base);
-}
-
-.ds-toast__icon {
-  margin-top: var(--sa-padding-2);
-  flex-shrink: 0;
-}
-
-.ds-toast__msg {
-  flex: 1;
-  margin: 0;
-  font-size: var(--sa-type-body-3-size);
-  font-weight: 500;
-  color: var(--sa-text-neutral-base);
-}
-
-.ds-toast__close {
-  appearance: none;
-  border: 0;
-  cursor: pointer;
-  flex-shrink: 0;
-  padding: var(--sa-padding-2);
-  border-radius: var(--sa-shape-4);
-  background: transparent;
-  color: var(--sa-text-neutral-subtle);
-  transition: color 0.12s ease;
-}
-
-.ds-toast__close:hover { color: var(--sa-text-neutral-base); }
-.ds-toast__close:focus-visible {
-  outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
-  outline-offset: var(--sa-focus-offset);
-}
-
-/* Variant accents (border + icon colour). */
-.ds-toast--success { border-color: color-mix(in srgb, var(--sa-border-status-success-base) 30%, transparent); background-color: var(--sa-bg-status-success-subtler); }
-.ds-toast--success .ds-toast__icon { color: var(--sa-text-status-success-base); }
-
-.ds-toast--info { border-color: color-mix(in srgb, var(--sa-border-brand-primary-base) 25%, transparent); background-color: var(--sa-color-primaryScale-50); }
-.ds-toast--info .ds-toast__icon { color: var(--sa-text-brand-primary-base); }
-
-.ds-toast--warning { border-color: color-mix(in srgb, var(--sa-border-status-warning-base) 35%, transparent); background-color: var(--sa-bg-status-warning-base); }
-/* `status/warningStrong` DOES NOT EXIST — it is the one absent member of the four-token
-   Strong family, and the closed legacy allow-list in packages/tokens may only shrink, so
-   it cannot be added. The fallback is therefore what has always painted this icon. Bound
-   to it directly: identical pixels (#704b00, 7.00:1 on the warning surface), one fewer
-   dangling name. A darker icon would need a token the grammar forbids — a design
-   decision, not a defect fix. */
-.ds-toast--warning .ds-toast__icon { color: var(--sa-text-status-warning-base); }
-
-.ds-toast--error { border-color: color-mix(in srgb, var(--sa-border-status-error-base) 30%, transparent); background-color: var(--sa-bg-status-error-base); }
-.ds-toast--error .ds-toast__icon { color: var(--sa-color-status-dangerStrong); }

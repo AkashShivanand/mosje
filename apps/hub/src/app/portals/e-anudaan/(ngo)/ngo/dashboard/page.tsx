@@ -368,7 +368,7 @@ export default function NgoDashboardPage() {
                 ["State", ngo?.state ?? "Maharashtra"],
                 ["District", ngo?.district ?? "Pune"],
                 ["Registration No.", ngo?.registrationNo ?? "51-54"],
-                ["Registration Date", ngo?.registrationDate ?? "06 Aug 1934"],
+                ["Registration Date", ngo?.registrationDate ?? "12 Mar 1978"],
                 ["Registered Under", ngo?.registeredUnder ?? "Registrar of Societies"],
                 ["Chairman", ngo?.chairman ?? "—"],
                 ["Secretary", ngo?.secretary ?? "—"],
@@ -413,7 +413,7 @@ export default function NgoDashboardPage() {
                     <span className="text-[11px] text-ink-muted block">{s.subtitle}</span>
                   </div>
                   <span className="text-xs font-bold text-ink shrink-0 bg-surface px-2 py-1 rounded border border-line">
-                    {s.count} apps
+                    {s.count} {s.count === 1 ? "app" : "apps"}
                   </span>
                 </div>
 

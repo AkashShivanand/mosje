@@ -47,7 +47,7 @@ export default function BankAccountsPage() {
   }, [state, ngo]);
 
   const [accounts, setAccounts] = React.useState<SavedAccount[]>([
-    { id: "acc-1", bank: "State Bank of India", accountMasked: "••••••••••3213", ifsc: "SBIN0001234", branch: "Pune Camp" },
+    { id: "acc-1", bank: "State Bank of India", accountMasked: "••••••••••4417", ifsc: "SBIN0001234", branch: "Pune Camp" },
   ]);
   const [paidInto, setPaidInto] = React.useState<Record<string, string>>({});
 

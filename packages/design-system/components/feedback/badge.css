@@ -1,138 +1,161 @@
-/* ============================================================================
-   MoSJE / UX4G — Badge atom
-   Semantic CSS classes only; all colours reference design tokens (--sa-*).
-   Combine: .ds-badge  +  .ds-badge--<status>  +  .ds-badge--<size>
-   Status: primary | success | danger | neutral
-   Sizes: sm | lg
-   Pill shaped (radius-pill); tonal background of the status colour.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--sa-stack-4);
-  font-family: var(--sa-font-latin);
-  font-weight: 500;
-  white-space: nowrap;
-  border-radius: var(--sa-shape-full);
-  background-color: var(--_bg);
-  color: var(--_fg);
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / UX4G — Badge atom
+     Semantic CSS classes only; all colours reference design tokens (--sa-*).
+     Combine: .ds-badge  +  .ds-badge--<status>  +  .ds-badge--<size>
+     Status: primary | success | danger | neutral
+     Sizes: sm | lg
+     Pill shaped (radius-pill); tonal background of the status colour.
+     ============================================================================ */
 
-/* --------------------------------------------------------------------------
-   Status → tonal bg + readable text
-   -------------------------------------------------------------------------- */
-.ds-badge--primary {
-  --_bg: var(--sa-color-action-primary-tonal);
-  --_fg: var(--sa-color-action-primary-hover);
-}
-
-.ds-badge--info {
-  --_bg: var(--sa-color-status-infoTonal);
-  --_fg: var(--sa-color-status-infoStrong);
-}
-
-.ds-badge--success {
-  --_bg: var(--sa-color-status-successTonal);
-  --_fg: var(--sa-color-status-successStrong);
-}
-
-.ds-badge--danger {
-  --_bg: var(--sa-color-status-dangerTonal);
-  --_fg: var(--sa-color-status-dangerStrong);
-}
-
-.ds-badge--warning {
-  --_bg: var(--sa-color-status-warningTonal);
-  --_fg: var(--sa-color-text-default);
-}
-
-.ds-badge--neutral {
-  --_bg: var(--sa-bg-neutral-subtler);
-  --_fg: var(--sa-color-text-default);
-}
-
-/* --------------------------------------------------------------------------
-   Sizes
-   -------------------------------------------------------------------------- */
-.ds-badge--sm {
-  min-height: 18px;
-  padding: var(--sa-padding-2) var(--sa-padding-8);
-  font-size: var(--sa-type-label-3-size);
-  line-height: var(--sa-type-label-3-lh);
-}
-
-.ds-badge--lg {
-  min-height: 24px;
-  padding: var(--sa-padding-4) var(--sa-padding-12);
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-}
-
-/* --------------------------------------------------------------------------
-   Emphasis: solid (filled source colour) — overrides the tonal default.
-   Two-class specificity beats the single-class subtle rules above.
-   -------------------------------------------------------------------------- */
-.ds-badge--solid.ds-badge--primary {
-  --_bg: var(--sa-color-action-primary-default);
-  --_fg: var(--sa-color-text-onPrimary);
-}
-.ds-badge--solid.ds-badge--info {
-  --_bg: var(--sa-color-status-infoStrong);
-  --_fg: var(--sa-color-text-onPrimary);
-}
-.ds-badge--solid.ds-badge--success {
-  --_bg: var(--sa-color-status-success);
-  --_fg: var(--sa-color-text-onPrimary);
-}
-.ds-badge--solid.ds-badge--danger {
-  --_bg: var(--sa-color-status-danger);
-  --_fg: var(--sa-color-text-onPrimary);
-}
-.ds-badge--solid.ds-badge--warning {
-  --_bg: var(--sa-color-status-warning);
-  --_fg: var(--sa-color-text-default);
-}
-.ds-badge--solid.ds-badge--neutral {
-  --_bg: var(--sa-color-text-default);
-  --_fg: var(--sa-bg-neutral-base);
-}
-
-/* --------------------------------------------------------------------------
-   Leading status dot (Portal DS Dot badge) + optional pulse
-   -------------------------------------------------------------------------- */
-.ds-badge__dot {
-  flex: 0 0 auto;
-  width: var(--sa-cmp-badge-dotSize);
-  height: var(--sa-cmp-badge-dotSize);
-  border-radius: var(--sa-shape-full);
-  background-color: currentColor;
-}
-
-.ds-badge--lg .ds-badge__dot {
-  width: var(--sa-cmp-badge-dotSizeLg);
-  height: var(--sa-cmp-badge-dotSizeLg);
-}
-
-.ds-badge__dot--pulse {
-  animation: ds-badge-pulse 1.6s ease-out infinite;
-}
-
-@keyframes ds-badge-pulse {
-  0% {
-    box-shadow: 0 0 0 0 currentColor;
+  .ds-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-stack-4);
+    font-family: var(--sa-font-latin);
+    font-weight: 500;
+    white-space: nowrap;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--_bg);
+    color: var(--_fg);
   }
-  70% {
-    box-shadow: 0 0 0 6px transparent;
-  }
-  100% {
-    box-shadow: 0 0 0 0 transparent;
-  }
-}
 
-@media (prefers-reduced-motion: reduce) {
+  /* --------------------------------------------------------------------------
+     Status → tonal bg + readable text
+     -------------------------------------------------------------------------- */
+  .ds-badge--primary {
+    --_bg: var(--sa-color-action-primary-tonal);
+    --_fg: var(--sa-color-action-primary-hover);
+  }
+
+  .ds-badge--info {
+    --_bg: var(--sa-color-status-infoTonal);
+    --_fg: var(--sa-color-status-infoStrong);
+  }
+
+  .ds-badge--success {
+    --_bg: var(--sa-color-status-successTonal);
+    --_fg: var(--sa-color-status-successStrong);
+  }
+
+  .ds-badge--danger {
+    --_bg: var(--sa-color-status-dangerTonal);
+    --_fg: var(--sa-color-status-dangerStrong);
+  }
+
+  .ds-badge--warning {
+    --_bg: var(--sa-color-status-warningTonal);
+    --_fg: var(--sa-color-text-default);
+  }
+
+  .ds-badge--neutral {
+    --_bg: var(--sa-bg-neutral-subtler);
+    --_fg: var(--sa-color-text-default);
+  }
+
+  /* --------------------------------------------------------------------------
+     Sizes
+     -------------------------------------------------------------------------- */
+  .ds-badge--sm {
+    min-height: 18px;
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+  }
+
+  .ds-badge--lg {
+    min-height: 24px;
+    padding: var(--sa-padding-4) var(--sa-padding-12);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  /* --------------------------------------------------------------------------
+     Emphasis: solid (filled source colour) — overrides the tonal default.
+     Two-class specificity beats the single-class subtle rules above.
+     -------------------------------------------------------------------------- */
+  .ds-badge--solid.ds-badge--primary {
+    --_bg: var(--sa-color-action-primary-default);
+    --_fg: var(--sa-color-text-onPrimary);
+  }
+  .ds-badge--solid.ds-badge--info {
+    --_bg: var(--sa-color-status-infoStrong);
+    --_fg: var(--sa-color-text-onPrimary);
+  }
+  .ds-badge--solid.ds-badge--success {
+    --_bg: var(--sa-color-status-success);
+    --_fg: var(--sa-color-text-onPrimary);
+  }
+  .ds-badge--solid.ds-badge--danger {
+    --_bg: var(--sa-color-status-danger);
+    --_fg: var(--sa-color-text-onPrimary);
+  }
+  .ds-badge--solid.ds-badge--warning {
+    --_bg: var(--sa-color-status-warning);
+    --_fg: var(--sa-color-text-default);
+  }
+  .ds-badge--solid.ds-badge--neutral {
+    --_bg: var(--sa-color-text-default);
+    --_fg: var(--sa-bg-neutral-base);
+  }
+
+  /* --------------------------------------------------------------------------
+     Leading status dot (Portal DS Dot badge) + optional pulse
+     -------------------------------------------------------------------------- */
+  .ds-badge__dot {
+    flex: 0 0 auto;
+    width: var(--sa-cmp-badge-dotSize);
+    height: var(--sa-cmp-badge-dotSize);
+    border-radius: var(--sa-shape-full);
+    background-color: currentColor;
+  }
+
+  .ds-badge--lg .ds-badge__dot {
+    width: var(--sa-cmp-badge-dotSizeLg);
+    height: var(--sa-cmp-badge-dotSizeLg);
+  }
+
   .ds-badge__dot--pulse {
-    animation: none;
+    animation: ds-badge-pulse 1.6s ease-out infinite;
+  }
+
+  @keyframes ds-badge-pulse {
+    0% {
+      box-shadow: 0 0 0 0 currentColor;
+    }
+    70% {
+      box-shadow: 0 0 0 6px transparent;
+    }
+    100% {
+      box-shadow: 0 0 0 0 transparent;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-badge__dot--pulse {
+      animation: none;
+    }
   }
 }

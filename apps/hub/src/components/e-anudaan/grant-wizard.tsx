@@ -36,11 +36,13 @@ import { cityCategoryFor, districtsOf } from "@/lib/e-anudaan/geography";
 import {
   AVYAY_RENEWAL_NOTICE,
   DECLARATION_TEXT,
+  applyAllAutoFields,
   applyAutoFields,
   errorSummary,
   fieldVisible,
   stepFields,
   validateStep,
+  visibleDocuments,
   wizardFor,
   type FieldDef,
   type StepDef,
@@ -98,17 +100,22 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
   };
 
   const [step, setStep] = React.useState(0);
-  const [values, setValues] = React.useState<Record<string, string>>(() => ({
-    fld_ngo_name: ngo?.name ?? "Sankalp Seva Sansthan",
-    fld_darpan_id: ngo?.darpanId ?? "MH/2016/100000",
-    fld_registration_number: ngo?.registrationNo ?? "51-54",
-    fld_contact_mobile: ngo?.mobile ?? "9441747200",
-    fld_contact_email: ngo?.email ?? "sankalpsevasansthan@gmail.com",
-    fld_reg_office_state: ngo?.state ?? "Maharashtra",
-    fld_reg_office_district: ngo?.district ?? "Pune",
-    fld_financial_year: "2026-27",
-    ...(readDraft().values ?? {}),
-  }));
+  const [values, setValues] = React.useState<Record<string, string>>(() => {
+    const seed: Record<string, string> = {
+      fld_ngo_name: ngo?.name ?? "Sankalp Seva Sansthan",
+      fld_darpan_id: ngo?.darpanId ?? "MH/2016/100000",
+      fld_registration_number: ngo?.registrationNo ?? "51-54",
+      fld_contact_mobile: ngo?.mobile ?? "9441747200",
+      fld_contact_email: ngo?.email ?? "sankalpsevasansthan@gmail.com",
+      fld_reg_office_state: ngo?.state ?? "Maharashtra",
+      fld_reg_office_district: ngo?.district ?? "Pune",
+      fld_financial_year: "2026-27",
+      ...(readDraft().values ?? {}),
+    };
+    // Derive the totals now, not on first keystroke — a restored draft has the inputs but not
+    // the read-only fields computed from them.
+    return def ? applyAllAutoFields(def, seed) : seed;
+  });
   const [errors, setErrors] = React.useState<Record<string, string>>({});
   const [declared, setDeclared] = React.useState(false);
   const [draftDismissed, setDraftDismissed] = React.useState(false);
@@ -259,7 +266,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
         {isDocs ? (
           <>
             <DocumentsChecklist
-              documents={def.documents}
+              documents={visibleDocuments(def, values)}
               note={def.documentsNote}
               uploaded={docs}
               onChange={setDocs}
@@ -517,7 +524,7 @@ function ReviewStep({
           </Button>
         </div>
         <ul className="mt-3 space-y-1.5">
-          {def.documents.map((d) => {
+          {visibleDocuments(def, values).map((d) => {
             const up = docs[d.n];
             return (
               <li key={d.n} className="flex items-center justify-between gap-3 text-sm">

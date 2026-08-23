@@ -1,124 +1,147 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — auth-only form fields
-   PasswordStrengthMeter and CaptchaField. Both exist because an authentication
-   screen needs them and nothing else does; keeping them out of forms.css keeps
-   that boundary visible.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-/* ---- PasswordStrengthMeter ------------------------------------------------ */
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — auth-only form fields
+     PasswordStrengthMeter and CaptchaField. Both exist because an authentication
+     screen needs them and nothing else does; keeping them out of forms.css keeps
+     that boundary visible.
+     ============================================================================ */
 
-.ds-pwmeter {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-4);
-  font-family: var(--sa-font-latin);
-}
+  /* ---- PasswordStrengthMeter ------------------------------------------------ */
 
-.ds-pwmeter__track {
-  display: flex;
-  gap: var(--sa-inline-2);
-}
+  .ds-pwmeter {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    font-family: var(--sa-font-latin);
+  }
 
-.ds-pwmeter__seg {
-  flex: 1 1 0;
-  height: var(--sa-padding-4);
-  border-radius: var(--sa-shape-full);
-  background-color: var(--sa-bg-neutral-subtle);
-  transition: background-color 0.18s ease;
-}
+  .ds-pwmeter__track {
+    display: flex;
+    gap: var(--sa-inline-2);
+  }
 
-@media (prefers-reduced-motion: reduce) {
-  .ds-pwmeter__seg { transition: none; }
-}
+  .ds-pwmeter__seg {
+    flex: 1 1 0;
+    height: var(--sa-padding-4);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-subtle);
+    transition: background-color 0.18s ease;
+  }
 
-.ds-pwmeter__seg--weak    { background-color: var(--sa-bg-status-error-bolder); }
-.ds-pwmeter__seg--fair    { background-color: var(--sa-bg-status-warning-bolder); }
-.ds-pwmeter__seg--good    { background-color: var(--sa-bg-status-info-bolder); }
-.ds-pwmeter__seg--strong  { background-color: var(--sa-bg-status-success-bolder); }
+  @media (prefers-reduced-motion: reduce) {
+    .ds-pwmeter__seg { transition: none; }
+  }
 
-.ds-pwmeter__legend {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sa-inline-8);
-}
+  .ds-pwmeter__seg--weak    { background-color: var(--sa-bg-status-error-bolder); }
+  .ds-pwmeter__seg--fair    { background-color: var(--sa-bg-status-warning-bolder); }
+  .ds-pwmeter__seg--good    { background-color: var(--sa-bg-status-info-bolder); }
+  .ds-pwmeter__seg--strong  { background-color: var(--sa-bg-status-success-bolder); }
 
-.ds-pwmeter__caption {
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-pwmeter__legend {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+  }
 
-.ds-pwmeter__level {
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  font-weight: 600;
-}
+  .ds-pwmeter__caption {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-pwmeter__level--none   { color: var(--sa-text-neutral-subtle); }
-.ds-pwmeter__level--weak   { color: var(--sa-text-status-error-base); }
-.ds-pwmeter__level--fair   { color: var(--sa-text-status-warning-base); }
-.ds-pwmeter__level--good   { color: var(--sa-text-status-info-base); }
-.ds-pwmeter__level--strong { color: var(--sa-text-status-success-base); }
+  .ds-pwmeter__level {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 600;
+  }
 
-/* ---- CaptchaField --------------------------------------------------------- */
+  .ds-pwmeter__level--none   { color: var(--sa-text-neutral-subtle); }
+  .ds-pwmeter__level--weak   { color: var(--sa-text-status-error-base); }
+  .ds-pwmeter__level--fair   { color: var(--sa-text-status-warning-base); }
+  .ds-pwmeter__level--good   { color: var(--sa-text-status-info-base); }
+  .ds-pwmeter__level--strong { color: var(--sa-text-status-success-base); }
 
-.ds-captcha {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-8);
-  font-family: var(--sa-font-latin);
-}
+  /* ---- CaptchaField --------------------------------------------------------- */
 
-.ds-captcha__row {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-inline-8);
-}
+  .ds-captcha {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    font-family: var(--sa-font-latin);
+  }
 
-.ds-captcha__challenge {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--sa-padding-12) var(--sa-padding-16);
-  border-radius: var(--sa-control-radius);
-  background-color: var(--sa-bg-neutral-subtle);
-  color: var(--sa-text-neutral-base);
-  font-size: var(--sa-type-title-2-size);
-  line-height: var(--sa-type-title-2-lh);
-  letter-spacing: 0.12em;
-  user-select: none;
-}
+  .ds-captcha__row {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
 
-.ds-captcha__challenge img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
+  .ds-captcha__challenge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    letter-spacing: 0.12em;
+    user-select: none;
+  }
 
-.ds-captcha__refresh {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--sa-target-comfortable);
-  height: var(--sa-target-comfortable);
-  flex: none;
-  border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-control-radius);
-  background-color: var(--sa-bg-neutral-base);
-  color: var(--sa-icon-neutral-base);
-  cursor: pointer;
-}
+  .ds-captcha__challenge img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
 
-.ds-captcha__refresh:hover { background-color: var(--sa-bg-neutral-subtler); }
+  .ds-captcha__refresh {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-target-comfortable);
+    height: var(--sa-target-comfortable);
+    flex: none;
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-icon-neutral-base);
+    cursor: pointer;
+  }
 
-.ds-captcha__refresh:focus-visible {
-  outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-  outline-offset: var(--sa-focus-offset);
-}
+  .ds-captcha__refresh:hover { background-color: var(--sa-bg-neutral-subtler); }
 
-.ds-captcha__error {
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-status-error-base);
+  .ds-captcha__refresh:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-captcha__error {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-status-error-base);
+  }
 }

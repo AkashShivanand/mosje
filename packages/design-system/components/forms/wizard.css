@@ -1,102 +1,125 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — Wizard + Review
-   Multi-step form shell and review-summary cards.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: calc(-1 * var(--sa-padding-2));
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Wizard + Review
+     Multi-step form shell and review-summary cards.
+     ============================================================================ */
 
-.ds-wizard {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-24);
-  font-family: var(--sa-font-latin);
-}
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: calc(-1 * var(--sa-padding-2));
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
 
-.ds-wizard__stepper {
-  background-color: var(--sa-bg-neutral-base);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-12);
-  padding: var(--sa-padding-20);
-}
+  .ds-wizard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-24);
+    font-family: var(--sa-font-latin);
+  }
 
-.ds-wizard__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-24);
-  outline: none;
-}
+  .ds-wizard__stepper {
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    padding: var(--sa-padding-20);
+  }
 
-.ds-wizard__actions {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sa-stack-12);
-  padding-top: var(--sa-padding-20);
-  border-top: 1px solid var(--sa-border-neutral-subtle);
-}
+  .ds-wizard__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-24);
+    outline: none;
+  }
 
-/* Review summary. */
-.ds-review-section {
-  background-color: var(--sa-bg-neutral-base);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-12);
-  padding: var(--sa-padding-20);
-}
+  .ds-wizard__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    padding-top: var(--sa-padding-20);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
 
-/* Review section label = Figma uppercase divider (matches form sub-dividers). */
-.ds-review-section__title {
-  margin: 0 0 var(--sa-padding-16);
-  font-size: var(--sa-type-label-2-size);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--sa-text-neutral-subtle);
-}
+  /* Review summary. */
+  .ds-review-section {
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    padding: var(--sa-padding-20);
+  }
 
-.ds-review-section__grid {
-  display: grid;
-  gap: var(--sa-stack-12) var(--sa-padding-20);
-  grid-template-columns: 1fr;
-  margin: 0;
-}
+  /* Review section label = Figma uppercase divider (matches form sub-dividers). */
+  .ds-review-section__title {
+    margin: 0 0 var(--sa-padding-16);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-@media (min-width: 640px) {
-  .ds-review-section__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
+  .ds-review-section__grid {
+    display: grid;
+    gap: var(--sa-stack-12) var(--sa-padding-20);
+    grid-template-columns: 1fr;
+    margin: 0;
+  }
 
-@media (min-width: 1280px) {
-  .ds-review-section__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-}
+  @media (min-width: 640px) {
+    .ds-review-section__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
 
-.ds-review-item {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-padding-2);
-}
+  @media (min-width: 1280px) {
+    .ds-review-section__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
 
-/* Span the full grid row — for multi-attribute records (e.g. a drug entry). */
-.ds-review-item--wide {
-  grid-column: 1 / -1;
-}
+  .ds-review-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-2);
+  }
 
-.ds-review-item__label {
-  font-size: var(--sa-type-body-3-size);
-  font-weight: 500;
-  color: var(--sa-text-neutral-subtle);
-}
+  /* Span the full grid row — for multi-attribute records (e.g. a drug entry). */
+  .ds-review-item--wide {
+    grid-column: 1 / -1;
+  }
 
-.ds-review-item__value {
-  margin: 0;
-  font-size: var(--sa-type-body-2-size);
-  color: var(--sa-text-neutral-base);
+  .ds-review-item__label {
+    font-size: var(--sa-type-body-3-size);
+    font-weight: 500;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-review-item__value {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-base);
+  }
 }

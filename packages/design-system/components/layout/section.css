@@ -1,84 +1,107 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — SectionTitle
-   The shared heading row for content sections. Token-driven; no Tailwind.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-section-title {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: var(--sa-stack-16);
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — SectionTitle
+     The shared heading row for content sections. Token-driven; no Tailwind.
+     ============================================================================ */
 
-/* min-width:0 lets a long title ellipsize instead of shoving the actions
-   off the right edge of the flex row. */
-.ds-section-title__text {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-padding-2);
-}
-
-.ds-section-title__eyebrow {
-  font-size: var(--sa-type-label-3-size);
-  line-height: var(--sa-type-label-3-lh);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--sa-text-neutral-subtle);
-}
-
-.ds-section-title__headline {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-}
-
-.ds-section-title__heading {
-  margin: 0;
-  font-family: var(--sa-font-latin);
-  font-size: var(--sa-type-headline-5-size);
-  line-height: var(--sa-type-headline-5-lh);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--sa-text-neutral-base);
-}
-
-.ds-section-title__count {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 var(--sa-padding-8);
-  border-radius: var(--sa-shape-full);
-  background-color: var(--sa-bg-neutral-subtler);
-  box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
-  font-size: var(--sa-type-label-3-size);
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--sa-text-neutral-subtle);
-}
-
-.ds-section-title__description {
-  margin: 0;
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-neutral-subtle);
-}
-
-.ds-section-title__actions {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  flex-shrink: 0;
-}
-
-/* Stack on narrow viewports so the actions don't crush the heading. */
-@media (max-width: 640px) {
   .ds-section-title {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--sa-stack-16);
+  }
+
+  /* min-width:0 lets a long title ellipsize instead of shoving the actions
+     off the right edge of the flex row. */
+  .ds-section-title__text {
+    min-width: 0;
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
-    gap: var(--sa-stack-12);
+    gap: var(--sa-padding-2);
+  }
+
+  .ds-section-title__eyebrow {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-section-title__headline {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+  }
+
+  .ds-section-title__heading {
+    margin: 0;
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-section-title__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-subtler);
+    box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-section-title__description {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-section-title__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    flex-shrink: 0;
+  }
+
+  /* Stack on narrow viewports so the actions don't crush the heading. */
+  @media (max-width: 640px) {
+    .ds-section-title {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--sa-stack-12);
+    }
   }
 }

@@ -8,8 +8,9 @@
  * Each scheme has its own step count, its own sections and its own document checklist:
  *
  *   SHRESHTA_M2  6 steps   20 documents   (PDF / JPG / PNG)
- *   AVYAY        7 steps    9 documents   (PDF)          + a cost-norms panel on the grant step
- *   SMILE        6 steps   20 documents   (PDF)
+ *   AVYAY      8/7 steps  11/9 documents  (PDF)          + a cost-norms panel on the grant step
+ *                  NEW branch has 8 steps and 11 documents; renewal 7 and 9.
+ *   SMILE        6 steps   12 documents   (PDF)
  *   NAPDDR       3 steps   17 documents   (PDF)          — the generic short form
  *
  * Routing note, also from the walkthrough: the early steps sit under `.../step-1`, the upload
@@ -17,7 +18,7 @@
  * internal and the stepper indicators are display-only.
  */
 
-import { CITY_CATEGORIES, INDIAN_STATES } from "./geography";
+import { CITY_CATEGORIES, INDIAN_STATES, cityCategoryFor } from "./geography.ts";
 
 export type SchemeCode = "SHRESHTA_M2" | "AVYAY" | "SMILE" | "NAPDDR";
 
@@ -37,7 +38,13 @@ export type FieldKind =
 export type AutoRule =
   | { kind: "sum"; from: readonly string[] }
   /** City category is filled in from the chosen district (live helper text says exactly this). */
-  | { kind: "cityCategory"; from: string };
+  | { kind: "cityCategory"; from: string }
+  /**
+   * AVYAY's account number, IFSC and bank/branch, which live fills in from the Bank Account
+   * chosen above rather than asking for them. The option reads
+   * "<bank> · <masked account> · <IFSC>", so each part is one segment of it.
+   */
+  | { kind: "bankAccountPart"; from: string; part: "account" | "ifsc" | "bankAndBranch" };
 
 export interface FieldDef {
   name: string;
@@ -92,6 +99,13 @@ export interface DocDef {
   /** NAPDDR renders a one-line description under each slot instead of a conditional note. */
   description?: string;
   optional?: boolean;
+  /**
+   * Some checklists depend on an answer given earlier. AVYAY is the case that forced this: a new
+   * project is asked for the NGO's own PAN, two years of annual reports, two years of audited
+   * accounts and a fire safety audit, while a renewal is asked instead for a budget estimate, the
+   * project's audited accounts and a GFR-12A utilisation certificate.
+   */
+  showWhen?: { field: string; equals: readonly string[] };
 }
 
 export interface WizardDef {
@@ -107,6 +121,9 @@ export interface WizardDef {
 }
 
 const YES_NO = ["Yes", "No"] as const;
+/** SMILE's two case_type answers, referenced by the fields that fork on them. */
+const SMILE_CASE_NEW = "No — new project (Project ID auto-generated)";
+const SMILE_CASE_EXISTING = "Yes — existing project (select the Project ID)";
 const FINANCIAL_YEARS = ["2027-28", "2026-27", "2025-26"] as const;
 
 /** The declaration that closes every scheme's review step, verbatim from the live portal. */
@@ -159,8 +176,8 @@ const SHRESHTA_STEPS: readonly StepDef[] = [
             kind: "select",
             wide: true,
             options: [
-              "SC/DL/NWD/02478 — Hostel, North West Delhi · last applied FY 2025-26",
-              "SC/DL/STS/02472 — Hostel, South East Delhi · last applied FY 2025-26",
+              "SC/DL/NWD/09001 — Hostel, North West Delhi · last applied FY 2025-26",
+              "SC/DL/STS/09002 — Hostel, South East Delhi · last applied FY 2025-26",
               "SC/GJ/AHM/02031 — Residential School · last applied FY 2025-26",
               "SC/GJ/AHM/02059 — Hostel · last applied FY 2025-26",
               "SC/TN/KLI/02302 — Residential School, Kallakurichi · last applied FY 2025-26",
@@ -338,7 +355,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
             help: "Choose 'Ongoing / Renewal' to carry forward the details of one of your existing AVYAY projects.",
           },
           {
-            name: "fld_existing_project",
+            name: "fld_ongoing_source_application",
             label: "Select the existing project to renew",
             kind: "select",
             required: true,
@@ -356,7 +373,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
             help: "A new application is always for the financial year now running. For a renewal, this is the year whose instalment you are claiming — changing it re-checks which instalments are still open for this project.",
           },
           {
-            name: "fld_installment",
+            name: "fld_installment_no",
             label: "Installment",
             kind: "select",
             required: true,
@@ -376,7 +393,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
         fields: [
           { name: "fld_ngo_name", label: "Name of NGO / VO (as in NGO-Darpan)", kind: "text", required: true, readOnly: true, help: "Pre-filled from your login / NGO-Darpan." },
           { name: "fld_darpan_id", label: "NGO-Darpan Unique ID", kind: "text", required: true, readOnly: true, help: "Pre-filled from your login. Key for identity read and for duplicate-project prevention (FR-ONG-01)." },
-          { name: "fld_project_id_auto", label: "Project ID", kind: "text", readOnly: true, wide: true, help: "Generated automatically on submit as IP / State abbreviation / District abbreviation / a unique number. For an ongoing renewal, the existing project's ID is retained (FR-ONG-02)." },
+          { name: "fld_project_id", label: "Project ID", kind: "text", readOnly: true, wide: true, help: "Generated automatically on submit as IP / State abbreviation / District abbreviation / a unique number. For an ongoing renewal, the existing project's ID is retained (FR-ONG-02)." },
           { name: "fld_statute_act", label: "Statute / Act of Registration", kind: "text", required: true },
           { name: "fld_registration_number", label: "Registration Number", kind: "text", required: true, help: "As printed on your registration certificate under the Act named above." },
           { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true },
@@ -386,7 +403,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
           { name: "fld_contact_mobile", label: "Mobile", kind: "tel", required: true, help: "Pre-filled from your login. Used for notifications." },
           { name: "fld_contact_email", label: "Email", kind: "email", required: true, help: "Pre-filled from your login. Used for notifications." },
           { name: "fld_contact_telephone", label: "Telephone", kind: "tel" },
-          { name: "moa_senior_citizens", label: "MOA includes welfare of senior citizens as an aim/objective", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "moa_includes_senior_citizens", label: "MOA includes welfare of senior citizens as an aim/objective", kind: "radio", required: true, options: YES_NO, wide: true },
         ],
       },
     ],
@@ -446,6 +463,42 @@ const AVYAY_STEPS: readonly StepDef[] = [
     ],
   },
   {
+    title: "Justification",
+    sections: [
+      {
+        title: "Justification",
+        lead: "Why the district needs this project. Walked on live 2026-08-23 — a step of its own between Project Details and the infrastructure step.",
+        fields: [
+          {
+            name: "fld_services_available_in_district",
+            label: "Services already available in the district",
+            kind: "textarea",
+            required: true,
+            wide: true,
+            maxLength: 1400,
+            help: "Approximately 200 words.",
+          },
+          {
+            name: "fld_distance_to_nearest_similar",
+            label: "Distance to the nearest similar service (km)",
+            // Live ships a text input and then rejects it with "must be a number"; a number input
+            // enforces the same constraint without the round trip.
+            kind: "number",
+            required: true,
+          },
+          {
+            name: "fld_other_justification",
+            label: "Other justification (max 200 words)",
+            kind: "textarea",
+            wide: true,
+            maxLength: 1400,
+            help: "Approximately 200 words.",
+          },
+        ],
+      },
+    ],
+  },
+  {
     title: "Infrastructure, Beneficiaries & Bank",
     sections: [
       {
@@ -478,17 +531,17 @@ const AVYAY_STEPS: readonly StepDef[] = [
         fields: [
           { name: "bank_ngo_name_declared", label: "Account is in the name of the NGO/VO", kind: "radio", required: true, options: YES_NO, wide: true },
           {
-            name: "fld_bank_account_ref",
+            name: "fld_bank_account_id",
             label: "Bank Account",
             kind: "select",
             required: true,
             wide: true,
-            options: ["State Bank of India · ••••••••••3213 · SBIN0001234"],
+            options: ["State Bank of India · ••••••••••4417 · SBIN0001234"],
             help: "Carried forward from this project — it cannot be changed on a renewal. To change it, raise a request from My Bank Accounts; it takes effect once the Ministry approves it. Manage all your accounts from the 'My Bank Accounts' menu.",
           },
-          { name: "fld_bank_account_number", label: "Account Number", kind: "text", required: true, readOnly: true, help: "Filled in automatically from the Bank Account you select above." },
-          { name: "fld_bank_ifsc", label: "IFSC Code", kind: "text", required: true, readOnly: true, help: "Filled in automatically from the Bank Account you select above." },
-          { name: "fld_bank_name_branch", label: "Bank & Branch", kind: "text", required: true, readOnly: true, help: "Filled in automatically from the Bank Account you select above." },
+          { name: "fld_bank_account_number", label: "Account Number", kind: "text", required: true, readOnly: true, auto: { kind: "bankAccountPart", from: "fld_bank_account_id", part: "account" }, help: "Filled in automatically from the Bank Account you select above." },
+          { name: "fld_bank_ifsc", label: "IFSC Code", kind: "text", required: true, readOnly: true, auto: { kind: "bankAccountPart", from: "fld_bank_account_id", part: "ifsc" }, help: "Filled in automatically from the Bank Account you select above." },
+          { name: "fld_bank_name_branch", label: "Bank & Branch", kind: "text", required: true, readOnly: true, auto: { kind: "bankAccountPart", from: "fld_bank_account_id", part: "bankAndBranch" }, help: "Filled in automatically from the Bank Account you select above." },
         ],
       },
     ],
@@ -509,7 +562,7 @@ const AVYAY_STEPS: readonly StepDef[] = [
       {
         title: "Verification & Authorised Person",
         fields: [
-          { name: "decl_fee_charged", label: "No money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
+          { name: "decl_no_money_from_beneficiaries", label: "No money is charged from the beneficiaries", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "decl_not_blacklisted", label: "Organisation is not blacklisted", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "fld_auth_person_name", label: "Name of Authorised Person", kind: "text", required: true },
           { name: "fld_auth_person_contact", label: "Contact of Authorised Person", kind: "tel", required: true },
@@ -523,16 +576,43 @@ const AVYAY_STEPS: readonly StepDef[] = [
   { title: "Review & Submit", kind: "review", sections: [] },
 ];
 
+/**
+ * AVYAY's checklist is branch-dependent. Walked on live 2026-08-23: the NEW branch renders these
+ * eleven in this order; the renewal branch renders the six shared entries plus Budget Estimate,
+ * Audited Accounts of Project and the GFR-12A. Ordered so that filtering by `case_type` reproduces
+ * each branch's sequence exactly.
+ */
 const AVYAY_DOCS: readonly DocDef[] = [
   { n: 1, title: "Registration Certificate" },
-  { n: 2, title: "Annual Report of NGO — previous FY" },
-  { n: 3, title: "Bank Details of the Project" },
-  { n: 4, title: "Beneficiary List" },
-  { n: 5, title: "Staff List" },
-  { n: 6, title: "Rent Agreement" },
-  { n: 7, title: "Budget Estimate" },
-  { n: 8, title: "Audited Accounts of Project" },
-  { n: 9, title: "Utilisation Certificate (GFR-12A)" },
+  { n: 2, title: "PAN Card of the Organisation", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 3, title: "Annual Report of NGO — previous FY" },
+  {
+    n: 4,
+    title: "Annual Report of NGO — previous-to-previous FY",
+    showWhen: { field: "case_type", equals: ["New project"] },
+  },
+  {
+    n: 5,
+    title: "Audited Accounts of NGO — previous FY",
+    showWhen: { field: "case_type", equals: ["New project"] },
+  },
+  {
+    n: 6,
+    title: "Audited Accounts of NGO — previous-to-previous FY",
+    showWhen: { field: "case_type", equals: ["New project"] },
+  },
+  { n: 7, title: "Bank Details of the Project" },
+  { n: 8, title: "Beneficiary List" },
+  { n: 9, title: "Staff List" },
+  { n: 10, title: "Rent Agreement" },
+  { n: 11, title: "Fire Safety Audit Report", showWhen: { field: "case_type", equals: ["New project"] } },
+  { n: 12, title: "Budget Estimate", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+  { n: 13, title: "Audited Accounts of Project", showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] } },
+  {
+    n: 14,
+    title: "Utilisation Certificate (GFR-12A)",
+    showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] },
+  },
 ];
 
 export const AVYAY_WIZARD: WizardDef = {
@@ -549,26 +629,71 @@ export const AVYAY_WIZARD: WizardDef = {
  * verbatim in the live "Show the 18 heads behind these figures" disclosure. Amounts are the
  * norm for a 50-beneficiary Senior Citizens' Home in a Z-category city.
  */
-export const AVYAY_COST_HEADS: readonly { head: string; norm: number; attendanceLinked?: boolean; nonRecurring?: boolean }[] = [
-  { head: "Superintendent", norm: 154553 },
-  { head: "Social Worker/ Counsellor", norm: 98914 },
-  { head: "Yoga Therapist", norm: 61821 },
-  { head: "Nurse", norm: 80367 },
-  { head: "Cook", norm: 197827 },
-  { head: "Multi-Tasking Staff (MTS)", norm: 395654 },
-  { head: "Accountant /Clerk", norm: 72000 },
-  { head: "Food/Nutrition (attendance-linked)", norm: 1410292, attendanceLinked: true },
-  { head: "Doctor", norm: 408019 },
-  { head: "Hygiene (attendance-linked)", norm: 100000, attendanceLinked: true },
-  { head: "Medicine/ Tests (attendance-linked)", norm: 206070, attendanceLinked: true },
-  { head: "Clothing /Oil, soap etc (attendance-linked)", norm: 206070, attendanceLinked: true },
-  { head: "Recreation and production related Charges", norm: 123642 },
-  { head: "Water, electricity charges", norm: 200000 },
-  { head: "Miscellaneous & Unforeseen", norm: 40000 },
-  { head: "Toiletries (attendance-linked)", norm: 60000, attendanceLinked: true },
-  { head: "Owned Building on Z Category City (10% of Rent)", norm: 29700 },
-  { head: "Non-Recurring Items including the cost of CCTV cameras and website developing charges", norm: 412140, nonRecurring: true },
+/**
+ * AVYAY's 18 cost heads, with the norm for each sanctioned capacity.
+ *
+ * Live does not publish one table — it recomputes the figures from the project type, so a
+ * 25-beneficiary home and a 50-beneficiary home draw different amounts on the same head, and
+ * not by a single ratio: a Superintendent is one post either way, food scales with residents,
+ * and the MTS count goes 3 → 4. The 25 column was read off the live panel on 2026-08-23 for a
+ * Senior Citizens' Home — 25 beneficiaries, NGO, city category Z; the 50 column is the table
+ * this file already carried.
+ *
+ * Row order follows live, including Toiletries before Miscellaneous.
+ */
+export const AVYAY_COST_HEADS_BY_CAPACITY: readonly {
+  head: string;
+  norm25: number;
+  norm50: number;
+  attendanceLinked?: boolean;
+  nonRecurring?: boolean;
+}[] = [
+  { head: "Superintendent", norm25: 154553, norm50: 154553 },
+  { head: "Social Worker/ Counsellor", norm25: 98914, norm50: 98914 },
+  { head: "Yoga Therapist", norm25: 61821, norm50: 61821 },
+  { head: "Nurse", norm25: 80367, norm50: 80367 },
+  { head: "Cook", norm25: 98914, norm50: 197827 },
+  { head: "Multi-Tasking Staff (MTS)", norm25: 296741, norm50: 395654 },
+  { head: "Accountant /Clerk", norm25: 72000, norm50: 72000 },
+  { head: "Food/Nutrition (attendance-linked)", norm25: 705146, norm50: 1410292, attendanceLinked: true },
+  { head: "Doctor", norm25: 204009, norm50: 408019 },
+  { head: "Hygiene (attendance-linked)", norm25: 50000, norm50: 100000, attendanceLinked: true },
+  { head: "Medicine/ Tests (attendance-linked)", norm25: 103035, norm50: 206070, attendanceLinked: true },
+  { head: "Clothing /Oil, soap etc (attendance-linked)", norm25: 103035, norm50: 206070, attendanceLinked: true },
+  { head: "Recreation and production related Charges", norm25: 61821, norm50: 123642 },
+  { head: "Water, electricity charges", norm25: 100000, norm50: 200000 },
+  { head: "Toiletries (attendance-linked)", norm25: 30000, norm50: 60000, attendanceLinked: true },
+  { head: "Miscellaneous & Unforeseen", norm25: 20000, norm50: 40000 },
+  { head: "Owned Building on Z Category City (10% of Rent)", norm25: 19800, norm50: 29700 },
+  {
+    head: "Non-Recurring Items including the cost of CCTV cameras and website developing charges",
+    norm25: 309105,
+    norm50: 412140,
+    nonRecurring: true,
+  },
 ];
+
+export type AvyayCostHead = {
+  head: string;
+  norm: number;
+  attendanceLinked?: boolean;
+  nonRecurring?: boolean;
+};
+
+/**
+ * The 18 heads resolved for one project type. Anything that is not an explicit 25-beneficiary
+ * home draws the 50 column, which is what live does for the 50-beneficiary, women-only and
+ * Continuous Care variants.
+ */
+export function avyayCostHeads(natureOfProject?: string): readonly AvyayCostHead[] {
+  const is25 = (natureOfProject ?? "").includes("25");
+  return AVYAY_COST_HEADS_BY_CAPACITY.map((h) => ({
+    head: h.head,
+    norm: is25 ? h.norm25 : h.norm50,
+    ...(h.attendanceLinked ? { attendanceLinked: true as const } : {}),
+    ...(h.nonRecurring ? { nonRecurring: true as const } : {}),
+  }));
+}
 
 /* ══════════════════════════════════════════════════════════════════════════════
    SMILE — Garima Greh — 6 steps
@@ -592,10 +717,46 @@ const SMILE_STEPS: readonly StepDef[] = [
             kind: "radio",
             required: true,
             wide: true,
-            options: ["No — new project (Project ID auto-generated)", "Yes — existing project (select the Project ID)"],
+            options: [SMILE_CASE_NEW, SMILE_CASE_EXISTING],
             help: "A new applicant's Project ID is generated automatically on submit.",
           },
-          { name: "fld_project_id_auto", label: "Project Id", kind: "text", readOnly: true, help: "Generated automatically on submit for a new project." },
+          /*
+           * SMILE's step 1 forks on case_type, walked on live 2026-08-23. A new project gets only
+           * the generated id; an existing one is asked to pick the project, confirm its id and
+           * name the installment — and does NOT get the generated id at all.
+           */
+          {
+            name: "fld_project_id_auto",
+            label: "Project Id",
+            kind: "text",
+            readOnly: true,
+            help: "Generated automatically on submit for a new project.",
+            showWhen: { field: "case_type", equals: [SMILE_CASE_NEW] },
+          },
+          {
+            name: "fld_smile_project_select",
+            label: "Existing Project",
+            kind: "select",
+            required: true,
+            wide: true,
+            options: ["SM/MH/PUN/09003 — SMILE project (FY 2026-27)"],
+            showWhen: { field: "case_type", equals: [SMILE_CASE_EXISTING] },
+          },
+          {
+            name: "fld_project_id",
+            label: "Project ID",
+            kind: "text",
+            required: true,
+            showWhen: { field: "case_type", equals: [SMILE_CASE_EXISTING] },
+          },
+          {
+            name: "fld_installment_no",
+            label: "Installment",
+            kind: "select",
+            required: true,
+            options: ["1st Installment", "2nd Installment"],
+            showWhen: { field: "case_type", equals: [SMILE_CASE_EXISTING] },
+          },
           { name: "website_available", label: "Do you have a website?", kind: "radio", required: true, options: YES_NO, wide: true },
           { name: "fld_website_url", label: "Website URL", kind: "text", required: true, showWhen: { field: "website_available", equals: ["Yes"] } },
           { name: "camera_live_feed", label: "Do you have a camera and live feed?", kind: "radio", required: true, options: YES_NO, wide: true, help: "A Yes makes the CCTV/live-feed registration proof (document 20) mandatory." },
@@ -949,6 +1110,19 @@ export function fieldVisible(field: FieldDef, values: Record<string, string>): b
   return field.showWhen.equals.includes(values[field.showWhen.field] ?? "");
 }
 
+/**
+ * The checklist for the answers given so far, renumbered 1..n the way live numbers whichever
+ * documents it is actually showing.
+ */
+export function visibleDocuments(
+  wizard: WizardDef,
+  values: Record<string, string>,
+): readonly DocDef[] {
+  return wizard.documents
+    .filter((d) => !d.showWhen || d.showWhen.equals.includes(values[d.showWhen.field] ?? ""))
+    .map((d, i) => ({ ...d, n: i + 1 }));
+}
+
 const IFSC_RE = /^[A-Z]{4}0[A-Z0-9]{6}$/;
 const PIN_RE = /^[1-9][0-9]{5}$/;
 const NAME_AND_PHONE_RE = /^[A-Za-z][A-Za-z .'-]*,\s*\d{10,}$/;
@@ -1008,6 +1182,24 @@ export function validateStep(step: StepDef, values: Record<string, string>): Rec
 }
 
 /** Recompute every auto-calculated field from its inputs. */
+/**
+ * Recompute every auto-calculated field across the WHOLE form.
+ *
+ * `applyAutoFields` only sees one step, which is right while the user is typing. It is wrong at
+ * hydration: a draft restored from storage carries the inputs but not the derived totals, and
+ * those totals are required AND read-only — so the applicant hit "2 fields need attention:
+ * Total Number of Beneficiaries, Total Grant Sought" on a field they could not type into. The
+ * live portal fills them in on load, so the clone does too.
+ */
+export function applyAllAutoFields(
+  wizard: WizardDef,
+  values: Record<string, string>,
+): Record<string, string> {
+  let next = values;
+  for (const step of wizard.steps) next = applyAutoFields(step, next);
+  return next;
+}
+
 export function applyAutoFields(step: StepDef, values: Record<string, string>): Record<string, string> {
   let next = values;
   for (const f of stepFields(step)) {
@@ -1015,6 +1207,28 @@ export function applyAutoFields(step: StepDef, values: Record<string, string>): 
     if (f.auto.kind === "sum") {
       const sum = f.auto.from.reduce((acc, k) => acc + Number(next[k] || 0), 0);
       const value = f.auto.from.some((k) => (next[k] ?? "").trim() !== "") ? String(sum) : "";
+      if (next[f.name] !== value) next = { ...next, [f.name]: value };
+    }
+    if (f.auto.kind === "cityCategory") {
+      const district = next[f.auto.from] ?? "";
+      // Only fill it in once a district is chosen; live leaves the applicant free to pick a
+      // category by hand where the district has not been classified.
+      if (district.trim() !== "") {
+        const value = cityCategoryFor(district);
+        if (value && next[f.name] !== value) next = { ...next, [f.name]: value };
+      }
+    }
+    if (f.auto.kind === "bankAccountPart") {
+      const parts = (next[f.auto.from] ?? "").split("·").map((x) => x.trim());
+      // "<bank> · <masked account> · <IFSC>" — anything else and we leave the field alone.
+      const value =
+        parts.length === 3
+          ? f.auto.part === "account"
+            ? (parts[1] ?? "")
+            : f.auto.part === "ifsc"
+              ? (parts[2] ?? "")
+              : (parts[0] ?? "")
+          : "";
       if (next[f.name] !== value) next = { ...next, [f.name]: value };
     }
   }

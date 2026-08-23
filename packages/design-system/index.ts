@@ -44,8 +44,8 @@ export {
 // ---- Components: Icon -------------------------------------------------------
 // Material Symbols Outlined — the official icon system for all MoSJE apps.
 // Load the font once in your app root: import "@mosje/design-system/icons.css"
-export { Icon } from "./components/icon";
-export type { IconProps } from "./components/icon";
+export { Icon } from "./components/utilities/icon";
+export type { IconProps } from "./components/utilities/icon";
 
 // ---- Components: Actions -----------------------------------------------------
 export { Button, buttonClasses } from "./components/actions/button";
@@ -246,12 +246,12 @@ export type { FilterBarProps, SegmentedControlProps, SegmentedOption } from "./c
 
 // ---- Components: Navigation --------------------------------------------------
 // AccessibilityBar — the government top utility bar (UX4G / GIGW).
-export { AccessibilityBar } from "./components/navigation/accessibility-bar";
+export { AccessibilityBar } from "./components/utilities/accessibility-bar";
 export type {
   AccessibilityBarProps,
   AccessibilityBarLayout,
   AccessibilityBarDevice,
-} from "./components/navigation/accessibility-bar";
+} from "./components/utilities/accessibility-bar";
 
 // Navbar — SiteHeader (the SAMAVESH Navbar: Website + Portal variants, 3-tier).
 export {
@@ -429,10 +429,10 @@ export type {
 export {
   UX4GAccessibilityWidget,
   UX4G_A11Y_WIDGET_SRC,
-} from "./components/a11y/ux4g-accessibility-widget";
-export type { UX4GAccessibilityWidgetProps } from "./components/a11y/ux4g-accessibility-widget";
-export { LiveRegion, useLiveRegion } from "./components/a11y/live-region";
-export type { LiveRegionProps, UseLiveRegionResult } from "./components/a11y/live-region";
+} from "./components/utilities/ux4g-accessibility-widget";
+export type { UX4GAccessibilityWidgetProps } from "./components/utilities/ux4g-accessibility-widget";
+export { LiveRegion, useLiveRegion } from "./components/utilities/live-region";
+export type { LiveRegionProps, UseLiveRegionResult } from "./components/utilities/live-region";
 
 
 // =============================================================================
