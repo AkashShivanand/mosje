@@ -3,14 +3,25 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { SiteFooter, VisitorCounter } from "@mosje/design-system";
 
 /**
- * **SiteFooter** — the statutory footer of a PUBLIC INFORMATION SITE. Two bands:
- * the working footer (identity, contact, navigation) and the statutory bar
- * (lineage, policies, credits, copyright, last-updated).
+ * **SiteFooter** — the statutory footer for the estate, in two variants.
  *
- * **Not the same thing as `Footer`.** `Footer` is the slim single-band app-shell
- * strip that sits under an authenticated portal workflow. Reach for that one
- * inside `/portals/*`; reach for this one on `/website/*`. They answer to
- * different clauses and merging them would break both.
+ * `variant="website"` (default) renders three zones: an OPTIONAL support strip,
+ * the working footer (identity, address, social, four link columns), and the
+ * statutory bar. `variant="portal"` renders the statutory bar alone — a portal
+ * has its own navigation, and a citizen mid-application does not need a sitemap.
+ *
+ * **Why a variant and not a second component.** The statutory bar is the half
+ * that must stay DBIM-compliant, and it is now impossible for a portal footer
+ * to drift from the website's on that half. The DS also still ships `Footer`, a
+ * slim strip written for portals that no portal ever adopted — prefer
+ * `variant="portal"` for new work.
+ *
+ * **There is no support strip here, deliberately.** A "need help?" call to
+ * action is page content, not statutory footer chrome, and the estate already
+ * has a component for it — `ActionBanner`. The website places one on a light
+ * band ABOVE this footer, which also says at a glance that the two are
+ * different registers. A second CTA mechanism inside the footer was a second
+ * thing to keep in step, and it briefly meant the site shipped two.
  *
  * **It is structural, not content-bound.** Every label, href, logo and sentence
  * arrives as a prop, so a second site in the estate gets the same footer by
@@ -46,7 +57,6 @@ const meta = {
       "Department of Social Justice & Empowerment",
     ],
     address: "8th Floor, GPOA-3, Netaji Nagar, New Delhi - 110023",
-    cta: { label: "Get in Touch", href: "/website/contact-us" },
     columns: [
       {
         heading: "Department",
@@ -107,6 +117,7 @@ const meta = {
     maxWidth: 1280,
   },
   argTypes: {
+    variant: { control: "inline-radio", options: ["website", "portal"] },
     emblem: { control: false },
     colophonSlot: { control: false },
     social: { control: false },
@@ -115,7 +126,6 @@ const meta = {
     policyLinks: { control: false },
     relatedLinks: { control: false },
     linkAs: { control: false },
-    cta: { control: false },
     lineage: { control: "text" },
     copyright: { control: "text" },
     lastUpdated: { control: "text" },
@@ -137,20 +147,18 @@ export const Playground: Story = {};
 export const Full: Story = {
   args: {
     social: [
-      {
-        label: "Facebook",
-        href: "https://www.facebook.com/goimsje",
-        path: "M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073c0 6.026 4.388 11.02 10.125 11.927v-8.437H7.078v-3.49h3.047V9.43c0-3.022 1.792-4.69 4.533-4.69 1.312 0 2.686.235 2.686.235v2.969h-1.514c-1.491 0-1.956.93-1.956 1.886v2.243h3.328l-.532 3.49h-2.796V24C19.612 23.093 24 18.099 24 12.073z",
-      },
-      {
-        label: "X (formerly Twitter)",
-        href: "https://x.com/msjegoi",
-        path: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231z",
-      },
+      { label: "Facebook", href: "https://www.facebook.com/goimsje", icon: "facebook" },
+      { label: "X (formerly Twitter)", href: "https://x.com/msjegoi", icon: "x" },
+      { label: "Instagram", href: "https://www.instagram.com/msjegoi", icon: "instagram" },
       {
         label: "YouTube",
         href: "https://www.youtube.com/@ministryofsocialjustice511",
-        path: "M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z",
+        icon: "youtube",
+      },
+      {
+        label: "WhatsApp Channel",
+        href: "https://whatsapp.com/channel/0029Vb7GfwH6mYPMHOvTd51W",
+        icon: "whatsapp",
       },
     ],
     colophonSlot: <VisitorCounter />,
@@ -185,7 +193,28 @@ export const Minimal: Story = {
     credits: undefined,
     relatedLinks: undefined,
     colophonSlot: undefined,
-    cta: undefined,
     address: undefined,
+  },
+};
+
+/**
+ * `variant="portal"` — the statutory bar alone. No navigation columns, no social
+ * rail, no address: a portal has its own navigation and the footer's job there
+ * is to carry what DBIM 5.6 and GIGW require and get out of the way.
+ * `columns`, `social` and `address` are ignored rather than erroring, so the
+ * same content object can drive both variants.
+ */
+export const PortalVariant: Story = {
+  args: {
+    variant: "portal",
+    credits: [
+      {
+        src: "https://placehold.co/78x28/ffffff/003975?text=NeGD",
+        alt: "National e-Governance Division (NeGD)",
+        href: "https://negd.gov.in/",
+        width: 78,
+        height: 28,
+      },
+    ],
   },
 };

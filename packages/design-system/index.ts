@@ -47,6 +47,13 @@ export {
 export { Icon } from "./components/utilities/icon";
 export type { IconProps } from "./components/utilities/icon";
 
+// BrandGlyph — third-party brand marks (Facebook, X, Instagram, YouTube,
+// WhatsApp), optically normalised so a row of them reads as one set. Material
+// Symbols cannot supply these; the vendors each supply theirs to a different
+// containment rule, which is the problem this component exists to solve.
+export { BrandGlyph, BRAND_GLYPHS, brandGlyphTitle } from "./components/utilities/brand-glyph";
+export type { BrandGlyphProps, BrandGlyphName } from "./components/utilities/brand-glyph";
+
 // ---- Components: Actions -----------------------------------------------------
 export { Button, buttonClasses } from "./components/actions/button";
 export type { ButtonVariant, ButtonAppearance, ButtonSize } from "./components/actions/button";
@@ -472,4 +479,4 @@ export { ProfileCard } from "./components/data-display/profile-card";
 export type { ProfileCardProps } from "./components/data-display/profile-card";
 
 export { ActionBanner } from "./components/feedback/action-banner";
-export type { ActionBannerProps } from "./components/feedback/action-banner";
+export type { ActionBannerProps, ActionBannerVariant } from "./components/feedback/action-banner";
