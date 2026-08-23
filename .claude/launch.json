@@ -2,39 +2,21 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "hub-wt",
-      "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "--prefix",
-        "/private/tmp/claude-502/-Users-akashk-Documents-Projects-MoSJE/cbef035f-ed22-4958-9216-771f2cd48ce3/scratchpad/wt-eanudaan/apps/hub",
-        "run",
-        "dev",
-        "--",
-        "-p",
-        "3017"
-      ],
-      "port": 3017,
-      "autoPort": false
-    },
-    {
+      "_comment": "The whole estate. One process serves /, /website, /design-system, /portals/<slug>, /reports/<slug> and /storybook. There is no per-portal dev server.",
       "name": "hub",
       "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "--prefix",
-        "apps/hub",
-        "run",
-        "dev"
-      ],
+      "runtimeArgs": ["--prefix", "apps/hub", "run", "dev"],
       "port": 3007,
       "autoPort": false
     },
     {
-      "_comment": "Attaches to an already-running hub on :3007 instead of starting a second one. Next 16 holds a per-directory dev lock, so only one `next dev` can own apps/hub \u2014 use this when another session already started it.",
+      "_comment": "Attaches to an already-running hub on :3007 instead of starting a second one. Next 16 holds a per-directory dev lock, so only one `next dev` can own apps/hub — use this when another session already started it. A git worktree is a different directory and can run its own `hub`.",
       "name": "hub-attach",
       "url": "http://localhost:3007",
       "port": 3007
     },
     {
+      "_comment": "The site gate, end to end. Needs a standalone build FIRST — `npm run build --prefix apps/hub` — or node exits immediately with a missing-server error. Password is local-preview, admin is local-admin.",
       "name": "hub-gated",
       "runtimeExecutable": "bash",
       "runtimeArgs": [
@@ -45,14 +27,10 @@
       "autoPort": false
     },
     {
+      "_comment": "Story AUTHORING only. The hub compiles Storybook into apps/hub/public/storybook and serves it at /storybook behind the site gate; that static build wins until you rebuild it.",
       "name": "storybook",
       "runtimeExecutable": "npm",
-      "runtimeArgs": [
-        "--prefix",
-        "apps/storybook",
-        "run",
-        "dev"
-      ],
+      "runtimeArgs": ["--prefix", "apps/storybook", "run", "dev"],
       "port": 6006,
       "autoPort": false
     }
