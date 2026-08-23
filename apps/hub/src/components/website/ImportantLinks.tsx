@@ -9,12 +9,35 @@ interface LinkGroup {
   items: { label: string; href: string }[];
 }
 
+/**
+ * Four entries below point at dosje.gov.in rather than a `/website/…` route, and
+ * that is deliberate — do not "fix" them back into internal links.
+ *
+ * Their slugs are correct: dosje.gov.in serves all four at exactly the paths this
+ * rail names. What is missing is the content. The website ingest
+ * (`src/content/website/documents.json`, 1624 records) never captured them, so the
+ * routes do not exist and each entry was a silent 404 — in three of the four groups
+ * it was the ONLY content-bearing item, the siblings being "About the Division"
+ * narrative pages.
+ *
+ * They are linked out rather than hand-authored because the content is statutory and
+ * volatile: the SC list is ~60 documents including Constitutional Orders and 23
+ * amendment Acts, revised to Nov 2025, and Demand For Grant grows a volume a year.
+ * A hand-copied register of legal instruments would go stale silently, and the
+ * upstream budget index is already internally inconsistent (2019-20, 2021-22 and
+ * 2023-24 resolve to one and the same PDF), so transcribing it would ship links we
+ * know to be wrong. The Department's own Hyperlinking Policy (/website/hyperlinking-policy)
+ * provides for exactly this, and the rail already links out to four government
+ * systems; `open_in_new` + target/rel are applied automatically to any `http` href.
+ *
+ * Restore an internal route by ingesting the content, then flipping the href back.
+ */
 const CATEGORIZED_LINKS: LinkGroup[] = [
   {
     category: "Scheduled Caste Welfare",
     items: [
       { label: "About the Division: Scheduled Caste Welfare", href: "/website/about-the-division" },
-      { label: "List of Scheduled Castes", href: "/website/list-of-scheduled-castes" },
+      { label: "List of Scheduled Castes", href: "https://www.dosje.gov.in/list-of-scheduled-castes/" },
       { label: "Policies / Acts / Rules / Circular", href: "/website/policies-acts-rules-circular" },
     ],
   },
@@ -39,7 +62,7 @@ const CATEGORIZED_LINKS: LinkGroup[] = [
   {
     category: "Budget And Account",
     items: [
-      { label: "Detailed Demand For Grant", href: "/website/detailed-demand-for-grant" },
+      { label: "Detailed Demand For Grant", href: "https://www.dosje.gov.in/detailed-demand-for-grant/" },
       { label: "Contact Person", href: "/website/contact-person" },
     ],
   },
@@ -63,7 +86,7 @@ const CATEGORIZED_LINKS: LinkGroup[] = [
     items: [
       { label: "SECC 2011", href: "https://secc.dord.gov.in/" },
       { label: "About the Division: Statistics Division", href: "/website/about-the-division-statistics-division" },
-      { label: "Handbook on Social Welfare Statistics", href: "/website/handbook-on-social-welfare-statistics" },
+      { label: "Handbook on Social Welfare Statistics", href: "https://www.dosje.gov.in/handbook-on-social-welfare-statistics/" },
     ],
   },
   {
@@ -78,7 +101,7 @@ const CATEGORIZED_LINKS: LinkGroup[] = [
     category: "Parliamentary Matters",
     items: [
       { label: "Assurances", href: "/website/assurances" },
-      { label: "Special Mention / Matters Raised Under Rule 377", href: "/website/special-mention-matters-raised-under-377" },
+      { label: "Special Mention / Matters Raised Under Rule 377", href: "https://www.dosje.gov.in/special-mention-matters-raised-under-377/" },
     ],
   },
   {

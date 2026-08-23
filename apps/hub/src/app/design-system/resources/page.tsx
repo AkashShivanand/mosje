@@ -28,7 +28,10 @@ const QUICK_LINKS: QuickLink[] = [
   {
     title: "Storybook",
     desc: "Live, interactive component playground with the a11y addon and theme/density toolbar.",
-    href: "/docs",
+    // The hub compiles Storybook into public/storybook and serves it at
+    // /storybook, in dev exactly as in production — which is where the site
+    // footer has always pointed. This card said /docs, which is nothing.
+    href: "/storybook/",
     external: true,
     icon: "▦",
   },
