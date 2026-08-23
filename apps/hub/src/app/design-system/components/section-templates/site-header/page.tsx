@@ -24,6 +24,11 @@ export const metadata: Metadata = {
  * ------------------------------------------------------------------ */
 
 
+const sectionStyle: React.CSSProperties = {
+  marginTop: "var(--sa-section-48)",
+  scrollMarginTop: "var(--sa-section-48)",
+};
+
 const h2Style: React.CSSProperties = {
   fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
   fontWeight: 700,
