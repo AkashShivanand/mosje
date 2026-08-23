@@ -1,62 +1,53 @@
-// url=https://www.figma.com/design/SVMfm1KApR7KYHSbwNBnOM/MoSJE--WIP-?node-id=2175-79096
-
-// ─────────────────────────────────────────────────────────────────────────────
-// NOT PUBLISHED YET — excluded in figma.config.json.
-//
-// This is the ONE template that does not target the SAMAVESH library. Its node
-// lives in MoSJE (WIP), file SVMfm1KApR7KYHSbwNBnOM, which the publishing token
-// cannot write. `code connect publish` uploads every template in a SINGLE request,
-// so that one file failed the whole batch:
-//
-//     Failed to upload to Figma (400): 400 Insufficient permissions for SVMfm1KApR7KYHSbwNBnOM
-//
-// All 19 templates validated; none published. Excluding this one lets the other 18
-// through untouched.
-//
-// TO RE-ENABLE, once Chatbot is rebuilt in the SAMAVESH library:
-//   1. change the `// url=` line above to `<SAMAVESH>?node-id=<new-node-id>`
-//   2. delete the `exclude` entry in figma.config.json
-//   3. capture a fixture for `Chatbot` in tools/code-connect-parity/figma-properties.json
-//      (check:code-connect reports it as unverified until you do)
-// Do not leave the exclude in place with a SAMAVESH url — that is a silent no-op.
-// ─────────────────────────────────────────────────────────────────────────────
+// url=<SAMAVESH>?node-id=55826-37003
 // source=packages/design-system/components/feedback/chatbot.tsx
 // component=Chatbot
 //
-// NOTE ON THE URL. Every other template in this package points at `<SAMAVESH>`
-// (the published library). This one cannot: the chatbot exists only in the
-// **MoSJE (WIP)** file as a loose component set, and has not been promoted into
-// the SAMAVESH library. When it is, swap this line for
-// `// url=<SAMAVESH>?node-id=<new-id>` — and remember a promoted component gets
-// a NEW key, so the mapping has to be disconnected in the Figma UI and
-// reconnected rather than edited in place.
+// ─────────────────────────────────────────────────────────────────────────────
+// Promoted into the SAMAVESH library on 2026-08-23. It used to live only in
+// MoSJE (WIP) (file SVMfm1KApR7KYHSbwNBnOM) as a loose set of 475x852 screen
+// mockups, which the publishing token could not write:
+//
+//     Failed to upload to Figma (400): 400 Insufficient permissions for SVMfm1KApR7KYHSbwNBnOM
+//
+// `code connect publish` uploads every template in ONE request, so that single
+// file took all 19 templates down with it and this one had to be excluded.
+// It now targets <SAMAVESH> like every other template and the exclude is gone.
+//
+// The promoted master is a NEW component with a NEW key. Any mapping ever
+// attached to the WIP node must be disconnected in the Figma UI rather than
+// edited in place.
+// ─────────────────────────────────────────────────────────────────────────────
 import figma from "figma";
 
 const instance = figma.selectedInstance;
 
 /**
- * Figma `Property 1` → `defaultOpen`. Exhaustive: all 4 values mapped.
+ * Figma `State` → `defaultOpen`. Exhaustive: all 4 values mapped.
  *
  * The four values are NOT four configurations — they are four moments of the
- * widget's own opening sequence, drawn as separate frames because a static file
- * cannot show motion:
+ * widget's own lifecycle, drawn as separate frames because a static file cannot
+ * show motion:
  *
- *   Open → launcher only, panel shut   (the name is misleading; it means closed)
- *   1    → panel open, bot typing, no messages yet
- *   2    → greeting has landed, bot still typing
- *   3    → suggestions have cascaded in
+ *   Closed     → launcher only, panel shut
+ *   Greeting   → panel open, opening line landed, suggestions cascaded in
+ *   Typing     → the bot is composing; nothing offered yet
+ *   Transcript → turns have accumulated
  *
- * Only the first distinction is a prop. States 1–3 are transient internals that
- * `Chatbot` walks through on its own — roughly 260ms, 1160ms and 1480ms after
- * opening. Emitting them as props would invent an API for something the
- * component deliberately owns, and would let a consumer freeze the widget in a
- * state it is supposed to pass through.
+ * Only the first distinction is a prop. Typing and Transcript are transient
+ * internals that `Chatbot` walks through on its own — roughly 260ms, 1160ms and
+ * 1480ms after opening. Emitting them as props would invent an API for something
+ * the component deliberately owns, and would let a consumer freeze the widget in
+ * a state it is supposed to pass through.
+ *
+ * The old WIP set called this axis `Property 1` with values `Open | 1 | 2 | 3`,
+ * where `Open` confusingly meant CLOSED. Renaming it was the point of the
+ * promotion, not a side effect.
  */
-const defaultOpen = instance.getEnum("Property 1", {
-  Open: false,
-  "1": true,
-  "2": true,
-  "3": true,
+const defaultOpen = instance.getEnum("State", {
+  Closed: false,
+  Greeting: true,
+  Typing: true,
+  Transcript: true,
 });
 
 export default {
@@ -65,11 +56,9 @@ export default {
       ${defaultOpen ? "defaultOpen" : ""}
       greeting="This is an assistant for the Ministry of Social Justice. How can I help you?"
       quickReplies={[
-        { id: "otp", label: "I'm not receiving OTP." },
-        { id: "docs", label: "Didn't find API documentation" },
-        { id: "register", label: "How to register as a developer." },
-        { id: "navigate", label: "Portal navigation help" },
-        { id: "other", label: "Others" },
+        { id: "scheme", label: "Find a scheme" },
+        { id: "status", label: "Check application status" },
+        { id: "otp", label: "I'm not receiving OTP" },
       ]}
       onQuickReply={(reply) => ({ text: answerFor(reply.id) })}
     />

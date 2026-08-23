@@ -40,6 +40,9 @@ export const FIGMA_NODES = {
   toggle: "2141:323883",
   dropdown: "2141:296718", // Select
   alerts: "2141:296701",
+  chatbot: "55827:730", // "Chatbot — Documentation" on the Chatbot page (55813:941),
+  //                          authored 2026-08-23 under Feedback & Status
+  chatbotMascot: "55830:731", // "2 · Chatbot Mascot" section on the same page
   loader: "2141:323879",
   avatars: "2141:296702",
   emptyState: "2141:296719",

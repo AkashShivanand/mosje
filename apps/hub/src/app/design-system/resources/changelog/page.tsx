@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.47.0",
+    date: "2026-08-23",
+    current: true,
+    changes: [
+      { kind: "Added", text: "CHATBOT IS IN THE SAMAVESH LIBRARY, and that is what unblocked Code Connect for the whole package. It lived only in MoSJE (WIP) as four 475\u00d7852 SCREEN MOCKUPS \u2014 not a component \u2014 in a file the publishing token cannot write, and `code connect publish` uploads every template in ONE request, so that single file had been failing all 19 templates until it was excluded. The exclude is gone, `chatbot.figma.ts` points at `<SAMAVESH>`, and a fixture is captured, so the mapping is verified rather than merely present" },
+      { kind: "Changed", text: "THE VARIANT AXIS WAS ACTIVELY MISLEADING and renaming it was the point of the promotion, not a side effect. `Property 1 = Open | 1 | 2 | 3`, where `Open` meant CLOSED, is now `State = Closed | Greeting | Typing | Transcript` \u2014 the widget\u2019s own lifecycle order. Only `Closed` maps to a prop (`defaultOpen`); the other three are transient internals the component walks through at roughly 260ms, 1160ms and 1480ms after opening, and giving them props would let a consumer freeze the widget in a state it is meant to pass through" },
+      { kind: "Added", text: "FIVE TOKENS RATHER THAN FIVE LITERALS \u2014 `layout/chatbot/width` (400), `height` (719), `launcher` (84), `bubbleMax` (246) and `typingDot` (6), plus `ref/brand/samavesh/navy` (#003366) for the mascot disc. The navy is deliberately NOT a themable surface: the disc is artwork, so it stays navy in blue, navy and dbim alike, the same way the National Emblem is not recoloured per portal. Both masters audit to ZERO unbound fills, strokes, paddings, gaps, radii and authored dimensions" },
+      { kind: "Added", text: "DOCUMENTATION AT BOTH ENDS. A `Chatbot \u2014 Documentation` frame in the house style \u2014 hero, six counted stats, seven numbered sections \u2014 with a sibling `Component record` frame carrying the open work, which `figma-documentation-style.md` asks for and no page in the library had. The web page moves off the auto-generated stub onto the docs-kit pattern the data-display components adopted yesterday: a live playground, `DoDont`, `A11yChecklist`, `Callout` and a 19-row `PropsTable`" },
+      { kind: "Fixed", text: "THREE TOKEN DEFECTS THE PROMOTION SURFACED, corrected in Figma and recorded against the code. The user bubble is hard-coded `--sa-color-brand-navy`, so in the DEFAULT blue brand it paints #003366 while everything around it is #0373DF \u2014 it ignores `data-brand` entirely. Panel title and subtitle both resolve to #404040, leaving the header with no hierarchy. And the icon button is a raw 32px carrying an 18px glyph, where 18 is not on the icon scale at all" },
+    ],
+  },
+  {
     version: "v0.46.0",
     date: "2026-08-22",
-    current: true,
     changes: [
       { kind: "Changed", text: "THE SOCIAL MARKS SIT IN A CHIP NOW, WHICH IS THE PART SIZING COULD NOT DO. v0.44.0 normalised them and got the ink spread from 2.37\u00d7 to 1.52\u00d7, and the rail still looked unbalanced \u2014 because the objection was never to the measurement. A letterform, a bare X, a hollow camera, a filled slab and a bubble are five different SILHOUETTES, and no amount of scaling makes them siblings. One repeating circle makes the circle the unit the eye reads and the marks its contents, and the variance stops mattering. This reverses an earlier note in the stylesheet, which argued against five hard shapes in the quietest part of the footer \u2014 correctly, but about OUTLINED circles, which is what it was arguing against. A filled tint is ground, not line" },
       { kind: "Changed", text: "THE TUNING BELONGS TO THE CONTAINMENT, NOT THE MARK. Bare, the corrections pulled hard toward equal ink \u2014 YouTube down to 0.86 \u2014 because with nothing to compare against the eye judges a mark by how dark it is. Inside a chip the frame is constant, the eye reads EXTENT instead, and that correction left YouTube visibly undersized in its circle. Retuned light: YouTube 0.94, Instagram 0.98, the rest 1.0. Marks fill 47\u201350% of the 40px chip; at 55% the chip stops being a frame and becomes a tight collar" },

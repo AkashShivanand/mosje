@@ -1,11 +1,7 @@
 {
   "codeConnect": {
-    "$comment": "`exclude` holds Chatbot ONLY because it targets MoSJE (WIP), file SVMfm1KApR7KYHSbwNBnOM, rather than the SAMAVESH library every other template uses. `code connect publish` uploads all templates in ONE request, so a file the token cannot write fails the whole batch \u2014 400 'Insufficient permissions for SVMfm1KApR7KYHSbwNBnOM' took all 19 templates down with it. Remove the exclude and repoint chatbot.figma.ts's `// url=` at <SAMAVESH> once Chatbot is rebuilt there. Full note in that file's header.",
     "include": [
       "packages/design-system/components/**/*.figma.ts"
-    ],
-    "exclude": [
-      "packages/design-system/components/feedback/chatbot.figma.ts"
     ],
     "importPaths": {
       "packages/design-system/components/*": "@mosje/design-system"

@@ -287,5 +287,20 @@
     "deliberatelyOmitted": [
       "Device"
     ]
+  },
+  "Chatbot": {
+    "nodeId": "55826:37003",
+    "captured": "2026-08-23",
+    "properties": {
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Closed",
+          "Greeting",
+          "Typing",
+          "Transcript"
+        ]
+      }
+    }
   }
 }
