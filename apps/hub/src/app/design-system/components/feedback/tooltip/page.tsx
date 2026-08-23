@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { TooltipPlayground } from "./tooltip-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "Tooltip - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function TooltipPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function TooltipPage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Try adjusting the side placement and delay. The tooltip will automatically flip to the opposite side if it hits the edge of the screen.
@@ -67,9 +72,7 @@ export default function TooltipPage(): React.JSX.Element {
           <TooltipPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Tooltips should be used for supplementary information only. They are not accessible on all touch devices in the same way they are with a mouse, so critical information must always be placed directly on the page.
@@ -98,9 +101,7 @@ export default function TooltipPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <p style={proseStyle}>
           Wrap a single child element with the Tooltip. Ensure the child accepts and forwards <code>ref</code> and standard DOM event handlers (<code>onMouseEnter</code>, <code>onFocus</code>, etc.).
@@ -114,22 +115,15 @@ export default function TooltipPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ============ 3. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <p style={proseStyle}>
-          SAMAVESH Tooltips meet WCAG 1.4.13 (Content on Hover or Focus) out-of-the-box.
-        </p>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Dismissible:</strong> Pressing <code>Escape</code> closes the tooltip without moving focus away from the trigger.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Hoverable:</strong> The bubble stays open while the pointer is over it, so users who are zoomed in can move onto it to read it.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Persistent:</strong> The tooltip remains visible until the user moves the pointer away, removes focus, or presses Escape.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria-describedby:</strong> The tooltip automatically sets <code>aria-describedby</code> on the trigger to announce the tooltip text. Set <code>duplicatesTriggerName=true</code> if the tooltip simply repeats the trigger&apos;s accessible name (e.g., an icon-only button), avoiding double announcement.</li>
-        </ul>
-      </section>
-
-      {/* ============ 4. API ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>4. API Reference</h2>
         <PropsTable
           props={[
@@ -143,6 +137,34 @@ export default function TooltipPage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
+        <p style={proseStyle}>
+          SAMAVESH Tooltips meet WCAG 1.4.13 (Content on Hover or Focus) out-of-the-box.
+        </p>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Dismissible:</strong> Pressing <code>Escape</code> closes the tooltip without moving focus away from the trigger.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Hoverable:</strong> The bubble stays open while the pointer is over it, so users who are zoomed in can move onto it to read it.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Persistent:</strong> The tooltip remains visible until the user moves the pointer away, removes focus, or presses Escape.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria-describedby:</strong> The tooltip automatically sets <code>aria-describedby</code> on the trigger to announce the tooltip text. Set <code>duplicatesTriggerName=true</code> if the tooltip simply repeats the trigger&apos;s accessible name (e.g., an icon-only button), avoiding double announcement.</li>
+        </ul>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

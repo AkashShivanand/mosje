@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { FormFieldPlayground } from "./form-field-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "FormField - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function FormFieldPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function FormFieldPage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Toggle the hints, errors, and required states to see how FormField updates the layout and accessibility attributes.
@@ -67,9 +72,7 @@ export default function FormFieldPage(): React.JSX.Element {
           <FormFieldPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           You should wrap almost every input, select, and textarea in a <code>FormField</code>. It prevents common accessibility bugs by handling the <code>htmlFor</code>, <code>id</code>, and <code>aria-describedby</code> attributes internally via a render prop.
@@ -98,9 +101,7 @@ export default function FormFieldPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <p style={proseStyle}>
           The <code>FormField</code> component expects a function as its child, commonly known as a &quot;render prop&quot;. This function provides the necessary accessibility properties that must be spread onto the actual input element.
@@ -118,18 +119,15 @@ export default function FormFieldPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ============ 3. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Automatic Linking:</strong> Generates a unique <code>id</code> for the input and links the <code>&lt;label&gt;</code> to it via <code>htmlFor</code>.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Described By:</strong> Links the hint and error messages to the input using <code>aria-describedby</code>, so screen readers announce them when the input receives focus.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Errors:</strong> The error message container has <code>role=&quot;alert&quot;</code>. When an error appears, it is immediately announced by assistive technologies.</li>
-        </ul>
-      </section>
-
-      {/* ============ 4. API ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>4. API Reference</h2>
         <PropsTable
           props={[
@@ -143,6 +141,30 @@ export default function FormFieldPage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Automatic Linking:</strong> Generates a unique <code>id</code> for the input and links the <code>&lt;label&gt;</code> to it via <code>htmlFor</code>.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Described By:</strong> Links the hint and error messages to the input using <code>aria-describedby</code>, so screen readers announce them when the input receives focus.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Errors:</strong> The error message container has <code>role=&quot;alert&quot;</code>. When an error appears, it is immediately announced by assistive technologies.</li>
+        </ul>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

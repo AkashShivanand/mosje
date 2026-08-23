@@ -1,4 +1,5 @@
 import * as React from "react";
+import { DocsTabs } from "@/components/design-system/docs-kit";
 import type { Metadata } from "next";
 import { ModalPlayground } from "./modal-playground";
 
@@ -8,12 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default function ModalPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -52,7 +48,15 @@ export default function ModalPage(): React.JSX.Element {
       <ModalPlayground />
 
       {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Modals are highly disruptive. They halt the user&apos;s current context and require an action before they can return. Use them sparingly, only when an action is irreversible, or when a sub-flow is required to complete the main flow.
@@ -77,9 +81,7 @@ export default function ModalPage(): React.JSX.Element {
           </UseCard>
         </div>
       </section>
-
-      {/* ============ 2. SIZES ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="sizes" style={h2Style}>2. Sizes</h2>
         <p style={proseStyle}>
           Modals come in three preset widths. The height will automatically adjust to the content, but long content will scroll within the modal body.
@@ -90,9 +92,7 @@ export default function ModalPage(): React.JSX.Element {
           <li><strong>Large (<code>lg</code>, max 800px):</strong> Use when the modal requires a data table, large chart, or multi-column layout.</li>
         </ul>
       </section>
-
-      {/* ============ 3. ANATOMY ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="anatomy" style={h2Style}>3. Anatomy</h2>
         <p style={proseStyle}>
           The Modal consists of four distinct architectural areas:
@@ -116,8 +116,24 @@ export default function ModalPage(): React.JSX.Element {
 </Modal>`}</CodeBlock>
       </section>
 
-      {/* ============ 4. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="accessibility" style={h2Style}>4. Accessibility (A11y)</h2>
         <p style={proseStyle}>
           SAMAVESH Modals handle complex accessibility requirements internally.
@@ -130,6 +146,13 @@ export default function ModalPage(): React.JSX.Element {
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>ARIA Roles:</strong> The modal panel has <code>role=&quot;dialog&quot;</code>, <code>aria-modal=&quot;true&quot;</code>, and <code>aria-labelledby</code> pointing to the auto-generated ID of the title.</li>
         </ul>
       </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

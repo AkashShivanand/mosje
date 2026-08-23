@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { GeoPhotoInputPlayground } from "./geo-photo-input-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "GeoPhotoInput - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function GeoPhotoInputPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function GeoPhotoInputPage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Try uploading an image. The component will attempt to extract its location and immediately display a thumbnail.
@@ -67,9 +72,7 @@ export default function GeoPhotoInputPage(): React.JSX.Element {
           <GeoPhotoInputPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Use <code>GeoPhotoInput</code> when building forms for field surveyors, inspectors, or citizens reporting physical evidence (e.g., PM-AJAY asset verification). It guarantees that a location is captured whenever possible, while transparently compressing multi-megabyte camera photos down to a few hundred kilobytes directly in the browser.
@@ -98,9 +101,7 @@ export default function GeoPhotoInputPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <Playground
           code={`function EvidenceForm() {
@@ -123,18 +124,15 @@ export default function GeoPhotoInputPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ============ 3. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Dropzone:</strong> The primary upload dropzone and &quot;Add more&quot; buttons are fully operable via keyboard.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Action Feedback:</strong> Status updates like &quot;Adding...&quot; and errors regarding file size limits are announced effectively.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Clear Focus:</strong> Removed thumbnails can be easily deleted using a dedicated, accessible <code>&lt;button&gt;</code> with an explicit <code>aria-label</code>.</li>
-        </ul>
-      </section>
-
-      {/* ============ 4. API ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>4. API Reference</h2>
         <PropsTable
           props={[
@@ -146,6 +144,30 @@ export default function GeoPhotoInputPage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Dropzone:</strong> The primary upload dropzone and &quot;Add more&quot; buttons are fully operable via keyboard.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Action Feedback:</strong> Status updates like &quot;Adding...&quot; and errors regarding file size limits are announced effectively.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Clear Focus:</strong> Removed thumbnails can be easily deleted using a dedicated, accessible <code>&lt;button&gt;</code> with an explicit <code>aria-label</code>.</li>
+        </ul>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { ChipPlayground } from "./chip-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "Chip - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function ChipPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -58,7 +55,15 @@ export default function ChipPage(): React.JSX.Element {
       </header>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Configure the Chip to act as a toggleable filter, a removable tag, or a static label.
@@ -67,9 +72,7 @@ export default function ChipPage(): React.JSX.Element {
           <ChipPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Chips are incredibly versatile. You can use them as a group of filters (like a multi-select), as tags that users can add or remove, or simply as static categories.
@@ -98,9 +101,7 @@ export default function ChipPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <p style={proseStyle}>
           Here&apos;s how to create a dismissible filter tag.
@@ -123,18 +124,15 @@ return (
         />
       </section>
 
-      {/* ============ 3. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Operable:</strong> If <code>onSelectedChange</code> is provided, the chip receives a <code>tabIndex</code> and can be toggled via Space or Enter.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Roles:</strong> Interactive chips receive <code>role=&quot;button&quot;</code> and <code>aria-pressed</code> to announce their toggle state to screen readers.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Dismiss Button:</strong> The trailing dismiss cross is a real <code>&lt;button&gt;</code> with an explicit <code>aria-label</code> (defaults to &quot;Remove&quot;).</li>
-        </ul>
-      </section>
-
-      {/* ============ 4. API ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>4. API Reference</h2>
         <PropsTable
           props={[
@@ -149,6 +147,30 @@ return (
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Operable:</strong> If <code>onSelectedChange</code> is provided, the chip receives a <code>tabIndex</code> and can be toggled via Space or Enter.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Roles:</strong> Interactive chips receive <code>role=&quot;button&quot;</code> and <code>aria-pressed</code> to announce their toggle state to screen readers.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Dismiss Button:</strong> The trailing dismiss cross is a real <code>&lt;button&gt;</code> with an explicit <code>aria-label</code> (defaults to &quot;Remove&quot;).</li>
+        </ul>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }

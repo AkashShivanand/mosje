@@ -30,8 +30,8 @@
 }
 .props-table tr:last-child td { border-bottom: none; }
 .props-table__name { font-weight: 600; color: var(--sa-text-brand-primary-base); font-family: var(--sa-font-mono); font-size: 0.9em; }
-.props-table__type { font-family: var(--sa-font-mono); font-size: 0.85em; color: var(--sa-text-neutral-subtle); background: var(--sa-bg-neutral-subtler); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--sa-border-neutral-subtle); }
-.props-table__required { display: inline-block; margin-left: var(--sa-stack-8); font-size: 0.75em; padding: 2px 6px; border-radius: 4px; background: color-mix(in oklab, var(--sa-color-status-danger) 10%, transparent); color: var(--sa-text-status-error-base); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.props-table__type { font-family: var(--sa-font-mono); font-size: 0.85em; color: var(--sa-text-neutral-subtle); background: var(--sa-bg-neutral-subtler); padding: var(--sa-padding-2) var(--sa-padding-4); border-radius: var(--sa-shape-4); border: 1px solid var(--sa-border-neutral-subtle); }
+.props-table__required { display: inline-block; margin-left: var(--sa-stack-8); font-size: 0.75em; padding: var(--sa-padding-2) var(--sa-padding-4); border-radius: var(--sa-shape-4); background: color-mix(in oklab, var(--sa-color-status-danger) 10%, transparent); color: var(--sa-text-status-error-base); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 
 /* ── Do/Don't ── */
 .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sa-padding-20); margin-top: var(--sa-padding-20); }

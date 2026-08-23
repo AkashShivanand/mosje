@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { AadhaarInputPlayground } from "./aadhaar-input-playground";
 import { Playground } from "@/components/design-system/playground";
 import { PropsTable, DoDont, Callout } from "@/components/design-system/docs-kit";
+import { DocsTabs } from "@/components/design-system/docs-kit";
+
 
 export const metadata: Metadata = {
   title: "AadhaarInput - SAMAVESH Design System",
@@ -11,12 +13,7 @@ export const metadata: Metadata = {
 };
 
 export default function AadhaarInputPage(): React.JSX.Element {
-  const sectionStyle: React.CSSProperties = {
-    marginTop: "var(--sa-stack-48)",
-    paddingTop: "var(--sa-stack-48)",
-    borderTop: "1px solid var(--sa-border-neutral-subtle)",
-  };
-  const h2Style: React.CSSProperties = {
+    const h2Style: React.CSSProperties = {
     fontSize: "var(--sa-type-headline-2-size)",
     fontWeight: 600,
     margin: "0 0 var(--sa-stack-24) 0",
@@ -62,7 +59,15 @@ export default function AadhaarInputPage(): React.JSX.Element {
       </Callout>
 
       {/* ============ PLAYGROUND ============ */}
-      <section style={sectionStyle}>
+      
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="playground" style={h2Style}>Playground</h2>
         <p style={proseStyle}>
           Type exactly 12 digits. Notice how spaces are inserted automatically. When you click outside the field (blur), the first 8 digits are masked. The internal state always holds the raw 12 digits.
@@ -71,9 +76,7 @@ export default function AadhaarInputPage(): React.JSX.Element {
           <AadhaarInputPlayground />
         </div>
       </section>
-
-      {/* ============ 1. USAGE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="usage" style={h2Style}>1. Usage</h2>
         <p style={proseStyle}>
           Use this component whenever you need a user to provide their Aadhaar number. It prevents invalid characters, fixes the caret jumping issue common in formatted inputs, and ensures you always receive a clean 12-digit string to send to your backend.
@@ -102,9 +105,7 @@ export default function AadhaarInputPage(): React.JSX.Element {
           />
         </div>
       </section>
-
-      {/* ============ 2. CODE EXAMPLE ============ */}
-      <section style={sectionStyle}>
+<section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="code-example" style={h2Style}>2. Code Example</h2>
         <Playground
           code={`function IdentityForm() {
@@ -125,17 +126,15 @@ export default function AadhaarInputPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ============ 3. ACCESSIBILITY ============ */}
-      <section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode:</strong> Sets <code>inputMode=&quot;numeric&quot;</code> so mobile users are presented with a numeric keypad, while remaining a <code>type=&quot;text&quot;</code> input to avoid native number input quirks.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Internal Validation:</strong> When exactly 12 digits are entered, it runs the Verhoeff algorithm. If the checksum fails, it automatically sets <code>aria-invalid=&quot;true&quot;</code>.</li>
-        </ul>
-      </section>
-
-      {/* ============ 4. API ============ */}
-      <section style={sectionStyle}>
+              </div>
+            )
+          },
+          {
+            id: "develop",
+            label: "Develop",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
         <h2 id="api" style={h2Style}>4. API Reference</h2>
         <PropsTable
           props={[
@@ -147,6 +146,29 @@ export default function AadhaarInputPage(): React.JSX.Element {
           ]}
         />
       </section>
+
+              </div>
+            )
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <div className="ds-prose">
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
+        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode:</strong> Sets <code>inputMode=&quot;numeric&quot;</code> so mobile users are presented with a numeric keypad, while remaining a <code>type=&quot;text&quot;</code> input to avoid native number input quirks.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Internal Validation:</strong> When exactly 12 digits are entered, it runs the Verhoeff algorithm. If the checksum fails, it automatically sets <code>aria-invalid=&quot;true&quot;</code>.</li>
+        </ul>
+      </section>
+
+              </div>
+            )
+          }
+        ]}
+      />
+
     </main>
   );
 }
