@@ -29,7 +29,7 @@ const CATEGORIZED_LINKS: LinkGroup[] = [
   {
     category: "Grants-In-Aid To NGOs",
     items: [
-      { label: "Prioritization Guidelines for funding Projects by Voluntary Organisations", href: "/website/prioritization-guidelines-for-funding-projects-by-vuluntary-organisations" },
+      { label: "Prioritization Guidelines for funding Projects by Voluntary Organisations", href: "/website/prioritization-guidelines-for-funding-projects-by-voluntary-organisations" },
       { label: "Procedure for processing Grant-in-Aid Cases for Voluntary Organisations", href: "/website/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations" },
       { label: "Inspection and Monitoring Procedure", href: "/website/inspection-and-monitoring-procedure" },
       { label: "Guidelines for Assisting NGOs / Voluntary Organisations", href: "/website/guidelines-for-assisting-ngos-voluntary-organisations" },

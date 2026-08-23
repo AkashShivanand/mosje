@@ -158,7 +158,7 @@ export function DeaddictionMapSection() {
                 24x7 Helpline: 14446
               </div>
               <Link
-                href="/de-addiction-centres"
+                href="/website/de-addiction-centres"
                 className={buttonClasses("primary", "outlined", "sm")}
               >
                 View Details
