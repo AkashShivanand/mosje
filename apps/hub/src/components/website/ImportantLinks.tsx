@@ -3,114 +3,27 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { Icon } from "@mosje/design-system";
-
-interface LinkGroup {
-  category: string;
-  items: { label: string; href: string }[];
-}
+import { DIVISIONS } from "@/data/website";
 
 /**
- * Four entries below point at dosje.gov.in rather than a `/website/…` route, and
- * that is deliberate — do not "fix" them back into internal links.
+ * The rail's contents now come from `DIVISIONS` in the data layer, not from a list kept
+ * here. The list that used to live in this file was an incomplete transcription of the
+ * Department's own rail — nine entries short, six of them from Grants-in-Aid alone — and
+ * five of those pointed at pages this estate had already built and never linked.
  *
- * Their slugs are correct: dosje.gov.in serves all four at exactly the paths this
- * rail names. What is missing is the content. The website ingest
- * (`src/content/website/documents.json`, 1624 records) never captured them, so the
- * routes do not exist and each entry was a silent 404 — in three of the four groups
- * it was the ONLY content-bearing item, the siblings being "About the Division"
- * narrative pages.
- *
+ * Four entries deliberately point at dosje.gov.in rather than a `/website/…` route. Their
+ * slugs are correct; the content ingest never captured them, so the routes do not exist.
  * They are linked out rather than hand-authored because the content is statutory and
- * volatile: the SC list is ~60 documents including Constitutional Orders and 23
- * amendment Acts, revised to Nov 2025, and Demand For Grant grows a volume a year.
- * A hand-copied register of legal instruments would go stale silently, and the
- * upstream budget index is already internally inconsistent (2019-20, 2021-22 and
- * 2023-24 resolve to one and the same PDF), so transcribing it would ship links we
- * know to be wrong. The Department's own Hyperlinking Policy (/website/hyperlinking-policy)
- * provides for exactly this, and the rail already links out to four government
- * systems; `open_in_new` + target/rel are applied automatically to any `http` href.
+ * volatile — the SC list alone is ~60 documents including the Constitutional Orders and 23
+ * amendment Acts — and because the upstream budget index is already internally
+ * inconsistent (2019-20, 2021-22 and 2023-24 resolve to one PDF), so transcribing it would
+ * ship links we know to be wrong. The Department's own Hyperlinking Policy provides for
+ * this. Restore an internal route by ingesting the content, then flipping the href in
+ * divisions.ts. Do not "fix" them back into 404s.
  *
- * Restore an internal route by ingesting the content, then flipping the href back.
+ * Any href starting with "http" gets target, rel and the open_in_new affordance below
+ * without being listed anywhere as external.
  */
-const CATEGORIZED_LINKS: LinkGroup[] = [
-  {
-    category: "Scheduled Caste Welfare",
-    items: [
-      { label: "About the Division: Scheduled Caste Welfare", href: "/website/about-the-division" },
-      { label: "List of Scheduled Castes", href: "https://www.dosje.gov.in/list-of-scheduled-castes/" },
-      { label: "Policies / Acts / Rules / Circular", href: "/website/policies-acts-rules-circular" },
-    ],
-  },
-  {
-    category: "Welfare Of The Other Backward Classes",
-    items: [
-      { label: "About the Division: Welfare Of The Other Backward Classes", href: "/website/about-the-division-welfare-of-the-other-backward-classes" },
-      { label: "Policies / Acts / Rules / Codes / Circular", href: "/website/policies-acts-rules-codes-circular" },
-      { label: "Welfare Of The Other Backward Classes FAQs", href: "/website/welfare-of-the-other-backward-classes" },
-    ],
-  },
-  {
-    category: "Grants-In-Aid To NGOs",
-    items: [
-      { label: "Prioritization Guidelines for funding Projects by Voluntary Organisations", href: "/website/prioritization-guidelines-for-funding-projects-by-voluntary-organisations" },
-      { label: "Procedure for processing Grant-in-Aid Cases for Voluntary Organisations", href: "/website/procedure-for-processing-grant-in-aid-cases-in-respect-of-voluntary-organisations" },
-      { label: "Inspection and Monitoring Procedure", href: "/website/inspection-and-monitoring-procedure" },
-      { label: "Guidelines for Assisting NGOs / Voluntary Organisations", href: "/website/guidelines-for-assisting-ngos-voluntary-organisations" },
-      { label: "Online Portal for Grant in Aid Schemes (e-Anudaan)", href: "https://grants-msje.gov.in/ngo-login" },
-    ],
-  },
-  {
-    category: "Budget And Account",
-    items: [
-      { label: "Detailed Demand For Grant", href: "https://www.dosje.gov.in/detailed-demand-for-grant/" },
-      { label: "Contact Person", href: "/website/contact-person" },
-    ],
-  },
-  {
-    category: "Social Defence",
-    items: [
-      { label: "Rashtriya Vayoshri Yojana", href: "https://alimco.in/" },
-      { label: "About the Division: Social Defence", href: "/website/about-the-division-social-defence" },
-      { label: "Drug Division", href: "/website/drug-division" },
-      { label: "Social Defence FAQs", href: "/website/social-defence-faqs" },
-    ],
-  },
-  {
-    category: "Public Grievance",
-    items: [
-      { label: "Public Grievance Redressal Mechanism (CPGRAMS)", href: "https://pgportal.gov.in/" },
-    ],
-  },
-  {
-    category: "Statistics Division",
-    items: [
-      { label: "SECC 2011", href: "https://secc.dord.gov.in/" },
-      { label: "About the Division: Statistics Division", href: "/website/about-the-division-statistics-division" },
-      { label: "Handbook on Social Welfare Statistics", href: "https://www.dosje.gov.in/handbook-on-social-welfare-statistics/" },
-    ],
-  },
-  {
-    category: "Official Language",
-    items: [
-      { label: "Official Language: Background", href: "/website/official-language-background" },
-      { label: "Official Language Act", href: "/website/official-language-act" },
-      { label: "Activities of the Ministry: Official Language", href: "/website/activities-of-the-ministry-official-language" },
-    ],
-  },
-  {
-    category: "Parliamentary Matters",
-    items: [
-      { label: "Assurances", href: "/website/assurances" },
-      { label: "Special Mention / Matters Raised Under Rule 377", href: "https://www.dosje.gov.in/special-mention-matters-raised-under-377/" },
-    ],
-  },
-  {
-    category: "Plan Division",
-    items: [
-      { label: "About the Division: Plan Division", href: "/website/about-the-division-2" },
-    ],
-  },
-];
 
 export function ImportantLinks() {
   const [isOpen, setIsOpen] = useState(false);
@@ -195,13 +108,13 @@ export function ImportantLinks() {
             </div>
 
             <div className="max-h-[70vh] divide-y divide-gray-100 overflow-y-auto p-5">
-              {CATEGORIZED_LINKS.map((group) => (
-                <div key={group.category} className="py-4 first:pt-0 last:pb-0">
+              {DIVISIONS.map((group) => (
+                <div key={group.id} className="py-4 first:pt-0 last:pb-0">
                   <h3 className="mb-2 text-[14px] font-bold uppercase tracking-wider text-primary-dark">
-                    {group.category}
+                    {group.name}
                   </h3>
                   <ul className="space-y-1.5">
-                    {group.items.map((item) => (
+                    {group.links.map((item) => (
                       <li key={item.label}>
                         <a
                           href={item.href}

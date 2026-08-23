@@ -3,6 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Icon, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
+import {
+  DIVISIONS_WITH_DIRECTORY,
+  getOfficeHolders,
+  getOrganisation,
+  ORGANISATIONS_WITH_DIRECTORY,
+  type Official,
+} from "@/data/website";
 
 export const metadata: Metadata = {
   title: "Who's Who — Department of Social Justice & Empowerment",
@@ -10,148 +17,82 @@ export const metadata: Metadata = {
     "Directory of Ministers, Commissions, and Senior Administrative Officers under the Ministry of Social Justice & Empowerment.",
 };
 
-interface OfficialProfile {
-  name: string;
-  role: string;
-  image?: string;
-  room?: string;
-  phone?: string;
-  email?: string;
-  location?: string;
-}
+/**
+ * Each group is one body: its office-holders, and a link onward to its full directory.
+ *
+ * The officials come from officials.ts rather than a list kept here, and `viewAllHref`
+ * prefers the body's telephone directory over its narrative profile. That ordering is the
+ * fix for a real defect: three of the four "View All" links pointed at
+ * /website/organisation/<slug>, which is an About page carrying no officials at all — so a
+ * reader who clicked "View All" beneath a list of officials arrived somewhere with none,
+ * while the purpose-built directory (daic-directory, ncbc-directory) sat unlinked.
+ *
+ * The profile is still the fallback, and it is the right one where a body publishes no
+ * directory — NCSC has none.
+ */
 
 interface OrganizationGroup {
   title: string;
   viewAllHref: string;
-  officials: OfficialProfile[];
+  officials: Official[];
 }
 
-const ORG_GROUPS: OrganizationGroup[] = [
+/** Bodies shown here, in protocol order, keyed by organisation id. */
+const GROUPS: { title: string; ownerId: string; profileHref: string }[] = [
   {
     title: "Ministry of Social Justice and Empowerment (MoSJE) Officials",
-    viewAllHref: "/website/mosje-directory",
-    officials: [
-      {
-        name: "Dr. Virendra Kumar",
-        role: "Union Minister of Social Justice and Empowerment",
-        image: "/website/images/Dr.-Virendra-Kumar.png",
-        room: "110",
-        phone: "011-23381001, 23381390, 23381902(Fax)",
-        email: "min-sje@nic.in",
-        location: "201 C-Wing, Shastri Bhawan, New Delhi",
-      },
-      {
-        name: "Shri Ramdas Athawale",
-        role: "Minister of State for Social Justice & Empowerment",
-        image: "/website/images/Shri-Ramdas-Athawale.png",
-        room: "125",
-        phone: "011-23381656, 011-23381657, 011-23018978(Fax)",
-        email: "mos3-msje@gov.in",
-        location: "101C-Wing, Shastri Bhawan, New Delhi",
-      },
-      {
-        name: "Shri B. L. Verma",
-        role: "Minister of State for Social Justice & Empowerment",
-        image: "/website/images/sri-l-b-verma.png",
-        room: "141, 142",
-        phone: "011-23072192, 23072193",
-        email: "mosoffice-sje@gov.in",
-        location: "Room No. 623, A-Wing, Shastri Bhawan, New Delhi",
-      },
-    ],
+    ownerId: "ministry-leadership",
+    profileHref: "/website/mosje-directory",
   },
   {
     title: "Dr. Ambedkar International Centre (DAIC) Officials",
-    viewAllHref: "/website/organisation/dr-ambedkar-international-centre",
-    officials: [
-      {
-        name: "Shri V. Appa Rao",
-        role: "Member Secretary",
-        phone: "011-23477499",
-        email: "dir-daic-mosje@gov.in",
-        location: "2nd Floor, DAIC, 15 Janpath, New Delhi",
-      },
-      {
-        name: "Shri Vikas Trivedi",
-        role: "Director",
-        phone: "011-23477493",
-        email: "dir-daic-mosje@gov.in",
-        location: "2nd Floor, DAIC, 15 Janpath, New Delhi",
-      },
-      {
-        name: "Hemant Kumar Srivastava",
-        role: "Financial Advisor",
-        phone: "011-23477499",
-        email: "dir-daic-mosje@gov.in",
-        location: "2nd Floor, DAIC, 15 Janpath, New Delhi",
-      },
-      {
-        name: "Mr. Nandu Shaw",
-        role: "Sr. Accounts Officer",
-        phone: "011-23477499",
-        email: "dir-daic-mosje@gov.in",
-        location: "2nd Floor, DAIC, 15 Janpath, New Delhi",
-      },
-    ],
+    ownerId: "dr-ambedkar-international-centre",
+    profileHref: "/website/organisation/dr-ambedkar-international-centre",
   },
   {
     title: "National Commission for Backward Classes (NCBC) Officials",
-    viewAllHref: "/website/organisation/national-commission-for-backward-classes-ncbc",
-    officials: [
-      {
-        name: "Shri Hansraj Gangaram Ahir",
-        role: "Hon'ble Chairperson",
-        room: "101",
-        phone: "011-26183152, 011-26182388",
-        email: "chairman-office@ncbc.nic.in",
-      },
-      {
-        name: "Shri Bhuvan Bhushan Kamal",
-        role: "Hon'ble Member",
-        room: "103",
-        phone: "011-26185478",
-        email: "member-office@ncbc.nic.in",
-      },
-      {
-        name: "Ms. Meeta Rajivlochan, I.A.S.",
-        role: "Secretary",
-        room: "102",
-        phone: "011-26183190",
-        email: "secy-ncbc@nic.in",
-      },
-      {
-        name: "Shri Rajesh Kumar",
-        role: "Advisor to the Commission",
-        room: "212",
-        phone: "011-26714874",
-      },
-    ],
+    ownerId: "national-commission-for-backward-classes-ncbc",
+    profileHref: "/website/organisation/national-commission-for-backward-classes-ncbc",
   },
   {
     title: "National Commission for Scheduled Castes (NCSC) Officials",
-    viewAllHref: "/website/organisation/national-commission-for-scheduled-castes",
-    officials: [
-      {
-        name: "Shri Kishor Makwana",
-        role: "Chairperson",
-        phone: "011-24620435",
-        email: "chairman-ncsc@nic.in",
-      },
-      {
-        name: "Shri Love Kush Kumar",
-        role: "Hon'ble Member",
-        phone: "011-24623296",
-        email: "lovekush.ncsc@gov.in",
-      },
-      {
-        name: "Shri Vaddepalli Ramchander",
-        role: "Hon'ble Member",
-        phone: "011-24624801",
-        email: "vaddepalli.ncsc@gov.in",
-      },
-    ],
+    ownerId: "national-commission-for-scheduled-castes",
+    profileHref: "/website/organisation/national-commission-for-scheduled-castes",
   },
 ];
+
+
+/**
+ * Every telephone directory the site publishes, gathered in one place.
+ *
+ * Fourteen of these pages existed and nothing linked to them — eleven organisation
+ * directories, the Scheduled Caste Welfare division's, the Ministry's general staff
+ * directory and the Chairperson's Office. This page is where a reader looking for a
+ * government officer arrives, so it is where they belong. The organisation and division
+ * entries are read from the registries, so a body that gains a directory appears here
+ * without anyone remembering to add it.
+ */
+const DIRECTORIES: { label: string; href: string; kind: string }[] = [
+  { label: "Ministry Leadership", href: "/website/mosje-directory", kind: "Ministry" },
+  { label: "General Staff Directory", href: "/website/directory", kind: "Ministry" },
+  { label: "Chairperson's Office", href: "/website/chairpersons-office", kind: "Ministry" },
+  ...DIVISIONS_WITH_DIRECTORY.map((division) => ({
+    label: division.name,
+    href: division.directoryHref!,
+    kind: "Division",
+  })),
+  ...ORGANISATIONS_WITH_DIRECTORY.map((organisation) => ({
+    label: `${organisation.name} (${organisation.abbr})`,
+    href: organisation.directoryHref!,
+    kind: "Associated Organisation",
+  })),
+];
+
+const ORG_GROUPS: OrganizationGroup[] = GROUPS.map((g) => ({
+  title: g.title,
+  viewAllHref: getOrganisation(g.ownerId)?.directoryHref ?? g.profileHref,
+  officials: getOfficeHolders(g.ownerId),
+}));
 
 export default function WhosWhoPage() {
   return (
@@ -188,10 +129,10 @@ export default function WhosWhoPage() {
                   className="bg-white rounded-xl border border-neutral-200 p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col space-y-4"
                 >
                   <div className="flex items-start gap-4">
-                    {official.image ? (
+                    {official.photo ? (
                       <div className="relative h-16 w-16 rounded-full overflow-hidden border-2 border-[#0373DF]/20 shadow-sm shrink-0 bg-neutral-100">
                         <Image
-                          src={official.image}
+                          src={official.photo}
                           alt={official.name}
                           fill
                           className="object-cover"
@@ -211,7 +152,7 @@ export default function WhosWhoPage() {
                         {official.name}
                       </h3>
                       <p className="mt-0.5 text-xs font-semibold text-[#0373DF]">
-                        {official.role}
+                        {official.designation}
                       </p>
                     </div>
                   </div>
@@ -240,10 +181,10 @@ export default function WhosWhoPage() {
                         </a>
                       </div>
                     )}
-                    {official.location && (
+                    {official.address && (
                       <div className="flex items-center gap-2">
                         <Icon name="location_on" size={16} className="text-neutral-400 shrink-0" />
-                        <span className="truncate">{official.location}</span>
+                        <span className="truncate">{official.address}</span>
                       </div>
                     )}
                   </div>
@@ -252,6 +193,42 @@ export default function WhosWhoPage() {
             </div>
           </section>
         ))}
+
+        {/* Telephone directories */}
+        <section className="space-y-4">
+          <div>
+            <h2 className="text-2xl font-bold text-neutral-900">Telephone Directories</h2>
+            <p className="mt-1 text-sm text-neutral-600">
+              Full contact lists for the Ministry, its divisions and its associated
+              organisations — name, designation, intercom, telephone and email.
+            </p>
+          </div>
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {DIRECTORIES.map((entry) => (
+              <li key={entry.href}>
+                <Link
+                  href={entry.href}
+                  className="flex h-full items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#0373DF]"
+                >
+                  <span className="min-w-0">
+                    <span className="block text-sm font-semibold text-neutral-900">
+                      {entry.label}
+                    </span>
+                    <span className="mt-0.5 block text-xs text-neutral-500">
+                      {entry.kind}
+                    </span>
+                  </span>
+                  <Icon
+                    name="chevron_right"
+                    size={20}
+                    className="shrink-0 text-neutral-400"
+                    aria-hidden="true"
+                  />
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         {/* Need Support Callout */}
         <section className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl p-8 border border-blue-100 flex flex-col sm:flex-row items-center justify-between gap-6 shadow-sm">
