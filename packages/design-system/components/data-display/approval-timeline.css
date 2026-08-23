@@ -1,117 +1,140 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — ApprovalTimeline (multi-tier approval audit trail)
-   Vertical rail with per-action markers. Token-driven; dark-mode safe.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-timeline {
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  margin: 0;
-  font-family: var(--sa-font-latin);
-  list-style: none;
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — ApprovalTimeline (multi-tier approval audit trail)
+     Vertical rail with per-action markers. Token-driven; dark-mode safe.
+     ============================================================================ */
 
-.ds-timeline__item {
-  position: relative;
-  padding: 0 0 var(--sa-padding-20) var(--sa-padding-24);
-}
+  .ds-timeline {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    margin: 0;
+    font-family: var(--sa-font-latin);
+    list-style: none;
+  }
 
-/* The rail, drawn behind every item except the last. */
-.ds-timeline__item::before {
-  position: absolute;
-  top: 16px;
-  bottom: 0;
-  left: 6px;
-  width: 2px;
-  content: "";
-  background-color: var(--sa-border-neutral-subtle);
-}
+  .ds-timeline__item {
+    position: relative;
+    padding: 0 0 var(--sa-padding-20) var(--sa-padding-24);
+  }
 
-.ds-timeline__item:last-child {
-  padding-bottom: 0;
-}
+  /* The rail, drawn behind every item except the last. */
+  .ds-timeline__item::before {
+    position: absolute;
+    top: 16px;
+    bottom: 0;
+    left: 6px;
+    width: 2px;
+    content: "";
+    background-color: var(--sa-border-neutral-subtle);
+  }
 
-.ds-timeline__item:last-child::before {
-  display: none;
-}
+  .ds-timeline__item:last-child {
+    padding-bottom: 0;
+  }
 
-.ds-timeline__marker {
-  position: absolute;
-  top: 5px;
-  left: 0;
-  width: 14px;
-  height: 14px;
-  background-color: var(--sa-bg-neutral-base);
-  border: 3px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-full);
-}
+  .ds-timeline__item:last-child::before {
+    display: none;
+  }
 
-.ds-timeline__item.is-submitted .ds-timeline__marker {
-  border-color: var(--sa-border-brand-primary-base);
-}
+  .ds-timeline__marker {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    background-color: var(--sa-bg-neutral-base);
+    border: 3px solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-full);
+  }
 
-.ds-timeline__item.is-approved .ds-timeline__marker {
-  background-color: var(--sa-color-status-success);
-  border-color: var(--sa-border-status-success-base);
-}
+  .ds-timeline__item.is-submitted .ds-timeline__marker {
+    border-color: var(--sa-border-brand-primary-base);
+  }
 
-.ds-timeline__item.is-returned .ds-timeline__marker {
-  background-color: var(--sa-color-status-warning);
-  border-color: var(--sa-border-status-warning-base);
-}
+  .ds-timeline__item.is-approved .ds-timeline__marker {
+    background-color: var(--sa-color-status-success);
+    border-color: var(--sa-border-status-success-base);
+  }
 
-/* `--sa-border-neutral-base` is a hairline against white and reads as an empty circle
-   at this size; use the muted ink so the pending step clears the 3:1 bar for
-   non-text UI. The adjacent label still carries the meaning in text. */
-.ds-timeline__item.is-pending .ds-timeline__marker {
-  border-style: dashed;
-  border-color: var(--sa-color-text-muted);
-}
+  .ds-timeline__item.is-returned .ds-timeline__marker {
+    background-color: var(--sa-color-status-warning);
+    border-color: var(--sa-border-status-warning-base);
+  }
 
-.ds-timeline__body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-padding-2);
-}
+  /* `--sa-border-neutral-base` is a hairline against white and reads as an empty circle
+     at this size; use the muted ink so the pending step clears the 3:1 bar for
+     non-text UI. The adjacent label still carries the meaning in text. */
+  .ds-timeline__item.is-pending .ds-timeline__marker {
+    border-style: dashed;
+    border-color: var(--sa-color-text-muted);
+  }
 
-.ds-timeline__action {
-  margin: 0;
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  font-weight: 600;
-  color: var(--sa-text-neutral-bolder);
-}
+  .ds-timeline__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-padding-2);
+  }
 
-.ds-timeline__action--pending {
-  font-weight: 500;
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-timeline__action {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
 
-.ds-timeline__meta {
-  margin: 0;
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-neutral-base);
-}
+  .ds-timeline__action--pending {
+    font-weight: 500;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-timeline__sep {
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-timeline__meta {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-base);
+  }
 
-.ds-timeline__stamp {
-  margin: 0;
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-timeline__sep {
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-timeline__remarks {
-  padding: var(--sa-padding-8) var(--sa-padding-12);
-  margin: var(--sa-padding-8) 0 0;
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-neutral-bolder);
-  background-color: var(--sa-bg-status-warning-base);
-  border-radius: var(--sa-shape-8);
+  .ds-timeline__stamp {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-timeline__remarks {
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    margin: var(--sa-padding-8) 0 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-bolder);
+    background-color: var(--sa-bg-status-warning-base);
+    border-radius: var(--sa-shape-8);
+  }
 }

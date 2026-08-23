@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Icon } from "../icon/icon";
+import { Icon } from "../utilities/icon";
 import "./accordion.css";
 
 export const Accordion = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(

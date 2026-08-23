@@ -1,281 +1,304 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — AppSwitcherPanel  (app-switcher-panel.css)
-   The searchable content of the AppSwitcher / DemoDock "Apps" tab. Pure
-   content — no fixed positioning of its own. Whatever mounts it owns the
-   scrolling box (`.ds-appsw__panel` for the standalone AppSwitcher shell,
-   `.ds-demodock__body` for DemoDock); this file only owns what sticks
-   *within* that scroll and what doesn't.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-/* ── Header (current-app indicator + search — sticks to the top of
-   whatever scroll container this panel lives in) ── */
-.ds-appsw__header {
-  position: sticky;
-  top: 0;
-  z-index: 2;
-  padding: var(--sa-padding-12) var(--sa-padding-16) var(--sa-padding-12);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-  background-color: var(--sa-bg-neutral-base);
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — AppSwitcherPanel  (app-switcher-panel.css)
+     The searchable content of the AppSwitcher / DemoDock "Apps" tab. Pure
+     content — no fixed positioning of its own. Whatever mounts it owns the
+     scrolling box (`.ds-appsw__panel` for the standalone AppSwitcher shell,
+     `.ds-demodock__body` for DemoDock); this file only owns what sticks
+     *within* that scroll and what doesn't.
+     ============================================================================ */
 
-.ds-appsw__header-row {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: var(--sa-padding-12);
-}
+  /* ── Header (current-app indicator + search — sticks to the top of
+     whatever scroll container this panel lives in) ── */
+  .ds-appsw__header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    padding: var(--sa-padding-12) var(--sa-padding-16) var(--sa-padding-12);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    background-color: var(--sa-bg-neutral-base);
+  }
 
-/* Current app indicator */
-.ds-appsw__current {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-}
+  .ds-appsw__header-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: var(--sa-padding-12);
+  }
 
-.ds-appsw__current-icon {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 auto;
-  border-radius: var(--sa-shape-6);
-  background-color: var(--sa-bg-brand-primary-subtler);
-  color: var(--sa-text-brand-primary-base);
-  font-size: 11px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  /* Current app indicator */
+  .ds-appsw__current {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+  }
 
-.ds-appsw__current-label {
-  font-size: var(--sa-type-label-3-size);
-  color: var(--sa-text-neutral-subtle);
-  line-height: 1;
-  margin-bottom: var(--sa-padding-2);
-}
+  .ds-appsw__current-icon {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 auto;
+    border-radius: var(--sa-shape-6);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-base);
+    font-size: 11px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.ds-appsw__current-name {
-  font-size: var(--sa-type-body-2-size);
-  font-weight: 700;
-  color: var(--sa-text-neutral-base);
-  line-height: 1;
-}
+  .ds-appsw__current-label {
+    font-size: var(--sa-type-label-3-size);
+    color: var(--sa-text-neutral-subtle);
+    line-height: 1;
+    margin-bottom: var(--sa-padding-2);
+  }
 
-/* Search bar */
-.ds-appsw__search {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  background-color: var(--sa-bg-neutral-subtler);
-  border-radius: var(--sa-shape-6);
-  padding: var(--sa-padding-8) var(--sa-padding-12);
-  transition: background-color 0.12s ease;
-}
+  .ds-appsw__current-name {
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 700;
+    color: var(--sa-text-neutral-base);
+    line-height: 1;
+  }
 
-.ds-appsw__search:focus-within {
-  background-color: var(--sa-bg-brand-primary-subtler);
-  outline: 1.5px solid var(--sa-focus-ring);
-}
+  /* Search bar */
+  .ds-appsw__search {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    background-color: var(--sa-bg-neutral-subtler);
+    border-radius: var(--sa-shape-6);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    transition: background-color 0.12s ease;
+  }
 
-.ds-appsw__search-icon {
-  width: 14px;
-  height: 14px;
-  flex: 0 0 auto;
-  color: var(--sa-text-neutral-subtle);
-  transition: color 0.12s ease;
-}
+  .ds-appsw__search:focus-within {
+    background-color: var(--sa-bg-brand-primary-subtler);
+    outline: 1.5px solid var(--sa-focus-ring);
+  }
 
-.ds-appsw__search:focus-within .ds-appsw__search-icon {
-  color: var(--sa-text-brand-primary-base);
-}
+  .ds-appsw__search-icon {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
+    color: var(--sa-text-neutral-subtle);
+    transition: color 0.12s ease;
+  }
 
-.ds-appsw__search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-family: var(--sa-font-latin);
-  font-size: var(--sa-type-body-2-size);
-  color: var(--sa-text-neutral-base);
-  min-width: 0;
-}
+  .ds-appsw__search:focus-within .ds-appsw__search-icon {
+    color: var(--sa-text-brand-primary-base);
+  }
 
-.ds-appsw__search-input::placeholder {
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-appsw__search-input {
+    flex: 1;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-base);
+    min-width: 0;
+  }
 
-/* Remove default search clear button */
-.ds-appsw__search-input::-webkit-search-cancel-button {
-  display: none;
-}
+  .ds-appsw__search-input::placeholder {
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-appsw__search-kbd {
-  font-family: var(--sa-font-latin);
-  font-size: 10px;
-  color: var(--sa-text-neutral-subtle);
-  background-color: var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-4);
-  padding: var(--sa-padding-2) var(--sa-padding-4);
-  flex: 0 0 auto;
-}
+  /* Remove default search clear button */
+  .ds-appsw__search-input::-webkit-search-cancel-button {
+    display: none;
+  }
 
-/* ── Body (flows with the ambient scroll container — no scroll box of its
-   own, so there is exactly one scrollbar wherever this panel is mounted) ── */
-.ds-appsw__body {
-  padding: var(--sa-padding-4) 0;
-}
+  .ds-appsw__search-kbd {
+    font-family: var(--sa-font-latin);
+    font-size: 10px;
+    color: var(--sa-text-neutral-subtle);
+    background-color: var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-4);
+    padding: var(--sa-padding-2) var(--sa-padding-4);
+    flex: 0 0 auto;
+  }
 
-/* ── Group headings — sticky just below the header. The offset is measured
-   at runtime (header height varies: the standalone AppSwitcher shows the
-   current-app row + search, DemoDock's embedded panel shows search only)
-   and written to `--cmp-appsw-sticky-offset` on the panel root; the px
-   fallback covers the first paint before that effect runs. ── */
-.ds-appsw__group-label {
-  position: sticky;
-  top: var(--cmp-appsw-sticky-offset, 56px);
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-4);
-  font-size: var(--sa-type-label-3-size);
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--sa-text-neutral-subtle);
-  background-color: var(--sa-bg-neutral-base);
-}
+  /* ── Body (flows with the ambient scroll container — no scroll box of its
+     own, so there is exactly one scrollbar wherever this panel is mounted) ── */
+  .ds-appsw__body {
+    padding: var(--sa-padding-4) 0;
+  }
 
-/* ── List items (shared) ── */
-.ds-appsw__item {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-12);
-  padding: var(--sa-padding-8) var(--sa-padding-16);
-  color: var(--sa-text-neutral-base);
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color 0.1s ease;
-}
+  /* ── Group headings — sticky just below the header. The offset is measured
+     at runtime (header height varies: the standalone AppSwitcher shows the
+     current-app row + search, DemoDock's embedded panel shows search only)
+     and written to `--cmp-appsw-sticky-offset` on the panel root; the px
+     fallback covers the first paint before that effect runs. ── */
+  .ds-appsw__group-label {
+    position: sticky;
+    top: var(--cmp-appsw-sticky-offset, 56px);
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-4);
+    font-size: var(--sa-type-label-3-size);
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+    background-color: var(--sa-bg-neutral-base);
+  }
 
-.ds-appsw__item:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  /* ── List items (shared) ── */
+  .ds-appsw__item {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    color: var(--sa-text-neutral-base);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.1s ease;
+  }
 
-.ds-appsw__item.is-active {
-  background-color: var(--sa-bg-brand-primary-subtler);
-}
+  .ds-appsw__item:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-.ds-appsw__item:focus-visible {
-  outline: none;
-  box-shadow: inset 0 0 0 2px var(--sa-focus-ring);
-}
+  .ds-appsw__item.is-active {
+    background-color: var(--sa-bg-brand-primary-subtler);
+  }
 
-/* Planned (non-interactive) */
-.ds-appsw__item--planned {
-  opacity: 0.45;
-  cursor: default;
-}
+  .ds-appsw__item:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 2px var(--sa-focus-ring);
+  }
 
-.ds-appsw__item--planned:hover {
-  background-color: transparent;
-}
+  /* Planned (non-interactive) */
+  .ds-appsw__item--planned {
+    opacity: 0.45;
+    cursor: default;
+  }
 
-/* Icon */
-.ds-appsw__item-icon {
-  width: 30px;
-  height: 30px;
-  flex: 0 0 auto;
-  border-radius: var(--sa-shape-6);
-  background-color: var(--sa-bg-brand-primary-subtler);
-  color: var(--sa-text-brand-primary-base);
-  font-size: 11px;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+  .ds-appsw__item--planned:hover {
+    background-color: transparent;
+  }
 
-.ds-appsw__item.is-active .ds-appsw__item-icon {
-  background-color: var(--sa-bg-brand-primary-bolder);
-  color: var(--sa-bg-neutral-base);
-}
+  /* Icon */
+  .ds-appsw__item-icon {
+    width: 30px;
+    height: 30px;
+    flex: 0 0 auto;
+    border-radius: var(--sa-shape-6);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-base);
+    font-size: 11px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.ds-appsw__item--planned .ds-appsw__item-icon {
-  background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-appsw__item.is-active .ds-appsw__item-icon {
+    background-color: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-bg-neutral-base);
+  }
 
-/* Text stack */
-.ds-appsw__item-text {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
+  .ds-appsw__item--planned .ds-appsw__item-icon {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-appsw__item-name {
-  font-size: var(--sa-type-body-2-size);
-  font-weight: 600;
-  color: var(--sa-text-neutral-base);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+  /* Text stack */
+  .ds-appsw__item-text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+  }
 
-/* New-tab affordance. Muted so it annotates the name rather than competing
-   with it — the name is the thing you are scanning for. */
-.ds-appsw__item-external {
-  margin-inline-start: 5px;
-  font-size: 0.85em;
-  font-weight: 500;
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-appsw__item-name {
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 
-.ds-appsw__item.is-active .ds-appsw__item-name {
-  color: var(--sa-text-brand-primary-base);
-}
+  /* New-tab affordance. Muted so it annotates the name rather than competing
+     with it — the name is the thing you are scanning for. */
+  .ds-appsw__item-external {
+    margin-inline-start: 5px;
+    font-size: 0.85em;
+    font-weight: 500;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-appsw__item-desc {
-  font-size: var(--sa-type-body-3-size);
-  color: var(--sa-text-neutral-subtle);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  line-height: var(--sa-type-body-3-lh);
-}
+  .ds-appsw__item.is-active .ds-appsw__item-name {
+    color: var(--sa-text-brand-primary-base);
+  }
 
-/* Badges */
-.ds-appsw__badge {
-  flex: 0 0 auto;
-  font-size: 9px;
-  font-weight: 700;
-  border-radius: var(--sa-shape-6);
-  padding: var(--sa-padding-2) var(--sa-padding-4);
-}
+  .ds-appsw__item-desc {
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: var(--sa-type-body-3-lh);
+  }
 
-.ds-appsw__badge--live {
-  background-color: var(--sa-bg-status-success-subtler);
-  color: var(--sa-text-status-success-base);
-}
+  /* Badges */
+  .ds-appsw__badge {
+    flex: 0 0 auto;
+    font-size: 9px;
+    font-weight: 700;
+    border-radius: var(--sa-shape-6);
+    padding: var(--sa-padding-2) var(--sa-padding-4);
+  }
 
-.ds-appsw__badge--soon {
-  background-color: var(--sa-bg-status-warning-base);
-  color: var(--sa-color-brand-saffronDark);
-}
+  .ds-appsw__badge--live {
+    background-color: var(--sa-bg-status-success-subtler);
+    color: var(--sa-text-status-success-base);
+  }
 
-/* "In development" note shown below planned items in search */
-.ds-appsw__planned-note {
-  padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-8);
-  font-size: var(--sa-type-body-3-size);
-  color: var(--sa-text-neutral-subtle);
-  border-top: 1px solid var(--sa-border-neutral-subtle);
-  text-align: center;
-}
+  .ds-appsw__badge--soon {
+    background-color: var(--sa-bg-status-warning-base);
+    color: var(--sa-color-brand-saffronDark);
+  }
 
-/* Empty state */
-.ds-appsw__empty {
-  padding: var(--sa-padding-20) var(--sa-padding-16);
-  font-size: var(--sa-type-body-2-size);
-  color: var(--sa-text-neutral-subtle);
-  text-align: center;
+  /* "In development" note shown below planned items in search */
+  .ds-appsw__planned-note {
+    padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-8);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    text-align: center;
+  }
+
+  /* Empty state */
+  .ds-appsw__empty {
+    padding: var(--sa-padding-20) var(--sa-padding-16);
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-subtle);
+    text-align: center;
+  }
 }

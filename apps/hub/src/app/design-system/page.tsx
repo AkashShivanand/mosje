@@ -36,7 +36,7 @@ export default function WelcomePage(): React.JSX.Element {
           >
             Explore Foundations
           </Button>
-          <Button href="/design-system/components/button" variant="primary" appearance="outlined">
+          <Button href="/design-system/components/actions/button" variant="primary" appearance="outlined">
             Browse Components
           </Button>
           {/* External link — DS button styling via buttonClasses so it can open
@@ -86,7 +86,7 @@ export default function WelcomePage(): React.JSX.Element {
           {[
             { title: "Token-based colors", desc: "Every color has a name and purpose. No guessing which blue to use.", href: "/design-system/foundations/color" },
             { title: "Type scale", desc: "Predefined type roles (Display, Headline, Body) for EN and हिन्दी.", href: "/design-system/foundations/typography" },
-            { title: "Component library", desc: "Every Figma component maps directly to code — zero translation gap.", href: "/design-system/components/button" },
+            { title: "Component library", desc: "Every Figma component maps directly to code — zero translation gap.", href: "/design-system/components/actions/button" },
             { title: "Accessibility built in", desc: "Touch targets, contrast, and focus states are part of every component design.", href: "/design-system/foundations/accessibility" },
           ].map((card) => (
             <a
@@ -141,12 +141,12 @@ export default function WelcomePage(): React.JSX.Element {
         </h2>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: "var(--sa-stack-12)" }}>
           {[
-            { name: "Button", status: "Stable" as const, href: "/design-system/components/button" },
-            { name: "Card", status: "Stable" as const, href: "/design-system/components/card" },
-            { name: "Badge", status: "Stable" as const, href: "/design-system/components/badge" },
-            { name: "Input / Textarea", status: "Stable" as const, href: "/design-system/components/input" },
-            { name: "Select", status: "Beta" as const, href: "/design-system/components/input#select" },
-            { name: "Form Field", status: "Stable" as const, href: "/design-system/components/input#form-field" },
+            { name: "Button", status: "Stable" as const, href: "/design-system/components/actions/button" },
+            { name: "Card", status: "Stable" as const, href: "/design-system/components/data-display/card" },
+            { name: "Badge", status: "Stable" as const, href: "/design-system/components/feedback/badge" },
+            { name: "Input / Textarea", status: "Stable" as const, href: "/design-system/components/forms/input" },
+            { name: "Select", status: "Beta" as const, href: "/design-system/components/forms/select" },
+            { name: "Form Field", status: "Stable" as const, href: "/design-system/components/forms/form-field" },
             { name: "Color Mode", status: "Stable" as const, href: "/design-system/foundations/color#brands" },
           ].map((item) => (
             <a

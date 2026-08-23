@@ -1,157 +1,180 @@
-/* ============================================================================
-   MoSJE / UX4G — Search atom
-   Semantic CSS classes only; all colours reference design tokens (--sa-*).
-   Combine: .ds-search  +  .ds-search--<size>   (md ≈ 44px · lg ≈ 56px)
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-search {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  width: 100%;
-  height: var(--_h, 44px);
-  padding: 0 var(--sa-padding-16);
-  font-family: var(--sa-font-latin);
-  background-color: var(--sa-bg-neutral-base);
-  border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-8);
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / UX4G — Search atom
+     Semantic CSS classes only; all colours reference design tokens (--sa-*).
+     Combine: .ds-search  +  .ds-search--<size>   (md ≈ 44px · lg ≈ 56px)
+     ============================================================================ */
 
-.ds-search--sm {
-  --_h: 40px;
-  padding: 0 var(--sa-padding-12);
-}
+  .ds-search {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    width: 100%;
+    height: var(--_h, 44px);
+    padding: 0 var(--sa-padding-16);
+    font-family: var(--sa-font-latin);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-8);
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+  }
 
-.ds-search--md {
-  --_h: 44px;
-}
+  .ds-search--sm {
+    --_h: 40px;
+    padding: 0 var(--sa-padding-12);
+  }
 
-.ds-search--lg {
-  --_h: 56px;
-  padding: 0 var(--sa-padding-16);
-}
+  .ds-search--md {
+    --_h: 44px;
+  }
 
-/* Focus ring lives on the wrapper, driven by the inner input's focus. */
-.ds-search:focus-within {
-  border-color: var(--sa-border-brand-primary-base);
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-}
+  .ds-search--lg {
+    --_h: 56px;
+    padding: 0 var(--sa-padding-16);
+  }
 
-.ds-search__icon {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  color: var(--sa-text-neutral-subtle);
-}
+  /* Focus ring lives on the wrapper, driven by the inner input's focus. */
+  .ds-search:focus-within {
+    border-color: var(--sa-border-brand-primary-base);
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+  }
 
-.ds-search__icon svg {
-  width: 20px;
-  height: 20px;
-}
+  .ds-search__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: var(--sa-text-neutral-subtle);
+  }
 
-.ds-search__input {
-  flex: 1 1 auto;
-  min-width: 0;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  color: var(--sa-text-neutral-base);
-  font-family: inherit;
-  font-size: var(--sa-type-body-1-size);
-  line-height: var(--sa-type-body-1-lh);
-  outline: none;
-  -webkit-appearance: none;
-  appearance: none;
-}
+  .ds-search__icon svg {
+    width: 20px;
+    height: 20px;
+  }
 
-.ds-search__input::placeholder {
-  color: var(--sa-text-neutral-subtle);
-  opacity: 1;
-}
+  .ds-search__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--sa-text-neutral-base);
+    font-family: inherit;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
 
-/* Hide the native WebKit search clear/decoration — we render our own. */
-.ds-search__input::-webkit-search-decoration,
-.ds-search__input::-webkit-search-cancel-button,
-.ds-search__input::-webkit-search-results-button,
-.ds-search__input::-webkit-search-results-decoration {
-  -webkit-appearance: none;
-  appearance: none;
-}
+  .ds-search__input::placeholder {
+    color: var(--sa-text-neutral-subtle);
+    opacity: 1;
+  }
 
-.ds-search__clear {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 0 auto;
-  width: 24px;
-  height: 24px;
-  margin: 0;
-  padding: 0;
-  border: 0;
-  border-radius: var(--sa-shape-full);
-  background: transparent;
-  color: var(--sa-text-neutral-subtle);
-  cursor: pointer;
-  transition:
-    background-color 0.15s ease,
-    color 0.15s ease;
-}
+  /* Hide the native WebKit search clear/decoration — we render our own. */
+  .ds-search__input::-webkit-search-decoration,
+  .ds-search__input::-webkit-search-cancel-button,
+  .ds-search__input::-webkit-search-results-button,
+  .ds-search__input::-webkit-search-results-decoration {
+    -webkit-appearance: none;
+    appearance: none;
+  }
 
-.ds-search__clear svg {
-  width: 16px;
-  height: 16px;
-}
+  .ds-search__clear {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--sa-shape-full);
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    cursor: pointer;
+    transition:
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
 
-.ds-search__clear:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-text-neutral-base);
-}
+  .ds-search__clear svg {
+    width: 16px;
+    height: 16px;
+  }
 
-.ds-search__clear:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-}
+  .ds-search__clear:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-base);
+  }
 
-/* Disabled */
-.ds-search--disabled {
-  background-color: var(--sa-bg-neutral-subtler);
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+  .ds-search__clear:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+  }
 
-.ds-search--disabled .ds-search__input {
-  cursor: not-allowed;
-}
+  /* Disabled */
+  .ds-search--disabled {
+    background-color: var(--sa-bg-neutral-subtler);
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 
-/* Leading icon as a submit control — present only when `onSubmit` is passed
-   (the masthead case). Without it the icon stays a decorative <span>, so a
-   plain filter field gains no phantom button. */
-.ds-search__icon--action {
-  display: inline-grid;
-  place-items: center;
-  flex: 0 0 auto;
-  height: 32px;
-  width: 32px;
-  padding: 0;
-  border: none;
-  border-radius: var(--sa-shape-8);
-  background: transparent;
-  color: inherit;
-  cursor: pointer;
-  transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
-}
+  .ds-search--disabled .ds-search__input {
+    cursor: not-allowed;
+  }
 
-.ds-search__icon--action:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  /* Leading icon as a submit control — present only when `onSubmit` is passed
+     (the masthead case). Without it the icon stays a decorative <span>, so a
+     plain filter field gains no phantom button. */
+  .ds-search__icon--action {
+    display: inline-grid;
+    place-items: center;
+    flex: 0 0 auto;
+    height: 32px;
+    width: 32px;
+    padding: 0;
+    border: none;
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
 
-.ds-search__icon--action:focus-visible {
-  outline: 2px solid var(--sa-border-brand-primary-base);
-  outline-offset: -2px;
+  .ds-search__icon--action:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-search__icon--action:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: -2px;
+  }
 }

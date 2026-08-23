@@ -22,48 +22,76 @@ export function PageHero({
   actions,
 }: PageHeroProps) {
   return (
-    <section className="border-b border-gray-200 bg-surface-muted">
-      <div className="sa-container py-6 md:py-8">
-        <Breadcrumb items={breadcrumb} />
-
-        <div className="mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div className="max-w-3xl">
-            {badge && (
-              <span className="inline-block rounded bg-primary/10 px-2.5 py-1 text-xs font-bold text-primary uppercase tracking-wide mb-2">
-                {badge}
-              </span>
-            )}
-            <h1 className="text-[26px] sm:text-[32px] font-bold leading-tight text-primary-dark">
-              {title}
-            </h1>
-            {description && (
-              <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">
-                {description}
-              </p>
-            )}
-            {lastUpdated && (
-              <p className="mt-3 text-[12px] text-ink-muted/70">
-                Last Updated: <time>{lastUpdated}</time>
-              </p>
-            )}
-          </div>
-
-          <div className="flex items-center gap-4 self-start md:self-center">
-            {logoSrc && (
-              <div className="flex h-16 w-16 items-center justify-center rounded-xl bg-white p-2 border border-gray-200 shadow-xs">
-                <Image
-                  src={logoSrc}
-                  alt={title}
-                  width={48}
-                  height={48}
-                  className="h-full w-full object-contain"
-                />
-              </div>
-            )}
-            {actions && <div>{actions}</div>}
-          </div>
+    <>
+      {/* 1. Breadcrumbs sit in their own white bar above the hero */}
+      <div className="bg-white border-b border-gray-100 relative z-20">
+        <div className="sa-container py-3">
+          <Breadcrumb items={breadcrumb} />
         </div>
       </div>
-    </section>
+
+      {/* 2. Blue hero section */}
+      <section className="relative overflow-hidden bg-[#0373DF]">
+        <div className="sa-container relative py-12 md:py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+            {/* Left Content Column */}
+            <div className="lg:col-span-8 flex gap-5 md:gap-6 items-stretch">
+              {/* Left Accent Pipe */}
+              <div className="w-1.5 rounded-full bg-white shrink-0" aria-hidden="true" />
+              
+              <div className="flex flex-col justify-center">
+                {badge && (
+                  <span className="inline-block rounded bg-white/20 px-2.5 py-1 text-xs font-bold text-white uppercase tracking-wide mb-3 self-start">
+                    {badge}
+                  </span>
+                )}
+                <h1 className="text-[32px] sm:text-[40px] font-bold leading-tight text-white">
+                  {title}
+                </h1>
+                {description && (
+                  <p className="mt-3 text-[16px] md:text-[18px] leading-relaxed text-white/95 max-w-3xl">
+                    {description}
+                  </p>
+                )}
+                {actions && <div className="mt-6">{actions}</div>}
+                {/* GIGW 3.0 requires every content page to state when it was last reviewed.
+                    The prop was already declared and documented; the blue-hero refactor
+                    stopped rendering it. */}
+                {lastUpdated && (
+                  <p className="mt-4 text-[13px] text-white/80">
+                    Last Updated: <time dateTime={lastUpdated}>{lastUpdated}</time>
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Right Side Graphic / Circular Plaque */}
+            <div className="lg:col-span-4 absolute right-0 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-end pointer-events-none opacity-20 lg:opacity-100 select-none pr-8">
+              {logoSrc ? (
+                 <div className="h-48 w-48 relative rounded-full shadow-2xl border-4 border-white overflow-hidden bg-white">
+                   <Image src={logoSrc} alt={title} fill className="object-contain p-4" />
+                 </div>
+              ) : (
+                /* Default 3D Ministry Plaque Representation */
+                <div className="w-[380px] h-[380px] rounded-full border-[10px] border-[#0256a8] bg-[#0365c4] shadow-2xl flex items-center justify-center relative translate-x-12">
+                  <div className="w-[320px] h-[320px] rounded-full border-2 border-[#024991] bg-gradient-to-br from-[#047aeb] to-[#025bb3] flex flex-col items-center justify-center text-center p-8 gap-4 shadow-inner">
+                    <Image
+                      src="/website/images/National_Emblem_logo_white.svg"
+                      alt="National Emblem of India"
+                      width={100}
+                      height={120}
+                      className="drop-shadow-md"
+                    />
+                    <div className="text-white font-bold tracking-widest text-[11px] leading-tight uppercase opacity-90 drop-shadow-sm">
+                      Ministry of Social Justice<br />&amp; Empowerment
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

@@ -1,91 +1,114 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — AppSwitcher  (zone-switcher.css)
-   Searchable cross-zone control panel. Fixed FAB bottom-left; panel opens
-   above it. Token-only — no raw hex.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-/* ── Root container ── */
-.ds-appsw {
-  position: fixed;
-  left: 20px;
-  bottom: 20px;
-  z-index: 2147483000;
-  font-family: var(--sa-font-latin);
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — AppSwitcher  (zone-switcher.css)
+     Searchable cross-zone control panel. Fixed FAB bottom-left; panel opens
+     above it. Token-only — no raw hex.
+     ============================================================================ */
 
-/* `--cmp-appsw-safe-area` / `.ds-appsw-safe-bottom` moved to demo-dock.css —
-   DemoDock is the FAB that actually mounts in every app now, and CSS only
-   ships for components an app actually imports. Kept here as a comment so
-   the class name doesn't look orphaned when grepped from this file. */
-
-/* ── FAB trigger ── */
-.ds-appsw__fab {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  height: 44px;
-  padding: 0 var(--sa-padding-16) 0 var(--sa-padding-16);
-  border: 1.5px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-full);
-  background-color: var(--sa-bg-neutral-base);
-  color: var(--sa-text-neutral-base);
-  font-family: var(--sa-font-latin);
-  font-size: var(--sa-type-body-2-size);
-  font-weight: 600;
-  cursor: pointer;
-  box-shadow: var(--sa-elevation-modal);
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.ds-appsw__fab:hover {
-  border-color: var(--sa-border-brand-primary-base);
-}
-
-.ds-appsw__fab:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-}
-
-.ds-appsw__fab-icon {
-  width: 18px;
-  height: 18px;
-  color: var(--sa-text-brand-primary-base);
-  flex: 0 0 auto;
-}
-
-/* ── Panel ──
-   Owns the scroll box: `AppSwitcherPanel`'s own CSS (app-switcher-panel.css)
-   no longer scrolls itself — it flows, and its header/group-labels stick
-   relative to whichever ancestor scrolls. For the standalone shell, that's
-   this element. */
-.ds-appsw__panel {
-  position: absolute;
-  left: 0;
-  bottom: calc(100% + 10px);
-  width: 288px;
-  max-height: min(70vh, 640px);
-  border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-8);
-  background-color: var(--sa-bg-neutral-base);
-  box-shadow: var(--sa-elevation-toast);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-/* ── Entrance animation ── */
-@media (prefers-reduced-motion: no-preference) {
-  .ds-appsw__panel {
-    animation: ds-appsw-in 0.14s ease;
+  /* ── Root container ── */
+  .ds-appsw {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    z-index: 2147483000;
+    font-family: var(--sa-font-latin);
   }
 
-  @keyframes ds-appsw-in {
-    from {
-      opacity: 0;
-      transform: translateY(6px);
+  /* `--cmp-appsw-safe-area` / `.ds-appsw-safe-bottom` moved to demo-dock.css —
+     DemoDock is the FAB that actually mounts in every app now, and CSS only
+     ships for components an app actually imports. Kept here as a comment so
+     the class name doesn't look orphaned when grepped from this file. */
+
+  /* ── FAB trigger ── */
+  .ds-appsw__fab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    height: 44px;
+    padding: 0 var(--sa-padding-16) 0 var(--sa-padding-16);
+    border: 1.5px solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-base);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: var(--sa-elevation-modal);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .ds-appsw__fab:hover {
+    border-color: var(--sa-border-brand-primary-base);
+  }
+
+  .ds-appsw__fab:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+  }
+
+  .ds-appsw__fab-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--sa-text-brand-primary-base);
+    flex: 0 0 auto;
+  }
+
+  /* ── Panel ──
+     Owns the scroll box: `AppSwitcherPanel`'s own CSS (app-switcher-panel.css)
+     no longer scrolls itself — it flows, and its header/group-labels stick
+     relative to whichever ancestor scrolls. For the standalone shell, that's
+     this element. */
+  .ds-appsw__panel {
+    position: absolute;
+    left: 0;
+    bottom: calc(100% + 10px);
+    width: 288px;
+    max-height: min(70vh, 640px);
+    border: 1px solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-toast);
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+
+  /* ── Entrance animation ── */
+  @media (prefers-reduced-motion: no-preference) {
+    .ds-appsw__panel {
+      animation: ds-appsw-in 0.14s ease;
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+
+    @keyframes ds-appsw-in {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
   }
 }

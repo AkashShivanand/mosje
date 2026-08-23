@@ -3,10 +3,7 @@ import * as React from "react";
 import { DataTable } from "@mosje/design-system";
 import type { DataTableColumn } from "@mosje/design-system";
 
-interface Scheme {
-  /** `DataTable` reads rows as `Record<string, unknown>`, so the row type
-      needs an index signature to be assignable to it. */
-  [key: string]: unknown;
+interface Scheme extends Record<string, unknown> {
   id: string;
   name: string;
   applicants: number;

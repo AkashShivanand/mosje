@@ -1,50 +1,120 @@
-/* `@reference` gives this file Tailwind's theme context. Without it `@apply`
-   cannot resolve a utility here — the file is imported by the component, not
-   through the app's CSS entry, so it is compiled outside that context and the
-   production build fails on the first utility it meets. Inherited with these
-   components; see ActionBanner for the token-based pattern they should move to. */
-@reference "tailwindcss";
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-/* Brand colour comes from the token, not a literal: `#0373DF` is gov-blue in
-   BLUE mode only, so a hardcoded copy freezes the component to one brand and
-   ignores the other seven. `--sa-color-primaryScale-500` is the same value in
-   blue and follows `data-brand` everywhere else. */
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / UX4G — VerticalTimeline
+     Semantic CSS classes only; all colours reference design tokens (--sa-*).
+     Plain CSS on purpose: imported from vertical-timeline.tsx, so Tailwind
+     processes it as its own root and `@apply` cannot see the estate's theme.
+     ============================================================================ */
 
-.sa-vertical-timeline {
-  @apply relative border-l-2 ml-3 sm:ml-4 space-y-12 pb-4;
-  border-inline-start-color: color-mix(in srgb, var(--sa-color-primaryScale-500) 20%, transparent);
-}
+  .sa-vertical-timeline {
+    position: relative;
+    border-left: 2px solid var(--sa-bg-brand-primary-subtle);
+    margin-left: var(--sa-stack-12);
+    padding-bottom: var(--sa-padding-16);
+  }
 
-.sa-vertical-timeline-item {
-  @apply relative pl-8 sm:pl-12;
-}
+  .sa-vertical-timeline > * + * {
+    margin-top: var(--sa-stack-48);
+  }
 
-.sa-vertical-timeline-item__marker-container {
-  @apply absolute -left-[29px] mt-1.5 h-14 w-14 rounded-full bg-white flex items-center justify-center;
-}
+  .sa-vertical-timeline-item {
+    position: relative;
+    padding-left: var(--sa-padding-32);
+  }
 
-.sa-vertical-timeline-item__marker {
-  @apply h-2.5 w-2.5 rounded-full ring-4 ring-white shadow-sm;
-  background-color: var(--sa-color-primaryScale-500);
-}
+  .sa-vertical-timeline-item__marker-container {
+    position: absolute;
+    left: -29px;
+    margin-top: var(--sa-stack-6);
+    height: 56px;
+    width: 56px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
-.sa-vertical-timeline-item__content {
-  @apply bg-white rounded-2xl p-6 sm:p-8 border border-neutral-200 shadow-sm hover:shadow-md transition-shadow relative;
-}
+  .sa-vertical-timeline-item__marker {
+    height: 10px;
+    width: 10px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-action-primary-default);
+    box-shadow: 0 0 0 4px var(--sa-bg-neutral-base), var(--sa-elevation-card);
+  }
 
-.sa-vertical-timeline-item__header {
-  @apply flex flex-col sm:flex-row sm:items-start justify-between gap-2 mb-4;
-}
+  .sa-vertical-timeline-item__content {
+    position: relative;
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-16);
+    padding: var(--sa-padding-24);
+    box-shadow: var(--sa-elevation-card);
+    transition: box-shadow 150ms ease;
+  }
 
-.sa-vertical-timeline-item__title {
-  @apply text-lg sm:text-xl font-bold text-neutral-900 pr-4;
-}
+  .sa-vertical-timeline-item__content:hover {
+    box-shadow: var(--sa-elevation-raised);
+  }
 
-.sa-vertical-timeline-item__date {
-  @apply text-sm font-bold whitespace-nowrap bg-blue-50 px-3 py-1 rounded-full;
-  color: var(--sa-color-primaryScale-500);
-}
+  .sa-vertical-timeline-item__header {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    margin-bottom: var(--sa-stack-16);
+  }
 
-.sa-vertical-timeline-item__body {
-  @apply text-neutral-600 leading-relaxed text-sm sm:text-base;
+  .sa-vertical-timeline-item__title {
+    font-size: var(--sa-type-body-1-size);
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+    padding-right: var(--sa-padding-16);
+  }
+
+  .sa-vertical-timeline-item__date {
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 700;
+    color: var(--sa-text-brand-primary-base);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    padding: var(--sa-padding-4) var(--sa-padding-12);
+    border-radius: var(--sa-shape-full);
+    white-space: nowrap;
+  }
+
+  .sa-vertical-timeline-item__body {
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-2-size);
+    line-height: 1.625;
+  }
+
+  @media (min-width: 640px) {
+    .sa-vertical-timeline { margin-left: var(--sa-stack-16); }
+    .sa-vertical-timeline-item { padding-left: var(--sa-padding-48); }
+    .sa-vertical-timeline-item__content { padding: var(--sa-padding-32); }
+    .sa-vertical-timeline-item__header { flex-direction: row; align-items: flex-start; }
+    .sa-vertical-timeline-item__title { font-size: var(--sa-type-title-1-size); }
+    .sa-vertical-timeline-item__body { font-size: var(--sa-type-body-1-size); }
+  }
 }

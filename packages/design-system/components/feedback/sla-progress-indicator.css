@@ -1,227 +1,250 @@
-/* SAMAVESH — SLA progress indicator. UX4G 3.0 parity: "SLA Progress Indicator".
-   Tokens only. Three variants (linear / circular / badge) x five tones.
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-   The tone is set once on the root as a pair of local custom properties, so each variant
-   reads --sla-ink / --sla-fill / --sla-soft rather than repeating a colour table per
-   variant. Adding a tone is two lines, not fifteen. */
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* SAMAVESH — SLA progress indicator. UX4G 3.0 parity: "SLA Progress Indicator".
+     Tokens only. Three variants (linear / circular / badge) x five tones.
 
-.ds-sla {
-  --sla-ink: var(--sa-color-action-primary-default);
-  --sla-fill: var(--sa-color-action-primary-default);
-  --sla-soft: var(--sa-color-action-primary-tonal);
-}
+     The tone is set once on the root as a pair of local custom properties, so each variant
+     reads --sla-ink / --sla-fill / --sla-soft rather than repeating a colour table per
+     variant. Adding a tone is two lines, not fifteen. */
 
-.ds-sla--success {
-  --sla-ink: var(--sa-color-status-success);
-  --sla-fill: var(--sa-color-status-success);
-  --sla-soft: var(--sa-color-status-successTonal);
-}
+  .ds-sla {
+    --sla-ink: var(--sa-color-action-primary-default);
+    --sla-fill: var(--sa-color-action-primary-default);
+    --sla-soft: var(--sa-color-action-primary-tonal);
+  }
 
-.ds-sla--warning {
-  --sla-ink: var(--sa-color-status-warning);
-  --sla-fill: var(--sa-color-status-warning);
-  --sla-soft: var(--sa-color-status-warningTonal);
-}
+  .ds-sla--success {
+    --sla-ink: var(--sa-color-status-success);
+    --sla-fill: var(--sa-color-status-success);
+    --sla-soft: var(--sa-color-status-successTonal);
+  }
 
-.ds-sla--danger {
-  --sla-ink: var(--sa-color-status-danger);
-  --sla-fill: var(--sa-color-status-danger);
-  --sla-soft: var(--sa-color-status-dangerTonal);
-}
+  .ds-sla--warning {
+    --sla-ink: var(--sa-color-status-warning);
+    --sla-fill: var(--sa-color-status-warning);
+    --sla-soft: var(--sa-color-status-warningTonal);
+  }
 
-/* A stopped clock carries no urgency — neutral, deliberately. */
-.ds-sla--neutral {
-  --sla-ink: var(--sa-color-text-muted);
-  --sla-fill: var(--sa-border-neutral-base);
-  --sla-soft: var(--sa-bg-neutral-subtler);
-}
+  .ds-sla--danger {
+    --sla-ink: var(--sa-color-status-danger);
+    --sla-fill: var(--sa-color-status-danger);
+    --sla-soft: var(--sa-color-status-dangerTonal);
+  }
 
-/* ---- Linear (default): a case row or a queue ------------------------------------- */
+  /* A stopped clock carries no urgency — neutral, deliberately. */
+  .ds-sla--neutral {
+    --sla-ink: var(--sa-color-text-muted);
+    --sla-fill: var(--sa-border-neutral-base);
+    --sla-soft: var(--sa-bg-neutral-subtler);
+  }
 
-.ds-sla--linear {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-4);
-  inline-size: 100%;
-}
+  /* ---- Linear (default): a case row or a queue ------------------------------------- */
 
-.ds-sla__head,
-.ds-sla__foot {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--sa-inline-8);
-}
+  .ds-sla--linear {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    inline-size: 100%;
+  }
 
-.ds-sla__label {
-  font-size: var(--sa-type-label-1-size);
-  line-height: var(--sa-type-label-1-lh);
-  font-weight: 600;
-  color: var(--sa-text-neutral-base);
-  min-inline-size: 0;
-  overflow-wrap: anywhere;
-}
+  .ds-sla__head,
+  .ds-sla__foot {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+  }
 
-.ds-sla__summary {
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  font-weight: 600;
-  color: var(--sla-ink);
-  white-space: nowrap;
-}
+  .ds-sla__label {
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+    min-inline-size: 0;
+    overflow-wrap: anywhere;
+  }
 
-.ds-sla__track-wrap {
-  block-size: 8px;
-  inline-size: 100%;
-  border-radius: var(--sa-shape-full);
-  background: var(--sla-soft);
-  overflow: hidden;
-}
+  .ds-sla__summary {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+    color: var(--sla-ink);
+    white-space: nowrap;
+  }
 
-.ds-sla__bar {
-  display: block;
-  block-size: 100%;
-  border-radius: inherit;
-  background: var(--sla-fill);
-  transition: inline-size var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
-}
+  .ds-sla__track-wrap {
+    block-size: 8px;
+    inline-size: 100%;
+    border-radius: var(--sa-shape-full);
+    background: var(--sla-soft);
+    overflow: hidden;
+  }
 
-.ds-sla__foot {
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-sla__bar {
+    display: block;
+    block-size: 100%;
+    border-radius: inherit;
+    background: var(--sla-fill);
+    transition: inline-size var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
 
-.ds-sla__action {
-  flex: none;
-}
+  .ds-sla__foot {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
 
-/* ---- Circular: a dashboard tile --------------------------------------------------- */
+  .ds-sla__action {
+    flex: none;
+  }
 
-.ds-sla--circular {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--sa-stack-4);
-  text-align: center;
-}
+  /* ---- Circular: a dashboard tile --------------------------------------------------- */
 
-.ds-sla__ring {
-  position: relative;
-  inline-size: 64px;
-  block-size: 64px;
-}
+  .ds-sla--circular {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sa-stack-4);
+    text-align: center;
+  }
 
-.ds-sla__ring svg {
-  inline-size: 100%;
-  block-size: 100%;
-  /* Start the arc at 12 o'clock rather than 3 — people read a clock, not a maths diagram. */
-  transform: rotate(-90deg);
-}
+  .ds-sla__ring {
+    position: relative;
+    inline-size: 64px;
+    block-size: 64px;
+  }
 
-.ds-sla__track,
-.ds-sla__fill {
-  fill: none;
-  stroke-width: 6;
-}
+  .ds-sla__ring svg {
+    inline-size: 100%;
+    block-size: 100%;
+    /* Start the arc at 12 o'clock rather than 3 — people read a clock, not a maths diagram. */
+    transform: rotate(-90deg);
+  }
 
-.ds-sla__track {
-  stroke: var(--sla-soft);
-}
-
-.ds-sla__fill {
-  stroke: var(--sla-fill);
-  stroke-linecap: round;
-  transition: stroke-dashoffset var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
-}
-
-.ds-sla__ring-value {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-size: var(--sa-type-title-1-size);
-  line-height: 1;
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--sla-ink);
-}
-
-.ds-sla--circular .ds-sla__label {
-  font-size: var(--sa-type-body-2-size);
-}
-
-.ds-sla--circular .ds-sla__summary {
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-}
-
-/* ---- Badge: a table cell, where a bar will not fit -------------------------------- */
-
-.ds-sla--badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--sa-inline-4);
-  padding: var(--sa-padding-2) var(--sa-padding-8);
-  border: 1px solid var(--sla-soft);
-  border-radius: var(--sa-shape-full);
-  background: var(--sa-bg-neutral-base);
-  max-inline-size: 100%;
-}
-
-/* The dot repeats the tone, but the summary text beside it always names the state, so the
-   colour is reinforcement rather than the message (WCAG 1.4.1). */
-.ds-sla__dot {
-  flex: none;
-  inline-size: 8px;
-  block-size: 8px;
-  border-radius: var(--sa-shape-full);
-  background: var(--sla-fill);
-}
-
-.ds-sla--badge .ds-sla__label {
-  font-size: var(--sa-type-label-2-size);
-  line-height: var(--sa-type-label-2-lh);
-  font-weight: 500;
-  color: var(--sa-text-neutral-subtle);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.ds-sla__divider {
-  flex: none;
-  inline-size: 1px;
-  block-size: 10px;
-  background: var(--sa-border-neutral-base);
-}
-
-.ds-sla--badge .ds-sla__summary {
-  font-size: var(--sa-type-label-2-size);
-  line-height: var(--sa-type-label-2-lh);
-}
-
-/* ---- Paused: a stopped clock should look stopped ---------------------------------- */
-
-.ds-sla--paused .ds-sla__bar,
-.ds-sla--paused .ds-sla__fill {
-  /* Hatching reads as "held", so a paused SLA is distinguishable from a grey on-track one
-     without relying on hue alone. */
-  background-image: repeating-linear-gradient(
-    45deg,
-    transparent 0 4px,
-    var(--sa-bg-neutral-base) 4px 8px
-  );
-}
-
-.ds-sla--paused .ds-sla__ring-value {
-  font-size: var(--sa-type-body-2-size);
-  letter-spacing: -0.1em;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .ds-sla__bar,
+  .ds-sla__track,
   .ds-sla__fill {
-    transition: none;
+    fill: none;
+    stroke-width: 6;
+  }
+
+  .ds-sla__track {
+    stroke: var(--sla-soft);
+  }
+
+  .ds-sla__fill {
+    stroke: var(--sla-fill);
+    stroke-linecap: round;
+    transition: stroke-dashoffset var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+
+  .ds-sla__ring-value {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: var(--sa-type-title-1-size);
+    line-height: 1;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: var(--sla-ink);
+  }
+
+  .ds-sla--circular .ds-sla__label {
+    font-size: var(--sa-type-body-2-size);
+  }
+
+  .ds-sla--circular .ds-sla__summary {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  /* ---- Badge: a table cell, where a bar will not fit -------------------------------- */
+
+  .ds-sla--badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    border: 1px solid var(--sla-soft);
+    border-radius: var(--sa-shape-full);
+    background: var(--sa-bg-neutral-base);
+    max-inline-size: 100%;
+  }
+
+  /* The dot repeats the tone, but the summary text beside it always names the state, so the
+     colour is reinforcement rather than the message (WCAG 1.4.1). */
+  .ds-sla__dot {
+    flex: none;
+    inline-size: 8px;
+    block-size: 8px;
+    border-radius: var(--sa-shape-full);
+    background: var(--sla-fill);
+  }
+
+  .ds-sla--badge .ds-sla__label {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 500;
+    color: var(--sa-text-neutral-subtle);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ds-sla__divider {
+    flex: none;
+    inline-size: 1px;
+    block-size: 10px;
+    background: var(--sa-border-neutral-base);
+  }
+
+  .ds-sla--badge .ds-sla__summary {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+  }
+
+  /* ---- Paused: a stopped clock should look stopped ---------------------------------- */
+
+  .ds-sla--paused .ds-sla__bar,
+  .ds-sla--paused .ds-sla__fill {
+    /* Hatching reads as "held", so a paused SLA is distinguishable from a grey on-track one
+       without relying on hue alone. */
+    background-image: repeating-linear-gradient(
+      45deg,
+      transparent 0 4px,
+      var(--sa-bg-neutral-base) 4px 8px
+    );
+  }
+
+  .ds-sla--paused .ds-sla__ring-value {
+    font-size: var(--sa-type-body-2-size);
+    letter-spacing: -0.1em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-sla__bar,
+    .ds-sla__fill {
+      transition: none;
+    }
   }
 }

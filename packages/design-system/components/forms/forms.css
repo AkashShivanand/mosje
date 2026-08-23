@@ -1,212 +1,235 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — Form atoms (Input · Textarea · Select · FormField)
-   Semantic CSS classes only; every value references a design token (--sa- vars).
-   No raw hex (token-lint clean). Native elements → built-in keyboard/SR a11y.
-   Min control height 44px (WCAG 2.2 target size); compact density via [data-density].
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-input,
-.ds-textarea,
-.ds-select__el {
-  display: block;
-  width: 100%;
-  min-height: 44px;
-  padding: var(--sa-padding-12) var(--sa-padding-12);
-  font-family: var(--sa-font-latin);
-  font-size: var(--sa-type-body-1-size);
-  line-height: var(--sa-type-body-1-lh);
-  color: var(--sa-text-neutral-base);
-  background-color: var(--sa-bg-neutral-base);
-  border: 1px solid var(--sa-border-neutral-base);
-  border-radius: var(--sa-shape-8);
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
-  -webkit-appearance: none;
-  appearance: none;
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Form atoms (Input · Textarea · Select · FormField)
+     Semantic CSS classes only; every value references a design token (--sa- vars).
+     No raw hex (token-lint clean). Native elements → built-in keyboard/SR a11y.
+     Min control height 44px (WCAG 2.2 target size); compact density via [data-density].
+     ============================================================================ */
 
-.ds-textarea {
-  min-height: 88px;
-  resize: vertical;
-}
-
-/* iOS Safari zooms into any focused control whose font-size is under 16px, and
-   the zoom does not reverse: the layout breaks mid-form and the user has to
-   pinch back out to carry on. The fluid type ramp puts `--sa-type-body-1-size` at
-   ~14px on a phone, so put a hard 16px floor under text-entry controls at
-   phone widths. Desktop density is untouched, and this is a platform
-   constraint rather than a type decision, which is why it is a literal. */
-@media (max-width: 767px) {
   .ds-input,
   .ds-textarea,
   .ds-select__el {
-    font-size: 16px;
+    display: block;
+    width: 100%;
+    min-height: 44px;
+    padding: var(--sa-padding-12) var(--sa-padding-12);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    color: var(--sa-text-neutral-base);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-8);
+    transition:
+      border-color 0.15s ease,
+      box-shadow 0.15s ease;
+    -webkit-appearance: none;
+    appearance: none;
   }
-}
 
-.ds-input::placeholder,
-.ds-textarea::placeholder {
-  color: var(--sa-text-neutral-subtle);
-  opacity: 0.7;
-}
+  .ds-textarea {
+    min-height: 88px;
+    resize: vertical;
+  }
 
-.ds-input:hover:not(:disabled),
-.ds-textarea:hover:not(:disabled),
-.ds-select__el:hover:not(:disabled) {
-  border-color: var(--sa-border-brand-primary-base);
-}
+  /* iOS Safari zooms into any focused control whose font-size is under 16px, and
+     the zoom does not reverse: the layout breaks mid-form and the user has to
+     pinch back out to carry on. The fluid type ramp puts `--sa-type-body-1-size` at
+     ~14px on a phone, so put a hard 16px floor under text-entry controls at
+     phone widths. Desktop density is untouched, and this is a platform
+     constraint rather than a type decision, which is why it is a literal. */
+  @media (max-width: 767px) {
+    .ds-input,
+    .ds-textarea,
+    .ds-select__el {
+      font-size: 16px;
+    }
+  }
 
-.ds-input:focus-visible,
-.ds-textarea:focus-visible,
-.ds-select__el:focus-visible {
-  border-color: var(--sa-border-brand-primary-base);
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-  outline: none;
-}
+  .ds-input::placeholder,
+  .ds-textarea::placeholder {
+    color: var(--sa-text-neutral-subtle);
+    opacity: 0.7;
+  }
 
-.ds-input:disabled,
-.ds-textarea:disabled,
-.ds-select__el:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-  background-color: var(--sa-bg-neutral-subtler);
-}
+  .ds-input:hover:not(:disabled),
+  .ds-textarea:hover:not(:disabled),
+  .ds-select__el:hover:not(:disabled) {
+    border-color: var(--sa-border-brand-primary-base);
+  }
 
-/* Error state (driven by aria-invalid="true") */
-.ds-input[aria-invalid="true"],
-.ds-textarea[aria-invalid="true"],
-.ds-select__el[aria-invalid="true"] {
-  border-color: var(--sa-border-status-error-base);
-}
+  .ds-input:focus-visible,
+  .ds-textarea:focus-visible,
+  .ds-select__el:focus-visible {
+    border-color: var(--sa-border-brand-primary-base);
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: none;
+  }
 
-.ds-input[aria-invalid="true"]:focus-visible,
-.ds-textarea[aria-invalid="true"]:focus-visible,
-.ds-select__el[aria-invalid="true"]:focus-visible {
-  box-shadow: 0 0 0 3px var(--sa-color-status-danger);
-}
+  .ds-input:disabled,
+  .ds-textarea:disabled,
+  .ds-select__el:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: var(--sa-bg-neutral-subtler);
+  }
 
-/* ---- Select: native element + custom chevron ---- */
-.ds-select {
-  position: relative;
-  display: block;
-  width: 100%;
-}
+  /* Error state (driven by aria-invalid="true") */
+  .ds-input[aria-invalid="true"],
+  .ds-textarea[aria-invalid="true"],
+  .ds-select__el[aria-invalid="true"] {
+    border-color: var(--sa-border-status-error-base);
+  }
 
-.ds-select__el {
-  padding-right: var(--sa-stack-40);
-}
+  .ds-input[aria-invalid="true"]:focus-visible,
+  .ds-textarea[aria-invalid="true"]:focus-visible,
+  .ds-select__el[aria-invalid="true"]:focus-visible {
+    box-shadow: 0 0 0 3px var(--sa-color-status-danger);
+  }
 
-.ds-select__chevron {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  width: 18px;
-  height: 18px;
-  transform: translateY(-50%);
-  color: var(--sa-text-neutral-subtle);
-  pointer-events: none;
-}
+  /* ---- Select: native element + custom chevron ---- */
+  .ds-select {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
 
-/* ---- FormField wrapper: label + control + hint + error ---- */
-.ds-field {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-8);
-  font-family: var(--sa-font-latin);
-}
+  .ds-select__el {
+    padding-right: var(--sa-stack-40);
+  }
 
-.ds-field__label {
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  font-weight: 500;
-  color: var(--sa-text-neutral-base);
-}
+  .ds-select__chevron {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    transform: translateY(-50%);
+    color: var(--sa-text-neutral-subtle);
+    pointer-events: none;
+  }
 
-.ds-field__required {
-  margin-left: var(--sa-padding-2);
-  /* dangerStrong (#b8382f, Figma Danger/700) clears 4.5:1 on white (5.8:1); --sa-color-status-danger (#ec5042) is only 3.6:1. */
-  color: var(--sa-color-status-dangerStrong);
-}
+  /* ---- FormField wrapper: label + control + hint + error ---- */
+  .ds-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    font-family: var(--sa-font-latin);
+  }
 
-.ds-field__hint {
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-neutral-subtle);
-}
+  .ds-field__label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 500;
+    color: var(--sa-text-neutral-base);
+  }
 
-.ds-field__error {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-4);
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  /* Error TEXT must clear 4.5:1 (WCAG 1.4.3); --sa-color-status-danger only meets the 3:1 UI-border bar. */
-  color: var(--sa-color-status-dangerStrong);
-}
+  .ds-field__required {
+    margin-left: var(--sa-padding-2);
+    /* dangerStrong (#b8382f, Figma Danger/700) clears 4.5:1 on white (5.8:1); --sa-color-status-danger (#ec5042) is only 3.6:1. */
+    color: var(--sa-color-status-dangerStrong);
+  }
 
-/* Compact density reduces control height to 40px */
-[data-density="compact"] .ds-input,
-[data-density="compact"] .ds-textarea,
-[data-density="compact"] .ds-select__el {
-  min-height: 40px;
-  padding-top: var(--sa-padding-8);
-  padding-bottom: var(--sa-padding-8);
-}
+  .ds-field__hint {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
 
-/* ----------------------------------------------------------------------------
-   Input adornments (leftIcon / rightIcon)
-   Only emitted when <Input> is given an icon; a bare input renders no wrapper.
-   The icon sits on top of the field rather than inside a bordered flex row, so
-   the focus ring stays on the <input> itself and none of the states above need
-   to be duplicated for a wrapper.
-   -------------------------------------------------------------------------- */
-.ds-input-shell {
-  position: relative;
-  display: block;
-  width: 100%;
-}
+  .ds-field__error {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-4);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    /* Error TEXT must clear 4.5:1 (WCAG 1.4.3); --sa-color-status-danger only meets the 3:1 UI-border bar. */
+    color: var(--sa-color-status-dangerStrong);
+  }
 
-.ds-input-shell__icon {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--sa-text-neutral-subtle);
-  pointer-events: none;
-}
+  /* Compact density reduces control height to 40px */
+  [data-density="compact"] .ds-input,
+  [data-density="compact"] .ds-textarea,
+  [data-density="compact"] .ds-select__el {
+    min-height: 40px;
+    padding-top: var(--sa-padding-8);
+    padding-bottom: var(--sa-padding-8);
+  }
 
-/* The right slot is usually an interactive control (password reveal, clear),
-   so it must remain clickable — only the decorative left slot opts out. */
-.ds-input-shell__icon--right {
-  pointer-events: auto;
-}
+  /* ----------------------------------------------------------------------------
+     Input adornments (leftIcon / rightIcon)
+     Only emitted when <Input> is given an icon; a bare input renders no wrapper.
+     The icon sits on top of the field rather than inside a bordered flex row, so
+     the focus ring stays on the <input> itself and none of the states above need
+     to be duplicated for a wrapper.
+     -------------------------------------------------------------------------- */
+  .ds-input-shell {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
 
-.ds-input-shell__icon--left {
-  left: 12px;
-}
+  .ds-input-shell__icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--sa-text-neutral-subtle);
+    pointer-events: none;
+  }
 
-.ds-input-shell__icon--right {
-  right: 12px;
-}
+  /* The right slot is usually an interactive control (password reveal, clear),
+     so it must remain clickable — only the decorative left slot opts out. */
+  .ds-input-shell__icon--right {
+    pointer-events: auto;
+  }
 
-/* Pad the text away from whichever adornment is present. 12px gutter + 20px
-   icon + 8px gap. */
-.ds-input--has-left {
-  padding-left: var(--sa-stack-40);
-}
+  .ds-input-shell__icon--left {
+    left: 12px;
+  }
 
-.ds-input--has-right {
-  padding-right: var(--sa-stack-40);
-}
+  .ds-input-shell__icon--right {
+    right: 12px;
+  }
 
-/* Tint the leading icon to match the field's focus/error state. */
-.ds-input-shell:focus-within .ds-input-shell__icon--left {
-  color: var(--sa-text-brand-primary-base);
-}
+  /* Pad the text away from whichever adornment is present. 12px gutter + 20px
+     icon + 8px gap. */
+  .ds-input--has-left {
+    padding-left: var(--sa-stack-40);
+  }
 
-.ds-input-shell:has(.ds-input[aria-invalid="true"]) .ds-input-shell__icon--left {
-  color: var(--sa-text-status-error-base);
+  .ds-input--has-right {
+    padding-right: var(--sa-stack-40);
+  }
+
+  /* Tint the leading icon to match the field's focus/error state. */
+  .ds-input-shell:focus-within .ds-input-shell__icon--left {
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .ds-input-shell:has(.ds-input[aria-invalid="true"]) .ds-input-shell__icon--left {
+    color: var(--sa-text-status-error-base);
+  }
 }

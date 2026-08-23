@@ -1,0 +1,189 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /**
+   * Brand skin for the official UX4G accessibility widget (CDN script + CSS).
+   *
+   * The widget exposes one theme hook: the `--color-dark-blue-1` custom property
+   * (its primary accent), consumed by the trigger FAB, the panel header, the
+   * scrollbar thumb and every "active" control state. Overriding it points most
+   * of the widget at the SAMAVESH brand primary instead of the widget's default
+   * violet — matching the "AccessibilityWidget / FAB" spec in the SAMAVESH Design
+   * System Figma file — without touching the widget's markup, JS or functionality.
+   *
+   * v3.x needs a second block below, because it added lighter accent surfaces
+   * that the custom property does not reach. Nothing here changes behaviour; it
+   * is colour only.
+   */
+  /* !important is required here: the widget's own stylesheet is injected into
+     <head> late (by its script, after our page's stylesheets), so its `:root`
+     rule for the same custom property otherwise wins on source order despite
+     identical specificity. */
+  :root {
+    --color-dark-blue-1: var(--sa-color-action-primary-default) !important;
+  }
+
+  /* The trigger button's expanded label is the one place the widget hardcodes a
+     non-Noto font; the panel itself already uses Noto Sans.
+
+     Targeted by ID, not class. v3.x namespaced every class it ships — the trigger
+     is now `.ux4g-accessibility-uw-widget-custom-trigger` — but left the element's
+     id alone. Matching on `#uw-widget-custom-trigger` is what survived the v1.15
+     → v3.28 upgrade, and is the more stable hook to keep using. */
+  #uw-widget-custom-trigger span {
+    font-family: "Noto Sans", sans-serif !important;
+  }
+
+  /* Centre the shortcut label on the trigger ICON, in both trigger states.
+
+     Upstream positions the label absolutely with asymmetric insets and no
+     text-align — `left: 17px; right: 15px`, left-aligned text. That only looked
+     centred because `Ctrl+F2` happens to fill nearly all of the resulting box;
+     `⌘⌥A` is narrower and hugs the left edge.
+
+     The trigger has TWO states, and that is what makes this subtle. It is
+     `position: fixed; right: 20px` with `overflow: hidden`, collapsed to a 70px
+     circle and expanding to `max-width: 300px` on hover to reveal its
+     "Accessibility Options" label. Because it is anchored on the right, the pill
+     grows LEFTWARD — so the icon, which is the first flex child, travels with the
+     left edge and is NOT at the pill's centre once expanded.
+
+     Anything anchored to the pill's own box therefore drifts: stretching the
+     label edge-to-edge and centring it puts the shortcut in the middle of the
+     expanded pill, ~90px away from the icon it labels. Upstream's left-anchoring
+     avoids that by accident, which is why it must not simply be centred.
+
+     So anchor to the icon instead. 35px is the icon's centre measured from the
+     pill's left edge (18px padding + 2px margin + half of the 30px icon), which
+     holds in both states because the icon tracks that edge. `translateX(-50%)`
+     with a content-sized box then centres any label length on that point — no
+     dependency on the pill's width, and none on the string. */
+  #uw-widget-custom-trigger .ux4g-accessibility-short-key {
+    left: 35px;
+    right: auto;
+    width: max-content;
+    transform: translateX(-50%);
+    text-align: center;
+  }
+
+  /* ---------------------------------------------------------------------------
+     v3.x hardcodes its violet palette in ~13 literal hex values that
+     `--color-dark-blue-1` does NOT reach, so overriding the variable alone leaves
+     the panel half brand-blue and half violet — the Reset button, the grid/list
+     toggle, profile cards, the submit button and more all stay purple.
+     Everything below re-points those to brand tokens.
+
+     Two mechanics matter here:
+
+     - `#uw-main` prefixes are for SPECIFICITY, not scoping. The widget injects
+       its stylesheet into <head> when its script runs, i.e. after ours, and
+       several of these declarations are already `!important` — at equal
+       specificity source order would hand the win to the later sheet. Adding the
+       id outranks it. Rules for elements OUTSIDE the panel (the skip link, the
+       reading guide/mask overlays) can't use that trick, but upstream doesn't
+       mark those `!important`, so ours wins on order.
+
+     - This block is PINNED TO v3.28. It depends on that build's class names and
+       on which colours it happens to hardcode, both of which have already
+       changed once (v1.15 → v3.x renamed every class). Re-verify it on any
+       widget upgrade: open the panel and look for violet.
+     --------------------------------------------------------------------------- */
+
+  /* Solid accent — #613af5, #6b5cff, #5a37e6, #4f22fc, #7c5cff, #4a2bc2,
+     #4e06dd, #6f339d, #a066cc → brand primary. */
+  #uw-main .ux4g-accessibility-uwaw-features__item__i:hover,
+  #uw-main .ux4g-accessibility-uw-section:hover,
+  #uw-main .ux4g-accessibility-uw-card:hover,
+  #uw-main .ux4g-accessibility-uw-card:active,
+  #uw-main .ux4g-accessibility-profile-item.ux4g-accessibility-active,
+  #uw-main .ux4g-accessibility-help-form-container:hover {
+    border-color: var(--sa-border-brand-primary-base) !important;
+    outline-color: var(--sa-border-brand-primary-base) !important;
+  }
+
+  #uw-main .ux4g-accessibility-btn-submit,
+  #uw-main .ux4g-accessibility-help-form-container::-webkit-scrollbar-thumb,
+  #uw-main .ux4g-accessibility-ux4g-checkbox-grid input[type="checkbox"]:checked {
+    background: var(--sa-bg-brand-primary-bolder) !important;
+  }
+
+  #uw-main .ux4g-accessibility-chat-container .ux4g-accessibility-cancel {
+    background-color: var(--sa-color-action-primary-hover) !important;
+  }
+
+  #uw-main .ux4g-accessibility-copyrights-accessibility a span,
+  #uw-main .ux4g-accessibility-icon-btn.ux4g-accessibility-active svg {
+    color: var(--sa-text-brand-primary-base) !important;
+    fill: var(--sa-icon-brand-primary-base) !important;
+  }
+
+  #uw-main .ux4g-accessibility-dict-spinner,
+  #uw-main .dict-spinner1 {
+    border-top-color: var(--sa-border-brand-primary-base) !important;
+  }
+
+  /* Light/tonal accent — #ecd0ff, #faefff, #d8b2ff, #ede6ff → brand tonal. */
+  #uw-main .ux4g-accessibility-uwaw-feature-desc,
+  #uw-main .ux4g-accessibility-btn-reset-all,
+  #uw-main .ux4g-accessibility-btn-reset-all:active,
+  #uw-main .ux4g-accessibility-inner-short-key,
+  #uw-main .ux4g-accessibility-icon-btn.ux4g-accessibility-active,
+  #uw-main .ux4g-accessibility-uw-chip.ux4g-accessibility-active {
+    background: var(--sa-bg-brand-primary-subtler) !important;
+    background-color: var(--sa-bg-brand-primary-subtler) !important;
+  }
+
+  #uw-main .ux4g-accessibility-icon-btn.ux4g-accessibility-active,
+  #uw-main .ux4g-accessibility-uw-chip.ux4g-accessibility-active {
+    border-color: var(--sa-color-action-primary-tonal) !important;
+  }
+
+  #uw-main .ux4g-accessibility-setting-row {
+    border-bottom-color: var(--sa-color-action-primary-tonal) !important;
+  }
+
+  /* KNOWN RESIDUE — two icons stay violet, deliberately.
+
+     `.ux4g-accessibility-accessibility-profile-icon` (the square beside
+     "Accessibility Profile") and `.ux4g-accessibility-lang-icon` carry their
+     colour as `fill='#613AF5'` INSIDE an SVG `data:` URI used as a
+     background-image. No CSS colour property reaches inside a data URI, so the
+     only ways to recolour them are to re-emit the whole data URI with our hex
+     baked in, or to hue-rotate them. Both would hardcode a brand value in a
+     place no token can reach — and this estate is multi-brand
+     (`packages/tokens/brands/`), so a hardcoded blue silently becomes wrong the
+     moment a brand other than MoSJE renders the widget.
+
+     Two small decorative icons out of an otherwise fully branded panel is the
+     better trade. Revisit if UX4G ever exposes these as real elements. */
+
+  /* Outside the panel — no id available, but upstream leaves these unflagged so
+     ordinary source order is enough. */
+  .ux4g-accessibility-skip-link {
+    border-color: var(--sa-border-brand-primary-base) !important;
+  }
+
+  .ux4g-accessibility-uwaw-text-reading-guide,
+  .ux4g-accessibility-reading-mask-horizontal::before {
+    background-color: var(--sa-bg-brand-primary-bolder) !important;
+  }
+}

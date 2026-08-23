@@ -89,6 +89,7 @@ export const DOCUMENTED_BY = {
   ReviewSection: "Wizard", ReviewItem: "Wizard",
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
   ChartTooltip: "Legend",
+  AccordionItem: "Accordion", VerticalTimelineItem: "VerticalTimeline",
 };
 
 /**

@@ -208,5 +208,5 @@ Every portal login page rendered using `PortalLoginTemplate` automatically passe
    - Captcha refresher has `aria-label="Refresh Captcha Security Code"`.
 3. **[UX4G 3.0] India Identity Formats:**
    - Mobile numbers restricted to 10 digits prefixed with `+91`.
-   - NGO DARPAN ID auto-formatted to uppercase (e.g. `DL/2016/0104728`).
+   - NGO DARPAN ID auto-formatted to uppercase (e.g. `MH/2016/0100000`).
    - Aadhaar numbers formatted as 12-digit numeric sequences.

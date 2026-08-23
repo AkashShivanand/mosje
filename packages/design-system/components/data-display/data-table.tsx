@@ -22,6 +22,12 @@ export interface DataTableProps<T> {
   data: T[];
   total: number;
   pageSizes?: number[];
+  /**
+   * Show the page-size buttons ("Showing 10 50 100 of N items"). Set false for the government
+   * register pattern, which states the visible range instead ("Showing 1–10 of 71") and fixes
+   * the page size at the first entry of `pageSizes`. @default true
+   */
+  showPageSizes?: boolean;
   /** Accessible table caption (sr-only). */
   caption?: string;
   /** Empty-state message. @default "No records found." */
@@ -52,6 +58,7 @@ export function DataTable<T extends Record<string, unknown>>({
   data,
   total,
   pageSizes = [10, 50, 100],
+  showPageSizes = true,
   caption,
   emptyLabel = "No records found.",
   className,
@@ -117,6 +124,8 @@ export function DataTable<T extends Record<string, unknown>>({
 
       <div className="ds-table__footer">
         <div className="ds-table__pagesize">
+          {showPageSizes ? (
+            <>
           <span>Showing</span>
           {pageSizes.map((size) => (
             <button
@@ -134,6 +143,13 @@ export function DataTable<T extends Record<string, unknown>>({
             </button>
           ))}
           <span>of {total.toLocaleString("en-IN")} items</span>
+            </>
+          ) : (
+            <span>
+              Showing {total === 0 ? 0 : (safePage - 1) * pageSize + 1}–
+              {Math.min(safePage * pageSize, total)} of {total.toLocaleString("en-IN")}
+            </span>
+          )}
         </div>
 
         <nav aria-label="Table pagination" className="ds-table__pager">

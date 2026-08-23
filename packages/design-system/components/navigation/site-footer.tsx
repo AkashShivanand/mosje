@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Icon } from "../icon/icon";
-import { BrandGlyph, type BrandGlyphName } from "../icon/brand-glyph";
+import { Icon } from "../utilities/icon";
+import { BrandGlyph, type BrandGlyphName } from "../utilities/brand-glyph";
 import "./site-footer.css";
 
 /**

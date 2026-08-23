@@ -194,10 +194,6 @@ export const NAV: NavGroup[] = [
     "title": "Navigation",
     "items": [
       {
-        "label": "Accessibility Bar",
-        "href": "/design-system/components/navigation/accessibility-bar"
-      },
-      {
         "label": "Account Menu",
         "href": "/design-system/components/navigation/account-menu"
       },
@@ -219,7 +215,7 @@ export const NAV: NavGroup[] = [
       },
       {
         "label": "Sidebar",
-        "href": "/design-system/components/navigation/sidebar"
+        "href": "/design-system/components/section-templates/sidebar"
       },
       {
         "label": "Site Footer",
@@ -227,7 +223,7 @@ export const NAV: NavGroup[] = [
       },
       {
         "label": "Site Header",
-        "href": "/design-system/components/navigation/site-header"
+        "href": "/design-system/components/section-templates/site-header"
       },
       {
         "label": "Tabs",
@@ -404,10 +400,6 @@ export const NAV: NavGroup[] = [
         "href": "/design-system/components/data-display/sparkline"
       },
       {
-        "label": "Tooltip",
-        "href": "/design-system/components/data-display/tooltip"
-      },
-      {
         "label": "Vertical Timeline",
         "href": "/design-system/components/data-display/vertical-timeline"
       },
@@ -458,12 +450,20 @@ export const NAV: NavGroup[] = [
     "title": "Utilities",
     "items": [
       {
+        "label": "Accessibility Bar",
+        "href": "/design-system/components/utilities/accessibility-bar"
+      },
+      {
+        "label": "Icon",
+        "href": "/design-system/components/utilities/icon"
+      },
+      {
         "label": "Live Region",
-        "href": "/design-system/components/a11y/live-region"
+        "href": "/design-system/components/utilities/live-region"
       },
       {
         "label": "Ux4g Accessibility Widget",
-        "href": "/design-system/components/a11y/ux4g-accessibility-widget"
+        "href": "/design-system/components/utilities/ux4g-accessibility-widget"
       }
     ]
   },

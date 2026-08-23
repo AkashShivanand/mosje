@@ -16,12 +16,12 @@
 @import "./components/feedback/tooltip.css";
 @import "./components/forms/label.css";
 @import "./components/layout/section.css";
-@import "./components/a11y/live-region.css";
+@import "./components/utilities/live-region.css";
 @import "./components/data-display/card.css";
 @import "./components/data-display/metric-card.css";
 @import "./components/data-display/charts/charts.css";
 @import "./components/dashboard/dashboard.css";
-@import "./components/a11y/ux4g-accessibility-widget.css";
+@import "./components/utilities/ux4g-accessibility-widget.css";
 @import "./components/navigation/zone-switcher.css";
 @import "./components/navigation/app-switcher-panel.css";
 @import "./components/feedback/chatbot.css";

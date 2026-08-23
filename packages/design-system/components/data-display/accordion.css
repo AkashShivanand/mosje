@@ -1,36 +1,103 @@
-/* `@reference` gives this file Tailwind's theme context. Without it `@apply`
-   cannot resolve a utility here — the file is imported by the component, not
-   through the app's CSS entry, so it is compiled outside that context and the
-   production build fails on the first utility it meets. Inherited with these
-   components; see ActionBanner for the token-based pattern they should move to. */
-@reference "tailwindcss";
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-/* Brand colour comes from the token, not a literal: `#0373DF` is gov-blue in
-   BLUE mode only, so a hardcoded copy freezes the component to one brand and
-   ignores the other seven. `--sa-color-primaryScale-500` is the same value in
-   blue and follows `data-brand` everywhere else. */
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / UX4G — Accordion
+     Semantic CSS classes only; all colours reference design tokens (--sa-*).
+     Plain CSS on purpose: this file is imported from accordion.tsx, so Tailwind
+     processes it as its own root and `@apply` cannot see the estate's theme.
+     Sub-parts: .sa-accordion-item / __trigger / __title / __icon / __content
+     ============================================================================ */
 
-.sa-accordion {
-  @apply flex flex-col gap-3;
-}
+  .sa-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+  }
 
-.sa-accordion-item {
-  @apply bg-white border border-neutral-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-shadow;
-}
+  .sa-accordion-item {
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    overflow: hidden;
+    box-shadow: var(--sa-elevation-card);
+    transition: box-shadow 150ms ease;
+  }
 
-.sa-accordion-item__trigger {
-  --tw-ring-color: var(--sa-color-primaryScale-500);
-  @apply w-full px-5 py-4 flex items-center justify-between bg-neutral-50/50 hover:bg-blue-50/30 transition-colors text-left focus:outline-none focus-visible:ring-2;
-}
+  .sa-accordion-item:hover {
+    box-shadow: var(--sa-elevation-raised);
+  }
 
-.sa-accordion-item__title {
-  @apply text-sm sm:text-base font-bold text-neutral-900;
-}
+  .sa-accordion-item__trigger {
+    width: 100%;
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-bolder);
+    font-family: var(--sa-font-latin);
+    text-align: left;
+    cursor: pointer;
+    border: 0;
+    transition: background-color 150ms ease;
+  }
 
-.sa-accordion-item__icon {
-  @apply text-neutral-500 shrink-0 transition-transform duration-200;
-}
+  .sa-accordion-item__trigger:hover {
+    background-color: var(--sa-bg-brand-primary-subtler);
+  }
 
-.sa-accordion-item__content {
-  @apply px-5 py-4 bg-white border-t border-neutral-100;
+  .sa-accordion-item__trigger:focus {
+    outline: none;
+  }
+
+  .sa-accordion-item__trigger:focus-visible {
+    outline: 2px solid var(--sa-color-action-primary-default);
+    outline-offset: -2px;
+  }
+
+  .sa-accordion-item__title {
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sa-accordion-item__icon {
+    color: var(--sa-text-neutral-subtle);
+    flex-shrink: 0;
+    transition: transform 200ms ease;
+  }
+
+  .sa-accordion-item__content {
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    background-color: var(--sa-bg-neutral-base);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    color: var(--sa-text-neutral-base);
+  }
+
+  @media (min-width: 640px) {
+    .sa-accordion-item__title {
+      font-size: var(--sa-type-body-1-size);
+    }
+  }
 }

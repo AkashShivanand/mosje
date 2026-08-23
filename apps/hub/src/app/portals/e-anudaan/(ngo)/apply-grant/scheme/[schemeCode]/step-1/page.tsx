@@ -3,8 +3,8 @@
 import { useParams } from "next/navigation";
 import { GrantWizard } from "@/components/e-anudaan/grant-wizard";
 
-/** All six wizard steps live under this one URL — the live portal's actual behaviour. */
-export default function ApplyGrantWizardPage() {
+/** The scheme's early steps. The live portal keeps all of them on this one URL. */
+export default function ApplyGrantStep1Page() {
   const params = useParams<{ schemeCode: string }>();
-  return <GrantWizard schemeCode={params.schemeCode} />;
+  return <GrantWizard schemeCode={params.schemeCode} phase="form" />;
 }

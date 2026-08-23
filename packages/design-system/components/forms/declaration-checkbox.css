@@ -1,78 +1,101 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — DeclarationCheckbox (statutory certification panel)
-   Token-driven; dark-mode safe.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-declaration {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-12);
-  padding: var(--sa-padding-16);
-  font-family: var(--sa-font-latin);
-  background-color: var(--sa-bg-neutral-subtler);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-12);
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — DeclarationCheckbox (statutory certification panel)
+     Token-driven; dark-mode safe.
+     ============================================================================ */
 
-.ds-declaration.is-invalid {
-  border-color: var(--sa-border-status-error-base);
-}
+  .ds-declaration {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-16);
+    font-family: var(--sa-font-latin);
+    background-color: var(--sa-bg-neutral-subtler);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+  }
 
-.ds-declaration__title {
-  margin: 0;
-  font-size: var(--sa-type-body-2-size);
-  line-height: var(--sa-type-body-2-lh);
-  font-weight: 700;
-  color: var(--sa-text-neutral-bolder);
-}
+  .ds-declaration.is-invalid {
+    border-color: var(--sa-border-status-error-base);
+  }
 
-.ds-declaration__statement {
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  color: var(--sa-text-neutral-base);
-}
+  .ds-declaration__title {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+  }
 
-.ds-declaration__lead {
-  margin: 0 0 var(--sa-padding-4);
-  font-weight: 600;
-  color: var(--sa-text-neutral-bolder);
-}
+  .ds-declaration__statement {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-base);
+  }
 
-.ds-declaration__statement ul {
-  padding-left: var(--sa-padding-20);
-  margin: 0;
-}
+  .ds-declaration__lead {
+    margin: 0 0 var(--sa-padding-4);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
 
-.ds-declaration__statement li + li {
-  margin-top: var(--sa-padding-4);
-}
+  .ds-declaration__statement ul {
+    padding-left: var(--sa-padding-20);
+    margin: 0;
+  }
 
-/* The attestation is the one action on the form carrying legal weight, and it
-   was the smallest target on the page at 20px tall. Give the whole row the
-   44px touch floor so it is the easiest thing to hit, not the hardest. */
-.ds-declaration .ds-checkbox {
-  align-items: center;
-  min-height: 44px;
-  padding: var(--sa-padding-4) 0;
-  cursor: pointer;
-}
+  .ds-declaration__statement li + li {
+    margin-top: var(--sa-padding-4);
+  }
 
-.ds-declaration .ds-checkbox__control {
-  display: inline-flex;
-  align-items: center;
-  align-self: center;
-}
+  /* The attestation is the one action on the form carrying legal weight, and it
+     was the smallest target on the page at 20px tall. Give the whole row the
+     44px touch floor so it is the easiest thing to hit, not the hardest. */
+  .ds-declaration .ds-checkbox {
+    align-items: center;
+    min-height: 44px;
+    padding: var(--sa-padding-4) 0;
+    cursor: pointer;
+  }
 
-.ds-declaration__confirm {
-  font-weight: 600;
-  color: var(--sa-text-neutral-bolder);
-}
+  .ds-declaration .ds-checkbox__control {
+    display: inline-flex;
+    align-items: center;
+    align-self: center;
+  }
 
-.ds-declaration__error {
-  margin: 0;
-  font-size: var(--sa-type-body-3-size);
-  line-height: var(--sa-type-body-3-lh);
-  /* Error TEXT must clear 4.5:1 (WCAG 1.4.3); --sa-color-status-danger only meets the 3:1
-     UI-border bar. Same rule as forms.css. */
-  color: var(--sa-color-status-dangerStrong);
+  .ds-declaration__confirm {
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-declaration__error {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    /* Error TEXT must clear 4.5:1 (WCAG 1.4.3); --sa-color-status-danger only meets the 3:1
+       UI-border bar. Same rule as forms.css. */
+    color: var(--sa-color-status-dangerStrong);
+  }
 }

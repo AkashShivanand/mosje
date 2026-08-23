@@ -129,7 +129,7 @@ the clone, make them genuinely read-only or drop the claim — do not copy the i
 
 ### Step 2 — Institution Details
 `Institution` (select — options are existing institutions formatted
-`SC/DL/NWD/02478 — Hostel, North West Delhi · last applied FY 2025-26`) · `Institution ID*` ·
+`SC/DL/NWD/09001 — Hostel, North West Delhi · last applied FY 2025-26`) · `Institution ID*` ·
 `Financial Year for which GIA is sought*` (`2025-26` / `2026-27` / `2027-28`) ·
 `Nature of Institution*` (`Primary Residential School` / `Secondary Residential School` /
 `Primary Non-Residential School` / `Secondary Non-Residential School`) ·
@@ -191,7 +191,7 @@ so nothing was uploaded. Build from the BRD's review-and-declare pattern and mar
 ## 6. My Bank Accounts — `/ngo/bank-accounts`
 H1 `My Bank Accounts`. Lead: *"Accounts you save here can be selected when applying. **Each
 project must use a separate account.**"* Action `+ Add account`.
-Table 1 columns: `Bank` · `Account` (masked `••••••••••3213`) · `IFSC` · `Branch`.
+Table 1 columns: `Bank` · `Account` (masked `••••••••••4417`) · `IFSC` · `Branch`.
 Table 2 `Project bank accounts`: `Project` · `Paid into` · action `Request change`.
 
 ## 7. Notifications — `/ngo/notifications`

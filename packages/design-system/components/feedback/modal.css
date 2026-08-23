@@ -1,82 +1,105 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — Modal / Dialog
-   Accessible dialog: backdrop, focus-trap, Escape, focus restore.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-.ds-modal__backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--sa-padding-16);
-  background-color: var(--sa-overlay-neutral-boldest);
-}
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Modal / Dialog
+     Accessible dialog: backdrop, focus-trap, Escape, focus restore.
+     ============================================================================ */
 
-.ds-modal {
-  width: 100%;
-  max-height: calc(100vh - 32px);
-  overflow-y: auto;
-  background-color: var(--sa-bg-neutral-base);
-  border-radius: var(--sa-shape-12);
-  box-shadow: var(--sa-elevation-toast);
-  font-family: var(--sa-font-latin);
-}
+  .ds-modal__backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sa-padding-16);
+    background-color: var(--sa-overlay-neutral-boldest);
+  }
 
-.ds-modal--sm { max-width: 24rem; }
-.ds-modal--md { max-width: 28rem; }
-.ds-modal--lg { max-width: 40rem; }
+  .ds-modal {
+    width: 100%;
+    max-height: calc(100vh - 32px);
+    overflow-y: auto;
+    background-color: var(--sa-bg-neutral-base);
+    border-radius: var(--sa-shape-12);
+    box-shadow: var(--sa-elevation-toast);
+    font-family: var(--sa-font-latin);
+  }
 
-.ds-modal__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--sa-stack-12);
-  padding: var(--sa-padding-20) var(--sa-padding-24) 0;
-}
+  .ds-modal--sm { max-width: 24rem; }
+  .ds-modal--md { max-width: 28rem; }
+  .ds-modal--lg { max-width: 40rem; }
 
-.ds-modal__title {
-  margin: 0;
-  font-size: var(--sa-type-title-1-size);
-  font-weight: 700;
-  color: var(--sa-text-neutral-base);
-}
+  .ds-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-20) var(--sa-padding-24) 0;
+  }
 
-.ds-modal__close {
-  appearance: none;
-  border: 0;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: var(--sa-shape-6);
-  background: transparent;
-  color: var(--sa-text-neutral-subtle);
-  transition: background-color 0.12s ease, color 0.12s ease;
-}
+  .ds-modal__title {
+    margin: 0;
+    font-size: var(--sa-type-title-1-size);
+    font-weight: 700;
+    color: var(--sa-text-neutral-base);
+  }
 
-.ds-modal__close:hover {
-  background-color: var(--sa-bg-neutral-subtler);
-  color: var(--sa-text-neutral-base);
-}
+  .ds-modal__close {
+    appearance: none;
+    border: 0;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--sa-shape-6);
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    transition: background-color 0.12s ease, color 0.12s ease;
+  }
 
-.ds-modal__close:focus-visible {
-  outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
-  outline-offset: var(--sa-focus-offset);
-}
+  .ds-modal__close:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-base);
+  }
 
-.ds-modal__body {
-  padding: var(--sa-padding-16) var(--sa-padding-24) var(--sa-padding-24);
-}
+  .ds-modal__close:focus-visible {
+    outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
+    outline-offset: var(--sa-focus-offset);
+  }
 
-.ds-modal__footer {
-  display: flex;
-  justify-content: flex-end;
-  /* Wider than the default 8px control gap — confirm/destructive actions sit
-     here, and a mis-tap between Cancel/Delete is costlier than elsewhere. */
-  gap: var(--sa-stack-12);
-  padding: 0 var(--sa-padding-24) var(--sa-padding-24);
+  .ds-modal__body {
+    padding: var(--sa-padding-16) var(--sa-padding-24) var(--sa-padding-24);
+  }
+
+  .ds-modal__footer {
+    display: flex;
+    justify-content: flex-end;
+    /* Wider than the default 8px control gap — confirm/destructive actions sit
+       here, and a mis-tap between Cancel/Delete is costlier than elsewhere. */
+    gap: var(--sa-stack-12);
+    padding: 0 var(--sa-padding-24) var(--sa-padding-24);
+  }
 }

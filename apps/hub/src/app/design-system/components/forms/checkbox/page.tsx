@@ -28,7 +28,7 @@ export default function CheckboxPage(): React.JSX.Element {
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--sa-inline-24)", marginTop: "var(--sa-stack-24)" }}>
           <UseCard tone="do" title="When to use">
             <li>When a user can select any number of choices from a list.</li>
-            <li>For boolean settings (e.g., “I agree to the terms”).</li>
+            <li>For boolean settings (e.g., &quot;I agree to the terms&quot;).</li>
             <li>For parent-child grouped selections (using indeterminate state).</li>
           </UseCard>
           <UseCard tone="dont" title="When NOT to use">
@@ -41,8 +41,8 @@ export default function CheckboxPage(): React.JSX.Element {
       <section style={sectionStyle}>
         <h2 id="features" style={h2Style}>2. Features & Accessibility</h2>
         <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Indeterminate State:</strong> Supports the mixed/indeterminate state natively, which is crucial for “Select All” parent checkboxes when only some children are selected.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Native Semantics:</strong> It renders a visually-hidden <code>&lt;input type=“checkbox”&gt;</code> over a custom styled SVG box, ensuring standard keyboard navigation (Spacebar to toggle) and perfect screen reader support.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Indeterminate State:</strong> Supports the mixed/indeterminate state natively, which is crucial for &quot;Select All&quot; parent checkboxes when only some children are selected.</li>
+          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Native Semantics:</strong> It renders a visually-hidden <code>&lt;input type=&quot;checkbox&quot;&gt;</code> over a custom styled SVG box, ensuring standard keyboard navigation (Spacebar to toggle) and perfect screen reader support.</li>
           <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Hit Area:</strong> The clickable label is inextricably linked to the input via <code>htmlFor</code>, vastly increasing the accessible tap target size.</li>
         </ul>
       </section>

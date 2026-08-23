@@ -143,7 +143,7 @@
 | `KpiRow` | `./components/dashboard/kpi-row` | `code-only` |
 | `Legend` | `./components/data-display/charts` | `code-only` |
 | `Lightbox` | `./components/feedback/lightbox` | `code-only` |
-| `LiveRegion` | `./components/a11y/live-region` | `deliberately-unmapped` — _Non-visual accessibility utility_ |
+| `LiveRegion` | `./components/utilities/live-region` | `deliberately-unmapped` — _Non-visual accessibility utility_ |
 | `MediaGalleryInput` | `./components/forms/media-gallery-input` | `code-only` |
 | `MediaUpload` | `./components/forms/media-upload` | `code-only` |
 | `MetricCard` | `./components/data-display/metric-card` | `code-only` |

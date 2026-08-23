@@ -1,5 +1,5 @@
 {
-  "_comment": "Nav and index links pointing at an anchor that no page renders. Every one names a REAL, exported, shipping component that simply has no doc section \u2014 so the entry is not wrong about the component existing, only about where it is written up. This list MAY ONLY SHRINK; see tools/docs-links/check.mjs for why it is a baseline rather than a clean gate. Where each is actually documented today is recorded beside it.",
+  "_comment": "Nav and index links pointing at an anchor that no page renders. Every one names a REAL, exported, shipping component that simply has no doc section — so the entry is not wrong about the component existing, only about where it is written up. This list MAY ONLY SHRINK; see tools/docs-links/check.mjs for why it is a baseline rather than a clean gate. Where each is actually documented today is recorded beside it.",
   "_documentedIn": {
     "#alert": "Storybook Components/Alert",
     "#modal": "Storybook Components/Feedback/Modal",
@@ -15,23 +15,7 @@
     "#footer": "Storybook Components/Navigation/Footer",
     "#checkbox": "Storybook Components/Controls",
     "#toggle": "Storybook Components/Controls",
-    "#toast": "NOWHERE \u2014 ToastProvider is listed in NOT_RENDERABLE_IN_STORYBOOK (scripts/lib/ds-exports.mjs) as a context provider, so the toast's visual appearance is undocumented"
+    "#toast": "NOWHERE — ToastProvider is listed in NOT_RENDERABLE_IN_STORYBOOK (scripts/lib/ds-exports.mjs) as a context provider, so the toast's visual appearance is undocumented"
   },
-  "orphans": [
-    "/design-system/components/badge#alert",
-    "/design-system/components/badge#avatar",
-    "/design-system/components/badge#empty-state",
-    "/design-system/components/badge#loader",
-    "/design-system/components/badge#modal",
-    "/design-system/components/badge#stepper",
-    "/design-system/components/badge#toast",
-    "/design-system/components/card#charts",
-    "/design-system/components/card#data-table",
-    "/design-system/components/card#metric-card",
-    "/design-system/components/header#footer",
-    "/design-system/components/input#checkbox",
-    "/design-system/components/input#chip",
-    "/design-system/components/input#search",
-    "/design-system/components/input#toggle"
-  ]
+  "orphans": []
 }

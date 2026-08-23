@@ -1,163 +1,186 @@
-/* ============================================================================
-   MoSJE / SAMAVESH — Dashboard composition primitives
-   Token-driven layout for ChartCard / DashboardGrid / KpiRow / FilterBar.
-   ============================================================================ */
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
 
-/* ── Grid ────────────────────────────────────────────────────────────────── */
-.ds-dash-grid {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: var(--sa-stack-24);
-  width: 100%;
-}
-.ds-dash-grid > * {
-  grid-column: span 12;
-  min-width: 0;
-}
-@media (min-width: 768px) {
-  .ds-dash-grid > * {
-    grid-column: span var(--cmp-card-span, 12);
+/*
+ * Wrapped in `@layer components` so Tailwind's utilities can override it.
+ *
+ * Every one of these stylesheets is imported from its own .tsx, so the bundler treats each as
+ * a separate CSS root. Unlayered, that put all of them ABOVE Tailwind's utilities layer, and a
+ * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
+ * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
+ * `display: flex` outranked `.hidden`.
+ *
+ * The layer order is established by `@import "tailwindcss"` in the app's globals.css
+ * (theme, base, components, utilities). Naming that layer here joins it rather than creating
+ * a new one, so these rules sit below utilities exactly as component CSS should.
+ */
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — Dashboard composition primitives
+     Token-driven layout for ChartCard / DashboardGrid / KpiRow / FilterBar.
+     ============================================================================ */
+
+  /* ── Grid ────────────────────────────────────────────────────────────────── */
+  .ds-dash-grid {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--sa-stack-24);
+    width: 100%;
   }
-}
+  .ds-dash-grid > * {
+    grid-column: span 12;
+    min-width: 0;
+  }
+  @media (min-width: 768px) {
+    .ds-dash-grid > * {
+      grid-column: span var(--cmp-card-span, 12);
+    }
+  }
 
-/* ── ChartCard ───────────────────────────────────────────────────────────── */
-.ds-chart-card {
-  display: flex;
-  flex-direction: column;
-  background: var(--sa-bg-neutral-base);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-12);
-  box-shadow: var(--sa-elevation-card);
-  overflow: hidden;
-  font-family: var(--sa-font-latin);
-}
-.ds-chart-card__head {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: var(--sa-stack-12);
-  padding: var(--sa-padding-16) var(--sa-padding-20);
-  border-bottom: 1px solid var(--sa-border-neutral-subtle);
-}
-.ds-chart-card__titles {
-  min-width: 0;
-}
-.ds-chart-card__title {
-  margin: 0;
-  font-size: var(--sa-type-title-1-size);
-  font-weight: 600;
-  color: var(--sa-text-neutral-base);
-}
-.ds-chart-card__subtitle {
-  margin: var(--sa-padding-2) 0 0;
-  font-size: var(--sa-type-body-3-size);
-  color: var(--sa-text-neutral-subtle);
-}
-.ds-chart-card__actions {
-  display: flex;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  flex-shrink: 0;
-}
-.ds-chart-card__body {
-  padding: var(--sa-padding-20);
-  flex: 1;
-}
-.ds-chart-card__footer {
-  padding: var(--sa-padding-12) var(--sa-padding-20);
-  border-top: 1px solid var(--sa-border-neutral-subtle);
-  font-size: var(--sa-type-body-3-size);
-  color: var(--sa-text-neutral-subtle);
-}
-.ds-chart-card__skeleton {
-  width: 100%;
-  height: 220px;
-  border-radius: var(--sa-shape-8);
-  background: linear-gradient(
-    90deg,
-    var(--sa-bg-neutral-subtler) 25%,
-    var(--sa-border-neutral-subtle) 37%,
-    var(--sa-bg-neutral-subtler) 63%
-  );
-  background-size: 400% 100%;
-  animation: ds-card-shimmer 1.4s ease infinite;
-}
-@keyframes ds-card-shimmer {
-  0% { background-position: 100% 0; }
-  100% { background-position: 0 0; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .ds-chart-card__skeleton { animation: none; }
-}
+  /* ── ChartCard ───────────────────────────────────────────────────────────── */
+  .ds-chart-card {
+    display: flex;
+    flex-direction: column;
+    background: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    box-shadow: var(--sa-elevation-card);
+    overflow: hidden;
+    font-family: var(--sa-font-latin);
+  }
+  .ds-chart-card__head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-16) var(--sa-padding-20);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
+  .ds-chart-card__titles {
+    min-width: 0;
+  }
+  .ds-chart-card__title {
+    margin: 0;
+    font-size: var(--sa-type-title-1-size);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+  }
+  .ds-chart-card__subtitle {
+    margin: var(--sa-padding-2) 0 0;
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .ds-chart-card__actions {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    flex-shrink: 0;
+  }
+  .ds-chart-card__body {
+    padding: var(--sa-padding-20);
+    flex: 1;
+  }
+  .ds-chart-card__footer {
+    padding: var(--sa-padding-12) var(--sa-padding-20);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .ds-chart-card__skeleton {
+    width: 100%;
+    height: 220px;
+    border-radius: var(--sa-shape-8);
+    background: linear-gradient(
+      90deg,
+      var(--sa-bg-neutral-subtler) 25%,
+      var(--sa-border-neutral-subtle) 37%,
+      var(--sa-bg-neutral-subtler) 63%
+    );
+    background-size: 400% 100%;
+    animation: ds-card-shimmer 1.4s ease infinite;
+  }
+  @keyframes ds-card-shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: 0 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ds-chart-card__skeleton { animation: none; }
+  }
 
-/* ── KpiRow ──────────────────────────────────────────────────────────────── */
-.ds-kpi-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--sa-stack-16);
-}
+  /* ── KpiRow ──────────────────────────────────────────────────────────────── */
+  .ds-kpi-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--sa-stack-16);
+  }
 
-/* ── FilterBar ───────────────────────────────────────────────────────────── */
-.ds-filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sa-stack-12);
-  padding: var(--sa-padding-12) var(--sa-padding-16);
-  background: var(--sa-bg-neutral-subtler);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-8);
-  font-family: var(--sa-font-latin);
-}
-.ds-filter-bar__title {
-  font-size: var(--sa-type-body-2-size);
-  font-weight: 600;
-  color: var(--sa-text-neutral-base);
-}
-.ds-filter-bar__controls {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: var(--sa-stack-8);
-  margin-left: auto;
-}
+  /* ── FilterBar ───────────────────────────────────────────────────────────── */
+  .ds-filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    background: var(--sa-bg-neutral-subtler);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    font-family: var(--sa-font-latin);
+  }
+  .ds-filter-bar__title {
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+  }
+  .ds-filter-bar__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    margin-left: auto;
+  }
 
-/* ── SegmentedControl ────────────────────────────────────────────────────── */
-.ds-segmented {
-  display: inline-flex;
-  padding: var(--sa-padding-4);
-  gap: var(--sa-padding-2);
-  background: var(--sa-bg-neutral-subtler);
-  border: 1px solid var(--sa-border-neutral-subtle);
-  border-radius: var(--sa-shape-8);
-}
-.ds-segmented__option {
-  appearance: none;
-  border: 0;
-  background: transparent;
-  padding: var(--sa-padding-8) var(--sa-padding-16);
-  min-height: 32px;
-  border-radius: var(--sa-shape-6);
-  font-family: inherit;
-  font-size: var(--sa-type-body-3-size);
-  font-weight: 500;
-  color: var(--sa-text-neutral-subtle);
-  cursor: pointer;
-  transition: background var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-    color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
-}
-.ds-segmented__option:hover {
-  color: var(--sa-text-neutral-base);
-}
-.ds-segmented__option:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-}
-.ds-segmented__option--active {
-  background: var(--sa-bg-neutral-base);
-  color: var(--sa-text-brand-primary-base);
-  box-shadow: var(--sa-elevation-card);
-}
-@media (prefers-reduced-motion: reduce) {
-  .ds-segmented__option { transition: none; }
+  /* ── SegmentedControl ────────────────────────────────────────────────────── */
+  .ds-segmented {
+    display: inline-flex;
+    padding: var(--sa-padding-4);
+    gap: var(--sa-padding-2);
+    background: var(--sa-bg-neutral-subtler);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+  }
+  .ds-segmented__option {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    min-height: 32px;
+    border-radius: var(--sa-shape-6);
+    font-family: inherit;
+    font-size: var(--sa-type-body-3-size);
+    font-weight: 500;
+    color: var(--sa-text-neutral-subtle);
+    cursor: pointer;
+    transition: background var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+      color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+  }
+  .ds-segmented__option:hover {
+    color: var(--sa-text-neutral-base);
+  }
+  .ds-segmented__option:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+  }
+  .ds-segmented__option--active {
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-brand-primary-base);
+    box-shadow: var(--sa-elevation-card);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ds-segmented__option { transition: none; }
+  }
 }

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Icon } from "../icon";
+import { Icon } from "../utilities/icon";
 import { Input, type InputProps } from "./input";
 import "./password-input.css";
 

@@ -68,6 +68,13 @@ interface EAnudaanContextValue {
   /** The single workflow entry point. Every officer and NGO action button calls this. */
   act: (appId: string, action: WorkflowAction, payload?: ActionPayload) => ActResult;
 
+  /**
+   * Create and submit a brand-new application from the wizard's answers, returning its
+   * reference. Mirrors the live portal: the file lands with the Programme Division's ASO,
+   * a timeline entry is written, and the applicant gets an "Application submitted" notice.
+   */
+  submitApplication: (input: SubmitApplicationInput) => GrantApplication;
+
   markNotificationRead: (id: string) => void;
   markAllNotificationsRead: () => void;
   resetStore: () => void;
@@ -75,6 +82,62 @@ interface EAnudaanContextValue {
   findApp: (id: string) => GrantApplication | undefined;
   findNgo: (id: string) => NgoProfile | undefined;
   findInspection: (id: string) => Inspection | undefined;
+}
+
+export interface SubmitApplicationInput {
+  schemeCode: string;
+  financialYear: string;
+  /** Every answer the wizard collected, keyed by the scheme form's field names. */
+  values: Record<string, string>;
+}
+
+/**
+ * The reference number the live portal mints on submit:
+ *   GIA / <FY> / <SCHEME> / <LOCATION> / <serial>
+ *
+ * The LOCATION segment is uppercased, with every run of non-alphanumerics collapsed to an
+ * underscore and cut to 30 characters — but **what feeds it differs by scheme**. Both were
+ * verified by submitting on the live portal on 2026-08-22:
+ *
+ *   SHRESHTA_M2  the institution's ADDRESS
+ *                "0531, Tenement, Parikshitlal Hostel, HSS, …"
+ *                → GIA/2026-27/SHRESHTA_M2/0531_TENEMENT_PARIKSHITLAL_HOS/83515
+ *   SMILE        the site's DISTRICT and STATE
+ *                Pune / Maharashtra
+ *                → GIA/2026-27/SMILE/PUNE_MAHARASHTRA/83516
+ */
+/** What each scheme's reference draws its location segment from. */
+function locationSegmentFor(
+  schemeCode: string,
+  values: Record<string, string>,
+  fallback: string,
+): string {
+  switch (schemeCode.toUpperCase()) {
+    case "SMILE": {
+      const parts = [values.fld_site_district, values.fld_site_state].filter(Boolean);
+      return parts.length ? parts.join(" ") : fallback;
+    }
+    case "AVYAY":
+      return values.fld_project_location || fallback;
+    case "SHRESHTA_M2":
+    default:
+      return values.fld_institution_location || fallback;
+  }
+}
+
+export function buildReference(
+  schemeCode: string,
+  financialYear: string,
+  location: string,
+  serial: number,
+): string {
+  const slug = location
+    .toUpperCase()
+    .replace(/[^A-Z0-9]+/g, "_")
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 30)
+    .replace(/_+$/, "");
+  return `GIA/${financialYear}/${schemeCode.toUpperCase()}/${slug || "PROVISIONAL"}/${serial}`;
 }
 
 const Ctx = React.createContext<EAnudaanContextValue | null>(null);
@@ -148,6 +211,75 @@ export function EAnudaanProvider({ children }: { children: React.ReactNode }) {
           ],
         }));
         return res;
+      },
+
+      submitApplication: ({ schemeCode, financialYear, values }) => {
+        const clock = liveClock();
+        const ngo = state.ngos[0]!;
+        const location = locationSegmentFor(schemeCode, values, ngo.district);
+        const serial = 83500 + state.applications.length;
+        const id = buildReference(schemeCode, financialYear, location, serial);
+
+        const sc = Number(values.fld_beneficiaries_sc || 0);
+        const other = Number(values.fld_beneficiaries_other || 0);
+        const recurring = Number(values.fld_grant_recurring || 0);
+        const nonRecurring = Number(values.fld_grant_non_recurring || 0);
+        const total = Number(values.fld_grant_total || 0) || recurring + nonRecurring;
+
+        const app: GrantApplication = {
+          id,
+          schemeCode: schemeCode.toUpperCase(),
+          ngoId: ngo.id,
+          institutionId: values.fld_institution_id ?? ngo.institutions[0]?.id ?? "",
+          projectLabel: values.fld_project_title ?? ngo.name,
+          financialYear,
+          status: "Submitted",
+          holder: { kind: "chain", division: "pd", grade: "aso" },
+          scBeneficiaries: sc,
+          otherBeneficiaries: other,
+          totalBeneficiaries: Number(values.fld_total_beneficiaries || 0) || sc + other,
+          recurring,
+          nonRecurring,
+          total,
+          documents: [],
+          formValues: values,
+          deficiencies: [],
+          queries: [],
+          showCauseNotices: [],
+          submittedAt: clock.now,
+          updatedAt: clock.now,
+          ageingDays: 0,
+          audit: [
+            {
+              id: clock.id("aud"),
+              at: clock.now,
+              byRole: "ngo",
+              byName: ngo.name,
+              action: "submit",
+              to: { kind: "chain", division: "pd", grade: "aso" },
+              remarks: `Application submitted (${id})`,
+            },
+          ],
+        };
+
+        setState((s) => ({
+          ...s,
+          applications: [app, ...s.applications],
+          notifications: [
+            {
+              id: `ntf-live-${app.audit[0]!.id}`,
+              at: clock.now,
+              title: "Application submitted",
+              body: `Your application ${id} has been submitted and is now with the Ministry for review.`,
+              audience: ["ngo"],
+              applicationId: id,
+              read: false,
+            },
+            ...s.notifications,
+          ],
+        }));
+
+        return app;
       },
 
       markNotificationRead: (id) =>

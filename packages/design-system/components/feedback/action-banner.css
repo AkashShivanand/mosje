@@ -1,3 +1,11 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
 /* ── ActionBanner ─────────────────────────────────────────────────────────
    A call to action, in two shapes: a full-width `banner` and a `card`.
 
@@ -17,103 +25,108 @@
    not a gradient anyone perceives — it is a second colour to keep in sync for
    no visible return, and the estate's surfaces are flat. */
 
-.sa-action-banner {
-  --sa-action-banner-bg: var(--sa-bg-brand-primary-base);
-  --sa-action-banner-ink: var(--sa-on-bg-brand-primary-base);
-  /* Same hue, deeper — never a neutral grey. */
-  --sa-action-banner-ink-muted: var(--sa-color-primaryScale-800);
-  --sa-action-banner-rule: var(--sa-color-primaryScale-200);
+/* Wrapped in `@layer components` so Tailwind's utilities can override it. Unlayered, this
+   file sits ABOVE the utilities layer and a plain class selector here beats any utility a
+   consumer writes — the defect that made `hidden md:flex` a no-op on seven portal shells. */
+@layer components {
+  .sa-action-banner {
+    --sa-action-banner-bg: var(--sa-bg-brand-primary-base);
+    --sa-action-banner-ink: var(--sa-on-bg-brand-primary-base);
+    /* Same hue, deeper — never a neutral grey. */
+    --sa-action-banner-ink-muted: var(--sa-color-primaryScale-800);
+    --sa-action-banner-rule: var(--sa-color-primaryScale-200);
 
-  display: flex;
-  gap: var(--sa-inline-24);
-  padding: var(--sa-padding-32);
-  border: 1px solid var(--sa-action-banner-rule);
-  border-radius: var(--sa-cmp-card-radius);
-  background-color: var(--sa-action-banner-bg);
-  color: var(--sa-action-banner-ink);
-}
+    display: flex;
+    gap: var(--sa-inline-24);
+    padding: var(--sa-padding-32);
+    border: 1px solid var(--sa-action-banner-rule);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-action-banner-bg);
+    color: var(--sa-action-banner-ink);
+  }
 
-.sa-action-banner__content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--sa-stack-4);
-}
-
-.sa-action-banner__title {
-  margin: 0;
-  font-size: var(--sa-type-title-1-size);
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--sa-action-banner-ink);
-  text-wrap: balance;
-}
-
-.sa-action-banner__description {
-  margin: 0;
-  font-size: var(--sa-type-body-2-size);
-  line-height: 1.5;
-  color: var(--sa-action-banner-ink-muted);
-  /* A CTA's sentence is one or two lines. Past ~60ch it is a paragraph, and a
-     paragraph beside a button reads as an article with a button stuck on it. */
-  max-width: 60ch;
-}
-
-.sa-action-banner__action {
-  display: flex;
-  flex-shrink: 0;
-  align-items: center;
-  gap: var(--sa-inline-12);
-}
-
-/* ── variant: banner (default) ────────────────────────────────────────────
-   Full width, text left, action right. The action does not shrink, so a long
-   sentence wraps rather than squeezing the button — the button is the point
-   of the component and is the last thing that should give way. */
-
-.sa-action-banner--banner {
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.sa-action-banner--banner .sa-action-banner__content {
-  /* min-width:0 so a long title wraps instead of forcing overflow. */
-  min-width: 0;
-}
-
-/* Below the content breakpoint the row becomes a stack and the action goes
-   full width — a button floating alone on a narrow screen reads as orphaned. */
-@media (max-width: 640px) {
-  .sa-action-banner--banner {
+  .sa-action-banner__content {
+    display: flex;
     flex-direction: column;
-    align-items: stretch;
+    gap: var(--sa-stack-4);
+  }
+
+  .sa-action-banner__title {
+    margin: 0;
+    font-size: var(--sa-type-title-1-size);
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--sa-action-banner-ink);
+    text-wrap: balance;
+  }
+
+  .sa-action-banner__description {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: 1.5;
+    color: var(--sa-action-banner-ink-muted);
+    /* A CTA's sentence is one or two lines. Past ~60ch it is a paragraph, and a
+       paragraph beside a button reads as an article with a button stuck on it. */
+    max-width: 60ch;
+  }
+
+  .sa-action-banner__action {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--sa-inline-12);
+  }
+
+  /* ── variant: banner (default) ────────────────────────────────────────────
+     Full width, text left, action right. The action does not shrink, so a long
+     sentence wraps rather than squeezing the button — the button is the point
+     of the component and is the last thing that should give way. */
+
+  .sa-action-banner--banner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .sa-action-banner--banner .sa-action-banner__content {
+    /* min-width:0 so a long title wraps instead of forcing overflow. */
+    min-width: 0;
+  }
+
+  /* Below the content breakpoint the row becomes a stack and the action goes
+     full width — a button floating alone on a narrow screen reads as orphaned. */
+  @media (max-width: 640px) {
+    .sa-action-banner--banner {
+      flex-direction: column;
+      align-items: stretch;
+      padding: var(--sa-padding-24);
+    }
+
+    .sa-action-banner--banner .sa-action-banner__action > * {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+
+  /* ── variant: card ────────────────────────────────────────────────────────
+     The same content model in a column, for a grid of several. It STRETCHES to
+     its grid cell and pushes the action to the bottom edge, so a row of cards
+     has its buttons on one line regardless of how long each description runs.
+     That single rule is most of what makes a card grid look deliberate. */
+
+  .sa-action-banner--card {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    height: 100%;
     padding: var(--sa-padding-24);
   }
 
-  .sa-action-banner--banner .sa-action-banner__action > * {
-    flex: 1;
-    justify-content: center;
+  .sa-action-banner--card .sa-action-banner__description {
+    max-width: none;
   }
-}
 
-/* ── variant: card ────────────────────────────────────────────────────────
-   The same content model in a column, for a grid of several. It STRETCHES to
-   its grid cell and pushes the action to the bottom edge, so a row of cards
-   has its buttons on one line regardless of how long each description runs.
-   That single rule is most of what makes a card grid look deliberate. */
-
-.sa-action-banner--card {
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: space-between;
-  height: 100%;
-  padding: var(--sa-padding-24);
-}
-
-.sa-action-banner--card .sa-action-banner__description {
-  max-width: none;
-}
-
-.sa-action-banner--card .sa-action-banner__action {
-  width: 100%;
+  .sa-action-banner--card .sa-action-banner__action {
+    width: 100%;
+  }
 }

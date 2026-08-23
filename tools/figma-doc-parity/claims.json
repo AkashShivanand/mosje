@@ -18,13 +18,13 @@
         },
         {
           "kind": "source",
-          "file": "packages/design-system/components/navigation/accessibility-bar.css",
+          "file": "packages/design-system/components/utilities/accessibility-bar.css",
           "pattern": ":focus-visible \\.sa-abar__govlabel \\{ text-decoration: underline",
           "hint": "The underline is hover/focus-scoped and lives on the LABEL, not the anchor — otherwise text-decoration propagates onto the launch glyph."
         },
         {
           "kind": "source",
-          "file": "packages/design-system/components/navigation/accessibility-bar.css",
+          "file": "packages/design-system/components/utilities/accessibility-bar.css",
           "pattern": "\\.sa-abar__gov\\s*\\{[^}]*text-decoration:\\s*underline",
           "flags": "s",
           "absent": true,
@@ -94,7 +94,7 @@
         },
         {
           "kind": "source",
-          "file": "packages/design-system/components/navigation/accessibility-bar.css",
+          "file": "packages/design-system/components/utilities/accessibility-bar.css",
           "pattern": "var\\(--sa-inline-16\\)",
           "hint": "If the stylesheet stops using a rung listed here, this row is describing spacing the bar no longer has."
         }
@@ -113,7 +113,7 @@
         },
         {
           "kind": "source",
-          "file": "packages/design-system/components/navigation/accessibility-bar.css",
+          "file": "packages/design-system/components/utilities/accessibility-bar.css",
           "pattern": "var\\(--sa-shape-4\\)"
         }
       ]
@@ -129,7 +129,7 @@
         },
         {
           "kind": "source",
-          "file": "packages/design-system/components/navigation/accessibility-bar.tsx",
+          "file": "packages/design-system/components/utilities/accessibility-bar.tsx",
           "pattern": "tone=\"inverse-subtle\"",
           "hint": "The bar standardised on the quieter inverse rule on 2026-08-19."
         }
@@ -164,7 +164,7 @@
         },
         {
           "kind": "source",
-          "file": "packages/design-system/components/navigation/accessibility-bar.css",
+          "file": "packages/design-system/components/utilities/accessibility-bar.css",
           "pattern": "--sa-focus-ring",
           "absent": true,
           "hint": "If the bar ever starts using focus/ring, this claim — and the WCAG 1.4.11 conformance behind it — is void."
@@ -206,8 +206,8 @@
   "tokenTables": [
     {
       "_comment": "Every --sa-* a component's WEB documentation page names in its token table must be referenced by that component's stylesheet — or declared in `via` as reached through another component.",
-      "page": "apps/hub/src/app/design-system/components/accessibility-bar/page.tsx",
-      "css": "packages/design-system/components/navigation/accessibility-bar.css",
+      "page": "apps/hub/src/app/design-system/components/utilities/accessibility-bar/page.tsx",
+      "css": "packages/design-system/components/utilities/accessibility-bar.css",
       "via": {
         "--sa-border-neutral-inverse-subtle": "packages/design-system/components/layout/divider.css"
       }

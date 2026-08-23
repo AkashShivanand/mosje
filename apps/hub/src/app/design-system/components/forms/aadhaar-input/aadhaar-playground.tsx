@@ -42,11 +42,9 @@ export function AadhaarPlayground() {
       </FormField>
 
       <div style={{ paddingTop: "var(--sa-stack-16)", borderTop: "1px solid var(--sa-border-neutral-subtle)" }}>
-         <Checkbox
-            checked={mask}
-            onChange={(e) => setMask(e.target.checked)}
-            label="Enable DPDP Masking (Default)"
-         />
+         <Checkbox checked={mask} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMask(e.target.checked)}>
+            Enable DPDP Masking (Default)
+         </Checkbox>
       </div>
     </div>
   );
