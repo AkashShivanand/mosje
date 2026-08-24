@@ -73,7 +73,11 @@ export function MenuToggle({
       aria-controls={controlsId}
       onClick={onToggle}
     >
-      <Icon name={expanded ? "menu_open" : "menu"} size={32} />
+      <Icon
+        name="menu_open"
+        size={32}
+        className={cn(!expanded && "ds-hdr-brand__toggle-flip")}
+      />
     </button>
   );
 }

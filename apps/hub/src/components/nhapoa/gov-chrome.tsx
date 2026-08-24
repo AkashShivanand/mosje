@@ -29,7 +29,6 @@ export function NhapoaHeader({
     <SiteHeader
       homeHref={BASE}
       variant="portal"
-      tone="navy"
       sticky
       emblemSrc={`${BASE}/brand/national-emblem.svg`}
       brandLines={{
@@ -38,7 +37,6 @@ export function NhapoaHeader({
         department: "SAMBAL संबल",
       }}
       beta
-      brandDivider
       skipTo="#main"
       govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
       language={{ label: "English" }}

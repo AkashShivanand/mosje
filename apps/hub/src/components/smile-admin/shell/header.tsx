@@ -58,7 +58,6 @@ export function Header() {
         department: "Department of Social Justice & Empowerment",
       }}
       beta
-      brandDivider
       onToggleNav={onToggleNav}
       /* Drives both the glyph (menu_open vs menu) and aria-expanded. The
          toggle is the sidebar's control, so it reads out the sidebar's state. */

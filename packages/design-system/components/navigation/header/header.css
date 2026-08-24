@@ -52,23 +52,13 @@
   }
 
   /* Emblem height is the one dimension that IS per-device in Figma:
-     Mobile 45 · Tablet 52 · Desktop 58. It was pinned at the tablet value. */
+     Mobile 45 · Tablet 52 · Desktop 58. It was pinned at the tablet value. 
+     UPDATE (2026-08-24): Figma now uses a fixed 64px height across all devices 
+     (width: 40px, height: 64px) */
   .ds-hdr-lockup__emblem {
-    height: 45px;
+    height: 64px;
     width: auto;
     flex: 0 0 auto;
-  }
-
-  @media (min-width: 768px) {
-    .ds-hdr-lockup__emblem {
-      height: 52px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .ds-hdr-lockup__emblem {
-      height: 58px;
-    }
   }
 
   .ds-hdr-lockup.is-compact {
@@ -87,18 +77,6 @@
     color: var(--sa-text-neutral-inverse);
   }
 
-  /* Blue radial-gradient divider between emblem and text (portal navbar) */
-  .ds-hdr-lockup__divider {
-    align-self: stretch;
-    width: 1px;
-    flex: 0 0 auto;
-    background-image: radial-gradient(
-      closest-side at 50% 50%,
-      var(--sa-color-action-primary-default) 0%,
-      color-mix(in srgb, var(--sa-color-action-primary-default) 50%, transparent) 50%,
-      transparent 100%
-    );
-  }
 
   .ds-hdr-lockup__lines {
     display: flex;
@@ -113,37 +91,38 @@
   }
 
   .ds-hdr-lockup__org {
-    font-size: 12px;
-    line-height: 16px;
-    letter-spacing: 0.4px;
-    font-weight: 500;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    letter-spacing: var(--sa-type-label-tracking);
+    font-weight: var(--sa-ref-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }
 
   .ds-hdr-lockup__ministry {
-    font-size: 14px;
-    line-height: 20px;
-    letter-spacing: 0.4px;
-    font-weight: 500;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    letter-spacing: var(--sa-type-label-tracking);
+    font-weight: var(--sa-ref-font-weight-medium);
     color: var(--sa-text-neutral-base);
   }
 
   .ds-hdr-lockup__dept {
-    font-size: 20px;
-    line-height: 24px;
-    /* Figma: Noto Sans SemiBold. 700 (Bold) was a half-step heavier than the library. */
-    font-weight: 600;
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    letter-spacing: var(--sa-type-heading-tracking);
+    font-weight: var(--sa-ref-font-weight-semibold);
     color: var(--sa-text-neutral-base);
   }
 
   .ds-hdr-lockup.is-compact .ds-hdr-lockup__org,
   .ds-hdr-lockup.is-compact .ds-hdr-lockup__ministry {
-    font-size: 11px;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
   }
 
   .ds-hdr-lockup.is-compact .ds-hdr-lockup__dept {
-    font-size: 15px;
-    line-height: 18px;
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
   }
 
   /* BETA badge — dedicated badge/beta component token, its own row above the text stack */
@@ -181,24 +160,14 @@
     top: 0;
   }
 
-  /* Scroll-shrink (Figma "Appbar / on Scroll"): once the page scrolls, the
-     accessibility bar tucks away so the pinned chrome reclaims vertical space.
-     Only the .is-scrolled flag (set when collapseOnScroll is on) triggers it, so
-     static website headers are unaffected. */
-  .ds-hdr.is-sticky .sa-abar {
-    overflow: hidden;
-    max-height: 40px;
-    transition: max-height var(--sa-motion-enter-duration) ease;
+  /* Apply a subtle shadow to the navbar when scrolled */
+  .ds-hdr.is-sticky.is-scrolled {
+    box-shadow: var(--sa-elevation-card);
   }
 
-  .ds-hdr.is-sticky.is-scrolled .sa-abar {
-    max-height: 0;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .ds-hdr.is-sticky .sa-abar {
-      transition: none;
-    }
+  /* Condense the brand lockup vertically by hiding the middle Ministry line on scroll */
+  .ds-hdr.is-sticky.is-scrolled .ds-hdr-lockup__ministry {
+    display: none;
   }
 
   /* The Tier-1 accessibility bar is now the shared <AccessibilityBar> component
@@ -258,6 +227,11 @@
 
   .ds-hdr-brand__toggle:hover {
     background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  /* Flip the menu_open icon when the sidebar is collapsed to point right */
+  .ds-hdr-brand__toggle-flip {
+    transform: scaleX(-1);
   }
 
   .ds-hdr-brand__lockup {
@@ -926,6 +900,11 @@
     align-items: center;
     justify-content: space-between;
     gap: var(--sa-stack-12);
+    padding: var(--sa-padding-16) var(--sa-padding-24);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-navsheet__search {
     padding: var(--sa-padding-16) var(--sa-padding-24);
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }

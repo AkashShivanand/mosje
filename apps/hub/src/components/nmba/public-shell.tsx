@@ -30,7 +30,6 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
       <SiteHeader
         homeHref={BASE}
         variant="portal"
-        tone="navy"
         sticky
         emblemSrc={`${BASE}/brand/national-emblem.svg`}
         brandLines={{
@@ -39,7 +38,6 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
           department: "Department of Social Justice & Empowerment",
         }}
         beta
-        brandDivider
         skipTo="#main-content"
         govLink={{ href: "https://india.gov.in", label: "Government of India" }}
         language={{

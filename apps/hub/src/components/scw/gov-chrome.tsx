@@ -29,7 +29,6 @@ export function ScwHeader({
     <SiteHeader
       homeHref={BASE}
       variant="portal"
-      tone="navy"
       sticky
       emblemSrc={`${BASE}/brand/national-emblem.svg`}
       brandLines={{
@@ -37,7 +36,6 @@ export function ScwHeader({
         department: "Ministry of Social Justice & Empowerment",
       }}
       beta
-      brandDivider
       skipTo="#main"
       govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
       language={{ label: "English" }}
