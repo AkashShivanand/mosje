@@ -3,7 +3,7 @@ import sanitizeHtml from "sanitize-html";
 export function sanitize(html) {
   return sanitizeHtml(html, {
     allowedTags: [
-      "h2", "h3", "h4", "p", "a", "ul", "ol", "li", "strong", "em", "b", "i",
+      "h2", "h3", "h4", "h5", "h6", "div", "p", "a", "ul", "ol", "li", "strong", "em", "b", "i",
       "br", "blockquote", "table", "thead", "tbody", "tr", "th", "td", "img", "span",
     ],
     allowedAttributes: {
