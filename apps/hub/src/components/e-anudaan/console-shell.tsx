@@ -25,7 +25,7 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
   if (!hydrated || !role) return null;
 
   return (
-    <div className="min-h-screen">
+    <div className="flex min-h-screen flex-col">
       <SiteHeader
         homeHref="/portals/e-anudaan/dashboard"
         variant="portal"
@@ -59,14 +59,14 @@ export function ConsoleShell({ children }: { children: React.ReactNode }) {
         ]}
       />
 
-      <div className="flex">
+      <div className="flex flex-1 items-stretch">
         <SidebarNav
           groups={[{ items: role.nav }]}
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
           showCollapseControl
-          className="sticky top-0 hidden h-screen shrink-0 md:flex md:flex-col"
+          className="sticky top-0 hidden max-h-[100dvh] shrink-0 overflow-y-auto md:flex md:flex-col"
         />
         <main id="main" className="min-w-0 flex-1 bg-surface-muted px-4 py-6 lg:px-8">
           {children}

@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Alert, Badge, Button, DonutChart, Icon, MetricCard } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
-import { ngoApplications, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
+import { formatDate, formatGrant, ngoApplications, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
 import type { AppStatus } from "@/lib/e-anudaan/types";
 
 /** Display names for the four schemes the NGO portal offers. */
@@ -248,23 +248,27 @@ export default function NgoDashboardPage() {
               <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted block pb-1 border-b border-line/40">
                 Status Breakdown
               </span>
-              {[
-                { label: "Sanctioned", count: 36, pct: "50.7%", color: "bg-emerald-500" },
-                { label: "In Review", count: 17, pct: "23.9%", color: "bg-amber-500" },
-                { label: "Draft", count: 13, pct: "18.3%", color: "bg-emerald-700" },
-                { label: "Submitted", count: 4, pct: "5.6%", color: "bg-indigo-500" },
-                { label: "Rejected", count: 1, pct: "1.4%", color: "bg-rose-500" },
-              ].map((item) => (
-                <div key={item.label} className="flex items-center justify-between gap-2">
-                  <div className="flex items-center gap-2">
-                    <span className={`h-2.5 w-2.5 rounded-full ${item.color} shrink-0`} aria-hidden />
-                    <span className="font-medium text-ink">{item.label}</span>
+              {donutChartData.sort((a, b) => b.value - a.value).map((item) => {
+                const pct = ((item.value / Math.max(totalAppsCount, 1)) * 100).toFixed(1) + "%";
+                let colorClass = "bg-status-neutral";
+                if (item.label === "Sanctioned") colorClass = "bg-status-success";
+                else if (item.label === "In Review") colorClass = "bg-status-warning";
+                else if (item.label === "Draft") colorClass = "bg-status-info";
+                else if (item.label === "Closed / Rejected") colorClass = "bg-status-error";
+                else colorClass = "bg-status-info";
+
+                return (
+                  <div key={item.label} className="flex items-center justify-between gap-2">
+                    <div className="flex items-center gap-2">
+                      <span className={`h-2.5 w-2.5 rounded-full ${colorClass} shrink-0`} aria-hidden />
+                      <span className="font-medium text-ink">{item.label}</span>
+                    </div>
+                    <div className="font-mono text-ink-muted">
+                      <strong className="text-ink font-semibold">{item.value}</strong> ({pct})
+                    </div>
                   </div>
-                  <div className="font-mono text-ink-muted">
-                    <strong className="text-ink font-semibold">{item.count}</strong> ({item.pct})
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
@@ -298,21 +302,21 @@ export default function NgoDashboardPage() {
             <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
               <span className="block text-xs font-semibold text-ink-muted">Total Requested</span>
               <span className="mt-1 block text-xl font-bold text-ink tracking-tight">₹{totalRequestedCr} Cr</span>
-              <span className="mt-0.5 block text-[11px] text-ink-muted">71 applications total</span>
+              <span className="mt-0.5 block text-[11px] text-ink-muted">{totalAppsCount} applications total</span>
             </div>
 
             {/* Total Sanctioned */}
             <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
               <span className="block text-xs font-semibold text-ink-muted">Total Sanctioned</span>
-              <span className="mt-1 block text-xl font-bold text-emerald-700 tracking-tight">₹{totalSanctionedCr} Cr</span>
-              <span className="mt-0.5 block text-[11px] text-emerald-800">36 approved grants</span>
+              <span className="mt-1 block text-xl font-bold text-status-success tracking-tight">₹{totalSanctionedCr} Cr</span>
+              <span className="mt-0.5 block text-[11px] text-status-success-strong">{sanctionedCount} approved grants</span>
             </div>
 
             {/* In Review Amount */}
             <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
               <span className="block text-xs font-semibold text-ink-muted">Pending Review</span>
-              <span className="mt-1 block text-xl font-bold text-sky-700 tracking-tight">₹{inReviewAmountCr} Cr</span>
-              <span className="mt-0.5 block text-[11px] text-sky-800">{inReviewCount} active files in chain</span>
+              <span className="mt-1 block text-xl font-bold text-status-info tracking-tight">₹{inReviewAmountCr} Cr</span>
+              <span className="mt-0.5 block text-[11px] text-status-info-strong">{inReviewCount} active files in chain</span>
             </div>
 
             {/* Avg Sanction */}
@@ -327,10 +331,10 @@ export default function NgoDashboardPage() {
           <div className="space-y-2 pt-2 border-t border-line">
             <div className="flex items-center justify-between text-xs">
               <span className="font-semibold text-ink-muted">Sanctioned vs Requested Budget</span>
-              <span className="font-bold text-emerald-700">{sanctionedPercent}% Sanction Ratio</span>
+              <span className="font-bold text-status-success">{sanctionedPercent}% Sanction Ratio</span>
             </div>
             <div className="h-2.5 w-full rounded-full bg-slate-100 overflow-hidden border border-slate-200/60">
-              <div className="h-full rounded-full bg-emerald-500" style={{ width: `${sanctionedPercent}%` }} />
+              <div className="h-full rounded-full bg-status-success" style={{ width: `${sanctionedPercent}%` }} />
             </div>
           </div>
 
@@ -398,7 +402,7 @@ export default function NgoDashboardPage() {
                 Applications by Scheme
               </h2>
             </div>
-            <Badge status="neutral">4 Schemes</Badge>
+            <Badge status="neutral">{activeSchemes.length} Schemes</Badge>
           </div>
 
           <div className="space-y-3">
@@ -420,12 +424,12 @@ export default function NgoDashboardPage() {
                 <div className="flex items-center justify-between gap-2 pt-1 text-[11px]">
                   <Badge status="info">{s.code}</Badge>
                   <span className="text-ink-muted font-medium">
-                    Requested: <strong className="text-ink">₹{s.requestedCr} Cr</strong> · Sanctioned: <strong className="text-emerald-700">₹{s.sanctionedCr} Cr</strong>
+                    Requested: <strong className="text-ink">₹{s.requestedCr} Cr</strong> · Sanctioned: <strong className="text-status-success">₹{s.sanctionedCr} Cr</strong>
                   </span>
                 </div>
 
                 <div className="h-1.5 w-full rounded-full bg-slate-200 overflow-hidden">
-                  <div className="h-full rounded-full bg-primary" style={{ width: `${s.percent}%` }} />
+                  <div className="h-full rounded-full bg-status-success" style={{ width: `${s.percent}%` }} />
                 </div>
               </div>
             ))}
@@ -465,88 +469,41 @@ export default function NgoDashboardPage() {
         </div>
 
         <div className="space-y-3">
-          {[
-            {
-              id: "app-1",
-              title: "SC Residential School Project — SHRESHTA Mode 2",
-              ref: "GIA/2026-27/SHRESHTA_M2/QSDASDASD/83387",
-              status: "Submitted",
-              statusKey: "Submitted",
-              requested: "₹42.4 K",
-              updated: "17 Aug 2026",
-            },
-            {
-              id: "app-2",
-              title: "SC Residential School Infrastructure — Rohini Sector 7",
-              ref: "GIA/2026-27/SHRESHTA_M2/PLOT_NO_42_SECTOR_7_ROHINI_NOR/83386",
-              status: "Submitted",
-              statusKey: "Submitted",
-              requested: "₹24.00 L",
-              updated: "17 Aug 2026",
-            },
-            {
-              id: "app-3",
-              title: "Senior Citizen Care Centre — AVYAY Scheme",
-              ref: "GIA/2026-27/AVYAY/PROVISIONAL/1785924030129",
-              status: "Submitted",
-              statusKey: "Submitted",
-              requested: "₹1.24 Cr",
-              updated: "17 Aug 2026",
-            },
-            {
-              id: "app-4",
-              title: "Hostel Project — North West Delhi · FY 2025-26",
-              ref: "LGCY/89709",
-              status: "In Review",
-              statusKey: "UnderReview",
-              requested: "₹39.80 L",
-              updated: "14 Aug 2026",
-            },
-            {
-              id: "app-5",
-              title: "Residential School Project — Kallakurichi · FY 2025-26",
-              ref: "LGCY/85715",
-              status: "In Review",
-              statusKey: "UnderReview",
-              requested: "₹1.42 Cr",
-              updated: "14 Aug 2026",
-            },
-            {
-              id: "app-6",
-              title: "Residential School Project — Madurai · FY 2025-26",
-              ref: "LGCY/85732",
-              status: "In Review",
-              statusKey: "UnderReview",
-              requested: "₹42.68 L",
-              updated: "14 Aug 2026",
-            },
-          ].map((appRow) => (
+          {apps.slice(0, 5).map((appRow) => {
+            const title = `${appRow.projectLabel || "Project"} — ${SCHEME_TITLES[appRow.schemeCode]?.title ?? appRow.schemeCode}`;
+            const ref = appRow.institutionId || appRow.id;
+            const statusLabel = ngoStatusLabel(appRow);
+            const statusKey = appRow.status;
+            const requested = formatGrant(appRow.total);
+            const updated = formatDate(appRow.submittedAt || new Date().toISOString());
+            
+            return (
             <div
               key={appRow.id}
               className="flex flex-col gap-3 rounded-lg border border-line p-4 transition hover:border-primary/40 hover:bg-surface-muted/50 sm:flex-row sm:items-center sm:justify-between"
             >
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-bold text-ink">{appRow.title}</h3>
+                  <h3 className="text-sm font-bold text-ink">{title}</h3>
                 </div>
                 <span className="inline-block font-mono text-[11px] text-ink-muted bg-surface-muted px-2 py-0.5 rounded border border-line/60">
-                  {appRow.ref}
+                  {ref}
                 </span>
               </div>
 
               <div className="flex flex-wrap items-center gap-5 text-xs">
-                <Badge status={statusTone(appRow.statusKey as AppStatus)}>
-                  {appRow.status}
+                <Badge status={statusTone(statusKey as AppStatus)}>
+                  {statusLabel}
                 </Badge>
 
                 <div className="text-right">
                   <span className="block text-[10px] text-ink-muted">Requested</span>
-                  <span className="font-bold text-ink">{appRow.requested}</span>
+                  <span className="font-bold text-ink">{requested}</span>
                 </div>
 
                 <div className="text-right">
                   <span className="block text-[10px] text-ink-muted">Updated</span>
-                  <span className="font-medium text-ink-muted">{appRow.updated}</span>
+                  <span className="font-medium text-ink-muted">{updated}</span>
                 </div>
 
                 <Link href={`/portals/e-anudaan/ngo/my-applications/${appRow.id}`}>
@@ -556,7 +513,8 @@ export default function NgoDashboardPage() {
                 </Link>
               </div>
             </div>
-          ))}
+            );
+          })}
         </div>
       </section>
     </div>

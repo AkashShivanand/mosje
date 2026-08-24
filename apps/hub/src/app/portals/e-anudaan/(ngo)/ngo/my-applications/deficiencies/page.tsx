@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge, EmptyState } from "@mosje/design-system";
+import { Badge, Button, EmptyState } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { formatDate, ngoApplications } from "@/lib/e-anudaan/selectors";
 
@@ -34,13 +34,13 @@ export default function DeficienciesPage() {
               </div>
               <p className="mt-2 text-sm text-ink">{d.detail}</p>
               <p className="mt-1 text-xs text-ink-muted">Raised {formatDate(d.raisedAt)}</p>
-              <button
-                type="button"
+              <Button
+                size="sm"
+                className="mt-3"
                 onClick={() => act(a.id, "respondDeficiency", { remarks: "Corrected documents attached." })}
-                className="mt-3 rounded-lg bg-navy px-3 py-1.5 text-sm font-semibold text-white hover:opacity-90"
               >
                 Submit response
-              </button>
+              </Button>
             </li>
           ))}
         </ul>
