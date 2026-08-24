@@ -112,7 +112,44 @@ if command -v gh >/dev/null 2>&1; then
     if [ "$latest" = "failure" ]; then
       # Only 10 runs are sampled, so a full streak is a floor, not a total.
       [ "$streak" -ge 10 ] && streak="10+"
-      out="$out
+
+      # A FAILED GATE AND A GATE THAT NEVER RAN LOOK IDENTICAL IN `gh run list`,
+      # and the difference is everything: the first is a defect someone must fix,
+      # the second is an account problem no amount of code will move. When Actions
+      # is blocked on billing the job dies in about three seconds having checked
+      # nothing, and the run still reports `failure`.
+      #
+      # That is not hypothetical. Between 2026-08-19 17:44 and 2026-08-24, ONE
+      # HUNDRED consecutive runs failed this way and 25 merges landed unchecked,
+      # because "main CI is failing" had become background noise — the exact
+      # outcome the comment above warns about, produced by the fix for it.
+      newest_id=$(run gh run list --branch main --limit 1 --json databaseId \
+        --jq '.[0].databaseId')
+      blocked=""
+      if [ -n "$newest_id" ]; then
+        blocked=$(run gh run view "$newest_id" 2>/dev/null \
+          | grep -c "recent account payments have failed" || true)
+      fi
+
+      if [ "${blocked:-0}" -gt 0 ]; then
+        out="$out
+
+**CI IS NOT RUNNING — GitHub Actions is blocked on BILLING.** The jobs are not
+failing; they never start. Every workflow reports \`failure\` after ~3 seconds
+having checked nothing, so **no commit on \`main\` has been verified since the
+block began** and every green-looking merge since is unverified.
+
+The block clears when the account's billing period resets. It is not something
+this repository can fix and it does not need chasing — what it needs is the gate
+run BY HAND on every pull request, before that PR is merged:
+\`\`\`
+npm run verify      # lint + lint:css + check + build — exactly what Apps CI runs
+\`\`\`
+That is the standing rule until a run on \`main\` reports something other than this.
+Vercel still builds every PR and is the only automated check left, so a red
+Vercel is never noise."
+      else
+        out="$out
 
 **main CI is FAILING** — $streak consecutive run(s). Nothing blocks a red \`main\`
 here (pre-push only guards LOCAL pushes; PR merges land server-side), so it stays
@@ -120,6 +157,7 @@ red until someone acts. Check before assuming a red PR is your fault:
 \`\`\`
 gh run list --branch main --workflow \"Apps CI\" --limit 5
 \`\`\`"
+      fi
     fi
   fi
 fi

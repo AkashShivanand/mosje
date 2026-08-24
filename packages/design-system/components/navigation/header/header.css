@@ -90,11 +90,16 @@
     display: none;
   }
 
+  /* Font weight is written as a NUMBER here, and that is the house rule rather
+     than an oversight: there is no Tier-2 weight token, and `--sa-ref-*` is a
+     Tier-1 primitive that `tier-discipline.test.mjs` forbids app code to
+     reference — it fails the build. `button.css` writes `font-weight: 500` for
+     the same reason. */
   .ds-hdr-lockup__org {
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
     letter-spacing: var(--sa-type-label-tracking);
-    font-weight: var(--sa-ref-font-weight-medium);
+    font-weight: 500;
     color: var(--sa-text-neutral-base);
   }
 
@@ -102,7 +107,7 @@
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
     letter-spacing: var(--sa-type-label-tracking);
-    font-weight: var(--sa-ref-font-weight-medium);
+    font-weight: 500;
     color: var(--sa-text-neutral-base);
   }
 
@@ -110,7 +115,7 @@
     font-size: var(--sa-type-headline-5-size);
     line-height: var(--sa-type-headline-5-lh);
     letter-spacing: var(--sa-type-heading-tracking);
-    font-weight: var(--sa-ref-font-weight-semibold);
+    font-weight: 600;
     color: var(--sa-text-neutral-base);
   }
 

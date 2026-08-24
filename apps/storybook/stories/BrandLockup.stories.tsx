@@ -18,10 +18,15 @@ import { BrandLockup } from "@mosje/design-system";
  * its own basePath and the design system cannot resolve it. Pass a
  * basePath-aware path.
  *
- * The variants map to context: `compact` for app-shell chrome, `divider` for
- * the portal navbar, `textHiddenOnMobile` where the row would otherwise wrap on
- * a phone. Only `department` is required — a portal often carries the scheme
- * name there and drops the ministry line.
+ * The variants map to context: `compact` for app-shell chrome,
+ * `textHiddenOnMobile` where the row would otherwise wrap on a phone. Only
+ * `department` is required — a portal often carries the scheme name there and
+ * drops the ministry line.
+ *
+ * The rule between the emblem and the wordmark is NOT a prop here. It belongs to
+ * the header that composes the lockup, as `SiteHeader`'s `brandDivider` — a
+ * separator between two things is a property of the row that holds them, not of
+ * either one.
  *
  * Lifecycle: **Stable**.
  *
@@ -51,13 +56,11 @@ const meta = {
     href: "/",
     beta: false,
     compact: false,
-    divider: false,
     textHiddenOnMobile: false,
   },
   argTypes: {
     beta: { control: "boolean" },
     compact: { control: "boolean" },
-    divider: { control: "boolean" },
     textHiddenOnMobile: { control: "boolean" },
     href: { control: "text" },
     emblemAlt: { control: "text" },
@@ -71,14 +74,14 @@ type Story = StoryObj<typeof meta>;
 
 export const Playground: Story = {};
 
-/** `compact` for app-shell chrome, `divider` for the portal navbar. */
+/** `compact` for app-shell chrome; `beta` for a pre-release property. */
 export const Variants: Story = {
   render: (args) => (
     <div style={{ display: "grid", gap: 32 }}>
       <BrandLockup {...args} />
       <BrandLockup {...args} compact />
-      <BrandLockup {...args} divider />
-      <BrandLockup {...args} compact divider beta />
+      <BrandLockup {...args} beta />
+      <BrandLockup {...args} compact beta />
     </div>
   ),
 };
@@ -90,7 +93,6 @@ export const Variants: Story = {
 export const PortalLines: Story = {
   args: {
     compact: true,
-    divider: true,
     lines: {
       org: "Government of India",
       department: "Nasha Mukt Bharat Abhiyaan",

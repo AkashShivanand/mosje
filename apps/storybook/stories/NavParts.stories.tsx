@@ -49,12 +49,15 @@ const meta = {
   /* Every story below supplies its own markup via `render`, but the meta's
      component has a REQUIRED `onToggle`, so without a default here each story
      is type-checked as missing it. Defaults on the meta, not `args: {}` on
-     eight stories. */
+     eight stories.
+
+     This line was once written TWICE — a duplicate object key, which is a
+     TypeScript error (TS1117) rather than a harmless repeat. Two branches then
+     fixed it independently by deleting different copies, and the merge took
+     both deletions and left none, which typechecks as the opposite failure:
+     every render-only story missing a required `args`. One line, once. */
   args: { expanded: false, onToggle: () => {} },
   parameters: { layout: "padded" },
-  // This file showcases several navbar parts, so most stories are render-only and pass no
-  // args. MenuToggle's props are required, so without defaults here every one of those
-  // stories fails to typecheck.
 } satisfies Meta<typeof MenuToggle>;
 
 export default meta;
