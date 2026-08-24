@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import Image from "next/image";
 import { SidebarNav } from "./sidebar-nav";
 import { DocsHeader } from "./docs-header";
 import { OnThisPage } from "./on-this-page";
@@ -75,7 +76,17 @@ export function DocsLayout({ children }: DocsLayoutProps): React.JSX.Element {
           onClick={onSidebarClick}
         >
           <a href="/design-system" className="docs-sidebar__brand">
-            <img src="/design-system/samavesh-logo.svg" alt="" className="docs-sidebar__logo-img" />
+            {/* next/image, per CLAUDE.md — the codemod that added this sidebar logo
+                left a bare <img>, which is the one lint warning the estate carried.
+                Decorative, so alt="" and it stays out of the accessible name; the
+                wordmark beside it already names the link. */}
+            <Image
+              src="/design-system/samavesh-logo.svg"
+              alt=""
+              width={32}
+              height={32}
+              className="docs-sidebar__logo-img"
+            />
             <div>
               <div className="docs-sidebar__name">SAMAVESH</div>
               <div className="docs-sidebar__tagline">Design System</div>
