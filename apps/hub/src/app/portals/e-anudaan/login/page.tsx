@@ -1,76 +1,12 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button, FormField, Input, PasswordInput, PortalLoginShell, useToast, type DemoFillDetail } from "@mosje/design-system";
 import { roleByLoginId } from "@/lib/e-anudaan/roles";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 
 const BASE = "/portals/e-anudaan";
-
-const PORTALS_GRID = [
-  {
-    code: "E-ANUDAAN",
-    title: "E-Anudaan",
-    subtitle: "Grant-in-Aid Management Portal",
-    href: "/portals/e-anudaan/login",
-    active: true,
-  },
-  {
-    code: "SCW",
-    title: "SCW",
-    subtitle: "Senior Citizens Welfare",
-    href: "/portals/scw",
-    active: false,
-  },
-  {
-    code: "TG",
-    title: "SMILE - Transgender",
-    subtitle: "National Portal for Transgender Persons",
-    href: "/portals/tg",
-    active: false,
-  },
-  {
-    code: "NOS",
-    title: "NOS",
-    subtitle: "National Overseas Scholarship",
-    // NOS has no portal in this estate. Every other tile here resolves, and the grid
-    // renders each one as a live Link regardless of `active`, so this was a 404. It points
-    // at the Department's real NOS portal, which is what samavesh-citizen-portals already
-    // links to — the one place in the estate that had it right.
-    href: "https://nosmsje.gov.in",
-    active: false,
-  },
-  {
-    code: "NMBA",
-    title: "NMBA",
-    subtitle: "Nasha Mukt Bharat Abhiyaan",
-    href: "/portals/nmba",
-    active: false,
-  },
-  {
-    code: "SMILE",
-    title: "SMILE - Beggary",
-    subtitle: "National Portal for Persons Engaged in Begging",
-    href: "/portals/smile-admin",
-    active: false,
-  },
-  {
-    code: "E-UTTHAAN",
-    title: "E-Utthaan",
-    subtitle: "Development Action Plan for Scheduled Castes",
-    href: "/portals/eutthan-admin",
-    active: false,
-  },
-  {
-    code: "PM-AJAY",
-    title: "PM-AJAY",
-    subtitle: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojna",
-    href: "/portals/pm-ajay",
-    active: false,
-  },
-];
 
 export default function EAnudaanOfficerLoginPage() {
   const router = useRouter();
@@ -100,41 +36,6 @@ export default function EAnudaanOfficerLoginPage() {
     router.push(role.home);
   };
 
-  const portalGridContent = (
-    <div className="mt-4 border-t border-border pt-6">
-      <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-ink-muted">
-        CHOOSE A PORTAL TO LOGIN
-      </h3>
-      <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-4">
-        {PORTALS_GRID.map((p) => (
-          <Link
-            key={p.code}
-            href={p.href}
-            target={p.href.startsWith("http") ? "_blank" : undefined}
-            rel={p.href.startsWith("http") ? "noreferrer" : undefined}
-            className={`flex flex-col justify-between rounded-lg border p-3 text-left transition-all ${
-              p.active
-                ? "border-primary bg-primary-tonal text-primary font-semibold shadow-xs"
-                : "border-border bg-surface text-ink hover:border-border-strong hover:bg-surface-muted"
-            }`}
-          >
-            <div>
-              <span className="text-xs font-bold uppercase tracking-wide text-primary">
-                {p.code}
-              </span>
-              <h4 className="mt-0.5 text-xs font-semibold leading-tight text-ink line-clamp-1">
-                {p.title}
-              </h4>
-            </div>
-            <p className="mt-2 text-[11px] leading-tight text-ink-muted line-clamp-2">
-              {p.subtitle}
-            </p>
-          </Link>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
     <PortalLoginShell
       emblemSrc={`${BASE}/brand/national-emblem.svg`}
@@ -143,7 +44,6 @@ export default function EAnudaanOfficerLoginPage() {
       signingInto="E-Anudaan"
       changeHref="/portals"
       tabs={[]}
-      extraContent={portalGridContent}
       onFooterLinkClick={(link) => {
         toast(`Viewing ${link} policy.`, "info");
       }}

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Alert, Badge, Button, Checkbox, FormField, Icon, Select, Textarea, useToast } from "@mosje/design-system";
+import { Alert, Badge, Button, Checkbox, FormField, Icon, Input, Select, Textarea, useToast } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { GRADE_FULL, ROLES } from "@/lib/e-anudaan/roles";
 import { permittedActions, statusLabel } from "@/lib/e-anudaan/workflow";
@@ -259,24 +259,13 @@ function DocumentsPanel({ app }: { app: GrantApplication }) {
 
   return (
     <Panel title={`Documents (${app.documents.length})`}>
-      <div className="overflow-x-auto">
-        <table className="w-full min-w-[42rem] text-sm">
-          <thead>
-            <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
-              <th className="pb-2 pr-3 font-medium">#</th>
-              <th className="pb-2 pr-3 font-medium">Document</th>
-              <th className="pb-2 pr-3 font-medium">Review</th>
-              <th className="pb-2 pr-3 font-medium">Remarks</th>
-              <th className="pb-2 font-medium">File</th>
-            </tr>
-          </thead>
-          <DocGroup label="Annual documents" hint="verified & remarked each year" docs={annual} />
-          <DocGroup
-            label="Permanent documents"
-            hint="one-time · view-only unless re-uploaded this year"
-            docs={permanent}
-          />
-        </table>
+      <div className="space-y-6">
+        <DocGroup label="Annual documents" hint="verified & remarked each year" docs={annual} />
+        <DocGroup
+          label="Permanent documents"
+          hint="one-time · view-only unless re-uploaded this year"
+          docs={permanent}
+        />
       </div>
     </Panel>
   );
@@ -293,55 +282,54 @@ function DocGroup({
 }) {
   if (docs.length === 0) return null;
   return (
-    <tbody>
-      <tr>
-        <td colSpan={5} className="pb-1 pt-4">
-          <span className="text-xs font-semibold text-navy">{label}</span>{" "}
-          <span className="text-xs text-ink-muted">{hint}</span>
-        </td>
-      </tr>
-      {docs.map((d) => (
-        <tr key={d.id} className="border-b border-line align-top">
-          <td className="py-2 pr-3 text-ink-muted">{d.slot}</td>
-          <td className="py-2 pr-3">
-            <span className="font-medium text-ink">{d.title}</span>
-            {!d.optional && <span className="text-danger"> *</span>}
-            {d.conditional && <span className="block text-xs text-ink-muted">{d.conditional}</span>}
-            {d.reUploadedThisYear && (
-              <Badge status="warning" size="sm" className="mt-1">
-                Permanent · re-uploaded this year · verify
-              </Badge>
-            )}
-          </td>
-          <td className="py-2 pr-3">
-            <Select defaultValue={d.reviewStatus} aria-label={`Review status for ${d.title}`}>
-              {DOC_STATUSES.map((s) => (
-                <option key={s} value={s}>
-                  {s}
-                </option>
-              ))}
-            </Select>
-          </td>
-          <td className="py-2 pr-3">
-            <input
-              defaultValue={d.officerRemarks ?? ""}
-              placeholder="Add remarks…"
-              aria-label={`Remarks for ${d.title}`}
-              className="w-full rounded-lg border border-line px-2 py-1 text-sm"
-            />
-          </td>
-          <td className="py-2">
-            {d.fileName ? (
-              <span className="inline-flex items-center gap-1 text-navy">
-                <Icon name="download" size={16} aria-hidden />
-                <span className="sr-only">Download {d.title}</span>
-              </span>
-            ) : (
-              <span className="text-ink-hint">—</span>
-            )}
-          </td>
-        </tr>
-      ))}
-    </tbody>
+    <div>
+      <div className="mb-3">
+        <span className="text-sm font-semibold text-navy">{label}</span>{" "}
+        <span className="text-xs text-ink-muted">{hint}</span>
+      </div>
+      <div className="grid gap-3">
+        {docs.map((d) => (
+          <div key={d.id} className="flex flex-col gap-3 rounded-lg border border-line p-4 md:flex-row md:items-start md:border-0 md:border-b md:border-line md:p-0 md:pb-3 md:last:border-0">
+            <div className="text-ink-muted md:w-8 md:shrink-0">{d.slot}</div>
+            <div className="flex-1">
+              <span className="font-medium text-ink">{d.title}</span>
+              {!d.optional && <span className="text-danger"> *</span>}
+              {d.conditional && <span className="block text-xs text-ink-muted">{d.conditional}</span>}
+              {d.reUploadedThisYear && (
+                <Badge status="warning" size="sm" className="mt-1">
+                  Permanent · re-uploaded this year · verify
+                </Badge>
+              )}
+            </div>
+            <div className="flex flex-col gap-2 md:w-40 md:shrink-0">
+              <Select defaultValue={d.reviewStatus} aria-label={`Review status for ${d.title}`}>
+                {DOC_STATUSES.map((s) => (
+                  <option key={s} value={s}>
+                    {s}
+                  </option>
+                ))}
+              </Select>
+            </div>
+            <div className="flex-1">
+              <Input
+                defaultValue={d.officerRemarks ?? ""}
+                placeholder="Add remarks…"
+                aria-label={`Remarks for ${d.title}`}
+              />
+            </div>
+            <div className="md:w-10 md:shrink-0 md:text-right">
+              {d.fileName ? (
+                <span className="inline-flex items-center gap-1 text-navy hover:underline cursor-pointer">
+                  <Icon name="download" size={20} aria-hidden />
+                  <span className="md:sr-only text-sm font-medium">Download</span>
+                </span>
+              ) : (
+                <span className="text-ink-hint">—</span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

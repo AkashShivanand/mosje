@@ -16,7 +16,15 @@
 
 import * as React from "react";
 import { useParams, useRouter } from "next/navigation";
-import { Alert, Badge, Button, Icon, MetricCard } from "@mosje/design-system";
+import {
+  Alert,
+  Badge,
+  Button,
+  Icon,
+  MetricCard,
+  Accordion,
+  AccordionItem,
+} from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ROLES } from "@/lib/e-anudaan/roles";
 import { formatDate, formatGrant, ngoStatusLabel, statusTone } from "@/lib/e-anudaan/selectors";
@@ -50,7 +58,7 @@ export default function NgoApplicationDetailPage() {
   const { findApp, state } = useEAnudaan();
   const app = findApp(decodeURIComponent(params.appId));
 
-  const [expanded, setExpanded] = React.useState<Record<string, boolean>>({});
+
 
   if (!app) {
     return (
@@ -84,13 +92,6 @@ export default function NgoApplicationDetailPage() {
 
   const totalFields = sections.reduce((a, s) => a + s.fields.length, 0);
   const totalFilled = sections.reduce((a, s) => a + s.filled, 0);
-  const allOpen = sections.length > 0 && sections.every((s) => expanded[s.title]);
-
-  const toggleAll = () => {
-    const next: Record<string, boolean> = {};
-    for (const s of sections) next[s.title] = !allOpen;
-    setExpanded(next);
-  };
 
   return (
     <div className="mx-auto max-w-4xl space-y-5">
@@ -196,74 +197,44 @@ export default function NgoApplicationDetailPage() {
       {/* ── Application Data — as submitted ────────────────────────────────── */}
       {sections.length > 0 && (
         <section className="space-y-3 rounded-xl border border-line bg-surface p-5">
-          <div className="flex flex-wrap items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
             <div>
               <h2 className="text-base font-bold text-ink">Application Data — as submitted</h2>
               <p className="mt-0.5 text-sm text-ink-muted">
                 {totalFilled} of {totalFields} answered
               </p>
             </div>
-            <Button appearance="outlined" size="sm" onClick={toggleAll}>
-              {allOpen ? "Collapse all" : "Expand all"}
-            </Button>
           </div>
 
-          <div className="flex flex-wrap gap-2">
+          <Accordion className="space-y-2">
             {sections.map((s) => (
-              <button
+              <AccordionItem
                 key={s.title}
-                type="button"
-                className="rounded-full border border-line bg-surface-muted px-3 py-1 text-xs text-ink hover:bg-surface"
-                onClick={() => {
-                  setExpanded((e) => ({ ...e, [s.title]: true }));
-                  document.getElementById(`sec-${s.index}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }}
-              >
-                {s.index}. {s.title}
-              </button>
-            ))}
-          </div>
-
-          <div className="space-y-2">
-            {sections.map((s) => {
-              const open = expanded[s.title] ?? false;
-              return (
-                <div key={s.title} id={`sec-${s.index}`} className="rounded-lg border border-line">
-                  <button
-                    type="button"
-                    aria-expanded={open}
-                    className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
-                    onClick={() => setExpanded((e) => ({ ...e, [s.title]: !open }))}
-                  >
+                title={
+                  <div className="flex w-full items-center justify-between gap-3 pr-2">
                     <span className="text-sm font-semibold text-ink">
                       {s.index}. {s.title}
                     </span>
-                    <span className="flex items-center gap-2">
-                      <Badge status={s.filled === s.fields.length ? "success" : "warning"}>
-                        {s.filled}/{s.fields.length} filled
-                      </Badge>
-                      <Icon name={open ? "expand_less" : "expand_more"} size={20} aria-hidden />
-                    </span>
-                  </button>
-                  {open && (
-                    <div className="border-t border-line px-4 py-3">
-                      {s.lead && <p className="mb-3 text-sm text-ink-muted">{s.lead}</p>}
-                      <dl className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
-                        {s.fields.map((f: FieldDef) => (
-                          <div key={f.name} className="flex flex-col border-b border-line/40 py-1">
-                            <dt className="text-xs text-ink-muted">{f.label}</dt>
-                            <dd className="text-sm font-medium text-ink">
-                              {(values[f.name] ?? "").trim() || "—"}
-                            </dd>
-                          </div>
-                        ))}
-                      </dl>
+                    <Badge status={s.filled === s.fields.length ? "success" : "warning"}>
+                      {s.filled}/{s.fields.length} filled
+                    </Badge>
+                  </div>
+                }
+              >
+                {s.lead && <p className="mb-3 text-sm text-ink-muted">{s.lead}</p>}
+                <dl className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
+                  {s.fields.map((f: FieldDef) => (
+                    <div key={f.name} className="flex flex-col border-b border-line/40 py-1">
+                      <dt className="text-xs text-ink-muted">{f.label}</dt>
+                      <dd className="text-sm font-medium text-ink">
+                        {(values[f.name] ?? "").trim() || "—"}
+                      </dd>
                     </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+                  ))}
+                </dl>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </section>
       )}
 
