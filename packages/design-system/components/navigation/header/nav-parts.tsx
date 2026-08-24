@@ -27,7 +27,7 @@ import "./header.css";
    ========================================================================== */
 
 const IcCaret = () => <Icon name="keyboard_arrow_down" size={16} className="ds-hdr-ic" />;
-const IcMegaChevron = () => <Icon name="chevron_right" size={20} className="ds-hdr-ic" />;
+const IcMegaChevron = () => <Icon name="chevron_right" size={24} className="ds-hdr-ic" />;
 
 /** WCAG 3.2.5 — a link that leaves the tab has to say so, visibly and to AT. */
 export const NewTabHint = (): React.JSX.Element => (
@@ -131,14 +131,20 @@ export interface DropdownItemProps {
 export function DropdownItem({ item, onSelect, className }: DropdownItemProps): React.JSX.Element {
   return (
     <a
-      href={item.href}
-      className={cn("ds-hdr-nav__drop-link", item.active && "is-active", className)}
-      target={item.external ? "_blank" : undefined}
-      rel={item.external ? "noreferrer" : undefined}
-      onClick={onSelect}
+      href={item.disabled ? undefined : item.href}
+      className={cn(
+        "ds-hdr-nav__drop-link",
+        item.active && "is-active",
+        item.disabled && "is-disabled",
+        className,
+      )}
+      aria-disabled={item.disabled || undefined}
+      target={item.external && !item.disabled ? "_blank" : undefined}
+      rel={item.external && !item.disabled ? "noreferrer" : undefined}
+      onClick={item.disabled ? undefined : onSelect}
     >
       {item.label}
-      {item.external && <NewTabHint />}
+      {item.external && !item.disabled && <NewTabHint />}
     </a>
   );
 }
@@ -178,11 +184,17 @@ export interface MegaMenuItemProps {
 export function MegaMenuItem({ item, onSelect, className }: MegaMenuItemProps): React.JSX.Element {
   return (
     <a
-      href={item.href}
-      className={cn("ds-hdr-mega-item", item.active && "is-active", className)}
-      target={item.external ? "_blank" : undefined}
-      rel={item.external ? "noreferrer" : undefined}
-      onClick={onSelect}
+      href={item.disabled ? undefined : item.href}
+      className={cn(
+        "ds-hdr-mega-item",
+        item.active && "is-active",
+        item.disabled && "is-disabled",
+        className,
+      )}
+      aria-disabled={item.disabled || undefined}
+      target={item.external && !item.disabled ? "_blank" : undefined}
+      rel={item.external && !item.disabled ? "noreferrer" : undefined}
+      onClick={item.disabled ? undefined : onSelect}
     >
       <span className="ds-hdr-mega-item__logo">
         {item.iconSrc ? (
@@ -257,7 +269,8 @@ export interface NavItemLinkProps {
 export function NavItemLink({ item, open = false, onOpenChange, className }: NavItemLinkProps): React.JSX.Element {
   const hasMega = !!item.columns?.length;
   const hasChildren = !hasMega && !!item.children?.length;
-  const hasMenu = hasMega || hasChildren;
+  // A disabled entry opens nothing — the caret would promise a menu it will not show.
+  const hasMenu = !item.disabled && (hasMega || hasChildren);
   const dropId = `ds-hdr-drop-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
   const close = () => onOpenChange?.(false);
 
@@ -268,10 +281,15 @@ export function NavItemLink({ item, open = false, onOpenChange, className }: Nav
       onMouseLeave={() => onOpenChange?.(false)}
     >
       <a
-        href={item.href}
-        className={cn("ds-hdr-nav__link", item.active && "is-active")}
-        target={item.external ? "_blank" : undefined}
-        rel={item.external ? "noreferrer" : undefined}
+        href={item.disabled ? undefined : item.href}
+        className={cn(
+          "ds-hdr-nav__link",
+          item.active && "is-active",
+          item.disabled && "is-disabled",
+        )}
+        aria-disabled={item.disabled || undefined}
+        target={item.external && !item.disabled ? "_blank" : undefined}
+        rel={item.external && !item.disabled ? "noreferrer" : undefined}
         aria-expanded={hasMenu ? open : undefined}
         aria-haspopup={hasMenu ? true : undefined}
         aria-controls={hasMenu && open ? dropId : undefined}
@@ -285,7 +303,7 @@ export function NavItemLink({ item, open = false, onOpenChange, className }: Nav
       >
         {item.label}
         {hasMenu && <IcCaret />}
-        {item.external && <NewTabHint />}
+        {item.external && !item.disabled && <NewTabHint />}
       </a>
 
       {hasChildren && open && (

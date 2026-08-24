@@ -78,10 +78,16 @@
   }
 
 
+  /* GAP 0, and the whole brand row depends on it. Figma's Label frame stacks its
+     four rows flush (4235:3652, itemSpacing 0): BETA 20 + org 16 + ministry 16 +
+     department 24 = 76, which with the row's 12px padding is the 100px "Logo and
+     CTAs" height. At gap 2 the stack came to 82 but the 64px emblem still drove the
+     row, pinning it at 88 — Figma's ON SCROLL height — so the masthead was never
+     once at its resting height. Dropping the ministry line on scroll then takes the
+     stack to 60, the emblem takes over at 64, and the row lands on 88 exactly. */
   .ds-hdr-lockup__lines {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-padding-2);
     justify-content: center;
     min-width: 0;
   }
@@ -170,14 +176,19 @@
     box-shadow: var(--sa-elevation-card);
   }
 
-  /* Condense the brand lockup vertically by hiding the middle Ministry line on scroll */
+  /* Figma "State=On Scroll" — the brand row goes 100px -> 88px, and it does it by
+     shrinking the LOCKUP (76 -> 64), not by collapsing the accessibility bar. The
+     bar stays at 46px in every Figma variant. Dropping the middle Ministry line is
+     what takes the text stack down the 12px.
+
+     A previous comment here claimed the bar's collapse was "driven above, via
+     .ds-hdr.is-sticky .sa-abar". No such rule has ever existed in this file or in
+     accessibility-bar.css — the selector appeared only inside that comment, so the
+     prop documented a collapse that never happened. Measured against Figma
+     2476:296125 (Website) and 4235:3169 (Portal), both Desktop / On Scroll. */
   .ds-hdr.is-sticky.is-scrolled .ds-hdr-lockup__ministry {
     display: none;
   }
-
-  /* The Tier-1 accessibility bar is now the shared <AccessibilityBar> component
-     (styles in accessibility-bar.css). Its scroll-collapse is driven above, via
-     .ds-hdr.is-sticky .sa-abar. Only the page skip link remains header-owned. */
 
   /* Skip link — visible only on focus */
   .ds-hdr-skip {
@@ -258,9 +269,15 @@
      embeds. Only PLACEMENT belongs here: width, and the breakpoint below which the
      field is not worth its space. Height, border, radius and the icons come from
      .ds-search, so the masthead can no longer drift from the field it copied. */
+  /* 320, not 417. Figma's Search instance in the brand row is 320x56, and the row's
+     whole width budget is built on it — Logos 570 + Search 320 + Digital India 105 +
+     CTAs 133 + three 24px gaps = the 1200 container exactly. At 417 the lockup was
+     left 361px for its text, the department line wrapped to two lines, and the brand
+     row stood at 124px against a designed 100. The masthead was 22px too tall on
+     every page of the estate because one number here was 97px too big. */
   .ds-hdr-searchfield {
     display: none;
-    width: 417px;
+    width: 320px;
     max-width: 40vw;
     flex: 0 0 auto;
   }
@@ -420,14 +437,29 @@
     display: flex;
     align-items: center;
     gap: var(--sa-padding-2);
-    /* UX4G/Portal spec: py 16px px 12px, Noto Sans Medium 14px / 20px, #343a40, 0.1px */
+    /* UX4G/Portal spec: py 16px px 12px, Noto Sans Medium 14px / 20px, #343a40, 0.1px
+       — and 20px means `label-1-lh`, the leading that belongs to `label-1-size`.
+       This read `body-3-lh`, crossing the two families. That token is declared twice
+       in the built CSS (1.25rem then 1rem) and the last one wins, so the nav row set
+       14px type on 16px leading and stood 48px tall against Figma's 52.
+
+       The tier therefore measures 54 including its two 1px rules, where Figma's is 52
+       with the rules drawn INSIDE the frame. CSS cannot put a border inside an
+       auto-height box without pinning the height and letting the 52px links overflow
+       it; the 2px is the border model, not a design change. */
     padding: var(--sa-padding-16) var(--sa-padding-12);
     border-radius: var(--sa-shape-4);
     font-size: var(--sa-type-label-1-size);
-    line-height: var(--sa-type-body-3-lh);
+    line-height: var(--sa-type-label-1-lh);
     letter-spacing: 0.1px;
     font-weight: 500;
     color: var(--sa-text-neutral-base);
+  }
+
+  /* Figma Navbar/NavItem Type=Dropdown is padded [16,8,16,12] — the caret sits
+     closer to the edge than a plain label does. Type=Default keeps 12 both sides. */
+  .ds-hdr-nav__link[aria-haspopup] {
+    padding-right: var(--sa-padding-8);
     text-decoration: none;
     cursor: pointer;
     transition: color var(--sa-motion-exit-duration) ease, background-color var(--sa-motion-exit-duration) ease;
@@ -481,7 +513,8 @@
     top: 100%;
     left: 0;
     z-index: 50;
-    min-width: 280px;
+    /* Figma Navbar/NavDropdown Device=Desktop and =Tablet are both 240 wide. */
+    min-width: 240px;
   }
 
   .ds-hdr-nav__drop {
@@ -514,30 +547,41 @@
     min-width: 0;
   }
 
-  /* Anchor to the right edge for nav items in the trailing half of the row so a
-     wide panel doesn't overflow the viewport. Apps can opt a specific item in by
-     leaving it on the right; the row is justify-between. */
-  .ds-hdr-nav__item:nth-last-child(-n + 2) .ds-hdr-nav__drop-wrap.is-mega {
-    left: auto;
-    right: 0;
+  /* CENTRE THE MEGA PANEL ON THE NAV ROW, not on the item that opened it.
+     Figma's panel is 1272 wide against a 1200 container — wider than the content
+     column, so it cannot be anchored to a nav item and still fit. Anchored left it
+     ran from x=424 to x=1696 on a 1440 viewport, 256px off-screen; the old
+     right-anchor rule only rescued the last two items, and the org menu is third of
+     seven. Making the item `static` moves the panel's containing block up to the nav
+     row, which is what it should always have been measured against. */
+  .ds-hdr-nav__item:has(> .ds-hdr-nav__drop-wrap.is-mega) {
+    position: static;
   }
 
+  .ds-hdr-nav__drop-wrap.is-mega {
+    left: 50%;
+    transform: translateX(-50%);
+  }
 
-  /* Constrain the mega menu width to enforce wrapping */
+  /* The cap is what forces the wrap, so it has to count everything inside the
+     panel's border box: columns, the gaps between them, the panel's own padding AND
+     its 1px border on each side. Leaving the 2px of border out left 1246px of content
+     box for 1248px of columns, and the grid quietly wrapped 2-up instead of 3-up. */
   @media (min-width: 1280px) {
     .ds-hdr-nav__mega {
-      max-width: 1272px; /* 3 cols of 400px + 2 gaps of 24px + 24px padding */
+      max-width: calc((400px * 3) + (var(--sa-stack-24) * 2) + (var(--sa-padding-12) * 2) + 2px);
     }
   }
   @media (max-width: 1279px) {
     .ds-hdr-nav__mega {
-      max-width: 848px; /* 2 cols of 400px + 1 gap of 24px + 24px padding */
+      max-width: calc((360px * 2) + var(--sa-stack-24) + (var(--sa-padding-12) * 2) + 2px);
     }
   }
 
   .ds-hdr-nav__mega {
     display: flex;
     flex-wrap: wrap;
+    width: max-content;
     gap: var(--sa-stack-24) var(--sa-stack-24);
     margin-top: var(--sa-padding-2);
     padding: var(--sa-padding-24) var(--sa-padding-12);
@@ -548,39 +592,15 @@
   }
 
   .ds-hdr-nav__mega-col {
-    position: relative;
     min-width: 200px;
   }
 
-  @media (min-width: 1280px) {
-    .ds-hdr-nav__mega-col:not(:nth-child(3n+1))::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: calc(var(--sa-stack-24) / -2);
-      width: 1px;
-      background-color: var(--sa-border-neutral-subtle);
-    }
-  }
-  @media (max-width: 1279px) {
-        /* The hairline between mega-menu columns.
-       `--sa-border-neutral-subtle` is the LIGHTEST rung the border ladder has.
-       There is no `border-neutral-subtler`, though `bg-neutral-subtler` and
-       `text-neutral-subtler` both exist — which is how all three of these rules
-       came to ask for one. CSS does not warn on an undeclared custom property, it
-       drops the declaration, so the dividers simply did not paint. Caught by
-       `npm run check:dangling-vars`, not by looking. */
-    .ds-hdr-nav__mega-col:not(:nth-child(2n+1))::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      left: calc(var(--sa-stack-24) / -2);
-      width: 1px;
-      background-color: var(--sa-border-neutral-subtle);
-    }
-  }
+  /* NO HAIRLINES BETWEEN COLUMNS. They existed here and nowhere else: Figma's five
+     `Col` frames (4268:914) carry zero strokes and the panel holds no line or rect
+     divider nodes at any Device. They were added in code on 2026-08-24 and only
+     became visible when the token painting them was repaired later the same day, so
+     the design was never asked. Asked now — design wins, and 24px of gap separates
+     the columns on its own. Do not reintroduce them without a Figma change first. */
 
 
 
@@ -604,11 +624,17 @@
   .ds-hdr-nav__mega-list.is-rich {
     display: flex;
     flex-direction: column;
-    gap: var(--sa-padding-2);
+    /* Figma's `Items` frame stacks at gap 0 — the rows' own padding does the work. */
   }
 
   .ds-hdr-nav__mega-col:has(.is-rich) {
     width: 400px;
+  }
+
+  @media (max-width: 1279px) {
+    .ds-hdr-nav__mega-col:has(.is-rich) {
+      width: 360px; /* Figma Navbar/MegaMenu Device=Tablet */
+    }
   }
 
   .ds-hdr-mega-item {
@@ -616,10 +642,9 @@
     align-items: center;
     gap: var(--sa-stack-12);
     padding: var(--sa-padding-12) var(--sa-padding-20) var(--sa-padding-12) var(--sa-padding-12);
-    border: 1px solid transparent;
     border-radius: var(--sa-shape-16);
     text-decoration: none;
-    transition: background-color var(--sa-motion-exit-duration) ease, border-color var(--sa-motion-exit-duration) ease;
+    transition: background-color var(--sa-motion-exit-duration) ease, box-shadow var(--sa-motion-exit-duration) ease;
   }
 
   .ds-hdr-mega-item__logo {
@@ -655,9 +680,18 @@
     color: var(--sa-text-neutral-base);
   }
 
+  /* Figma fixes the row at 88px: Copy is 64 = a 24px abbreviation over a 40px name,
+     i.e. TWO lines of body-2 reserved whether or not the name needs both. Without
+     the reservation a one-line name gives an 80px row and the column loses its
+     rhythm. Longer names clamp at two lines rather than pushing the row taller. */
   .ds-hdr-mega-item__name {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    min-height: calc(var(--sa-type-body-2-lh) * 2);
     font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh, 20px);
+    line-height: var(--sa-type-body-2-lh);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -668,12 +702,14 @@
     transition: opacity var(--sa-motion-exit-duration) ease;
   }
 
+  /* Figma State=Hover carries a 1px stroke and NO effect; the elevation that used
+     to be here was code's own addition. State=Focused is the reverse — a drop
+     shadow, no stroke — which the :focus-visible rule below supplies. */
   .ds-hdr-mega-item:hover,
   .ds-hdr-mega-item:focus-visible {
     outline: none;
     background-color: var(--sa-bg-neutral-base);
-    border-color: var(--sa-border-neutral-subtle);
-    box-shadow: var(--sa-elevation-card);
+    box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
   }
 
   .ds-hdr-mega-item:hover .ds-hdr-ic,
@@ -681,14 +717,35 @@
     opacity: 1;
   }
 
+  /* Figma ships a State=Disabled variant for MegaMenuItem, DropdownItem and NavItem
+     (both Types). It is expressed as colour, not opacity — the emblem keeps its own
+     contrast so the row stays identifiable. */
+  .ds-hdr-mega-item.is-disabled,
+  .ds-hdr-nav__drop-link.is-disabled,
+  .ds-hdr-nav__link.is-disabled {
+    pointer-events: none;
+    cursor: default;
+    color: var(--sa-text-neutral-disabled);
+  }
+
+  .ds-hdr-mega-item.is-disabled .ds-hdr-mega-item__abbr,
+  .ds-hdr-mega-item.is-disabled .ds-hdr-mega-item__name {
+    color: var(--sa-text-neutral-disabled);
+  }
+
+  .ds-hdr-mega-item.is-disabled .ds-hdr-ic,
+  .ds-hdr-nav__link.is-disabled .ds-hdr-ic {
+    color: var(--sa-icon-neutral-disabled);
+  }
+
   .ds-hdr-mega-item.is-active {
-    border-color: var(--sa-border-neutral-subtle);
+    box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
     background-color: var(--sa-bg-neutral-base);
   }
 
   .ds-hdr-mega-item:focus-visible {
-    border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 1px var(--sa-color-action-primary-default);
+    box-shadow: inset 0 0 0 1px var(--sa-border-brand-primary-base),
+                0 0 0 2px var(--sa-color-action-primary-default);
   }
 
   /* Mobile drawer */
@@ -874,12 +931,12 @@
   }
 
   /* The compact bar's drawer trigger appears below the inline nav's breakpoint. */
-  .ds-hdr[data-variant="compact"] .ds-hdr-burger {
-    height: 40px;
-    width: 40px;
-    border: none;
-  }
-
+  /* The compact bar's trigger is the SAME control as everywhere else — IconButton
+     Large Outlined, 48x48, 32px glyph. It used to be overridden here to a bare 40px
+     icon with `border: none`, which is the container-less form the rest of the
+     masthead moved away from; it survived only because the compact variant was added
+     after that pass and has no Figma master to check against. It has one now
+     (Navbar/Compact, Device=Mobile), and it shows the 48px SheetToggle. */
   @media (min-width: 768px) {
     .ds-hdr[data-variant="compact"] .ds-hdr-burger {
       display: none;
@@ -960,12 +1017,14 @@
     }
   }
 
+  /* 16px on all four sides, per Figma's header frame. It was 16/24, which is the
+     masthead's inset, not the sheet's. */
   .ds-navsheet__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: var(--sa-stack-12);
-    padding: var(--sa-padding-16) var(--sa-padding-24);
+    padding: var(--sa-padding-16);
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }
 
@@ -974,13 +1033,25 @@
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }
 
-  /* Lockup inside the sheet.
-     Figma allots the sheet header 96px; the masthead's 20px department line wraps
-     to two in a 344px column and takes 129. The header's job here is orientation,
-     not proclamation — the reader arrived from the masthead that already said it —
-     so the stack steps down one rung. This is handled by passing compact to BrandLockup. */
-  .ds-navsheet__header .ds-hdr-lockup__emblem {
-    height: 40px;
+  /* Lockup inside the sheet — read straight off Figma's header (55327:3503).
+     It is the DEFAULT lockup at its full 64px emblem, and the 96px header is
+     16 + 64 + 16. Two things differ from the masthead and both are deliberate:
+
+       · the MINISTRY line is hidden. The reader arrived from the masthead that
+         already said it; in a 208px column it costs a line to repeat.
+       · the DEPARTMENT line steps down a rung, so it wraps to two lines inside the
+         64px the emblem already occupies rather than pushing the header taller.
+
+     This used to pass `compact` to BrandLockup and shrink the emblem to 40, which
+     made the header 121 against a designed 96 — the compact lockup's smaller type
+     bought less than its taller text stack cost. */
+  .ds-navsheet__header .ds-hdr-lockup__ministry {
+    display: none;
+  }
+
+  .ds-navsheet__header .ds-hdr-lockup__dept {
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
   }
 
   .ds-navsheet__close {
@@ -1075,5 +1146,52 @@
     outline: 2px solid var(--sa-border-brand-primary-base);
     outline-offset: -2px;
     border-radius: var(--sa-shape-4);
+  }
+
+  /* ── The sheet's mega state ──────────────────────────────────────────────
+     Figma NavSheet State=Mega nests Navbar/MegaMenu Device=Mobile at 344 wide.
+     That variant is a VERTICAL stack, not a grid: 16px padding, 16px between
+     columns, 8px from a column's heading to its rows, rows themselves at gap 0,
+     and radius 0 because it is inset in the sheet rather than floating. */
+  .ds-navsheet__mega {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-16);
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-navsheet__mega-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  .ds-navsheet__mega-head {
+    margin: 0;
+    padding: 0 var(--sa-padding-12);
+    font-size: var(--sa-type-title-3-size);
+    font-weight: 500;
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-navsheet__mega-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* 344 - 32 of sheet padding leaves 312 for a row that is 400 on desktop. The
+     emblem, both text lines and the chevron all stay; the trailing inset gives
+     back the 8px that keeps the full name off the chevron. */
+  .ds-navsheet__mega-list .ds-hdr-mega-item {
+    padding-right: var(--sa-padding-12);
+  }
+
+  .ds-navsheet__sublink.is-disabled {
+    pointer-events: none;
+    cursor: default;
+    color: var(--sa-text-neutral-disabled);
   }
 }

@@ -4,8 +4,9 @@ import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import { BrandLockup } from "./brand-lockup";
+import { MegaMenuItem } from "./nav-parts";
 import { Search } from "../../forms/search";
-import type { BrandLines, NavItem, NavLink } from "./types";
+import type { BrandLines, NavItem } from "./types";
 import "./header.css";
 
 export interface NavSheetProps {
@@ -27,16 +28,21 @@ export interface NavSheetProps {
   className?: string;
 }
 
-/** A mega-menu's columns flatten into one list — the sheet has no room for a grid. */
-function flatten(item: NavItem): NavLink[] | undefined {
-  if (item.columns?.length) {
-    return item.columns.flatMap((col) =>
-      col.items?.length
-        ? col.items.map((it) => ({ label: it.abbr, href: it.href, external: it.external }))
-        : (col.links ?? []),
-    );
-  }
-  return item.children;
+/**
+ * What an expanded row shows. A mega-menu keeps its COLUMNS in the sheet — headings,
+ * emblems and full organisation names — stacked vertically rather than side by side.
+ *
+ * It used to flatten them to a bare list of abbreviations, which is what the code
+ * did and not what the library says: Figma's `NavSheet State=Mega` (55327:3503)
+ * nests the real `Navbar/MegaMenu Device=Mobile` (4268:914) at 344 wide, a vertical
+ * stack of Col frames each carrying its Header and its rows. Flattening threw away
+ * every column heading, every emblem and every full name — on the one surface where
+ * an unfamiliar abbreviation like "NCSC" is hardest to place.
+ */
+function subContent(item: NavItem) {
+  if (item.columns?.length) return { columns: item.columns } as const;
+  if (item.children?.length) return { children: item.children } as const;
+  return null;
 }
 
 /**
@@ -45,8 +51,8 @@ function flatten(item: NavItem): NavLink[] | undefined {
  * Matches the Figma component: a 344px sheet with its own header (brand lockup +
  * close), divider-separated 56px rows, and an `expand_more` caret on any row that
  * carries children. Its three Figma states — Default / Expanded / Mega — are the
- * same component with nothing open, one row open, and a flattened org list open;
- * they are states, not variants a consumer picks.
+ * same component with nothing open, a simple child list open, and a full mega-menu
+ * open; they are states, not variants a consumer picks.
  *
  * DELIBERATELY NOT A MODAL. It is a disclosure region with a close control, so it
  * does not trap focus — the same rule the Chatbot panel carries. Escape closes it
@@ -98,12 +104,14 @@ export function NavSheet({
         aria-modal={false}
       >
         <div className="ds-navsheet__header">
+          {/* NOT `compact` — Figma's sheet header carries the default lockup at its
+              full 64px emblem. The header's step-downs (ministry hidden, department a
+              rung smaller) are scoped in header.css, where the 96px is derived. */}
           <BrandLockup
             emblemSrc={emblemSrc}
             emblemAlt={emblemAlt}
             lines={brandLines}
             href={homeHref}
-            compact
           />
           <button
             type="button"
@@ -133,8 +141,8 @@ export function NavSheet({
 
         <ul className="ds-navsheet__list">
           {nav.map((item) => {
-            const subLinks = flatten(item);
-            const hasSub = !!subLinks?.length;
+            const sub = subContent(item);
+            const hasSub = !!sub;
             const isOpen = openLabel === item.label;
             const subId = `ds-navsheet-sub-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
             return (
@@ -167,16 +175,53 @@ export function NavSheet({
                   </a>
                 )}
 
-                {hasSub && isOpen && (
+                {hasSub && isOpen && sub!.columns && (
+                  <div id={subId} className="ds-navsheet__mega">
+                    {sub!.columns.map((col, ci) => (
+                      <div key={col.heading ?? ci} className="ds-navsheet__mega-col">
+                        {col.heading && <p className="ds-navsheet__mega-head">{col.heading}</p>}
+                        {col.items?.length ? (
+                          <ul className="ds-navsheet__mega-list">
+                            {col.items.map((it) => (
+                              <li key={it.abbr}>
+                                <MegaMenuItem item={it} onSelect={onClose} />
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <ul className="ds-navsheet__sub">
+                            {col.links?.map((c) => (
+                              <li key={c.label}>
+                                <a
+                                  href={c.disabled ? undefined : c.href}
+                                  className={cn("ds-navsheet__sublink", c.disabled && "is-disabled")}
+                                  aria-disabled={c.disabled || undefined}
+                                  target={c.external && !c.disabled ? "_blank" : undefined}
+                                  rel={c.external && !c.disabled ? "noreferrer" : undefined}
+                                  onClick={c.disabled ? undefined : onClose}
+                                >
+                                  {c.label}
+                                </a>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {hasSub && isOpen && sub!.children && (
                   <ul id={subId} className="ds-navsheet__sub">
-                    {subLinks!.map((c) => (
+                    {sub!.children.map((c) => (
                       <li key={c.label}>
                         <a
-                          href={c.href}
-                          className="ds-navsheet__sublink"
-                          target={c.external ? "_blank" : undefined}
-                          rel={c.external ? "noreferrer" : undefined}
-                          onClick={onClose}
+                          href={c.disabled ? undefined : c.href}
+                          className={cn("ds-navsheet__sublink", c.disabled && "is-disabled")}
+                          aria-disabled={c.disabled || undefined}
+                          target={c.external && !c.disabled ? "_blank" : undefined}
+                          rel={c.external && !c.disabled ? "noreferrer" : undefined}
+                          onClick={c.disabled ? undefined : onClose}
                         >
                           {c.label}
                         </a>

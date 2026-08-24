@@ -269,18 +269,33 @@
   },
   "BrandLockup": {
     "nodeId": "4235:3652",
-    "captured": "2026-08-22",
+    "captured": "2026-08-24",
     "properties": {
       "Show beta#4512:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show org#56059:0": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "Show ministry#56059:7": {
         "type": "BOOLEAN",
         "defaultValue": true
       },
       "Device": {
         "type": "VARIANT",
         "variantOptions": [
-          "Desktop",
+          "Mobile",
           "Tablet",
-          "Mobile"
+          "Desktop"
+        ]
+      },
+      "Size": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Compact"
         ]
       }
     },
@@ -327,5 +342,70 @@
         "defaultValue": true
       }
     }
+  },
+  "AccountMenu": {
+    "nodeId": "56046:4113",
+    "captured": "2026-08-24",
+    "properties": {
+      "Name#56049:0": {
+        "type": "TEXT",
+        "defaultValue": "Asha Ramesh"
+      },
+      "Email#56049:4": {
+        "type": "TEXT",
+        "defaultValue": "asha.ramesh@gov.in"
+      },
+      "Role#56049:8": {
+        "type": "TEXT",
+        "defaultValue": "State Nodal Officer"
+      },
+      "Show email#56049:12": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Static",
+          "Closed",
+          "Open"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State"
+    ]
+  },
+  "AccountMenuItem": {
+    "nodeId": "56040:4083",
+    "captured": "2026-08-24",
+    "properties": {
+      "Label#56040:0": {
+        "type": "TEXT",
+        "defaultValue": "Menu item"
+      },
+      "Show icon#56040:7": {
+        "type": "BOOLEAN",
+        "defaultValue": true
+      },
+      "State": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Hover",
+          "Focused"
+        ]
+      },
+      "Tone": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Default",
+          "Danger"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "State"
+    ]
   }
 }

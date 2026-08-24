@@ -10,9 +10,16 @@
 //
 // PROPERTY COVERAGE
 //   State -> deliberatelyOmitted. Default / Expanded / Mega are RUNTIME STATES of one
-//            component (nothing open · one row open · a flattened organisation list
+//            component (nothing open · a simple child list open · a full mega-menu
 //            open), not variants a caller picks. There is no `state` prop and there
 //            must not be one: the sheet owns which row is expanded.
+//
+// MEGA KEEPS ITS COLUMNS. Figma's State=Mega nests the real Navbar/MegaMenu
+// (Device=Mobile) at 344 wide — headings, emblems and full organisation names all
+// present, stacked vertically. This note used to say the sheet flattened them to a
+// list of abbreviations, which described what the code did, not what the library
+// shows. Do not "simplify" it back: an abbreviation like NCSC with no emblem and no
+// full name is least identifiable on exactly the surface this component serves.
 import figma from "figma";
 
 export default {

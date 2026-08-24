@@ -12,7 +12,28 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-22 · System version: v0.32.0 (NO HAND-ROLLED MASTHEAD OR
+  Last reviewed: 2026-08-24 · System version: v0.33.0 (THE MASTHEAD IS THE HEIGHT IT
+  WAS DESIGNED TO BE. The brand row stood at 124px against Figma's 100 because the
+  lockup's four rows carried a 2px gap and the masthead search was 417px wide instead
+  of 320 — which left the department line 361px, so it wrapped. Both fixed; the row is
+  100 at rest and 88 On Scroll, exactly as drawn. `collapseOnScroll` now DOES what it
+  says: it shrinks the brand row by dropping the ministry line, and it never touched
+  the accessibility bar, which is 46px in every Figma variant — the prop's docstring
+  pointed at a `.sa-abar` rule that existed only inside a comment. It defaults ON
+  wherever the header is sticky. THE MEGA-MENU COLUMN HAIRLINES ARE GONE: Figma's Col
+  frames carry no strokes, they were added in code alone, and design won. The panel is
+  now centred on the nav row rather than on the item that opened it, because a 1272px
+  panel anchored to the third of seven items ran 256px off-screen. NAVSHEET KEEPS ITS
+  COLUMNS — Figma's State=Mega nests the real MegaMenu, and the code was flattening
+  five headed columns of emblems and full names into a list of bare abbreviations.
+  THREE NEW FIGMA MASTERS close the other direction: Navbar/AccountMenu and
+  Navbar/AccountMenuItem (the account dropdown shipped in code with nothing in the
+  library), and Navbar/Compact (the third `variant`, which had no master — which is
+  how its burger stayed a bare 40px icon after every other trigger became a 48px
+  outlined IconButton). BrandLockup gained Size=Default|Compact plus Show org and
+  Show ministry, mirroring the optional `BrandLines` fields. Nav items, dropdown rows
+  and mega rows all take `disabled` now — Figma has shipped a State=Disabled variant
+  for each of them all along. Previously v0.32.0: (NO HAND-ROLLED MASTHEAD OR
   ACCESSIBILITY BAR EXISTS ANYWHERE — `npm run check:chrome` fails the build on one.
   Twelve sites were converted, including a second accessibility bar INSIDE the design
   system and an invented abstract mark where the National Emblem belongs. Code Connect

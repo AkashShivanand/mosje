@@ -25,10 +25,8 @@ export interface SiteHeaderProps {
    * Which estate surface this header serves. Optional but recommended — it makes
    * intent explicit at the call site and sets behavioural defaults:
    *  - `"website"` (default): static masthead, no scroll collapse.
-   *  - `"portal"`: app-shell chrome — defaults `sticky` on. (Scroll-collapse of
-   *    the accessibility bar — Figma "Appbar / on Scroll" — is available via the
-   *    explicit `collapseOnScroll` prop; it stays opt-in because it changes the
-   *    chrome height that app-shell sidebar offsets are measured against.)
+   *  - `"portal"`: app-shell chrome — defaults `sticky` on, and with it the
+   *    Figma "State=On Scroll" behaviour (see `collapseOnScroll`).
    * Explicit `sticky` / `collapseOnScroll` props always override these defaults.
    */
   variant?: HeaderVariant;
@@ -123,11 +121,18 @@ export interface SiteHeaderProps {
    */
   sticky?: boolean;
   /**
-   * Collapse the accessibility bar once the page scrolls, reclaiming vertical
-   * space (Figma "Appbar / on Scroll"). Only meaningful with `sticky`. Opt-in —
-   * when on, ensure any app-shell sidebar offset accounts for the shorter
-   * scrolled height (or make the sidebar sticky under the brand row).
-   * @default false
+   * Figma "State=On Scroll": once the page scrolls, the brand row goes 100px -> 88px.
+   *
+   * It does that by shrinking the LOCKUP — the middle "Ministry …" line drops, the
+   * text stack goes 76 -> 60, and the 64px emblem becomes the tallest thing in the
+   * row. The accessibility bar does NOT collapse; it is 46px in every Figma variant,
+   * and the previous version of this comment promised a collapse that no rule in
+   * this package implemented.
+   *
+   * Only meaningful with `sticky`, and defaults ON whenever `sticky` is on, because
+   * Figma models On Scroll as a standard state of both Website and Portal rather
+   * than an opt-in. Pass `false` to pin the masthead at its full height.
+   * @default true when `sticky`, otherwise false
    */
   collapseOnScroll?: boolean;
   className?: string;
@@ -158,8 +163,8 @@ export interface SiteHeaderProps {
  * `onToggleNav` + `brandDivider` + `cobranding` + `account`.
  *
  * Nav items support a simple dropdown (`children`) or a multi-column mega-menu
- * (`columns`) for org-heavy menus. `variant="portal"` also collapses the
- * accessibility bar on scroll (Figma "Appbar / on Scroll").
+ * (`columns`) for org-heavy menus. Sticky variants also shrink the brand row on
+ * scroll (Figma "State=On Scroll") — see `collapseOnScroll`.
  */
 export function SiteHeader({
   variant,
@@ -193,7 +198,10 @@ export function SiteHeader({
   // variant supplies behavioural defaults; explicit props always win.
   // `sticky` defaults on for portals; scroll-collapse stays opt-in.
   const isSticky = sticky ?? (isPortal || isCompact);
-  const wantsScrollCollapse = (collapseOnScroll ?? false) && isSticky;
+  // On Scroll is a Figma state of both mastheads, not an extra — so it follows
+  // `sticky` unless a caller explicitly turns it off. A non-sticky header scrolls
+  // out of view, where shrinking it would be invisible anyway.
+  const wantsScrollCollapse = (collapseOnScroll ?? isSticky) && isSticky;
 
   const [openLabel, setOpenLabel] = React.useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
