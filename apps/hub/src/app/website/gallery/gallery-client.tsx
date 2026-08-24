@@ -47,7 +47,7 @@ export function GalleryClient() {
       description="A glimpse of events, programmes and initiatives of the Department of Social Justice & Empowerment."
     >
       <section>
-        <div className="mx-auto max-w-[1280px] px-4 py-10">
+        <div className="sa-container py-10">
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {IMAGES.map((image, index) => (
               <li key={image.src}>

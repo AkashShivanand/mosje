@@ -20,7 +20,7 @@ export default function Page() {
         description="Locate a Nasha Mukti Kendra across India — search by name, state, district or centre type, or use your location to find the nearest one. No login required."
         lastUpdated="14 Jul 2026"
       />
-      <section className="mx-auto max-w-[1280px] px-4 py-8 md:py-10">
+      <section className="sa-container py-8 md:py-10">
         <DeAddictionMap />
       </section>
     </>

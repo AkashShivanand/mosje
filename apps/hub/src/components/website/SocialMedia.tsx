@@ -134,7 +134,7 @@ export function SocialMedia() {
   const currentTab = SOCIAL_TABS.find((tab) => tab.key === activeTab) ?? SOCIAL_TABS[0]!;
 
   return (
-    <section className="bg-white py-12 md:py-16">
+    <section className="bg-surface-muted py-12 md:py-16">
       <div className="sa-container">
         <div className="text-center">
           <h2 className="text-[28px] sm:text-[32px] font-semibold leading-tight text-primary-dark">

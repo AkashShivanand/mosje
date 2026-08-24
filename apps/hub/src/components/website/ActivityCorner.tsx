@@ -51,7 +51,7 @@ export function ActivityCorner() {
   const [activeTab, setActiveTab] = useState<TabKey>("events");
 
   return (
-    <section className="bg-surface-muted py-12 md:py-16">
+    <section className="bg-surface py-12 md:py-16">
       <div className="sa-container">
         {/* Header with Tabs and View All Link */}
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">

@@ -122,7 +122,12 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
 - **MANDATORY VISUAL AUDIT:** every component, page, wizard or portal change must be
   screenshotted and audited against SAMAVESH standards **before** declaring completion.
   Lint/typecheck passing without visual verification is forbidden.
-- Mobile-first responsive; content max-width **1280px**.
+- Mobile-first responsive. **Content width is `.sa-container`, never a restated number** —
+  UX4G 3.0 ("Grid and layout") specifies **1200px desktop / 1320px desktop-XL** (≥1768px),
+  and `--sa-container-content` / `--sa-container-contentXl` carry those two values. The
+  **1280px** this line used to name was one of four widths that shipped at once before
+  2026-08-13; it is not the contract and was still being cited as one a year later. Bind to
+  `.sa-container` and add no `px-*` of your own — it owns the cap *and* the responsive margin.
 - **AI design contract:** read `packages/design-system/design.md` before building or
   changing UI. Its companions `AGENTS.md` and `/design-system/llms.txt` stay in sync →
   `.claude/rules/design-system.md`.

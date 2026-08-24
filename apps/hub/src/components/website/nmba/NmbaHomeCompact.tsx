@@ -5,7 +5,7 @@ import { Icon } from "@mosje/design-system";
 
 export function NmbaHomeCompact() {
   return (
-    <section className="bg-surface-muted" aria-labelledby="nmba-compact-heading">
+    <section className="bg-surface" aria-labelledby="nmba-compact-heading">
       <div className="sa-container py-12 md:py-16">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>

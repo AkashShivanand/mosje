@@ -731,8 +731,16 @@ rung's name equals its resolved value, so a violation fails the build rather tha
 
 **Content container — never hardcode a max-width.** Use the `.sa-container` class from
 `@mosje/design-system/layout.css`, which carries the cap *and* the responsive side margin.
-The estate follows **UX4G 3.0's two-step container**: `--sa-container-content` **1200px**,
-widening to `--sa-container-contentXl` **1320px** at `--sa-ref-breakpoint-desktopXl` (1768px).
+The estate uses a **three-step container**: `--sa-container-content` **1200px**, widening to
+`--sa-container-contentXl` **1320px** at `--sa-ref-breakpoint-desktopXl` (1600px), then to
+`--sa-container-contentWide` **1440px** at `--sa-ref-breakpoint-desktopWide` (1920px).
+
+UX4G publishes two widths (1200 / 1320) and no breakpoints, which left the estate on a single
+widen at 1768px. That was measurably wrong in both directions: a 1728-wide viewport carried
+264px of margin each side against 1768's own 224px — margins *narrowing* as the screen grew —
+and one widen could not serve 1600 through 2560+, so a 2560 monitor rendered a 1320 column
+between 620px margins. The third step and the corrected anchors follow Material 3's window size
+classes (large 1200–1599, extra-large ≥1600). Recorded in `docs/guidelines/README.md`.
 `--sa-container-page` is the derived variable that selects between them; bind that when a
 media query is unavailable (an inline style, for instance — it is how `SiteHeader` caps its
 own column).
@@ -2306,7 +2314,7 @@ inventing a page-local variant.
 **Rules**:
 - Only one `<h1>` per page.
 - All sections must have an `id` for deep-linking.
-- Content max-width: use `.sa-container` (UX4G 1200 / 1320 — see §1). Never a literal.
+- Content max-width: use `.sa-container` (1200 / 1320 / 1440 — see §1). Never a literal.
   Prose sections: `max-w-prose` (`65ch`).
 
 ---
