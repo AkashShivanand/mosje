@@ -50,7 +50,6 @@ const meta = {
      component has a REQUIRED `onToggle`, so without a default here each story
      is type-checked as missing it. Defaults on the meta, not `args: {}` on
      eight stories. */
-  args: { expanded: false, onToggle: () => {} },
   parameters: { layout: "padded" },
   // This file showcases several navbar parts, so most stories are render-only and pass no
   // args. MenuToggle's props are required, so without defaults here every one of those

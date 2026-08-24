@@ -139,7 +139,6 @@ const meta = {
     sticky: false,
     collapseOnScroll: false,
     accessibilityToolbar: true,
-    tone: "blue",
     cobranding: [
       { src: asset("Digital India", 120, 44), alt: "Digital India", height: 44 },
       { src: asset("SAMAVESH", 60, 44), alt: "SAMAVESH", height: 44 },
@@ -147,7 +146,6 @@ const meta = {
   },
   argTypes: {
     variant: { control: "inline-radio", options: ["website", "portal"] },
-    tone: { control: "inline-radio", options: ["blue", "navy"] },
     beta: { control: "boolean" },
     sticky: { control: "boolean" },
     collapseOnScroll: { control: "boolean" },
@@ -183,6 +181,12 @@ export const Website: Story = {
  * App-shell chrome. Sticky by default, with the nav toggle and the account
  * block in place of a marketing CTA.
  */
+/**
+ * Tone is NOT a prop. `navy` is a BRAND MODE — set `data-brand="navy"` on an
+ * ancestor and the whole subtree re-tones, header included. A `tone` prop was
+ * retired for exactly that reason: it let one component disagree with the brand
+ * the rest of the page was painting.
+ */
 export const Portal: Story = {
   render: function Render(args) {
     const [navOpen, setNavOpen] = React.useState(true);
@@ -190,7 +194,6 @@ export const Portal: Story = {
       <SiteHeader
         {...args}
         variant="portal"
-        tone="navy"
         nav={undefined}
         brandDivider
         brandLines={{

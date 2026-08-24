@@ -86,3 +86,39 @@ export const Playground: Story = {
     );
   },
 };
+
+/**
+ * `search` puts a field above the nav list. Pass it only where the surface has
+ * something to search — an empty search box is a promise the sheet cannot keep,
+ * and on a 344px sheet it costs a row of navigation to make it.
+ */
+export const WithSearch: Story = {
+  args: {
+    open: false,
+    onClose: () => {},
+    nav: NAV,
+    emblemSrc: EMBLEM,
+    brandLines: {
+      org: "Government of India",
+      ministry: "Ministry of Social Justice & Empowerment",
+      department: "Department of Social Justice & Empowerment",
+    },
+    homeHref: "#",
+    search: {
+      placeholder: "Search schemes and documents",
+      onSearch: () => {},
+    },
+  },
+  render: function WithSearch(args) {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <div style={{ minHeight: 480, padding: 24 }}>
+        <SheetToggle open={open} onOpen={() => setOpen(true)} />
+        <p style={{ marginTop: 16, maxWidth: 420 }}>
+          Narrow the viewport below 1024px to see the sheet.
+        </p>
+        <NavSheet {...args} open={open} onClose={() => setOpen(false)} />
+      </div>
+    );
+  },
+};
