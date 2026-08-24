@@ -54,7 +54,6 @@ const meta = {
   // This file showcases several navbar parts, so most stories are render-only and pass no
   // args. MenuToggle's props are required, so without defaults here every one of those
   // stories fails to typecheck.
-  args: { expanded: false, onToggle: () => {} },
 } satisfies Meta<typeof MenuToggle>;
 
 export default meta;
