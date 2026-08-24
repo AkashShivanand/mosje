@@ -16,10 +16,15 @@ const require_ = createRequire(import.meta.url);
 const pkgDir = (id: string) => path.dirname(require_.resolve(`${id}/package.json`));
 
 const config: StorybookConfig = {
-  stories: ["../stories/**/*.stories.@(ts|tsx)"],
-  addons: [pkgDir("@storybook/addon-essentials"), pkgDir("@storybook/addon-a11y")],
+  stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(ts|tsx)"],
+  addons: [
+    pkgDir("@storybook/addon-essentials"),
+    pkgDir("@storybook/addon-a11y"),
+    pkgDir("@storybook/addon-designs")
+  ],
   framework: { name: pkgDir("@storybook/react-vite"), options: {} },
   core: { disableTelemetry: true },
+  docs: { autodocs: true },
 
   /**
    * Rollup strips `"use client"` when it bundles for the browser and warns once
