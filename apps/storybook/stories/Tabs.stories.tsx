@@ -85,7 +85,7 @@ const meta = {
   parameters: {
     design: {
       type: "figma",
-      url: "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55489-870"
+      url: "https://www.figma.com/file/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55489-870"
     }
   },
   title: "Components/Navigation/Tabs",

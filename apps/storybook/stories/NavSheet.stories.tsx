@@ -35,7 +35,7 @@ const meta = {
   parameters: {
     design: {
       type: "figma",
-      url: "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55327-3503"
+      url: "https://www.figma.com/file/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55327-3503"
     }, layout: "fullscreen" },
 } satisfies Meta<typeof NavSheet>;
 

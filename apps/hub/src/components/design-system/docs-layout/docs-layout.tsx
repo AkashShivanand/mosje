@@ -75,7 +75,7 @@ export function DocsLayout({ children }: DocsLayoutProps): React.JSX.Element {
           onClick={onSidebarClick}
         >
           <a href="/design-system" className="docs-sidebar__brand">
-            <span className="docs-sidebar__logo" aria-hidden="true">SA</span>
+            <img src="/design-system/samavesh-logo.svg" alt="" className="docs-sidebar__logo-img" />
             <div>
               <div className="docs-sidebar__name">SAMAVESH</div>
               <div className="docs-sidebar__tagline">Design System</div>
