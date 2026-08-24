@@ -101,7 +101,7 @@ const meta = {
   parameters: {
     design: {
       type: "figma",
-      url: "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55397-1364"
+      url: "https://www.figma.com/file/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55397-1364"
     }, layout: "fullscreen" },
 } satisfies Meta<typeof PortalLoginTemplate>;
 

@@ -43,7 +43,7 @@ const meta = {
   parameters: {
     design: {
       type: "figma",
-      url: "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55065-33766"
+      url: "https://www.figma.com/file/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55065-33766"
     }, layout: "fullscreen" },
   argTypes: {
     layout: { control: "inline-radio", options: ["narrow", "wide", "fluid"] },

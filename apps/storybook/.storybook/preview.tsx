@@ -78,7 +78,7 @@ const preview: Preview = {
           data-density={density === "comfortable" ? undefined : density}
           style={{
             padding: 24,
-            minHeight: "100vh",
+            minHeight: "unset",
             background: "var(--sa-bg-neutral-base)",
             color: "var(--sa-text-neutral-base)",
             fontFamily: "var(--sa-font-latin)",

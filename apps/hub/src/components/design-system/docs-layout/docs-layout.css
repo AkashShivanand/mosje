@@ -384,3 +384,10 @@
   .docs-header__search-btn .docs-header__search-label,
   .docs-header__search-kbd { display: none; }
 }
+
+.docs-sidebar__logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  margin-right: 12px;
+}
