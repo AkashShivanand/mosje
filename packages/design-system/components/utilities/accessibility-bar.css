@@ -200,6 +200,7 @@
   .sa-abar__icbtn {
     display: inline-flex;
     align-items: center;
+    justify-content: center;
     gap: var(--sa-inline-2);
     height: var(--sa-cmp-accessibilityBar-iconButtonSize);
     min-width: var(--sa-cmp-accessibilityBar-iconButtonSize);
