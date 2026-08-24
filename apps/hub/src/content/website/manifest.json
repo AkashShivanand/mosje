@@ -1,51 +1,38 @@
 {
-  "generatedAt": "2026-06-13T16:01:15.089Z",
+  "generatedAt": "2026-08-24T18:08:12.413Z",
   "collections": [
     {
       "name": "documents",
-      "sitemapCount": 1624,
-      "kept": 1624,
+      "sitemapCount": 1962,
+      "kept": 1962,
       "skipped": 0,
       "skippedDetail": []
     },
     {
       "name": "organisation",
-      "sitemapCount": 178,
-      "kept": 175,
-      "skipped": 3,
-      "skippedDetail": [
-        {
-          "slug": "national-commission-for-backward-classes-ncbc/gazette-notifications-2",
-          "reason": "duplicate of national-commission-for-backward-classes-ncbc/gazette-notifications"
-        },
-        {
-          "slug": "national-commission-for-backward-classes-ncbc/tour-reports-2",
-          "reason": "duplicate of national-commission-for-backward-classes-ncbc/tour-reports"
-        },
-        {
-          "slug": "national-commission-for-safai-karamcharis/total-no-of-deaths-compensation-2",
-          "reason": "duplicate of national-commission-for-safai-karamcharis/total-no-of-deaths-compensation"
-        }
-      ]
+      "sitemapCount": 426,
+      "kept": 226,
+      "skipped": 0,
+      "skippedDetail": []
     },
     {
       "name": "schemes",
-      "sitemapCount": 141,
-      "kept": 141,
+      "sitemapCount": 0,
+      "kept": 140,
       "skipped": 0,
       "skippedDetail": []
     },
     {
       "name": "tenders",
-      "sitemapCount": 305,
-      "kept": 305,
+      "sitemapCount": 512,
+      "kept": 312,
       "skipped": 0,
       "skippedDetail": []
     },
     {
       "name": "vacancies",
-      "sitemapCount": 137,
-      "kept": 137,
+      "sitemapCount": 815,
+      "kept": 163,
       "skipped": 0,
       "skippedDetail": []
     }

@@ -17,7 +17,7 @@ function cleanRoot(html) {
 // Returns [{ heading: string|null, html: string }], skipping empty sections.
 export function extractSections(html) {
   const root = cleanRoot(html);
-  const matched = root.querySelectorAll("h1,h2,h3,p,ul,ol,table,blockquote");
+  const matched = root.querySelectorAll("h1,h2,h3,h4,h5,h6,p,ul,ol,table,blockquote,dl,.elementor-widget-html,.elementor-widget-text-editor,.elementor-icon-list-items,.elementor-widget-n-accordion,.elementor-widget-n-tabs,.elementor-widget-icon-box");
   const matchedSet = new Set(matched);
   // Keep only outermost matches (a node with a matched ancestor is contained in that ancestor's outerHTML).
   const nodes = matched.filter((n) => {
