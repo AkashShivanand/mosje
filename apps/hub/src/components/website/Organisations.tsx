@@ -69,7 +69,24 @@ export function Organisations() {
           })}
         </div>
 
-        <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        {/* Three across at every width from md up, which is the column count the
+            design specifies. It was four, and four is what made these cards
+            cramped: at the 1200 content cap a 4-up row gives 272px cards, and 13
+            of the 17 organisation names wrapped to two or three lines. Three
+            gives 368px and takes that to 5.
+
+            Worth recording because the obvious diagnosis was wrong. The cramping
+            reads like the container being too narrow, but widening it to the
+            design's 1272 fixes exactly ONE of those 13 — the names here run to
+            "National Scheduled Castes Finance and Development Corporation", and
+            72px does not touch that. The column count was the constraint the
+            whole time.
+
+            The third column also waits for `lg` rather than `md`. Three across a
+            tablet was 221px cards with 16 of 17 names wrapping — worse than the
+            desktop case this change was made to fix. Two across holds 340px
+            there, and 1024 and up are untouched. */}
+        <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((org) => (
             <li key={org.id}>
               <Link href={org.profileHref} className="group block h-full">
