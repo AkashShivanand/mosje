@@ -213,9 +213,7 @@ export function MegaMenu({ id, label, columns, onSelect, className }: MegaMenuPr
     <div className={cn("ds-hdr-nav__drop-wrap is-mega", className)}>
       <div id={id} className="ds-hdr-nav__mega" role="group" aria-label={label}>
         {columns.map((col, ci) => (
-          <React.Fragment key={col.heading ?? ci}>
-            {ci > 0 && <div className="ds-hdr-nav__mega-divider" />}
-            <div className="ds-hdr-nav__mega-col">
+          <div key={col.heading ?? ci} className="ds-hdr-nav__mega-col">
             {col.heading && <p className="ds-hdr-nav__mega-head">{col.heading}</p>}
             {col.items?.length ? (
               <ul className="ds-hdr-nav__mega-list is-rich">
@@ -235,7 +233,6 @@ export function MegaMenu({ id, label, columns, onSelect, className }: MegaMenuPr
               </ul>
             )}
           </div>
-          </React.Fragment>
         ))}
       </div>
     </div>
