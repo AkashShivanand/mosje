@@ -128,8 +128,8 @@
   /* BETA badge — dedicated badge/beta component token, its own row above the text stack */
   .ds-hdr-badge {
     align-self: flex-start;
-    font-size: 10px;
-    line-height: 10px;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
@@ -326,15 +326,15 @@
   }
 
   .ds-hdr-account__name {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
     font-weight: 600;
     color: var(--sa-text-neutral-base);
   }
 
   .ds-hdr-account__email {
-    font-size: 13px;
-    line-height: 20px;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -348,7 +348,7 @@
     border-radius: var(--sa-shape-8);
     background-color: var(--sa-color-primaryScale-100);
     color: var(--sa-color-primaryScale-800);
-    font-size: 18px;
+    font-size: var(--sa-type-title-2-size);
     font-weight: 500;
     object-fit: cover;
     overflow: hidden;
@@ -417,8 +417,8 @@
     /* UX4G/Portal spec: py 16px px 12px, Noto Sans Medium 14px / 20px, #343a40, 0.1px */
     padding: var(--sa-padding-16) var(--sa-padding-12);
     border-radius: var(--sa-shape-4);
-    font-size: 14px;
-    line-height: 20px;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-body-3-lh);
     letter-spacing: 0.1px;
     font-weight: 500;
     color: var(--sa-text-neutral-base);
@@ -913,25 +913,9 @@
      Figma allots the sheet header 96px; the masthead's 20px department line wraps
      to two in a 344px column and takes 129. The header's job here is orientation,
      not proclamation — the reader arrived from the masthead that already said it —
-     so the stack steps down one rung. This is placement styling, the same call the
-     compact variant makes, not a second lockup component. */
+     so the stack steps down one rung. This is handled by passing compact to BrandLockup. */
   .ds-navsheet__header .ds-hdr-lockup__emblem {
     height: 40px;
-  }
-
-  .ds-navsheet__header .ds-hdr-lockup__org {
-    font-size: 11px;
-    line-height: 14px;
-  }
-
-  .ds-navsheet__header .ds-hdr-lockup__ministry {
-    font-size: 12px;
-    line-height: 16px;
-  }
-
-  .ds-navsheet__header .ds-hdr-lockup__dept {
-    font-size: 16px;
-    line-height: 20px;
   }
 
   .ds-navsheet__close {
