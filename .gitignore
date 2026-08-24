@@ -69,8 +69,22 @@ apps/hub/public/reports/eutthan-admin/figures/
 # the repo. This pattern only covers the ROOT, so scripts/ and tools/ are
 # unaffected.
 /fix_*.py
+/fix_*.mjs
 /migrate_*.py
+/migrate_*.mjs
 /transform.py
 /test-*.js
 /test-*.mjs
 /test-*.py
+# Added 2026-08-24. The first pass named the nine files that existed and missed
+# the naming everyone actually reaches for: `patch`. Two more — patch-intro.mjs
+# and patch-docs-layout.mjs — were committed to main within the week, and seven
+# others (patch.mjs, patch2.mjs, patch_mega.mjs, revert_nav_parts.mjs and
+# friends) were sitting uncommitted in the tree waiting their turn. Match the
+# VERB, both separators, not one spelling of it.
+/patch*.mjs
+/patch*.js
+/patch*.py
+/revert*.mjs
+/revert*.js
+/revert*.py

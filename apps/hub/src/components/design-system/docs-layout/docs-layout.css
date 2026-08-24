@@ -389,5 +389,5 @@
   width: 32px;
   height: 32px;
   object-fit: contain;
-  margin-right: 12px;
+  margin-right: var(--sa-inline-12);
 }
