@@ -161,7 +161,7 @@ export function Header() {
       ]}
       nav={nav}
       actions={
-        <Link href="/website/admin" className={buttonClasses("primary", "filled", "sm")}>
+        <Link href="/website/admin" className={buttonClasses()}>
           Admin Login
         </Link>
       }
