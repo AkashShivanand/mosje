@@ -1318,7 +1318,8 @@ export const tokens = {
     "contentXl": "1320px",
     "contentWide": "1440px",
     "narrow": "720px",
-    "wide": "1200px"
+    "wide": "1200px",
+    "page": "1200px"
   },
   "grid": {
     "columns": 12,
@@ -1326,7 +1327,8 @@ export const tokens = {
     "margin": {
       "mobile": "16px",
       "tablet": "24px",
-      "desktop": "32px"
+      "desktop": "32px",
+      "page": "16px"
     }
   },
   "layout": {

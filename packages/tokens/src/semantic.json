@@ -2429,16 +2429,16 @@
     },
     "content": {
       "$value": "1200px",
-      "$description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor."
+      "$description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor. BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
     },
     "contentXl": {
       "$value": "{container.2xl}",
-      "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages; Bootstrap — whose ladder UX4G's is — engages `container-xxl` at 1400, so that is the anchor."
+      "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages, so the anchor is the estate's own `breakpoint/desktopXl` — 1600 since 2026-08-24. Bootstrap's `container-xxl` at 1400 was considered and rejected: at 1400 the 1440 design frame would take this cap, contradicting the 1200-at-desktop guidance. (This note said 1400 WAS the anchor until 2026-08-24; it never was — the token has read 1768 and now 1600.) BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
     },
     "contentWide": {
       "$value": "1440px",
       "$type": "dimension",
-      "$description": "The content cap at `breakpoint/desktopWide` (1920) and above — the third and last step of the page container (1200 -> 1320 -> 1440). Exists because two steps left a 2560-wide monitor rendering a 1320 column between 620px margins. Stops here rather than tracking the viewport: past ~1440 a 12-column grid costs more in eye travel than it returns in density, and the line lengths inside it stop being scannable. Consumed only through `--sa-container-page` in foundations/layout.css; never restate it in a component."
+      "$description": "The content cap at `breakpoint/desktopWide` (1920) and above — the third and last step of the page container (1200 -> 1320 -> 1440). Exists because two steps left a 2560-wide monitor rendering a 1320 column between 620px margins. Stops here rather than tracking the viewport: past ~1440 a 12-column grid costs more in eye travel than it returns in density, and the line lengths inside it stop being scannable. Consumed only through `--sa-container-page` in foundations/layout.css; never restate it in a component. BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
     },
     "narrow": {
       "$description": "AccessibilityBar narrow content container (Figma layout/container/narrow). Same 720px as container.md, named for the bar's own Layout variant.",
@@ -2447,6 +2447,22 @@
     "wide": {
       "$description": "AccessibilityBar wide content container (Figma layout/container/wide). 1200px is the Figma master's own value. It now COINCIDES with `container/content`, which moved 1280 > 1200 on 13 August 2026, but is deliberately left as a literal rather than aliased: the two are independent decisions that happen to agree today — this one is the bar's Figma master, that one is UX4G's published desktop cap — and aliasing would silently drag the bar along if the page cap moves again.",
       "$value": "1200px"
+    },
+    "page": {
+      "$value": "{container.content}",
+      "$description": "The RESOLVED page cap at a given window size — what `.sa-container` actually applies, and the one container token a page skeleton should bind. `content`/`contentXl`/`contentWide` are the three rungs; this is which rung is in force. It carries a mode per viewport, so a designer opening a frame in Desktop XL sees 1320 without having to know the media query that picks it. That was previously impossible: the CSS derived `--sa-container-page` in a media query, and a Figma variable cannot express a media query, so the cap was the one layout value the library could not represent at all. $value is the mobile-first base, which is `content` — the cap is 1200 everywhere below 1600.",
+      "$extensions": {
+        "mosje": {
+          "viewport": {
+            "Mobile": "{container.content}",
+            "Tablet": "{container.content}",
+            "Laptop": "{container.content}",
+            "Desktop": "{container.content}",
+            "Desktop XL": "{container.contentXl}",
+            "Desktop Wide": "{container.contentWide}"
+          }
+        }
+      }
     }
   },
   "grid": {
@@ -2464,13 +2480,32 @@
     "margin": {
       "$description": "The page's own side margin — the gap between the grid and the viewport edge. Responsive, because a margin that reads generous on a phone reads cramped on a desktop.",
       "mobile": {
-        "$value": "{space.16}"
+        "$value": "{space.16}",
+        "$description": "BIND `grid/margin/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
       },
       "tablet": {
-        "$value": "{space.24}"
+        "$value": "{space.24}",
+        "$description": "BIND `grid/margin/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
       },
       "desktop": {
-        "$value": "{space.32}"
+        "$value": "{space.32}",
+        "$description": "BIND `grid/margin/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
+      },
+      "page": {
+        "$value": "{grid.margin.mobile}",
+        "$description": "The RESOLVED page margin at a given window size — the companion to `container/page`, and what `.sa-container` applies as its inline padding. `mobile`/`tablet`/`desktop` are the three rungs; this is which rung is in force. It steps with the CAP, not with the viewport anchors: a wider margin only buys breathing room while the container is still fluid, and once the cap binds it buys nothing and costs content. Stepping it at the desktop anchor did exactly that — content went 1152 -> 1136 crossing 1280 — so Laptop and Desktop hold the tablet rung and the 32px step waits for Desktop XL, where the cap widens too. $value is the mobile-first base.",
+        "$extensions": {
+          "mosje": {
+            "viewport": {
+              "Mobile": "{grid.margin.mobile}",
+              "Tablet": "{grid.margin.tablet}",
+              "Laptop": "{grid.margin.tablet}",
+              "Desktop": "{grid.margin.tablet}",
+              "Desktop XL": "{grid.margin.desktop}",
+              "Desktop Wide": "{grid.margin.desktop}"
+            }
+          }
+        }
       }
     }
   },

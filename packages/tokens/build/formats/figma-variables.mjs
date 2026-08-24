@@ -80,6 +80,26 @@ export const COLLECTIONS = {
    * so creating them in the right home costs nothing.
    */
   "Static": { axis: null, modes: ["Mode 1"] },
+  /**
+   * The two layout values that genuinely VARY WITH WINDOW WIDTH, and nothing else.
+   *
+   * Every other container and grid token is a fixed rung — 1200 is 1200 at every size. These
+   * two are the RESOLVED value: which rung is in force right now. In CSS that is a media
+   * query, and a Figma variable cannot express a media query, so until this collection existed
+   * the page cap was the one layout value the library could not represent at all — a designer
+   * opening a 1600-wide frame had no way to see that the cap is 1320 there.
+   *
+   * The ANCHORS deliberately stay out. `ref/breakpoint/laptop` is 1024 in every mode; giving a
+   * breakpoint a per-viewport value is circular. Modes are for what the anchors SELECT.
+   *
+   * New variables rather than modes added to Space and Static, because Figma forbids moving a
+   * variable between collections — `grid/margin/*` and `container/*` cannot relocate, and
+   * adding six modes to Space would force all 142 of its rungs to carry six identical values.
+   */
+  "Viewport": {
+    axis: "viewport",
+    modes: ["Mobile", "Tablet", "Laptop", "Desktop", "Desktop XL", "Desktop Wide"],
+  },
 };
 
 /**
@@ -210,6 +230,10 @@ function collectionFor(path, tier, type) {
   // CSS but fell out of the Figma payload entirely, so the library could only ever have carried
   // them by hand — which is how `layout/bar/height` and `layout/flag/width` came to exist in
   // the library with nothing in the build defining them.
+  // The resolved-per-viewport pair. Checked BEFORE the general `grid`/`container` rules
+  // below, which would otherwise file them with the fixed rungs they select between.
+  if (head === "container" && rest[0] === "page") return "Viewport";
+  if (head === "grid" && rest[0] === "margin" && rest[1] === "page") return "Viewport";
   if (head === "grid" || head === "target" || head === "layout") return "Space";
   if (head === "container") return "Static";
   if (head === "focus" && (rest[0] === "width" || rest[0] === "offset")) return "Static";
@@ -713,6 +737,12 @@ export function buildPayload(dictionary) {
         raw = bounds
           ? fluidAt(parseFloat(bounds.min), parseFloat(bounds.max), BP[breakpoint], BP.Mobile, BP.Desktop)
           : (token.original?.$value ?? val(token));
+      } else if (target.collection === "Viewport") {
+        // Authored per mode in the token source, exactly as Density authors `compact`, so the
+        // ladder lives with the tokens rather than hardcoded here. Falls back to $value, which
+        // is the mobile-first base.
+        raw = token.original?.$extensions?.mosje?.viewport?.[mode]
+          ?? token.original?.$value ?? val(token);
       } else if (target.collection === "Density" && mode === "Compact") {
         raw = token.original?.$extensions?.mosje?.themes?.compact ?? token.original?.$value ?? val(token);
       } else {

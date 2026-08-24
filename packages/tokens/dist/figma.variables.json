@@ -41,6 +41,11 @@
       "total": 59,
       "new": 13,
       "existing": 46
+    },
+    "Viewport": {
+      "total": 2,
+      "new": 0,
+      "existing": 2
     }
   },
   "unmapped": [
@@ -2688,7 +2693,7 @@
               "name": "ref/space/16"
             }
           },
-          "description": "Use for the page’s side margin on a phone — the gap between the layout grid and the viewport edge. Bind it to the frame’s horizontal padding, not to the grid’s gutter, which is `grid/gutter`.",
+          "description": "BIND `grid/margin/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-grid-margin-mobile)"
           },
@@ -2709,7 +2714,7 @@
               "name": "ref/space/24"
             }
           },
-          "description": "Use for the page’s side margin on a tablet — the gap between the layout grid and the viewport edge. Bind it to the frame’s horizontal padding, not to the grid’s gutter, which is `grid/gutter`.",
+          "description": "BIND `grid/margin/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-grid-margin-tablet)"
           },
@@ -2730,7 +2735,7 @@
               "name": "ref/space/32"
             }
           },
-          "description": "Use for the page’s side margin on a desktop — the gap between the layout grid and the viewport edge. Bind it to the frame’s horizontal padding, not to the grid’s gutter, which is `grid/gutter`.",
+          "description": "BIND `grid/margin/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-grid-margin-desktop)"
           },
@@ -23762,7 +23767,7 @@
               "unit": "px"
             }
           },
-          "description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor.",
+          "description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor. BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-container-content)"
           },
@@ -23783,7 +23788,7 @@
               "name": "container/2xl"
             }
           },
-          "description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages; Bootstrap — whose ladder UX4G's is — engages `container-xxl` at 1400, so that is the anchor.",
+          "description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages, so the anchor is the estate's own `breakpoint/desktopXl` — 1600 since 2026-08-24. Bootstrap's `container-xxl` at 1400 was considered and rejected: at 1400 the 1440 design frame would take this cap, contradicting the 1200-at-desktop guidance. (This note said 1400 WAS the anchor until 2026-08-24; it never was — the token has read 1768 and now 1600.) BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-container-contentXl)"
           },
@@ -23804,7 +23809,7 @@
               "unit": "px"
             }
           },
-          "description": "The content cap at `breakpoint/desktopWide` (1920) and above — the third and last step of the page container (1200 -> 1320 -> 1440). Exists because two steps left a 2560-wide monitor rendering a 1320 column between 620px margins. Stops here rather than tracking the viewport: past ~1440 a 12-column grid costs more in eye travel than it returns in density, and the line lengths inside it stop being scannable. Consumed only through `--sa-container-page` in foundations/layout.css; never restate it in a component.",
+          "description": "The content cap at `breakpoint/desktopWide` (1920) and above — the third and last step of the page container (1200 -> 1320 -> 1440). Exists because two steps left a 2560-wide monitor rendering a 1320 column between 620px margins. Stops here rather than tracking the viewport: past ~1440 a 12-column grid costs more in eye travel than it returns in density, and the line lengths inside it stop being scannable. Consumed only through `--sa-container-page` in foundations/layout.css; never restate it in a component. BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-container-contentWide)"
           },
@@ -23977,6 +23982,112 @@
             "WEB": "var(--sa-stroke-4)"
           },
           "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Viewport",
+      "axis": "viewport",
+      "modes": [
+        "Mobile",
+        "Tablet",
+        "Laptop",
+        "Desktop",
+        "Desktop XL",
+        "Desktop Wide"
+      ],
+      "variables": [
+        {
+          "name": "container/page",
+          "path": "container/page",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mobile": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/content"
+            },
+            "Tablet": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/content"
+            },
+            "Laptop": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/content"
+            },
+            "Desktop": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/content"
+            },
+            "Desktop XL": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/contentXl"
+            },
+            "Desktop Wide": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/contentWide"
+            }
+          },
+          "description": "The RESOLVED page cap at a given window size — what `.sa-container` actually applies, and the one container token a page skeleton should bind. `content`/`contentXl`/`contentWide` are the three rungs; this is which rung is in force. It carries a mode per viewport, so a designer opening a frame in Desktop XL sees 1320 without having to know the media query that picks it. That was previously impossible: the CSS derived `--sa-container-page` in a media query, and a Figma variable cannot express a media query, so the cap was the one layout value the library could not represent at all. $value is the mobile-first base, which is `content` — the cap is 1200 everywhere below 1600.",
+          "codeSyntax": {
+            "WEB": "var(--sa-container-page)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "grid/margin/page",
+          "path": "grid/margin/page",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mobile": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/mobile"
+            },
+            "Tablet": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/tablet"
+            },
+            "Laptop": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/tablet"
+            },
+            "Desktop": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/tablet"
+            },
+            "Desktop XL": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/desktop"
+            },
+            "Desktop Wide": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/desktop"
+            }
+          },
+          "description": "The RESOLVED page margin at a given window size — the companion to `container/page`, and what `.sa-container` applies as its inline padding. `mobile`/`tablet`/`desktop` are the three rungs; this is which rung is in force. It steps with the CAP, not with the viewport anchors: a wider margin only buys breathing room while the container is still fluid, and once the cap binds it buys nothing and costs content. Stepping it at the desktop anchor did exactly that — content went 1152 -> 1136 crossing 1280 — so Laptop and Desktop hold the tablet rung and the 32px step waits for Desktop XL, where the cap widens too. $value is the mobile-first base.",
+          "codeSyntax": {
+            "WEB": "var(--sa-grid-margin-page)"
+          },
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"

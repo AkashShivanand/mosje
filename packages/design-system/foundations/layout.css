@@ -33,13 +33,17 @@
    Requires tokens.css.
    ========================================================================== */
 
-/* --sa-container-page is DERIVED, not a token: it selects between the two real
-   tokens (--sa-container-content / --sa-container-contentXl) at the desktop-XL
-   anchor. It exists because an inline style cannot carry a media query, and
-   SiteHeader sets its cap through one. Do not add it to the token source. */
-:root {
-  --sa-container-page: var(--sa-container-content);
-}
+/* --sa-container-page and --sa-grid-margin-page ARE tokens now (container/page and
+   grid/margin/page), and they carry a mode per viewport in the Figma Viewport
+   collection. tokens.css emits the mobile-first BASE of each; what a media query
+   cannot be expressed in a variable, so the steps below re-point them — the CSS
+   media query and the Figma mode are the two halves of one ladder.
+
+   This block used to say "DERIVED, not a token: do not add it to the token
+   source." That was true while the cap could not be modelled in Figma at all,
+   which is exactly the gap the Viewport collection closed: a designer opening a
+   1600-wide frame could not see that the cap is 1320 there. Re-point the steps,
+   never the base — the base belongs to the token. */
 
 @media (min-width: 1600px) {
   :root {
@@ -50,6 +54,20 @@
 @media (min-width: 1920px) {
   :root {
     --sa-container-page: var(--sa-container-contentWide);
+  }
+}
+
+/* The margin ladder, kept in the same shape as the cap's so the two can be read
+   together. Mobile-first base is `grid/margin/mobile`, from tokens.css. */
+@media (min-width: 768px) {
+  :root {
+    --sa-grid-margin-page: var(--sa-grid-margin-tablet);
+  }
+}
+
+@media (min-width: 1600px) {
+  :root {
+    --sa-grid-margin-page: var(--sa-grid-margin-desktop);
   }
 }
 
@@ -66,28 +84,17 @@
   width: 100%;
   max-width: var(--sa-container-page);
   margin-inline: auto;
-  padding-inline: var(--sa-grid-margin-mobile);
-}
 
-@media (min-width: 768px) {
-  .sa-container {
-    padding-inline: var(--sa-grid-margin-tablet);
-  }
-}
-
-/* The 32px margin steps at 1600, NOT at 1280 — it moves with the CAP, not with
-   the desktop anchor. A wider margin only buys breathing room while the
-   container is still fluid; once the cap binds it buys nothing and costs
-   content. Stepping it at 1280 did exactly that: the cap was already at 1200,
-   so content went 1152 -> 1136 as the viewport grew past 1280. Content now
-   rises monotonically across the whole ladder — 1152 (desktop) -> 1256
-   (desktopXl) -> 1376 (desktopWide). The remaining step at 768 is deliberate
-   and different: the container is fluid there, so the extra margin is real
-   breathing room rather than a tax on a fixed column. */
-@media (min-width: 1600px) {
-  .sa-container {
-    padding-inline: var(--sa-grid-margin-desktop);
-  }
+  /* One value, resolved above, instead of three rules re-deriving the ladder.
+     The 32px rung steps at 1600 and NOT at the desktop anchor, because the
+     margin moves with the CAP: a wider margin buys breathing room only while the
+     container is still fluid, and once the cap binds it buys nothing and costs
+     content. Stepping it at 1280 did exactly that — the cap was already 1200, so
+     content went 1152 -> 1136 as the viewport grew past it. Content now rises
+     monotonically: 1152 -> 1256 -> 1376. The step at 768 is deliberate and
+     different — the container is fluid there, so the margin is real breathing
+     room rather than a tax on a fixed column. */
+  padding-inline: var(--sa-grid-margin-page);
 }
 
 /* ----------------------------------------------------------------------------
@@ -135,21 +142,15 @@
 
 @media (min-width: 1280px) {
   /* The gutter absorbs the rail from here up, so the container goes back to a
-     symmetric margin rather than staying permanently lopsided. SYMMETRIC means
-     matching whatever `padding-inline` currently is, which is the tablet margin
-     until 1600 — this selector is more specific than the plain `.sa-container`
-     rule, so it wins on the end side and would otherwise leave the website
-     24px on the left against 32px on the right through the whole desktop
-     range. */
+     symmetric margin rather than staying permanently lopsided. SYMMETRIC is now
+     literally the same variable the other side reads, so this cannot drift out
+     of step with the ladder again — it briefly did, when the 32px rung moved to
+     1600 and this rule stayed on the desktop margin, leaving the website 24px on
+     the left against 32px on the right across the whole desktop range. This
+     selector is more specific than the plain `.sa-container` rule, so it wins on
+     the end side and has to be right. */
   [data-site="website"] .sa-container {
-    padding-inline-end: var(--sa-grid-margin-tablet);
-  }
-}
-
-@media (min-width: 1600px) {
-  /* Follows the symmetric margin up to its 32px step. */
-  [data-site="website"] .sa-container {
-    padding-inline-end: var(--sa-grid-margin-desktop);
+    padding-inline-end: var(--sa-grid-margin-page);
   }
 }
 

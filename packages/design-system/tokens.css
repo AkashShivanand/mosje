@@ -869,11 +869,13 @@
   --sa-container-contentWide: 1440px;
   --sa-container-narrow: 720px;
   --sa-container-wide: 1200px;
+  --sa-container-page: 1200px;
   --sa-grid-columns: 12;
   --sa-grid-gutter: 24px;
   --sa-grid-margin-mobile: 16px;
   --sa-grid-margin-tablet: 24px;
   --sa-grid-margin-desktop: 32px;
+  --sa-grid-margin-page: 16px;
   --sa-layout-bar-height: 46px;
   --sa-layout-chatbot-width: 400px;
   --sa-layout-chatbot-height: 719px;
