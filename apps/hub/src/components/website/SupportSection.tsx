@@ -3,7 +3,7 @@ import { Icon, buttonClasses } from "@mosje/design-system";
 
 export function SupportSection() {
   return (
-    <section className="bg-primary/5 py-12 border-y border-border" aria-labelledby="support-heading">
+    <section className="bg-primary-50 py-12 border-y border-border" aria-labelledby="support-heading">
       <div className="sa-container flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
         <div className="max-w-2xl">
           <h2

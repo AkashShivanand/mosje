@@ -471,7 +471,7 @@ export default function EutthanAdminReport() {
     <div className="min-h-screen bg-surface-muted">
       {/* ── Sticky header ── */}
       <header className="sticky top-0 z-20 border-b border-border bg-surface/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1280px] items-center gap-4 px-6 py-3">
+        <div className="sa-container flex items-center gap-4 py-3">
           <Link
             href="/reports"
             className="flex items-center gap-1.5 text-xs text-ink-muted hover:text-ink transition"
@@ -528,7 +528,7 @@ export default function EutthanAdminReport() {
         <>
           {/* Sticky filter bar */}
           <div className="sticky top-[49px] z-10 border-b border-border bg-white/95 backdrop-blur">
-            <div className="mx-auto max-w-[1280px] px-6 py-3 space-y-2">
+            <div className="sa-container py-3 space-y-2">
               <div className="relative w-full max-w-md">
                 <Icon name="search" size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
                 <input
@@ -600,7 +600,7 @@ export default function EutthanAdminReport() {
 
           {/* Summary strip */}
           <div className="border-b border-border bg-surface">
-            <div className="mx-auto flex max-w-[1280px] items-center gap-6 px-6 py-4">
+            <div className="sa-container flex items-center gap-6 py-4">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-muted mb-0.5">Portal</p>
                 <p className="text-sm font-bold text-ink">{audit.portal}</p>
@@ -625,7 +625,7 @@ export default function EutthanAdminReport() {
           </div>
 
           {/* Findings */}
-          <main className="mx-auto max-w-[1280px] px-6 py-8">
+          <main className="sa-container py-8">
             {filteredScreens.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 text-center">
                 <Icon name="search" size={40} className="text-ink-muted/30 mb-4" />
@@ -651,7 +651,7 @@ export default function EutthanAdminReport() {
       {tab === "suggestions" && (
         <>
           <div className="border-b border-border bg-surface">
-            <div className="mx-auto flex max-w-[1280px] items-center gap-6 px-6 py-4">
+            <div className="sa-container flex items-center gap-6 py-4">
               <div>
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-muted mb-0.5">Portal</p>
                 <p className="text-sm font-bold text-ink">{audit.portal}</p>
@@ -674,7 +674,7 @@ export default function EutthanAdminReport() {
             </div>
           </div>
 
-          <main className="mx-auto max-w-[1280px] px-6 py-8 space-y-10">
+          <main className="sa-container py-8 space-y-10">
             {sugCategories.map((cat) => (
               <section key={cat}>
                 <h2 className="mb-4 text-base font-bold text-ink border-b border-border pb-2">{cat}</h2>
