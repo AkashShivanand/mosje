@@ -127,9 +127,9 @@ export default function ChatbotPage(): React.JSX.Element {
           footer. The log is the only region allowed to grow.
         </p>
         <ul style={listStyle}>
-          <li><strong>Header:</strong> the mascot at 40px, the bilingual title block, then expand and minimise as 32px targets.</li>
-          <li><strong>Log:</strong> bot turns carry an avatar, user turns do not. Bubbles cap at 67% width, and the squared corner points at the edge the speaker came from.</li>
-          <li><strong>Footer:</strong> a pill composer, the honest note, and End chat as a text link in error ink.</li>
+          <li><strong>Header:</strong> the mascot at 40px, the bilingual title block, then expand (<code>open_in_full</code>) and minimise (<code>close</code>) as 32px targets. All four marks are Material Symbols Rounded glyphs at 20 / 24 / 16 — none is a hand-drawn path.</li>
+          <li><strong>Log:</strong> bot turns carry an avatar, user turns do not. Bubbles cap at 67% width, and the squared corner points at the edge the speaker came from. Suggestions wrap and pack <em>right</em>, on the user&apos;s side — each one is a sentence they are about to say, and pressing it puts those words in a user bubble.</li>
+          <li><strong>Footer:</strong> a pill composer, the honest note, and End chat as a <em>bordered button</em> sharing the note&apos;s row, hard right. An underlined word reads as a link — something that navigates — and this is the control that ends the conversation and clears the transcript.</li>
         </ul>
         <Playground
           code={`<Chatbot
@@ -242,11 +242,17 @@ export default function ChatbotPage(): React.JSX.Element {
           used. The five frames answer &quot;what does it look like on a page, growing out of the
           corner?&quot; — which an instance switching variants in place cannot show. Keep both.
         </Callout>
-        <Callout type="info" title="Why the loops live on a separate frame">
-          Figma refuses keyframes on instance sublayers. The typing wave, the float and the seal are
-          therefore keyframed on detached specimens in <em>06 · Motion specimen</em>, beside the
-          flow rather than inside it. Hover and press are not prototyped at all: representing them
-          would mean duplicating every frame, and they are already fully specified above.
+        <Callout type="info" title="The loops live on the masters, not on a slide">
+          Figma refuses keyframes on an <em>instance</em> sublayer, but a <em>main</em> component
+          accepts them — so the typing wave is keyframed on <code>State=Typing</code> and the float
+          on <code>Chatbot Mascot</code>, and an instance dropped in any frame carries its own
+          motion. They used to sit on a standalone specimen frame, which gave all three loops that
+          frame&apos;s single 10s duration: the 1200ms wave pulsed once and then held still for 9.3
+          seconds. A track plays inside the <strong>host</strong> frame&apos;s timeline, so reuse
+          the component in a frame whose timeline is a whole multiple of its cycle — the
+          documentation frame runs 30s, which is 25 waves, 6 floats and 3 turns of the seal.
+          Hover and press are not prototyped at all: representing them would mean duplicating every
+          frame, and they are already fully specified above.
         </Callout>
       </section>
 
@@ -260,7 +266,7 @@ export default function ChatbotPage(): React.JSX.Element {
         <div style={{ marginTop: "var(--sa-padding-20)" }}>
           <A11yChecklist
             items={[
-              { criterion: "Target sizes", level: "AA", description: "The 84px launcher and 32px header controls both clear the 24px minimum (2.5.8). End chat measures 28px tall — its padding used to be zeroed by a duplicate rule further down the stylesheet, which rendered it 16px while this page claimed otherwise." },
+              { criterion: "Target sizes", level: "AA", description: "The 84px launcher and 32px header controls both clear the 24px minimum (2.5.8). End chat is an 83 x 34 bordered button on the note's row, so the only exit sits in one fixed place whatever the note says." },
               { criterion: "Nothing loops at rest", level: "A", description: "The seal no longer turns by itself at all — only a caller passing spin starts it — so the widget presents nothing for a Pause/Stop/Hide control to pause (2.2.2). The mascot's 2.5px float is the one continuous movement, and it collapses under prefers-reduced-motion." },
               { criterion: "Contrast on every surface", level: "AA", description: "End chat uses the system error ink at 9.10:1 rather than the lighter red the reference used." },
               { criterion: "Live region on the log", level: "A", description: "New turns are announced. On minimise, focus returns to the launcher rather than the top of the page (4.1.2)." },
@@ -278,7 +284,7 @@ export default function ChatbotPage(): React.JSX.Element {
             { name: "open", type: "boolean", description: "Controlled open state. Omit to let the widget own it." },
             { name: "defaultOpen", type: "boolean", default: "false", description: "Initial open state when uncontrolled." },
             { name: "onOpenChange", type: "(open: boolean) => void", description: "Called when the widget opens or closes." },
-            { name: "title", type: "string", default: '"Chat with us"', description: "Panel header. An invitation, not the assistant's name." },
+            { name: "title", type: "string", default: '"Samajik Sahayak"', description: "Panel header. The assistant's own name — the seal on the launcher has it written round the ring, so the title says the same thing." },
             { name: "subtitle", type: "string", description: "Devanagari name under the title. Pass \"\" to suppress it." },
             { name: "greeting", type: "string", description: "The bot's opening line, typed out on first open." },
             { name: "quickReplies", type: "readonly ChatbotQuickReply[]", description: "Suggestions offered under the greeting." },
@@ -291,7 +297,7 @@ export default function ChatbotPage(): React.JSX.Element {
             { name: "note", type: "string", description: "The honest statement of what this assistant is not. Never remove it." },
             { name: "endChatLabel", type: "string", default: '"End chat"', description: "Label for the footer end-chat action." },
             { name: "onEndChat", type: "() => void", description: "Called after the transcript is cleared." },
-            { name: "launcherLabel", type: "string", default: '"Chat with us"', description: "Accessible name of the launcher." },
+            { name: "launcherLabel", type: "string", default: '"Samajik Sahayak, chat assistant"', description: "Accessible name of the launcher." },
             { name: "typingDelayMs", type: "number", default: "900", description: "How long the typing indicator runs before a bot message lands." },
             { name: "placement", type: '"fixed" | "inline"', default: '"fixed"', description: "fixed pins it to the corner rail; inline drops the positioning so a docs page or story can place it." },
           ]}

@@ -2478,6 +2478,34 @@
         "$description": "The government accessibility bar. Genuinely fixed: it carries one row of controls at a known size, in every surface and every locale."
       }
     },
+    "chatbot": {
+      "$description": "The assistant's fixed geometry. The panel is deliberately NOT fluid: it is a viewport-level overlay on top of somebody else's page, so a width that responded to the page would move under the reader as they scrolled a different column. These five were authored in the Figma library first and had no counterpart here, which meant the master was bound to variables the stylesheet could not name.",
+      "width": {
+        "$type": "dimension",
+        "$value": "400px",
+        "$description": "Panel width at rest. Wide enough for a 246px bubble to hold a readable measure and still leave the column its gutters; narrow enough not to cover the page it is helping with."
+      },
+      "height": {
+        "$type": "dimension",
+        "$value": "719px",
+        "$description": "Panel height at rest. A ceiling, not a floor: the panel caps against the shared corner rail via `100dvh - rail - launcher - gaps`, so on a short viewport it is shorter than this."
+      },
+      "launcher": {
+        "$type": "dimension",
+        "$value": "84px",
+        "$description": "Launcher diameter, and the closed widget's whole footprint. Well past the 24px WCAG 2.2 (2.5.8) target minimum, because it is the one control on the page a citizen may be hunting for."
+      },
+      "bubbleMax": {
+        "$type": "dimension",
+        "$value": "246px",
+        "$description": "Message bubble cap — 67% of the 368px content column, so the transcript never reads as a wall of text. CSS expresses it as the ratio rather than this number, so the cap follows the column if the panel width ever changes; this token is that ratio resolved at the default width, for Figma to bind."
+      },
+      "typingDot": {
+        "$type": "dimension",
+        "$value": "5px",
+        "$description": "Diameter of one dot in the typing indicator. Four of them, 110ms apart. Was recorded as 6 in the library while both the master and the stylesheet drew 5 — the variable was carried but never bound."
+      }
+    },
     "flag": {
       "width": {
         "$value": "33px",

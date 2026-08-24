@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { useCornerRailOffset } from "../../foundations/corner-rail";
+import { Icon } from "../utilities/icon";
 import { ChatbotMascot } from "./chatbot-mascot";
 import "./chatbot.css";
 
@@ -39,11 +40,17 @@ export interface ChatbotProps
   defaultOpen?: boolean;
   onOpenChange?: (open: boolean) => void;
 
-  /** Panel header. @default "Chat with us" */
+  /**
+   * Panel header. Defaults to the assistant's own name, which is what the seal
+   * on the launcher says — see CHATBOT_NAME below for why it is not an
+   * invitation like "Chat with us".
+   *
+   * @default "Samajik Sahayak"
+   */
   title?: string;
   /** Devanagari name under the title. Pass "" to suppress it. */
   subtitle?: string;
-  /** Label for the (footer, non-destructive-looking) end-chat action. @default "End chat" */
+  /** Label for the footer's end-chat button. @default "End chat" */
   endChatLabel?: string;
   /**
    * The honest statement of what this assistant is not. Shown under the
@@ -68,7 +75,7 @@ export interface ChatbotProps
    * the widget falls back to re-offering the suggestions.
    */
   onSubmit?: (text: string) => ChatbotReply | Promise<ChatbotReply | void> | void;
-  /** Accessible name of the launcher. @default "Chat with us" */
+  /** Accessible name of the launcher. @default "Samajik Sahayak, chat assistant" */
   launcherLabel?: string;
 
   /** The bot's opening line, typed out on first open. */
@@ -118,7 +125,7 @@ export interface ChatbotProps
  * and the first alone settles it:
  *
  *  1. The mark this component renders has the name written ON it — the seal
- *     reads "Samajik Sahayak ~ सामाजिक सहायक", twice around the ring. A widget
+ *     reads "सामाजिक सहायक · Samajik Sahayak", twice around the ring. A widget
  *     that introduces itself as something other than the badge it is wearing
  *     is not a personality, it is a defect.
  *  2. The live assistant on dosje.gov.in is called Samajik Sahayak. A citizen
@@ -165,9 +172,11 @@ const nextId = () => `m${++seq}`;
  *   and nothing else. The scripted sequence is skipped entirely, because two
  *   things writing the transcript is how a chat surface starts double-posting.
  *
- * Motion is authored, not imported: the Figma node carries no keyframes
- * (`get_motion_context` returns an empty set), so every timing here is a
- * decision — documented, with its reasoning, at the top of `chatbot.css`.
+ * Motion was authored here first and pushed to Figma second: every timing is a
+ * decision, documented with its reasoning at the top of `chatbot.css`. The three
+ * loops now exist on both sides — the typing wave is keyframed on the Figma
+ * master's `State=Typing`, the mascot float on `Chatbot Mascot` — so an instance
+ * dropped into any frame carries the same motion this stylesheet describes.
  *
  * Accessibility: the panel is a **non-modal** dialog — it never traps focus and
  * never blocks the page behind it, because a support widget that hostages the
@@ -504,14 +513,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               aria-pressed={expanded}
               onClick={() => setExpanded((v) => !v)}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                   strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                {expanded ? (
-                  <path d="M9 4v5H4M15 20v-5h5" />
-                ) : (
-                  <path d="M14 4h6v6M10 20H4v-6" />
-                )}
-              </svg>
+              <Icon name={expanded ? "close_fullscreen" : "open_in_full"} size={20} />
             </button>
             <button
               type="button"
@@ -522,10 +524,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
                 launcherRef.current?.focus();
               }}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                   strokeLinecap="round" aria-hidden="true">
-                <path d="M6 6l12 12M18 6L6 18" />
-              </svg>
+              <Icon name="close" size={20} />
             </button>
           </header>
 
@@ -630,37 +629,40 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
                   aria-label="Send"
                   disabled={draft.trim().length === 0}
                 >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                       strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M4 12l16-8-6 16-2.5-6.5L4 12z" />
-                  </svg>
+                  <Icon name="send" size={16} />
                 </button>
               </form>
             )}
 
-            <p className="ds-chatbot__note">
-              {note}
-              {/*
-                Shown when there is a conversation to end AND something can end
-                it. Uncontrolled, that is always us. Controlled, the transcript
-                is not ours to clear — so the button appears only where the
-                consumer passed `onEndChat`, which is how it says it will.
+            <div className="ds-chatbot__footer-row">
+              <p className="ds-chatbot__note">{note}</p>
+            {/*
+              END CHAT IS A SIBLING OF THE NOTE, NOT A WORD INSIDE IT. It used to
+              live in the paragraph, separated by a space, which cost two things:
+              the control stretched the note's last line box and broke the
+              footer's rhythm, and — worse — the only way out of the conversation
+              moved horizontally with the text wrap, so its position depended on
+              how long the disclaimer happened to be. A control people reach for
+              should be somewhere they can learn. It now shares a row with the
+              note and sits hard right, which is a fixed place.
 
-                This used to read `!controlledTranscript`, which silently took
-                the only way out of a conversation away from every controlled
-                consumer. A widget that drops an affordance because of HOW it is
-                driven, rather than whether the affordance can work, is making a
-                decision that is not its to make.
-              */}
+              Shown when there is a conversation to end AND something can end
+              it. Uncontrolled, that is always us. Controlled, the transcript
+              is not ours to clear — so the button appears only where the
+              consumer passed `onEndChat`, which is how it says it will.
+
+              This used to read `!controlledTranscript`, which silently took
+              the only way out of a conversation away from every controlled
+              consumer. A widget that drops an affordance because of HOW it is
+              driven, rather than whether the affordance can work, is making a
+              decision that is not its to make.
+            */}
               {canEndChat && messages.length > 0 && (
-                <>
-                  {" "}
-                  <button type="button" className="ds-chatbot__end" onClick={handleEndChat}>
-                    {endChatLabel}
-                  </button>
-                </>
+                <button type="button" className="ds-chatbot__end" onClick={handleEndChat}>
+                  {endChatLabel}
+                </button>
               )}
-            </p>
+            </div>
           </footer>
         </div>
       )}
@@ -678,10 +680,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
       >
         <ChatbotMascot className="ds-chatbot__mark" size={84} ring />
         <span className="ds-chatbot__close" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
-               strokeLinecap="round" focusable="false">
-            <path d="M6 6l12 12M18 6L6 18" />
-          </svg>
+          <Icon name="close" size={24} />
         </span>
         {unread > 0 && <span className="ds-chatbot__nudge" aria-hidden="true" />}
       </button>

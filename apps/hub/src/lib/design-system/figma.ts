@@ -45,7 +45,11 @@ export const FIGMA_NODES = {
   chatbotMascot: "55830:731", // "2 · Chatbot Mascot" section on the same page
   chatbotPrototype: "55846:731", // "01 · Closed", the flow's starting point in
   //                          "3 · Prototype" (55846:730). Opens straight into Present.
-  chatbotMotion: "55852:893", // "06 · Motion specimen" — the three keyframed loops
+  chatbotMotion: "55940:872", // "09 Motion specimen" — the three loops, running on live
+  //                          instances INSIDE the documentation frame. It used to be a
+  //                          standalone frame beside the prototype flow (55852:893), which
+  //                          gave all three loops one borrowed 10s duration; the loops now
+  //                          live on the masters and the section demonstrates them.
   loader: "2141:323879",
   avatars: "2141:296702",
   emptyState: "2141:296719",

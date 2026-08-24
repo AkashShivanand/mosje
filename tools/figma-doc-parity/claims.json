@@ -201,6 +201,127 @@
           "value": "2.5.8"
         }
       ]
+    },
+    {
+      "node": "55828:742",
+      "where": "Chatbot — Documentation › 01 Identity › THE HEADER",
+      "figma": "Samajik Sahayak",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "Samajik Sahayak"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "export const CHATBOT_NAME = \"Samajik Sahayak\"",
+          "hint": "The seal has the name written round the ring, so the header says the same thing."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "title = CHATBOT_NAME",
+          "hint": "The panel title defaults to the name, not to an invitation."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "@default \"Chat with us\"",
+          "absent": true,
+          "hint": "This exact string sat in two JSDoc @default tags, in the props table on the web docs, in the Figma master and in this Identity panel long after the implementation moved on. Four surfaces agreed with each other and disagreed with the code."
+        }
+      ]
+    },
+    {
+      "node": "55828:762",
+      "where": "Chatbot — Documentation › 02 Anatomy › LOG",
+      "figma": "Bot turns carry an avatar; user turns do not. Bubbles cap at 67% so the column never reads as a wall of text. Suggestions wrap and pack RIGHT, on the user’s side — each is a sentence they are about to say.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "pack RIGHT"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "\\.ds-chatbot__replies \\{[^}]*justify-content: flex-end",
+          "flags": "s",
+          "hint": "Suggestions sit on the user's side because pressing one becomes a user bubble, which lands hard right."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "\\.ds-chatbot__reply-item \\{[^}]*margin: 0",
+          "flags": "s",
+          "hint": "Without this the docs page's own `.ds-prose li + li` margin offsets every pill after the first by 8px."
+        }
+      ]
+    },
+    {
+      "node": "55828:766",
+      "where": "Chatbot — Documentation › 02 Anatomy › FOOTER",
+      "figma": "A pill composer, the honest note, and End chat as a BORDERED BUTTON sharing the note’s row, hard right. An underlined word reads as a link — something that navigates — and this is the control that ends the conversation.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "BORDERED BUTTON"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "<div className=\"ds-chatbot__footer-row\">",
+          "hint": "The note and the button share one row; the button is not a word inside the paragraph."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "\\.ds-chatbot__end \\{[^}]*border: 1px solid var\\(--sa-border-status-error-base\\)",
+          "flags": "s",
+          "hint": "A bounded target is what says 'button'. Without the border this reads as a link, which is what it looked like before."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "\\.ds-chatbot__end \\{[^}]*text-decoration: underline",
+          "flags": "s",
+          "absent": true,
+          "hint": "An underline says 'this navigates'. It ends the conversation and clears the transcript."
+        }
+      ]
+    },
+    {
+      "node": "55829:804",
+      "where": "Chatbot — Documentation › 07 Tokens › GEOMETRY",
+      "figma": "width 400, height 719, launcher 84, bubbleMax 246, typingDot 5. Bound to the frames here and resolved by chatbot.css there, so neither side can move alone.",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-layout-chatbot-width"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-layout-chatbot-height"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-layout-chatbot-launcher"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-layout-chatbot-bubbleMax"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-layout-chatbot-typingDot",
+          "hint": "The library carried 6 while the master and the stylesheet both drew 5, because nothing was bound to it."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "--ds-chatbot-width: var\\(--sa-layout-chatbot-width\\)",
+          "hint": "The stylesheet must RESOLVE these, not restate the numbers."
+        }
+      ]
     }
   ],
   "tokenTables": [

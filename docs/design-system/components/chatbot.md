@@ -163,7 +163,7 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
 | 2 | **The user bubble was hard-coded navy.** `--sa-color-brand-navy` is a literal, not a themed slot, so the bubble painted `#003366` in every brand mode — including the default blue one, where everything around it is `#0373DF`. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` + its `on/` pair. White measures 6.36:1 in blue; navy mode resolves to `#003366` and renders byte-identical, so only the mode that was wrong changed |
 | 3 | **Panel title and subtitle were the same ink**, leaving the header with no hierarchy. | **Fixed 2026-08-23** — the title takes `text/default`, the subtitle keeps `text/muted` |
 | 4 | **Raw pixels in the component CSS.** `.ds-chatbot__icon-btn` was `32px` with an `18px` glyph, and 18 is not on the icon scale at all. | **Fixed 2026-08-23** — `icon/size/32` and `icon/size/20` |
-| 5 | **The code's seal is a flattened outline that bakes in a `~` separator** where Figma uses `·`, and it repeats the wordmark twice where Figma repeats it once. `chatbot-assets.ts` states plainly that the 40,888-character path must not be hand-edited — it is re-exported. Now that the master lives in SAMAVESH, that is the node to re-export from (`55825:701`). | **Open — needs a Figma-UI export**: copy the seal as SVG from the master and replace `CHATBOT_RING_PATH` |
+| 5 | ~~**The code's seal is a flattened outline that bakes in a `~` separator**~~ where Figma uses `·`, and it repeats the wordmark twice where Figma repeats it once. `chatbot-assets.ts` states plainly that the 40,888-character path must not be hand-edited — it is re-exported. Now that the master lives in SAMAVESH, that is the node to re-export from (`55825:701`). | **Resolved 2026-08-23** — re-exported from `55825:701` by cloning the TEXT_PATH, `figma.flatten()`, SVG export, merging the 56 `d` attributes at 2dp. The viewBox comes from the *flattened* node's own bounds, not Figma's SVG header, which rounds to integers and stretches the artwork by a fraction of a percent |
 | 6 | **The typing indicator had no bubble in code** — a bare `<span>` of four 5px dots, so it read as the whole panel loading rather than one turn arriving. | **Fixed 2026-08-23** — a hugging pill on the bot bubble's own tail geometry, so the reply grows out of the indicator instead of appearing beside it |
 | 7 | **The seal turned where nobody could see it.** It rotated on `[data-thinking]`, but the widget only thinks while open, and while open the launcher has already crossfaded the mark to the close ×. | **Resolved 2026-08-23** — trigger removed. Moving it to the 40px avatar was rejected on legibility (the wordmark is a grey smudge at that size). `--spin` remains for documentation and specimens, and is now the only thing that starts it. `data-thinking` stays as a state hook for consumers and tests |
 | 8 | **The send button had BOTH defects at once** — hard-coded navy and a raw `32px` box. Found while fixing the others; not in the original audit. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` and `icon/size/32`, matching what the Figma master already bound |
@@ -174,18 +174,25 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
 | 13 | **The Figma mascot was drawn far too small.** `chatbot.css` sizes the figure at 71.5% of the mark without the ring and 66% with it; Figma had 54.8% and 39.3%. | **Fixed 2026-08-23** — both derived from the CSS percentages and the image's own crop aspect |
 | 14 | **The bottom half of the seal reads inverted.** That is inherent to a single circular path and the shipped component does the same, so Figma matches it. A seal that reads upright top AND bottom needs two arcs with the lower one reversed. | Recorded — a design decision, not a defect |
 
-## Figma ↔ code parity — measured 2026-08-23
+## Figma ↔ code parity — measured 2026-08-23, re-measured after the parity pass
 
 Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Aligned unless noted.
 
 | Part | Figma | Code | |
 |---|---|---|---|
-| Panel | 400×719, `bg/neutral/base`, `shape/16`, `elevation/toast`, 1px `border/neutral/subtle` | identical | ✅ |
+| Panel | 400×719, bound to `layout/chatbot/width` · `height` | resolves the same two tokens | ✅ |
+| Geometry tokens | `layout/chatbot/*` — 5 variables, bound on the master | `--sa-layout-chatbot-*`, resolved by `chatbot.css` | **reconciled** — the family existed only in the library until 2026-08-24 |
 | Header | pad `padding/16`, gap `inline/12`, 1px bottom border | identical | ✅ |
 | Header mark | 40 | `--ds-chatbot-mascot-size: 40px` | ✅ |
 | Title | `Title/title-2` 16 Medium, `text/neutral/base` | `title-2`, weight 500, `text-default` | ✅ |
+| Title text | `Samajik Sahayak` | `title = CHATBOT_NAME` | **fixed in Figma** (was `Chat with us`, which two JSDoc `@default` tags and the web props table also still claimed) |
 | Subtitle | `Body/body-3` 12, `text/neutral/subtle` | `body-3`, `text-muted` | ✅ |
-| Icon buttons | 32, `shape/8`, glyph 20, `icon/neutral/subtle` | `icon-size-32`, `shape/8`, `icon-size-20`, `text-muted` | ✅ |
+| Icon buttons | 32, `shape/8`, glyph 20, `icon/neutral/subtle` | identical | ✅ |
+| Icon glyphs | Material Symbols Rounded Light — `open_in_full`, `close`, `send` | were four hand-drawn `<svg>` paths, which `component-authoring.md` §2 forbids | **fixed in code** |
+| Typing dot | 5, bound to `layout/chatbot/typingDot` | `var(--sa-layout-chatbot-typingDot)` | **fixed in both** — the variable said 6 and was bound to nothing |
+| Typing wave | keyframed on `State=Typing`, 1.2s × 25 over a 30s timeline | `1200ms infinite`, 110ms stagger | ✅ |
+| Mascot float | keyframed on `Chatbot Mascot`, 5s × 6 | `5s ease-in-out infinite`, 2.5px | ✅ |
+| Seal turn | a declared specimen in §09, never on the master | `--spin` only; nothing in the lifecycle starts it | ✅ |
 | Log | pad `padding/16`, gap `stack/8`, bottom-anchored | identical | ✅ |
 | Turn | **row**, gap `inline/8`, top-aligned | was a **column** with a 37px avatar above the bubble | **fixed in code** |
 | Avatar | 40 | was **37** — on no scale, and 40 sits beside it in the header | **fixed in code** |
@@ -193,19 +200,25 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | User bubble | `bg/brand/primary/bolder` + `on/…` | identical | ✅ |
 | Bubble cap | 246 of 368 = 67% | `max-width: 67%` | ✅ |
 | Quick reply | `bg/brand/primary/base`, pad `padding/8`×`padding/12`, `shape/8`, `Body/body-2`, `text/neutral/subtle` | identical | ✅ |
-| Replies | gap `stack/8`, wrap | identical | ✅ |
+| Quick reply border | 1px OUTSIDE stroke on its own fill colour | `border: 1px solid transparent`, so hover colours it without resizing | ✅ — renders 38; Figma *reports* 36, because an outside stroke is excluded from a node's measured size |
+| Quick reply copy | Find a scheme · Check application status · I'm not receiving OTP | identical | **fixed in Figma** (was developer-portal copy: API documentation, register as a developer) |
+| Replies | wrap, packed **right**, gap `stack/8`×`inline/8` | identical | **fixed in both** — Figma stacked one-per-row, code packed left |
+| Reply item margin | n/a | `margin: 0`, so an ambient `li + li` prose rule cannot offset the row | **fixed in code** |
 | Footer | pad `12/16/16/16`, gap `stack/8`, 1px top border | identical | ✅ |
 | Composer | pad `4/4/4/12`, gap `inline/8`, `shape/full`, 1px border | identical | ✅ |
 | Composer text | `Body/body-2` 14 | `body-2` | ✅ |
-| Send | 32, `bg/brand/primary/bolder`, `shape/full`, glyph **16** | `icon-size-32`, glyph `icon-size-16` | **fixed in Figma** (was 20) |
+| Send | 32, `bg/brand/primary/bolder`, `shape/full`, glyph **16** | identical | ✅ |
+| Send at rest | drawn at 35% — the composer is empty in every variant | `:disabled { opacity: 0.35 }` | **fixed in Figma** (was drawn enabled) |
 | Note | `Body/body-3` 12, `text/neutral/subtle` | `body-3`, `text-muted` | ✅ |
-| End chat | `Label/label-1` 14, underlined, `text/status/error/base` | identical | **fixed in Figma** (was `body-3` 12) |
-| End chat target | 20px tall — a Figma TEXT node cannot carry padding | 28px (`padding/4`×`padding/8`) | **open, cosmetic** — needs a HUG wrapper to show the real hit area |
+| Note text | "…points you to the right portal. It cannot decide or change an application." | identical | **fixed in Figma** |
+| End chat | `Label/label-1` 14, `text/status/error/base`, 1px `border/status/error/base`, `shape/8`, pad `padding/6`×`padding/12` | identical | **redesigned in both** — it was an underlined word, which reads as a link |
+| End chat target | 83×32 reported, 83×34 rendered — the 1px border is an OUTSIDE stroke | 83×34 | ✅ — the TEXT node now sits inside a HUG button frame, so the hit area is real geometry rather than a claim |
+| End chat position | same row as the note, hard right, bottom-aligned | identical (`.ds-chatbot__footer-row`, `align-items: flex-end`) | ✅ |
 | Launcher | 84, `bg/neutral/base`, `shape/full`, `elevation/toast` | identical | ✅ |
 | Close disc | full-bleed, `bg/brand/primary/bolder`, glyph 24 | full-bleed, glyph 30% of 84 = 25.2 | ✅ within a pixel |
 | Mascot disc | `bg/brand/primary/bolder` | identical | ✅ |
-| Mascot figure | 60 (Ring=Off) · 56 (Ring=On) of 84 | 71.5% = 60.06 · 66% = 55.44 | ✅ rounded to whole pixels |
-| Seal | live text on a path, `·` separator, doubled | flattened outline, `~` separator, doubled | **open** — see finding 5 |
+| Mascot figure | 60 (Ring=Off) · 56 (Ring=On) of 84 | 71.43% = 60 · 66.67% = 56 | ✅ derived from the master, not eyeballed |
+| Seal | live text on a path, `·` separator, doubled, Noto Sans Medium 6.5 on a 68px circle | flattened outline of that exact node, viewBox `0 0 77.19 76.07` | **resolved** — re-exported from `55825:701`; ring insets recomputed from the same measurement |
 
 ## The strategic question, unchanged
 
