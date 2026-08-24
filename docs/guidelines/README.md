@@ -93,6 +93,7 @@ Recorded so nobody "fixes" them by accident, and so an auditor sees a decision r
 | 3 | UX4G ships `ux4g-web-components` | Conformance measured against a token contract, package not installed | 7.6 MB stylesheet + DOM-rewriting runtime, incompatible with React ownership. See `docs/ux4g/UX4G-Code-Readiness-Audit.md`. |
 | 4 | UX4G tokens are prefixed `--ux4g-*` | Canonical tokens are `--sa-*` (SAMAVESH) | One namespace per estate. A `--ux4g-*` parity layer is generated for conformance measurement, not for authoring. |
 | 5 | DBIM's own brand mode exists in code | `dbim` brand mode is **code-only** and never pushed to Figma | Standing instruction, 2026-08-11. See `CLAUDE.md` → "Brand modes". |
+| 6 | UX4G gives two content widths — 1200px desktop, 1320px desktop-XL — and publishes **no breakpoints** | A **three-step** container — 1200 / 1320 / **1440** — on a six-rung viewport ladder that adds `laptop` (1024) and `desktopWide` (1920) | Quality wins over UX4G per `.claude/rules/standards-precedence.md`, and this is additive: 1200 at desktop is unchanged. With one widen at 1768px, a 1728-wide viewport carried 264px of margin each side against 1768's 224px — margins narrowing as the screen grew — and a 2560 monitor rendered a 1320 column between 620px margins. Anchors follow Material 3's window size classes (large 1200–1599, extra-large ≥1600), which are derived from measured device distribution. The 1024 rung filled a 512px void between `tablet` and `desktop`. 2026-08-24. |
 
 Adding a row is cheap. Leaving a conflict undocumented is not.
 

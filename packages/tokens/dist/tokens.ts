@@ -902,8 +902,10 @@ export const tokens = {
   "breakpoint": {
     "mobile": "360px",
     "tablet": "768px",
+    "laptop": "1024px",
     "desktop": "1280px",
-    "desktopXl": "1768px"
+    "desktopXl": "1600px",
+    "desktopWide": "1920px"
   },
   "density": {
     "control": {
@@ -1314,6 +1316,7 @@ export const tokens = {
     "2xl": "1320px",
     "content": "1200px",
     "contentXl": "1320px",
+    "contentWide": "1440px",
     "narrow": "720px",
     "wide": "1200px"
   },

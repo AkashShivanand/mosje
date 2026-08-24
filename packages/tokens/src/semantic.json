@@ -2435,6 +2435,11 @@
       "$value": "{container.2xl}",
       "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages; Bootstrap — whose ladder UX4G's is — engages `container-xxl` at 1400, so that is the anchor."
     },
+    "contentWide": {
+      "$value": "1440px",
+      "$type": "dimension",
+      "$description": "The content cap at `breakpoint/desktopWide` (1920) and above — the third and last step of the page container (1200 -> 1320 -> 1440). Exists because two steps left a 2560-wide monitor rendering a 1320 column between 620px margins. Stops here rather than tracking the viewport: past ~1440 a 12-column grid costs more in eye travel than it returns in density, and the line lengths inside it stop being scannable. Consumed only through `--sa-container-page` in foundations/layout.css; never restate it in a component."
+    },
     "narrow": {
       "$description": "AccessibilityBar narrow content container (Figma layout/container/narrow). Same 720px as container.md, named for the bar's own Layout variant.",
       "$value": "{container.md}"

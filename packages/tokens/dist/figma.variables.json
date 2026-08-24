@@ -38,8 +38,8 @@
       "existing": 8
     },
     "Static": {
-      "total": 56,
-      "new": 10,
+      "total": 59,
+      "new": 13,
       "existing": 46
     }
   },
@@ -23521,6 +23521,27 @@
           }
         },
         {
+          "name": "ref/breakpoint/laptop",
+          "path": "breakpoint/laptop",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 1024,
+              "unit": "px"
+            }
+          },
+          "description": "The third anchor, and the one the ladder was missing. Between tablet (768) and desktop (1280) sat a 512px void with no token in it — which is where iPad landscape, 11-13\" laptops and every half-screen window on a 2K monitor live. Anything needing to change at 1024 had to hardcode it or round to one of the neighbours. Matches Tailwind's `lg`, so the token and the utility variant used across this estate finally agree. Viewport anchor. The ladder follows Material 3's window size classes, which are derived from measured device distribution rather than from one framework's grid: compact <600, medium 600-839, expanded 840-1199, large 1200-1599, extra-large >=1600. UX4G publishes the two content widths but no breakpoints at all, so there is nothing to diverge FROM here; where its guidance and interface quality met, quality won, per .claude/rules/standards-precedence.md. Recorded in docs/guidelines/README.md. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
+          "codeSyntax": {
+            "WEB": "var(--sa-ref-breakpoint-laptop)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "ref",
+            "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
           "name": "ref/breakpoint/desktop",
           "path": "breakpoint/desktop",
           "type": "FLOAT",
@@ -23548,13 +23569,34 @@
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 1768,
+              "value": 1600,
               "unit": "px"
             }
           },
-          "description": "The fourth anchor — where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). UX4G states the two widths as guidance (\"max content width: 1200px desktop, 1320px desktop XL\") without publishing a breakpoint, so the anchor comes from the estate's own viewport ladder, where desktop is 1440 and desktop-XL is 1768. Bootstrap's `container-xxl` engages at 1400 and was rejected for this: at 1400 the 1440 frame would take the 1320 cap, contradicting the 1200-at-desktop guidance. That FLOOR still holds — 1440 must stay on 1200. CORRECTION (2026-08-24): the rejection above also cited \"the website Handoff, which shows the wide margin of a 1200 column at 1440\". It does not. Every Container node in the Handoff's Home frame is 1320 wide at x=60, i.e. the desktop-XL cap drawn on a desktop artboard; a 1200 column at 1440 would be x=120 width=1200. The frame is the thing off-standard there, not this token. OPEN — the CEILING is unexamined and 1768 looks too high: at 1768 a 1728-wide viewport (MacBook Pro 16\" default) carries 264px of margin each side while 1768 itself carries 224px, so margins get NARROWER as the viewport grows, which is the signature of a threshold set too high. 1600 would satisfy both constraints (1440/1512/1536 keep 1200; 1600+ take 1320 with >=140px margin). NOT APPLIED: this variable is live in the Figma Static collection, so moving it requires a library push and a re-read before `figma-value-parity.test.mjs` will pass — see that gate. UX4G's Bootstrap CONTAINER LADDER is a separate thing and is kept faithfully as `container/sm`…`container/2xl`; this token governs the CONTENT CAP only. Not part of the type curve either — `clamp()` still tops out at 1280, so this anchor resizes no glyph. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
+          "description": "Where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). Was 1768px, chosen from the estate's own viewport ladder; corrected to 1600 on 2026-08-24 for two reasons. MEASURED: at 1768 a 1728-wide viewport (the MacBook Pro 16\" default) carried 264px of margin each side while 1768 itself carried 224px, so margins got NARROWER as the viewport grew — the signature of a threshold set too high. STANDARD: Material 3's extra-large window class begins at exactly 1600, arrived at independently. The FLOOR that the previous note defended still holds and is still honoured — 1440 stays on the 1200 cap. That note also justified 1768 by \"the website Handoff, which shows the wide margin of a 1200 column at 1440\"; it does not — every Container node in the Handoff's Home frame is 1320 wide at x=60, so the frame draws the desktop-XL cap on a desktop artboard and is itself the thing to correct. Not part of the type curve — `clamp()` still tops out at 1280, so this resizes no glyph. Viewport anchor. The ladder follows Material 3's window size classes, which are derived from measured device distribution rather than from one framework's grid: compact <600, medium 600-839, expanded 840-1199, large 1200-1599, extra-large >=1600. UX4G publishes the two content widths but no breakpoints at all, so there is nothing to diverge FROM here; where its guidance and interface quality met, quality won, per .claude/rules/standards-precedence.md. Recorded in docs/guidelines/README.md. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-breakpoint-desktopXl)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "ref",
+            "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "ref/breakpoint/desktopWide",
+          "path": "breakpoint/desktopWide",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 1920,
+              "unit": "px"
+            }
+          },
+          "description": "The fifth anchor, where the cap widens a second time to `container/contentWide` (1440). Without it a 2560-wide monitor rendered a 1320 column between 620px margins — 48% of the screen given to nothing, which is the complaint that started this. One step is not enough for the range 1600-2560+: a single cap either starves the desktop or sprawls on the monitor. Stops at 1440 rather than continuing to grow because beyond that a 12-column grid starts costing more in eye travel than it returns in density. Viewport anchor. The ladder follows Material 3's window size classes, which are derived from measured device distribution rather than from one framework's grid: compact <600, medium 600-839, expanded 840-1199, large 1200-1599, extra-large >=1600. UX4G publishes the two content widths but no breakpoints at all, so there is nothing to diverge FROM here; where its guidance and interface quality met, quality won, per .claude/rules/standards-precedence.md. Recorded in docs/guidelines/README.md. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
+          "codeSyntax": {
+            "WEB": "var(--sa-ref-breakpoint-desktopWide)"
           },
           "status": "new",
           "$extensions": {
@@ -23744,6 +23786,27 @@
           "description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages; Bootstrap — whose ladder UX4G's is — engages `container-xxl` at 1400, so that is the anchor.",
           "codeSyntax": {
             "WEB": "var(--sa-container-contentXl)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "container/contentWide",
+          "path": "container/contentWide",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 1440,
+              "unit": "px"
+            }
+          },
+          "description": "The content cap at `breakpoint/desktopWide` (1920) and above — the third and last step of the page container (1200 -> 1320 -> 1440). Exists because two steps left a 2560-wide monitor rendering a 1320 column between 620px margins. Stops here rather than tracking the viewport: past ~1440 a 12-column grid costs more in eye travel than it returns in density, and the line lengths inside it stop being scannable. Consumed only through `--sa-container-page` in foundations/layout.css; never restate it in a component.",
+          "codeSyntax": {
+            "WEB": "var(--sa-container-contentWide)"
           },
           "status": "new",
           "$extensions": {
