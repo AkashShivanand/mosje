@@ -118,7 +118,6 @@ export function SiteHeaderPreview(): React.JSX.Element {
         emblemSrc={EMBLEM}
         brandLines={BRAND_LINES}
         beta
-        tone="blue"
         language={{ label: "English" }}
         search={{ placeholder: "Search Schemes, Services, Document", onSearch: () => {} }}
         nav={SAMPLE_NAV}
@@ -145,7 +144,6 @@ export function SiteHeaderNavyPreview(): React.JSX.Element {
         emblemSrc={EMBLEM}
         brandLines={BRAND_LINES}
         beta
-        brandDivider
         onToggleNav={() => setNavExpanded((v) => !v)}
         navExpanded={navExpanded}
         language={{ label: "English" }}

@@ -139,7 +139,6 @@ export function Header() {
         department: "Department of Social Justice & Empowerment",
       }}
       beta
-      tone="blue"
       govLink={{
         href: "https://india.gov.in/",
         label: "Government of India",

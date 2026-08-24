@@ -38,8 +38,6 @@ export interface SiteHeaderProps {
   govLink?: { href: string; label: string; flagSrc?: string };
   /** Skip-to-content target id. @default "#main-content" */
   skipTo?: string;
-  /** Accessibility-bar tone. @default "blue" */
-  tone?: UtilityTone;
   /**
    * Render the accessibility-statement control in the accessibility bar.
    * @default true
@@ -167,7 +165,6 @@ export function SiteHeader({
   variant,
   govLink = { href: "https://india.gov.in/", label: "Government of India" },
   skipTo = "#main-content",
-  tone = "blue",
   accessibilityToolbar = true,
   onAccessibility,
   accessibilityHref = "/accessibility-statement",
@@ -175,12 +172,11 @@ export function SiteHeader({
   emblemSrc,
   emblemAlt,
   brandLines,
-  beta = false,
+  beta = true,
   homeHref = "/",
   onToggleNav,
   navExpanded,
   navControlsId,
-  brandDivider = false,
   search,
   cobranding,
   account,
@@ -195,8 +191,7 @@ export function SiteHeader({
   const isPortal = variant === "portal";
   const isCompact = variant === "compact";
   // variant supplies behavioural defaults; explicit props always win.
-  // `sticky` defaults on for portals; scroll-collapse stays opt-in (it changes
-  // the chrome height, which app-shell sidebar offsets are measured against).
+  // `sticky` defaults on for portals; scroll-collapse stays opt-in.
   const isSticky = sticky ?? (isPortal || isCompact);
   const wantsScrollCollapse = (collapseOnScroll ?? false) && isSticky;
 
@@ -282,34 +277,18 @@ export function SiteHeader({
           value the retired tone="navy" hardcoded. Scoped to the bar so the brand
           row and nav row below keep their own surfaces. */}
       {!isCompact && (
-      <div data-brand={tone === "navy" ? "navy" : undefined}>
         <AccessibilityBar
           govLink={govLink}
           skipTo={skipTo}
           showSkip
-          /* ON since 2026-08-14, REVERSING the v2.3.0 decision that kept it off.
-             The old reasoning — "the widget is the single mechanism, a second stepper
-             doubles up" — rested on a premise that was never true in practice: the
-             stepper wrote `--sa-font-scale` and NOTHING READ IT, so it was not a
-             competing mechanism, it was an inert control. Now that the variable
-             actually drives the root font size, the bar is the direct, visible way to
-             resize text and the widget's floating button is hidden wherever the bar
-             offers the same entry (accessibility-bar.css). One door, not two.
-             AND THE FIGMA LIBRARY ALREADY AGREED. The claim this comment used to make
-             — that 13 nested instances were set OFF to match this file — was checked on
-             2026-08-14 and is false: all 39 nested AccessibilityBar instances across the
-             Navbar, Accessibility Bar and Portal Login Template pages have Font size ON.
-             The code was the outlier, so turning it on CLOSES a divergence rather than
-             creating one. Verify before re-asserting a claim like that. */
           fontSize
           accessibility={accessibilityToolbar}
           accessibilityHref={accessibilityHref}
           onAccessibility={onAccessibility}
           language={language}
-          layout="fluid"
+          layout={isPortal ? "fluid" : "wide"}
           maxWidth={maxWidth}
         />
-      </div>
       )}
 
       {/* ── Tier 2: Brand row ── */}
@@ -330,7 +309,6 @@ export function SiteHeader({
             lines={brandLines}
             href={homeHref}
             beta={beta}
-            divider={brandDivider}
             compact={isCompact}
           />
 
@@ -385,6 +363,7 @@ export function SiteHeader({
           brandLines={brandLines}
           homeHref={homeHref}
           actions={actions}
+          search={search}
         />
       )}
     </header>

@@ -16,7 +16,6 @@ export function Navbar() {
     <SiteHeader
       homeHref={IMG_BASE}
       variant="portal"
-      tone="navy"
       emblemSrc={`${IMG_BASE}/images/National-Emblem-logo.svg`}
       brandLines={{
         org: "Government of India",
@@ -24,7 +23,6 @@ export function Navbar() {
         department: "Department of Social Justice & Empowerment",
       }}
       beta
-      brandDivider
       skipTo="#pm-main"
       govLink={{
         href: "https://india.gov.in/",

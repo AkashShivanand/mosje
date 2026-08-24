@@ -4,6 +4,7 @@ import * as React from "react";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import { BrandLockup } from "./brand-lockup";
+import { Search } from "../../forms/search";
 import type { BrandLines, NavItem, NavLink } from "./types";
 import "./header.css";
 
@@ -20,6 +21,8 @@ export interface NavSheetProps {
   homeHref?: string;
   /** Trailing CTA (Login / Admin Login), pinned above the list. */
   actions?: React.ReactNode;
+  /** Search configuration to render inside the sheet */
+  search?: { placeholder?: string; onSearch?: (q: string) => void };
   id?: string;
   className?: string;
 }
@@ -58,10 +61,12 @@ export function NavSheet({
   brandLines,
   homeHref = "/",
   actions,
+  search,
   id,
   className,
 }: NavSheetProps): React.JSX.Element | null {
   const [openLabel, setOpenLabel] = React.useState<string | null>(null);
+  const [query, setQuery] = React.useState("");
   const ref = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
@@ -109,6 +114,20 @@ export function NavSheet({
             <Icon name="close" size={24} />
           </button>
         </div>
+
+        {search && (
+          <div className="ds-navsheet__search">
+            <Search
+              size="lg"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onClear={() => setQuery("")}
+              onSubmit={(v) => search.onSearch?.(v)}
+              placeholder={search.placeholder ?? "Search"}
+              aria-label={search.placeholder ?? "Search"}
+            />
+          </div>
+        )}
 
         {actions && <div className="ds-navsheet__actions">{actions}</div>}
 

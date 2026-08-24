@@ -15,8 +15,6 @@ export interface BrandLockupProps {
   beta?: boolean;
   /** Compact lockup for the app-shell header (smaller emblem + tighter type). */
   compact?: boolean;
-  /** Vertical gradient divider between emblem and text (portal navbar). @default false */
-  divider?: boolean;
   /** Hide the text stack below a breakpoint (emblem-only on mobile). @default false */
   textHiddenOnMobile?: boolean;
   /**
@@ -34,8 +32,7 @@ export interface BrandLockupProps {
 /**
  * SAMAVESH BrandLockup — the National Emblem + government text stack, matching the
  * UX4G / Portal Navbar Figma: a BETA badge on its own row above "Government of
- * India" (12px) · "Ministry …" (14px) · "Department …" (20px bold), with an
- * optional blue gradient divider between the emblem and text.
+ * India" (12px) · "Ministry …" (14px) · "Department …" (20px bold).
  *
  * Server-safe; renders a plain <a>/<img> so it works in any basePath-ed zone.
  * Per estate rule, always the National Emblem — never an invented mark.
@@ -47,7 +44,6 @@ export function BrandLockup({
   href = "/",
   beta = false,
   compact = false,
-  divider = false,
   textHiddenOnMobile = false,
   inverse = false,
   className,
@@ -60,7 +56,6 @@ export function BrandLockup({
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img className="ds-hdr-lockup__emblem" src={emblemSrc} alt={emblemAlt} />
-      {divider && <span className="ds-hdr-lockup__divider" aria-hidden="true" />}
       <span
         className={cn(
           "ds-hdr-lockup__lines",

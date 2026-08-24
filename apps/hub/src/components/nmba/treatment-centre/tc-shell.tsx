@@ -197,14 +197,12 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
         variant="portal"
         sticky
         beta
-        tone="navy"
         emblemSrc={`${BASE}/brand/national-emblem.svg`}
         brandLines={{
           org: "Government of India",
           ministry: "Ministry of Social Justice & Empowerment",
           department: "Patient Data Monitoring System",
         }}
-        brandDivider
         cobranding={[
           { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", height: 34 },
           { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },

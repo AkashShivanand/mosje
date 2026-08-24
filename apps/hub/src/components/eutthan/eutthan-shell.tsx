@@ -33,7 +33,6 @@ export function EutthanHeader({
     <SiteHeader
       homeHref={portalLink("/")}
       variant="portal"
-      tone="navy"
       sticky
       emblemSrc="/images/National-Emblem-logo.svg"
       brandLines={{
@@ -42,7 +41,6 @@ export function EutthanHeader({
         department: "DAPSC Allocation & Progress Tracker",
       }}
       beta
-      brandDivider
       skipTo="#eu-main-content"
       govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
       language={{ label: "English" }}
