@@ -1,0 +1,34 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Introduction" />
+
+# SAMAVESH Design System
+
+Welcome to the living documentation for the **Ministry / Department of Social Justice & Empowerment (DoSJE)** digital estate.
+
+This Storybook serves as the single source of truth for the UI components and foundations used across the unified informational website and the 20+ workflow portals.
+
+## The Four Non-Negotiables
+
+Everything else is craft. These four are gates:
+
+1. **Never commit to `main`.** Every task gets its own branch and reaches `main` through a PR.
+2. **A task keeps its branch across sessions.**
+3. **Accessibility is not tradeable.** WCAG 2.2 AA + GIGW. Semantic HTML, alt text, keyboard nav, visible focus, AA contrast on every public-facing page.
+4. **Design tokens, never hardcoded values.** No raw hex, `rgb()`, or arbitrary px in component CSS.
+
+## Features of this Storybook
+
+- **Theme Toggle**: Use the global toolbar (circle icon) to switch between the Blue, Navy, and DBIM color modes to verify components against all brands.
+- **Density Toggle**: Use the density toolbar to test "Comfortable" vs "Compact" UI spacing.
+- **Figma Integration**: Go to the "Design" tab in any component to see the original Figma frame alongside the implementation.
+- **Accessibility Checks**: The "Accessibility" tab runs axe-core tests on the current component state.
+
+## Tech Stack
+- **Framework**: React 19 / Next.js 16
+- **Styling**: Tailwind CSS v4 + `@mosje/tokens`
+- **Typography**: Noto Sans
+- **Icons**: Material Symbols Rounded
+
+---
+*Built with care for the Government of India.*

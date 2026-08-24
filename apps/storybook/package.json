@@ -1,7 +1,7 @@
 {
   "name": "@mosje/storybook",
   "version": "0.1.0",
-  "description": "SAMAVESH Design System \u2014 living documentation (Storybook).",
+  "description": "SAMAVESH Design System — living documentation (Storybook).",
   "private": true,
   "type": "module",
   "scripts": {
@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@mosje/design-system": "file:../../packages/design-system",
+    "@storybook/addon-designs": "^8.2.1",
+    "@storybook/theming": "^8.6.18",
     "react": "^19",
     "react-dom": "^19"
   },
