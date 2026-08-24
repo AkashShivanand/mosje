@@ -308,7 +308,7 @@ export function SiteHeader({
             emblemAlt={emblemAlt}
             lines={brandLines}
             href={homeHref}
-            beta={beta}
+            beta={isCompact ? false : beta}
             compact={isCompact}
           />
 
