@@ -904,7 +904,7 @@ export const tokens = {
     "tablet": "768px",
     "laptop": "1024px",
     "desktop": "1280px",
-    "desktopXl": "1600px",
+    "desktopXl": "1440px",
     "desktopWide": "1920px"
   },
   "density": {

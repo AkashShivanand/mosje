@@ -26,9 +26,14 @@
    1768 a 1728-wide viewport carried 264px of margin each side against 1768's own
    224px, so margins got NARROWER as the screen grew. And one widen could not
    cover 1600 through 2560+, so a 2560 monitor rendered a 1320 column between
-   620px margins. The ladder now steps 1200 -> 1320 -> 1440 at 1280 / 1600 / 1920,
-   which keeps 1440-wide laptops on the 1200 cap (the constraint the old note
-   defended, still honoured) while giving real monitors a column worth having.
+   620px margins. The ladder now steps 1200 -> 1320 -> 1440 at 1280 / 1440 / 1920.
+
+   The middle anchor was 1600 for half a day. It moved to 1440 because 1600 left
+   the ladder's weakest point on its most common viewport: at 1536 — 1920 at 125%
+   Windows scaling — content held 75% of the screen, worse than 1280 (90%) and
+   worse than 1600 (78%). At 1440 that range reads 88 / 84 / 83%, and nothing at
+   1600 and above changes. It also puts the code on the same 1320 column the
+   Handoff frame draws at 1440.
 
    Requires tokens.css.
    ========================================================================== */
@@ -45,7 +50,7 @@
    1600-wide frame could not see that the cap is 1320 there. Re-point the steps,
    never the base — the base belongs to the token. */
 
-@media (min-width: 1600px) {
+@media (min-width: 1440px) {
   :root {
     --sa-container-page: var(--sa-container-contentXl);
   }
@@ -65,7 +70,13 @@
   }
 }
 
-@media (min-width: 1600px) {
+/* The 32px rung waits for 1920, not 1440. Both steps still move with the CAP
+   rather than with a viewport anchor — the rule that removed the old narrowing
+   at 1280 — but taking 32 at 1440 would spend the widen on margin: content would
+   be 1256 instead of 1272, and 1272 is the number the Handoff's own frame draws
+   at that width. So the cap widens at 1440 and the margin widens at 1920, and
+   content still only ever grows: 1152 -> 1272 -> 1376. */
+@media (min-width: 1920px) {
   :root {
     --sa-grid-margin-page: var(--sa-grid-margin-desktop);
   }
