@@ -38,6 +38,12 @@ const EMBLEM = `data:image/svg+xml;utf8,${encodeURIComponent(
 )}`;
 
 const meta = {
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=4235-3652"
+    }
+  },
   title: "Components/Navigation/BrandLockup",
   component: BrandLockup,
   args: {

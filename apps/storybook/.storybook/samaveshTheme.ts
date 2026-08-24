@@ -9,7 +9,7 @@ export default create({
   brandTitle: 'SAMAVESH Design System',
   brandUrl: '/',
   // You can set an external image URL for brandImage
-  brandImage: 'https://ux4g.gov.in/assets/images/emblem-dark.svg',
+  brandImage: '/design-system/samavesh-logo.svg',
   brandTarget: '_self',
 
   // Colors
