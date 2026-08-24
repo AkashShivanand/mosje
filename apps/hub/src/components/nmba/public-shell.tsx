@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AccessibilityBar, BrandLockup, Icon, buttonClasses } from "@mosje/design-system";
+import { SiteHeader, Icon, buttonClasses } from "@mosje/design-system";
 import { cn } from "@/lib/nmba/utils";
 
 const BASE = "/portals/nmba";
@@ -17,93 +17,37 @@ const NAV_ITEMS = [
   { label: "Helpline", href: `${BASE}/helpline`, icon: "call" },
 ];
 
-const LANGUAGES = ["English", "हिंदी"];
-
 export function PublicShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = React.useState(false);
   const [lang, setLang] = React.useState("English");
-  const [langOpen, setLangOpen] = React.useState(false);
-  const [fontScale, setFontScale] = React.useState<"small" | "default" | "large">("default");
 
   const isActive = (href: string) =>
     href === BASE ? pathname === BASE || pathname === `${BASE}/` : pathname.startsWith(href);
 
   return (
-    <div
-      className="flex min-h-screen flex-col"
-      data-fontscale={fontScale}
-    >
-      {/* Government top bar — the shared DS AccessibilityBar. Its font-size
-          stepper is wired back to nmba's `data-fontscale` (line above) so the
-          portal's own scaling CSS keeps working; the language switcher lives in
-          the masthead below, so the bar's own language control is off. */}
-      <div data-brand="navy">
-        <AccessibilityBar
-          layout="fluid"
-          govLink={{ href: "https://india.gov.in", label: "Government of India" }}
-          skipTo="#main-content"
-          showSkip
-          fontSize
-          accessibility
-          language={false}
-          onFontScaleChange={(s) => setFontScale(s < 1 ? "small" : s > 1 ? "large" : "default")}
-        />
-      </div>
-
-      {/* Masthead */}
-      <header className="border-b border-line bg-white">
-        <div className="flex items-center justify-between gap-4 px-4 py-3">
-          {/* Identity from the DS lockup — never retyped. */}
-          <BrandLockup
-            emblemSrc={`${BASE}/brand/national-emblem.svg`}
-            lines={{
-              org: "Government of India",
-              ministry: "Ministry of Social Justice & Empowerment",
-              department: "Department of Social Justice & Empowerment",
-            }}
-            href={BASE}
-            compact
-          />
+    <div className="flex min-h-screen flex-col">
+      <SiteHeader
+        homeHref={BASE}
+        variant="portal"
+        tone="navy"
+        sticky
+        emblemSrc={`${BASE}/brand/national-emblem.svg`}
+        brandLines={{
+          org: "Government of India",
+          ministry: "Ministry of Social Justice & Empowerment",
+          department: "Department of Social Justice & Empowerment",
+        }}
+        beta
+        brandDivider
+        skipTo="#main-content"
+        govLink={{ href: "https://india.gov.in", label: "Government of India" }}
+        language={{
+          label: lang,
+          onClick: () => setLang((l) => (l === "English" ? "हिंदी" : "English")),
+        }}
+        actions={
           <div className="flex items-center gap-3">
-            {/* Language switcher */}
-            <div className="relative">
-              <button
-                onClick={() => setLangOpen((o) => !o)}
-                aria-haspopup="listbox"
-                aria-expanded={langOpen}
-                aria-label="Select language"
-                className="flex items-center gap-1.5 rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-ink hover:bg-surface-muted"
-              >
-                <Icon name="language" size={16} className="text-ink-muted" />
-                <span>{lang}</span>
-                <Icon name="keyboard_arrow_down" size={12} className="text-ink-muted" />
-              </button>
-              {langOpen && (
-                <ul
-                  role="listbox"
-                  aria-label="Language Translator"
-                  className="absolute right-0 top-full z-10 mt-1 w-32 rounded-lg border border-line bg-white py-1 shadow-pop"
-                >
-                  {LANGUAGES.map((l) => (
-                    <li key={l}>
-                      <button
-                        role="option"
-                        aria-selected={lang === l}
-                        onClick={() => { setLang(l); setLangOpen(false); }}
-                        className={cn(
-                          "w-full px-3 py-2 text-left text-sm",
-                          lang === l ? "bg-brandwash font-semibold text-navy" : "hover:bg-surface-muted text-ink"
-                        )}
-                      >
-                        {l}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-            {/* Admin login */}
             <Link
               href={`${BASE}/admin/login`}
               className={buttonClasses("primary", "outlined", "sm")}
@@ -114,7 +58,6 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
               </span>
               <span className="hidden sm:inline">Admin Login</span>
             </Link>
-            {/* Helpline */}
             <a
               href="tel:14446"
               className="flex items-center gap-2 rounded-lg bg-saffron px-3 py-1.5 text-sm font-semibold text-white hover:bg-saffron-600"
@@ -124,8 +67,8 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
               <span className="hidden sm:inline">Helpline 14446</span>
             </a>
           </div>
-        </div>
-      </header>
+        }
+      />
 
       <div className="flex flex-1">
         {/* Sidebar */}

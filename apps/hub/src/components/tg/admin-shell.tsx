@@ -2,9 +2,8 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SidebarNav } from "@mosje/design-system";
-import { GovTopBar, GovMasthead } from "./gov-chrome";
-import { UserMenu } from "./user-menu";
+import { SidebarNav, Icon, type AccountMenuItem } from "@mosje/design-system";
+import { TgHeader } from "./gov-chrome";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
 
@@ -16,7 +15,7 @@ import { ROLES } from "@/lib/tg/roles";
 export function AdminShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { state, hydrated } = useTg();
+  const { state, hydrated, logout } = useTg();
   const [collapsed, setCollapsed] = React.useState(false);
 
   const isAdmin = state.session !== null && state.session !== "citizen";
@@ -28,11 +27,28 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
 
   if (!hydrated || !role) return null;
 
+  const accountMenu: AccountMenuItem[] = [
+    {
+      label: "Log out",
+      icon: <Icon name="logout" size={16} />,
+      danger: true,
+      onSelect: () => {
+        logout();
+        router.push("/portals/tg/admin/login");
+      },
+    },
+  ];
+
   return (
     <div className="min-h-screen">
-      <GovTopBar />
-      <GovMasthead
-        right={<UserMenu name={role.label} roleLabel={`(${role.label})`} loginHref="/portals/tg/admin/login" />}
+      <TgHeader
+        onToggleNav={() => setCollapsed(!collapsed)}
+        navExpanded={!collapsed}
+        account={{
+          name: role.label,
+          role: "Officer",
+        }}
+        accountMenu={accountMenu}
       />
       <div className="flex">
         <SidebarNav

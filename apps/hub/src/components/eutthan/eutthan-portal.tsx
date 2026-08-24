@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { type Role } from "@/lib/eutthan/portal-data";
 import { normalizePath, DEMO_CREDENTIALS, portalLink } from "./eutthan-shared";
 import { LoginPage } from "./eutthan-login";
-import { TopBar, Masthead, Sidebar } from "./eutthan-shell";
+import { EutthanHeader, Sidebar } from "./eutthan-shell";
 import { AdminDashboard, MinistryDashboard } from "./eutthan-dashboard";
 import { adminNavItems, ministryNavItems } from "@/lib/eutthan/portal-data";
 
@@ -128,10 +128,11 @@ export default function EutthanPortal() {
 
   return (
     <div className="app-shell">
-      {/* The skip link comes from <AccessibilityBar> inside <TopBar>. Two links
-          to the same target announce the bypass twice. */}
-      <TopBar onLogout={handleLogout} />
-      <Masthead name={userName} roleLabel={roleLabel} />
+      <EutthanHeader
+        name={userName}
+        roleLabel={roleLabel}
+        onLogout={handleLogout}
+      />
       <div className="workspace">
         <Sidebar navItems={navItems} path={path} />
         <main id="eu-main-content" className="content" tabIndex={-1}>
