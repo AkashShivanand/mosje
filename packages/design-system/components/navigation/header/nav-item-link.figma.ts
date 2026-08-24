@@ -4,7 +4,7 @@
 //
 // One primary nav entry plus whichever menu it carries.
 //
-// NAME NOTE: the Figma component is `Navbar/NavItem`, but `NavItem` is already the
+// NAME NOTE: the Figma component is `Navbar/NavItemLink`, but `NavItem` is already the
 // DATA TYPE every consumer passes to `nav`. A TypeScript type and a component
 // cannot share one name in one barrel, so the component is `NavItemLink` and the
 // type keeps the name callers already write. Do not "fix" the snippet to `NavItem`.
@@ -31,6 +31,6 @@ export default {
   onOpenChange={(next) => setOpenLabel(next ? "${label}" : null)}
 />`,
   imports: ['import { NavItemLink } from "@mosje/design-system"'],
-  id: "navbar-nav-item",
+  id: "navbar-nav-item-link",
   metadata: { nestable: true },
 };
