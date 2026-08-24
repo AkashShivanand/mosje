@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 204,
+    "offScale": 201,
     "classSized": 4
   },
   "files": {
@@ -240,7 +240,7 @@
       "classSized": 0
     },
     "apps/hub/src/components/eutthan/eutthan-shell.tsx": {
-      "offScale": 6,
+      "offScale": 4,
       "classSized": 0
     },
     "apps/hub/src/components/eutthan/eutthan-statement10a.tsx": {
@@ -260,10 +260,6 @@
       "classSized": 0
     },
     "apps/hub/src/components/nmba/committee/minutes-section.tsx": {
-      "offScale": 1,
-      "classSized": 0
-    },
-    "apps/hub/src/components/nmba/public-shell.tsx": {
       "offScale": 1,
       "classSized": 0
     },

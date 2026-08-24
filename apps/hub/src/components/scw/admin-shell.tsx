@@ -1,5 +1,5 @@
 import * as React from "react";
-import { GovTopBar, GovMasthead } from "./gov-chrome";
+import { ScwHeader } from "./gov-chrome";
 import { Sidebar, ADMIN_NAV } from "./sidebar";
 import { UserMenu } from "./user-menu";
 
@@ -7,9 +7,8 @@ import { UserMenu } from "./user-menu";
 export function AdminShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen">
-      <GovTopBar />
-      <GovMasthead
-        right={
+      <ScwHeader
+        actions={
           <UserMenu
             user={{ name: "Rajesh Pilli", role: "(Admin)", initials: "RP" }}
             showProfile

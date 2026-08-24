@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { GovTopBar, GovMasthead } from "@/components/nhapoa/gov-chrome";
+import { NhapoaHeader } from "@/components/nhapoa/gov-chrome";
 import { Icon } from "@mosje/design-system";
 
 const CITIZEN_ACTIONS = [
@@ -32,9 +32,8 @@ const CITIZEN_ACTIONS = [
 export default function CitizenHome() {
   return (
     <div className="min-h-screen">
-      <GovTopBar />
-      <GovMasthead
-        right={
+      <NhapoaHeader
+        actions={
           <Link
             href="/portals/nhapoa/login"
             className="inline-flex items-center gap-2 rounded-lg bg-navy px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-navy-800"

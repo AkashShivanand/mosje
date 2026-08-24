@@ -3,7 +3,7 @@
 import * as React from "react";
 import { usePathname } from "next/navigation";
 import { SidebarNav, Divider } from "@mosje/design-system";
-import { GovTopBar, GovMasthead } from "./gov-chrome";
+import { NhapoaHeader } from "./gov-chrome";
 
 const CITIZEN_NAV = [
   { label: "Dashboard", href: "/portals/nhapoa", icon: "grid_view" },
@@ -20,8 +20,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <GovTopBar />
-      <GovMasthead />
+      <NhapoaHeader />
       <div className="flex flex-1">
         <SidebarNav
           groups={[{ items: CITIZEN_NAV }]}

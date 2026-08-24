@@ -17,7 +17,7 @@ import {
   type AppEntry,
 } from "@mosje/design-system/registry";
 import { DEFAULT_APPS } from "@mosje/design-system/app-registry";
-import { BrandLockup, Button } from "@mosje/design-system";
+import { Button, SiteHeader } from "@mosje/design-system";
 import { requireAdmin } from "@/lib/admin/auth";
 import { settingsConfigured } from "@/lib/settings/store";
 import { readRegistryConfig } from "@/lib/registry/config";
@@ -108,24 +108,17 @@ export default async function AdminPortalsPage({
 
   return (
     <div className="min-h-screen bg-surface-muted">
-      <header className="border-b border-border bg-surface">
-        <div className="mx-auto flex h-16 max-w-5xl items-center gap-4 px-6">
-          <div className="flex flex-1 items-center gap-3.5">
-            {/* Identity from the DS lockup. /admin is the recovery path and sits
-                outside the gate, but that is a reason for the emblem to be the
-                real one, not a licence to retype it. */}
-            <BrandLockup
-              emblemSrc="/images/National-Emblem-logo.svg"
-              lines={{ ministry: "MoSJE", department: "Portal administration" }}
-              href="/admin"
-              compact
-            />
-          </div>
+      <SiteHeader
+        homeHref="/admin"
+        variant="compact"
+        emblemSrc="/images/National-Emblem-logo.svg"
+        brandLines={{ ministry: "MoSJE", department: "Portal administration" }}
+        actions={
           <Button href="/admin" appearance="outlined" size="sm">
             Settings
           </Button>
-        </div>
-      </header>
+        }
+      />
 
       <main className="mx-auto w-full max-w-5xl px-6 py-12">
         <nav aria-label="Breadcrumb" className="mb-6">
