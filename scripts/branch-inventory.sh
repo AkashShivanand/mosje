@@ -139,12 +139,13 @@ failing; they never start. Every workflow reports \`failure\` after ~3 seconds
 having checked nothing, so **no commit on \`main\` has been verified since the
 block began** and every green-looking merge since is unverified.
 
-Nothing in this repository can fix it — it is an account setting:
-**GitHub → Settings → Billing & plans** (payment method, or raise the spending
-limit). Until then, run the gates yourself before merging anything:
+The block clears when the account's billing period resets. It is not something
+this repository can fix and it does not need chasing — what it needs is the gate
+run BY HAND on every pull request, before that PR is merged:
 \`\`\`
-npm run verify      # lint + lint:css + check + build — what Apps CI runs
+npm run verify      # lint + lint:css + check + build — exactly what Apps CI runs
 \`\`\`
+That is the standing rule until a run on \`main\` reports something other than this.
 Vercel still builds every PR and is the only automated check left, so a red
 Vercel is never noise."
       else
