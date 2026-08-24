@@ -19,5 +19,7 @@ The ~20 portals are **authenticated, transactional** apps for MoSJE orgs & schem
 ## Accessibility & quality
 Same WCAG 2.2 AA + GIGW bar as the website. Run `/review` and `/a11y` before shipping.
 
-## Shared design system
-Once `packages/design-system` lands, import tokens/components from `@mosje/design-system` instead of re-declaring them here.
+## Shared design system & Chrome single-sourcing
+- Import all shared tokens and components from `@mosje/design-system`.
+- **Top-of-page chrome is single-sourced:** Every portal layout/shell MUST render `<SiteHeader variant="portal">` (configured with `tone="navy"`, `brandLines`, `emblemSrc`, `cobranding`, `account`, and `onToggleNav` as needed).
+- Never hand-roll `<header>` tags, skip links, or separate `AccessibilityBar` + `BrandLockup` containers in portal layouts. This is enforced by `npm run check:chrome` (`tools/chrome-single-source/check.mjs`).

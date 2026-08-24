@@ -7,17 +7,15 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { AccessibilityBar, BrandLockup } from "@mosje/design-system";
 import type { DemoFillDetail } from "@mosje/design-system";
-import Image from "next/image";
 import Link from "next/link";
+import { Navbar } from "@/components/pm-ajay/shell/navbar";
 import { useAuth } from "@/store/pm-ajay/auth-context";
 
 // Next.js adds the basePath automatically to <Link> and the router, so nav
 // paths stay basePath-RELATIVE (BASE = "") — prepending it doubles the path.
 // next/image does NOT add the basePath, so image src must include it (IMG_BASE).
 const BASE = "/portals/pm-ajay";
-const IMG_BASE = "/portals/pm-ajay";
 
 // This page's own inline "quick accounts" panel, independent of the
 // estate-wide DemoDock (which also reaches this form via the `demo:fill`
@@ -83,42 +81,7 @@ export default function LoginPage() {
 
   return (
     <div className="login-page">
-      {/* ── GoI utility bar — the shared DS AccessibilityBar ──
-          It was a lone skip link plus a flag and a wordmark: no text-size control,
-          no accessibility entry, no language selector. The one row on the page
-          whose job is those affordances offered none of them. */}
-      <AccessibilityBar
-        layout="fluid"
-        govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
-        skipTo="#login-main"
-        showSkip
-        fontSize
-        accessibility
-        language={{ label: "English" }}
-      />
-
-      {/* ── Brand strip ── */}
-      <header className="login-brand">
-        <div className="login-brand-inner">
-          <div className="login-brand-left">
-            {/* Identity from the DS lockup — inverse, because this strip is dark. */}
-            <BrandLockup
-              emblemSrc={`${IMG_BASE}/images/National_Emblem_logo_white.svg`}
-              lines={{
-                org: "Government of India",
-                ministry: "Ministry of Social Justice & Empowerment",
-                department: "Department of Social Justice & Empowerment",
-              }}
-              href={IMG_BASE}
-              compact
-              inverse
-            />
-          </div>
-          <div className="login-brand-logos">
-            <Image src={`${IMG_BASE}/images/digital-india-logo.svg`} alt="Digital India" width={100} height={39} />
-          </div>
-        </div>
-      </header>
+      <Navbar />
 
       {/* ── Scheme identity bar ── */}
       <div className="login-scheme-bar">

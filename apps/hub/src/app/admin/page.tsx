@@ -10,7 +10,7 @@
 
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BrandLockup, Button } from "@mosje/design-system";
+import { Button, SiteHeader } from "@mosje/design-system";
 import { requireAdmin } from "@/lib/admin/auth";
 import { changeGatePassword, signOut } from "./actions";
 import { GatePasswordForm } from "./settings-form";
@@ -33,27 +33,19 @@ export default async function AdminPage({
 
   return (
     <div className="min-h-screen bg-surface-muted">
-      <header className="border-b border-border bg-surface">
-        <div className="mx-auto flex h-16 max-w-3xl items-center gap-4 px-6">
-          <div className="flex flex-1 items-center gap-3.5">
-            {/* Identity from the DS lockup. /admin is the recovery path and sits
-                outside the gate, but that is a reason for the emblem to be the
-                real one, not a licence to retype it. */}
-            <BrandLockup
-              emblemSrc="/images/National-Emblem-logo.svg"
-              lines={{ ministry: "MoSJE", department: "Hub administration" }}
-              href="/admin"
-              compact
-            />
-          </div>
-
+      <SiteHeader
+        homeHref="/admin"
+        variant="compact"
+        emblemSrc="/images/National-Emblem-logo.svg"
+        brandLines={{ ministry: "MoSJE", department: "Hub administration" }}
+        actions={
           <form action={signOut}>
             <Button type="submit" appearance="outlined" size="sm">
               Sign out
             </Button>
           </form>
-        </div>
-      </header>
+        }
+      />
 
       <main className="mx-auto w-full max-w-3xl px-6 py-12">
         <h1 className="text-2xl font-bold tracking-tight text-ink">Settings</h1>

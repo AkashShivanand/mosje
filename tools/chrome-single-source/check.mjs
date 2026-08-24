@@ -88,7 +88,7 @@ for (const file of files) {
     names.some((n) => imported.has(n) && new RegExp(`<${[...imported].find((a) => a === n) ?? n}\\b`).test(src)) ||
     names.some((n) => new RegExp(`<\\w*${n}\\b`).test(src));
 
-  const usesHeader = rendersAny(["SiteHeader", "BrandLockup"]);
+  const usesHeader = rendersAny(["SiteHeader"]);
   const usesBar = rendersAny(["AccessibilityBar"]);
 
   // Chrome, not content: the marks must sit in a <header>, or in a component whose
@@ -101,8 +101,8 @@ for (const file of files) {
       rel,
       what: "masthead",
       detail: inHeaderEl
-        ? "a <header> renders the government identity without <SiteHeader> or <BrandLockup>"
-        : "a masthead-named component renders the government identity without <SiteHeader> or <BrandLockup>",
+        ? "a <header> renders the government identity without <SiteHeader>"
+        : "a masthead-named component renders the government identity without <SiteHeader>",
     });
   }
 

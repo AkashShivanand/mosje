@@ -3,7 +3,7 @@
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { SidebarNav } from "@mosje/design-system";
-import { GovTopBar, GovMasthead } from "./gov-chrome";
+import { NhapoaHeader } from "./gov-chrome";
 import { UserMenu } from "./user-menu";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { ROLES } from "@/lib/nhapoa/roles";
@@ -45,8 +45,11 @@ export function AdminShell({
 
   return (
     <div className="min-h-screen">
-      <GovTopBar />
-      <GovMasthead right={<UserMenu name={displayLabel} roleLabel={`(${displayLabel})`} />} />
+      <NhapoaHeader
+        onToggleNav={() => setCollapsed(!collapsed)}
+        navExpanded={!collapsed}
+        actions={<UserMenu name={displayLabel} roleLabel={`(${displayLabel})`} />}
+      />
       <div className="flex">
         <SidebarNav
           groups={[{ items: role.nav }]}

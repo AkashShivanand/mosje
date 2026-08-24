@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { GovTopBar, GovMasthead, Ux4gFooter } from "./gov-chrome";
+import { ScwHeader, Ux4gFooter } from "./gov-chrome";
 import { Sidebar, USER_NAV } from "./sidebar";
 import { UserMenu, type AccountUser } from "./user-menu";
 
@@ -15,9 +15,8 @@ export function UserShell({
 }) {
   return (
     <div className="flex min-h-screen flex-col">
-      <GovTopBar />
-      <GovMasthead
-        right={
+      <ScwHeader
+        actions={
           user ? (
             <UserMenu user={user} />
           ) : (
