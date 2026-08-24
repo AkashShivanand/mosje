@@ -2,33 +2,155 @@ import { Meta } from '@storybook/blocks';
 
 <Meta title="Introduction" />
 
-# SAMAVESH Design System
+<style>
+  {`
+    .sb-container {
+      margin-bottom: 48px;
+    }
 
-Welcome to the living documentation for the **Ministry / Department of Social Justice & Empowerment (DoSJE)** digital estate.
+    .sb-section-title {
+      margin-bottom: 32px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #162F6A; /* DBIM Blue */
+      letter-spacing: -0.02em;
+    }
 
-This Storybook serves as the single source of truth for the UI components and foundations used across the unified informational website and the 20+ workflow portals.
+    .sb-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 48px;
+    }
 
-## The Four Non-Negotiables
+    .sb-card {
+      padding: 32px;
+      border-radius: 12px;
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      box-shadow: 0 4px 12px rgba(22, 47, 106, 0.04);
+      transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    }
+    
+    .sb-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(22, 47, 106, 0.08);
+    }
 
-Everything else is craft. These four are gates:
+    .sb-card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 8px;
+      background: #F3F4F6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+      color: #162F6A;
+      font-size: 24px;
+    }
+    
+    .sb-card-icon.primary {
+      background: #162F6A;
+      color: #FFFFFF;
+    }
 
-1. **Never commit to `main`.** Every task gets its own branch and reaches `main` through a PR.
-2. **A task keeps its branch across sessions.**
-3. **Accessibility is not tradeable.** WCAG 2.2 AA + GIGW. Semantic HTML, alt text, keyboard nav, visible focus, AA contrast on every public-facing page.
-4. **Design tokens, never hardcoded values.** No raw hex, `rgb()`, or arbitrary px in component CSS.
+    .sb-card-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #1F2937;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
 
-## Features of this Storybook
+    .sb-card-desc {
+      font-size: 14px;
+      line-height: 1.5;
+      color: #4B5563;
+      margin: 0;
+    }
+    
+    .sb-hero {
+      padding: 64px 0;
+      border-bottom: 1px solid #E5E7EB;
+      margin-bottom: 64px;
+    }
+    
+    .sb-hero-kicker {
+      font-size: 13px;
+      font-weight: 600;
+      color: #4B5563;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    
+    .sb-hero-title {
+      font-size: clamp(32px, 5vw, 48px);
+      font-weight: 700;
+      color: #1F2937;
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      max-width: 20ch;
+    }
+    
+    .sb-hero-desc {
+      font-size: 18px;
+      line-height: 1.6;
+      color: #4B5563;
+      max-width: 60ch;
+    }
+  `}
+</style>
 
-- **Theme Toggle**: Use the global toolbar (circle icon) to switch between the Blue, Navy, and DBIM color modes to verify components against all brands.
-- **Density Toggle**: Use the density toolbar to test "Comfortable" vs "Compact" UI spacing.
-- **Figma Integration**: Go to the "Design" tab in any component to see the original Figma frame alongside the implementation.
-- **Accessibility Checks**: The "Accessibility" tab runs axe-core tests on the current component state.
+<div className="sb-hero">
+  <div className="sb-hero-title">SAMAVESH Design System</div>
+  <p className="sb-hero-desc">
+    The living documentation and component library for the Ministry of Social Justice & Empowerment digital estate. A unified foundation serving the main informational website and over 20 workflow portals.
+  </p>
+</div>
 
-## Tech Stack
-- **Framework**: React 19 / Next.js 16
-- **Styling**: Tailwind CSS v4 + `@mosje/tokens`
-- **Typography**: Noto Sans
-- **Icons**: Material Symbols Rounded
+<div className="sb-container">
+  <h2 className="sb-section-title">The Four Non-Negotiables</h2>
+  <div className="sb-cards-grid">
+    <div className="sb-card">
+      <div className="sb-card-icon primary">✦</div>
+      <h3 className="sb-card-title">Branch Discipline</h3>
+      <p className="sb-card-desc">Never commit to main. Every task gets its own branch and reaches main through a PR. Husky hooks enforce this.</p>
+    </div>
+    <div className="sb-card">
+      <div className="sb-card-icon">✦</div>
+      <h3 className="sb-card-title">Continuity</h3>
+      <p className="sb-card-desc">A task keeps its branch across sessions. Resume existing worktrees rather than spawning duplicates.</p>
+    </div>
+    <div className="sb-card">
+      <div className="sb-card-icon primary">✦</div>
+      <h3 className="sb-card-title">Strict Accessibility</h3>
+      <p className="sb-card-desc">WCAG 2.2 AA + GIGW 3.0. Semantic HTML, alt text, keyboard navigation, visible focus, and strict contrast ratios.</p>
+    </div>
+    <div className="sb-card">
+      <div className="sb-card-icon">✦</div>
+      <h3 className="sb-card-title">Token Architecture</h3>
+      <p className="sb-card-desc">Design tokens only. No raw hex codes or arbitrary pixels in components. Governed by Style Dictionary.</p>
+    </div>
+  </div>
+</div>
 
----
-*Built with care for the Government of India.*
+<div className="sb-container">
+  <h2 className="sb-section-title">Storybook Capabilities</h2>
+  <div className="sb-cards-grid">
+    <div className="sb-card">
+      <h3 className="sb-card-title">Global Theming</h3>
+      <p className="sb-card-desc">Toggle between Blue, Navy, and DBIM color modes using the circle icon in the toolbar. This validates cross-brand component resilience.</p>
+    </div>
+    <div className="sb-card">
+      <h3 className="sb-card-title">Density Modes</h3>
+      <p className="sb-card-desc">Switch between Comfortable and Compact UI densities to test component behavior in data-heavy portal environments.</p>
+    </div>
+    <div className="sb-card">
+      <h3 className="sb-card-title">Figma Integration</h3>
+      <p className="sb-card-desc">Navigate to the "Design" tab within components to view the embedded Figma frames alongside the code implementation.</p>
+    </div>
+  </div>
+</div>

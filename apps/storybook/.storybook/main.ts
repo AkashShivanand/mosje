@@ -22,6 +22,7 @@ const config: StorybookConfig = {
     pkgDir("@storybook/addon-a11y"),
     pkgDir("@storybook/addon-designs")
   ],
+  staticDirs: [{ from: "../../apps/hub/public", to: "/" }],
   framework: { name: pkgDir("@storybook/react-vite"), options: {} },
   core: { disableTelemetry: true },
   docs: { autodocs: true },

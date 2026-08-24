@@ -25,7 +25,11 @@ import { Divider } from "@mosje/design-system";
 const meta = {
   title: "Layout/Divider",
   component: Divider,
-  parameters: { layout: "padded" },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55061-700"
+    }, layout: "padded" },
 } satisfies Meta<typeof Divider>;
 
 export default meta;

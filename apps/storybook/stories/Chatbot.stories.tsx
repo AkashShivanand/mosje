@@ -81,7 +81,11 @@ import {
 const meta = {
   title: "Feedback/Chatbot",
   component: Chatbot,
-  parameters: { layout: "centered" },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55826-37003"
+    }, layout: "centered" },
   args: {
     placement: "inline",
     defaultOpen: true,

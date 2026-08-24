@@ -1,3 +1,4 @@
+import { Title, Subtitle, Description, Primary, Controls, Stories } from "@storybook/blocks";
 import * as React from "react";
 import type { Preview } from "@storybook/react";
 
@@ -44,10 +45,29 @@ export const globalTypes = {
   },
 };
 
+
+
 const preview: Preview = {
   parameters: {
     layout: "fullscreen",
     controls: { expanded: true, matchers: { color: /(background|color)$/i } },
+    docs: {
+      page: () => (
+        <>
+          <Title />
+          <Subtitle />
+          <Description />
+          <div style={{ marginTop: '32px', marginBottom: '32px', border: '1px solid #E5E7EB', borderRadius: '12px', overflow: 'hidden' }}>
+            <Primary />
+          </div>
+          <div style={{ marginTop: '32px', marginBottom: '16px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: 600, color: '#111827', margin: '0 0 16px' }}>Properties</h2>
+            <Controls />
+          </div>
+          <Stories title="Variants & Examples" />
+        </>
+      ),
+    },
   },
   decorators: [
     (Story, context) => {

@@ -32,7 +32,11 @@ const EMBLEM = "/images/National-Emblem-logo.svg";
 const meta = {
   title: "Components/Navigation/NavSheet",
   component: NavSheet,
-  parameters: { layout: "fullscreen" },
+  parameters: {
+    design: {
+      type: "figma",
+      url: "https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=55327-3503"
+    }, layout: "fullscreen" },
 } satisfies Meta<typeof NavSheet>;
 
 export default meta;
