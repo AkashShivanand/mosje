@@ -872,6 +872,11 @@
   --sa-grid-margin-tablet: 24px;
   --sa-grid-margin-desktop: 32px;
   --sa-layout-bar-height: 46px;
+  --sa-layout-chatbot-width: 400px;
+  --sa-layout-chatbot-height: 719px;
+  --sa-layout-chatbot-launcher: 84px;
+  --sa-layout-chatbot-bubbleMax: 246px;
+  --sa-layout-chatbot-typingDot: 5px;
   --sa-layout-flag-width: 33px;
   --sa-layout-masthead-minHeight: 72px;
   --sa-layout-chrome-minHeight: 118px;

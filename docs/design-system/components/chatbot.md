@@ -180,7 +180,8 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 
 | Part | Figma | Code | |
 |---|---|---|---|
-| Panel | 400×719, `bg/neutral/base`, `shape/16`, `elevation/toast`, 1px `border/neutral/subtle` | identical | ✅ |
+| Panel | 400×719, bound to `layout/chatbot/width` · `height` | resolves the same two tokens | ✅ |
+| Geometry tokens | `layout/chatbot/*` — 5 variables, bound on the master | `--sa-layout-chatbot-*`, resolved by `chatbot.css` | **reconciled** — the family existed only in the library until 2026-08-24 |
 | Header | pad `padding/16`, gap `inline/12`, 1px bottom border | identical | ✅ |
 | Header mark | 40 | `--ds-chatbot-mascot-size: 40px` | ✅ |
 | Title | `Title/title-2` 16 Medium, `text/neutral/base` | `title-2`, weight 500, `text-default` | ✅ |
@@ -188,6 +189,10 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | Subtitle | `Body/body-3` 12, `text/neutral/subtle` | `body-3`, `text-muted` | ✅ |
 | Icon buttons | 32, `shape/8`, glyph 20, `icon/neutral/subtle` | identical | ✅ |
 | Icon glyphs | Material Symbols Rounded Light — `open_in_full`, `close`, `send` | were four hand-drawn `<svg>` paths, which `component-authoring.md` §2 forbids | **fixed in code** |
+| Typing dot | 5, bound to `layout/chatbot/typingDot` | `var(--sa-layout-chatbot-typingDot)` | **fixed in both** — the variable said 6 and was bound to nothing |
+| Typing wave | keyframed on `State=Typing`, 1.2s × 25 over a 30s timeline | `1200ms infinite`, 110ms stagger | ✅ |
+| Mascot float | keyframed on `Chatbot Mascot`, 5s × 6 | `5s ease-in-out infinite`, 2.5px | ✅ |
+| Seal turn | a declared specimen in §09, never on the master | `--spin` only; nothing in the lifecycle starts it | ✅ |
 | Log | pad `padding/16`, gap `stack/8`, bottom-anchored | identical | ✅ |
 | Turn | **row**, gap `inline/8`, top-aligned | was a **column** with a 37px avatar above the bubble | **fixed in code** |
 | Avatar | 40 | was **37** — on no scale, and 40 sits beside it in the header | **fixed in code** |
@@ -206,9 +211,9 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | Send at rest | drawn at 35% — the composer is empty in every variant | `:disabled { opacity: 0.35 }` | **fixed in Figma** (was drawn enabled) |
 | Note | `Body/body-3` 12, `text/neutral/subtle` | `body-3`, `text-muted` | ✅ |
 | Note text | "…points you to the right portal. It cannot decide or change an application." | identical | **fixed in Figma** |
-| End chat | `Label/label-1` 14, underlined, `text/status/error/base` | identical | **fixed in Figma** (was `body-3` 12) |
-| End chat target | 20px tall — a Figma TEXT node cannot carry padding | 73×28 (`padding/4`×`padding/8`) | **open, cosmetic** — needs a HUG wrapper to show the real hit area |
-| End chat position | own line under the note | was inline inside the note `<p>`, which stretched the note's last line box to 28px and moved the target with the text wrap | **fixed in code** |
+| End chat | `Label/label-1` 14, `text/status/error/base`, 1px `border/status/error/base`, `shape/8`, pad `padding/6`×`padding/12` | identical | **redesigned in both** — it was an underlined word, which reads as a link |
+| End chat target | 83×32 reported, 83×34 rendered — the 1px border is an OUTSIDE stroke | 83×34 | ✅ — the TEXT node now sits inside a HUG button frame, so the hit area is real geometry rather than a claim |
+| End chat position | same row as the note, hard right, bottom-aligned | identical (`.ds-chatbot__footer-row`, `align-items: flex-end`) | ✅ |
 | Launcher | 84, `bg/neutral/base`, `shape/full`, `elevation/toast` | identical | ✅ |
 | Close disc | full-bleed, `bg/brand/primary/bolder`, glyph 24 | full-bleed, glyph 30% of 84 = 25.2 | ✅ within a pixel |
 | Mascot disc | `bg/brand/primary/bolder` | identical | ✅ |

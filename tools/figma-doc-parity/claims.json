@@ -260,23 +260,66 @@
     {
       "node": "55828:766",
       "where": "Chatbot — Documentation › 02 Anatomy › FOOTER",
-      "figma": "A pill composer, the honest note, and End chat as a text link in error ink on its own line beneath it — never trailing the sentence, and never a button beside the close control.",
+      "figma": "A pill composer, the honest note, and End chat as a BORDERED BUTTON sharing the note’s row, hard right. An underlined word reads as a link — something that navigates — and this is the control that ends the conversation.",
       "expect": [
         {
           "kind": "text",
-          "value": "own line"
+          "value": "BORDERED BUTTON"
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/feedback/chatbot.tsx",
-          "pattern": "<p className=\"ds-chatbot__note\">\\{note\\}</p>",
-          "hint": "End chat is a SIBLING of the note. Inside it, the 28px control stretched the note's last line box and its position moved with the text wrap."
+          "pattern": "<div className=\"ds-chatbot__footer-row\">",
+          "hint": "The note and the button share one row; the button is not a word inside the paragraph."
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/feedback/chatbot.css",
-          "pattern": "\\.ds-chatbot__end \\{[^}]*display: block",
-          "flags": "s"
+          "pattern": "\\.ds-chatbot__end \\{[^}]*border: 1px solid var\\(--sa-border-status-error-base\\)",
+          "flags": "s",
+          "hint": "A bounded target is what says 'button'. Without the border this reads as a link, which is what it looked like before."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "\\.ds-chatbot__end \\{[^}]*text-decoration: underline",
+          "flags": "s",
+          "absent": true,
+          "hint": "An underline says 'this navigates'. It ends the conversation and clears the transcript."
+        }
+      ]
+    },
+    {
+      "node": "55829:804",
+      "where": "Chatbot — Documentation › 07 Tokens › GEOMETRY",
+      "figma": "width 400, height 719, launcher 84, bubbleMax 246, typingDot 5. Bound to the frames here and resolved by chatbot.css there, so neither side can move alone.",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-layout-chatbot-width"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-layout-chatbot-height"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-layout-chatbot-launcher"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-layout-chatbot-bubbleMax"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-layout-chatbot-typingDot",
+          "hint": "The library carried 6 while the master and the stylesheet both drew 5, because nothing was bound to it."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "--ds-chatbot-width: var\\(--sa-layout-chatbot-width\\)",
+          "hint": "The stylesheet must RESOLVE these, not restate the numbers."
         }
       ]
     }

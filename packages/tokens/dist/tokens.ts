@@ -1330,6 +1330,13 @@ export const tokens = {
     "bar": {
       "height": "46px"
     },
+    "chatbot": {
+      "width": "400px",
+      "height": "719px",
+      "launcher": "84px",
+      "bubbleMax": "246px",
+      "typingDot": "5px"
+    },
     "flag": {
       "width": "33px"
     },

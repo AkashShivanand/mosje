@@ -32,10 +32,10 @@
 
      1. SHOULD IT ANIMATE?  Opening a help widget is occasional, so it earns a
         real transition. The launcher, by contrast, is on screen on every page of
-        the estate, all day — so its ring is STATIC AT REST and only turns while
-        the pointer or keyboard is actually on it. A perpetual spin would be the
-        most-seen animation in the estate and the least useful, and it would drag
-        WCAG 2.2.2 (Pause, Stop, Hide) in with it for no gain.
+        the estate, all day — so its ring is STATIC unless a caller asks for
+        `spin`, and nothing in the widget's own lifecycle ever asks. A perpetual
+        spin would be the most-seen animation in the estate and the least useful,
+        and it would drag WCAG 2.2.2 (Pause, Stop, Hide) in with it for no gain.
 
      2. WHAT IS THE PURPOSE?  Panel — spatial continuity: it grows out of the
         launcher, so closing it visibly returns there. Bubbles — causality: the
@@ -89,11 +89,22 @@
      */
     --ds-chatbot-hover: 200ms;
 
-    /* -- geometry (from Figma 2175:79161) ---------------------------------- */
-    --ds-chatbot-width: 400px;
-    --ds-chatbot-height: 719px;
-    --ds-chatbot-launcher: 84px;
-    --ds-chatbot-gap: 16px;
+    /* -- geometry ----------------------------------------------------------
+       These resolve through `layout/chatbot/*`, which the Figma master has been
+       bound to all along — its panel width, panel height and launcher diameter
+       are variable bindings, not typed numbers. The tokens existed only in the
+       library until 2026-08-24, so this block used to restate the three values
+       as literals and the documentation could claim a token family the
+       stylesheet had no way to name. The local aliases stay because six calc()
+       sites read them; only the numbers are gone.
+
+       `gap` is an inset from the viewport edge on both axes, so it takes a
+       padding rung rather than an inline or stack one — it is a distance from
+       an edge, not a space between siblings. */
+    --ds-chatbot-width: var(--sa-layout-chatbot-width);
+    --ds-chatbot-height: var(--sa-layout-chatbot-height);
+    --ds-chatbot-launcher: var(--sa-layout-chatbot-launcher);
+    --ds-chatbot-gap: var(--sa-padding-16);
 
     position: relative;
     /* Column with the launcher last, so the mark is bottom-right of whatever box
@@ -503,11 +514,11 @@
      shadow, which are transitions, and transitions interrupt and reverse
      cleanly by construction.
 
-     10s, not 6s. Six was an overcorrection from an earlier pass — fast enough to
-     read as spinning, which is wrong for a government seal. At 10s a full turn
-     is stately and legible, and since it now only appears while the bot composes
-     a reply it is on screen for seconds at a time, not for the half-second a
-     hover lasts. That is what makes a slow rate affordable.
+     10s, not 6s. Six is fast enough to read as spinning, which is wrong for a
+     government seal. At 10s a full turn is stately and legible, and because the
+     turn is deliberately asked for rather than triggered by a passing pointer,
+     it is on screen for as long as the caller wants it — which is what makes a
+     slow rate affordable.
 
      THE FLOAT NEVER CHANGES AMPLITUDE. Transitioning it was smoother than adding
      and removing it, but not smooth ENOUGH: the keyframe and the amplitude were
@@ -901,8 +912,8 @@
   }
 
   .ds-chatbot__typing i {
-    width: 5px;
-    height: 5px;
+    width: var(--sa-layout-chatbot-typingDot);
+    height: var(--sa-layout-chatbot-typingDot);
     border-radius: var(--sa-shape-full);
     background: var(--sa-color-text-muted);
   }
@@ -1179,8 +1190,20 @@
     transform: scale(0.94);
   }
 
+  /* The note and End chat share ONE row: the sentence takes the space it needs
+     and the control sits hard right, baseline-aligned with the note's last line.
+     A two-line disclaimer with a control under it wastes a whole row of a panel
+     that is already capped against the corner rail. */
+  .ds-chatbot__footer-row {
+    display: flex;
+    gap: var(--sa-inline-8);
+    align-items: flex-end;
+    margin-block-start: var(--sa-stack-8);
+  }
+
   .ds-chatbot__note {
-    margin: var(--sa-stack-8) 0 0;
+    flex: 1 1 auto;
+    margin: 0;
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
@@ -1200,30 +1223,36 @@
      section where the control actually lives.
 
      Do not re-split it: `no-duplicate-selectors` is on for exactly this reason. */
+  /* IT IS A BUTTON, SO IT LOOKS LIKE ONE. An underlined word in error ink reads
+     as a link — something that navigates — and this is the one control that ENDS
+     the conversation and clears the transcript. A bounded target says that; an
+     underline says the opposite, and it also put the only exit on the same
+     visual footing as body copy.
+
+     Outline rather than filled: it stays quiet beside the note, and it must not
+     compete with Send, which is the panel's one filled control. The error ink is
+     carried by the label and the border, not by a fill — the same restraint the
+     Colour page applies to status signals.
+
+     34px tall (20 line-height + 6 + 6 + 2 border), comfortably past the 24px
+     WCAG 2.2 (2.5.8) minimum, and it no longer needs a negative margin to sit in
+     the gutter because it is right-aligned in its own row. */
   .ds-chatbot__end {
-    /* Its own line under the note, not trailing the sentence. */
-    display: block;
-    width: fit-content;
-    margin-block-start: var(--sa-stack-4);
-    padding: var(--sa-padding-4) var(--sa-padding-8);
-    /* -8px of the padding above, so the LABEL sits flush with the footer's 16px
-       gutter while the tappable box clears 24px (WCAG 2.2 · 2.5.8):
-       label-1's 20px line-height + 4 + 4 = 28. This was `margin-inline-end`
-       while the button trailed the note inline, where it pulled the wrong edge
-       and aligned nothing. */
-    margin-inline-start: calc(var(--sa-padding-8) * -1);
-    border: 0;
-    border-radius: var(--sa-shape-4);
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    padding: var(--sa-padding-6) var(--sa-padding-12);
+    border: 1px solid var(--sa-border-status-error-base);
+    border-radius: var(--sa-shape-8);
     background: transparent;
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    /* Figma specifies #ff0004, which measures 4.00:1 on white and fails AA for
-       text. The design system's error ink is the same signal at 9.10:1, so it
-       wins — accessibility is not traded against fidelity. */
+    /* The reference specifies #ff0004, which measures 4.00:1 on white and fails
+       AA for text. The design system's error ink is the same signal at 9.10:1,
+       so it wins — accessibility is not traded against fidelity. */
     color: var(--sa-text-status-error-base);
-    text-decoration: underline;
-    text-underline-offset: 2px;
+    white-space: nowrap;
     cursor: pointer;
     transition:
       background-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
@@ -1235,8 +1264,15 @@
     outline-offset: var(--sa-focus-offset);
   }
 
-  .ds-chatbot__end:hover {
+  @media (hover: hover) and (pointer: fine) {
+    .ds-chatbot__end:hover {
+      background: var(--sa-bg-status-error-base);
+    }
+  }
+
+  .ds-chatbot__end:active {
     background: var(--sa-bg-status-error-subtler);
+    transform: scale(0.97);
   }
 
   .ds-chatbot__end:active {

@@ -50,7 +50,7 @@ export interface ChatbotProps
   title?: string;
   /** Devanagari name under the title. Pass "" to suppress it. */
   subtitle?: string;
-  /** Label for the (footer, non-destructive-looking) end-chat action. @default "End chat" */
+  /** Label for the footer's end-chat button. @default "End chat" */
   endChatLabel?: string;
   /**
    * The honest statement of what this assistant is not. Shown under the
@@ -172,9 +172,11 @@ const nextId = () => `m${++seq}`;
  *   and nothing else. The scripted sequence is skipped entirely, because two
  *   things writing the transcript is how a chat surface starts double-posting.
  *
- * Motion is authored, not imported: the Figma node carries no keyframes
- * (`get_motion_context` returns an empty set), so every timing here is a
- * decision — documented, with its reasoning, at the top of `chatbot.css`.
+ * Motion was authored here first and pushed to Figma second: every timing is a
+ * decision, documented with its reasoning at the top of `chatbot.css`. The three
+ * loops now exist on both sides — the typing wave is keyframed on the Figma
+ * master's `State=Typing`, the mascot float on `Chatbot Mascot` — so an instance
+ * dropped into any frame carries the same motion this stylesheet describes.
  *
  * Accessibility: the panel is a **non-modal** dialog — it never traps focus and
  * never blocks the page behind it, because a support widget that hostages the
@@ -632,15 +634,17 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               </form>
             )}
 
-            <p className="ds-chatbot__note">{note}</p>
+            <div className="ds-chatbot__footer-row">
+              <p className="ds-chatbot__note">{note}</p>
             {/*
               END CHAT IS A SIBLING OF THE NOTE, NOT A WORD INSIDE IT. It used to
               live in the paragraph, separated by a space, which cost two things:
-              the 28px control stretched the note's last line box from 16px to
-              28px and broke the footer's rhythm, and — worse — the only way out
-              of the conversation moved horizontally with the text wrap, so its
-              position depended on how long the disclaimer happened to be. A
-              control people reach for should be somewhere they can learn.
+              the control stretched the note's last line box and broke the
+              footer's rhythm, and — worse — the only way out of the conversation
+              moved horizontally with the text wrap, so its position depended on
+              how long the disclaimer happened to be. A control people reach for
+              should be somewhere they can learn. It now shares a row with the
+              note and sits hard right, which is a fixed place.
 
               Shown when there is a conversation to end AND something can end
               it. Uncontrolled, that is always us. Controlled, the transcript
@@ -653,11 +657,12 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               driven, rather than whether the affordance can work, is making a
               decision that is not its to make.
             */}
-            {canEndChat && messages.length > 0 && (
-              <button type="button" className="ds-chatbot__end" onClick={handleEndChat}>
-                {endChatLabel}
-              </button>
-            )}
+              {canEndChat && messages.length > 0 && (
+                <button type="button" className="ds-chatbot__end" onClick={handleEndChat}>
+                  {endChatLabel}
+                </button>
+              )}
+            </div>
           </footer>
         </div>
       )}
