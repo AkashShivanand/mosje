@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 201,
+    "offScale": 200,
     "classSized": 4
   },
   "files": {
@@ -321,10 +321,6 @@
     },
     "apps/hub/src/components/website/nmba/DeAddictionMap.tsx": {
       "offScale": 2,
-      "classSized": 0
-    },
-    "apps/hub/src/components/website/nmba/NmbaHomeCompact.tsx": {
-      "offScale": 1,
       "classSized": 0
     },
     "apps/hub/src/components/website/nmba/options/CombinedOptions.tsx": {
