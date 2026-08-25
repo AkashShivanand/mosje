@@ -21,7 +21,14 @@ export const revalidate = 3600;
 export async function GET(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
   const query = (searchParams.get("q") ?? "").trim();
-  const limit = Math.min(Number(searchParams.get("limit") ?? 8) || 8, 20);
+  // CLAMP BOTH ENDS. `Math.min(n, 20)` alone only holds the ceiling, and the
+  // floor is the end that leaks: `Number("-1")` is truthy, so a negative limit
+  // survived as-is and `suggest()` passed it to `.slice(0, -1)` — which returns
+  // everything but the last row. `?limit=-1` answered with all 251 records, the
+  // whole corpus this route exists to avoid shipping. Floor at 1, and floor the
+  // value itself so a fractional limit cannot slice on a non-integer.
+  const requested = Number(searchParams.get("limit") ?? 8) || 8;
+  const limit = Math.min(Math.max(1, Math.floor(requested)), 20);
 
   if (query.length < MIN_QUERY_LENGTH) {
     return NextResponse.json({ query, suggestions: [] });
