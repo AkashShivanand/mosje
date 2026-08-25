@@ -176,3 +176,114 @@ export const OnABrandSurface: Story = {
     </div>
   ),
 };
+
+/**
+ * **Known defects, rendered rather than described.**
+ *
+ * A design system that only demonstrates its happy path teaches the happy path.
+ * These three are real, measured on 2026-08-25, and open — the brief that closes
+ * them is `docs/design-system/components/button-cleanup-prompt.md`. They are here
+ * so a reviewer can see them, and so they cannot be quietly forgotten.
+ */
+export const KnownDefects: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 32, maxWidth: 720 }}>
+      <section>
+        <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
+          1 · <code>disabled</code> does nothing on a link-button
+        </h3>
+        <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
+          `href` renders an `&lt;a&gt;`, and `disabled` is not a valid attribute there.
+          Measured: pointer-events auto, opacity 1, cursor pointer, no `aria-disabled`,
+          still in the tab order. Tab to it — it takes focus. Do not ship one.
+        </p>
+        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          <Button disabled>Disabled button — correct</Button>
+          <Button href="/nowhere" disabled>
+            Disabled link — still live
+          </Button>
+        </div>
+      </section>
+
+      <section>
+        <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
+          2 · A fixed height clips the label at 200% text (WCAG 1.4.4)
+        </h3>
+        <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
+          Sizes set `height`, not `min-height`. At 200% the box stays 40px while the
+          content needs 41.
+        </p>
+        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          <Button>Apply now</Button>
+          <Button style={{ fontSize: 32 }}>Apply now</Button>
+        </div>
+      </section>
+
+      <section>
+        <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
+          3 · Tonal has no perceivable edge (WCAG 1.4.11 needs 3:1)
+        </h3>
+        <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
+          Boundary against the page: primary 1.42, success 1.52, danger 1.21,
+          neutral 1.35. You cannot tell where the control is except by reading it.
+        </p>
+        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+          {(["primary", "success", "danger", "neutral"] as const).map((v) => (
+            <Button key={v} variant={v} appearance="tonal">
+              {v}
+            </Button>
+          ))}
+        </div>
+      </section>
+    </div>
+  ),
+};
+
+/**
+ * `inverseOutlined` renders **identically for all four variants** — white text,
+ * white border — so `variant="danger"` silently loses its signal. Compare the
+ * top row (inverse, which does respect the variant) with the bottom.
+ */
+export const InverseIgnoresVariant: Story = {
+  render: () => (
+    <div
+      style={{
+        display: "grid",
+        gap: 16,
+        padding: 24,
+        borderRadius: "var(--sa-shape-8)",
+        background: "var(--sa-bg-brand-primary-bolder)",
+      }}
+    >
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+        {(["primary", "success", "danger", "neutral"] as const).map((v) => (
+          <Button key={v} variant={v} appearance="inverse">
+            {v}
+          </Button>
+        ))}
+      </div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+        {(["primary", "success", "danger", "neutral"] as const).map((v) => (
+          <Button key={v} variant={v} appearance="inverseOutlined">
+            {v}
+          </Button>
+        ))}
+      </div>
+    </div>
+  ),
+};
+
+/**
+ * There is **no** `loading` prop. Pass `aria-busy` and `disabled` yourself and
+ * swap the label — this is the pattern to copy, not something the component does.
+ */
+export const LoadingIsConsumerSupplied: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+      <Button>Submit application</Button>
+      <Button disabled aria-busy="true">
+        Submitting…
+      </Button>
+    </div>
+  ),
+};

@@ -1,7 +1,6 @@
 import { Header } from "@/components/website/Header";
 import { SamaveshBanner } from "@/components/website/SamaveshBanner";
 import { HeroCarousel } from "@/components/website/HeroCarousel";
-import { LatestUpdates } from "@/components/website/LatestUpdates";
 import { AboutUs } from "@/components/website/AboutUs";
 import { Offerings } from "@/components/website/Offerings";
 import { Organisations } from "@/components/website/Organisations";
@@ -29,7 +28,6 @@ export default async function Home() {
       <main id="main-content" className="flex-1">
         <SamaveshBanner />
         <HeroCarousel />
-        <LatestUpdates />
         <AboutUs />
         <Offerings />
         <Organisations />

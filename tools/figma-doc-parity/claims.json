@@ -289,9 +289,16 @@
         {
           "kind": "source",
           "file": "packages/design-system/components/actions/button.css",
-          "pattern": "\\.ds-btn--neutral \\{[^}]*--_color: var\\(--sa-text-neutral-base\\)",
+          "pattern": "\\.ds-btn--neutral \\{[^}]*--_color: var\\(--sa-cmp-action-neutral-tertiary-default-text\\)",
           "flags": "s",
-          "hint": "Base ink, not subtle: `subtle` resolves to the same text/muted as the disclaimer beside it, which made the one control in the footer the colour of body copy."
+          "hint": "It binds TIER 3, and it is the only variant that does. A complete cmp/action/neutral/* family already existed — 72 variables in Figma, 464 --sa-cmp-action-* in tokens.css — and the estate consumed two of them, both in comments. That orphan is why the author of this control reached for danger."
+        },
+        {
+          "kind": "source",
+          "file": "packages/tokens/src/component-matrix.json",
+          "pattern": "\"neutral\":\\s*\\{\\s*\"tertiary\":\\s*\\{\\s*\"default\":\\s*\\{\\s*\"text\":\\s*\"800\"",
+          "flags": "s",
+          "hint": "The neutral-only override. Without it the ink is the matrix default 700, which on the neutral ramp is text/muted — the colour of the disclaimer this control sits beside."
         }
       ]
     },
@@ -333,6 +340,75 @@
           "pattern": "max-height: min\\(\\s*var\\(--ds-chatbot-height\\)",
           "flags": "s",
           "hint": "719 is the ceiling. Pinned there as a height, the opening state was 435px of white under the header — about 45% of the panel."
+        }
+      ]
+    },
+    {
+      "node": "56162:1799",
+      "where": "Button — Documentation › 03 Size",
+      "figma": "32, 40 and 48px. All three clear the 24x24 WCAG 2.2 (2.5.8) Level AA minimum. 44x44 is 2.5.5 Target Size (Enhanced), Level AAA — only lg reaches it, and UX4G 3.0 recommends it on mobile along with 8px between adjacent targets. Treat 44 as a touch-context recommendation, never as a WCAG failure on a pointer surface.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "24x24"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--sm \\{[^}]*height: 32px",
+          "flags": "s",
+          "hint": "sm is 32px. This page said sm 'meets the 44px height requirement' in three places, including inside the accessibility checklist, until 2026-08-25."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--lg \\{[^}]*height: 48px",
+          "flags": "s",
+          "hint": "lg is the only size reaching 44."
+        }
+      ]
+    },
+    {
+      "node": "56162:1811",
+      "where": "Button — Documentation › 03 Size › OPEN",
+      "figma": "The height is a FIXED height, not a minimum. Measured at 200% text the box stays 40px while the content needs 41 — the label is clipped, which fails WCAG 1.4.4 Resize Text. The fix is min-height plus vertical padding so the box grows with the text.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "FIXED height, not a minimum"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--md \\{[^}]*min-height",
+          "flags": "s",
+          "absent": true,
+          "hint": "The claim is that the size rules use `height`, not `min-height`. The day someone fixes it, this assertion fails and the page must stop calling it open."
+        }
+      ]
+    },
+    {
+      "node": "56162:1816",
+      "where": "Button — Documentation › 04 States",
+      "figma": "Default, hover, pressed, focused and disabled are drawn here as variants so a designer can see them. In CODE there is no state prop — CSS drives hover, active and disabled. Never add one. Loading is absent from both surfaces: pass aria-busy and disabled yourself.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "no state prop"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.tsx",
+          "pattern": "state\\?:",
+          "absent": true,
+          "hint": "State is a Figma variant axis only. A state prop in code would be the drift this line exists to prevent."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.tsx",
+          "pattern": "aria-busy",
+          "absent": true,
+          "hint": "There is no loading state. The docs page claimed the component set aria-busy until 2026-08-25; it does not."
         }
       ]
     }

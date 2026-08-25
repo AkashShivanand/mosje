@@ -43,6 +43,13 @@ test.describe("Samajik Sahayak — Start over", () => {
     // The hand-rolled version is what drifted into the estate's rejection red
     // for an action that is housekeeping. Pinning the class is what stops it
     // being quietly re-written by hand later.
+    //
+    // IF THIS FAILS DURING THE BUTTON REBUILD, IT IS THE DEPENDENCY, NOT A BUG
+    // HERE. Button is being restructured separately (button-cleanup-prompt.md).
+    // These three class names are a contract: either they survive, or this test
+    // is updated in the SAME change. Do not delete the assertion to get green —
+    // it is the only thing standing between this control and a fourth
+    // hand-rolled button.
     await expect(page.locator(START_OVER)).toHaveClass(/ds-btn/);
     await expect(page.locator(START_OVER)).toHaveClass(/ds-btn--neutral/);
     await expect(page.locator(START_OVER)).toHaveClass(/ds-btn--text/);

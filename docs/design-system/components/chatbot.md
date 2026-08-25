@@ -179,6 +179,59 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
 | 13 | **The Figma mascot was drawn far too small.** `chatbot.css` sizes the figure at 71.5% of the mark without the ring and 66% with it; Figma had 54.8% and 39.3%. | **Fixed 2026-08-23** — both derived from the CSS percentages and the image's own crop aspect |
 | 14 | **The bottom half of the seal reads inverted.** That is inherent to a single circular path and the shipped component does the same, so Figma matches it. A seal that reads upright top AND bottom needs two arcs with the lower one reversed. | Recorded — a design decision, not a defect |
 
+## Upstream dependency — `Button` (recorded 2026-08-25, NOT to be fixed here)
+
+The chatbot's reset control is a `Button` instance in **both** surfaces. `Button` is
+being rebuilt in a separate piece of work
+(`docs/design-system/components/button-cleanup-prompt.md`), and this section exists
+so neither side surprises the other.
+
+### What the chatbot binds to today
+
+| Coupling | Where |
+|---|---|
+| `variant="neutral" appearance="text" size="sm"` | `chatbot.tsx`, the footer control |
+| `.ds-btn` · `.ds-btn--neutral` · `.ds-btn--text` class names | `e2e/chatbot/end-chat.spec.ts:46-48` — asserted directly |
+| `.ds-btn--neutral { --_color: var(--sa-cmp-action-neutral-tertiary-default-text) }` | pinned in `claims.json` on the chatbot's own Figma node `55828:766` |
+| `"neutral" → "tertiary" → default text: "800"` | pinned in `claims.json`, from `component-matrix.json` |
+| A `Size=Small, Type=Neutral, Sub-type=Text` **instance** in Figma | all three chatbot panel states |
+| `.ds-chatbot__end { flex: none }` | the only styling the chatbot still owns — layout, not appearance |
+
+**Consequence worth stating plainly: a `Button` change can fail the CHATBOT's Figma
+parity gate.** Two of the assertions on chatbot node `55828:766` read
+`button.css` and `component-matrix.json`, not chatbot files. If
+`check:figma-docs` fails naming the chatbot's FOOTER claim while you are editing
+Button, that is this dependency firing, not a chatbot regression.
+
+### What the Button work must not break
+
+1. **The three Figma instances.** `component-authoring.md` §11 — edit the set in
+   place, never fork the key. A new key silently detaches all three.
+2. **The class names** `ds-btn--neutral` and `ds-btn--text`, or update
+   `end-chat.spec.ts` in the same change.
+3. **The neutral tertiary ink at `neutralScale/800`.** It is 800 rather than the
+   matrix default 700 because of a neutral-only override, and the reason is
+   specific to this footer: 700 on the neutral ramp is `text/muted`, the exact ink
+   of the disclaimer the control sits beside. Reverting it makes the control the
+   colour of the paragraph next to it.
+
+### What the chatbot should ADOPT once Button lands
+
+- **`min-height` instead of `height`.** The reset button will then grow at 200%
+  text. The footer row is `align-items: flex-end` and the panel is content-sized,
+  so it should absorb it — **re-verify, do not assume.**
+- **A `loading` state, if one is added.** The chatbot's send control has a real use
+  for it during the typing beat; it currently has none.
+- **The remaining three hand-rolled controls.** `.ds-chatbot__send`,
+  `.ds-chatbot__reply` and `.ds-chatbot__icon-btn` are still hand-drawn — the same
+  defect class the reset control had. `__send` and `__icon-btn` are icon-only, so
+  they wait on the `IconButton` decision (Figma has a 60-variant set, code exports
+  none, and UX4G says icon-only is a Button *prop*). `__reply` is a suggestion
+  chip and may belong to `Chip` rather than `Button`; decide before converting.
+
+**No impact:** deleting `tonal` or `inverseOutlined`, and the disabled-link fix —
+the chatbot uses none of them and its control is a real `<button>`.
+
 ## Figma ↔ code parity — measured 2026-08-23, re-measured after the parity pass
 
 Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Aligned unless noted.
@@ -216,11 +269,12 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | Send at rest | drawn at 35% — the composer is empty in every variant | `:disabled { opacity: 0.35 }` | **fixed in Figma** (was drawn enabled) |
 | Note | `Body/body-3` 12, `text/neutral/subtle` | `body-3`, `text-muted` | ✅ |
 | Note text | "…points you to the right portal. It cannot decide or change an application." | identical | **fixed in Figma** |
-| Start over | `Label/label-1` 14/500, `text/neutral/base`, **no border, no fill**, `shape/8`, `.ds-btn--sm` (32 high, `padding/16` sides) | **Figma still shows the red outlined "End chat"** | ⚠️ **open — Figma to update.** The red was wrong twice over: the mock's `#ff0004` measures 4.00:1 and fails AA, and even the compliant error ink spends the estate's *rejection* signal on housekeeping. See the parity note below |
-| Start over target | 101×32 | pending | ⚠️ clears the 24px 2.5.8 minimum |
+| Start over | `Label/label-2`, `cmp/action/neutral/tertiary/default/text`, **no border, no fill**, `shape/8`, `.ds-btn--sm` | **a `Button` INSTANCE** — `Size=Small, Type=Neutral, Sub-type=Text` | ✅ **both sides now instance the same component.** It was a hand-drawn frame with a 1px error stroke in Figma and ~40 lines of hand-rolled CSS in code — the same defect, authored twice |
+| Start over target | 32 high, clears the 24px 2.5.8 minimum | identical (the Button master hugs its label) | ✅ |
+| Start over ink | `neutralScale/800` via a **neutral-only override** in `component-matrix.json` | identical — pushed and read back, `figma-live.json` re-recorded | ✅ the matrix default is 700, which on the neutral ramp is `text/muted`, the ink of the disclaimer it sits beside |
 | Start over position | same row as the note, hard right, bottom-aligned | identical (`.ds-chatbot__footer-row`, `align-items: flex-end`) | ✅ |
-| Composer input | fills the pill's 32px inner height | pending | ⚠️ **was 20px** — a line box floated inside a 42px pill by `align-items: center`, so half the visible field focused nothing and the real target sat under the 24px minimum |
-| Panel height | **content-sized**, capped at `min(719, viewport room)` | Figma frame is a fixed 719 | ⚠️ Figma's frame is a specimen at maximum extent; the cap is the contract. Pinned at 719 the opening state was 435px of white under the header |
+| Composer input | fills the pill's full 40px inner height (the padding moved onto the input) | not expressible | ⚠️ **by design.** Figma draws appearance, not hit areas — the pill renders identically either way. The rule is carried in the master's description and §06 of the documentation page instead. It was 20px: a line box floated inside a 42px pill, so half the visible field focused nothing and the real target sat under the 24px minimum |
+| Panel height | **content-sized**, capped at `min(719, viewport room)` | `State=Greeting` 396 · `State=Typing` 252 · `State=Transcript` 719 | ✅ the two short states are drawn at their true content height; Transcript stays at 719 because it is the state that demonstrates the cap and the scroll |
 | Launcher | 84, `bg/neutral/base`, `shape/full`, `elevation/toast` | identical | ✅ |
 | Close disc | full-bleed, `bg/brand/primary/bolder`, glyph 24 | full-bleed, glyph 30% of 84 = 25.2 | ✅ within a pixel |
 | Mascot disc | `bg/brand/primary/bolder` | identical | ✅ |

@@ -246,14 +246,7 @@ export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
         "Ministry of Social Justice & Empowerment",
         "Department of Social Justice & Empowerment",
       ]}
-      /* The Ministry's own address [WEB-F-04, in part]. This read "8th Floor,
-         GPOA-3, Netaji Nagar, New Delhi - 110023", which is not the Ministry —
-         `content/website/organisation.json` gives it as the address of
-         subordinate offices (the NOS cell among them). The Ministry is at
-         Shastri Bhawan, per /website/mosje-contact and /website/contact-person,
-         and the Handoff frame's footer agrees. Every page on the estate was
-         printing a subordinate office's address as the Ministry's. */
-      address="Shastri Bhawan, Dr. Rajendra Prasad Road, New Delhi - 110001"
+      address="8th Floor, GPOA-3, Netaji Nagar, New Delhi - 110023"
       social={social}
       colophonSlot={<VisitorCounter />}
       columns={columns}

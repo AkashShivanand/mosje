@@ -129,27 +129,51 @@
   /* THE VARIANT WITH NO SIGNAL. For dismiss / reset / "start over" — an action
      that is neither the primary path nor a warning about one.
 
-     `--_color` is the BASE ink. It was written as `subtle` first, on the
-     reasoning that a neutral variant should read as quiet — and that was wrong,
-     visibly so the moment it rendered. `subtle` resolves to the same
-     `text/muted` the chatbot's disclaimer uses, so the one interactive thing in
-     that footer came out the exact colour of the paragraph beside it. Quiet is
-     the job of the APPEARANCE (`text` and `outlined` carry no fill); making the
-     ink quiet as well de-emphasises it twice and leaves a control that reads as
-     a caption. Full ink, no signal colour: that is what neutral means.
+     IT BINDS TIER 3, AND IT IS THE ONLY VARIANT HERE THAT DOES. The comment
+     above says the `--sa-cmp-action-*` matrix "is the eventual home for this;
+     restructuring the Button onto it is a separate change." That deferral had a
+     cost: a COMPLETE `cmp/action/neutral/*` family already existed — 72
+     variables in Figma, 464 `--sa-cmp-action-*` emitted into tokens.css — and
+     the whole estate consumed exactly two of them, both in comments. A Tier-3
+     token nothing binds reads as governance while the thing it governs drifts
+     underneath, and the drift here was somebody reaching for `danger` to style a
+     reset because no neutral action appeared to exist.
 
-     `--_fill` is a light grey, so `--_on` is dark ink rather than white. This is
-     exactly why `--_on` is declared per family: a filled neutral with white text
-     would be unreadable.
+     So this variant starts where the others should end up. The three above are
+     unchanged deliberately: repointing them is an estate-wide visual change and
+     does not belong in the same pass as a chatbot fix.
+
+     `--_color` is `tertiary/default/text`, which resolves to `neutralScale/800`
+     — the body-text ink, identical to the `text/neutral/base` this used to name,
+     so nothing moved on screen. It reads 800 rather than the matrix's default
+     700 because of a NEUTRAL-ONLY override added with this change: on every
+     other ramp 700 is a saturated hue, but on the neutral ramp 700 IS
+     `text/muted`, the exact ink disclaimers use — and a chrome-less control
+     painted in muted body ink is indistinguishable from the paragraph beside it.
+     That is not hypothetical; it is what this variant looked like in the chatbot
+     footer an hour before this comment was written.
+
+     `--_fill` is `neutralScale/600`, a DARK grey, so `--_on` is white. That is a
+     deliberate change from the light `bg/neutral/bold` this first shipped with:
+     the Tier-3 matrix models a filled neutral as a solid dark button, the Figma
+     variants are built from the same tokens, and two definitions of "filled
+     neutral" is the drift this whole exercise is about. Nothing consumed filled
+     neutral yet, so the cost of aligning is zero and now is the only free moment.
+
+     STILL NOT BOUND, and recorded rather than hidden: the hover and active
+     washes below are computed with `color-mix()`, so they cannot be contrast
+     tested and do not repaint per brand mode. Tier 3 models them explicitly
+     (`tertiary/hover/bg` and friends). Moving them is the same estate-wide
+     change as repointing the other three variants.
 
      No `--_dark`: it is declared by the three variants above and consumed by
      nothing. Not propagated here rather than copied forward. */
   .ds-btn--neutral {
-    --_fill: var(--sa-bg-neutral-bold);
-    --_on: var(--sa-on-bg-neutral-bold);
-    --_color: var(--sa-text-neutral-base);
-    --_tonal-bg: var(--sa-bg-neutral-subtle);
-    --_tonal-fg: var(--sa-text-neutral-bolder);
+    --_fill: var(--sa-cmp-action-neutral-primary-default-bg);
+    --_on: var(--sa-cmp-action-neutral-primary-default-text);
+    --_color: var(--sa-cmp-action-neutral-tertiary-default-text);
+    --_tonal-bg: var(--sa-cmp-action-neutral-tonal-default-bg);
+    --_tonal-fg: var(--sa-cmp-action-neutral-tonal-default-text);
     --_ring: var(--sa-focus-ring);
   }
 
