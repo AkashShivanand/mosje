@@ -31,7 +31,7 @@ export function Navbar() {
       }}
       language={{ label: "English" }}
       cobranding={[
-        { src: `${IMG_BASE}/images/digital-india-logo.svg`, alt: "Digital India — Power To Empower", height: 40 },
+        { src: `${IMG_BASE}/images/digital-india-logo.svg`, alt: "Digital India — Power To Empower", href: "https://www.digitalindia.gov.in/", height: 40 },
         { src: `${IMG_BASE}/images/samavesh.png`, alt: "SAMAVESH", height: 44 },
       ]}
     />

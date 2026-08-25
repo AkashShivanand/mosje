@@ -27,7 +27,7 @@ import "./header.css";
    ========================================================================== */
 
 const IcCaret = () => <Icon name="keyboard_arrow_down" size={16} className="ds-hdr-ic" />;
-const IcMegaChevron = () => <Icon name="chevron_right" size={20} className="ds-hdr-ic" />;
+const IcMegaChevron = () => <Icon name="chevron_right" size={24} className="ds-hdr-ic" />;
 
 /** WCAG 3.2.5 — a link that leaves the tab has to say so, visibly and to AT. */
 export const NewTabHint = (): React.JSX.Element => (
@@ -131,14 +131,20 @@ export interface DropdownItemProps {
 export function DropdownItem({ item, onSelect, className }: DropdownItemProps): React.JSX.Element {
   return (
     <a
-      href={item.href}
-      className={cn("ds-hdr-nav__drop-link", item.active && "is-active", className)}
-      target={item.external ? "_blank" : undefined}
-      rel={item.external ? "noreferrer" : undefined}
-      onClick={onSelect}
+      href={item.disabled ? undefined : item.href}
+      className={cn(
+        "ds-hdr-nav__drop-link",
+        item.active && "is-active",
+        item.disabled && "is-disabled",
+        className,
+      )}
+      aria-disabled={item.disabled || undefined}
+      target={item.external && !item.disabled ? "_blank" : undefined}
+      rel={item.external && !item.disabled ? "noreferrer" : undefined}
+      onClick={item.disabled ? undefined : onSelect}
     >
       {item.label}
-      {item.external && <NewTabHint />}
+      {item.external && !item.disabled && <NewTabHint />}
     </a>
   );
 }
@@ -178,17 +184,28 @@ export interface MegaMenuItemProps {
 export function MegaMenuItem({ item, onSelect, className }: MegaMenuItemProps): React.JSX.Element {
   return (
     <a
-      href={item.href}
-      className={cn("ds-hdr-mega-item", item.active && "is-active", className)}
-      target={item.external ? "_blank" : undefined}
-      rel={item.external ? "noreferrer" : undefined}
-      onClick={onSelect}
+      href={item.disabled ? undefined : item.href}
+      className={cn(
+        "ds-hdr-mega-item",
+        item.active && "is-active",
+        item.disabled && "is-disabled",
+        className,
+      )}
+      aria-disabled={item.disabled || undefined}
+      target={item.external && !item.disabled ? "_blank" : undefined}
+      rel={item.external && !item.disabled ? "noreferrer" : undefined}
+      onClick={item.disabled ? undefined : onSelect}
     >
-      <span className="ds-hdr-mega-item__logo">
+      <span className={cn("ds-hdr-mega-item__logo", !item.iconSrc && "is-fallback")}>
         {item.iconSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={item.iconSrc} alt="" loading="lazy" />
-        ) : null}
+        ) : (
+          /* Not a monogram: the abbreviation is already the row's title, and
+             repeating "NC" beside "NCSC" is noise. An institution glyph says
+             "organisation, no emblem supplied" — an empty frame says "broken". */
+          <Icon name="account_balance" size={24} aria-hidden="true" />
+        )}
       </span>
       <span className="ds-hdr-mega-item__copy">
         <span className="ds-hdr-mega-item__abbr">{item.abbr}</span>
@@ -255,37 +272,58 @@ export interface NavItemLinkProps {
  * matching the type's documented contract.
  */
 export function NavItemLink({ item, open = false, onOpenChange, className }: NavItemLinkProps): React.JSX.Element {
+  /* Open is deliberately slower than a flick across the row; close is slower
+     still, so travelling from the label to the panel — or across a sibling on the
+     way to a centred one — does not drop what you were reaching for. */
+  const OPEN_MS = 100;
+  const CLOSE_MS = 300;
+  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const clear = () => {
+    if (timer.current !== undefined) clearTimeout(timer.current);
+    timer.current = undefined;
+  };
+  React.useEffect(() => clear, []);
+  const schedule = (next: boolean, ms: number) => {
+    clear();
+    timer.current = setTimeout(() => onOpenChange?.(next), ms);
+  };
   const hasMega = !!item.columns?.length;
   const hasChildren = !hasMega && !!item.children?.length;
-  const hasMenu = hasMega || hasChildren;
+  // A disabled entry opens nothing — the caret would promise a menu it will not show.
+  const hasMenu = !item.disabled && (hasMega || hasChildren);
   const dropId = `ds-hdr-drop-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
   const close = () => onOpenChange?.(false);
 
   return (
     <li
       className={cn("ds-hdr-nav__item", className)}
-      onMouseEnter={() => hasMenu && onOpenChange?.(true)}
-      onMouseLeave={() => onOpenChange?.(false)}
+      onMouseEnter={() => hasMenu && schedule(true, OPEN_MS)}
+      onMouseLeave={() => schedule(false, CLOSE_MS)}
     >
       <a
-        href={item.href}
-        className={cn("ds-hdr-nav__link", item.active && "is-active")}
-        target={item.external ? "_blank" : undefined}
-        rel={item.external ? "noreferrer" : undefined}
+        href={item.disabled ? undefined : item.href}
+        className={cn(
+          "ds-hdr-nav__link",
+          item.active && "is-active",
+          item.disabled && "is-disabled",
+        )}
+        aria-disabled={item.disabled || undefined}
+        target={item.external && !item.disabled ? "_blank" : undefined}
+        rel={item.external && !item.disabled ? "noreferrer" : undefined}
         aria-expanded={hasMenu ? open : undefined}
-        aria-haspopup={hasMenu ? true : undefined}
         aria-controls={hasMenu && open ? dropId : undefined}
         aria-current={item.active ? "page" : undefined}
         onClick={(e) => {
           if (hasMenu) {
             e.preventDefault();
+            clear();
             onOpenChange?.(!open);
           }
         }}
       >
         {item.label}
         {hasMenu && <IcCaret />}
-        {item.external && <NewTabHint />}
+        {item.external && !item.disabled && <NewTabHint />}
       </a>
 
       {hasChildren && open && (

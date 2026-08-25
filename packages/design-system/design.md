@@ -12,7 +12,50 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-22 · System version: v0.32.0 (NO HAND-ROLLED MASTHEAD OR
+  Last reviewed: 2026-08-25 · System version: v0.34.0 (THE MASTHEAD ANSWERS TO THE
+  STANDARDS, NOT JUST TO FIGMA. SEARCH NOW OUTLIVES THE NAV: it used to hide at
+  900px while the nav row held to 1024, so between 768 and 899 a reader had neither
+  a menu nor a search box — the two wayfinding tools collapsing one breakpoint apart
+  in the wrong order. Search is the FALLBACK for navigation; it stays inline to
+  `tablet` and takes its own full-width row below it [GIGW 5.2]. BREAKPOINTS ARE THE
+  TOKEN LADDER: 640, 900, 767 and 1279 are gone; the file mirrors `breakpoint/*`
+  (360 · 768 · 1024 · 1280) which the estate already derived from Material 3's
+  window size classes. THE NAVSHEET IS A REAL MODAL — `aria-modal="true"`, focus
+  trapped, body scroll locked, and focus RESTORED to the trigger, which its own
+  docstring had promised for months with no code behind it; it also sits above the
+  wall-rail widgets now instead of opening underneath Important Links. ACCOUNTMENU
+  IS REBUILT: the DS `Avatar` (circular — everything else square in this masthead is
+  an institution), the full APG menu-button keyboard (arrows, Home/End, Escape
+  restores focus, Tab closes) where `role="menu"` had previously promised all of it
+  and implemented none, a caret that turns over on open, truncation with `title`,
+  and a person glyph instead of "?" when there is no name. CO-BRANDING is capped at
+  two [DBIM 5.4] and its marks are LINKS [DBIM 5.6] — `BrandMark.href` had been in
+  the type and never rendered, so Digital India sat inert in every public masthead.
+  Plus `scroll-padding-top` so the sticky header stops covering anchors and focus
+  [WCAG 2.4.11], reduced-motion, print styles, hover-intent delays, and an
+  institution glyph where an organisation has no emblem. Previously v0.33.0: (THE
+  MASTHEAD IS THE HEIGHT IT
+  WAS DESIGNED TO BE. The brand row stood at 124px against Figma's 100 because the
+  lockup's four rows carried a 2px gap and the masthead search was 417px wide instead
+  of 320 — which left the department line 361px, so it wrapped. Both fixed; the row is
+  100 at rest and 88 On Scroll, exactly as drawn. `collapseOnScroll` now DOES what it
+  says: it shrinks the brand row by dropping the ministry line, and it never touched
+  the accessibility bar, which is 46px in every Figma variant — the prop's docstring
+  pointed at a `.sa-abar` rule that existed only inside a comment. It defaults ON
+  wherever the header is sticky. THE MEGA-MENU COLUMN HAIRLINES ARE GONE: Figma's Col
+  frames carry no strokes, they were added in code alone, and design won. The panel is
+  now centred on the nav row rather than on the item that opened it, because a 1272px
+  panel anchored to the third of seven items ran 256px off-screen. NAVSHEET KEEPS ITS
+  COLUMNS — Figma's State=Mega nests the real MegaMenu, and the code was flattening
+  five headed columns of emblems and full names into a list of bare abbreviations.
+  THREE NEW FIGMA MASTERS close the other direction: Navbar/AccountMenu and
+  Navbar/AccountMenuItem (the account dropdown shipped in code with nothing in the
+  library), and Navbar/Compact (the third `variant`, which had no master — which is
+  how its burger stayed a bare 40px icon after every other trigger became a 48px
+  outlined IconButton). BrandLockup gained Size=Default|Compact plus Show org and
+  Show ministry, mirroring the optional `BrandLines` fields. Nav items, dropdown rows
+  and mega rows all take `disabled` now — Figma has shipped a State=Disabled variant
+  for each of them all along. Previously v0.32.0: (NO HAND-ROLLED MASTHEAD OR
   ACCESSIBILITY BAR EXISTS ANYWHERE — `npm run check:chrome` fails the build on one.
   Twelve sites were converted, including a second accessibility bar INSIDE the design
   system and an invented abstract mark where the National Emblem belongs. Code Connect

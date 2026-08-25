@@ -13,6 +13,12 @@ export interface NavLink {
   active?: boolean;
   /** Open in a new tab (adds rel="noreferrer"). */
   external?: boolean;
+  /**
+   * Renders the disabled treatment (Figma `State=Disabled`) — muted colour, no
+   * href, `aria-disabled`. Use it for a destination that exists in the IA but is
+   * not reachable yet; drop the entry entirely if it never will be.
+   */
+  disabled?: boolean;
 }
 
 /**
@@ -32,6 +38,8 @@ export interface NavMegaItem {
   external?: boolean;
   /** Marks the current page. */
   active?: boolean;
+  /** Renders the disabled treatment (Figma `State=Disabled`). */
+  disabled?: boolean;
 }
 
 /**

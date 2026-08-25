@@ -204,7 +204,7 @@ export function TreatmentCentreShell({ children }: { children: React.ReactNode }
           department: "Patient Data Monitoring System",
         }}
         cobranding={[
-          { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", height: 34 },
+          { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 34 },
           { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },
         ]}
         onToggleNav={() => setMobileOpen((o) => !o)}

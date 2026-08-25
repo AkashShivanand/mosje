@@ -157,7 +157,7 @@ export function Header() {
           ),
       }}
       cobranding={[
-        { src: `${BP}/images/digital-india-logo.svg`, alt: "Digital India — Power To Empower", height: 40 },
+        { src: `${BP}/images/digital-india-logo.svg`, alt: "Digital India — Power To Empower", href: "https://www.digitalindia.gov.in/", height: 40 },
       ]}
       nav={nav}
       actions={
