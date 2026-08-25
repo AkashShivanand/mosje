@@ -54,9 +54,20 @@ function subContent(item: NavItem) {
  * same component with nothing open, a simple child list open, and a full mega-menu
  * open; they are states, not variants a consumer picks.
  *
- * DELIBERATELY NOT A MODAL. It is a disclosure region with a close control, so it
- * does not trap focus — the same rule the Chatbot panel carries. Escape closes it
- * and focus returns to the trigger, which is the behaviour a `SheetToggle` implies.
+ * IT IS A MODAL, AND IT NOW SAYS SO. It covers the viewport behind a scrim that
+ * swallows every click, so sighted users are already confined to it. It used to
+ * declare `aria-modal={false}` anyway — telling a screen-reader user the page
+ * behind was still theirs to browse while, for everyone else, it was not. Focus
+ * was not trapped either, so Tab walked out of the sheet into a page the reader
+ * could neither see nor click.
+ *
+ * Now: `aria-modal="true"`, focus trapped inside, the body scroll locked while it
+ * is open, and — the part its own docstring used to promise without any code
+ * behind it — focus RESTORED to whatever opened it when it closes.
+ *
+ * It slides from the RIGHT, matching the SheetToggle that opens it. A control on
+ * the right that produces a panel on the left breaks the relationship between the
+ * two, and on a phone it means the reader's thumb is nowhere near the close button.
  */
 export function NavSheet({
   open,
@@ -74,16 +85,70 @@ export function NavSheet({
   const [openLabel, setOpenLabel] = React.useState<string | null>(null);
   const [query, setQuery] = React.useState("");
   const ref = React.useRef<HTMLDivElement>(null);
+  /** Whatever had focus when the sheet opened — almost always the SheetToggle. */
+  const returnTo = React.useRef<HTMLElement | null>(null);
 
+  // Escape, the focus trap, and returning focus where it came from.
   React.useEffect(() => {
     if (!open) return;
+    returnTo.current = document.activeElement as HTMLElement | null;
+
+    const focusables = () =>
+      Array.from(
+        ref.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      ).filter((el) => el.offsetParent !== null);
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key !== "Tab") return;
+      // Trap: wrap at both ends rather than letting focus reach the page behind.
+      const list = focusables();
+      if (list.length === 0) return;
+      const first = list[0]!;
+      const last = list[list.length - 1]!;
+      const active = document.activeElement;
+      if (e.shiftKey && (active === first || !ref.current?.contains(active))) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     document.addEventListener("keydown", onKey);
-    ref.current?.querySelector<HTMLButtonElement>("button")?.focus();
-    return () => document.removeEventListener("keydown", onKey);
+    focusables()[0]?.focus();
+
+    return () => {
+      document.removeEventListener("keydown", onKey);
+      // Restore on the way out. `AccountMenu` has always done this; the sheet
+      // only claimed to, and a keyboard reader was dropped at the top of the
+      // document every time they closed it.
+      returnTo.current?.focus();
+    };
   }, [open, onClose]);
+
+  // Lock the page behind it. `overflow: hidden` on <body> keeps the scroll
+  // position (the position:fixed trick does not), and the padding compensates
+  // for the scrollbar so the layout does not jump as it disappears.
+  React.useEffect(() => {
+    if (!open) return;
+    const { body } = document;
+    const prevOverflow = body.style.overflow;
+    const prevPad = body.style.paddingRight;
+    const gap = window.innerWidth - document.documentElement.clientWidth;
+    body.style.overflow = "hidden";
+    if (gap > 0) body.style.paddingRight = `${gap}px`;
+    return () => {
+      body.style.overflow = prevOverflow;
+      body.style.paddingRight = prevPad;
+    };
+  }, [open]);
 
   // Collapse any open row when the sheet closes, so it reopens in its Default state.
   React.useEffect(() => {
@@ -101,7 +166,7 @@ export function NavSheet({
         className={cn("ds-navsheet", className)}
         role="dialog"
         aria-label="Navigation menu"
-        aria-modal={false}
+        aria-modal="true"
       >
         <div className="ds-navsheet__header">
           {/* NOT `compact` — Figma's sheet header carries the default lockup at its

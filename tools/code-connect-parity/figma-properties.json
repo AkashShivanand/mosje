@@ -345,7 +345,7 @@
   },
   "AccountMenu": {
     "nodeId": "56046:4113",
-    "captured": "2026-08-24",
+    "captured": "2026-08-25",
     "properties": {
       "Name#56049:0": {
         "type": "TEXT",
@@ -368,6 +368,8 @@
         "variantOptions": [
           "Static",
           "Closed",
+          "Hover",
+          "Focused",
           "Open"
         ]
       }

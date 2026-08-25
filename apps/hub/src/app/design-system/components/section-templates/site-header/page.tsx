@@ -400,7 +400,7 @@ export default function HeaderPage(): React.JSX.Element {
   brandLines={{ org: "Government of India", ministry: "…", department: "…" }}
   beta
   search={{ placeholder: "Search Schemes…", onSearch: () => router.push("/search") }}
-  cobranding={[{ src: digitalIndia, alt: "Digital India", height: 40 }]}
+  cobranding={[{ src: digitalIndia, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 40 }]}
   nav={NAV}
   actions={<a href="/admin">Login</a>}
 />;
@@ -416,7 +416,7 @@ export default function HeaderPage(): React.JSX.Element {
   navExpanded={!sidebarCollapsed}   // menu_open when expanded, menu when collapsed
   navControlsId="portal-sidebar"
   cobranding={[
-    { src: digitalIndia, alt: "Digital India", height: 40 },
+    { src: digitalIndia, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 40 },
     { src: samavesh, alt: "SAMAVESH", height: 44 },
   ]}
   account={{ name: "Sachin Malhotra", email: "sachin.malhotra@email.com" }}

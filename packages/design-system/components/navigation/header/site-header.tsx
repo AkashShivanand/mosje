@@ -215,7 +215,19 @@ export function SiteHeader({
   const hasNav = !!nav && nav.length > 0;
   const drawerId = React.useId();
 
-  // Scroll-shrink: collapse the accessibility bar after the page scrolls a touch.
+  /* [DBIM 5.4] "Co-branding section: … with a maximum of 2." Enforced here rather
+     than trusted to every call site; anything beyond two belongs in the footer's
+     dedicated logo strip, which is DBIM's own answer for the overflow. */
+  const marks = (cobranding ?? []).slice(0, 2);
+  if ((cobranding?.length ?? 0) > 2) {
+    console.warn(
+      `[SiteHeader] ${cobranding!.length} co-branding marks passed; DBIM 5.4 allows 2. ` +
+        `Rendering the first two — the rest belong in the footer's logo strip.`,
+    );
+  }
+
+  // Figma "State=On Scroll": shrink the BRAND ROW 100 -> 88. The accessibility
+  // bar does not move — it is 46px in every masthead variant.
   React.useEffect(() => {
     if (!wantsScrollCollapse) return;
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -320,24 +332,47 @@ export function SiteHeader({
             compact={isCompact}
           />
 
-          <div className="ds-hdr-brand__trailing">
-            {search && (
-              <Search
-                className="ds-hdr-searchfield"
-                size="lg"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onClear={() => setQuery("")}
-                onSubmit={(v) => search.onSearch?.(v)}
-                placeholder={search.placeholder ?? "Search"}
-                aria-label={search.placeholder ?? "Search"}
-              />
-            )}
+          {/* A DIRECT CHILD of the brand row, not part of the trailing cluster —
+              that is what lets it wrap onto its own full-width line below
+              `breakpoint/tablet` instead of disappearing. It used to hide at 900px
+              while the nav row survived to 1024, so between the two the reader had
+              neither. */}
+          {search && (
+            <Search
+              className="ds-hdr-searchfield"
+              size="lg"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onClear={() => setQuery("")}
+              onSubmit={(v) => search.onSearch?.(v)}
+              placeholder={search.placeholder ?? "Search"}
+              aria-label={search.placeholder ?? "Search"}
+            />
+          )}
 
-            {cobranding?.map((m) => (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
-            ))}
+          <div className="ds-hdr-brand__trailing">
+            {marks.map((m) =>
+              m.href ? (
+                /* [DBIM 5.6] Hyperlinked logos — the same treatment the footer
+                   gives its credits. `href` has been in `BrandMark` all along and
+                   was never read, so Digital India sat in every public masthead as
+                   an inert image. */
+                <a
+                  key={m.src}
+                  className="ds-hdr-cobrand-link"
+                  href={m.href}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+                  <span className="ds-hdr-sr"> (opens in a new window)</span>
+                </a>
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+              ),
+            )}
 
             {isCompact && navRow}
 

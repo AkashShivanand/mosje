@@ -12,7 +12,29 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-24 · System version: v0.33.0 (THE MASTHEAD IS THE HEIGHT IT
+  Last reviewed: 2026-08-25 · System version: v0.34.0 (THE MASTHEAD ANSWERS TO THE
+  STANDARDS, NOT JUST TO FIGMA. SEARCH NOW OUTLIVES THE NAV: it used to hide at
+  900px while the nav row held to 1024, so between 768 and 899 a reader had neither
+  a menu nor a search box — the two wayfinding tools collapsing one breakpoint apart
+  in the wrong order. Search is the FALLBACK for navigation; it stays inline to
+  `tablet` and takes its own full-width row below it [GIGW 5.2]. BREAKPOINTS ARE THE
+  TOKEN LADDER: 640, 900, 767 and 1279 are gone; the file mirrors `breakpoint/*`
+  (360 · 768 · 1024 · 1280) which the estate already derived from Material 3's
+  window size classes. THE NAVSHEET IS A REAL MODAL — `aria-modal="true"`, focus
+  trapped, body scroll locked, and focus RESTORED to the trigger, which its own
+  docstring had promised for months with no code behind it; it also sits above the
+  wall-rail widgets now instead of opening underneath Important Links. ACCOUNTMENU
+  IS REBUILT: the DS `Avatar` (circular — everything else square in this masthead is
+  an institution), the full APG menu-button keyboard (arrows, Home/End, Escape
+  restores focus, Tab closes) where `role="menu"` had previously promised all of it
+  and implemented none, a caret that turns over on open, truncation with `title`,
+  and a person glyph instead of "?" when there is no name. CO-BRANDING is capped at
+  two [DBIM 5.4] and its marks are LINKS [DBIM 5.6] — `BrandMark.href` had been in
+  the type and never rendered, so Digital India sat inert in every public masthead.
+  Plus `scroll-padding-top` so the sticky header stops covering anchors and focus
+  [WCAG 2.4.11], reduced-motion, print styles, hover-intent delays, and an
+  institution glyph where an organisation has no emblem. Previously v0.33.0: (THE
+  MASTHEAD IS THE HEIGHT IT
   WAS DESIGNED TO BE. The brand row stood at 124px against Figma's 100 because the
   lockup's four rows carried a 2px gap and the masthead search was 417px wide instead
   of 320 — which left the department line 361px, so it wrapped. Both fixed; the row is

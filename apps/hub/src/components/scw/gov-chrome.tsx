@@ -40,7 +40,7 @@ export function ScwHeader({
       govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
       language={{ label: "English" }}
       cobranding={[
-        { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", height: 36 },
+        { src: `${BASE}/brand/digital-india.svg`, alt: "Digital India", href: "https://www.digitalindia.gov.in/", height: 36 },
         { src: `${BASE}/brand/samavesh-logo.svg`, alt: "SAMAVESH", height: 40 },
       ]}
       account={account}

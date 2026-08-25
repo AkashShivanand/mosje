@@ -16,7 +16,19 @@
 //   Email      -> account.email
 //   Role       -> account.role   (header of the popover only)
 //   Show email -> omit account.email
-//   State      -> deliberatelyOmitted. Static = no `items`; Closed/Open are runtime.
+//   State      -> deliberatelyOmitted. Static is the only one a caller chooses, and
+//                 it is expressed by passing no `items`. Closed · Hover · Focused ·
+//                 Open are runtime and CSS states of one control.
+//
+// THE CARET IS THE AFFORDANCE, AND IT IS CONDITIONAL. Static drops it because
+// nothing opens; the menu button keeps it and turns it over when open. Do not make
+// it unconditional "for consistency" — it is the only thing separating an identity
+// badge from a control, and this component ships both.
+//
+// The avatar is the DS `Avatar` at size 48, CIRCULAR. Everything else square in
+// this masthead is an institution (the emblem, the co-brand marks, the org chips);
+// the person is the one round thing. Do not hand-roll it — this used to be a bare
+// <img> styled to a rounded square inside the design system that exports Avatar.
 //
 // The avatar falls back to up-to-two-letter initials derived from `name` when
 // `avatarSrc` is absent — do not pass a placeholder image to fake it.

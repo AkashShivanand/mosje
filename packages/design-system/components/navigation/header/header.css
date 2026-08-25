@@ -92,6 +92,9 @@
     min-width: 0;
   }
 
+  /* Hidden below `breakpoint/tablet` (768). Was 640 — a rung the token ladder
+     does not have, so the lockup revealed its text one step out of sync with
+     everything else in the masthead. */
   .ds-hdr-lockup__lines.is-hidden-mobile {
     display: none;
   }
@@ -150,7 +153,7 @@
     padding: var(--sa-padding-2) var(--sa-padding-4);
   }
 
-  @media (min-width: 640px) {
+  @media (min-width: 768px) {
     .ds-hdr-lockup__lines.is-hidden-mobile {
       display: flex;
     }
@@ -216,6 +219,17 @@
     padding: var(--sa-padding-12) var(--sa-padding-24);
   }
 
+  /* Wrapping is ON only below `breakpoint/tablet`, where the search field takes a
+     100% basis and drops to its own line. Above it the row must stay a single row:
+     flex decides wrapping from each item's BASIS before any shrinking happens, so
+     with wrap enabled the lockup's natural 510px pushed the 260px field onto a
+     second line at 820px too — a tablet masthead 172px tall. */
+  .ds-hdr-brand__in { flex-wrap: nowrap; }
+
+  @media (max-width: 767px) {
+    .ds-hdr-brand__in { flex-wrap: wrap; }
+  }
+
   /* Portal collapse / menu toggle (far left).
      Figma: Navbar/MenuToggle = IconButton Size=Large, Type=Outlined — 48x48,
      radius 8, 1px neutral border, 32px glyph. Identical to the mobile SheetToggle,
@@ -255,6 +269,35 @@
     min-width: 0;
   }
 
+  /* Basis 0 below `breakpoint/tablet`, and it has to sit AFTER the rule above:
+     equal specificity, later wins. With the row wrapping, `auto` lets the lockup's
+     natural width decide whether its neighbours fit — and the lockup is the widest
+     thing in the masthead, so the burger was pushed onto a line of its own with the
+     whole row empty beside it. At basis 0 the lockup takes what is left after the
+     burger, and only the search (basis 100%) drops to a second line. */
+  @media (max-width: 767px) {
+    .ds-hdr-brand__lockup {
+      flex: 1 1 0;
+    }
+
+    /* All three DBIM lines stay — the lockup is the statutory identity and none of
+       them is optional [DBIM 5.2, Lockup 2]. What changes is the SIZE of the
+       department line, one rung down, so it wraps to two lines instead of four in
+       the ~230px a 375px screen leaves it. At the desktop rung the mobile masthead
+       stood 298px tall before any content — 37% of the phone. */
+    .ds-hdr-lockup__dept {
+      font-size: var(--sa-type-title-3-size);
+      line-height: var(--sa-type-title-3-lh);
+    }
+
+    /* 16 not 24 on both axes here: on a 375px screen the row's own inset was
+       costing the identity almost 30px of the width it needed to stop wrapping. */
+    .ds-hdr-brand__in {
+      gap: var(--sa-stack-16);
+      padding-inline: var(--sa-padding-16);
+    }
+  }
+
   /* Trailing zone */
   .ds-hdr-brand__trailing {
     display: flex;
@@ -269,22 +312,41 @@
      embeds. Only PLACEMENT belongs here: width, and the breakpoint below which the
      field is not worth its space. Height, border, radius and the icons come from
      .ds-search, so the masthead can no longer drift from the field it copied. */
-  /* 320, not 417. Figma's Search instance in the brand row is 320x56, and the row's
-     whole width budget is built on it — Logos 570 + Search 320 + Digital India 105 +
-     CTAs 133 + three 24px gaps = the 1200 container exactly. At 417 the lockup was
-     left 361px for its text, the department line wrapped to two lines, and the brand
-     row stood at 124px against a designed 100. The masthead was 22px too tall on
-     every page of the estate because one number here was 97px too big. */
+  /* 320 at desktop, and the row's whole width budget is built on it — Logos 570 +
+     Search 320 + Digital India 105 + CTAs 133 + three 24px gaps = the 1200 container
+     exactly. At 417 the lockup was left 361px for its text, the department line
+     wrapped, and the brand row stood at 124px against a designed 100.
+
+     IT NEVER HIDES. The field used to disappear below 900px while the nav row held
+     on until 1024 — so between 768 and 899 the reader had neither a menu nor a
+     search box, and the two wayfinding tools collapsed one breakpoint apart in the
+     wrong order. Search is the FALLBACK for navigation: the moment the menu goes
+     into a sheet is the moment search matters most, and GIGW 5.2 wants it in a
+     consistent position on every page regardless. Below `tablet` it takes its own
+     full-width row instead of leaving. */
   .ds-hdr-searchfield {
-    display: none;
-    width: 320px;
-    max-width: 40vw;
-    flex: 0 0 auto;
+    order: 10;
+    flex: 1 1 100%;
+    width: auto;
+    max-width: none;
+    margin-block-start: var(--sa-stack-8);
   }
 
-  @media (min-width: 900px) {
+  @media (min-width: 768px) {
     .ds-hdr-searchfield {
-      display: flex;
+      order: 0;
+      /* Shrinkable but not greedy: the lockup absorbs the free space, the field
+         holds its size until the row genuinely runs out. */
+      flex: 0 1 260px;
+      min-width: 180px;
+      max-width: 320px;
+      margin-block-start: 0;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .ds-hdr-searchfield {
+      flex: 0 0 320px;
     }
   }
 
@@ -294,10 +356,30 @@
     flex: 0 0 auto;
   }
 
-  @media (max-width: 767px) {
-    .ds-hdr-cobrand {
+  /* Gone below `breakpoint/laptop` (1024). A co-brand mark is promotional; it does
+     not outrank the department's own name or the search field on a narrow screen,
+     and DBIM's own answer for the overflow is a dedicated logo section — which this
+     estate already has in the footer. [DBIM 5.4] */
+  @media (max-width: 1023px) {
+    .ds-hdr-cobrand,
+    .ds-hdr-cobrand-link {
       display: none;
     }
+  }
+
+  /* [DBIM 5.6] Hyperlinked logos, the same treatment the footer gives its credits:
+     a real anchor, a new tab, and the destination announced rather than implied. */
+  .ds-hdr-cobrand-link {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    border-radius: var(--sa-shape-4);
+    text-decoration: none;
+  }
+
+  .ds-hdr-cobrand-link:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: 2px;
   }
 
   /* Account block (portal) — details + 48px avatar; static, or a dropdown trigger */
@@ -308,16 +390,29 @@
     flex: 0 0 auto;
   }
 
-  /* Interactive variant: the block becomes the dropdown trigger button */
+  /* Interactive variant: the block becomes the menu button.
+     [DBIM 4.4.iv] "Mouse hover must prompt a noticeable change in clickable items"
+     — it had a hover ground already, but no pressed state and no open state, so
+     the control looked identical whether its menu was open or shut. */
   .ds-hdr-account.is-button {
     border: none;
     background: transparent;
-    padding: var(--sa-padding-2);
+    padding: var(--sa-padding-4);
     border-radius: var(--sa-shape-8);
     cursor: pointer;
+    transition: background-color var(--sa-motion-exit-duration) ease;
   }
 
   .ds-hdr-account.is-button:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-hdr-account.is-button:active {
+    background-color: var(--sa-bg-neutral-subtle);
+  }
+
+  /* Open reads as held-down, so the trigger and its panel are one object. */
+  .ds-hdr-account.is-button.is-open {
     background-color: var(--sa-bg-neutral-subtler);
   }
 
@@ -328,23 +423,53 @@
 
   /* Font glyph: it sizes from the `size` prop, so no width/height here — those
      would not resize it and could only clip it. */
+  /* The caret is the ONLY thing separating the static identity block from the
+     menu button, so it is conditional in the component and must stay so. It turns
+     over on open: the estate's other disclosure (NavSheet's rows) swaps
+     expand_more for expand_less, and showing state on the control itself matters
+     most on a narrow screen where the panel may open below the fold. */
   .ds-hdr-account__caret {
     flex: 0 0 auto;
     color: var(--sa-text-neutral-subtle);
+    transition: transform var(--sa-motion-exit-duration) ease;
+  }
+
+  .ds-hdr-account.is-open .ds-hdr-account__caret {
+    transform: rotate(180deg);
   }
 
   .ds-hdr-account__details {
     display: none;
     flex-direction: column;
     align-items: flex-end;
-    text-align: right;
+    text-align: end;
     line-height: 1.2;
+    min-width: 0;
+    max-width: 22ch;
   }
 
   @media (min-width: 768px) {
     .ds-hdr-account__details {
       display: flex;
     }
+  }
+
+  /* The email is the first thing to go — the name identifies the session, the
+     address only confirms it. Below `laptop` the block is name + avatar + caret. */
+  @media (max-width: 1023px) {
+    .ds-hdr-account__email {
+      display: none;
+    }
+  }
+
+  /* A long name must never push the masthead wider. Truncated in the trigger,
+     given in full by `title` and repeated unabridged in the menu header. */
+  .ds-hdr-account__name,
+  .ds-hdr-account__email {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
   }
 
   .ds-hdr-account__name {
@@ -360,20 +485,15 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /* This used to be a hand-rolled 48px rounded square — inside the design system
+     that exports `Avatar`. It is the DS component now, at size 48 and CIRCULAR:
+     circular is `Avatar`'s own default, and in this masthead the shape carries
+     information. Everything else square here is an institution — the National
+     Emblem, the co-brand marks, the organisation chips in the mega-menu. The one
+     round thing is the person. Sizing and ground come from `.ds-avatar`; all this
+     needs to do is stop the flex row shrinking it. */
   .ds-hdr-account__avatar {
-    display: grid;
-    place-items: center;
-    height: 48px;
-    width: 48px;
     flex: 0 0 auto;
-    border: 1px solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-8);
-    background-color: var(--sa-color-primaryScale-100);
-    color: var(--sa-color-primaryScale-800);
-    font-size: var(--sa-type-title-2-size);
-    font-weight: 500;
-    object-fit: cover;
-    overflow: hidden;
   }
 
   /* Mobile drawer toggle.
@@ -418,12 +538,18 @@
     }
   }
 
+  /* SPACE_BETWEEN is Figma's own call (2476:296125 → Navigational Items), and it
+     carries a 40px gap as a FLOOR, which this had as 0 — so as the viewport
+     narrowed the labels closed up until they touched. Left-aligning the row is the
+     more common government pattern (GOV.UK, USWDS, Canada.ca) and would survive a
+     changing item count better, but that is a design decision the frame has already
+     made deliberately; it is not a defect to fix in code. */
   .ds-hdr-nav__list {
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0;
+    gap: var(--sa-stack-40);
     padding: 0 var(--sa-padding-12);
     list-style: none;
   }
@@ -660,6 +786,12 @@
     overflow: hidden;
   }
 
+  /* No emblem supplied: a tinted institution glyph, not an empty frame. */
+  .ds-hdr-mega-item__logo.is-fallback {
+    color: var(--sa-icon-neutral-subtle);
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
   .ds-hdr-mega-item__logo img {
     width: 100%;
     height: 100%;
@@ -807,17 +939,29 @@
     position: relative;
   }
 
+  /* Logical inset so it anchors correctly in RTL. Capped against the viewport so a
+     long role line or a narrow window cannot push it off-screen, and capped in
+     height so a portal with many actions scrolls instead of running past the fold. */
   .ds-hdr-acct__menu {
     position: absolute;
-    right: 0;
+    inset-inline-end: 0;
     top: calc(100% + 8px);
     z-index: 50;
     min-width: 240px;
+    max-width: min(320px, calc(100vw - var(--sa-inline-32)));
+    max-height: min(70vh, 32rem);
+    overflow-y: auto;
+    overscroll-behavior: contain;
     padding: var(--sa-padding-4);
     border: 1px solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: var(--sa-elevation-toast);
+    box-shadow: var(--sa-elevation-dropdown);
+  }
+
+  .ds-hdr-acct__menu-list {
+    display: flex;
+    flex-direction: column;
   }
 
   .ds-hdr-acct__menu-head {
@@ -991,7 +1135,7 @@
   .ds-navsheet__scrim {
     position: fixed;
     inset: 0;
-    z-index: 60;
+    z-index: 1100;
     /* The estate's one scrim token — same as Modal and SideSheet. */
     background-color: var(--sa-overlay-neutral-boldest);
   }
@@ -1000,7 +1144,7 @@
     position: fixed;
     inset-block: 0;
     inset-inline-end: 0;
-    z-index: 61;
+    z-index: 1101;
     width: min(344px, 100vw);
     display: flex;
     flex-direction: column;
@@ -1193,5 +1337,79 @@
     pointer-events: none;
     cursor: default;
     color: var(--sa-text-neutral-disabled);
+  }
+
+  /* ── Motion, print, and where a sticky header must not land ──────────────── */
+
+  /* Every other navigation component in this package honours the preference —
+     tabs.css, site-footer.css, zone-switcher.css — and the masthead did not, so a
+     reader who had asked for less movement got a calm footer and an animated
+     header. The scroll collapse in particular must SNAP: it is a height change on
+     a pinned element, which is the most disturbing thing here to animate. */
+  @media (prefers-reduced-motion: reduce) {
+    .ds-hdr *,
+    .ds-navsheet * {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* A sticky masthead prints on every single page otherwise, and the nav row, the
+     search field and the account block are all noise on paper. What a printed page
+     needs from the header is who published it. */
+  @media print {
+    .ds-hdr {
+      position: static !important;
+      box-shadow: none;
+      border-bottom: 1px solid var(--sa-border-neutral-base);
+    }
+
+    .ds-hdr .sa-abar,
+    .ds-hdr-nav,
+    .ds-hdr-searchfield,
+    .ds-hdr-burger,
+    .ds-hdr-brand__toggle,
+    .ds-hdr-brand__actions,
+    .ds-hdr-acct,
+    .ds-navsheet,
+    .ds-navsheet__scrim {
+      display: none !important;
+    }
+  }
+}
+
+/* ── Sticky-header offset ──────────────────────────────────────────────────────
+   OUTSIDE the layer, and deliberately: this styles the document root, not a
+   component, so it must not sit in `components` where a utility could outrank it.
+
+   Without it every in-page anchor, every skip-link activation and every keyboard
+   focus that scrolls into view lands UNDERNEATH the pinned masthead — up to 146px
+   of it. That is WCAG 2.4.11 (Focus Not Obscured), which this package already
+   cites in tabs.css for a horizontal scroller far less likely to obscure anything.
+
+   `:has()` scopes it to pages that actually pin a header, so a static website page
+   keeps a scroll padding of zero. The values are each variant's RESTING height
+   plus 4px: the resting height is the larger one, so an anchor is never covered in
+   either scroll state. */
+:root:has(.ds-hdr[data-variant="portal"].is-sticky) {
+  scroll-padding-top: 150px;
+}
+
+:root:has(.ds-hdr[data-variant="compact"].is-sticky) {
+  scroll-padding-top: 72px;
+}
+
+:root:has(.ds-hdr[data-variant="website"].is-sticky) {
+  scroll-padding-top: 204px;
+}
+
+/* Below `breakpoint/tablet` the accessibility bar sheds its right-hand cluster and
+   the nav row is gone, so the pinned height drops. */
+@media (max-width: 767px) {
+  :root:has(.ds-hdr[data-variant="portal"].is-sticky),
+  :root:has(.ds-hdr[data-variant="website"].is-sticky) {
+    scroll-padding-top: 132px;
   }
 }
