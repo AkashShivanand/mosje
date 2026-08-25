@@ -20,6 +20,17 @@ export interface EstateLanguage {
   english: string;
   /** Writing direction, written to `<html dir>`. */
   dir: "ltr" | "rtl";
+  /**
+   * Does this language actually translate IN THE PROTOTYPE?
+   *
+   * The prototype has no Bhashini credentials and is not getting any — the real
+   * integration happens on the live site. So only the languages with a bundled
+   * dictionary translate here, and the picker has to say so rather than offer
+   * thirteen choices where twelve silently do nothing. Selecting one of those
+   * still switches `lang` and `dir`, which is a real part of the behaviour worth
+   * demonstrating; what it cannot do is change the words.
+   */
+  prototype: boolean;
 }
 
 /**
@@ -27,20 +38,26 @@ export interface EstateLanguage {
  * entry is translated FROM, so it has no Bhashini call behind it.
  */
 export const LANGUAGES: readonly EstateLanguage[] = [
-  { code: "en", native: "English", english: "English", dir: "ltr" },
-  { code: "hi", native: "हिन्दी", english: "Hindi", dir: "ltr" },
-  { code: "bn", native: "বাংলা", english: "Bengali", dir: "ltr" },
-  { code: "mr", native: "मराठी", english: "Marathi", dir: "ltr" },
-  { code: "te", native: "తెలుగు", english: "Telugu", dir: "ltr" },
-  { code: "ta", native: "தமிழ்", english: "Tamil", dir: "ltr" },
-  { code: "gu", native: "ગુજરાતી", english: "Gujarati", dir: "ltr" },
-  { code: "kn", native: "ಕನ್ನಡ", english: "Kannada", dir: "ltr" },
-  { code: "ml", native: "മലയാളം", english: "Malayalam", dir: "ltr" },
-  { code: "pa", native: "ਪੰਜਾਬੀ", english: "Punjabi", dir: "ltr" },
-  { code: "or", native: "ଓଡ଼ିଆ", english: "Odia", dir: "ltr" },
-  { code: "as", native: "অসমীয়া", english: "Assamese", dir: "ltr" },
-  { code: "ur", native: "اردو", english: "Urdu", dir: "rtl" },
+  { code: "en", native: "English", english: "English", dir: "ltr", prototype: true },
+  { code: "hi", native: "हिन्दी", english: "Hindi", dir: "ltr", prototype: true },
+  { code: "bn", native: "বাংলা", english: "Bengali", dir: "ltr", prototype: false },
+  { code: "mr", native: "मराठी", english: "Marathi", dir: "ltr", prototype: false },
+  { code: "te", native: "తెలుగు", english: "Telugu", dir: "ltr", prototype: false },
+  { code: "ta", native: "தமிழ்", english: "Tamil", dir: "ltr", prototype: false },
+  { code: "gu", native: "ગુજરાતી", english: "Gujarati", dir: "ltr", prototype: false },
+  { code: "kn", native: "ಕನ್ನಡ", english: "Kannada", dir: "ltr", prototype: false },
+  { code: "ml", native: "മലയാളം", english: "Malayalam", dir: "ltr", prototype: false },
+  { code: "pa", native: "ਪੰਜਾਬੀ", english: "Punjabi", dir: "ltr", prototype: false },
+  { code: "or", native: "ଓଡ଼ିଆ", english: "Odia", dir: "ltr", prototype: false },
+  { code: "as", native: "অসমীয়া", english: "Assamese", dir: "ltr", prototype: false },
+  { code: "ur", native: "اردو", english: "Urdu", dir: "rtl", prototype: false },
 ] as const;
+
+/**
+ * Flip this the day the deployment carries Bhashini credentials and every entry
+ * translates for real. It is read by the picker, and by nothing else.
+ */
+export const PROTOTYPE_MODE = true;
 
 export const SOURCE_LANGUAGE = "en";
 

@@ -1,6 +1,13 @@
 # Bhashini — language translation
 
-**Status:** working prototype, credentials not yet issued.
+**Status:** prototype demonstrates it; the live site integrates it.
+
+> **The prototype is not getting Bhashini credentials, deliberately.** Registration
+> and the live API belong to the production site. What this repository holds is a
+> working integration plus a bundled Hindi dictionary, so the behaviour can be
+> shown, reviewed and handed over without anyone waiting on an account. The
+> language picker says which languages translate here and which wait for the live
+> site — see `PROTOTYPE_MODE` in `lib/bhashini/languages.ts`.
 **Owner:** MoSJE digital estate.
 **Live surface:** the website masthead's language control (`/website`).
 
@@ -35,7 +42,9 @@ apps/hub/src/components/i18n/
 
 ---
 
-## Turning it on
+## For whoever integrates the live site
+
+Nothing below is needed to run or review the prototype. It is the handover.
 
 Bhashini's API is two calls, not one, and this matters when you debug it:
 
@@ -52,7 +61,7 @@ translation.
 
 ### Credentials
 
-Register the organisation and the domain at
+On the live site: register the organisation and the domain at
 [dashboard.bhashini.co.in](https://dashboard.bhashini.co.in/), then set three
 variables in the deployment environment — **never in the repository**:
 
@@ -64,7 +73,11 @@ BHASHINI_PIPELINE_ID=…
 
 On Vercel these go in Project → Settings → Environment Variables. Locally they go
 in `apps/hub/.env.local`, which is gitignored. With any of the three missing the
-route reports `configured: false` and the fallback takes over; nothing breaks.
+route reports `configured: false` and the fallback takes over; nothing breaks —
+which is exactly the state the prototype runs in, permanently and on purpose.
+
+Set `PROTOTYPE_MODE = false` in `lib/bhashini/languages.ts` at the same time, so
+the picker stops captioning twelve languages "Live site".
 
 ### Checking it
 
@@ -118,9 +131,10 @@ script tag plus deleting `components/i18n`.
 
 ## Known gaps
 
-- **Only the chrome is translated.** Page content still needs `<T>` applied, or a
-  build-time pass. Translating 86 website pages on the fly per reader is not
-  affordable; the next step is translating at build time and caching.
+- **Only the chrome is translated, and only into Hindi here.** Page content needs
+  `<T>` applied, or a build-time pass. Translating 86 website pages on the fly per
+  reader is not affordable; the next step is translating at build time and caching.
+  On the prototype this is moot — there are no credentials to spend.
 - **RTL needs a pass.** Turning on Urdu surfaced that the masthead flips correctly
   but the shared `Search` field clips its placeholder — its icon padding is still
   physical (`padding-left`) where it should be logical (`padding-inline-start`).
