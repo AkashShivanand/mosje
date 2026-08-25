@@ -173,7 +173,21 @@ export function Ticker({
   // Computed HERE, above the effects, because both of them depend on it and a
   // hook may not sit below an early return.
   const canMove = isVertical ? count > rows && !isNarrow : count > 1;
-  const moving = canMove && isPlaying && !reducedMotion;
+
+  /**
+   * `canScroll` is a fact about the CONTENT; `isPlaying` is the citizen's
+   * choice. Keeping them apart is what stopped pause from resetting the scroll.
+   *
+   * It used to be one flag. Pressing pause dropped it, which removed the
+   * `animation` property outright, unmounted the duplicated copy and re-sliced
+   * the first one — so the track snapped back to zero and resumed from the top.
+   * A pause that loses your place is not a pause. Now the DOM and the animation
+   * are identical either way and only `animation-play-state` moves, so the
+   * marquee freezes on the frame the citizen stopped it at and carries on from
+   * there.
+   */
+  const canScroll = canMove && !reducedMotion;
+  const moving = canScroll && isPlaying;
 
   React.useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
@@ -224,7 +238,7 @@ export function Ticker({
     ro.observe(track);
     Array.from(track.children).forEach((c) => ro.observe(c));
     return () => ro.disconnect();
-  }, [isVertical, rows, items, moving]);
+  }, [isVertical, rows, items, canScroll]);
 
   // A shrinking list must not strand the index past the end.
   const safeIndex = count > 0 ? index % count : 0;
@@ -279,20 +293,16 @@ export function Ticker({
           className="sa-ticker__rowlink"
           {...(cloned ? { tabIndex: -1 } : {})}
         >
-          {/* THE LEAD-IN ONLY EXISTS WHEN THERE IS A SENTENCE FOR IT TO LEAD
-              INTO. Rendered alone it is a whole notice set in bold with a colon
-              dangling off the end — and if the data's categories repeat, which
-              real notice lists do ("Documents", "Documents", "Documents"), it is
-              also four identical bold words down the rail carrying no
-              information. Without a description the title IS the row. */}
+          {/* TITLE OVER SUBTITLE — the same two-line structure the bar has, and
+              the same one the live site uses. It replaced a bold lead-in and a
+              colon on one line, which read as a label when the data's kinds
+              repeat: the department's list is "Documents" seven times in eight,
+              so the rail carried the same bold word four times over. A subtitle
+              can repeat without harm, because it is plainly the quieter line. */}
+          <span className="sa-ticker__rowtitle">{item.title}</span>
           {item.description ? (
-            <>
-              <span className="sa-ticker__lead">{item.title}</span>
-              <span className="sa-ticker__rowtext">{item.description}</span>
-            </>
-          ) : (
-            <span className="sa-ticker__rowtext">{item.title}</span>
-          )}
+            <span className="sa-ticker__rowmeta">{item.description}</span>
+          ) : null}
         </ItemLink>
       </li>
     );
@@ -302,7 +312,8 @@ export function Ticker({
         {...rest}
         className={cn("sa-ticker", "sa-ticker--vertical", className)}
         data-orientation="vertical"
-        data-moving={moving ? "" : undefined}
+        data-animate={canScroll ? "" : undefined}
+        data-paused={canScroll && !isPlaying ? "" : undefined}
         style={
           {
             "--sa-ticker-rows": rows,
@@ -322,15 +333,19 @@ export function Ticker({
             {action ? <div className="sa-ticker__action">{action}</div> : null}
           </div>
 
-          <div className="sa-ticker__viewport" data-moving={moving ? "" : undefined}>
+          <div
+            className="sa-ticker__viewport"
+            data-scroll={canScroll ? "" : undefined}
+            data-paused={canScroll && !isPlaying ? "" : undefined}
+          >
             <ul className="sa-ticker__track" ref={trackRef}>
-              {(moving ? items : items.slice(0, rows)).map((it, i) => renderRow(it, i, false))}
+              {(canScroll ? items : items.slice(0, rows)).map((it, i) => renderRow(it, i, false))}
             </ul>
             {/* The second copy is what makes the loop seamless. It is scenery:
                 hidden from assistive technology and out of the tab order, so
                 the list is announced once. It only exists while the panel is
                 actually moving — a still list must not be twice as long. */}
-            {moving ? (
+            {canScroll ? (
               <ul className="sa-ticker__track" aria-hidden="true">
                 {items.map((it, i) => renderRow(it, i, true))}
               </ul>
@@ -350,7 +365,8 @@ export function Ticker({
       {...rest}
       className={cn("sa-ticker", className)}
       data-orientation="horizontal"
-      data-moving={moving ? "" : undefined}
+      data-animate={canMove && !reducedMotion ? "" : undefined}
+      data-paused={canMove && !reducedMotion && !isPlaying ? "" : undefined}
       aria-label={label}
       aria-roledescription="carousel"
     >

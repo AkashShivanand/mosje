@@ -8,15 +8,35 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
 import type { UpdateItem } from "@/types/website";
 
 const UPDATES: UpdateItem[] = [
-  { category: "Documents", title: "Acceptance of Transgender Identity Certificate/Card for Change Name and Gender in EPFO Records.", href: "/website/notices" },
-  { category: "Vacancies", title: "Extension of Application Submission Date for Financial Adviser (FA) Post at DAF and BJRNF", href: "/website/vacancies" },
-  { category: "Documents", title: "Extension of Application Submission Date for Financial Adviser (FA) Post at DAIC", href: "/website/notices" },
-  { category: "Documents", title: "Annual Report 2025-26 (English)", href: "/website/notices" },
-  { category: "Documents", title: "Annual Report 2025-26 (Hindi)", href: "/website/notices" },
-  { category: "Documents", title: "Fighting Against The Stigma & Stereotype Attached To Recovered Drug Dependents", href: "/website/notices" },
-  { category: "Documents", title: "Result of National Overseas Scholarship (NOS) for SC etc. candidates for the Selection Year 2025-26 (2nd Round)", href: "/website/notices" },
-  { category: "Documents", title: "Result of NOS for the Selection Year 2023-24 (1st list)", href: "/website/notices" },
+  { category: "Notice", date: "2026-08-18", title: "Acceptance of Transgender Identity Certificate/Card for Change Name and Gender in EPFO Records.", href: "/website/notices" },
+  { category: "Vacancy", date: "2026-08-14", title: "Extension of Application Submission Date for Financial Adviser (FA) Post at DAF and BJRNF", href: "/website/vacancies" },
+  { category: "Vacancy", date: "2026-08-12", title: "Extension of Application Submission Date for Financial Adviser (FA) Post at DAIC", href: "/website/vacancies" },
+  { category: "Annual Report", date: "2026-08-05", title: "Annual Report 2025-26 (English)", href: "/website/notices" },
+  { category: "Annual Report", date: "2026-08-05", title: "Annual Report 2025-26 (Hindi)", href: "/website/notices" },
+  { category: "Campaign", date: "2026-07-29", title: "Fighting Against The Stigma & Stereotype Attached To Recovered Drug Dependents", href: "/website/notices" },
+  { category: "Result", date: "2026-07-22", title: "Result of National Overseas Scholarship (NOS) for SC etc. candidates for the Selection Year 2025-26 (2nd Round)", href: "/website/notices" },
+  { category: "Result", date: "2026-07-11", title: "Result of NOS for the Selection Year 2023-24 (1st list)", href: "/website/notices" },
 ];
+
+/**
+ * "Notice · 18 Aug 2026" — the subtitle line.
+ *
+ * The date is formatted with an EXPLICIT locale and time zone rather than the
+ * browser's. Left to the visitor's, a server-rendered page and its hydration
+ * disagree whenever the two sit on different sides of a day boundary, and React
+ * replaces the text after paint. `en-IN` in IST is also simply the right reading
+ * for this audience.
+ */
+function subtitleFor(update: UpdateItem): string {
+  if (!update.date) return update.category;
+  const when = new Date(`${update.date}T00:00:00+05:30`).toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "Asia/Kolkata",
+  });
+  return `${update.category} · ${when}`;
+}
 
 /**
  * The website's Latest Updates panel.
@@ -33,14 +53,16 @@ const UPDATES: UpdateItem[] = [
  * Offerings it reads as one panel among the page's content, and it can show
  * four notices at once instead of one.
  *
- * THE CATEGORY IS DELIBERATELY NOT SHOWN. The panel's row can carry a bold
- * lead-in before the sentence, and mapping `category` onto it looked right
- * until it was rendered against the real list: seven of the eight notices are
- * "Documents", so the rail read "Documents:" four times down its length in
- * bold, carrying no information and crowding out the words that did. The notice
- * titles are self-describing — "Annual Report 2025-26 (English)" needs no label
- * — so each row is the notice, and the lead-in is left for data that has a
- * genuinely varying kind.
+ * EACH ROW IS A TITLE OVER A SUBTITLE, which is the structure the live site
+ * uses and the one the bar already had. The notice is the title; its kind and
+ * date are the subtitle.
+ *
+ * The kind is worth showing NOW and was not before. It first went in as a bold
+ * lead-in on the same line, where seven "Documents" out of eight read as the
+ * same word repeated four times down the rail in bold. As a quieter second line
+ * beside a date it is scannable rather than shouty, and repeating is what a
+ * subtitle is allowed to do. The categories are also narrower now — Notice,
+ * Vacancy, Annual Report, Campaign, Result — so they say something.
  *
  * `rows` is 6 rather than 4 so the rail is a reasonable proportion of the card
  * column beside it, and 6 still leaves the 8-item list something to scroll past.
@@ -53,6 +75,7 @@ export function LatestUpdates() {
       items={UPDATES.map((update, i) => ({
         id: `${update.href}-${i}`,
         title: update.title,
+        description: subtitleFor(update),
         href: update.href,
       }))}
       linkAs={Link}

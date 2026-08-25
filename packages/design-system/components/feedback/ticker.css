@@ -57,8 +57,19 @@
      file sits ABOVE the utilities layer and a plain class selector here beats any utility a
      consumer writes — the defect that made `hidden md:flex` a no-op on seven portal shells. */
   .sa-ticker {
-    --sa-ticker-bar: var(--sa-color-action-primary-default);
-    --sa-ticker-plinth: var(--sa-color-action-primary-hover);
+    /* THE GROUND IS primaryScale/600, NOT /500, AND THAT IS A CONTRAST FIX.
+       White on /500 (#0373df) measures 4.64:1 — it clears WCAG 1.4.3's 4.5:1
+       by four hundredths — and the moment secondary text is dimmed at all it
+       fails outright: 90% is 4.06:1 and 80% is 3.52:1. This component shipped
+       an 80% description line on that ground and its own documentation claimed
+       6.3:1, which was simply wrong.
+
+       On /600 (#005eb9) the primary line is 6.36:1 and 80% is 4.66:1, so the
+       title/subtitle structure this needs is possible at all. The plinth moves
+       to /800 with it, keeping the tonal step at 1.77:1 — the 1.85:1 the two
+       had before, so nothing about the shape changes. */
+    --sa-ticker-bar: var(--sa-color-primaryScale-600);
+    --sa-ticker-plinth: var(--sa-color-primaryScale-800);
     --sa-ticker-ink: var(--sa-text-neutral-inverse);
     /* The tile is a fixed 32px square in the frame. It is chrome, not type, so
        it does not scale with the font — but it is expressed in rem so that a
@@ -163,12 +174,18 @@
     transform-origin: 6px 12px;
   }
 
-  .sa-ticker[data-moving] .sa-ticker__wave {
+  .sa-ticker[data-animate] .sa-ticker__wave {
     animation: sa-ticker-broadcast 2.4s ease-in-out infinite;
   }
 
-  .sa-ticker[data-moving] .sa-ticker__wave--2 {
+  .sa-ticker[data-animate] .sa-ticker__wave--2 {
     animation-delay: 0.35s;
+  }
+
+  /* Freezes with the list rather than snapping back to its resting arc — the
+     mark is a readout of the strip's state, so it stops where the strip did. */
+  .sa-ticker[data-paused] .sa-ticker__wave {
+    animation-play-state: paused;
   }
 
   /* Scaled from the horn's mouth, so the arcs travel OUTWARD from the source
@@ -238,9 +255,17 @@
     flex: 1 1 auto;
     min-width: 0;
     gap: var(--sa-stack-2);
+    padding-inline: var(--sa-padding-8);
+    margin-inline: calc(-1 * var(--sa-padding-8));
+    border-radius: var(--sa-shape-8);
     color: inherit;
     text-decoration: none;
-    animation: sa-ticker-enter 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    transition: background-color 150ms ease;
+    /* A STRONG EASE-OUT, not Material's cubic-bezier(0.4, 0, 0.2, 1). That
+       curve eases IN as well as out, so the first third of the travel is slow —
+       and the first third is exactly when a citizen is looking hardest at a
+       message that just changed. This one starts at full speed and settles. */
+    animation: sa-ticker-enter 320ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   @keyframes sa-ticker-enter {
@@ -338,7 +363,7 @@
      of fade at each end says "this continues" — the oldest marquee affordance
      there is, and the honest one.
 
-     IT IS GATED ON `[data-moving]` for a reason worth keeping: a STILL list has
+     IT IS GATED ON `[data-scroll]` for a reason worth keeping: a STILL list has
      no row straddling the edge, so a fade there would dim the last notice for
      nothing. That is precisely the defect the reference implementation carries
      on mobile, where the fade stayed behind after the scrolling was removed and
@@ -347,7 +372,7 @@
      the alpha channel, so the hex here is the opaque end of an opacity ramp and
      never reaches a pixel — binding it to an ink token would imply the fade
      changes with the brand, which it cannot. */
-  .sa-ticker--vertical .sa-ticker__viewport[data-moving] {
+  .sa-ticker--vertical .sa-ticker__viewport[data-scroll] {
     mask-image: linear-gradient(
       to bottom,
       transparent 0,
@@ -364,14 +389,32 @@
     list-style: none;
   }
 
-  .sa-ticker__viewport[data-moving] .sa-ticker__track {
+  /* THE ANIMATION IS ALWAYS ON WHEN THE LIST CAN SCROLL; only its play-state
+     moves. Gating the `animation` property itself on "is it playing" is what
+     made the pause button reset the scroll — removing the property returns the
+     track to translateY(0), so resuming started again from the top. */
+  .sa-ticker__viewport[data-scroll] .sa-ticker__track {
     /* LINEAR, and it must stay linear. Any easing makes a continuous marquee
        visibly hesitate at the loop point, which is the one place it must not. */
     animation: sa-ticker-scroll var(--sa-ticker-duration) linear infinite;
   }
 
-  .sa-ticker__viewport[data-moving]:hover .sa-ticker__track,
-  .sa-ticker__viewport[data-moving]:focus-within .sa-ticker__track {
+  .sa-ticker__viewport[data-paused] .sa-ticker__track {
+    animation-play-state: paused;
+  }
+
+  /* HOVER STOPS IT — but only where hovering is a real thing. On a touch screen
+     `:hover` sticks after a tap, so an untethered rule would freeze the list
+     for the rest of the visit on the one device that cannot un-hover. */
+  @media (hover: hover) and (pointer: fine) {
+    .sa-ticker__viewport[data-scroll]:hover .sa-ticker__track {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Focus is not gated: a keyboard user has no pointer to withdraw, and a row
+     that scrolls out from under the focus ring takes the ring with it. */
+  .sa-ticker__viewport[data-scroll]:focus-within .sa-ticker__track {
     animation-play-state: paused;
   }
 
@@ -389,35 +432,32 @@
   }
 
   /* SPACING SEPARATES THE ROWS, NOT A DIVIDER. Rows wrap, so the gap between
-     two notices has to beat the gap between two lines of the same notice or a
-     reader cannot tell where one ends: 16px of padding either side puts 32px
-     between rows against the 20px inside them. A hairline would have done the
-     same job by drawing more furniture. */
+     two notices has to beat the gap between the two lines of one: 16px of
+     padding either side puts 32px between rows against the 20px inside them.
+     A hairline would have done the same job by drawing more furniture. */
   .sa-ticker__rowlink {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0 var(--sa-inline-6);
-    align-items: baseline;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
     padding-inline: var(--sa-padding-16);
     padding-block: var(--sa-padding-16);
     color: inherit;
     text-decoration: none;
-    font-size: var(--sa-type-title-3-size);
-    line-height: var(--sa-type-title-3-lh);
-    letter-spacing: var(--sa-type-title-tracking);
-    transition: background-color 120ms ease-out;
+    transition: background-color 150ms ease;
   }
 
-  /* THE WHOLE ROW IS THE TARGET, so the whole row lights. A wrapped notice is
-     two or three lines wide and 400px across; an underline on the text alone
-     leaves most of what a citizen can click showing no response at all. */
+  /* THE WHOLE ROW IS THE TARGET, so the whole row lights — and that is the ONLY
+     hover cue it needs. The underline that used to come with it was doing no
+     work: WCAG 1.4.1 asks that a link be distinguishable from the text AROUND
+     it, and in a list where every row is a link there is no surrounding text to
+     be confused with. On a wrapped two-line notice it also struck through both
+     lines at once and fought the subtitle for the same few pixels. */
   .sa-ticker__rowlink:hover {
     background-color: var(--sa-color-transparent-white-8);
   }
 
-  .sa-ticker__rowlink:hover .sa-ticker__rowtext,
-  .sa-ticker__rowlink:hover .sa-ticker__lead {
-    text-decoration: underline;
+  .sa-ticker__rowlink:active {
+    background-color: var(--sa-color-transparent-white-16);
   }
 
   .sa-ticker__rowlink:focus-visible {
@@ -426,29 +466,21 @@
     background-color: var(--sa-color-transparent-white-8);
   }
 
-  /* The lead-in carries the KIND of notice — "Vacancies", "Result", "Tender".
-     Weight, not a Badge: four coloured rectangles down a moving list compete
-     with the words, and the row is already one link. */
-  .sa-ticker__lead {
-    flex: 0 0 auto;
-    font-weight: 600;
-  }
-
-  .sa-ticker__lead::after {
-    content: ":";
-  }
-
-  /* NOT TRUNCATED, and not greyed. `refactoring-ui`'s rule about grey on a
-     coloured ground is why this is white at 80% rather than a neutral — but the
-     row is the notice itself, the bar's TITLE role, so on its own it runs at
-     full ink and only the trailing sentence steps back. */
-  .sa-ticker__rowtext {
-    flex: 1 1 12rem;
-    min-width: 0;
+  /* Title over subtitle — the bar's structure, in the panel. */
+  .sa-ticker__rowtitle {
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    letter-spacing: var(--sa-type-title-tracking);
+    font-weight: 500;
     text-wrap: pretty;
   }
 
-  .sa-ticker__lead + .sa-ticker__rowtext {
+  /* 80% white on the /600 ground is 4.66:1 — past 1.4.3's 4.5:1 for normal
+     text. It would have been 3.52:1 on /500, which is why the ground moved. */
+  .sa-ticker__rowmeta {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    letter-spacing: var(--sa-type-body-tracking);
     opacity: 0.8;
   }
 
@@ -464,6 +496,7 @@
   .sa-ticker__control {
     display: grid;
     place-items: center;
+    transition: background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
     inline-size: var(--sa-ticker-control);
     block-size: var(--sa-ticker-control);
     padding: 0;
@@ -477,12 +510,18 @@
   /* A white wash rather than a second colour: the strip has exactly one ink,
      and every state layer on a solid brand surface in this estate is a
      transparency of it — the same two steps Button's `inverseOutlined` uses. */
-  .sa-ticker__control:hover {
-    background-color: var(--sa-color-transparent-white-16);
+  @media (hover: hover) and (pointer: fine) {
+    .sa-ticker__control:hover {
+      background-color: var(--sa-color-transparent-white-16);
+    }
   }
 
+  /* It has to feel pressed. A control that changes nothing under the finger
+     reads as not having registered — and this one's whole job is to answer
+     immediately, because the citizen pressed it to stop something moving. */
   .sa-ticker__control:active {
     background-color: var(--sa-color-transparent-white-24);
+    transform: scale(0.94);
   }
 
   /* THE FOCUS RING IS INVERSE INK, NOT --sa-focus-ring. The ring token is
@@ -540,11 +579,32 @@
      itself, not here, because a CSS media query cannot pause a JS interval —
      and an interval that keeps firing while the animation is suppressed would
      still snap the message from one item to the next every four seconds. */
+  /* REDUCED MOTION MEANS LESS MOVEMENT, NOT LESS MEANING. The travel goes —
+     the marquee, the arcs, the message's slide — but the message keeps a plain
+     fade, because a line of text that swaps with no transition at all is the
+     jarring change the setting is meant to prevent. */
   @media (prefers-reduced-motion: reduce) {
-    .sa-ticker__item,
     .sa-ticker__track,
-    .sa-ticker[data-moving] .sa-ticker__wave {
+    .sa-ticker[data-animate] .sa-ticker__wave {
       animation: none;
+    }
+
+    .sa-ticker__item {
+      animation-name: sa-ticker-fade;
+      animation-duration: 200ms;
+    }
+
+    .sa-ticker__control:active {
+      transform: none;
+    }
+  }
+
+  @keyframes sa-ticker-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
     }
   }
 }
