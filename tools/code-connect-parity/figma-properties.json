@@ -306,7 +306,7 @@
   "Chatbot": {
     "nodeId": "55826:37003",
     "captured": "2026-08-23",
-    "note": "variantOptions is recorded exactly as Figma reports it. That is a stored registration order, not the canvas order and not the lifecycle order — the canvas reads Closed, Typing, Greeting, Transcript, and two attempts to rewrite the option list (child reorder, temp-rename cycle) both no-op'd. Order is cosmetic here; the gate only checks that every value is mapped.",
+    "note": "variantOptions is recorded exactly as Figma reports it. That is a stored registration order, not the canvas order and not the lifecycle order \u2014 the canvas reads Closed, Typing, Greeting, Transcript, and two attempts to rewrite the option list (child reorder, temp-rename cycle) both no-op'd. Order is cosmetic here; the gate only checks that every value is mapped.",
     "properties": {
       "State": {
         "type": "VARIANT",
@@ -323,7 +323,7 @@
       },
       "Subtitle": {
         "type": "TEXT",
-        "defaultValue": "सामाजिक सहायक"
+        "defaultValue": "\u0938\u093e\u092e\u093e\u091c\u093f\u0915 \u0938\u0939\u093e\u092f\u0915"
       },
       "Note": {
         "type": "TEXT",
@@ -331,7 +331,7 @@
       },
       "Placeholder": {
         "type": "TEXT",
-        "defaultValue": "Type something…"
+        "defaultValue": "Type something\u2026"
       },
       "Show subtitle": {
         "type": "BOOLEAN",
@@ -408,6 +408,58 @@
     },
     "deliberatelyOmitted": [
       "State"
+    ]
+  },
+  "Ticker": {
+    "nodeId": "56159:903",
+    "captured": "2026-08-25",
+    "properties": {
+      "Label": {
+        "type": "TEXT"
+      },
+      "Title": {
+        "type": "TEXT"
+      },
+      "Description": {
+        "type": "TEXT"
+      },
+      "Action Label": {
+        "type": "TEXT"
+      },
+      "Show Description": {
+        "type": "BOOLEAN"
+      },
+      "Show Action": {
+        "type": "BOOLEAN"
+      },
+      "Breakpoint": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Desktop",
+          "Tablet",
+          "Mobile"
+        ]
+      },
+      "Motion": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Playing A",
+          "Playing B",
+          "Paused A",
+          "Paused B"
+        ]
+      },
+      "Direction": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Horizontal",
+          "Vertical"
+        ]
+      }
+    },
+    "deliberatelyOmitted": [
+      "Breakpoint",
+      "Motion"
     ]
   }
 }
