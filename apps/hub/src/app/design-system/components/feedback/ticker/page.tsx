@@ -125,8 +125,13 @@ export default function TickerPage(): React.JSX.Element {
                     a column beside it. In the panel <code>title</code> becomes the{" "}
                     <strong style={strong}>bold lead-in before the colon</strong> (the kind of
                     notice — Vacancies, Result, Tender) and <code>description</code> the sentence
-                    after it. <code>linkLabel</code> is ignored there: on a scrolling list it would
-                    repeat on every row, and the whole row is already the link.
+                    after it. <strong style={strong}>Without a description the title IS the row</strong>,
+                    in normal weight and with no colon — rendered alone the lead-in is a whole
+                    notice set in bold with a colon dangling off the end, and real notice lists
+                    repeat their categories (the DoSJE list is &quot;Documents&quot; seven times out
+                    of eight), which drew four identical bold words down the rail carrying no
+                    information. <code>linkLabel</code> is ignored there: on a scrolling list it
+                    would repeat on every row, and the whole row is already the link.
                   </p>
                   <p style={{ ...proseStyle, marginTop: "var(--sa-stack-16)" }}>
                     <strong style={strong}>The loop is seamless because the list is rendered
@@ -180,8 +185,13 @@ export default function TickerPage(): React.JSX.Element {
                       <code>--sa-focus-ring</code>. See Accessibility.
                     </li>
                     <li>
-                      <strong style={strong}>Reduced motion</strong> — the timer never starts;
-                      the citizen steps through with the arrows.
+                      <strong style={strong}>Reduced motion</strong> — nothing starts: not the
+                      bar&apos;s timer, not the panel&apos;s scroll, not the mark&apos;s arcs.
+                    </li>
+                    <li>
+                      <strong style={strong}>The mark follows the strip.</strong> Its arcs pulse
+                      only while the list is moving. A mark that keeps broadcasting over a stopped
+                      list contradicts the control the citizen just pressed.
                     </li>
                   </ul>
                 </section>
@@ -259,7 +269,7 @@ export default function TickerPage(): React.JSX.Element {
                         name: "icon",
                         type: "ReactNode",
                         description:
-                          "The mark on the white tile. Defaults to the Material Symbols 'campaign' glyph.",
+                          "Override the mark. Defaults to <TickerMark>, a bespoke animated megaphone whose arcs pulse while the strip moves and stop when it is paused.",
                       },
                       {
                         name: "action",

@@ -50,6 +50,17 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * whole cluster goes — a pause button on something that is not moving is worse
  * than absent, because it advertises motion to escape from.
  *
+ * **The mark is `<TickerMark>`, a bespoke animated SVG** — a megaphone whose
+ * arcs pulse while the strip moves and stop when it is paused. It replaced a
+ * white rounded tile, which on the navy plinth read as a sticker pasted onto
+ * the bar. It is a bespoke mark rather than an `<Icon>` because it animates in
+ * parts and answers to the strip's state; a font glyph can do neither.
+ *
+ * **A panel row with no `description` renders the title as the row**, in normal
+ * weight with no colon. The bold lead-in only exists when there is a sentence
+ * for it to lead into — and real notice lists repeat their categories, so a
+ * lead-in mapped from one draws the same bold word down the whole rail.
+ *
  * **The action slot needs `inverseOutlined`.** The strip is a solid brand
  * surface, so a normal outlined button draws its border in a blue nobody can
  * see against it.
@@ -162,6 +173,24 @@ export const VerticalSixRows: Story = {
  */
 export const VerticalStatic: Story = {
   args: { orientation: "vertical", items: LONG_LIST.slice(0, 4) },
+};
+
+/**
+ * Rows with **no `description`** — the shape the DoSJE website actually uses,
+ * because its notice categories repeat ("Documents" seven times out of eight)
+ * and a lead-in mapped from one would draw the same bold word down the rail.
+ * Each row is the notice, in normal weight, with no dangling colon.
+ */
+export const VerticalTitlesOnly: Story = {
+  args: {
+    orientation: "vertical",
+    rows: 4,
+    items: LONG_LIST.map(({ id, title, description, href }) => ({
+      id,
+      title: description ?? title,
+      href,
+    })),
+  },
 };
 
 /**

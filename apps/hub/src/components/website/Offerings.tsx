@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button, Card, Icon } from "@mosje/design-system";
+import { LatestUpdates } from "@/components/website/LatestUpdates";
 import { cn } from "@/lib/website/utils";
 
 type TabKey = "schemes" | "vacancies" | "tenders";
@@ -240,7 +241,15 @@ export function Offerings() {
           aria-labelledby={`tab-${activeTab}`}
           className="mt-8"
         >
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {/* AN 8/4 SPLIT THAT COSTS THE CARDS NOTHING.
+              The container is 1272 at desktop, so a 12-column grid on gap-6 has
+              84px columns: the cards' 8 columns come to 840, and two 408px
+              cards plus one 24px gutter is exactly 840 — the same card width
+              they had at three-up. They reflow from 3x2 to 2x3 and the section
+              grows by one row; nothing is squeezed. The remaining 4 columns are
+              408 too, which is the rail. */}
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-8">
             {current.items.map((item) => (
               <Link
                 key={item.title}
@@ -295,6 +304,18 @@ export function Offerings() {
                 </Card>
               </Link>
             ))}
+            </div>
+
+            {/* The updates rail. It lives HERE rather than as a full-bleed strip
+                under the hero for two reasons: the strip stacked a third
+                coloured band on top of the saffron SAMAVESH bar and the hero,
+                and it put a second pause control 65px below the carousel's own.
+                Beside the offerings it is also better placed in meaning — a
+                citizen reading what the department offers sees what has just
+                changed about it. */}
+            <div className="lg:col-span-4">
+              <LatestUpdates />
+            </div>
           </div>
         </div>
       </div>

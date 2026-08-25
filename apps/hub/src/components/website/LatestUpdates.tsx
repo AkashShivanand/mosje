@@ -19,32 +19,46 @@ const UPDATES: UpdateItem[] = [
 ];
 
 /**
- * The website's Latest Updates strip.
+ * The website's Latest Updates panel.
  *
- * ALL BEHAVIOUR — the auto-advance, the pause control, the live region, the
- * reflow order — lives in `<Ticker>` in the design system. This file is the
- * DoSJE *content*: which notices run, and where "View All" goes.
+ * ALL BEHAVIOUR — the scroll, the pause control, hover-to-stop, the mobile
+ * fallback — lives in `<Ticker>` in the design system. This file is the DoSJE
+ * *content*: which notices run, and where "View All" goes.
  *
- * The mapping is deliberate. The frame's two lines are a short lead-in over a
- * sentence, and the real notice data is a category over a title — so the
- * category becomes the headline line and the notice its sentence. Nothing here
- * is invented to fill the second line; a notice without a category would simply
- * render single-line.
+ * IT IS THE PANEL, NOT THE BAR, AND IT SITS IN A COLUMN. It ran as a full-bleed
+ * strip under the hero until 2026-08-25. That put a third full-width coloured
+ * band directly beneath the saffron SAMAVESH bar and the hero, and a second
+ * pause control 65px below the carousel's own — two things on one screen that
+ * both stop something, neither of which says what. As a rail beside Our
+ * Offerings it reads as one panel among the page's content, and it can show
+ * four notices at once instead of one.
+ *
+ * THE CATEGORY IS DELIBERATELY NOT SHOWN. The panel's row can carry a bold
+ * lead-in before the sentence, and mapping `category` onto it looked right
+ * until it was rendered against the real list: seven of the eight notices are
+ * "Documents", so the rail read "Documents:" four times down its length in
+ * bold, carrying no information and crowding out the words that did. The notice
+ * titles are self-describing — "Annual Report 2025-26 (English)" needs no label
+ * — so each row is the notice, and the lead-in is left for data that has a
+ * genuinely varying kind.
+ *
+ * `rows` is 6 rather than 4 so the rail is a reasonable proportion of the card
+ * column beside it, and 6 still leaves the 8-item list something to scroll past.
  */
 export function LatestUpdates() {
   return (
     <Ticker
+      orientation="vertical"
+      rows={6}
       items={UPDATES.map((update, i) => ({
         id: `${update.href}-${i}`,
-        title: update.category,
-        description: update.title,
+        title: update.title,
         href: update.href,
-        linkLabel: "Read More",
       }))}
       linkAs={Link}
       action={
         <Link href="/website/notices" className={buttonClasses("primary", "inverseOutlined", "sm")}>
-          View All Updates
+          View All
         </Link>
       }
     />

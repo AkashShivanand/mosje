@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Icon } from "../utilities/icon";
+import { TickerMark } from "./ticker-mark";
 import "./ticker.css";
 
 export type TickerOrientation = "horizontal" | "vertical";
@@ -37,8 +38,10 @@ export interface TickerProps extends Omit<React.HTMLAttributes<HTMLElement>, "ti
    */
   label?: string;
   /**
-   * The mark on the white tile. Defaults to the Material Symbols megaphone.
-   * Pass a `next/image` when a site has its own artwork for it.
+   * Override the mark. Defaults to `<TickerMark>`, the broadcasting megaphone
+   * that pulses while the strip is moving and stops when it is paused. Pass
+   * something else only when a site genuinely has its own emblem for this — the
+   * default is deliberately tied to the strip's state.
    */
   icon?: React.ReactNode;
   /**
@@ -228,7 +231,7 @@ export function Ticker({
   const heading = (
     <div className="sa-ticker__heading">
       <span className="sa-ticker__mark" aria-hidden="true">
-        {icon ?? <Icon name="campaign" size={24} aria-hidden />}
+        {icon ?? <TickerMark />}
       </span>
       <span className="sa-ticker__label">{label}</span>
     </div>
@@ -243,10 +246,20 @@ export function Ticker({
           className="sa-ticker__rowlink"
           {...(cloned ? { tabIndex: -1 } : {})}
         >
-          <span className="sa-ticker__lead">{item.title}</span>
+          {/* THE LEAD-IN ONLY EXISTS WHEN THERE IS A SENTENCE FOR IT TO LEAD
+              INTO. Rendered alone it is a whole notice set in bold with a colon
+              dangling off the end — and if the data's categories repeat, which
+              real notice lists do ("Documents", "Documents", "Documents"), it is
+              also four identical bold words down the rail carrying no
+              information. Without a description the title IS the row. */}
           {item.description ? (
-            <span className="sa-ticker__rowtext">{item.description}</span>
-          ) : null}
+            <>
+              <span className="sa-ticker__lead">{item.title}</span>
+              <span className="sa-ticker__rowtext">{item.description}</span>
+            </>
+          ) : (
+            <span className="sa-ticker__rowtext">{item.title}</span>
+          )}
         </ItemLink>
       </li>
     );
@@ -256,6 +269,7 @@ export function Ticker({
         {...rest}
         className={cn("sa-ticker", "sa-ticker--vertical", className)}
         data-orientation="vertical"
+        data-moving={moving ? "" : undefined}
         style={
           {
             "--sa-ticker-rows": rows,
@@ -302,6 +316,7 @@ export function Ticker({
       {...rest}
       className={cn("sa-ticker", className)}
       data-orientation="horizontal"
+      data-moving={moving ? "" : undefined}
       aria-label={label}
       aria-roledescription="carousel"
     >

@@ -123,25 +123,55 @@
     }
   }
 
+  /* ── The mark ────────────────────────────────────────────────────────────
+     NO TILE. It used to be a 32px white rounded square holding a small blue
+     glyph, and on the plinth's navy that read as a sticker pasted onto the bar:
+     a white block beside white text, edged with `border-neutral-subtle` — a
+     hairline drawn for a white tile on a LIGHT ground, invisible on navy, so
+     the block floated with no edge at all. The mark now paints in the strip's
+     single ink directly on the ground, like everything else on it.
+
+     IT ANIMATES WITH THE STRIP, NOT ON ITS OWN. The arcs pulse only while the
+     list is moving; pausing stops them. A mark that keeps broadcasting over a
+     stopped list contradicts the control the citizen just pressed. */
   .sa-ticker__mark {
     display: grid;
     flex: 0 0 auto;
     place-items: center;
-    inline-size: var(--sa-ticker-mark);
-    block-size: var(--sa-ticker-mark);
-    border: 1px solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-8);
-    background-color: var(--sa-text-neutral-inverse);
-    /* The glyph is the only thing on the strip painted in the bar's own blue —
-       it sits on the white tile, where the ink token would vanish. */
-    color: var(--sa-ticker-bar);
+    color: var(--sa-text-neutral-inverse);
   }
 
-  .sa-ticker__mark > img,
-  .sa-ticker__mark > svg {
-    inline-size: 1.5rem;
-    block-size: 1.5rem;
+  .sa-ticker__mark > img {
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
     object-fit: contain;
+  }
+
+  .sa-ticker__wave {
+    opacity: 0.4;
+    transform-origin: 6px 12px;
+  }
+
+  .sa-ticker[data-moving] .sa-ticker__wave {
+    animation: sa-ticker-broadcast 2.4s ease-in-out infinite;
+  }
+
+  .sa-ticker[data-moving] .sa-ticker__wave--2 {
+    animation-delay: 0.35s;
+  }
+
+  /* Scaled from the horn's mouth, so the arcs travel OUTWARD from the source
+     rather than breathing around their own centres. */
+  @keyframes sa-ticker-broadcast {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(0.9);
+    }
+    45% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
   }
 
   .sa-ticker__label {
@@ -462,7 +492,8 @@
      still snap the message from one item to the next every four seconds. */
   @media (prefers-reduced-motion: reduce) {
     .sa-ticker__item,
-    .sa-ticker__track {
+    .sa-ticker__track,
+    .sa-ticker[data-moving] .sa-ticker__wave {
       animation: none;
     }
   }
