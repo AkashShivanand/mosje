@@ -1,7 +1,41 @@
 import Image from "next/image";
-import Link from "next/link";
 import { HELPLINE } from "@/content/website/deaddiction-centres";
 import { Icon } from "@mosje/design-system";
+
+/**
+ * The two pledge channels, each with the count that belongs to IT.
+ *
+ * The build showed these two figures as "Total Pledges Taken" and "Youth
+ * Pledges Taken". Neither label was right: they are the non-user and
+ * recovered-user subtotals, and they sum to 31,80,579 — the running total the
+ * design prints in the card header. Relabelling them as a total and a youth
+ * count made the larger figure claim to be the whole movement while actually
+ * counting one channel of it [WEB-M-02].
+ *
+ * Counts are integers so the header total is derived, not restated.
+ */
+const PLEDGE_CHANNELS = [
+  {
+    key: "non-user",
+    count: 2_520_056,
+    title: "I\u2019m a non-user",
+    blurb:
+      "Stay drug-free and help spread awareness where you live, study and work.",
+    href: "/portals/nmba/epledge?channel=non-user",
+  },
+  {
+    key: "recovered",
+    count: 660_523,
+    title: "I\u2019m a recovered user",
+    blurb: "Stay on your recovery journey and inspire others to seek help.",
+    href: "/portals/nmba/epledge?channel=recovered",
+  },
+] as const;
+
+/** 25,20,056 — lakh/crore grouping, not the 2,520,056 `toLocaleString` gives by default. */
+function formatIndian(value: number): string {
+  return value.toLocaleString("en-IN");
+}
 
 export function NmbaHomeCompact() {
   return (
@@ -25,59 +59,67 @@ export function NmbaHomeCompact() {
           />
         </div>
 
-        {/* Get-involved pair: pledge + volunteer */}
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
+        {/* 68 / 32, not 50 / 50 — the pledge card carries two persona rows and
+            the volunteer card one paragraph [WEB-M-04]. */}
+        <div className="mt-8 grid gap-6 md:grid-cols-12">
           {/* Take the pledge */}
-          <div className="flex flex-col justify-between rounded-xl border border-gray-200 bg-white p-6 shadow-sm">
-            <div>
-              <div className="flex items-center justify-between">
-                <h3 className="text-[20px] font-semibold text-ink">Take the pledge</h3>
-                <Link
-                  href="/portals/nmba/epledge"
-                  className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
-                >
-                  All Pledges <Icon name="arrow_forward" size={14} />
-                </Link>
-              </div>
-
-              <div className="mt-6 grid grid-cols-2 gap-4 border-y border-gray-150 py-4">
-                <div>
-                  <dd className="text-[28px] sm:text-[32px] font-bold text-primary-dark leading-none">
-                    25,20,056
-                  </dd>
-                  <dt className="mt-1 text-[12px] font-medium text-ink-muted uppercase tracking-wide">
-                    Total Pledges Taken
-                  </dt>
-                </div>
-                <div>
-                  <dd className="text-[28px] sm:text-[32px] font-bold text-primary-dark leading-none">
-                    6,60,523
-                  </dd>
-                  <dt className="mt-1 text-[12px] font-medium text-ink-muted uppercase tracking-wide">
-                    Youth Pledges Taken
-                  </dt>
-                </div>
-              </div>
+          <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm md:col-span-8">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
+              <h3 className="text-[20px] font-semibold text-ink">Take the pledge</h3>
+              {/* The running total the design puts here. It was an "All Pledges"
+                  link, so the page never showed how many had pledged
+                  [WEB-M-03]. Summed from the rows rather than written out, so
+                  the headline cannot drift from the two figures under it. */}
+              <p className="text-[13px] text-ink-muted">
+                <span className="font-bold text-primary-dark">
+                  {formatIndian(
+                    PLEDGE_CHANNELS.reduce((total, c) => total + c.count, 0),
+                  )}
+                </span>{" "}
+                Indians have already pledged
+              </p>
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3">
-              <a
-                href="/portals/nmba/epledge?channel=non-user"
-                className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-5 py-2.5 text-[14px] font-semibold text-white transition-colors hover:bg-primary-dark"
-              >
-                I&rsquo;m a non-user <Icon name="arrow_forward" size={16} />
-              </a>
-              <a
-                href="/portals/nmba/epledge?channel=recovered"
-                className="inline-flex items-center gap-1.5 rounded-lg border border-primary/40 px-5 py-2.5 text-[14px] font-semibold text-primary transition-colors hover:bg-primary/5"
-              >
-                I&rsquo;m a recovered user <Icon name="arrow_forward" size={16} />
-              </a>
+            {/* Persona ROWS. The build showed a statistic pair over two buttons,
+                which split each persona's count away from the persona it
+                belonged to — and mislabelled them in the process [WEB-M-02]. */}
+            <div className="mt-5 divide-y divide-gray-150 border-y border-gray-150">
+              {PLEDGE_CHANNELS.map((channel) => (
+                <div
+                  key={channel.key}
+                  className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:gap-6"
+                >
+                  <div className="sm:w-[38%] sm:shrink-0">
+                    <span className="block text-[26px] font-bold leading-none text-primary-dark sm:text-[30px]">
+                      {formatIndian(channel.count)}
+                    </span>
+                    <span className="mt-1 block text-[11px] font-medium uppercase tracking-wide text-ink-muted">
+                      Pledges
+                    </span>
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <h4 className="text-[15px] font-semibold text-ink">
+                      {channel.title}
+                    </h4>
+                    <p className="mt-0.5 text-[13px] leading-snug text-ink-muted">
+                      {channel.blurb}
+                    </p>
+                  </div>
+
+                  <a
+                    href={channel.href}
+                    className="flex shrink-0 items-center gap-1 self-start text-[13px] font-semibold text-primary-dark hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:self-center"
+                  >
+                    Pledge <Icon name="arrow_forward" size={16} aria-hidden />
+                  </a>
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Become a Mitr */}
-          <div className="flex flex-col justify-between rounded-xl bg-gradient-to-br from-primary-dark to-primary p-6 text-white shadow-sm">
+          <div className="flex flex-col justify-between rounded-xl bg-gradient-to-br from-primary-dark to-primary p-6 text-white shadow-sm md:col-span-4">
             <div>
               <span className="inline-block rounded bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
                 Nasha Mukti Mitr
