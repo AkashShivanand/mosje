@@ -291,7 +291,7 @@ export default function TickerPage(): React.JSX.Element {
                         type: "TickerItem[]",
                         required: true,
                         description:
-                          "The messages to cycle: { id?, title, description?, href, linkLabel? }. An empty list renders nothing.",
+                          "The messages: { id?, title, description?, date?, dateTime?, href, linkLabel? }. date is the display text and dateTime its ISO form; the component owns the separator between the kind and the date, so a notice without one does not trail a dangling middot. An empty list renders nothing.",
                       },
                       {
                         name: "label",
@@ -316,6 +316,12 @@ export default function TickerPage(): React.JSX.Element {
                         type: '"horizontal" | "vertical"',
                         description:
                           "Which of the two shapes: the 72px one-message bar, or the stacked scrolling panel. Defaults to horizontal.",
+                      },
+                      {
+                        name: "height",
+                        type: '"auto" | "fill"',
+                        description:
+                          "auto (default) stands at the header plus the rows window; fill takes the height of the row it shares, making rows a floor. Vertical only.",
                       },
                       {
                         name: "rows",

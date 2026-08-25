@@ -171,7 +171,9 @@
 
   .sa-ticker__wave {
     opacity: 0.4;
-    transform-origin: 6px 12px;
+    /* The mouth of the horn, so the arcs travel OUTWARD from the source rather
+       than breathing around their own centres. */
+    transform-origin: 13px 12px;
   }
 
   .sa-ticker[data-animate] .sa-ticker__wave {
@@ -306,6 +308,19 @@
      moving tap target: without this the line a citizen is reading walks out
      from under the pointer just as they reach for it. `:focus-within` covers
      the keyboard, where a focused row that scrolls away takes the ring with it. */
+  /* HEIGHT: `auto` STANDS, `fill` TAKES THE ROW.
+     `auto` is the header plus the `rows` window — the widget on its own.
+     `fill` takes the height of the row it shares, and `rows` becomes a floor.
+
+     It is driven by a prop rather than inferred. `block-size: 100%` looked like
+     it would do this for free — `auto` against an auto-height parent, the row
+     otherwise — and in practice it filled almost everywhere, because a flex
+     parent has a resolved height by the time the child asks. A panel standing
+     alone in a plain column stretched too. Only the consumer knows which it is.
+
+     What follows either way: whether the list scrolls is a MEASUREMENT, not a
+     count. A tall enough row fits the whole list, and a marquee moving content
+     that is already on screen is motion for its own sake. See the component. */
   .sa-ticker--vertical {
     --sa-ticker-rows: 4;
     --sa-ticker-duration: 40s;
@@ -319,10 +334,18 @@
     overflow: hidden;
   }
 
+  .sa-ticker--vertical[data-height="fill"] {
+    block-size: 100%;
+  }
+
   .sa-ticker--vertical .sa-ticker__container {
     flex-direction: column;
     align-items: stretch;
     padding-inline: 0;
+  }
+
+  .sa-ticker--vertical[data-height="fill"] .sa-ticker__container {
+    block-size: 100%;
   }
 
   /* The bar's plinth, doing the bar's job. */
@@ -354,7 +377,22 @@
   .sa-ticker--vertical .sa-ticker__viewport {
     display: block;
     block-size: var(--sa-ticker-window);
-    overflow: hidden;
+    /* NOT `hidden`. A panel that is not scrolling itself must let the citizen
+       scroll it — clipping a list nobody can reach strands the notices past the
+       fold and leaves them focusable but invisible. */
+    overflow-y: auto;
+  }
+
+  /* Filling: the `rows` window becomes the floor and `flex: 1` takes the rest of
+     the row. `min-block-size: 0` is what lets a flex child shrink at all. */
+  .sa-ticker--vertical[data-height="fill"] .sa-ticker__viewport {
+    flex: 1 1 auto;
+    block-size: auto;
+    min-block-size: var(--sa-ticker-window);
+  }
+
+  .sa-ticker--vertical .sa-ticker__viewport[data-scroll] {
+    overflow-y: hidden;
   }
 
   /* THE EDGES FADE ONLY WHILE IT MOVES. A scrolling window cuts whatever row

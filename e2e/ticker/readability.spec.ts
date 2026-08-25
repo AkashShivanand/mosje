@@ -64,12 +64,6 @@ test.describe("Latest Updates — readability", () => {
     // In a list where every row is a link there is no surrounding text, so the
     // underline carried no weight and struck through both lines of a wrapped
     // notice.
-    // Stop it first. A row in a running marquee is never "stable", so Playwright
-    // will not hover it — and a citizen cannot reliably hover it either, which
-    // is exactly why hovering the list pauses it in the first place.
-    await page.locator(`${PANEL} .sa-ticker__control`).first().click();
-    await expect(page.locator(`${PANEL} .sa-ticker__viewport`)).toHaveAttribute("data-paused", "");
-
     const row = page.locator(`${PANEL} .sa-ticker__rowlink`).first();
     await row.hover();
     await expect(row.locator(".sa-ticker__rowtitle")).toHaveCSS("text-decoration-line", "none");

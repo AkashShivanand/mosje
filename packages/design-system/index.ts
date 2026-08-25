@@ -484,4 +484,4 @@ export type { ProfileCardProps } from "./components/data-display/profile-card";
 export { ActionBanner } from "./components/feedback/action-banner";
 export type { ActionBannerProps, ActionBannerVariant } from "./components/feedback/action-banner";
 export { Ticker } from "./components/feedback/ticker";
-export type { TickerProps, TickerItem } from "./components/feedback/ticker";
+export type { TickerProps, TickerItem, TickerOrientation, TickerHeight } from "./components/feedback/ticker";

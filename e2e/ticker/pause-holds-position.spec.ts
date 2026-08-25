@@ -25,6 +25,22 @@ const PANEL = '.sa-ticker[data-orientation="vertical"]';
 const VIEWPORT = ".sa-ticker__viewport";
 const TRACK = ".sa-ticker__track";
 
+/**
+ * These run against the docs playground rather than the website, and the reason
+ * is the component working correctly: the panel takes the height of the row it
+ * sits in, and in the website's Offerings row that is tall enough for the whole
+ * list — so nothing overflows, nothing scrolls, and there is no pause control to
+ * press. A marquee moving content already entirely on screen would be motion for
+ * its own sake. The playground instance stands alone at its `rows` height, which
+ * is the case these assertions are about.
+ */
+async function openStandalonePanel(page: import("@playwright/test").Page) {
+  await page.goto("/design-system/components/feedback/ticker");
+  await page.getByText("Panel (vertical scroll)").click();
+  await expect(page.locator(PANEL)).toBeVisible();
+  await expect(page.locator(`${PANEL} ${VIEWPORT}`)).toHaveAttribute("data-scroll", "");
+}
+
 /** Elapsed time on the marquee, in ms — `null` if it is not animating. */
 async function currentTime(page: import("@playwright/test").Page) {
   return page.locator(`${PANEL} ${TRACK}`).first().evaluate((el) => {
@@ -35,8 +51,7 @@ async function currentTime(page: import("@playwright/test").Page) {
 
 test.describe("Latest Updates — pause holds its position", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("/website");
-    await expect(page.locator(PANEL)).toBeVisible();
+    await openStandalonePanel(page);
   });
 
   test("keeps its place across pause and resume, and only play-state moves", async ({ page }) => {

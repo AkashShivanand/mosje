@@ -19,23 +19,25 @@ const UPDATES: UpdateItem[] = [
 ];
 
 /**
- * "Notice · 18 Aug 2026" — the subtitle line.
+ * The date, formatted for display — "18 Aug 2026".
  *
- * The date is formatted with an EXPLICIT locale and time zone rather than the
- * browser's. Left to the visitor's, a server-rendered page and its hydration
- * disagree whenever the two sit on different sides of a day boundary, and React
- * replaces the text after paint. `en-IN` in IST is also simply the right reading
- * for this audience.
+ * `en-IN` in IST, stated EXPLICITLY rather than left to the visitor's locale:
+ * a server-rendered page and its hydration disagree whenever the two sit on
+ * different sides of a day boundary, and React then replaces the text after
+ * paint. It is also simply the right reading for this audience.
+ *
+ * The component takes the kind and the date as separate fields and owns the
+ * separator between them, so a notice without a date does not trail a dangling
+ * middot — and this file no longer builds the subtitle by pasting strings.
  */
-function subtitleFor(update: UpdateItem): string {
-  if (!update.date) return update.category;
-  const when = new Date(`${update.date}T00:00:00+05:30`).toLocaleDateString("en-IN", {
+function displayDate(iso: string | undefined): string | undefined {
+  if (!iso) return undefined;
+  return new Date(`${iso}T00:00:00+05:30`).toLocaleDateString("en-IN", {
     day: "numeric",
     month: "short",
     year: "numeric",
     timeZone: "Asia/Kolkata",
   });
-  return `${update.category} · ${when}`;
 }
 
 /**
@@ -71,11 +73,16 @@ export function LatestUpdates() {
   return (
     <Ticker
       orientation="vertical"
+      // It shares the Offerings row with the scheme cards, so it takes the
+      // row's height rather than standing at its own — `rows` is the floor.
+      height="fill"
       rows={6}
       items={UPDATES.map((update, i) => ({
         id: `${update.href}-${i}`,
         title: update.title,
-        description: subtitleFor(update),
+        description: update.category,
+        date: displayDate(update.date),
+        dateTime: update.date,
         href: update.href,
       }))}
       linkAs={Link}

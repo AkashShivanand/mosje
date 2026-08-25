@@ -36,6 +36,7 @@ export function TickerPlayground(): React.JSX.Element {
   const [autoplay, setAutoplay] = React.useState(true);
   const [vertical, setVertical] = React.useState(false);
   const [singleItem, setSingleItem] = React.useState(false);
+  const [withDates, setWithDates] = React.useState(true);
 
   const controlStyle: React.CSSProperties = {
     display: "flex",
@@ -84,13 +85,29 @@ export function TickerPlayground(): React.JSX.Element {
           <input type="checkbox" checked={singleItem} onChange={(e) => setSingleItem(e.target.checked)} />
           <strong>Too short to move (controls go)</strong>
         </label>
+        <label style={controlStyle}>
+          <input type="checkbox" checked={withDates} onChange={(e) => setWithDates(e.target.checked)} />
+          <strong>Dates</strong>
+        </label>
       </div>
 
       <Ticker
         key={`${autoplay}-${vertical}-${singleItem}`}
-        items={(singleItem ? ITEMS.slice(0, vertical ? 4 : 1) : ITEMS).map((i) =>
-          twoLine ? i : { id: i.id, title: i.title, href: i.href },
-        )}
+        items={(singleItem ? ITEMS.slice(0, vertical ? 4 : 1) : ITEMS).map((i, n) => {
+          const base = twoLine ? i : { id: i.id, title: i.title, href: i.href };
+          if (!withDates || !vertical) return base;
+          const iso = `2026-08-${String(18 - n).padStart(2, "0")}`;
+          return {
+            ...base,
+            date: new Date(`${iso}T00:00:00+05:30`).toLocaleDateString("en-IN", {
+              day: "numeric",
+              month: "short",
+              year: "numeric",
+              timeZone: "Asia/Kolkata",
+            }),
+            dateTime: iso,
+          };
+        })}
         orientation={vertical ? "vertical" : "horizontal"}
         autoplay={autoplay}
         action={
