@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+import { TranslationProvider } from "@/components/i18n/translation-provider";
 import "./website.css";
 
 export const metadata: Metadata = {
@@ -39,8 +41,14 @@ export default function WebsiteLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div data-site="website" className="flex min-h-screen flex-col">
-      {children}
-    </div>
+    /* TranslationProvider wraps the whole site, not just the masthead: `lang` and
+       `dir` belong on <html>, and a reader who switches language expects it to
+       hold as they move between pages. It renders English until something asks
+       for a translation, so pages that have not adopted <T> are unaffected. */
+    <TranslationProvider>
+      <div data-site="website" className="flex min-h-screen flex-col">
+        {children}
+      </div>
+    </TranslationProvider>
   );
 }

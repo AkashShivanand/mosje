@@ -1,8 +1,13 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { SiteHeader, buttonClasses, type NavItem } from "@mosje/design-system";
+
+import { LanguageDialog } from "@/components/i18n/language-dialog";
+import { useTranslation } from "@/components/i18n/translation-provider";
+import { languageLabel } from "@/lib/bhashini/languages";
 
 // The website mounts natively in the hub at /website, and its public assets live
 // at apps/hub/public/website/…, so they serve under this prefix. (It was the app's
@@ -122,21 +127,37 @@ const NAV: NavItem[] = [
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
+  const { lang, t } = useTranslation();
+  const [langOpen, setLangOpen] = React.useState(false);
 
+  /* Labels go through `t` on the way out. Only the labels: hrefs, emblem paths
+     and organisation abbreviations are identifiers, not prose, and translating
+     an abbreviation like NCSC would make the row unsearchable in every language
+     including its own. The full organisation NAMES are translated, because those
+     are the words a reader actually scans. */
   const nav: NavItem[] = NAV.map((item) => ({
     ...item,
+    label: t(item.label),
     active: item.href !== "#" && item.href === pathname,
+    children: item.children?.map((c) => ({ ...c, label: t(c.label) })),
+    columns: item.columns?.map((col) => ({
+      ...col,
+      heading: col.heading ? t(col.heading) : col.heading,
+      items: col.items?.map((o) => ({ ...o, name: t(o.name) })),
+      links: col.links?.map((l) => ({ ...l, label: t(l.label) })),
+    })),
   }));
 
   return (
+    <>
     <SiteHeader
       homeHref="/website"
       variant="website"
       emblemSrc={`${BP}/images/National-Emblem-logo.svg`}
       brandLines={{
-        org: "Government of India",
-        ministry: "Ministry of Social Justice & Empowerment",
-        department: "Department of Social Justice & Empowerment",
+        org: t("Government of India"),
+        ministry: t("Ministry of Social Justice & Empowerment"),
+        department: t("Department of Social Justice & Empowerment"),
       }}
       beta
       govLink={{
@@ -144,9 +165,13 @@ export function Header() {
         label: "Government of India",
         flagSrc: `${BP}/images/Indian-Flag.svg`,
       }}
-      language={{ label: "English" }}
+      language={{
+        // The control has always drawn a caret. Now something opens.
+        label: languageLabel(lang),
+        onClick: () => setLangOpen(true),
+      }}
       search={{
-        placeholder: "Search Schemes, Services, Documents",
+        placeholder: t("Search Schemes, Services, Documents"),
         // The masthead field is a real input now, so the query travels with the
         // navigation instead of dumping the reader on an empty results page.
         onSearch: (query) =>
@@ -162,9 +187,11 @@ export function Header() {
       nav={nav}
       actions={
         <Link href="/website/admin" className={buttonClasses()}>
-          Admin Login
+          {t("Admin Login")}
         </Link>
       }
     />
+    <LanguageDialog open={langOpen} onClose={() => setLangOpen(false)} />
+    </>
   );
 }
