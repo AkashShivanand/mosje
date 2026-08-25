@@ -185,8 +185,34 @@ export default function TickerPage(): React.JSX.Element {
                     </li>
                     <li>
                       <strong style={strong}>Hover / pressed</strong> on the controls is a white
-                      wash at 16% and 24% — a transparency of the single ink, never a second
-                      colour. The message underlines its headline.
+                      wash at 16% and 24%, plus a 0.94 press scale — a control that changes nothing
+                      under the finger reads as not having registered. Hover is gated behind{" "}
+                      <code>(hover: hover) and (pointer: fine)</code>, because on a touch screen{" "}
+                      <code>:hover</code> sticks after a tap.
+                    </li>
+                    <li>
+                      <strong style={strong}>Each row is marked, and the marker hangs.</strong> A
+                      small 48%-ink dot sits in its own grid column, so wrapped lines return to the
+                      text column and the dot is the only thing at the outer edge. Without it every
+                      line starts at the same x and only a vertical gap — 32px between rows against
+                      20px inside a wrapped title — says whether a line begins a notice or continues
+                      one, which is thin enough to misread while the list is moving. The hanging
+                      indent is the point, not the dot. The bar has none: one message, no list.
+                    </li>
+                    <li>
+                      <strong style={strong}>Rows do not underline on hover.</strong> WCAG 1.4.1
+                      asks that a link be distinguishable from the text <em>around</em> it, and in a
+                      list where every row is a link there is no surrounding text to confuse it
+                      with. The row&apos;s own background wash and the cursor carry the affordance;
+                      an underline on a wrapped two-line notice struck through both lines and fought
+                      the subtitle for the same few pixels.
+                    </li>
+                    <li>
+                      <strong style={strong}>Pause holds its place.</strong> The animation is
+                      applied whenever the list <em>can</em> scroll and only its{" "}
+                      <code>animation-play-state</code> moves. Gating the animation property itself
+                      on &quot;is it playing&quot; returned the track to zero, so resuming started
+                      again from the top — a pause that loses your place is not a pause.
                     </li>
                     <li>
                       <strong style={strong}>Focus</strong> is inverse ink, not{" "}
@@ -366,8 +392,14 @@ export default function TickerPage(): React.JSX.Element {
                       action below 1024px, the plinth label below 640px. Pause never drops.
                     </li>
                     <li>
-                      <strong style={strong}>Contrast:</strong> the description runs at 80% white on
-                      the brand blue — 6.3:1, past the 4.5:1 of WCAG 1.4.3.
+                      <strong style={strong}>Contrast:</strong> the ground is{" "}
+                      <code>primaryScale/600</code>, not <code>/500</code>, and that is a fix rather
+                      than a preference. White on <code>/500</code> is{" "}
+                      <strong style={strong}>4.64:1</strong> — clearing 1.4.3&apos;s 4.5:1 by four
+                      hundredths — and any dimming fails outright: 90% is 4.06:1, 80% is 3.52:1.
+                      This component shipped an 80% line on that ground and this page claimed 6.3:1,
+                      which was wrong. On <code>/600</code> the title is 6.36:1 and the subtitle
+                      4.66:1, so the two-line structure is possible at all.
                     </li>
                   </ul>
                 </section>

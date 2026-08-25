@@ -63,6 +63,29 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * the bar's own title role. Side by side they read as one component in two
  * shapes — which is what they are.
  *
+ * **Each row is a title over a subtitle** — the structure the live site uses and
+ * the one the bar already had. The notice is the title; its kind and date are
+ * the subtitle. A subtitle is allowed to repeat, which is why the kind can be
+ * shown here when it could not be as a bold lead-in on the same line.
+ *
+ * **Each row is marked, and the marker hangs.** A small dot in its own grid
+ * column, with wrapped lines returning to the text column — so the dot is the
+ * only thing at the outer edge and item starts are pickable out of the left
+ * margin without reading a word. It matters because the list *moves*: a reader
+ * re-acquires it constantly. The bar has none; one message, no list to scan.
+ *
+ * **Rows do not underline on hover.** WCAG 1.4.1 asks that a link be
+ * distinguishable from the text *around* it; in a list where every row is a
+ * link there is no surrounding text. The wash and the cursor carry it.
+ *
+ * **Pause holds its place.** The animation is applied whenever the list *can*
+ * scroll and only `animation-play-state` moves — gating the property itself on
+ * "is it playing" reset the track to zero.
+ *
+ * **The ground is `primaryScale/600`, and that is a contrast fix.** White on
+ * `/500` is 4.64:1 and any dimming fails (80% is 3.52:1). On `/600` the title
+ * is 6.36:1 and the subtitle 4.66:1.
+ *
  * **The mark is `<TickerMark>`, a bespoke animated SVG** — a megaphone whose
  * arcs pulse while the strip moves and stop when it is paused. It replaced a
  * white rounded tile, which on the navy plinth read as a sticker pasted onto
