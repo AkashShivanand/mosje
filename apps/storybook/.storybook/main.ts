@@ -22,7 +22,33 @@ const config: StorybookConfig = {
     pkgDir("@storybook/addon-a11y"),
     pkgDir("@storybook/addon-designs")
   ],
-  staticDirs: [{ from: "../../hub/public", to: "/" }],
+  /*
+   * NAMED SUBDIRECTORIES, never the whole `hub/public`.
+   *
+   * The hub serves Storybook from `apps/hub/public/storybook`, so that is where
+   * this build's `--output-dir` points. Copying `hub/public` wholesale therefore
+   * asks Node to copy a directory INTO ITSELF, and `cp` refuses:
+   *
+   *   ERR_FS_CP_EINVAL: cannot copy .../apps/hub/public to a subdirectory of
+   *   self .../apps/hub/public/storybook/
+   *
+   * That made the build unrunnable. It went unnoticed for a while because it was
+   * masked twice over: locally by an uninstalled addon that failed earlier, and
+   * in the hub's `prebuild` by its `|| echo '::warning::'` fallback — and CI,
+   * which would have hit it on a clean `npm ci`, is blocked on billing.
+   *
+   * These two roots are the ones stories and design-system components actually
+   * reference — the National Emblem, and the 144 portal logos the app switcher
+   * and login shells draw. Narrowing also drops ~59 MB of `reports/` and
+   * `website/` content out of the static build, none of which any story touches.
+   *
+   * ADDING AN ASSET ROOT MEANS ADDING A LINE HERE. That is the cost of not being
+   * able to map the parent, and it is cheaper than an unbuildable Storybook.
+   */
+  staticDirs: [
+    { from: "../../hub/public/images", to: "/images" },
+    { from: "../../hub/public/portals", to: "/portals" },
+  ],
   framework: { name: pkgDir("@storybook/react-vite"), options: {} },
   core: { disableTelemetry: true },
   docs: { autodocs: true },
