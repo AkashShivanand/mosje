@@ -289,9 +289,16 @@
         {
           "kind": "source",
           "file": "packages/design-system/components/actions/button.css",
-          "pattern": "\\.ds-btn--neutral \\{[^}]*--_color: var\\(--sa-text-neutral-base\\)",
+          "pattern": "\\.ds-btn--neutral \\{[^}]*--_color: var\\(--sa-cmp-action-neutral-tertiary-default-text\\)",
           "flags": "s",
-          "hint": "Base ink, not subtle: `subtle` resolves to the same text/muted as the disclaimer beside it, which made the one control in the footer the colour of body copy."
+          "hint": "It binds TIER 3, and it is the only variant that does. A complete cmp/action/neutral/* family already existed — 72 variables in Figma, 464 --sa-cmp-action-* in tokens.css — and the estate consumed two of them, both in comments. That orphan is why the author of this control reached for danger."
+        },
+        {
+          "kind": "source",
+          "file": "packages/tokens/src/component-matrix.json",
+          "pattern": "\"neutral\":\\s*\\{\\s*\"tertiary\":\\s*\\{\\s*\"default\":\\s*\\{\\s*\"text\":\\s*\"800\"",
+          "flags": "s",
+          "hint": "The neutral-only override. Without it the ink is the matrix default 700, which on the neutral ramp is text/muted — the colour of the disclaimer this control sits beside."
         }
       ]
     },

@@ -1557,7 +1557,7 @@
           },
           "text": {
             "$type": "color",
-            "$value": "{color.neutralScale.700}",
+            "$value": "{color.neutralScale.800}",
             "$description": "Use for neutral tertiary buttons at rest — the label."
           },
           "border": {
@@ -1574,7 +1574,7 @@
           },
           "text": {
             "$type": "color",
-            "$value": "{color.neutralScale.700}",
+            "$value": "{color.neutralScale.800}",
             "$description": "Use when the user hovers over a neutral tertiary button — the label."
           },
           "border": {

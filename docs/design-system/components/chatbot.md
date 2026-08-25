@@ -216,11 +216,12 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | Send at rest | drawn at 35% — the composer is empty in every variant | `:disabled { opacity: 0.35 }` | **fixed in Figma** (was drawn enabled) |
 | Note | `Body/body-3` 12, `text/neutral/subtle` | `body-3`, `text-muted` | ✅ |
 | Note text | "…points you to the right portal. It cannot decide or change an application." | identical | **fixed in Figma** |
-| Start over | `Label/label-1` 14/500, `text/neutral/base`, **no border, no fill**, `shape/8`, `.ds-btn--sm` (32 high, `padding/16` sides) | **Figma still shows the red outlined "End chat"** | ⚠️ **open — Figma to update.** The red was wrong twice over: the mock's `#ff0004` measures 4.00:1 and fails AA, and even the compliant error ink spends the estate's *rejection* signal on housekeeping. See the parity note below |
-| Start over target | 101×32 | pending | ⚠️ clears the 24px 2.5.8 minimum |
+| Start over | `Label/label-2`, `cmp/action/neutral/tertiary/default/text`, **no border, no fill**, `shape/8`, `.ds-btn--sm` | **a `Button` INSTANCE** — `Size=Small, Type=Neutral, Sub-type=Text` | ✅ **both sides now instance the same component.** It was a hand-drawn frame with a 1px error stroke in Figma and ~40 lines of hand-rolled CSS in code — the same defect, authored twice |
+| Start over target | 32 high, clears the 24px 2.5.8 minimum | identical (the Button master hugs its label) | ✅ |
+| Start over ink | `neutralScale/800` via a **neutral-only override** in `component-matrix.json` | identical — pushed and read back, `figma-live.json` re-recorded | ✅ the matrix default is 700, which on the neutral ramp is `text/muted`, the ink of the disclaimer it sits beside |
 | Start over position | same row as the note, hard right, bottom-aligned | identical (`.ds-chatbot__footer-row`, `align-items: flex-end`) | ✅ |
-| Composer input | fills the pill's 32px inner height | pending | ⚠️ **was 20px** — a line box floated inside a 42px pill by `align-items: center`, so half the visible field focused nothing and the real target sat under the 24px minimum |
-| Panel height | **content-sized**, capped at `min(719, viewport room)` | Figma frame is a fixed 719 | ⚠️ Figma's frame is a specimen at maximum extent; the cap is the contract. Pinned at 719 the opening state was 435px of white under the header |
+| Composer input | fills the pill's full 40px inner height (the padding moved onto the input) | not expressible | ⚠️ **by design.** Figma draws appearance, not hit areas — the pill renders identically either way. The rule is carried in the master's description and §06 of the documentation page instead. It was 20px: a line box floated inside a 42px pill, so half the visible field focused nothing and the real target sat under the 24px minimum |
+| Panel height | **content-sized**, capped at `min(719, viewport room)` | `State=Greeting` 396 · `State=Typing` 252 · `State=Transcript` 719 | ✅ the two short states are drawn at their true content height; Transcript stays at 719 because it is the state that demonstrates the cap and the scroll |
 | Launcher | 84, `bg/neutral/base`, `shape/full`, `elevation/toast` | identical | ✅ |
 | Close disc | full-bleed, `bg/brand/primary/bolder`, glyph 24 | full-bleed, glyph 30% of 84 = 25.2 | ✅ within a pixel |
 | Mascot disc | `bg/brand/primary/bolder` | identical | ✅ |

@@ -14310,7 +14310,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/neutralScale/700"
+              "name": "color/neutralScale/800"
             }
           },
           "description": "Use for neutral tertiary buttons at rest — the label.",
@@ -14372,7 +14372,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/neutralScale/700"
+              "name": "color/neutralScale/800"
             }
           },
           "description": "Use when the user hovers over a neutral tertiary button — the label.",
