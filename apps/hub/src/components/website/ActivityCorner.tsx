@@ -59,8 +59,11 @@ export function ActivityCorner() {
             <h2 className="text-[28px] sm:text-[32px] font-semibold leading-tight text-primary-dark">
               Activity Corner
             </h2>
+            {/* "Explore our affiliated bodies" used to sit here. It describes
+                Our Organisations, and that is where it now lives [WEB-T-04].
+                This section carries events and press releases. */}
             <p className="mt-1 text-[15px] text-ink-muted">
-              Explore our affiliated bodies
+              Events, press releases and announcements
             </p>
           </div>
 

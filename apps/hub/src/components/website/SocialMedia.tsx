@@ -136,7 +136,7 @@ export function SocialMedia() {
   return (
     <section className="bg-surface-muted py-12 md:py-16">
       <div className="sa-container">
-        <div className="text-center">
+        <div>
           <h2 className="text-[28px] sm:text-[32px] font-semibold leading-tight text-primary-dark">
             Explore our Social Media Platforms
           </h2>

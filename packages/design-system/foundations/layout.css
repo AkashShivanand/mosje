@@ -97,12 +97,12 @@
   margin-inline: auto;
 
   /* One value, resolved above, instead of three rules re-deriving the ladder.
-     The 32px rung steps at 1600 and NOT at the desktop anchor, because the
+     The 32px rung steps at 1920 and NOT at the desktop anchor, because the
      margin moves with the CAP: a wider margin buys breathing room only while the
      container is still fluid, and once the cap binds it buys nothing and costs
      content. Stepping it at 1280 did exactly that — the cap was already 1200, so
      content went 1152 -> 1136 as the viewport grew past it. Content now rises
-     monotonically: 1152 -> 1256 -> 1376. The step at 768 is deliberate and
+     monotonically: 1152 -> 1272 -> 1376. The step at 768 is deliberate and
      different — the container is fluid there, so the margin is real breathing
      room rather than a tax on a fixed column. */
   padding-inline: var(--sa-grid-margin-page);
