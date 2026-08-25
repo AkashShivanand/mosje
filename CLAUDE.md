@@ -142,11 +142,13 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   screenshotted and audited against SAMAVESH standards **before** declaring completion.
   Lint/typecheck passing without visual verification is forbidden.
 - Mobile-first responsive. **Content width is `.sa-container`, never a restated number** —
-  UX4G 3.0 ("Grid and layout") specifies **1200px desktop / 1320px desktop-XL** (≥1768px),
-  and `--sa-container-content` / `--sa-container-contentXl` carry those two values. The
-  **1280px** this line used to name was one of four widths that shipped at once before
-  2026-08-13; it is not the contract and was still being cited as one a year later. Bind to
-  `.sa-container` and add no `px-*` of your own — it owns the cap *and* the responsive margin.
+  UX4G 3.0 ("Grid and layout") publishes **1200px desktop / 1320px desktop-XL** but **no
+  breakpoints at all**, so where each engages is the estate's own decision. The cap is a
+  **three-step ladder** — 1200, then 1320 from **1440**, then 1440 from **1920** — and the
+  margin ladder (16 / 24 from 768 / 32 from 1920) steps with the CAP, not the viewport, so
+  content only ever grows: **1152 → 1272 → 1376**. The `≥1768px` this line used to name was a
+  retired anchor, and it was never UX4G's. Bind to `.sa-container` and add no `px-*` of your
+  own — it owns the cap *and* the responsive margin.
 - **AI design contract:** read `packages/design-system/design.md` before building or
   changing UI. Its companions `AGENTS.md` and `/design-system/llms.txt` stay in sync →
   `.claude/rules/design-system.md`.

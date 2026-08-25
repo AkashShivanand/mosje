@@ -775,15 +775,25 @@ rung's name equals its resolved value, so a violation fails the build rather tha
 **Content container — never hardcode a max-width.** Use the `.sa-container` class from
 `@mosje/design-system/layout.css`, which carries the cap *and* the responsive side margin.
 The estate uses a **three-step container**: `--sa-container-content` **1200px**, widening to
-`--sa-container-contentXl` **1320px** at `--sa-ref-breakpoint-desktopXl` (1600px), then to
+`--sa-container-contentXl` **1320px** at `--sa-ref-breakpoint-desktopXl` (**1440px**), then to
 `--sa-container-contentWide` **1440px** at `--sa-ref-breakpoint-desktopWide` (1920px).
+
+The **margin** ladder is deliberately out of step with the cap: 16px, 24px from 768, and 32px
+only from 1920. It follows the CAP, not the viewport anchors — a wider margin buys breathing
+room only while the container is still fluid, and once the cap binds it costs content instead.
+Stepping it at the desktop anchor did exactly that: content went 1152 -> 1136 crossing 1280.
+Holding 24px through Desktop XL is also what makes content there exactly **1272px**, the width
+the Handoff frame draws at 1440. Effective content is
+`min(cap, viewport) - 2 x margin`, and it only ever grows: **1152 -> 1272 -> 1376**.
 
 UX4G publishes two widths (1200 / 1320) and no breakpoints, which left the estate on a single
 widen at 1768px. That was measurably wrong in both directions: a 1728-wide viewport carried
 264px of margin each side against 1768's own 224px — margins *narrowing* as the screen grew —
 and one widen could not serve 1600 through 2560+, so a 2560 monitor rendered a 1320 column
 between 620px margins. The third step and the corrected anchors follow Material 3's window size
-classes (large 1200–1599, extra-large ≥1600). Recorded in `docs/guidelines/README.md`.
+classes. The 1320 anchor moved 1768 -> 1600 -> **1440** over 2026-08-24, each step decided by
+measuring the page rather than citing a ladder: 1600 left the weakest point of the ladder sitting
+on 1536, the most common desktop width. Recorded in `docs/guidelines/README.md`.
 `--sa-container-page` is the derived variable that selects between them; bind that when a
 media query is unavailable (an inline style, for instance — it is how `SiteHeader` caps its
 own column).
