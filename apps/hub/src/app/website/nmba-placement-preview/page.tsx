@@ -8,7 +8,7 @@ import { LatestUpdates } from "@/components/website/LatestUpdates";
 import { AboutUs } from "@/components/website/AboutUs";
 import { Offerings } from "@/components/website/Offerings";
 import { Organisations } from "@/components/website/Organisations";
-import { PortalBanner } from "@/components/website/PortalBanner";
+import { SamaveshJusticeBanner } from "@/components/website/SamaveshJusticeBanner";
 import { RecentDocuments } from "@/components/website/RecentDocuments";
 import { ActivityCorner } from "@/components/website/ActivityCorner";
 import { SocialMedia } from "@/components/website/SocialMedia";
@@ -72,7 +72,7 @@ export default function NmbaPlacementPreview() {
         <AboutUs />
         <Offerings />
         <Organisations />
-        <PortalBanner />
+        <SamaveshJusticeBanner />
 
         {option === "A" && <NashaMuktBharat variant="full" />}
         {option === "C" && <NashaMuktBharat variant="map" />}

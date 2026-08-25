@@ -37,23 +37,36 @@ export function LatestUpdates() {
 
   return (
     <section className="bg-primary text-white" aria-label="Latest Updates Ticker">
-      <div className="sa-container flex h-[72px] items-center gap-4">
-        {/* Label pill */}
-        <div className="flex shrink-0 items-center gap-2 rounded-md bg-white px-3 py-2 text-ink">
+      <div className="sa-container flex h-[72px] items-center gap-3 sm:gap-4">
+        {/* Label pill. The words are the first thing to go: they are 120px of a
+            288px content box at 320, and the section already carries the same
+            name as its accessible label, so nothing is lost to a screen reader. */}
+        <div className="flex shrink-0 items-center gap-2 rounded-md bg-white px-2.5 py-2 text-ink sm:px-3">
           <Image src="/website/images/updates.png" alt="" width={20} height={20} className="h-5 w-5" />
-          <span className="whitespace-nowrap text-[15px] font-semibold">Latest Updates</span>
+          <span className="hidden whitespace-nowrap text-[15px] font-semibold sm:inline">Latest Updates</span>
         </div>
 
         {/* Cycling item */}
         <Link href={item.href} className="flex min-w-0 flex-1 items-center gap-3 text-[15px] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-white">
-          <Badge status="primary" size="sm" className="shrink-0 uppercase">
+          <Badge status="primary" size="sm" className="hidden shrink-0 uppercase sm:inline-flex">
             {item.category}
           </Badge>
           <span className="truncate">{item.title}</span>
         </Link>
 
-        {/* Controls */}
-        <div className="flex shrink-0 items-center gap-2">
+        {/* Controls.
+            The row could not compress: `shrink-0` here plus `whitespace-nowrap` on
+            the button below fixed it at ~266px, which pushed the page to 481px of
+            scrollWidth on a 390px viewport — a WCAG 2.2 AA reflow failure
+            (1.4.10) on a public government page, at every mobile visit.
+
+            Things drop in order of how much they cost against what they do.
+            Pause STAYS at every width: this ticker auto-advances, so removing it
+            would trade a reflow failure for a 2.2.2 Pause/Stop/Hide failure.
+            Prev/next go below sm — the ticker cycles on its own and the same
+            items are on the linked page. The View All button goes below lg,
+            where it is the single widest item in the row. */}
+        <div className="flex shrink-0 items-center gap-1 sm:gap-2">
           <button
             onClick={() => setIsPlaying((p) => !p)}
             aria-label={isPlaying ? "Pause updates animation" : "Play updates animation"}
@@ -61,13 +74,13 @@ export function LatestUpdates() {
           >
             <Icon name={isPlaying ? "pause" : "play_arrow"} size={20} />
           </button>
-          <button onClick={() => go(index - 1)} aria-label="Previous update" className="grid h-8 w-8 place-items-center rounded-full hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white">
+          <button onClick={() => go(index - 1)} aria-label="Previous update" className="hidden h-8 w-8 sm:grid place-items-center rounded-full hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white">
             <Icon name="keyboard_arrow_left" size={20} />
           </button>
-          <button onClick={() => go(index + 1)} aria-label="Next update" className="grid h-8 w-8 place-items-center rounded-full hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white">
+          <button onClick={() => go(index + 1)} aria-label="Next update" className="hidden h-8 w-8 sm:grid place-items-center rounded-full hover:bg-white/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-white">
             <Icon name="keyboard_arrow_right" size={20} />
           </button>
-          <Link href="/website/notices" className={buttonClasses("primary", "outlined", "sm", "ml-1 whitespace-nowrap")}>
+          <Link href="/website/notices" className={buttonClasses("primary", "outlined", "sm", "ml-1 hidden whitespace-nowrap lg:inline-flex")}>
             View All Updates
           </Link>
         </div>
