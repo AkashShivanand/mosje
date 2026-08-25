@@ -257,6 +257,25 @@ context. It is not a tagline. It carries, in this order:
 Write the rules as *prohibitions and consequences*, not description. "Never add a
 tone prop" prevents a defect; "supports theming" prevents nothing.
 
+**WRITE IT THROUGH `descriptionMarkdown`, NEVER `description`.** The plain
+`description` setter HTML-escapes on every write and does not un-escape on read,
+so each edit escapes what the previous edit already escaped. An apostrophe
+becomes `&#39;`, then `&amp;#39;`, then `&amp;amp;#39;` — and the description an
+agent is handed as context fills up with entity noise. `descriptionMarkdown`
+round-trips a string unchanged and is idempotent; verified 2026-08-25 with a
+probe on `Ticker / Mark`.
+
+The Ticker set had reached **six levels** of nesting and 58 mangled entities
+before this was noticed, because nothing reads a component description back and
+compares it. When you edit one, re-read it and count: a match for
+`/&(amp;)*#?\w+;/` should return only genuine `&lt;`/`&gt;` from angle brackets
+you actually wrote. **Prefer `›` to `>` in file paths** so even those do not
+appear.
+
+This is not confined to Ticker. A survey the same day found the same damage on
+`Tabs` (63 entities, nineteen doubly-escaped), `Chatbot` (19), `Buttons` (15),
+`Inputs` (13) and `Accordion` (9) — recorded in `docs/design-system/follow-ups.md`.
+
 ### Why this is a rule
 
 The AccessibilityBar shipped with a correct Figma master, a correct code

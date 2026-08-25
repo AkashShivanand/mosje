@@ -95,7 +95,7 @@ export default function TickerPage(): React.JSX.Element {
                         {
                           type: "do",
                           label:
-                            "Keep the headline to one short clause — it is clipped, not wrapped, and the sentence under it carries the detail.",
+                            "Keep the headline to one short clause. Nothing is truncated, so a long one wraps and grows the strip — which is right, but a notice that takes three lines has stopped being a headline.",
                           preview: null,
                         },
                         {
@@ -120,18 +120,19 @@ export default function TickerPage(): React.JSX.Element {
                     the way out.
                   </p>
                   <p style={{ ...proseStyle, marginTop: "var(--sa-stack-16)" }}>
-                    They are one component because the data is identical — a lead-in, a sentence,
-                    a link — and a site usually wants both: the bar on the home page, the panel in
-                    a column beside it. In the panel <code>title</code> becomes the{" "}
-                    <strong style={strong}>bold lead-in before the colon</strong> (the kind of
-                    notice — Vacancies, Result, Tender) and <code>description</code> the sentence
-                    after it. <strong style={strong}>Without a description the title IS the row</strong>,
-                    in normal weight and with no colon — rendered alone the lead-in is a whole
-                    notice set in bold with a colon dangling off the end, and real notice lists
-                    repeat their categories (the DoSJE list is &quot;Documents&quot; seven times out
-                    of eight), which drew four identical bold words down the rail carrying no
-                    information. <code>linkLabel</code> is ignored there: on a scrolling list it
-                    would repeat on every row, and the whole row is already the link.
+                    They are one component because the data is identical — a notice, its kind, a
+                    date, a link — and a site usually wants both: the bar on the home page, the
+                    panel in a column beside it.{" "}
+                    <strong style={strong}>Every row is a title over a subtitle</strong>, in both
+                    shapes: <code>title</code> is the notice, and <code>description</code> and{" "}
+                    <code>date</code> fall to the quieter line beneath it. There is no colon and no
+                    bold lead-in — that was the shape until it met the real list, and it read as a
+                    label rather than a notice wherever the kinds repeat (the DoSJE list is{" "}
+                    &quot;Documents&quot; seven times out of eight, so the rail carried the same
+                    bold word four times over). Demoting the kind to the subtitle is what makes it
+                    safe to show at all. <code>linkLabel</code> is ignored in the panel: on a
+                    scrolling list it would repeat on every row, and the whole row is already the
+                    link.
                   </p>
                   <p style={{ ...proseStyle, marginTop: "var(--sa-stack-16)" }}>
                     <strong style={strong}>The loop is seamless because one animated wrapper holds
