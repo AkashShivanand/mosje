@@ -147,6 +147,12 @@ export function SocialMedia() {
 
         {/* Tab Selector matching Figma node 8137:48670 */}
         <div className="mt-8 flex justify-center">
+          {/* The segmented control was 398px wide against a 288px content box at
+              320, so it pushed the whole page sideways — a WCAG 2.2 AA reflow
+              failure (1.4.10). `px-6` on three tabs is 144px of padding alone.
+              Below sm the tabs are their glyphs, which for Facebook, X and
+              YouTube is the most recognisable form they have; `aria-label`
+              carries the name that stops being visible. */}
           <div className="flex items-center rounded-xl bg-gray-100 p-1.5 border border-gray-200">
             {SOCIAL_TABS.map((tab) => {
               const isActive = tab.key === activeTab;
@@ -155,15 +161,17 @@ export function SocialMedia() {
                   key={tab.key}
                   type="button"
                   onClick={() => setActiveTab(tab.key)}
+                  aria-label={tab.name}
+                  aria-pressed={isActive}
                   className={cn(
-                    "rounded-lg px-6 py-2 text-xs sm:text-sm font-semibold transition flex items-center gap-2",
+                    "rounded-lg px-3 py-2 text-xs sm:px-6 sm:text-sm font-semibold transition flex items-center gap-2",
                     isActive
                       ? "bg-primary text-white shadow-xs"
                       : "text-ink-muted hover:text-ink"
                   )}
                 >
                   <BrandGlyph name={tab.icon} size={20} />
-                  {tab.name}
+                  <span className="hidden sm:inline">{tab.name}</span>
                 </button>
               );
             })}
