@@ -200,6 +200,145 @@
     }
   }
 
+  /* ── The panel: orientation="vertical" ───────────────────────────────────
+     A DIFFERENT SHAPE, NOT A DIFFERENT TRANSITION. The bar shows one message
+     on a 72px strip; the panel stacks the same items as rows and scrolls them
+     upward under a header. Several headlines are legible at once, which is
+     what a notice board is for, and there is no stepping because the list
+     moves on its own.
+
+     THE LOOP IS SEAMLESS BECAUSE THE LIST IS RENDERED TWICE and the track
+     travels exactly -50%. At -50% the second copy sits precisely where the
+     first began, so the reset is invisible; any other distance produces a
+     visible jump, and a percentage of the TRACK is the only figure that stays
+     correct as notices are added. The duplicate is `aria-hidden` and out of
+     the tab order — see the component.
+
+     IT STOPS ON HOVER AND ON FOCUS, not only on the button. A moving row is a
+     moving tap target: without this the line a citizen is reading walks out
+     from under the pointer just as they reach for it. The button is the
+     deliberate control; this is the one that prevents accidents. `:focus-within`
+     covers the keyboard, where the same problem is worse — a focused row that
+     scrolls away takes the focus ring with it. */
+  .sa-ticker--vertical {
+    --sa-ticker-rows: 4;
+    --sa-ticker-duration: 40s;
+    /* One row is the sentence's line-height plus its own padding. It is a
+       local custom property rather than a token because it is a DERIVED
+       measurement — change the padding or the type role and this must follow,
+       which a shared rung could not express. */
+    --sa-ticker-row-height: calc(var(--sa-type-body-2-lh) + (2 * var(--sa-padding-12)));
+  }
+
+  .sa-ticker--vertical .sa-ticker__container {
+    flex-direction: column;
+    align-items: stretch;
+    padding-block: var(--sa-padding-16);
+  }
+
+  .sa-ticker--vertical .sa-ticker__header {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-16);
+    padding-block-end: var(--sa-padding-12);
+    border-block-end: 1px solid var(--sa-color-transparent-white-16);
+  }
+
+  /* In the panel the plinth is gone. It exists in the bar to separate the name
+     from the message on one horizontal line; here the header is already its own
+     row above a rule, so a second ground would be decoration. */
+  .sa-ticker--vertical .sa-ticker__heading {
+    flex: 1 1 auto;
+    align-self: auto;
+    padding: 0;
+    background-color: transparent;
+  }
+
+  .sa-ticker--vertical .sa-ticker__heading::before {
+    content: none;
+  }
+
+  .sa-ticker--vertical .sa-ticker__viewport {
+    display: block;
+    block-size: calc(var(--sa-ticker-rows) * var(--sa-ticker-row-height));
+    overflow: hidden;
+  }
+
+  .sa-ticker__track {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sa-ticker__viewport[data-moving] .sa-ticker__track {
+    animation: sa-ticker-scroll var(--sa-ticker-duration) linear infinite;
+  }
+
+  .sa-ticker__viewport[data-moving]:hover .sa-ticker__track,
+  .sa-ticker__viewport[data-moving]:focus-within .sa-ticker__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes sa-ticker-scroll {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50%);
+    }
+  }
+
+  .sa-ticker__row {
+    display: block;
+  }
+
+  .sa-ticker__rowlink {
+    display: flex;
+    gap: var(--sa-inline-8);
+    align-items: baseline;
+    padding-block: var(--sa-padding-12);
+    color: inherit;
+    text-decoration: none;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    letter-spacing: var(--sa-type-body-tracking);
+  }
+
+  .sa-ticker__rowlink:hover .sa-ticker__rowtext,
+  .sa-ticker__rowlink:hover .sa-ticker__lead,
+  .sa-ticker__rowlink:focus-visible .sa-ticker__rowtext,
+  .sa-ticker__rowlink:focus-visible .sa-ticker__lead {
+    text-decoration: underline;
+  }
+
+  .sa-ticker__rowlink:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: calc(-1 * var(--sa-focus-width));
+    border-radius: var(--sa-shape-8);
+  }
+
+  /* The lead-in carries the KIND of notice — "Vacancies", "Result", "Tender".
+     It is bold rather than a Badge because a badge on every row of a moving
+     list is four coloured rectangles competing with the words, and the row is
+     already one link. */
+  .sa-ticker__lead {
+    flex: 0 0 auto;
+    font-weight: 600;
+  }
+
+  .sa-ticker__lead::after {
+    content: ":";
+  }
+
+  .sa-ticker__rowtext {
+    flex: 1 1 auto;
+    min-width: 0;
+    opacity: 0.9;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .sa-ticker__title {
     font-size: var(--sa-type-title-3-size);
     line-height: var(--sa-type-title-3-lh);
@@ -295,12 +434,12 @@
      last — the section's accessible name already carries it, so a screen
      reader loses nothing. */
   @media (max-width: 639px) {
-    .sa-ticker__label,
-    .sa-ticker__step {
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__label,
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__step {
       display: none;
     }
 
-    .sa-ticker__heading {
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__heading {
       padding-inline: var(--sa-padding-12);
     }
 
@@ -311,7 +450,7 @@
   }
 
   @media (max-width: 1023px) {
-    .sa-ticker__action {
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action {
       display: none;
     }
   }
@@ -322,7 +461,8 @@
      and an interval that keeps firing while the animation is suppressed would
      still snap the message from one item to the next every four seconds. */
   @media (prefers-reduced-motion: reduce) {
-    .sa-ticker__item {
+    .sa-ticker__item,
+    .sa-ticker__track {
       animation: none;
     }
   }

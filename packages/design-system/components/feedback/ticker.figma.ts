@@ -1,11 +1,13 @@
-// url=<SAMAVESH>?node-id=56148-37528
+// url=<SAMAVESH>?node-id=56159-903
 // source=packages/design-system/components/feedback/ticker.tsx
 // component=Ticker
 //
 // ─────────────────────────────────────────────────────────────────────────────
-// Authored 2026-08-25 alongside the component itself, recreated from
-// MoSJE Handoff > Latest Updates (Ds5qx61QsI0ZkYSrLKxo0A, 8137:48790) into the
-// SAMAVESH library as a Breakpoint x Motion variant set.
+// Authored 2026-08-25 alongside the component itself. The BAR is recreated from
+// MoSJE Handoff > Latest Updates (Ds5qx61QsI0ZkYSrLKxo0A, 8137:48790); the
+// PANEL's behaviour follows UPSC + DBIM > Latest Updates (5jRf3OFlWlxKDgpnjYueFa,
+// 759:40) while its surface stays SAMAVESH's. One Breakpoint x Direction x
+// Motion set of 24 in the SAMAVESH library.
 // ─────────────────────────────────────────────────────────────────────────────
 import figma from "figma";
 
@@ -27,6 +29,19 @@ const instance = figma.selectedInstance;
  * from Motion=Paused would tell a reader the page controls a thing the page
  * does not control.
  */
+/**
+ * `Direction` → `orientation`. Exhaustive: both values mapped.
+ *
+ * This one IS a prop, unlike the two above, because it selects which of the two
+ * SHAPES you get — the 72px bar or the stacked scrolling panel — and that is a
+ * decision the page makes and keeps, not something the browser picks by width
+ * or the citizen toggles at runtime.
+ */
+const orientation = instance.getEnum("Direction", {
+  Horizontal: "horizontal",
+  Vertical: "vertical",
+});
+
 const label = instance.getString("Label");
 const title = instance.getString("Title");
 const description = instance.getBoolean("Show Description")
@@ -41,10 +56,15 @@ const showAction = instance.getBoolean("Show Action");
 // pair rather than mirroring the single frame back.
 const item = `{ id: "1", title: "${title}", description: "${description}", href: "/website/notices", linkLabel: "Learn More" }`;
 
+// `rows` is emitted only for the panel: in the bar it is meaningless, and a
+// prop that does nothing is a prop somebody will later try to make do something.
+const rowsProp = orientation === "vertical" ? "\n      rows={4}" : "";
+
 export default {
   example: figma.code`
     <Ticker
       label="${label}"
+      orientation="${orientation}"${rowsProp}
       linkAs={Link}
       items={[
         ${item},

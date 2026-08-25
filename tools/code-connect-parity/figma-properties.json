@@ -411,7 +411,7 @@
     ]
   },
   "Ticker": {
-    "nodeId": "56148:37528",
+    "nodeId": "56159:903",
     "captured": "2026-08-25",
     "properties": {
       "Label": {
@@ -436,14 +436,24 @@
         "type": "VARIANT",
         "variantOptions": [
           "Desktop",
+          "Tablet",
           "Mobile"
         ]
       },
       "Motion": {
         "type": "VARIANT",
         "variantOptions": [
-          "Playing",
-          "Paused"
+          "Playing A",
+          "Playing B",
+          "Paused A",
+          "Paused B"
+        ]
+      },
+      "Direction": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Horizontal",
+          "Vertical"
         ]
       }
     },

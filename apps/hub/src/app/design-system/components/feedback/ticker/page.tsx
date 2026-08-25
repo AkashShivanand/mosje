@@ -7,7 +7,7 @@ import { PropsTable, DoDont, DocsTabs } from "@/components/design-system/docs-ki
 export const metadata: Metadata = {
   title: "Ticker - SAMAVESH Design System",
   description:
-    "The full-bleed announcement strip under the masthead — a named plinth, one message at a time, and the controls to move through them.",
+    "Recent announcements in two shapes: the full-bleed bar under the masthead, and the stacked panel that scrolls them.",
 };
 
 export default function TickerPage(): React.JSX.Element {
@@ -46,8 +46,10 @@ export default function TickerPage(): React.JSX.Element {
           Ticker
         </h1>
         <p className="ds-lead" style={leadStyle}>
-          The full-bleed announcement strip that runs under the masthead on public pages — a named
-          plinth, one message at a time, and the controls to move through them.
+          Recent announcements, in two shapes. <strong style={strong}>The bar</strong> is the
+          full-bleed strip under the masthead, one message at a time.{" "}
+          <strong style={strong}>The panel</strong> stacks the same items as rows and scrolls them
+          upward under a header. One component, one data model, one pause control.
         </p>
       </header>
 
@@ -61,9 +63,10 @@ export default function TickerPage(): React.JSX.Element {
                 <section style={{ marginBottom: "var(--sa-section-48)" }}>
                   <h2 id="playground" style={h2Style}>Playground</h2>
                   <p style={proseStyle}>
-                    Switch between the two-line and single-line content models, drop the action, and
-                    stop the rotation. Note that pausing is what turns screen-reader announcements
-                    on — the strip is deliberately silent while it plays.
+                    Switch between the bar and the panel, between the two-line and single-line
+                    content models, drop the action, and stop the motion. Two things worth trying:
+                    pausing the bar is what turns screen-reader announcements on, and hovering the
+                    panel stops its scroll without touching the button.
                   </p>
                   <div style={{ marginTop: "var(--sa-stack-24)" }}>
                     <TickerPlayground />
@@ -107,7 +110,84 @@ export default function TickerPage(): React.JSX.Element {
                 </section>
 
                 <section style={{ marginBottom: "var(--sa-section-48)" }}>
-                  <h2 id="divergences" style={h2Style}>2. Divergences from the Figma frame</h2>
+                  <h2 id="orientation" style={h2Style}>2. Orientation — two shapes</h2>
+                  <p style={proseStyle}>
+                    <code>horizontal</code> (default) is the <strong style={strong}>bar</strong>:
+                    the 72px full-bleed strip under the masthead, one message at a time, stepped
+                    with prev and next. <code>vertical</code> is the{" "}
+                    <strong style={strong}>panel</strong>: the same items stacked as rows,
+                    scrolling upward under a header that carries the name, the pause control and
+                    the way out.
+                  </p>
+                  <p style={{ ...proseStyle, marginTop: "var(--sa-stack-16)" }}>
+                    They are one component because the data is identical — a lead-in, a sentence,
+                    a link — and a site usually wants both: the bar on the home page, the panel in
+                    a column beside it. In the panel <code>title</code> becomes the{" "}
+                    <strong style={strong}>bold lead-in before the colon</strong> (the kind of
+                    notice — Vacancies, Result, Tender) and <code>description</code> the sentence
+                    after it. <code>linkLabel</code> is ignored there: on a scrolling list it would
+                    repeat on every row, and the whole row is already the link.
+                  </p>
+                  <p style={{ ...proseStyle, marginTop: "var(--sa-stack-16)" }}>
+                    <strong style={strong}>The loop is seamless because the list is rendered
+                    twice</strong> and the track travels exactly −50%, so the second copy lands
+                    precisely where the first began. Any other distance produces a visible jump,
+                    and a percentage of the track is the only figure that stays correct as notices
+                    are added. The duplicate is <code>aria-hidden</code> and out of the tab order.
+                  </p>
+                </section>
+
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+                  <h2 id="states" style={h2Style}>3. States</h2>
+                  <ul style={listStyle}>
+                    <li>
+                      <strong style={strong}>Playing / Paused</strong> — the only state a citizen
+                      changes. Pausing also flips the live region from <code>off</code> to{" "}
+                      <code>polite</code>.
+                    </li>
+                    <li>
+                      <strong style={strong}>Hover / focus stops the panel.</strong> Not only the
+                      button — a moving row is a moving tap target, so without this the line
+                      somebody is reading walks out from under the pointer just as they reach for
+                      it. <code>:focus-within</code> covers the keyboard, where a focused row that
+                      scrolls away takes the focus ring with it.
+                    </li>
+                    <li>
+                      <strong style={strong}>The panel does not scroll below 640px.</strong> On
+                      touch there is no hover to stop it with, so it becomes a still list of its
+                      first <code>rows</code> items with the rest behind the action. The bar is
+                      unaffected: it holds one message, so nothing moves out from under a thumb.
+                    </li>
+                    <li>
+                      <strong style={strong}>Nothing that cannot move shows motion controls.</strong>{" "}
+                      Below two items (bar), or when the list is no longer than its own window
+                      (panel), the whole cluster is removed — pause included. A pause control on
+                      something that is not moving is worse than absent: it advertises motion a
+                      citizen may be trying to escape. This is the one place pause legitimately
+                      disappears.
+                    </li>
+                    <li>
+                      <strong style={strong}>Empty</strong> — an empty list renders nothing at
+                      all, not an empty blue band.
+                    </li>
+                    <li>
+                      <strong style={strong}>Hover / pressed</strong> on the controls is a white
+                      wash at 16% and 24% — a transparency of the single ink, never a second
+                      colour. The message underlines its headline.
+                    </li>
+                    <li>
+                      <strong style={strong}>Focus</strong> is inverse ink, not{" "}
+                      <code>--sa-focus-ring</code>. See Accessibility.
+                    </li>
+                    <li>
+                      <strong style={strong}>Reduced motion</strong> — the timer never starts;
+                      the citizen steps through with the arrows.
+                    </li>
+                  </ul>
+                </section>
+
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+                  <h2 id="divergences" style={h2Style}>4. Divergences from the Figma frame</h2>
                   <p style={proseStyle}>
                     Four, each recorded rather than hidden — a later reader will otherwise
                     &quot;fix&quot; them back.
@@ -137,7 +217,7 @@ export default function TickerPage(): React.JSX.Element {
                 </section>
 
                 <section style={{ marginBottom: "var(--sa-section-48)" }}>
-                  <h2 id="code-example" style={h2Style}>3. Code Example</h2>
+                  <h2 id="code-example" style={h2Style}>5. Code Example</h2>
                   <Playground
                     code={`<Ticker
   items={updates}
@@ -159,7 +239,7 @@ export default function TickerPage(): React.JSX.Element {
             content: (
               <div className="ds-prose">
                 <section style={{ marginBottom: "var(--sa-section-48)" }}>
-                  <h2 id="api" style={h2Style}>4. API Reference</h2>
+                  <h2 id="api" style={h2Style}>6. API Reference</h2>
                   <PropsTable
                     props={[
                       {
@@ -187,7 +267,24 @@ export default function TickerPage(): React.JSX.Element {
                         description:
                           "The way out of the strip. Style it with buttonClasses(\"primary\", \"inverseOutlined\", \"sm\").",
                       },
-                      { name: "interval", type: "number", description: "Milliseconds each item holds. Defaults to 5000." },
+                      {
+                        name: "orientation",
+                        type: '"horizontal" | "vertical"',
+                        description:
+                          "Which of the two shapes: the 72px one-message bar, or the stacked scrolling panel. Defaults to horizontal.",
+                      },
+                      {
+                        name: "rows",
+                        type: "number",
+                        description:
+                          "How many rows are visible at once, and therefore the panel's height. Vertical only. Defaults to 4.",
+                      },
+                      {
+                        name: "interval",
+                        type: "number",
+                        description:
+                          "Horizontal: milliseconds each item holds. Vertical: milliseconds of travel per row, so the scroll speed stays constant however long the list gets. Defaults to 5000.",
+                      },
                       { name: "autoplay", type: "boolean", description: "Start advancing on mount. Defaults to true." },
                       {
                         name: "linkAs",
@@ -212,7 +309,7 @@ export default function TickerPage(): React.JSX.Element {
             content: (
               <div className="ds-prose">
                 <section style={{ marginBottom: "var(--sa-section-48)" }}>
-                  <h2 id="accessibility" style={h2Style}>5. Accessibility (A11y)</h2>
+                  <h2 id="accessibility" style={h2Style}>7. Accessibility (A11y)</h2>
                   <ul style={listStyle}>
                     <li>
                       <strong style={strong}>Pause, Stop, Hide (2.2.2):</strong> the strip
@@ -238,6 +335,13 @@ export default function TickerPage(): React.JSX.Element {
                       <strong style={strong}>Focus ring (1.4.11 / 2.4.11):</strong> inverse ink, not{" "}
                       <code>--sa-focus-ring</code>. The ring token is this bar&apos;s own fill and
                       measures 1:1 against it.
+                    </li>
+                    <li>
+                      <strong style={strong}>The panel is a list, not a live region.</strong> A
+                      screen reader reads it as one, at whatever pace the reader chooses — so
+                      there is no <code>aria-live</code> on it and nothing interrupts. The
+                      duplicated scrolling copy is <code>aria-hidden</code> with{" "}
+                      <code>tabIndex=-1</code>, so it is announced once and tabbed through once.
                     </li>
                     <li>
                       <strong style={strong}>Reflow (1.4.10):</strong> prev/next drop below 640px, the

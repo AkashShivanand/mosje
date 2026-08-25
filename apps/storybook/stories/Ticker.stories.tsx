@@ -33,6 +33,23 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * active item costs the exit animation and buys a tab order that matches what
  * is on screen.
  *
+ * **`orientation` picks one of TWO SHAPES.** `horizontal` is the **bar**: the
+ * 72px full-bleed strip, one message at a time, stepped with prev/next.
+ * `vertical` is the **panel**: the same items stacked as rows scrolling upward
+ * under a header. Several headlines are legible at once, and there is no
+ * stepping because the list moves on its own. In the panel `title` becomes the
+ * bold lead-in before the colon and `description` the sentence after it.
+ *
+ * **The panel stops on hover and on focus, not only on the button.** A moving
+ * row is a moving tap target — without it the line somebody is reading walks
+ * out from under the pointer. It also does not scroll at all below 640px,
+ * where there is no hover to stop it with.
+ *
+ * **Nothing that cannot move shows controls that govern motion.** Below two
+ * items (bar), or when the list is no longer than its own window (panel), the
+ * whole cluster goes — a pause button on something that is not moving is worse
+ * than absent, because it advertises motion to escape from.
+ *
  * **The action slot needs `inverseOutlined`.** The strip is a solid brand
  * surface, so a normal outlined button draws its border in a blue nobody can
  * see against it.
@@ -64,12 +81,22 @@ const ITEMS = [
   },
 ];
 
+/** Enough notices to overflow a four-row window, so the panel has something to
+ *  scroll past. In the panel the title is the bold lead-in before the colon. */
+const LONG_LIST = [
+  ...ITEMS,
+  { id: "vacancy", title: "Vacancies", description: "Financial Adviser at DAF and BJRNF — application window extended.", href: "#vacancy" },
+  { id: "tender", title: "Tender", description: "Supply and installation of assistive devices, Phase III.", href: "#tender" },
+  { id: "report", title: "Documents", description: "Annual Report 2025-26 is now available in English and Hindi.", href: "#report" },
+];
+
 const meta = {
   title: "Components/Ticker",
   component: Ticker,
   args: {
     items: ITEMS,
     label: "Latest Updates",
+    orientation: "horizontal",
     interval: 5000,
     autoplay: true,
     action: (
@@ -82,6 +109,7 @@ const meta = {
     action: { control: false },
     icon: { control: false },
     linkAs: { control: false },
+    orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
     interval: { control: { type: "number", min: 2000, step: 500 } },
   },
   parameters: { layout: "fullscreen" },
@@ -111,8 +139,37 @@ export const SingleLine: Story = {
 };
 
 /**
- * One item. The arrows still render and still work — they wrap to the same
- * item — but the timer does not start, because there is nothing to advance to.
+ * The **panel** — items stacked and scrolling upward under a header. Hover it
+ * and the scroll stops; tab into it and it stops too. With six items over a
+ * four-row window there is something to scroll past, so it moves.
+ */
+export const Vertical: Story = {
+  args: { orientation: "vertical", items: LONG_LIST },
+};
+
+/**
+ * A taller panel. `rows` is what sets the height, and the travel is per row, so
+ * a longer list takes proportionally longer to loop — the reading speed stays
+ * the same however many notices the ministry publishes.
+ */
+export const VerticalSixRows: Story = {
+  args: { orientation: "vertical", items: LONG_LIST, rows: 6, interval: 3000 },
+};
+
+/**
+ * A panel with nothing to scroll past — four items in a four-row window. It is
+ * a still list, and the pause control is gone with the motion it governed.
+ */
+export const VerticalStatic: Story = {
+  args: { orientation: "vertical", items: LONG_LIST.slice(0, 4) },
+};
+
+/**
+ * One item, and therefore **no controls at all**. The timer never starts below
+ * two, so pause, prev and next would be three buttons that visibly do nothing —
+ * and a pause control on a strip that is not moving is worse than absent,
+ * because it advertises motion a citizen might be trying to escape. The message
+ * and the action remain.
  */
 export const SingleItem: Story = {
   args: { items: [ITEMS[0]!] },

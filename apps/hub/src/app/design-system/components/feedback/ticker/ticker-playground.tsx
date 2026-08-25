@@ -25,12 +25,17 @@ const ITEMS = [
     href: "#nos",
     linkLabel: "Learn More",
   },
+  { id: "vacancy", title: "Vacancies", description: "Financial Adviser at DAF and BJRNF — application window extended.", href: "#vacancy" },
+  { id: "tender", title: "Tender", description: "Supply and installation of assistive devices, Phase III.", href: "#tender" },
+  { id: "report", title: "Documents", description: "Annual Report 2025-26 is now available in English and Hindi.", href: "#report" },
 ];
 
 export function TickerPlayground(): React.JSX.Element {
   const [twoLine, setTwoLine] = React.useState(true);
   const [withAction, setWithAction] = React.useState(true);
   const [autoplay, setAutoplay] = React.useState(true);
+  const [vertical, setVertical] = React.useState(false);
+  const [singleItem, setSingleItem] = React.useState(false);
 
   const controlStyle: React.CSSProperties = {
     display: "flex",
@@ -71,11 +76,22 @@ export function TickerPlayground(): React.JSX.Element {
           <input type="checkbox" checked={autoplay} onChange={(e) => setAutoplay(e.target.checked)} />
           <strong>Autoplay</strong>
         </label>
+        <label style={controlStyle}>
+          <input type="checkbox" checked={vertical} onChange={(e) => setVertical(e.target.checked)} />
+          <strong>Panel (vertical scroll)</strong>
+        </label>
+        <label style={controlStyle}>
+          <input type="checkbox" checked={singleItem} onChange={(e) => setSingleItem(e.target.checked)} />
+          <strong>Too short to move (controls go)</strong>
+        </label>
       </div>
 
       <Ticker
-        key={`${autoplay}`}
-        items={twoLine ? ITEMS : ITEMS.map(({ id, title, href }) => ({ id, title, href }))}
+        key={`${autoplay}-${vertical}-${singleItem}`}
+        items={(singleItem ? ITEMS.slice(0, vertical ? 4 : 1) : ITEMS).map((i) =>
+          twoLine ? i : { id: i.id, title: i.title, href: i.href },
+        )}
+        orientation={vertical ? "vertical" : "horizontal"}
         autoplay={autoplay}
         action={
           withAction ? (
