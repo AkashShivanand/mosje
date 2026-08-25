@@ -219,9 +219,15 @@ export default function AboutPage() {
 
           <div className="lg:col-span-5 flex justify-center">
             <div className="relative w-full max-w-md aspect-[4/3] rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-neutral-100">
+              {/* Was `portal-banner-images.png` — a raster of the SAMAVESH banner
+                  comp, with the headline and subline baked in. Cropped to 4:3 by
+                  `object-cover` it rendered half-cut words ("…ed Advancement",
+                  "…y. Dignity.") between two black bars, under alt text that
+                  described none of it. This is the same photography with no text
+                  in it, framed for this slot. */}
               <Image
-                src="/website/images/portal-banner-images.png"
-                alt="MoSJE Welfare and Social Justice Initiatives"
+                src="/website/images/samavesh-citizens-4x3.jpg"
+                alt="Citizens of India at sunset — an elderly woman, students, a tribal youth, a man in a wheelchair and an elderly farmer, representing the groups the Department serves."
                 fill
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, 450px"
