@@ -23574,11 +23574,11 @@
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 1600,
+              "value": 1440,
               "unit": "px"
             }
           },
-          "description": "Where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). Was 1768px, chosen from the estate's own viewport ladder; corrected to 1600 on 2026-08-24 for two reasons. MEASURED: at 1768 a 1728-wide viewport (the MacBook Pro 16\" default) carried 264px of margin each side while 1768 itself carried 224px, so margins got NARROWER as the viewport grew — the signature of a threshold set too high. STANDARD: Material 3's extra-large window class begins at exactly 1600, arrived at independently. The FLOOR that the previous note defended still holds and is still honoured — 1440 stays on the 1200 cap. That note also justified 1768 by \"the website Handoff, which shows the wide margin of a 1200 column at 1440\"; it does not — every Container node in the Handoff's Home frame is 1320 wide at x=60, so the frame draws the desktop-XL cap on a desktop artboard and is itself the thing to correct. Not part of the type curve — `clamp()` still tops out at 1280, so this resizes no glyph. Viewport anchor. The ladder follows Material 3's window size classes, which are derived from measured device distribution rather than from one framework's grid: compact <600, medium 600-839, expanded 840-1199, large 1200-1599, extra-large >=1600. UX4G publishes the two content widths but no breakpoints at all, so there is nothing to diverge FROM here; where its guidance and interface quality met, quality won, per .claude/rules/standards-precedence.md. Recorded in docs/guidelines/README.md. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
+          "description": "Where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). 1768 -> 1600 -> 1440 over 2026-08-24, each step decided by measuring the page rather than by citing a ladder. 1768 was abandoned because a 1728-wide viewport carried 264px of margin each side against 1768's own 224px — margins NARROWING as the screen grew. 1600 (Material 3's extra-large window class) was then abandoned because it left the ladder's WEAKEST POINT sitting on its most common viewport: at 1536 — 1920 at 125% Windows scaling, the single most common desktop width — content held only 75% of the screen, worse than at 1280 (90%) and worse than at 1600 (78%). 1440 fixes the range that carries the most users: 1440 goes 80% -> 88%, 1512 76% -> 84%, 1536 75% -> 83%. Nothing at 1600 and above changes. THE FLOOR THAT WAS DROPPED, deliberately: earlier notes held that 1440 must stay on the 1200 cap because UX4G says '1200px desktop'. UX4G publishes no breakpoints at all, so it never fixed where desktop ends; and `.claude/rules/standards-precedence.md` puts interface quality above it, which is the whole point of that rule. Recorded as divergence #6 in docs/guidelines/README.md. It also makes the code agree with the Handoff, whose Home frame draws a 1320 container on a 1440 artboard — the frame was right and the note calling it wrong has been withdrawn. Not part of the type curve — `clamp()` still tops out at 1280, so this anchor resizes no glyph. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-breakpoint-desktopXl)"
           },
@@ -24075,7 +24075,7 @@
             "Desktop XL": {
               "type": "ALIAS",
               "collection": "Space",
-              "name": "grid/margin/desktop"
+              "name": "grid/margin/tablet"
             },
             "Desktop Wide": {
               "type": "ALIAS",
@@ -24083,7 +24083,7 @@
               "name": "grid/margin/desktop"
             }
           },
-          "description": "The RESOLVED page margin at a given window size — the companion to `container/page`, and what `.sa-container` applies as its inline padding. `mobile`/`tablet`/`desktop` are the three rungs; this is which rung is in force. It steps with the CAP, not with the viewport anchors: a wider margin only buys breathing room while the container is still fluid, and once the cap binds it buys nothing and costs content. Stepping it at the desktop anchor did exactly that — content went 1152 -> 1136 crossing 1280 — so Laptop and Desktop hold the tablet rung and the 32px step waits for Desktop XL, where the cap widens too. $value is the mobile-first base.",
+          "description": "The RESOLVED page margin at a given window size — the companion to `container/page`, and what `.sa-container` applies as its inline padding. `mobile`/`tablet`/`desktop` are the three rungs; this is which rung is in force. It steps with the CAP, not with the viewport anchors: a wider margin only buys breathing room while the container is still fluid, and once the cap binds it buys nothing and costs content. Stepping it at the desktop anchor did exactly that — content went 1152 -> 1136 crossing 1280 — so Laptop, Desktop and Desktop XL hold the tablet rung and the 32px step waits for Desktop Wide. Keeping 24 at Desktop XL is also what makes the content there exactly 1272 — the width the Handoff's own frame draws. $value is the mobile-first base.",
           "codeSyntax": {
             "WEB": "var(--sa-grid-margin-page)"
           },

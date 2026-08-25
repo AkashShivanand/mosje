@@ -2493,7 +2493,7 @@
       },
       "page": {
         "$value": "{grid.margin.mobile}",
-        "$description": "The RESOLVED page margin at a given window size — the companion to `container/page`, and what `.sa-container` applies as its inline padding. `mobile`/`tablet`/`desktop` are the three rungs; this is which rung is in force. It steps with the CAP, not with the viewport anchors: a wider margin only buys breathing room while the container is still fluid, and once the cap binds it buys nothing and costs content. Stepping it at the desktop anchor did exactly that — content went 1152 -> 1136 crossing 1280 — so Laptop and Desktop hold the tablet rung and the 32px step waits for Desktop XL, where the cap widens too. $value is the mobile-first base.",
+        "$description": "The RESOLVED page margin at a given window size — the companion to `container/page`, and what `.sa-container` applies as its inline padding. `mobile`/`tablet`/`desktop` are the three rungs; this is which rung is in force. It steps with the CAP, not with the viewport anchors: a wider margin only buys breathing room while the container is still fluid, and once the cap binds it buys nothing and costs content. Stepping it at the desktop anchor did exactly that — content went 1152 -> 1136 crossing 1280 — so Laptop, Desktop and Desktop XL hold the tablet rung and the 32px step waits for Desktop Wide. Keeping 24 at Desktop XL is also what makes the content there exactly 1272 — the width the Handoff's own frame draws. $value is the mobile-first base.",
         "$extensions": {
           "mosje": {
             "viewport": {
@@ -2501,7 +2501,7 @@
               "Tablet": "{grid.margin.tablet}",
               "Laptop": "{grid.margin.tablet}",
               "Desktop": "{grid.margin.tablet}",
-              "Desktop XL": "{grid.margin.desktop}",
+              "Desktop XL": "{grid.margin.tablet}",
               "Desktop Wide": "{grid.margin.desktop}"
             }
           }
