@@ -30,6 +30,29 @@
 // `onChange` OPENS THE PORTAL PICKER. It never submits, and anything the user
 // has already typed must survive the round trip. Omit it and no Change control
 // renders — which is correct for a portal reached by a fixed URL.
+//
+// `logoSrc` is DELIBERATELY NOT EMITTED, and this is the interesting one.
+//
+// The snippet used to hardcode `logoSrc="/portals/scw/logo.svg"`. That file does
+// not exist and never has: `apps/hub/public/portals/scw/` contains only
+// `brand/`, and every portal's `brand/` holds the same four shared marks
+// (national emblem, Digital India, SAMAVESH) rather than a logo of its own. So
+// the estate has no per-portal logo asset for this prop to point at, and Dev
+// Mode was handing developers a path that 404s.
+//
+// Pointing it at one of the shared marks instead would be worse — it would put
+// the National Emblem in a decorative `alt=""` slot on every portal's login bar,
+// which is not what that mark is for. The prop is optional (`logoSrc?`), it is
+// decorative when set, and the only real use of this component in the repo —
+// `AuthParts.stories.tsx` — omits it too. So the snippet omits it, per
+// `.claude/rules/component-authoring.md` §12a: never invent a code prop; if none
+// fits, omit it and say why.
+//
+// CAVEAT, stated rather than glossed: this template has no Figma fixture
+// (`check:code-connect` reports it as unverified), so whether the Figma
+// component carries a logo layer could not be confirmed from the recorded
+// snapshot. If capturing the fixture later shows a logo property, map it to a
+// real asset then — do not restore the dead path.
 import figma from "figma";
 
 const instance = figma.selectedInstance;
@@ -45,7 +68,6 @@ export default {
   example: figma.code`<SigningIntoBar
   portalName="${portalName}"
   tone="${tone}"
-  logoSrc="/portals/scw/logo.svg"
   onChange={openPortalPicker}
 />`,
   imports: ['import { SigningIntoBar } from "@mosje/design-system"'],

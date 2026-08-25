@@ -27,6 +27,9 @@
      ============================================================================ */
 
   .ds-search {
+    /* Positioned so the autocomplete listbox can anchor to the field. Harmless
+       for a field without one — nothing else here is absolutely positioned. */
+    position: relative;
     display: inline-flex;
     align-items: center;
     gap: var(--sa-stack-8);
@@ -176,5 +179,132 @@
   .ds-search__icon--action:focus-visible {
     outline: 2px solid var(--sa-border-brand-primary-base);
     outline-offset: -2px;
+  }
+
+  /* ============================================================================
+     Autocomplete — ARIA 1.2 combobox listbox
+     Present only when the owner passes `suggestions`. See search.tsx for the
+     three behavioural rules (focus stays in the input, Escape keeps the text,
+     Enter on raw text always works).
+     ============================================================================ */
+
+  /* The field keeps its focus ring while the list is open, because the input is
+     still the focused element — the highlight in the list is not focus. */
+  .ds-search--open {
+    border-color: var(--sa-border-brand-primary-base);
+  }
+
+  /* Square off the join between field and list so they read as one surface. */
+  .ds-search--open,
+  .ds-search--open .ds-search__input {
+    border-bottom-left-radius: var(--sa-shape-0);
+    border-bottom-right-radius: var(--sa-shape-0);
+  }
+
+  .ds-search__listbox {
+    position: absolute;
+    top: 100%;
+    left: -1px;
+    right: -1px;
+    /* Beats sticky product chrome and a masthead's own stacking, and nothing
+       more. This is a popover anchored to a field, not a floating widget on one
+       of the two rails in .claude/rules/floating-element-placement.md, so it
+       stays well below the accessibility panel and the chatbot. */
+    z-index: 60;
+    max-height: 22rem;
+    margin: 0;
+    padding: var(--sa-padding-4) 0;
+    overflow-y: auto;
+    list-style: none;
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-brand-primary-base);
+    border-top: 0;
+    border-bottom-left-radius: var(--sa-shape-8);
+    border-bottom-right-radius: var(--sa-shape-8);
+    box-shadow: var(--sa-elevation-dropdown);
+  }
+
+  .ds-search__group {
+    padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-4);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 700;
+    letter-spacing: var(--sa-type-label-tracking);
+    text-transform: uppercase;
+  }
+
+  .ds-search__option {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    color: var(--sa-text-neutral-base);
+    cursor: pointer;
+  }
+
+  /* One highlight for both keyboard and pointer — `is-active` follows
+     aria-activedescendant, and mouseenter sets the same index, so the two input
+     methods can never disagree about which row Enter would open. */
+  .ds-search__option.is-active {
+    background-color: var(--sa-bg-brand-primary-subtler);
+  }
+
+  .ds-search__option-icon {
+    display: inline-flex;
+    flex: 0 0 auto;
+    margin-top: var(--sa-stack-2);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-search__option-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ds-search__option-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    min-width: 0;
+  }
+
+  .ds-search__option-label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+  }
+
+  .ds-search__option-desc {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  /* `<mark>`, not a coloured span: the match is conveyed to a screen reader as
+     emphasis, not by colour alone. */
+  .ds-search__mark {
+    background-color: var(--sa-bg-brand-primary-subtle);
+    color: var(--sa-text-neutral-bolder);
+    font-weight: 700;
+    border-radius: var(--sa-shape-2);
+  }
+
+  /* The polite live region announcing the suggestion count. Visually hidden but
+     never `display: none`, which would stop it being announced at all. */
+  .ds-search__status {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
   }
 }

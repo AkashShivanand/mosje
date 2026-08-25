@@ -1,0 +1,129 @@
+/* Declare the order before using it — see search.css for the full reasoning. A
+   cascade layer's position is fixed by where its NAME first appears, and each of
+   these stylesheets is a separate CSS root the bundler may inject before the
+   app's globals.css. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     Pagination
+     Visual language matches the table's own pager (outlined current page, not a
+     filled block) so a listing and a table on the same screen do not disagree.
+     ============================================================================ */
+
+  .ds-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-inline-8);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-pagination__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-pagination__step,
+  .ds-pagination__page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-inline-4);
+    /* 40px clears WCAG 2.2 AA target size (24x24 minimum, 2.5.8) with room to
+       spare, and matches UX4G's 44px touch recommendation once the 4px gap
+       between adjacent targets is counted. */
+    height: 40px;
+    min-width: 40px;
+    padding: 0 var(--sa-padding-12);
+    border: 1px solid transparent;
+    border-radius: var(--sa-shape-6);
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      border-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  .ds-pagination__page {
+    padding: 0 var(--sa-padding-8);
+  }
+
+  .ds-pagination__step:hover,
+  .ds-pagination__page:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-base);
+  }
+
+  /* Outlined, not filled — the same treatment the table pager uses. */
+  .ds-pagination__page.is-current {
+    border-color: var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-brand-primary-base);
+    cursor: default;
+  }
+
+  .ds-pagination__page.is-current:hover {
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .ds-pagination__ellipsis {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 var(--sa-padding-4);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-pagination__step svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* The step labels are words on a pointer surface and icons alone below it —
+     but the WORD stays in the accessibility tree either way, so "Previous" is
+     never announced as "chevron left". */
+  @media (max-width: 480px) {
+    .ds-pagination__step-text {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      margin: -1px;
+      padding: 0;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    .ds-pagination__step {
+      padding: 0;
+    }
+  }
+
+  .ds-pagination__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .ds-pagination__step:focus-visible,
+  .ds-pagination__page:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+}

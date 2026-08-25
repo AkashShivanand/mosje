@@ -98,6 +98,7 @@ export { Checkbox } from "./components/forms/checkbox";
 export { Radio } from "./components/forms/radio";
 export { Toggle } from "./components/forms/toggle";
 export { Search } from "./components/forms/search";
+export type { SearchProps, SearchSize, SearchSuggestion } from "./components/forms/search";
 export { Chip } from "./components/forms/chip";
 export { FormSection } from "./components/forms/form-section";
 export type { FormSectionProps } from "./components/forms/form-section";
@@ -289,6 +290,8 @@ export type {
 
 // Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
 export { SidebarNav } from "./components/navigation/sidebar";
+export { Pagination } from "./components/navigation/pagination";
+export type { PaginationProps } from "./components/navigation/pagination";
 export type {
   SidebarNavProps,
   SidebarNavGroup,

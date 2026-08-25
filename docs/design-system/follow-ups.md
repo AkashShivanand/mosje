@@ -15,6 +15,37 @@ Sibling documents: `parity-ledger.md` (generated — what is designed vs built),
 
 ## Open
 
+### Pagination ships without its Figma half
+
+**Deferred to:** whoever next has write access to the SAMAVESH library. Recorded
+2026-08-25, on review of PR #186.
+
+**What is missing.** `Pagination` is exported from `packages/design-system/index.ts`
+and has a component, a stylesheet and a Storybook story — but no
+`pagination.figma.ts` Code Connect template and no docs page under
+`apps/hub/src/app/design-system/components/navigation/pagination/`.
+`.claude/rules/component-authoring.md` §12 requires the first;
+`.claude/rules/design-system-architecture.md` §4 requires the second. The Ticker
+that landed the same week (PR #187) has both, so this is an inconsistency inside
+one release rather than a standard nobody meets.
+
+**Why it shipped anyway.** It supports the website search results page, which is
+finished and verified; holding a working citizen-facing feature for a helper
+component's Figma mapping would have been the wrong trade. The template also needs
+a Figma node id that does not exist yet — the component was built from the search
+design, not promoted from an existing master.
+
+**THE GATES CANNOT SEE THIS, which is the part worth knowing.**
+`check:code-connect` walks the templates that exist and checks each one lines up;
+a component with *no* template is not a template it walks. `check:docs-routes`
+fails when two pages document one component, not when zero do. Both were green on
+PR #186. Do not read their passing as evidence that a new export is complete —
+until that changes, it is a checklist a human runs.
+
+**The workaround.** Nothing renders a Figma snippet for Pagination in Dev Mode, so
+anyone building with it from Figma will hand-roll one. Point them at
+`Pagination.stories.tsx` until the template exists.
+
 ### Button has no `inverse` axis in Figma
 
 **Deferred to:** the next Button component rework. Agreed 2026-08-25.

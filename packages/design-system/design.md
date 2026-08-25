@@ -1490,8 +1490,15 @@ so escalation jobs, reports and reminder emails share it.
 Docs: `/design-system/components/sla-progress`.
 
 #### Search
-**Purpose**: Search affordance with built-in icon and clear (`×`) button.  
-**Rule**: Use `<Search>` (not `<Input type="search">`) for all search boxes.
+**Purpose**: Search affordance with built-in icon, clear (`×`) button, optional submit, and optional autocomplete.  
+**Props**: `value`, `onChange`, `size` (`sm|md|lg`), `onClear`, `onSubmit`, `suggestions`, `onSuggestionSelect`, `suggestionsLabel`  
+**Rules**:
+- Use `<Search>` (not `<Input type="search">`) for all search boxes. The masthead uses this same atom — that is why they cannot drift.
+- `onSubmit` fires on Enter and on the leading glyph. Wire it when the search leaves the page (a results route); leave it off when the field filters a list in place.
+- **`suggestions` turns the field into an ARIA 1.2 combobox.** Omit it entirely for a field with no autocomplete — passing `[]` still announces the field as a combobox that never has options.
+- **The component neither fetches nor debounces.** The owner does both, because an in-memory list and a network route want different intervals. The website masthead debounces 150ms and aborts in-flight lookups (`use-search-suggestions.ts`).
+- Three behaviours that must not be "simplified": arrow keys move `aria-activedescendant` and **never focus**; `Esc` closes the list and **keeps the text**; `Enter` on raw text always submits, so the suggestion list is a shortcut and never the only route. `[DBIM 9.viii]`
+- The list closes on blur, not on `mouseleave`, so it can be read without being dismissed. `[WCAG 1.4.13]`
 
 #### Select
 **Purpose**: Dropdown value selector.  
@@ -2017,6 +2024,16 @@ matching the Figma "Navbar Portal" account.
 **Rules**:
 - Groups are collapsible. Active item must be indicated with `active: true`. Never hardcode colours in sidebar item overrides.
 - `SidebarNavItem.icon` is a **Material Symbols name string** (`"dashboard"`, `"group"`), not a component. Nav configs therefore stay plain serialisable data and cross the RSC boundary without ceremony.
+
+#### Pagination
+**Purpose**: Page navigation for a result set.  
+**Props**: `page`, `totalPages`, `hrefFor`, `onPageChange`, `label`, `siblings`, `className`  
+**Rules**:
+- **Prefer the link form.** Pass `hrefFor` and the numbers render as real `<a>`s, so page 3 is shareable, bookmarkable, reachable with the back button, crawlable, and works before hydration. Use `onPageChange` only for client-side state that genuinely has no URL — and when it *could* have one, it should.
+- `DataTable` paginates its own state and does not use this. This is for anything whose result set comes out of the URL: search results, filtered listings, directories.
+- `totalPages < 2` renders `null`, so a single-page set needs no guard at the call site.
+- The current page carries `aria-current="page"` and is **not a link**. Previous/Next are **removed** at the ends, never disabled — a disabled control still in the tab order is worse than one that is not there.
+- Targets are 40px, clearing WCAG 2.2 AA §2.5.8 (24×24 minimum) with room for the 4px inter-target gap.
 
 #### SectionTitle
 **Purpose**: The shared heading row for a content section — eyebrow, heading, count pill, description, right-aligned actions.  
