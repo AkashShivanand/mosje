@@ -8,6 +8,7 @@ import { SiteHeader, buttonClasses, type NavItem } from "@mosje/design-system";
 import { LanguageDialog } from "@/components/i18n/language-dialog";
 import { useTranslation } from "@/components/i18n/translation-provider";
 import { languageLabel } from "@/lib/bhashini/languages";
+import { useSearchSuggestions } from "@/components/website/search/use-search-suggestions";
 
 // The website mounts natively in the hub at /website, and its public assets live
 // at apps/hub/public/website/…, so they serve under this prefix. (It was the app's
@@ -130,6 +131,13 @@ export function Header() {
   const { lang, t } = useTranslation();
   const [langOpen, setLangOpen] = React.useState(false);
 
+  /* The masthead field holds its own text; this mirrors it so the suggestions can
+     be fetched for it. The field stays the source of truth for what is TYPED —
+     mirroring it here rather than controlling it keeps the header's existing
+     contract intact for every other consumer. */
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const suggestions = useSearchSuggestions(searchQuery);
+
   /* Labels go through `t` on the way out. Only the labels: hrefs, emblem paths
      and organisation abbreviations are identifiers, not prose, and translating
      an abbreviation like NCSC would make the row unsearchable in every language
@@ -180,6 +188,12 @@ export function Header() {
               ? `/website/search?q=${encodeURIComponent(query.trim())}`
               : "/website/search",
           ),
+        onQueryChange: setSearchQuery,
+        suggestions,
+        // A chosen suggestion goes straight to the thing. Pressing Enter without
+        // choosing one still runs the full search — the list is a shortcut, never
+        // the only route. [DBIM 9.viii]
+        onSuggestionSelect: (suggestion) => router.push(suggestion.id),
       }}
       cobranding={[
         { src: `${BP}/images/digital-india-logo.svg`, alt: "Digital India — Power To Empower", href: "https://www.digitalindia.gov.in/", height: 40 },

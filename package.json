@@ -22,7 +22,7 @@
     "dev:storybook": "bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006'",
     "check:build": "npm --prefix apps/hub run build",
   "verify": "npm run lint && npm run lint:css && npm run check && npm run check:build",
-  "check": "npm run check:hub && npm run check:dangling-vars && npm run check:docs-links && npm run check:docs-routes && npm run check:figma-docs && npm run check:docs-data && npm run check:ds-linkage && npm run check:icon-scale && npm run check:space-linkage && npm run check:radius-linkage && npm run check:code-connect && npm run check:chrome",
+  "check": "npm run check:hub && npm run check:search-index && npm run check:dangling-vars && npm run check:docs-links && npm run check:docs-routes && npm run check:figma-docs && npm run check:docs-data && npm run check:ds-linkage && npm run check:icon-scale && npm run check:space-linkage && npm run check:radius-linkage && npm run check:code-connect && npm run check:chrome",
     "check:changelog": "node scripts/check-changelog-freshness.mjs",
     "check:design-context": "node scripts/check-design-context.mjs",
     "check:design-context:baseline": "node scripts/check-design-context.mjs --update-baseline",
@@ -61,7 +61,9 @@
     "figma:connect:check": "figma connect publish --dry-run --exit-on-unreadable-files",
     "lint:css": "stylelint '**/*.css'",
     "check:chrome": "node tools/chrome-single-source/check.mjs",
-    "check:docs-routes": "node scripts/check-docs-routes.mjs"
+    "check:docs-routes": "node scripts/check-docs-routes.mjs",
+    "check:search-index": "node scripts/build-search-index.mjs --check",
+    "build:search-index": "node scripts/build-search-index.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

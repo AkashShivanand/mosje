@@ -8,7 +8,7 @@ import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
 import { MenuToggle, NavItemLink, SheetToggle } from "./nav-parts";
 import { NavSheet } from "./nav-sheet";
-import { Search } from "../../forms/search";
+import { Search, type SearchSuggestion } from "../../forms/search";
 import type {
   AccountMenuItem,
   BrandLines,
@@ -90,7 +90,23 @@ export interface SiteHeaderProps {
    *
    * `onSearch` receives the typed query (Enter, or the leading icon).
    */
-  search?: { placeholder?: string; onSearch?: (query: string) => void };
+  search?: {
+    placeholder?: string;
+    onSearch?: (query: string) => void;
+    /**
+     * Called on every keystroke, so the owner can fetch autocomplete rows. The
+     * header holds the query state; this is how it hands it out.
+     *
+     * DEBOUNCE ON THE OWNER'S SIDE. The masthead must not decide how often a
+     * consumer's index may be hit — the design-system docs search is in-memory
+     * and the website's is a route, and those want different intervals.
+     */
+    onQueryChange?: (query: string) => void;
+    /** Autocomplete rows for the current query. Omit for no autocomplete. */
+    suggestions?: SearchSuggestion[];
+    /** A suggestion was chosen — by click, or Enter on the highlighted row. */
+    onSuggestionSelect?: (suggestion: SearchSuggestion) => void;
+  };
   /** Cobranding marks in the trailing zone (Digital India, SAMAVESH …). */
   cobranding?: BrandMark[];
   /** Portal account block (name / email + avatar). */
@@ -342,9 +358,17 @@ export function SiteHeader({
               className="ds-hdr-searchfield"
               size="lg"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onClear={() => setQuery("")}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                search.onQueryChange?.(e.target.value);
+              }}
+              onClear={() => {
+                setQuery("");
+                search.onQueryChange?.("");
+              }}
               onSubmit={(v) => search.onSearch?.(v)}
+              suggestions={search.suggestions}
+              onSuggestionSelect={search.onSuggestionSelect}
               placeholder={search.placeholder ?? "Search"}
               aria-label={search.placeholder ?? "Search"}
             />
