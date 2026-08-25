@@ -50,6 +50,19 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * whole cluster goes — a pause button on something that is not moving is worse
  * than absent, because it advertises motion to escape from.
  *
+ * **Nothing is truncated.** Both shapes wrapped to an ellipsis until it met the
+ * real list: two DoSJE notices both open "Extension of Application Submission
+ * Date for Financial Adviser (FA) Post at…" and clipped to the *same visible
+ * string* — two links reading identically and going to different pages. Text
+ * wraps; the bar has a minimum height and grows, and the panel measures its
+ * window with a `ResizeObserver` rather than calculating it from a nominal row
+ * height that wrapping makes meaningless.
+ *
+ * **The panel is built from the bar's parts.** Its header is the bar's navy
+ * plinth, over the bar's blue ground, in the bar's single ink, with rows set in
+ * the bar's own title role. Side by side they read as one component in two
+ * shapes — which is what they are.
+ *
  * **The mark is `<TickerMark>`, a bespoke animated SVG** — a megaphone whose
  * arcs pulse while the strip moves and stop when it is paused. It replaced a
  * white rounded tile, which on the navy plinth read as a sticker pasted onto

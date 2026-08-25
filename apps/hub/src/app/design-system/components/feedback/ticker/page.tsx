@@ -146,6 +146,14 @@ export default function TickerPage(): React.JSX.Element {
                   <h2 id="states" style={h2Style}>3. States</h2>
                   <ul style={listStyle}>
                     <li>
+                      <strong style={strong}>Nothing is truncated, in either shape.</strong> Both
+                      clipped to an ellipsis until it met the real list — two DoSJE notices both
+                      open &quot;Extension of Application Submission Date for Financial Adviser (FA)
+                      Post at…&quot; and clipped to the <em>same visible string</em>, two links
+                      reading identically and going to different pages. Text wraps: the bar has a
+                      minimum height and grows, the panel measures its window.
+                    </li>
+                    <li>
                       <strong style={strong}>Playing / Paused</strong> — the only state a citizen
                       changes. Pausing also flips the live region from <code>off</code> to{" "}
                       <code>polite</code>.

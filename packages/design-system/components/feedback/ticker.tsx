@@ -159,8 +159,21 @@ export function Ticker({
   const [isPlaying, setIsPlaying] = React.useState(autoplay);
   const [reducedMotion, setReducedMotion] = React.useState(false);
   const [isNarrow, setIsNarrow] = React.useState(false);
+  const trackRef = React.useRef<HTMLUListElement | null>(null);
+  const [windowPx, setWindowPx] = React.useState<number | null>(null);
   const count = items.length;
   const isVertical = orientation === "vertical";
+
+  // ONE ITEM IS NOT A CAROUSEL, and a list shorter than its own window has
+  // nothing to scroll past. Either way the motion never starts, so the controls
+  // that govern motion would visibly do nothing — and a pause button on
+  // something that is not moving is worse than absent: it advertises motion a
+  // citizen may be trying to escape.
+  //
+  // Computed HERE, above the effects, because both of them depend on it and a
+  // hook may not sit below an early return.
+  const canMove = isVertical ? count > rows && !isNarrow : count > 1;
+  const moving = canMove && isPlaying && !reducedMotion;
 
   React.useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;
@@ -185,6 +198,34 @@ export function Ticker({
     return () => mq.removeEventListener("change", sync);
   }, []);
 
+  /**
+   * THE WINDOW IS MEASURED, NOT CALCULATED.
+   *
+   * `rows` used to multiply a nominal row height. That only worked while rows
+   * were clipped to one line — and clipping a notice list is a loss of meaning,
+   * not a compromise, so rows now WRAP and their heights differ. The window is
+   * therefore the summed height of the first `rows` items, re-measured whenever
+   * the column resizes or the citizen changes their font size, both of which
+   * rewrap the text and change the answer.
+   */
+  React.useLayoutEffect(() => {
+    if (!isVertical) return;
+    const track = trackRef.current;
+    if (!track || typeof ResizeObserver === "undefined") return;
+
+    const measure = () => {
+      const items = Array.from(track.children).slice(0, rows) as HTMLElement[];
+      if (!items.length) return;
+      setWindowPx(items.reduce((total, el) => total + el.getBoundingClientRect().height, 0));
+    };
+
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(track);
+    Array.from(track.children).forEach((c) => ro.observe(c));
+    return () => ro.disconnect();
+  }, [isVertical, rows, items, moving]);
+
   // A shrinking list must not strand the index past the end.
   const safeIndex = count > 0 ? index % count : 0;
 
@@ -205,14 +246,6 @@ export function Ticker({
   }, [count, interval, isPlaying, isVertical, reducedMotion]);
 
   if (count === 0) return null;
-
-  // ONE ITEM IS NOT A CAROUSEL, and a list shorter than its own window has
-  // nothing to scroll past. Either way the motion never starts, so the controls
-  // that govern motion would visibly do nothing — and a pause button on
-  // something that is not moving is worse than absent: it advertises motion a
-  // citizen may be trying to escape.
-  const canMove = isVertical ? count > rows && !isNarrow : count > 1;
-  const moving = canMove && isPlaying && !reducedMotion;
 
   const ItemLink = (linkAs ?? "a") as React.ElementType;
 
@@ -273,6 +306,7 @@ export function Ticker({
         style={
           {
             "--sa-ticker-rows": rows,
+            ...(windowPx ? { "--sa-ticker-window": `${windowPx}px` } : {}),
             // Travel is per ROW, so the speed a citizen reads at does not change
             // when the ministry publishes a ninth notice.
             "--sa-ticker-duration": `${(count * interval) / 1000}s`,
@@ -289,7 +323,7 @@ export function Ticker({
           </div>
 
           <div className="sa-ticker__viewport" data-moving={moving ? "" : undefined}>
-            <ul className="sa-ticker__track">
+            <ul className="sa-ticker__track" ref={trackRef}>
               {(moving ? items : items.slice(0, rows)).map((it, i) => renderRow(it, i, false))}
             </ul>
             {/* The second copy is what makes the loop seamless. It is scenery:
