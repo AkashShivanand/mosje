@@ -257,24 +257,36 @@ context. It is not a tagline. It carries, in this order:
 Write the rules as *prohibitions and consequences*, not description. "Never add a
 tone prop" prevents a defect; "supports theming" prevents nothing.
 
-**WRITE IT THROUGH `descriptionMarkdown`, NEVER `description`.** The plain
-`description` setter HTML-escapes on every write and does not un-escape on read,
-so each edit escapes what the previous edit already escaped. An apostrophe
-becomes `&#39;`, then `&amp;#39;`, then `&amp;amp;#39;` — and the description an
-agent is handed as context fills up with entity noise. `descriptionMarkdown`
-round-trips a string unchanged and is idempotent; verified 2026-08-25 with a
-probe on `Ticker / Mark`.
+**NEVER ROUND-TRIP `description`.** Reading it returns text that is already
+HTML-escaped; writing that text back escapes it a second time. Do that a few
+times and an apostrophe walks `'` → `&#39;` → `&amp;#39;` → `&amp;amp;#39;`,
+and the briefing an agent is handed fills with entity noise. Demonstrated
+2026-08-25, not assumed: one naive `n.description = n.description` on
+`Navbar/NavDropdown` reintroduced the damage immediately.
 
-The Ticker set had reached **six levels** of nesting and 58 mangled entities
-before this was noticed, because nothing reads a component description back and
-compares it. When you edit one, re-read it and count: a match for
-`/&(amp;)*#?\w+;/` should return only genuine `&lt;`/`&gt;` from angle brackets
-you actually wrote. **Prefer `›` to `>` in file paths** so even those do not
-appear.
+The rule is therefore about the **cycle**, not the field:
 
-This is not confined to Ticker. A survey the same day found the same damage on
-`Tabs` (63 entities, nineteen doubly-escaped), `Chatbot` (19), `Buttons` (15),
-`Inputs` (13) and `Accordion` (9) — recorded in `docs/design-system/follow-ups.md`.
+- **Writing fresh text to `description` is fine.** The setter escapes exactly
+  once, which is the correct stored form. A single-level `&#39;` or `&quot;`
+  is Figma's normal projection and renders as the character — it is **not** a
+  defect, and 113 of the library's 119 components legitimately carry them.
+- **If you must edit existing text, decode what you read first** — collapse
+  every `&amp;` chain, then decode `&#NN;` / `&quot;` / `&lt;` / `&gt;` — and
+  write real characters back.
+- **`descriptionMarkdown` round-trips unchanged and is idempotent**, so prefer
+  it when authoring something new. But **it is empty on any component authored
+  through `description`**, so never read it as your source without checking:
+  a sweep that did exactly that reported 53 damaged components as "already
+  clean", because `unescape("") === ""`.
+
+**Audit for chained entities only.** Match `/&(amp;)+(#\d+|quot|lt|gt|apos);/`
+— one or more `amp;` means real damage. Matching `/&\w+;/` instead flags every
+healthy description in the library; that error turned six genuinely damaged
+components into a reported 53.
+
+Raw `<Tag />` in `descriptionMarkdown` is correct and survives; a pre-escaped
+`&lt;Tag&gt;` there gets double-escaped into the projection. Probed both ways
+before relying on either.
 
 ### Why this is a rule
 
