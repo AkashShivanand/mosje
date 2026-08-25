@@ -145,9 +145,13 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
    rather than silence. Never write copy implying free-form AI.
 4. **Never remove the footer note.** It is the honest statement that the assistant cannot see
    the user's application or personal data.
-5. **End chat is a footer text link**, in the system error ink at 9.10:1 — deliberately not a
-   button beside the close control, because destructive intent does not belong where people
-   reach to dismiss.
+5. **Closing and clearing are two controls, and neither does the other's job.** The header's ✕
+   ("Minimise chat") closes and KEEPS the conversation; the footer's **"Start over"** clears the
+   transcript, greets again, and leaves the panel open. Until 2026-08-25 the footer control was
+   called "End chat" and did both, which made it a second way to close sitting beside a ✕ and
+   made the label untrue whichever of its two words you trusted. Clearing stays out of the
+   top-right because that is where people reach to dismiss.
+   It is `<Button variant="neutral" appearance="text" size="sm">`, not a hand-rolled control.
 6. **The seal never turns on its own.** It runs only when a caller asks for it (`spin`), for
    documentation and specimens. A perpetual spin would be the estate's most-seen animation and
    its least useful, and would pull WCAG 2.2.2 in for no gain — and the thinking trigger it used
@@ -168,6 +172,7 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
 | 7 | **The seal turned where nobody could see it.** It rotated on `[data-thinking]`, but the widget only thinks while open, and while open the launcher has already crossfaded the mark to the close ×. | **Resolved 2026-08-23** — trigger removed. Moving it to the 40px avatar was rejected on legibility (the wordmark is a grey smudge at that size). `--spin` remains for documentation and specimens, and is now the only thing that starts it. `data-thinking` stays as a state hook for consumers and tests |
 | 8 | **The send button had BOTH defects at once** — hard-coded navy and a raw `32px` box. Found while fixing the others; not in the original audit. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` and `icon/size/32`, matching what the Figma master already bound |
 | 9 | **`State`'s variant option order cannot be rewritten.** Figma reports `Greeting, Closed, Typing, Transcript` — a stored registration order, not child order. A child reorder and a temp-rename cycle both no-op'd. Canvas order and `defaultValue` are correct; only the properties-panel dropdown reads oddly. | Recorded, cosmetic |
+| 10a | **The `no-duplicate-selectors` claim in row 10 is FALSE, and the defect recurred because of it.** The rule is `null` in `.stylelintrc.js` — switched off deliberately, with a documented rationale about two decisions under two comments. So nothing was blocking anything, and `.ds-chatbot__end:active` was subsequently declared twice, ten lines apart, with `npx stylelint` passing clean over it. | **Fixed 2026-08-25** — the block is gone entirely (it is a DS `Button` now), and the false claim went with it. A comment asserting a guard that does not exist is worse than no comment |
 | 10 | **`.ds-chatbot__end` was declared twice and the second one silently won.** The later block re-declared `padding: 0` and `font: inherit`, overriding the first block's WCAG padding, so the control rendered **49×16 — under the 24px 2.5.8 minimum** — while this spec and the docs page both claimed a 24px box. The orphaned negative margin was pulling it out of the gutter to compensate for padding that no longer existed. Found because stylelint's `no-duplicate-selectors` blocks any commit touching this file. | **Fixed 2026-08-23** — merged into one rule in the footer section; now 73×28 |
 | 11 | **The unread nudge ring was the last navy literal.** It rings the mascot disc, which now follows the brand, so a fixed navy ring would have been the odd one out. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` |
 | 12 | **The Figma seal was 6.6px off-centre**, so its glyphs overran the 84px frame at the top and the `·` separators rendered as half-dots — the semicircle that was reported. The path circle was centred on (35.4, 35.4) while the disc is centred on (42, 42). The wordmark also covered only ~60% of the ring, because it was set at zero tracking. | **Fixed 2026-08-23** — centred, and tracked to 2.59px so the string closes the circle exactly |
@@ -211,9 +216,11 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | Send at rest | drawn at 35% — the composer is empty in every variant | `:disabled { opacity: 0.35 }` | **fixed in Figma** (was drawn enabled) |
 | Note | `Body/body-3` 12, `text/neutral/subtle` | `body-3`, `text-muted` | ✅ |
 | Note text | "…points you to the right portal. It cannot decide or change an application." | identical | **fixed in Figma** |
-| End chat | `Label/label-1` 14, `text/status/error/base`, 1px `border/status/error/base`, `shape/8`, pad `padding/6`×`padding/12` | identical | **redesigned in both** — it was an underlined word, which reads as a link |
-| End chat target | 83×32 reported, 83×34 rendered — the 1px border is an OUTSIDE stroke | 83×34 | ✅ — the TEXT node now sits inside a HUG button frame, so the hit area is real geometry rather than a claim |
-| End chat position | same row as the note, hard right, bottom-aligned | identical (`.ds-chatbot__footer-row`, `align-items: flex-end`) | ✅ |
+| Start over | `Label/label-1` 14/500, `text/neutral/base`, **no border, no fill**, `shape/8`, `.ds-btn--sm` (32 high, `padding/16` sides) | **Figma still shows the red outlined "End chat"** | ⚠️ **open — Figma to update.** The red was wrong twice over: the mock's `#ff0004` measures 4.00:1 and fails AA, and even the compliant error ink spends the estate's *rejection* signal on housekeeping. See the parity note below |
+| Start over target | 101×32 | pending | ⚠️ clears the 24px 2.5.8 minimum |
+| Start over position | same row as the note, hard right, bottom-aligned | identical (`.ds-chatbot__footer-row`, `align-items: flex-end`) | ✅ |
+| Composer input | fills the pill's 32px inner height | pending | ⚠️ **was 20px** — a line box floated inside a 42px pill by `align-items: center`, so half the visible field focused nothing and the real target sat under the 24px minimum |
+| Panel height | **content-sized**, capped at `min(719, viewport room)` | Figma frame is a fixed 719 | ⚠️ Figma's frame is a specimen at maximum extent; the cap is the contract. Pinned at 719 the opening state was 435px of white under the header |
 | Launcher | 84, `bg/neutral/base`, `shape/full`, `elevation/toast` | identical | ✅ |
 | Close disc | full-bleed, `bg/brand/primary/bolder`, glyph 24 | full-bleed, glyph 30% of 84 = 25.2 | ✅ within a pixel |
 | Mascot disc | `bg/brand/primary/bolder` | identical | ✅ |

@@ -2,7 +2,16 @@ import * as React from "react";
 import { cn } from "../../utils/cn";
 import "./button.css";
 
-export type ButtonVariant = "primary" | "success" | "danger";
+/**
+ * `neutral` is the variant for an action that carries no semantic charge — a
+ * dismiss, a reset, a "start over". It exists because there was no way to
+ * express "quiet" without borrowing a signal colour: the chatbot's end-chat
+ * control reached for `danger`, which spent the estate's rejection red on
+ * housekeeping and made the least-used control the loudest thing in its panel.
+ * A portal that fills its screen with red for non-errors has no red left when
+ * an application actually fails.
+ */
+export type ButtonVariant = "primary" | "success" | "danger" | "neutral";
 /**
  * `inverse`/`inverseOutlined` are for placing a button directly on a solid
  * brand-colour surface (e.g. a navy page header) — the only two patterns

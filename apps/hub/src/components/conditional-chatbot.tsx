@@ -110,21 +110,30 @@ export function ConditionalChatbot({ enabledPaths }: { enabledPaths: readonly st
   );
 
   /**
-   * End chat: drop the session, and with it the whole frame stack.
+   * Start over: drop the whole frame stack, then greet again in place.
    *
    * The timers go FIRST. A typing beat in flight would otherwise land a
    * committed answer a moment after the transcript was cleared, and the
-   * conversation a citizen just ended would reappear on its own.
+   * conversation a citizen just cleared would reappear on its own.
    *
-   * Reopening replays the greeting with its opening beat, because the session
-   * being null is exactly what `handleOpenChange` starts from.
+   * THE REPLAY IS THE PART THAT IS EASY TO MISS. This used to end with
+   * `setSession(null)` and stop, which was correct only because the widget also
+   * closed the panel — the next OPEN ran `handleOpenChange`, which greets from a
+   * null session. The panel no longer closes, so nothing would call it, and the
+   * citizen would be left looking at an empty panel with a composer. Greeting
+   * here restores the behaviour the close was accidentally providing, and does
+   * it with the same 900ms beat so a fresh start reads exactly like a first one.
    */
   const handleEndChat = React.useCallback(() => {
     clearTimers();
-    setTyping(false);
     setPending(null);
     setSession(null);
-  }, [clearTimers]);
+    setTyping(true);
+    after(900, () => {
+      setTyping(false);
+      setSession(finderSessionStart(CHATBOT_SCRIPT));
+    });
+  }, [clearTimers, after]);
 
   if (!chatbotEnabledAt(pathname, enabledPaths)) return null;
 
