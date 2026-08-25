@@ -69,6 +69,24 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /* Quieter than "Current" — it is a caveat, not a state the reader chose. */
+  .lang-dialog__pending {
+    margin-inline-start: auto;
+    font-size: var(--sa-type-label-3-size);
+    color: var(--sa-text-neutral-subtle);
+    white-space: nowrap;
+  }
+
+  .lang-dialog__note {
+    margin: 0 0 var(--sa-stack-16);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-inline-start: 3px solid var(--sa-border-neutral-base);
+    background-color: var(--sa-bg-neutral-subtler);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
   .lang-dialog__current {
     margin-inline-start: auto;
     font-size: var(--sa-type-label-3-size);
