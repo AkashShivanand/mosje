@@ -173,11 +173,25 @@ export default function ButtonPage(): React.JSX.Element {
           interactive atom in SAMAVESH and the reference implementation for every
           other component page.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.buttons)} target="_blank" rel="noopener noreferrer">
-            View in Figma <span aria-hidden="true">↗</span>
+        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
+          <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.buttonDoc)} target="_blank" rel="noopener noreferrer">
+            Button — Documentation <span aria-hidden="true">↗</span>
+          </a>
+          <a className={buttonClasses("neutral", "text", "md")} href={figmaUrl(FIGMA_NODES.buttons)} target="_blank" rel="noopener noreferrer">
+            The master <span aria-hidden="true">↗</span>
+          </a>
+          <a className={buttonClasses("neutral", "text", "md")} href={figmaUrl(FIGMA_NODES.buttonRecord)} target="_blank" rel="noopener noreferrer">
+            Component record <span aria-hidden="true">↗</span>
           </a>
         </div>
+        <Callout type="warning" title="This component has open defects, and they are listed here rather than hidden">
+          A full audit on 2026-08-25 found three that ship today — <code>disabled</code> is
+          inert on a link-button, a fixed height clips the label at 200% text, and five
+          variant/appearance pairs miss the 3:1 non-text contrast requirement. The evidence is
+          in <code>docs/design-system/components/button-audit.md</code> and the brief that
+          closes them is <code>button-cleanup-prompt.md</code>. Nothing on this page claims a
+          behaviour the component does not have.
+        </Callout>
       </header>
 
       {/* ============ 1. PURPOSE ============ */}
@@ -306,8 +320,11 @@ export default function ButtonPage(): React.JSX.Element {
           }}
         >
           <li>
-            Touch targets are always <strong>≥44px</strong>, enforced in CSS, on
-            every breakpoint.
+            Heights are <strong>32 / 40 / 48px</strong>. All three clear the{" "}
+            <strong>24×24px</strong> WCAG 2.2 §2.5.8 Level AA minimum; only{" "}
+            <code>lg</code> reaches the <strong>44×44px</strong> UX4G recommends for
+            touch. On a touch surface, prefer <code>lg</code> or add spacing —
+            UX4G also asks for 8px between adjacent targets.
           </li>
           <li>
             For full-width mobile buttons, wrap with{" "}
@@ -315,8 +332,10 @@ export default function ButtonPage(): React.JSX.Element {
             full-width container.
           </li>
           <li>
-            Size <code>sm</code> shrinks padding and type, but still meets the 44px
-            height requirement.
+            Size <code>sm</code> is <strong>32px</strong> and does <em>not</em> reach
+            44px. That is a deliberate density choice for dense admin tables, not an
+            oversight — but it means <code>sm</code> is a pointer-surface size. This
+            page claimed the opposite in three places until 2026-08-25.
           </li>
         </ul>
         <CodeBlock>{`{/* Full-width on mobile, auto on larger screens */}
@@ -491,8 +510,10 @@ export function ApplicationForm() {
         { id: "accessibility", label: "Accessibility", content: (<><section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>Accessibility</h2>
         <p style={proseStyle}>
-          Buttons are government-grade controls — they must satisfy WCAG 2.1 AA and
-          GIGW. The checklist below is verified for every release.
+          Buttons are government-grade controls — they must satisfy{" "}
+          <strong>WCAG 2.2 AA</strong> and GIGW. Where an entry below records a gap,
+          it is a gap: this checklist is a statement of what is true, not of what
+          was intended.
         </p>
         <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <A11yChecklist
@@ -504,10 +525,10 @@ export function ApplicationForm() {
                   "The label communicates the action, not just “Click here” or a bare “Submit”. (WCAG 2.4.6)",
               },
               {
-                criterion: "44×44px minimum touch target",
+                criterion: "24×24px minimum target size",
                 level: "AA",
                 description:
-                  "Every variant — including size sm — meets the minimum target size. (WCAG 2.5.8)",
+                  "All three sizes (32 / 40 / 48px) clear the 24×24px Level AA minimum. 44×44 is 2.5.5 Target Size (Enhanced), Level AAA, which only lg reaches — UX4G recommends it for touch. (WCAG 2.2 §2.5.8)",
               },
               {
                 criterion: "Visible focus indicator",
@@ -519,13 +540,13 @@ export function ApplicationForm() {
                 criterion: "Communicates disabled state",
                 level: "AA",
                 description:
-                  "Disabled buttons expose aria-disabled and are not in the tab order. (WCAG 4.1.2)",
+                  "A disabled <button> uses the native disabled attribute, which removes it from the tab order. KNOWN GAP: with href the component renders an <a>, where disabled is not a valid attribute — the control stays focusable and clickable and no aria-disabled is set. Do not ship a disabled link-button until that is fixed. (WCAG 4.1.2)",
               },
               {
-                criterion: "Loading state announced",
+                criterion: "Loading state — NOT IMPLEMENTED",
                 level: "AA",
                 description:
-                  "aria-busy=\"true\" is set during loading so the change is announced. (WCAG 4.1.3)",
+                  "NOT IMPLEMENTED. The component has no loading state and sets no aria-busy; a consumer must pass aria-busy itself. This checklist claimed otherwise until 2026-08-25.",
               },
             ]}
           />
@@ -647,12 +668,12 @@ export function ApplicationForm() {
               Submit application
             </Button>
           </StateRow>
-          <StateRow state="Disabled" note="Reduced opacity; not focusable; aria-disabled.">
+          <StateRow state="Disabled" note="Reduced opacity; the native disabled attribute takes it out of the tab order. No aria-disabled is set — and none is needed on a <button>. On an <a href>, disabled does nothing at all: see the Accessibility checklist.">
             <Button variant="primary" appearance="filled" disabled>
               Submit application
             </Button>
           </StateRow>
-          <StateRow state="Loading" note="aria-busy=true; label swaps to a progress message.">
+          <StateRow state="Loading" note="CONSUMER-SUPPLIED. There is no loading prop — pass aria-busy and disabled yourself, and swap the label. Shown here as the pattern to copy, not as something the component does for you.">
             <Button variant="primary" appearance="filled" disabled aria-busy="true">
               Submitting…
             </Button>
