@@ -68,7 +68,7 @@ const logos: EcosystemLogo[] = [...GOVERNMENT_PLATFORMS, ...ORGANISATION_LOGOS];
 
 export function LogoStrip() {
   return (
-    <section className="bg-surface-muted">
+    <section className="bg-surface">
       <div className="sa-container py-8">
         <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
           {logos.map((logo) => {

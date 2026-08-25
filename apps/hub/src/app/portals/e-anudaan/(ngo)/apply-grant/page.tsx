@@ -21,14 +21,15 @@ export default function SelectSchemePage() {
         <p className="mt-1 text-sm text-ink-muted">Choose the scheme you want to apply for.</p>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3" role="radiogroup" aria-label="Select a scheme">
         {state.schemes.map((s) => (
           <button
             key={s.code}
             type="button"
+            role="radio"
             onClick={() => setSelected(s.code)}
-            aria-pressed={selected === s.code}
-            className={`w-full rounded-lg border-2 px-5 py-4 text-left transition-colors ${
+            aria-checked={selected === s.code}
+            className={`w-full rounded-lg border-2 px-5 py-4 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy ${
               selected === s.code ? "border-navy bg-brandwash" : "border-line bg-surface hover:border-navy/40"
             }`}
           >

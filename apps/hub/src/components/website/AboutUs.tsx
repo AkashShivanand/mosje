@@ -41,7 +41,7 @@ const stats: Stat[] = [
 
 export function AboutUs() {
   return (
-    <section className="bg-white">
+    <section className="bg-primary-50">
       <div className="sa-container py-12 md:py-16">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
           <div>

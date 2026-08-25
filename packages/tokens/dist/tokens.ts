@@ -902,8 +902,10 @@ export const tokens = {
   "breakpoint": {
     "mobile": "360px",
     "tablet": "768px",
+    "laptop": "1024px",
     "desktop": "1280px",
-    "desktopXl": "1768px"
+    "desktopXl": "1440px",
+    "desktopWide": "1920px"
   },
   "density": {
     "control": {
@@ -1314,8 +1316,10 @@ export const tokens = {
     "2xl": "1320px",
     "content": "1200px",
     "contentXl": "1320px",
+    "contentWide": "1440px",
     "narrow": "720px",
-    "wide": "1200px"
+    "wide": "1200px",
+    "page": "1200px"
   },
   "grid": {
     "columns": 12,
@@ -1323,7 +1327,8 @@ export const tokens = {
     "margin": {
       "mobile": "16px",
       "tablet": "24px",
-      "desktop": "32px"
+      "desktop": "32px",
+      "page": "16px"
     }
   },
   "layout": {

@@ -48,7 +48,7 @@ export const PLEDGE_STATS = {
   institutions: "17 lakh",
 };
 
-export const DEADDICTION_CENTRES: DeAddictionCentre[] = [
+const RAW_CENTRES: DeAddictionCentre[] = [
   {"type": "DDAC", "name": "Society For Education And Environment Development", "address": "2-175, Ground Floor, Building, Near Temple, Velupula Street, Velupula Street, Anakapalli", "state": "Andhra Pradesh", "district": "Anakapalli", "lat": 17.67, "lng": 82.98},
   {"type": "DDAC", "name": "Divya Foundation Society", "address": "4-62 D, First Floor, Union Bank Building, Union Bank Building, Papampeta, Kalyandurgam Road, Anantapur", "state": "Andhra Pradesh", "district": "Anantapur", "lat": 28.57, "lng": 77.05},
   {"type": "DDAC", "name": "Peoples Action For Social Service", "address": "10-163, Ground, 1,2,3rd, Building, Opp District Court , Ayyaswamy Reddy Street, Gandhiroad, Thotapalyam, Chittoor- 517001, Gandhi Road , Chittoor", "state": "Andhra Pradesh", "district": "Chittoor", "lat": 13.22, "lng": 79.1},
@@ -537,3 +537,43 @@ export const DEADDICTION_CENTRES: DeAddictionCentre[] = [
   {"type": "DDAC", "name": "Bamoir Bishnupur Vivekananda Smriti Sangha", "address": "N 0133, Ground Floor, From Rahatpur High Madrasah At Domohana East Side 1 Km, At Barodangi Jharbari To Fasihara Road, Raiganj", "state": "West Bengal", "district": "Uttar Dinajpur", "lat": 25.61, "lng": 88.11},
   {"type": "IRCA", "name": "West Bengal Scheduled Castes, Tribes", "address": "N.a., N.a., N.a., Near Jugnitala Bus Stop, Nazarganj, Nazarganj, Midnapore", "state": "West Bengal", "district": "West Medinipur", "lat": 22.42, "lng": 87.32},
 ];
+
+/* ──────────────────────────────────────────────────────────────────────────
+   Geo sanitisation.
+
+   The upstream NMBA feed carries 8 rows (of 487) whose coordinates are not
+   usable as published: three have lat and lng transposed, one is a pair of
+   Web Mercator metres (1244230, 7718093), one is null island, and three fall
+   in west Africa. Left alone they are not a cosmetic problem — Leaflet's
+   `fitBounds` fits the CLUSTER's bounds, so a single 7,718,093° longitude
+   zooms the map out past the whole world and every real centre collapses into
+   a speck. Both this section and /website/de-addiction-centres were rendering
+   an empty world map for exactly that reason.
+
+   A transposed pair is safely recoverable — if (lng, lat) lands inside India
+   and (lat, lng) does not, it was written the wrong way round. The rest are
+   not recoverable, so they keep their place in the list (they are real
+   centres, with real addresses and a real district) and are simply not
+   plotted.
+   ────────────────────────────────────────────────────────────────────────── */
+
+const INDIA_BOUNDS = { latMin: 6.0, latMax: 37.6, lngMin: 68.0, lngMax: 97.5 };
+
+const inIndia = (lat: number, lng: number) =>
+  Number.isFinite(lat) &&
+  Number.isFinite(lng) &&
+  lat >= INDIA_BOUNDS.latMin &&
+  lat <= INDIA_BOUNDS.latMax &&
+  lng >= INDIA_BOUNDS.lngMin &&
+  lng <= INDIA_BOUNDS.lngMax;
+
+const normaliseGeo = (c: DeAddictionCentre): DeAddictionCentre =>
+  !inIndia(c.lat, c.lng) && inIndia(c.lng, c.lat) ? { ...c, lat: c.lng, lng: c.lat } : c;
+
+export const DEADDICTION_CENTRES: DeAddictionCentre[] = RAW_CENTRES.map(normaliseGeo);
+
+/** True when the centre can be plotted. Filter the MAP by this; never the list. */
+export const isPlottable = (c: DeAddictionCentre) => inIndia(c.lat, c.lng);
+
+/** Centres that survive sanitisation — what the map actually draws. */
+export const PLOTTABLE_CENTRES = DEADDICTION_CENTRES.filter(isPlottable);

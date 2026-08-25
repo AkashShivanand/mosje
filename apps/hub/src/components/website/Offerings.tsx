@@ -140,7 +140,7 @@ export function Offerings() {
   const current = tabs.find((tab) => tab.key === activeTab) ?? tabs[0]!;
 
   return (
-    <section className="bg-white py-12 md:py-16">
+    <section className="bg-primary-50 py-12 md:py-16">
       <div className="sa-container">
         <div className="text-center">
           <h2 className="text-[28px] sm:text-[32px] font-semibold leading-tight text-primary-dark">

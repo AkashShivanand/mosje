@@ -118,6 +118,12 @@ export function CentreMapCanvas({ centres, selected, userLoc, onSelect }: Centre
     <MapContainer
       center={[22.5, 80.0]}
       zoom={4}
+      minZoom={3}
+      /* markercluster needs a FINITE max zoom. Without one, `map.getMaxZoom()`
+         returns Infinity, the plugin cannot compute its cluster levels, and it
+         adds nothing to the map — a world view with no pins, which is exactly
+         what both this section and /website/de-addiction-centres were showing. */
+      maxZoom={18}
       scrollWheelZoom={false}
       className="h-full min-h-[380px] w-full"
       aria-label="Map of De-addiction Centres across India"
@@ -125,6 +131,7 @@ export function CentreMapCanvas({ centres, selected, userLoc, onSelect }: Centre
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        maxZoom={18}
       />
       <ClusterLayer centres={centres} selectedKey={selected ? centreKey(selected) : null} onSelect={onSelect} />
       <FlyToSelected selected={selected} />

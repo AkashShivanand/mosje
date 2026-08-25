@@ -87,7 +87,7 @@ export function RecentDocuments() {
   const currentPersona = personas[personaIndex] ?? personas[0]!;
 
   return (
-    <section className="bg-white py-12 md:py-16">
+    <section className="bg-surface py-12 md:py-16">
       <div className="sa-container">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-10">
           {/* PART A — Recent Documents (Vertical List of 4 Rows) */}

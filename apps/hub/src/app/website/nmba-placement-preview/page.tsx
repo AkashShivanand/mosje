@@ -31,7 +31,7 @@ export default function NmbaPlacementPreview() {
     <>
       {/* Review-only control bar */}
       <div className="sticky top-0 z-[1000] border-b border-border-ds bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-3 px-4 py-2.5">
+        <div className="sa-container flex flex-wrap items-center gap-3 py-2.5">
           <span className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
             NMBA placement preview
           </span>

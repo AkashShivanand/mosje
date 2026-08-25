@@ -2463,12 +2463,22 @@
     "tablet": {
       "$value": "768px"
     },
+    "laptop": {
+      "$value": "1024px",
+      "$type": "dimension",
+      "$description": "The third anchor, and the one the ladder was missing. Between tablet (768) and desktop (1280) sat a 512px void with no token in it — which is where iPad landscape, 11-13\" laptops and every half-screen window on a 2K monitor live. Anything needing to change at 1024 had to hardcode it or round to one of the neighbours. Matches Tailwind's `lg`, so the token and the utility variant used across this estate finally agree. Viewport anchor. The ladder follows Material 3's window size classes, which are derived from measured device distribution rather than from one framework's grid: compact <600, medium 600-839, expanded 840-1199, large 1200-1599, extra-large >=1600. UX4G publishes the two content widths but no breakpoints at all, so there is nothing to diverge FROM here; where its guidance and interface quality met, quality won, per .claude/rules/standards-precedence.md. Recorded in docs/guidelines/README.md."
+    },
     "desktop": {
       "$value": "1280px"
     },
     "desktopXl": {
-      "$value": "1768px",
-      "$description": "The fourth anchor — where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). UX4G states the two widths as guidance (\"max content width: 1200px desktop, 1320px desktop XL\") without publishing a breakpoint, so the anchor comes from the estate's own viewport ladder, where desktop is 1440 and desktop-XL is 1768. Bootstrap's `container-xxl` engages at 1400 and was rejected for this: at 1400 the 1440 design frame would take the 1320 cap, contradicting the 1200-at-desktop guidance and the website Handoff, which shows the wide margin of a 1200 column at 1440. UX4G's Bootstrap CONTAINER LADDER is a separate thing and is kept faithfully as `container/sm`…`container/2xl`; this token governs the CONTENT CAP only. Not part of the type curve either — `clamp()` still tops out at 1280, so this anchor resizes no glyph."
+      "$value": "1440px",
+      "$description": "Where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). 1768 -> 1600 -> 1440 over 2026-08-24, each step decided by measuring the page rather than by citing a ladder. 1768 was abandoned because a 1728-wide viewport carried 264px of margin each side against 1768's own 224px — margins NARROWING as the screen grew. 1600 (Material 3's extra-large window class) was then abandoned because it left the ladder's WEAKEST POINT sitting on its most common viewport: at 1536 — 1920 at 125% Windows scaling, the single most common desktop width — content held only 75% of the screen, worse than at 1280 (90%) and worse than at 1600 (78%). 1440 fixes the range that carries the most users: 1440 goes 80% -> 88%, 1512 76% -> 84%, 1536 75% -> 83%. Nothing at 1600 and above changes. THE FLOOR THAT WAS DROPPED, deliberately: earlier notes held that 1440 must stay on the 1200 cap because UX4G says '1200px desktop'. UX4G publishes no breakpoints at all, so it never fixed where desktop ends; and `.claude/rules/standards-precedence.md` puts interface quality above it, which is the whole point of that rule. Recorded as divergence #6 in docs/guidelines/README.md. It also makes the code agree with the Handoff, whose Home frame draws a 1320 container on a 1440 artboard — the frame was right and the note calling it wrong has been withdrawn. Not part of the type curve — `clamp()` still tops out at 1280, so this anchor resizes no glyph."
+    },
+    "desktopWide": {
+      "$value": "1920px",
+      "$type": "dimension",
+      "$description": "The fifth anchor, where the cap widens a second time to `container/contentWide` (1440). Without it a 2560-wide monitor rendered a 1320 column between 620px margins — 48% of the screen given to nothing, which is the complaint that started this. One step is not enough for the range 1600-2560+: a single cap either starves the desktop or sprawls on the monitor. Stops at 1440 rather than continuing to grow because beyond that a 12-column grid starts costing more in eye travel than it returns in density. Viewport anchor. The ladder follows Material 3's window size classes, which are derived from measured device distribution rather than from one framework's grid: compact <600, medium 600-839, expanded 840-1199, large 1200-1599, extra-large >=1600. UX4G publishes the two content widths but no breakpoints at all, so there is nothing to diverge FROM here; where its guidance and interface quality met, quality won, per .claude/rules/standards-precedence.md. Recorded in docs/guidelines/README.md."
     }
   }
 }
