@@ -3,6 +3,7 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { useCornerRailOffset } from "../../foundations/corner-rail";
+import { Button } from "../actions/button";
 import { Icon } from "../utilities/icon";
 import { ChatbotMascot } from "./chatbot-mascot";
 import "./chatbot.css";
@@ -50,7 +51,17 @@ export interface ChatbotProps
   title?: string;
   /** Devanagari name under the title. Pass "" to suppress it. */
   subtitle?: string;
-  /** Label for the footer's end-chat button. @default "End chat" */
+  /**
+   * Label for the footer's reset button.
+   *
+   * "Start over", not "End chat". The control clears the transcript and returns
+   * the assistant to its greeting — it does NOT close the panel, and it never
+   * ends anything. It used to close the panel too, which made "End chat" half
+   * true and made the control redundant with the header's ✕. The prop keeps its
+   * name because two consumers pass it; only the default and the behaviour moved.
+   *
+   * @default "Start over"
+   */
   endChatLabel?: string;
   /**
    * The honest statement of what this assistant is not. Shown under the
@@ -97,7 +108,7 @@ export interface ChatbotProps
    * render the answer. Return nothing and only the user's message is appended.
    */
   onQuickReply?: (reply: ChatbotQuickReply) => ChatbotReply | Promise<ChatbotReply | void> | void;
-  /** Called when "End Chat" is pressed, after the transcript is cleared. */
+  /** Called when "Start over" is pressed, after the transcript is cleared. */
   onEndChat?: () => void;
 
   /**
@@ -190,7 +201,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     onOpenChange,
     title = CHATBOT_NAME,
     subtitle = CHATBOT_NAME_HI,
-    endChatLabel = "End chat",
+    endChatLabel = "Start over",
     note = "Samajik Sahayak points you to the right portal. It cannot decide or change an application.",
     composer = true,
     composerPlaceholder = "Type something…",
@@ -223,6 +234,16 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     quickReplies ?? [],
   );
   const [repliesShown, setRepliesShown] = React.useState(false);
+  /**
+   * Bumped by "Start over" to re-run the scripted opening.
+   *
+   * The opening effect guards on `greeted.current`, and resetting that ref
+   * changes nothing on its own — a ref is not reactive, so React has no reason
+   * to re-run anything. While Start over also closed the panel, `open` flipping
+   * did the re-triggering by accident. It no longer closes, so the trigger has
+   * to be explicit.
+   */
+  const [restartToken, setRestartToken] = React.useState(0);
   /** Bot messages that landed while the panel was shut. Drives the launcher's nudge. */
   const [unread, setUnread] = React.useState(0);
   const [expanded, setExpanded] = React.useState(false);
@@ -304,7 +325,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     // The suggestions land a beat after the message they belong to, so the
     // eye reads "here is the answer" before "here is what you can ask".
     after(OPENING_BEAT_MS + typingDelayMs + 320, () => setRepliesShown(true));
-  }, [open, controlledTranscript, greeting, typingDelayMs, after]);
+  }, [open, controlledTranscript, greeting, typingDelayMs, after, restartToken]);
 
   /* -- keep the suggestion set in step when the prop changes -------------- */
   React.useEffect(() => {
@@ -360,18 +381,41 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     if (!next) launcherRef.current?.focus();
   };
 
+  /**
+   * START OVER. It resets the conversation and LEAVES THE PANEL OPEN.
+   *
+   * It used to call `setOpen(false)` as well, which made it a second way to
+   * close — and the header already has one, correctly labelled "Minimise chat".
+   * Two controls that both close, one of which also destroys the transcript, is
+   * how somebody loses a conversation reaching for the wrong one. It also meant
+   * that starting fresh cost a reopen plus the whole scripted typing sequence
+   * again, which is a strange price for "ask me something else".
+   *
+   * Staying open is also what lets the label be true. A control that closes the
+   * panel cannot honestly be called "Start over", and a control that resets the
+   * transcript cannot honestly be called "End chat" — the old pairing was wrong
+   * whichever of the two words you trusted.
+   */
   const handleEndChat = () => {
     clearTimers();
-    setOpen(false);
     if (!controlledTranscript) {
       setOwnMessages([]);
       setOwnTyping(false);
       setRepliesShown(false);
       setOwnReplies(quickReplies ?? []);
       greeted.current = false;
+      // The scripted opening is keyed on `open` flipping. The panel is no
+      // longer flipping, so nothing would re-run it and the citizen would be
+      // left staring at an empty panel. This is the re-trigger.
+      setRestartToken((n) => n + 1);
     }
     onEndChat?.();
-    launcherRef.current?.focus();
+    // The button unmounts the instant the transcript empties (`messages.length
+    // > 0` guards it), so focus would otherwise fall to <body> and a keyboard
+    // user would be dropped out of the dialog they are still inside. The panel
+    // is `tabIndex={-1}` and labelled, so it is the correct landing place — and
+    // the greeting that follows is announced by the log's live region.
+    panelRef.current?.focus();
   };
 
   /**
@@ -486,12 +530,16 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
             live assistant on dosje.gov.in does, and the reason is the same.
 
             The two controls are EXPAND and CLOSE, in that order, matching the
-            live panel. What is deliberately NOT here is "End chat": it wipes
+            live panel. What is deliberately NOT here is "Start over": it wipes
             the transcript, and the top-right of a panel is where every user on
-            earth expects a harmless dismiss. Putting a destructive action in
-            that slot means people will lose their conversation reaching for
-            the close button. It now sits in the footer, quietly, and is
-            recoverable — see the note there.
+            earth expects a harmless dismiss. Putting a clearing action in that
+            slot means people will lose their conversation reaching for the
+            close button. It sits in the footer instead, quietly.
+
+            The two are now cleanly separated by outcome, which they were not
+            before: ✕ closes and KEEPS the conversation, Start over keeps the
+            panel and CLEARS it. Neither does both, so neither can be pressed
+            for one effect and deliver the other.
           */}
           <header className="ds-chatbot__header">
             <ChatbotMascot className="ds-chatbot__brand-mark" size={40} />
@@ -637,14 +685,23 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
             <div className="ds-chatbot__footer-row">
               <p className="ds-chatbot__note">{note}</p>
             {/*
-              END CHAT IS A SIBLING OF THE NOTE, NOT A WORD INSIDE IT. It used to
-              live in the paragraph, separated by a space, which cost two things:
-              the control stretched the note's last line box and broke the
-              footer's rhythm, and — worse — the only way out of the conversation
-              moved horizontally with the text wrap, so its position depended on
-              how long the disclaimer happened to be. A control people reach for
-              should be somewhere they can learn. It now shares a row with the
-              note and sits hard right, which is a fixed place.
+              START OVER IS A SIBLING OF THE NOTE, NOT A WORD INSIDE IT. It used
+              to live in the paragraph, separated by a space, which cost two
+              things: the control stretched the note's last line box and broke
+              the footer's rhythm, and — worse — it moved horizontally with the
+              text wrap, so its position depended on how long the disclaimer
+              happened to be. A control people reach for should be somewhere they
+              can learn. It now shares a row with the note and sits hard right,
+              which is a fixed place.
+
+              IT IS A DS `Button`, NOT A HAND-ROLLED ONE, and the appearance is
+              the whole reason the design-system-first rule exists. Written by
+              hand it landed outlined in the estate's REJECTION red — the colour
+              that means "your application failed" — for an action that is
+              housekeeping, and became the loudest thing in a footer whose only
+              filled control (Send) is disabled at rest. `variant="neutral"
+              appearance="text"` is the register this always wanted: present,
+              findable, and quieter than the disclaimer beside it.
 
               Shown when there is a conversation to end AND something can end
               it. Uncontrolled, that is always us. Controlled, the transcript
@@ -658,9 +715,16 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               decision that is not its to make.
             */}
               {canEndChat && messages.length > 0 && (
-                <button type="button" className="ds-chatbot__end" onClick={handleEndChat}>
+                <Button
+                  type="button"
+                  variant="neutral"
+                  appearance="text"
+                  size="sm"
+                  className="ds-chatbot__end"
+                  onClick={handleEndChat}
+                >
                   {endChatLabel}
-                </button>
+                </Button>
               )}
             </div>
           </footer>

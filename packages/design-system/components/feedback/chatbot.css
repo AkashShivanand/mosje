@@ -558,8 +558,26 @@
       }
     }
 
-    /* The float: constant, everywhere, one clock. */
-    .ds-chatbot-mascot__figure {
+    /*
+     * The float: constant, one clock — and ONLY on the launcher.
+     *
+     * It used to be on every `__figure`, which is every mascot the component
+     * renders: the 84px launcher mark, the 40px brand mark in the header, and a
+     * 40px avatar beside every run of bot messages. Four were measured bobbing
+     * at once on the docs page, each at its own phase because each started when
+     * its element mounted. The justification written above — 2.5px on a 55px
+     * mascot is below the threshold of drawing the eye — is a claim about ONE
+     * mark on an otherwise still page. It does not survive being multiplied
+     * down a scrolling transcript, where the movement is the only thing moving
+     * and the reader is trying to read.
+     *
+     * The launcher is where the argument actually holds: it is one element, it
+     * is the thing being invited to click, and a legless robot drawn mid-hover
+     * has to hover. The avatars are punctuation in a transcript, and
+     * punctuation should hold still.
+     */
+    .ds-chatbot__mark .ds-chatbot-mascot__figure,
+    .ds-chatbot-mascot--float .ds-chatbot-mascot__figure {
       animation: ds-chatbot-float 5s ease-in-out infinite;
     }
 
@@ -585,7 +603,27 @@
     flex-direction: column;
     width: var(--ds-chatbot-width);
     max-width: calc(100vw - (var(--ds-chatbot-gap) * 2));
-    height: var(--ds-chatbot-height);
+    /*
+     * IT SIZES TO ITS CONTENT. There is no `height` here any more, and that one
+     * deletion is the whole fix for a panel that opened 45% empty.
+     *
+     * Measured on open: a 531px log holding 96px of greeting — 435px of white
+     * above one bubble, in a 400px-wide floating surface. On a phone, 397px of
+     * 517. The log is bottom-anchored (see `__stream`, and that decision is
+     * right), so the void sat at the TOP, under the header, which is where a
+     * panel looks broken rather than roomy.
+     *
+     * The tempting fixes were both wrong. Top-aligning the first bubble strands
+     * it at the ceiling — the stylesheet already rejected that, correctly.
+     * Filling the space with a welcome block duplicates the header, which
+     * already carries the mark, the name and the Devanagari, 40px above.
+     *
+     * So: don't fill the space, don't have it. 719px was never a height the
+     * content asked for; it is the tallest the panel may get. The panel now
+     * opens at what the greeting needs (~330px), grows with the conversation,
+     * and starts scrolling when it hits the cap — which also makes the
+     * grows-from-the-launcher motion literal instead of decorative.
+     */
     /*
      * THE CAP HAS TO KNOW WHERE THE LAUNCHER ACTUALLY IS.
      *
@@ -602,9 +640,12 @@
      * the top. Derived from the same custom property the launcher is positioned
      * by, so the two cannot disagree again.
      */
-    max-height: calc(
-      100dvh - var(--sa-corner-rail-bottom, 32px) - var(--ds-chatbot-launcher) -
-        var(--sa-stack-8) - var(--ds-chatbot-gap)
+    max-height: min(
+      var(--ds-chatbot-height),
+      calc(
+        100dvh - var(--sa-corner-rail-bottom, 32px) - var(--ds-chatbot-launcher) -
+          var(--sa-stack-8) - var(--ds-chatbot-gap)
+      )
     );
     overflow: hidden;
     border-radius: var(--sa-shape-16);
@@ -1071,10 +1112,12 @@
       transform: none;
     }
 
+    /* `__end` is absent: it is a DS `Button` now, and `.ds-btn` carries its own
+       `prefers-reduced-motion` rule that drops the press scale. Restating it
+       here would be a second copy of a decision that lives in button.css. */
     .ds-chatbot__launcher,
     .ds-chatbot__launcher:hover,
     .ds-chatbot__launcher:active,
-    .ds-chatbot__end:active,
     .ds-chatbot__reply:active {
       transform: none;
     }
@@ -1119,14 +1162,33 @@
     background: var(--sa-bg-neutral-base);
   }
 
+  /*
+   * THE PADDING MOVED OFF THE FORM AND ONTO THE INPUT, and that is the fix —
+   * `align-self: stretch` alone was not enough.
+   *
+   * Stretching the input makes it fill the form's CONTENT box. The form's own
+   * padding is not part of that, so a 4px band along the top and bottom of the
+   * pill still belonged to the form, which focuses nothing. Half the field
+   * became live and a rim of it stayed dead — better than before, and still a
+   * control that does nothing where it plainly should.
+   *
+   * With the padding on the input instead, the input's border box spans the
+   * pill's full inner height and its whole left region, so every pixel a
+   * citizen would aim at is the input. Only the 4px gutter holding the send
+   * button is left, and `cursor: text` on the form covers the intent there.
+   *
+   * The rendering is unchanged: a single-line input centres its text in its
+   * content box, so moving 4px of padding across moves nothing on screen.
+   */
   .ds-chatbot__composer {
     display: flex;
     align-items: center;
     gap: var(--sa-inline-8);
-    padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-12);
+    padding: var(--sa-padding-0) var(--sa-padding-4) var(--sa-padding-0) var(--sa-padding-0);
     border: 1px solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-full);
     background: var(--sa-bg-neutral-base);
+    cursor: text;
     transition: border-color var(--ds-chatbot-press) var(--ds-chatbot-ease);
   }
 
@@ -1138,8 +1200,33 @@
     outline-offset: 1px;
   }
 
+  /*
+   * `align-self: stretch` PLUS ITS OWN PADDING IS A TARGET-SIZE FIX, NOT
+   * ALIGNMENT POLISH.
+   *
+   * The pill renders 42px tall. The input inside it had no height, so it was
+   * 20px — its line box — and the parent's `align-items: center` floated that
+   * 20px band in the middle. Everything above and below it belonged to the
+   * FORM: measured with `elementFromPoint`, a click 4px under the pill's top
+   * border returned `.ds-chatbot__composer`, which focuses nothing. Roughly
+   * half of what reads unmistakably as a text field did nothing when tapped.
+   *
+   * It also put the real target at 20px, under the 24px WCAG 2.2 (2.5.8)
+   * minimum, on a government service where that is a compliance line and not a
+   * preference.
+   *
+   * Stretching alone left a 4px dead rim, because stretch fills the CONTENT box
+   * and the form's padding is outside it. That was caught by a Playwright click
+   * at `y + 4`, not by looking — which is the whole reason the assertion is a
+   * synthetic click rather than a measured height. The padding now lives here,
+   * so the input's border box IS the pill's inner area: 40px tall, full width
+   * up to the send button.
+   */
   .ds-chatbot__input {
     flex: 1;
+    align-self: stretch;
+    padding-block: var(--sa-padding-4);
+    padding-inline: var(--sa-padding-12) var(--sa-padding-0);
     min-width: 0;
     border: 0;
     background: transparent;
@@ -1210,73 +1297,40 @@
     color: var(--sa-color-text-muted);
   }
 
-  /* Quiet, and in the footer rather than the close slot. Destructive actions do
-     not belong where people reach to dismiss something.
-
-     THIS RULE WAS DECLARED TWICE, AND THE SECOND ONE WAS SILENTLY WINNING.
-     One declaration up in the header block carried the padding and the type; this
-     one, further down the file, re-declared `padding: 0` and `font: inherit` and
-     therefore overrode both. The result rendered 49x16 — UNDER the 24px WCAG 2.2
-     (2.5.8) target minimum — while the documentation claimed a 24px box, and the
-     negative margin left behind was pulling the label out of the gutter to
-     compensate for padding that no longer existed. Merged here, in the footer
-     section where the control actually lives.
-
-     Do not re-split it: `no-duplicate-selectors` is on for exactly this reason. */
-  /* IT IS A BUTTON, SO IT LOOKS LIKE ONE. An underlined word in error ink reads
-     as a link — something that navigates — and this is the one control that ENDS
-     the conversation and clears the transcript. A bounded target says that; an
-     underline says the opposite, and it also put the only exit on the same
-     visual footing as body copy.
-
-     Outline rather than filled: it stays quiet beside the note, and it must not
-     compete with Send, which is the panel's one filled control. The error ink is
-     carried by the label and the border, not by a fill — the same restraint the
-     Colour page applies to status signals.
-
-     34px tall (20 line-height + 6 + 6 + 2 border), comfortably past the 24px
-     WCAG 2.2 (2.5.8) minimum, and it no longer needs a negative margin to sit in
-     the gutter because it is right-aligned in its own row. */
+  /*
+   * THE APPEARANCE OF THIS CONTROL IS NOT DEFINED HERE ANY MORE.
+   *
+   * It is `<Button variant="neutral" appearance="text" size="sm">`, and the ~40
+   * lines that used to sit here were a hand-rolled reimplementation of exactly
+   * that — padding, radius, focus ring, press scale, hover wash and all. The
+   * design system's own rule says check the barrel first and import what
+   * exists; this component sits INSIDE the design system and broke it four
+   * times over (`__end`, `__reply`, `__send`, `__icon-btn`).
+   *
+   * That is also why it looked wrong. Styled by hand, it landed on its own
+   * weight scale instead of the system's, ended up outlined in the estate's
+   * REJECTION red for an action that is housekeeping, and became the loudest
+   * thing in a footer whose only filled control (Send) is disabled at rest. The
+   * previous version was an underlined link, which was too little; this was too
+   * much. The middle was in the barrel the whole time.
+   *
+   * Two things the old block recorded that are worth keeping:
+   *  - The reference's #ff0004 measures 4.00:1 on white and fails AA for text.
+   *    It was never used. Moot now that the control is not red at all.
+   *  - The rule was once declared twice and the second silently won, rendering
+   *    the target at 49x16 — under the 24px WCAG 2.2 (2.5.8) minimum. The
+   *    comment that replaced it said `no-duplicate-selectors` guards against a
+   *    repeat. It does not: the rule is `null` in `.stylelintrc.js`, switched
+   *    off deliberately and for good reasons. The proof is that it happened
+   *    AGAIN — `:active` was declared twice, ten lines apart, and `stylelint`
+   *    passed clean over it. Deleting the block deletes the duplicate; deleting
+   *    the false claim matters more, because a comment asserting a guard that
+   *    does not exist is worse than no comment.
+   *
+   * `size="sm"` is 32px tall, past the 24px minimum.
+   */
   .ds-chatbot__end {
-    display: inline-flex;
     flex: none;
-    align-items: center;
-    padding: var(--sa-padding-6) var(--sa-padding-12);
-    border: 1px solid var(--sa-border-status-error-base);
-    border-radius: var(--sa-shape-8);
-    background: transparent;
-    font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-label-1-size);
-    line-height: var(--sa-type-label-1-lh);
-    /* The reference specifies #ff0004, which measures 4.00:1 on white and fails
-       AA for text. The design system's error ink is the same signal at 9.10:1,
-       so it wins — accessibility is not traded against fidelity. */
-    color: var(--sa-text-status-error-base);
-    white-space: nowrap;
-    cursor: pointer;
-    transition:
-      background-color var(--ds-chatbot-press) var(--ds-chatbot-ease),
-      transform var(--ds-chatbot-press) var(--ds-chatbot-ease);
-  }
-
-  .ds-chatbot__end:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: var(--sa-focus-offset);
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .ds-chatbot__end:hover {
-      background: var(--sa-bg-status-error-base);
-    }
-  }
-
-  .ds-chatbot__end:active {
-    background: var(--sa-bg-status-error-subtler);
-    transform: scale(0.97);
-  }
-
-  .ds-chatbot__end:active {
-    transform: scale(0.97);
   }
 
   /* ---------------------------------------------------------------------------
@@ -1290,19 +1344,35 @@
 
   .ds-chatbot__panel[data-expanded] {
     width: min(560px, calc(100vw - (var(--ds-chatbot-gap) * 2)));
-    /* Same correction as the cap above: expanding must not reintroduce the
-       overflow the cap exists to prevent. */
-    height: min(
+    /* `max-height`, matching the base rule: expanding raises the ceiling, it
+       does not pin the panel to 820px of mostly-nothing. Same viewport
+       correction as the cap above — expanding must not reintroduce the overflow
+       the cap exists to prevent. */
+    max-height: min(
       820px,
       calc(
         100dvh - var(--sa-corner-rail-bottom, 32px) - var(--ds-chatbot-launcher) -
           var(--sa-stack-8) - var(--ds-chatbot-gap)
       )
     );
+    /*
+     * WIDTH AND HEIGHT ARE NOT ANIMATED, DELIBERATELY.
+     *
+     * They were, and it cost two things. They are layout properties, so every
+     * frame of the 240ms re-ran layout and re-wrapped every bubble in the
+     * transcript — the one moment the panel is guaranteed to be full of text.
+     * And because both lived only in THIS rule, expanding animated and
+     * restoring snapped: an accidental asymmetry, on two halves of one gesture
+     * that are equally deliberate.
+     *
+     * The box now changes in one step, both ways. A cross-fade to cover it was
+     * written and deleted: keying it off `[data-expanded]` vs `:not(...)` keeps
+     * the same `animation-name` on both sides, so the browser has no reason to
+     * restart it and it plays once, on mount, and never again. A resize you
+     * cannot make smooth is better taken instantly than faked unreliably.
+     */
     transition:
       opacity var(--ds-chatbot-enter) var(--ds-chatbot-ease),
-      transform var(--ds-chatbot-enter) var(--ds-chatbot-ease),
-      width var(--ds-chatbot-enter) var(--ds-chatbot-ease),
-      height var(--ds-chatbot-enter) var(--ds-chatbot-ease);
+      transform var(--ds-chatbot-enter) var(--ds-chatbot-ease);
   }
 }

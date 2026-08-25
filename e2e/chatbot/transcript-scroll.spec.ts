@@ -39,42 +39,59 @@ test.describe("Samajik Sahayak — the transcript scrolls", () => {
     await expect(page.getByText("This is an assistant for the Ministry")).toBeVisible();
   });
 
-  test("a short conversation sits on the floor of the panel, not its ceiling", async ({ page }) => {
-    // Tall enough that the greeting and its six suggestions genuinely fit. At
-    // the 720px default they do NOT — which is worth writing down: before the
-    // fix, the opening state alone overflowed on a short viewport and the
-    // greeting was already unreachable on first open, script or no script.
+  /**
+   * REWRITTEN 2026-08-25, and the assertion is now the OPPOSITE of what it was.
+   *
+   * It used to require FREE SPACE ABOVE the transcript — proof that the log was
+   * bottom-anchored rather than stuck to its ceiling. That was the right test
+   * for a panel with a fixed 719px height, where free space was guaranteed and
+   * the only question was which end of it the conversation sat at.
+   *
+   * The panel no longer has a fixed height. It sizes to its content up to a
+   * 719px cap, because the free space that test was measuring turned out to be
+   * the defect: on open, a 531px log held 96px of greeting, so 435px — about
+   * 45% of the panel — was white. Bottom-anchoring meant it collected under the
+   * header, which is exactly where a panel looks unfinished.
+   *
+   * So the property worth pinning flipped: there should be NO free space at
+   * rest, and the panel should be well under its cap. The floor assertion
+   * survives unchanged, because `margin-block-start: auto` is still what puts
+   * the transcript on the floor whenever free space does exist — a consumer
+   * forcing a height, or a viewport cap taller than the content.
+   */
+  test("a short conversation fills the panel — no dead space above it", async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 1000 });
     await expect(page.getByText("This is an assistant for the Ministry")).toBeVisible();
 
-    /*
-     * The property is FREE SPACE ABOVE, not "the greeting is low on screen" —
-     * the suggestion list is a sibling inside the same scroller and takes as
-     * much room as it has entries, so on a short panel the greeting can be
-     * high up and still be correctly floor-anchored.
-     */
     const geometry = await page.locator(PANEL).evaluate((el) => {
       const style = getComputedStyle(el);
       const box = el.getBoundingClientRect();
       const children = [...el.children].map((c) => c.getBoundingClientRect());
+      const panel = el.closest(".ds-chatbot__panel")!;
       return {
         contentTop: box.top + parseFloat(style.paddingTop),
         contentBottom: box.bottom - parseFloat(style.paddingBottom),
         firstChildTop: children[0]!.top,
         lastChildBottom: children[children.length - 1]!.bottom,
         overflows: el.scrollHeight > el.clientHeight,
+        panelHeight: panel.getBoundingClientRect().height,
+        panelCap: parseFloat(getComputedStyle(panel).maxHeight),
       };
     });
 
     expect(geometry.overflows, "this case is only meaningful while nothing overflows").toBe(false);
     expect(
       geometry.firstChildTop - geometry.contentTop,
-      "the transcript should be pushed down by the free space, not stuck to the ceiling",
-    ).toBeGreaterThan(1);
+      "the panel should have shrunk to its content, leaving no white band under the header",
+    ).toBeLessThan(2);
     expect(
       Math.abs(geometry.lastChildBottom - geometry.contentBottom),
-      "and it should rest on the floor",
+      "and the transcript should still rest on the floor",
     ).toBeLessThan(2);
+    expect(
+      geometry.panelHeight,
+      "the opening panel must be comfortably under the cap, not pinned to it",
+    ).toBeLessThan(geometry.panelCap - 100);
   });
 
   test("a transcript longer than the panel is scrollable, and the top is reachable", async ({

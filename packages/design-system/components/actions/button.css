@@ -24,7 +24,7 @@
      MoSJE / UX4G — Button atom
      Semantic CSS classes only; all colours reference design tokens (--sa-*).
      Combine: .ds-btn  +  .ds-btn--<variant>  +  .ds-btn--<appearance>  +  .ds-btn--<size>
-     Variants: primary | success | danger
+     Variants: primary | success | danger | neutral
      Appearances: filled | outlined | text | tonal
      Sizes: sm | md | lg
      ============================================================================ */
@@ -126,7 +126,36 @@
     --_ring: color-mix(in oklab, var(--sa-color-status-danger) 40%, transparent);
   }
 
-  /* Route the focus ring to the active variant's colour */
+  /* THE VARIANT WITH NO SIGNAL. For dismiss / reset / "start over" — an action
+     that is neither the primary path nor a warning about one.
+
+     `--_color` is the BASE ink. It was written as `subtle` first, on the
+     reasoning that a neutral variant should read as quiet — and that was wrong,
+     visibly so the moment it rendered. `subtle` resolves to the same
+     `text/muted` the chatbot's disclaimer uses, so the one interactive thing in
+     that footer came out the exact colour of the paragraph beside it. Quiet is
+     the job of the APPEARANCE (`text` and `outlined` carry no fill); making the
+     ink quiet as well de-emphasises it twice and leaves a control that reads as
+     a caption. Full ink, no signal colour: that is what neutral means.
+
+     `--_fill` is a light grey, so `--_on` is dark ink rather than white. This is
+     exactly why `--_on` is declared per family: a filled neutral with white text
+     would be unreadable.
+
+     No `--_dark`: it is declared by the three variants above and consumed by
+     nothing. Not propagated here rather than copied forward. */
+  .ds-btn--neutral {
+    --_fill: var(--sa-bg-neutral-bold);
+    --_on: var(--sa-on-bg-neutral-bold);
+    --_color: var(--sa-text-neutral-base);
+    --_tonal-bg: var(--sa-bg-neutral-subtle);
+    --_tonal-fg: var(--sa-text-neutral-bolder);
+    --_ring: var(--sa-focus-ring);
+  }
+
+  /* Route the focus ring to the active variant's colour. `neutral` is absent on
+     purpose — its ring IS `--sa-focus-ring`, which the base rule already sets, so
+     listing it here would restate the default. */
   .ds-btn--success:focus-visible,
   .ds-btn--danger:focus-visible {
     box-shadow: 0 0 0 3px var(--_ring);
