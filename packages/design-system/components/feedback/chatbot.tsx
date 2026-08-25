@@ -714,6 +714,24 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               driven, rather than whether the affordance can work, is making a
               decision that is not its to make.
             */}
+              {/*
+                UPSTREAM DEPENDENCY. Button is being rebuilt separately — see
+                docs/design-system/components/button-cleanup-prompt.md, and the
+                "Upstream dependency — Button" section of chatbot.md for what
+                must not break.
+
+                Two things to know if you are here because something failed:
+
+                - `size="sm"` is 32px today because Button sets a fixed `height`.
+                  When that becomes `min-height` this control will start GROWING
+                  at 200% text. The footer row is `align-items: flex-end` and the
+                  panel is content-sized, so it should absorb it — re-verify,
+                  do not assume.
+                - The chatbot's OWN Figma-parity claim (node 55828:766) asserts
+                  two lines inside button.css and component-matrix.json. A Button
+                  change can therefore fail a gate that names the CHATBOT. That
+                  is this dependency firing, not a regression here.
+              */}
               {canEndChat && messages.length > 0 && (
                 <Button
                   type="button"
