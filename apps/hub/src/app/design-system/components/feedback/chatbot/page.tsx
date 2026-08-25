@@ -129,7 +129,7 @@ export default function ChatbotPage(): React.JSX.Element {
         <ul style={listStyle}>
           <li><strong>Header:</strong> the mascot at 40px, the bilingual title block, then expand (<code>open_in_full</code>) and minimise (<code>close</code>) as 32px targets. All four marks are Material Symbols Rounded glyphs at 20 / 24 / 16 — none is a hand-drawn path.</li>
           <li><strong>Log:</strong> bot turns carry an avatar, user turns do not. Bubbles cap at 67% width, and the squared corner points at the edge the speaker came from. Suggestions wrap and pack <em>right</em>, on the user&apos;s side — each one is a sentence they are about to say, and pressing it puts those words in a user bubble.</li>
-          <li><strong>Footer:</strong> a pill composer, the honest note, and End chat as a <em>bordered button</em> sharing the note&apos;s row, hard right. An underlined word reads as a link — something that navigates — and this is the control that ends the conversation and clears the transcript.</li>
+          <li><strong>Footer:</strong> a pill composer, the honest note, and <strong>Start over</strong> sharing the note&apos;s row, hard right. It is the design system&apos;s <code>Button</code> at <code>variant=&quot;neutral&quot; appearance=&quot;text&quot;</code> — no border, full ink, no signal colour. Hand-rolled it drifted into the estate&apos;s <em>rejection</em> red for an action that is housekeeping, and became the loudest thing in a footer whose only filled control is disabled at rest.</li>
         </ul>
         <Playground
           code={`<Chatbot
@@ -180,7 +180,7 @@ export default function ChatbotPage(): React.JSX.Element {
         </p>
         <ul style={listStyle}>
           <li>The launcher reports its size to the rail and reads its own offset back from <code>--sa-corner-rail-bottom</code>.</li>
-          <li>The panel caps at <code>100dvh − rail − launcher − gaps</code>, so it can never render above the viewport.</li>
+          <li>The panel <strong>sizes to its content</strong>, capped at the smaller of 719px and <code>100dvh − rail − launcher − gaps</code>, so it can never render above the viewport. 719 is a ceiling, not a height: pinned there, the opening state was a 531px log holding 96px of greeting — 435px of white collecting under the header, about 45&nbsp;% of the panel.</li>
           <li>Open, the widget takes <code>z-index: 2147483001</code> and outranks everything on the page, including the accessibility widget. Closed, it sits at <code>1010</code> with the rest of the corner.</li>
         </ul>
         <Callout type="danger" title="This one only showed up in production">
@@ -196,7 +196,12 @@ export default function ChatbotPage(): React.JSX.Element {
         <p style={proseStyle}>
           Everything that enters or exits uses ease-out, never ease-in, and everything is under
           300ms. Only <code>transform</code>, <code>opacity</code> and <code>filter</code> are
-          animated, so nothing here triggers layout or paint.
+          animated, so nothing here triggers layout or paint — expanding used to animate{" "}
+          <code>width</code> and <code>height</code>, which re-ran layout and re-wrapped every
+          bubble on every frame, at the one moment the panel is guaranteed to be full of text.
+          The box now changes in one step, and in one step both ways: because those two
+          properties lived only in the expanded rule, expanding animated while restoring
+          snapped.
         </p>
         <ul style={listStyle}>
           <li><strong>Enter, 240ms</strong> — the panel grows out of the launcher, so closing visibly returns there.</li>
@@ -266,9 +271,9 @@ export default function ChatbotPage(): React.JSX.Element {
         <div style={{ marginTop: "var(--sa-padding-20)" }}>
           <A11yChecklist
             items={[
-              { criterion: "Target sizes", level: "AA", description: "The 84px launcher and 32px header controls both clear the 24px minimum (2.5.8). End chat is an 83 x 34 bordered button on the note's row, so the only exit sits in one fixed place whatever the note says." },
-              { criterion: "Nothing loops at rest", level: "A", description: "The seal no longer turns by itself at all — only a caller passing spin starts it — so the widget presents nothing for a Pause/Stop/Hide control to pause (2.2.2). The mascot's 2.5px float is the one continuous movement, and it collapses under prefers-reduced-motion." },
-              { criterion: "Contrast on every surface", level: "AA", description: "End chat uses the system error ink at 9.10:1 rather than the lighter red the reference used." },
+              { criterion: "Target sizes", level: "AA", description: "The 84px launcher, the 32px header controls and the 32px Start over button all clear the 24px minimum (2.5.8). So does the composer input, which did not: it was 20px inside a 42px pill, so half of what looked like a text field focused nothing at all. It now stretches to the pill's inner height. Pinned in e2e/chatbot/composer-target.spec.ts." },
+              { criterion: "Nothing loops at rest", level: "A", description: "The seal no longer turns by itself at all — only a caller passing spin starts it — so the widget presents nothing for a Pause/Stop/Hide control to pause (2.2.2). The mascot's 2.5px float is the one continuous movement, it runs on the LAUNCHER ONLY, and it collapses under prefers-reduced-motion. It used to run on every mascot the component renders, so a transcript bobbed once per bot avatar." },
+              { criterion: "Contrast on every surface", level: "AA", description: "Start over paints text/neutral/base at 16.18:1 — darker and heavier than the 12px note beside it, so the one control in the footer is not the same colour as the disclaimer." },
               { criterion: "Live region on the log", level: "A", description: "New turns are announced. On minimise, focus returns to the launcher rather than the top of the page (4.1.2)." },
               { criterion: "Reduced motion honoured", level: "AA", description: "The cascade, the typing dots and the seal all stop. The panel appears without growing, rather than not appearing." },
             ]}
@@ -295,8 +300,8 @@ export default function ChatbotPage(): React.JSX.Element {
             { name: "composerPlaceholder", type: "string", default: '"Type something…"', description: "Placeholder for the composer input." },
             { name: "onSubmit", type: "(text: string) => ChatbotReply | Promise<...> | void", description: "Handle a typed question. Without a handler an unrecognised question gets an honest fallback rather than silence." },
             { name: "note", type: "string", description: "The honest statement of what this assistant is not. Never remove it." },
-            { name: "endChatLabel", type: "string", default: '"End chat"', description: "Label for the footer end-chat action." },
-            { name: "onEndChat", type: "() => void", description: "Called after the transcript is cleared." },
+            { name: "endChatLabel", type: "string", default: '"Start over"', description: "Label for the footer reset action. It clears the transcript and greets again — it does NOT close the panel, which is the header\u2019s job." },
+            { name: "onEndChat", type: "() => void", description: "Called after the transcript is cleared. A controlled consumer must clear its own transcript here, and re-seed its greeting — the panel stays open, so nothing else will." },
             { name: "launcherLabel", type: "string", default: '"Samajik Sahayak, chat assistant"', description: "Accessible name of the launcher." },
             { name: "typingDelayMs", type: "number", default: "900", description: "How long the typing indicator runs before a bot message lands." },
             { name: "placement", type: '"fixed" | "inline"', default: '"fixed"', description: "fixed pins it to the corner rail; inline drops the positioning so a docs page or story can place it." },

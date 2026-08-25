@@ -3,7 +3,7 @@
 import * as React from "react";
 import { Modal } from "@mosje/design-system";
 
-import { LANGUAGES } from "@/lib/bhashini/languages";
+import { LANGUAGES, PROTOTYPE_MODE } from "@/lib/bhashini/languages";
 import { useTranslation } from "./translation-provider";
 
 import "./language-dialog.css";
@@ -21,6 +21,14 @@ import "./language-dialog.css";
  * It also settles an affordance that was previously false: the masthead's
  * language control has always drawn a caret, which promises something opens.
  * Until now nothing did.
+ *
+ * ── IT SAYS WHICH ONES ACTUALLY WORK HERE ─────────────────────────────────────
+ * The prototype has no Bhashini credentials and is not getting any; the real
+ * integration happens on the live site. Offering thirteen languages where twelve
+ * silently do nothing is the same false affordance as a caret that opens nothing
+ * — worse, because in a demo it reads as broken rather than as unfinished. So the
+ * rows that cannot translate here say so, once, quietly, and still switch `lang`
+ * and `dir` when chosen, because that half is real and worth showing.
  *
  * ── EACH ROW IS IN ITS OWN LANGUAGE ───────────────────────────────────────────
  * `lang` on the row is not a detail. Without it a screen reader announces
@@ -42,6 +50,14 @@ export function LanguageDialog({
       <p className="lang-dialog__lede">
         {t("Translation is provided by Bhashini, the Government of India's national language platform.")}
       </p>
+
+      {PROTOTYPE_MODE && (
+        <p className="lang-dialog__note">
+          {t(
+            "In this prototype English and हिन्दी are translated. The rest are configured and will translate on the live site — choosing one here still switches the page's language and reading direction.",
+          )}
+        </p>
+      )}
 
       <ul className="lang-dialog__list">
         {LANGUAGES.map((l) => {
@@ -65,10 +81,17 @@ export function LanguageDialog({
                 <span className="lang-dialog__english" lang="en" dir="ltr">
                   {l.english}
                 </span>
-                {current && (
+                {current ? (
                   <span className="lang-dialog__current" lang="en" dir="ltr">
                     {t("Current")}
                   </span>
+                ) : (
+                  PROTOTYPE_MODE &&
+                  !l.prototype && (
+                    <span className="lang-dialog__pending" lang="en" dir="ltr">
+                      {t("Live site")}
+                    </span>
+                  )
                 )}
               </button>
             </li>

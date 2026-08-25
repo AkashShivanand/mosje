@@ -51,17 +51,24 @@ import {
  * puts its disclaimer, and it deliberately does not copy live's "can make
  * mistakes" wording, which describes a generative model this is not.
  *
- * ### The header controls are EXPAND and MINIMISE, never "end chat"
+ * ### Closing and clearing are two controls, and neither does the other's job
  *
  * `launcherLabel` is the launcher's accessible name — it carries the assistant's
  * name, because "open chat" tells a screen-reader user nothing about which
  * assistant they are opening on a page that may also have a demo dock and an
  * accessibility widget in the same corner.
  *
- * `endChatLabel` names the end-chat action, which lives quietly in the footer.
- * It wipes the transcript, and the top-right of a panel is where every user
- * expects a harmless dismiss — putting it there means people lose their
- * conversation reaching for close.
+ * The header's ✕ ("Minimise chat") closes and KEEPS the conversation.
+ * `endChatLabel` names the footer control — **"Start over"** — which clears the
+ * transcript, greets again, and leaves the panel open. It used to be called
+ * "End chat" and used to close the panel too, which made it a second way to
+ * close sitting beside a ✕, and made the label untrue whichever of its two
+ * words you trusted. Clearing stays out of the top-right because that is where
+ * every user expects a harmless dismiss.
+ *
+ * It is the design system's `Button` at `variant="neutral" appearance="text"`.
+ * Hand-rolled, it drifted into the estate's rejection red for an action that is
+ * housekeeping — see the Button story for what `neutral` is for.
  *
  * ### Accessibility
  *
@@ -257,7 +264,11 @@ export const ControlledOpenState: Story = {
           open={open}
           onOpenChange={setOpen}
           quickReplies={SCHEME_REPLIES}
-          onEndChat={() => setOpen(false)}
+          // A CONTROLLED consumer owns its transcript, so it must clear it here
+          // AND re-seed its greeting: the panel no longer closes on Start over,
+          // so nothing else will start the conversation again. This story has no
+          // transcript of its own to clear, so it only has to keep the panel open.
+          onEndChat={() => setOpen(true)}
         />
       </div>
     );

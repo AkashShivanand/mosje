@@ -3,13 +3,21 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Divider, Icon, buttonClasses } from "@mosje/design-system";
+import { Button, Divider, Icon, buttonClasses } from "@mosje/design-system";
 import { CarouselIndicators } from "./CarouselIndicators";
 
 interface DocumentItem {
   title: string;
   date: string;
   href: string;
+  /**
+   * Document class, shown as "Type: X" [WEB-D-02, partially].
+   * The design also shows a one-line description and "File: PDF (2.4 MB)".
+   * `content/website/documents.json` carries neither — it holds only slug,
+   * title, sourceUrl, date and category — so neither is rendered rather than
+   * being fabricated for a government page.
+   */
+  type: string;
 }
 
 interface Persona {
@@ -21,21 +29,25 @@ interface Persona {
 const documents: DocumentItem[] = [
   {
     title: "Annual Report 2025-26 (English)",
+    type: "Report",
     date: "22 Apr 2026",
     href: "/website/annual-reports",
   },
   {
     title: "Annual Report 2025-26 (Hindi)",
+    type: "Report",
     date: "22 Apr 2026",
     href: "/website/annual-reports",
   },
   {
     title: "Result of National Overseas Scholarship (NOS) for SC candidates 2025-26 (2nd Round)",
+    type: "Result",
     date: "18 Apr 2026",
     href: "/website/annual-reports",
   },
   {
     title: "Acceptance of Transgender Identity Certificate/Card in EPFO Records",
+    type: "Circular",
     date: "15 Apr 2026",
     href: "/website/notices",
   },
@@ -97,36 +109,49 @@ export function RecentDocuments() {
                 <h2 className="text-[26px] sm:text-[30px] font-semibold leading-tight text-primary-dark">
                   Recent Documents
                 </h2>
-                <Link
+                {/* Outlined button, not a text link [WEB-G-05]. */}
+                <Button
+                  appearance="outlined"
+                  size="sm"
                   href="/website/annual-reports"
-                  className="text-xs sm:text-sm font-semibold text-primary hover:underline flex items-center gap-1"
+                  iconRight={<Icon name="arrow_forward" size={16} aria-hidden />}
                 >
-                  View All <Icon name="arrow_forward" size={16} />
-                </Link>
+                  View All
+                </Button>
               </div>
 
-              <div className="mt-2 divide-y divide-gray-150">
+              {/* A 2 x 2 grid of cards, which is what the design draws. The
+                  build shipped a single-column divided list [WEB-D-01]. */}
+              <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
                 {documents.map((doc) => (
                   <div
                     key={doc.title}
-                    className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 py-4.5 hover:bg-gray-50/80 px-2 rounded-lg transition"
+                    className="flex flex-col rounded-xl border border-gray-200 bg-surface-muted/40 p-4 transition hover:border-primary/40 hover:shadow-sm"
                   >
-                    <div className="flex items-start gap-3.5 min-w-0 flex-1">
-                      <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary mt-0.5">
-                        <Icon name="description" size={20} />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <h3 className="text-[15px] font-medium leading-snug text-ink line-clamp-2">
-                          {doc.title}
-                        </h3>
-                        <p className="mt-1 text-xs text-ink-muted">{doc.date}</p>
-                      </div>
-                    </div>
+                    <h3 className="text-[15px] font-semibold leading-snug text-ink">
+                      {doc.title}
+                    </h3>
+                    <p className="mt-1 text-xs text-ink-muted">{doc.date}</p>
 
-                    <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
+                    {/* The design also carries a description here. It is not in
+                        the document data — see DocumentItem.type. */}
+                    <p className="mt-3 text-xs text-ink-muted">
+                      Type: <span className="font-medium text-ink">{doc.type}</span>
+                    </p>
+
+                    <div className="mt-4 flex items-center justify-end gap-2 pt-1">
                       <Link
                         href={doc.href}
-                        className={buttonClasses("primary", "outlined", "sm", "text-xs px-3.5 py-1.5 whitespace-nowrap")}
+                        /* gov-blue is 4.4:1 on this card's pale ground — just
+                           under AA. Same cause as the Offerings CTA: the DS
+                           outlined button is correct on white and short of it on
+                           every tint. primary-dark is 7.9:1 here. */
+                        className={buttonClasses(
+                          "primary",
+                          "outlined",
+                          "sm",
+                          "text-xs px-3.5 py-1.5 whitespace-nowrap border-primary-dark text-primary-dark",
+                        )}
                       >
                         View Online
                       </Link>
@@ -145,7 +170,7 @@ export function RecentDocuments() {
 
           {/* PART B — Explore User Personas (Blue Card) */}
           <div className="lg:col-span-4">
-            <div className="h-full rounded-2xl bg-[#0052b4] p-6 text-white flex flex-col justify-between shadow-md">
+            <div className="flex h-full flex-col justify-between rounded-2xl bg-primary-dark p-6 text-white shadow-md">
               <div>
                 <h2 className="text-[22px] font-bold text-white">
                   Explore User Personas

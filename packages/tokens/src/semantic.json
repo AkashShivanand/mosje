@@ -2433,7 +2433,7 @@
     },
     "contentXl": {
       "$value": "{container.2xl}",
-      "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages, so the anchor is the estate's own `breakpoint/desktopXl` — 1600 since 2026-08-24. Bootstrap's `container-xxl` at 1400 was considered and rejected: at 1400 the 1440 design frame would take this cap, contradicting the 1200-at-desktop guidance. (This note said 1400 WAS the anchor until 2026-08-24; it never was — the token has read 1768 and now 1600.) BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
+      "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages, so the anchor is the estate's own `breakpoint/desktopXl` — 1440 since 2026-08-24 (it read 1768, then 1600, before the page itself was measured). Bootstrap's `container-xxl` at 1400 was considered and rejected: at 1400 the 1440 design frame would take this cap, contradicting the 1200-at-desktop guidance. (This note said 1400 WAS the anchor until 2026-08-24; it never was — the token has read 1768, then 1600, and now 1440.) BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
     },
     "contentWide": {
       "$value": "1440px",

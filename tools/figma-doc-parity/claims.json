@@ -260,11 +260,11 @@
     {
       "node": "55828:766",
       "where": "Chatbot — Documentation › 02 Anatomy › FOOTER",
-      "figma": "A pill composer, the honest note, and End chat as a BORDERED BUTTON sharing the note’s row, hard right. An underlined word reads as a link — something that navigates — and this is the control that ends the conversation.",
+      "figma": "A pill composer, the honest note, and Start over sharing the note’s row, hard right. It is the design system’s Button at variant=\"neutral\" appearance=\"text\" — no border, full ink, NO SIGNAL COLOUR. Hand-rolled it drifted into the estate’s rejection red for an action that is housekeeping.",
       "expect": [
         {
           "kind": "text",
-          "value": "BORDERED BUTTON"
+          "value": "NO SIGNAL COLOUR"
         },
         {
           "kind": "source",
@@ -274,25 +274,31 @@
         },
         {
           "kind": "source",
-          "file": "packages/design-system/components/feedback/chatbot.css",
-          "pattern": "\\.ds-chatbot__end \\{[^}]*border: 1px solid var\\(--sa-border-status-error-base\\)",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "variant=\"neutral\"\\s*\\n\\s*appearance=\"text\"",
           "flags": "s",
-          "hint": "A bounded target is what says 'button'. Without the border this reads as a link, which is what it looked like before."
+          "hint": "It is a DS Button, not a hand-rolled control. Styled by hand it landed on its own weight scale instead of the system's."
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/feedback/chatbot.css",
-          "pattern": "\\.ds-chatbot__end \\{[^}]*text-decoration: underline",
-          "flags": "s",
+          "pattern": "border: 1px solid var\\(--sa-border-status-error-base\\)",
           "absent": true,
-          "hint": "An underline says 'this navigates'. It ends the conversation and clears the transcript."
+          "hint": "No error ink on this control. Clearing a scripted routing transcript is housekeeping, not a failure, and a portal that spends its rejection red on housekeeping has none left when an application actually fails."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--neutral \\{[^}]*--_color: var\\(--sa-text-neutral-base\\)",
+          "flags": "s",
+          "hint": "Base ink, not subtle: `subtle` resolves to the same text/muted as the disclaimer beside it, which made the one control in the footer the colour of body copy."
         }
       ]
     },
     {
       "node": "55829:804",
       "where": "Chatbot — Documentation › 07 Tokens › GEOMETRY",
-      "figma": "width 400, height 719, launcher 84, bubbleMax 246, typingDot 5. Bound to the frames here and resolved by chatbot.css there, so neither side can move alone.",
+      "figma": "width 400, height 719 (a CAP, not a fixed height — the panel sizes to its content), launcher 84, bubbleMax 246, typingDot 5. Bound to the frames here and resolved by chatbot.css there, so neither side can move alone.",
       "expect": [
         {
           "kind": "token",
@@ -320,6 +326,13 @@
           "file": "packages/design-system/components/feedback/chatbot.css",
           "pattern": "--ds-chatbot-width: var\\(--sa-layout-chatbot-width\\)",
           "hint": "The stylesheet must RESOLVE these, not restate the numbers."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "max-height: min\\(\\s*var\\(--ds-chatbot-height\\)",
+          "flags": "s",
+          "hint": "719 is the ceiling. Pinned there as a height, the opening state was 435px of white under the header — about 45% of the panel."
         }
       ]
     }

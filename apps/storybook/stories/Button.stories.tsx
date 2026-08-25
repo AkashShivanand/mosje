@@ -2,8 +2,18 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { Button, Icon } from "@mosje/design-system";
 
 /**
- * **Button** — the primary action atom. Variants encode intent (primary/success/danger),
- * appearances encode prominence (filled/outlined/text/tonal). Lifecycle: **Stable**.
+ * **Button** — the primary action atom. Variants encode intent
+ * (primary/success/danger/neutral), appearances encode prominence
+ * (filled/outlined/text/tonal). Lifecycle: **Stable**.
+ *
+ * `variant="neutral"` is for an action with **no semantic charge** — a dismiss,
+ * a reset, a "start over". Reach for it whenever you catch yourself wanting a
+ * control to look different from the paragraph beside it: before it existed the
+ * only way to do that was to borrow a signal colour, and the chatbot's reset
+ * duly shipped outlined in the estate's *rejection* red for what is
+ * housekeeping. On a portal where red means "your application was rejected",
+ * spending it on a reset devalues the signal. Pair it with `appearance="text"`
+ * for the quietest register the system has.
  *
  * `href` turns it into an `<a>`. Use it when the control **navigates** — a link
  * that merely looks like a button is still a link, and a keyboard user expects
@@ -25,7 +35,7 @@ const meta = {
   component: Button,
   args: { children: "Submit application", variant: "primary", appearance: "filled", size: "md" },
   argTypes: {
-    variant: { control: "inline-radio", options: ["primary", "success", "danger"] },
+    variant: { control: "inline-radio", options: ["primary", "success", "danger", "neutral"] },
     appearance: {
       control: "inline-radio",
       options: ["filled", "outlined", "text", "tonal", "inverse", "inverseOutlined"],
@@ -49,6 +59,34 @@ export const Variants: Story = {
       <Button {...args} variant="primary">Primary</Button>
       <Button {...args} variant="success">Success</Button>
       <Button {...args} variant="danger">Danger</Button>
+      <Button {...args} variant="neutral">Neutral</Button>
+    </div>
+  ),
+};
+
+/**
+ * **The quiet register, and the mistake it exists to prevent.**
+ *
+ * Top is what a reset should look like. Below it is what it looked like before
+ * `neutral` existed — the only way to make a control read as a control was to
+ * borrow `danger`, so a routine "clear this and start again" ended up wearing
+ * the colour reserved for a rejected application.
+ */
+export const NeutralVsBorrowedSignal: Story = {
+  render: (args) => (
+    <div style={{ display: "grid", gap: 20 }}>
+      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+        <Button {...args} variant="neutral" appearance="text" size="sm">Start over</Button>
+        <span style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)" }}>
+          right — no signal, still unmistakably a control
+        </span>
+      </div>
+      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: "wrap" }}>
+        <Button {...args} variant="danger" appearance="outlined" size="sm">Start over</Button>
+        <span style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)" }}>
+          wrong — the rejection colour, spent on housekeeping
+        </span>
+      </div>
     </div>
   ),
 };

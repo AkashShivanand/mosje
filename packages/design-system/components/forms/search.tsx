@@ -219,6 +219,25 @@ export const Search = React.forwardRef<HTMLInputElement, SearchProps>(
           id={fieldId}
           type="search"
           className="ds-search__input"
+          /* `auto`, not inherited.
+
+             A search field holds two different languages at once: the placeholder
+             is in the interface's language, and what the reader types is in
+             whatever language they think in. Inheriting `dir` from <html> gets
+             both wrong half the time.
+
+             Concretely: with the estate in Urdu, <html dir="rtl"> made this input
+             RTL, and an English placeholder longer than the field then clipped
+             from the START — "Search Schemes, Services, Documents" rendered as
+             "n Schemes, Services, Documents", losing the one word that says what
+             the field is for. LTR clips the tail, which is harmless; RTL clips
+             the head, which is not.
+
+             `dir="auto"` lets the browser read the first strong character and
+             decide per string, so an English placeholder stays LTR inside an RTL
+             page, an Urdu one is RTL, and a reader typing Devanagari into an
+             English page gets their own direction rather than ours. */
+          dir="auto"
           value={value}
           onChange={(event) => {
             setDismissed(false);
