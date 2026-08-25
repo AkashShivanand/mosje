@@ -204,7 +204,11 @@ export const ORGANISATIONS: Organisation[] = [
     abbr: "NHAA",
     name: "National Helpline Against Atrocities",
     category: "schemes",
-    profileHref: "/website/organisation/national-helpline-against-atrocities",
+    /* SAMBAL, the National Helpline Against Atrocities. It has no record in
+       `content/website/organisation.json`, so `/website/organisation/<id>`
+       404s — the profile page it pointed at was never ingested. The helpline's
+       own portal is the real destination. */
+    profileHref: "/portals/nhapoa",
     logoSrc: "/website/images/National-Emblem-logo.svg",
   },
 ];
