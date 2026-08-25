@@ -93,3 +93,40 @@ description and in `design.md`.
 
 **Where it is referenced:** `packages/design-system/design.md` (Ticker § Known gap),
 the SAMAVESH `Ticker` component description, `components/button.md` gap 7, PR #187.
+
+
+---
+
+## Figma component descriptions are full of escaped-entity noise (2026-08-25)
+
+**Status:** open. Cause fixed and recorded; the existing damage is not cleaned up.
+
+**What happened.** Figma's plain `description` setter HTML-escapes on write and does
+not un-escape on read. Every edit therefore escapes what the last edit escaped, so an
+apostrophe walks `'` → `&#39;` → `&amp;#39;` → `&amp;amp;#39;`. The `Ticker` set had
+reached **six levels** and 58 mangled entities before anyone read it back.
+
+**Why it matters.** The component description is exactly what the Figma MCP server
+hands an agent as context, and what a designer reads in the Figma sidebar. Both were
+being handed entity soup in the middle of sentences.
+
+**The fix, applied to Ticker.** Write through `descriptionMarkdown`, which round-trips
+unchanged and is idempotent. `Ticker` and `Ticker / Mark` are now at zero entities in
+both projections. The rule is recorded in `.claude/rules/component-authoring.md` §12b.
+
+**What is still dirty.** A survey of the other component pages the same day:
+
+| page | entities | doubly-escaped markers |
+|---|---|---|
+| Tabs | 63 | 19 |
+| Chatbot | 19 | 0 |
+| Buttons | 15 | 0 |
+| Inputs | 13 | 0 |
+| Accordion | 9 | 0 |
+| Card | 1 | 0 |
+
+Not swept, because each one needs its text read and confirmed rather than
+regex-replaced in bulk — the un-escape is mechanical but the *content* of several of
+these descriptions has not been checked against the shipped component, and doing the
+two together is how the Ticker pass found three stale paragraphs. Do it per page, and
+audit the prose while it is open.

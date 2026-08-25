@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.57.0",
+    version: "v0.58.0",
     date: "2026-08-25",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THREE SURFACES DOCUMENTED A ROW THE COMPONENT HAD STOPPED RENDERING. design.md, the docs page and the Storybook notes all still described the panel row as a bold lead-in before a colon with the sentence after it \u2014 the shape that was replaced by title-over-subtitle when the ticker met the real notice list. design.md carried BOTH descriptions, in adjacent paragraphs, contradicting each other. Two of the three also still named primaryScale/500 and /700 as the ground and plinth, which the contrast fix had already moved to /600 and /800, and design.md still said the mark defaults to the Material `campaign` glyph it no longer uses" },
+      { kind: "Fixed", text: "FIGMA COMPONENT DESCRIPTIONS WERE FILLING UP WITH ESCAPED-ENTITY NOISE, AND THE CAUSE IS A SETTER NOBODY SHOULD USE. Figma\u2019s plain `description` field HTML-escapes on write and does not un-escape on read, so every edit escapes what the last edit escaped: an apostrophe walks to &#39;, then &amp;#39;, then &amp;amp;#39;. The Ticker set had reached SIX levels and 58 mangled entities in the text the Figma MCP server hands an agent as context. `descriptionMarkdown` round-trips unchanged and is idempotent \u2014 proved with a probe rather than assumed. Ticker and Ticker / Mark are at zero entities in both projections now" },
+      { kind: "Added", text: "THE TICKER HAS A FIGMA DOCUMENTATION PAGE, built to the house pattern the Chatbot page set: a hero with six at-a-glance figures, nine numbered sections \u2014 shapes, row anatomy, contrast, states, motion, height, accessibility, tokens, prototype \u2014 and a separate Component record frame carrying what is still open. 257 nodes, audited at 100% bound on fills, padding, gaps and radii, 172 of 172 text nodes on a published style, zero UNACCOUNTED and nothing under the 11px floor" },
+      { kind: "Changed", text: "THE TICKER FIGMA PAGE IS ORGANISED INTO SECTIONS instead of six sets loose on the canvas. `1 \u00b7 Ticker` holds the published 24-variant set, `2 \u00b7 Ticker Parts` the four nested interaction parts, `3 \u00b7 Ticker Mark` the drawn megaphone \u2014 the same convention the Chatbot page uses, so the two pages can be read the same way" },
+      { kind: "Added", text: "THE ESCAPING TRAP IS WRITTEN DOWN WHERE IT WILL BE READ, in component-authoring \u00a712b, with the instruction to re-read a description after writing it and count the entities. A survey the same day found the same damage on Tabs (63 entities, nineteen doubly-escaped), Chatbot (19), Buttons (15), Inputs (13), Accordion (9) and Card (1). That cleanup is recorded in follow-ups and deliberately NOT done in bulk: the un-escape is mechanical, but the Ticker pass proves the prose needs auditing at the same time" },
+    ],
+  },
+  {
+    version: "v0.57.0",
+    date: "2026-08-25",
     changes: [
       { kind: "Fixed", text: "THE TICKER WAS FAILING WCAG 1.4.3 ON ITS OWN GROUND, AND ITS DOCUMENTATION ASSERTED IT WAS FINE. White on primaryScale/500 (#0373df) measures 4.64:1 \u2014 it clears the 4.5:1 floor by four hundredths \u2014 and the moment secondary text is dimmed it fails outright: 90% is 4.06:1, 80% is 3.52:1. The bar shipped an 80% description line on that ground while design.md and the docs page both claimed 6.3:1, a number that was never computed. The ground is primaryScale/600 now, where the primary line is 6.36:1 and 80% is 4.66:1 \u2014 which is what makes a dimmed second line possible at all. The plinth moved to /800 with it, holding the tonal step at 1.77:1 against the 1.85:1 the two had before, so the shape is unchanged" },
       { kind: "Fixed", text: "PAUSE RESET THE SCROLL INSTEAD OF HOLDING IT. `canScroll` (a fact about the content) and `isPlaying` (the citizen\u2019s choice) were one flag, so pressing pause removed the `animation` property outright, unmounted the duplicated copy that makes the loop seamless, and re-sliced the first \u2014 the track snapped to translateY(0) and resumed from the top. A pause that loses your place is not a pause, it is a reset with the wrong label. The DOM and the animation are identical either side of the press now and only `animation-play-state` moves" },

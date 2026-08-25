@@ -37,8 +37,9 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * 72px full-bleed strip, one message at a time, stepped with prev/next.
  * `vertical` is the **panel**: the same items stacked as rows scrolling upward
  * under a header. Several headlines are legible at once, and there is no
- * stepping because the list moves on its own. In the panel `title` becomes the
- * bold lead-in before the colon and `description` the sentence after it.
+ * stepping because the list moves on its own. Both shapes lay a row out the
+ * same way: `title` is the notice, `description` and `date` the quieter line
+ * beneath it.
  *
  * **The panel stops on hover and on focus, not only on the button.** A moving
  * row is a moving tap target — without it the line somebody is reading walks
@@ -66,7 +67,7 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * **Each row is a title over a subtitle** — the structure the live site uses and
  * the one the bar already had. The notice is the title; its kind and date are
  * the subtitle. A subtitle is allowed to repeat, which is why the kind can be
- * shown here when it could not be as a bold lead-in on the same line.
+ * shown at all — as a bold lead-in on the notice's own line it could not.
  *
  * **Each row is marked, and the marker hangs.** A small dot in its own grid
  * column, with wrapped lines returning to the text column — so the dot is the
@@ -115,10 +116,10 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * the bar. It is a bespoke mark rather than an `<Icon>` because it animates in
  * parts and answers to the strip's state; a font glyph can do neither.
  *
- * **A panel row with no `description` renders the title as the row**, in normal
- * weight with no colon. The bold lead-in only exists when there is a sentence
- * for it to lead into — and real notice lists repeat their categories, so a
- * lead-in mapped from one draws the same bold word down the whole rail.
+ * **A row with no `description` and no `date` is its title alone** — the
+ * subtitle is not rendered, rather than rendered empty. There is no colon and
+ * no bold lead-in anywhere: that was the shape until 2026-08-25, and it drew
+ * the same bold word down the whole rail wherever the categories repeat.
  *
  * **The action slot needs `inverseOutlined`.** The strip is a solid brand
  * surface, so a normal outlined button draws its border in a blue nobody can
@@ -152,7 +153,7 @@ const ITEMS = [
 ];
 
 /** Enough notices to overflow a four-row window, so the panel has something to
- *  scroll past. In the panel the title is the bold lead-in before the colon. */
+ *  scroll past. */
 const LONG_LIST = [
   ...ITEMS,
   { id: "vacancy", title: "Vacancies", description: "Financial Adviser at DAF and BJRNF — application window extended.", href: "#vacancy" },
@@ -274,7 +275,7 @@ export const VerticalStatic: Story = {
  * Rows with **no `description`** — the shape the DoSJE website actually uses,
  * because its notice categories repeat ("Documents" seven times out of eight)
  * and a lead-in mapped from one would draw the same bold word down the rail.
- * Each row is the notice, in normal weight, with no dangling colon.
+ * Each row is the notice alone, with no subtitle rendered beneath it.
  */
 export const VerticalTitlesOnly: Story = {
   args: {
