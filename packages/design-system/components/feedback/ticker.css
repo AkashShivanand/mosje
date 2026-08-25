@@ -1,0 +1,329 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+/* ── Ticker ───────────────────────────────────────────────────────────────
+   The full-bleed announcement strip that runs under the masthead on public
+   pages — "Latest Updates" on the DoSJE website.
+
+   SOURCE OF TRUTH: Figma "MoSJE Handoff" › Latest Updates (8137:48790),
+   recreated as SAMAVESH › Ticker. Everything below binds to a token; the
+   Figma variables map straight across:
+
+     Primary/500  #0373df → --sa-color-action-primary-default   (the bar)
+     Primary/700  #004b96 → --sa-color-action-primary-hover     (the plinth)
+     Text/Light   #ffffff → --sa-text-neutral-inverse
+     radius-md    8       → --sa-shape-8
+     spacing sm/lg/2xl    → --sa-inline-8 / -16 / -24
+     Title/title-3        → --sa-type-title-3-*   (the headline line)
+     Body/body-3          → --sa-type-body-3-*    (the sentence under it)
+     Label/label-1        → the DS Button's own type ramp
+
+   THREE DELIBERATE DIVERGENCES FROM THE FIGMA FRAME, each recorded because a
+   later reader will otherwise "fix" them back:
+
+   1. THE PLINTH HUGS ITS LABEL; it is not a 265px rectangle. In the frame the
+      darker block is an absolutely-placed 265×72 rect that happens to end just
+      past "Latest Updates" in English. It does not in Hindi — "नवीनतम अपडेट"
+      and every other scheduled language set a different width — and it does
+      not once a citizen raises their browser font size. A fixed rectangle
+      would clip the label or trail empty colour past it. So the plinth IS the
+      heading's own background and ends where the heading ends.
+
+   2. THE PAUSE CONTROL IS ADDED. The frame draws prev and next only. This
+      strip auto-advances, so WCAG 2.2.2 (Pause, Stop, Hide) requires a
+      mechanism to stop it, and there is no way to satisfy that with two
+      stepping buttons. Per the estate's standards-precedence rule a published
+      set of values is a FLOOR, not a ceiling: we add what is missing rather
+      than ship the frame as drawn. The control is first in the row, so it is
+      the first thing a keyboard user reaches after the message.
+
+   3. THE NAV GAP IS 8px, NOT 16px. The frame spaces two arrows; this row runs
+      three controls because of (2), and at 16px the extra button costs another
+      56px of a row that already had to be taught to compress. Eight keeps the
+      cluster inside the footprint the frame budgeted for it.
+
+   4. THE TILE BORDER IS 1px, NOT 0.5px. Half a pixel is not a colour any
+      display renders predictably — it dithers to a lighter grey at 1x and
+      disappears entirely against the white tile at some zoom levels. One
+      opaque pixel of the same token is the honest version of the same line. */
+
+@layer components {
+  /* Wrapped in `@layer components` so Tailwind's utilities can override it. Unlayered, this
+     file sits ABOVE the utilities layer and a plain class selector here beats any utility a
+     consumer writes — the defect that made `hidden md:flex` a no-op on seven portal shells. */
+  .sa-ticker {
+    --sa-ticker-bar: var(--sa-color-action-primary-default);
+    --sa-ticker-plinth: var(--sa-color-action-primary-hover);
+    --sa-ticker-ink: var(--sa-text-neutral-inverse);
+    /* The tile is a fixed 32px square in the frame. It is chrome, not type, so
+       it does not scale with the font — but it is expressed in rem so that a
+       root-size change (the AccessibilityBar's A+ / A-) still moves it. */
+    --sa-ticker-mark: 2rem;
+    /* 40px: 24px glyph + 8px of padding either side. Comfortably past the
+       24×24 floor of WCAG 2.5.8, and the same square the nav arrows use. */
+    --sa-ticker-control: 2.5rem;
+
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    justify-content: center;
+    background-color: var(--sa-ticker-bar);
+    color: var(--sa-ticker-ink);
+    box-shadow: var(--sa-elevation-raised);
+  }
+
+  .sa-ticker__container {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    min-width: 0;
+    max-width: var(--sa-container-page);
+    padding-inline: var(--sa-padding-24);
+  }
+
+  /* ── Heading — the plinth ────────────────────────────────────────────── */
+
+  .sa-ticker__heading {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    align-self: stretch;
+    padding-inline: var(--sa-padding-16);
+    padding-block: var(--sa-padding-16);
+  }
+
+  /* The darker block. It is a pseudo-element rather than a sibling rect so it
+     cannot drift out of step with the label it sits behind, and it bleeds LEFT
+     to the edge of the viewport — the container's own margin is bar-coloured
+     in the frame, and a plinth that stops at the content column reads as a
+     floating chip rather than a masthead band. */
+  .sa-ticker__heading::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline: calc(-1 * var(--sa-padding-24)) 0;
+    z-index: -1;
+    background-color: var(--sa-ticker-plinth);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  /* On a viewport wider than the content column the margin is not 24px, it is
+     however much is left over — so the plinth is pushed out with a very large
+     negative start inset and clipped by the bar's own overflow. */
+  @media (min-width: 1440px) {
+    .sa-ticker__heading::before {
+      inset-inline-start: -100vw;
+    }
+  }
+
+  .sa-ticker__mark {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    inline-size: var(--sa-ticker-mark);
+    block-size: var(--sa-ticker-mark);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-text-neutral-inverse);
+    /* The glyph is the only thing on the strip painted in the bar's own blue —
+       it sits on the white tile, where the ink token would vanish. */
+    color: var(--sa-ticker-bar);
+  }
+
+  .sa-ticker__mark > img,
+  .sa-ticker__mark > svg {
+    inline-size: 1.5rem;
+    block-size: 1.5rem;
+    object-fit: contain;
+  }
+
+  .sa-ticker__label {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    letter-spacing: var(--sa-type-title-tracking);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ── Body — the message, the controls, the way out ───────────────────── */
+
+  .sa-ticker__body {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--sa-inline-24);
+    min-width: 0;
+    padding-inline-start: var(--sa-padding-24);
+    padding-block: var(--sa-padding-16);
+  }
+
+  .sa-ticker__viewport {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    min-width: 0;
+  }
+
+  /* ONE ITEM IS IN THE DOM AT A TIME. The frame stacks every slide absolutely
+     and fades the inactive ones to opacity 0, which is right on a canvas and
+     wrong in a browser: an opacity-0 link is still in the tab order and still
+     read out, so a citizen tabbing through the strip would walk eight invisible
+     links. Rendering only the active item costs the exit animation — the entry
+     animation below carries the movement on its own — and buys a tab order
+     that matches what is on screen. */
+  .sa-ticker__item {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: var(--sa-stack-2);
+    color: inherit;
+    text-decoration: none;
+    animation: sa-ticker-enter 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes sa-ticker-enter {
+    from {
+      opacity: 0;
+      transform: translateX(2rem);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .sa-ticker__title {
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    letter-spacing: var(--sa-type-title-tracking);
+    font-weight: 500;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sa-ticker__description {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    letter-spacing: var(--sa-type-body-tracking);
+    /* The frame's 80% opacity, kept because it is doing real work: it separates
+       the sentence from the headline without introducing a second ink. White at
+       80% on this blue measures 6.3:1 — past the 4.5:1 of WCAG 1.4.3. */
+    opacity: 0.8;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .sa-ticker__more {
+    text-decoration: underline;
+    text-underline-offset: 0.125em;
+  }
+
+  .sa-ticker__item:hover .sa-ticker__title,
+  .sa-ticker__item:focus-visible .sa-ticker__title {
+    text-decoration: underline;
+  }
+
+  /* ── Controls ────────────────────────────────────────────────────────── */
+
+  .sa-ticker__nav {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  .sa-ticker__control {
+    display: grid;
+    place-items: center;
+    inline-size: var(--sa-ticker-control);
+    block-size: var(--sa-ticker-control);
+    padding: 0;
+    border: 0;
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  /* A white wash rather than a second colour: the strip has exactly one ink,
+     and every state layer on a solid brand surface in this estate is a
+     transparency of it — the same two steps Button's `inverseOutlined` uses. */
+  .sa-ticker__control:hover {
+    background-color: var(--sa-color-transparent-white-16);
+  }
+
+  .sa-ticker__control:active {
+    background-color: var(--sa-color-transparent-white-24);
+  }
+
+  /* THE FOCUS RING IS INVERSE INK, NOT --sa-focus-ring. The ring token is
+     #0373DF, which is this bar's own fill — it measures 1:1 against it and
+     fails the 3:1 floor of WCAG 1.4.11 / 2.4.11 completely. The same defect
+     was found and fixed on AccessibilityBar; do not "restore the token" here. */
+  .sa-ticker__control:focus-visible,
+  .sa-ticker__item:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-8);
+  }
+
+  .sa-ticker__action {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  /* ── Reflow ──────────────────────────────────────────────────────────────
+     The row could not compress: at full complement it fixed itself at ~266px,
+     which pushed a 390px viewport to 481px of scrollWidth — a WCAG 1.4.10
+     failure on a public government page, at every mobile visit. Things drop in
+     order of how much they cost against what they do.
+
+     PAUSE STAYS AT EVERY WIDTH. Dropping it would trade a reflow failure for a
+     2.2.2 failure, which is not a trade. Prev/next go first: the strip cycles
+     on its own and the same items are on the linked page. The action button
+     goes next, being the single widest item in the row. The label text goes
+     last — the section's accessible name already carries it, so a screen
+     reader loses nothing. */
+  @media (max-width: 639px) {
+    .sa-ticker__label,
+    .sa-ticker__step {
+      display: none;
+    }
+
+    .sa-ticker__heading {
+      padding-inline: var(--sa-padding-12);
+    }
+
+    .sa-ticker__body {
+      gap: var(--sa-inline-8);
+      padding-inline-start: var(--sa-padding-12);
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .sa-ticker__action {
+      display: none;
+    }
+  }
+
+  /* ── Reduced motion ──────────────────────────────────────────────────────
+     The entry animation goes. The auto-advance is stopped in the component
+     itself, not here, because a CSS media query cannot pause a JS interval —
+     and an interval that keeps firing while the animation is suppressed would
+     still snap the message from one item to the next every four seconds. */
+  @media (prefers-reduced-motion: reduce) {
+    .sa-ticker__item {
+      animation: none;
+    }
+  }
+}

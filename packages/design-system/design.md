@@ -1588,6 +1588,27 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - **The title is a real heading** so the CTA appears in the document outline. Pass `as` so the page's outline does not skip a level. The panel is **not** a landmark and must not be given a `region` role — it is a paragraph and a button, and naming it adds a stop to the landmark list that leads nowhere.
 - **Keep the sentence short.** Past ~60ch it is a paragraph, and a paragraph beside a button reads as an article with a button stuck on it.
 
+#### Ticker
+**Purpose**: The full-bleed announcement strip that runs under the masthead on public pages — "Latest Updates" on the DoSJE website. A named plinth, one message at a time, and the controls to move through them.
+**Source of truth**: Figma **SAMAVESH › Ticker**, recreated from *MoSJE Handoff › Latest Updates* (`8137:48790`).
+**Key props**: `items` (`{ id?, title, description?, href, linkLabel? }[]`) · `label` (default `"Latest Updates"`) · `icon` (slot, defaults to Material Symbols `campaign`) · `action` (slot) · `interval` (default 5000) · `autoplay` · `linkAs`
+**Structural, not content-bound**: every string, href and route arrives as a prop, so the website's notices and a portal's scheme alerts are the same component with different data. An **empty `items` list renders nothing at all** — no plinth, no empty blue band; a strip with no message is chrome with nothing to say, and leaving the band in place pushes the page down for no reason.
+**Colour**: the bar is `--sa-color-action-primary-default` and the plinth `--sa-color-action-primary-hover` — the two tokens that resolve to the frame's `Primary/500` and `Primary/700` exactly *and* answer to `data-brand`. The single ink is `--sa-text-neutral-inverse`; hover and pressed are transparencies of it, never a second colour.
+**Rules**:
+- **A strip that moves on its own must be stoppable.** The pause control is not decoration and not optional — WCAG 2.2.2 requires a mechanism to stop motion that starts automatically and runs past five seconds, and prev/next do not satisfy it. It is the one control that survives every breakpoint. **Never hide it to win space.**
+- **Reduced motion means it does not advance**, not that it advances without a transition. Suppressing only the animation leaves the message replacing itself every few seconds, which is the part that hurts. The timer never starts under `prefers-reduced-motion`; the citizen steps through with the arrows.
+- **The live region is `off` while playing, `polite` once paused.** An auto-rotating region set to `polite` interrupts a screen-reader user every interval with text they did not ask for. Pausing is the act that signals intent, so pausing is what turns announcements on — the APG carousel behaviour.
+- **One item is in the DOM at a time.** The frame stacks every slide absolutely and fades the inactive ones to `opacity: 0`, which is right on a canvas and wrong in a browser: an invisible link is still in the tab order and still read out, so a citizen would tab through eight links they cannot see. Rendering only the active item costs the exit animation — the entry animation carries the movement alone — and buys a tab order that matches the screen.
+- **The action slot takes `inverseOutlined`.** The strip is a solid brand surface; a normal `outlined` button draws its border in a blue that is invisible against it.
+- **The focus ring is inverse ink, not `--sa-focus-ring`.** The ring token is `#0373DF` — this bar's own fill — measuring 1:1 against it and failing the 3:1 floor of WCAG 1.4.11 / 2.4.11 outright. The identical defect was found and fixed on `AccessibilityBar`; do not "restore the token" here.
+**Reflow (WCAG 1.4.10)**: the control row cannot compress, so things drop in order of cost against value — prev/next below 640px, the action button below 1024px, the plinth's label text below 640px (the section's accessible name already carries it). **Pause never drops**: trading a reflow failure for a 2.2.2 failure is not a trade.
+**Four deliberate divergences from the Figma frame**, recorded rather than hidden:
+- **The plinth hugs its label**; it is not the frame's absolutely-placed 265x72 rectangle. That width ends just past "Latest Updates" *in English* — not in Hindi, and not once a citizen raises their browser font size. A fixed rectangle would clip the label or trail empty colour past it, so the plinth is the heading's own background.
+- **The pause control is added.** See the rule above; per `.claude/rules/standards-precedence.md` a published set of values is a floor, not a ceiling, so what is missing gets added rather than the frame shipped as drawn.
+- **The nav gap is 8px, not 16px.** The frame spaces two arrows; this row runs three because of the pause control, and 16px would cost another 56px of a row that already had to be taught to compress.
+- **The tile border is 1px, not 0.5px.** Half a pixel is not a colour any display renders predictably — it dithers lighter at 1x and disappears against the white tile at some zoom levels.
+**When NOT to reach for it**: not for a statutory or compliance notice — that is `Alert`, which does not move. Not for a single non-recurring announcement — that is `ActionBanner`. Not inside a portal workflow, where a moving strip competes with the task.
+
 #### Modal
 **Purpose**: Blocking overlay for confirmations, destructive prompts, and detail views.  
 **Props**: `open`, `onClose`, `title`, `size` (`sm` | `md` | `lg`)  

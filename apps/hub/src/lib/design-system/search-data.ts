@@ -473,6 +473,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     iconName: "campaign",
   },
   {
+    title: "Ticker",
+    section: "Feedback & Status",
+    href: "/design-system/components/feedback/ticker",
+    keywords: "ticker latest updates marquee announcement strip carousel rotating news notices scrolling pause autoplay",
+    description: "Full-bleed announcement strip under the masthead — one message at a time, pausable.",
+    type: "component",
+    iconName: "campaign",
+  },
+  {
     title: "Alert",
     section: "Feedback & Status",
     href: "/design-system/components/feedback/alert",
