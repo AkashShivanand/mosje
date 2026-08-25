@@ -19,6 +19,13 @@ Sibling documents: `parity-ledger.md` (generated — what is designed vs built),
 
 **Deferred to:** the next Button component rework. Agreed 2026-08-25.
 
+**Corroborated independently.** The Button audit that landed in PR #188 reached the
+same finding from the other direction — see `components/button.md`, gap **7**
+("`inverse` / `inverseOutlined` absent from Figma entirely") and its note that the
+Tier-3 `inverse` branch has to be bound first. That document is now the authority on
+what Button needs; this entry exists to record what is *working around* the gap
+today, so whoever closes it there knows to come back here.
+
 **What is wrong.** `packages/design-system/components/actions/button.css` ships six
 appearances — `filled · outlined · text · tonal · inverse · inverseOutlined`. The Figma
 `Button` component set (`609:283111`, Buttons page) carries only four:
@@ -54,4 +61,4 @@ description and in `design.md`.
    likely places.
 
 **Where it is referenced:** `packages/design-system/design.md` (Ticker § Known gap),
-the SAMAVESH `Ticker` component description, PR #187.
+the SAMAVESH `Ticker` component description, `components/button.md` gap 7, PR #187.
