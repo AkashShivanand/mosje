@@ -48,6 +48,39 @@ multiplied by that, and every regression is too. Move in verifiable steps.
 
 ---
 
+## What depends on you — read before Stage 1
+
+`Chatbot` consumes this component and **its Figma-parity gate asserts YOUR files.**
+Two assertions on chatbot node `55828:766` read `button.css` and
+`component-matrix.json`. If `npm run check:figma-docs` fails naming the chatbot's
+*FOOTER* claim while you are editing Button, that is this dependency firing — not a
+chatbot regression, and not something to route around.
+
+Three things must survive, or be updated in the same change:
+
+1. **`.ds-btn--neutral` and `.ds-btn--text` class names.** Asserted directly in
+   `e2e/chatbot/end-chat.spec.ts:46-48`.
+2. **Neutral tertiary ink at `neutralScale/800`,** not the matrix default 700. The
+   neutral-only override in `component-matrix.json` exists for a specific reason:
+   on the neutral ramp 700 is `text/muted`, the exact ink of the disclaimer the
+   chatbot's reset sits beside, so 700 makes the control the colour of the
+   paragraph next to it. Do not "tidy" the override away.
+3. **The three Figma `Size=Small, Type=Neutral, Sub-type=Text` instances** in the
+   Chatbot master's panel states. §11 already forbids forking the set's key; this
+   is the concrete thing that breaks if it happens.
+
+Then tell the chatbot side what changed, because two of your stages are things it
+wants: `min-height` (its reset will start growing at 200% text — the footer row and
+content-sized panel should absorb it, but it needs re-verifying) and a `loading`
+state (its send control has a real use for one).
+
+`Chatbot` uses **no** `tonal` and **no** `inverseOutlined`, and its control is a
+real `<button>` — so deleting those appearances and fixing the disabled-link defect
+cannot affect it.
+
+Full picture from the other side: `docs/design-system/components/chatbot.md`,
+section *Upstream dependency — Button*.
+
 ## Work, in order. Do not reorder — later steps depend on earlier ones.
 
 ### Stage 1 — stop the bleeding (three defects that ship today)
