@@ -1941,12 +1941,12 @@ export const tokens = {
       "tertiary": {
         "default": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "#3a3d41",
+          "text": "#1e2124",
           "border": "rgba(0, 0, 0, 0)"
         },
         "hover": {
           "bg": "#eef0f3",
-          "text": "#3a3d41",
+          "text": "#1e2124",
           "border": "rgba(0, 0, 0, 0)"
         },
         "active": {
