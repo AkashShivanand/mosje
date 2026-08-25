@@ -30,6 +30,14 @@ export const FIGMA_NODES = {
 
   // ── Components ──
   buttons: "2141:296705",
+  buttonDoc: "56160:1773", // "Button — Documentation" on the Buttons page, authored
+  //                          2026-08-25 to the house style. It replaced a 1400px template
+  //                          with 16 text nodes, ZERO on a published style, describing a
+  //                          component that does not exist ("Primary · Secondary · Outlined
+  //                          · Ghost"). The set has Type x Sub-type, not those words.
+  buttonRecord: "56164:1805", // "Button — Component record" — the maintainer frame. The
+  //                          FIRST one in the library; figma-code-sync.md records that no
+  //                          page had one, which is why open work kept being rediscovered.
   inputs: "2141:296720",
   card: "2141:296707",
   badges: "2141:296703",

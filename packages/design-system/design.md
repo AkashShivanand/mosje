@@ -1299,6 +1299,19 @@ All components are exported from `@mosje/design-system`. Import from the package
 
 **Press feedback** is built in: every enabled button scales to `0.97` on `:active`, suppressed under `prefers-reduced-motion`. Colour alone tells you the button noticed; the give tells you it is listening. Do not re-add this per app, and do not increase it — 0.97 reads as a press, 0.9 reads as a toy.
 
+**KNOWN DEFECTS, audited 2026-08-25 — do not build on these.** Full evidence in `docs/design-system/components/button-audit.md`; the brief that closes them is `button-cleanup-prompt.md`; the maintainer frame is `Button — Component record` in Figma.
+
+- **`disabled` is inert on a link-button.** `<Button href disabled>` emits `<a disabled>`, which is not a valid attribute. Measured: `pointer-events: auto`, `opacity: 1`, `cursor: pointer`, no `aria-disabled`, still in the tab order. **Do not ship a disabled link-button.**
+- **A fixed `height` clips the label at 200% text (WCAG 1.4.4).** Sizes set `height: 32/40/48px`, not `min-height`. Measured at 32px text: the box stays 40px while the content needs 41.
+- **Five WCAG 1.4.11 boundary failures**, against a 3:1 requirement: tonal primary 1.42, success 1.52, danger 1.21, neutral 1.35; neutral outlined 2.15. Every tonal button is invisible as a control until you read its label. Context before anyone spends effort: **tonal has 2 consumers in 494 buttons**, `inverseOutlined` has 1.
+- **`inverseOutlined` renders identically for all four variants** — white text, white border — so `danger` silently loses its signal.
+- **There is no `loading` state.** Pass `aria-busy` and `disabled` yourself.
+- **Text contrast is clean** on all 16 variant×appearance pairs, 4.64 – 16.18. The failures above are all non-text.
+
+**Target size, stated correctly because the docs got it wrong three times:** 32 / 40 / 48px all clear the **24×24** WCAG 2.2 §2.5.8 Level AA minimum. **44×44 is §2.5.5 (Enhanced), Level AAA** — only `lg` reaches it. UX4G 3.0 recommends 44×44 *on mobile* plus 8px between adjacent targets; that is a touch-context recommendation, not a WCAG failure on a pointer surface.
+
+**Figma structure, counted not sampled:** 720 variants (`3 Size × 4 Type × 4 Sub-type × 5 State × 3 Icon`). **All 1,440 padding bindings sit on the Type collection** (`Font Size/*`), zero on Space. **900 of 1,956 colour bindings reach Tier-1 `ref/*`**; only the Neutral variants bind Tier 3. Radius is the one clean axis: 720/720 on `shape/8`. `inverse`/`inverseOutlined` do not exist in Figma at all.
+
 #### Icon
 **Purpose**: **Material Symbols Rounded** — the official SAMAVESH icon system.  
 **Rendering (intended approach)**: icons render as an **icon font (text glyph)** via ligatures — i.e. the glyph is a text character in the `Material Symbols Rounded` family, **not** an inline `<svg>` and not a per-icon component. This is the house standard used everywhere applicable (e.g. the navbar mega-menu chevron).  
