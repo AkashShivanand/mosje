@@ -191,6 +191,15 @@ export default function TickerPage(): React.JSX.Element {
                       <code>:hover</code> sticks after a tap.
                     </li>
                     <li>
+                      <strong style={strong}>Each row is marked, and the marker hangs.</strong> A
+                      small 48%-ink dot sits in its own grid column, so wrapped lines return to the
+                      text column and the dot is the only thing at the outer edge. Without it every
+                      line starts at the same x and only a vertical gap — 32px between rows against
+                      20px inside a wrapped title — says whether a line begins a notice or continues
+                      one, which is thin enough to misread while the list is moving. The hanging
+                      indent is the point, not the dot. The bar has none: one message, no list.
+                    </li>
+                    <li>
                       <strong style={strong}>Rows do not underline on hover.</strong> WCAG 1.4.1
                       asks that a link be distinguishable from the text <em>around</em> it, and in a
                       list where every row is a link there is no surrounding text to confuse it

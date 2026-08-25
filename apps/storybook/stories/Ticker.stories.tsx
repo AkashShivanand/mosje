@@ -68,6 +68,12 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * the subtitle. A subtitle is allowed to repeat, which is why the kind can be
  * shown here when it could not be as a bold lead-in on the same line.
  *
+ * **Each row is marked, and the marker hangs.** A small dot in its own grid
+ * column, with wrapped lines returning to the text column — so the dot is the
+ * only thing at the outer edge and item starts are pickable out of the left
+ * margin without reading a word. It matters because the list *moves*: a reader
+ * re-acquires it constantly. The bar has none; one message, no list to scan.
+ *
  * **Rows do not underline on hover.** WCAG 1.4.1 asks that a link be
  * distinguishable from the text *around* it; in a list where every row is a
  * link there is no surrounding text. The wash and the cursor carry it.

@@ -435,15 +435,60 @@
      two notices has to beat the gap between the two lines of one: 16px of
      padding either side puts 32px between rows against the 20px inside them.
      A hairline would have done the same job by drawing more furniture. */
+  /* THE MARKER EARNS ITS PLACE BECAUSE THE TITLES WRAP AND THE LIST MOVES.
+     Without it every line in the rail starts at the same x, so nothing but a
+     vertical gap says whether a line begins a notice or continues the one
+     above — and the gap is 32px against the 20px inside a wrapped title, a
+     ratio of 1.6 that is thin enough to misread while the list is scrolling
+     past. A reader here is re-acquiring the list constantly, items arriving
+     clipped at one edge and leaving at the other; a fixed column of dots is a
+     stable anchor that survives the movement.
+
+     THE HANGING INDENT IS THE POINT, NOT THE DOT. A marker with the text
+     wrapping back underneath it would be decoration and nothing more. Set in
+     its own grid column, the dot is the ONLY thing at the outer edge, so item
+     starts are the one thing the eye can pick out of the left margin without
+     reading a word. The grid does this with no extra DOM: dot in column one,
+     title and subtitle stacked in column two.
+
+     Not on the bar, which shows one message and has no list to scan. */
   .sa-ticker__rowlink {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-2);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sa-stack-2) var(--sa-inline-8);
     padding-inline: var(--sa-padding-16);
     padding-block: var(--sa-padding-16);
     color: inherit;
     text-decoration: none;
     transition: background-color 150ms ease;
+  }
+
+  .sa-ticker__rowlink::before {
+    content: "";
+    grid-column: 1;
+    grid-row: 1;
+    inline-size: 0.3125rem;
+    block-size: 0.3125rem;
+    /* Optically centred on the FIRST line, not the row: the row is two or three
+       lines tall and a dot halfway down it would point at nothing. */
+    margin-block-start: calc((var(--sa-type-title-3-lh) - 0.3125rem) / 2);
+    border-radius: var(--sa-shape-full);
+    /* The top of the transparency ramp, and deliberately not full ink: at 100%
+       six dots read as a column of holes punched down the rail and compete with
+       the words they exist to index. The dot carries no meaning of its own —
+       the list semantics do — so it has no 3:1 floor to meet; it needs only to
+       be findable when looked for and quiet when not. */
+    background-color: var(--sa-color-transparent-white-48);
+  }
+
+  .sa-ticker__rowtitle {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .sa-ticker__rowmeta {
+    grid-column: 2;
+    grid-row: 2;
   }
 
   /* THE WHOLE ROW IS THE TARGET, so the whole row lights — and that is the ONLY
