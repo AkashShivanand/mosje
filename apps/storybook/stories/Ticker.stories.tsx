@@ -86,6 +86,29 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * `/500` is 4.64:1 and any dimming fails (80% is 3.52:1). On `/600` the title
  * is 6.36:1 and the subtitle 4.66:1.
  *
+ * **`height`**: `auto` stands at the `rows` window; `fill` takes the height of
+ * the row it shares. A prop rather than something inferred — `block-size: 100%`
+ * fills almost everywhere in practice, because a flex parent already has a
+ * resolved height by the time the child asks.
+ *
+ * **The loop is seamless because one animated wrapper holds two copies** and
+ * travels exactly −50% — one list, exactly where the second copy already sits.
+ * Each copy used to animate itself by −50% of *its own* height, which moved the
+ * list half a length per cycle and snapped back: one visible jump per loop.
+ *
+ * **`fill` needs a parent whose height does not come from the panel** — a grid
+ * item is sized by its own content, so a long list grows the row and the panel
+ * fills what it just inflated. Take the rail out of flow.
+ *
+ * **Whether it scrolls is measured, not counted.** One copy of the list against
+ * the viewport. Give the panel a tall enough row and the whole list fits, at
+ * which point a marquee would be moving content already entirely on screen — so
+ * it does not run, and the controls that govern it are not offered.
+ *
+ * **`date` is optional and separate from `description`.** The component owns the
+ * separator, so a notice with no date does not trail a dangling middot, and the
+ * date renders as a real `<time>`.
+ *
  * **The mark is `<TickerMark>`, a bespoke animated SVG** — a megaphone whose
  * arcs pulse while the strip moves and stop when it is paused. It replaced a
  * white rounded tile, which on the navy plinth read as a sticker pasted onto
@@ -201,6 +224,42 @@ export const Vertical: Story = {
  */
 export const VerticalSixRows: Story = {
   args: { orientation: "vertical", items: LONG_LIST, rows: 6, interval: 3000 },
+};
+
+/**
+ * `height="fill"` inside a 560px row, beside a block standing in for the content
+ * it would share the row with. The panel takes the row rather than its `rows`
+ * window — and because that window is now tall enough for the whole list, it
+ * stops scrolling and offers no pause control, which is the point: a marquee
+ * moving content that is already on screen is motion for its own sake.
+ */
+export const VerticalFillsItsRow: Story = {
+  args: { orientation: "vertical", items: LONG_LIST, height: "fill", rows: 3 },
+  render: (args) => (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "var(--sa-inline-24)", height: 560 }}>
+      <div
+        style={{
+          borderRadius: "var(--sa-shape-12)",
+          background: "var(--sa-bg-neutral-subtle)",
+          display: "grid",
+          placeItems: "center",
+          color: "var(--sa-text-neutral-subtle)",
+        }}
+      >
+        the content it shares the row with
+      </div>
+      <Ticker {...args} />
+    </div>
+  ),
+};
+
+/** A notice with no date — the subtitle is the kind alone, and there is no
+ *  dangling middot after it. */
+export const VerticalWithoutDates: Story = {
+  args: {
+    orientation: "vertical",
+    items: LONG_LIST.map(({ id, title, href }) => ({ id, title, description: "Notice", href })),
+  },
 };
 
 /**

@@ -80,7 +80,7 @@ test.describe("Latest Updates — readability", () => {
   test("is a list to a screen reader, and is not a live region", async ({ page }) => {
     // A list is read at the reader's own pace. A live region would interrupt
     // them every time the marquee moved.
-    await expect(page.locator(`${PANEL} ul.sa-ticker__track`).first()).toBeVisible();
+    await expect(page.locator(`${PANEL} ul.sa-ticker__list`).first()).toBeVisible();
     await expect(page.locator(`${PANEL} [aria-live]`)).toHaveCount(0);
   });
 });
@@ -99,7 +99,7 @@ test.describe("Latest Updates — on a phone", () => {
 
     await expect(panel.locator(".sa-ticker__viewport")).not.toHaveAttribute("data-scroll", "");
     await expect(panel.locator(".sa-ticker__control")).toHaveCount(0);
-    await expect(panel.locator(".sa-ticker__track")).toHaveCount(1);
+    await expect(panel.locator(".sa-ticker__list")).toHaveCount(1);
 
     // The way out survives — it is how the remaining notices are reached.
     await expect(panel.locator(".sa-ticker__action")).toBeVisible();

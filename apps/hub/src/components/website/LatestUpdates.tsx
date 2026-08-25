@@ -1,89 +1,85 @@
-// A client component because `linkAs` takes the Link COMPONENT, and a function
-// cannot cross the server/client boundary as a prop. The data below is static,
-// so nothing is lost by rendering this on the client.
-"use client";
+import { LatestUpdatesPanel } from "@/components/website/LatestUpdatesPanel";
+import { getDocuments, getTenders, getVacancies } from "@/lib/website/content";
+import type { FileRecord } from "@/types/website/content";
+import type { TickerItem } from "@mosje/design-system";
 
-import Link from "next/link";
-import { Ticker, buttonClasses } from "@mosje/design-system";
-import type { UpdateItem } from "@/types/website";
+/**
+ * The website's Latest Updates panel.
+ *
+ * ── IT READS THE DEPARTMENT'S OWN RECORDS ─────────────────────────────────
+ * It used to be eight notices typed into this file. The ingested content has
+ * 1,624 documents, 137 vacancies and 305 tenders, all with real dates — so the
+ * list was both stale and, more to the point, SHORTER THAN THE PANEL. A panel
+ * taller than its list has nothing to scroll past, so the marquee stopped
+ * running and the pause control disappeared with it. Feeding it the real feed
+ * fixes the symptom by removing the cause.
+ *
+ * ── WHY THIS IS A SERVER COMPONENT ────────────────────────────────────────
+ * Because the records must NOT reach the browser. Importing the content module
+ * into a client component bundles every one of those 2,000+ entries into the
+ * page. The selection happens here and only the chosen handful crosses over;
+ * `LatestUpdatesPanel` is the client half, and exists solely so `next/link` can
+ * be passed as `linkAs`.
+ *
+ * ── WHAT COUNTS AS AN UPDATE ──────────────────────────────────────────────
+ * Notices, circulars, vacancies and tenders — the four kinds a citizen would
+ * call news. Deliberately NOT the whole document library: "Advices" alone is 734
+ * records and "Resources" 233, and neither is an announcement. Everything is
+ * sorted by date, newest first, and a record without one is dropped rather than
+ * floated to the top by an empty string.
+ */
 
-const UPDATES: UpdateItem[] = [
-  { category: "Notice", date: "2026-08-18", title: "Acceptance of Transgender Identity Certificate/Card for Change Name and Gender in EPFO Records.", href: "/website/notices" },
-  { category: "Vacancy", date: "2026-08-14", title: "Extension of Application Submission Date for Financial Adviser (FA) Post at DAF and BJRNF", href: "/website/vacancies" },
-  { category: "Vacancy", date: "2026-08-12", title: "Extension of Application Submission Date for Financial Adviser (FA) Post at DAIC", href: "/website/vacancies" },
-  { category: "Annual Report", date: "2026-08-05", title: "Annual Report 2025-26 (English)", href: "/website/notices" },
-  { category: "Annual Report", date: "2026-08-05", title: "Annual Report 2025-26 (Hindi)", href: "/website/notices" },
-  { category: "Campaign", date: "2026-07-29", title: "Fighting Against The Stigma & Stereotype Attached To Recovered Drug Dependents", href: "/website/notices" },
-  { category: "Result", date: "2026-07-22", title: "Result of National Overseas Scholarship (NOS) for SC etc. candidates for the Selection Year 2025-26 (2nd Round)", href: "/website/notices" },
-  { category: "Result", date: "2026-07-11", title: "Result of NOS for the Selection Year 2023-24 (1st list)", href: "/website/notices" },
+const COUNT = 24;
+
+/** The four kinds that are announcements, and what to call each in the rail. */
+const KINDS: Array<{ records: () => FileRecord[]; only?: string[]; label: (r: FileRecord) => string }> = [
+  {
+    records: getDocuments,
+    only: ["Notice", "Circulars & Notifications"],
+    label: (r) => (r.category === "Notice" ? "Notice" : "Circular"),
+  },
+  { records: getVacancies, label: () => "Vacancy" },
+  { records: getTenders, label: () => "Tender" },
 ];
 
 /**
- * "Notice · 18 Aug 2026" — the subtitle line.
- *
- * The date is formatted with an EXPLICIT locale and time zone rather than the
- * browser's. Left to the visitor's, a server-rendered page and its hydration
- * disagree whenever the two sit on different sides of a day boundary, and React
- * replaces the text after paint. `en-IN` in IST is also simply the right reading
- * for this audience.
+ * "18 Aug 2026" — `en-IN` in IST, stated EXPLICITLY rather than left to the
+ * visitor's locale. This is a server component, so the format is fixed at build
+ * time and cannot disagree with what the browser would have rendered; naming the
+ * zone also keeps a date from sliding a day either side of midnight.
  */
-function subtitleFor(update: UpdateItem): string {
-  if (!update.date) return update.category;
-  const when = new Date(`${update.date}T00:00:00+05:30`).toLocaleDateString("en-IN", {
+function displayDate(iso: string): string {
+  return new Date(`${iso}T00:00:00+05:30`).toLocaleDateString("en-IN", {
     day: "numeric",
     month: "short",
     year: "numeric",
     timeZone: "Asia/Kolkata",
   });
-  return `${update.category} · ${when}`;
 }
 
-/**
- * The website's Latest Updates panel.
- *
- * ALL BEHAVIOUR — the scroll, the pause control, hover-to-stop, the mobile
- * fallback — lives in `<Ticker>` in the design system. This file is the DoSJE
- * *content*: which notices run, and where "View All" goes.
- *
- * IT IS THE PANEL, NOT THE BAR, AND IT SITS IN A COLUMN. It ran as a full-bleed
- * strip under the hero until 2026-08-25. That put a third full-width coloured
- * band directly beneath the saffron SAMAVESH bar and the hero, and a second
- * pause control 65px below the carousel's own — two things on one screen that
- * both stop something, neither of which says what. As a rail beside Our
- * Offerings it reads as one panel among the page's content, and it can show
- * four notices at once instead of one.
- *
- * EACH ROW IS A TITLE OVER A SUBTITLE, which is the structure the live site
- * uses and the one the bar already had. The notice is the title; its kind and
- * date are the subtitle.
- *
- * The kind is worth showing NOW and was not before. It first went in as a bold
- * lead-in on the same line, where seven "Documents" out of eight read as the
- * same word repeated four times down the rail in bold. As a quieter second line
- * beside a date it is scannable rather than shouty, and repeating is what a
- * subtitle is allowed to do. The categories are also narrower now — Notice,
- * Vacancy, Annual Report, Campaign, Result — so they say something.
- *
- * `rows` is 6 rather than 4 so the rail is a reasonable proportion of the card
- * column beside it, and 6 still leaves the 8-item list something to scroll past.
- */
-export function LatestUpdates() {
-  return (
-    <Ticker
-      orientation="vertical"
-      rows={6}
-      items={UPDATES.map((update, i) => ({
-        id: `${update.href}-${i}`,
-        title: update.title,
-        description: subtitleFor(update),
-        href: update.href,
-      }))}
-      linkAs={Link}
-      action={
-        <Link href="/website/notices" className={buttonClasses("primary", "inverseOutlined", "sm")}>
-          View All
-        </Link>
-      }
-    />
+function latestUpdates(): TickerItem[] {
+  const pool = KINDS.flatMap(({ records, only, label }) =>
+    records()
+      .filter((r) => r.date && (!only || (r.category && only.includes(r.category))))
+      .map((r) => ({ record: r, kind: label(r) })),
   );
+
+  return pool
+    .sort((a, b) => (b.record.date ?? "").localeCompare(a.record.date ?? ""))
+    .slice(0, COUNT)
+    .map(({ record, kind }) => ({
+      id: `${kind}-${record.slug}`,
+      title: record.title,
+      description: kind,
+      date: displayDate(record.date as string),
+      dateTime: record.date,
+      // The record's own page on the department's site. `fileUrl` is the PDF
+      // itself where there is one, which is what a citizen following a notice
+      // actually wants.
+      href: record.fileUrl ?? record.sourceUrl,
+    }));
+}
+
+export function LatestUpdates() {
+  return <LatestUpdatesPanel items={latestUpdates()} />;
 }

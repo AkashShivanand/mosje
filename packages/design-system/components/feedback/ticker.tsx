@@ -7,6 +7,7 @@ import { TickerMark } from "./ticker-mark";
 import "./ticker.css";
 
 export type TickerOrientation = "horizontal" | "vertical";
+export type TickerHeight = "auto" | "fill";
 
 export interface TickerItem {
   /** Stable key. Falls back to the index when absent. */
@@ -17,8 +18,28 @@ export interface TickerItem {
    * this is — "Vacancies", "Result", "Tender".
    */
   title: string;
-  /** The sentence. Optional: without it the row is the lead-in alone. */
+  /**
+   * The subtitle's words — the KIND of notice ("Vacancy", "Result", "Tender")
+   * in the panel, the sentence under the headline in the bar. Optional.
+   */
   description?: string;
+  /**
+   * The date, already formatted for display — "12 Aug 2026".
+   *
+   * OPTIONAL, and independent of `description`: a notice may carry a kind, a
+   * date, both, or neither, and the separator between them appears only when
+   * there are two things to separate. Formatting stays with the consumer on
+   * purpose — locale and time zone are the site's policy, not the design
+   * system's, and `en-IN` in IST is not a default this component should be
+   * imposing on a portal that needs otherwise.
+   */
+  date?: string;
+  /**
+   * The machine-readable form of `date`, ISO 8601 — "2026-08-12". Rendered as
+   * `<time dateTime>`, so the date is a date to a screen reader and to anything
+   * else parsing the page rather than a run of characters that looks like one.
+   */
+  dateTime?: string;
   /** Where the item goes. */
   href: string;
   /**
@@ -66,6 +87,32 @@ export interface TickerProps extends Omit<React.HTMLAttributes<HTMLElement>, "ti
    * @default "horizontal"
    */
   orientation?: TickerOrientation;
+  /**
+   * HOW TALL THE PANEL IS. `vertical` only.
+   *
+   * `auto` (default) — the panel stands at its own height: the header plus the
+   * `rows` window. Use it when the widget has a row to itself.
+   *
+   * `fill` — the panel takes the height of the row it is in, and `rows` becomes
+   * a floor rather than the answer. Use it when the widget sits beside other
+   * content and should match it, as the website's does next to the Offerings
+   * cards.
+   *
+   * **`fill` needs a parent whose height does not come from this panel.** A grid
+   * or flex item is sized by its own content, so a long list will grow the row
+   * and the panel will then dutifully fill what it just inflated — the website
+   * reached 2,616px that way. Give the rail `position: relative` and the panel's
+   * wrapper `position: absolute; inset: 0`, so the row is sized by whatever
+   * shares it and the panel scrolls the remainder.
+   *
+   * IT IS A PROP RATHER THAN SOMETHING INFERRED, and the first attempt proves
+   * why: `block-size: 100%` looks like it would do this for free, resolving to
+   * `auto` against an auto-height parent and to the row otherwise. In practice
+   * it filled almost everywhere — a flex parent has a resolved height by the
+   * time the child asks, so a panel standing on its own in a plain column
+   * stretched too. Only the consumer knows which situation it is in.
+   */
+  height?: TickerHeight;
   /**
    * How many rows are visible at once. `vertical` only — it is what sets the
    * panel's height. Ignored by `horizontal`, which is always one line.
@@ -148,6 +195,7 @@ export function Ticker({
   icon,
   action,
   orientation = "horizontal",
+  height = "auto",
   rows = 4,
   interval = 5000,
   autoplay = true,
@@ -160,19 +208,36 @@ export function Ticker({
   const [reducedMotion, setReducedMotion] = React.useState(false);
   const [isNarrow, setIsNarrow] = React.useState(false);
   const trackRef = React.useRef<HTMLUListElement | null>(null);
+  const viewportRef = React.useRef<HTMLDivElement | null>(null);
   const [windowPx, setWindowPx] = React.useState<number | null>(null);
+  const [overflows, setOverflows] = React.useState<boolean | null>(null);
   const count = items.length;
   const isVertical = orientation === "vertical";
 
-  // ONE ITEM IS NOT A CAROUSEL, and a list shorter than its own window has
-  // nothing to scroll past. Either way the motion never starts, so the controls
-  // that govern motion would visibly do nothing — and a pause button on
-  // something that is not moving is worse than absent: it advertises motion a
-  // citizen may be trying to escape.
-  //
-  // Computed HERE, above the effects, because both of them depend on it and a
-  // hook may not sit below an early return.
-  const canMove = isVertical ? count > rows && !isNarrow : count > 1;
+  /**
+   * ONE ITEM IS NOT A CAROUSEL, and a list that already fits has nothing to
+   * scroll past. Either way the motion never starts, so the controls that govern
+   * motion would visibly do nothing — and a pause button on something that is
+   * not moving is worse than absent: it advertises motion a citizen may be
+   * trying to escape.
+   *
+   * FOR THE PANEL THIS IS MEASURED, NOT COUNTED. `count > rows` was only ever a
+   * proxy for "does the list overflow its window", and it stopped being true the
+   * moment the panel could take the height of the row it sits in: given a tall
+   * enough column the whole list fits, and a marquee scrolling content that is
+   * already entirely visible is motion for its own sake. `overflows` compares
+   * one copy of the list against the viewport and answers the real question.
+   *
+   * The count is still the first guess, because the measurement cannot happen
+   * until after the first paint and a strip that flickers its controls on mount
+   * is worse than one that corrects itself silently.
+   *
+   * Computed HERE, above the effects, because they depend on it and a hook may
+   * not sit below an early return.
+   */
+  const canMove = isVertical
+    ? (overflows ?? count > rows) && !isNarrow
+    : count > 1;
 
   /**
    * `canScroll` is a fact about the CONTENT; `isPlaying` is the citizen's
@@ -213,32 +278,44 @@ export function Ticker({
   }, []);
 
   /**
-   * THE WINDOW IS MEASURED, NOT CALCULATED.
+   * THE WINDOW IS MEASURED, NOT CALCULATED — and so is whether it overflows.
    *
    * `rows` used to multiply a nominal row height. That only worked while rows
-   * were clipped to one line — and clipping a notice list is a loss of meaning,
-   * not a compromise, so rows now WRAP and their heights differ. The window is
-   * therefore the summed height of the first `rows` items, re-measured whenever
-   * the column resizes or the citizen changes their font size, both of which
-   * rewrap the text and change the answer.
+   * were clipped to one line, and clipping a notice list is a loss of meaning,
+   * so rows now WRAP and their heights differ. `rows` therefore sets a MINIMUM
+   * height — the sum of the first `rows` items — and the panel takes more when
+   * the row it sits in is taller than that.
+   *
+   * The second measurement is the one that keeps the motion honest: one copy of
+   * the list against the visible window. Taller, and there is something to
+   * scroll past; shorter, and the marquee would be moving content that is
+   * already entirely on screen.
    */
   React.useLayoutEffect(() => {
     if (!isVertical) return;
     const track = trackRef.current;
-    if (!track || typeof ResizeObserver === "undefined") return;
+    const viewport = viewportRef.current;
+    if (!track || !viewport || typeof ResizeObserver === "undefined") return;
 
     const measure = () => {
-      const items = Array.from(track.children).slice(0, rows) as HTMLElement[];
-      if (!items.length) return;
-      setWindowPx(items.reduce((total, el) => total + el.getBoundingClientRect().height, 0));
+      const children = Array.from(track.children) as HTMLElement[];
+      if (!children.length) return;
+      const height = (el: HTMLElement) => el.getBoundingClientRect().height;
+      setWindowPx(children.slice(0, rows).reduce((total, el) => total + height(el), 0));
+      // One copy against the window. The half-pixel guard keeps a sub-pixel
+      // rounding difference from being read as an overflow and starting a
+      // marquee that has nowhere to go.
+      const listHeight = children.reduce((total, el) => total + height(el), 0);
+      setOverflows(listHeight > viewport.getBoundingClientRect().height + 1);
     };
 
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(track);
+    ro.observe(viewport);
     Array.from(track.children).forEach((c) => ro.observe(c));
     return () => ro.disconnect();
-  }, [isVertical, rows, items, canScroll]);
+  }, [isVertical, rows, items]);
 
   // A shrinking list must not strand the index past the end.
   const safeIndex = count > 0 ? index % count : 0;
@@ -300,8 +377,15 @@ export function Ticker({
               so the rail carried the same bold word four times over. A subtitle
               can repeat without harm, because it is plainly the quieter line. */}
           <span className="sa-ticker__rowtitle">{item.title}</span>
-          {item.description ? (
-            <span className="sa-ticker__rowmeta">{item.description}</span>
+          {item.description || item.date ? (
+            <span className="sa-ticker__rowmeta">
+              {item.description}
+              {/* The separator belongs to the PAIR, not to either half — it
+                  appears only when there are two things to separate, so a
+                  notice with no date does not trail a dangling middot. */}
+              {item.description && item.date ? <span aria-hidden="true"> · </span> : null}
+              {item.date ? <time dateTime={item.dateTime}>{item.date}</time> : null}
+            </span>
           ) : null}
         </ItemLink>
       </li>
@@ -312,6 +396,7 @@ export function Ticker({
         {...rest}
         className={cn("sa-ticker", "sa-ticker--vertical", className)}
         data-orientation="vertical"
+        data-height={height}
         data-animate={canScroll ? "" : undefined}
         data-paused={canScroll && !isPlaying ? "" : undefined}
         style={
@@ -334,22 +419,39 @@ export function Ticker({
           </div>
 
           <div
+            ref={viewportRef}
             className="sa-ticker__viewport"
             data-scroll={canScroll ? "" : undefined}
             data-paused={canScroll && !isPlaying ? "" : undefined}
           >
-            <ul className="sa-ticker__track" ref={trackRef}>
-              {(canScroll ? items : items.slice(0, rows)).map((it, i) => renderRow(it, i, false))}
-            </ul>
-            {/* The second copy is what makes the loop seamless. It is scenery:
-                hidden from assistive technology and out of the tab order, so
-                the list is announced once. It only exists while the panel is
-                actually moving — a still list must not be twice as long. */}
-            {canScroll ? (
-              <ul className="sa-ticker__track" aria-hidden="true">
-                {items.map((it, i) => renderRow(it, i, true))}
+            {/* ONE ANIMATED WRAPPER HOLDING BOTH COPIES — and that is the whole
+                trick. Each copy used to be its own animated element translating
+                -50% of ITS OWN height, so every cycle moved the list half a
+                length and then snapped back: a visible jump, once per loop, and
+                the jerk this was reported as. Translating the WRAPPER by -50%
+                moves it exactly one list, which is where the second copy
+                already sits — so the reset lands on an identical frame and
+                cannot be seen. It also keeps the distance correct as notices are
+                added: -50% of two identical lists is one list, whatever they
+                hold. */}
+            <div className="sa-ticker__track">
+              {/* The whole list, always. Slicing it to `rows` when still both
+                  stranded the notices past the cut and latched the overflow
+                  check off — a sliced list can never be found to overflow, so a
+                  panel that stopped scrolling could never start again. */}
+              <ul className="sa-ticker__list" ref={trackRef}>
+                {items.map((it, i) => renderRow(it, i, false))}
               </ul>
-            ) : null}
+              {/* The second copy is scenery: hidden from assistive technology
+                  and out of the tab order, so the list is announced once. It
+                  exists only while the panel is moving — a still list must not
+                  be twice as long. */}
+              {canScroll ? (
+                <ul className="sa-ticker__list" aria-hidden="true">
+                  {items.map((it, i) => renderRow(it, i, true))}
+                </ul>
+              ) : null}
+            </div>
           </div>
         </div>
       </section>
