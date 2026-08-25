@@ -208,7 +208,7 @@ export function Offerings() {
                       : "text-ink-muted hover:bg-primary-50 hover:text-ink",
                   )}
                 >
-                  <Icon name={tab.icon} size={18} aria-hidden />
+                  <Icon name={tab.icon} size={20} aria-hidden />
                   {tab.label}
                 </button>
               );
@@ -261,7 +261,7 @@ export function Offerings() {
                       />
                     ) : (
                       <div className="flex h-full w-full items-center justify-center bg-primary/5 text-primary">
-                        <Icon name="school" size={28} aria-hidden />
+                        <Icon name="school" size={32} aria-hidden />
                       </div>
                     )}
                   </div>
