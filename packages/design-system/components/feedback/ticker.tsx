@@ -98,6 +98,13 @@ export interface TickerProps extends Omit<React.HTMLAttributes<HTMLElement>, "ti
    * content and should match it, as the website's does next to the Offerings
    * cards.
    *
+   * **`fill` needs a parent whose height does not come from this panel.** A grid
+   * or flex item is sized by its own content, so a long list will grow the row
+   * and the panel will then dutifully fill what it just inflated — the website
+   * reached 2,616px that way. Give the rail `position: relative` and the panel's
+   * wrapper `position: absolute; inset: 0`, so the row is sized by whatever
+   * shares it and the panel scrolls the remainder.
+   *
    * IT IS A PROP RATHER THAN SOMETHING INFERRED, and the first attempt proves
    * why: `block-size: 100%` looks like it would do this for free, resolving to
    * `auto` against an auto-height parent and to the row otherwise. In practice
@@ -417,25 +424,34 @@ export function Ticker({
             data-scroll={canScroll ? "" : undefined}
             data-paused={canScroll && !isPlaying ? "" : undefined}
           >
-            {/* THE WHOLE LIST, ALWAYS. It used to be sliced to `rows` when the
-                panel was not scrolling, which was wrong twice over: the notices
-                past the cut were unreachable, and — because the overflow check
-                measures this track — a sliced list can never be found to
-                overflow, so a panel that stopped scrolling could never start
-                again. When it is not scrolling the viewport scrolls normally
-                instead, so nothing is hidden and nothing is stranded. */}
-            <ul className="sa-ticker__track" ref={trackRef}>
-              {items.map((it, i) => renderRow(it, i, false))}
-            </ul>
-            {/* The second copy is what makes the loop seamless. It is scenery:
-                hidden from assistive technology and out of the tab order, so
-                the list is announced once. It only exists while the panel is
-                actually moving — a still list must not be twice as long. */}
-            {canScroll ? (
-              <ul className="sa-ticker__track" aria-hidden="true">
-                {items.map((it, i) => renderRow(it, i, true))}
+            {/* ONE ANIMATED WRAPPER HOLDING BOTH COPIES — and that is the whole
+                trick. Each copy used to be its own animated element translating
+                -50% of ITS OWN height, so every cycle moved the list half a
+                length and then snapped back: a visible jump, once per loop, and
+                the jerk this was reported as. Translating the WRAPPER by -50%
+                moves it exactly one list, which is where the second copy
+                already sits — so the reset lands on an identical frame and
+                cannot be seen. It also keeps the distance correct as notices are
+                added: -50% of two identical lists is one list, whatever they
+                hold. */}
+            <div className="sa-ticker__track">
+              {/* The whole list, always. Slicing it to `rows` when still both
+                  stranded the notices past the cut and latched the overflow
+                  check off — a sliced list can never be found to overflow, so a
+                  panel that stopped scrolling could never start again. */}
+              <ul className="sa-ticker__list" ref={trackRef}>
+                {items.map((it, i) => renderRow(it, i, false))}
               </ul>
-            ) : null}
+              {/* The second copy is scenery: hidden from assistive technology
+                  and out of the tab order, so the list is announced once. It
+                  exists only while the panel is moving — a still list must not
+                  be twice as long. */}
+              {canScroll ? (
+                <ul className="sa-ticker__list" aria-hidden="true">
+                  {items.map((it, i) => renderRow(it, i, true))}
+                </ul>
+              ) : null}
+            </div>
           </div>
         </div>
       </section>

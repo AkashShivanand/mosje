@@ -313,8 +313,18 @@ export function Offerings() {
                 Beside the offerings it is also better placed in meaning — a
                 citizen reading what the department offers sees what has just
                 changed about it. */}
-            <div className="lg:col-span-4">
-              <LatestUpdates />
+            {/* THE RAIL IS TAKEN OUT OF FLOW AT `lg`, and it has to be. The
+                panel is set to take the row's height — but a grid item's own
+                content is what sizes the row, so a 24-notice list made the row
+                2,616px tall and then obligingly filled it. Absolute positioning
+                breaks the circle: the CARDS decide how tall the row is, the
+                rail matches it, and the panel scrolls whatever does not fit.
+                Below `lg` the grid is one column and it returns to normal flow,
+                where standing at its own height is the right answer. */}
+            <div className="lg:relative lg:col-span-4">
+              <div className="lg:absolute lg:inset-0">
+                <LatestUpdates />
+              </div>
             </div>
           </div>
         </div>

@@ -23,7 +23,8 @@ import { test, expect } from "@playwright/test";
 
 const PANEL = '.sa-ticker[data-orientation="vertical"]';
 const VIEWPORT = ".sa-ticker__viewport";
-const TRACK = ".sa-ticker__track";
+const TRACK = ".sa-ticker__track";   // the animated wrapper
+const LIST = ".sa-ticker__list";     // one copy of the notices
 
 /**
  * These run against the docs playground rather than the website, and the reason
@@ -62,9 +63,9 @@ test.describe("Latest Updates — pause holds its position", () => {
     // whether pausing lost its place.
     await page.waitForTimeout(1200);
 
-    const tracksBefore = await page.locator(`${PANEL} ${TRACK}`).count();
-    const rowsBefore = await track.locator(".sa-ticker__row").count();
-    expect(tracksBefore).toBe(2);
+    const listsBefore = await page.locator(`${PANEL} ${LIST}`).count();
+    const rowsBefore = await page.locator(`${PANEL} ${LIST}`).first().locator(".sa-ticker__row").count();
+    expect(listsBefore).toBe(2);
 
     await pause.click();
     await expect(page.locator(`${PANEL} ${VIEWPORT}`)).toHaveAttribute("data-paused", "");
@@ -83,8 +84,8 @@ test.describe("Latest Updates — pause holds its position", () => {
 
     // The DOM is identical either side of the press — this is what stopped the
     // reset: nothing unmounts, nothing is re-sliced.
-    expect(await page.locator(`${PANEL} ${TRACK}`).count()).toBe(tracksBefore);
-    expect(await track.locator(".sa-ticker__row").count()).toBe(rowsBefore);
+    expect(await page.locator(`${PANEL} ${LIST}`).count()).toBe(listsBefore);
+    expect(await page.locator(`${PANEL} ${LIST}`).first().locator(".sa-ticker__row").count()).toBe(rowsBefore);
 
     await pause.click();
     await expect(page.locator(`${PANEL} ${VIEWPORT}`)).not.toHaveAttribute("data-paused", "");
@@ -102,7 +103,7 @@ test.describe("Latest Updates — pause holds its position", () => {
   test("the duplicated copy stays out of the way of assistive technology", async ({ page }) => {
     // A seamless loop needs the list twice; announcing it twice, or tabbing
     // through it twice, would be the defect that buys.
-    const copies = page.locator(`${PANEL} ${TRACK}`);
+    const copies = page.locator(`${PANEL} ${LIST}`);
     await expect(copies).toHaveCount(2);
     await expect(copies.nth(1)).toHaveAttribute("aria-hidden", "true");
 

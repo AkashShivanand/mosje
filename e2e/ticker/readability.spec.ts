@@ -64,6 +64,12 @@ test.describe("Latest Updates — readability", () => {
     // In a list where every row is a link there is no surrounding text, so the
     // underline carried no weight and struck through both lines of a wrapped
     // notice.
+    // Stop it first. A row in a running marquee is never "stable", so Playwright
+    // will not hover it — and a citizen cannot reliably hover it either, which
+    // is exactly why hovering the list pauses it in the first place.
+    await page.locator(`${PANEL} .sa-ticker__control`).first().click();
+    await expect(page.locator(`${PANEL} .sa-ticker__viewport`)).toHaveAttribute("data-paused", "");
+
     const row = page.locator(`${PANEL} .sa-ticker__rowlink`).first();
     await row.hover();
     await expect(row.locator(".sa-ticker__rowtitle")).toHaveCSS("text-decoration-line", "none");
@@ -74,7 +80,7 @@ test.describe("Latest Updates — readability", () => {
   test("is a list to a screen reader, and is not a live region", async ({ page }) => {
     // A list is read at the reader's own pace. A live region would interrupt
     // them every time the marquee moved.
-    await expect(page.locator(`${PANEL} ul.sa-ticker__track`).first()).toBeVisible();
+    await expect(page.locator(`${PANEL} ul.sa-ticker__list`).first()).toBeVisible();
     await expect(page.locator(`${PANEL} [aria-live]`)).toHaveCount(0);
   });
 });
@@ -93,7 +99,7 @@ test.describe("Latest Updates — on a phone", () => {
 
     await expect(panel.locator(".sa-ticker__viewport")).not.toHaveAttribute("data-scroll", "");
     await expect(panel.locator(".sa-ticker__control")).toHaveCount(0);
-    await expect(panel.locator(".sa-ticker__track")).toHaveCount(1);
+    await expect(panel.locator(".sa-ticker__list")).toHaveCount(1);
 
     // The way out survives — it is how the remaining notices are reached.
     await expect(panel.locator(".sa-ticker__action")).toBeVisible();

@@ -91,6 +91,15 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * fills almost everywhere in practice, because a flex parent already has a
  * resolved height by the time the child asks.
  *
+ * **The loop is seamless because one animated wrapper holds two copies** and
+ * travels exactly −50% — one list, exactly where the second copy already sits.
+ * Each copy used to animate itself by −50% of *its own* height, which moved the
+ * list half a length per cycle and snapped back: one visible jump per loop.
+ *
+ * **`fill` needs a parent whose height does not come from the panel** — a grid
+ * item is sized by its own content, so a long list grows the row and the panel
+ * fills what it just inflated. Take the rail out of flow.
+ *
  * **Whether it scrolls is measured, not counted.** One copy of the list against
  * the viewport. Give the panel a tall enough row and the whole list fits, at
  * which point a marquee would be moving content already entirely on screen — so

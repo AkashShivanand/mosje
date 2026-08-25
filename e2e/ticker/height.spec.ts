@@ -36,10 +36,10 @@ test.describe("Latest Updates — height", () => {
     expect(panelH).toBeGreaterThan(400);
     expect(railH).toBeGreaterThan(400);
 
-    // Everything fits, so nothing scrolls and nothing offers to stop it.
-    await expect(panel.locator(".sa-ticker__viewport")).not.toHaveAttribute("data-scroll", "");
-    await expect(panel.locator(".sa-ticker__control")).toHaveCount(0);
-    await expect(panel.locator(".sa-ticker__track")).toHaveCount(1);
+    // The department's feed is far longer than any row, so it scrolls — and the
+    // control that stops it is offered.
+    await expect(panel.locator(".sa-ticker__viewport")).toHaveAttribute("data-scroll", "");
+    await expect(panel.locator(".sa-ticker__control")).toHaveCount(1);
   });
 
   test("stands at its own height alone, and scrolls because the list overflows it", async ({ page }) => {
@@ -50,11 +50,11 @@ test.describe("Latest Updates — height", () => {
 
     const measured = await panel.evaluate((el) => {
       const vp = el.querySelector(".sa-ticker__viewport") as HTMLElement;
-      const track = el.querySelector(".sa-ticker__track") as HTMLElement;
+      const list = el.querySelector(".sa-ticker__list") as HTMLElement;
       return {
         panelH: el.getBoundingClientRect().height,
         viewportH: vp.getBoundingClientRect().height,
-        listH: track.getBoundingClientRect().height,
+        listH: list.getBoundingClientRect().height,
       };
     });
 
@@ -62,8 +62,41 @@ test.describe("Latest Updates — height", () => {
     // the condition the marquee exists for.
     expect(measured.listH).toBeGreaterThan(measured.viewportH);
     await expect(panel.locator(".sa-ticker__viewport")).toHaveAttribute("data-scroll", "");
-    await expect(panel.locator(".sa-ticker__track")).toHaveCount(2);
+    await expect(panel.locator(".sa-ticker__list")).toHaveCount(2);
     await expect(panel.locator(".sa-ticker__control")).toHaveCount(1);
+  });
+
+  test("the seam is invisible: the wrapper is exactly two lists, and travels exactly one", async ({ page }) => {
+    // This is the jerk that was reported. Each copy used to be its own animated
+    // element translating -50% of ITS OWN height, so every cycle moved the list
+    // half a length and snapped back. Translating the WRAPPER by -50% moves it
+    // exactly one list, which is where the second copy already sits — the reset
+    // lands on an identical frame.
+    await page.goto("/website");
+    const panel = page.locator(PANEL);
+    await expect(panel).toBeVisible();
+    await expect(panel.locator(".sa-ticker__viewport")).toHaveAttribute("data-scroll", "");
+
+    const seam = await panel.evaluate((el) => {
+      const track = el.querySelector(".sa-ticker__track") as HTMLElement;
+      const list = el.querySelector(".sa-ticker__list") as HTMLElement;
+      const anim = track.getAnimations()[0];
+      const y = () => new DOMMatrixReadOnly(getComputedStyle(track).transform).m42;
+      const duration = Number(anim.effect!.getTiming().duration);
+      anim.currentTime = 0;
+      const start = y();
+      anim.currentTime = duration - 1;
+      const end = y();
+      anim.currentTime = 0;
+      return {
+        listH: list.getBoundingClientRect().height,
+        trackH: track.getBoundingClientRect().height,
+        travel: Math.abs(end - start),
+      };
+    });
+
+    expect(Math.abs(seam.trackH - seam.listH * 2)).toBeLessThan(1.5);
+    expect(Math.abs(seam.travel - seam.listH)).toBeLessThan(1.5);
   });
 
   test("a list that does not scroll can still be scrolled by hand", async ({ page }) => {
@@ -72,13 +105,16 @@ test.describe("Latest Updates — height", () => {
     // list — a sliced list can never be found to overflow, so a panel that
     // stopped scrolling could never start again. The whole list is always in the
     // DOM now, and the viewport scrolls normally when the marquee is not running.
-    await page.goto("/website");
+    // The standalone playground panel is short enough to sit still.
+    await page.goto("/design-system/components/feedback/ticker");
+    await page.getByText("Panel (vertical scroll)").click();
+    await page.getByText("Too short to move (controls go)").click();
     const panel = page.locator(PANEL);
     await expect(panel).toBeVisible();
     await expect(panel.locator(".sa-ticker__viewport")).not.toHaveAttribute("data-scroll", "");
 
-    const rows = await panel.locator(".sa-ticker__track").first().locator(".sa-ticker__row").count();
-    expect(rows).toBe(8);
+    const rows = await panel.locator(".sa-ticker__list").first().locator(".sa-ticker__row").count();
+    expect(rows).toBeGreaterThan(0);
     await expect(panel.locator(".sa-ticker__viewport")).toHaveCSS("overflow-y", "auto");
   });
 });

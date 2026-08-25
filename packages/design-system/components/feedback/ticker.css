@@ -421,7 +421,13 @@
   }
   /* ds-exempt-end */
 
+  /* The animated wrapper. It holds one list when still and two when scrolling,
+     and it is the ONLY element that moves — see the component for why. */
   .sa-ticker__track {
+    display: flow-root;
+  }
+
+  .sa-ticker__list {
     margin: 0;
     padding: 0;
     list-style: none;
@@ -435,6 +441,10 @@
     /* LINEAR, and it must stay linear. Any easing makes a continuous marquee
        visibly hesitate at the loop point, which is the one place it must not. */
     animation: sa-ticker-scroll var(--sa-ticker-duration) linear infinite;
+    /* Promoted for the duration: a long, slow, continuously running transform
+       is exactly the case that benefits, and the hint is scoped to while it
+       actually runs rather than left on the element for the life of the page. */
+    will-change: transform;
   }
 
   .sa-ticker__viewport[data-paused] .sa-ticker__track {
