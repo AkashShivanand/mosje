@@ -487,10 +487,22 @@ export function Ticker({
               pausing is the act that says "read this to me". */}
           <div className="sa-ticker__viewport" aria-live={isPlaying ? "off" : "polite"} aria-atomic="true">
             <ItemLink key={item.id ?? safeIndex} href={item.href} className="sa-ticker__item">
+              {/* ONE ROW LAYOUT, BOTH SHAPES. The bar and the panel show the
+                  same four things — a notice, its kind, its date, a link — so
+                  they compose the second line identically: kind, then the
+                  separator, then the date, each appearing only if it is there.
+                  The bar used to ignore `date` entirely and the panel owned the
+                  whole composition, which meant the same item read differently
+                  depending on which shape you dropped it into. `linkLabel` is
+                  the one difference that stays, and only here: the bar shows
+                  one message so a trailing call to action reads once, where in
+                  a scrolling list it would repeat on every row. */}
               <span className="sa-ticker__title">{item.title}</span>
-              {item.description ? (
+              {item.description || item.date || item.linkLabel ? (
                 <span className="sa-ticker__description">
                   {item.description}
+                  {item.description && item.date ? <span aria-hidden="true"> · </span> : null}
+                  {item.date ? <time dateTime={item.dateTime}>{item.date}</time> : null}
                   {item.linkLabel ? (
                     <> <span className="sa-ticker__more">{item.linkLabel}</span></>
                   ) : null}
