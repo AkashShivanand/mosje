@@ -1324,8 +1324,10 @@
   /* The sheet trigger comes in at the masthead's 48px, which is right in a 100px
      brand row and wrong here: at 48 it — not the row's own min-height — decided
      the bar, so a phone measured 65px against a designed 56. 40 matches every
-     other control in this bar and lets the min-height do its job. */
-  .ds-hdr-cond .ds-hdr-burger {
+     other control in this bar and lets the min-height do its job. The portal's
+     sidebar toggle is the same control at the same size, for the same reason. */
+  .ds-hdr-cond .ds-hdr-burger,
+  .ds-hdr-cond__toggle {
     height: 40px;
     width: 40px;
     padding: var(--sa-padding-4);
@@ -1662,7 +1664,13 @@
     .ds-hdr-brand__actions,
     .ds-hdr-acct,
     .ds-navsheet,
-    .ds-navsheet__scrim {
+    .ds-navsheet__scrim,
+    /* The condensed bar's own controls. `SiteHeader` restores the resting tiers
+       on `beforeprint`, so this should never have anything to hide — it is the
+       belt to that braces, for a browser that prints without firing the event. */
+    .ds-hdr-cond__iconbtn,
+    .ds-hdr-cond__toggle,
+    .ds-hdr-cond__searchfield {
       display: none !important;
     }
   }

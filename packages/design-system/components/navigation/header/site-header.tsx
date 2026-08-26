@@ -228,6 +228,8 @@ export function SiteHeader({
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [scrolled, setScrolled] = React.useState(false);
+  /** Held true across printing, so scroll anchoring cannot re-condense the header. */
+  const printingRef = React.useRef(false);
   /** The condensed bar's search, expanded in place over the nav. */
   const [condSearchOpen, setCondSearchOpen] = React.useState(false);
   /** The condensed nav has run out of room; fall back to the sheet. */
@@ -278,6 +280,7 @@ export function SiteHeader({
     let frame = 0;
     const read = () => {
       frame = 0;
+      if (printingRef.current) return;
       const y = window.scrollY;
       setScrolled((was) => (was ? y > 40 : y > 120));
     };
@@ -340,6 +343,43 @@ export function SiteHeader({
     };
   }, [condensed]);
 
+  /**
+   * Print the FULL masthead, whatever the reader had scrolled to.
+   *
+   * The condensed bar carries the emblem and no department name — deliberate on
+   * screen, where the name is one scroll away, and wrong on paper, where it is
+   * gone for good. What a printed government page needs from its header is who
+   * published it, which is the whole reason the print rules below strip the nav,
+   * the search and the account block and keep the lockup.
+   *
+   * CSS cannot undo this on its own: the tiers are swapped in React, not hidden,
+   * so `@media print` has nothing to reveal. Restoring the state before the dialog
+   * opens is what gives those rules something to work with.
+   */
+  React.useEffect(() => {
+    if (!wantsScrollCollapse) return;
+    /* THE FLAG IS THE WHOLE FIX, and the reason is SCROLL ANCHORING. Restoring the
+       tiers grows the header by ~135px, all of it above the viewport, so the
+       browser helpfully shifts `scrollY` down by the same amount to keep the
+       visible content still. That shift is a scroll event, the scroll handler
+       reads the new position, and the masthead condenses straight back — measured:
+       the handler fired, the state was set, and the condensed bar never left. */
+    const onBeforePrint = () => {
+      printingRef.current = true;
+      setScrolled(false);
+    };
+    const onAfterPrint = () => {
+      printingRef.current = false;
+      setScrolled(window.scrollY > 120);
+    };
+    window.addEventListener("beforeprint", onBeforePrint);
+    window.addEventListener("afterprint", onAfterPrint);
+    return () => {
+      window.removeEventListener("beforeprint", onBeforePrint);
+      window.removeEventListener("afterprint", onAfterPrint);
+    };
+  }, [wantsScrollCollapse]);
+
   /* Condensing swaps the nav row out from under whatever was open in it. Close
      first, so a panel is never orphaned and focus is never stranded on a node that
      is about to be unmounted. */
@@ -348,8 +388,61 @@ export function SiteHeader({
     else setCondSearchOpen(false);
   }, [condensed]);
 
+  /**
+   * The swap unmounts whatever the reader was on. A pointer user never notices; a
+   * keyboard reader who had tabbed into the masthead and then scrolled would find
+   * focus back on `<body>` — at the top of the document, place lost.
+   *
+   * Tracked with a `focusin` listener rather than sampled inside the effect below.
+   * Sampling only sees the moments the effect runs, which is when `condensed`
+   * CHANGES — and focus almost always moves between two of those, so the sample
+   * was `<body>` every time and the restore never fired once.
+   */
+  const hadFocusRef = React.useRef(false);
   React.useEffect(() => {
-    if (condSearchOpen) condSearchRef.current?.focus();
+    const el = headerRef.current;
+    if (!el) return;
+    const onIn = () => {
+      hadFocusRef.current = true;
+    };
+    const onOut = (e: FocusEvent) => {
+      /* Only when focus leaves for somewhere real. A swap moves it to <body>
+         first, and treating that as "left" would clear the flag before the
+         effect below has had a chance to read it. */
+      const next = e.relatedTarget as Node | null;
+      if (next && !el.contains(next)) hadFocusRef.current = false;
+    };
+    el.addEventListener("focusin", onIn);
+    el.addEventListener("focusout", onOut);
+    return () => {
+      el.removeEventListener("focusin", onIn);
+      el.removeEventListener("focusout", onOut);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    const el = headerRef.current;
+    if (!el || !hadFocusRef.current) return;
+    if (document.activeElement !== document.body) return;
+    el.querySelector<HTMLElement>(".ds-hdr-cond__home, .ds-hdr-lockup")?.focus({
+      preventScroll: true,
+    });
+  }, [condensed]);
+
+  /**
+   * `preventScroll`, defensively.
+   *
+   * A plain `focus()` scrolls the element into view, and this one lives in a
+   * header pinned to the top of the viewport: any scrolling on its behalf moves
+   * the page toward scrollTop 0, which is the threshold that un-condenses the
+   * masthead and unmounts this very field. The field is already on screen when it
+   * mounts, so in practice the browser has nothing to do — this is a guard against
+   * a state where it would, not a fix for one observed here. (It was briefly
+   * credited with fixing exactly that; the disappearing bar turned out to be a
+   * test harness scrolling the target into view before clicking it.)
+   */
+  React.useEffect(() => {
+    if (condSearchOpen) condSearchRef.current?.focus({ preventScroll: true });
   }, [condSearchOpen]);
 
   /**
@@ -505,6 +598,19 @@ export function SiteHeader({
   const condensedBar = (
     <div className="ds-hdr-cond">
       <div className="ds-hdr-cond__in" style={inner} ref={condInRef}>
+        {/* The app-shell sidebar toggle. It lives in the brand row at rest, and
+            leaving it out of this bar meant a portal lost the control for its own
+            navigation the moment the page scrolled — on the surface where the
+            sidebar IS the navigation. */}
+        {onToggleNav && (
+          <MenuToggle
+            expanded={navExpanded}
+            onToggle={onToggleNav}
+            controlsId={navControlsId}
+            className="ds-hdr-cond__toggle"
+          />
+        )}
+
         <a
           className="ds-hdr-cond__home"
           href={homeHref}
