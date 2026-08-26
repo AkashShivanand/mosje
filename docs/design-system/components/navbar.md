@@ -91,7 +91,7 @@ assembled mastheads, then menus, then navigation parts, then brand.
 | Frame widths | `ref/viewport/mobile` · `ref/viewport/tablet` · `ref/viewport/desktop` |
 | Surfaces | `bg/neutral/*`, `bg/brand/primary/*` |
 | Ink | `text/neutral/*`, `on/*` on filled surfaces |
-| Icons | `Icon/Outline/16` · `Icon/Outline/20` · `Icon/Outline/24` (Material Symbols Rounded, Light) |
+| Icons | `Icon/16/Outline` · `Icon/20/Outline` · `Icon/24/Outline` (Material Symbols Rounded, Light) |
 | Type | the 21-role ramp — `Display/*`, `Headline/*`, `Title/*`, `Body/*`, `Label/*` |
 | Radius | `shape/*` |
 | Spacing | `padding/*`, `stack/*`, `inline/*`, `section/*` |

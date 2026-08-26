@@ -81,9 +81,36 @@ or `border/*` — the same judgement the Button's 135 filled variants already go
 Buttons alone holds 988 of these. A script could guess; a wrong guess would be a silent
 visual change in a shared library, which is worse than the debt it removes.
 
-**Also open, and much smaller:** ~60 `fontFamily` bindings per heavy page reach
-`ref/font/family/*` directly. Those DO have a unique Tier-2 alias (`font/latin`,
-`font/display`, `font/icon`), so they are one value-preserving pass away.
+### The font-family pass — closed, and it taught the audit a lesson
+
+Run over **all 73 pages** (every page in the file, separators and section headers
+included). **216 text ranges rebound** onto `font/latin`, `font/display` and `font/icon`,
+on four pages only: Ticker 147, New in 2.0 55, Footer 8, Navbar 6. Zero failures, zero
+remaining on re-audit.
+
+**It is a RANGE-level property, and reading it the obvious way lies.** A text node's
+`boundVariables.fontFamily` is an ARRAY, and it keeps reporting the variable a node was
+built with even after the binding is gone — the Navbar showed 49 `ref/font/family/*`
+entries whose ranges all resolved to `font/latin` when asked properly. The truth is
+`getRangeBoundVariable(start, end, 'fontFamily')` per styled segment, and the write is
+`setRangeBoundVariable`. A `setBoundVariable` on the node does nothing here: the first
+pass rebound 0 of 1,046 nodes and reported success, which is exactly what a wrong audit
+looks like.
+
+## 3a · The icon styles, and the one axis nobody can bind
+
+`Icon/{16 · 20 · 24 · 32 · 40 · 48 · 64}/{Outline · Filled}` — 14 styles, **size as the
+folder and the cut as the leaf**, so both cuts of one size sit together where a designer
+switches between them.
+
+`FILL 1` was applied by hand (the Plugin API exposes no font-variation axis, and no Figma
+variable scope exists for one). Verified by rendering all seven sizes of both cuts.
+
+**The part worth recording:** applying the axis by hand silently **cleared the `fontStyle`
+binding on all seven Filled styles**. They still rendered at Light, so nothing looked
+wrong — only a binding audit caught it. Re-binding the weight afterwards is safe; the
+axis survives, confirmed by rendering before and after. Order of operations: create,
+apply FILL, re-bind the weight.
 
 ## 4 · The guardrail, so this cannot come back the same way
 
