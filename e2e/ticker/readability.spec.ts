@@ -95,16 +95,21 @@ test.describe("Latest Updates — readability", () => {
   });
 
   test("rows do not underline on hover — the wash is the affordance", async ({ page }) => {
+    // REDUCED MOTION, so the row is genuinely still rather than merely paused.
+    // Pausing stops the marquee, but `/website` keeps settling around it and
+    // Playwright refuses to dispatch a hover onto anything it has seen move
+    // between two frames — so this raced, ~1 run in 3, against a component
+    // behaving perfectly. Waiting for the geometry helped and did not close it.
+    // Under reduced motion the component starts no animation at all, which is
+    // the state this assertion is actually about: whether a row underlines when
+    // pointed at. Motion is not part of that question.
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.reload({ waitUntil: "networkidle" });
+    await expect(page.locator(PANEL)).toBeVisible();
     // WCAG 1.4.1 asks that a link be distinguishable from the text AROUND it.
     // In a list where every row is a link there is no surrounding text, so the
     // underline carried no weight and struck through both lines of a wrapped
     // notice.
-    // Stop it first. A row in a running marquee is never "stable", so Playwright
-    // will not hover it — and a citizen cannot reliably hover it either, which
-    // is exactly why hovering the list pauses it in the first place.
-    await page.locator(`${PANEL} .sa-ticker__control`).first().click();
-    await expect(page.locator(`${PANEL} .sa-ticker__viewport`)).toHaveAttribute("data-paused", "");
-
     const row = page.locator(`${PANEL} .sa-ticker__rowlink`).first();
     await settled(row);
     await row.hover();
