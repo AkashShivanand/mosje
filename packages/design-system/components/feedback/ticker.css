@@ -103,6 +103,9 @@
     display: flex;
     flex: 1 1 auto;
     align-items: center;
+    /* The nav and the action are the container's own children now, not the
+       body's, so the container owns the spacing between them. */
+    gap: var(--sa-inline-24);
     min-width: 0;
     max-width: var(--sa-container-page);
     padding-inline: var(--sa-padding-24);
@@ -218,9 +221,7 @@
     display: flex;
     flex: 1 1 auto;
     align-items: center;
-    gap: var(--sa-inline-24);
     min-width: 0;
-    padding-inline-start: var(--sa-padding-24);
     padding-block: var(--sa-padding-16);
   }
 
@@ -646,7 +647,12 @@
      last — the section's accessible name already carries it, so a screen
      reader loses nothing. */
   @container sa-ticker (max-width: 639px) {
-    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__label,
+    /* THE LABEL STAYS. It used to go at this width to buy room in a single
+       crowded row; below 1024px the plinth has a full line to itself, so the
+       width the name costs is width nothing else was competing for — and a
+       strip that shows only a mark has stopped saying what it is. Prev/next
+       still go: they are the one thing here the citizen can do without, since
+       the strip cycles on its own. */
     .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__step {
       display: none;
     }
@@ -678,25 +684,81 @@
      content REORGANISE rather than be lost; hiding the only link out was the
      wrong reading of it. */
   @container sa-ticker (max-width: 1023px) {
-    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__body {
+    /* THE BAR ADOPTS THE PANEL'S HEADER.
+       The previous answer wrapped the controls under the message, which left
+       the plinth a narrow square holding a mark and no name — the component
+       losing its identity at the width where identity matters most, to save a
+       line it then spent anyway.
+
+       Here the plinth becomes a FULL-WIDTH HEADER carrying the name, the pause
+       and the route out, with the message on the ground beneath it. That is
+       exactly the vertical panel's header, so at narrow widths the two shapes
+       CONVERGE on one layout instead of diverging into three. Nothing is
+       dropped: 1.4.10 asks that content reorganise, and this reorganises it
+       into a shape the citizen has already seen elsewhere on the page. */
+    /* THE NAVY GOES ON THE CONTAINER, NOT ON `.sa-ticker`.
+       A container query cannot style the element that ESTABLISHES the
+       container, and `.sa-ticker` is the one carrying `container-type`. The
+       first version of this rule set the header colour there and it silently
+       did nothing — the header rendered on the ground blue and the whole point
+       of the layout was lost. The container is the outermost descendant, so it
+       is the first element the query can actually reach. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__container {
       flex-wrap: wrap;
-      row-gap: var(--sa-stack-8);
-      padding-block: var(--sa-padding-12);
+      gap: var(--sa-inline-8);
+      padding-inline: 0;
+      background-color: var(--sa-ticker-plinth);
     }
 
-    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__viewport {
-      flex: 1 1 100%;
+    /* The pseudo-element plinth is retired here — the whole line is the plinth
+       now, so a second navy block behind part of it would only mis-align. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__heading::before {
+      display: none;
+    }
+
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__heading {
+      flex: 1 1 auto;
+      padding-inline-start: var(--sa-padding-16);
+    }
+
+    /* A hairline between the control and the route, as in the reference: they
+       are two different kinds of thing sharing one end of the header. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action {
+      order: 3;
+      padding-inline-start: var(--sa-padding-16);
+      border-inline-start: 1px solid var(--sa-color-transparent-white-24);
+      margin-inline-end: var(--sa-padding-16);
+    }
+
+    /* THE ROUTE BECOMES A LINK, NOT A BUTTON, ON THE HEADER LINE.
+       An outlined button is ~164px; the header also has to hold a mark, the
+       name and the pause, and at 312px the button simply dropped to a third
+       line — which is how a two-line layout quietly becomes three. Stripped to
+       a text link it is ~110px and the header holds on one line.
+
+       It loses nothing by it: the hairline to its left already separates it
+       from the control, and a header row is a place a citizen expects links.
+       The tap target keeps the header's own 44px block, so 2.5.8 still holds.
+       This restyles the CONSUMER'S element, which is why it is scoped tightly
+       to the direct child of our own wrapper and does nothing above 1024px. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action > :is(a, button) {
+      padding-inline: 0;
+      border: 0;
+      background: transparent;
     }
 
     .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__nav {
       order: 2;
     }
 
-    /* Pushed to the far end of the second line, where the eye lands last —
-       the same place it sits on one line above this width. */
-    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action {
-      order: 3;
-      margin-inline-start: auto;
+    /* The message takes the whole second line, on the ground rather than the
+       plinth — which is what separates the two, exactly as it does in the
+       panel. No rule between them: the colour change already does that job. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__body {
+      order: 4;
+      flex: 1 1 100%;
+      background-color: var(--sa-ticker-bar);
+      padding-inline: var(--sa-padding-16);
     }
   }
 

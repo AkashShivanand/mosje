@@ -482,21 +482,20 @@ export function Ticker({
       <div className="sa-ticker__container">
         {heading}
 
+        {/* THE MESSAGE ONLY. Nav and the action are siblings of the plinth
+            rather than children of the body, and that is what lets the bar
+            adopt the PANEL'S HEADER below 1024px: the plinth, the pause and
+            the route out share one full-width navy line, with the message on
+            the ground beneath it. Nested inside the body they could only ever
+            wrap underneath the message, which left the plinth a narrow square
+            holding a mark and no name — the component losing its identity at
+            exactly the width where identity matters most. */}
         <div className="sa-ticker__body">
           {/* `off` while running, `polite` once the citizen has stopped it —
               pausing is the act that says "read this to me". */}
           <div className="sa-ticker__viewport" aria-live={isPlaying ? "off" : "polite"} aria-atomic="true">
             <ItemLink key={item.id ?? safeIndex} href={item.href} className="sa-ticker__item">
-              {/* ONE ROW LAYOUT, BOTH SHAPES. The bar and the panel show the
-                  same four things — a notice, its kind, its date, a link — so
-                  they compose the second line identically: kind, then the
-                  separator, then the date, each appearing only if it is there.
-                  The bar used to ignore `date` entirely and the panel owned the
-                  whole composition, which meant the same item read differently
-                  depending on which shape you dropped it into. `linkLabel` is
-                  the one difference that stays, and only here: the bar shows
-                  one message so a trailing call to action reads once, where in
-                  a scrolling list it would repeat on every row. */}
+              {/* ONE ROW LAYOUT, BOTH SHAPES — see the panel. */}
               <span className="sa-ticker__title">{item.title}</span>
               {item.description || item.date || item.linkLabel ? (
                 <span className="sa-ticker__description">
@@ -510,31 +509,31 @@ export function Ticker({
               ) : null}
             </ItemLink>
           </div>
-
-          {canMove ? (
-            <div className="sa-ticker__nav">
-              {pauseButton}
-              <button
-                type="button"
-                className="sa-ticker__control sa-ticker__step"
-                onClick={() => go(safeIndex - 1)}
-                aria-label={`Previous item in ${label}`}
-              >
-                <Icon name="arrow_back" size={24} aria-hidden />
-              </button>
-              <button
-                type="button"
-                className="sa-ticker__control sa-ticker__step"
-                onClick={() => go(safeIndex + 1)}
-                aria-label={`Next item in ${label}`}
-              >
-                <Icon name="arrow_forward" size={24} aria-hidden />
-              </button>
-            </div>
-          ) : null}
-
-          {action ? <div className="sa-ticker__action">{action}</div> : null}
         </div>
+
+        {canMove ? (
+          <div className="sa-ticker__nav">
+            {pauseButton}
+            <button
+              type="button"
+              className="sa-ticker__control sa-ticker__step"
+              onClick={() => go(safeIndex - 1)}
+              aria-label={`Previous item in ${label}`}
+            >
+              <Icon name="arrow_back" size={24} aria-hidden />
+            </button>
+            <button
+              type="button"
+              className="sa-ticker__control sa-ticker__step"
+              onClick={() => go(safeIndex + 1)}
+              aria-label={`Next item in ${label}`}
+            >
+              <Icon name="arrow_forward" size={24} aria-hidden />
+            </button>
+          </div>
+        ) : null}
+
+        {action ? <div className="sa-ticker__action">{action}</div> : null}
       </div>
     </section>
   );
