@@ -274,6 +274,41 @@ mode-less — the correct home for a value that must never move, and a much bett
 The ink is worth repeating: **`#1F2428` for the mark, `#1E2124` for text.** Two colours that
 survive any review by looking the same.
 
+## 3d · Growing the ramps — 14 rungs, one refusal, one contrast fix
+
+The 885 were not effort, they were inventory: values the ramps did not carry for that kind of
+property. So the ramps grew, in `build/generate-system-tokens.mjs` — the generator, not by hand —
+which keeps one ladder across every family:
+
+| added | value | why it was needed |
+|---|---|---|
+| `icon/neutral/subtler` | neutralScale/500 | the icon family had no quiet rung; `text/neutral/subtler` had existed for months |
+| `icon\|text\|border/status/{success,error,warning,info}/bolder` | *Scale/600 | the ladder's 600 step existed **only for backgrounds**, so any status glyph or label needing the darker step bound `ref/color/<status>/source` directly |
+| `border/brand/primary/bolder` | primaryScale/600 | pairs with `text\|icon/brand/primary/bolder`, so an outlined control and its label agree |
+
+**176 bindings moved onto them, 167 value-preserving.**
+
+### The fifteenth was refused, and the refusal is the interesting part
+
+`border/neutral/bold` at neutralScale/300 looked obvious — the ramp runs subtle(100) · base(200) ·
+bolder(400) with a hole at 300, and 35 rules were filling it from `ref/color/stroke/300`.
+
+**The contrast gate rejected it: 2.15:1 against a rung name that promises ≥3:1.** That is the
+system catching its author. A rung name here is a *contrast promise*, not a position on a ramp,
+and 300 cannot keep this one. So the 35 rules are not a ramp gap: either they are decoration, and
+`border/neutral/base` is the honest home, or they are a real division and need `bolder/default` to
+be perceivable at all. Recorded as a decision rather than papered over with a token that lies.
+
+### The chevron fix, and a mistake the screenshot caught
+
+The Date-Time Picker's prev/next chevrons were `#ADB1B7` — **2.0:1 on white, on ACTIVE controls**,
+a WCAG 1.4.11 failure (needs 3:1). They are now `icon/neutral/subtler` at **4.6:1**.
+
+The first pass fixed only half of them, and the render showed it plainly: the left pair darkened,
+the right pair did not. The rule had classified a **stroke on a VECTOR** as a border. It is not —
+on a shape, the stroke IS the glyph. Fixed, and worth remembering when writing any rule that maps
+a property to a token family: `strokes` means "border" on a surface and "ink" on a glyph.
+
 ## 4 · The guardrail, so this cannot come back the same way
 
 Every Tier-1 variable in the library is now **hidden from publishing** — 12 were still

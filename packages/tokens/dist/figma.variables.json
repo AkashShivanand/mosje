@@ -13,9 +13,9 @@
       "existing": 138
     },
     "Color": {
-      "total": 481,
+      "total": 495,
       "new": 9,
-      "existing": 472
+      "existing": 486
     },
     "Type": {
       "total": 103,
@@ -6824,6 +6824,33 @@
           }
         },
         {
+          "name": "border/brand/primary/bolder",
+          "path": "border/brand/primary/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/600"
+            }
+          },
+          "description": "Use for the outline of a primary-brand control, such as a selected card or a focused input. Contrast 6.36:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-border-brand-primary-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 6.36,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "border/status/success/base",
           "path": "border/status/success/base",
           "type": "COLOR",
@@ -6846,6 +6873,33 @@
               "rung": "base",
               "min": 0,
               "measured": 11.67,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "border/status/success/bolder",
+          "path": "border/status/success/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600"
+            }
+          },
+          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-border-status-success-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 9.12,
               "meets": true
             }
           }
@@ -6878,6 +6932,33 @@
           }
         },
         {
+          "name": "border/status/error/bolder",
+          "path": "border/status/error/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/600"
+            }
+          },
+          "description": "Use for the outline of a control or callout reporting an error or destructive state. Contrast 6.68:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-border-status-error-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 6.68,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "border/status/warning/base",
           "path": "border/status/warning/base",
           "type": "COLOR",
@@ -6905,6 +6986,33 @@
           }
         },
         {
+          "name": "border/status/warning/bolder",
+          "path": "border/status/warning/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/600"
+            }
+          },
+          "description": "Use for the outline of a control or callout reporting a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-border-status-warning-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 5.68,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "border/status/info/base",
           "path": "border/status/info/base",
           "type": "COLOR",
@@ -6926,6 +7034,33 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
+              "measured": 6.3,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "border/status/info/bolder",
+          "path": "border/status/info/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/infoScale/600"
+            }
+          },
+          "description": "Use for the outline of a control or callout reporting an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-border-status-info-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
               "measured": 6.3,
               "meets": true
             }
@@ -8501,6 +8636,33 @@
           }
         },
         {
+          "name": "text/status/success/bolder",
+          "path": "text/status/success/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600"
+            }
+          },
+          "description": "Use for text that report a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-text-status-success-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 9.12,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "text/status/error/base",
           "path": "text/status/error/base",
           "type": "COLOR",
@@ -8523,6 +8685,33 @@
               "rung": "base",
               "min": 4.5,
               "measured": 9.1,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "text/status/error/bolder",
+          "path": "text/status/error/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/600"
+            }
+          },
+          "description": "Use for text that report an error or destructive state. Contrast 6.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-text-status-error-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 6.68,
               "meets": true
             }
           }
@@ -8555,6 +8744,33 @@
           }
         },
         {
+          "name": "text/status/warning/bolder",
+          "path": "text/status/warning/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/600"
+            }
+          },
+          "description": "Use for text that report a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-text-status-warning-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 5.68,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "text/status/info/base",
           "path": "text/status/info/base",
           "type": "COLOR",
@@ -8575,6 +8791,33 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "base",
+              "min": 4.5,
+              "measured": 6.3,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "text/status/info/bolder",
+          "path": "text/status/info/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/infoScale/600"
+            }
+          },
+          "description": "Use for text that report an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-text-status-info-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
               "min": 4.5,
               "measured": 6.3,
               "meets": true
@@ -8684,6 +8927,33 @@
           }
         },
         {
+          "name": "icon/neutral/subtler",
+          "path": "icon/neutral/subtler",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/500"
+            }
+          },
+          "description": "Use for non-essential text and quiet icons, never body copy. Contrast 4.65:1 vs bg/neutral/base — meets ≥3:1: non-essential text and quiet icons.",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-neutral-subtler)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "subtler",
+              "min": 3,
+              "measured": 4.65,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "icon/brand/primary/base",
           "path": "icon/brand/primary/base",
           "type": "COLOR",
@@ -8765,6 +9035,33 @@
           }
         },
         {
+          "name": "icon/status/success/bolder",
+          "path": "icon/status/success/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600"
+            }
+          },
+          "description": "Use for icons that report a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-status-success-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 9.12,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "icon/status/error/base",
           "path": "icon/status/error/base",
           "type": "COLOR",
@@ -8787,6 +9084,33 @@
               "rung": "base",
               "min": 4.5,
               "measured": 9.1,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "icon/status/error/bolder",
+          "path": "icon/status/error/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/600"
+            }
+          },
+          "description": "Use for icons that report an error or destructive state. Contrast 6.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-status-error-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 6.68,
               "meets": true
             }
           }
@@ -8819,6 +9143,33 @@
           }
         },
         {
+          "name": "icon/status/warning/bolder",
+          "path": "icon/status/warning/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/600"
+            }
+          },
+          "description": "Use for icons that report a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-status-warning-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 5.68,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "icon/status/info/base",
           "path": "icon/status/info/base",
           "type": "COLOR",
@@ -8839,6 +9190,33 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "base",
+              "min": 4.5,
+              "measured": 6.3,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "icon/status/info/bolder",
+          "path": "icon/status/info/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/infoScale/600"
+            }
+          },
+          "description": "Use for icons that report an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-status-info-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
               "min": 4.5,
               "measured": 6.3,
               "meets": true
@@ -24466,8 +24844,8 @@
   ],
   "contrast": {
     "$description": "Contrast classes are MEASURED against each token's own surface, across every brand, and the worst case is what the description states. A token absent from this summary carries no contrast sentence because the prominence ladder does not describe it — see build/contrast-contract.mjs.",
-    "measured": 80,
-    "meets": 64,
+    "measured": 94,
+    "meets": 78,
     "shortfall": [
       "Color::bg/brand/accent/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
       "Color::bg/brand/primary/bold — 2.46:1 vs ≥3:1 (\"bold\")",

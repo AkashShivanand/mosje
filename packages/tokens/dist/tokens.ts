@@ -823,21 +823,26 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "base": "#0373df"
+        "base": "#0373df",
+        "bolder": "#005eb9"
       }
     },
     "status": {
       "success": {
-        "base": "#004220"
+        "base": "#004220",
+        "bolder": "#00542b"
       },
       "error": {
-        "base": "#8b1f18"
+        "base": "#8b1f18",
+        "bolder": "#aa2f25"
       },
       "warning": {
-        "base": "#704b00"
+        "base": "#704b00",
+        "bolder": "#8b5e00"
       },
       "info": {
-        "base": "#0a5cc3"
+        "base": "#0a5cc3",
+        "bolder": "#0a5cc3"
       }
     }
   },
@@ -1050,16 +1055,20 @@ export const tokens = {
     },
     "status": {
       "success": {
-        "base": "#004220"
+        "base": "#004220",
+        "bolder": "#00542b"
       },
       "error": {
-        "base": "#8b1f18"
+        "base": "#8b1f18",
+        "bolder": "#aa2f25"
       },
       "warning": {
-        "base": "#704b00"
+        "base": "#704b00",
+        "bolder": "#8b5e00"
       },
       "info": {
-        "base": "#0a5cc3"
+        "base": "#0a5cc3",
+        "bolder": "#0a5cc3"
       }
     }
   },
@@ -1304,7 +1313,8 @@ export const tokens = {
       "base": "#1e2124",
       "subtle": "#3a3d41",
       "disabled": "rgba(30, 33, 36, 0.48)",
-      "inverse": "#ffffff"
+      "inverse": "#ffffff",
+      "subtler": "#6f757d"
     },
     "brand": {
       "primary": {
@@ -1314,16 +1324,20 @@ export const tokens = {
     },
     "status": {
       "success": {
-        "base": "#004220"
+        "base": "#004220",
+        "bolder": "#00542b"
       },
       "error": {
-        "base": "#8b1f18"
+        "base": "#8b1f18",
+        "bolder": "#aa2f25"
       },
       "warning": {
-        "base": "#704b00"
+        "base": "#704b00",
+        "bolder": "#8b5e00"
       },
       "info": {
-        "base": "#0a5cc3"
+        "base": "#0a5cc3",
+        "bolder": "#0a5cc3"
       }
     }
   },

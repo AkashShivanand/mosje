@@ -84,6 +84,8 @@ put(["text", "brand", "primary", "bolder"], "{color.primaryScale.600}", "Brand-c
 for (const [variant] of Object.entries(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
   put(["text", "status", variant, "base"], `{color.status.${src}}`, `${variant} message text`);
+  /** Same gap as the icon family: the ladder's 600 rung existed only for backgrounds. */
+  put(["text", "status", variant, "bolder"], `{color.${STATUS[variant]}.600}`, `${variant} text, bolder — the darker rung, for a label on a tinted status surface`);
 }
 // Link states — the estate had exactly one link token before this (--ds-link). GIGW expects
 // visited links to be distinguishable on public pages.
@@ -101,17 +103,49 @@ put(["icon", "neutral", "inverse"], "{color.text.onPrimary}", "Icon on a solid b
 put(["icon", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured icon");
 /** Pairs with `text/brand/primary/bolder` so a label and its leading glyph never disagree. */
 put(["icon", "brand", "primary", "bolder"], "{color.primaryScale.600}", "Brand-coloured icon that must pass AA on a tinted surface");
+/**
+ * The quiet ICON rung, and the twin of `text/neutral/subtler` — added 2026-08-26 because the
+ * library had no such thing and 14 glyphs had reached past the icon family into the raw stroke
+ * ramp to find one. The worst were the Date-Time Picker's prev/next chevrons at `stroke/300`:
+ * #ADB1B7 measures 2.0:1 on white, and those are ACTIVE controls, so 1.4.11 wants 3:1. This
+ * rung is 4.6:1 — quiet enough to read as secondary, contrasty enough to be a control.
+ */
+put(["icon", "neutral", "subtler"], "{color.neutralScale.500}", "Quietest glyph that still clears 1.4.11 on bg/neutral/base (4.6:1) — a secondary control's icon, a stepper chevron. Not for a DISABLED glyph: that is icon/neutral/disabled, which is allowed to fail because WCAG exempts inactive controls.");
 for (const variant of Object.keys(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
   put(["icon", "status", variant, "base"], `{color.status.${src}}`, `${variant} icon`);
+  /**
+   * The 600 rung of each status ramp, as an ICON. The bg family has had `bolder` since the
+   * ladder landed; text, icon and border never got it, so a status glyph that needed the
+   * darker step bound `ref/color/<status>/source` directly — 112 of them across the library.
+   */
+  put(["icon", "status", variant, "bolder"], `{color.${STATUS[variant]}.600}`, `${variant} icon, bolder — the darker rung, for a glyph on a tinted status surface where the base rung would not carry`);
 }
 
 // ---- border --------------------------------------------------------------
 put(["border", "neutral", "bolder", "hover"], "{color.border.controlHover}", "Form control border, hovered");
 put(["border", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured border");
+/**
+ * NO `border/neutral/bold` — and the reason is worth keeping, because it was attempted.
+ *
+ * The neutral border ramp runs subtle(100) · base(200) · bolder(400) with a hole at 300, and 35
+ * rules in the library were filling that hole from `ref/color/stroke/300`. Minting the rung
+ * under the ladder's own word for that step looked obvious. The contrast gate refused it:
+ * neutralScale/300 measures **2.15:1**, and the name `bold` promises a ≥3:1 class, so the token
+ * would have been lying about itself in its own name.
+ *
+ * That is the gate working. A rung name here is a CONTRAST PROMISE, not a position on a ramp,
+ * and 300 cannot keep this one. The 35 rules are therefore not a ramp gap: either they are
+ * decoration, in which case `border/neutral/base` is the honest home, or they are a real
+ * division, in which case they need `bolder/default` (400) to be perceivable at all. That is a
+ * decision about those rules, and it is recorded rather than papered over with a token.
+ */
+/** Pairs with `text|icon/brand/primary/bolder`, so an outlined control and its label agree. */
+put(["border", "brand", "primary", "bolder"], "{color.primaryScale.600}", "Brand border that must pass 1.4.11 on a tinted surface — the outlined counterpart of text/brand/primary/bolder");
 for (const variant of Object.keys(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
   put(["border", "status", variant, "base"], `{color.status.${src}}`, `${variant} border`);
+  put(["border", "status", variant, "bolder"], `{color.${STATUS[variant]}.600}`, `${variant} border, bolder — the darker rung, for an outline on a tinted status surface`);
 }
 
 // ---- focus / overlay -----------------------------------------------------
