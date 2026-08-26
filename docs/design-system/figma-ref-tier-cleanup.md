@@ -94,11 +94,22 @@ all unchanged.
 
 ### What Phase A deliberately left — it is a decision, not a swap
 
-**~400 BUTTON BACKGROUND fills.** There is no Tier-2 token at the same value: the library
-paints primary at `primaryScale/500` (#0373DF) while the code paints #005EB9 (600). Binding
-the Tier-3 action matrix `design.md` prescribes fixes the tier AND makes Figma agree with the
-code — but primary buttons visibly darken. Success and danger already agree (the library was
-right and the code caught up, v0.34.0), so only primary moves. That is a design call.
+**THE BUTTON, corrected.** An earlier reading of this said ~400 button *backgrounds* sat on
+the raw primary. That was wrong, and the error is worth naming: the audit counted every
+`ref/color/primary/source` binding on the Buttons page, and most of them were the ICON vectors
+inside buttons, not the button's own fill. The `Button` set's filled variants already bound
+`cmp/action/brand/primary/*/bg` and already painted the code's #005EB9.
+
+What actually remained was **`IconButton`, 15 fills**, and it was worse than a tier problem:
+every state painted the same `primaryScale/500`, so a **disabled** icon button rendered in
+full-strength brand blue. Now bound to the matrix — default #0373DF → **#005EB9**, hover
+→ #004B96, pressed → #003975, disabled → #C6C9CD.
+
+**~400 success and danger OUTLINED and TEXT bindings — still open, and deliberately.** Their
+border and label are on one variable across every state, so Hover, Pressed, Focused and
+Disabled are pixel-identical to Default. The matrix has four distinct values per state, so
+binding it is the correct fix — but it is a real visual change (the outlined success border
+would go from `#00542B` to `#659C77`), not a tier swap, and it deserves its own look.
 
 **~450 bindings with no Tier-2 home at all** — `ref/brand/samavesh/{ink,blue,green,orange,saffron}`
 and `ref/color/badge/beta`. Note the SAMAVESH mark's ink is `#1F2428`, which is NOT the text
@@ -167,11 +178,14 @@ Color cannot move with the brand.
   companion in **Palette** and alias the Color token to it. That mechanism already existed;
   the token simply never had a second value to trigger it. Navy now gets `#1E2024@0.50`.
   `focus/ring` is the precedent — a literal, but living in Palette with a value per brand.
-- `border/brand/primary/subtle` `#0373DF@0.45` — **open, and it is Figma-only**. It has no
-  entry in the token source, so it cannot be fixed by a push. On Navy it paints a Blue-brand
-  border, and Navy's primary is a different hue (`#244C7B`), so this one is visible. It needs
-  a human decision: author it in the source with both brand values, or delete it if nothing
-  binds it.
+- `border/brand/primary/subtle` `#0373DF@0.45` — **deleted**. Figma-only, no source entry, so
+  no push could reach it; on Navy it painted a Blue-brand border where Navy's primary is a
+  different hue entirely (`#244C7B`). It was **not unused** — a first sweep found 8 annotation
+  connectors on the Accessibility Bar documentation page bound to it. Deleting a bound variable
+  is precisely what strands a node on a ghost, so they were rebound first, to
+  `bg/brand/primary/bolder` — the token their own numbered pins already use, which makes a
+  leader line and its pin the same colour instead of a translucent near-miss. Zero dangling
+  aliases confirmed on a re-read.
 
 **The general rule this leaves behind:** an `rgba()` in `semantic.json` is a brand trap. If
 the colour it tints varies by brand, it needs a `colorModes.navy` value, or it silently
