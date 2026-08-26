@@ -348,7 +348,14 @@ export function Ticker({
       aria-label={isPlaying ? `Pause ${label}` : `Play ${label}`}
       aria-pressed={!isPlaying}
     >
-      <Icon name={isPlaying ? "pause" : "play_arrow"} size={24} aria-hidden />
+      {/* FILLED, not the estate's default stroke. At 24px on a solid brand
+          surface the outlined `pause` is two hairline rectangles — it reads as
+          a pair of thin outlines rather than a control, and it is the one
+          control WCAG 2.2.2 requires to be findable. The filled axis makes it
+          a solid mark at the same size and lifts it well clear of the 3:1
+          non-text contrast floor. Every other icon in the estate stays stroke;
+          this is a deliberate, local exception for a statutory control. */}
+      <Icon name={isPlaying ? "pause" : "play_arrow"} size={24} fill aria-hidden />
     </button>
   ) : null;
 

@@ -661,9 +661,42 @@
     }
   }
 
+  /* THE ROUTE OUT IS NOT DROPPED — THE ROW WRAPS.
+     The action used to be `display: none` below 1023px, which is the one drop
+     in this ladder that removes a DESTINATION rather than a convenience. Prev
+     and next are conveniences: the strip cycles on its own and the same items
+     are on the linked page. The label is a convenience: the section's
+     accessible name still carries it. But "View All" is the only way from this
+     strip to the archive behind it, and a citizen on a phone — the likeliest
+     person to want the list rather than one rotating headline — was the only
+     one who could not get there.
+
+     So the message takes the full width and the controls drop to a second
+     line beneath it. The bar has a MINIMUM height rather than a fixed one
+     precisely so it can grow, so this costs height it was already able to
+     spend, and it costs nothing at all above 1023px. Reflow (1.4.10) asks that
+     content REORGANISE rather than be lost; hiding the only link out was the
+     wrong reading of it. */
   @container sa-ticker (max-width: 1023px) {
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__body {
+      flex-wrap: wrap;
+      row-gap: var(--sa-stack-8);
+      padding-block: var(--sa-padding-12);
+    }
+
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__viewport {
+      flex: 1 1 100%;
+    }
+
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__nav {
+      order: 2;
+    }
+
+    /* Pushed to the far end of the second line, where the eye lands last —
+       the same place it sits on one line above this width. */
     .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action {
-      display: none;
+      order: 3;
+      margin-inline-start: auto;
     }
   }
 
