@@ -271,18 +271,51 @@
     /* A STRONG EASE-OUT, not Material's cubic-bezier(0.4, 0, 0.2, 1). That
        curve eases IN as well as out, so the first third of the travel is slow —
        and the first third is exactly when a citizen is looking hardest at a
-       message that just changed. This one starts at full speed and settles. */
-    animation: sa-ticker-enter 320ms cubic-bezier(0.23, 1, 0.32, 1);
+       message that just changed. This one starts at full speed and settles.
+
+       240ms AND 12px, DOWN FROM 320ms AND 32px. A citizen reading this page for
+       a minute sees the message change a dozen times, and at that frequency the
+       job of the movement is to say "this is new" and then get out of the way.
+       32px of travel over a third of a second announces itself every five
+       seconds; 12px is enough to register as arrival without becoming the thing
+       you watch. Keyframes rather than a transition because the item MOUNTS —
+       only the active message is in the DOM, so there is no previous value for
+       a transition to interpolate from. */
+    animation: sa-ticker-enter 240ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  /* IT ENTERS FROM THE SIDE IT CAME FROM.
+     The offset was a fixed +2rem, so a message summoned by PREVIOUS still slid
+     in from the right — the motion saying "forward" while the control said
+     "back". On a stepped component that is the difference between holding a
+     position and reshuffling.
+
+     Logical, not physical: in Urdu the estate runs `dir="rtl"`, where "next"
+     travels leftward, so the sign flips with the writing direction. */
+  .sa-ticker__item {
+    --sa-ticker-enter-from: 0.75rem;
+  }
+
+  .sa-ticker[data-step="back"] .sa-ticker__item {
+    --sa-ticker-enter-from: -0.75rem;
+  }
+
+  [dir="rtl"] .sa-ticker__item {
+    --sa-ticker-enter-from: -0.75rem;
+  }
+
+  [dir="rtl"] .sa-ticker[data-step="back"] .sa-ticker__item {
+    --sa-ticker-enter-from: 0.75rem;
   }
 
   @keyframes sa-ticker-enter {
     from {
       opacity: 0;
-      transform: translateX(2rem);
+      transform: translateX(var(--sa-ticker-enter-from));
     }
     to {
       opacity: 1;
-      transform: none;
+      transform: translateX(0);
     }
   }
 
