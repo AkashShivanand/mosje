@@ -121,6 +121,12 @@ import { Ticker, buttonClasses } from "@mosje/design-system";
  * no bold lead-in anywhere: that was the shape until 2026-08-25, and it drew
  * the same bold word down the whole rail wherever the categories repeat.
  *
+ * **The message enters from the side it came from.** `data-step` carries the
+ * direction, so Previous slides in from the left and Next from the right —
+ * and both flip under `dir="rtl"`, where "next" travels leftward. 240ms on a
+ * strong ease-out: seen a dozen times a minute, the movement should say
+ * "this is new" and then get out of the way.
+ *
  * **The action slot needs `inverseOutlined`.** The strip is a solid brand
  * surface, so a normal outlined button draws its border in a blue nobody can
  * see against it.

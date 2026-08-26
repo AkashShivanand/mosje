@@ -274,7 +274,49 @@ export default function TickerPage(): React.JSX.Element {
                 </section>
 
                 <section style={{ marginBottom: "var(--sa-section-48)" }}>
-                  <h2 id="divergences" style={h2Style}>4. Divergences from the Figma frame</h2>
+                  <h2 id="motion" style={h2Style}>5. Motion</h2>
+                  <p style={proseStyle}>
+                    Two mechanisms, each where it fits, and the same numbers in Figma as in
+                    the CSS.
+                  </p>
+                  <MatrixTable
+                    caption="What moves, and how"
+                    columns={["What", "Duration", "Curve", "Why that curve"]}
+                    rows={[
+                      ["The bar's message", "240ms", "cubic-bezier(0.23, 1, 0.32, 1)", "A strong ease-out. It is entering, so it should start at full speed and settle"],
+                      ["The panel's scroll", "interval x rows", "linear", "Any easing makes a marquee hesitate at the loop point"],
+                      ["Hover / focus states", "150ms", "ease", "Not entering or leaving — just a colour changing under the pointer"],
+                      ["The mark's arcs", "continuous", "ease-in-out", "They pulse outward and back, so they accelerate and settle at both ends"],
+                      ["Control press", "160ms", "ease-out", "0.94 scale — a control that changes nothing under the finger reads as not having registered"],
+                    ]}
+                  />
+                  <p style={{ ...proseStyle, marginTop: "var(--sa-stack-16)" }}>
+                    <strong style={strong}>The message enters from the side it came from.</strong>{" "}
+                    The offset was a fixed +2rem, so a message summoned by{" "}
+                    <em>Previous</em> still slid in from the right — the motion saying
+                    &quot;forward&quot; while the control said &quot;back&quot;. On a stepped
+                    component that is the difference between holding a position and reshuffling,
+                    and it is invisible in a still screenshot, which is why it survived several
+                    visual passes. It is{" "}
+                    <strong style={strong}>logical, not physical</strong>: the estate runs{" "}
+                    <code>dir=&quot;rtl&quot;</code> in Urdu, where &quot;next&quot; travels
+                    leftward, so the sign flips again with the writing direction.
+                  </p>
+                  <p style={{ ...proseStyle, marginTop: "var(--sa-stack-16)" }}>
+                    <strong style={strong}>240ms and 12px, down from 320ms and 32px.</strong> A
+                    citizen reading the page for a minute sees the message change a dozen times,
+                    and at that frequency the job of the movement is to say &quot;this is
+                    new&quot; and then get out of the way. It stays keyframes rather than a
+                    transition because the item <em>mounts</em> — only the active message is in
+                    the DOM, so there is no previous value to interpolate from. Under{" "}
+                    <code>prefers-reduced-motion</code> the travel goes and a 200ms fade remains:
+                    text that swaps with no transition at all is the jarring change the setting
+                    exists to prevent.
+                  </p>
+                </section>
+
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+                  <h2 id="divergences" style={h2Style}>6. Divergences from the Figma frame</h2>
                   <p style={proseStyle}>
                     Four, each recorded rather than hidden — a later reader will otherwise
                     &quot;fix&quot; them back.
@@ -304,7 +346,7 @@ export default function TickerPage(): React.JSX.Element {
                 </section>
 
                 <section style={{ marginBottom: "var(--sa-section-48)" }}>
-                  <h2 id="code-example" style={h2Style}>5. Code Example</h2>
+                  <h2 id="code-example" style={h2Style}>7. Code Example</h2>
                   <Playground
                     code={`<Ticker
   items={updates}
@@ -326,7 +368,7 @@ export default function TickerPage(): React.JSX.Element {
             content: (
               <div className="ds-prose">
                 <section style={{ marginBottom: "var(--sa-section-48)" }}>
-                  <h2 id="api" style={h2Style}>6. API Reference</h2>
+                  <h2 id="api" style={h2Style}>8. API Reference</h2>
                   <PropsTable
                     props={[
                       {
@@ -402,7 +444,7 @@ export default function TickerPage(): React.JSX.Element {
             content: (
               <div className="ds-prose">
                 <section style={{ marginBottom: "var(--sa-section-48)" }}>
-                  <h2 id="accessibility" style={h2Style}>7. Accessibility (A11y)</h2>
+                  <h2 id="accessibility" style={h2Style}>9. Accessibility (A11y)</h2>
                   <ul style={listStyle}>
                     <li>
                       <strong style={strong}>Pause, Stop, Hide (2.2.2):</strong> the strip
