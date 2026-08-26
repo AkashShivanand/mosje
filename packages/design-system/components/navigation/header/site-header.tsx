@@ -230,8 +230,12 @@ export function SiteHeader({
   const [scrolled, setScrolled] = React.useState(false);
   /** The condensed bar's search, expanded in place over the nav. */
   const [condSearchOpen, setCondSearchOpen] = React.useState(false);
+  /** The condensed nav has run out of room; fall back to the sheet. */
+  const [navOverflows, setNavOverflows] = React.useState(false);
   const headerRef = React.useRef<HTMLElement>(null);
   const condSearchRef = React.useRef<HTMLInputElement>(null);
+  const condInRef = React.useRef<HTMLDivElement>(null);
+  const condListRef = React.useRef<HTMLUListElement>(null);
   // Default to 100% for portal app-shells so the brand row aligns with full-width topbar,
   // or default to estate container variable for static website headers.
   const inner = {
@@ -348,6 +352,83 @@ export function SiteHeader({
     if (condSearchOpen) condSearchRef.current?.focus();
   }, [condSearchOpen]);
 
+  /**
+   * When the nav stops fitting the condensed bar, hand it to the sheet.
+   *
+   * Measured on 2026-08-26 at 1280px: seven items are 825px, and after the
+   * emblem, the search button and the CTA the 1200px column leaves 44px. One more
+   * top-level entry fits with 40px to spare, a second leaves 9px, and a third
+   * overlaps by 88 — items here neither wrap nor shrink, they run under the search
+   * button. An information architecture should not have to be measured against a
+   * masthead before it can change.
+   *
+   * The fallback is the sheet, not a "More" menu: three of these entries own
+   * mega-menus, which do not nest sensibly inside a flat dropdown, and the sheet
+   * already renders their columns properly at every width below 1024.
+   *
+   * WHY THIS CANNOT OSCILLATE. The requirement is read from the list's own
+   * `max-content` width, which does not depend on the container — and the burger's
+   * width is subtracted in BOTH states, so collapsing the nav (which reveals the
+   * burger) cannot make the nav fit again and flip it straight back.
+   */
+  React.useEffect(() => {
+    if (!condensed || !hasNav) {
+      setNavOverflows(false);
+      return;
+    }
+    const inner = condInRef.current;
+    const list = condListRef.current;
+    if (!inner || !list || typeof ResizeObserver === "undefined") return;
+    const GAP = 16;
+    const measure = () => {
+      const required = list.getBoundingClientRect().width;
+      /* The EFFECTIVE flex items, not `inner.children`. `.ds-hdr-brand__actions`
+         is `display: contents`, so its own box measures zero while the CTA inside
+         it takes ~110px and participates in the flex row as an item in its own
+         right. Counting the wrapper missed the button entirely, and the bar
+         overlapped by 20px at eight items before this check noticed. */
+      const flexItems: Element[] = [];
+      for (const child of Array.from(inner.children)) {
+        if (getComputedStyle(child).display === "contents") {
+          flexItems.push(...Array.from(child.children));
+        } else {
+          flexItems.push(child);
+        }
+      }
+      /* THE SHEET TRIGGER IS EXCLUDED FROM BOTH SIDES, and that is what makes this
+         stable rather than merely cautious. It is absent while the nav shows and
+         present once the nav collapses, so counting it would make the two states
+         compute different answers — the 16px of its gap alone is enough to flip a
+         borderline layout back and forth forever. Ignoring it entirely asks the
+         same question in both directions: "does the nav fit in the row it would
+         have to itself?" An earlier version reserved 56px unconditionally instead;
+         that was stable too, but it threw away a whole nav entry at 1280 to buy
+         something this gets for free. */
+      const laidOut = flexItems.filter(
+        (el) => !el.classList.contains("ds-hdr-burger") && el.getClientRects().length > 0,
+      );
+      let taken = 0;
+      for (const item of laidOut) {
+        if (item === list.parentElement) continue;
+        if (item.classList.contains("ds-hdr-cond__spacer")) continue;
+        taken += item.getBoundingClientRect().width;
+      }
+      /* clientWidth INCLUDES padding — 24px a side here, so 48px of room that does
+         not exist. Left in, the check reads 48px more space than the row has and
+         lets the nav overflow by up to that much before it notices. */
+      const cs = getComputedStyle(inner);
+      const content =
+        inner.clientWidth - parseFloat(cs.paddingLeft || "0") - parseFloat(cs.paddingRight || "0");
+      const available = content - taken - GAP * Math.max(0, laidOut.length - 1);
+      setNavOverflows(required > available);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(inner);
+    ro.observe(list);
+    return () => ro.disconnect();
+  }, [condensed, hasNav, nav]);
+
   // Nav dropdown: close on Escape, outside-click, or focus leaving the nav.
   const navRef = React.useRef<HTMLElement>(null);
   React.useEffect(() => {
@@ -423,7 +504,7 @@ export function SiteHeader({
      occupies at rest; see `collapseOnScroll` for why that is not negotiable. */
   const condensedBar = (
     <div className="ds-hdr-cond">
-      <div className="ds-hdr-cond__in" style={inner}>
+      <div className="ds-hdr-cond__in" style={inner} ref={condInRef}>
         <a
           className="ds-hdr-cond__home"
           href={homeHref}
@@ -460,7 +541,9 @@ export function SiteHeader({
         ) : (
           hasNav && (
             <nav className="ds-hdr-nav is-cond" aria-label="Primary" ref={navRef}>
-              <ul className="ds-hdr-nav__list">{navItems}</ul>
+              <ul className="ds-hdr-nav__list" ref={condListRef}>
+                {navItems}
+              </ul>
             </nav>
           )
         )}
@@ -499,6 +582,7 @@ export function SiteHeader({
       ref={headerRef}
       className={cn("ds-hdr", isSticky && "is-sticky", condensed && "is-scrolled", className)}
       data-variant={variant}
+      data-nav-overflow={navOverflows ? "true" : undefined}
     >
       {/* ── Tier 1: Accessibility bar (the shared DS component) ──
          Figma is the source of truth, so all four actions render: skip · font

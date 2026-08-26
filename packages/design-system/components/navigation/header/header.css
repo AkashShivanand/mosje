@@ -1360,11 +1360,33 @@
     }
   }
 
+  /* `max-content`, so the list's measured width IS the nav's requirement no matter
+     how much room the container is currently giving it. That is what
+     `SiteHeader`'s overflow measurement reads, and reading a shrunk container back
+     as "it fits" is the classic way this kind of check oscillates. */
   .ds-hdr-nav.is-cond .ds-hdr-nav__list {
+    width: max-content;
     max-width: none;
     padding: 0;
     gap: var(--sa-stack-2);
     justify-content: flex-start;
+  }
+
+  /* OUT OF ROOM: the nav stands down and the sheet takes over.
+     `visibility` and a zero basis rather than `display: none` — the list has to
+     stay measurable, or the check that put it here could never decide to bring it
+     back. `visibility: hidden` also takes it out of the accessibility tree and out
+     of the tab order, so it is not a hidden trap for a keyboard reader. */
+  .ds-hdr[data-nav-overflow="true"] .ds-hdr-nav.is-cond {
+    flex: 0 0 0;
+    width: 0;
+    visibility: hidden;
+  }
+
+  @media (min-width: 1024px) {
+    .ds-hdr[data-nav-overflow="true"] .ds-hdr-cond .ds-hdr-burger {
+      display: inline-grid;
+    }
   }
 
   .ds-hdr-nav.is-cond .ds-hdr-nav__link {
