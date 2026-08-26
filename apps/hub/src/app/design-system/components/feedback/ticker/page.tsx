@@ -2,7 +2,7 @@ import * as React from "react";
 import type { Metadata } from "next";
 import { TickerPlayground } from "./ticker-playground";
 import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, DocsTabs } from "@/components/design-system/docs-kit";
+import { PropsTable, DoDont, DocsTabs, MatrixTable } from "@/components/design-system/docs-kit";
 
 export const metadata: Metadata = {
   title: "Ticker - SAMAVESH Design System",
@@ -145,7 +145,48 @@ export default function TickerPage(): React.JSX.Element {
                 </section>
 
                 <section style={{ marginBottom: "var(--sa-section-48)" }}>
-                  <h2 id="states" style={h2Style}>3. States</h2>
+                  <h2 id="behaviour" style={h2Style}>3. Behaviour by width</h2>
+                  <p style={proseStyle}>
+                    The single most misread thing about this component: it does{" "}
+                    <strong style={strong}>not behave the same at every size</strong>, and the
+                    differences are deliberate rather than degradations. Both shapes reflow on
+                    their <em>own</em> width, not the viewport&apos;s — a bar in a 659px docs column
+                    behaves like a bar on a phone, because that is the only question that was ever
+                    meant.
+                  </p>
+                  <MatrixTable
+                    caption="The bar (horizontal)"
+                    columns={["Width", "Auto-advance", "Pause", "Prev / Next", "View All", "Name"]}
+                    rows={[
+                      ["1024px and up", "Yes, every 5s", "Yes", "Yes", "Button, same row", "Shown"],
+                      ["Below 1024px", "Yes, every 5s", "Yes", "Dropped", "Link, in the header", "Shown"],
+                      ["Reduced motion", "Never starts", "Yes", "Yes", "As above", "Shown"],
+                    ]}
+                  />
+                  <MatrixTable
+                    caption="The panel (vertical)"
+                    columns={["Width", "Auto-scroll", "Pause", "Scroll by hand", "Edge fade", "View All"]}
+                    rows={[
+                      ["640px and up", "Yes, continuous", "Yes", "n/a — it moves", "Yes, 20px", "Yes"],
+                      ["Below 640px", "No — a still list", "Removed", "Yes", "No", "Yes"],
+                      ["List fits its window", "No — nothing to scroll", "Removed", "No", "No", "Yes"],
+                      ["Reduced motion", "Never starts", "Removed", "Yes", "No", "Yes"],
+                    ]}
+                  />
+                  <p style={{ ...proseStyle, marginTop: "var(--sa-stack-16)" }}>
+                    Two rules explain every row above.{" "}
+                    <strong style={strong}>Nothing that cannot move may show a control that governs
+                    motion</strong> — a pause button on a still list advertises movement a citizen
+                    may be trying to escape, so the whole cluster goes.{" "}
+                    <strong style={strong}>Pause never drops while anything is moving</strong>,
+                    because trading a reflow failure for a 2.2.2 failure is not a trade. The phone
+                    is a still list for a third reason: there is no hover to stop it with, so a
+                    moving row would be a moving tap target.
+                  </p>
+                </section>
+
+                <section style={{ marginBottom: "var(--sa-section-48)" }}>
+                  <h2 id="states" style={h2Style}>4. States</h2>
                   <ul style={listStyle}>
                     <li>
                       <strong style={strong}>Nothing is truncated, in either shape.</strong> Both
