@@ -1388,6 +1388,7 @@
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDark-900);
   --sa-text-link-brand-default: var(--sa-ref-color-primaryRamp-navy-500);
   --sa-focus-ring: rgba(0, 51, 102, 0.48);
+  --sa-overlay-neutral-boldest: rgba(30, 32, 36, 0.5);
 
   /* re-resolve every alias whose source changed in this block */
   --sa-border-neutral-bolder-hover: var(--sa-color-border-controlHover);

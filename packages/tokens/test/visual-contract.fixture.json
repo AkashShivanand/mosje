@@ -2062,7 +2062,7 @@
     "--sa-on-bg-status-warning-subtler": "#1e2124",
     "--sa-overlay-brand-active": "rgba(255, 255, 255, 0.16)",
     "--sa-overlay-brand-hover": "rgba(255, 255, 255, 0.08)",
-    "--sa-overlay-neutral-boldest": "rgba(30, 33, 36, 0.5)",
+    "--sa-overlay-neutral-boldest": "rgba(30, 32, 36, 0.5)",
     "--sa-padding-0": "0px",
     "--sa-padding-12": "12px",
     "--sa-padding-120": "120px",

@@ -69,17 +69,43 @@ which is what a value-preserving remap should look like.
   is a separate decision.
 - **The five separator pages** (`------`). No content.
 
-## 3 · ~2,000 colour bindings still reach `ref/color/*` — OPEN, and it needs a designer
+## 3 · The colour bindings — 4,552 swapped, the rest is a design decision
 
-The remainder is colour, and it is not mechanical. `ref/color/ink/dark`,
-`ref/color/{primary,danger,success,neutral}/source`, `ref/color/stroke/100` and
-`ref/brand/samavesh/*` are hand-made library variables from before the token pipeline, and
-**none of them has a Tier-2 alias to fall back on**. Choosing the right target means
-deciding, per component and per state, whether a fill is `cmp/action/*`, `bg/*`, `text/*`
-or `border/*` — the same judgement the Button's 135 filled variants already got by hand.
+**Phase A ran on 2026-08-26 across every page: 4,552 bindings swapped, zero failures.** The
+rule is property-driven and the same shape as the spacing one — what a colour IS depends on
+where it is painted:
 
-Buttons alone holds 988 of these. A script could guess; a wrong guess would be a silent
-visual change in a shared library, which is worse than the debt it removes.
+| ref | on TEXT | on a vector | on a stroke | on a container fill |
+|---|---|---|---|---|
+| `ink/dark`, `neutral/source` | `text/neutral/base` | `icon/neutral/base` | — | no target |
+| `ink/hint` | `text/neutral/subtle` | `icon/neutral/subtle` | — | no target |
+| `primary/source` | `text/brand/primary/base` | `icon/brand/primary/base` | `border/brand/primary/base` | **Phase B** |
+| `stroke/50` | — | — | no target | `bg/neutral/subtler` |
+| `stroke/100` | — | — | `border/neutral/subtle` | `bg/neutral/subtle` |
+| `stroke/200` | — | — | `border/neutral/base` | `bg/neutral/bold` |
+
+Every target was checked to be **alias-backed and brand-following** before use, and every
+swap was value-checked in BOTH brand modes — a swap onto a frozen literal would have been a
+regression dressed as a cleanup. Paints were rebound with `setBoundVariableForPaint` and the
+array reassigned; a mutated-in-place paint array silently does nothing.
+
+Verified by rendering Button variants before and after: filled, outlined, text and neutral
+all unchanged.
+
+### What Phase A deliberately left — it is a decision, not a swap
+
+**~400 BUTTON BACKGROUND fills.** There is no Tier-2 token at the same value: the library
+paints primary at `primaryScale/500` (#0373DF) while the code paints #005EB9 (600). Binding
+the Tier-3 action matrix `design.md` prescribes fixes the tier AND makes Figma agree with the
+code — but primary buttons visibly darken. Success and danger already agree (the library was
+right and the code caught up, v0.34.0), so only primary moves. That is a design call.
+
+**~450 bindings with no Tier-2 home at all** — `ref/brand/samavesh/{ink,blue,green,orange,saffron}`
+and `ref/color/badge/beta`. Note the SAMAVESH mark's ink is `#1F2428`, which is NOT the text
+ink `#1E2124`: they are different colours that look identical in review. These need tokens
+minted in the source first.
+
+**15 `stroke/50` strokes** — the neutral border family has no rung at 50.
 
 ### The font-family pass — closed, and it taught the audit a lesson
 
@@ -111,6 +137,45 @@ binding on all seven Filled styles**. They still rendered at Light, so nothing l
 wrong — only a binding audit caught it. Re-binding the weight afterwards is safe; the
 axis survives, confirmed by rendering before and after. Order of operations: create,
 apply FILL, re-bind the weight.
+
+## 3b · The colour audit — what a raw hex does when the mode changes
+
+The question that prompted this: some Tier-2/Tier-3 colours hold a **raw hex** instead of an
+alias. What happens on a brand switch?
+
+**First, the shape of the system.** The **Color** collection has exactly ONE mode
+("Default"). It is not brand-aware at all. Every brand switch happens by *aliasing* into
+**Palette**, which carries `Blue` and `Navy`. 361 of 481 Color variables alias, and those
+follow the brand correctly.
+
+**So a literal in Color is frozen** — permanently, at whatever brand was current when it was
+typed. 120 of 481 are literals. Classified:
+
+| class | count | verdict |
+|---|---|---|
+| fully transparent `#000000@0` | 40 | correct — a "no fill" sentinel has no brand |
+| white at alpha (the `inverse` family) | 55 | correct — white on any brand is the point |
+| chart categoricals + `cmp/badge/beta/bg` | 23 | correct, and worth stating: a category must NOT change hue when the brand changes, or last month's chart stops matching this month's |
+| **translucent tints of brand-aware colours** | **2** | **defects** |
+
+The two defects are the interesting ones, and they share one cause: **Figma cannot express
+"alias plus alpha"**. A translucent token can therefore only be a literal — and a literal in
+Color cannot move with the brand.
+
+- `overlay/neutral/boldest` `#1E2124@0.50` — **fixed**. It has a code counterpart, so the fix
+  is at the source: authoring a `navy` override makes the exporter emit a brand-aware
+  companion in **Palette** and alias the Color token to it. That mechanism already existed;
+  the token simply never had a second value to trigger it. Navy now gets `#1E2024@0.50`.
+  `focus/ring` is the precedent — a literal, but living in Palette with a value per brand.
+- `border/brand/primary/subtle` `#0373DF@0.45` — **open, and it is Figma-only**. It has no
+  entry in the token source, so it cannot be fixed by a push. On Navy it paints a Blue-brand
+  border, and Navy's primary is a different hue (`#244C7B`), so this one is visible. It needs
+  a human decision: author it in the source with both brand values, or delete it if nothing
+  binds it.
+
+**The general rule this leaves behind:** an `rgba()` in `semantic.json` is a brand trap. If
+the colour it tints varies by brand, it needs a `colorModes.navy` value, or it silently
+ships the Blue value to every other brand.
 
 ## 4 · The guardrail, so this cannot come back the same way
 

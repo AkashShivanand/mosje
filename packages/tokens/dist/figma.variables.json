@@ -6738,6 +6738,27 @@
           "codeSyntax": {
             "WEB": "var(--sa-focus-ring)"
           }
+        },
+        {
+          "name": "overlay/neutral/boldest",
+          "path": "overlay/neutral/boldest",
+          "role": "brand-source",
+          "type": "COLOR",
+          "status": "existing",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "rgba(30, 33, 36, 0.5)"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "rgba(30, 32, 36, 0.5)"
+            }
+          },
+          "description": "Brand-aware source for Theme::overlay/neutral/boldest. Generated because that token’s light value is a literal that differs between Blue and Navy; without it the Navy brand is lost.",
+          "codeSyntax": {
+            "WEB": "var(--sa-overlay-neutral-boldest)"
+          }
         }
       ]
     },
@@ -15036,11 +15057,12 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.5)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "overlay/neutral/boldest"
             }
           },
-          "description": "Use for the scrim behind a modal or drawer — it suppresses the page beneath rather than carrying content.",
+          "description": "The scrim behind a modal — neutral 800 at 50%. The NAVY line below is structural, not stylistic: Figma cannot express \"alias plus alpha\", so a translucent token can only be a LITERAL, and a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed. Without it, Navy inherited the BLUE neutral (#1E2124 instead of #1E2024) and the scrim was quietly the wrong brand — invisible in review, wrong in every Navy screenshot. Authoring the second value is what makes the exporter generate a brand-aware companion in Palette (which does carry the brand modes) and alias this token to it. Every other rgba() in this file is exposed to the same trap.",
           "codeSyntax": {
             "WEB": "var(--sa-overlay-neutral-boldest)"
           },

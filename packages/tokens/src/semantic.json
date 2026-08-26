@@ -1520,12 +1520,14 @@
     "neutral": {
       "boldest": {
         "$value": "rgba(30, 33, 36, 0.5)",
+        "$description": "The scrim behind a modal \u2014 neutral 800 at 50%. The NAVY line below is structural, not stylistic: Figma cannot express \"alias plus alpha\", so a translucent token can only be a LITERAL, and a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed. Without it, Navy inherited the BLUE neutral (#1E2124 instead of #1E2024) and the scrim was quietly the wrong brand \u2014 invisible in review, wrong in every Navy screenshot. Authoring the second value is what makes the exporter generate a brand-aware companion in Palette (which does carry the brand modes) and alias this token to it. Every other rgba() in this file is exposed to the same trap.",
         "$extensions": {
           "mosje": {
             "themes": {
               "dark": "rgba(0, 0, 0, 0.6)"
             },
             "colorModes": {
+              "navy": "rgba(30, 32, 36, 0.5)",
               "dbim-blue": "rgba(21, 2, 2, 0.5)",
               "dbim-burgundy": "rgba(21, 2, 2, 0.5)",
               "dbim-purple": "rgba(21, 2, 2, 0.5)",
