@@ -43,18 +43,35 @@ const orientation = instance.getEnum("Direction", {
 });
 
 const label = instance.getString("Label");
-const title = instance.getString("Title");
-const description = instance.getBoolean("Show Description")
-  ? instance.getString("Description")
-  : "";
-const actionLabel = instance.getString("Action Label");
-const showAction = instance.getBoolean("Show Action");
 
-// `items` is DATA, not a slot — there is no <TickerItem> export and there must
-// not be. One Figma frame can only draw one message; the array is what makes
-// the strip a ticker rather than a banner, so the example seeds a realistic
-// pair rather than mirroring the single frame back.
-const item = `{ id: "1", title: "${title}", description: "${description}", href: "/website/notices", linkLabel: "Learn More" }`;
+/**
+ * `Label` IS THE ONLY TEXT PROPERTY ON THE SET, AND THAT IS CORRECT.
+ *
+ * This template used to read `Title`, `Description`, `Show Description`,
+ * `Action Label` and `Show Action` as well. **None of the five existed.** They
+ * are properties of the NESTED parts — `Ticker / Row` and `Ticker / Action`
+ * — and were never exposed on the parent, so every one of
+ * those reads resolved to nothing.
+ *
+ * The sixth was worse than nothing. The parent's only text property was *named*
+ * `Title` while it drove the PLINTH LABEL, so reading a property by that name
+ * returned the strip's name — the emitted snippet put "What's New" into the
+ * first notice's headline while leaving the label blank.
+ * The property is named `Label` now,
+ * which is what it has always actually been, and its default is the code
+ * default rather than a third string nobody ships.
+ *
+ * Exposing the nested properties would be the wrong repair. `items` is DATA,
+ * not a slot — one Figma frame draws one message, and the array is what makes
+ * this a ticker rather than a banner — so the example seeds a realistic pair.
+ * The action is a route the consuming site owns, so it stays a slot.
+ */
+
+// Seeded, not mirrored from the frame — see above.
+const items = [
+  '{ id: "1", title: "Expression of Interest for Rate of Interest on Fixed Deposit", description: "Notice", date: "15 May 2026", dateTime: "2026-05-15", href: "/website/notices" }',
+  '{ id: "2", title: "Medical Aid Scheme for the Financial Year 2025-26", description: "Notice", date: "7 Dec 2025", dateTime: "2025-12-07", href: "/website/notices" }',
+].join(",\n        ");
 
 // `rows` is emitted only for the panel: in the bar it is meaningless, and a
 // prop that does nothing is a prop somebody will later try to make do something.
@@ -67,16 +84,13 @@ export default {
       orientation="${orientation}"${rowsProp}
       linkAs={Link}
       items={[
-        ${item},
-        { id: "2", title: "New Opportunity!", description: "Ministry launches ‘Skill India Connect’.", href: "/website/notices", linkLabel: "Learn More" },
+        ${items},
       ]}
-      ${showAction
-        ? `action={
+      action={
         <Link href="/website/notices" className={buttonClasses("primary", "inverseOutlined", "sm")}>
-          ${actionLabel}
+          View All Updates
         </Link>
-      }`
-        : ""}
+      }
     />
   `,
   imports: ['import { Ticker, buttonClasses } from "@mosje/design-system"'],

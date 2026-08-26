@@ -15,7 +15,22 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  /**
+   * TWO LOCALLY, NOT "HALF THE CORES".
+   *
+   * `undefined` gives Playwright half the CPUs — four here — and all four point
+   * at ONE Next dev server that compiles routes on demand. Measured: the ticker
+   * suite passes 13/13 in 27s at four workers about two runs in three, and when
+   * it does not, the run takes 60-140s and fails 1-10 tests with timeouts
+   * scattered across unrelated specs. Serially it passes 13/13 every time, each
+   * test in 2-8s. That is contention, not flakiness in the specs — the same
+   * assertions pass instantly when the server is not being asked for four pages
+   * at once.
+   *
+   * Two keeps most of the parallel speed without starving the server. Raising
+   * it means chasing failures that say nothing about the code.
+   */
+  workers: process.env.CI ? 1 : 2,
   reporter: "html",
   use: {
     baseURL: "http://localhost:3007",

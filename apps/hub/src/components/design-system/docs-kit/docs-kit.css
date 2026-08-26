@@ -295,3 +295,57 @@
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: none; }
 }
+
+/* ── MatrixTable ─────────────────────────────────────────────────────────
+   A behaviour-by-condition grid. The scroll wrapper is what keeps a six-column
+   matrix from pushing the page sideways on a phone — the table scrolls inside
+   its own box rather than the document scrolling under it, which is the
+   difference between a wide table and a WCAG 1.4.10 failure. */
+.matrix-table__scroll {
+  overflow-x: auto;
+  margin-top: var(--sa-stack-16);
+}
+
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--sa-type-body-2-size);
+}
+
+.matrix-table__caption {
+  text-align: start;
+  font-size: var(--sa-type-title-1-size);
+  font-weight: 600;
+  color: var(--sa-text-neutral-base);
+  padding-bottom: var(--sa-stack-8);
+}
+
+.matrix-table th {
+  text-align: start;
+  padding: var(--sa-padding-12);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  color: var(--sa-text-neutral-base);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* The column headings are the quieter of the two header kinds: a reader scans
+   DOWN the row headings to find their case, and only then across. */
+.matrix-table thead th {
+  font-size: var(--sa-type-label-3-size);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sa-text-brand-primary-base);
+  background: var(--sa-bg-neutral-subtler);
+}
+
+.matrix-table td {
+  padding: var(--sa-padding-12);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  color: var(--sa-text-neutral-subtle);
+  vertical-align: top;
+}
+
+.matrix-table tbody tr:last-child :is(th, td) {
+  border-bottom: none;
+}

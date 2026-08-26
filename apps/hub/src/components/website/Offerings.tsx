@@ -321,8 +321,17 @@ export function Offerings() {
                 rail matches it, and the panel scrolls whatever does not fit.
                 Below `lg` the grid is one column and it returns to normal flow,
                 where standing at its own height is the right answer. */}
-            <div className="lg:relative lg:col-span-4">
-              <div className="lg:absolute lg:inset-0">
+            {/* BELOW `lg` THE RAIL MUST BOUND ITS OWN HEIGHT, or `fill` has
+                nothing to fill against and grows to fit every notice: measured
+                at 2,016px on a 834px viewport and 2,936px on a 390px one — a
+                wall of 24 headlines with no pause control, because a list that
+                never overflows its window is never found to be scrolling. It
+                is the precondition the panel's own documentation states, and
+                this rail was breaking it at exactly the widths nobody checked.
+                A fixed height here restores the overflow, and with it the
+                scroll and the control that stops it. */}
+            <div className="relative h-[28rem] sm:h-[32rem] lg:col-span-4 lg:h-auto">
+              <div className="absolute inset-0">
                 <LatestUpdates />
               </div>
             </div>
