@@ -105,18 +105,40 @@ every state painted the same `primaryScale/500`, so a **disabled** icon button r
 full-strength brand blue. Now bound to the matrix — default #0373DF → **#005EB9**, hover
 → #004B96, pressed → #003975, disabled → #C6C9CD.
 
-**~400 success and danger OUTLINED and TEXT bindings — still open, and deliberately.** Their
-border and label are on one variable across every state, so Hover, Pressed, Focused and
-Disabled are pixel-identical to Default. The matrix has four distinct values per state, so
-binding it is the correct fix — but it is a real visual change (the outlined success border
-would go from `#00542B` to `#659C77`), not a tier swap, and it deserves its own look.
+**THE OUTLINED AND TEXT STATES — closed 2026-08-26, 639 bindings.** Border and label had sat
+on ONE variable across every state, so Hover, Pressed, Focused and Disabled were
+pixel-identical to Default while the code rendered four distinct values. Every variant is now
+bound to `cmp/action/<family>/<sub-type>/<state>/<slot>`, derived from its own variant name:
+Filled→primary, Outlined→secondary, Text→tertiary, Tonal→tonal; Pressed→active;
+**Focused→default**, because the code renders focus as the default colours plus a ring.
 
-**~450 bindings with no Tier-2 home at all** — `ref/brand/samavesh/{ink,blue,green,orange,saffron}`
-and `ref/color/badge/beta`. Note the SAMAVESH mark's ink is `#1F2428`, which is NOT the text
-ink `#1E2124`: they are different colours that look identical in review. These need tokens
-minted in the source first.
+The visible movement, all of it toward what the code already paints:
 
-**15 `stroke/50` strokes** — the neutral border family has no rung at 50.
+| | default | hover | pressed | disabled |
+|---|---|---|---|---|
+| outlined border (success) | `#00542B` → `#659C77` | → `#3B8155` | → `#046A38` | → `#C6C9CD` |
+| label (success) | `#00542B` → `#004220` | unchanged | → `#003318` | → `#1E2124@0.48` |
+| label (primary) | `#0373DF` → `#004B96` | unchanged | → `#003975` | → `#1E2124@0.48` |
+
+**And one defect nobody had reported: the Neutral text and outlined buttons were painting
+their labels BRAND BLUE** (`#0373DF`), 48 bindings. A neutral action is the one that must
+carry no semantic charge — `design.md` argues exactly this about the variant's existence —
+and it was the loudest colour in the set. Now ink (`#1E2124`) and subtle ink on outlined.
+
+**Zero `ref/color/*` bindings remain anywhere on the Buttons page.**
+
+### What is left, counted rather than estimated
+
+A full sweep on 2026-08-26 puts the remaining `ref/color/*` and `ref/brand/*` bindings at
+**2,986**, and they are not one problem:
+
+| population | count | why it is still there |
+|---|---|---|
+| `ref/brand/samavesh/*` | ~1,700 | the SAMAVESH mark's own colours — Portal Login alone holds 1,036. No Tier-2 home exists; the tokens must be minted in the source first, and named. Its ink `#1F2428` is NOT the text ink `#1E2124` — two colours that look identical in review |
+| `ref/color/stroke/{300,400,600}` | ~130 | the same value-preserving swap as 50/100/200, simply not mapped yet |
+| `ref/color/{primary,success,danger}/source` outside buttons | ~500 | charts, list rows, chips, steppers, avatars. A fill has a value-preserving target (`bg/status/*/bolder`); a LABEL in the same colour does not, so the two halves need separate answers |
+| `ref/color/ink/primary`, `ink/light` | ~120 | no Tier-2 token resolves to the same value in both brands |
+| `stroke/50` on strokes | 15 | the neutral border family has no rung at 50 |
 
 ### The font-family pass — closed, and it taught the audit a lesson
 
