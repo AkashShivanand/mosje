@@ -604,9 +604,11 @@ export const tokens = {
       "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
       "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
       "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
-      "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+      "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace",
+      "icon": "\"Material Symbols Rounded\", sans-serif"
     },
     "weight": {
+      "light": 300,
       "regular": 400,
       "medium": 500,
       "semibold": 600,
@@ -763,7 +765,8 @@ export const tokens = {
     "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
     "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
     "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
-    "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+    "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace",
+    "icon": "\"Material Symbols Rounded\", sans-serif"
   },
   "shadow": {
     "none": "none",

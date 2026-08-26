@@ -749,10 +749,18 @@
       "mono": {
         "$description": "CODE AND TECHNICAL STRINGS ONLY — token names, CSS snippets, file paths in the design-system docs. NOT for numbers, amounts or reference numbers: those want `font-variant-numeric: tabular-nums` on Noto Sans, which aligns digits down a column while keeping them in the same typeface as the text beside them. Switching a data column to a monospace face is the clumsier fix and looks like a different design. The estate already does this correctly in the Aadhaar/PAN field, the charts, the SLA indicator and the shared DataTable. DELIBERATELY a system stack: `ui-monospace` resolves to the platform's own mono (SF Mono, Cascadia, Roboto Mono) — all well-drawn, all disambiguating 0/O and 1/l/I, and already on the device. A webfont here would download on every page to style sample code on a handful of documentation pages, which on a low-bandwidth government audience is not a trade worth making. IBM Plex Mono was set here briefly and reverted for that reason.",
         "$value": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+      },
+      "icon": {
+        "$description": "The ICON face \u2014 Material Symbols Rounded, the official SAMAVESH icon system. It is here for the same reason every other family is: a Material Symbols glyph is TEXT, not artwork, so its family is a typographic decision the design system owns rather than a constant three files happen to agree on. Before this token the name was a literal in `icons.css` (twice) and in all seven Figma `Icon/*` text styles, which is four places to change and no way to prove they still match. The stack is the family plus a generic, so a failed webfont falls back to a real face rather than to nothing; Figma takes only the first entry (`primaryFontFamily`), which is exactly the family name its picker resolves. NOT a Tier-2 role \u2014 bind `font/icon` from anything that renders.",
+        "$value": "\"Material Symbols Rounded\", sans-serif"
       }
     },
     "weight": {
       "$type": "fontWeight",
+      "light": {
+        "$description": "300 \u2014 the ICON cut, and the only place the estate uses it. `<Icon>` defaults to a weight of 300 and every Figma `Icon/*` text style is Material Symbols Rounded / Light; this is the one token both read, so the two cannot drift apart. Figma has no numeric weight, so the build projects this to the style name \"Light\" (see FIGMA_FONT_STYLES in build/formats/figma-variables.mjs). NOT for prose \u2014 300 on Noto Sans at body sizes fails the contrast the ramp is drawn for; text stays on regular/medium/semibold/bold.",
+        "$value": 300
+      },
       "regular": {
         "$value": 400
       },

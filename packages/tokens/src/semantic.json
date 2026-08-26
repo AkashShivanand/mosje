@@ -1320,6 +1320,11 @@
       "$type": "fontFamily",
       "$value": "{font.family.mono}",
       "$description": "Tabular and code contexts. A system stack, deliberately not a webfont."
+    },
+    "icon": {
+      "$type": "fontFamily",
+      "$value": "{font.family.icon}",
+      "$description": "Material Symbols Rounded \u2014 the face every icon glyph renders in. Bind this from `.material-symbols-rounded`, never the Tier-1 primitive. The `@font-face` rule in icons.css still names the family literally because a font-face descriptor cannot take a custom property; that literal is the font LOADER, this token is what everything else reads."
     }
   },
   "leading": {

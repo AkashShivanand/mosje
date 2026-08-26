@@ -18,9 +18,9 @@
       "existing": 472
     },
     "Type": {
-      "total": 99,
+      "total": 102,
       "new": 0,
-      "existing": 99
+      "existing": 102
     },
     "Radius": {
       "total": 25,
@@ -17384,6 +17384,86 @@
           }
         },
         {
+          "name": "ref/font/family/icon",
+          "path": "font/family/icon",
+          "type": "STRING",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "STRING",
+              "value": "Material Symbols Rounded"
+            },
+            "Website · Tablet": {
+              "type": "STRING",
+              "value": "Material Symbols Rounded"
+            },
+            "Website · Mobile": {
+              "type": "STRING",
+              "value": "Material Symbols Rounded"
+            },
+            "Portal · Desktop": {
+              "type": "STRING",
+              "value": "Material Symbols Rounded"
+            },
+            "Portal · Tablet": {
+              "type": "STRING",
+              "value": "Material Symbols Rounded"
+            },
+            "Portal · Mobile": {
+              "type": "STRING",
+              "value": "Material Symbols Rounded"
+            }
+          },
+          "description": "The ICON face — Material Symbols Rounded, the official SAMAVESH icon system. It is here for the same reason every other family is: a Material Symbols glyph is TEXT, not artwork, so its family is a typographic decision the design system owns rather than a constant three files happen to agree on. Before this token the name was a literal in `icons.css` (twice) and in all seven Figma `Icon/*` text styles, which is four places to change and no way to prove they still match. The stack is the family plus a generic, so a failed webfont falls back to a real face rather than to nothing; Figma takes only the first entry (`primaryFontFamily`), which is exactly the family name its picker resolves. NOT a Tier-2 role — bind `font/icon` from anything that renders. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "codeSyntax": {
+            "WEB": "var(--sa-ref-font-family-icon)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "ref",
+            "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "ref/font/weight/light",
+          "path": "font/weight/light",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "STRING",
+              "value": "Light"
+            },
+            "Website · Tablet": {
+              "type": "STRING",
+              "value": "Light"
+            },
+            "Website · Mobile": {
+              "type": "STRING",
+              "value": "Light"
+            },
+            "Portal · Desktop": {
+              "type": "STRING",
+              "value": "Light"
+            },
+            "Portal · Tablet": {
+              "type": "STRING",
+              "value": "Light"
+            },
+            "Portal · Mobile": {
+              "type": "STRING",
+              "value": "Light"
+            }
+          },
+          "description": "300 — the ICON cut, and the only place the estate uses it. `<Icon>` defaults to a weight of 300 and every Figma `Icon/*` text style is Material Symbols Rounded / Light; this is the one token both read, so the two cannot drift apart. Figma has no numeric weight, so the build projects this to the style name \"Light\" (see FIGMA_FONT_STYLES in build/formats/figma-variables.mjs). NOT for prose — 300 on Noto Sans at body sizes fails the contrast the ramp is drawn for; text stays on regular/medium/semibold/bold. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "codeSyntax": {
+            "WEB": "var(--sa-ref-font-weight-light)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "ref",
+            "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
           "name": "ref/font/weight/regular",
           "path": "font/weight/regular",
           "type": "FLOAT",
@@ -21676,6 +21756,52 @@
           "description": "Tabular and code contexts. A system stack, deliberately not a webfont.",
           "codeSyntax": {
             "WEB": "var(--sa-font-mono)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "font/icon",
+          "path": "font/icon",
+          "type": "STRING",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            },
+            "Website · Tablet": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            },
+            "Website · Mobile": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            },
+            "Portal · Desktop": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            },
+            "Portal · Tablet": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            },
+            "Portal · Mobile": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            }
+          },
+          "description": "Material Symbols Rounded — the face every icon glyph renders in. Bind this from `.material-symbols-rounded`, never the Tier-1 primitive. The `@font-face` rule in icons.css still names the family literally because a font-face descriptor cannot take a custom property; that literal is the font LOADER, this token is what everything else reads.",
+          "codeSyntax": {
+            "WEB": "var(--sa-font-icon)"
           },
           "status": "existing",
           "$extensions": {
