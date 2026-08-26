@@ -9,10 +9,45 @@ import { test, expect } from "@playwright/test";
 
 const PANEL = '.sa-ticker[data-orientation="vertical"]';
 
+/**
+ * Wait until a locator's box stops moving.
+ *
+ * `/website` keeps loading below the fold long after the panel is visible, and
+ * each of those loads reflows the column the panel sits in. Playwright refuses
+ * to dispatch a hover until the target is "stable", so a hover races the
+ * reflow and times out against a component that is behaving perfectly — 1 run
+ * in 3 locally. `networkidle` does not fix it, because the movement is layout
+ * settling rather than requests finishing.
+ *
+ * Nothing is ever actually covering the row: with the page settled,
+ * `elementFromPoint` at the row's centre returns the row's own title. So this
+ * waits for the geometry rather than forcing the interaction, which would hide
+ * a real overlay if one ever appeared.
+ */
+async function settled(locator: import("@playwright/test").Locator) {
+  let previous = "";
+  for (let i = 0; i < 40; i++) {
+    const box = await locator.boundingBox();
+    const current = JSON.stringify(box);
+    if (box && current === previous) return;
+    previous = current;
+    await locator.page().waitForTimeout(100);
+  }
+}
+
 test.describe("Latest Updates — readability", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/website");
     await expect(page.locator(PANEL)).toBeVisible();
+    // WAIT FOR THE PAGE TO STOP MOVING BEFORE TOUCHING ANYTHING.
+    // /website keeps loading below the fold long after the panel is visible,
+    // and every one of those loads reflows the column the panel sits in. A
+    // hover then races the reflow: Playwright refuses to dispatch until the
+    // target is "stable", the target keeps moving, and the test times out
+    // against a component that is behaving perfectly. Verified by measuring —
+    // with the page settled, `elementFromPoint` at the row's centre returns
+    // the row's own title, so nothing is ever actually covering it.
+    await page.waitForLoadState("networkidle");
   });
 
   test("nothing is truncated", async ({ page }) => {
@@ -71,6 +106,7 @@ test.describe("Latest Updates — readability", () => {
     await expect(page.locator(`${PANEL} .sa-ticker__viewport`)).toHaveAttribute("data-paused", "");
 
     const row = page.locator(`${PANEL} .sa-ticker__rowlink`).first();
+    await settled(row);
     await row.hover();
     await expect(row.locator(".sa-ticker__rowtitle")).toHaveCSS("text-decoration-line", "none");
     const bg = await row.evaluate((el) => getComputedStyle(el).backgroundColor);
