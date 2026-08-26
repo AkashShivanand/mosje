@@ -530,12 +530,16 @@
     background-color: var(--sa-color-transparent-white-48);
   }
 
-  .sa-ticker__rowtitle {
+  /* Grid placement is the PANEL's business — its row is a two-column grid so
+     the marker can hang. The bar renders the same two spans in a flex column,
+     where these would be inert; scoping them says so rather than relying on
+     them being harmlessly ignored. */
+  .sa-ticker__rowlink .sa-ticker__rowtitle {
     grid-column: 2;
     grid-row: 1;
   }
 
-  .sa-ticker__rowmeta {
+  .sa-ticker__rowlink .sa-ticker__rowmeta {
     grid-column: 2;
     grid-row: 2;
   }
@@ -576,6 +580,15 @@
     line-height: var(--sa-type-body-3-lh);
     letter-spacing: var(--sa-type-body-tracking);
     opacity: 0.8;
+  }
+
+  /* The bar's trailing call to action. Underlined because it sits INSIDE a
+     sentence — which is the case 1.4.1 is actually about, and the opposite of
+     a list row where every line is a link and there is no surrounding text to
+     tell it apart from. */
+  .sa-ticker__more {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
   }
 
   /* ── Controls ────────────────────────────────────────────────────────── */

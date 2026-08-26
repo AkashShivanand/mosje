@@ -340,6 +340,40 @@ export function Ticker({
 
   const ItemLink = (linkAs ?? "a") as React.ElementType;
 
+  /**
+   * THE MESSAGE, RENDERED ONCE FOR BOTH SHAPES.
+   *
+   * The bar and the panel show the same four things — a notice, its kind, its
+   * date, a link — so they must not have two ways of drawing them. They did:
+   * the panel used `rowtitle`/`rowmeta`, which are specified, and the bar used
+   * `title`/`description`/`more`, which had **no CSS at all** and were styled
+   * only by whatever they inherited. The same item therefore rendered at a
+   * different size and weight depending on which shape it was dropped into,
+   * and only the panel's second line had been checked for contrast.
+   *
+   * `linkLabel` is the one deliberate difference and it stays bar-only: the bar
+   * shows one message, so a trailing call to action reads once. In a scrolling
+   * list it would repeat on every row.
+   */
+  const renderMessage = (item: TickerItem, withLinkLabel: boolean) => (
+    <>
+      <span className="sa-ticker__rowtitle">{item.title}</span>
+      {item.description || item.date || (withLinkLabel && item.linkLabel) ? (
+        <span className="sa-ticker__rowmeta">
+          {item.description}
+          {/* The separator belongs to the PAIR, not to either half — it appears
+              only when there are two things to separate, so a notice with no
+              date does not trail a dangling middot. */}
+          {item.description && item.date ? <span aria-hidden="true"> · </span> : null}
+          {item.date ? <time dateTime={item.dateTime}>{item.date}</time> : null}
+          {withLinkLabel && item.linkLabel ? (
+            <> <span className="sa-ticker__more">{item.linkLabel}</span></>
+          ) : null}
+        </span>
+      ) : null}
+    </>
+  );
+
   const pauseButton = canMove ? (
     <button
       type="button"
@@ -377,23 +411,7 @@ export function Ticker({
           className="sa-ticker__rowlink"
           {...(cloned ? { tabIndex: -1 } : {})}
         >
-          {/* TITLE OVER SUBTITLE — the same two-line structure the bar has, and
-              the same one the live site uses. It replaced a bold lead-in and a
-              colon on one line, which read as a label when the data's kinds
-              repeat: the department's list is "Documents" seven times in eight,
-              so the rail carried the same bold word four times over. A subtitle
-              can repeat without harm, because it is plainly the quieter line. */}
-          <span className="sa-ticker__rowtitle">{item.title}</span>
-          {item.description || item.date ? (
-            <span className="sa-ticker__rowmeta">
-              {item.description}
-              {/* The separator belongs to the PAIR, not to either half — it
-                  appears only when there are two things to separate, so a
-                  notice with no date does not trail a dangling middot. */}
-              {item.description && item.date ? <span aria-hidden="true"> · </span> : null}
-              {item.date ? <time dateTime={item.dateTime}>{item.date}</time> : null}
-            </span>
-          ) : null}
+          {renderMessage(item, false)}
         </ItemLink>
       </li>
     );
@@ -495,18 +513,7 @@ export function Ticker({
               pausing is the act that says "read this to me". */}
           <div className="sa-ticker__viewport" aria-live={isPlaying ? "off" : "polite"} aria-atomic="true">
             <ItemLink key={item.id ?? safeIndex} href={item.href} className="sa-ticker__item">
-              {/* ONE ROW LAYOUT, BOTH SHAPES — see the panel. */}
-              <span className="sa-ticker__title">{item.title}</span>
-              {item.description || item.date || item.linkLabel ? (
-                <span className="sa-ticker__description">
-                  {item.description}
-                  {item.description && item.date ? <span aria-hidden="true"> · </span> : null}
-                  {item.date ? <time dateTime={item.dateTime}>{item.date}</time> : null}
-                  {item.linkLabel ? (
-                    <> <span className="sa-ticker__more">{item.linkLabel}</span></>
-                  ) : null}
-                </span>
-              ) : null}
+              {renderMessage(item, true)}
             </ItemLink>
           </div>
         </div>
