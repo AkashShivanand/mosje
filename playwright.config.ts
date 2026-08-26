@@ -25,12 +25,28 @@ export default defineConfig({
   timeout: 90_000,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  // Bounded on purpose. Every worker shares ONE dev server, so past a point
-  // parallelism stops buying speed and just queues on the same compiler — the
-  // unbounded default (one per two cores) is what turned a slow first run into
-  // a failing one. Four is a judgement, not a measurement: enough to keep the
-  // suite near its serial-plus-parallel best, few enough to stop the thrash.
-  workers: process.env.CI ? 1 : 4,
+  /**
+   * TWO LOCALLY, NOT "HALF THE CORES".
+   *
+   * `undefined` gives Playwright half the CPUs — four here — and all four point
+   * at ONE Next dev server that compiles routes on demand. Measured: the ticker
+   * suite passes 13/13 in 27s at four workers about two runs in three, and when
+   * it does not, the run takes 60-140s and fails 1-10 tests with timeouts
+   * scattered across unrelated specs. Serially it passes 13/13 every time, each
+   * test in 2-8s. That is contention, not flakiness in the specs — the same
+   * assertions pass instantly when the server is not being asked for four pages
+   * at once.
+   *
+   * Two keeps most of the parallel speed without starving the server. Raising
+   * it means chasing failures that say nothing about the code.
+   *
+   * This branch arrived at the same diagnosis independently and proposed four.
+   * Two wins: it is the measured number, four was a judgement. The warming in
+   * `globalSetup` is the complement, not the substitute — capping workers stops
+   * them starving each other, but the FIRST worker to reach a route still pays
+   * its compile. Both are needed.
+   */
+  workers: process.env.CI ? 1 : 2,
   reporter: "html",
   use: {
     baseURL: "http://localhost:3007",
