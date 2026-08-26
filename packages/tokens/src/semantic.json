@@ -1355,6 +1355,29 @@
       "$description": "Material Symbols Rounded \u2014 the face every icon glyph renders in. Bind this from `.material-symbols-rounded`, never the Tier-1 primitive. The `@font-face` rule in icons.css still names the family literally because a font-face descriptor cannot take a custom property; that literal is the font LOADER, this token is what everything else reads."
     }
   },
+  "brand": {
+    "$type": "color",
+    "$description": "MARK COLOURS \u2014 the fixed palette of a logo, not a role in the interface. They are Tier 2 and they alias NOTHING, which is the one place in this file where a literal is the correct answer: a mark does not re-colour when the brand pack changes, because the mark IS the brand. That is also why they belong in the mode-less Static collection rather than in Color \u2014 a value that must never move should not sit in a collection whose whole purpose is moving. Authored here on 2026-08-26; the library had carried them as hand-made `ref/brand/*` variables since before the pipeline, with a codeSyntax pointing at `--sa-ref-brand-samavesh-*` names that had never existed in any stylesheet. USE THEM ONLY inside the mark they belong to. The SAMAVESH ink is #1F2428 and the estate's text ink is #1E2124 \u2014 two colours that look identical in review and are not the same, which is exactly why the mark needs its own token rather than borrowing `text/neutral/base`.",
+    "samavesh": {
+      "ink": {
+        "$value": "#1f2428",
+        "$description": "The wordmark's own ink. NOT `text/neutral/base` (#1E2124) \u2014 close enough to pass a glance, far enough to be a defect."
+      },
+      "blue": { "$value": "#06038d" },
+      "green": { "$value": "#046a38" },
+      "orange": { "$value": "#ff671f" },
+      "saffron": { "$value": "#ed8a1d" },
+      "navy": { "$value": "#003366" },
+      "white": { "$value": "#ffffff" },
+      "black": { "$value": "#000000" }
+    },
+    "digilocker": {
+      "purple": {
+        "$value": "#5330e6",
+        "$description": "DigiLocker's own purple, for the DigiLocker lockup only. A partner's colour is theirs, so it is a constant here and never a role."
+      }
+    }
+  },
   "leading": {
     "devanagari": {
       "$type": "number",

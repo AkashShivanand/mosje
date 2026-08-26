@@ -38,8 +38,8 @@
       "existing": 8
     },
     "Static": {
-      "total": 59,
-      "new": 13,
+      "total": 68,
+      "new": 22,
       "existing": 46
     },
     "Viewport": {
@@ -23795,6 +23795,186 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/ink",
+          "path": "brand/samavesh/ink",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#1f2428"
+            }
+          },
+          "description": "The wordmark's own ink. NOT `text/neutral/base` (#1E2124) — close enough to pass a glance, far enough to be a defect.",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-ink)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/blue",
+          "path": "brand/samavesh/blue",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#06038d"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-blue)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/green",
+          "path": "brand/samavesh/green",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#046a38"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-green)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/orange",
+          "path": "brand/samavesh/orange",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#ff671f"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-orange)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/saffron",
+          "path": "brand/samavesh/saffron",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#ed8a1d"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-saffron)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/navy",
+          "path": "brand/samavesh/navy",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#003366"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-navy)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/white",
+          "path": "brand/samavesh/white",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#ffffff"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-white)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/black",
+          "path": "brand/samavesh/black",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#000000"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-black)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/digilocker/purple",
+          "path": "brand/digilocker/purple",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#5330e6"
+            }
+          },
+          "description": "DigiLocker's own purple, for the DigiLocker lockup only. A partner's colour is theirs, so it is a constant here and never a role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-digilocker-purple)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
           }
         },
         {

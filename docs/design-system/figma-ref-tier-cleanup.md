@@ -134,8 +134,8 @@ A full sweep on 2026-08-26 puts the remaining `ref/color/*` and `ref/brand/*` bi
 
 | population | count | why it is still there |
 |---|---|---|
-| `ref/brand/samavesh/*` | ~1,700 | the SAMAVESH mark's own colours — Portal Login alone holds 1,036. No Tier-2 home exists; the tokens must be minted in the source first, and named. Its ink `#1F2428` is NOT the text ink `#1E2124` — two colours that look identical in review |
-| `ref/color/stroke/{300,400,600}` | ~130 | the same value-preserving swap as 50/100/200, simply not mapped yet |
+| ~~`ref/brand/samavesh/*`~~ | ~~1,700~~ | **closed** — see below |
+| `ref/color/stroke/{300,600}` | ~50 | no Tier-2 rung exists at those steps; `stroke/400` is closed |
 | `ref/color/{primary,success,danger}/source` outside buttons | ~500 | charts, list rows, chips, steppers, avatars. A fill has a value-preserving target (`bg/status/*/bolder`); a LABEL in the same colour does not, so the two halves need separate answers |
 | `ref/color/ink/primary`, `ink/light` | ~120 | no Tier-2 token resolves to the same value in both brands |
 | `stroke/50` on strokes | 15 | the neutral border family has no rung at 50 |
@@ -212,6 +212,33 @@ Color cannot move with the brand.
 **The general rule this leaves behind:** an `rgba()` in `semantic.json` is a brand trap. If
 the colour it tints varies by brand, it needs a `colorModes.navy` value, or it silently
 ships the Blue value to every other brand.
+
+## 3c · The mark colours — minted, and the record was wrong about why they were absent
+
+The nine `ref/brand/*` variables were **Figma-only**, hand-made since before the pipeline, and
+the repo's own note explained the gap as *"library-only BY DESIGN: a partner or seal colour
+never re-themes, so it is authored in Figma and not projected from code."*
+
+That reasoning is right about the values and wrong about where they live. **Never re-theming is
+a fact about the token, not a reason to keep it out of code.** The proof it had gone wrong:
+all nine carried a `codeSyntax` of `var(--sa-ref-brand-samavesh-*)` — CSS variables **no
+stylesheet had ever declared**. The library was pointing developers at names that did not exist.
+
+They are now authored in `semantic.json` as `brand/*` and routed to **Static**, which is
+mode-less — the correct home for a value that must never move, and a much better argument than
+"it lives in Figma". Three consequences worth stating:
+
+- **The rename carried all ~1,700 bindings for free.** Renaming a variable keeps its id, so
+  Portal Login's 1,036 uses, the Navbar's 296 and the rest moved without touching a node.
+- **`brand` had to be registered in the naming grammar**, and the reason is a real distinction:
+  a colour ROLE says what a colour is FOR and re-themes; a MARK colour says what a logo IS and
+  must not. That is also why its second segment is an ORGANISATION (`brand/samavesh/ink`)
+  where a role takes a family — position keeps them readable apart.
+- **Static is now byte-identical between payload and library**, so its `knownDifference` entry
+  was deleted rather than updated. A stale exemption hides the next real difference.
+
+The ink is worth repeating: **`#1F2428` for the mark, `#1E2124` for text.** Two colours that
+survive any review by looking the same.
 
 ## 4 · The guardrail, so this cannot come back the same way
 

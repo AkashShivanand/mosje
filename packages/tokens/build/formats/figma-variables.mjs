@@ -189,6 +189,10 @@ function collectionFor(path, tier, type) {
   if (head === "size") return "Space";
   // Effect and viewport constants: mode-less, and neither is a spacing or a colour.
   if (head === "blur" || head === "breakpoint") return "Static";
+  // Mark colours. Static because a logo's palette must NOT move: it is mode-less on purpose,
+  // and putting it in Color — a collection whose job is to vary — would invite exactly the
+  // brand-follows-the-mark bug these tokens exist to prevent.
+  if (head === "brand") return "Static";
   // `radius` is the Tier-1 scale; `shape` is the Tier-2 group that aliases it and is what a
   // designer should bind to. Both belong in the Radius collection — the tier stays legible in
   // the variable name (`ref/radius/md` vs `shape/md`), exactly as it does in CSS.

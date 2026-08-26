@@ -608,6 +608,15 @@
   --sa-density-row-padding-x: 16px;
   --sa-density-row-padding-y: 12px;
   --sa-density-section-gap: 24px;
+  --sa-brand-samavesh-ink: #1f2428;
+  --sa-brand-samavesh-blue: #06038d;
+  --sa-brand-samavesh-green: #046a38;
+  --sa-brand-samavesh-orange: #ff671f;
+  --sa-brand-samavesh-saffron: #ed8a1d;
+  --sa-brand-samavesh-navy: #003366;
+  --sa-brand-samavesh-white: #ffffff;
+  --sa-brand-samavesh-black: #000000;
+  --sa-brand-digilocker-purple: #5330e6;
   --sa-leading-devanagari: 1.7;
   --sa-bg-neutral-base: #ffffff;
   --sa-bg-neutral-subtler: #eef0f3;

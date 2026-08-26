@@ -930,6 +930,21 @@
       "gap": "24px"
     }
   },
+  "brand": {
+    "samavesh": {
+      "ink": "#1f2428",
+      "blue": "#06038d",
+      "green": "#046a38",
+      "orange": "#ff671f",
+      "saffron": "#ed8a1d",
+      "navy": "#003366",
+      "white": "#ffffff",
+      "black": "#000000"
+    },
+    "digilocker": {
+      "purple": "#5330e6"
+    }
+  },
   "leading": {
     "devanagari": "1.7"
   },
