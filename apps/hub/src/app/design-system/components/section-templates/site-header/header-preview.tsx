@@ -119,7 +119,7 @@ export function SiteHeaderPreview(): React.JSX.Element {
         brandLines={BRAND_LINES}
         beta
         language={{ label: "English" }}
-        search={{ placeholder: "Search Schemes, Services, Document", onSearch: () => {} }}
+        search={{ placeholder: "Search schemes and services", onSearch: () => {} }}
         nav={SAMPLE_NAV}
         actions={
           <a className={buttonClasses("primary", "outlined", "md")} href="#">

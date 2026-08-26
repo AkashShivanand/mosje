@@ -160,18 +160,39 @@
   }
 
   /* ── SiteHeader root ───────────────────────────────────────────────────── */
+  /* 900, and the number is doing real work.
+     `position: relative` + a z-index makes this a STACKING CONTEXT, so every panel
+     inside it — dropdowns, the mega menu, the search suggestions — is capped at
+     whatever this says. At 50 that was below page content: Leaflet gives
+     `.leaflet-map-pane` a transform and `z-index: 400`, and `.leaflet-container`
+     is `position: relative; z-index: auto`, so that 400 competes at the ROOT, not
+     inside the map. Nothing collided while the masthead scrolled away; pinned, it
+     slides under the map.
+     900 clears page content and stays UNDER the floating rail — Important Links
+     (1002), the chatbot launcher (1010), the statutory accessibility panel
+     (999999). See .claude/rules/floating-element-placement.md for that ladder.
+     NavSheet is the one thing that must beat the rail, which is why it portals to
+     <body> and escapes this context entirely rather than bidding higher inside it. */
   .ds-hdr {
     position: relative;
-    z-index: 50;
+    z-index: 900;
     width: 100%;
     background-color: var(--sa-bg-neutral-base);
     font-family: var(--sa-font-latin);
   }
 
-  /* App-shell portals: keep the navbar pinned while content scrolls */
+  /* PINNED AT A NEGATIVE OFFSET, so the accessibility bar scrolls away and the
+     brand and nav rows stay. `--sa-hdr-abar-h` is measured and written by
+     SiteHeader; the 0px fallback degrades to pinning the whole masthead, which is
+     the old behaviour and never wrong, only taller.
+
+     The bar carries page-level preferences — text size, contrast, language — not
+     per-scroll chrome, and it is 46px of a 200px masthead. This is one line of CSS
+     instead of a wrapper element, and it needs no padding compensation because the
+     header stays in flow. */
   .ds-hdr.is-sticky {
     position: sticky;
-    top: 0;
+    top: calc(-1 * var(--sa-hdr-abar-h, 0px));
   }
 
   /* Apply a subtle shadow to the navbar when scrolled */
@@ -179,19 +200,13 @@
     box-shadow: var(--sa-elevation-card);
   }
 
-  /* Figma "State=On Scroll" — the brand row goes 100px -> 88px, and it does it by
-     shrinking the LOCKUP (76 -> 64), not by collapsing the accessibility bar. The
-     bar stays at 46px in every Figma variant. Dropping the middle Ministry line is
-     what takes the text stack down the 12px.
+  /* The old "State=On Scroll" — dropping the lockup's middle Ministry line to take
+     the brand row 100 -> 88 — is GONE, and its rule with it. Measured on the live
+     portal: 146px to 134px. Twelve pixels, 1.7% of a 720px viewport, for a state
+     that cost a class, a listener, a media-query set and a Figma variant.
 
-     A previous comment here claimed the bar's collapse was "driven above, via
-     .ds-hdr.is-sticky .sa-abar". No such rule has ever existed in this file or in
-     accessibility-bar.css — the selector appeared only inside that comment, so the
-     prop documented a collapse that never happened. Measured against Figma
-     2476:296125 (Website) and 4235:3169 (Portal), both Desktop / On Scroll. */
-  .ds-hdr.is-sticky.is-scrolled .ds-hdr-lockup__ministry {
-    display: none;
-  }
+     `SiteHeader` now swaps the three tiers for one `.ds-hdr-cond` bar instead:
+     200 -> 64 on desktop, 258 -> 56 on a phone. See the `.ds-hdr-cond` block below. */
 
   /* Skip link — visible only on focus */
   .ds-hdr-skip {
@@ -324,12 +339,22 @@
      into a sheet is the moment search matters most, and GIGW 5.2 wants it in a
      consistent position on every page regardless. Below `tablet` it takes its own
      full-width row instead of leaving. */
+  /* This class now sits on a `<search>` LANDMARK wrapping the field, not on the
+     field itself — the masthead search was a bare div, so landmark navigation
+     could not reach the estate's primary search box. The wrapper owns placement;
+     `.ds-search` inside it still owns height, border, radius and the icons. */
   .ds-hdr-searchfield {
+    display: flex;
     order: 10;
     flex: 1 1 100%;
     width: auto;
     max-width: none;
     margin-block-start: var(--sa-stack-8);
+  }
+
+  .ds-hdr-searchfield__field {
+    flex: 1 1 auto;
+    min-width: 0;
   }
 
   @media (min-width: 768px) {
@@ -693,21 +718,46 @@
      panel's border box: columns, the gaps between them, the panel's own padding AND
      its 1px border on each side. Leaving the 2px of border out left 1246px of content
      box for 1248px of columns, and the grid quietly wrapped 2-up instead of 3-up. */
+  /* Figma draws the panel at 1272 against a 1200 container — wider than the
+     content column, deliberately, so it is not clamped to the grid here. What IS
+     clamped is the viewport: at exactly 1280 the panel measured 1274 wide sitting
+     3px from each edge, and one rung narrower it would have overhung. The `min()`
+     is a floor under the design, not a change to it. */
   @media (min-width: 1280px) {
     .ds-hdr-nav__mega {
-      max-width: calc((400px * 3) + (var(--sa-stack-24) * 2) + (var(--sa-padding-12) * 2) + 2px);
+      max-width: min(
+        calc((400px * 3) + (var(--sa-stack-24) * 2) + (var(--sa-padding-12) * 2) + 2px),
+        calc(100vw - (var(--sa-inline-32, 32px)))
+      );
     }
   }
   @media (max-width: 1279px) {
     .ds-hdr-nav__mega {
-      max-width: calc((360px * 2) + var(--sa-stack-24) + (var(--sa-padding-12) * 2) + 2px);
+      max-width: min(
+        calc((360px * 2) + var(--sa-stack-24) + (var(--sa-padding-12) * 2) + 2px),
+        calc(100vw - (var(--sa-inline-32, 32px)))
+      );
     }
   }
 
+  /* IT MUST NOT OUTGROW THE VIEWPORT. Measured on 2026-08-26 at 1280x720: the
+     organisations panel rendered 1100px tall, `max-height: none`,
+     `overflow-y: visible`, bottom edge 582px below the fold — two whole categories
+     unreachable except by scrolling the page behind it. With the masthead pinned
+     that stops being recoverable at all: the panel hangs off a fixed element, so
+     scrolling the page moves everything except the rows you are trying to read.
+
+     `--sa-header-bottom` is measured and written by SiteHeader — the panel's top
+     edge is the header's bottom edge, so that IS the space left. The 200px
+     fallback is the resting desktop masthead, and it errs tall rather than short. */
   .ds-hdr-nav__mega {
     display: flex;
     flex-wrap: wrap;
     width: max-content;
+    max-height: calc(100dvh - var(--sa-header-bottom, 200px) - var(--sa-stack-24));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
     gap: var(--sa-stack-24) var(--sa-stack-24);
     margin-top: var(--sa-padding-2);
     padding: var(--sa-padding-24) var(--sa-padding-12);
@@ -715,6 +765,14 @@
     border-radius: var(--sa-shape-20);
     background-color: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-modal);
+  }
+
+  /* The simple dropdown needs the same ceiling for the same reason — it is short
+     today, but nothing stops a consumer passing thirty children. */
+  .ds-hdr-nav__drop {
+    max-height: calc(100dvh - var(--sa-header-bottom, 200px) - var(--sa-stack-24));
+    overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   .ds-hdr-nav__mega-col {
@@ -729,6 +787,51 @@
      the columns on its own. Do not reintroduce them without a Figma change first. */
 
 
+
+  /* The parent entry's own page, offered inside the panel it opens — a nav item
+     with a menu cancels its own click, so "Department" was a real page nothing in
+     the masthead could reach. Full width across the foot of the panel, above the
+     rows in reading order only if you have already decided not to pick one. */
+  .ds-hdr-nav__mega-foot {
+    flex: 1 0 100%;
+    margin-top: var(--sa-stack-8);
+    padding-top: var(--sa-padding-8);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-hdr-nav__overview {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-12);
+    border-radius: var(--sa-shape-8);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: 600;
+    color: var(--sa-text-brand-primary-base);
+    text-decoration: none;
+  }
+
+  /* Same trade as the condensed active pill: the tint costs the text 0.34 of its
+     contrast ratio, which is the difference between passing AA and not. */
+  .ds-hdr-nav__overview:hover {
+    background-color: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .ds-hdr-nav__overview:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: -2px;
+  }
+
+  /* In the simple dropdown it is a closing row rather than a full-width strip. */
+  .ds-hdr-nav__drop .ds-hdr-nav__overview {
+    margin: var(--sa-stack-8) var(--sa-padding-8) 0;
+    padding: var(--sa-padding-8) var(--sa-padding-8);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: 0;
+  }
 
   .ds-hdr-nav__mega-head {
     margin: 0 0 var(--sa-padding-8);
@@ -1127,6 +1230,169 @@
     }
   }
 
+  /* ── The condensed bar (scroll state) ──────────────────────────────────────
+     Three tiers become one. 200 -> 64 on desktop, 258 -> 56 on a phone, against
+     the 12px the retired "State=On Scroll" returned.
+
+     THE EMBLEM HOLDS ITS LEFT EDGE. It is the same x it occupies at rest, and that
+     is the constraint the whole layout is built around: the emblem is also the
+     go-home control, and an identity mark that crosses the screen when you scroll
+     reads as a different site. The department NAME is what gets sacrificed — it is
+     one scroll back up, and it is still in the page title, the h1 and the footer.
+
+     The arithmetic that forces the choice: the content column is 1200px and seven
+     nav items measure 890 of it, leaving ~310 for identity and actions. That is
+     not enough for the full department name AND the inline menu. Something goes;
+     this is the version where it is the name. */
+  .ds-hdr-cond {
+    background-color: var(--sa-bg-neutral-base);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-hdr-cond__in {
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-16);
+    min-height: 56px;
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+  }
+
+  @media (min-width: 768px) {
+    .ds-hdr-cond__in {
+      min-height: 64px;
+      padding-inline: var(--sa-padding-24);
+      gap: var(--sa-stack-16);
+    }
+  }
+
+  .ds-hdr-cond__home {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+    border-radius: var(--sa-shape-4);
+    text-decoration: none;
+  }
+
+  .ds-hdr-cond__home:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: 2px;
+  }
+
+  .ds-hdr-cond__emblem {
+    height: 28px;
+    width: auto;
+    display: block;
+  }
+
+  @media (min-width: 768px) {
+    .ds-hdr-cond__emblem {
+      height: 32px;
+    }
+  }
+
+  .ds-hdr-cond__spacer {
+    flex: 1 1 auto;
+    min-width: var(--sa-stack-8);
+  }
+
+  /* 40x40, one rung below the masthead's 48px IconButton: this row is 64px tall,
+     and a 48px control in it leaves 8px of air. */
+  .ds-hdr-cond__iconbtn {
+    display: inline-grid;
+    place-items: center;
+    height: 40px;
+    width: 40px;
+    flex: 0 0 auto;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
+    cursor: pointer;
+    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  .ds-hdr-cond__iconbtn:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-hdr-cond__iconbtn:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: -2px;
+  }
+
+  /* The sheet trigger comes in at the masthead's 48px, which is right in a 100px
+     brand row and wrong here: at 48 it — not the row's own min-height — decided
+     the bar, so a phone measured 65px against a designed 56. 40 matches every
+     other control in this bar and lets the min-height do its job. */
+  .ds-hdr-cond .ds-hdr-burger {
+    height: 40px;
+    width: 40px;
+    padding: var(--sa-padding-4);
+  }
+
+  /* Search expands IN PLACE, over the nav, rather than sending the reader back to
+     the top of the page to reach the full masthead's field. Escape closes it. */
+  .ds-hdr-cond__searchfield {
+    display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 520px;
+  }
+
+  .ds-hdr-cond__searchfield .ds-search {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  /* The nav, inline in the bar. Below `breakpoint/laptop` it is a sheet, exactly
+     as in the resting masthead — the SheetToggle beside it is the same control. */
+  .ds-hdr-nav.is-cond {
+    display: none;
+    border: 0;
+    background: transparent;
+    min-width: 0;
+  }
+
+  @media (min-width: 1024px) {
+    .ds-hdr-nav.is-cond {
+      display: block;
+    }
+  }
+
+  .ds-hdr-nav.is-cond .ds-hdr-nav__list {
+    max-width: none;
+    padding: 0;
+    gap: var(--sa-stack-2);
+    justify-content: flex-start;
+  }
+
+  .ds-hdr-nav.is-cond .ds-hdr-nav__link {
+    padding: var(--sa-padding-8) var(--sa-padding-8);
+    border-radius: var(--sa-shape-8);
+  }
+
+  .ds-hdr-nav.is-cond .ds-hdr-nav__link:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  /* The 4px underbar wants a row edge to sit on — in the resting nav it lands flush
+     with the row's own border, and in a 36px pill inside a 64px bar it would float
+     mid-air. So the current page reads as a tint here instead.
+
+     THE TEXT GOES ONE RUNG DARKER WITH IT. `text/brand/primary/base` (#0373df) is
+     4.64:1 on white and only 4.30:1 on this tint — under the 4.5:1 that 14px
+     semibold needs. `bolder` (#005eb9) is 5.89:1. A tinted ground is not a free
+     change; it moves the text's contrast with it. */
+  .ds-hdr-nav.is-cond .ds-hdr-nav__link.is-active {
+    background-color: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .ds-hdr-nav.is-cond .ds-hdr-nav__link.is-active::after {
+    content: none;
+  }
+
   /* ── NavSheet ───────────────────────────────────────────────────────────────
      Figma Navbar/NavSheet: a 344px overlay with its own header (brand lockup +
      close), divider-separated 56px rows, expand_more on any row with children.
@@ -1385,31 +1651,23 @@
    component, so it must not sit in `components` where a utility could outrank it.
 
    Without it every in-page anchor, every skip-link activation and every keyboard
-   focus that scrolls into view lands UNDERNEATH the pinned masthead — up to 146px
-   of it. That is WCAG 2.4.11 (Focus Not Obscured), which this package already
-   cites in tabs.css for a horizontal scroller far less likely to obscure anything.
+   focus that scrolls into view lands UNDERNEATH the pinned masthead. That is WCAG
+   2.4.11 (Focus Not Obscured), which this package already cites in tabs.css for a
+   horizontal scroller far less likely to obscure anything.
 
-   `:has()` scopes it to pages that actually pin a header, so a static website page
-   keeps a scroll padding of zero. The values are each variant's RESTING height
-   plus 4px: the resting height is the larger one, so an anchor is never covered in
-   either scroll state. */
-:root:has(.ds-hdr[data-variant="portal"].is-sticky) {
-  scroll-padding-top: 150px;
-}
+   ONE RULE, FROM A MEASURED VARIABLE. It used to be four hand-written numbers —
+   150 for portal, 72 for compact, 204 for website, 132 below 767px — and on
+   2026-08-26 the mobile header measured 258px against that 132. A 126px shortfall
+   is the criterion failing, and the 768-1023 band had no rule at all, so it
+   inherited the desktop 204 against a real 170. Numbers typed beside a layout that
+   answers to viewport, font scale and content length drift the moment any of the
+   three moves; `--sa-header-pinned` is written by SiteHeader's ResizeObserver from
+   the element itself, and only while the masthead is at its RESTING height, since
+   an anchor can land before the page has scrolled far enough to condense.
 
-:root:has(.ds-hdr[data-variant="compact"].is-sticky) {
-  scroll-padding-top: 72px;
-}
-
-:root:has(.ds-hdr[data-variant="website"].is-sticky) {
-  scroll-padding-top: 204px;
-}
-
-/* Below `breakpoint/tablet` the accessibility bar sheds its right-hand cluster and
-   the nav row is gone, so the pinned height drops. */
-@media (max-width: 767px) {
-  :root:has(.ds-hdr[data-variant="portal"].is-sticky),
-  :root:has(.ds-hdr[data-variant="website"].is-sticky) {
-    scroll-padding-top: 132px;
-  }
+   `:has()` scopes it to pages that actually pin a header. The 204px fallback is
+   the resting desktop website masthead — the tallest of the variants, so a page
+   whose script has not measured yet over-pads rather than under-pads. */
+:root:has(.ds-hdr.is-sticky) {
+  scroll-padding-top: calc(var(--sa-header-pinned, 204px) + 4px);
 }

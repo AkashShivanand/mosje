@@ -237,6 +237,15 @@ export const Search = React.forwardRef<HTMLInputElement, SearchProps>(
              decide per string, so an English placeholder stays LTR inside an RTL
              page, an Urdu one is RTL, and a reader typing Devanagari into an
              English page gets their own direction rather than ours. */
+          /* SPREAD FIRST, and it has to be. It used to come last, which meant a
+             consumer's `onKeyDown` REPLACED this component's — silently taking out
+             Enter-to-submit and the whole combobox arrow-key path, on a component
+             that goes to the trouble of chaining `rest.onKeyDown?.(event)` at the
+             end of its own handler. That chaining was unreachable. `onFocus` and
+             `onBlur` chain the same way and were broken the same way, and a
+             consumer could also overwrite `role="combobox"` by accident. Anything
+             derived from a named prop is written after this, so it still wins. */
+          {...rest}
           dir="auto"
           value={value}
           onChange={(event) => {
@@ -268,7 +277,6 @@ export const Search = React.forwardRef<HTMLInputElement, SearchProps>(
                 "aria-activedescendant": active ? `${listId}-${activeIndex}` : undefined,
               }
             : {})}
-          {...rest}
         />
         {showClear && (
           <button
