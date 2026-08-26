@@ -129,6 +129,24 @@ export interface TickerProps extends Omit<React.HTMLAttributes<HTMLElement>, "ti
   interval?: number;
   /** Start moving on mount. @default true */
   autoplay?: boolean;
+  /**
+   * PUT THE STRIP'S NAME IN THE DOCUMENT OUTLINE.
+   *
+   * The section is labelled, so a screen-reader user can already reach it by
+   * LANDMARK navigation and hears "Latest Updates". But heading navigation —
+   * pressing H, one of the commonest ways people move through a page — skips
+   * it entirely, because the name is a `span`. On a notice board that is the
+   * one thing somebody is most likely to jump to.
+   *
+   * It defaults to `"span"`, which is what it has always rendered, because the
+   * right LEVEL depends on the page: the website's panel sits inside a section
+   * that already owns an `h2`, so it wants `h3`, while a bar under the masthead
+   * wants `h2`. A component cannot know that, and guessing would skip a level —
+   * which is worse than not being a heading at all.
+   *
+   * @default "span"
+   */
+  labelAs?: "h2" | "h3" | "h4" | "h5" | "h6" | "span";
   /** Router-aware link for internal hrefs — pass `next/link`. @default "a" */
   linkAs?: React.ElementType;
 }
@@ -200,6 +218,7 @@ export function Ticker({
   interval = 5000,
   autoplay = true,
   linkAs,
+  labelAs = "span",
   className,
   ...rest
 }: TickerProps): React.JSX.Element | null {
@@ -398,7 +417,7 @@ export function Ticker({
       <span className="sa-ticker__mark" aria-hidden="true">
         {icon ?? <TickerMark />}
       </span>
-      <span className="sa-ticker__label">{label}</span>
+      {React.createElement(labelAs, { className: "sa-ticker__label" }, label)}
     </div>
   );
 

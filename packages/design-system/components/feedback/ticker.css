@@ -208,6 +208,10 @@
   }
 
   .sa-ticker__label {
+    /* It may be rendered as a heading (see `labelAs`), so its own type is
+       stated rather than inherited — a browser's h2 default would drag the
+       plinth to 32px and break the strip's height. */
+    margin: 0;
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
     letter-spacing: var(--sa-type-title-tracking);
@@ -743,7 +747,19 @@
       margin-inline-end: var(--sa-padding-16);
     }
 
-    /* THE ROUTE BECOMES A LINK, NOT A BUTTON, ON THE HEADER LINE.
+    /* THE ROUTE BECOMES A LINK, NOT A BUTTON, ON THE HEADER LINE — IN BOTH
+       SHAPES. One rule by container width rather than by shape: the outlined
+       button appears only where the strip is at least 1024px wide. The bar is
+       that wide when it runs full-bleed; the PANEL never is — it is a column,
+       408px at desktop and 326px on a phone — so it always takes the link.
+
+       That is not a special case for the panel, it is the same measurement
+       reaching a different answer. An outlined button costs 32px of padding
+       plus a border, and in a 408px header already carrying a mark, the name
+       and the pause it is the single widest element competing with the
+       component's own identity. The outline is doing decorative work there,
+       not affordance work: a header row is a place a citizen expects links,
+       and the hairline already separates it from the control.
        An outlined button is ~164px; the header also has to hold a mark, the
        name and the pause, and at 312px the button simply dropped to a third
        line — which is how a two-line layout quietly becomes three. Stripped to
@@ -754,7 +770,7 @@
        The tap target keeps the header's own 44px block, so 2.5.8 still holds.
        This restyles the CONSUMER'S element, which is why it is scoped tightly
        to the direct child of our own wrapper and does nothing above 1024px. */
-    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action > :is(a, button) {
+    .sa-ticker__action > :is(a, button) {
       padding-inline: 0;
       border: 0;
       background: transparent;

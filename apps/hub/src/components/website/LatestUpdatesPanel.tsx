@@ -20,6 +20,10 @@ export function LatestUpdatesPanel({ items }: LatestUpdatesPanelProps) {
   return (
     <Ticker
       orientation="vertical"
+      // "Our Offerings" owns the h2 on this section, so the rail's name is an h3.
+      // Without it the panel is reachable by landmark but invisible to heading
+      // navigation — on a notice board, the thing people most want to jump to.
+      labelAs="h3"
       // It shares the Offerings row with the scheme cards, so it takes the
       // row's height rather than standing at its own — `rows` is the floor.
       height="fill"
