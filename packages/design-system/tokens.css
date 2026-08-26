@@ -484,11 +484,6 @@
   --sa-ref-font-family-display: "Noto Sans Display", "Noto Sans", ui-sans-serif, system-ui, sans-serif;
   --sa-ref-font-family-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
   --sa-ref-font-family-icon: "Material Symbols Rounded", sans-serif;
-  --sa-ref-font-weight-light: 300;
-  --sa-ref-font-weight-regular: 400;
-  --sa-ref-font-weight-medium: 500;
-  --sa-ref-font-weight-semibold: 600;
-  --sa-ref-font-weight-bold: 700;
   --sa-ref-font-size-11: 0.6875rem;
   --sa-ref-font-size-12: 0.75rem;
   --sa-ref-font-size-14: 0.875rem;
@@ -506,6 +501,12 @@
   --sa-font-latin: "Noto Sans", ui-sans-serif, system-ui, sans-serif;
   --sa-font-display: "Noto Sans Display", "Noto Sans", ui-sans-serif, system-ui, sans-serif;
   --sa-font-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+  --sa-font-weight-light: 300;
+  --sa-font-weight-regular: 400;
+  --sa-font-weight-medium: 500;
+  --sa-font-weight-semibold: 600;
+  --sa-font-weight-bold: 700;
+  --sa-font-weight-displayMedium: 500;
   --sa-font-icon: "Material Symbols Rounded", sans-serif;
   --sa-ref-shadow-none: none;
   --sa-ref-shadow-xs: 0 2px 3px 1px rgba(30, 33, 36, 0.12);

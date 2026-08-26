@@ -755,25 +755,6 @@
         "$value": "\"Material Symbols Rounded\", sans-serif"
       }
     },
-    "weight": {
-      "$type": "fontWeight",
-      "light": {
-        "$description": "300 \u2014 the ICON cut, and the only place the estate uses it. `<Icon>` defaults to a weight of 300 and every Figma `Icon/*` text style is Material Symbols Rounded / Light; this is the one token both read, so the two cannot drift apart. Figma has no numeric weight, so the build projects this to the style name \"Light\" (see FIGMA_FONT_STYLES in build/formats/figma-variables.mjs). NOT for prose \u2014 300 on Noto Sans at body sizes fails the contrast the ramp is drawn for; text stays on regular/medium/semibold/bold.",
-        "$value": 300
-      },
-      "regular": {
-        "$value": 400
-      },
-      "medium": {
-        "$value": 500
-      },
-      "semibold": {
-        "$value": 600
-      },
-      "bold": {
-        "$value": 700
-      }
-    },
     "size": {
       "11": {
         "$value": "{size.11}"

@@ -1321,6 +1321,34 @@
       "$value": "{font.family.mono}",
       "$description": "Tabular and code contexts. A system stack, deliberately not a webfont."
     },
+    "weight": {
+      "$type": "fontWeight",
+      "$description": "Tier-2 font weights. They were Tier-1 `ref/font/weight/*` until 2026-08-26, and that was the whole reason 24 of the library's text styles bound a reference token: a text style has to name a cut, and no Tier-2 cut existed to name. They are a ROLE, not a raw step \u2014 a brand pack that ships a heavier body face changes them here, and every style follows. Figma has no numeric weight, so the build projects each one to the STYLE NAME its family is addressed by (see FIGMA_FONT_STYLES).",
+      "light": {
+        "$value": 300,
+        "$description": "300 \u2014 the ICON cut, and the only place the estate uses it. Every Figma `Icon/*` text style is Material Symbols Rounded / Light and `<Icon>` defaults to 300, so this is the one token both read. NOT for prose: 300 on Noto Sans at body sizes thins the stroke below what the ramp is drawn for."
+      },
+      "regular": {
+        "$value": 400,
+        "$description": "Body copy and anything that is read rather than scanned."
+      },
+      "medium": {
+        "$value": 500,
+        "$description": "Titles and labels \u2014 the weight that separates a heading from its paragraph without shouting."
+      },
+      "semibold": {
+        "$value": 600,
+        "$description": "Headlines, and the emphasised cut of body copy."
+      },
+      "bold": {
+        "$value": 700,
+        "$description": "Reserved. The estate's headings stop at semibold; bold is for the rare in-line emphasis a heading cannot carry."
+      },
+      "displayMedium": {
+        "$value": 500,
+        "$description": "The Display cut at Medium \u2014 500 on `Noto Sans Display` for the 40-80px ramp. It is a SEPARATE token from `medium` because Figma does not model the Display cut as a family: it is the STYLE string \"Display Medium\" of Noto Sans, which is why the build special-cases this one name instead of projecting 500 to \"Medium\". In CSS the same pairing is `font/display` plus this weight."
+      }
+    },
     "icon": {
       "$type": "fontFamily",
       "$value": "{font.family.icon}",

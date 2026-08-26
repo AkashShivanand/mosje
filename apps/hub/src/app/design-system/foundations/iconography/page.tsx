@@ -241,11 +241,12 @@ export default function IconographyPage(): React.JSX.Element {
           <code> wght 300</code> is therefore the style <strong>Light</strong> — the
           identical asymmetry the text styles carry, where CSS needs a number and
           Figma selects a cut by name. Both halves are now a token rather than a
-          literal: <code>--sa-ref-font-weight-light</code> holds the number and its
-          Figma counterpart <code>ref/font/weight/light</code> holds the style name{" "}
+          literal: <code>--sa-font-weight-light</code> holds the number and its
+          Figma counterpart <code>font/weight/light</code> holds the style name{" "}
           <em>Light</em>, so the seven <code>Icon/*</code> text styles bind their cut
           the same way the Noto Sans ramp does. The face is bound the same way, to{" "}
-          <code>font/icon</code>.
+          <code>font/icon</code>. Both are Tier-2 tokens: nothing in the library binds a
+          Tier-1 <code>ref/*</code> any more.
         </p>
         <div className="icon-panel">
           <div className="icon-strip">

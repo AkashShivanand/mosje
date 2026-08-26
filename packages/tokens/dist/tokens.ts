@@ -607,13 +607,6 @@ export const tokens = {
       "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace",
       "icon": "\"Material Symbols Rounded\", sans-serif"
     },
-    "weight": {
-      "light": 300,
-      "regular": 400,
-      "medium": 500,
-      "semibold": 600,
-      "bold": 700
-    },
     "size": {
       "11": "0.6875rem",
       "12": "0.75rem",
@@ -766,6 +759,14 @@ export const tokens = {
     "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
     "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
     "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace",
+    "weight": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700,
+      "displayMedium": 500
+    },
     "icon": "\"Material Symbols Rounded\", sans-serif"
   },
   "shadow": {
