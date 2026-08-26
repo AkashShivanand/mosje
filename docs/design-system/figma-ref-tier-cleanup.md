@@ -127,18 +127,52 @@ and it was the loudest colour in the set. Now ink (`#1E2124`) and subtle ink on 
 
 **Zero `ref/color/*` bindings remain anywhere on the Buttons page.**
 
+### The last mechanical pass, and where it stopped
+
+A further 142 bindings moved on 2026-08-26: `stroke/400` and `ink/light` by property, then the
+status sources **on surfaces only** — `success|danger|warning/source` → `bg/status/*/bolder`,
+and `badge/beta` → `cmp/badge/beta/bg`. Fills on TEXT and VECTOR nodes were deliberately left,
+because at those values the `text/*` and `icon/*` families have no rung.
+
+**That is where the mechanical work ends, and the reason is one sentence:** every binding that
+remains is a case where **no token in the system holds that value for that kind of property**.
+Not effort — inventory.
+
+The proof is in the shape of what is left. Take `stroke/400`, used on 45 pieces of TEXT (the
+Date-Time Picker's out-of-range day cells). The neutral text ramp runs
+base `#1E2124` · subtle `#3A3D41` · subtler `#6F757D` · disabled `#1E2124@48%`. The value
+painted is `#8E949C`. Nothing matches, so the only moves are to mint a rung or to repaint —
+and repainting is a design change, which is why it stopped here.
+
+Two things worth knowing before that decision is taken:
+
+- **`#8E949C` on white is 2.6:1**, and `#ADB1B7` (the picker's prev/next chevrons) is **2.0:1**.
+  For the out-of-range *cells* that is defensible — WCAG exempts inactive controls — but the
+  chevrons are ACTIVE controls, and 2.0:1 fails 1.4.11 (3:1). Whatever rung is chosen for them
+  should clear 3:1.
+- **The Date-Time Picker does not exist in code.** There is no implementation to match, so
+  unlike every other decision in this branch, "bind what the code renders" has no answer here.
+
 ### What is left, counted rather than estimated
 
 A full sweep on 2026-08-26 puts the remaining `ref/color/*` and `ref/brand/*` bindings at
 **2,986**, and they are not one problem:
 
-| population | count | why it is still there |
+**885 bindings remain**, down from 2,986. Every one is the same problem wearing a different
+hat — a value the ramps do not carry for that property:
+
+| population | count | the missing rung |
 |---|---|---|
-| ~~`ref/brand/samavesh/*`~~ | ~~1,700~~ | **closed** — see below |
-| `ref/color/stroke/{300,600}` | ~50 | no Tier-2 rung exists at those steps; `stroke/400` is closed |
-| `ref/color/{primary,success,danger}/source` outside buttons | ~500 | charts, list rows, chips, steppers, avatars. A fill has a value-preserving target (`bg/status/*/bolder`); a LABEL in the same colour does not, so the two halves need separate answers |
-| `ref/color/ink/primary`, `ink/light` | ~120 | no Tier-2 token resolves to the same value in both brands |
-| `stroke/50` on strokes | 15 | the neutral border family has no rung at 50 |
+| `primary/source` as a SURFACE | 367 | no `bg/brand/primary/*` at primaryScale/500. Charts (196) and List (141) dominate |
+| status sources on ICONS and TEXT | ~140 | `icon/status/*` and `text/status/*` have no rung at 600 |
+| `ink/primary` | 125 | `#004B96` / navy `#244C7B` — the primary-ink step the semantic layer never got |
+| `stroke/{300,500,600}` on icons, text, strokes | ~175 | the neutral ramps stop at 400 for borders and at `subtler` for text |
+| odds and ends | ~50 | `stroke/50` strokes, `stroke/{100,200}` on icons, stray `ink/dark` |
+
+So it is **one decision, not five**: extend the semantic ramps to cover the rungs the library
+actually uses, or repaint those elements onto the nearest rung that exists and accept the
+visible change. Minting is value-preserving and grows the palette; repainting keeps the palette
+small and moves pixels. Both are defensible; neither is a sweep.
 
 ### The font-family pass — closed, and it taught the audit a lesson
 
