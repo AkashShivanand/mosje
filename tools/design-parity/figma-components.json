@@ -1849,10 +1849,10 @@
         "type": "VARIANT",
         "key": "Direction",
         "variantOptions": [
-          "top \u2191",
-          "bottom \u2193"
+          "top ↑",
+          "bottom ↓"
         ],
-        "defaultValue": "top \u2191"
+        "defaultValue": "top ↑"
       }
     },
     "childInstanceTags": [
@@ -2337,7 +2337,7 @@
     "childInstanceTags": [
       "icon",
       "text",
-      "layout-blocks/horizontal\u00d71",
+      "layout-blocks/horizontal×1",
       "arrow",
       "layout-blocks/base"
     ],
@@ -4167,7 +4167,7 @@
     "assetKey": "fca6f0243673ec4eaa4f0cba4b3d29ebeca1d533"
   },
   {
-    "name": "Input Field \u2014 Label & Description",
+    "name": "Input Field — Label & Description",
     "nodeId": "2727:1578",
     "type": "COMPONENT_SET",
     "pageId": "2141:296720",
@@ -5389,7 +5389,7 @@
       }
     },
     "childInstanceTags": [
-      "AccessibilityBar \u2014 v1 (legacy \u00b7 Device only)",
+      "AccessibilityBar — v1 (legacy · Device only)",
       "dehaze",
       "navbar/logo",
       "Search",
@@ -5400,7 +5400,7 @@
     "instanceCount": 1,
     "dependencies": [
       {
-        "name": "AccessibilityBar \u2014 v1 (legacy \u00b7 Device only)",
+        "name": "AccessibilityBar — v1 (legacy · Device only)",
         "external": true,
         "assetKey": "b47475ac3c4b519e0c16c47c34e7815ce0a16da5"
       },
@@ -5552,7 +5552,7 @@
       }
     },
     "childInstanceTags": [
-      "AccessibilityBar \u2014 v1 (legacy \u00b7 Device only)",
+      "AccessibilityBar — v1 (legacy · Device only)",
       "navbar/logo",
       "Search",
       "Button",
@@ -5562,7 +5562,7 @@
     "instanceCount": 7,
     "dependencies": [
       {
-        "name": "AccessibilityBar \u2014 v1 (legacy \u00b7 Device only)",
+        "name": "AccessibilityBar — v1 (legacy · Device only)",
         "external": true,
         "assetKey": "b47475ac3c4b519e0c16c47c34e7815ce0a16da5"
       },
@@ -5792,12 +5792,12 @@
         "type": "VARIANT",
         "key": "Direction",
         "variantOptions": [
-          "top \u2191",
-          "bottom \u2193",
+          "top ↑",
+          "bottom ↓",
           "left <-",
           "right ->"
         ],
-        "defaultValue": "top \u2191"
+        "defaultValue": "top ↑"
       },
       "Title": {
         "name": "Title",
@@ -6924,7 +6924,6 @@
     },
     "childInstanceTags": [
       "Ticker / Mark",
-      "Ticker / Message",
       "Ticker / Control",
       "Icon",
       "Ticker / Action",
@@ -6933,7 +6932,6 @@
     "instanceCount": 0,
     "dependencies": [
       "Ticker / Mark",
-      "Ticker / Message",
       "Ticker / Control",
       "Icon",
       "Ticker / Action",
@@ -7006,37 +7004,6 @@
     "instanceCount": 0,
     "dependencies": [],
     "assetKey": "d1c3f5e7c18323357b554b15c4397dd781993959"
-  },
-  {
-    "name": "Ticker / Message",
-    "nodeId": "56156:720",
-    "type": "COMPONENT_SET",
-    "pageId": "56148:695",
-    "pageName": "Ticker",
-    "hasVariants": true,
-    "properties": {
-      "Title#56156:0": {
-        "type": "TEXT"
-      },
-      "Description#56156:4": {
-        "type": "TEXT"
-      },
-      "Show Description#56156:8": {
-        "type": "BOOLEAN"
-      },
-      "State": {
-        "type": "VARIANT",
-        "variantOptions": [
-          "Default",
-          "Hover",
-          "Focused"
-        ]
-      }
-    },
-    "childInstanceTags": [],
-    "instanceCount": 0,
-    "dependencies": [],
-    "assetKey": "782d6d121950e825de644b27ea2ed37711f21abb"
   },
   {
     "name": "Ticker / Row",
@@ -7126,12 +7093,12 @@
         "type": "VARIANT",
         "key": "Direction",
         "variantOptions": [
-          "top \u2191",
-          "bottom \u2193",
-          "left \u2190",
-          "right \u2192"
+          "top ↑",
+          "bottom ↓",
+          "left ←",
+          "right →"
         ],
-        "defaultValue": "left \u2190"
+        "defaultValue": "left ←"
       },
       "Auto Width": {
         "name": "Auto Width",
