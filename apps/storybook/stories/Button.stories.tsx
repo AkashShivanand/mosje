@@ -181,37 +181,48 @@ export const OnABrandSurface: Story = {
  * **Known defects, rendered rather than described.**
  *
  * A design system that only demonstrates its happy path teaches the happy path.
- * These three are real, measured on 2026-08-25, and open — the brief that closes
- * them is `docs/design-system/components/button-cleanup-prompt.md`. They are here
- * so a reviewer can see them, and so they cannot be quietly forgotten.
+ * Three were measured on 2026-08-25. **Two are now fixed** and are kept here rather
+ * than deleted, because a fix is only convincing beside the thing it fixed — and
+ * because both are the kind that look identical in a screenshot and differ entirely
+ * under a keyboard or a zoom. One remains open.
+ *
+ * The audit also reported a fifth 1.4.11 failure, "neutral outlined 2.15:1". It does
+ * not exist: that measured a token the component does not bind, and the border it
+ * actually paints is 16.18:1. Corrected in `button-audit.md`; the boundaries are now
+ * measured on every build by `packages/tokens/test/action-nontext-contrast.test.mjs`
+ * rather than by hand.
  */
 export const KnownDefects: Story = {
   render: () => (
     <div style={{ display: "grid", gap: 32, maxWidth: 720 }}>
       <section>
         <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
-          1 · <code>disabled</code> does nothing on a link-button
+          FIXED 2026-08-27 · <code>disabled</code> on a link-button
         </h3>
         <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
-          `href` renders an `&lt;a&gt;`, and `disabled` is not a valid attribute there.
-          Measured: pointer-events auto, opacity 1, cursor pointer, no `aria-disabled`,
-          still in the tab order. Tab to it — it takes focus. Do not ship one.
+          Kept rendered rather than deleted, because the fix is only convincing beside
+          the thing it fixes. The link-button now drops `href` entirely and carries
+          `aria-disabled` + `role="link"` — so it is not focusable and not activatable,
+          by the browser&rsquo;s own rules rather than by a handler. Tab through this row:
+          focus should skip both. Until 2026-08-27 the second one took focus and followed
+          its link.
         </p>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <Button disabled>Disabled button — correct</Button>
+          <Button disabled>Disabled button</Button>
           <Button href="/nowhere" disabled>
-            Disabled link — still live
+            Disabled link
           </Button>
         </div>
       </section>
 
       <section>
         <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
-          2 · A fixed height clips the label at 200% text (WCAG 1.4.4)
+          FIXED 2026-08-27 · text scaled to 200% (WCAG 1.4.4)
         </h3>
         <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
-          Sizes set `height`, not `min-height`. At 200% the box stays 40px while the
-          content needs 41.
+          Sizes now set `min-height` plus vertical padding, so the box grows with the
+          text. The right-hand button is at 200%; its label used to be clipped, 41px of
+          content inside a 38px client box.
         </p>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
           <Button>Apply now</Button>
@@ -221,11 +232,14 @@ export const KnownDefects: Story = {
 
       <section>
         <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
-          3 · Tonal has no perceivable edge (WCAG 1.4.11 needs 3:1)
+          STILL OPEN · Tonal has no perceivable edge (WCAG 1.4.11 needs 3:1)
         </h3>
         <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
           Boundary against the page: primary 1.42, success 1.52, danger 1.21,
           neutral 1.35. You cannot tell where the control is except by reading it.
+          It cannot be fixed by darkening the border without becoming a different
+          appearance, and it has two consumers in 494 buttons — so `tonal` is being
+          retired rather than repaired.
         </p>
         <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
           {(["primary", "success", "danger", "neutral"] as const).map((v) => (

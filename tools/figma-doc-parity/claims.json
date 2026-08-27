@@ -355,14 +355,14 @@
         {
           "kind": "source",
           "file": "packages/design-system/components/actions/button.css",
-          "pattern": "\\.ds-btn--sm \\{[^}]*height: 32px",
+          "pattern": "\\.ds-btn--sm \\{[^}]*min-height: 32px",
           "flags": "s",
-          "hint": "sm is 32px. This page said sm 'meets the 44px height requirement' in three places, including inside the accessibility checklist, until 2026-08-25."
+          "hint": "sm is 32px. This page said sm 'meets the 44px height requirement' in three places, including inside the accessibility checklist, until 2026-08-25. The regex names min-height deliberately: `height: 32px` also matches `min-height: 32px`, so the looser pattern would keep passing if the fix were ever reverted."
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/actions/button.css",
-          "pattern": "\\.ds-btn--lg \\{[^}]*height: 48px",
+          "pattern": "\\.ds-btn--lg \\{[^}]*min-height: 48px",
           "flags": "s",
           "hint": "lg is the only size reaching 44."
         }
@@ -370,20 +370,34 @@
     },
     {
       "node": "56162:1811",
-      "where": "Button — Documentation › 03 Size › OPEN",
-      "figma": "The height is a FIXED height, not a minimum. Measured at 200% text the box stays 40px while the content needs 41 — the label is clipped, which fails WCAG 1.4.4 Resize Text. The fix is min-height plus vertical padding so the box grows with the text.",
+      "where": "Button — Documentation › 03 Size › How it scales",
+      "figma": "The height is a MINIMUM, not a fixed height. Each size sets min-height plus vertical padding, so the box grows with the text instead of clipping it: at 200% an md button used to hold 40px while its content needed 41. min-height is what makes a button 32/40/48 at 100%; the padding stays under that and becomes the breathing room as the text scales. WCAG 1.4.4 Resize Text.",
       "expect": [
         {
           "kind": "text",
-          "value": "FIXED height, not a minimum"
+          "value": "MINIMUM, not a fixed height"
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/actions/button.css",
-          "pattern": "\\.ds-btn--md \\{[^}]*min-height",
+          "pattern": "\\.ds-btn--md \\{[^}]*min-height: 40px",
           "flags": "s",
+          "hint": "md is a minimum. Reverting to a fixed `height` reintroduces the 1.4.4 clipping this section describes."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "^\\s+height:",
+          "flags": "m",
           "absent": true,
-          "hint": "The claim is that the size rules use `height`, not `min-height`. The day someone fixes it, this assertion fails and the page must stop calling it open."
+          "hint": "NO bare `height` anywhere in button.css. This is the assertion that actually holds the fix: a min-height on md means nothing if sm or lg quietly keeps a fixed height."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--md \\{[^}]*padding: var\\(--sa-padding-6\\) var\\(--sa-padding-24\\)",
+          "flags": "s",
+          "hint": "The vertical padding is half the fix. Without it min-height alone still centres a clipped label."
         }
       ]
     },

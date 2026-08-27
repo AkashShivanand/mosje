@@ -99,19 +99,47 @@ attribute — measured `pointer-events: auto`, `opacity: 1`, `cursor: pointer`,
 Full evidence in `button-audit.md`; the brief that closes them is
 `button-cleanup-prompt.md`.
 
+### Closed 2026-08-27
+
+| # | Was | How |
+|---|---|---|
+| 1 | `disabled` inert on link-buttons | The `<a>` now drops `href` and carries `aria-disabled="true"` + `role="link"`. Dropping the href is the fix; an anchor without one is not focusable or activatable, so nothing has to swallow events. Pinned in `e2e/design-system/button.spec.ts` |
+| 2 | Fixed `height` clips the label at 200% text (WCAG 1.4.4) | `min-height` + vertical padding (`sm` 4/16 · `md` 6/24 · `lg` 8/24), each size naming its own `--sa-type-*-lh`. Padding stays *under* the nominal height so `min-height` sets the ladder and the padding becomes headroom |
+| 9 | `--_dark` dead (3 declarations, 0 uses); `--_ring` dead on primary and neutral | Deleted |
+| — | **#3 was never five failures** | See the correction below. Four, all `tonal`. Now gated by `packages/tokens/test/action-nontext-contrast.test.mjs` |
+
+### Still open
+
 | # | Open | Why it is not fixed here |
 |---|---|---|
-| 1 | `disabled` inert on link-buttons | Behavioural change to 565 consumers; needs its own change and e2e pins |
-| 2 | Fixed `height` clips the label at 200% text (WCAG 1.4.4) | Same — `min-height` changes every button's box |
-| 3 | Five 1.4.11 boundary failures | Needs a decision on whether `tonal` survives at 2 consumers |
+| 3 | **Four** 1.4.11 boundary failures, all `tonal` (1.21–1.52:1) | Decided 2026-08-27: retire `tonal` rather than darken it. Held in the gate's exemption list, which may only shrink |
 | 4 | 1,440 Figma padding bindings on the **Type** collection, 0 on Space | Rebinding is provable but touches all 720 variants |
-| 5 | 46% of Figma colour bindings reach Tier 1 (900 of 1,956) | Estate-wide visual change; must be value-proven then re-recorded |
+| 5 | ~~46% of Figma colour bindings reach Tier 1~~ — **closed 2026-08-26**, and the number was wrong anyway | Zero `ref/color/*` remain on the Buttons page. What replaced it: **Figma models every state explicitly and the code does not** |
 | 6 | 720 variants — `State` and `Icon` are variant axes that should be properties | Restructuring changes every instance in the estate |
-| 7 | `inverse` / `inverseOutlined` absent from Figma entirely | Needs the Tier-3 `inverse` branch bound first |
+| 7 | `inverse` / `inverseOutlined` absent from Figma entirely | Becoming a `tone` axis rather than a fifth Sub-type |
 | 8 | `inverseOutlined` renders identically for all four variants | `danger` silently loses its signal |
-| 9 | `--_dark` dead (3 declarations, 0 uses); `--_ring` dead on primary and neutral | Trivial, but belongs with the Tier-3 move |
-| 10 | No `IconButton` in code, though Figma has a 60-variant set and UX4G says icon-only is a Button *prop* | Needs a decision, not a patch |
+| 10 | No `IconButton` in code, though Figma has a 60-variant set and UX4G says icon-only is a Button *prop* | Decided 2026-08-27: build it |
 | 11 | `filter: brightness()` for hover/active — cannot be contrast-tested, does not repaint per brand | The matrix's own `$notes` already says this |
+| 12 | **`--_color` is both the label ink and the border colour** | New. Text needs 4.5:1, a border needs 3:1, and they pull apart — which is why neutral's outlined border is a near-black 16.18:1 nobody chose. Split it into an ink and an edge |
+
+### The correction to finding #3
+
+The audit reported **five** 1.4.11 failures. There are **four**.
+
+The fifth, "neutral outlined 2.15:1", measured `cmp/action/neutral/secondary/default/border`
+(`#adb1b7`) — a token `button.css` does not bind. `.ds-btn--neutral` sets `--_color` from
+`cmp/action/neutral/tertiary/default/text`, and `.ds-btn--outlined` paints its border with
+`--_color`, so the rendered border is `#1e2124` at **16.18:1**.
+
+This is the same error class as the "~400 button backgrounds on raw primary" claim corrected
+in `docs/design-system/figma-ref-tier-cleanup.md`: **a token was measured where a component
+was meant.** The defence is structural rather than editorial — the new gate parses the
+variant blocks out of `button.css` and measures whatever they actually bind, so it cannot go
+stale the way a hand-kept list does.
+
+**The flip side is real, and it is now a Figma↔code divergence.** Figma binds outlined→`secondary`,
+so the *library* paints that neutral border `#adb1b7` at 2.15:1 while the *code* paints
+`#1e2124`. Two surfaces, two different borders, and the library's is the failing one.
 
 ---
 

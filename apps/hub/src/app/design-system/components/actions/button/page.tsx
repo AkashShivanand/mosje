@@ -184,13 +184,22 @@ export default function ButtonPage(): React.JSX.Element {
             Component record <span aria-hidden="true">↗</span>
           </a>
         </div>
-        <Callout type="warning" title="This component has open defects, and they are listed here rather than hidden">
-          A full audit on 2026-08-25 found three that ship today — <code>disabled</code> is
-          inert on a link-button, a fixed height clips the label at 200% text, and five
-          variant/appearance pairs miss the 3:1 non-text contrast requirement. The evidence is
-          in <code>docs/design-system/components/button-audit.md</code> and the brief that
-          closes them is <code>button-cleanup-prompt.md</code>. Nothing on this page claims a
-          behaviour the component does not have.
+        <Callout type="warning" title="One open defect remains, and it is listed here rather than hidden">
+          The 2026-08-25 audit found three defects shipping. Two are now fixed and pinned:{" "}
+          <code>disabled</code> on a link-button is genuinely inert, and the size ladder is a{" "}
+          <code>min-height</code> that grows with the text instead of clipping it at 200%.
+          What remains is <strong>non-text contrast on <code>tonal</code></strong> — all four
+          variants sit between 1.21:1 and 1.52:1 against a white page, where WCAG 1.4.11 asks
+          for 3:1. <code>tonal</code> is being retired rather than darkened.
+          <br />
+          <br />
+          The audit also reported a fifth failure, &ldquo;neutral outlined, 2.15:1&rdquo;. That
+          one does not exist: it measured{" "}
+          <code>cmp/action/neutral/secondary/default/border</code>, a token this component does
+          not bind. The border it actually paints measures <strong>16.18:1</strong>. Evidence in{" "}
+          <code>docs/design-system/components/button-audit.md</code>; the boundaries are now
+          measured on every build by{" "}
+          <code>packages/tokens/test/action-nontext-contrast.test.mjs</code>.
         </Callout>
       </header>
 
@@ -320,7 +329,8 @@ export default function ButtonPage(): React.JSX.Element {
           }}
         >
           <li>
-            Heights are <strong>32 / 40 / 48px</strong>. All three clear the{" "}
+            Heights are <strong>minimums</strong> of <strong>32 / 40 / 48px</strong>, not
+            fixed heights — the box grows with the text rather than clipping it. All three clear the{" "}
             <strong>24×24px</strong> WCAG 2.2 §2.5.8 Level AA minimum; only{" "}
             <code>lg</code> reaches the <strong>44×44px</strong> UX4G recommends for
             touch. On a touch surface, prefer <code>lg</code> or add spacing —
@@ -338,6 +348,28 @@ export default function ButtonPage(): React.JSX.Element {
             page claimed the opposite in three places until 2026-08-25.
           </li>
         </ul>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--sa-stack-16)",
+            flexWrap: "wrap",
+            marginTop: "var(--sa-stack-24)",
+            padding: "var(--sa-padding-24)",
+            background: "var(--sa-bg-neutral-subtler)",
+            borderRadius: "var(--sa-shape-12)",
+          }}
+        >
+          <Button variant="primary" appearance="filled" size="sm">
+            Small &mdash; 32px
+          </Button>
+          <Button variant="primary" appearance="filled" size="md">
+            Medium &mdash; 40px
+          </Button>
+          <Button variant="primary" appearance="filled" size="lg">
+            Large &mdash; 48px
+          </Button>
+        </div>
         <CodeBlock>{`{/* Full-width on mobile, auto on larger screens */}
 <Button variant="primary" appearance="filled" style={{ width: "100%" }}>
   Submit application
@@ -531,6 +563,12 @@ export function ApplicationForm() {
                   "All three sizes (32 / 40 / 48px) clear the 24×24px Level AA minimum. 44×44 is 2.5.5 Target Size (Enhanced), Level AAA, which only lg reaches — UX4G recommends it for touch. (WCAG 2.2 §2.5.8)",
               },
               {
+                criterion: "Text resizes to 200% without clipping",
+                level: "AA",
+                description:
+                  "Each size sets min-height plus vertical padding, so the box grows with the text. A fixed height clipped the label until 2026-08-27 — an md button held 40px while its content needed 41. Pinned at the criterion's own 200% threshold in e2e/design-system/button.spec.ts. (WCAG 1.4.4)",
+              },
+              {
                 criterion: "Visible focus indicator",
                 level: "AA",
                 description:
@@ -540,7 +578,7 @@ export function ApplicationForm() {
                 criterion: "Communicates disabled state",
                 level: "AA",
                 description:
-                  "A disabled <button> uses the native disabled attribute, which removes it from the tab order. KNOWN GAP: with href the component renders an <a>, where disabled is not a valid attribute — the control stays focusable and clickable and no aria-disabled is set. Do not ship a disabled link-button until that is fixed. (WCAG 4.1.2)",
+                  "A disabled <button> uses the native disabled attribute, which removes it from the tab order. With href the component renders an <a> and DROPS the href, setting aria-disabled=\"true\" and role=\"link\" — an anchor without href is not focusable and not activatable, so the two paths carry the same semantics. Until 2026-08-27 it emitted <a disabled>, which the browser ignores entirely. (WCAG 4.1.2)",
               },
               {
                 criterion: "Loading state — NOT IMPLEMENTED",
@@ -668,9 +706,20 @@ export function ApplicationForm() {
               Submit application
             </Button>
           </StateRow>
-          <StateRow state="Disabled" note="Reduced opacity; the native disabled attribute takes it out of the tab order. No aria-disabled is set — and none is needed on a <button>. On an <a href>, disabled does nothing at all: see the Accessibility checklist.">
-            <Button variant="primary" appearance="filled" disabled>
+          <StateRow state="Disabled" note="Reduced opacity; the native disabled attribute takes it out of the tab order. No aria-disabled is set — and none is needed on a <button>.">
+            <Button variant="primary" appearance="filled" disabled data-testid="btn-disabled">
               Submit application
+            </Button>
+          </StateRow>
+          <StateRow state="Disabled link" note="A link-button carries the SAME disabled semantics as a button, which is the whole point: an <a> cannot use the native disabled attribute, so the component drops href entirely and sets aria-disabled. Without href an anchor is not focusable and not activatable, so no click-swallowing is needed and none is done.">
+            <Button
+              variant="primary"
+              appearance="filled"
+              href="/design-system/components/actions/button"
+              disabled
+              data-testid="btn-disabled-link"
+            >
+              Continue to eligibility
             </Button>
           </StateRow>
           <StateRow state="Loading" note="CONSUMER-SUPPLIED. There is no loading prop — pass aria-busy and disabled yourself, and swap the label. Shown here as the pattern to copy, not as something the component does for you.">

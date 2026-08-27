@@ -54,6 +54,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       className,
       type = "button",
       href,
+      disabled,
       children,
       ...rest
     },
@@ -83,11 +84,35 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
 
     if (href != null) {
+      /**
+       * A DISABLED LINK-BUTTON DROPS `href`. IT DOES NOT SWALLOW EVENTS.
+       *
+       * `disabled` is not a valid attribute on an anchor, so `<a disabled href>` is
+       * simply an ordinary link: measured on 2026-08-25 as pointer-events:auto,
+       * opacity:1, cursor:pointer, aria-disabled:null and keyboard-focusable — while
+       * looking, to the person who wrote it, exactly like a disabled button.
+       *
+       * Removing `href` is what makes it genuinely inert, and it is better than the
+       * alternatives for a reason worth keeping: an anchor without `href` is not
+       * focusable and not activatable by the browser's own rules. So there is no
+       * click handler to get wrong, no keydown handler to forget, and no `tabIndex`
+       * to keep in sync with the disabled state. The element stays an `<a>`, because
+       * what it IS has not changed — only whether it currently leads anywhere.
+       *
+       * `aria-disabled` carries the state to assistive tech (there is no native
+       * `disabled` to read), and `.ds-btn[aria-disabled="true"]` in button.css
+       * already paints every appearance's disabled treatment.
+       *
+       * Pinned in `e2e/design-system/button.spec.ts`.
+       */
+      const anchorRest = rest as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>;
       return (
         <a
-          href={href}
           className={classes}
-          {...(rest as unknown as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+          {...anchorRest}
+          {...(disabled
+            ? { role: "link" as const, "aria-disabled": "true" as const }
+            : { href })}
         >
           {content}
         </a>
@@ -95,7 +120,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     }
 
     return (
-      <button ref={ref} type={type} className={classes} {...rest}>
+      <button ref={ref} type={type} className={classes} disabled={disabled} {...rest}>
         {content}
       </button>
     );

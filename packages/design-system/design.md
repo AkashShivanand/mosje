@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-25 · System version: v0.34.0 (THE MASTHEAD ANSWERS TO THE
+  Last reviewed: 2026-08-27 · System version: v0.34.0 (THE MASTHEAD ANSWERS TO THE
   STANDARDS, NOT JUST TO FIGMA. SEARCH NOW OUTLIVES THE NAV: it used to hide at
   900px while the nav row held to 1024, so between 768 and 899 a reader had neither
   a menu nor a search box — the two wayfinding tools collapsing one breakpoint apart
@@ -1309,18 +1309,30 @@ All components are exported from `@mosje/design-system`. Import from the package
 
 **Press feedback** is built in: every enabled button scales to `0.97` on `:active`, suppressed under `prefers-reduced-motion`. Colour alone tells you the button noticed; the give tells you it is listening. Do not re-add this per app, and do not increase it — 0.97 reads as a press, 0.9 reads as a toy.
 
-**KNOWN DEFECTS, audited 2026-08-25 — do not build on these.** Full evidence in `docs/design-system/components/button-audit.md`; the brief that closes them is `button-cleanup-prompt.md`; the maintainer frame is `Button — Component record` in Figma.
+**KNOWN DEFECTS, audited 2026-08-25, two closed 2026-08-27.** Full evidence in `docs/design-system/components/button-audit.md`; the brief is `button-cleanup-prompt.md`; the maintainer frame is `Button — Component record` in Figma.
 
-- **`disabled` is inert on a link-button.** `<Button href disabled>` emits `<a disabled>`, which is not a valid attribute. Measured: `pointer-events: auto`, `opacity: 1`, `cursor: pointer`, no `aria-disabled`, still in the tab order. **Do not ship a disabled link-button.**
-- **A fixed `height` clips the label at 200% text (WCAG 1.4.4).** Sizes set `height: 32/40/48px`, not `min-height`. Measured at 32px text: the box stays 40px while the content needs 41.
-- **Five WCAG 1.4.11 boundary failures**, against a 3:1 requirement: tonal primary 1.42, success 1.52, danger 1.21, neutral 1.35; neutral outlined 2.15. Every tonal button is invisible as a control until you read its label. Context before anyone spends effort: **tonal has 2 consumers in 494 buttons**, `inverseOutlined` has 1.
-- **`inverseOutlined` renders identically for all four variants** — white text, white border — so `danger` silently loses its signal.
+**Closed:**
+
+- ~~**`disabled` is inert on a link-button.**~~ Fixed 2026-08-27. `<Button href disabled>` now renders an `<a>` with **no `href`**, plus `aria-disabled="true"` and `role="link"`. Dropping the href is what makes it inert: an anchor without one is not focusable and not activatable by the browser's own rules, so there is no handler to get wrong and no `tabIndex` to keep in sync. Pinned in `e2e/design-system/button.spec.ts`.
+- ~~**A fixed `height` clips the label at 200% text.**~~ Fixed 2026-08-27. Sizes set `min-height` plus vertical padding (`sm` 4/16, `md` 6/24, `lg` 8/24) and each names its own `--sa-type-*-lh`. **The padding is deliberately smaller than the amount that would fill the box** — `min-height` is what makes a button 32/40/48 at 100%, and the padding is the breathing room as the text grows. Sized the other way round, the button outgrows its own ladder at the first zoom step. Pinned at the criterion's own 200% threshold.
+
+**Open:**
+
+- **Four WCAG 1.4.11 boundary failures, all `tonal`**, against a 3:1 requirement: primary 1.42, success 1.52, danger 1.21, neutral 1.35. A tonal button is invisible as a control until you read its label, and it cannot be fixed by darkening its border without becoming a different appearance. **tonal has 2 consumers in 494 buttons**; the decision (2026-08-27) is to retire it. Measured on every build by `packages/tokens/test/action-nontext-contrast.test.mjs`, whose exemption list holds exactly these four and may only shrink.
+- **`inverseOutlined` renders identically for all four variants** — white text, white border — so `danger` silently loses its signal. Being replaced by a `tone="inverse"` axis that crosses with `variant`.
 - **There is no `loading` state.** Pass `aria-busy` and `disabled` yourself.
+- **`--_color` does double duty** as the label ink *and* the border colour, for `outlined` and `text` alike. Those are governed by different criteria — 4.5:1 for text, 3:1 for non-text — and pull in different directions, which is why neutral's outlined border is a near-black 16.18:1 rather than a border weight anyone chose. Splitting it into an ink and an edge is the structural fix.
 - **Text contrast is clean** on all 16 variant×appearance pairs, 4.64 – 16.18. The failures above are all non-text.
+
+**A CORRECTION, and the reason it is worth reading.** The audit reported *five* 1.4.11 failures, the fifth being "neutral outlined 2.15". There is no such failure. It measured `cmp/action/neutral/secondary/default/border` (`#adb1b7`), a token `button.css` does not bind; the border the component actually paints comes from `--_color` → `cmp/action/neutral/tertiary/default/text` → `#1e2124`, which measures **16.18:1**. This is the same error class as the "~400 button backgrounds on raw primary" claim corrected in `docs/design-system/figma-ref-tier-cleanup.md`: **a token was measured where a component was meant.** The new gate defends against it structurally — it parses the variant blocks out of `button.css` and measures whatever they actually bind, so no list in a test file can go stale.
+
+Note the flip side, which IS real: Figma binds outlined→`secondary`, so the **library** paints that neutral border `#adb1b7` at 2.15:1 while the code paints `#1e2124`. Figma and code disagree here, and the library's side is the failing one.
 
 **Target size, stated correctly because the docs got it wrong three times:** 32 / 40 / 48px all clear the **24×24** WCAG 2.2 §2.5.8 Level AA minimum. **44×44 is §2.5.5 (Enhanced), Level AAA** — only `lg` reaches it. UX4G 3.0 recommends 44×44 *on mobile* plus 8px between adjacent targets; that is a touch-context recommendation, not a WCAG failure on a pointer surface.
 
-**Figma structure, counted not sampled:** 720 variants (`3 Size × 4 Type × 4 Sub-type × 5 State × 3 Icon`). **All 1,440 padding bindings sit on the Type collection** (`Font Size/*`), zero on Space. **900 of 1,956 colour bindings reach Tier-1 `ref/*`**; only the Neutral variants bind Tier 3. Radius is the one clean axis: 720/720 on `shape/8`. `inverse`/`inverseOutlined` do not exist in Figma at all.
+**Figma structure, counted not sampled:** 720 variants (`3 Size × 4 Type × 4 Sub-type × 5 State × 3 Icon`), against the ~30 cap in `.claude/rules/component-authoring.md` §4. **All 1,440 padding bindings sit on the Type collection** (`Font Size/*`), zero on Space — so a type-scale change silently re-paddings the estate. Radius is the one clean axis: 720/720 on `shape/8`. `inverse`/`inverseOutlined` do not exist in Figma at all.
+
+The colour half of that paragraph used to read "900 of 1,956 colour bindings reach Tier-1 `ref/*`". **That was wrong and is corrected** — most of those bindings were the icon vectors inside buttons, not the buttons' own fills, which already bound `cmp/action/brand/primary/*/bg`. The 2026-08-26 sweep (`docs/design-system/figma-ref-tier-cleanup.md`) closed the rest: **zero `ref/color/*` bindings remain on the Buttons page**, and 639 outlined/text state bindings now sit on `cmp/action/<family>/<sub-type>/<state>/<slot>`. The consequence for code is the interesting one — **Figma now models every button state explicitly while `button.css` still computes hover and active with `filter: brightness()`**, so the library is ahead of the code here, not behind it.
 
 #### Icon
 **Purpose**: **Material Symbols Rounded** — the official SAMAVESH icon system.  
