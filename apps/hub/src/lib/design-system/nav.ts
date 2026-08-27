@@ -309,6 +309,21 @@ export const NAV: NavGroup[] = [
     ]
   },
   {
+    "title": "Data Visualisation",
+    "items": [
+      {
+        "label": "Library",
+        "href": "/design-system/data-visualisation",
+        "badge": "Beta"
+      },
+      {
+        "label": "Dashboard Archetypes",
+        "href": "/design-system/data-visualisation/archetypes",
+        "badge": "Beta"
+      }
+    ]
+  },
+  {
     "title": "Data Display",
     "items": [
       {
