@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Icon, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import { OrganisationSidebar } from "./OrganisationSidebar";
+import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
 import {
   getOrganisations,
   getOrganisation,
@@ -112,7 +113,14 @@ export default async function OrganisationDetailPage({
               ))
             )}
 
+            
+            {/* Custom Dashboard for Adarsh Gram */}
+            {key === 'pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/components/development-of-sc-dominated-villages-into-adarsh-gram' && (
+              <AdarshGramDashboard />
+            )}
+
             {/* Child Pages Grid / Components */}
+
             {relatedPages.length > 1 && key === rootSlug && (
               <section className="mt-16 pt-10 border-t border-gray-100">
                 <h2 className="text-[26px] font-bold text-primary-dark pb-2 mb-8 text-center">
