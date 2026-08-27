@@ -179,6 +179,53 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
 | 13 | **The Figma mascot was drawn far too small.** `chatbot.css` sizes the figure at 71.5% of the mark without the ring and 66% with it; Figma had 54.8% and 39.3%. | **Fixed 2026-08-23** — both derived from the CSS percentages and the image's own crop aspect |
 | 14 | **The bottom half of the seal reads inverted.** That is inherent to a single circular path and the shipped component does the same, so Figma matches it. A seal that reads upright top AND bottom needs two arcs with the lower one reversed. | Recorded — a design decision, not a defect |
 
+## The composer — measured 2026-08-25
+
+| | |
+|---|---|
+| Pill | 42px (`min-height` on the form, `box-sizing: border-box`) |
+| Input | stretches to the form's 40px inner box — the WHOLE pill is the click target |
+| Send | 32px disc, 5px clearance top and bottom |
+| Placeholder | `text/neutral/subtler`, **4.65:1** — passes WCAG 2.2 §1.4.3 |
+| Border | `border/neutral/base`, **1.66:1** — see below |
+
+**The pill was 34px and that was a regression of this repo's own making.** Fixing the
+dead click zone moved the form's `padding: 4px` onto the input, which fixed the target
+but took the form's height with it: 42 → 34, and the send disc ended with **one pixel**
+of clearance, visibly bursting out of the field. Height now lives on the form's
+`min-height` so both are true at once — verified with five hit-tests down the pill,
+including 3px from each border, all landing on the input.
+
+**The placeholder was never styled**, so it painted the browser default — the input's
+own ink at 50% alpha, compositing to `#808080` at **3.95:1**, under the 4.5:1 that
+§1.4.3 asks of text. Every other input in the estate styles this (`.ds-input`,
+`.ds-search__input`); the composer was the only one that did not. It now binds
+`text/neutral/subtler`, which is what the **Figma master already specified** for that
+node — so design and code agree, and it measures 4.65:1.
+
+### OPEN — the input border fails §1.4.11, estate-wide
+
+Non-text contrast asks **3:1** for the boundary that identifies a control. Measured
+against the panel:
+
+| token | contrast | used by |
+|---|---|---|
+| `border/neutral/subtle` | **1.35:1** | 29 components; was the composer's |
+| `border/neutral/base` | **1.66:1** | `.ds-input`, `.ds-search__input`, `chip`, `india-id`, `auth-fields` — and now the composer |
+| `border/neutral/bolder/default` | 3.06:1 | the rung that would pass |
+
+The composer moved `subtle → base` because it is a text input and that is what text
+inputs in this estate use — it was the odd one out on the faintest rung in the set.
+**It still fails, and so does every other input.** Moving one field to
+`bolder/default` would make the chatbot visibly heavier than every input beside it and
+fix nothing systemic; this is a token-level decision with an estate-wide blast radius
+and belongs with the shared `Input`, not here.
+
+**A related finding worth carrying to whoever takes that on:** `.ds-input`'s own
+placeholder recipe is `text/neutral/subtle` at `opacity: 0.7`, which composites to
+`#75777a` and measures **4.49:1** — missing AA by one hundredth. That is why the
+composer uses `subtler` at full opacity instead of copying it.
+
 ## Upstream dependency — `Button` (recorded 2026-08-25, NOT to be fixed here)
 
 The chatbot's reset control is a `Button` instance in **both** surfaces. `Button` is
