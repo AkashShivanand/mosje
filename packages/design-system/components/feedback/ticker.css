@@ -684,6 +684,22 @@
     white-space: nowrap;
   }
 
+  /* THE HAIRLINE BETWEEN THE CONTROL AND THE ROUTE.
+     They are two different kinds of thing sharing one end of the row: one
+     governs the strip, the other leaves it. It was scoped to the narrow bar,
+     so the desktop bar and every panel had the pause and the route abutting
+     with nothing between them while the library drew a divider — a divergence
+     in the direction that matters least to notice and most to fix.
+
+     ADJACENT SIBLING, deliberately. The nav is only rendered when something can
+     actually move, so this draws itself exactly when there is a control to
+     separate from and vanishes with it. A rule keyed on the shape or the width
+     would have to guess. */
+  .sa-ticker__nav + .sa-ticker__action {
+    padding-inline-start: var(--sa-padding-16);
+    border-inline-start: 1px solid var(--sa-color-transparent-white-24);
+  }
+
   /* ── Reflow ──────────────────────────────────────────────────────────────
      The row could not compress: at full complement it fixed itself at ~266px,
      which pushed a 390px viewport to 481px of scrollWidth — a WCAG 1.4.10
@@ -775,8 +791,6 @@
        are two different kinds of thing sharing one end of the header. */
     .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action {
       order: 3;
-      padding-inline-start: var(--sa-padding-16);
-      border-inline-start: 1px solid var(--sa-color-transparent-white-24);
       margin-inline-end: var(--sa-padding-16);
     }
 
