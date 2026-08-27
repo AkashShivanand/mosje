@@ -15,29 +15,30 @@ const variant = instance.getEnum("Type", {
 });
 
 /**
- * Figma `Sub-type` → `ButtonAppearance`. Exhaustive over what Figma HAS.
+ * Figma `Sub-type` → `ButtonAppearance`. Exhaustive, and now 1:1 with code.
  *
- * DIVERGENCE 1 — `Tonal` maps to `outlined`, because `tonal` NO LONGER EXISTS in code.
- * It was retired on 2026-08-27: its fill and border were the same pale wash, so the
- * control had no edge against the page (1.21:1 to 1.52:1 against a 3:1 requirement) and
- * darkening the border would have made it `outlined` anyway. Figma still has the variant,
- * so a designer can still pick it; this mapping emits the nearest honest thing rather
- * than a prop the component would reject. Remove the Figma variant to close this.
- *
- * DIVERGENCE 2 — the `inverse` TONE (a button on a solid brand surface) has no Figma
- * variant at all, so a designer cannot specify it and this mapping cannot emit it.
- * Resolve by adding a Tone property in Figma, not by removing it from code.
- *
- * Both are logged in the parity ledger.
+ * `Tonal` was REMOVED from the Figma set on 2026-08-27, in the same migration that
+ * removed it from code: its fill and border were the same pale wash, so it had no
+ * findable edge (1.21–1.52:1 against a 3:1 requirement). UX4G 3.0 still publishes a
+ * Tonal button; theirs measures 1.41:1 against a white page, so this is a deliberate,
+ * measured divergence from the standard rather than an oversight — quality-first, per
+ * `.claude/rules/standards-precedence.md`.
  */
 const appearance = instance.getEnum("Sub-type", {
   Filled: "filled",
   Outlined: "outlined",
   Text: "text",
-  Tonal: "outlined",
 });
 
-/** Figma `Size` → `ButtonSize`. Figma's "Default" is the code default `md`. */
+/**
+ * Figma `Tone` → `ButtonTone`. Added 2026-08-27; the axis crosses `Sub-type`, which is
+ * what lets each intent keep its own border on a brand surface.
+ */
+const tone = instance.getEnum("Tone", {
+  Default: "default",
+  Inverse: "inverse",
+});
+
 const size = instance.getEnum("Size", {
   Large: "lg",
   Default: "md",
@@ -58,12 +59,14 @@ const disabled = instance.getEnum("State", {
   Disabled: true,
 });
 
-/** Figma `Icon` places the swapped icon before or after the label. */
-const iconSide = instance.getEnum("Icon", {
-  None: "none",
-  Left: "left",
-  Right: "right",
-});
+/**
+ * The `Icon` VARIANT axis is gone. It was three options multiplying all 720 variants for
+ * something that is two independent yes/no choices — the exact case
+ * `.claude/rules/component-authoring.md` §4 says to push to properties. Removing it took
+ * the set from 720 to 240 and paid for the `Tone` axis twice over.
+ */
+const showLeft = instance.getBoolean("Show Left Icon");
+const showRight = instance.getBoolean("Show Right Icon");
 
 const icon = instance.getInstanceSwap("Change Icon");
 let iconCode;
@@ -76,10 +79,11 @@ export default {
     <Button
       variant="${variant}"
       appearance="${appearance}"
+      ${tone === "inverse" ? figma.code`tone="inverse"` : ""}
       size="${size}"
       ${disabled ? "disabled" : ""}
-      ${iconCode && iconSide === "left" ? figma.code`iconLeft={${iconCode}}` : ""}
-      ${iconCode && iconSide === "right" ? figma.code`iconRight={${iconCode}}` : ""}
+      ${iconCode && showLeft ? figma.code`iconLeft={${iconCode}}` : ""}
+      ${iconCode && showRight ? figma.code`iconRight={${iconCode}}` : ""}
     >
       ${label}
     </Button>

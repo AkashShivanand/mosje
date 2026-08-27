@@ -361,7 +361,26 @@
     border-color: var(--_inv-edge-active);
   }
 
+  /* `tone="inverse"` + `appearance="text"`. Transparent like its default-tone twin, with
+     the inverse ink — the border is what separates it from the outlined form, not the
+     label. `text` (tertiary) has no inverse token family of its own, so it borrows the
+     secondary one, which is the same white. Figma binds it identically. */
+  .ds-btn--inverseText {
+    background-color: transparent;
+    color: var(--_inv-ink);
+    border-color: transparent;
+  }
+
+  .ds-btn--inverseText:hover {
+    background-color: var(--sa-cmp-action-brand-secondary-inverse-hover-bg);
+  }
+
+  .ds-btn--inverseText:active {
+    background-color: var(--sa-cmp-action-brand-secondary-inverse-active-bg);
+  }
+
   .ds-btn--inverse:focus-visible,
+  .ds-btn--inverseText:focus-visible,
   .ds-btn--inverseOutlined:focus-visible {
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);
   }

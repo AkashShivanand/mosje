@@ -103,11 +103,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
      * here, at the edge, and nothing downstream needs to know which spelling arrived.
      */
     const inverse = tone === "inverse" || appearance === "inverse" || appearance === "inverseOutlined";
-    const outlined = appearance === "outlined" || appearance === "inverseOutlined";
     const resolvedAppearance = inverse
-      ? outlined
+      ? appearance === "outlined" || appearance === "inverseOutlined"
         ? "inverseOutlined"
-        : "inverse"
+        : appearance === "text"
+          ? // THE THIRD CASE, AND IT WAS MISSING. `tone="inverse"` first shipped mapping
+            // anything-not-outlined to the white FILLED pill, so a text button on a brand
+            // surface silently became a solid white block — the loudest control on the page
+            // where the quietest was asked for. Found by rendering all twelve combinations
+            // in Figma rather than by reading the branch: the code path looked reasonable.
+            "inverseText"
+          : "inverse"
       : appearance;
 
     // Busy implies disabled. A button that says "Submitting…" and still submits is the

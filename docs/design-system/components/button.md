@@ -205,6 +205,73 @@ branch**, whose Figma side was pushed before its code side landed. The differenc
 when #200 merges. Nothing needs deleting, which is the outcome worth having: the honest
 reading of an unexplained count is "find out", not "delete it" and not "absorb it".
 
+### The Figma component was migrated in place (2026-08-27)
+
+Not a new set — the existing `Button` (`609:283111`) was restructured, so every instance
+in the estate came with it. **720 variants → 360, while ADDING a whole axis.**
+
+| Change | Before | After | Instances affected |
+|---|---|---|---|
+| `Sub-type=Tonal` | 180 variants | **removed** | 5, retargeted to `Outlined` first |
+| `Icon` variant axis | `None \| Left \| Right` (×3) | **two booleans** — `Show Left Icon`, `Show Right Icon` | 1, retargeted with the boolean set |
+| `Tone` | did not exist | **`Default \| Inverse`** (×2), 180 new variants | — |
+
+The measurement that made it safe: **100 instances existed across the whole file, using
+35 of 720 variants.** 95% of that set had never been used, and the two destructive steps
+touched six instances between them. Every one was retargeted *before* anything was
+deleted, and each delete step refused to run while any variant still had an instance.
+
+Icon layers were cloned from **each variant's own** `Icon=Left`/`Icon=Right` sibling, not
+from one source — icon colour lives on a nested `Vector` bound per variant, so a single
+source would have painted all 360 icons white.
+
+**Two defects the migration surfaced, both found by rendering rather than by reading:**
+
+1. The 180 new `Tone=Inverse` variants landed **exactly on top of** their originals. Fixed
+   by shifting the inverse block below the default block; the set now has zero overlaps.
+2. `Tone=Inverse` + `Sub-type=Text` was **illegible** — dark ink on a brand ground. Only
+   `primary` and `secondary` have inverse token families; `text` (tertiary) has none, so
+   the remap found no target and left the default ink. **The same bug existed in code**,
+   where `tone="inverse"` + `appearance="text"` resolved to the white *filled* pill — the
+   loudest control on the page where the quietest was asked for. Both now bind the
+   secondary inverse ink, which is the white the outlined form already uses; the border is
+   what separates them, not the label.
+
+The `Tone=Inverse` half of the set sits on a token-bound brand ground, because those
+variants are white-on-white against the library's own canvas. The Ticker parts hit exactly
+this and it read as a broken component.
+
+### Measured against UX4G 3.0 (2026-08-27)
+
+Their live file, not our notes: `0v5NnMKFKC3foZ85bxPp6c`. Their `Button` is 540 variants;
+their `Icon Button` is 300.
+
+**What they have and we do not:**
+
+| Theirs | Ours | Verdict |
+|---|---|---|
+| `Shape: Rectangle \| Pill` (pill = radius 999) | no shape axis; fixed `shape/8` | **Real gap.** UX4G 3.0 publishes it; a standard's list is a floor |
+| `Size: XS S M L XL` = 24 / 32 / 40 / 48 / 56 | `sm md lg` = 32 / 40 / 48 | **Real gap** at both ends. We match S/M/L exactly. XS at 24 is exactly WCAG 2.5.8's minimum — no margin |
+| `Loading` as a Figma **variant** | `loading` in code only | **Real sync gap** — we have the behaviour, the library cannot show it |
+| Separate `Leading`/`Trailing icon switch` | one `Change Icon` swap driving both | **Real gap.** Code has separate `iconLeft`/`iconRight`; Figma cannot express two different icons |
+| `Label` boolean (hide label → icon-only) | separate `IconButton` component | Deliberate: a component can make `aria-label` **required by the type system**; a boolean cannot |
+| Icon Button `Shape: Square \| Round` | no shape axis | Real gap, same as above |
+
+**What we have and they do not:** `Tone: Default \| Inverse` (they have no inverse
+treatment at all), a `Success` intent, and `Neutral` as a first-class intent rather than a
+spelling of `Type`.
+
+**Where we diverge deliberately, with a measurement:** UX4G keeps a **Tonal** button. Read
+from their live file, its fill is `#dcd4ff` — **1.41:1 against a white page**, where WCAG
+1.4.11 asks 3:1. That is the same failure ours had at 1.42:1. Their label on that fill is
+fine (6.17:1); the defect is the control's *edge*, not its text. So retiring Tonal is
+quality-first per `.claude/rules/standards-precedence.md`, and this is now a measured
+divergence rather than an asserted one.
+
+Their `Type` also merges intent with prominence (`Outlined - Brand` vs `Outlined -
+Neutral`). Ours keeps them orthogonal — `Type` for intent, `Sub-type` for prominence —
+which is the Material/Polaris shape and is why we can offer Success at all.
+
 ### Still open
 
 | # | Open | Why it is not fixed here |
@@ -212,8 +279,11 @@ reading of an unexplained count is "find out", not "delete it" and not "absorb i
 | 4 | 1,440 Figma padding bindings on the **Type** collection, 0 on Space | Rebinding is provable but touches all 720 variants |
 | 5 | ~~46% of Figma colour bindings reach Tier 1~~ — **closed 2026-08-26**, and the number was wrong anyway | Zero `ref/color/*` remain on the Buttons page. What replaced it: **Figma models every state explicitly and the code does not** |
 | 6 | 720 variants — `State` and `Icon` are variant axes that should be properties | Restructuring changes every instance in the estate |
-| 7b | Figma has no `Tone` property, and still has a `Tonal` Sub-type | Needs the Figma edit; the Code Connect template maps `Tonal` → `outlined` in the meantime |
-| 10b | Figma's 60-variant IconButton set has no Code Connect template yet | The component now exists to map it to |
+| 7c | **`Shape: Rectangle \| Pill`** — UX4G 3.0 has it, we have no shape axis | New, from the UX4G comparison |
+| 7d | **Sizes XS (24) and XL (56)** — UX4G has five, we have three | New. XS sits exactly on WCAG 2.5.8's 24×24 floor with no margin, so it needs a decision, not a copy |
+| 7e | **`Loading` is a code prop with no Figma variant** | New. The behaviour exists; the library cannot show it |
+| 7f | **One `Change Icon` swap drives both sides** — UX4G has separate leading/trailing swaps | New. Code has separate `iconLeft`/`iconRight`, so two different icons cannot be expressed in Figma |
+| 10b | Figma's 300-variant Icon Button set has no Code Connect template, and still carries `Tonal` | The component now exists to map it to |
 | 11 | `filter: brightness()` for hover/active — cannot be contrast-tested, does not repaint per brand | The matrix's own `$notes` already says this |
 | 12 | **`--_color` is both the label ink and the border colour** | New. Text needs 4.5:1, a border needs 3:1, and they pull apart — which is why neutral's outlined border is a near-black 16.18:1 nobody chose. Split it into an ink and an edge |
 
