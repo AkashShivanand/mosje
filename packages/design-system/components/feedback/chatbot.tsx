@@ -3,7 +3,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { useCornerRailOffset } from "../../foundations/corner-rail";
-import { Button } from "../actions/button";
 import { Icon } from "../utilities/icon";
 import { ChatbotMascot } from "./chatbot-mascot";
 import "./chatbot.css";
@@ -591,24 +590,27 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
             lives in the header, where it cannot leave. This is also what the
             live assistant on dosje.gov.in does, and the reason is the same.
 
-            The two controls are EXPAND and CLOSE, in that order, matching the
-            live panel. "Start over" is deliberately NOT here — but the reason
-            changed on 2026-08-27 and the old one is worth recording, because it
-            was the right reason until it stopped being true.
+            THREE CONTROLS: START OVER, EXPAND, CLOSE — in that order, with ✕
+            last because the top-right corner is where every user on earth
+            reaches to dismiss, and nothing may take that slot.
 
-            IT USED TO BE: Start over wiped the transcript, and the top-right of
-            a panel is where every user on earth expects a harmless dismiss, so
-            a clearing action in that slot would cost people their conversation.
-            That objection is dead. Start over appends now; it destroys nothing,
-            so it would be harmless beside ✕.
+            START OVER WAS KEPT OUT OF THIS ROW TWICE, FOR A REASON THAT HAS
+            SINCE EXPIRED. While it CLEARED the transcript, an unlabelled icon
+            next to ✕ was how somebody lost a conversation reaching for the
+            close button — so it lived in the footer instead. Three footer
+            arrangements later (hard right, head of the note's row, its own line
+            beneath it) each broke something: Send's column, the panel's left
+            edge, and 24px of height on a phone.
 
-            IT IS NOW: an icon-only control in this row would lose its words,
-            and the words are the only thing telling a first-time visitor what
-            it does. It stays in the footer, hard left, where it can be a label.
+            The premise had changed underneath all three. Start over APPENDS
+            now — it destroys nothing — so the danger that kept it out of the
+            header is gone, and what is left is a panel-level control sitting
+            among the citizen's own composing tools. It belongs here.
 
-            All three are separated by outcome and none of them destroys: ✕
+            All three are separated by outcome and NONE of them destroys: ✕
             closes and keeps the conversation, expand resizes, Start over keeps
-            the panel and adds a fresh start under what is already there.
+            the panel and adds a fresh start under what is already there. That
+            is what makes three icons in one corner safe.
           */}
           <header className="ds-chatbot__header">
             <ChatbotMascot className="ds-chatbot__brand-mark" size={40} />
@@ -623,6 +625,32 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               )}
             </span>
 
+            {/*
+              START OVER. Shown when there is a conversation to restart AND
+              something can restart it — uncontrolled, that is always us;
+              controlled, only where the consumer passed `onEndChat`, which is
+              how it says it will. It once read `!controlledTranscript`, which
+              silently took the affordance from every controlled consumer.
+
+              IT IS AN ICON, AND THE WORDS ARE NOT LOST — `aria-label` and
+              `title` both carry the label, so a screen reader announces it and
+              a pointer reveals it. That trade was refused twice while the
+              control still CLEARED the transcript, because an unlabelled
+              destructive button beside ✕ is how people lose a conversation. It
+              appends now, so the worst a mis-tap costs is a scroll, and the
+              trade is finally the right way round.
+            */}
+            {canEndChat && messages.length > 0 && (
+              <button
+                type="button"
+                className="ds-chatbot__icon-btn ds-chatbot__end"
+                aria-label={endChatLabel}
+                title={endChatLabel}
+                onClick={handleEndChat}
+              >
+                <Icon name="restart_alt" size={20} />
+              </button>
+            )}
             <button
               type="button"
               className="ds-chatbot__icon-btn"
@@ -768,94 +796,25 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               </form>
             )}
 
+            {/*
+              THE FOOTER CARRIES THE NOTE AND NOTHING ELSE.
+
+              Start over used to live down here and it never fitted. Hard right
+              put it 25px under Send in the same 32px column — the most-pressed
+              control in the panel stacked on the rarest. At the head of the
+              note's row it pushed the disclaimer 109px off the panel's left
+              edge and rewrapped it to three lines. On its own line beneath the
+              note it was aligned and honest and still wrong: a lone control
+              under a legal disclaimer, adding 24px to a panel that is already
+              tight on a phone.
+
+              Three arrangements, three different defects, one cause — the
+              footer is where the citizen SAYS things, and a panel-level reset
+              is not something they say. It belongs with the other panel-level
+              controls, in the header. See the header block above.
+            */}
             <div className="ds-chatbot__footer-row">
               <p className="ds-chatbot__note">{note}</p>
-            {/*
-              START OVER IS A SIBLING OF THE NOTE, NOT A WORD INSIDE IT. It used
-              to live in the paragraph, separated by a space, which cost two
-              things: the control stretched the note's last line box and broke
-              the footer's rhythm, and — worse — it moved horizontally with the
-              text wrap, so its position depended on how long the disclaimer
-              happened to be. A control people reach for should be somewhere they
-              can learn.
-
-              IT SITS ON ITS OWN LINE, BENEATH THE NOTE, LEFT-ALIGNED — and it
-              took two goes to get there, so both wrong answers are recorded.
-
-              It sat hard RIGHT until 2026-08-27, in the SAME 32px column as
-              Send, 25px below it, with the whole of Send's width directly
-              above. Send is the most-pressed control in the panel; this was the
-              rarest. Stacking them on one target line is a defect even though
-              every measurement passes — WCAG 2.2 §2.5.8 wants 24px targets and
-              these are 32, UX4G wants 8px between them and these had 25.
-
-              Moving it to the HEAD OF THE SAME ROW fixed the adjacency and
-              broke the layout: 101px of button in front of the note pushed the
-              disclaimer's left edge 109px inside the composer's, giving the
-              panel a ragged left margin, and rewrapped the note from two lines
-              to three so the button floated with 16px of dead space above it.
-              Measured, not guessed — and caught on review, not by a gate.
-
-              Its own line fixes both. Composer, note and button now share one
-              left edge at 33px, the note is two lines again, and the control is
-              171px horizontally and 53px vertically from Send. It costs 24px of
-              panel height, and that is the real price: the line the note gives
-              back pays for most of the row the button takes.
-
-              The header was the other candidate and lost: an icon-only reset
-              beside ✕ would drop the words, and the words are what tell a
-              first-time visitor what the control does.
-
-              IT IS A DS `Button`, NOT A HAND-ROLLED ONE, and the appearance is
-              the whole reason the design-system-first rule exists. Written by
-              hand it landed outlined in the estate's REJECTION red — the colour
-              that means "your application failed" — for an action that is
-              housekeeping, and became the loudest thing in a footer whose only
-              filled control (Send) is disabled at rest. `variant="neutral"
-              appearance="text"` is the register this always wanted: present,
-              findable, and quieter than the disclaimer beside it.
-
-              Shown when there is a conversation to end AND something can end
-              it. Uncontrolled, that is always us. Controlled, the transcript
-              is not ours to clear — so the button appears only where the
-              consumer passed `onEndChat`, which is how it says it will.
-
-              This used to read `!controlledTranscript`, which silently took
-              the only way out of a conversation away from every controlled
-              consumer. A widget that drops an affordance because of HOW it is
-              driven, rather than whether the affordance can work, is making a
-              decision that is not its to make.
-            */}
-              {/*
-                UPSTREAM DEPENDENCY. Button is being rebuilt separately — see
-                docs/design-system/components/button-cleanup-prompt.md, and the
-                "Upstream dependency — Button" section of chatbot.md for what
-                must not break.
-
-                Two things to know if you are here because something failed:
-
-                - `size="sm"` is 32px today because Button sets a fixed `height`.
-                  When that becomes `min-height` this control will start GROWING
-                  at 200% text. The footer row is `align-items: flex-end` and the
-                  panel is content-sized, so it should absorb it — re-verify,
-                  do not assume.
-                - The chatbot's OWN Figma-parity claim (node 55828:766) asserts
-                  two lines inside button.css and component-matrix.json. A Button
-                  change can therefore fail a gate that names the CHATBOT. That
-                  is this dependency firing, not a regression here.
-              */}
-              {canEndChat && messages.length > 0 && (
-                <Button
-                  type="button"
-                  variant="neutral"
-                  appearance="text"
-                  size="sm"
-                  className="ds-chatbot__end"
-                  onClick={handleEndChat}
-                >
-                  {endChatLabel}
-                </Button>
-              )}
             </div>
           </footer>
         </div>

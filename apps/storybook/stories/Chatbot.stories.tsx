@@ -59,19 +59,20 @@ import {
  * accessibility widget in the same corner.
  *
  * The header's ✕ ("Minimise chat") closes and KEEPS the conversation.
- * `endChatLabel` names the footer control — **"Start over"** — which DESTROYS
- * NOTHING. It rules the transcript off with a labelled separator
- * (`restartNotice`, "New conversation" by default) and greets again beneath it,
- * leaving every earlier turn scrolled up and the panel open.
+ * `endChatLabel` names the reset — **"Start over"** — which DESTROYS NOTHING.
+ * It rules the transcript off with a labelled separator (`restartNotice`, "New
+ * conversation" by default) and greets again beneath it, leaving every earlier
+ * turn scrolled up and the panel open. Since it is an icon, that label is its
+ * `aria-label` and `title` rather than visible text.
  *
- * That is the second correction to this control. It was "End chat" and closed
- * the panel, which made it a second ✕ and made the label untrue whichever word
- * you trusted. Then it cleared the transcript, which made a mis-tap cost a
- * citizen every answer they had given — and it sat 25px under Send, in the same
- * 32px column, which is where the most-pressed control in the panel lives. It
- * is hard LEFT in the footer now, and it appends. Both halves matter: moving it
- * alone leaves a destructive button someone will still press on purpose, and
- * appending alone leaves a badly grouped one.
+ * **It is a HEADER control, first of three, with ✕ last.** It was "End chat"
+ * and closed the panel; then it CLEARED the transcript, which made a mis-tap
+ * cost a citizen every answer they had given. It lived in the footer through
+ * three arrangements and each broke something: hard right put it 25px under
+ * Send in the same 32px column, the head of the note's row pushed the
+ * disclaimer 109px off the panel's left edge, and its own line cost 24px of
+ * height. The premise had changed underneath all three — it appends now, so
+ * the danger that kept it out of the header is gone.
  *
  * `restartNotice` is a prop rather than a constant because this estate serves
  * Hindi as well as English.

@@ -44,6 +44,9 @@ const BUBBLE = ".ds-chatbot__bubble";
 const USER_BUBBLE = ".ds-chatbot__bubble--user";
 const BREAK = ".ds-chatbot__break";
 const NOTE = ".ds-chatbot__note";
+const HEADER = ".ds-chatbot__header";
+const FOOTER = ".ds-chatbot__footer";
+const TITLE = ".ds-chatbot__title";
 const COMPOSER = ".ds-chatbot__composer";
 const TYPING = ".ds-chatbot__typing";
 const PANEL = ".ds-chatbot__panel";
@@ -55,74 +58,82 @@ test.describe("Samajik Sahayak — Start over", () => {
     await expect(page.getByText("This is an assistant for the Ministry")).toBeVisible();
   });
 
-  test("is offered in the footer once there is a conversation", async ({ page }) => {
+  test("is offered in the HEADER once there is a conversation", async ({ page }) => {
     await expect(page.locator(START_OVER)).toBeVisible();
-    await expect(page.locator(START_OVER)).toHaveText("Start over");
+    // The label moved from a text node to the accessible name when the control
+    // became an icon. Both `aria-label` and `title` carry it, so a screen
+    // reader announces it and a pointer reveals it.
+    await expect(page.locator(START_OVER)).toHaveAttribute("aria-label", "Start over");
+    await expect(page.locator(START_OVER)).toHaveAttribute("title", "Start over");
+    await expect(page.locator(`${HEADER} ${START_OVER}`)).toHaveCount(1);
   });
 
-  test("is a design-system Button, not a hand-rolled one", async ({ page }) => {
-    // The hand-rolled version is what drifted into the estate's rejection red
-    // for an action that is housekeeping. Pinning the class is what stops it
-    // being quietly re-written by hand later.
+  test("is the header's own icon button, matching its two neighbours", async ({ page }) => {
+    // It was a DS `Button` at variant="neutral" appearance="text" while it lived
+    // in the footer, and that mattered there: hand-rolled it had landed in the
+    // estate's REJECTION red for an action that is housekeeping.
     //
-    // IF THIS FAILS DURING THE BUTTON REBUILD, IT IS THE DEPENDENCY, NOT A BUG
-    // HERE. Button is being restructured separately (button-cleanup-prompt.md).
-    // These three class names are a contract: either they survive, or this test
-    // is updated in the SAME change. Do not delete the assertion to get green —
-    // it is the only thing standing between this control and a fourth
-    // hand-rolled button.
-    await expect(page.locator(START_OVER)).toHaveClass(/ds-btn/);
-    await expect(page.locator(START_OVER)).toHaveClass(/ds-btn--neutral/);
-    await expect(page.locator(START_OVER)).toHaveClass(/ds-btn--text/);
+    // In the header the correct answer is different — it is one of three icons
+    // in one corner, and the other two are `__icon-btn`. A third that styled
+    // itself differently would be the same design-system failure pointing the
+    // other way. `.ds-chatbot__end` carries NO css of its own; it is a handle.
+    await expect(page.locator(START_OVER)).toHaveClass(/ds-chatbot__icon-btn/);
+    await expect(page.locator(START_OVER)).not.toHaveClass(/ds-btn/);
+
+    const controls = page.locator(`${HEADER} button`);
+    await expect(controls).toHaveCount(3);
+    // ✕ is LAST. The top-right corner is where people reach to dismiss and
+    // nothing may take that slot.
+    await expect(controls.nth(2)).toHaveAttribute("aria-label", "Minimise chat");
   });
 
-  test("does not share a column with Send — a mis-tap must cost a reach", async ({
-    page,
-  }) => {
+  test("the header title does not wrap — three controls still leave room", async ({ page }) => {
+    // A THREE PIXEL SHORTFALL is all it took. When Start over joined this row
+    // the brand had 125px for a title needing 128, so "Samajik Sahayak" wrapped
+    // onto two lines and shoved the Devanagari subtitle down with it. The gap
+    // went 12 → 8, giving back 16px across four gaps.
+    //
+    // This is the assertion to read first if a FOURTH control is ever proposed
+    // for the header: the title is what breaks, and it breaks silently.
+    const box = await page.locator(TITLE).boundingBox();
+    expect(box).not.toBeNull();
+    if (!box) return;
+    const lineHeight = await page
+      .locator(TITLE)
+      .evaluate((el) => parseFloat(getComputedStyle(el).lineHeight));
+    expect(Math.round(box.height / lineHeight)).toBe(1);
+  });
+
+  test("the footer is the composer and the note, and nothing else", async ({ page }) => {
+    // Start over lived down here through THREE arrangements and each broke
+    // something measurable: hard right put it 25px under Send in the same 32px
+    // column; at the head of the note's row its 101px pushed the disclaimer
+    // 109px off the panel's left edge and rewrapped it to three lines; on its
+    // own line it added 24px of height to a panel already tight on a phone.
+    await expect(page.locator(`${FOOTER} ${START_OVER}`)).toHaveCount(0);
+
+    const composer = await page.locator(COMPOSER).boundingBox();
+    const note = await page.locator(NOTE).boundingBox();
+    expect(composer).not.toBeNull();
+    expect(note).not.toBeNull();
+    if (!composer || !note) return;
+
+    // One left edge, and the note gets the full width back — which is what
+    // returns it to two lines.
+    expect(Math.abs(note.x - composer.x)).toBeLessThanOrEqual(1);
+    expect(note.width).toBeGreaterThan(composer.width - 2);
+  });
+
+  test("is nowhere near Send — a mis-tap must cost a deliberate reach", async ({ page }) => {
     const send = await page.locator(SEND).boundingBox();
     const startOver = await page.locator(START_OVER).boundingBox();
     expect(send).not.toBeNull();
     expect(startOver).not.toBeNull();
     if (!send || !startOver) return;
 
-    // No horizontal overlap at all: Send begins after Start over ends.
-    expect(send.x).toBeGreaterThan(startOver.x + startOver.width);
-
-    // And not by a hair. Send is pressed constantly and this control is rare;
-    // they should not be reachable by the same thumb position. Measured at
-    // 171px on a 375px-wide viewport, so 100 fails on a regression rather than
-    // on a design tweak.
-    expect(send.x - (startOver.x + startOver.width)).toBeGreaterThan(100);
-  });
-
-  test("the footer keeps ONE left edge — composer, note and Start over", async ({ page }) => {
-    // THIS IS THE HALF THAT WAS MISSED THE FIRST TIME, and it was caught on
-    // review rather than by any gate. Getting Start over out of Send's column
-    // by putting it at the head of the note's row worked geometrically and
-    // wrecked the layout: 101px of button in front of the paragraph pushed the
-    // disclaimer 109px inside the composer's left edge, giving the panel a
-    // ragged left margin, and rewrapped the note from two lines to three so the
-    // button floated with dead space above it.
-    //
-    // Both facts are asserted because fixing either one alone reintroduces the
-    // other: the gap test above passes in BOTH arrangements.
-    const composer = await page.locator(COMPOSER).boundingBox();
-    const note = await page.locator(NOTE).boundingBox();
-    const startOver = await page.locator(START_OVER).boundingBox();
-    expect(composer).not.toBeNull();
-    expect(note).not.toBeNull();
-    expect(startOver).not.toBeNull();
-    if (!composer || !note || !startOver) return;
-
-    expect(Math.abs(note.x - composer.x)).toBeLessThanOrEqual(1);
-    expect(Math.abs(startOver.x - composer.x)).toBeLessThanOrEqual(1);
-
-    // The note runs the full width of the panel rather than being squeezed
-    // beside the button — that squeeze is what cost it the extra line.
-    expect(note.width).toBeGreaterThan(composer.width - 2);
-
-    // And the control is BELOW the note, not beside it.
-    expect(startOver.y).toBeGreaterThanOrEqual(note.y + note.height - 1);
+    // Send is the most-pressed control in the panel; this is the rarest. They
+    // are now at opposite ends of it — the whole transcript sits between them.
+    expect(send.y - (startOver.y + startOver.height)).toBeGreaterThan(200);
   });
 
   test("KEEPS the conversation, rules it off, and greets again below", async ({ page }) => {

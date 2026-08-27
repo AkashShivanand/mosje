@@ -706,12 +706,24 @@
 
   /* -- header --------------------------------------------------------------- */
 
+  /*
+   * THE GAP IS 8, NOT 12, AND THAT IS LOAD-BEARING SINCE THE THIRD CONTROL
+   * ARRIVED. Start over joined expand and close here on 2026-08-27, taking
+   * 32px plus a gap out of the row. At 12 the brand had 125px for a title
+   * needing 128 — a THREE PIXEL shortfall, which is enough to wrap "Samajik
+   * Sahayak" onto two lines and push the Devanagari subtitle down with it.
+   *
+   * Four gaps at 8 instead of 12 give back 16px, so the title clears by 13.
+   * Measured at 375px, the narrowest viewport the estate designs for. If a
+   * fourth control is ever proposed for this row, measure the title first —
+   * it is the thing that breaks, and it breaks silently.
+   */
   .ds-chatbot__header {
     display: flex;
     flex: none;
     align-items: center;
     justify-content: space-between;
-    gap: var(--sa-inline-12);
+    gap: var(--sa-inline-8);
     padding: var(--sa-padding-16);
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }
@@ -1379,34 +1391,25 @@
      A two-line disclaimer with a control under it wastes a whole row of a panel
      that is already capped against the corner rail. */
   /*
-   * A COLUMN, DESPITE THE NAME. The class is still `__footer-row` because the
-   * Figma parity claim (node 55828:766) pins that string; what it holds is the
-   * footer's meta block — the note, then Start over beneath it.
+   * THE NOTE'S BLOCK, AND NOW IT HOLDS ONLY THE NOTE. The class keeps the
+   * `__footer-row` name because the Figma parity claim (node 55828:766) pins
+   * that string.
    *
-   * IT WAS A ROW UNTIL 2026-08-27, AND BOTH ARRANGEMENTS WERE WRONG. With the
-   * control hard RIGHT it sat 25px under Send in the same 32px column. Moving
-   * it to the head of the same row fixed that and broke the layout instead:
-   * the button took 101px off the front, so the disclaimer started 109px inside
-   * the composer's left edge — a ragged left margin down the panel — and rewrapped
-   * from two lines to three, leaving the button floating with 16px of dead space
-   * above it.
+   * Start over shared it until 2026-08-27 and three arrangements each broke
+   * something measurable: hard RIGHT put it 25px under Send in the same 32px
+   * column; at the HEAD of the row its 101px pushed the disclaimer 109px off
+   * the panel's left edge and rewrapped it to three lines; on its OWN LINE it
+   * added 24px of height to a panel already tight on a phone. The control is
+   * in the header now, with the other panel-level controls.
    *
-   * A column fixes both at once. `align-items` stays at its default `stretch`, so
-   * the note runs the full 309px and returns to two lines; the button takes
-   * `align-self: flex-start` below it. Every left edge in the footer — composer,
-   * note, button — now lands on the same 33px. It costs 24px of panel height,
-   * which is the whole price and is worth naming: the note giving back a line
-   * pays for most of the row the button gained.
+   * What the footer gets back is what it had before any of this: a disclaimer
+   * at the full width of the composer, on two lines.
    */
   .ds-chatbot__footer-row {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-8);
     margin-block-start: var(--sa-stack-8);
   }
 
   .ds-chatbot__note {
-    flex: 0 0 auto;
     margin: 0;
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-3-size);
@@ -1446,12 +1449,14 @@
    *
    * `size="sm"` is 32px tall, past the 24px minimum.
    */
-  /* Hugs its label at the head of the column, so it never stretches to the
-     note's width above it. Layout only — Button owns every pixel of appearance. */
-  .ds-chatbot__end {
-    flex: none;
-    align-self: flex-start;
-  }
+  /*
+   * `.ds-chatbot__end` HAS NO RULE HERE, DELIBERATELY. Start over is an
+   * `__icon-btn` like its two neighbours; the extra class exists only so tests
+   * and consumers have a stable handle on WHICH of the three header controls it
+   * is. Giving it appearance of its own would make one of three icons in a
+   * single corner look different from the other two, which is worse than the
+   * problem it would solve.
+   */
 
   /* ---------------------------------------------------------------------------
      Expanded — the live panel offers this and a 400px column earns it
