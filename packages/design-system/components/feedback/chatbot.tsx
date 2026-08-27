@@ -3,7 +3,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { useCornerRailOffset } from "../../foundations/corner-rail";
-import { Button } from "../actions/button";
 import { Icon } from "../utilities/icon";
 import { ChatbotMascot } from "./chatbot-mascot";
 import "./chatbot.css";
@@ -14,8 +13,16 @@ import "./chatbot.css";
 
 export interface ChatbotMessage {
   id: string;
-  /** Who said it. Drives side, bubble shape and whether an avatar is shown. */
-  from: "bot" | "user";
+  /**
+   * Who said it. Drives side, bubble shape and whether an avatar is shown.
+   *
+   * `system` is NOT a speaker. It is a labelled rule drawn across the
+   * transcript, and it exists so that "Start over" can begin a fresh
+   * conversation WITHOUT destroying the one above it. Two greetings in a row
+   * read as the assistant repeating itself; a labelled rule between them reads
+   * as a new start, which is what it is.
+   */
+  from: "bot" | "user" | "system";
   text: string;
 }
 
@@ -54,15 +61,28 @@ export interface ChatbotProps
   /**
    * Label for the footer's reset button.
    *
-   * "Start over", not "End chat". The control clears the transcript and returns
-   * the assistant to its greeting — it does NOT close the panel, and it never
-   * ends anything. It used to close the panel too, which made "End chat" half
-   * true and made the control redundant with the header's ✕. The prop keeps its
-   * name because two consumers pass it; only the default and the behaviour moved.
+   * "Start over", not "End chat". The control begins a fresh conversation and
+   * DESTROYS NOTHING: the turns above stay where they are, under a labelled
+   * rule. It does not close the panel either. The prop keeps its name because
+   * two consumers pass it; only the default and the behaviour moved.
+   *
+   * The label survived the move to an append because it became MORE true, not
+   * less — you start over, and nothing is taken away. A rename to "Clear chat"
+   * was considered and rejected for saying the one thing that is no longer so.
    *
    * @default "Start over"
    */
   endChatLabel?: string;
+  /**
+   * Text on the rule that marks where a fresh start begins.
+   *
+   * A prop rather than a constant because this estate serves Hindi as well as
+   * English, and a hardcoded English string inside the design system is a
+   * translation defect waiting to be found by a citizen.
+   *
+   * @default "New conversation"
+   */
+  restartNotice?: string;
   /**
    * The honest statement of what this assistant is not. Shown under the
    * composer, where the live panel puts its own disclaimer.
@@ -108,7 +128,13 @@ export interface ChatbotProps
    * render the answer. Return nothing and only the user's message is appended.
    */
   onQuickReply?: (reply: ChatbotQuickReply) => ChatbotReply | Promise<ChatbotReply | void> | void;
-  /** Called when "Start over" is pressed, after the transcript is cleared. */
+  /**
+   * Called when "Start over" is pressed.
+   *
+   * A CONTROLLED consumer owns the transcript, so it owns the append too: it
+   * should carry the turns it is showing, add its own rule, and greet again.
+   * It must not clear — see `from: "system"` on ChatbotMessage.
+   */
   onEndChat?: () => void;
 
   /**
@@ -202,6 +228,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     title = CHATBOT_NAME,
     subtitle = CHATBOT_NAME_HI,
     endChatLabel = "Start over",
+    restartNotice = "New conversation",
     note = "Samajik Sahayak points you to the right portal. It cannot decide or change an application.",
     composer = true,
     composerPlaceholder = "Type something…",
@@ -234,16 +261,6 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     quickReplies ?? [],
   );
   const [repliesShown, setRepliesShown] = React.useState(false);
-  /**
-   * Bumped by "Start over" to re-run the scripted opening.
-   *
-   * The opening effect guards on `greeted.current`, and resetting that ref
-   * changes nothing on its own — a ref is not reactive, so React has no reason
-   * to re-run anything. While Start over also closed the panel, `open` flipping
-   * did the re-triggering by accident. It no longer closes, so the trigger has
-   * to be explicit.
-   */
-  const [restartToken, setRestartToken] = React.useState(0);
   /** Bot messages that landed while the panel was shut. Drives the launcher's nudge. */
   const [unread, setUnread] = React.useState(0);
   const [expanded, setExpanded] = React.useState(false);
@@ -325,7 +342,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     // The suggestions land a beat after the message they belong to, so the
     // eye reads "here is the answer" before "here is what you can ask".
     after(OPENING_BEAT_MS + typingDelayMs + 320, () => setRepliesShown(true));
-  }, [open, controlledTranscript, greeting, typingDelayMs, after, restartToken]);
+  }, [open, controlledTranscript, greeting, typingDelayMs, after]);
 
   /* -- keep the suggestion set in step when the prop changes -------------- */
   React.useEffect(() => {
@@ -342,11 +359,33 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
     }
   }, [messages, open]);
 
-  /* -- follow the conversation -------------------------------------------- */
+  /*
+   * -- follow the conversation ---------------------------------------------
+   *
+   * `behavior: "instant"` IS THE FIX, AND IT IS NOT A STYLE PREFERENCE.
+   *
+   * The log carries `scroll-behavior: smooth` so a citizen's own scrolling
+   * glides. A bare `log.scrollTop = …` inherits that, which turns every one of
+   * these into an ANIMATION — and this effect re-runs on each render, because
+   * `messages` is a fresh array identity every time a controlled consumer
+   * builds it. Each run restarts the animation from wherever the last one had
+   * got to, so it never arrives. Measured 2026-08-27 on both this branch and
+   * `main`: a long transcript sat pinned at scrollTop 540 of 1046 here, and at
+   * 0 of 8102 on main, while the same element accepted `scrollTo({behavior:
+   * "instant"})` and landed exactly.
+   *
+   * The bug predates the append — it was simply invisible, because "Start over"
+   * used to empty the log and there was nothing left to scroll. Now the whole
+   * conversation stays and the citizen has to be taken to the new greeting, so
+   * the follow has to actually work.
+   *
+   * `instant` overrides the CSS for THIS call only, so the smooth glide the
+   * citizen gets when they scroll by hand is untouched.
+   */
   React.useEffect(() => {
     const log = logRef.current;
     if (!log || !open) return;
-    log.scrollTop = log.scrollHeight;
+    log.scrollTo({ top: log.scrollHeight, behavior: "instant" });
   }, [messages, typing, repliesShown, open]);
 
   /* -- Escape closes, focus goes home -------------------------------------- */
@@ -382,7 +421,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
   };
 
   /**
-   * START OVER. It resets the conversation and LEAVES THE PANEL OPEN.
+   * START OVER. It APPENDS a fresh conversation and LEAVES THE PANEL OPEN.
    *
    * It used to call `setOpen(false)` as well, which made it a second way to
    * close — and the header already has one, correctly labelled "Minimise chat".
@@ -399,22 +438,44 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
   const handleEndChat = () => {
     clearTimers();
     if (!controlledTranscript) {
-      setOwnMessages([]);
-      setOwnTyping(false);
+      /*
+       * APPEND. DO NOT WIPE. This used to empty the transcript, which is what
+       * made the control dangerous and made its position next to Send worth
+       * arguing about — a mis-tap cost a citizen every answer they had given.
+       *
+       * Nothing is destroyed now: a labelled rule goes in under the last turn
+       * and the greeting lands below it on the same beat a first greeting
+       * gets. The turns above stay, scrolled up. There is therefore nothing to
+       * undo, no confirmation to sit through, and no snapshot to keep — the
+       * three things a destructive reset would have needed.
+       *
+       * `greeted.current` deliberately stays true. It guards the opening
+       * effect, which must not fire again; this handler does its own greeting.
+       */
       setRepliesShown(false);
       setOwnReplies(quickReplies ?? []);
-      greeted.current = false;
-      // The scripted opening is keyed on `open` flipping. The panel is no
-      // longer flipping, so nothing would re-run it and the citizen would be
-      // left staring at an empty panel. This is the re-trigger.
-      setRestartToken((n) => n + 1);
+      setOwnMessages((prev) => [
+        ...prev,
+        { id: nextId(), from: "system", text: restartNotice },
+      ]);
+      setOwnTyping(true);
+      after(typingDelayMs, () => {
+        setOwnTyping(false);
+        setOwnMessages((prev) => [
+          ...prev,
+          { id: nextId(), from: "bot", text: greeting },
+        ]);
+      });
+      // Suggestions land a beat after the message they belong to, exactly as
+      // they do on first open.
+      after(typingDelayMs + 320, () => setRepliesShown(true));
     }
     onEndChat?.();
-    // The button unmounts the instant the transcript empties (`messages.length
-    // > 0` guards it), so focus would otherwise fall to <body> and a keyboard
-    // user would be dropped out of the dialog they are still inside. The panel
-    // is `tabIndex={-1}` and labelled, so it is the correct landing place — and
-    // the greeting that follows is announced by the log's live region.
+    // Focus moves to the panel deliberately, even though the button no longer
+    // unmounts (the transcript never empties now, so `messages.length > 0`
+    // stays true). A keyboard user who has just restarted should be at the top
+    // of what changed, not still on the control that changed it — and the rule
+    // and greeting that follow are announced by the log's live region.
     panelRef.current?.focus();
   };
 
@@ -529,17 +590,27 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
             lives in the header, where it cannot leave. This is also what the
             live assistant on dosje.gov.in does, and the reason is the same.
 
-            The two controls are EXPAND and CLOSE, in that order, matching the
-            live panel. What is deliberately NOT here is "Start over": it wipes
-            the transcript, and the top-right of a panel is where every user on
-            earth expects a harmless dismiss. Putting a clearing action in that
-            slot means people will lose their conversation reaching for the
-            close button. It sits in the footer instead, quietly.
+            THREE CONTROLS: START OVER, EXPAND, CLOSE — in that order, with ✕
+            last because the top-right corner is where every user on earth
+            reaches to dismiss, and nothing may take that slot.
 
-            The two are now cleanly separated by outcome, which they were not
-            before: ✕ closes and KEEPS the conversation, Start over keeps the
-            panel and CLEARS it. Neither does both, so neither can be pressed
-            for one effect and deliver the other.
+            START OVER WAS KEPT OUT OF THIS ROW TWICE, FOR A REASON THAT HAS
+            SINCE EXPIRED. While it CLEARED the transcript, an unlabelled icon
+            next to ✕ was how somebody lost a conversation reaching for the
+            close button — so it lived in the footer instead. Three footer
+            arrangements later (hard right, head of the note's row, its own line
+            beneath it) each broke something: Send's column, the panel's left
+            edge, and 24px of height on a phone.
+
+            The premise had changed underneath all three. Start over APPENDS
+            now — it destroys nothing — so the danger that kept it out of the
+            header is gone, and what is left is a panel-level control sitting
+            among the citizen's own composing tools. It belongs here.
+
+            All three are separated by outcome and NONE of them destroys: ✕
+            closes and keeps the conversation, expand resizes, Start over keeps
+            the panel and adds a fresh start under what is already there. That
+            is what makes three icons in one corner safe.
           */}
           <header className="ds-chatbot__header">
             <ChatbotMascot className="ds-chatbot__brand-mark" size={40} />
@@ -554,6 +625,32 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               )}
             </span>
 
+            {/*
+              START OVER. Shown when there is a conversation to restart AND
+              something can restart it — uncontrolled, that is always us;
+              controlled, only where the consumer passed `onEndChat`, which is
+              how it says it will. It once read `!controlledTranscript`, which
+              silently took the affordance from every controlled consumer.
+
+              IT IS AN ICON, AND THE WORDS ARE NOT LOST — `aria-label` and
+              `title` both carry the label, so a screen reader announces it and
+              a pointer reveals it. That trade was refused twice while the
+              control still CLEARED the transcript, because an unlabelled
+              destructive button beside ✕ is how people lose a conversation. It
+              appends now, so the worst a mis-tap costs is a scroll, and the
+              trade is finally the right way round.
+            */}
+            {canEndChat && messages.length > 0 && (
+              <button
+                type="button"
+                className="ds-chatbot__icon-btn ds-chatbot__end"
+                aria-label={endChatLabel}
+                title={endChatLabel}
+                onClick={handleEndChat}
+              >
+                <Icon name="restart_alt" size={20} />
+              </button>
+            )}
             <button
               type="button"
               className="ds-chatbot__icon-btn"
@@ -585,6 +682,23 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               aria-label={title}
             >
               {messages.map((m, i) => {
+                // Not a turn — the rule marking where a fresh start begins.
+                // The label is carried by `aria-label` and the visible span is
+                // hidden from the tree, so it is announced once, not twice.
+                if (m.from === "system") {
+                  return (
+                    <div
+                      key={m.id}
+                      className="ds-chatbot__break"
+                      role="separator"
+                      aria-label={m.text}
+                    >
+                      <span className="ds-chatbot__break-label" aria-hidden="true">
+                        {m.text}
+                      </span>
+                    </div>
+                  );
+                }
                 // One avatar per run of bot messages, not one per bubble —
                 // a column of identical avatars reads as noise.
                 const leads = m.from === "bot" && messages[i - 1]?.from !== "bot";
@@ -682,68 +796,25 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               </form>
             )}
 
+            {/*
+              THE FOOTER CARRIES THE NOTE AND NOTHING ELSE.
+
+              Start over used to live down here and it never fitted. Hard right
+              put it 25px under Send in the same 32px column — the most-pressed
+              control in the panel stacked on the rarest. At the head of the
+              note's row it pushed the disclaimer 109px off the panel's left
+              edge and rewrapped it to three lines. On its own line beneath the
+              note it was aligned and honest and still wrong: a lone control
+              under a legal disclaimer, adding 24px to a panel that is already
+              tight on a phone.
+
+              Three arrangements, three different defects, one cause — the
+              footer is where the citizen SAYS things, and a panel-level reset
+              is not something they say. It belongs with the other panel-level
+              controls, in the header. See the header block above.
+            */}
             <div className="ds-chatbot__footer-row">
               <p className="ds-chatbot__note">{note}</p>
-            {/*
-              START OVER IS A SIBLING OF THE NOTE, NOT A WORD INSIDE IT. It used
-              to live in the paragraph, separated by a space, which cost two
-              things: the control stretched the note's last line box and broke
-              the footer's rhythm, and — worse — it moved horizontally with the
-              text wrap, so its position depended on how long the disclaimer
-              happened to be. A control people reach for should be somewhere they
-              can learn. It now shares a row with the note and sits hard right,
-              which is a fixed place.
-
-              IT IS A DS `Button`, NOT A HAND-ROLLED ONE, and the appearance is
-              the whole reason the design-system-first rule exists. Written by
-              hand it landed outlined in the estate's REJECTION red — the colour
-              that means "your application failed" — for an action that is
-              housekeeping, and became the loudest thing in a footer whose only
-              filled control (Send) is disabled at rest. `variant="neutral"
-              appearance="text"` is the register this always wanted: present,
-              findable, and quieter than the disclaimer beside it.
-
-              Shown when there is a conversation to end AND something can end
-              it. Uncontrolled, that is always us. Controlled, the transcript
-              is not ours to clear — so the button appears only where the
-              consumer passed `onEndChat`, which is how it says it will.
-
-              This used to read `!controlledTranscript`, which silently took
-              the only way out of a conversation away from every controlled
-              consumer. A widget that drops an affordance because of HOW it is
-              driven, rather than whether the affordance can work, is making a
-              decision that is not its to make.
-            */}
-              {/*
-                UPSTREAM DEPENDENCY. Button is being rebuilt separately — see
-                docs/design-system/components/button-cleanup-prompt.md, and the
-                "Upstream dependency — Button" section of chatbot.md for what
-                must not break.
-
-                Two things to know if you are here because something failed:
-
-                - `size="sm"` is 32px today because Button sets a fixed `height`.
-                  When that becomes `min-height` this control will start GROWING
-                  at 200% text. The footer row is `align-items: flex-end` and the
-                  panel is content-sized, so it should absorb it — re-verify,
-                  do not assume.
-                - The chatbot's OWN Figma-parity claim (node 55828:766) asserts
-                  two lines inside button.css and component-matrix.json. A Button
-                  change can therefore fail a gate that names the CHATBOT. That
-                  is this dependency firing, not a regression here.
-              */}
-              {canEndChat && messages.length > 0 && (
-                <Button
-                  type="button"
-                  variant="neutral"
-                  appearance="text"
-                  size="sm"
-                  className="ds-chatbot__end"
-                  onClick={handleEndChat}
-                >
-                  {endChatLabel}
-                </Button>
-              )}
             </div>
           </footer>
         </div>

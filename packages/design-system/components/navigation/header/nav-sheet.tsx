@@ -1,12 +1,14 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
+import { AccessibilityControls } from "../../utilities/accessibility-controls";
 import { BrandLockup } from "./brand-lockup";
 import { MegaMenuItem } from "./nav-parts";
 import { Search } from "../../forms/search";
-import type { BrandLines, NavItem } from "./types";
+import type { BrandLines, HeaderSearchConfig, NavItem } from "./types";
 import "./header.css";
 
 export interface NavSheetProps {
@@ -22,8 +24,35 @@ export interface NavSheetProps {
   homeHref?: string;
   /** Trailing CTA (Login / Admin Login), pinned above the list. */
   actions?: React.ReactNode;
-  /** Search configuration to render inside the sheet */
-  search?: { placeholder?: string; onSearch?: (q: string) => void };
+  /**
+   * The masthead's search, in FULL — the same `HeaderSearchConfig` the header
+   * itself renders, autocomplete included.
+   *
+   * It used to be a narrowed `{ placeholder, onSearch }`, so `onQueryChange`,
+   * `suggestions` and `onSuggestionSelect` were dropped on the floor: autocomplete
+   * worked on desktop and silently did not on a phone. A downgraded copy of a
+   * component is a fork with extra steps.
+   */
+  search?: HeaderSearchConfig;
+  /**
+   * The query, owned by `SiteHeader`. The sheet used to hold its own, so whatever
+   * the reader had typed in the masthead vanished the moment they opened the menu.
+   */
+  searchValue?: string;
+  onSearchValueChange?: (value: string) => void;
+  /**
+   * Text size · accessibility options · language, rendered as a labelled section
+   * at the foot of the sheet — because `AccessibilityBar` sheds all three below
+   * `breakpoint/tablet` and, until this existed, nothing picked them up. See
+   * `AccessibilityControls`. Pass `false` to omit the section entirely.
+   * @default true
+   */
+  accessibilityControls?: boolean;
+  /** Show the accessibility-options row. Mirrors `SiteHeader`'s `accessibilityToolbar`. */
+  accessibility?: boolean;
+  accessibilityHref?: string;
+  onAccessibility?: () => void;
+  language?: { label?: string; onClick?: () => void } | false;
   id?: string;
   className?: string;
 }
@@ -79,11 +108,25 @@ export function NavSheet({
   homeHref = "/",
   actions,
   search,
+  searchValue,
+  onSearchValueChange,
+  accessibilityControls = true,
+  accessibility = true,
+  accessibilityHref,
+  onAccessibility,
+  language,
   id,
   className,
 }: NavSheetProps): React.JSX.Element | null {
   const [openLabel, setOpenLabel] = React.useState<string | null>(null);
-  const [query, setQuery] = React.useState("");
+  /* Uncontrolled fallback, so a consumer rendering NavSheet on its own still gets
+     a working field. `SiteHeader` always controls it. */
+  const [ownQuery, setOwnQuery] = React.useState("");
+  const query = searchValue ?? ownQuery;
+  const setQuery = onSearchValueChange ?? setOwnQuery;
+  /* Portals need a DOM, so nothing renders until after hydration. */
+  const [mounted, setMounted] = React.useState(false);
+  React.useEffect(() => setMounted(true), []);
   const ref = React.useRef<HTMLDivElement>(null);
   /** Whatever had focus when the sheet opened — almost always the SheetToggle. */
   const returnTo = React.useRef<HTMLElement | null>(null);
@@ -150,14 +193,41 @@ export function NavSheet({
     };
   }, [open]);
 
+  /* Flag the sheet as open, so the UX4G widget's floating button can stand down.
+     It comes back on a phone (accessibility-bar.css un-hides it below 768, since
+     the bar has no control there) and it anchors the bottom-right corner — which
+     is where this sheet is. Screenshotted 2026-08-26: the FAB sat directly on top
+     of the sheet's own A+ button and its "Accessibility options" row. Two doors to
+     one panel, one covering the other.
+
+     Hidden, never unmounted: the bridge in `AccessibilityControls` opens the panel
+     by dispatching a click on this element, and a dispatched click still reaches a
+     hidden node. Remove it from the DOM and the sheet's own row stops working. */
+  React.useEffect(() => {
+    if (!open) return;
+    const root = document.documentElement;
+    root.dataset.saNavsheetOpen = "1";
+    return () => {
+      delete root.dataset.saNavsheetOpen;
+    };
+  }, [open]);
+
   // Collapse any open row when the sheet closes, so it reopens in its Default state.
   React.useEffect(() => {
     if (!open) setOpenLabel(null);
   }, [open]);
 
-  if (!open) return null;
+  if (!open || !mounted) return null;
 
-  return (
+  /* PORTALLED TO <body>, and that is the whole point of it.
+     `SiteHeader` renders this inside `<header class="ds-hdr">`, and `.ds-hdr` is
+     `position: relative` with a `z-index`, so it opens a stacking context — which
+     capped everything inside it, this sheet included, at the header's own level.
+     The sheet's `z-index: 1101` was therefore scoped to a context worth far less
+     at the root, and the sheet still opened UNDERNEATH the Important Links rail
+     (1002) and the chatbot launcher (1010). Raising the number inside the context
+     could never have fixed it. Leaving the context does. */
+  return createPortal(
     <>
       <div className="ds-navsheet__scrim" onClick={onClose} aria-hidden="true" />
       <div
@@ -189,21 +259,35 @@ export function NavSheet({
         </div>
 
         {search && (
-          <div className="ds-navsheet__search">
+          <search className="ds-navsheet__search">
             <Search
               size="lg"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onClear={() => setQuery("")}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                search.onQueryChange?.(e.target.value);
+              }}
+              onClear={() => {
+                setQuery("");
+                search.onQueryChange?.("");
+              }}
               onSubmit={(v) => search.onSearch?.(v)}
+              suggestions={search.suggestions}
+              onSuggestionSelect={search.onSuggestionSelect}
               placeholder={search.placeholder ?? "Search"}
               aria-label={search.placeholder ?? "Search"}
             />
-          </div>
+          </search>
         )}
 
         {actions && <div className="ds-navsheet__actions">{actions}</div>}
 
+        {/* A NAVIGATION LANDMARK, like the row it replaces. `.ds-hdr-nav` is a
+            `<nav aria-label="Primary">`; below 1024 that row is gone and this is
+            the page's primary navigation — but it was a bare `<ul>` inside a
+            dialog, so landmark navigation lost the menu at exactly the width
+            where a screen-reader user most needs it. */}
+        <nav aria-label="Primary">
         <ul className="ds-navsheet__list">
           {nav.map((item) => {
             const sub = subContent(item);
@@ -298,7 +382,19 @@ export function NavSheet({
             );
           })}
         </ul>
+        </nav>
+
+        {accessibilityControls && (
+          <AccessibilityControls
+            variant="sheet"
+            accessibility={accessibility}
+            accessibilityHref={accessibilityHref}
+            onAccessibility={onAccessibility}
+            language={language}
+          />
+        )}
       </div>
-    </>
+    </>,
+    document.body,
   );
 }

@@ -12,6 +12,8 @@ The Button is **structurally sound and factually mis-documented**. Its text cont
 
 Blocking: **P0-1, P0-2, P0-3.** Everything else is debt with a plan.
 
+> **STATUS 2026-08-27.** P0-1 and P0-2 are **fixed and pinned** (`e2e/design-system/button.spec.ts`). P0-3 was **five failures and is four** — all `tonal`, now gated by `packages/tokens/test/action-nontext-contrast.test.mjs`; `tonal` is being retired rather than darkened. See the correction in the P0-3 section.
+
 ---
 
 ## P0 — ships broken today
@@ -47,7 +49,11 @@ WCAG 1.4.4 requires content to remain readable and functional at 200% text with 
 
 **Fix:** `min-height` + vertical padding instead of `height`, so the box grows with the text.
 
-### P0-3 · Five WCAG 1.4.11 non-text-contrast failures
+### P0-3 · ~~Five~~ **FOUR** WCAG 1.4.11 non-text-contrast failures
+
+> **CORRECTED 2026-08-27.** This section said five. It is four. The row struck through
+> below measured a token the component does not bind — see the correction after the
+> table. The four `tonal` rows stand, re-measured and unchanged.
 
 The boundary between a button and the page must reach **3:1**. Measured against `#ffffff`:
 
@@ -57,13 +63,45 @@ The boundary between a button and the page must reach **3:1**. Measured against 
 | success | tonal | **1.52** | ✗ |
 | danger | tonal | **1.21** | ✗ |
 | neutral | tonal | **1.35** | ✗ |
-| neutral | outlined | **2.15** | ✗ |
+| ~~neutral~~ | ~~outlined~~ | ~~**2.15**~~ | **NOT A FAILURE — 16.18 ✓** |
 | primary | outlined | 4.64 | ✓ |
 | success | outlined | 11.67 | ✓ |
 | danger | outlined | 9.10 | ✓ |
 | all four | filled | 6.36 – 9.12 | ✓ |
 
-Every **tonal** button in the system is invisible as a control until you read its label — there is no perceivable edge. Neutral outlined fails because its border is `neutralScale/300` (`#adb1b7`).
+Every **tonal** button in the system is invisible as a control until you read its label — there is no perceivable edge. That half is confirmed.
+
+#### The correction — a token was measured where a component was meant
+
+The neutral-outlined row read: *"Neutral outlined fails because its border is `neutralScale/300` (`#adb1b7`)."* It does not.
+
+`neutralScale/300` is what `cmp/action/neutral/secondary/default/border` resolves to, and
+**`button.css` does not bind that token.** `.ds-btn--neutral` sets `--_color` from
+`cmp/action/neutral/tertiary/default/text`, and `.ds-btn--outlined` paints its border with
+`--_color`. The border the citizen sees is `#1e2124` — **16.18:1**, one of the highest
+boundaries in the component.
+
+This is the **same error class** as the "~400 button backgrounds sit on the raw primary"
+claim corrected in `docs/design-system/figma-ref-tier-cleanup.md` on 2026-08-26, where the
+audit had counted icon vectors inside buttons as button fills. Both times the audit reached
+for a plausible token and reported it as the rendered value. An audit that measures tokens
+is measuring the system's intentions; only measuring the component measures what ships.
+
+**The defence is structural, not editorial.** `packages/tokens/test/action-nontext-contrast.test.mjs`
+parses the variant blocks out of `button.css` and measures whatever they actually bind, in
+both brands. A rebinding cannot escape it and no hand-kept list can go stale. Its exemption
+list holds exactly the four `tonal` boundaries and is asserted to only ever shrink.
+
+**What IS wrong, and was missed:** Figma binds outlined→`secondary`, so the *library* paints
+that neutral border `#adb1b7` at 2.15:1 while the *code* paints `#1e2124`. The 2.15 is real —
+it is just in Figma, not in the code, and it is a Figma↔code divergence rather than a
+shipping defect. It belongs to the Figma branch of this work.
+
+**Why the confusion was available to be had:** `--_color` is doing two jobs. It is the label
+ink for `text` *and* the border colour for `outlined`, which are governed by different
+criteria (4.5:1 vs 3:1) and want different values. Neutral's border is 16.18:1 not because
+anyone chose a near-black border, but because it inherited the body-text ink. Splitting
+`--_color` into an ink and an edge is recorded as open item #12 in `button.md`.
 
 Worth knowing before you spend effort: **`tonal` has 2 consumers in 494 buttons.** `inverseOutlined` has 1. The cheapest correct fix for tonal may be to give it a 3:1 border; the cheapest *honest* option is to ask whether it earns its place at all.
 

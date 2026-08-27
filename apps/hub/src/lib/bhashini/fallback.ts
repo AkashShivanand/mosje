@@ -48,7 +48,7 @@ export const FALLBACK_HI: Readonly<Record<string, string>> = {
 
   // Search
   Search: "खोजें",
-  "Search Schemes, Services, Documents": "योजनाएँ, सेवाएँ, दस्तावेज़ खोजें",
+  "Search schemes and services": "योजनाएँ और सेवाएँ खोजें",
   "Clear search": "खोज साफ़ करें",
 
   // Account and actions

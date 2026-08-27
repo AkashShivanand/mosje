@@ -25,7 +25,7 @@
  * worse than no gate.
  */
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { join, relative, dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
@@ -106,7 +106,7 @@ for (const file of templates) {
   if (!iface) {
     notes.push(`${rel}: no \`${componentName}Props\` interface found in ${sourcePath} — prop names NOT verified`);
   } else {
-    const declared = new Set([...iface[1].matchAll(/^\s{2}(?:\/\*\*[\s\S]*?\*\/\s*)?["']?([a-zA-Z][\w-]*)["']?\??\s*:/gm)].map((m) => m[1]));
+    const declared = declaredProps(componentSrc, componentName, sourcePath);
     for (const p of emitted) {
       if (!declared.has(p)) fail(rel, `example emits \`${p}\` but \`${componentName}Props\` does not declare it`);
     }
@@ -152,3 +152,58 @@ if (findings.length) {
   process.exit(1);
 }
 console.log("✔ every template's props, enums and Figma properties line up.");
+
+/** Prop names declared directly in an interface body. */
+function ownProps(body) {
+  return [...body.matchAll(/^\s{2}(?:\/\*\*[\s\S]*?\*\/\s*)?["']?([a-zA-Z][\w-]*)["']?\??\s*:/gm)].map((m) => m[1]);
+}
+
+/**
+ * Every prop an interface offers, INCLUDING the ones it inherits.
+ *
+ * Reading only the interface body was a second vacuous pass, of exactly the kind the
+ * comment above records finding once already. `IconButtonProps extends Omit<ButtonProps,
+ * …>` declares two members and offers eleven, so a template emitting `size` was reported
+ * as emitting a prop that "does not exist" — and, far worse, any template that emitted an
+ * inherited prop it had spelled WRONG would have been reported the same way and quietly
+ * dismissed as a false positive.
+ *
+ * Follows `extends Base` and `extends Omit<Base, "a" | "b">`, resolving the base from the
+ * same file or from a relative import, and subtracting whatever the Omit removes. React's
+ * own HTML-attribute bases are not resolved — they are not in this repo, and a template
+ * emitting `onClick` was never the risk this check exists for.
+ */
+function declaredProps(srcText, componentName, sourcePath, seen = new Set()) {
+  const key = `${sourcePath}#${componentName}`;
+  if (seen.has(key)) return new Set();
+  seen.add(key);
+
+  const m = srcText.match(new RegExp(`interface\\s+${componentName}Props\\b([^{]*)\\{([\\s\\S]*?)\\n\\}`));
+  if (!m) return new Set();
+  const [, extendsClause, body] = m;
+  const props = new Set(ownProps(body));
+
+  for (const base of extendsClause.matchAll(/(\w+)Props\b/g)) {
+    const baseName = base[1];
+    const omitted = new Set();
+    const omitMatch = extendsClause.match(new RegExp(`Omit<\\s*${baseName}Props\\s*,([^>]*)>`));
+    if (omitMatch) for (const o of omitMatch[1].matchAll(/["']([^"']+)["']/g)) omitted.add(o[1]);
+
+    // Same file first, then a relative import.
+    let baseSrc = srcText;
+    let basePath = sourcePath;
+    if (!new RegExp(`interface\\s+${baseName}Props\\b`).test(srcText)) {
+      const imp = srcText.match(new RegExp(`import[^;]*${baseName}Props[^;]*from\\s+["'](\\.[^"']+)["']`));
+      if (!imp) continue;
+      const resolved = resolve(dirname(join(ROOT, sourcePath)), imp[1]);
+      const candidate = [".tsx", ".ts", "/index.tsx", "/index.ts"].map((e) => resolved + e).find(existsSync);
+      if (!candidate) continue;
+      baseSrc = readFileSync(candidate, "utf8");
+      basePath = candidate;
+    }
+    for (const p of declaredProps(baseSrc, baseName, basePath, seen)) {
+      if (!omitted.has(p)) props.add(p);
+    }
+  }
+  return props;
+}
