@@ -275,22 +275,31 @@ nothing clears.
 **The label survived on purpose.** "Start over" was reviewed for a rename and kept: it became
 MORE true, not less. "Clear chat" would now say the one thing that is no longer so.
 
-## Open — Figma is behind, and needs a human with library access
+## Figma, synced 2026-08-27 — and the one thing still open
 
-The code moved on 2026-08-27. The SAMAVESH library did not, because this session had no way to
-push it. Three things are out of sync and a reader of the Figma page will be misinformed until
-they are fixed:
+Both surfaces moved in the same change, which is what `.claude/rules/figma-code-sync.md` asks
+for and what this component had failed to do twice before.
 
-1. The **master** draws Start over on the right of the footer row. It belongs first in the row.
-2. The **`Chatbot — Documentation` page**, node `55828:766` (§02 Anatomy › FOOTER), still reads
-   *"Start over sharing the note's row, hard right"*. The claim pinned in
-   `tools/figma-doc-parity/claims.json` carries that text as its snapshot, so
-   `npm run check:figma-docs` still passes on the code assertions — the snapshot is what is
-   stale. **Do not edit the snapshot without editing Figma**, or `check:figma-docs:live` will
-   fail instead, having been made to disagree with the library.
-3. There is **no separator part** in the library for the `from: "system"` rule.
+| Surface | What changed |
+|---|---|
+| **Masters** — all three `panel` variants (`55929:178`, `55955:910`, `55955:912`) | The `start over` instance was moved to index 0 of the footer `Row`. It now sits at x **0** with the note at x **97**; it was x **279**. No node was created or deleted — `insertChild(0, …)` reorders, so every instance follows its main |
+| **`Chatbot — Documentation`**, node `55828:766` (§02 Anatomy › FOOTER) | Rewritten: *"first in it, hard LEFT"*, why hard right was wrong, and that Start over APPENDS |
+| **Master description** (`55826:37003`) | Rules renumbered to 8. Rule 1 is now "nothing in this panel destroys anything"; rule 2 is the placement, with the measurements and the reason a checklist could not catch it; rule 7 gained the `scrollTo({ behavior: "instant" })` requirement |
+| **`tools/figma-doc-parity/claims.json`** | Snapshot updated to the new Figma text **in the same change**, plus a 53rd assertion pinning the Button to appear BEFORE the note in the JSX. Editing one without the other is what turns `check:figma-docs:live` into a false red |
 
-Run `npm run check:figma-docs:live` after fixing, with `FIGMA_ACCESS_TOKEN` set.
+**Writing the description needs care and this is the trap:** Figma returns it HTML-escaped
+(`&#39;`, `&quot;`), so reading it, patching the string and writing it back escapes it a second
+time and compounds — `design.md` records one that had reached six levels. It was rewritten
+**fresh in plain text** instead. A single-level escape on read-back is Figma's normal
+projection, not a defect: 2,906 characters written came back as 3,012.
+
+**Still open — there is no separator PART in the library.** The `from: "system"` rule has no
+component, because none of the three drawn variants shows a post-restart transcript, so there is
+nowhere on the canvas it would appear. Adding one means adding a fourth panel state. That is a
+deliberate deferral, not an oversight, and it is the only known divergence.
+
+Run `npm run check:figma-docs:live` with `FIGMA_ACCESS_TOKEN` set to confirm the snapshot against
+the live library.
 
 ## Upstream dependency — `Button` (recorded 2026-08-25, NOT to be fixed here)
 
@@ -385,8 +394,8 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | Start over | `Label/label-2`, `cmp/action/neutral/tertiary/default/text`, **no border, no fill**, `shape/8`, `.ds-btn--sm` | **a `Button` INSTANCE** — `Size=Small, Type=Neutral, Sub-type=Text` | ✅ **both sides now instance the same component.** It was a hand-drawn frame with a 1px error stroke in Figma and ~40 lines of hand-rolled CSS in code — the same defect, authored twice |
 | Start over target | 32 high, clears the 24px 2.5.8 minimum | identical (the Button master hugs its label) | ✅ |
 | Start over ink | `neutralScale/800` via a **neutral-only override** in `component-matrix.json` | identical — pushed and read back, `figma-live.json` re-recorded | ✅ the matrix default is 700, which on the neutral ramp is `text/muted`, the ink of the disclaimer it sits beside |
-| Start over position | same row as the note, hard **right**, bottom-aligned | hard **LEFT**, first in the row (`.ds-chatbot__footer-row`, `flex: none`, `align-items: flex-end`) | ⚠️ **FIGMA IS BEHIND — see the open item below.** Code moved 2026-08-27; the Figma master and its documentation page still draw and describe it on the right |
-| Start over outcome | clears the transcript | **appends** — a `from: "system"` rule, then a fresh greeting under it | ⚠️ **FIGMA IS BEHIND.** The library has no separator part yet |
+| Start over position | first in the row, hard **left**, bottom-aligned — moved in all three masters | identical (`.ds-chatbot__footer-row`, `flex: none` first child, `align-items: flex-end`) | ✅ both sides moved 2026-08-27; the master screenshots at x 0 against the note at x 97 |
+| Start over outcome | **appends** — stated in the master description (rule 1) and §02 of the documentation page | **appends** — a `from: "system"` rule, then a fresh greeting under it | ⚠️ **behaviour matches; the library has no separator PART yet.** Figma draws the panel's states, and none of the three variants shows a post-restart transcript, so there is nothing on the canvas the rule would appear in. See the open item below |
 | Composer input | fills the pill's full 40px inner height (the padding moved onto the input) | not expressible | ⚠️ **by design.** Figma draws appearance, not hit areas — the pill renders identically either way. The rule is carried in the master's description and §06 of the documentation page instead. It was 20px: a line box floated inside a 42px pill, so half the visible field focused nothing and the real target sat under the 24px minimum |
 | Panel height | **content-sized**, capped at `min(719, viewport room)` | `State=Greeting` 396 · `State=Typing` 252 · `State=Transcript` 719 | ✅ the two short states are drawn at their true content height; Transcript stays at 719 because it is the state that demonstrates the cap and the scroll |
 | Launcher | 84, `bg/neutral/base`, `shape/full`, `elevation/toast` | identical | ✅ |
