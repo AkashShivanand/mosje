@@ -179,6 +179,32 @@ appearance is gone from code, but deleting a Figma variant breaks every instance
 uses it, and that is a migration rather than a documentation fix. The Code Connect
 template maps `Tonal` → `outlined` meanwhile, and this stays open below.
 
+### The 15 library-only Color variables are reconciled (2026-08-27)
+
+Pushing the inverse borders surfaced a count nobody could explain: the live `Color`
+collection held **496** entries against the code's **481**. The first write-up called
+thirteen of them unexplained. Both halves of that were wrong.
+
+**The count is 15, not 13** — the 13 came from comparing against the *previous record's*
+483 rather than against the code, which is the same class of mistake as measuring a token
+where a component was meant.
+
+**And they are all explained:**
+
+| Extra | What | Why it is there |
+|---|---|---|
+| `border/brand/primary/hover`, `.../bolder` | 2 | The long-standing library-only pair. `hover` is still the only variable in the collection with no generated `codeSyntax`, which is the cross-check the record has always used. `bolder` is what the old note called `subtle` — renamed since the last read |
+| `border\|icon\|text/status/{success,error,warning,info}/bolder` | 12 | **Open PR #200** (`ds/icon-style-bindings`) |
+| `icon/neutral/subtler` | 1 | **Open PR #200** |
+
+Verified by diffing `dist/tokens.css` across `main` and that branch: every one of the
+thirteen is absent on `main` and present on #200.
+
+So the library is **not holding orphans — it is ahead of `main` by exactly one unmerged
+branch**, whose Figma side was pushed before its code side landed. The difference closes
+when #200 merges. Nothing needs deleting, which is the outcome worth having: the honest
+reading of an unexplained count is "find out", not "delete it" and not "absorb it".
+
 ### Still open
 
 | # | Open | Why it is not fixed here |
