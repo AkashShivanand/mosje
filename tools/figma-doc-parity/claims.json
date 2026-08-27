@@ -387,10 +387,10 @@
         {
           "kind": "source",
           "file": "packages/design-system/components/actions/button.css",
-          "pattern": "^\\s+height:",
-          "flags": "m",
+          "pattern": "\\.ds-btn--(?:sm|md|lg) \\{[^}]*?(?<!min-)(?<!line-)height:",
+          "flags": "s",
           "absent": true,
-          "hint": "NO bare `height` anywhere in button.css. This is the assertion that actually holds the fix: a min-height on md means nothing if sm or lg quietly keeps a fixed height."
+          "hint": "NO bare `height` in any of the three SIZE rules — the assertion that actually holds the fix, since a min-height on md means nothing if sm or lg quietly keeps a fixed one. Two corrections on 2026-08-27: it was `^\\s+height:` over the whole file, which fired on the busy spinner's legitimate `height: 1em`; and the first narrowing excluded `min-` but not `line-`, so it matched the size rules' own `line-height`. Both lookbehinds are load-bearing."
         },
         {
           "kind": "source",

@@ -361,7 +361,26 @@
     border-color: var(--_inv-edge-active);
   }
 
+  /* `tone="inverse"` + `appearance="text"`. Transparent like its default-tone twin, with
+     the inverse ink — the border is what separates it from the outlined form, not the
+     label. `text` (tertiary) has no inverse token family of its own, so it borrows the
+     secondary one, which is the same white. Figma binds it identically. */
+  .ds-btn--inverseText {
+    background-color: transparent;
+    color: var(--_inv-ink);
+    border-color: transparent;
+  }
+
+  .ds-btn--inverseText:hover {
+    background-color: var(--sa-cmp-action-brand-secondary-inverse-hover-bg);
+  }
+
+  .ds-btn--inverseText:active {
+    background-color: var(--sa-cmp-action-brand-secondary-inverse-active-bg);
+  }
+
   .ds-btn--inverse:focus-visible,
+  .ds-btn--inverseText:focus-visible,
   .ds-btn--inverseOutlined:focus-visible {
     box-shadow: 0 0 0 3px color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);
   }
@@ -371,6 +390,51 @@
   .ds-btn--inverseOutlined:disabled:active,
   .ds-btn--inverseOutlined[aria-disabled="true"]:active {
     background-color: transparent;
+  }
+
+  /* --------------------------------------------------------------------------
+     Busy (`loading`)
+     -------------------------------------------------------------------------- */
+
+  /* `currentColor` so the spinner follows the button's ink through every variant,
+     appearance and tone without a single extra token. `1em` so it tracks the label's
+     size across the whole ladder, including when a reader scales text.
+
+     Its own keyframes rather than the `ds-spin` in feedback.css: that file is only
+     loaded when something imports Loader, so borrowing the name would make the spinner
+     silently stop animating on any page that has a Button and no Loader. Three lines of
+     duplication is cheaper than a load-order dependency nobody can see. */
+  .ds-btn__spinner {
+    flex: 0 0 auto;
+    width: 1em;
+    height: 1em;
+    border-radius: var(--sa-shape-full);
+    border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
+    border-top-color: currentColor;
+    animation: ds-btn-spin 0.7s linear infinite;
+  }
+
+  @keyframes ds-btn-spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-btn__spinner {
+      animation-duration: 1.6s;
+    }
+  }
+
+  /* A BUSY BUTTON IS NOT A FORBIDDEN ONE, AND MUST NOT LOOK LIKE IT.
+     `loading` implies `disabled` so the form cannot be submitted twice — but the disabled
+     block below drops every control to 50% opacity, which would say "you may not press
+     this" when the truth is "this is working". The control keeps its full strength and a
+     progress cursor; it is still unclickable, because it is genuinely disabled. */
+  .ds-btn[aria-busy="true"]:disabled,
+  .ds-btn[aria-busy="true"][aria-disabled="true"] {
+    opacity: 1;
+    cursor: progress;
   }
 
   /* --------------------------------------------------------------------------

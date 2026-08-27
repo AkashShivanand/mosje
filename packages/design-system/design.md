@@ -1354,7 +1354,9 @@ Note the flip side, which IS real: Figma binds outlined→`secondary`, so the **
 
 **Target size, stated correctly because the docs got it wrong three times:** 32 / 40 / 48px all clear the **24×24** WCAG 2.2 §2.5.8 Level AA minimum. **44×44 is §2.5.5 (Enhanced), Level AAA** — only `lg` reaches it. UX4G 3.0 recommends 44×44 *on mobile* plus 8px between adjacent targets; that is a touch-context recommendation, not a WCAG failure on a pointer surface.
 
-**Figma structure, counted not sampled:** 720 variants (`3 Size × 4 Type × 4 Sub-type × 5 State × 3 Icon`), against the ~30 cap in `.claude/rules/component-authoring.md` §4. **All 1,440 padding bindings sit on the Type collection** (`Font Size/*`), zero on Space — so a type-scale change silently re-paddings the estate. Radius is the one clean axis: 720/720 on `shape/8`. `inverse`/`inverseOutlined` do not exist in Figma at all.
+**Figma structure, counted not sampled (re-counted 2026-08-27):** **360 variants** (`3 Size × 4 Type × 3 Sub-type × 5 State × 2 Tone`), down from 720 **while gaining an axis** — `Tonal` was deleted and the `Icon` axis became two booleans, which is what paid for `Tone`. Without that removal, adding `Tone` would have produced 1,440. `State` stays a variant deliberately: a designer has to SEE hover, pressed and disabled, and Material and Polaris keep it too. Still above the ~30 cap in `.claude/rules/component-authoring.md` §4, and that is now a considered position rather than an accident — every remaining axis repaints the control.
+
+**Radius** is clean: 360/360 on `shape/8`. **Colour** is now clean too — 993 of 1,102 bindings on Tier-3 `cmp/*`, 109 on palette rungs, **zero on Tier-1 `ref/*`** (it was 900 of 1,956 on 2026-08-25). **Padding is the one still wrong**: 960 of 1,440 bound and every one to the **Type** collection (`Font Size/6 ×480, /1 ×240, /3 ×240`), so a type-scale change silently re-paddings the estate. The other 480 cannot be bound at all — the vertical padding is a raw **10px**, and 10 is not a rung on the space scale. Code uses **6px** there, so the two surfaces disagree on a value neither can currently name; fixing it means moving 10 to 8 or 12, which moves geometry and needs a decision.
 
 The colour half of that paragraph used to read "900 of 1,956 colour bindings reach Tier-1 `ref/*`". **That was wrong and is corrected** — most of those bindings were the icon vectors inside buttons, not the buttons' own fills, which already bound `cmp/action/brand/primary/*/bg`. The 2026-08-26 sweep (`docs/design-system/figma-ref-tier-cleanup.md`) closed the rest: **zero `ref/color/*` bindings remain on the Buttons page**, and 639 outlined/text state bindings now sit on `cmp/action/<family>/<sub-type>/<state>/<slot>`. The consequence for code is the interesting one — **Figma now models every button state explicitly while `button.css` still computes hover and active with `filter: brightness()`**, so the library is ahead of the code here, not behind it.
 
@@ -1379,8 +1381,15 @@ text: unhidden, a screen reader says "arrow_back Close dialog". Square at 32 / 4
 size for the same WCAG 1.4.4 reason as the parent. All three clear 2.5.8's 24×24; only `lg`
 reaches the 44×44 UX4G recommends for touch.
 
-**Figma**: a 60-variant IconButton set exists in the library and had no code counterpart
-until 2026-08-27 (finding #10 in `button.md`).
+**Figma**: the `IconButton` set was migrated in place on 2026-08-27 — **60 variants → 45**.
+`Tonal` was deleted (zero instances, and the appearance no longer exists in code), and the
+property `Type` became `Sub-type` with its value `Default` renamed to `Text`: it rendered with
+no fill and no stroke, so it *was* the text appearance wearing a name that made the quietest
+option sound like the normal one. All 76 instances survived, verified after the rename.
+`icon-button.figma.ts` maps it.
+
+**Still divergent, recorded not hidden**: the Figma set has **no intent axis and no `Tone`**, so
+a `danger` or inverse icon button cannot be drawn even though the code supports both.
 
 #### ButtonGroup
 **Purpose**: related actions kept together **and kept apart**. It gives the row a
