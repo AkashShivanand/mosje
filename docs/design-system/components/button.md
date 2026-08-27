@@ -272,6 +272,40 @@ Their `Type` also merges intent with prominence (`Outlined - Brand` vs `Outlined
 Neutral`). Ours keeps them orthogonal — `Type` for intent, `Sub-type` for prominence —
 which is the Material/Polaris shape and is why we can offer Success at all.
 
+### What we took from UX4G 3.0, and what we declined (2026-08-27)
+
+Scoped to Button. Two adopted, five declined — each with a reason rather than a shrug.
+
+**Adopted:**
+
+| Taken | Why | Cost |
+|---|---|---|
+| **Separate leading/trailing icon swaps** | Not really a UX4G idea — a parity bug. Code has had `iconLeft`/`iconRight` all along while Figma had ONE `Change Icon` driving both, so "← Back" and "Next →" had to be the same arrow. Now `Left Icon` + `Right Icon` | No variant cost |
+| **`Loading`** | We had the behaviour and the library could not show it | One boolean |
+
+**`Loading` was taken as a capability, not as a shape.** UX4G models it as a VARIANT axis
+(×2). Copying that would have taken the set from 360 straight back to 720 — undoing the
+migration — for something that is a plain on/off. It is a boolean with a hidden spinner
+bound to each variant's own label ink, so it follows every intent, appearance and tone.
+
+**And it exposed a defect in our own code.** `loading` shipped on 2026-08-27 setting
+`aria-busy` and disabling the control, and **nothing else** — so a screen-reader user was
+told the button was busy while a sighted user saw a greyed-out button indistinguishable
+from one they were never allowed to press. Half an accessible state is not an accessible
+state. Both surfaces now show a spinner in the **leading icon's place**, so a button with
+an icon does not change width the moment it is pressed, and a busy button keeps full
+opacity with `cursor: progress` rather than wearing the disabled wash.
+
+**Declined:**
+
+| Not taken | Why |
+|---|---|
+| `Shape: Rectangle \| Pill` | Radius is a **brand** decision — DBIM and SAMAVESH set it. Our rule is to adopt UX4G's structural conventions, not its aesthetic preferences. It also doubles the set again. If we ever want pill, change `shape/8` once, estate-wide |
+| Size **XS (24px)** | Sits exactly on WCAG 2.5.8's floor with **zero margin**, and our own docs already call `sm` (32) a pointer-surface size. Wrong direction for citizens on cheap phones |
+| Size **XL (56px)** | No demonstrated need, and sizes multiply — 3 → 4 costs +120 variants. Add it when a hero CTA actually asks |
+| `Label` boolean (icon-only) | We use `IconButton` precisely so `aria-label` is **required by the type system**. A boolean cannot do that, and 533 of 718 icon call sites here once missed their label |
+| `Tonal` | Measured in **their** file: `#dcd4ff` is **1.41:1** against a white page, the same failure ours was at 1.42:1 |
+
 ### Still open
 
 | # | Open | Why it is not fixed here |
@@ -281,8 +315,8 @@ which is the Material/Polaris shape and is why we can offer Success at all.
 | 6 | 720 variants — `State` and `Icon` are variant axes that should be properties | Restructuring changes every instance in the estate |
 | 7c | **`Shape: Rectangle \| Pill`** — UX4G 3.0 has it, we have no shape axis | New, from the UX4G comparison |
 | 7d | **Sizes XS (24) and XL (56)** — UX4G has five, we have three | New. XS sits exactly on WCAG 2.5.8's 24×24 floor with no margin, so it needs a decision, not a copy |
-| 7e | **`Loading` is a code prop with no Figma variant** | New. The behaviour exists; the library cannot show it |
-| 7f | **One `Change Icon` swap drives both sides** — UX4G has separate leading/trailing swaps | New. Code has separate `iconLeft`/`iconRight`, so two different icons cannot be expressed in Figma |
+| ~~7e~~ | ~~`Loading` has no Figma variant~~ | **Closed 2026-08-27** — a `Loading` boolean with a token-bound spinner |
+| ~~7f~~ | ~~One `Change Icon` swap drives both sides~~ | **Closed 2026-08-27** — `Left Icon` + `Right Icon` |
 | 10b | Figma's 300-variant Icon Button set has no Code Connect template, and still carries `Tonal` | The component now exists to map it to |
 | 11 | `filter: brightness()` for hover/active — cannot be contrast-tested, does not repaint per brand | The matrix's own `$notes` already says this |
 | 12 | **`--_color` is both the label ink and the border colour** | New. Text needs 4.5:1, a border needs 3:1, and they pull apart — which is why neutral's outlined border is a near-black 16.18:1 nobody chose. Split it into an ink and an edge |

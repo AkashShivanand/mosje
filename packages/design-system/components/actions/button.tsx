@@ -129,7 +129,23 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     );
     const content = (
       <>
-        {iconLeft != null && (
+        {/*
+          THE BUSY STATE HAD NO VISIBLE INDICATOR, WHICH MADE IT INVISIBLE TO THE PEOPLE
+          WHO CAN SEE. `loading` shipped on 2026-08-27 setting `aria-busy` and disabling
+          the control, and nothing else — so a screen-reader user was told the button was
+          busy and a sighted user saw a greyed-out button indistinguishable from one they
+          were never allowed to press. Half an accessible state is not an accessible state.
+
+          The spinner takes the LEADING ICON'S PLACE rather than being added beside it, so
+          a button with an icon does not change width the moment it is pressed — the
+          commonest cause of a mis-click on the control next to it.
+
+          It is `aria-hidden` deliberately: the button already carries `aria-busy` and its
+          own label. Reusing the `Loader` component here would nest a `role="status"` live
+          region inside an already-busy control and announce twice.
+        */}
+        {loading && <span className="ds-btn__spinner" aria-hidden="true" />}
+        {iconLeft != null && !loading && (
           <span className="ds-btn__icon" aria-hidden="true">
             {iconLeft}
           </span>

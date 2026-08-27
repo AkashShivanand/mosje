@@ -68,11 +68,24 @@ const disabled = instance.getEnum("State", {
 const showLeft = instance.getBoolean("Show Left Icon");
 const showRight = instance.getBoolean("Show Right Icon");
 
-const icon = instance.getInstanceSwap("Change Icon");
-let iconCode;
-if (icon && icon.type === "INSTANCE") {
-  iconCode = icon.executeTemplate().example;
-}
+/**
+ * TWO swaps, one per side. Until 2026-08-27 a single `Change Icon` drove both, so a
+ * designer could not put different glyphs on the two ends of a button — "Back ←" and
+ * "→ Next" had to be the same arrow. Code has always had separate `iconLeft` and
+ * `iconRight`; this is the Figma side catching up, and it matches UX4G 3.0's own
+ * leading/trailing pair.
+ */
+/**
+ * Figma `Loading` → the `loading` prop. Modelled as a BOOLEAN, not as UX4G's variant
+ * axis: as a variant it would have doubled a set we had just halved, 360 back to 720, for
+ * something that is a plain on/off. Same capability, a tenth of the surface.
+ */
+const loading = instance.getBoolean("Loading");
+
+const leftIcon = instance.getInstanceSwap("Left Icon");
+const rightIcon = instance.getInstanceSwap("Right Icon");
+const leftCode = leftIcon && leftIcon.type === "INSTANCE" ? leftIcon.executeTemplate().example : undefined;
+const rightCode = rightIcon && rightIcon.type === "INSTANCE" ? rightIcon.executeTemplate().example : undefined;
 
 export default {
   example: figma.code`
@@ -81,9 +94,10 @@ export default {
       appearance="${appearance}"
       ${tone === "inverse" ? figma.code`tone="inverse"` : ""}
       size="${size}"
-      ${disabled ? "disabled" : ""}
-      ${iconCode && showLeft ? figma.code`iconLeft={${iconCode}}` : ""}
-      ${iconCode && showRight ? figma.code`iconRight={${iconCode}}` : ""}
+      ${loading ? "loading" : ""}
+      ${disabled && !loading ? "disabled" : ""}
+      ${leftCode && showLeft ? figma.code`iconLeft={${leftCode}}` : ""}
+      ${rightCode && showRight ? figma.code`iconRight={${rightCode}}` : ""}
     >
       ${label}
     </Button>

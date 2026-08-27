@@ -141,6 +141,18 @@ test.describe("Button — audited defects", () => {
     // The label survives. A spinner that replaces the name leaves a screen reader with
     // an unnamed control at the exact moment the user needs to know what is happening.
     await expect(btn).toHaveText(/Submitting/);
+
+    // AND IT IS VISIBLE. `loading` first shipped setting aria-busy and disabling the
+    // control and nothing else, so the state existed only for screen readers: a sighted
+    // user saw a greyed-out button indistinguishable from one they were never allowed to
+    // press. Half an accessible state is not an accessible state.
+    const spinner = btn.locator(".ds-btn__spinner");
+    await expect(spinner).toBeVisible();
+    await expect(spinner).toHaveAttribute("aria-hidden", "true");
+
+    // A busy button must not wear the disabled 50% wash — that says "forbidden" when the
+    // truth is "working". It stays unclickable regardless, which the assertion above pins.
+    expect(Number(await btn.evaluate((el) => getComputedStyle(el).opacity))).toBe(1);
   });
 
   /**
