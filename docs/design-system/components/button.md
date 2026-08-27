@@ -306,6 +306,61 @@ opacity with `cursor: progress` rather than wearing the disabled wash.
 | `Label` boolean (icon-only) | We use `IconButton` precisely so `aria-label` is **required by the type system**. A boolean cannot do that, and 533 of 718 icon call sites here once missed their label |
 | `Tonal` | Measured in **their** file: `#dcd4ff` is **1.41:1** against a white page, the same failure ours was at 1.42:1 |
 
+### The Buttons page was audited and restructured (2026-08-27)
+
+**Structure.** The page had **eight top-level nodes, zero sections and seven overlapping
+pairs** — the Button set had grown to 7,828px in the migration and was sitting on top of
+the legacy boards, the IconButton set, and 24px of the Component record. It now follows the
+convention the Ticker and Chatbot pages already set:
+
+| Section | Holds |
+|---|---|
+| `1 · Button — the published set` | the set, and the brand ground the `Tone=Inverse` half sits on |
+| `2 · IconButton — the published set` | the set |
+| `3 · Link — published here, and absent from code` | see below |
+| `4 · Scratch — pre-2026 specimen boards` | two dead boards, parked not deleted |
+
+Plus `Button — Documentation` and `Button — Component record` as top-level frames.
+**Zero overlaps** after the move.
+
+**Two things the audit turned up that nobody was looking for:**
+
+1. A frame named **"Icon Buttons" actually contained the `Link` component set** — 15
+   variants, with malformed names (`Size= Small, State=  Default`: leading and doubled
+   spaces). `Link` is published in Figma and **has no code counterpart at all**. Lifted into
+   its own honestly-named section; the naming and the parity gap are open below.
+2. The other two frames were **hand-drawn specimen boards** — zero components, zero
+   instances, and one still advertising `Tonal`. Parked in a labelled scratch section rather
+   than deleted, which is what was done with the Ticker's detached panel.
+
+### IconButton was migrated in place (2026-08-27)
+
+**60 variants → 45.** Not a new set; every instance came with it.
+
+| Change | Detail |
+|---|---|
+| `Tonal` deleted | 15 variants, **zero instances**, and the appearance no longer exists in code |
+| `Type` → `Sub-type` | matching Button's vocabulary |
+| value `Default` → `Text` | it rendered with **no fill and no stroke** — it *was* the text appearance, under a name that made the quietest option sound like the normal one |
+| `icon-button.figma.ts` | the set had no Code Connect template at all; it has one now |
+
+All **76 instances verified healthy** after the property and value renames — that is the
+step that can silently break a library, so it was checked rather than assumed.
+
+### The token counts, re-measured after the migration
+
+| Axis | State |
+|---|---|
+| **Radius** | 360/360 on `shape/8` — clean |
+| **Colour** | 993 of 1,102 bindings on Tier-3 `cmp/*`, 109 on palette rungs, **zero on Tier-1** (it was 900 of 1,956 on 2026-08-25) |
+| **Padding** | **still wrong.** 960 of 1,440 bound, every one to the **Type** collection (`Font Size/6 ×480, /1 ×240, /3 ×240`) |
+
+**And 480 padding slots cannot be bound at all.** The vertical padding is a raw **10px**, and
+10 is not a rung on the space scale. Code uses **6px** in the same place — so the two
+surfaces disagree on a value neither can currently name. Fixing it means moving 10 to 8 or
+12, which moves geometry on 240 variants; that is a decision, not a mechanical rebind, and it
+is not made here.
+
 ### Still open
 
 | # | Open | Why it is not fixed here |
@@ -317,7 +372,10 @@ opacity with `cursor: progress` rather than wearing the disabled wash.
 | 7d | **Sizes XS (24) and XL (56)** — UX4G has five, we have three | New. XS sits exactly on WCAG 2.5.8's 24×24 floor with no margin, so it needs a decision, not a copy |
 | ~~7e~~ | ~~`Loading` has no Figma variant~~ | **Closed 2026-08-27** — a `Loading` boolean with a token-bound spinner |
 | ~~7f~~ | ~~One `Change Icon` swap drives both sides~~ | **Closed 2026-08-27** — `Left Icon` + `Right Icon` |
-| 10b | Figma's 300-variant Icon Button set has no Code Connect template, and still carries `Tonal` | The component now exists to map it to |
+| ~~10b~~ | ~~IconButton has no Code Connect template and still carries `Tonal`~~ | **Closed 2026-08-27** |
+| 13 | **IconButton has no intent axis and no `Tone` in Figma** | A `danger` or inverse icon button cannot be drawn, though code supports both |
+| 14 | **`Link` is published in Figma and absent from code**, with malformed variant names | Found during the page audit; outside Button's scope to resolve |
+| 15 | **480 padding slots unbindable** — vertical padding is a raw 10px, off the space scale, where code uses 6px | Needs a geometry decision (10 → 8 or 12), not a rebind |
 | 11 | `filter: brightness()` for hover/active — cannot be contrast-tested, does not repaint per brand | The matrix's own `$notes` already says this |
 | 12 | **`--_color` is both the label ink and the border colour** | New. Text needs 4.5:1, a border needs 3:1, and they pull apart — which is why neutral's outlined border is a near-black 16.18:1 nobody chose. Split it into an ink and an edge |
 

@@ -444,7 +444,7 @@ import "@mosje/design-system/tokens.css";`}</CodeBlock>
               type: "boolean",
               default: "false",
               description:
-                "Sets aria-busy and disables the control, so a form cannot be submitted twice while the first submission is in flight. It does NOT swap the label — pass “Submitting…” yourself, because a control that loses its name mid-action is unusable with a screen reader.",
+                "Sets aria-busy, disables the control so a form cannot be submitted twice, and shows a spinner in the LEADING ICON’S place so the button does not change width mid-press. It does NOT swap the label — pass “Submitting…” yourself, because a control that loses its name mid-action is unusable with a screen reader. A busy button keeps full opacity with cursor: progress rather than the disabled wash: “working” and “forbidden” must not look the same.",
             },
             {
               name: "size",
