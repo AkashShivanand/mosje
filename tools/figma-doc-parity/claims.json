@@ -404,7 +404,7 @@
     {
       "node": "56162:1816",
       "where": "Button — Documentation › 04 States",
-      "figma": "Default, hover, pressed, focused and disabled are drawn here as variants so a designer can see them. In CODE there is no state prop — CSS drives hover, active and disabled. Never add one. Loading is absent from both surfaces: pass aria-busy and disabled yourself.",
+      "figma": "Default, hover, pressed, focused and disabled are drawn here as variants so a designer can see them. In CODE there is no state prop — CSS drives hover, active and disabled. Never add one. Loading IS a prop as of 2026-08-27: `loading` sets aria-busy and disables the control, but it deliberately does not swap the label — pass “Submitting…” yourself.",
       "expect": [
         {
           "kind": "text",
@@ -420,9 +420,14 @@
         {
           "kind": "source",
           "file": "packages/design-system/components/actions/button.tsx",
-          "pattern": "aria-busy",
-          "absent": true,
-          "hint": "There is no loading state. The docs page claimed the component set aria-busy until 2026-08-25; it does not."
+          "pattern": "loading\\?: boolean",
+          "hint": "The loading prop exists. This page claimed the component set aria-busy, then that it had no loading state at all; it now has one and says so."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.tsx",
+          "pattern": "const isDisabled = disabled === true \\|\\| loading",
+          "hint": "Busy implies disabled. A button that says “Submitting…” and still submits is the double-submission this prop exists to prevent."
         }
       ]
     }

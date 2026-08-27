@@ -108,17 +108,57 @@ Full evidence in `button-audit.md`; the brief that closes them is
 | 9 | `--_dark` dead (3 declarations, 0 uses); `--_ring` dead on primary and neutral | Deleted |
 | — | **#3 was never five failures** | See the correction below. Four, all `tonal`. Now gated by `packages/tokens/test/action-nontext-contrast.test.mjs` |
 
+### Also closed 2026-08-27
+
+| # | Was | How |
+|---|---|---|
+| 3 | Four 1.4.11 failures, all `tonal` | **`tonal` retired**, not repaired — darkening its border would have made it `outlined`. Two consumers migrated. The gate's exemption list is now **empty** |
+| 7/8 | `inverse`/`inverseOutlined` absent from Figma; `inverseOutlined` identical for all four variants | Replaced by **`tone="inverse"`**, an axis crossing `appearance`. Each intent takes its own scale at rung 100. Old words kept as deprecated aliases — the Ticker's route-out, the login shell and two Code Connect templates name them |
+| 10 | No `IconButton` in code | **Built**, as a component rather than a prop, so `aria-label` is required by the type system |
+| — | No loading state | **`loading`** sets `aria-busy` + disabled; deliberately does not swap the label |
+| — | **A fifth 1.4.11 failure the audit missed** | See below. Fixed by the same change as 7/8 |
+
+### The failure the audit missed
+
+The audit measured every boundary against a **white page**. `inverse` exists precisely because
+the button is *not* on white.
+
+Measured on a brand surface, `inverse`/`outlined` failed 1.4.11: a flat
+`rgba(255, 255, 255, 0.4)` border for every intent — **2.25:1 on `primaryScale/600`**
+(`#005eb9`) and 1.91:1 on gov-blue. It cleared 3:1 on **navy alone**, the one brand surface
+anybody had checked.
+
+**Where it paints — and a correction.** The failure is real in the **portal login shell's
+"Signing Into" bar** (`auth-parts.tsx`, `tone="hero"`), on the design-system docs and in
+Storybook. It is **not** the Ticker's route-out, which the first draft of this note named:
+`ticker.css` carries `.sa-ticker__action > :is(a, button) { border: 0 }`, stripping the border
+inside the same cascade layer at higher specificity. That button has no edge to measure.
+
+That was **the same error this section criticises the audit for**, made while correcting it —
+a token measured where a component was meant. It got past a passing contrast gate, because the
+gate reads token values and `button.css` bindings and cannot see a third stylesheet overriding
+the outcome. Only the rendered element settles it.
+
+**A latent oddity this turned up:** the Ticker asks for `inverseOutlined` and then removes the
+border that makes it outlined. It should ask for `appearance="text"` with `tone="inverse"` and
+say what it means. Left alone here because PR #207 is open on the ticker.
+
+So the audit was wrong in both directions, and for opposite reasons: it reported a failure on
+a token the component does not bind, and missed one on a surface it never measured. **The
+surface a control sits on is part of the measurement.** The gate now names the surfaces
+rather than assuming one, and separately asserts the component *binds* the tokens — because
+these were fully modelled in the matrix long before anything read them, so fixing the values
+alone would have changed nothing on screen.
+
 ### Still open
 
 | # | Open | Why it is not fixed here |
 |---|---|---|
-| 3 | **Four** 1.4.11 boundary failures, all `tonal` (1.21–1.52:1) | Decided 2026-08-27: retire `tonal` rather than darken it. Held in the gate's exemption list, which may only shrink |
 | 4 | 1,440 Figma padding bindings on the **Type** collection, 0 on Space | Rebinding is provable but touches all 720 variants |
 | 5 | ~~46% of Figma colour bindings reach Tier 1~~ — **closed 2026-08-26**, and the number was wrong anyway | Zero `ref/color/*` remain on the Buttons page. What replaced it: **Figma models every state explicitly and the code does not** |
 | 6 | 720 variants — `State` and `Icon` are variant axes that should be properties | Restructuring changes every instance in the estate |
-| 7 | `inverse` / `inverseOutlined` absent from Figma entirely | Becoming a `tone` axis rather than a fifth Sub-type |
-| 8 | `inverseOutlined` renders identically for all four variants | `danger` silently loses its signal |
-| 10 | No `IconButton` in code, though Figma has a 60-variant set and UX4G says icon-only is a Button *prop* | Decided 2026-08-27: build it |
+| 7b | Figma has no `Tone` property, and still has a `Tonal` Sub-type | Needs the Figma edit; the Code Connect template maps `Tonal` → `outlined` in the meantime |
+| 10b | Figma's 60-variant IconButton set has no Code Connect template yet | The component now exists to map it to |
 | 11 | `filter: brightness()` for hover/active — cannot be contrast-tested, does not repaint per brand | The matrix's own `$notes` already says this |
 | 12 | **`--_color` is both the label ink and the border colour** | New. Text needs 4.5:1, a border needs 3:1, and they pull apart — which is why neutral's outlined border is a near-black 16.18:1 nobody chose. Split it into an ink and an edge |
 

@@ -125,4 +125,85 @@ test.describe("Button — audited defects", () => {
       expect(Math.round(box!.height), `${cls} height`).toBe(expected);
     }
   });
+
+  /**
+   * `loading` landed 2026-08-27. Before it, the docs told consumers to pass `aria-busy`
+   * and `disabled` themselves, which meant every consumer could forget half of it — and
+   * a button that says "Submitting…" while still accepting clicks is the double
+   * submission the prop exists to prevent.
+   */
+  test("a loading button is busy AND disabled, not merely busy", async ({ page }) => {
+    await openTab(page, "Meta");
+    const btn = page.getByTestId("btn-loading");
+    await expect(btn).toBeVisible();
+    await expect(btn).toHaveAttribute("aria-busy", "true");
+    await expect(btn).toBeDisabled();
+    // The label survives. A spinner that replaces the name leaves a screen reader with
+    // an unnamed control at the exact moment the user needs to know what is happening.
+    await expect(btn).toHaveText(/Submitting/);
+  });
+
+  /**
+   * The audit's finding #8: `inverseOutlined` rendered identically for all four variants,
+   * so `danger` silently lost its signal. That was a TOKEN fact as much as a CSS one —
+   * every intent resolved the same `rgba(255,255,255,0.4)`.
+   *
+   * Asserted on the rendered border, not on the token, because the token was already
+   * fully modelled while nothing read it.
+   */
+  test("on a brand surface each variant paints its own border", async ({ page }) => {
+    await openTab(page, "Meta");
+    await expect(page.getByTestId("inverse-strip")).toBeVisible();
+
+    // Distinctness ALONE is not enough, and this test learned that the hard way: reverting
+    // a SINGLE variant back to the old flat white-alpha still leaves four different
+    // colours, so a `new Set(...).size === 4` check passed against the very bug it was
+    // written to catch. Each border is therefore compared to ITS OWN intent token.
+    const INTENT_OF: Record<string, string> = {
+      primary: "brand",
+      success: "success",
+      danger: "destructive",
+      neutral: "neutral",
+    };
+
+    const rows = await Promise.all(
+      Object.entries(INTENT_OF).map(async ([variant, intent]) => {
+        const actual = await page
+          .getByTestId(`inv-${variant}`)
+          .evaluate((el) => getComputedStyle(el).borderTopColor);
+        // Normalise through the SAME computed-style path. A custom property comes back as
+        // its raw text (`#c0dbff`) while a border colour comes back resolved
+        // (`rgb(192, 219, 255)`), and comparing those two spellings fails on formatting
+        // rather than on colour.
+        const expected = await page
+          .getByTestId(`inv-${variant}`)
+          .evaluate((el, token) => {
+            const raw = getComputedStyle(el).getPropertyValue(token).trim();
+            if (!raw) return "";
+            const probe = document.createElement("span");
+            probe.style.color = raw;
+            document.body.appendChild(probe);
+            const resolved = getComputedStyle(probe).color;
+            probe.remove();
+            return resolved;
+          }, `--sa-cmp-action-${intent}-secondary-inverse-default-border`);
+        return { variant, actual, expected };
+      }),
+    );
+
+    for (const { variant, actual, expected } of rows) {
+      expect(expected, `${variant}'s inverse border token must resolve`).not.toBe("");
+      expect(
+        actual,
+        `${variant} paints ${actual} but its own intent token is ${expected}`,
+      ).toBe(expected);
+    }
+
+    // ...and they must still all differ, which is what "carries the intent" means.
+    const unique = new Set(rows.map((r) => r.actual));
+    expect(
+      unique.size,
+      `all four inverse outlined borders should differ, got ${JSON.stringify(rows.map((r) => r.actual))}`,
+    ).toBe(4);
+  });
 });

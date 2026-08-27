@@ -185,12 +185,13 @@ export default function ButtonPage(): React.JSX.Element {
           </a>
         </div>
         <Callout type="warning" title="One open defect remains, and it is listed here rather than hidden">
-          The 2026-08-25 audit found three defects shipping. Two are now fixed and pinned:{" "}
+          The 2026-08-25 audit found three defects shipping. All three are now closed:{" "}
           <code>disabled</code> on a link-button is genuinely inert, and the size ladder is a{" "}
           <code>min-height</code> that grows with the text instead of clipping it at 200%.
-          What remains is <strong>non-text contrast on <code>tonal</code></strong> — all four
-          variants sit between 1.21:1 and 1.52:1 against a white page, where WCAG 1.4.11 asks
-          for 3:1. <code>tonal</code> is being retired rather than darkened.
+          <code>tonal</code> has been <strong>retired</strong> — all four of its variants sat
+          between 1.21:1 and 1.52:1 against a white page where WCAG 1.4.11 asks for 3:1, and
+          darkening the border would simply have made it <code>outlined</code>. Its two
+          consumers are now <code>outlined</code>.
           <br />
           <br />
           The audit also reported a fifth failure, &ldquo;neutral outlined, 2.15:1&rdquo;. That
@@ -304,7 +305,7 @@ export default function ButtonPage(): React.JSX.Element {
         <Callout type="info" title="How variants map to the component API">
           The shared <code>Button</code> exposes a <code>variant</code> axis
           (primary · success · danger) and an <code>appearance</code> axis (filled
-          · outlined · text · tonal · inverse · inverseOutlined). The intents above
+          · outlined · text) plus a <code>tone</code> axis (default · inverse). The intents above
           map onto that API:{" "}
           <strong>secondary</strong> = <code>appearance=&quot;outlined&quot;</code>,{" "}
           <strong>ghost</strong> = <code>appearance=&quot;text&quot;</code>. The
@@ -312,8 +313,11 @@ export default function ButtonPage(): React.JSX.Element {
           surface — for a button placed directly on a solid brand-colour surface
           (a navy header, hero band), use{" "}
           <code>appearance=&quot;inverse&quot;</code> (emphasized) or{" "}
-          <code>appearance=&quot;inverseOutlined&quot;</code> (secondary) instead
-          of overriding <code>className</code>.
+          <code>tone=&quot;inverse&quot;</code> instead of overriding{" "}
+          <code>className</code>. It crosses <code>appearance</code>, so{" "}
+          <code>tone=&quot;inverse&quot; appearance=&quot;outlined&quot;</code> is the
+          secondary form — and unlike the old <code>inverseOutlined</code> it keeps the
+          variant&rsquo;s intent.
         </Callout>
         <div style={{ marginTop: "var(--sa-stack-24)" }}>
           <ButtonPlayground />
@@ -417,16 +421,30 @@ import "@mosje/design-system/tokens.css";`}</CodeBlock>
           props={[
             {
               name: "variant",
-              type: '"primary" | "success" | "danger"',
+              type: '"primary" | "success" | "danger" | "neutral"',
               default: '"primary"',
               description: "Semantic colour role / intent of the action.",
             },
             {
               name: "appearance",
-              type: '"filled" | "outlined" | "text" | "tonal" | "inverse" | "inverseOutlined"',
+              type: '"filled" | "outlined" | "text"',
               default: '"filled"',
               description:
-                "Visual weight. outlined = secondary, text = ghost (tertiary). inverse/inverseOutlined are for a button placed directly on a solid brand-colour surface (e.g. a navy header) — use instead of overriding className.",
+                "Visual weight. outlined = secondary, text = ghost (tertiary). tonal was retired on 2026-08-27 (no perceivable edge — 1.21:1 to 1.52:1 against a 3:1 requirement). For a solid brand-colour surface use tone, not an appearance.",
+            },
+            {
+              name: "tone",
+              type: '"default" | "inverse"',
+              default: '"default"',
+              description:
+                "Which ground the button sits on. inverse is for a solid brand-colour surface — a navy header, the ticker bar. It CROSSES appearance, which is the point: as two appearance words (inverse/inverseOutlined) it could only have one look, so all four variants painted the same white-alpha border and danger silently lost its signal. Those two words still work as deprecated aliases.",
+            },
+            {
+              name: "loading",
+              type: "boolean",
+              default: "false",
+              description:
+                "Sets aria-busy and disables the control, so a form cannot be submitted twice while the first submission is in flight. It does NOT swap the label — pass “Submitting…” yourself, because a control that loses its name mid-action is unusable with a screen reader.",
             },
             {
               name: "size",
@@ -722,10 +740,29 @@ export function ApplicationForm() {
               Continue to eligibility
             </Button>
           </StateRow>
-          <StateRow state="Loading" note="CONSUMER-SUPPLIED. There is no loading prop — pass aria-busy and disabled yourself, and swap the label. Shown here as the pattern to copy, not as something the component does for you.">
-            <Button variant="primary" appearance="filled" disabled aria-busy="true">
+          <StateRow state="Loading" note="loading sets aria-busy and disables the control, so a form cannot be submitted twice while the first submission is in flight. It deliberately does NOT swap the label — a control that loses its name mid-action is unusable with a screen reader, so pass “Submitting…” yourself.">
+            <Button variant="primary" appearance="filled" loading data-testid="btn-loading">
               Submitting…
             </Button>
+          </StateRow>
+          <StateRow state="Inverse tone" note="tone=&quot;inverse&quot; crosses appearance, so each variant keeps its own intent on a brand surface. Until 2026-08-27 the outlined form painted the same white-alpha border for all four — and at 2.25:1 on this background it was not a findable edge either. It paints in the portal login shell’s “Signing Into” bar, here, and in Storybook; the Ticker’s route-out strips its border in ticker.css and renders as a text link.">
+            <div
+              data-testid="inverse-strip"
+              style={{
+                display: "flex",
+                gap: "var(--sa-inline-8)",
+                padding: "var(--sa-padding-16)",
+                background: "var(--sa-color-primaryScale-600)",
+                borderRadius: "var(--sa-shape-8)",
+                flexWrap: "wrap",
+              }}
+            >
+              {(["primary", "success", "danger", "neutral"] as const).map((v) => (
+                <Button key={v} variant={v} tone="inverse" appearance="outlined" data-testid={`inv-${v}`}>
+                  {v}
+                </Button>
+              ))}
+            </div>
           </StateRow>
         </div>
         <Callout type="tip" title="Loading is a busy disabled state">

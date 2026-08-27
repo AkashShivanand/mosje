@@ -26,7 +26,19 @@ import { relLum } from "./lib/contrast.mjs";
  * whatever they actually bind. A rebinding cannot silently escape it, and no list here
  * can go stale.
  *
- * There are four real failures, not five, and all four are `tonal`.
+ * There were four real failures, not five, and all four were `tonal` — retired 2026-08-27.
+ *
+ * THE AUDIT ALSO MISSED ONE, FOR THE MIRROR-IMAGE REASON.
+ * ------------------------------------------------------
+ * It measured every boundary against a WHITE page. But `inverse` exists precisely
+ * because the button is NOT on a white page — it is on a solid brand surface. Measured
+ * where it actually lives, `inverse`/`outlined` fails: its border is a flat
+ * `rgba(255,255,255,0.4)` for every intent, which is 2.25:1 on the ticker bar
+ * (`primaryScale/600`, `#005eb9`) and 1.91:1 on gov-blue. It clears 3:1 on navy alone,
+ * which is the one brand surface anybody checked.
+ *
+ * So the surface a control sits on is part of the measurement, and this file names the
+ * surfaces rather than assuming one.
  */
 
 const root = new URL("..", import.meta.url).pathname;
@@ -39,20 +51,17 @@ const buttonCss = readFileSync(
 const AA_NONTEXT = 3.0;
 
 /**
- * The four `tonal` boundaries, declared rather than hidden.
+ * EMPTY, AND THAT IS THE POINT.
  *
- * `tonal` paints a pale wash and gives it a border of the SAME colour, so the control's
- * edge against a white page is whatever the wash is — 1.21:1 to 1.52:1. It cannot be
- * fixed by darkening the border without becoming a different appearance, and it has two
- * consumers out of 494. The decision (2026-08-27) is to retire it; these entries go with
- * it and the list is asserted to only ever SHRINK.
+ * This held the four `tonal` boundaries — 1.21:1 to 1.52:1 against a 3:1 requirement.
+ * `tonal` painted a pale wash and gave it a border of the SAME colour, so the control had
+ * no edge against a white page at all, and darkening the border would simply have made it
+ * `outlined`. It had two consumers in 494 buttons, so it was retired on 2026-08-27 rather
+ * than repaired, and the four entries left with it.
+ *
+ * The list may only ever shrink. Nothing goes back in.
  */
-const EXEMPT = new Set([
-  "primary/tonal",
-  "success/tonal",
-  "danger/tonal",
-  "neutral/tonal",
-]);
+const EXEMPT = new Set([]);
 
 function declsIn(selector) {
   const body = buttonCss.match(
@@ -122,10 +131,28 @@ function contrastOf(fg, bg) {
 const EDGE_OF = {
   filled: "--_fill",
   outlined: "--_color",
-  tonal: "--_tonal-bg",
 };
 
 const VARIANTS = ["primary", "success", "danger", "neutral"];
+
+/** variant word in button.css -> intent word in the token matrix. */
+const INTENT_OF = {
+  primary: "brand",
+  success: "success",
+  danger: "destructive",
+  neutral: "neutral",
+};
+
+/**
+ * Every solid surface an `inverse` button is allowed to sit on. `inverse` is documented
+ * as working on ANY solid brand colour, so the gate holds it to all of them rather than
+ * to the single darkest one — the failure below was invisible for exactly as long as
+ * navy was the only surface anyone measured.
+ */
+const BRAND_SURFACES = [
+  ["ticker bar / brand bolder", "--sa-color-primaryScale-600"],
+  ["navy", "--sa-color-brand-navy"],
+];
 
 test("every Button edge is findable against the page it sits on (1.4.11, 3:1)", () => {
   for (const brand of BRANDS) {
@@ -158,8 +185,10 @@ test("every Button edge is findable against the page it sits on (1.4.11, 3:1)", 
       }
     }
 
+    // 4 variants x 2 appearances. It was 12 while `tonal` existed; if this number drops
+    // again, an appearance has gone missing rather than been retired on purpose.
     assert.ok(
-      checked >= 12,
+      checked >= 8,
       `${brand.name}: expected every variant x appearance edge, only resolved ${checked}`,
     );
     assert.deepEqual(
@@ -175,16 +204,12 @@ test("every Button edge is findable against the page it sits on (1.4.11, 3:1)", 
 test("the 1.4.11 exemption list only ever shrinks", () => {
   // Every exemption is a known failure shipping to citizens, so the list is capped at the
   // four it was created with. Retiring `tonal` empties it; nothing may ever be added.
-  assert.ok(
-    EXEMPT.size <= 4,
-    `the 1.4.11 exemption list grew to ${EXEMPT.size}. It may only shrink.`,
+  assert.equal(
+    EXEMPT.size,
+    0,
+    `the 1.4.11 exemption list has ${EXEMPT.size} entr(y|ies). It emptied when tonal was ` +
+      `retired and may only shrink — every entry is a known failure shipping to citizens.`,
   );
-  for (const key of EXEMPT) {
-    assert.ok(
-      key.endsWith("/tonal"),
-      `${key} is exempt but is not a tonal boundary. Only tonal was ever agreed.`,
-    );
-  }
 });
 
 test("the neutral outlined border is NOT the 2.15:1 the audit reported", () => {
@@ -206,4 +231,92 @@ test("the neutral outlined border is NOT the 2.15:1 the audit reported", () => {
     ratio > 10,
     `the rendered neutral outlined border measures ${ratio.toFixed(2)}:1, not the >10 expected`,
   );
+});
+
+test("an inverse button's edge is findable on every brand surface it may sit on", () => {
+  // The audit measured against white and therefore never looked at this. `inverse` is
+  // never on white; that is what the word means.
+  const failures = [];
+  let checked = 0;
+
+  // Both brands. Navy repaints the whole component tier, so a border measured only in
+  // Blue is a border nobody has checked in half the estate.
+  for (const brand of BRANDS) {
+    CURRENT = brand.decls;
+    for (const variant of VARIANTS) {
+    const intent = INTENT_OF[variant];
+    for (const [surfaceLabel, surfaceToken] of BRAND_SURFACES) {
+      const surfaceValue = resolve(surfaceToken);
+      if (!surfaceValue) continue;
+      const surface = parseColor(surfaceValue);
+
+      const edgeToken = `--sa-cmp-action-${intent}-secondary-inverse-default-border`;
+      const edge = resolve(edgeToken);
+      if (!edge) continue;
+      const ratio = contrastOf(over(parseColor(edge), surface), surface);
+      checked++;
+      if (ratio < AA_NONTEXT) {
+        failures.push(
+          `[${brand.name}] ${variant}/inverse-outlined on ${surfaceLabel} ` +
+            `(${surfaceValue}): ${edge} = ${ratio.toFixed(2)}:1`,
+        );
+      }
+    }
+    }
+  }
+  CURRENT = BRANDS[0].decls;
+
+  assert.ok(
+    checked >= 16,
+    `expected every brand x variant x surface, only resolved ${checked}`,
+  );
+  assert.deepEqual(
+    failures,
+    [],
+    `\n  an inverse button with no findable edge:\n  ${failures.join("\n  ")}\n\n` +
+      `  Fix the value in src/component-matrix.json under \`inverse\`.`,
+  );
+});
+
+test("inverse carries the intent, so danger does not read as brand", () => {
+  // Finding #8 in button.md: inverseOutlined rendered identically for all four variants,
+  // so `danger` silently lost its signal. That was a TOKEN fact, not just a CSS one —
+  // every intent resolved the same white-alpha border. Distinctness is the assertion;
+  // the contrast test above is what stops "distinct" being bought with an unreadable edge.
+  CURRENT = BRANDS[0].decls;
+  const seen = new Map();
+  for (const variant of VARIANTS) {
+    const intent = INTENT_OF[variant];
+    const edge = resolve(`--sa-cmp-action-${intent}-secondary-inverse-default-border`);
+    assert.ok(edge, `${intent} has no inverse secondary border token`);
+    if (seen.has(edge)) {
+      assert.fail(
+        `${variant} and ${seen.get(edge)} both paint their inverse outlined border ${edge}. ` +
+          `An intent that cannot be told apart is not an intent.`,
+      );
+    }
+    seen.set(edge, variant);
+  }
+});
+
+test("the component actually BINDS the inverse tokens", () => {
+  // The tokens existed and were fully modelled long before anything read them:
+  // `.ds-btn--inverseOutlined` hard-coded `--sa-color-transparent-white-40`, so fixing
+  // the matrix alone would have changed nothing on screen. Assert the wiring, not just
+  // the values.
+  for (const variant of VARIANTS) {
+    const decls = declsIn(variant);
+    const edge = decls.get("--_inv-edge");
+    assert.ok(
+      edge,
+      `.ds-btn--${variant} declares no --_inv-edge, so the inverse appearance cannot ` +
+        `carry this variant's intent`,
+    );
+    const intent = INTENT_OF[variant];
+    assert.match(
+      edge,
+      new RegExp(`--sa-cmp-action-${intent}-secondary-inverse-default-border`),
+      `.ds-btn--${variant} binds ${edge} for its inverse edge, not its own intent's token`,
+    );
+  }
 });

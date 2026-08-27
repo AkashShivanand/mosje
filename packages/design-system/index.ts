@@ -56,7 +56,17 @@ export type { BrandGlyphProps, BrandGlyphName } from "./components/utilities/bra
 
 // ---- Components: Actions -----------------------------------------------------
 export { Button, buttonClasses } from "./components/actions/button";
-export type { ButtonVariant, ButtonAppearance, ButtonSize } from "./components/actions/button";
+export type {
+  ButtonVariant,
+  ButtonAppearance,
+  ButtonTone,
+  ButtonSize,
+  ButtonProps,
+} from "./components/actions/button";
+export { IconButton } from "./components/actions/icon-button";
+export type { IconButtonProps } from "./components/actions/icon-button";
+export { ButtonGroup } from "./components/actions/button-group";
+export type { ButtonGroupProps, ButtonGroupAlign } from "./components/actions/button-group";
 
 // ---- Components: Forms -------------------------------------------------------
 export { Input } from "./components/forms/input";

@@ -106,7 +106,7 @@ const COLUMN_RIGHT: React.ReactNode[] = [
     <Loader />
     <span className="hero-muted">Loading…</span>
   </div>,
-  <Button key="tonal" variant="primary" appearance="tonal">Learn more</Button>,
+  <Button key="tonal" variant="primary" appearance="outlined">Learn more</Button>,
 ];
 
 function Column({
