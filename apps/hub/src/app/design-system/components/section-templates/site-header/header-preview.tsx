@@ -115,11 +115,16 @@ export function SiteHeaderPreview(): React.JSX.Element {
     <Frame>
       <SiteHeader
         variant="website"
+        /* A SPECIMEN, so it opts out — as the portal and compact previews below
+           already did. `sticky` defaults on for every variant now, and an inline
+           example that pins itself over the documentation and condenses as you
+           scroll past it is demonstrating the page, not the component. */
+        sticky={false}
         emblemSrc={EMBLEM}
         brandLines={BRAND_LINES}
         beta
         language={{ label: "English" }}
-        search={{ placeholder: "Search Schemes, Services, Document", onSearch: () => {} }}
+        search={{ placeholder: "Search schemes and services", onSearch: () => {} }}
         nav={SAMPLE_NAV}
         actions={
           <a className={buttonClasses("primary", "outlined", "md")} href="#">
