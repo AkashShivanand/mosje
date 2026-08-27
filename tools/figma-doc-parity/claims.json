@@ -404,7 +404,7 @@
     {
       "node": "56162:1816",
       "where": "Button — Documentation › 04 States",
-      "figma": "Default, hover, pressed, focused and disabled are drawn here as variants so a designer can see them. In CODE there is no state prop — CSS drives hover, active and disabled. Never add one. Loading IS a prop as of 2026-08-27: `loading` sets aria-busy and disables the control, but it deliberately does not swap the label — pass “Submitting…” yourself.",
+      "figma": "Default, hover, pressed, focused and disabled are drawn here as variants so a designer can see them. In CODE there is no state prop — CSS drives hover, active and disabled. Never add one. Loading IS a prop as of 2026-08-27: loading sets aria-busy and disables the control, but it deliberately does not swap the label — pass “Submitting…” yourself.",
       "expect": [
         {
           "kind": "text",

@@ -150,6 +150,35 @@ rather than assuming one, and separately asserts the component *binds* the token
 these were fully modelled in the matrix long before anything read them, so fixing the values
 alone would have changed nothing on screen.
 
+### The Figma surfaces are synced (2026-08-27)
+
+Code and the library disagreed in prose as well as in values, and prose drift is the kind
+that gets believed. Eleven text nodes on the `Buttons` page were rewritten to match what
+now ships:
+
+| Where | Was | Now |
+|---|---|---|
+| Hero · at a glance | **5** boundary failures | **0** — tonal retired, inverse rebound |
+| Hero · at a glance | **46%** colour on Tier 1 | **0%** — counted live: 0 of 2,257 colour bindings reach `ref/*` |
+| 03 Size › `open` | "The height is a FIXED height" | "a MINIMUM, not a fixed height"; the frame is no longer named `open` |
+| 04 States | "Loading is absent from both surfaces" | `loading` is a prop, and deliberately does not swap the label |
+| 04 States | "A disabled LINK-button does not… Do not ship one" | it drops `href` and sets `aria-disabled` |
+| 05 Accessibility | "Five boundaries do not [pass]" | "Every boundary now does too" |
+| 05 Accessibility · measured | the five-value list including `neutral outlined 2.15` | tonal retired; the correction **and** the missed inverse failure both recorded |
+| Component record | "OPEN · CODE — three defects that ship today" | "CLOSED · CODE — all three shipped defects are fixed" |
+| Component record · parity | "inverseOutlined renders identically for all four variants" | inverse is a tone that crosses appearance; each intent carries its own border |
+
+**The 46% was not this change's to fix, and was fixed anyway** — it belonged to the
+2026-08-26 ref-tier cleanup and had simply never been carried onto the page. It was
+verified before being rewritten, by walking all 3,436 nodes on the page and counting
+colour bindings rather than trusting the claim in `design.md`: 2,257 bindings, **zero**
+on `ref/*`.
+
+**What was deliberately NOT touched:** the four `Sub-type=Tonal` component variants. The
+appearance is gone from code, but deleting a Figma variant breaks every instance that
+uses it, and that is a migration rather than a documentation fix. The Code Connect
+template maps `Tonal` → `outlined` meanwhile, and this stays open below.
+
 ### Still open
 
 | # | Open | Why it is not fixed here |
