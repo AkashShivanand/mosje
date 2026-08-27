@@ -2796,10 +2796,12 @@
         "heading": "About the Scheme",
         "html": "<p>PM-AJAY is a flagship scheme of the Ministry of Social Justice & Empowerment dedicated to the socio-economic empowerment of Scheduled Castes. The scheme promotes livelihood opportunities, strengthens village infrastructure, and enhances access to education and residential facilities for sustainable and inclusive development.</p><p>The scheme has the components &ndash;</p><ol><li>Adarsh Gram: Develops Scheduled Caste dominated villages into model villages;</li><li>Grants-in-Aid: Livelihood, Skilling, and Infrastructure projects for the economic betterment of Scheduled Castes;</li><li>Hostels: supports the construction and repair of hostels for Scheduled Caste students to reduce dropout rates.</li></ol>"
       }
-    ]
+    ],
+    "description": "PM-AJAY is a flagship scheme of the Ministry of Social Justice & Empowerment dedicated to the socio-economic empowerment of Scheduled Castes. The scheme promotes livelihood opportunities, strengthens village infrastructure, and enhances access to education and residential facilities for sustainable and inclusive development.",
+    "featuredImage": "/website/images/department/dosje-building.jpg"
   },
   {
-    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/about-us",
+    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/pmajy/about-us",
     "title": "About Us",
     "sourceUrl": "https://www.dosje.gov.in/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/about-us/",
     "sections": [
@@ -2810,7 +2812,7 @@
     ]
   },
   {
-    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/construction-repair-of-hostels",
+    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/components/construction-repair-of-hostels",
     "title": "Construction Repair Of Hostels",
     "sourceUrl": "https://www.dosje.gov.in/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/construction-repair-of-hostels/",
     "sections": [
@@ -2821,7 +2823,7 @@
     ]
   },
   {
-    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/development-of-sc-dominated-villages-into-adarsh-gram",
+    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/components/development-of-sc-dominated-villages-into-adarsh-gram",
     "title": "Development Of Sc Dominated Villages Into Adarsh Gram",
     "sourceUrl": "https://www.dosje.gov.in/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/development-of-sc-dominated-villages-into-adarsh-gram/",
     "sections": [
@@ -2832,7 +2834,7 @@
     ]
   },
   {
-    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/grants-in-aid-to-state-districts",
+    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/components/grants-in-aid-to-state-districts",
     "title": "Grants In Aid To State Districts",
     "sourceUrl": "https://www.dosje.gov.in/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/grants-in-aid-to-state-districts/",
     "sections": [
@@ -2843,7 +2845,7 @@
     ]
   },
   {
-    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/contact-us",
+    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/pmajy/contact-us",
     "title": "Contact Us",
     "sourceUrl": "https://www.dosje.gov.in/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/contact-us/",
     "sections": [
@@ -2854,13 +2856,13 @@
     ]
   },
   {
-    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/flow-chart",
+    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/reports/flow-chart",
     "title": "Flow Chart",
     "sourceUrl": "https://www.dosje.gov.in/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/flow-chart/",
     "sections": []
   },
   {
-    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme",
+    "slug": "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/reports/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme",
     "title": "Illustrative List Of Projects Under Various Domains For Development Of Scheduled Castes Families Under The Scheme",
     "sourceUrl": "https://www.dosje.gov.in/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme/",
     "sections": [

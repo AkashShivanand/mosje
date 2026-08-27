@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Image from "next/image";
 import Link from "next/link";
 import { Icon, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
+import { OrganisationSidebar } from "./OrganisationSidebar";
 import {
   getOrganisations,
   getOrganisation,
@@ -60,6 +60,7 @@ export default async function OrganisationDetailPage({
       ]}
       lastUpdated={getContentSyncedDate()}
       logoSrc={org.featuredImage}
+      description={(org as any).description /* eslint-disable-line @typescript-eslint/no-explicit-any */}
       actions={
         org.website && (
           <a
@@ -73,48 +74,14 @@ export default async function OrganisationDetailPage({
         )
       }
     >
-      <section className="py-10 md:py-14 bg-white">
-        <div className={`sa-container grid gap-10 ${hasSidebar ? "lg:grid-cols-[220px_minmax(0,1fr)_300px]" : "lg:grid-cols-[minmax(0,1fr)_340px]"}`}>
+      <section className="py-10 md:py-14 bg-surface-muted/30">
+        <div className={`sa-container grid gap-10 ${hasSidebar ? "lg:grid-cols-[280px_minmax(0,1fr)] items-start" : "max-w-4xl mx-auto"}`}>
           
-          {/* Sidebar Navigation */}
           {hasSidebar && (
-            <aside className="hidden lg:block shrink-0">
-              <nav className="sticky top-28 space-y-8">
-                {relatedPages.length > 1 && (
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-ink-muted mb-3">Pages</h3>
-                    <ul className="space-y-2.5 text-[15px]">
-                      {relatedPages.map(rp => (
-                         <li key={rp.slug}>
-                            <Link href={`/website/organisation/${rp.slug}`} className={rp.slug === key ? "font-bold text-primary" : "text-ink-muted hover:text-primary transition-colors"}>
-                              {rp.title}
-                            </Link>
-                         </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-                {org.sections.filter(s => s.heading).length > 1 && (
-                  <div>
-                    <h3 className="text-xs font-bold uppercase tracking-wider text-ink-muted mb-3">On this page</h3>
-                    <ul className="space-y-2.5 text-[14px]">
-                      {org.sections.map((sec, i) => sec.heading ? (
-                         <li key={i}>
-                            <a href={`#${slugify(sec.heading)}`} className="text-ink-muted hover:text-primary transition-colors">
-                              {sec.heading}
-                            </a>
-                         </li>
-                      ) : null)}
-                    </ul>
-                  </div>
-                )}
-              </nav>
-            </aside>
+            <OrganisationSidebar rootSlug={rootSlug || ""} relatedPages={relatedPages} orgSections={org.sections} />
           )}
 
-          {/* Main Body Sections */}
-
-          <article className="gov-prose min-w-0">
+          <article className="gov-prose min-w-0 bg-white p-8 md:p-12 rounded-2xl shadow-xs border border-gray-100">
             {org.sections.length === 0 ? (
               <div className="rounded-2xl border border-gray-200 p-8 bg-surface-muted">
                 <p className="text-ink-muted leading-relaxed">
@@ -133,91 +100,41 @@ export default async function OrganisationDetailPage({
               org.sections.map((s, i) => (
                 <section key={s.heading ?? i} className="mb-8">
                   {s.heading && (
-                    <h2 id={slugify(s.heading)} className="text-[22px] font-bold text-primary-dark border-b border-gray-200 pb-2 mb-4 scroll-mt-28">
+                    <h2 id={slugify(s.heading)} className="text-[26px] font-bold text-primary-dark border-b border-gray-200 pb-2 mb-6 scroll-mt-28">
                       {s.heading}
                     </h2>
                   )}
-                  {/* Sanitized HTML content */}
                   <div
                     dangerouslySetInnerHTML={{ __html: withAssetBasePath(s.html) }}
-                    className="leading-relaxed text-ink"
+                    className="leading-relaxed text-ink text-[16px]"
                   />
                 </section>
               ))
             )}
+
+            {/* Child Pages Grid / Components */}
+            {relatedPages.length > 1 && key === rootSlug && (
+              <section className="mt-16 pt-10 border-t border-gray-100">
+                <h2 className="text-[26px] font-bold text-primary-dark pb-2 mb-8 text-center">
+                  Components & Initiatives
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+                  {relatedPages.filter(rp => rp.slug !== rootSlug && rp.slug.includes('components')).map(cp => (
+                    <div key={cp.slug} className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm hover:shadow-md transition-all flex flex-col items-center text-center group">
+                      <div className="h-14 w-14 rounded-full bg-blue-50 text-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
+                        <Icon name="home" size={28} />
+                      </div>
+                      <h3 className="font-bold text-ink mb-4 leading-snug">{cp.title}</h3>
+                      <Link href={`/website/organisation/${cp.slug}`} className="mt-auto text-sm font-semibold text-primary border border-primary/20 rounded-full px-5 py-2 hover:bg-primary/5 hover:border-primary/50 transition-colors">
+                        Read more
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
           </article>
-
-          {/* Sidebar Information Card */}
-          <aside className="space-y-6">
-            <div className="rounded-2xl border border-gray-200 bg-surface-muted p-6 shadow-xs">
-              <h2 className="text-[17px] font-bold text-primary-dark border-b border-gray-200/80 pb-3">
-                Organisation Overview
-              </h2>
-
-              {org.featuredImage && (
-                <div className="mt-4 flex justify-center p-3 bg-white rounded-xl border border-gray-200">
-                  <Image
-                    src={org.featuredImage}
-                    alt={`${org.title} logo`}
-                    width={140}
-                    height={80}
-                    className="h-16 w-auto object-contain"
-                  />
-                </div>
-              )}
-
-              <dl className="mt-4 space-y-4 text-xs sm:text-sm">
-                {org.website && (
-                  <div>
-                    <dt className="font-bold text-ink">Official Website</dt>
-                    <dd className="mt-0.5">
-                      <a
-                        href={org.website}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-primary font-semibold hover:underline flex items-center gap-1"
-                      >
-                        {org.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                        <Icon name="open_in_new" size={16} />
-                      </a>
-                    </dd>
-                  </div>
-                )}
-                <div>
-                  <dt className="font-bold text-ink">Affiliation</dt>
-                  <dd className="mt-0.5 text-ink-muted">
-                    Ministry of Social Justice &amp; Empowerment
-                  </dd>
-                </div>
-                <div>
-                  <dt className="font-bold text-ink">Source Record</dt>
-                  <dd className="mt-0.5">
-                    <a
-                      href={org.sourceUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-primary hover:underline flex items-center gap-1"
-                    >
-                      dosje.gov.in <Icon name="open_in_new" size={16} />
-                    </a>
-                  </dd>
-                </div>
-              </dl>
-            </div>
-
-            {/* Quick Link to All Organisations */}
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-xs">
-              <h3 className="text-xs font-bold uppercase tracking-wider text-ink-muted mb-3">
-                Explore More Bodies
-              </h3>
-              <Link
-                href="/website"
-                className="text-xs font-semibold text-primary hover:underline flex items-center gap-1"
-              >
-                All Associated Organisations <Icon name="arrow_forward" size={16} />
-              </Link>
-            </div>
-          </aside>
         </div>
       </section>
     </PageLayout>
