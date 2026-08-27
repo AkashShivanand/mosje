@@ -256,8 +256,8 @@ export default function HeaderPage(): React.JSX.Element {
           <code>actions</code>; signed-in portals use{" "}
           <code>variant=&quot;portal&quot;</code> + <code>onToggleNav</code> +{" "}
           <code>brandDivider</code> + <code>cobranding</code> + <code>account</code>.
-          The <code>variant</code> prop also defaults <code>sticky</code> on for
-          portals.
+          Since 27 August 2026 <code>sticky</code> defaults ON for every variant,
+          and with it the scroll condense.
         </p>
         <div style={{ overflowX: "auto", marginTop: "var(--sa-stack-16)" }}>
           <table className="props-table">
@@ -286,13 +286,18 @@ export default function HeaderPage(): React.JSX.Element {
               </tr>
               <tr>
                 <td>Sticky default</td>
-                <td>Off (static masthead)</td>
-                <td>On (pinned app-shell chrome)</td>
+                <td>On</td>
+                <td>On</td>
               </tr>
               <tr>
                 <td>Scroll-collapse</td>
-                <td>—</td>
-                <td>Opt-in via <code>collapseOnScroll</code></td>
+                <td>On — 200px &rarr; 65px</td>
+                <td>On — three tiers &rarr; one bar</td>
+              </tr>
+              <tr>
+                <td>Container</td>
+                <td>1200 / 1320 / 1440 ladder, all three tiers</td>
+                <td>Full-bleed</td>
               </tr>
               <tr>
                 <td>Used by</td>
@@ -335,7 +340,7 @@ export default function HeaderPage(): React.JSX.Element {
         <h2 id="props" style={h2Style}>Props</h2>
         <PropsTable
           props={[
-            { name: "variant", type: '"website" | "portal" | "compact"', description: "Estate surface. Sets defaults (portal/compact ⇒ sticky on; compact drops the accessibility bar and moves nav inline) and documents intent. Explicit props always win." },
+            { name: "variant", type: '"website" | "portal" | "compact"', description: "Estate surface. Sets defaults (compact drops the accessibility bar and moves nav inline, and never condenses) and documents intent. Explicit props always win." },
             { name: "homeHref", type: "string", description: 'Where the brand lockup links. ALWAYS pass it — the default "/" is the hub root, so a website page that omits it sends the emblem to the estate index instead of the site the reader is on.' },
             { name: "navExpanded", type: "boolean", description: "Portal: state of the sidebar the toggle drives. true ⇒ menu_open glyph, false ⇒ menu. Also drives aria-expanded. Only meaningful for MenuToggle — SheetToggle opens an overlay and has no second state." },
             { name: "navControlsId", type: "string", description: "Portal: id of the sidebar the toggle controls (aria-controls). Pass the same id to SidebarNav." },
@@ -348,8 +353,8 @@ export default function HeaderPage(): React.JSX.Element {
             { name: "brandDivider", type: "boolean", default: "false", description: "Portal: blue gradient divider between the emblem and the text." },
             { name: "cobranding", type: "BrandMark[]", description: "Cobranding marks in the trailing zone (Digital India, SAMAVESH …)." },
             { name: "account / accountMenu", type: "HeaderAccount / AccountMenuItem[]", description: "Portal account block; pass accountMenu to make it a dropdown trigger." },
-            { name: "sticky", type: "boolean", default: "false (true when variant=portal)", description: "Pin the whole navbar to the top of the viewport." },
-            { name: "collapseOnScroll", type: "boolean", default: "false", description: "Opt-in: collapse the accessibility bar on scroll (Figma 'Appbar / on Scroll'). Mind sidebar offsets." },
+            { name: "sticky", type: "boolean", default: "true", description: "Pin the navbar. The accessibility bar is NOT pinned with it — the header sticks at a negative offset equal to that bar's height, so tier 1 scrolls away and the brand and nav rows stay. Pass false on a documentation specimen." },
+            { name: "collapseOnScroll", type: "boolean", default: "true when sticky", description: "Past 120px of scroll the three tiers become one 65px bar (57 on a phone) carrying the emblem, the nav, a search icon and the CTA. Restores below 40px. Never applied to variant=compact. Read the pinned height from --sa-header-pinned rather than hardcoding an offset." },
             { name: "tone", type: '"blue" | "navy"', default: '"blue"', description: "Accessibility-bar background. Blue = website, navy = portal chrome." },
             { name: "beta", type: "boolean", default: "false", description: "Show the BETA badge above the text stack." },
             { name: "accessibilityToolbar", type: "boolean", default: "true", description: "Render the accessibility-statement control. Font-size / contrast controls live in the official UX4GAccessibilityWidget instead — see the Accessibility foundation page." },
@@ -405,7 +410,7 @@ export default function HeaderPage(): React.JSX.Element {
   actions={<a href="/admin">Login</a>}
 />;
 
-// Portal — collapse toggle + divider + cobranding + account (sticky by default)
+// Portal — collapse toggle + divider + cobranding + account
 <SiteHeader
   variant="portal"
   homeHref="/portals/<slug>"
@@ -596,14 +601,41 @@ export default function HeaderPage(): React.JSX.Element {
     { heading: "Councils & Institutes", links: [{ label: "NISD", href: "/nisd" }, …] },
   ]},
 ];`}</CodeBlock>
-        <h3 style={h3Style}>Scroll-collapse (portal)</h3>
+        <h3 style={h3Style}>Scroll-collapse</h3>
         <p style={proseStyle}>
-          Sticky portals can pass <code>collapseOnScroll</code> to tuck the
-          accessibility bar away once the page scrolls (Figma &quot;Appbar / on
-          Scroll&quot;), reclaiming vertical space. It is opt-in because the chrome
-          gets shorter — any app-shell sidebar offset must account for the scrolled
-          height (or make the sidebar sticky beneath the brand row). It also honours{" "}
+          Past 120px of scroll the three tiers become ONE bar — 200px to 65 on desktop,
+          258 to 57 on a phone — carrying the emblem, the full nav, a search icon and the
+          CTA. It restores below 40px; two thresholds rather than one, because a single
+          threshold on a state that changes document height is a latch waiting to
+          oscillate. The accessibility bar is not collapsed so much as left behind: the
+          header pins at a negative offset equal to that bar&apos;s height, so tier 1
+          scrolls away on its own.
+        </p>
+        <p style={proseStyle}>
+          <strong style={{ color: "var(--sa-text-neutral-base)" }}>The emblem holds the
+          same left edge in both states.</strong> It is also the go-home control, and an
+          identity mark that crosses the screen on scroll reads as a different site. The
+          department NAME is what is given up — one scroll back up, and still in the page
+          title, the h1 and the footer. Printing restores the full masthead, because on
+          paper the name would be gone for good.
+        </p>
+        <p style={proseStyle}>
+          This replaced the old Figma <code>State=On Scroll</code>, which dropped the
+          lockup&apos;s ministry line to take the brand row 100px to 88 — measured 146 to
+          134 on the live portal. Any app-shell sidebar offset should read{" "}
+          <code>--sa-header-pinned</code>, which the component measures and publishes,
+          rather than hardcoding a number. It honours{" "}
           <code>prefers-reduced-motion</code>.
+        </p>
+        <h3 style={h3Style}>When the nav runs out of room</h3>
+        <p style={proseStyle}>
+          At 1280px the content column is 1200; after its padding, the emblem, the search
+          button and the CTA, the nav has 880px. Seven entries measure 837 — 43px of slack
+          against the ~96px an eighth needs. The component measures itself and hands the
+          nav to <code>NavSheet</code> rather than letting entries overlap, so a 1280px
+          laptop trades the inline row for the sheet trigger while 1440 and up still fit
+          eight. Adding a top-level entry is therefore a design decision, not a bug to
+          discover.
         </p>
       </section>
 <section style={sectionStyle}>
@@ -674,8 +706,8 @@ export default function HeaderPage(): React.JSX.Element {
           <li>
             <strong style={{ color: "var(--sa-text-neutral-base)" }}>Variants &amp; menus</strong>{" "}
             — added an explicit <code>variant</code> prop, multi-column{" "}
-            <code>columns</code> mega-menus, an opt-in <code>collapseOnScroll</code>{" "}
-            state, and tooltips on the icon controls.
+            <code>columns</code> mega-menus, the <code>collapseOnScroll</code>{" "}
+            condense, and tooltips on the icon controls.
           </li>
           <li>
             <strong style={{ color: "var(--sa-text-neutral-base)" }}>Accessibility hardening</strong>{" "}

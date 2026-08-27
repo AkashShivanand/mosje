@@ -9,7 +9,7 @@ import { Button, SiteHeader } from "@mosje/design-system";
  *
  * - **`website`** (default) — a static masthead for the public site. Full
  *   accessibility bar, primary nav with mega-menus, a Login or Apply CTA.
- * - **`portal`** — app-shell chrome. Defaults `sticky` on, and carries the nav
+ * - **`portal`** — app-shell chrome, full-bleed. Carries the nav
  *   toggle and the account block instead of a marketing CTA.
  *
  * `collapseOnScroll` stays **opt-in even for portals**, and the reason matters:
@@ -125,6 +125,12 @@ const NAV = [
   { label: "Contact us", href: "/contact" },
 ];
 
+/*
+ * `sticky` and `collapseOnScroll` are BOTH false in these args, and deliberately:
+ * they default ON in the component (every variant, since 2026-08-27), and a story is a
+ * specimen. A pinned, self-condensing masthead inside a Storybook frame demonstrates the
+ * frame, not the component. Flip them in the controls to see the condensed bar.
+ */
 const meta = {
   title: "Components/Navigation/SiteHeader",
   component: SiteHeader,
