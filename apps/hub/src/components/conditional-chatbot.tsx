@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
-import { Chatbot, type ChatbotQuickReply } from "@mosje/design-system";
+import { Chatbot, type ChatbotMessage, type ChatbotQuickReply } from "@mosje/design-system";
 import { chatbotEnabledAt } from "@/lib/chatbot/config";
 import { CHATBOT_SCRIPT } from "@/lib/chatbot/content";
 import {
@@ -48,6 +48,23 @@ export function ConditionalChatbot({ enabledPaths }: { enabledPaths: readonly st
   /** The half-turn shown for the length of the typing beat. Never on the stack. */
   const [pending, setPending] = React.useState<FinderFrame | null>(null);
   const [typing, setTyping] = React.useState(false);
+  /**
+   * Conversations already finished with, kept above the live one.
+   *
+   * "Start over" does not clear — it starts a new session and pushes the old
+   * transcript in here, under a rule. The finder's own stack is a stack of
+   * FRAMES within one conversation, and going back is a pop of it; this is a
+   * different thing entirely, which is why it lives beside the session rather
+   * than inside it. The finder never has to know a restart happened.
+   */
+  const [carried, setCarried] = React.useState<readonly ChatbotMessage[]>([]);
+  /**
+   * How many times Start over has been pressed. It exists ONLY to keep React
+   * keys unique: the finder derives message ids from script nodes, so a second
+   * run of the same conversation produces the SAME ids as the first, and two
+   * children with one key is a rendering defect rather than a visible one.
+   */
+  const [restarts, setRestarts] = React.useState(0);
 
   const timers = React.useRef<number[]>([]);
   const clearTimers = React.useCallback(() => {
@@ -110,11 +127,16 @@ export function ConditionalChatbot({ enabledPaths }: { enabledPaths: readonly st
   );
 
   /**
-   * Start over: drop the whole frame stack, then greet again in place.
+   * Start over: carry the conversation up, then greet again beneath it.
+   *
+   * IT DOES NOT CLEAR, AND THAT IS THE WHOLE DESIGN. It used to, and the cost
+   * was a control that could take away every answer a citizen had given — which
+   * is what made its position, 25px under Send in the same column, worth an
+   * argument. Nothing is destroyed now, so the mis-tap costs a scroll.
    *
    * The timers go FIRST. A typing beat in flight would otherwise land a
-   * committed answer a moment after the transcript was cleared, and the
-   * conversation a citizen just cleared would reappear on its own.
+   * committed answer a moment after the restart, and the conversation the
+   * citizen just left would carry on writing itself underneath the new one.
    *
    * THE REPLAY IS THE PART THAT IS EASY TO MISS. This used to end with
    * `setSession(null)` and stop, which was correct only because the widget also
@@ -126,6 +148,16 @@ export function ConditionalChatbot({ enabledPaths }: { enabledPaths: readonly st
    */
   const handleEndChat = React.useCallback(() => {
     clearTimers();
+    // Whatever is on screen right now, including a half-landed echo.
+    const shown = pending ?? (session ? finderCurrent(session) : null);
+    const round = restarts + 1;
+    setCarried((prev) => [
+      ...prev,
+      // Re-keyed per round: the finder's ids repeat across runs of the script.
+      ...(shown?.messages ?? []).map((m) => ({ ...m, id: `r${round}:${m.id}` })),
+      { id: `r${round}:break`, from: "system" as const, text: "New conversation" },
+    ]);
+    setRestarts(round);
     setPending(null);
     setSession(null);
     setTyping(true);
@@ -133,7 +165,7 @@ export function ConditionalChatbot({ enabledPaths }: { enabledPaths: readonly st
       setTyping(false);
       setSession(finderSessionStart(CHATBOT_SCRIPT));
     });
-  }, [clearTimers, after]);
+  }, [clearTimers, after, pending, session, restarts]);
 
   if (!chatbotEnabledAt(pathname, enabledPaths)) return null;
 
@@ -143,7 +175,7 @@ export function ConditionalChatbot({ enabledPaths }: { enabledPaths: readonly st
     <Chatbot
       placement="fixed"
       onOpenChange={handleOpenChange}
-      messages={view?.messages ?? []}
+      messages={carried.length > 0 ? [...carried, ...(view?.messages ?? [])] : (view?.messages ?? [])}
       typing={typing}
       quickReplies={view?.quickReplies ?? []}
       onQuickReply={handleQuickReply}

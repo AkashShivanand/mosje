@@ -21,10 +21,29 @@ import { test, expect } from "@playwright/test";
  * So the assertions below are the INVERSE of what they used to be on two
  * points, deliberately: the panel stays OPEN, and focus stays inside it. Those
  * lines are the test, not an oversight.
+ *
+ * WHAT CHANGED AGAIN, 2026-08-27, and it inverts two MORE assertions. The
+ * control no longer clears anything. It appends: a labelled rule goes in under
+ * the last turn and a fresh greeting lands below it, with everything said
+ * before still there, scrolled up. So the two tests that used to prove the
+ * transcript was GONE now prove it SURVIVED. Read them as the design, not as a
+ * test somebody forgot to finish.
+ *
+ * It also moved. It sat hard right, in the same 32px column as Send with the
+ * whole of Send's width 25px directly above it — the most-pressed control in
+ * the panel stacked on the rarest and, at the time, the most destructive. It is
+ * hard left now, and `does not share a column with Send` is what stops that
+ * being undone by a future tidy-up. Every measurement passed BEFORE the move
+ * (32px targets against WCAG 2.2 §2.5.8's 24, 25px gaps against UX4G's 8), so
+ * no standards check would have caught the regression. This test would.
  */
 
 const START_OVER = ".ds-chatbot__end";
+const SEND = ".ds-chatbot__send";
 const BUBBLE = ".ds-chatbot__bubble";
+const USER_BUBBLE = ".ds-chatbot__bubble--user";
+const BREAK = ".ds-chatbot__break";
+const TYPING = ".ds-chatbot__typing";
 const PANEL = ".ds-chatbot__panel";
 
 test.describe("Samajik Sahayak — Start over", () => {
@@ -55,42 +74,74 @@ test.describe("Samajik Sahayak — Start over", () => {
     await expect(page.locator(START_OVER)).toHaveClass(/ds-btn--text/);
   });
 
-  test("clears the transcript, KEEPS the panel open, and greets again", async ({ page }) => {
+  test("does not share a column with Send — a mis-tap must cost a reach", async ({
+    page,
+  }) => {
+    const send = await page.locator(SEND).boundingBox();
+    const startOver = await page.locator(START_OVER).boundingBox();
+    expect(send).not.toBeNull();
+    expect(startOver).not.toBeNull();
+    if (!send || !startOver) return;
+
+    // No horizontal overlap at all: Send begins after Start over ends.
+    expect(send.x).toBeGreaterThan(startOver.x + startOver.width);
+
+    // And not by a hair. Send is pressed constantly and this control is rare;
+    // they should not be reachable by the same thumb position. Measured at
+    // 171px on a 375px-wide viewport, so 100 fails on a regression rather than
+    // on a design tweak.
+    expect(send.x - (startOver.x + startOver.width)).toBeGreaterThan(100);
+  });
+
+  test("KEEPS the conversation, rules it off, and greets again below", async ({ page }) => {
     for (const label of ["Which scheme applies to me?", "Myself", "Scheduled Caste"]) {
       await page.getByRole("button", { name: label, exact: true }).click();
     }
-    expect(await page.locator(BUBBLE).count()).toBeGreaterThan(3);
+    await expect(page.locator(TYPING)).toHaveCount(0);
+    const before = await page.locator(BUBBLE).count();
+    expect(before).toBeGreaterThan(3);
 
     await page.locator(START_OVER).click();
 
     // The panel does NOT close. Closing is the header's ✕, and only that.
     await expect(page.locator(PANEL)).toBeVisible();
 
-    // Focus stays inside the dialog. The button unmounts the moment the
-    // transcript empties, so without this it falls to <body> and a keyboard
-    // user is silently dropped out of a panel that is still on screen.
+    // Focus stays inside the dialog, at the top of what changed.
     await expect(page.locator(PANEL)).toBeFocused();
 
-    // The greeting comes back on its own, in place.
+    // The greeting arrives on its own, in place.
     await expect(page.getByText("This is an assistant for the Ministry")).toBeVisible();
-    expect(await page.locator(BUBBLE).count()).toBe(1);
+    await expect(page.locator(TYPING)).toHaveCount(0);
+
+    // NOTHING WAS DESTROYED. Every bubble that was there is still there, and
+    // the greeting is one more on top — not a transcript of one.
+    expect(await page.locator(BUBBLE).count()).toBe(before + 1);
+
+    // A single labelled rule marks where the new conversation starts.
+    await expect(page.locator(BREAK)).toHaveCount(1);
+    await expect(page.locator(BREAK)).toHaveAttribute("aria-label", "New conversation");
+
     await expect(page.getByRole("button", { name: "Which scheme applies to me?" })).toBeVisible();
 
     // No unread nudge: the citizen did this themselves, nothing arrived for them.
     await expect(page.locator(".ds-chatbot__nudge")).toHaveCount(0);
   });
 
-  test("drops the whole frame stack, not just the visible turn", async ({ page }) => {
+  test("the answers already given stay above the fresh start", async ({ page }) => {
     for (const label of ["Which scheme applies to me?", "Myself"]) {
       await page.getByRole("button", { name: label, exact: true }).click();
     }
-    await expect(page.getByText("Question 2 of 5")).toBeVisible();
+    await expect(page.locator(TYPING)).toHaveCount(0);
+    await expect(page.locator(USER_BUBBLE).filter({ hasText: "Myself" })).toHaveCount(1);
 
     await page.locator(START_OVER).click();
     await expect(page.getByText("This is an assistant for the Ministry")).toBeVisible();
 
-    // No half-finished run waiting underneath the fresh greeting.
-    await expect(page.getByText("Question 2 of 5")).toHaveCount(0);
+    // This is the whole point of the change. The citizen who reached for Send
+    // and hit this instead has lost nothing — the answer they gave is still on
+    // screen, above the rule, and they can read it back rather than retype it.
+    await expect(page.locator(USER_BUBBLE).filter({ hasText: "Myself" })).toHaveCount(1);
+    expect(await page.locator(USER_BUBBLE).count()).toBeGreaterThan(0);
   });
 
   test("the header ✕ closes WITHOUT clearing — the two are cleanly separated", async ({

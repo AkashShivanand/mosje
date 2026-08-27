@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.59.0",
+    date: "2026-08-27",
+    current: true,
+    changes: [
+      { kind: "Changed", text: "\u201cSTART OVER\u201d NO LONGER THROWS THE CONVERSATION AWAY. It rules the transcript off with a labelled separator \u2014 \u201cNew conversation\u201d \u2014 and greets again underneath, leaving every answer the citizen already gave scrolled up above it. A mis-tap now costs a scroll instead of five questions about caste, income and disability asked a second time. Nothing is destroyed, so there is no undo to build, no confirmation to sit through, and no snapshot to keep" },
+      { kind: "Fixed", text: "IT ALSO SAT DIRECTLY UNDER SEND, AND EVERY MEASUREMENT SAID THAT WAS FINE. On a 375px phone it was 25px below Send in the SAME 32px column, with the whole of Send\u2019s width above it \u2014 the most-pressed control in the panel stacked on the rarest and the only destructive one. WCAG 2.2 \u00a72.5.8 wants 24px targets and these are 32; UX4G wants 8px between them and the gaps were 24\u201336. Nothing failed, because frequency-versus-severity adjacency is not something a checklist can see. It is hard LEFT in the footer row now, 171px from Send, at zero cost in panel height, and pinned by a test that asserts the two never share a column again" },
+      { kind: "Fixed", text: "THE CHAT LOG NEVER ACTUALLY FOLLOWED THE CONVERSATION, AND HAD NOT FOR SOME TIME. The log carries `scroll-behavior: smooth` for hand-scrolling, and the auto-follow set `scrollTop` directly \u2014 which inherits it, turning each follow into an animation that the next render restarts. Measured: a long transcript pinned at scrollTop 540 of 1046 on the branch and 0 of 8102 on main, while the same element accepted `scrollTo({ behavior: \u201cinstant\u201d })` and landed exactly. It predates this change and was invisible only because Start over used to empty the log and leave nothing to scroll" },
+      { kind: "Added", text: "`restartNotice` NAMES THE SEPARATOR, and `from: \u201csystem\u201d` is a third kind of turn \u2014 not a speaker, a labelled rule. Two greetings in a row read as the assistant repeating itself; a rule between them reads as a new start. It is a prop rather than a constant because this estate serves Hindi as well as English, and a hardcoded English string inside the design system is a translation defect waiting to be found by a citizen" },
+      { kind: "Changed", text: "THE LABEL \u201cSTART OVER\u201d WAS REVIEWED FOR A RENAME AND KEPT. It became more true, not less \u2014 you start over, and nothing is taken away. \u201cClear chat\u201d would now say the one thing that is no longer so. A CONTROLLED consumer must do the append itself in `onEndChat`: carry the turns it is showing, add its own separator, greet again, and re-key the carried messages, because the finder derives ids from script nodes and a second run repeats them" },
+    ],
+  },
+  {
     version: "v0.58.0",
     date: "2026-08-25",
-    current: true,
     changes: [
       { kind: "Fixed", text: "THE TICKER\u2019S MESSAGE SLID IN FROM THE RIGHT EVEN WHEN YOU PRESSED PREVIOUS. The entry offset was a fixed +2rem regardless of direction, so the motion said \u201cforward\u201d while the control said \u201cback\u201d \u2014 on a stepped component the difference between holding a position and reshuffling, and invisible in a still screenshot, which is why it survived several visual passes. `data-step` carries the direction now and the offset flips with it. Logical rather than physical: the estate runs dir=\u201crtl\u201d in Urdu, where \u201cnext\u201d travels leftward, so the sign flips again with the writing direction" },
       { kind: "Changed", text: "THE ENTRY IS 240ms AND 12px, DOWN FROM 320ms AND 32px. A citizen reading the page for a minute sees the message change a dozen times, and at that frequency the job of the movement is to say \u201cthis is new\u201d and then get out of the way \u2014 32px over a third of a second announces itself every five seconds. The Figma prototype carries the same 240ms and the same curve, and its hover states the same 150ms as the CSS, across 6 message swaps, 36 control transitions and 172 hover states" },

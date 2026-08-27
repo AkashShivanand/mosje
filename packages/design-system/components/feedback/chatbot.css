@@ -867,6 +867,34 @@
     justify-content: flex-end;
   }
 
+  /* The rule "Start over" leaves behind. It is a SEPARATOR, not a turn: no
+     bubble, no avatar, no side. Rules to both sides of a centred label, so it
+     reads as a break in the transcript rather than as something the assistant
+     said. The 1px hairline matches the header's border, which is the only other
+     rule in the panel. */
+  .ds-chatbot__break {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding-block: var(--sa-padding-4);
+  }
+
+  .ds-chatbot__break::before,
+  .ds-chatbot__break::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background: var(--sa-border-neutral-subtle);
+  }
+
+  .ds-chatbot__break-label {
+    flex: none;
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-color-text-muted);
+  }
+
   .ds-chatbot__bubble {
     /* Figma caps the bubble at 245.8px inside a 368px column — 67%. That is a
        measured decision, not a default: it is what makes the greeting wrap onto
@@ -909,7 +937,8 @@
   /* A bubble grows out of its own tail — the corner nearest the speaker — so the
      message reads as coming FROM somewhere rather than fading in over the page. */
   @media (prefers-reduced-motion: no-preference) {
-    .ds-chatbot__turn {
+    .ds-chatbot__turn,
+    .ds-chatbot__break {
       animation: ds-chatbot-turn-in 260ms var(--ds-chatbot-ease) both;
     }
 

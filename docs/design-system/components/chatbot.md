@@ -145,12 +145,15 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
    rather than silence. Never write copy implying free-form AI.
 4. **Never remove the footer note.** It is the honest statement that the assistant cannot see
    the user's application or personal data.
-5. **Closing and clearing are two controls, and neither does the other's job.** The header's ✕
-   ("Minimise chat") closes and KEEPS the conversation; the footer's **"Start over"** clears the
-   transcript, greets again, and leaves the panel open. Until 2026-08-25 the footer control was
-   called "End chat" and did both, which made it a second way to close sitting beside a ✕ and
-   made the label untrue whichever of its two words you trusted. Clearing stays out of the
-   top-right because that is where people reach to dismiss.
+5. **Nothing in this panel destroys anything.** The header's ✕ ("Minimise chat") closes and
+   KEEPS the conversation; expand resizes; the footer's **"Start over"** rules the transcript off
+   with a labelled separator (`restartNotice`, "New conversation") and greets again BENEATH it,
+   leaving every earlier turn scrolled up and the panel open.
+   Until 2026-08-25 the footer control was called "End chat" and closed *and* wiped, which made
+   it a second ✕ and made the label untrue whichever word you trusted. Until 2026-08-27 it still
+   CLEARED — and sat 25px directly below Send, in the same 32px column, with the whole of Send's
+   width above it. See *Placement — measured 2026-08-27* below for why every measurement passing
+   was not the same as the placement being right.
    It is `<Button variant="neutral" appearance="text" size="sm">`, not a hand-rolled control.
 6. **The seal never turns on its own.** It runs only when a caller asks for it (`spin`), for
    documentation and specimens. A perpetual spin would be the estate's most-seen animation and
@@ -225,6 +228,69 @@ and belongs with the shared `Input`, not here.
 placeholder recipe is `text/neutral/subtle` at `opacity: 0.7`, which composites to
 `#75777a` and measures **4.49:1** — missing AA by one hundredth. That is why the
 composer uses `subtler` at full opacity instead of copying it.
+
+## Placement — measured 2026-08-27
+
+**Every standard passed, and the placement was still wrong.** That is the whole lesson of this
+change, and it is why the geometry is now pinned by a test rather than by a checklist.
+
+Measured on a 375px viewport, before the move:
+
+| | |
+|---|---|
+| Quick-reply chip | y 552–590 |
+| **Send** | y 614–646, x 305–337 |
+| **Start over** | y 671–703, x 305–337 |
+| Launcher / close | y 739–815 |
+| Gaps | 24px · **25px** · 36px |
+| Horizontal overlap of Send and Start over | **100%** — the same 32px column |
+
+Against the rules: WCAG 2.2 §2.5.8 asks for **24×24** and every target was **32**. UX4G asks for
+**8px** between targets and the gaps were **24–36**. Nothing failed. (UX4G's 44×44 *mobile
+recommendation* is unmet at 32px, but that is the shared `Button` `sm` height, estate-wide, and
+out of scope here.)
+
+What was wrong is not expressible as a measurement: **the most-pressed control in the panel sat
+directly on top of the rarest and most destructive one**, sharing its column and its thumb path.
+Frequency-versus-severity adjacency is a design defect that passes every audit.
+
+**Two changes, and neither is sufficient alone.**
+
+- *Move alone* leaves a destructive control that people still press deliberately, having read
+  "Start over" as "start this question over" rather than "discard everything".
+- *Append alone* leaves a control grouped with the wrong neighbour.
+
+After the move: Start over x **33–134**, Send x **305–337** — **171px apart, zero overlap**,
+pinned by `does not share a column with Send` in `e2e/chatbot/end-chat.spec.ts`.
+
+**Why the footer's left edge and not the header.** Left is as fixed as right — `flex: none` at
+the head of the row, so no amount of disclaimer wrap can move it, which was the original reason
+for going hard right. It costs **no panel height**, which is what ruled out giving it a row of
+its own (~40px on a phone). The header beside ✕ was the other candidate and lost on
+discoverability: an icon-only reset drops the words, and the words are the only thing telling a
+first-time visitor what the control does. The header's long-standing objection — that a clearing
+action must not sit where people reach to dismiss — is now moot rather than overruled, because
+nothing clears.
+
+**The label survived on purpose.** "Start over" was reviewed for a rename and kept: it became
+MORE true, not less. "Clear chat" would now say the one thing that is no longer so.
+
+## Open — Figma is behind, and needs a human with library access
+
+The code moved on 2026-08-27. The SAMAVESH library did not, because this session had no way to
+push it. Three things are out of sync and a reader of the Figma page will be misinformed until
+they are fixed:
+
+1. The **master** draws Start over on the right of the footer row. It belongs first in the row.
+2. The **`Chatbot — Documentation` page**, node `55828:766` (§02 Anatomy › FOOTER), still reads
+   *"Start over sharing the note's row, hard right"*. The claim pinned in
+   `tools/figma-doc-parity/claims.json` carries that text as its snapshot, so
+   `npm run check:figma-docs` still passes on the code assertions — the snapshot is what is
+   stale. **Do not edit the snapshot without editing Figma**, or `check:figma-docs:live` will
+   fail instead, having been made to disagree with the library.
+3. There is **no separator part** in the library for the `from: "system"` rule.
+
+Run `npm run check:figma-docs:live` after fixing, with `FIGMA_ACCESS_TOKEN` set.
 
 ## Upstream dependency — `Button` (recorded 2026-08-25, NOT to be fixed here)
 
@@ -319,7 +385,8 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | Start over | `Label/label-2`, `cmp/action/neutral/tertiary/default/text`, **no border, no fill**, `shape/8`, `.ds-btn--sm` | **a `Button` INSTANCE** — `Size=Small, Type=Neutral, Sub-type=Text` | ✅ **both sides now instance the same component.** It was a hand-drawn frame with a 1px error stroke in Figma and ~40 lines of hand-rolled CSS in code — the same defect, authored twice |
 | Start over target | 32 high, clears the 24px 2.5.8 minimum | identical (the Button master hugs its label) | ✅ |
 | Start over ink | `neutralScale/800` via a **neutral-only override** in `component-matrix.json` | identical — pushed and read back, `figma-live.json` re-recorded | ✅ the matrix default is 700, which on the neutral ramp is `text/muted`, the ink of the disclaimer it sits beside |
-| Start over position | same row as the note, hard right, bottom-aligned | identical (`.ds-chatbot__footer-row`, `align-items: flex-end`) | ✅ |
+| Start over position | same row as the note, hard **right**, bottom-aligned | hard **LEFT**, first in the row (`.ds-chatbot__footer-row`, `flex: none`, `align-items: flex-end`) | ⚠️ **FIGMA IS BEHIND — see the open item below.** Code moved 2026-08-27; the Figma master and its documentation page still draw and describe it on the right |
+| Start over outcome | clears the transcript | **appends** — a `from: "system"` rule, then a fresh greeting under it | ⚠️ **FIGMA IS BEHIND.** The library has no separator part yet |
 | Composer input | fills the pill's full 40px inner height (the padding moved onto the input) | not expressible | ⚠️ **by design.** Figma draws appearance, not hit areas — the pill renders identically either way. The rule is carried in the master's description and §06 of the documentation page instead. It was 20px: a line box floated inside a 42px pill, so half the visible field focused nothing and the real target sat under the 24px minimum |
 | Panel height | **content-sized**, capped at `min(719, viewport room)` | `State=Greeting` 396 · `State=Typing` 252 · `State=Transcript` 719 | ✅ the two short states are drawn at their true content height; Transcript stays at 719 because it is the state that demonstrates the cap and the scroll |
 | Launcher | 84, `bg/neutral/base`, `shape/full`, `elevation/toast` | identical | ✅ |
