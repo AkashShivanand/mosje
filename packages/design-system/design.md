@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-25 · System version: v0.34.0 (THE MASTHEAD ANSWERS TO THE
+  Last reviewed: 2026-08-27 · System version: v0.34.0 (THE MASTHEAD ANSWERS TO THE
   STANDARDS, NOT JUST TO FIGMA. SEARCH NOW OUTLIVES THE NAV: it used to hide at
   900px while the nav row held to 1024, so between 768 and 899 a reader had neither
   a menu nor a search box — the two wayfinding tools collapsing one breakpoint apart
@@ -1319,18 +1319,96 @@ All components are exported from `@mosje/design-system`. Import from the package
 
 **Press feedback** is built in: every enabled button scales to `0.97` on `:active`, suppressed under `prefers-reduced-motion`. Colour alone tells you the button noticed; the give tells you it is listening. Do not re-add this per app, and do not increase it — 0.97 reads as a press, 0.9 reads as a toy.
 
-**KNOWN DEFECTS, audited 2026-08-25 — do not build on these.** Full evidence in `docs/design-system/components/button-audit.md`; the brief that closes them is `button-cleanup-prompt.md`; the maintainer frame is `Button — Component record` in Figma.
+**KNOWN DEFECTS, audited 2026-08-25, two closed 2026-08-27.** Full evidence in `docs/design-system/components/button-audit.md`; the brief is `button-cleanup-prompt.md`; the maintainer frame is `Button — Component record` in Figma.
 
-- **`disabled` is inert on a link-button.** `<Button href disabled>` emits `<a disabled>`, which is not a valid attribute. Measured: `pointer-events: auto`, `opacity: 1`, `cursor: pointer`, no `aria-disabled`, still in the tab order. **Do not ship a disabled link-button.**
-- **A fixed `height` clips the label at 200% text (WCAG 1.4.4).** Sizes set `height: 32/40/48px`, not `min-height`. Measured at 32px text: the box stays 40px while the content needs 41.
-- **Five WCAG 1.4.11 boundary failures**, against a 3:1 requirement: tonal primary 1.42, success 1.52, danger 1.21, neutral 1.35; neutral outlined 2.15. Every tonal button is invisible as a control until you read its label. Context before anyone spends effort: **tonal has 2 consumers in 494 buttons**, `inverseOutlined` has 1.
-- **`inverseOutlined` renders identically for all four variants** — white text, white border — so `danger` silently loses its signal.
-- **There is no `loading` state.** Pass `aria-busy` and `disabled` yourself.
+**Closed:**
+
+- ~~**`disabled` is inert on a link-button.**~~ Fixed 2026-08-27. `<Button href disabled>` now renders an `<a>` with **no `href`**, plus `aria-disabled="true"` and `role="link"`. Dropping the href is what makes it inert: an anchor without one is not focusable and not activatable by the browser's own rules, so there is no handler to get wrong and no `tabIndex` to keep in sync. Pinned in `e2e/design-system/button.spec.ts`.
+- ~~**A fixed `height` clips the label at 200% text.**~~ Fixed 2026-08-27. Sizes set `min-height` plus vertical padding (`sm` 4/16, `md` 6/24, `lg` 8/24) and each names its own `--sa-type-*-lh`. **The padding is deliberately smaller than the amount that would fill the box** — `min-height` is what makes a button 32/40/48 at 100%, and the padding is the breathing room as the text grows. Sized the other way round, the button outgrows its own ladder at the first zoom step. Pinned at the criterion's own 200% threshold.
+
+**Also closed 2026-08-27:**
+
+- ~~**Four WCAG 1.4.11 failures, all `tonal`.**~~ **`tonal` is retired**, not repaired. Its fill and its border were the same pale wash, so the control had no edge against the page (1.21:1 – 1.52:1 against a 3:1 requirement) and darkening the border would simply have made it `outlined`. Two consumers in 494 buttons, both now `outlined`. The gate's exemption list **is now empty** and may only shrink.
+- ~~**`inverseOutlined` renders identically for all four variants.**~~ Replaced by **`tone="inverse"`**, an axis that CROSSES `appearance` — which is the whole point: as two appearance words it could only ever have one look. The old words still work as deprecated aliases, because the Ticker's documented route-out, the login shell and two Code Connect templates all name them.
+- ~~**There is no `loading` state.**~~ `loading` sets `aria-busy` and disables the control, so a form cannot be submitted twice. It deliberately does **not** swap the label — a control that loses its name mid-action is unusable with a screen reader.
+
+**A FIFTH FAILURE THE AUDIT MISSED, found 2026-08-27 while fixing the fourth.** The audit measured every boundary against a **white page**. But `inverse` exists precisely because the button is *not* on white. Measured on a brand surface, `inverse`/`outlined` failed 1.4.11: its border was a flat `rgba(255, 255, 255, 0.4)` for every intent — **2.25:1 on `primaryScale/600`** (`#005eb9`) and 1.91:1 on gov-blue. It cleared 3:1 on navy alone, the one brand surface anybody had checked.
+
+**WHERE IT PAINTS, stated carefully, because the first version of this note got it wrong.** The failure is real in the **portal login shell's "Signing Into" bar** (`auth-parts.tsx` at `tone="hero"`), on the design-system docs and in Storybook. It is **NOT** the Ticker's route-out, which was named here first and should not have been: `ticker.css` carries `.sa-ticker__action > :is(a, button) { border: 0 }`, which strips the border inside the same cascade layer at higher specificity, so that button renders as a text link and has no edge to measure. The token said 2.25:1; the rendered control had no border at all.
+
+That mistake is worth keeping on the page, because it is **the same error this section criticises the audit for** — a token measured where a component was meant — made by the person correcting it, on the same afternoon. It survived a passing contrast gate, because the gate reads token values and `button.css` bindings and cannot see a third stylesheet overriding the result. The defence against that class of error is not care; it is measuring the rendered element, which is what `e2e/design-system/button.spec.ts` does.
+
+The two defects had one cause and one fix: each intent now takes **its own scale at rung 100** (50 on hover, white when pressed — brighter as the control is engaged, which is the correct direction on a dark ground). That makes the four borders distinguishable *and* lifts them to **4.14 – 4.72:1** on the live bar. The **label stays white** deliberately: a 100-rung tint as text measures 4.49:1 there, a hundredth short of 1.4.3's 4.5. Two jobs, two values.
+
+The gate now names the surfaces rather than assuming one, and asserts that the component **binds** the tokens — because these were fully modelled in the matrix long before anything read them, and fixing the values alone would have changed nothing on screen.
+
+**Open:**
+- **`--_color` does double duty** as the label ink *and* the border colour, for `outlined` and `text` alike. Those are governed by different criteria — 4.5:1 for text, 3:1 for non-text — and pull in different directions, which is why neutral's outlined border is a near-black 16.18:1 rather than a border weight anyone chose. Splitting it into an ink and an edge is the structural fix.
 - **Text contrast is clean** on all 16 variant×appearance pairs, 4.64 – 16.18. The failures above are all non-text.
+
+**The Figma surfaces were synced in the same pass (2026-08-27)**, because a documentation page that still describes a fixed defect is worse than one that says nothing — it is believed. Eleven text nodes on the `Buttons` page changed: the hero's "5 boundary failures" is **0**, the `03 Size › open` frame is no longer named `open` and no longer calls the height fixed, `04 States` stops saying loading is absent and stops warning against disabled link-buttons, `05 Accessibility` records both the phantom fifth failure and the real one that was missed, and the Component record reads **CLOSED · CODE**. The hero's **"46% colour on Tier 1" is now 0%** — that one belonged to the 2026-08-26 ref-tier cleanup and had never been carried onto the page; it was re-counted live before being rewritten (3,436 nodes walked, 2,257 colour bindings, **zero** on `ref/*`) rather than taken on trust from this file. The four `Sub-type=Tonal` variants were left alone deliberately: deleting a variant breaks every instance of it, which is a migration, not a doc fix.
+
+**A CORRECTION, and the reason it is worth reading.** The audit reported *five* 1.4.11 failures, the fifth being "neutral outlined 2.15". There is no such failure. It measured `cmp/action/neutral/secondary/default/border` (`#adb1b7`), a token `button.css` does not bind; the border the component actually paints comes from `--_color` → `cmp/action/neutral/tertiary/default/text` → `#1e2124`, which measures **16.18:1**. This is the same error class as the "~400 button backgrounds on raw primary" claim corrected in `docs/design-system/figma-ref-tier-cleanup.md`: **a token was measured where a component was meant.** The new gate defends against it structurally — it parses the variant blocks out of `button.css` and measures whatever they actually bind, so no list in a test file can go stale.
+
+Note the flip side, which IS real: Figma binds outlined→`secondary`, so the **library** paints that neutral border `#adb1b7` at 2.15:1 while the code paints `#1e2124`. Figma and code disagree here, and the library's side is the failing one.
 
 **Target size, stated correctly because the docs got it wrong three times:** 32 / 40 / 48px all clear the **24×24** WCAG 2.2 §2.5.8 Level AA minimum. **44×44 is §2.5.5 (Enhanced), Level AAA** — only `lg` reaches it. UX4G 3.0 recommends 44×44 *on mobile* plus 8px between adjacent targets; that is a touch-context recommendation, not a WCAG failure on a pointer surface.
 
-**Figma structure, counted not sampled:** 720 variants (`3 Size × 4 Type × 4 Sub-type × 5 State × 3 Icon`). **All 1,440 padding bindings sit on the Type collection** (`Font Size/*`), zero on Space. **900 of 1,956 colour bindings reach Tier-1 `ref/*`**; only the Neutral variants bind Tier 3. Radius is the one clean axis: 720/720 on `shape/8`. `inverse`/`inverseOutlined` do not exist in Figma at all.
+**Figma structure, counted not sampled (re-counted 2026-08-27):** **360 variants** (`3 Size × 4 Type × 3 Sub-type × 5 State × 2 Tone`), down from 720 **while gaining an axis** — `Tonal` was deleted and the `Icon` axis became two booleans, which is what paid for `Tone`. Without that removal, adding `Tone` would have produced 1,440. `State` stays a variant deliberately: a designer has to SEE hover, pressed and disabled, and Material and Polaris keep it too. Still above the ~30 cap in `.claude/rules/component-authoring.md` §4, and that is now a considered position rather than an accident — every remaining axis repaints the control.
+
+**Radius** is clean: 360/360 on `shape/8`. **Colour** is now clean too — 993 of 1,102 bindings on Tier-3 `cmp/*`, 109 on palette rungs, **zero on Tier-1 `ref/*`** (it was 900 of 1,956 on 2026-08-25). **Padding is the one still wrong**: 960 of 1,440 bound and every one to the **Type** collection (`Font Size/6 ×480, /1 ×240, /3 ×240`), so a type-scale change silently re-paddings the estate. The other 480 cannot be bound at all — the vertical padding is a raw **10px**, and 10 is not a rung on the space scale. Code uses **6px** there, so the two surfaces disagree on a value neither can currently name; fixing it means moving 10 to 8 or 12, which moves geometry and needs a decision.
+
+The colour half of that paragraph used to read "900 of 1,956 colour bindings reach Tier-1 `ref/*`". **That was wrong and is corrected** — most of those bindings were the icon vectors inside buttons, not the buttons' own fills, which already bound `cmp/action/brand/primary/*/bg`. The 2026-08-26 sweep (`docs/design-system/figma-ref-tier-cleanup.md`) closed the rest: **zero `ref/color/*` bindings remain on the Buttons page**, and 639 outlined/text state bindings now sit on `cmp/action/<family>/<sub-type>/<state>/<slot>`. The consequence for code is the interesting one — **Figma now models every button state explicitly while `button.css` still computes hover and active with `filter: brightness()`**, so the library is ahead of the code here, not behind it.
+
+#### IconButton
+**Purpose**: a Button whose whole label is its icon — a close ✕, a row's overflow ⋯, a
+pagination arrow. It renders a real `Button`, so variant, appearance, `tone`, size,
+`disabled`, `loading` and the link form all behave identically. There is one button in
+this system; this is a shape of it, not a second implementation.
+
+**Why a component and not an `iconOnly` prop.** UX4G models icon-only as a property of the
+button, and that is a fair reading — it is not the one taken here. As a component,
+**`aria-label` can be REQUIRED by the type system**. On an ordinary Button the accessible
+name arrives as `children`, and a boolean prop cannot make a *different* prop mandatory, so
+an unlabelled icon-only button would compile. This estate has already paid for that lesson:
+**533 of 718 icon call sites were missing their label** before `Icon` started hiding itself
+by default. A contract this easy to forget belongs in the type, not in a review checklist.
+
+**Rules**: label what the control DOES, not what the glyph depicts — "Close dialog", never
+"Cross". The glyph is `aria-hidden` because `Icon` renders a font ligature, which is real
+text: unhidden, a screen reader says "arrow_back Close dialog". Square at 32 / 40 / 48 via
+`min-width`, matching the Button ladder so the two cannot drift — `min-` rather than a fixed
+size for the same WCAG 1.4.4 reason as the parent. All three clear 2.5.8's 24×24; only `lg`
+reaches the 44×44 UX4G recommends for touch.
+
+**Figma**: the `IconButton` set was migrated in place on 2026-08-27 — **60 variants → 45**.
+`Tonal` was deleted (zero instances, and the appearance no longer exists in code), and the
+property `Type` became `Sub-type` with its value `Default` renamed to `Text`: it rendered with
+no fill and no stroke, so it *was* the text appearance wearing a name that made the quietest
+option sound like the normal one. All 76 instances survived, verified after the rename.
+`icon-button.figma.ts` maps it.
+
+**Still divergent, recorded not hidden**: the Figma set has **no intent axis and no `Tone`**, so
+a `danger` or inverse icon button cannot be drawn even though the code supports both.
+
+#### ButtonGroup
+**Purpose**: related actions kept together **and kept apart**. It gives the row a
+`role="group"` and a required name, so a screen reader announces "Record actions, group"
+instead of reading four loose buttons — and it holds them 8px apart.
+
+**The spacing is the load-bearing half, and it is the one that gets forgotten.** UX4G 3.0
+asks for 8px between adjacent targets, and WCAG 2.2 §2.5.8 lets a target smaller than 24×24
+be met by SPACING instead. A row of adjacent `sm` buttons with no gap is exactly the case
+that fails, and a group is exactly where adjacency happens. Reaching for a bare flex `div`
+is what produces those rows.
+
+**Props**: `vertical` stacks it; `align` is `start | end | between`; `attached` joins the
+buttons into one segmented control (no gap, collapsed seams, rounded only at the outer ends).
+
+**Rules**: use `attached` only when the buttons are ALTERNATIVES to one another — a view
+switcher, a date range. Never for unrelated actions: attaching Save to Delete tells the
+reader they are the same kind of thing, and puts the destructive one a pixel from the safe
+one. Each segment still meets 24×24 on its own, which the size ladder guarantees.
 
 #### Icon
 **Purpose**: **Material Symbols Rounded** — the official SAMAVESH icon system.  
@@ -1676,6 +1754,8 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **The outlined button appears only at 1024px and up — in BOTH shapes (2026-08-26)**: one rule by container width rather than per shape. The bar is that wide when it runs full-bleed; the **panel never is** — it is a column, 408px at desktop and 326px on a phone — so it always takes the text link. That is not a special case, it is the same measurement reaching a different answer. An outlined button costs 32px of padding plus a border, and in a 408px header already carrying a mark, the name and the pause it was the widest element competing with the component's own identity: **130px down to 53px**, giving 77px back. The outline was doing decorative work there, not affordance work — a header row is a place a citizen expects links, and the hairline already separates it from the control.
 **`labelAs` puts the strip's name in the document outline**: the section is labelled, so landmark navigation already reaches it, but **heading navigation skipped it entirely** because the name was a `span` — and on a notice board that is the one thing somebody is most likely to jump to. It defaults to `"span"`, the existing behaviour, because the right LEVEL depends on the page: the website's rail sits inside a section that owns an `h2`, so it passes `h3`, while a bar under the masthead wants `h2`. A component cannot know that, and guessing would skip a level — worse than not being a heading. The label's own type is stated rather than inherited, so a browser's `h2` default cannot drag the plinth to 32px.
 **The Figma bar was 102px against the code's 72px**: the bar's Row instance carried the **panel's** row padding — 16px top and bottom, meant for spacing a list — and the Body added 16 more. Row spacing belongs to the LIST, not to the message, so it is stripped on the bar's instances. That was the "extra space" the design showed and the build never had.
+**The hairline draws wherever the control and the route sit together (fixed 2026-08-26)**: it was scoped to the narrow bar, so the **desktop bar and every panel** had the pause and "View All" abutting with nothing between them — while the library drew a divider. It is an **adjacent-sibling rule** (`.sa-ticker__nav + .sa-ticker__action`) rather than one keyed on shape or width: the nav is only rendered when something can actually move, so the hairline appears exactly when there is a control to separate from and vanishes with it. On a phone the panel has no control, so it correctly has no hairline. The panel also stopped rendering an EMPTY nav wrapper, which would have been a sibling separating the route from nothing. It is the published **`Divider`** component in Figma, at `Orientation=Vertical, Tone=Inverse subtle`.
+**The bar's slide is now visible in Figma (2026-08-26)**: the prototype had reactions but the message carried **no keyframes at all**, so Smart Animate crossfaded the text and the entry this component is built around could not be seen. Each of the twelve bar variants now carries `TRANSLATION_X` and `OPACITY` manual keyframe tracks — 12px to 0 and 0 to 1 over **240ms on the same cubic-bezier the CSS uses**. **One fidelity limit, recorded**: a Figma variant cannot branch on WHICH control was pressed, so the prototype always plays the forward slide. The direction-awareness is code-only, and `e2e/ticker/motion.spec.ts` is what holds it.
 **The bar enters from the side it came from (fixed 2026-08-26)**: the entry offset was a fixed `+2rem`, so a message summoned by **Previous** still slid in from the right — the motion saying "forward" while the control said "back". On a stepped component that is the difference between holding a position and reshuffling, and it is invisible in a still screenshot, which is why it survived several visual passes. `data-step` now carries the direction and the offset flips with it. **Logical, not physical**: the estate runs `dir="rtl"` in Urdu, where "next" travels leftward, so the sign flips again with the writing direction.
 **240ms and 12px, down from 320ms and 32px**: a citizen reading the page for a minute sees the message change a dozen times, and at that frequency the job of the movement is to say "this is new" and then get out of the way. 32px over a third of a second announces itself every five seconds; 12px registers as arrival without becoming the thing you watch. It stays **keyframes rather than a transition** because the item MOUNTS — only the active message is in the DOM, so there is no previous value to interpolate from. The Figma prototype carries the same 240ms and the same curve, and its hover states the same 150ms.
 **ONE MESSAGE, BOTH SHAPES — in code and in Figma (2026-08-26)**. The two shapes show the same four things — a notice, its kind, its date, a link — so they must not have two ways of drawing them, and they did. The panel used `rowtitle`/`rowmeta`, which are specified; the bar used `title`/`description`/`more`, which had **no CSS at all** and were styled only by what they inherited. The same item therefore rendered at a different size and weight depending on which shape it was dropped into, and only the panel's second line had ever been checked for contrast. Both shapes now call **one `renderMessage`** and share one style block. In Figma `Ticker / Message` is **deleted** and the bar carries a **`Ticker / Row` instance with `Show Marker` off** — one component, two shapes, which is what the author's reference frame showed all along. The marker is the only difference: the panel is a list and needs a hanging marker, the bar shows one message and has no list to scan. `linkLabel` stays the one bar-only element, and it is **underlined** because it sits inside a sentence — the case WCAG 1.4.1 is actually about, and the opposite of a list row where every line is a link.

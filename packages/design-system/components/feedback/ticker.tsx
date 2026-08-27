@@ -470,7 +470,10 @@ export function Ticker({
         <div className="sa-ticker__container">
           <div className="sa-ticker__header">
             {heading}
-            <div className="sa-ticker__nav">{pauseButton}</div>
+            {/* Only when there IS a control. An empty wrapper would still be a
+                sibling, and the hairline that separates the control from the
+                route would then be separating the route from nothing. */}
+            {pauseButton ? <div className="sa-ticker__nav">{pauseButton}</div> : null}
             {action ? <div className="sa-ticker__action">{action}</div> : null}
           </div>
 
