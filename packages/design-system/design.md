@@ -38,11 +38,20 @@
   WAS DESIGNED TO BE. The brand row stood at 124px against Figma's 100 because the
   lockup's four rows carried a 2px gap and the masthead search was 417px wide instead
   of 320 — which left the department line 361px, so it wrapped. Both fixed; the row is
-  100 at rest and 88 On Scroll, exactly as drawn. `collapseOnScroll` now DOES what it
-  says: it shrinks the brand row by dropping the ministry line, and it never touched
-  the accessibility bar, which is 46px in every Figma variant — the prop's docstring
-  pointed at a `.sa-abar` rule that existed only inside a comment. It defaults ON
-  wherever the header is sticky. THE MEGA-MENU COLUMN HAIRLINES ARE GONE: Figma's Col
+  100 at rest, exactly as drawn.
+
+  THE 88px "ON SCROLL" STATE IS RETIRED (27 August 2026). It shrank the brand row by
+  dropping the ministry line: 146px to 134px on the live portal. Twelve pixels — 8% of
+  the header, 1.7% of a 720px viewport — for a class, a listener, a media-query set and
+  a Figma variant. `collapseOnScroll` now swaps the three tiers for ONE `.ds-hdr-cond`
+  bar: 200 to 65 on desktop, 258 to 57 on a phone. The emblem holds the same left edge
+  in both states, because it is also the go-home control and identity that crosses the
+  screen on scroll reads as a different site; the department NAME is what is given up.
+  `sticky` defaults ON for every variant now, not just portals — the public masthead
+  used to scroll away entirely, leaving no navigation, no search and no identity for
+  the length of a scheme page. The accessibility bar still does not collapse; the
+  header pins at `top: calc(-1 * var(--sa-hdr-abar-h))` so the bar scrolls away and the
+  brand and nav rows stay. THE MEGA-MENU COLUMN HAIRLINES ARE GONE: Figma's Col
   frames carry no strokes, they were added in code alone, and design won. The panel is
   now centred on the nav row rather than on the item that opened it, because a 1272px
   panel anchored to the third of seven items ran 256px off-screen. NAVSHEET KEEPS ITS
@@ -944,8 +953,9 @@ graph TD
 | :--- | :--- |
 | Render the canonical `<SiteHeader>` with the functional accessibility toolbar. | Banned: Placing decorative Indian tricolour stripes in the header, footer, or hero section. |
 | Configure `variant="website"` for public portals, `variant="portal"` for authenticated dashboards. | Do not override the official National Emblem with abstract logos or custom marks. |
-| Ensure the mobile drawer flattens the mega-menu structure dynamically. | Do not disable collapse-on-scroll or keyboard navigation properties. |
-| Pass `collapseOnScroll` only on portal variant — always account for the dynamic chrome height in sidebar offset calculations. | Do not hardcode a pixel offset for sidebar top positioning. |
+| Let `NavSheet` keep the mega-menu's COLUMNS — headings, emblems and full organisation names. | Do not flatten the mega-menu to bare abbreviations in the drawer: "NCSK" alone is hardest to place on the smallest screen. |
+| Leave `sticky` and `collapseOnScroll` at their defaults (both ON, every variant). Read the pinned height from `--sa-header-pinned`. | Do not hardcode a pixel offset for sidebar top positioning, and do not pass `collapseOnScroll` "only on portal" — it serves the website too. |
+| Pass `sticky={false}` on a documentation SPECIMEN. | Do not let an inline example pin itself over the page it is illustrating. |
 
 ### D. Forms & Inputs
 

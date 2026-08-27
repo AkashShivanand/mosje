@@ -711,7 +711,9 @@ export function SiteHeader({
           accessibilityHref={accessibilityHref}
           onAccessibility={onAccessibility}
           language={language}
-          layout={isPortal ? "fluid" : "wide"}
+          /* `page`, so tier 1 sits on the same column as the brand and nav rows.
+             `wide` is a flat 1200 and does not follow the container ladder. */
+          layout={isPortal ? "fluid" : "page"}
           maxWidth={maxWidth}
         />
       )}
