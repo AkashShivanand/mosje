@@ -145,12 +145,17 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
    rather than silence. Never write copy implying free-form AI.
 4. **Never remove the footer note.** It is the honest statement that the assistant cannot see
    the user's application or personal data.
-5. **Closing and clearing are two controls, and neither does the other's job.** The header's ✕
-   ("Minimise chat") closes and KEEPS the conversation; the footer's **"Start over"** clears the
-   transcript, greets again, and leaves the panel open. Until 2026-08-25 the footer control was
-   called "End chat" and did both, which made it a second way to close sitting beside a ✕ and
-   made the label untrue whichever of its two words you trusted. Clearing stays out of the
-   top-right because that is where people reach to dismiss.
+5. **Nothing in this panel destroys anything, and that is what makes three icons in one corner
+   safe.** The header carries **start over, expand and ✕ — in that order, ✕ last**, because the
+   top-right corner is where every user reaches to dismiss. ✕ ("Minimise chat") closes and KEEPS
+   the conversation; expand resizes; **"Start over"** rules the transcript off with a labelled
+   separator (`restartNotice`, "New conversation") and greets again BENEATH it, leaving every
+   earlier turn scrolled up and the panel open.
+   Until 2026-08-25 the footer control was called "End chat" and closed *and* wiped, which made
+   it a second ✕ and made the label untrue whichever word you trusted. Until 2026-08-27 it still
+   CLEARED — and sat 25px directly below Send, in the same 32px column, with the whole of Send's
+   width above it. See *Placement — measured 2026-08-27* below for why every measurement passing
+   was not the same as the placement being right.
    It is `<Button variant="neutral" appearance="text" size="sm">`, not a hand-rolled control.
 6. **The seal never turns on its own.** It runs only when a caller asks for it (`spin`), for
    documentation and specimens. A perpetual spin would be the estate's most-seen animation and
@@ -225,6 +230,100 @@ and belongs with the shared `Input`, not here.
 placeholder recipe is `text/neutral/subtle` at `opacity: 0.7`, which composites to
 `#75777a` and measures **4.49:1** — missing AA by one hundredth. That is why the
 composer uses `subtler` at full opacity instead of copying it.
+
+## Placement — three footer arrangements, then the header (2026-08-27)
+
+**Start over is a HEADER control**, first of three, with ✕ last. It took three failed footer
+arrangements to get there, and **no gate caught any of them** — each was found by looking.
+
+| Arrangement | Geometry | What it cost |
+|---|---|---|
+| hard **right** (original) | x 305–337, 25px under Send, **same 32px column** | the most-pressed control in the panel stacked on the rarest and, at the time, the only destructive one |
+| head of the note's **row** | x 33–134, 171px from Send | 101px of button pushed the disclaimer **109px** off the panel's left edge, rewrapped it from two lines to three, and left the button with 16px of dead space above it |
+| its own **line** | x 33, beneath the note | one clean left edge — but **+24px of panel height**, on a panel already tight at 375px |
+| **header** | 32px icon, first of three | nothing; the footer returns to composer + note, and is 16px *shorter* than it started |
+
+### The measurements that made the first one look fine
+
+WCAG 2.2 §2.5.8 asks for **24×24** and every target was **32**. UX4G asks for **8px** between
+targets and the gaps were **24–36**. Nothing failed. **Frequency-versus-severity adjacency is not
+something a checklist can see** — which is why the placement is now held by tests, not by a
+standards pass.
+
+### Why the header was refused twice, and why it isn't now
+
+While Start over **CLEARED** the transcript, an unlabelled icon beside ✕ was exactly how somebody
+loses a conversation reaching for close. That objection was correct and it is why the control
+lived in the footer at all.
+
+**It appends now.** The danger is gone, and what was left was a panel-level control sitting among
+the citizen's own composing tools — the footer is where the citizen *says* things, and a reset is
+not something they say. **Three icons in one corner are only safe BECAUSE none of them destroys.**
+
+### Three consequences worth carrying
+
+1. **The header gap is 8, not 12.** With three controls the brand had **125px for a title needing
+   128** — a three-pixel shortfall, enough to wrap "Samajik Sahayak" onto two lines and shove the
+   Devanagari subtitle down with it. Four gaps at 8 give back 16px; the title clears by 13.
+   **If a fourth control is ever proposed for that row, measure the title first** — it is what
+   breaks, and it breaks silently.
+2. **It is an `__icon-btn`, not a DS `Button`** — and that reverses a decision that was *right
+   where it stood*. In the footer, `variant="neutral" appearance="text"` was hard-won: hand-rolled,
+   this control had landed in the estate's rejection red for housekeeping. In the header the same
+   reasoning inverts — it is one of three icons in one corner, and a third that styled itself
+   differently would be the same design-system failure pointing the other way. `.ds-chatbot__end`
+   now carries **no CSS at all**; it is a handle for tests and consumers.
+3. **`neutral` is once again a Button variant with no product consumer.** It was added *for* this
+   control. It stays in the DS on its merits — there was no way to express "quiet, no semantic
+   charge", and that absence is what pushed the original author to `danger` — but it is no longer
+   demonstrated by anything shipping. Worth knowing before the Button cleanup decides its fate.
+
+### The label is not lost
+
+`aria-label` and `title` both carry "Start over", so a screen reader announces it and a pointer
+reveals it. Dropping the visible words was refused twice while the control still destroyed
+something; it appends now, so the worst a mis-tap costs is a scroll, and the trade is finally the
+right way round.
+
+**Note for the hub specifically:** the scheme-finder script *also* offers a "Start over" quick
+reply alongside "Skip this" and "Go back". That chip is contextual and predates this work; the
+header icon is the panel-level affordance and exists for every consumer, including those whose
+script offers no such chip. Two routes to one harmless action is acceptable — but if the chip is
+ever removed, the icon is what the flow falls back on.
+
+
+## Figma, synced 2026-08-27 — and the one thing still open
+
+Both surfaces moved in the same change, which is what `.claude/rules/figma-code-sync.md` asks
+for and what this component had failed to do twice before.
+
+| Surface | What changed |
+|---|---|
+| **Masters** — headers (`55826:36908`, `55814:696`, `55826:36956`) | An `icon-btn / start over` was cloned from `icon-btn / expand`, its `Icon` instance's `icon#55030:0` text property set to `restart_alt`, and inserted BEFORE expand so ✕ stays last. `itemSpacing` 12 → 8 |
+| **Masters** — footer Rows (`55929:178`, `55955:910`, `55955:912`) | The `start over` Button instance is **removed**; the Row is back to HORIZONTAL with the note at FILL. Row height 32 |
+| **`Chatbot — Documentation`** — four nodes | `55828:766` (FOOTER) rewritten to composer + note and why the control left; `55828:758` (HEADER) now lists three controls and the gap rule; `55828:765` label is "Composer · note"; `55829:781` (targets) and `55829:789` (colour) corrected |
+| **Master description** (`55826:37003`) | Rules renumbered to 8. Rule 1 is now "nothing in this panel destroys anything"; rule 2 is the placement, carrying both failed attempts and the reason no checklist caught either; rule 7 gained the `scrollTo({ behavior: "instant" })` requirement |
+| **`tools/figma-doc-parity/claims.json`** | The FOOTER claim's snapshot and all its assertions replaced; a **new claim added for the HEADER** (`55828:758`) pinning the three-control order, the `restart_alt` glyph and the 8px gap. 19 claims, 52 assertions. Editing a snapshot without editing Figma is what turns `check:figma-docs:live` into a false red |
+
+**Edit the JSON through a parser, not through string escapes.** The `pattern` fields are
+double-escaped (`\\"` in the file, `[\\\\s\\\\S]` for a regex class), and hand-matching that in a
+replacement script fails silently against the wrong nesting. Load it with `json.loads`, mutate the
+claim object, dump with `indent=2, ensure_ascii=False` — verify the round-trip is byte-identical
+BEFORE mutating, so a formatting change cannot hide inside the diff.
+
+**Writing the description needs care and this is the trap:** Figma returns it HTML-escaped
+(`&#39;`, `&quot;`), so reading it, patching the string and writing it back escapes it a second
+time and compounds — `design.md` records one that had reached six levels. It was rewritten
+**fresh in plain text** instead. A single-level escape on read-back is Figma's normal
+projection, not a defect: 2,906 characters written came back as 3,012.
+
+**Still open — there is no separator PART in the library.** The `from: "system"` rule has no
+component, because none of the three drawn variants shows a post-restart transcript, so there is
+nowhere on the canvas it would appear. Adding one means adding a fourth panel state. That is a
+deliberate deferral, not an oversight, and it is the only known divergence.
+
+Run `npm run check:figma-docs:live` with `FIGMA_ACCESS_TOKEN` set to confirm the snapshot against
+the live library.
 
 ## Upstream dependency — `Button` (recorded 2026-08-25, NOT to be fixed here)
 
@@ -319,7 +418,10 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | Start over | `Label/label-2`, `cmp/action/neutral/tertiary/default/text`, **no border, no fill**, `shape/8`, `.ds-btn--sm` | **a `Button` INSTANCE** — `Size=Small, Type=Neutral, Sub-type=Text` | ✅ **both sides now instance the same component.** It was a hand-drawn frame with a 1px error stroke in Figma and ~40 lines of hand-rolled CSS in code — the same defect, authored twice |
 | Start over target | 32 high, clears the 24px 2.5.8 minimum | identical (the Button master hugs its label) | ✅ |
 | Start over ink | `neutralScale/800` via a **neutral-only override** in `component-matrix.json` | identical — pushed and read back, `figma-live.json` re-recorded | ✅ the matrix default is 700, which on the neutral ramp is `text/muted`, the ink of the disclaimer it sits beside |
-| Start over position | same row as the note, hard right, bottom-aligned | identical (`.ds-chatbot__footer-row`, `align-items: flex-end`) | ✅ |
+| Start over position | a third `icon-btn` in the header, before expand, ✕ last — added to all three masters | identical (`.ds-chatbot__icon-btn .ds-chatbot__end`, `<Icon name="restart_alt" size={20} />`) | ✅ both sides moved 2026-08-27 |
+| Header gap | **8**, in all three masters | `gap: var(--sa-inline-8)` | ✅ 12 left the title 3px short and wrapped it |
+| Footer contents | composer + note only; the `start over` instance is deleted from the Row | identical — `.ds-chatbot__footer-row` holds one `<p>` | ✅ the footer is 16px shorter than before any of this |
+| Start over outcome | **appends** — stated in the master description (rule 1) and §02 of the documentation page | **appends** — a `from: "system"` rule, then a fresh greeting under it | ⚠️ **behaviour matches; the library has no separator PART yet.** Figma draws the panel's states, and none of the three variants shows a post-restart transcript, so there is nothing on the canvas the rule would appear in. See the open item below |
 | Composer input | fills the pill's full 40px inner height (the padding moved onto the input) | not expressible | ⚠️ **by design.** Figma draws appearance, not hit areas — the pill renders identically either way. The rule is carried in the master's description and §06 of the documentation page instead. It was 20px: a line box floated inside a 42px pill, so half the visible field focused nothing and the real target sat under the 24px minimum |
 | Panel height | **content-sized**, capped at `min(719, viewport room)` | `State=Greeting` 396 · `State=Typing` 252 · `State=Transcript` 719 | ✅ the two short states are drawn at their true content height; Transcript stays at 719 because it is the state that demonstrates the cap and the scroll |
 | Launcher | 84, `bg/neutral/base`, `shape/full`, `elevation/toast` | identical | ✅ |
