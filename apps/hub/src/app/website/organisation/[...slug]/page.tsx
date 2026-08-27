@@ -11,6 +11,11 @@ import {
   getContentSyncedDate,
 } from "@/lib/website/content";
 
+
+function slugify(text: string) {
+  return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
 export function generateStaticParams() {
   return getOrganisations().map((o) => ({ slug: o.slug.split("/") }));
 }
@@ -33,10 +38,17 @@ export default async function OrganisationDetailPage({
 }: {
   params: Promise<{ slug: string[] }>;
 }) {
+
   const { slug } = await params;
   const key = slug.join("/");
   const org = getOrganisation(key);
   if (!org) notFound();
+
+  const rootSlug = slug[0];
+  const allOrgs = getOrganisations();
+  const relatedPages = allOrgs.filter((o) => o.slug === rootSlug || o.slug.startsWith(`${rootSlug}/`));
+  const hasSidebar = relatedPages.length > 1 || org.sections.filter(s => s.heading).length > 1;
+
 
   return (
     <PageLayout
@@ -62,8 +74,46 @@ export default async function OrganisationDetailPage({
       }
     >
       <section className="py-10 md:py-14 bg-white">
-        <div className="sa-container grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
+        <div className={`sa-container grid gap-10 ${hasSidebar ? "lg:grid-cols-[220px_minmax(0,1fr)_300px]" : "lg:grid-cols-[minmax(0,1fr)_340px]"}`}>
+          
+          {/* Sidebar Navigation */}
+          {hasSidebar && (
+            <aside className="hidden lg:block shrink-0">
+              <nav className="sticky top-28 space-y-8">
+                {relatedPages.length > 1 && (
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-ink-muted mb-3">Pages</h3>
+                    <ul className="space-y-2.5 text-[15px]">
+                      {relatedPages.map(rp => (
+                         <li key={rp.slug}>
+                            <Link href={`/website/organisation/${rp.slug}`} className={rp.slug === key ? "font-bold text-primary" : "text-ink-muted hover:text-primary transition-colors"}>
+                              {rp.title}
+                            </Link>
+                         </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {org.sections.filter(s => s.heading).length > 1 && (
+                  <div>
+                    <h3 className="text-xs font-bold uppercase tracking-wider text-ink-muted mb-3">On this page</h3>
+                    <ul className="space-y-2.5 text-[14px]">
+                      {org.sections.map((sec, i) => sec.heading ? (
+                         <li key={i}>
+                            <a href={`#${slugify(sec.heading)}`} className="text-ink-muted hover:text-primary transition-colors">
+                              {sec.heading}
+                            </a>
+                         </li>
+                      ) : null)}
+                    </ul>
+                  </div>
+                )}
+              </nav>
+            </aside>
+          )}
+
           {/* Main Body Sections */}
+
           <article className="gov-prose min-w-0">
             {org.sections.length === 0 ? (
               <div className="rounded-2xl border border-gray-200 p-8 bg-surface-muted">
@@ -83,7 +133,7 @@ export default async function OrganisationDetailPage({
               org.sections.map((s, i) => (
                 <section key={s.heading ?? i} className="mb-8">
                   {s.heading && (
-                    <h2 className="text-[22px] font-bold text-primary-dark border-b border-gray-200 pb-2 mb-4">
+                    <h2 id={slugify(s.heading)} className="text-[22px] font-bold text-primary-dark border-b border-gray-200 pb-2 mb-4 scroll-mt-28">
                       {s.heading}
                     </h2>
                   )}
