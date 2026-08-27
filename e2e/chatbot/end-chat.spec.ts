@@ -43,6 +43,8 @@ const SEND = ".ds-chatbot__send";
 const BUBBLE = ".ds-chatbot__bubble";
 const USER_BUBBLE = ".ds-chatbot__bubble--user";
 const BREAK = ".ds-chatbot__break";
+const NOTE = ".ds-chatbot__note";
+const COMPOSER = ".ds-chatbot__composer";
 const TYPING = ".ds-chatbot__typing";
 const PANEL = ".ds-chatbot__panel";
 
@@ -91,6 +93,36 @@ test.describe("Samajik Sahayak — Start over", () => {
     // 171px on a 375px-wide viewport, so 100 fails on a regression rather than
     // on a design tweak.
     expect(send.x - (startOver.x + startOver.width)).toBeGreaterThan(100);
+  });
+
+  test("the footer keeps ONE left edge — composer, note and Start over", async ({ page }) => {
+    // THIS IS THE HALF THAT WAS MISSED THE FIRST TIME, and it was caught on
+    // review rather than by any gate. Getting Start over out of Send's column
+    // by putting it at the head of the note's row worked geometrically and
+    // wrecked the layout: 101px of button in front of the paragraph pushed the
+    // disclaimer 109px inside the composer's left edge, giving the panel a
+    // ragged left margin, and rewrapped the note from two lines to three so the
+    // button floated with dead space above it.
+    //
+    // Both facts are asserted because fixing either one alone reintroduces the
+    // other: the gap test above passes in BOTH arrangements.
+    const composer = await page.locator(COMPOSER).boundingBox();
+    const note = await page.locator(NOTE).boundingBox();
+    const startOver = await page.locator(START_OVER).boundingBox();
+    expect(composer).not.toBeNull();
+    expect(note).not.toBeNull();
+    expect(startOver).not.toBeNull();
+    if (!composer || !note || !startOver) return;
+
+    expect(Math.abs(note.x - composer.x)).toBeLessThanOrEqual(1);
+    expect(Math.abs(startOver.x - composer.x)).toBeLessThanOrEqual(1);
+
+    // The note runs the full width of the panel rather than being squeezed
+    // beside the button — that squeeze is what cost it the extra line.
+    expect(note.width).toBeGreaterThan(composer.width - 2);
+
+    // And the control is BELOW the note, not beside it.
+    expect(startOver.y).toBeGreaterThanOrEqual(note.y + note.height - 1);
   });
 
   test("KEEPS the conversation, rules it off, and greets again below", async ({ page }) => {

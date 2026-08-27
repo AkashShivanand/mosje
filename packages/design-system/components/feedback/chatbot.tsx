@@ -769,6 +769,7 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
             )}
 
             <div className="ds-chatbot__footer-row">
+              <p className="ds-chatbot__note">{note}</p>
             {/*
               START OVER IS A SIBLING OF THE NOTE, NOT A WORD INSIDE IT. It used
               to live in the paragraph, separated by a space, which cost two
@@ -778,21 +779,31 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
               happened to be. A control people reach for should be somewhere they
               can learn.
 
-              IT SITS HARD LEFT, AND THAT IS THE POINT. It sat hard right until
-              2026-08-27, which fixed the drift but put it in the SAME 32px
-              column as Send, 25px below it, with the whole of Send's width
-              directly above. Send is the most-pressed control in the panel;
-              this was the rarest. Stacking them on one target line is a defect
-              even though every measurement passes — WCAG 2.2 §2.5.8 wants 24px
-              targets and these are 32, and UX4G wants 8px between them and
-              these had 25.
+              IT SITS ON ITS OWN LINE, BENEATH THE NOTE, LEFT-ALIGNED — and it
+              took two goes to get there, so both wrong answers are recorded.
 
-              Left is just as fixed as right — it is `flex: none` at the head of
-              the row, so no amount of disclaimer wrap can move it — and it puts
-              roughly 270px between this control and Send at 390px wide. It
-              costs no panel height, which is what ruled out giving it a row of
-              its own. The header was the other candidate and lost: an icon-only
-              reset beside ✕ would drop the words, and the words are what tell a
+              It sat hard RIGHT until 2026-08-27, in the SAME 32px column as
+              Send, 25px below it, with the whole of Send's width directly
+              above. Send is the most-pressed control in the panel; this was the
+              rarest. Stacking them on one target line is a defect even though
+              every measurement passes — WCAG 2.2 §2.5.8 wants 24px targets and
+              these are 32, UX4G wants 8px between them and these had 25.
+
+              Moving it to the HEAD OF THE SAME ROW fixed the adjacency and
+              broke the layout: 101px of button in front of the note pushed the
+              disclaimer's left edge 109px inside the composer's, giving the
+              panel a ragged left margin, and rewrapped the note from two lines
+              to three so the button floated with 16px of dead space above it.
+              Measured, not guessed — and caught on review, not by a gate.
+
+              Its own line fixes both. Composer, note and button now share one
+              left edge at 33px, the note is two lines again, and the control is
+              171px horizontally and 53px vertically from Send. It costs 24px of
+              panel height, and that is the real price: the line the note gives
+              back pays for most of the row the button takes.
+
+              The header was the other candidate and lost: an icon-only reset
+              beside ✕ would drop the words, and the words are what tell a
               first-time visitor what the control does.
 
               IT IS A DS `Button`, NOT A HAND-ROLLED ONE, and the appearance is
@@ -845,7 +856,6 @@ export const Chatbot = React.forwardRef<HTMLDivElement, ChatbotProps>(function C
                   {endChatLabel}
                 </Button>
               )}
-              <p className="ds-chatbot__note">{note}</p>
             </div>
           </footer>
         </div>

@@ -260,17 +260,39 @@ Frequency-versus-severity adjacency is a design defect that passes every audit.
   "Start over" as "start this question over" rather than "discard everything".
 - *Append alone* leaves a control grouped with the wrong neighbour.
 
-After the move: Start over x **33–134**, Send x **305–337** — **171px apart, zero overlap**,
-pinned by `does not share a column with Send` in `e2e/chatbot/end-chat.spec.ts`.
+**The first fix was wrong, and the gate could not see that either.** Moving Start over to the
+**head of the note's row** cleared the adjacency — 171px apart, zero overlap — and broke the
+layout:
 
-**Why the footer's left edge and not the header.** Left is as fixed as right — `flex: none` at
-the head of the row, so no amount of disclaimer wrap can move it, which was the original reason
-for going hard right. It costs **no panel height**, which is what ruled out giving it a row of
-its own (~40px on a phone). The header beside ✕ was the other candidate and lost on
-discoverability: an icon-only reset drops the words, and the words are the only thing telling a
-first-time visitor what the control does. The header's long-standing objection — that a clearing
-action must not sit where people reach to dismiss — is now moot rather than overruled, because
-nothing clears.
+| | Before the move | Head of the row | Own line |
+|---|---|---|---|
+| Note's left edge vs composer's | 0px | **+109px** | 0px |
+| Note width | 200px | 200px | **309px** |
+| Note lines | 3 | 3 | **2** |
+| Dead space above the button | — | 16px | — |
+| Footer height | 127px | 127px | **151px** |
+
+101px of button in front of the paragraph is what did it: the disclaimer no longer started on the
+panel's left edge, so the whole footer read ragged, and the note stayed at three lines while the
+button floated against the bottom of them. **Caught on review, not by any check** — the
+column test above passes in *both* arrangements, which is exactly why there are now two tests
+and not one.
+
+**The footer meta block is a column.** Note at full width, Start over on its own line beneath it.
+Composer, note and button share one left edge at **33px**; the note is two lines again; the
+control is 171px horizontally and 53px vertically from Send. It costs **24px of panel height**,
+and that is the honest price — the line the note gives back pays for most of the row the button
+takes. The class stays `.ds-chatbot__footer-row` because the Figma claim pins that string.
+
+**The button's BOX aligns, not its glyphs.** `Button` `sm` carries 16px of horizontal padding, so
+the label starts 17px right of the note's text. A negative margin would align them optically and
+push the control's hover and focus wash outside the panel's content edge — worse than the indent.
+Do not change it without solving that.
+
+**Why not the header.** An icon-only reset beside ✕ drops the words, and the words are the only
+thing telling a first-time visitor what the control does. The header's long-standing objection —
+that a clearing action must not sit where people reach to dismiss — is now moot rather than
+overruled, because nothing clears.
 
 **The label survived on purpose.** "Start over" was reviewed for a rename and kept: it became
 MORE true, not less. "Clear chat" would now say the one thing that is no longer so.
@@ -282,10 +304,16 @@ for and what this component had failed to do twice before.
 
 | Surface | What changed |
 |---|---|
-| **Masters** — all three `panel` variants (`55929:178`, `55955:910`, `55955:912`) | The `start over` instance was moved to index 0 of the footer `Row`. It now sits at x **0** with the note at x **97**; it was x **279**. No node was created or deleted — `insertChild(0, …)` reorders, so every instance follows its main |
-| **`Chatbot — Documentation`**, node `55828:766` (§02 Anatomy › FOOTER) | Rewritten: *"first in it, hard LEFT"*, why hard right was wrong, and that Start over APPENDS |
-| **Master description** (`55826:37003`) | Rules renumbered to 8. Rule 1 is now "nothing in this panel destroys anything"; rule 2 is the placement, with the measurements and the reason a checklist could not catch it; rule 7 gained the `scrollTo({ behavior: "instant" })` requirement |
-| **`tools/figma-doc-parity/claims.json`** | Snapshot updated to the new Figma text **in the same change**, plus a 53rd assertion pinning the Button to appear BEFORE the note in the JSX. Editing one without the other is what turns `check:figma-docs:live` into a false red |
+| **Masters** — all three `panel` variants (`55929:178`, `55955:910`, `55955:912`) | The footer `Row` became `VERTICAL`: the note first at FILL width, `start over` beneath it hugging its label, `counterAxisAlignItems: MIN`, 8px gap. Row height 72, matching the code. No node was created or deleted — reordering and layout changes only, so every instance follows its main |
+| **`Chatbot — Documentation`**, node `55828:766` (§02 Anatomy › FOOTER) | Rewritten: own line beneath the note, both wrong arrangements and what each cost, and that Start over APPENDS |
+| **Master description** (`55826:37003`) | Rules renumbered to 8. Rule 1 is now "nothing in this panel destroys anything"; rule 2 is the placement, carrying both failed attempts and the reason no checklist caught either; rule 7 gained the `scrollTo({ behavior: "instant" })` requirement |
+| **`tools/figma-doc-parity/claims.json`** | Snapshot updated to the new Figma text **in the same change**, plus two assertions (54 total): the note must appear BEFORE the button in the JSX, and the block must be `flex-direction: column`. Editing the snapshot without editing Figma is what turns `check:figma-docs:live` into a false red |
+
+**Edit the JSON through a parser, not through string escapes.** The `pattern` fields are
+double-escaped (`\\"` in the file, `[\\\\s\\\\S]` for a regex class), and hand-matching that in a
+replacement script fails silently against the wrong nesting. Load it with `json.loads`, mutate the
+claim object, dump with `indent=2, ensure_ascii=False` — verify the round-trip is byte-identical
+BEFORE mutating, so a formatting change cannot hide inside the diff.
 
 **Writing the description needs care and this is the trap:** Figma returns it HTML-escaped
 (`&#39;`, `&quot;`), so reading it, patching the string and writing it back escapes it a second
@@ -394,7 +422,7 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | Start over | `Label/label-2`, `cmp/action/neutral/tertiary/default/text`, **no border, no fill**, `shape/8`, `.ds-btn--sm` | **a `Button` INSTANCE** — `Size=Small, Type=Neutral, Sub-type=Text` | ✅ **both sides now instance the same component.** It was a hand-drawn frame with a 1px error stroke in Figma and ~40 lines of hand-rolled CSS in code — the same defect, authored twice |
 | Start over target | 32 high, clears the 24px 2.5.8 minimum | identical (the Button master hugs its label) | ✅ |
 | Start over ink | `neutralScale/800` via a **neutral-only override** in `component-matrix.json` | identical — pushed and read back, `figma-live.json` re-recorded | ✅ the matrix default is 700, which on the neutral ramp is `text/muted`, the ink of the disclaimer it sits beside |
-| Start over position | first in the row, hard **left**, bottom-aligned — moved in all three masters | identical (`.ds-chatbot__footer-row`, `flex: none` first child, `align-items: flex-end`) | ✅ both sides moved 2026-08-27; the master screenshots at x 0 against the note at x 97 |
+| Start over position | own line beneath the note, left-aligned — the Row is `VERTICAL` in all three masters | identical (`.ds-chatbot__footer-row` is `flex-direction: column`; the button takes `align-self: flex-start`) | ✅ both sides moved 2026-08-27; master Row height 72 against the code's 72 |
 | Start over outcome | **appends** — stated in the master description (rule 1) and §02 of the documentation page | **appends** — a `from: "system"` rule, then a fresh greeting under it | ⚠️ **behaviour matches; the library has no separator PART yet.** Figma draws the panel's states, and none of the three variants shows a post-restart transcript, so there is nothing on the canvas the rule would appear in. See the open item below |
 | Composer input | fills the pill's full 40px inner height (the padding moved onto the input) | not expressible | ⚠️ **by design.** Figma draws appearance, not hit areas — the pill renders identically either way. The rule is carried in the master's description and §06 of the documentation page instead. It was 20px: a line box floated inside a 42px pill, so half the visible field focused nothing and the real target sat under the 24px minimum |
 | Panel height | **content-sized**, capped at `min(719, viewport room)` | `State=Greeting` 396 · `State=Typing` 252 · `State=Transcript` 719 | ✅ the two short states are drawn at their true content height; Transcript stays at 719 because it is the state that demonstrates the cap and the scroll |

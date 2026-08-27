@@ -260,7 +260,7 @@
     {
       "node": "55828:766",
       "where": "Chatbot — Documentation › 02 Anatomy › FOOTER",
-      "figma": "A pill composer, the honest note, and Start over sharing the note’s row — first in it, hard LEFT. It is the design system’s Button at variant=\"neutral\" appearance=\"text\" — no border, full ink, NO SIGNAL COLOUR. Hard right put it 25px under Send in the same 32px column, stacking the most-pressed control in the panel on the rarest; every measurement passed, which is why the move is pinned by a test and not by a checklist. Start over APPENDS — it rules the transcript off and greets beneath it, destroying nothing.",
+      "figma": "A pill composer, the honest note, and Start over on its OWN LINE beneath it, left-aligned. It is the design system’s Button at variant=\"neutral\" appearance=\"text\" — no border, full ink, NO SIGNAL COLOUR. Hard right put it 25px under Send in the same 32px column; putting it beside the note instead pushed the disclaimer 109px off the panel’s left edge and rewrapped it to three lines. Its own line keeps composer, note and button on ONE left edge, for 24px of panel height. Start over APPENDS — it rules the transcript off and greets beneath it, destroying nothing.",
       "expect": [
         {
           "kind": "text",
@@ -270,13 +270,20 @@
           "kind": "source",
           "file": "packages/design-system/components/feedback/chatbot.tsx",
           "pattern": "<div className=\"ds-chatbot__footer-row\">",
-          "hint": "The note and the button share one row; the button is not a word inside the paragraph."
+          "hint": "The note and the button share one block; the button is not a word inside the paragraph."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "\\.ds-chatbot__footer-row \\{[^}]*flex-direction: column",
+          "flags": "s",
+          "hint": "The block is a COLUMN despite the class name, which this claim pins. Beside the note the button ate 101px off the front of the disclaimer and rewrapped it; stacked, every left edge in the footer lands on one line."
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/feedback/chatbot.tsx",
-          "pattern": "className=\"ds-chatbot__end\"[\\s\\S]*?<p className=\"ds-chatbot__note\">",
-          "hint": "Start over comes FIRST in the row, so it is hard left and out of Send's column. Hard right put the rarest, then-destructive control 25px under the most-pressed one, sharing its 32px column — and every measurement passed, so only this ordering and e2e/chatbot/end-chat.spec.ts hold it."
+          "pattern": "<p className=\"ds-chatbot__note\">[\\s\\S]*?className=\"ds-chatbot__end\"",
+          "hint": "The note comes FIRST and Start over sits beneath it. TWO arrangements were wrong before this one: hard right put the rarest, then-destructive control 25px under the most-pressed one in the same 32px column, and moving it to the head of that row pushed the disclaimer 109px off the panel's left edge."
         },
         {
           "kind": "source",
