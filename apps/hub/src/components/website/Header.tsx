@@ -15,6 +15,28 @@ import { useSearchSuggestions } from "@/components/website/search/use-search-sug
 // basePath before the native mount — same value, now a literal folder path.)
 const BP = "/website";
 
+/**
+ * SEVEN ENTRIES IS THE CEILING ON A 1280px SCREEN — read this before adding one.
+ *
+ * Measured 2026-08-26 against the live masthead. Once the page scrolls, the
+ * header condenses to a single bar and the content column is 1200px; after its
+ * 24px padding a side, the emblem, the search button and the CTA, the nav has
+ * **880px**. These seven entries measure **837**. That is 43px of slack, and an
+ * eighth entry needs about 96.
+ *
+ * Nothing breaks if you add one: `SiteHeader` measures itself and hands the nav
+ * to the sheet rather than letting the items overlap, so a 1280px laptop loses
+ * the inline row to the hamburger. At 1440 and above an eighth entry still fits.
+ * That is a design decision to make deliberately, not a bug to discover.
+ *
+ * If you need the row back at 1280, the cheapest 96px is a shorter label:
+ * "Associated Organisations" is 206px on its own — a quarter of the whole nav and
+ * more than double the average entry. Kept as it stands by decision (2026-08-27),
+ * to be revisited when Schemes moves out of Offerings and becomes the eighth.
+ *
+ * The arithmetic and the fallback live in `site-header.tsx` (the overflow
+ * measurement) and `header.css` (the condensed bar).
+ */
 const NAV: NavItem[] = [
   { label: "Home", href: "/website" },
   {
