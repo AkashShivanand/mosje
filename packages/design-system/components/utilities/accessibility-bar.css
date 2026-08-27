@@ -70,6 +70,13 @@
   }
   .sa-abar.layout-narrow .sa-abar__in { max-width: var(--sa-container-narrow); }
   .sa-abar.layout-wide   .sa-abar__in { max-width: var(--sa-container-wide); }
+  /* THE LADDER, not the flat 1200. `container/wide` never steps; `container/page`
+     goes 1200 -> 1320 at 1440 -> 1440 at 1920, and it is what the brand and nav
+     rows below this bar use. On `wide` the bar's content sat 60px narrower than
+     the masthead beneath it at 1440 and 120px at 1920 — the same misalignment
+     between tiers that `SiteHeader.maxWidth` was made to stop between the
+     masthead and the page. */
+  .sa-abar.layout-page   .sa-abar__in { max-width: var(--sa-container-page); }
   /* Fluid is full-bleed: edge padding only. Figma uses padding/2xl (32) from tablet
      up and padding/m (16) on mobile — matching its Device axis with a media query. */
   .sa-abar.layout-fluid .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-16); }

@@ -25,7 +25,14 @@ import { AccessibilityControls } from "./accessibility-controls";
 import { useFontScale } from "./font-scale";
 import "./accessibility-bar.css";
 
-export type AccessibilityBarLayout = "narrow" | "wide" | "fluid";
+/**
+ * `page` tracks `--sa-container-page` — the estate's three-step content ladder
+ * (1200 · 1320 from 1440 · 1440 from 1920). `wide` is a FLAT 1200 that never
+ * steps, which is the difference that matters: a bar on `wide` above rows on
+ * `page` is 60px narrower than them at 1440 and 120px at 1920. Measured
+ * 2026-08-27. Use `page` whenever the bar sits above page content.
+ */
+export type AccessibilityBarLayout = "narrow" | "wide" | "page" | "fluid";
 /**
  * Mirrors the Figma master's `Device` variant axis. `"auto"` (the default) is the
  * web-native form: the same breakpoints, resolved by CSS instead of by a prop, so
@@ -69,7 +76,7 @@ export interface AccessibilityBarProps {
   onAccessibility?: () => void;
   /** Language selector. Pass `false` to hide. @default { label: "English" } */
   language?: { label?: string; onClick?: () => void } | false;
-  /** Content-container width: narrow (720) · wide (1200) · fluid (full-bleed). @default "wide" */
+  /** Content-container width: narrow (720) · wide (flat 1200) · page (1200/1320/1440 ladder) · fluid (full-bleed). @default "wide" */
   layout?: AccessibilityBarLayout;
   /**
    * Explicit content-container max-width (px), overriding the `layout` preset.
