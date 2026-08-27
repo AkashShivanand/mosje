@@ -70,6 +70,13 @@
   }
   .sa-abar.layout-narrow .sa-abar__in { max-width: var(--sa-container-narrow); }
   .sa-abar.layout-wide   .sa-abar__in { max-width: var(--sa-container-wide); }
+  /* THE LADDER, not the flat 1200. `container/wide` never steps; `container/page`
+     goes 1200 -> 1320 at 1440 -> 1440 at 1920, and it is what the brand and nav
+     rows below this bar use. On `wide` the bar's content sat 60px narrower than
+     the masthead beneath it at 1440 and 120px at 1920 — the same misalignment
+     between tiers that `SiteHeader.maxWidth` was made to stop between the
+     masthead and the page. */
+  .sa-abar.layout-page   .sa-abar__in { max-width: var(--sa-container-page); }
   /* Fluid is full-bleed: edge padding only. Figma uses padding/2xl (32) from tablet
      up and padding/m (16) on mobile — matching its Device axis with a media query. */
   .sa-abar.layout-fluid .sa-abar__in { max-width: none; padding-inline: var(--sa-padding-16); }
@@ -321,7 +328,124 @@
      while a bar with `accessibility` is mounted — so if the bar unmounts, or renders
      with `accessibility={false}`, the floating button comes straight back and the
      widget is never unreachable. */
-  :root[data-sa-abar-a11y="1"] #uw-widget-custom-trigger {
+  /* ONLY FROM `breakpoint/tablet` UP, which is where the bar actually shows the
+     control. Below it the bar sheds the whole right-hand cluster — so the flag was
+     hiding the vendor's floating button on behalf of a control that was not on
+     screen, and a phone had no route to the accessibility panel at all. The sheet
+     now carries the controls too, but it is shut most of the time; the floating
+     button is the always-available route and it comes back here. */
+  @media (min-width: 768px) {
+    :root[data-sa-abar-a11y="1"] #uw-widget-custom-trigger {
+      display: none !important;
+    }
+  }
+
+  /* …and at ANY width while NavSheet is open, because the sheet carries the same
+     control and the FAB's corner is underneath it. `NavSheet` sets the flag. */
+  :root[data-sa-navsheet-open] #uw-widget-custom-trigger {
     display: none !important;
+  }
+
+  /* ── AccessibilityControls, sheet variant ────────────────────────────────────
+     The same three controls as the bar's cluster, as full-width labelled rows,
+     rendered inside NavSheet below `breakpoint/tablet`. Hidden from 768 up, which
+     is exactly where the bar takes them back — between 768 and 1023 both the bar
+     and the sheet exist, and two live copies of one control is worse than none. */
+  .sa-a11yc {
+    margin-top: auto;
+    padding: var(--sa-padding-16) var(--sa-padding-24) var(--sa-padding-24);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  @media (min-width: 768px) {
+    .sa-a11yc {
+      display: none;
+    }
+  }
+
+  .sa-a11yc__head {
+    margin: 0 0 var(--sa-stack-8);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sa-a11yc__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-stack-12);
+    min-height: 48px;
+  }
+
+  .sa-a11yc__label {
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .sa-a11yc__steps {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-4);
+  }
+
+  /* 44px, not the bar's 26px pill: this is a touch target on a phone, and WCAG
+     2.5.8 wants 24px minimum with 44 the figure every mobile guideline actually
+     uses. The bar's version is a pointer target on a 46px row and stays as it is. */
+  .sa-a11yc__step {
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: var(--sa-text-neutral-base);
+    cursor: pointer;
+  }
+
+  .sa-a11yc__step:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .sa-a11yc__step.is-active {
+    background-color: var(--sa-bg-brand-primary-base);
+    border-color: var(--sa-border-brand-primary-base);
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .sa-a11yc__step:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: 2px;
+  }
+
+  .sa-a11yc__action {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-12);
+    width: 100%;
+    min-height: 48px;
+    padding: var(--sa-padding-8) 0;
+    border: 0;
+    background: transparent;
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-base);
+    text-align: start;
+    cursor: pointer;
+  }
+
+  .sa-a11yc__action:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: -2px;
+    border-radius: var(--sa-shape-4);
+  }
+
+  .sa-a11yc__value {
+    margin-inline-start: auto;
+    color: var(--sa-text-neutral-subtle);
   }
 }

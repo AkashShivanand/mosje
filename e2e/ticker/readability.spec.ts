@@ -124,14 +124,26 @@ test.describe("Latest Updates — readability", () => {
     //
     // Head-to-head over 40 trials on the same page and the same hover, the ONLY
     // difference being whether the assertion retries: one-shot `expect(bg).not
-    // .toBe(...)` failed 12/40, this line failed 0/40. Thirty percent is the
-    // same rate this test was failing the whole suite at, which is what it was.
+    // .toBe(...)` failed 12/40, this line failed 0/40.
+    //
+    // Both arms ran in a standalone browser, not under the test runner, so
+    // `workers` played no part in either: this measures retry against no
+    // retry and nothing else. The same one-shot read was 5/12 under concurrent
+    // suite load and 12/40 on a quiet machine — about a third either way, which
+    // is why it reads as a transition race rather than a contention one.
+    //
+    // That thirty percent is CLOSE TO the rate this test was failing the whole
+    // suite at before (76e7aa66: "about two runs in three"), and the two were
+    // measured differently — that one at suite level with `workers` unbounded,
+    // this one standalone. Suggestive, not the same measurement. Do not read it
+    // as proof the two are one bug.
     //
     // Reduced motion above does not cover this. It stops the marquee; it does
     // not stop a colour transition, and it should not — killing motion and
-    // keeping colour is the estate's pattern (see button.css). The two earlier
-    // attempts at this flake both aimed a layer too high: they made the window
-    // before the read wider, which lowered the rate without closing it.
+    // keeping colour is the estate's pattern (see button.css). Whether the
+    // earlier `reducedMotion` and `settled()` attempts are now redundant is
+    // OPEN: settling it needs the one-shot read run with and against the worker
+    // cap, which has not been done. They stay until it is.
     await expect(row).not.toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
   });
 

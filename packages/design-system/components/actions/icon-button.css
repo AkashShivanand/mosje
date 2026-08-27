@@ -1,0 +1,46 @@
+/* Declare the order before using it — see the note at the top of button.css. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     IconButton — a Button whose whole label is its icon.
+
+     It composes `.ds-btn`, so every variant, appearance, tone, size and state comes
+     from button.css and there is exactly one place a button's colour is decided. This
+     file only makes it SQUARE and re-centres the glyph.
+
+     WHY A COMPONENT AND NOT AN `iconOnly` PROP.
+     UX4G models icon-only as a property of the button, and that is a reasonable read.
+     It is not the one taken here, for a reason the type system makes plain: an
+     icon-only control MUST carry an accessible name, and on an ordinary Button the
+     name arrives as `children`. A prop cannot make `aria-label` required — a separate
+     component can, and does. The estate had 533 of 718 icon call sites missing their
+     label before the Icon component started defaulting to `aria-hidden`; the lesson
+     was that this contract has to be enforced by construction rather than remembered.
+     ============================================================================ */
+  .ds-icon-btn {
+    padding: 0;
+    aspect-ratio: 1;
+  }
+
+  /* Square, using the SAME rungs as the size ladder in button.css so the two cannot
+     drift. `min-` rather than a fixed size for the same WCAG 1.4.4 reason: the box has
+     to be able to grow when a reader scales text, and an icon glyph is text here — it
+     is a font ligature, not an SVG. */
+  .ds-icon-btn.ds-btn--sm {
+    min-width: 32px;
+  }
+
+  .ds-icon-btn.ds-btn--md {
+    min-width: 40px;
+  }
+
+  .ds-icon-btn.ds-btn--lg {
+    min-width: 48px;
+  }
+
+  /* The glyph is the whole content, so the icon slot must not add its own spacing. */
+  .ds-icon-btn .ds-btn__icon {
+    margin: 0;
+  }
+}

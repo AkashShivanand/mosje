@@ -9618,8 +9618,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/100"
             }
           },
           "description": "Use for primary-brand secondary buttons at rest placed on a solid brand surface — the outline.",
@@ -9679,8 +9680,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/50"
             }
           },
           "description": "Use when the user hovers over a primary-brand secondary button placed on a solid brand surface — the outline.",
@@ -11107,8 +11109,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/100"
             }
           },
           "description": "Use for confirming secondary buttons at rest placed on a solid brand surface — the outline.",
@@ -11168,8 +11171,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/50"
             }
           },
           "description": "Use when the user hovers over a confirming secondary button placed on a solid brand surface — the outline.",
@@ -12596,8 +12600,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/100"
             }
           },
           "description": "Use for destructive secondary buttons at rest placed on a solid brand surface — the outline.",
@@ -12657,8 +12662,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/50"
             }
           },
           "description": "Use when the user hovers over a destructive secondary button placed on a solid brand surface — the outline.",
@@ -14085,8 +14091,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/100"
             }
           },
           "description": "Use for neutral secondary buttons at rest placed on a solid brand surface — the outline.",
@@ -14146,8 +14153,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/50"
             }
           },
           "description": "Use when the user hovers over a neutral secondary button placed on a solid brand surface — the outline.",

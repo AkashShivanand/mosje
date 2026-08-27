@@ -474,11 +474,13 @@
 }
 
 /* ── Where the panel opens ───────────────────────────────────────────────
-   Resolved by `usePanelLeft`: it stands BESIDE the form underneath rather
-   than on the far side of the screen. On most routes there is nothing to
-   avoid, the measured answer equals the default, and nothing moves. On a
-   login route it steps aside — the panel used to sit directly on top of both
-   credential fields and the submit button.
+   Resolved by `usePanelLeft`, and it moves for EXACTLY ONE THING: a login
+   form. There, it stands BESIDE the form rather than on top of it — the
+   panel used to sit directly over both credential fields and the submit
+   button, and the Sign in tab types into those. Everywhere else — which is
+   every other route on the estate — the measured answer equals the default
+   below and nothing moves. A search box, a filter, a page's own form: none
+   of them displace this panel.
 
    `data-placed` is only set once measured, so the first paint uses the CSS
    default above instead of rendering somewhere and snapping. ── */

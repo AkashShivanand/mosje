@@ -25,8 +25,14 @@
      Semantic CSS classes only; all colours reference design tokens (--sa-*).
      Combine: .ds-btn  +  .ds-btn--<variant>  +  .ds-btn--<appearance>  +  .ds-btn--<size>
      Variants: primary | success | danger | neutral
-     Appearances: filled | outlined | text | tonal
-     Sizes: sm | md | lg
+     Appearances: filled | outlined | text
+     Tone:        default | inverse   (crosses appearance)
+     Sizes:       sm | md | lg
+
+     `tonal` was RETIRED on 2026-08-27. Its fill and its border were the same pale wash,
+     so the control had no edge against the page at all — 1.21:1 to 1.52:1 against WCAG
+     1.4.11's 3:1 — and darkening the border to fix that would simply have made it
+     `outlined`. It had two consumers in 494 buttons.
      ============================================================================ */
 
   .ds-btn {
@@ -36,7 +42,11 @@
     gap: var(--sa-stack-8);
     font-family: var(--sa-font-latin);
     font-weight: 500;
-    line-height: 1;
+    /* Was a raw `1`. A one-to-one line box cannot absorb the 1.5x line-height a
+       reader is entitled to apply under WCAG 1.4.12, and it is the other half of
+       the clipping this size ladder used to cause. Each size names its own role
+       token below; this is the fallback for anything that does not. */
+    line-height: var(--sa-type-body-1-lh);
     letter-spacing: 0.1px;
     border: 1px solid transparent;
     border-radius: var(--sa-shape-8);
@@ -100,30 +110,50 @@
     --_fill: var(--sa-bg-brand-primary-bolder);
     --_on: var(--sa-on-bg-brand-primary-bolder);
     --_color: var(--sa-text-brand-primary-base);
-    --_tonal-bg: var(--sa-color-action-primary-tonal);
-    --_tonal-fg: var(--sa-color-action-primary-hover);
-    --_dark: var(--sa-color-action-primary-hover);
-    --_ring: var(--sa-focus-ring);
+    /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
+       intent survives the trip. A flat white-alpha border used to be identical for all
+       four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it
+       was not a findable edge either. Gated in action-nontext-contrast.test.mjs. */
+    --_inv-fill: var(--sa-cmp-action-brand-primary-inverse-default-bg);
+    --_inv-on: var(--sa-cmp-action-brand-primary-inverse-default-text);
+    --_inv-edge: var(--sa-cmp-action-brand-secondary-inverse-default-border);
+    --_inv-edge-hover: var(--sa-cmp-action-brand-secondary-inverse-hover-border);
+    --_inv-edge-active: var(--sa-cmp-action-brand-secondary-inverse-active-border);
+    --_inv-ink: var(--sa-cmp-action-brand-secondary-inverse-default-text);
   }
 
   .ds-btn--success {
     --_fill: var(--sa-bg-status-success-bolder);
     --_on: var(--sa-on-bg-status-success-bolder);
     --_color: var(--sa-text-status-success-base);
-    --_tonal-bg: var(--sa-color-status-successTonal);
-    --_tonal-fg: var(--sa-color-status-successStrong); /* darkened success for tonal label contrast */
-    --_dark: var(--sa-color-status-successStrong);
     --_ring: color-mix(in oklab, var(--sa-color-status-success) 40%, transparent);
+    /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
+       intent survives the trip. A flat white-alpha border used to be identical for all
+       four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it
+       was not a findable edge either. Gated in action-nontext-contrast.test.mjs. */
+    --_inv-fill: var(--sa-cmp-action-success-primary-inverse-default-bg);
+    --_inv-on: var(--sa-cmp-action-success-primary-inverse-default-text);
+    --_inv-edge: var(--sa-cmp-action-success-secondary-inverse-default-border);
+    --_inv-edge-hover: var(--sa-cmp-action-success-secondary-inverse-hover-border);
+    --_inv-edge-active: var(--sa-cmp-action-success-secondary-inverse-active-border);
+    --_inv-ink: var(--sa-cmp-action-success-secondary-inverse-default-text);
   }
 
   .ds-btn--danger {
     --_fill: var(--sa-bg-status-error-bolder);
     --_on: var(--sa-on-bg-status-error-bolder);
     --_color: var(--sa-text-status-error-base);
-    --_tonal-bg: var(--sa-color-status-dangerTonal);
-    --_tonal-fg: var(--sa-color-status-dangerStrong);
-    --_dark: var(--sa-color-status-dangerStrong);
     --_ring: color-mix(in oklab, var(--sa-color-status-danger) 40%, transparent);
+    /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
+       intent survives the trip. A flat white-alpha border used to be identical for all
+       four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it
+       was not a findable edge either. Gated in action-nontext-contrast.test.mjs. */
+    --_inv-fill: var(--sa-cmp-action-destructive-primary-inverse-default-bg);
+    --_inv-on: var(--sa-cmp-action-destructive-primary-inverse-default-text);
+    --_inv-edge: var(--sa-cmp-action-destructive-secondary-inverse-default-border);
+    --_inv-edge-hover: var(--sa-cmp-action-destructive-secondary-inverse-hover-border);
+    --_inv-edge-active: var(--sa-cmp-action-destructive-secondary-inverse-active-border);
+    --_inv-ink: var(--sa-cmp-action-destructive-secondary-inverse-default-text);
   }
 
   /* THE VARIANT WITH NO SIGNAL. For dismiss / reset / "start over" — an action
@@ -166,20 +196,29 @@
      (`tertiary/hover/bg` and friends). Moving them is the same estate-wide
      change as repointing the other three variants.
 
-     No `--_dark`: it is declared by the three variants above and consumed by
-     nothing. Not propagated here rather than copied forward. */
+     No `--_dark`: it was declared by the three variants above and consumed by
+     nothing, and has now been deleted from all three. */
   .ds-btn--neutral {
     --_fill: var(--sa-cmp-action-neutral-primary-default-bg);
     --_on: var(--sa-cmp-action-neutral-primary-default-text);
     --_color: var(--sa-cmp-action-neutral-tertiary-default-text);
-    --_tonal-bg: var(--sa-cmp-action-neutral-tonal-default-bg);
-    --_tonal-fg: var(--sa-cmp-action-neutral-tonal-default-text);
-    --_ring: var(--sa-focus-ring);
+    /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
+       intent survives the trip. A flat white-alpha border used to be identical for all
+       four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it
+       was not a findable edge either. Gated in action-nontext-contrast.test.mjs. */
+    --_inv-fill: var(--sa-cmp-action-neutral-primary-inverse-default-bg);
+    --_inv-on: var(--sa-cmp-action-neutral-primary-inverse-default-text);
+    --_inv-edge: var(--sa-cmp-action-neutral-secondary-inverse-default-border);
+    --_inv-edge-hover: var(--sa-cmp-action-neutral-secondary-inverse-hover-border);
+    --_inv-edge-active: var(--sa-cmp-action-neutral-secondary-inverse-active-border);
+    --_inv-ink: var(--sa-cmp-action-neutral-secondary-inverse-default-text);
   }
 
-  /* Route the focus ring to the active variant's colour. `neutral` is absent on
-     purpose — its ring IS `--sa-focus-ring`, which the base rule already sets, so
-     listing it here would restate the default. */
+  /* Route the focus ring to the active variant's colour. Only success and danger
+     declare a `--_ring`; primary and neutral both want `--sa-focus-ring`, which the
+     base rule at the top of this file already sets, so they declare nothing. They
+     used to declare it anyway and no rule ever read it — a variable that looks
+     load-bearing and is not is worse than no variable. */
   .ds-btn--success:focus-visible,
   .ds-btn--danger:focus-visible {
     box-shadow: 0 0 0 3px var(--_ring);
@@ -188,22 +227,40 @@
   /* --------------------------------------------------------------------------
      Sizes
      -------------------------------------------------------------------------- */
+  /* MIN-HEIGHT, NOT HEIGHT — WCAG 1.4.4 Resize Text (AA).
+     `height` is a ceiling as well as a floor. At 200% text an `md` button held 40px
+     while its content needed 41, so the label was clipped against a 38px client box;
+     `sm` clipped 34 into 30. Measured, not inferred — the numbers come from the pins
+     in `e2e/design-system/button.spec.ts`, which were watched to fail before this
+     block changed.
+
+     The vertical padding is deliberately SMALLER than the amount that would produce
+     the nominal height. `min-height` is what makes a button 32/40/48 at 100%; the
+     padding only has to stay under that at 100% and keep breathing room as the text
+     grows. Sized the other way round — padding that exactly fills the box — the
+     button would immediately outgrow its own size ladder at the first zoom step.
+
+     At 100%: sm 20+8+2=30 -> 32 · md 24+12+2=38 -> 40 · lg 24+16+2=42 -> 48.
+     Every rung is a real token; the ladder is value-named so nothing is invented. */
   .ds-btn--sm {
-    height: 32px;
-    padding: 0 var(--sa-padding-16);
+    min-height: 32px;
+    padding: var(--sa-padding-4) var(--sa-padding-16);
     font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
   }
 
   .ds-btn--md {
-    height: 40px;
-    padding: 0 var(--sa-padding-24);
+    min-height: 40px;
+    padding: var(--sa-padding-6) var(--sa-padding-24);
     font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
   }
 
   .ds-btn--lg {
-    height: 48px;
-    padding: 0 var(--sa-padding-24);
+    min-height: 48px;
+    padding: var(--sa-padding-8) var(--sa-padding-24);
     font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
   }
 
   /* --------------------------------------------------------------------------
@@ -257,57 +314,51 @@
     background-color: color-mix(in srgb, var(--_color) 14%, transparent);
   }
 
-  /* --------------------------------------------------------------------------
-     Appearance: tonal
-     -------------------------------------------------------------------------- */
-  .ds-btn--tonal {
-    background-color: var(--_tonal-bg);
-    color: var(--_tonal-fg);
-    border-color: var(--_tonal-bg);
-  }
-
-  .ds-btn--tonal:hover {
-    filter: brightness(0.96);
-  }
-
-  .ds-btn--tonal:active {
-    filter: brightness(0.92);
-  }
 
   /* --------------------------------------------------------------------------
-     Appearance: inverse / inverseOutlined
-     For a button placed directly on a solid brand-colour surface (e.g. a navy
-     page header) — replaces the className overrides every portal was hand-rolling.
+     TONE: inverse — a button on a solid brand-colour surface.
+
+     This is an AXIS THAT CROSSES `appearance`, not a fifth appearance. `tone="inverse"`
+     with `appearance="filled"` gives the white pill; with `appearance="outlined"` it
+     gives the bordered one. The two old appearance words still emit these classes and
+     still work — the Ticker's documented route-out, the login shell and two Code Connect
+     templates all name them — but they are aliases now, not the model.
+
+     Both forms read the variant's own `--_inv-*`, so the intent crosses the axis. Before
+     this, `inverseOutlined` hard-coded a white-alpha border (identical for all four
+     intents, 2.25:1 on the ticker bar) and `inverse` reused `--_color` — an ink chosen to
+     sit on WHITE, asked to sit on brand blue.
      -------------------------------------------------------------------------- */
   .ds-btn--inverse {
-    background-color: var(--sa-color-neutralScale-0);
-    color: var(--_color);
-    border-color: var(--sa-color-neutralScale-0);
+    background-color: var(--_inv-fill);
+    color: var(--_inv-on);
+    border-color: var(--_inv-fill);
   }
 
   .ds-btn--inverse:hover {
-    background-color: color-mix(in srgb, var(--_color) 8%, white);
-    border-color: color-mix(in srgb, var(--_color) 8%, white);
+    background-color: var(--sa-cmp-action-brand-primary-inverse-hover-bg);
+    border-color: var(--sa-cmp-action-brand-primary-inverse-hover-bg);
   }
 
   .ds-btn--inverse:active {
-    background-color: color-mix(in srgb, var(--_color) 14%, white);
-    border-color: color-mix(in srgb, var(--_color) 14%, white);
+    background-color: var(--sa-cmp-action-brand-primary-inverse-active-bg);
+    border-color: var(--sa-cmp-action-brand-primary-inverse-active-bg);
   }
 
   .ds-btn--inverseOutlined {
     background-color: transparent;
-    color: var(--sa-on-bg-brand-primary-bolder);
-    border-color: var(--sa-color-transparent-white-40);
+    color: var(--_inv-ink);
+    border-color: var(--_inv-edge);
   }
 
   .ds-btn--inverseOutlined:hover {
-    background-color: color-mix(in oklab, var(--sa-bg-neutral-base) 10%, transparent);
-    border-color: color-mix(in oklab, var(--sa-bg-neutral-base) 60%, transparent);
+    background-color: var(--sa-cmp-action-brand-secondary-inverse-hover-bg);
+    border-color: var(--_inv-edge-hover);
   }
 
   .ds-btn--inverseOutlined:active {
-    background-color: var(--sa-color-transparent-white-16);
+    background-color: var(--sa-cmp-action-brand-secondary-inverse-active-bg);
+    border-color: var(--_inv-edge-active);
   }
 
   .ds-btn--inverse:focus-visible,
@@ -338,12 +389,6 @@
   .ds-btn--filled[aria-disabled="true"]:hover,
   .ds-btn--filled:disabled:active,
   .ds-btn--filled[aria-disabled="true"]:active,
-  .ds-btn--tonal:disabled:hover,
-  .ds-btn--tonal[aria-disabled="true"]:hover,
-  .ds-btn--tonal:disabled:active,
-  .ds-btn--tonal[aria-disabled="true"]:active {
-    filter: none;
-  }
 
   .ds-btn--outlined:disabled:hover,
   .ds-btn--outlined[aria-disabled="true"]:hover,

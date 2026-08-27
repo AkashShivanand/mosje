@@ -5,6 +5,8 @@
 // --sa-* tokens only).
 // =============================================================================
 
+import type { SearchSuggestion } from "../../forms/search";
+
 /** A single navigation link. */
 export interface NavLink {
   label: string;
@@ -95,6 +97,32 @@ export interface BrandMark {
   href?: string;
   /** Rendered height in px (width auto). @default 44 */
   height?: number;
+}
+
+/**
+ * The masthead search, as `SiteHeader` and `NavSheet` BOTH take it.
+ *
+ * One type, deliberately: the sheet used to declare its own narrowed
+ * `{ placeholder, onSearch }`, which is how autocomplete came to work on desktop
+ * and silently not on a phone. A shared type makes that particular drift a type
+ * error rather than a thing someone notices in six months.
+ */
+export interface HeaderSearchConfig {
+  placeholder?: string;
+  /** The query was submitted — Enter, or the leading icon. */
+  onSearch?: (query: string) => void;
+  /**
+   * Called on every keystroke, so the owner can fetch autocomplete rows.
+   *
+   * DEBOUNCE ON THE OWNER'S SIDE. The masthead must not decide how often a
+   * consumer's index may be hit — the design-system docs search is in-memory and
+   * the website's is a route, and those want different intervals.
+   */
+  onQueryChange?: (query: string) => void;
+  /** Autocomplete rows for the current query. Omit for no autocomplete. */
+  suggestions?: SearchSuggestion[];
+  /** A suggestion was chosen — by click, or Enter on the highlighted row. */
+  onSuggestionSelect?: (suggestion: SearchSuggestion) => void;
 }
 
 /** Controlled search field config shared by both headers. */

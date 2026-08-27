@@ -189,7 +189,7 @@ export default function SurveysPage() {
                   </TD>
                   <TD className="font-mono text-ink-muted">{s.pincode ?? "—"}</TD>
                   <TD className="text-right">
-                    <Link href={`/portals/smile-admin/surveys/${s.id}`} className={buttonClasses("primary", "tonal", "sm")}>
+                    <Link href={`/portals/smile-admin/surveys/${s.id}`} className={buttonClasses("primary", "outlined", "sm")}>
                         <Icon name="visibility" size={14} /> View Details
                       </Link>
                   </TD>

@@ -17,17 +17,24 @@ const variant = instance.getEnum("Type", {
 /**
  * Figma `Sub-type` → `ButtonAppearance`. Exhaustive over what Figma HAS.
  *
- * DIVERGENCE: the code type also carries `inverse` and `inverseOutlined` (for a
- * button on a solid brand surface, e.g. a navy page header). The Figma component
- * set has no variant for either, so a designer cannot specify them and this
- * mapping cannot emit them. Logged in the parity ledger — resolve by adding the
- * two variants in Figma, not by removing them from code.
+ * DIVERGENCE 1 — `Tonal` maps to `outlined`, because `tonal` NO LONGER EXISTS in code.
+ * It was retired on 2026-08-27: its fill and border were the same pale wash, so the
+ * control had no edge against the page (1.21:1 to 1.52:1 against a 3:1 requirement) and
+ * darkening the border would have made it `outlined` anyway. Figma still has the variant,
+ * so a designer can still pick it; this mapping emits the nearest honest thing rather
+ * than a prop the component would reject. Remove the Figma variant to close this.
+ *
+ * DIVERGENCE 2 — the `inverse` TONE (a button on a solid brand surface) has no Figma
+ * variant at all, so a designer cannot specify it and this mapping cannot emit it.
+ * Resolve by adding a Tone property in Figma, not by removing it from code.
+ *
+ * Both are logged in the parity ledger.
  */
 const appearance = instance.getEnum("Sub-type", {
   Filled: "filled",
   Outlined: "outlined",
   Text: "text",
-  Tonal: "tonal",
+  Tonal: "outlined",
 });
 
 /** Figma `Size` → `ButtonSize`. Figma's "Default" is the code default `md`. */
