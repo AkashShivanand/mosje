@@ -225,7 +225,7 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.primaryScale.100}",
               "$description": "Use for primary-brand secondary buttons at rest placed on a solid brand surface — the outline."
             }
           },
@@ -242,7 +242,7 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.64)",
+              "$value": "{color.primaryScale.50}",
               "$description": "Use when the user hovers over a primary-brand secondary button placed on a solid brand surface — the outline."
             }
           },
@@ -647,7 +647,7 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.successScale.100}",
               "$description": "Use for confirming secondary buttons at rest placed on a solid brand surface — the outline."
             }
           },
@@ -664,7 +664,7 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.64)",
+              "$value": "{color.successScale.50}",
               "$description": "Use when the user hovers over a confirming secondary button placed on a solid brand surface — the outline."
             }
           },
@@ -1069,7 +1069,7 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.dangerScale.100}",
               "$description": "Use for destructive secondary buttons at rest placed on a solid brand surface — the outline."
             }
           },
@@ -1086,7 +1086,7 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.64)",
+              "$value": "{color.dangerScale.50}",
               "$description": "Use when the user hovers over a destructive secondary button placed on a solid brand surface — the outline."
             }
           },
@@ -1491,7 +1491,7 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.100}",
               "$description": "Use for neutral secondary buttons at rest placed on a solid brand surface — the outline."
             }
           },
@@ -1508,7 +1508,7 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.64)",
+              "$value": "{color.neutralScale.50}",
               "$description": "Use when the user hovers over a neutral secondary button placed on a solid brand surface — the outline."
             }
           },

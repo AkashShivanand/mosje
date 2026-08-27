@@ -1184,8 +1184,47 @@
     display: flex;
     align-items: center;
     gap: var(--sa-inline-8);
+    /*
+     * THE PILL'S HEIGHT LIVES HERE, NOT IN THE INPUT'S PADDING.
+     *
+     * It used to be 42px because the FORM carried `padding: 4px` and the 32px
+     * send disc sat inside with 4px of air. Moving that padding onto the input
+     * fixed a real defect — a click on the form's padding focused nothing, and
+     * the real target was 20px, under the 24px WCAG 2.2 (2.5.8) minimum — but it
+     * took the form's height with it. The pill collapsed 42 -> 34 and the send
+     * disc ended up with ONE pixel of clearance, visibly bursting out of the
+     * field it sits in. That is the regression this restores.
+     *
+     * `min-height` rather than padding is what lets both things be true at once:
+     * the form is 42px again, and the input still STRETCHES across its whole
+     * inner box, so every pixel that looks like a text field is one. Measured
+     * after the fix: five probes down the pill, including 3px from the top and
+     * bottom borders, all land on the input.
+     *
+     * `box-sizing` is stated because the package sets no global reset — the same
+     * reason the panel states its own, a few hundred lines up. Without it this is
+     * 42 under Tailwind's preflight and 44 in Storybook.
+     */
+    box-sizing: border-box;
+    min-height: 42px;
     padding: var(--sa-padding-0) var(--sa-padding-4) var(--sa-padding-0) var(--sa-padding-0);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    /*
+     * `base`, not `subtle`, because this is a TEXT INPUT and that is what every
+     * other text input in the estate uses — `.ds-input`, `.ds-search__input`,
+     * `chip`, `india-id`, `auth-fields` all bind `border/neutral/base`. The
+     * composer was the odd one out on the faintest rung in the set.
+     *
+     * IT STILL FAILS WCAG 2.2 §1.4.11, AND SO DOES EVERY OTHER INPUT. Measured
+     * against the panel: `subtle` is 1.35:1 and `base` is 1.66:1, against a 3:1
+     * requirement for the boundary that identifies a control. The token that
+     * would pass is `border/neutral/bolder/default` at 3.06:1 — but 29
+     * components bind `subtle` and the form components bind `base`, so moving
+     * ONE input to it makes the chatbot visibly heavier than every field beside
+     * it and fixes nothing systemic. That is a token-level change with an
+     * estate-wide blast radius; it is recorded in chatbot.md rather than
+     * smuggled in here.
+     */
+    border: 1px solid var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-full);
     background: var(--sa-bg-neutral-base);
     cursor: text;
@@ -1222,10 +1261,19 @@
    * so the input's border box IS the pill's inner area: 40px tall, full width
    * up to the send button.
    */
+  /*
+   * The input carries the horizontal inset and NO vertical padding: it stretches
+   * to the form's inner box instead, which is what keeps the whole pill clickable.
+   *
+   * The height itself is the form's `min-height`, not this padding — an earlier
+   * attempt put it here as `padding-block: 8` and landed at 38px, because the
+   * input's line box is 20px and not the 24 that arithmetic assumed. Measure the
+   * line box; do not derive it.
+   */
   .ds-chatbot__input {
     flex: 1;
     align-self: stretch;
-    padding-block: var(--sa-padding-4);
+    padding-block: var(--sa-padding-0);
     padding-inline: var(--sa-padding-12) var(--sa-padding-0);
     min-width: 0;
     border: 0;
@@ -1234,6 +1282,26 @@
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     color: var(--sa-color-text-default);
+  }
+
+  /*
+   * THE PLACEHOLDER WAS NEVER STYLED, so it painted the browser default — the
+   * input's own ink at 50% alpha, which composites to #808080 and measures
+   * 3.95:1 on white. Placeholder text is text: WCAG 2.2 §1.4.3 wants 4.5:1.
+   *
+   * Every other input in the estate styles this and the composer did not:
+   * `.ds-input` and `.ds-search__input` both bind `text/neutral/subtle`. The
+   * value here is `subtler` at full opacity, which is what the FIGMA master
+   * already specifies for this node — so design and code now agree, and it
+   * measures 4.65:1.
+   *
+   * Not `.ds-input`'s own recipe (`subtle` at `opacity: 0.7`): that composites
+   * to #75777a and measures 4.49:1, missing AA by a hundredth. Recorded in
+   * chatbot.md — it is a real finding about the shared Input, not this file.
+   */
+  .ds-chatbot__input::placeholder {
+    color: var(--sa-text-neutral-subtler);
+    opacity: 1;
   }
 
   .ds-chatbot__input:focus {

@@ -223,6 +223,14 @@ export function Ticker({
   ...rest
 }: TickerProps): React.JSX.Element | null {
   const [index, setIndex] = React.useState(0);
+  /**
+   * WHICH WAY THE LAST STEP WENT, so the message can enter from the side it
+   * came from. It entered from the right unconditionally before — including
+   * when the citizen pressed PREVIOUS, so the motion said "forward" while the
+   * control said "back". Spatial consistency is most of what makes a stepped
+   * component feel like it is holding a position rather than reshuffling.
+   */
+  const [step, setStep] = React.useState<"forward" | "back">("forward");
   const [isPlaying, setIsPlaying] = React.useState(autoplay);
   const [reducedMotion, setReducedMotion] = React.useState(false);
   const [isNarrow, setIsNarrow] = React.useState(false);
@@ -340,8 +348,9 @@ export function Ticker({
   const safeIndex = count > 0 ? index % count : 0;
 
   const go = React.useCallback(
-    (next: number) => {
+    (next: number, direction: "forward" | "back") => {
       if (count === 0) return;
+      setStep(direction);
       setIndex(((next % count) + count) % count);
     },
     [count],
@@ -351,7 +360,10 @@ export function Ticker({
   // animation, so there is nothing to schedule and nothing to leak.
   React.useEffect(() => {
     if (isVertical || !isPlaying || count < 2 || reducedMotion) return;
-    const id = window.setInterval(() => setIndex((i) => (i + 1) % count), interval);
+    const id = window.setInterval(() => {
+      setStep("forward");
+      setIndex((i) => (i + 1) % count);
+    }, interval);
     return () => window.clearInterval(id);
   }, [count, interval, isPlaying, isVertical, reducedMotion]);
 
@@ -511,6 +523,7 @@ export function Ticker({
       {...rest}
       className={cn("sa-ticker", className)}
       data-orientation="horizontal"
+      data-step={step}
       data-animate={canMove && !reducedMotion ? "" : undefined}
       data-paused={canMove && !reducedMotion && !isPlaying ? "" : undefined}
       aria-label={label}
@@ -543,7 +556,7 @@ export function Ticker({
             <button
               type="button"
               className="sa-ticker__control sa-ticker__step"
-              onClick={() => go(safeIndex - 1)}
+              onClick={() => go(safeIndex - 1, "back")}
               aria-label={`Previous item in ${label}`}
             >
               <Icon name="arrow_back" size={24} aria-hidden />
@@ -551,7 +564,7 @@ export function Ticker({
             <button
               type="button"
               className="sa-ticker__control sa-ticker__step"
-              onClick={() => go(safeIndex + 1)}
+              onClick={() => go(safeIndex + 1, "forward")}
               aria-label={`Next item in ${label}`}
             >
               <Icon name="arrow_forward" size={24} aria-hidden />
