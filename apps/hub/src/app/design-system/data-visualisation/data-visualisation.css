@@ -1,0 +1,41 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* The specimen grid. Two columns where there is room, one where there is not.
+     Charts have a minimum legible size — below it they must degrade to another
+     representation, not shrink — so this never goes to three columns. */
+  .sa-viz-specimens {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sa-stack-24);
+  }
+
+  @media (min-width: 900px) {
+    .sa-viz-specimens {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  /* The frame an archetype board sits in.
+   *
+   * Deliberately NOT given a minimum width. An earlier version pinned the board
+   * to 40rem so it always showed desktop proportions, which was wrong twice
+   * over: `DashboardGrid` already collapses to a single column below 768px, so
+   * the pin was overriding the very responsive behaviour a reader comes here to
+   * see — and its min-content width propagated up through the docs shell's
+   * <main> (a grid item with `min-width: auto`), pushing the whole page sideways
+   * at 390px. `overflow-x` does not stop that propagation; it only clips paint.
+   *
+   * Letting the board size itself fixes the overflow and shows the truth.
+   * `min-width: 0` and the auto overflow stay as a backstop for any single wide
+   * child, such as a table. */
+  .sa-viz-board {
+    overflow-x: auto;
+    min-width: 0;
+    max-width: 100%;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-subtle);
+    padding: var(--sa-padding-24);
+  }
+}

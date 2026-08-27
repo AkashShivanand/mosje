@@ -99,19 +99,304 @@ attribute — measured `pointer-events: auto`, `opacity: 1`, `cursor: pointer`,
 Full evidence in `button-audit.md`; the brief that closes them is
 `button-cleanup-prompt.md`.
 
+### Closed 2026-08-27
+
+| # | Was | How |
+|---|---|---|
+| 1 | `disabled` inert on link-buttons | The `<a>` now drops `href` and carries `aria-disabled="true"` + `role="link"`. Dropping the href is the fix; an anchor without one is not focusable or activatable, so nothing has to swallow events. Pinned in `e2e/design-system/button.spec.ts` |
+| 2 | Fixed `height` clips the label at 200% text (WCAG 1.4.4) | `min-height` + vertical padding (`sm` 4/16 · `md` 6/24 · `lg` 8/24), each size naming its own `--sa-type-*-lh`. Padding stays *under* the nominal height so `min-height` sets the ladder and the padding becomes headroom |
+| 9 | `--_dark` dead (3 declarations, 0 uses); `--_ring` dead on primary and neutral | Deleted |
+| — | **#3 was never five failures** | See the correction below. Four, all `tonal`. Now gated by `packages/tokens/test/action-nontext-contrast.test.mjs` |
+
+### Also closed 2026-08-27
+
+| # | Was | How |
+|---|---|---|
+| 3 | Four 1.4.11 failures, all `tonal` | **`tonal` retired**, not repaired — darkening its border would have made it `outlined`. Two consumers migrated. The gate's exemption list is now **empty** |
+| 7/8 | `inverse`/`inverseOutlined` absent from Figma; `inverseOutlined` identical for all four variants | Replaced by **`tone="inverse"`**, an axis crossing `appearance`. Each intent takes its own scale at rung 100. Old words kept as deprecated aliases — the Ticker's route-out, the login shell and two Code Connect templates name them |
+| 10 | No `IconButton` in code | **Built**, as a component rather than a prop, so `aria-label` is required by the type system |
+| — | No loading state | **`loading`** sets `aria-busy` + disabled; deliberately does not swap the label |
+| — | **A fifth 1.4.11 failure the audit missed** | See below. Fixed by the same change as 7/8 |
+
+### The failure the audit missed
+
+The audit measured every boundary against a **white page**. `inverse` exists precisely because
+the button is *not* on white.
+
+Measured on a brand surface, `inverse`/`outlined` failed 1.4.11: a flat
+`rgba(255, 255, 255, 0.4)` border for every intent — **2.25:1 on `primaryScale/600`**
+(`#005eb9`) and 1.91:1 on gov-blue. It cleared 3:1 on **navy alone**, the one brand surface
+anybody had checked.
+
+**Where it paints — and a correction.** The failure is real in the **portal login shell's
+"Signing Into" bar** (`auth-parts.tsx`, `tone="hero"`), on the design-system docs and in
+Storybook. It is **not** the Ticker's route-out, which the first draft of this note named:
+`ticker.css` carries `.sa-ticker__action > :is(a, button) { border: 0 }`, stripping the border
+inside the same cascade layer at higher specificity. That button has no edge to measure.
+
+That was **the same error this section criticises the audit for**, made while correcting it —
+a token measured where a component was meant. It got past a passing contrast gate, because the
+gate reads token values and `button.css` bindings and cannot see a third stylesheet overriding
+the outcome. Only the rendered element settles it.
+
+**A latent oddity this turned up:** the Ticker asks for `inverseOutlined` and then removes the
+border that makes it outlined. It should ask for `appearance="text"` with `tone="inverse"` and
+say what it means. Left alone here because PR #207 is open on the ticker.
+
+So the audit was wrong in both directions, and for opposite reasons: it reported a failure on
+a token the component does not bind, and missed one on a surface it never measured. **The
+surface a control sits on is part of the measurement.** The gate now names the surfaces
+rather than assuming one, and separately asserts the component *binds* the tokens — because
+these were fully modelled in the matrix long before anything read them, so fixing the values
+alone would have changed nothing on screen.
+
+### The Figma surfaces are synced (2026-08-27)
+
+Code and the library disagreed in prose as well as in values, and prose drift is the kind
+that gets believed. Eleven text nodes on the `Buttons` page were rewritten to match what
+now ships:
+
+| Where | Was | Now |
+|---|---|---|
+| Hero · at a glance | **5** boundary failures | **0** — tonal retired, inverse rebound |
+| Hero · at a glance | **46%** colour on Tier 1 | **0%** — counted live: 0 of 2,257 colour bindings reach `ref/*` |
+| 03 Size › `open` | "The height is a FIXED height" | "a MINIMUM, not a fixed height"; the frame is no longer named `open` |
+| 04 States | "Loading is absent from both surfaces" | `loading` is a prop, and deliberately does not swap the label |
+| 04 States | "A disabled LINK-button does not… Do not ship one" | it drops `href` and sets `aria-disabled` |
+| 05 Accessibility | "Five boundaries do not [pass]" | "Every boundary now does too" |
+| 05 Accessibility · measured | the five-value list including `neutral outlined 2.15` | tonal retired; the correction **and** the missed inverse failure both recorded |
+| Component record | "OPEN · CODE — three defects that ship today" | "CLOSED · CODE — all three shipped defects are fixed" |
+| Component record · parity | "inverseOutlined renders identically for all four variants" | inverse is a tone that crosses appearance; each intent carries its own border |
+
+**The 46% was not this change's to fix, and was fixed anyway** — it belonged to the
+2026-08-26 ref-tier cleanup and had simply never been carried onto the page. It was
+verified before being rewritten, by walking all 3,436 nodes on the page and counting
+colour bindings rather than trusting the claim in `design.md`: 2,257 bindings, **zero**
+on `ref/*`.
+
+**What was deliberately NOT touched:** the four `Sub-type=Tonal` component variants. The
+appearance is gone from code, but deleting a Figma variant breaks every instance that
+uses it, and that is a migration rather than a documentation fix. The Code Connect
+template maps `Tonal` → `outlined` meanwhile, and this stays open below.
+
+### The 15 library-only Color variables are reconciled (2026-08-27)
+
+Pushing the inverse borders surfaced a count nobody could explain: the live `Color`
+collection held **496** entries against the code's **481**. The first write-up called
+thirteen of them unexplained. Both halves of that were wrong.
+
+**The count is 15, not 13** — the 13 came from comparing against the *previous record's*
+483 rather than against the code, which is the same class of mistake as measuring a token
+where a component was meant.
+
+**And they are all explained:**
+
+| Extra | What | Why it is there |
+|---|---|---|
+| `border/brand/primary/hover`, `.../bolder` | 2 | The long-standing library-only pair. `hover` is still the only variable in the collection with no generated `codeSyntax`, which is the cross-check the record has always used. `bolder` is what the old note called `subtle` — renamed since the last read |
+| `border\|icon\|text/status/{success,error,warning,info}/bolder` | 12 | **Open PR #200** (`ds/icon-style-bindings`) |
+| `icon/neutral/subtler` | 1 | **Open PR #200** |
+
+Verified by diffing `dist/tokens.css` across `main` and that branch: every one of the
+thirteen is absent on `main` and present on #200.
+
+So the library is **not holding orphans — it is ahead of `main` by exactly one unmerged
+branch**, whose Figma side was pushed before its code side landed. The difference closes
+when #200 merges. Nothing needs deleting, which is the outcome worth having: the honest
+reading of an unexplained count is "find out", not "delete it" and not "absorb it".
+
+### The Figma component was migrated in place (2026-08-27)
+
+Not a new set — the existing `Button` (`609:283111`) was restructured, so every instance
+in the estate came with it. **720 variants → 360, while ADDING a whole axis.**
+
+| Change | Before | After | Instances affected |
+|---|---|---|---|
+| `Sub-type=Tonal` | 180 variants | **removed** | 5, retargeted to `Outlined` first |
+| `Icon` variant axis | `None \| Left \| Right` (×3) | **two booleans** — `Show Left Icon`, `Show Right Icon` | 1, retargeted with the boolean set |
+| `Tone` | did not exist | **`Default \| Inverse`** (×2), 180 new variants | — |
+
+The measurement that made it safe: **100 instances existed across the whole file, using
+35 of 720 variants.** 95% of that set had never been used, and the two destructive steps
+touched six instances between them. Every one was retargeted *before* anything was
+deleted, and each delete step refused to run while any variant still had an instance.
+
+Icon layers were cloned from **each variant's own** `Icon=Left`/`Icon=Right` sibling, not
+from one source — icon colour lives on a nested `Vector` bound per variant, so a single
+source would have painted all 360 icons white.
+
+**Two defects the migration surfaced, both found by rendering rather than by reading:**
+
+1. The 180 new `Tone=Inverse` variants landed **exactly on top of** their originals. Fixed
+   by shifting the inverse block below the default block; the set now has zero overlaps.
+2. `Tone=Inverse` + `Sub-type=Text` was **illegible** — dark ink on a brand ground. Only
+   `primary` and `secondary` have inverse token families; `text` (tertiary) has none, so
+   the remap found no target and left the default ink. **The same bug existed in code**,
+   where `tone="inverse"` + `appearance="text"` resolved to the white *filled* pill — the
+   loudest control on the page where the quietest was asked for. Both now bind the
+   secondary inverse ink, which is the white the outlined form already uses; the border is
+   what separates them, not the label.
+
+The `Tone=Inverse` half of the set sits on a token-bound brand ground, because those
+variants are white-on-white against the library's own canvas. The Ticker parts hit exactly
+this and it read as a broken component.
+
+### Measured against UX4G 3.0 (2026-08-27)
+
+Their live file, not our notes: `0v5NnMKFKC3foZ85bxPp6c`. Their `Button` is 540 variants;
+their `Icon Button` is 300.
+
+**What they have and we do not:**
+
+| Theirs | Ours | Verdict |
+|---|---|---|
+| `Shape: Rectangle \| Pill` (pill = radius 999) | no shape axis; fixed `shape/8` | **Real gap.** UX4G 3.0 publishes it; a standard's list is a floor |
+| `Size: XS S M L XL` = 24 / 32 / 40 / 48 / 56 | `sm md lg` = 32 / 40 / 48 | **Real gap** at both ends. We match S/M/L exactly. XS at 24 is exactly WCAG 2.5.8's minimum — no margin |
+| `Loading` as a Figma **variant** | `loading` in code only | **Real sync gap** — we have the behaviour, the library cannot show it |
+| Separate `Leading`/`Trailing icon switch` | one `Change Icon` swap driving both | **Real gap.** Code has separate `iconLeft`/`iconRight`; Figma cannot express two different icons |
+| `Label` boolean (hide label → icon-only) | separate `IconButton` component | Deliberate: a component can make `aria-label` **required by the type system**; a boolean cannot |
+| Icon Button `Shape: Square \| Round` | no shape axis | Real gap, same as above |
+
+**What we have and they do not:** `Tone: Default \| Inverse` (they have no inverse
+treatment at all), a `Success` intent, and `Neutral` as a first-class intent rather than a
+spelling of `Type`.
+
+**Where we diverge deliberately, with a measurement:** UX4G keeps a **Tonal** button. Read
+from their live file, its fill is `#dcd4ff` — **1.41:1 against a white page**, where WCAG
+1.4.11 asks 3:1. That is the same failure ours had at 1.42:1. Their label on that fill is
+fine (6.17:1); the defect is the control's *edge*, not its text. So retiring Tonal is
+quality-first per `.claude/rules/standards-precedence.md`, and this is now a measured
+divergence rather than an asserted one.
+
+Their `Type` also merges intent with prominence (`Outlined - Brand` vs `Outlined -
+Neutral`). Ours keeps them orthogonal — `Type` for intent, `Sub-type` for prominence —
+which is the Material/Polaris shape and is why we can offer Success at all.
+
+### What we took from UX4G 3.0, and what we declined (2026-08-27)
+
+Scoped to Button. Two adopted, five declined — each with a reason rather than a shrug.
+
+**Adopted:**
+
+| Taken | Why | Cost |
+|---|---|---|
+| **Separate leading/trailing icon swaps** | Not really a UX4G idea — a parity bug. Code has had `iconLeft`/`iconRight` all along while Figma had ONE `Change Icon` driving both, so "← Back" and "Next →" had to be the same arrow. Now `Left Icon` + `Right Icon` | No variant cost |
+| **`Loading`** | We had the behaviour and the library could not show it | One boolean |
+
+**`Loading` was taken as a capability, not as a shape.** UX4G models it as a VARIANT axis
+(×2). Copying that would have taken the set from 360 straight back to 720 — undoing the
+migration — for something that is a plain on/off. It is a boolean with a hidden spinner
+bound to each variant's own label ink, so it follows every intent, appearance and tone.
+
+**And it exposed a defect in our own code.** `loading` shipped on 2026-08-27 setting
+`aria-busy` and disabling the control, and **nothing else** — so a screen-reader user was
+told the button was busy while a sighted user saw a greyed-out button indistinguishable
+from one they were never allowed to press. Half an accessible state is not an accessible
+state. Both surfaces now show a spinner in the **leading icon's place**, so a button with
+an icon does not change width the moment it is pressed, and a busy button keeps full
+opacity with `cursor: progress` rather than wearing the disabled wash.
+
+**Declined:**
+
+| Not taken | Why |
+|---|---|
+| `Shape: Rectangle \| Pill` | Radius is a **brand** decision — DBIM and SAMAVESH set it. Our rule is to adopt UX4G's structural conventions, not its aesthetic preferences. It also doubles the set again. If we ever want pill, change `shape/8` once, estate-wide |
+| Size **XS (24px)** | Sits exactly on WCAG 2.5.8's floor with **zero margin**, and our own docs already call `sm` (32) a pointer-surface size. Wrong direction for citizens on cheap phones |
+| Size **XL (56px)** | No demonstrated need, and sizes multiply — 3 → 4 costs +120 variants. Add it when a hero CTA actually asks |
+| `Label` boolean (icon-only) | We use `IconButton` precisely so `aria-label` is **required by the type system**. A boolean cannot do that, and 533 of 718 icon call sites here once missed their label |
+| `Tonal` | Measured in **their** file: `#dcd4ff` is **1.41:1** against a white page, the same failure ours was at 1.42:1 |
+
+### The Buttons page was audited and restructured (2026-08-27)
+
+**Structure.** The page had **eight top-level nodes, zero sections and seven overlapping
+pairs** — the Button set had grown to 7,828px in the migration and was sitting on top of
+the legacy boards, the IconButton set, and 24px of the Component record. It now follows the
+convention the Ticker and Chatbot pages already set:
+
+| Section | Holds |
+|---|---|
+| `1 · Button — the published set` | the set, and the brand ground the `Tone=Inverse` half sits on |
+| `2 · IconButton — the published set` | the set |
+| `3 · Link — published here, and absent from code` | see below |
+| `4 · Scratch — pre-2026 specimen boards` | two dead boards, parked not deleted |
+
+Plus `Button — Documentation` and `Button — Component record` as top-level frames.
+**Zero overlaps** after the move.
+
+**Two things the audit turned up that nobody was looking for:**
+
+1. A frame named **"Icon Buttons" actually contained the `Link` component set** — 15
+   variants, with malformed names (`Size= Small, State=  Default`: leading and doubled
+   spaces). `Link` is published in Figma and **has no code counterpart at all**. Lifted into
+   its own honestly-named section; the naming and the parity gap are open below.
+2. The other two frames were **hand-drawn specimen boards** — zero components, zero
+   instances, and one still advertising `Tonal`. Parked in a labelled scratch section rather
+   than deleted, which is what was done with the Ticker's detached panel.
+
+### IconButton was migrated in place (2026-08-27)
+
+**60 variants → 45.** Not a new set; every instance came with it.
+
+| Change | Detail |
+|---|---|
+| `Tonal` deleted | 15 variants, **zero instances**, and the appearance no longer exists in code |
+| `Type` → `Sub-type` | matching Button's vocabulary |
+| value `Default` → `Text` | it rendered with **no fill and no stroke** — it *was* the text appearance, under a name that made the quietest option sound like the normal one |
+| `icon-button.figma.ts` | the set had no Code Connect template at all; it has one now |
+
+All **76 instances verified healthy** after the property and value renames — that is the
+step that can silently break a library, so it was checked rather than assumed.
+
+### The token counts, re-measured after the migration
+
+| Axis | State |
+|---|---|
+| **Radius** | 360/360 on `shape/8` — clean |
+| **Colour** | 993 of 1,102 bindings on Tier-3 `cmp/*`, 109 on palette rungs, **zero on Tier-1** (it was 900 of 1,956 on 2026-08-25) |
+| **Padding** | **still wrong.** 960 of 1,440 bound, every one to the **Type** collection (`Font Size/6 ×480, /1 ×240, /3 ×240`) |
+
+**And 480 padding slots cannot be bound at all.** The vertical padding is a raw **10px**, and
+10 is not a rung on the space scale. Code uses **6px** in the same place — so the two
+surfaces disagree on a value neither can currently name. Fixing it means moving 10 to 8 or
+12, which moves geometry on 240 variants; that is a decision, not a mechanical rebind, and it
+is not made here.
+
+### Still open
+
 | # | Open | Why it is not fixed here |
 |---|---|---|
-| 1 | `disabled` inert on link-buttons | Behavioural change to 565 consumers; needs its own change and e2e pins |
-| 2 | Fixed `height` clips the label at 200% text (WCAG 1.4.4) | Same — `min-height` changes every button's box |
-| 3 | Five 1.4.11 boundary failures | Needs a decision on whether `tonal` survives at 2 consumers |
 | 4 | 1,440 Figma padding bindings on the **Type** collection, 0 on Space | Rebinding is provable but touches all 720 variants |
-| 5 | 46% of Figma colour bindings reach Tier 1 (900 of 1,956) | Estate-wide visual change; must be value-proven then re-recorded |
+| 5 | ~~46% of Figma colour bindings reach Tier 1~~ — **closed 2026-08-26**, and the number was wrong anyway | Zero `ref/color/*` remain on the Buttons page. What replaced it: **Figma models every state explicitly and the code does not** |
 | 6 | 720 variants — `State` and `Icon` are variant axes that should be properties | Restructuring changes every instance in the estate |
-| 7 | `inverse` / `inverseOutlined` absent from Figma entirely | Needs the Tier-3 `inverse` branch bound first |
-| 8 | `inverseOutlined` renders identically for all four variants | `danger` silently loses its signal |
-| 9 | `--_dark` dead (3 declarations, 0 uses); `--_ring` dead on primary and neutral | Trivial, but belongs with the Tier-3 move |
-| 10 | No `IconButton` in code, though Figma has a 60-variant set and UX4G says icon-only is a Button *prop* | Needs a decision, not a patch |
+| 7c | **`Shape: Rectangle \| Pill`** — UX4G 3.0 has it, we have no shape axis | New, from the UX4G comparison |
+| 7d | **Sizes XS (24) and XL (56)** — UX4G has five, we have three | New. XS sits exactly on WCAG 2.5.8's 24×24 floor with no margin, so it needs a decision, not a copy |
+| ~~7e~~ | ~~`Loading` has no Figma variant~~ | **Closed 2026-08-27** — a `Loading` boolean with a token-bound spinner |
+| ~~7f~~ | ~~One `Change Icon` swap drives both sides~~ | **Closed 2026-08-27** — `Left Icon` + `Right Icon` |
+| ~~10b~~ | ~~IconButton has no Code Connect template and still carries `Tonal`~~ | **Closed 2026-08-27** |
+| 13 | **IconButton has no intent axis and no `Tone` in Figma** | A `danger` or inverse icon button cannot be drawn, though code supports both |
+| 14 | **`Link` is published in Figma and absent from code**, with malformed variant names | Found during the page audit; outside Button's scope to resolve |
+| 15 | **480 padding slots unbindable** — vertical padding is a raw 10px, off the space scale, where code uses 6px | Needs a geometry decision (10 → 8 or 12), not a rebind |
 | 11 | `filter: brightness()` for hover/active — cannot be contrast-tested, does not repaint per brand | The matrix's own `$notes` already says this |
+| 12 | **`--_color` is both the label ink and the border colour** | New. Text needs 4.5:1, a border needs 3:1, and they pull apart — which is why neutral's outlined border is a near-black 16.18:1 nobody chose. Split it into an ink and an edge |
+
+### The correction to finding #3
+
+The audit reported **five** 1.4.11 failures. There are **four**.
+
+The fifth, "neutral outlined 2.15:1", measured `cmp/action/neutral/secondary/default/border`
+(`#adb1b7`) — a token `button.css` does not bind. `.ds-btn--neutral` sets `--_color` from
+`cmp/action/neutral/tertiary/default/text`, and `.ds-btn--outlined` paints its border with
+`--_color`, so the rendered border is `#1e2124` at **16.18:1**.
+
+This is the same error class as the "~400 button backgrounds on raw primary" claim corrected
+in `docs/design-system/figma-ref-tier-cleanup.md`: **a token was measured where a component
+was meant.** The defence is structural rather than editorial — the new gate parses the
+variant blocks out of `button.css` and measures whatever they actually bind, so it cannot go
+stale the way a hand-kept list does.
+
+**The flip side is real, and it is now a Figma↔code divergence.** Figma binds outlined→`secondary`,
+so the *library* paints that neutral border `#adb1b7` at 2.15:1 while the *code* paints
+`#1e2124`. Two surfaces, two different borders, and the library's is the failing one.
 
 ---
 

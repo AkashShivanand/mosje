@@ -1517,12 +1517,12 @@ export const tokens = {
           "default": {
             "bg": "rgba(0, 0, 0, 0)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "border": "#c0dbff"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.1)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.64)"
+            "border": "#ecf4ff"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.16)",
@@ -1651,12 +1651,12 @@ export const tokens = {
           "default": {
             "bg": "rgba(0, 0, 0, 0)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "border": "#bed8c5"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.1)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.64)"
+            "border": "#ecf4ee"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.16)",
@@ -1785,12 +1785,12 @@ export const tokens = {
           "default": {
             "bg": "rgba(0, 0, 0, 0)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "border": "#ffc2b8"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.1)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.64)"
+            "border": "#ffe4e0"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.16)",
@@ -1919,12 +1919,12 @@ export const tokens = {
           "default": {
             "bg": "rgba(0, 0, 0, 0)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "border": "#dcdee1"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.1)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.64)"
+            "border": "#eef0f3"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.16)",

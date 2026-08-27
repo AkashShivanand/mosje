@@ -1,8 +1,25 @@
 /* Shared SVG arc geometry for pie / donut / gauge segments. */
 
+/**
+ * Coordinates are quantised before they reach a path string, and that is not a
+ * tidiness measure — it is what makes these charts survive server rendering.
+ *
+ * ECMAScript does not require `Math.cos`/`Math.sin` to be correctly rounded, so
+ * Node and the browser may disagree in the last bit. That difference reaches
+ * the DOM as a different `d` attribute — `…60.500836139208566…` server-side
+ * against `…60.50083613920856…` in the client — and React reports a hydration
+ * mismatch it explicitly will not patch up. It surfaced the first time a
+ * PieChart was rendered on a server-rendered page.
+ *
+ * Three decimals on a 200-unit viewBox is a thousandth of a unit: far below any
+ * visual threshold, and deterministic across runtimes.
+ */
+const PRECISION = 1000;
+const q = (n: number): number => Math.round(n * PRECISION) / PRECISION;
+
 export function polarToCartesian(cx: number, cy: number, r: number, angleDeg: number) {
   const a = ((angleDeg - 90) * Math.PI) / 180;
-  return { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
+  return { x: q(cx + r * Math.cos(a)), y: q(cy + r * Math.sin(a)) };
 }
 
 /** Filled pie slice (wedge to centre). Angles in degrees, clockwise from top. */

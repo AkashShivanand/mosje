@@ -15,7 +15,8 @@ export interface NhapoaHeaderProps {
 
 /**
  * Single-sourced NHAPOA Portal header — powered by @mosje/design-system SiteHeader
- * (variant="portal", tone="navy").
+ * (variant="portal"). The navy ground is the `data-brand` axis, not a
+ * component prop — `tone` was retired.
  */
 export function NhapoaHeader({
   account,

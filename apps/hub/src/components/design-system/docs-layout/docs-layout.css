@@ -218,6 +218,13 @@
   gap: var(--sa-stack-32);
   padding: var(--sa-padding-32);
   max-width: 1100px;
+  /* This is a grid item of `.docs-shell`, so it defaults to `min-width: auto`
+     and grows to its content's min-content width — carrying any wide child
+     (a data table, a colour ramp) straight past the viewport and giving the
+     whole page a horizontal scrollbar on a phone. `.docs-content` below already
+     carried this guard; the item ABOVE it did not, so the propagation simply
+     happened one level higher. */
+  min-width: 0;
 }
 
 .docs-content { min-width: 0; }
