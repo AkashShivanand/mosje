@@ -4,7 +4,14 @@ import { Button, Icon } from "@mosje/design-system";
 /**
  * **Button** — the primary action atom. Variants encode intent
  * (primary/success/danger/neutral), appearances encode prominence
- * (filled/outlined/text/tonal). Lifecycle: **Stable**.
+ * (filled/outlined/text), and `tone` says which ground it sits on
+ * (default/inverse). Lifecycle: **Stable**.
+ *
+ * `tone="inverse"` is for a solid brand surface — a navy header, the ticker bar. It
+ * CROSSES `appearance`, which is the point: as two appearance words
+ * (`inverse`/`inverseOutlined`) it could only have one look, so all four variants painted
+ * the same white-alpha border and `danger` silently lost its signal. Those two words
+ * still work as deprecated aliases.
  *
  * `variant="neutral"` is for an action with **no semantic charge** — a dismiss,
  * a reset, a "start over". Reach for it whenever you catch yourself wanting a
@@ -38,8 +45,10 @@ const meta = {
     variant: { control: "inline-radio", options: ["primary", "success", "danger", "neutral"] },
     appearance: {
       control: "inline-radio",
-      options: ["filled", "outlined", "text", "tonal", "inverse", "inverseOutlined"],
+      options: ["filled", "outlined", "text"],
     },
+    tone: { control: "inline-radio", options: ["default", "inverse"] },
+    loading: { control: "boolean" },
     size: { control: "inline-radio", options: ["sm", "md", "lg"] },
     disabled: { control: "boolean" },
     href: { control: "text" },
@@ -97,7 +106,6 @@ export const Appearances: Story = {
       <Button {...args} appearance="filled">Filled</Button>
       <Button {...args} appearance="outlined">Outlined</Button>
       <Button {...args} appearance="text">Text</Button>
-      <Button {...args} appearance="tonal">Tonal</Button>
     </div>
   ),
 };
@@ -181,37 +189,48 @@ export const OnABrandSurface: Story = {
  * **Known defects, rendered rather than described.**
  *
  * A design system that only demonstrates its happy path teaches the happy path.
- * These three are real, measured on 2026-08-25, and open — the brief that closes
- * them is `docs/design-system/components/button-cleanup-prompt.md`. They are here
- * so a reviewer can see them, and so they cannot be quietly forgotten.
+ * Three were measured on 2026-08-25. **Two are now fixed** and are kept here rather
+ * than deleted, because a fix is only convincing beside the thing it fixed — and
+ * because both are the kind that look identical in a screenshot and differ entirely
+ * under a keyboard or a zoom. One remains open.
+ *
+ * The audit also reported a fifth 1.4.11 failure, "neutral outlined 2.15:1". It does
+ * not exist: that measured a token the component does not bind, and the border it
+ * actually paints is 16.18:1. Corrected in `button-audit.md`; the boundaries are now
+ * measured on every build by `packages/tokens/test/action-nontext-contrast.test.mjs`
+ * rather than by hand.
  */
 export const KnownDefects: Story = {
   render: () => (
     <div style={{ display: "grid", gap: 32, maxWidth: 720 }}>
       <section>
         <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
-          1 · <code>disabled</code> does nothing on a link-button
+          FIXED 2026-08-27 · <code>disabled</code> on a link-button
         </h3>
         <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
-          `href` renders an `&lt;a&gt;`, and `disabled` is not a valid attribute there.
-          Measured: pointer-events auto, opacity 1, cursor pointer, no `aria-disabled`,
-          still in the tab order. Tab to it — it takes focus. Do not ship one.
+          Kept rendered rather than deleted, because the fix is only convincing beside
+          the thing it fixes. The link-button now drops `href` entirely and carries
+          `aria-disabled` + `role="link"` — so it is not focusable and not activatable,
+          by the browser&rsquo;s own rules rather than by a handler. Tab through this row:
+          focus should skip both. Until 2026-08-27 the second one took focus and followed
+          its link.
         </p>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <Button disabled>Disabled button — correct</Button>
+          <Button disabled>Disabled button</Button>
           <Button href="/nowhere" disabled>
-            Disabled link — still live
+            Disabled link
           </Button>
         </div>
       </section>
 
       <section>
         <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
-          2 · A fixed height clips the label at 200% text (WCAG 1.4.4)
+          FIXED 2026-08-27 · text scaled to 200% (WCAG 1.4.4)
         </h3>
         <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
-          Sizes set `height`, not `min-height`. At 200% the box stays 40px while the
-          content needs 41.
+          Sizes now set `min-height` plus vertical padding, so the box grows with the
+          text. The right-hand button is at 200%; its label used to be clipped, 41px of
+          content inside a 38px client box.
         </p>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
           <Button>Apply now</Button>
@@ -221,30 +240,44 @@ export const KnownDefects: Story = {
 
       <section>
         <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
-          3 · Tonal has no perceivable edge (WCAG 1.4.11 needs 3:1)
+          RETIRED 2026-08-27 · Tonal had no perceivable edge (WCAG 1.4.11 needs 3:1)
         </h3>
         <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
-          Boundary against the page: primary 1.42, success 1.52, danger 1.21,
-          neutral 1.35. You cannot tell where the control is except by reading it.
+          Boundary against the page was 1.21 to 1.52 across the four variants — you could
+          not tell where the control was except by reading it. It could not be fixed by
+          darkening the border without simply becoming `outlined`, and it had two
+          consumers in 494 buttons, so it was removed rather than repaired. Nothing
+          renders here because the appearance no longer exists; the two consumers are now
+          `outlined`.
         </p>
-        <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-          {(["primary", "success", "danger", "neutral"] as const).map((v) => (
-            <Button key={v} variant={v} appearance="tonal">
-              {v}
-            </Button>
-          ))}
-        </div>
       </section>
     </div>
   ),
 };
 
 /**
- * `inverseOutlined` renders **identically for all four variants** — white text,
- * white border — so `variant="danger"` silently loses its signal. Compare the
- * top row (inverse, which does respect the variant) with the bottom.
+ * **FIXED 2026-08-27.** `inverseOutlined` used to render identically for all four
+ * variants — white text, white border — so `variant="danger"` silently lost its signal.
+ *
+ * Two things were wrong and both were in the tokens, not just the CSS. Every intent
+ * resolved the SAME `rgba(255,255,255,0.4)` border, and at 2.25:1 on this very
+ * background it was not a findable edge either (WCAG 1.4.11 asks 3:1) — a failure the
+ * 2026-08-25 audit missed because it measured every boundary against a WHITE page, and
+ * `inverse` is never on white.
+ *
+ * Where it paints: the portal login shell's "Signing Into" bar, these docs and this
+ * story. NOT the Ticker's route-out — `ticker.css` strips that border, so it renders as
+ * a text link. The first write-up of this fix said otherwise, on the strength of the
+ * token value alone, which is the same mistake in the opposite direction.
+ *
+ * Each intent now takes its own scale at rung 100, so the border carries the signal and
+ * measures 4.14–4.72:1 on this bar. The label stays white deliberately: a 100-rung tint
+ * as text measures 4.49:1 here, a hundredth short of 1.4.3's 4.5.
+ *
+ * Both rows below now differ per variant. Written with `tone` — the two old appearance
+ * words still work as aliases.
  */
-export const InverseIgnoresVariant: Story = {
+export const InverseCarriesTheVariant: Story = {
   render: () => (
     <div
       style={{
@@ -257,14 +290,14 @@ export const InverseIgnoresVariant: Story = {
     >
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
         {(["primary", "success", "danger", "neutral"] as const).map((v) => (
-          <Button key={v} variant={v} appearance="inverse">
+          <Button key={v} variant={v} tone="inverse" appearance="filled">
             {v}
           </Button>
         ))}
       </div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
         {(["primary", "success", "danger", "neutral"] as const).map((v) => (
-          <Button key={v} variant={v} appearance="inverseOutlined">
+          <Button key={v} variant={v} tone="inverse" appearance="outlined">
             {v}
           </Button>
         ))}
@@ -274,16 +307,20 @@ export const InverseIgnoresVariant: Story = {
 };
 
 /**
- * There is **no** `loading` prop. Pass `aria-busy` and `disabled` yourself and
- * swap the label — this is the pattern to copy, not something the component does.
+ * **`loading` landed 2026-08-27.** It sets `aria-busy` and disables the control, so a
+ * form cannot be submitted twice while the first submission is in flight.
+ *
+ * It deliberately does **not** swap the label for you. A control that loses its name
+ * mid-action is unusable with a screen reader, so pass "Submitting…" yourself — the
+ * third button shows what happens if you keep a stale label, which is worse than no
+ * loading state at all.
  */
-export const LoadingIsConsumerSupplied: Story = {
+export const Loading: Story = {
   render: () => (
     <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
       <Button>Submit application</Button>
-      <Button disabled aria-busy="true">
-        Submitting…
-      </Button>
+      <Button loading>Submitting…</Button>
+      <Button loading>Submit application{" "}(stale label — do not do this)</Button>
     </div>
   ),
 };
