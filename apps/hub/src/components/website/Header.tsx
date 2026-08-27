@@ -179,7 +179,11 @@ export function Header() {
         onClick: () => setLangOpen(true),
       }}
       search={{
-        placeholder: t("Search Schemes, Services, Documents"),
+        /* Measured 2026-08-26: the field is 320px at desktop, 218 at tablet and 343
+           on a phone, and "Search Schemes, Services, Documents" rendered as
+           "Search Schemes, Services, Docu" at EVERY one of them. A truncated
+           placeholder is a truncated instruction. This fits at all three. */
+        placeholder: t("Search schemes and services"),
         // The masthead field is a real input now, so the query travels with the
         // navigation instead of dumping the reader on an empty results page.
         onSearch: (query) =>

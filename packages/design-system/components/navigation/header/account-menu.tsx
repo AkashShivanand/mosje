@@ -75,10 +75,14 @@ export function AccountMenu({
   const itemRefs = React.useRef<(HTMLButtonElement | null)[]>([]);
   const menuId = React.useId();
 
+  /* `preventScroll` throughout: this control lives in a masthead pinned to the top
+     of the viewport, and any scrolling on focus's behalf moves the page toward
+     scrollTop 0 — the threshold that un-condenses the header out from under this
+     menu. Defensive rather than a fix for an observed failure. */
   const close = React.useCallback((restoreFocus = true) => {
     setOpen(false);
     setActiveIndex(-1);
-    if (restoreFocus) triggerRef.current?.focus();
+    if (restoreFocus) triggerRef.current?.focus({ preventScroll: true });
   }, []);
 
   const openAt = React.useCallback((index: number) => {
@@ -89,7 +93,7 @@ export function AccountMenu({
   // Move real focus to the active item whenever it changes while open.
   React.useEffect(() => {
     if (!open || activeIndex < 0) return;
-    itemRefs.current[activeIndex]?.focus();
+    itemRefs.current[activeIndex]?.focus({ preventScroll: true });
   }, [open, activeIndex]);
 
   React.useEffect(() => {
