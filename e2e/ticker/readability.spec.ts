@@ -114,8 +114,25 @@ test.describe("Latest Updates — readability", () => {
     await settled(row);
     await row.hover();
     await expect(row.locator(".sa-ticker__rowtitle")).toHaveCSS("text-decoration-line", "none");
-    const bg = await row.evaluate((el) => getComputedStyle(el).backgroundColor);
-    expect(bg).not.toBe("rgba(0, 0, 0, 0)");
+    // POLLS, because the thing it measures is still moving.
+    //
+    // The row declares no background of its own, so its computed value is
+    // exactly `rgba(0, 0, 0, 0)` — the value this asserts against — and the
+    // wash arrives over `transition: background-color 150ms`. Read once, right
+    // after the hover, the read lands on the transition's FROM value: measured
+    // 5 times in 12 at zero delay, and 0 times in 36 at 5ms or later.
+    //
+    // Head-to-head over 40 trials on the same page and the same hover, the ONLY
+    // difference being whether the assertion retries: one-shot `expect(bg).not
+    // .toBe(...)` failed 12/40, this line failed 0/40. Thirty percent is the
+    // same rate this test was failing the whole suite at, which is what it was.
+    //
+    // Reduced motion above does not cover this. It stops the marquee; it does
+    // not stop a colour transition, and it should not — killing motion and
+    // keeping colour is the estate's pattern (see button.css). The two earlier
+    // attempts at this flake both aimed a layer too high: they made the window
+    // before the read wider, which lowered the rate without closing it.
+    await expect(row).not.toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
   });
 
   test("is a list to a screen reader, and is not a live region", async ({ page }) => {
