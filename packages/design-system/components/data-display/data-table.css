@@ -47,6 +47,13 @@
 
   .ds-table__scroll {
     overflow-x: auto;
+    /* `.ds-table` is a flex column, so this scroll box is a flex item and
+       defaults to `min-width: auto` — it refuses to shrink below the table's
+       min-content width, which means `overflow-x` never engages. The table then
+       pushes its ancestors sideways instead of scrolling inside this box, and
+       the page gains a horizontal scrollbar. Found when a DataTable was placed
+       inside a ChartCard on a narrow viewport. */
+    min-width: 0;
     border: 1px solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-12);
   }

@@ -6,7 +6,6 @@ import { PageHeader } from "@/components/smile-admin/shell/page-header";
 import { ScopeBanner } from "@/components/smile-admin/shell/scope-banner";
 import { DateRangeChips } from "@/components/smile-admin/dashboard/date-range-chips";
 import { KpiCard, KPI_ICONS, type KpiSpec } from "@/components/smile-admin/dashboard/kpi-card";
-import { IndiaMap } from "@/components/smile-admin/dashboard/india-map";
 import { SystemUsersRail } from "@/components/smile-admin/dashboard/system-users-rail";
 import {
   ActivityLine,
@@ -28,7 +27,7 @@ import {
   SURVEY_ACTIVITY,
   SYSTEM_USERS_ALL,
 } from "@/lib/smile-admin/mock-data";
-import { Card, CardBody, CardHeader, CardTitle, Icon, SectionTitle } from "@mosje/design-system";
+import { Card, CardBody, CardHeader, CardTitle, Icon, IndiaMap, SectionTitle } from "@mosje/design-system";
 
 const TABS = [
   { id: "identified", label: "Identified" },
@@ -230,7 +229,11 @@ export default function DashboardPage() {
         </div>
         <CardBody className="grid grid-cols-1 gap-lg p-lg lg:grid-cols-[1.4fr_1fr]">
           <div className="relative overflow-hidden rounded-md border border-stroke-100 bg-gradient-to-br from-primary-50/50 to-primary-50/10 p-md">
-            <IndiaMap highlightState={account?.stateName ?? undefined} />
+            <IndiaMap
+              title="Beneficiaries identified by state"
+              data={STATE_DISTRIBUTION.map((s) => ({ state: s.state, value: s.count }))}
+              highlightState={account?.stateName ?? undefined}
+            />
           </div>
           <div className="overflow-hidden rounded-md border border-stroke-200">
             <table className="w-full text-body-3">

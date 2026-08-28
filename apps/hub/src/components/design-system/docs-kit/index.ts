@@ -1,4 +1,5 @@
 export * from './props-table';
+export * from './matrix-table';
 export * from './do-dont';
 export * from './callout';
 export * from './token-table';

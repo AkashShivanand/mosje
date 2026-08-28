@@ -129,6 +129,24 @@ export interface TickerProps extends Omit<React.HTMLAttributes<HTMLElement>, "ti
   interval?: number;
   /** Start moving on mount. @default true */
   autoplay?: boolean;
+  /**
+   * PUT THE STRIP'S NAME IN THE DOCUMENT OUTLINE.
+   *
+   * The section is labelled, so a screen-reader user can already reach it by
+   * LANDMARK navigation and hears "Latest Updates". But heading navigation —
+   * pressing H, one of the commonest ways people move through a page — skips
+   * it entirely, because the name is a `span`. On a notice board that is the
+   * one thing somebody is most likely to jump to.
+   *
+   * It defaults to `"span"`, which is what it has always rendered, because the
+   * right LEVEL depends on the page: the website's panel sits inside a section
+   * that already owns an `h2`, so it wants `h3`, while a bar under the masthead
+   * wants `h2`. A component cannot know that, and guessing would skip a level —
+   * which is worse than not being a heading at all.
+   *
+   * @default "span"
+   */
+  labelAs?: "h2" | "h3" | "h4" | "h5" | "h6" | "span";
   /** Router-aware link for internal hrefs — pass `next/link`. @default "a" */
   linkAs?: React.ElementType;
 }
@@ -200,10 +218,19 @@ export function Ticker({
   interval = 5000,
   autoplay = true,
   linkAs,
+  labelAs = "span",
   className,
   ...rest
 }: TickerProps): React.JSX.Element | null {
   const [index, setIndex] = React.useState(0);
+  /**
+   * WHICH WAY THE LAST STEP WENT, so the message can enter from the side it
+   * came from. It entered from the right unconditionally before — including
+   * when the citizen pressed PREVIOUS, so the motion said "forward" while the
+   * control said "back". Spatial consistency is most of what makes a stepped
+   * component feel like it is holding a position rather than reshuffling.
+   */
+  const [step, setStep] = React.useState<"forward" | "back">("forward");
   const [isPlaying, setIsPlaying] = React.useState(autoplay);
   const [reducedMotion, setReducedMotion] = React.useState(false);
   const [isNarrow, setIsNarrow] = React.useState(false);
@@ -321,8 +348,9 @@ export function Ticker({
   const safeIndex = count > 0 ? index % count : 0;
 
   const go = React.useCallback(
-    (next: number) => {
+    (next: number, direction: "forward" | "back") => {
       if (count === 0) return;
+      setStep(direction);
       setIndex(((next % count) + count) % count);
     },
     [count],
@@ -332,13 +360,50 @@ export function Ticker({
   // animation, so there is nothing to schedule and nothing to leak.
   React.useEffect(() => {
     if (isVertical || !isPlaying || count < 2 || reducedMotion) return;
-    const id = window.setInterval(() => setIndex((i) => (i + 1) % count), interval);
+    const id = window.setInterval(() => {
+      setStep("forward");
+      setIndex((i) => (i + 1) % count);
+    }, interval);
     return () => window.clearInterval(id);
   }, [count, interval, isPlaying, isVertical, reducedMotion]);
 
   if (count === 0) return null;
 
   const ItemLink = (linkAs ?? "a") as React.ElementType;
+
+  /**
+   * THE MESSAGE, RENDERED ONCE FOR BOTH SHAPES.
+   *
+   * The bar and the panel show the same four things — a notice, its kind, its
+   * date, a link — so they must not have two ways of drawing them. They did:
+   * the panel used `rowtitle`/`rowmeta`, which are specified, and the bar used
+   * `title`/`description`/`more`, which had **no CSS at all** and were styled
+   * only by whatever they inherited. The same item therefore rendered at a
+   * different size and weight depending on which shape it was dropped into,
+   * and only the panel's second line had been checked for contrast.
+   *
+   * `linkLabel` is the one deliberate difference and it stays bar-only: the bar
+   * shows one message, so a trailing call to action reads once. In a scrolling
+   * list it would repeat on every row.
+   */
+  const renderMessage = (item: TickerItem, withLinkLabel: boolean) => (
+    <>
+      <span className="sa-ticker__rowtitle">{item.title}</span>
+      {item.description || item.date || (withLinkLabel && item.linkLabel) ? (
+        <span className="sa-ticker__rowmeta">
+          {item.description}
+          {/* The separator belongs to the PAIR, not to either half — it appears
+              only when there are two things to separate, so a notice with no
+              date does not trail a dangling middot. */}
+          {item.description && item.date ? <span aria-hidden="true"> · </span> : null}
+          {item.date ? <time dateTime={item.dateTime}>{item.date}</time> : null}
+          {withLinkLabel && item.linkLabel ? (
+            <> <span className="sa-ticker__more">{item.linkLabel}</span></>
+          ) : null}
+        </span>
+      ) : null}
+    </>
+  );
 
   const pauseButton = canMove ? (
     <button
@@ -348,7 +413,14 @@ export function Ticker({
       aria-label={isPlaying ? `Pause ${label}` : `Play ${label}`}
       aria-pressed={!isPlaying}
     >
-      <Icon name={isPlaying ? "pause" : "play_arrow"} size={24} aria-hidden />
+      {/* FILLED, not the estate's default stroke. At 24px on a solid brand
+          surface the outlined `pause` is two hairline rectangles — it reads as
+          a pair of thin outlines rather than a control, and it is the one
+          control WCAG 2.2.2 requires to be findable. The filled axis makes it
+          a solid mark at the same size and lifts it well clear of the 3:1
+          non-text contrast floor. Every other icon in the estate stays stroke;
+          this is a deliberate, local exception for a statutory control. */}
+      <Icon name={isPlaying ? "pause" : "play_arrow"} size={24} fill aria-hidden />
     </button>
   ) : null;
 
@@ -357,7 +429,7 @@ export function Ticker({
       <span className="sa-ticker__mark" aria-hidden="true">
         {icon ?? <TickerMark />}
       </span>
-      <span className="sa-ticker__label">{label}</span>
+      {React.createElement(labelAs, { className: "sa-ticker__label" }, label)}
     </div>
   );
 
@@ -370,23 +442,7 @@ export function Ticker({
           className="sa-ticker__rowlink"
           {...(cloned ? { tabIndex: -1 } : {})}
         >
-          {/* TITLE OVER SUBTITLE — the same two-line structure the bar has, and
-              the same one the live site uses. It replaced a bold lead-in and a
-              colon on one line, which read as a label when the data's kinds
-              repeat: the department's list is "Documents" seven times in eight,
-              so the rail carried the same bold word four times over. A subtitle
-              can repeat without harm, because it is plainly the quieter line. */}
-          <span className="sa-ticker__rowtitle">{item.title}</span>
-          {item.description || item.date ? (
-            <span className="sa-ticker__rowmeta">
-              {item.description}
-              {/* The separator belongs to the PAIR, not to either half — it
-                  appears only when there are two things to separate, so a
-                  notice with no date does not trail a dangling middot. */}
-              {item.description && item.date ? <span aria-hidden="true"> · </span> : null}
-              {item.date ? <time dateTime={item.dateTime}>{item.date}</time> : null}
-            </span>
-          ) : null}
+          {renderMessage(item, false)}
         </ItemLink>
       </li>
     );
@@ -414,7 +470,10 @@ export function Ticker({
         <div className="sa-ticker__container">
           <div className="sa-ticker__header">
             {heading}
-            <div className="sa-ticker__nav">{pauseButton}</div>
+            {/* Only when there IS a control. An empty wrapper would still be a
+                sibling, and the hairline that separates the control from the
+                route would then be separating the route from nothing. */}
+            {pauseButton ? <div className="sa-ticker__nav">{pauseButton}</div> : null}
             {action ? <div className="sa-ticker__action">{action}</div> : null}
           </div>
 
@@ -467,6 +526,7 @@ export function Ticker({
       {...rest}
       className={cn("sa-ticker", className)}
       data-orientation="horizontal"
+      data-step={step}
       data-animate={canMove && !reducedMotion ? "" : undefined}
       data-paused={canMove && !reducedMotion && !isPlaying ? "" : undefined}
       aria-label={label}
@@ -475,47 +535,47 @@ export function Ticker({
       <div className="sa-ticker__container">
         {heading}
 
+        {/* THE MESSAGE ONLY. Nav and the action are siblings of the plinth
+            rather than children of the body, and that is what lets the bar
+            adopt the PANEL'S HEADER below 1024px: the plinth, the pause and
+            the route out share one full-width navy line, with the message on
+            the ground beneath it. Nested inside the body they could only ever
+            wrap underneath the message, which left the plinth a narrow square
+            holding a mark and no name — the component losing its identity at
+            exactly the width where identity matters most. */}
         <div className="sa-ticker__body">
           {/* `off` while running, `polite` once the citizen has stopped it —
               pausing is the act that says "read this to me". */}
           <div className="sa-ticker__viewport" aria-live={isPlaying ? "off" : "polite"} aria-atomic="true">
             <ItemLink key={item.id ?? safeIndex} href={item.href} className="sa-ticker__item">
-              <span className="sa-ticker__title">{item.title}</span>
-              {item.description ? (
-                <span className="sa-ticker__description">
-                  {item.description}
-                  {item.linkLabel ? (
-                    <> <span className="sa-ticker__more">{item.linkLabel}</span></>
-                  ) : null}
-                </span>
-              ) : null}
+              {renderMessage(item, true)}
             </ItemLink>
           </div>
-
-          {canMove ? (
-            <div className="sa-ticker__nav">
-              {pauseButton}
-              <button
-                type="button"
-                className="sa-ticker__control sa-ticker__step"
-                onClick={() => go(safeIndex - 1)}
-                aria-label={`Previous item in ${label}`}
-              >
-                <Icon name="arrow_back" size={24} aria-hidden />
-              </button>
-              <button
-                type="button"
-                className="sa-ticker__control sa-ticker__step"
-                onClick={() => go(safeIndex + 1)}
-                aria-label={`Next item in ${label}`}
-              >
-                <Icon name="arrow_forward" size={24} aria-hidden />
-              </button>
-            </div>
-          ) : null}
-
-          {action ? <div className="sa-ticker__action">{action}</div> : null}
         </div>
+
+        {canMove ? (
+          <div className="sa-ticker__nav">
+            {pauseButton}
+            <button
+              type="button"
+              className="sa-ticker__control sa-ticker__step"
+              onClick={() => go(safeIndex - 1, "back")}
+              aria-label={`Previous item in ${label}`}
+            >
+              <Icon name="arrow_back" size={24} aria-hidden />
+            </button>
+            <button
+              type="button"
+              className="sa-ticker__control sa-ticker__step"
+              onClick={() => go(safeIndex + 1, "forward")}
+              aria-label={`Next item in ${label}`}
+            >
+              <Icon name="arrow_forward" size={24} aria-hidden />
+            </button>
+          </div>
+        ) : null}
+
+        {action ? <div className="sa-ticker__action">{action}</div> : null}
       </div>
     </section>
   );

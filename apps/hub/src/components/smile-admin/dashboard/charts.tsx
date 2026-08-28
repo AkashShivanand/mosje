@@ -1,44 +1,43 @@
 "use client";
 
-import {
-  Area,
-  AreaChart,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  Cell,
-  Legend,
-  Line,
-  LineChart,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+/* ============================================================================
+   SMILE admin dashboard charts.
 
-// Recharts renders SVG, so these resolve as var() in fill/stroke just like any
-// other CSS colour. Series colours come from the DS chart scale rather than raw
-// Tailwind hex, so a brand re-skin or theme switch carries the charts with it.
-const PALETTE = {
-  brand: "var(--sa-color-brand-navy)",
-  brandSoft: "var(--sa-chart-seq-600)",
-  info: "var(--sa-chart-cat-1)",
-  success: "var(--sa-chart-trend-up)",
-  warning: "var(--sa-chart-cat-6)",
-  amber: "var(--sa-chart-cat-2)",
-  axis: "var(--sa-chart-axis)",
-  grid: "var(--sa-chart-grid)",
-};
+   These are portal-level *compositions* over the design-system chart layer —
+   they bind SMILE's mock-data shapes to `@mosje/design-system` components and
+   nothing else. There is no charting logic here, and there must never be
+   again: this file previously wrapped Recharts, which put a second, ungoverned
+   charting stack inside the estate with no `ChartFrame`, no screen-reader
+   table and no keyboard model. The DS components were written to absorb it
+   (see the doc comments on BarChart, LineChart and IndiaMap) and this is that
+   migration landing.
 
-const tickStyle = { fill: PALETTE.axis, fontSize: 11 };
-const tooltipStyle = {
-  borderRadius: 8,
-  borderColor: "var(--sa-border-neutral-base)",
-  boxShadow: "var(--sa-elevation-modal)",
-  fontSize: 12,
-};
+   Series colours come from `categoricalColor`, never from a semantic or brand
+   token. The Recharts version reached for `--sa-chart-trend-up` and
+   `--sa-color-brand-navy` as series colours, which made an arbitrary series
+   read as "good" — the collision the chart palette contract forbids.
+   ============================================================================ */
+
+import { BarChart, DonutChart, LineChart, categoricalColor } from "@mosje/design-system";
+
+/**
+ * Stable slot assignment for SMILE's three recurring activity series.
+ *
+ * Slot 3 is deliberately skipped: `--sa-chart-cat-3` is `#046a38`, which is
+ * byte-identical to `--sa-chart-trend-up`. Using it would put the semantic
+ * "good" green back on an arbitrary series by a different route. Slots 1, 5
+ * and 2 are blue / teal / orange — mutually distinct and none of them a
+ * semantic ink.
+ */
+const SERIES_COLOR = {
+  identified: categoricalColor(0), // cat-1  #0373df
+  mobilised: categoricalColor(4), // cat-5  #0e7490
+  rehabilitated: categoricalColor(1), // cat-2  #e1560f
+} as const;
+
+const AGE_COLOR = categoricalColor(0);
+const TYPE_COLOR = categoricalColor(1);
+const SHELTER_COLOR = categoricalColor(5);
 
 export function GenderDonut({
   data,
@@ -47,87 +46,38 @@ export function GenderDonut({
 }) {
   const total = data.reduce((sum, d) => sum + d.value, 0);
   return (
-    <ResponsiveContainer width="100%" height={240}>
-      <PieChart>
-        <Pie
-          data={data}
-          dataKey="value"
-          nameKey="name"
-          innerRadius={62}
-          outerRadius={92}
-          paddingAngle={2}
-          stroke="var(--sa-chart-regionStroke)"
-          strokeWidth={2}
-        >
-          {data.map((d) => (
-            <Cell key={d.name} fill={d.color} />
-          ))}
-        </Pie>
-        <Tooltip
-          formatter={(v: number, name) => [
-            `${v.toLocaleString("en-IN")} (${((v / total) * 100).toFixed(1)}%)`,
-            name,
-          ]}
-          contentStyle={tooltipStyle}
-        />
-        <Legend
-          iconType="circle"
-          formatter={(value) => (
-            <span className="text-label-2 text-ink-muted">{value}</span>
-          )}
-        />
-      </PieChart>
-    </ResponsiveContainer>
+    <DonutChart
+      title="Beneficiaries by gender"
+      data={data.map((d) => ({ label: d.name, value: d.value, color: d.color }))}
+      center={total.toLocaleString("en-IN")}
+      centerSub="total"
+    />
   );
 }
 
 export function AgeBars({ data }: { data: { band: string; value: number }[] }) {
   return (
-    <ResponsiveContainer width="100%" height={240}>
-      <BarChart
-        data={data}
-        layout="vertical"
-        margin={{ left: 8, right: 16, top: 8, bottom: 8 }}
-      >
-        <CartesianGrid stroke={PALETTE.grid} horizontal={false} />
-        <XAxis type="number" tick={tickStyle} axisLine={false} tickLine={false} />
-        <YAxis
-          dataKey="band"
-          type="category"
-          width={56}
-          tick={tickStyle}
-          axisLine={false}
-          tickLine={false}
-        />
-        <Tooltip cursor={{ fill: PALETTE.grid }} contentStyle={tooltipStyle} />
-        <Bar dataKey="value" fill={PALETTE.info} radius={[0, 6, 6, 0]} barSize={16} />
-      </BarChart>
-    </ResponsiveContainer>
+    <BarChart
+      title="Beneficiaries by age band"
+      orientation="horizontal"
+      /* These sit in a ~260px column. The viewBox aspect drives the rendered
+         height, so the 480×240 default squashed them to half their old size. */
+      width={320}
+      height={260}
+      data={data.map((d) => ({ label: d.band, value: d.value, color: AGE_COLOR }))}
+    />
   );
 }
 
 export function TypeBars({ data }: { data: { type: string; value: number }[] }) {
   return (
-    <ResponsiveContainer width="100%" height={240}>
-      <BarChart
-        data={data}
-        layout="vertical"
-        margin={{ left: 8, right: 16, top: 8, bottom: 8 }}
-      >
-        <CartesianGrid stroke={PALETTE.grid} horizontal={false} />
-        <XAxis type="number" tick={tickStyle} axisLine={false} tickLine={false} />
-        <YAxis
-          dataKey="type"
-          type="category"
-          width={140}
-          tick={tickStyle}
-          axisLine={false}
-          tickLine={false}
-        />
-        <Tooltip cursor={{ fill: PALETTE.grid }} contentStyle={tooltipStyle} />
-        <Bar dataKey="value" fill={PALETTE.amber} radius={[0, 6, 6, 0]} barSize={14} />
-      </BarChart>
-    </ResponsiveContainer>
+    <BarChart
+      title="Beneficiaries by type"
+      orientation="horizontal"
+      width={320}
+      height={260}
+      data={data.map((d) => ({ label: d.type, value: d.value, color: TYPE_COLOR }))}
+    />
   );
 }
 
@@ -138,64 +88,37 @@ export function ActivityLine({
   data: { date: string; identified: number; mobilised: number; rehabilitated: number }[];
   series: "identified" | "mobilised" | "rehabilitated";
 }) {
-  const color =
-    series === "identified"
-      ? PALETTE.info
-      : series === "mobilised"
-      ? PALETTE.success
-      : PALETTE.amber;
-
+  const label = series.charAt(0).toUpperCase() + series.slice(1);
   return (
-    <ResponsiveContainer width="100%" height={240}>
-      <AreaChart data={data} margin={{ top: 8, right: 16, left: 0, bottom: 8 }}>
-        <defs>
-          <linearGradient id={`grad-${series}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={color} stopOpacity={0.25} />
-            <stop offset="100%" stopColor={color} stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <CartesianGrid stroke={PALETTE.grid} vertical={false} />
-        <XAxis
-          dataKey="date"
-          tick={tickStyle}
-          interval="preserveStartEnd"
-          axisLine={false}
-          tickLine={false}
-          tickFormatter={(d) => d.slice(5)}
-        />
-        <YAxis tick={tickStyle} axisLine={false} tickLine={false} />
-        <Tooltip contentStyle={tooltipStyle} />
-        <Area
-          dataKey={series}
-          stroke={color}
-          fill={`url(#grad-${series})`}
-          strokeWidth={2}
-          activeDot={{ r: 5, strokeWidth: 2, stroke: "#fff" }}
-        />
-      </AreaChart>
-    </ResponsiveContainer>
+    <LineChart
+      title={`Daily survey activity — ${label.toLowerCase()}`}
+      area
+      height={240}
+      /* Dates arrive ISO; the axis wants day-and-month, not the year. */
+      labels={data.map((d) => d.date.slice(5))}
+      series={[{ name: label, data: data.map((d) => d[series]), color: SERIES_COLOR[series] }]}
+    />
   );
 }
 
 export function ShelterStateBars({ data }: { data: { state: string; count: number }[] }) {
   return (
-    <ResponsiveContainer width="100%" height={240}>
-      <BarChart data={data} margin={{ left: -10, right: 10, top: 8, bottom: 40 }}>
-        <CartesianGrid stroke={PALETTE.grid} vertical={false} />
-        <XAxis
-          dataKey="state"
-          tick={{ ...tickStyle, fontSize: 10 }}
-          angle={-35}
-          textAnchor="end"
-          interval={0}
-          axisLine={false}
-          tickLine={false}
-        />
-        <YAxis tick={tickStyle} axisLine={false} tickLine={false} />
-        <Tooltip cursor={{ fill: PALETTE.grid }} contentStyle={tooltipStyle} />
-        <Bar dataKey="count" fill={PALETTE.warning} radius={[6, 6, 0, 0]} />
-      </BarChart>
-    </ResponsiveContainer>
+    <BarChart
+      title="Shelter homes by state"
+      /* 18 long state names collide as x-axis labels at any dashboard width;
+         horizontal is the readable encoding for many long categories. */
+      orientation="horizontal"
+      width={480}
+      height={560}
+      /* Ranked, because both captions promise a ranking ("Top states by
+         operational shelter capacity"). The alphabetical order was only
+         survivable while the old chart's labels were too crowded to read.
+         NOTE: SHELTER_HOMES_BY_STATE is 16 zeros out of 18 — the chart is
+         readable now but the mock data still needs real values. */
+      data={[...data]
+        .sort((a, b) => b.count - a.count)
+        .map((d) => ({ label: d.state, value: d.count, color: SHELTER_COLOR }))}
+    />
   );
 }
 
@@ -205,35 +128,15 @@ export function MonthlyPerf({
   data: { month: string; identified: number; mobilised: number; rehab: number }[];
 }) {
   return (
-    <ResponsiveContainer width="100%" height={300}>
-      <LineChart data={data} margin={{ top: 12, right: 20, left: 0, bottom: 12 }}>
-        <CartesianGrid stroke={PALETTE.grid} vertical={false} />
-        <XAxis dataKey="month" tick={tickStyle} axisLine={false} tickLine={false} />
-        <YAxis tick={tickStyle} axisLine={false} tickLine={false} />
-        <Tooltip contentStyle={tooltipStyle} />
-        <Legend />
-        <Line
-          dataKey="identified"
-          name="Identified"
-          stroke={PALETTE.info}
-          strokeWidth={2}
-          dot={false}
-        />
-        <Line
-          dataKey="mobilised"
-          name="Mobilised"
-          stroke={PALETTE.brand}
-          strokeWidth={2}
-          dot={false}
-        />
-        <Line
-          dataKey="rehab"
-          name="Rehabilitated"
-          stroke={PALETTE.success}
-          strokeWidth={2}
-          dot={false}
-        />
-      </LineChart>
-    </ResponsiveContainer>
+    <LineChart
+      title="Monthly performance"
+      height={300}
+      labels={data.map((d) => d.month)}
+      series={[
+        { name: "Identified", data: data.map((d) => d.identified), color: SERIES_COLOR.identified },
+        { name: "Mobilised", data: data.map((d) => d.mobilised), color: SERIES_COLOR.mobilised },
+        { name: "Rehabilitated", data: data.map((d) => d.rehab), color: SERIES_COLOR.rehabilitated },
+      ]}
+    />
   );
 }

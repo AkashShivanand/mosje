@@ -8,15 +8,15 @@ import { BrandLockup } from "./brand-lockup";
 import { AccountMenu } from "./account-menu";
 import { MenuToggle, NavItemLink, SheetToggle } from "./nav-parts";
 import { NavSheet } from "./nav-sheet";
-import { Search, type SearchSuggestion } from "../../forms/search";
+import { Search } from "../../forms/search";
 import type {
   AccountMenuItem,
   BrandLines,
   BrandMark,
   HeaderAccount,
+  HeaderSearchConfig,
   HeaderVariant,
   NavItem,
-  UtilityTone,
 } from "./types";
 import "./header.css";
 
@@ -90,23 +90,16 @@ export interface SiteHeaderProps {
    *
    * `onSearch` receives the typed query (Enter, or the leading icon).
    */
-  search?: {
-    placeholder?: string;
-    onSearch?: (query: string) => void;
-    /**
-     * Called on every keystroke, so the owner can fetch autocomplete rows. The
-     * header holds the query state; this is how it hands it out.
-     *
-     * DEBOUNCE ON THE OWNER'S SIDE. The masthead must not decide how often a
-     * consumer's index may be hit — the design-system docs search is in-memory
-     * and the website's is a route, and those want different intervals.
-     */
-    onQueryChange?: (query: string) => void;
-    /** Autocomplete rows for the current query. Omit for no autocomplete. */
-    suggestions?: SearchSuggestion[];
-    /** A suggestion was chosen — by click, or Enter on the highlighted row. */
-    onSuggestionSelect?: (suggestion: SearchSuggestion) => void;
-  };
+  /**
+   * Masthead search. Renders the shared DS `<Search>` — the same atom every
+   * other screen uses, and the same component the Figma masthead embeds. It
+   * used to be a `<button>` dressed as a search box, which is why the two
+   * drifted.
+   *
+   * The type is `HeaderSearchConfig`, shared with `NavSheet`, so the phone can
+   * no longer end up with a quietly reduced version of the same field.
+   */
+  search?: HeaderSearchConfig;
   /** Cobranding marks in the trailing zone (Digital India, SAMAVESH …). */
   cobranding?: BrandMark[];
   /** Portal account block (name / email + avatar). */
@@ -132,23 +125,37 @@ export interface SiteHeaderProps {
    */
   maxWidth?: number;
   /**
-   * Stick the whole navbar to the top of the viewport (app-shell portals).
-   * @default false (true when variant="portal")
+   * Pin the navbar to the top of the viewport.
+   *
+   * DEFAULTS ON FOR EVERY VARIANT as of 2026-08-26. It used to be portals only,
+   * which meant the public website — 200px of masthead — scrolled away entirely
+   * and left the reader with no navigation, no search and no identity for the
+   * length of a scheme page. Search is the fallback for navigation and GIGW 5.2
+   * wants it in a consistent position on every page; neither survives a masthead
+   * that leaves.
+   *
+   * The ACCESSIBILITY BAR is deliberately not pinned with the rest: the header
+   * sticks at `top: -(bar height)`, so the bar scrolls away and the brand and nav
+   * rows stay. It carries page-level preferences, not per-scroll chrome.
+   * @default true
    */
   sticky?: boolean;
   /**
-   * Figma "State=On Scroll": once the page scrolls, the brand row goes 100px -> 88px.
+   * Condense the masthead once the page scrolls: three tiers become ONE 64px bar
+   * (56px on a phone) carrying the emblem, the full nav, search and the CTA.
    *
-   * It does that by shrinking the LOCKUP — the middle "Ministry …" line drops, the
-   * text stack goes 76 -> 60, and the 64px emblem becomes the tallest thing in the
-   * row. The accessibility bar does NOT collapse; it is 46px in every Figma variant,
-   * and the previous version of this comment promised a collapse that no rule in
-   * this package implemented.
+   * This replaces the old "State=On Scroll", which dropped the middle Ministry
+   * line and took the header from 146px to 134px. Measured: twelve pixels — 8% of
+   * the header, 1.7% of a 720px viewport — in exchange for a class, a listener and
+   * a variant. The condense returns 136px on desktop and 202px on a phone.
    *
-   * Only meaningful with `sticky`, and defaults ON whenever `sticky` is on, because
-   * Figma models On Scroll as a standard state of both Website and Portal rather
-   * than an opt-in. Pass `false` to pin the masthead at its full height.
-   * @default true when `sticky`, otherwise false
+   * The condensed bar keeps the emblem AT THE SAME LEFT EDGE it occupies at rest.
+   * That is the one deliberate constraint: it is also the go-home control, and an
+   * identity mark that jumps across the screen on scroll reads as a different site.
+   *
+   * Only meaningful with `sticky`, and never applied to `variant="compact"`, which
+   * is a single 65px bar already. Pass `false` to pin the masthead at full height.
+   * @default true when `sticky`
    */
   collapseOnScroll?: boolean;
   className?: string;
@@ -211,18 +218,26 @@ export function SiteHeader({
 }: SiteHeaderProps): React.JSX.Element {
   const isPortal = variant === "portal";
   const isCompact = variant === "compact";
-  // variant supplies behavioural defaults; explicit props always win.
-  // `sticky` defaults on for portals; scroll-collapse stays opt-in.
-  const isSticky = sticky ?? (isPortal || isCompact);
-  // On Scroll is a Figma state of both mastheads, not an extra — so it follows
-  // `sticky` unless a caller explicitly turns it off. A non-sticky header scrolls
-  // out of view, where shrinking it would be invisible anyway.
-  const wantsScrollCollapse = (collapseOnScroll ?? isSticky) && isSticky;
+  /* Pinned by default on every surface — see the `sticky` docs. */
+  const isSticky = sticky ?? true;
+  /* The compact bar is one 65px tier already; there is nothing to condense, and the
+     old default turned the state on for it anyway, where it did nothing at all. */
+  const wantsScrollCollapse = (collapseOnScroll ?? isSticky) && isSticky && !isCompact;
 
   const [openLabel, setOpenLabel] = React.useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [scrolled, setScrolled] = React.useState(false);
+  /** Held true across printing, so scroll anchoring cannot re-condense the header. */
+  const printingRef = React.useRef(false);
+  /** The condensed bar's search, expanded in place over the nav. */
+  const [condSearchOpen, setCondSearchOpen] = React.useState(false);
+  /** The condensed nav has run out of room; fall back to the sheet. */
+  const [navOverflows, setNavOverflows] = React.useState(false);
+  const headerRef = React.useRef<HTMLElement>(null);
+  const condSearchRef = React.useRef<HTMLInputElement>(null);
+  const condInRef = React.useRef<HTMLDivElement>(null);
+  const condListRef = React.useRef<HTMLUListElement>(null);
   // Default to 100% for portal app-shells so the brand row aligns with full-width topbar,
   // or default to estate container variable for static website headers.
   const inner = {
@@ -230,6 +245,7 @@ export function SiteHeader({
   } as React.CSSProperties;
   const hasNav = !!nav && nav.length > 0;
   const drawerId = React.useId();
+  const condensed = wantsScrollCollapse && scrolled;
 
   /* [DBIM 5.4] "Co-branding section: … with a maximum of 2." Enforced here rather
      than trusted to every call site; anything beyond two belongs in the footer's
@@ -242,15 +258,269 @@ export function SiteHeader({
     );
   }
 
-  // Figma "State=On Scroll": shrink the BRAND ROW 100 -> 88. The accessibility
-  // bar does not move — it is 46px in every masthead variant.
+  /**
+   * Condense past 120px of scroll, restore below 40.
+   *
+   * TWO THRESHOLDS, NOT ONE. The old rule was a bare `scrollY > 8`, and a single
+   * threshold on a state that changes the document's height is a latch waiting to
+   * oscillate: condensing removes ~136px of pinned header, the page shifts, and a
+   * reader parked on the boundary gets a header that flickers between two heights.
+   * A 40/120 band is wider than any single condense can move the page.
+   *
+   * A passive listener rather than an IntersectionObserver sentinel, deliberately:
+   * the sentinel has to live OUTSIDE the sticky element to work, which means this
+   * component would have to return a fragment and every consumer's first child
+   * would silently change. Reading `scrollY` inside a rAF costs nothing measurable.
+   */
+  React.useEffect(() => {
+    if (!wantsScrollCollapse) {
+      setScrolled(false);
+      return;
+    }
+    let frame = 0;
+    const read = () => {
+      frame = 0;
+      if (printingRef.current) return;
+      const y = window.scrollY;
+      setScrolled((was) => (was ? y > 40 : y > 120));
+    };
+    const onScroll = () => {
+      if (frame === 0) frame = window.requestAnimationFrame(read);
+    };
+    read();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame !== 0) window.cancelAnimationFrame(frame);
+    };
+  }, [wantsScrollCollapse]);
+
+  /**
+   * Publish the masthead's own measurements, so nothing else has to guess them.
+   *
+   *   --sa-hdr-abar-h     the accessibility bar's height (on the header)
+   *   --sa-header-pinned  what stays on screen when scrolled, AT REST (on :root)
+   *   --sa-header-bottom  what stays on screen right now (on :root)
+   *
+   * `scroll-padding-top` used to be four hardcoded numbers — 150 / 72 / 204, and
+   * 132 below 767px against a mobile header measured at 258. A 126px shortfall is
+   * WCAG 2.4.11 (Focus Not Obscured) the moment the header is pinned, and the
+   * tablet band had no rule at all. Numbers written by hand next to a layout that
+   * responds to viewport, font scale and content length will always drift; these
+   * are measured.
+   *
+   * `--sa-header-pinned` is only written while RESTING. Anchors and skip links can
+   * land while the header is at its full height, so the padding has to clear the
+   * taller of the two states, not whichever happens to be showing.
+   */
+  React.useEffect(() => {
+    const el = headerRef.current;
+    if (!el || typeof ResizeObserver === "undefined") return;
+    const root = document.documentElement;
+    const measure = () => {
+      const abar = el.querySelector<HTMLElement>(".sa-abar");
+      const abarH = abar?.offsetHeight ?? 0;
+      const pinned = Math.max(0, el.offsetHeight - abarH);
+      el.style.setProperty("--sa-hdr-abar-h", `${abarH}px`);
+      /* The panels hanging off the nav row are positioned at the header's bottom
+         edge, so this is how much of the viewport they have left. While RESTING it
+         is the whole header: the accessibility bar is still on screen for the first
+         46px of scroll, and a panel sized against the pinned height alone would
+         overhang the fold by exactly that much during those 46px. Condensed there
+         is no bar left to allow for. Erring tall costs a panel a little height it
+         could have used; erring short puts rows off-screen with no way to reach
+         them, which is the defect this whole variable exists to close. */
+      root.style.setProperty("--sa-header-bottom", `${condensed ? pinned : el.offsetHeight}px`);
+      if (!condensed) root.style.setProperty("--sa-header-pinned", `${pinned}px`);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    window.addEventListener("resize", measure);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measure);
+    };
+  }, [condensed]);
+
+  /**
+   * Print the FULL masthead, whatever the reader had scrolled to.
+   *
+   * The condensed bar carries the emblem and no department name — deliberate on
+   * screen, where the name is one scroll away, and wrong on paper, where it is
+   * gone for good. What a printed government page needs from its header is who
+   * published it, which is the whole reason the print rules below strip the nav,
+   * the search and the account block and keep the lockup.
+   *
+   * CSS cannot undo this on its own: the tiers are swapped in React, not hidden,
+   * so `@media print` has nothing to reveal. Restoring the state before the dialog
+   * opens is what gives those rules something to work with.
+   */
   React.useEffect(() => {
     if (!wantsScrollCollapse) return;
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    /* THE FLAG IS THE WHOLE FIX, and the reason is SCROLL ANCHORING. Restoring the
+       tiers grows the header by ~135px, all of it above the viewport, so the
+       browser helpfully shifts `scrollY` down by the same amount to keep the
+       visible content still. That shift is a scroll event, the scroll handler
+       reads the new position, and the masthead condenses straight back — measured:
+       the handler fired, the state was set, and the condensed bar never left. */
+    const onBeforePrint = () => {
+      printingRef.current = true;
+      setScrolled(false);
+    };
+    const onAfterPrint = () => {
+      printingRef.current = false;
+      setScrolled(window.scrollY > 120);
+    };
+    window.addEventListener("beforeprint", onBeforePrint);
+    window.addEventListener("afterprint", onAfterPrint);
+    return () => {
+      window.removeEventListener("beforeprint", onBeforePrint);
+      window.removeEventListener("afterprint", onAfterPrint);
+    };
   }, [wantsScrollCollapse]);
+
+  /* Condensing swaps the nav row out from under whatever was open in it. Close
+     first, so a panel is never orphaned and focus is never stranded on a node that
+     is about to be unmounted. */
+  React.useEffect(() => {
+    if (condensed) setOpenLabel(null);
+    else setCondSearchOpen(false);
+  }, [condensed]);
+
+  /**
+   * The swap unmounts whatever the reader was on. A pointer user never notices; a
+   * keyboard reader who had tabbed into the masthead and then scrolled would find
+   * focus back on `<body>` — at the top of the document, place lost.
+   *
+   * Tracked with a `focusin` listener rather than sampled inside the effect below.
+   * Sampling only sees the moments the effect runs, which is when `condensed`
+   * CHANGES — and focus almost always moves between two of those, so the sample
+   * was `<body>` every time and the restore never fired once.
+   */
+  const hadFocusRef = React.useRef(false);
+  React.useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const onIn = () => {
+      hadFocusRef.current = true;
+    };
+    const onOut = (e: FocusEvent) => {
+      /* Only when focus leaves for somewhere real. A swap moves it to <body>
+         first, and treating that as "left" would clear the flag before the
+         effect below has had a chance to read it. */
+      const next = e.relatedTarget as Node | null;
+      if (next && !el.contains(next)) hadFocusRef.current = false;
+    };
+    el.addEventListener("focusin", onIn);
+    el.addEventListener("focusout", onOut);
+    return () => {
+      el.removeEventListener("focusin", onIn);
+      el.removeEventListener("focusout", onOut);
+    };
+  }, []);
+
+  React.useEffect(() => {
+    const el = headerRef.current;
+    if (!el || !hadFocusRef.current) return;
+    if (document.activeElement !== document.body) return;
+    el.querySelector<HTMLElement>(".ds-hdr-cond__home, .ds-hdr-lockup")?.focus({
+      preventScroll: true,
+    });
+  }, [condensed]);
+
+  /**
+   * `preventScroll`, defensively.
+   *
+   * A plain `focus()` scrolls the element into view, and this one lives in a
+   * header pinned to the top of the viewport: any scrolling on its behalf moves
+   * the page toward scrollTop 0, which is the threshold that un-condenses the
+   * masthead and unmounts this very field. The field is already on screen when it
+   * mounts, so in practice the browser has nothing to do — this is a guard against
+   * a state where it would, not a fix for one observed here. (It was briefly
+   * credited with fixing exactly that; the disappearing bar turned out to be a
+   * test harness scrolling the target into view before clicking it.)
+   */
+  React.useEffect(() => {
+    if (condSearchOpen) condSearchRef.current?.focus({ preventScroll: true });
+  }, [condSearchOpen]);
+
+  /**
+   * When the nav stops fitting the condensed bar, hand it to the sheet.
+   *
+   * Measured on 2026-08-26 at 1280px: seven items are 825px, and after the
+   * emblem, the search button and the CTA the 1200px column leaves 44px. One more
+   * top-level entry fits with 40px to spare, a second leaves 9px, and a third
+   * overlaps by 88 — items here neither wrap nor shrink, they run under the search
+   * button. An information architecture should not have to be measured against a
+   * masthead before it can change.
+   *
+   * The fallback is the sheet, not a "More" menu: three of these entries own
+   * mega-menus, which do not nest sensibly inside a flat dropdown, and the sheet
+   * already renders their columns properly at every width below 1024.
+   *
+   * WHY THIS CANNOT OSCILLATE. The requirement is read from the list's own
+   * `max-content` width, which does not depend on the container — and the burger's
+   * width is subtracted in BOTH states, so collapsing the nav (which reveals the
+   * burger) cannot make the nav fit again and flip it straight back.
+   */
+  React.useEffect(() => {
+    if (!condensed || !hasNav) {
+      setNavOverflows(false);
+      return;
+    }
+    const inner = condInRef.current;
+    const list = condListRef.current;
+    if (!inner || !list || typeof ResizeObserver === "undefined") return;
+    const GAP = 16;
+    const measure = () => {
+      const required = list.getBoundingClientRect().width;
+      /* The EFFECTIVE flex items, not `inner.children`. `.ds-hdr-brand__actions`
+         is `display: contents`, so its own box measures zero while the CTA inside
+         it takes ~110px and participates in the flex row as an item in its own
+         right. Counting the wrapper missed the button entirely, and the bar
+         overlapped by 20px at eight items before this check noticed. */
+      const flexItems: Element[] = [];
+      for (const child of Array.from(inner.children)) {
+        if (getComputedStyle(child).display === "contents") {
+          flexItems.push(...Array.from(child.children));
+        } else {
+          flexItems.push(child);
+        }
+      }
+      /* THE SHEET TRIGGER IS EXCLUDED FROM BOTH SIDES, and that is what makes this
+         stable rather than merely cautious. It is absent while the nav shows and
+         present once the nav collapses, so counting it would make the two states
+         compute different answers — the 16px of its gap alone is enough to flip a
+         borderline layout back and forth forever. Ignoring it entirely asks the
+         same question in both directions: "does the nav fit in the row it would
+         have to itself?" An earlier version reserved 56px unconditionally instead;
+         that was stable too, but it threw away a whole nav entry at 1280 to buy
+         something this gets for free. */
+      const laidOut = flexItems.filter(
+        (el) => !el.classList.contains("ds-hdr-burger") && el.getClientRects().length > 0,
+      );
+      let taken = 0;
+      for (const item of laidOut) {
+        if (item === list.parentElement) continue;
+        if (item.classList.contains("ds-hdr-cond__spacer")) continue;
+        taken += item.getBoundingClientRect().width;
+      }
+      /* clientWidth INCLUDES padding — 24px a side here, so 48px of room that does
+         not exist. Left in, the check reads 48px more space than the row has and
+         lets the nav overflow by up to that much before it notices. */
+      const cs = getComputedStyle(inner);
+      const content =
+        inner.clientWidth - parseFloat(cs.paddingLeft || "0") - parseFloat(cs.paddingRight || "0");
+      const available = content - taken - GAP * Math.max(0, laidOut.length - 1);
+      setNavOverflows(required > available);
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(inner);
+    ro.observe(list);
+    return () => ro.disconnect();
+  }, [condensed, hasNav, nav]);
 
   // Nav dropdown: close on Escape, outside-click, or focus leaving the nav.
   const navRef = React.useRef<HTMLElement>(null);
@@ -268,95 +538,93 @@ export function SiteHeader({
     document.addEventListener("keydown", onKey);
     document.addEventListener("mousedown", onDown);
     navRef.current?.addEventListener("focusout", onFocusOut);
-    const nav = navRef.current;
+    const navEl = navRef.current;
     return () => {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("mousedown", onDown);
-      nav?.removeEventListener("focusout", onFocusOut);
+      navEl?.removeEventListener("focusout", onFocusOut);
     };
   }, [openLabel]);
 
-  // Escape-to-close and initial focus now belong to <NavSheet>, with the markup.
+  const navItems = (nav ?? []).map((item) => (
+    <NavItemLink
+      key={item.label}
+      item={item}
+      open={openLabel === item.label}
+      onOpenChange={(next) => setOpenLabel(next ? item.label : null)}
+    />
+  ));
 
-  /* The primary nav renders in one of two places: its own bordered tier below
-     the brand row (website / portal), or inline in the brand row (compact).
-     Same markup, same refs, same dropdown behaviour — only the slot moves. */
+  /* The primary nav renders in one of three places: its own bordered tier below
+     the brand row (website / portal), inline in the brand row (compact), or inside
+     the condensed bar. Same markup, same refs, same dropdown behaviour. */
   const navRow = hasNav ? (
     <nav className={cn("ds-hdr-nav", isCompact && "is-inline")} aria-label="Primary" ref={navRef}>
       <ul className="ds-hdr-nav__list" style={inner}>
-        {nav!.map((item) => (
-          <NavItemLink
-            key={item.label}
-            item={item}
-            open={openLabel === item.label}
-            onOpenChange={(next) => setOpenLabel(next ? item.label : null)}
-          />
-        ))}
+        {navItems}
       </ul>
     </nav>
   ) : null;
 
-  return (
-    <header
-      className={cn("ds-hdr", isSticky && "is-sticky", scrolled && "is-scrolled", className)}
-      data-variant={variant}
-    >
-      {/* ── Tier 1: Accessibility bar (the shared DS component) ──
-         Figma is the source of truth, so all four actions render: skip · font
-         size · accessibility · language. The bar's skip is VISIBLE (as in Figma
-         and on UX4G government sites), which is why the header no longer emits a
-         second, visually-hidden `.ds-hdr-skip` — two links to the same target
-         announce the bypass twice. WCAG 2.4.1 is satisfied by the visible one.
-         The accessibility control opens the UX4G widget. */}
-      {/* `tone` is the BRAND AXIS, not a component prop — `data-brand="navy"`
-          re-resolves bg/brand/primary/bolder to the navy ramp (#003366), the same
-          value the retired tone="navy" hardcoded. Scoped to the bar so the brand
-          row and nav row below keep their own surfaces. */}
-      {!isCompact && (
-        <AccessibilityBar
-          govLink={govLink}
-          skipTo={skipTo}
-          showSkip
-          fontSize
-          accessibility={accessibilityToolbar}
-          accessibilityHref={accessibilityHref}
-          onAccessibility={onAccessibility}
-          language={language}
-          layout={isPortal ? "fluid" : "wide"}
-          maxWidth={maxWidth}
-        />
-      )}
+  const searchField = search ? (
+    /* A `search` LANDMARK, which the masthead's own field never was — it rendered
+       as a bare `<div class="ds-search">`, so landmark navigation could not reach
+       the primary search box on any page in the estate. [GIGW 3.0 §9] */
+    <search className="ds-hdr-searchfield">
+      <Search
+        className="ds-hdr-searchfield__field"
+        size="lg"
+        value={query}
+        onChange={(e) => {
+          setQuery(e.target.value);
+          search.onQueryChange?.(e.target.value);
+        }}
+        onClear={() => {
+          setQuery("");
+          search.onQueryChange?.("");
+        }}
+        onSubmit={(v) => search.onSearch?.(v)}
+        suggestions={search.suggestions}
+        onSuggestionSelect={search.onSuggestionSelect}
+        placeholder={search.placeholder ?? "Search"}
+        aria-label={search.placeholder ?? "Search"}
+      />
+    </search>
+  ) : null;
 
-      {/* ── Tier 2: Brand row ── */}
-      <div className="ds-hdr-brand">
-        <div className="ds-hdr-brand__in" style={inner}>
-          {onToggleNav && (
-            <MenuToggle
-              expanded={navExpanded}
-              onToggle={onToggleNav}
-              controlsId={navControlsId}
-            />
-          )}
-
-          <BrandLockup
-            className="ds-hdr-brand__lockup"
-            emblemSrc={emblemSrc}
-            emblemAlt={emblemAlt}
-            lines={brandLines}
-            href={homeHref}
-            beta={isCompact ? false : beta}
-            compact={isCompact}
+  /* ── The condensed bar ──────────────────────────────────────────────────────
+     Emblem, nav, search, CTA — one row. The emblem holds the same left edge it
+     occupies at rest; see `collapseOnScroll` for why that is not negotiable. */
+  const condensedBar = (
+    <div className="ds-hdr-cond">
+      <div className="ds-hdr-cond__in" style={inner} ref={condInRef}>
+        {/* The app-shell sidebar toggle. It lives in the brand row at rest, and
+            leaving it out of this bar meant a portal lost the control for its own
+            navigation the moment the page scrolled — on the surface where the
+            sidebar IS the navigation. */}
+        {onToggleNav && (
+          <MenuToggle
+            expanded={navExpanded}
+            onToggle={onToggleNav}
+            controlsId={navControlsId}
+            className="ds-hdr-cond__toggle"
           />
+        )}
 
-          {/* A DIRECT CHILD of the brand row, not part of the trailing cluster —
-              that is what lets it wrap onto its own full-width line below
-              `breakpoint/tablet` instead of disappearing. It used to hide at 900px
-              while the nav row survived to 1024, so between the two the reader had
-              neither. */}
-          {search && (
+        <a
+          className="ds-hdr-cond__home"
+          href={homeHref}
+          aria-label={`${brandLines.department} — home`}
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img className="ds-hdr-cond__emblem" src={emblemSrc} alt={emblemAlt ?? ""} />
+        </a>
+
+        {condSearchOpen && search ? (
+          <search className="ds-hdr-cond__searchfield">
             <Search
-              className="ds-hdr-searchfield"
-              size="lg"
+              ref={condSearchRef}
+              size="md"
               value={query}
               onChange={(e) => {
                 setQuery(e.target.value);
@@ -367,56 +635,166 @@ export function SiteHeader({
                 search.onQueryChange?.("");
               }}
               onSubmit={(v) => search.onSearch?.(v)}
+              onKeyDown={(e) => {
+                if (e.key === "Escape") setCondSearchOpen(false);
+              }}
               suggestions={search.suggestions}
               onSuggestionSelect={search.onSuggestionSelect}
               placeholder={search.placeholder ?? "Search"}
               aria-label={search.placeholder ?? "Search"}
             />
-          )}
+          </search>
+        ) : (
+          hasNav && (
+            <nav className="ds-hdr-nav is-cond" aria-label="Primary" ref={navRef}>
+              <ul className="ds-hdr-nav__list" ref={condListRef}>
+                {navItems}
+              </ul>
+            </nav>
+          )
+        )}
 
-          <div className="ds-hdr-brand__trailing">
-            {marks.map((m) =>
-              m.href ? (
-                /* [DBIM 5.6] Hyperlinked logos — the same treatment the footer
-                   gives its credits. `href` has been in `BrandMark` all along and
-                   was never read, so Digital India sat in every public masthead as
-                   an inert image. */
-                <a
-                  key={m.src}
-                  className="ds-hdr-cobrand-link"
-                  href={m.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
-                  <span className="ds-hdr-sr"> (opens in a new window)</span>
-                </a>
-              ) : (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
-              ),
-            )}
+        <span className="ds-hdr-cond__spacer" />
 
-            {isCompact && navRow}
+        {search && (
+          <button
+            type="button"
+            className="ds-hdr-cond__iconbtn"
+            aria-label={condSearchOpen ? "Close search" : (search.placeholder ?? "Search")}
+            aria-expanded={condSearchOpen}
+            onClick={() => setCondSearchOpen((o) => !o)}
+          >
+            <Icon name={condSearchOpen ? "close" : "search"} size={24} />
+          </button>
+        )}
 
-            {account && <AccountMenu account={account} items={accountMenu} />}
+        {account && <AccountMenu account={account} items={accountMenu} />}
 
-            <span className="ds-hdr-brand__actions">{actions}</span>
+        <span className="ds-hdr-brand__actions">{actions}</span>
 
-            {hasNav && (
-              <SheetToggle
-                open={drawerOpen}
-                onOpen={() => setDrawerOpen(true)}
-                controlsId={drawerId}
-              />
-            )}
-          </div>
-        </div>
+        {hasNav && (
+          <SheetToggle
+            open={drawerOpen}
+            onOpen={() => setDrawerOpen(true)}
+            controlsId={drawerId}
+          />
+        )}
       </div>
+    </div>
+  );
 
-      {/* ── Tier 3: Navigation row (website / portal) ── */}
-      {!isCompact && navRow}
+  return (
+    <header
+      ref={headerRef}
+      className={cn("ds-hdr", isSticky && "is-sticky", condensed && "is-scrolled", className)}
+      data-variant={variant}
+      data-nav-overflow={navOverflows ? "true" : undefined}
+    >
+      {/* ── Tier 1: Accessibility bar (the shared DS component) ──
+         Figma is the source of truth, so all four actions render: skip · font
+         size · accessibility · language. The bar's skip is VISIBLE (as in Figma
+         and on UX4G government sites), which is why the header no longer emits a
+         second, visually-hidden `.ds-hdr-skip` — two links to the same target
+         announce the bypass twice. WCAG 2.4.1 is satisfied by the visible one.
+
+         IT IS INSIDE THE STICKY HEADER BUT SCROLLS AWAY: the header pins at
+         `top: calc(-1 * var(--sa-hdr-abar-h))`, so this row leaves and the brand
+         and nav rows stay. Keeping it in the DOM keeps the skip link on the page
+         and the markup stable across the condense. */}
+      {!isCompact && (
+        <AccessibilityBar
+          govLink={govLink}
+          skipTo={skipTo}
+          showSkip
+          fontSize
+          accessibility={accessibilityToolbar}
+          accessibilityHref={accessibilityHref}
+          onAccessibility={onAccessibility}
+          language={language}
+          /* `page`, so tier 1 sits on the same column as the brand and nav rows.
+             `wide` is a flat 1200 and does not follow the container ladder. */
+          layout={isPortal ? "fluid" : "page"}
+          maxWidth={maxWidth}
+        />
+      )}
+
+      {condensed ? (
+        condensedBar
+      ) : (
+        <>
+          {/* ── Tier 2: Brand row ── */}
+          <div className="ds-hdr-brand">
+            <div className="ds-hdr-brand__in" style={inner}>
+              {onToggleNav && (
+                <MenuToggle
+                  expanded={navExpanded}
+                  onToggle={onToggleNav}
+                  controlsId={navControlsId}
+                />
+              )}
+
+              <BrandLockup
+                className="ds-hdr-brand__lockup"
+                emblemSrc={emblemSrc}
+                emblemAlt={emblemAlt}
+                lines={brandLines}
+                href={homeHref}
+                beta={isCompact ? false : beta}
+                compact={isCompact}
+              />
+
+              {/* A DIRECT CHILD of the brand row, not part of the trailing cluster —
+                  that is what lets it wrap onto its own full-width line below
+                  `breakpoint/tablet` instead of disappearing. It used to hide at 900px
+                  while the nav row survived to 1024, so between the two the reader had
+                  neither. */}
+              {searchField}
+
+              <div className="ds-hdr-brand__trailing">
+                {marks.map((m) =>
+                  m.href ? (
+                    /* [DBIM 5.6] Hyperlinked logos — the same treatment the footer
+                       gives its credits. `href` has been in `BrandMark` all along and
+                       was never read, so Digital India sat in every public masthead as
+                       an inert image. */
+                    <a
+                      key={m.src}
+                      className="ds-hdr-cobrand-link"
+                      href={m.href}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+                      <span className="ds-hdr-sr"> (opens in a new window)</span>
+                    </a>
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+                  ),
+                )}
+
+                {isCompact && navRow}
+
+                {account && <AccountMenu account={account} items={accountMenu} />}
+
+                <span className="ds-hdr-brand__actions">{actions}</span>
+
+                {hasNav && (
+                  <SheetToggle
+                    open={drawerOpen}
+                    onOpen={() => setDrawerOpen(true)}
+                    controlsId={drawerId}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* ── Tier 3: Navigation row (website / portal) ── */}
+          {!isCompact && navRow}
+        </>
+      )}
 
       {/* ── Mobile navigation (Figma Navbar/NavSheet) ── */}
       {hasNav && (
@@ -431,6 +809,19 @@ export function SiteHeader({
           homeHref={homeHref}
           actions={actions}
           search={search}
+          searchValue={query}
+          onSearchValueChange={(v) => {
+            setQuery(v);
+            search?.onQueryChange?.(v);
+          }}
+          /* The three controls `AccessibilityBar` drops below `breakpoint/tablet`.
+             This is the "consumer's menu" its stylesheet has referred to since the
+             day the cluster was hidden; until now nothing rendered them. */
+          accessibilityControls={!isCompact}
+          accessibility={accessibilityToolbar}
+          accessibilityHref={accessibilityHref}
+          onAccessibility={onAccessibility}
+          language={language}
         />
       )}
     </header>

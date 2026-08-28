@@ -59,12 +59,23 @@ import {
  * accessibility widget in the same corner.
  *
  * The header's ✕ ("Minimise chat") closes and KEEPS the conversation.
- * `endChatLabel` names the footer control — **"Start over"** — which clears the
- * transcript, greets again, and leaves the panel open. It used to be called
- * "End chat" and used to close the panel too, which made it a second way to
- * close sitting beside a ✕, and made the label untrue whichever of its two
- * words you trusted. Clearing stays out of the top-right because that is where
- * every user expects a harmless dismiss.
+ * `endChatLabel` names the reset — **"Start over"** — which DESTROYS NOTHING.
+ * It rules the transcript off with a labelled separator (`restartNotice`, "New
+ * conversation" by default) and greets again beneath it, leaving every earlier
+ * turn scrolled up and the panel open. Since it is an icon, that label is its
+ * `aria-label` and `title` rather than visible text.
+ *
+ * **It is a HEADER control, first of three, with ✕ last.** It was "End chat"
+ * and closed the panel; then it CLEARED the transcript, which made a mis-tap
+ * cost a citizen every answer they had given. It lived in the footer through
+ * three arrangements and each broke something: hard right put it 25px under
+ * Send in the same 32px column, the head of the note's row pushed the
+ * disclaimer 109px off the panel's left edge, and its own line cost 24px of
+ * height. The premise had changed underneath all three — it appends now, so
+ * the danger that kept it out of the header is gone.
+ *
+ * `restartNotice` is a prop rather than a constant because this estate serves
+ * Hindi as well as English.
  *
  * It is the design system's `Button` at `variant="neutral" appearance="text"`.
  * Hand-rolled, it drifted into the estate's rejection red for an action that is
@@ -264,10 +275,11 @@ export const ControlledOpenState: Story = {
           open={open}
           onOpenChange={setOpen}
           quickReplies={SCHEME_REPLIES}
-          // A CONTROLLED consumer owns its transcript, so it must clear it here
-          // AND re-seed its greeting: the panel no longer closes on Start over,
-          // so nothing else will start the conversation again. This story has no
-          // transcript of its own to clear, so it only has to keep the panel open.
+          // A CONTROLLED consumer owns its transcript, so the append is ITS
+          // job: carry the turns it is showing, add its own `from: "system"`
+          // separator, and greet again beneath. It must NOT clear — that is the
+          // behaviour this control was moved away from. This story has no
+          // transcript of its own, so it only has to keep the panel open.
           onEndChat={() => setOpen(true)}
         />
       </div>

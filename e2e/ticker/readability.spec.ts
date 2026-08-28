@@ -9,10 +9,45 @@ import { test, expect } from "@playwright/test";
 
 const PANEL = '.sa-ticker[data-orientation="vertical"]';
 
+/**
+ * Wait until a locator's box stops moving.
+ *
+ * `/website` keeps loading below the fold long after the panel is visible, and
+ * each of those loads reflows the column the panel sits in. Playwright refuses
+ * to dispatch a hover until the target is "stable", so a hover races the
+ * reflow and times out against a component that is behaving perfectly — 1 run
+ * in 3 locally. `networkidle` does not fix it, because the movement is layout
+ * settling rather than requests finishing.
+ *
+ * Nothing is ever actually covering the row: with the page settled,
+ * `elementFromPoint` at the row's centre returns the row's own title. So this
+ * waits for the geometry rather than forcing the interaction, which would hide
+ * a real overlay if one ever appeared.
+ */
+async function settled(locator: import("@playwright/test").Locator) {
+  let previous = "";
+  for (let i = 0; i < 40; i++) {
+    const box = await locator.boundingBox();
+    const current = JSON.stringify(box);
+    if (box && current === previous) return;
+    previous = current;
+    await locator.page().waitForTimeout(100);
+  }
+}
+
 test.describe("Latest Updates — readability", () => {
   test.beforeEach(async ({ page }) => {
     await page.goto("/website");
     await expect(page.locator(PANEL)).toBeVisible();
+    // WAIT FOR THE PAGE TO STOP MOVING BEFORE TOUCHING ANYTHING.
+    // /website keeps loading below the fold long after the panel is visible,
+    // and every one of those loads reflows the column the panel sits in. A
+    // hover then races the reflow: Playwright refuses to dispatch until the
+    // target is "stable", the target keeps moving, and the test times out
+    // against a component that is behaving perfectly. Verified by measuring —
+    // with the page settled, `elementFromPoint` at the row's centre returns
+    // the row's own title, so nothing is ever actually covering it.
+    await page.waitForLoadState("networkidle");
   });
 
   test("nothing is truncated", async ({ page }) => {
@@ -60,21 +95,56 @@ test.describe("Latest Updates — readability", () => {
   });
 
   test("rows do not underline on hover — the wash is the affordance", async ({ page }) => {
+    // REDUCED MOTION, so the row is genuinely still rather than merely paused.
+    // Pausing stops the marquee, but `/website` keeps settling around it and
+    // Playwright refuses to dispatch a hover onto anything it has seen move
+    // between two frames — so this raced, ~1 run in 3, against a component
+    // behaving perfectly. Waiting for the geometry helped and did not close it.
+    // Under reduced motion the component starts no animation at all, which is
+    // the state this assertion is actually about: whether a row underlines when
+    // pointed at. Motion is not part of that question.
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.reload({ waitUntil: "networkidle" });
+    await expect(page.locator(PANEL)).toBeVisible();
     // WCAG 1.4.1 asks that a link be distinguishable from the text AROUND it.
     // In a list where every row is a link there is no surrounding text, so the
     // underline carried no weight and struck through both lines of a wrapped
     // notice.
-    // Stop it first. A row in a running marquee is never "stable", so Playwright
-    // will not hover it — and a citizen cannot reliably hover it either, which
-    // is exactly why hovering the list pauses it in the first place.
-    await page.locator(`${PANEL} .sa-ticker__control`).first().click();
-    await expect(page.locator(`${PANEL} .sa-ticker__viewport`)).toHaveAttribute("data-paused", "");
-
     const row = page.locator(`${PANEL} .sa-ticker__rowlink`).first();
+    await settled(row);
     await row.hover();
     await expect(row.locator(".sa-ticker__rowtitle")).toHaveCSS("text-decoration-line", "none");
-    const bg = await row.evaluate((el) => getComputedStyle(el).backgroundColor);
-    expect(bg).not.toBe("rgba(0, 0, 0, 0)");
+    // POLLS, because the thing it measures is still moving.
+    //
+    // The row declares no background of its own, so its computed value is
+    // exactly `rgba(0, 0, 0, 0)` — the value this asserts against — and the
+    // wash arrives over `transition: background-color 150ms`. Read once, right
+    // after the hover, the read lands on the transition's FROM value: measured
+    // 5 times in 12 at zero delay, and 0 times in 36 at 5ms or later.
+    //
+    // Head-to-head over 40 trials on the same page and the same hover, the ONLY
+    // difference being whether the assertion retries: one-shot `expect(bg).not
+    // .toBe(...)` failed 12/40, this line failed 0/40.
+    //
+    // Both arms ran in a standalone browser, not under the test runner, so
+    // `workers` played no part in either: this measures retry against no
+    // retry and nothing else. The same one-shot read was 5/12 under concurrent
+    // suite load and 12/40 on a quiet machine — about a third either way, which
+    // is why it reads as a transition race rather than a contention one.
+    //
+    // That thirty percent is CLOSE TO the rate this test was failing the whole
+    // suite at before (76e7aa66: "about two runs in three"), and the two were
+    // measured differently — that one at suite level with `workers` unbounded,
+    // this one standalone. Suggestive, not the same measurement. Do not read it
+    // as proof the two are one bug.
+    //
+    // Reduced motion above does not cover this. It stops the marquee; it does
+    // not stop a colour transition, and it should not — killing motion and
+    // keeping colour is the estate's pattern (see button.css). Whether the
+    // earlier `reducedMotion` and `settled()` attempts are now redundant is
+    // OPEN: settling it needs the one-shot read run with and against the worker
+    // cap, which has not been done. They stay until it is.
+    await expect(row).not.toHaveCSS("background-color", "rgba(0, 0, 0, 0)");
   });
 
   test("is a list to a screen reader, and is not a live region", async ({ page }) => {

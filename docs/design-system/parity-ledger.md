@@ -10,11 +10,11 @@
 | `mapped` | 44 | A Figma component set with a confirmed code counterpart |
 | `figma-only` | 30 | Designed, never built. Backlog item or retire from the library |
 | `code-only` | 90 | Built, never designed. Figma backlog item |
-| `deliberately-unmapped` (Figma) | 15 | Internal sub-parts and brand assets |
+| `deliberately-unmapped` (Figma) | 14 | Internal sub-parts and brand assets |
 | `deliberately-unmapped` (code) | 8 | Demo tooling, providers, utilities |
 | `broken-pairing` | 0 | Pairing names a code export that no longer exists — **fix immediately** |
 
-**89** published component sets · **126** code components · **44** paired.
+**88** published component sets · **126** code components · **44** paired.
 
 ## Figma → code
 
@@ -105,8 +105,7 @@
 | Ticker | Ticker | `Ticker` | `mapped` | [56159:903](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56159-903) |
 | Ticker / Action | Ticker | _Internal sub-part of Ticker — its interaction states_ | `deliberately-unmapped` | [56155:37470](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56155-37470) |
 | Ticker / Control | Ticker | _Internal sub-part of Ticker — its interaction states_ | `deliberately-unmapped` | [56155:1797](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56155-1797) |
-| Ticker / Message | Ticker | _Internal sub-part of Ticker — the bar's message_ | `deliberately-unmapped` | [56156:720](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56156-720) |
-| Ticker / Row | Ticker | _Internal sub-part of Ticker — the panel's row_ | `deliberately-unmapped` | [56167:900](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56167-900) |
+| Ticker / Row | Ticker | _Internal sub-part of Ticker — the message, in BOTH shapes_ | `deliberately-unmapped` | [56167:900](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56167-900) |
 | Toggle | Toggle | `Toggle` | `mapped` | [23:599](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=23-599) |
 | Tooltip | Tooltip | `Tooltip` | `mapped` | [320:67518](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=320-67518) |
 
