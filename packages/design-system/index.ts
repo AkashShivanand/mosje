@@ -56,7 +56,17 @@ export type { BrandGlyphProps, BrandGlyphName } from "./components/utilities/bra
 
 // ---- Components: Actions -----------------------------------------------------
 export { Button, buttonClasses } from "./components/actions/button";
-export type { ButtonVariant, ButtonAppearance, ButtonSize } from "./components/actions/button";
+export type {
+  ButtonVariant,
+  ButtonAppearance,
+  ButtonTone,
+  ButtonSize,
+  ButtonProps,
+} from "./components/actions/button";
+export { IconButton } from "./components/actions/icon-button";
+export type { IconButtonProps } from "./components/actions/icon-button";
+export { ButtonGroup } from "./components/actions/button-group";
+export type { ButtonGroupProps, ButtonGroupAlign } from "./components/actions/button-group";
 
 // ---- Components: Forms -------------------------------------------------------
 export { Input } from "./components/forms/input";
@@ -98,6 +108,7 @@ export { Checkbox } from "./components/forms/checkbox";
 export { Radio } from "./components/forms/radio";
 export { Toggle } from "./components/forms/toggle";
 export { Search } from "./components/forms/search";
+export type { SearchProps, SearchSize, SearchSuggestion } from "./components/forms/search";
 export { Chip } from "./components/forms/chip";
 export { FormSection } from "./components/forms/form-section";
 export type { FormSectionProps } from "./components/forms/form-section";
@@ -289,6 +300,8 @@ export type {
 
 // Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
 export { SidebarNav } from "./components/navigation/sidebar";
+export { Pagination } from "./components/navigation/pagination";
+export type { PaginationProps } from "./components/navigation/pagination";
 export type {
   SidebarNavProps,
   SidebarNavGroup,
@@ -480,3 +493,5 @@ export type { ProfileCardProps } from "./components/data-display/profile-card";
 
 export { ActionBanner } from "./components/feedback/action-banner";
 export type { ActionBannerProps, ActionBannerVariant } from "./components/feedback/action-banner";
+export { Ticker } from "./components/feedback/ticker";
+export type { TickerProps, TickerItem, TickerOrientation, TickerHeight } from "./components/feedback/ticker";

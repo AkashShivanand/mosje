@@ -145,9 +145,18 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
    rather than silence. Never write copy implying free-form AI.
 4. **Never remove the footer note.** It is the honest statement that the assistant cannot see
    the user's application or personal data.
-5. **End chat is a footer text link**, in the system error ink at 9.10:1 — deliberately not a
-   button beside the close control, because destructive intent does not belong where people
-   reach to dismiss.
+5. **Nothing in this panel destroys anything, and that is what makes three icons in one corner
+   safe.** The header carries **start over, expand and ✕ — in that order, ✕ last**, because the
+   top-right corner is where every user reaches to dismiss. ✕ ("Minimise chat") closes and KEEPS
+   the conversation; expand resizes; **"Start over"** rules the transcript off with a labelled
+   separator (`restartNotice`, "New conversation") and greets again BENEATH it, leaving every
+   earlier turn scrolled up and the panel open.
+   Until 2026-08-25 the footer control was called "End chat" and closed *and* wiped, which made
+   it a second ✕ and made the label untrue whichever word you trusted. Until 2026-08-27 it still
+   CLEARED — and sat 25px directly below Send, in the same 32px column, with the whole of Send's
+   width above it. See *Placement — measured 2026-08-27* below for why every measurement passing
+   was not the same as the placement being right.
+   It is `<Button variant="neutral" appearance="text" size="sm">`, not a hand-rolled control.
 6. **The seal never turns on its own.** It runs only when a caller asks for it (`spin`), for
    documentation and specimens. A perpetual spin would be the estate's most-seen animation and
    its least useful, and would pull WCAG 2.2.2 in for no gain — and the thinking trigger it used
@@ -168,11 +177,206 @@ One simplification, deliberate: `04 Asked` hides the answer bubble by instance o
 | 7 | **The seal turned where nobody could see it.** It rotated on `[data-thinking]`, but the widget only thinks while open, and while open the launcher has already crossfaded the mark to the close ×. | **Resolved 2026-08-23** — trigger removed. Moving it to the 40px avatar was rejected on legibility (the wordmark is a grey smudge at that size). `--spin` remains for documentation and specimens, and is now the only thing that starts it. `data-thinking` stays as a state hook for consumers and tests |
 | 8 | **The send button had BOTH defects at once** — hard-coded navy and a raw `32px` box. Found while fixing the others; not in the original audit. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` and `icon/size/32`, matching what the Figma master already bound |
 | 9 | **`State`'s variant option order cannot be rewritten.** Figma reports `Greeting, Closed, Typing, Transcript` — a stored registration order, not child order. A child reorder and a temp-rename cycle both no-op'd. Canvas order and `defaultValue` are correct; only the properties-panel dropdown reads oddly. | Recorded, cosmetic |
+| 10a | **The `no-duplicate-selectors` claim in row 10 is FALSE, and the defect recurred because of it.** The rule is `null` in `.stylelintrc.js` — switched off deliberately, with a documented rationale about two decisions under two comments. So nothing was blocking anything, and `.ds-chatbot__end:active` was subsequently declared twice, ten lines apart, with `npx stylelint` passing clean over it. | **Fixed 2026-08-25** — the block is gone entirely (it is a DS `Button` now), and the false claim went with it. A comment asserting a guard that does not exist is worse than no comment |
 | 10 | **`.ds-chatbot__end` was declared twice and the second one silently won.** The later block re-declared `padding: 0` and `font: inherit`, overriding the first block's WCAG padding, so the control rendered **49×16 — under the 24px 2.5.8 minimum** — while this spec and the docs page both claimed a 24px box. The orphaned negative margin was pulling it out of the gutter to compensate for padding that no longer existed. Found because stylelint's `no-duplicate-selectors` blocks any commit touching this file. | **Fixed 2026-08-23** — merged into one rule in the footer section; now 73×28 |
 | 11 | **The unread nudge ring was the last navy literal.** It rings the mascot disc, which now follows the brand, so a fixed navy ring would have been the odd one out. | **Fixed 2026-08-23** — `bg/brand/primary/bolder` |
 | 12 | **The Figma seal was 6.6px off-centre**, so its glyphs overran the 84px frame at the top and the `·` separators rendered as half-dots — the semicircle that was reported. The path circle was centred on (35.4, 35.4) while the disc is centred on (42, 42). The wordmark also covered only ~60% of the ring, because it was set at zero tracking. | **Fixed 2026-08-23** — centred, and tracked to 2.59px so the string closes the circle exactly |
 | 13 | **The Figma mascot was drawn far too small.** `chatbot.css` sizes the figure at 71.5% of the mark without the ring and 66% with it; Figma had 54.8% and 39.3%. | **Fixed 2026-08-23** — both derived from the CSS percentages and the image's own crop aspect |
 | 14 | **The bottom half of the seal reads inverted.** That is inherent to a single circular path and the shipped component does the same, so Figma matches it. A seal that reads upright top AND bottom needs two arcs with the lower one reversed. | Recorded — a design decision, not a defect |
+
+## The composer — measured 2026-08-25
+
+| | |
+|---|---|
+| Pill | 42px (`min-height` on the form, `box-sizing: border-box`) |
+| Input | stretches to the form's 40px inner box — the WHOLE pill is the click target |
+| Send | 32px disc, 5px clearance top and bottom |
+| Placeholder | `text/neutral/subtler`, **4.65:1** — passes WCAG 2.2 §1.4.3 |
+| Border | `border/neutral/base`, **1.66:1** — see below |
+
+**The pill was 34px and that was a regression of this repo's own making.** Fixing the
+dead click zone moved the form's `padding: 4px` onto the input, which fixed the target
+but took the form's height with it: 42 → 34, and the send disc ended with **one pixel**
+of clearance, visibly bursting out of the field. Height now lives on the form's
+`min-height` so both are true at once — verified with five hit-tests down the pill,
+including 3px from each border, all landing on the input.
+
+**The placeholder was never styled**, so it painted the browser default — the input's
+own ink at 50% alpha, compositing to `#808080` at **3.95:1**, under the 4.5:1 that
+§1.4.3 asks of text. Every other input in the estate styles this (`.ds-input`,
+`.ds-search__input`); the composer was the only one that did not. It now binds
+`text/neutral/subtler`, which is what the **Figma master already specified** for that
+node — so design and code agree, and it measures 4.65:1.
+
+### OPEN — the input border fails §1.4.11, estate-wide
+
+Non-text contrast asks **3:1** for the boundary that identifies a control. Measured
+against the panel:
+
+| token | contrast | used by |
+|---|---|---|
+| `border/neutral/subtle` | **1.35:1** | 29 components; was the composer's |
+| `border/neutral/base` | **1.66:1** | `.ds-input`, `.ds-search__input`, `chip`, `india-id`, `auth-fields` — and now the composer |
+| `border/neutral/bolder/default` | 3.06:1 | the rung that would pass |
+
+The composer moved `subtle → base` because it is a text input and that is what text
+inputs in this estate use — it was the odd one out on the faintest rung in the set.
+**It still fails, and so does every other input.** Moving one field to
+`bolder/default` would make the chatbot visibly heavier than every input beside it and
+fix nothing systemic; this is a token-level decision with an estate-wide blast radius
+and belongs with the shared `Input`, not here.
+
+**A related finding worth carrying to whoever takes that on:** `.ds-input`'s own
+placeholder recipe is `text/neutral/subtle` at `opacity: 0.7`, which composites to
+`#75777a` and measures **4.49:1** — missing AA by one hundredth. That is why the
+composer uses `subtler` at full opacity instead of copying it.
+
+## Placement — three footer arrangements, then the header (2026-08-27)
+
+**Start over is a HEADER control**, first of three, with ✕ last. It took three failed footer
+arrangements to get there, and **no gate caught any of them** — each was found by looking.
+
+| Arrangement | Geometry | What it cost |
+|---|---|---|
+| hard **right** (original) | x 305–337, 25px under Send, **same 32px column** | the most-pressed control in the panel stacked on the rarest and, at the time, the only destructive one |
+| head of the note's **row** | x 33–134, 171px from Send | 101px of button pushed the disclaimer **109px** off the panel's left edge, rewrapped it from two lines to three, and left the button with 16px of dead space above it |
+| its own **line** | x 33, beneath the note | one clean left edge — but **+24px of panel height**, on a panel already tight at 375px |
+| **header** | 32px icon, first of three | nothing; the footer returns to composer + note, and is 16px *shorter* than it started |
+
+### The measurements that made the first one look fine
+
+WCAG 2.2 §2.5.8 asks for **24×24** and every target was **32**. UX4G asks for **8px** between
+targets and the gaps were **24–36**. Nothing failed. **Frequency-versus-severity adjacency is not
+something a checklist can see** — which is why the placement is now held by tests, not by a
+standards pass.
+
+### Why the header was refused twice, and why it isn't now
+
+While Start over **CLEARED** the transcript, an unlabelled icon beside ✕ was exactly how somebody
+loses a conversation reaching for close. That objection was correct and it is why the control
+lived in the footer at all.
+
+**It appends now.** The danger is gone, and what was left was a panel-level control sitting among
+the citizen's own composing tools — the footer is where the citizen *says* things, and a reset is
+not something they say. **Three icons in one corner are only safe BECAUSE none of them destroys.**
+
+### Three consequences worth carrying
+
+1. **The header gap is 8, not 12.** With three controls the brand had **125px for a title needing
+   128** — a three-pixel shortfall, enough to wrap "Samajik Sahayak" onto two lines and shove the
+   Devanagari subtitle down with it. Four gaps at 8 give back 16px; the title clears by 13.
+   **If a fourth control is ever proposed for that row, measure the title first** — it is what
+   breaks, and it breaks silently.
+2. **It is an `__icon-btn`, not a DS `Button`** — and that reverses a decision that was *right
+   where it stood*. In the footer, `variant="neutral" appearance="text"` was hard-won: hand-rolled,
+   this control had landed in the estate's rejection red for housekeeping. In the header the same
+   reasoning inverts — it is one of three icons in one corner, and a third that styled itself
+   differently would be the same design-system failure pointing the other way. `.ds-chatbot__end`
+   now carries **no CSS at all**; it is a handle for tests and consumers.
+3. **`neutral` is once again a Button variant with no product consumer.** It was added *for* this
+   control. It stays in the DS on its merits — there was no way to express "quiet, no semantic
+   charge", and that absence is what pushed the original author to `danger` — but it is no longer
+   demonstrated by anything shipping. Worth knowing before the Button cleanup decides its fate.
+
+### The label is not lost
+
+`aria-label` and `title` both carry "Start over", so a screen reader announces it and a pointer
+reveals it. Dropping the visible words was refused twice while the control still destroyed
+something; it appends now, so the worst a mis-tap costs is a scroll, and the trade is finally the
+right way round.
+
+**Note for the hub specifically:** the scheme-finder script *also* offers a "Start over" quick
+reply alongside "Skip this" and "Go back". That chip is contextual and predates this work; the
+header icon is the panel-level affordance and exists for every consumer, including those whose
+script offers no such chip. Two routes to one harmless action is acceptable — but if the chip is
+ever removed, the icon is what the flow falls back on.
+
+
+## Figma, synced 2026-08-27 — and the one thing still open
+
+Both surfaces moved in the same change, which is what `.claude/rules/figma-code-sync.md` asks
+for and what this component had failed to do twice before.
+
+| Surface | What changed |
+|---|---|
+| **Masters** — headers (`55826:36908`, `55814:696`, `55826:36956`) | An `icon-btn / start over` was cloned from `icon-btn / expand`, its `Icon` instance's `icon#55030:0` text property set to `restart_alt`, and inserted BEFORE expand so ✕ stays last. `itemSpacing` 12 → 8 |
+| **Masters** — footer Rows (`55929:178`, `55955:910`, `55955:912`) | The `start over` Button instance is **removed**; the Row is back to HORIZONTAL with the note at FILL. Row height 32 |
+| **`Chatbot — Documentation`** — four nodes | `55828:766` (FOOTER) rewritten to composer + note and why the control left; `55828:758` (HEADER) now lists three controls and the gap rule; `55828:765` label is "Composer · note"; `55829:781` (targets) and `55829:789` (colour) corrected |
+| **Master description** (`55826:37003`) | Rules renumbered to 8. Rule 1 is now "nothing in this panel destroys anything"; rule 2 is the placement, carrying both failed attempts and the reason no checklist caught either; rule 7 gained the `scrollTo({ behavior: "instant" })` requirement |
+| **`tools/figma-doc-parity/claims.json`** | The FOOTER claim's snapshot and all its assertions replaced; a **new claim added for the HEADER** (`55828:758`) pinning the three-control order, the `restart_alt` glyph and the 8px gap. 19 claims, 52 assertions. Editing a snapshot without editing Figma is what turns `check:figma-docs:live` into a false red |
+
+**Edit the JSON through a parser, not through string escapes.** The `pattern` fields are
+double-escaped (`\\"` in the file, `[\\\\s\\\\S]` for a regex class), and hand-matching that in a
+replacement script fails silently against the wrong nesting. Load it with `json.loads`, mutate the
+claim object, dump with `indent=2, ensure_ascii=False` — verify the round-trip is byte-identical
+BEFORE mutating, so a formatting change cannot hide inside the diff.
+
+**Writing the description needs care and this is the trap:** Figma returns it HTML-escaped
+(`&#39;`, `&quot;`), so reading it, patching the string and writing it back escapes it a second
+time and compounds — `design.md` records one that had reached six levels. It was rewritten
+**fresh in plain text** instead. A single-level escape on read-back is Figma's normal
+projection, not a defect: 2,906 characters written came back as 3,012.
+
+**Still open — there is no separator PART in the library.** The `from: "system"` rule has no
+component, because none of the three drawn variants shows a post-restart transcript, so there is
+nowhere on the canvas it would appear. Adding one means adding a fourth panel state. That is a
+deliberate deferral, not an oversight, and it is the only known divergence.
+
+Run `npm run check:figma-docs:live` with `FIGMA_ACCESS_TOKEN` set to confirm the snapshot against
+the live library.
+
+## Upstream dependency — `Button` (recorded 2026-08-25, NOT to be fixed here)
+
+The chatbot's reset control is a `Button` instance in **both** surfaces. `Button` is
+being rebuilt in a separate piece of work
+(`docs/design-system/components/button-cleanup-prompt.md`), and this section exists
+so neither side surprises the other.
+
+### What the chatbot binds to today
+
+| Coupling | Where |
+|---|---|
+| `variant="neutral" appearance="text" size="sm"` | `chatbot.tsx`, the footer control |
+| `.ds-btn` · `.ds-btn--neutral` · `.ds-btn--text` class names | `e2e/chatbot/end-chat.spec.ts:46-48` — asserted directly |
+| `.ds-btn--neutral { --_color: var(--sa-cmp-action-neutral-tertiary-default-text) }` | pinned in `claims.json` on the chatbot's own Figma node `55828:766` |
+| `"neutral" → "tertiary" → default text: "800"` | pinned in `claims.json`, from `component-matrix.json` |
+| A `Size=Small, Type=Neutral, Sub-type=Text` **instance** in Figma | all three chatbot panel states |
+| `.ds-chatbot__end { flex: none }` | the only styling the chatbot still owns — layout, not appearance |
+
+**Consequence worth stating plainly: a `Button` change can fail the CHATBOT's Figma
+parity gate.** Two of the assertions on chatbot node `55828:766` read
+`button.css` and `component-matrix.json`, not chatbot files. If
+`check:figma-docs` fails naming the chatbot's FOOTER claim while you are editing
+Button, that is this dependency firing, not a chatbot regression.
+
+### What the Button work must not break
+
+1. **The three Figma instances.** `component-authoring.md` §11 — edit the set in
+   place, never fork the key. A new key silently detaches all three.
+2. **The class names** `ds-btn--neutral` and `ds-btn--text`, or update
+   `end-chat.spec.ts` in the same change.
+3. **The neutral tertiary ink at `neutralScale/800`.** It is 800 rather than the
+   matrix default 700 because of a neutral-only override, and the reason is
+   specific to this footer: 700 on the neutral ramp is `text/muted`, the exact ink
+   of the disclaimer the control sits beside. Reverting it makes the control the
+   colour of the paragraph next to it.
+
+### What the chatbot should ADOPT once Button lands
+
+- **`min-height` instead of `height`.** The reset button will then grow at 200%
+  text. The footer row is `align-items: flex-end` and the panel is content-sized,
+  so it should absorb it — **re-verify, do not assume.**
+- **A `loading` state, if one is added.** The chatbot's send control has a real use
+  for it during the typing beat; it currently has none.
+- **The remaining three hand-rolled controls.** `.ds-chatbot__send`,
+  `.ds-chatbot__reply` and `.ds-chatbot__icon-btn` are still hand-drawn — the same
+  defect class the reset control had. `__send` and `__icon-btn` are icon-only, so
+  they wait on the `IconButton` decision (Figma has a 60-variant set, code exports
+  none, and UX4G says icon-only is a Button *prop*). `__reply` is a suggestion
+  chip and may belong to `Chip` rather than `Button`; decide before converting.
+
+**No impact:** deleting `tonal` or `inverseOutlined`, and the disabled-link fix —
+the chatbot uses none of them and its control is a real `<button>`.
 
 ## Figma ↔ code parity — measured 2026-08-23, re-measured after the parity pass
 
@@ -211,9 +415,15 @@ Every property compared, Figma master against `chatbot.css`/`chatbot.tsx`. Align
 | Send at rest | drawn at 35% — the composer is empty in every variant | `:disabled { opacity: 0.35 }` | **fixed in Figma** (was drawn enabled) |
 | Note | `Body/body-3` 12, `text/neutral/subtle` | `body-3`, `text-muted` | ✅ |
 | Note text | "…points you to the right portal. It cannot decide or change an application." | identical | **fixed in Figma** |
-| End chat | `Label/label-1` 14, `text/status/error/base`, 1px `border/status/error/base`, `shape/8`, pad `padding/6`×`padding/12` | identical | **redesigned in both** — it was an underlined word, which reads as a link |
-| End chat target | 83×32 reported, 83×34 rendered — the 1px border is an OUTSIDE stroke | 83×34 | ✅ — the TEXT node now sits inside a HUG button frame, so the hit area is real geometry rather than a claim |
-| End chat position | same row as the note, hard right, bottom-aligned | identical (`.ds-chatbot__footer-row`, `align-items: flex-end`) | ✅ |
+| Start over | `Label/label-2`, `cmp/action/neutral/tertiary/default/text`, **no border, no fill**, `shape/8`, `.ds-btn--sm` | **a `Button` INSTANCE** — `Size=Small, Type=Neutral, Sub-type=Text` | ✅ **both sides now instance the same component.** It was a hand-drawn frame with a 1px error stroke in Figma and ~40 lines of hand-rolled CSS in code — the same defect, authored twice |
+| Start over target | 32 high, clears the 24px 2.5.8 minimum | identical (the Button master hugs its label) | ✅ |
+| Start over ink | `neutralScale/800` via a **neutral-only override** in `component-matrix.json` | identical — pushed and read back, `figma-live.json` re-recorded | ✅ the matrix default is 700, which on the neutral ramp is `text/muted`, the ink of the disclaimer it sits beside |
+| Start over position | a third `icon-btn` in the header, before expand, ✕ last — added to all three masters | identical (`.ds-chatbot__icon-btn .ds-chatbot__end`, `<Icon name="restart_alt" size={20} />`) | ✅ both sides moved 2026-08-27 |
+| Header gap | **8**, in all three masters | `gap: var(--sa-inline-8)` | ✅ 12 left the title 3px short and wrapped it |
+| Footer contents | composer + note only; the `start over` instance is deleted from the Row | identical — `.ds-chatbot__footer-row` holds one `<p>` | ✅ the footer is 16px shorter than before any of this |
+| Start over outcome | **appends** — stated in the master description (rule 1) and §02 of the documentation page | **appends** — a `from: "system"` rule, then a fresh greeting under it | ⚠️ **behaviour matches; the library has no separator PART yet.** Figma draws the panel's states, and none of the three variants shows a post-restart transcript, so there is nothing on the canvas the rule would appear in. See the open item below |
+| Composer input | fills the pill's full 40px inner height (the padding moved onto the input) | not expressible | ⚠️ **by design.** Figma draws appearance, not hit areas — the pill renders identically either way. The rule is carried in the master's description and §06 of the documentation page instead. It was 20px: a line box floated inside a 42px pill, so half the visible field focused nothing and the real target sat under the 24px minimum |
+| Panel height | **content-sized**, capped at `min(719, viewport room)` | `State=Greeting` 396 · `State=Typing` 252 · `State=Transcript` 719 | ✅ the two short states are drawn at their true content height; Transcript stays at 719 because it is the state that demonstrates the cap and the scroll |
 | Launcher | 84, `bg/neutral/base`, `shape/full`, `elevation/toast` | identical | ✅ |
 | Close disc | full-bleed, `bg/brand/primary/bolder`, glyph 24 | full-bleed, glyph 30% of 84 = 25.2 | ✅ within a pixel |
 | Mascot disc | `bg/brand/primary/bolder` | identical | ✅ |

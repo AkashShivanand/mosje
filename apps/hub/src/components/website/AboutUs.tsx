@@ -12,6 +12,8 @@ interface Minister {
 interface Stat {
   label: string;
   value: string;
+  /** The line under the figure that says what it is measured against. */
+  caption: string;
 }
 
 const ministers: Minister[] = [
@@ -33,15 +35,34 @@ const ministers: Minister[] = [
   },
 ];
 
+/**
+ * The design sets each cell as label -> figure -> sub-caption, in that order.
+ * The build dropped the sub-caption and put the label UNDER the figure, which
+ * left three large numbers with no statement of what they measured until after
+ * you had read them [WEB-A-05]. "Financial Assistance" was also the wrong
+ * label for the third: the design names it as the FY 2025-26 release.
+ */
 const stats: Stat[] = [
-  { label: "Cumulative Disbursement", value: "₹67,977 Crore" },
-  { label: "Beneficiary Coverage", value: "19.82 Crore" },
-  { label: "Financial Assistance", value: "₹8,731 Crore" },
+  {
+    label: "Cumulative Disbursement",
+    value: "₹67,977 Crore",
+    caption: "Scholarships for Scheduled Castes",
+  },
+  {
+    label: "Beneficiary Coverage",
+    value: "19.82 Crore",
+    caption: "Cumulative across all schemes",
+  },
+  {
+    label: "Release of Funds, FY 2025–26",
+    value: "₹8,731 Crore",
+    caption: "Provisional · 14.3% above previous year",
+  },
 ];
 
 export function AboutUs() {
   return (
-    <section className="bg-white">
+    <section className="bg-primary-50">
       <div className="sa-container py-12 md:py-16">
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
@@ -64,7 +85,15 @@ export function AboutUs() {
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/website/about-us"
-                className={buttonClasses("primary", "outlined", "sm")}
+                /* Fourth instance of one DS defect: gov-blue is 4.19:1 on this
+                   section's primary-50 ground, under AA. The DS outlined button
+                   is correct on white and short of it on every tint. */
+                className={buttonClasses(
+                  "primary",
+                  "outlined",
+                  "sm",
+                  "border-primary-dark text-primary-dark",
+                )}
               >
                 Read More
                 <span className="ds-btn__icon" aria-hidden="true"><Icon name="arrow_forward" size={16} /></span>
@@ -97,14 +126,18 @@ export function AboutUs() {
           </div>
 
           <div className="flex flex-col gap-6">
+            {/* The lead card is tinted in the design — it is what separates the
+                Union Minister from the two Ministers of State beneath, which a
+                plain white card on a tinted section could not do [WEB-A-02].
+                saffron-50 is the token nearest the frame's cream. */}
             {ministers[0] && (
-            <div className="rounded-lg border border-gray-200 bg-white p-5 shadow-sm transition hover:shadow-md sm:flex sm:items-center sm:gap-5">
+            <div className="rounded-lg border border-saffron-500/25 bg-saffron-50 p-5 shadow-sm transition hover:shadow-md sm:flex sm:items-center sm:gap-5">
               <Image
                 src={ministers[0].img}
                 alt={ministers[0].name}
                 width={140}
                 height={140}
-                className="mx-auto h-[140px] w-[140px] flex-shrink-0 rounded-lg object-cover sm:mx-0"
+                className="mx-auto h-[140px] w-[140px] flex-shrink-0 rounded-full border-4 border-white bg-white object-cover shadow-sm sm:mx-0"
               />
               <div className="mt-4 text-center sm:mt-0 sm:text-left">
                 <h3 className="text-[22px] font-medium text-ink">
@@ -146,16 +179,16 @@ export function AboutUs() {
           <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
             <dl className="grid flex-1 grid-cols-1 divide-y divide-white/15 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
               {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="px-4 py-4 text-center sm:px-6 sm:py-2"
-                >
-                  <dd className="text-[32px] sm:text-[38px] font-bold leading-none text-white">
-                    {stat.value}
-                  </dd>
-                  <dt className="mt-2 text-[12px] sm:text-[13px] font-medium uppercase tracking-wide text-white/80">
+                <div key={stat.label} className="px-4 py-4 sm:px-6 sm:py-2">
+                  <dt className="text-[11px] font-semibold uppercase tracking-wide text-white/75">
                     {stat.label}
                   </dt>
+                  <dd className="mt-1.5 text-[30px] font-bold leading-none text-white sm:text-[36px]">
+                    {stat.value}
+                  </dd>
+                  <dd className="mt-1.5 text-[12px] leading-snug text-white/70">
+                    {stat.caption}
+                  </dd>
                 </div>
               ))}
             </dl>

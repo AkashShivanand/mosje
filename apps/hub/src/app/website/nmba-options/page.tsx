@@ -120,7 +120,7 @@ export default function NmbaOptionsPage() {
   return (
     <main className="min-h-screen bg-white">
       <div className="border-b border-border-strong bg-surface-muted">
-        <div className="mx-auto max-w-[1280px] px-4 py-6">
+        <div className="sa-container py-6">
           <p className="text-[12px] font-semibold uppercase tracking-wide text-primary">Design options · internal review</p>
           <h1 className="mt-1 text-[26px] font-semibold text-primary-dark">NMBA widget options</h1>
           <p className="mt-1 max-w-2xl text-[14px] text-ink-muted">
@@ -129,7 +129,7 @@ export default function NmbaOptionsPage() {
           </p>
         </div>
       </div>
-      <div className="mx-auto flex max-w-[1280px] flex-col gap-12 px-4 py-10">
+      <div className="sa-container flex flex-col gap-12 py-10">
         <Section title="1 · Take the pledge + Nasha Mukti Mitr (combined)" variants={COMBINED} />
         <Section title="2 · Combined block — leaf-motif aesthetics" variants={AESTHETICS} />
         <Section title="3 · De-addiction centre locator" variants={LOCATORS} />

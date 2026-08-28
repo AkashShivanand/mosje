@@ -1,14 +1,42 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { SiteHeader, buttonClasses, type NavItem } from "@mosje/design-system";
+
+import { LanguageDialog } from "@/components/i18n/language-dialog";
+import { useTranslation } from "@/components/i18n/translation-provider";
+import { languageLabel } from "@/lib/bhashini/languages";
+import { useSearchSuggestions } from "@/components/website/search/use-search-suggestions";
 
 // The website mounts natively in the hub at /website, and its public assets live
 // at apps/hub/public/website/…, so they serve under this prefix. (It was the app's
 // basePath before the native mount — same value, now a literal folder path.)
 const BP = "/website";
 
+/**
+ * SEVEN ENTRIES IS THE CEILING ON A 1280px SCREEN — read this before adding one.
+ *
+ * Measured 2026-08-26 against the live masthead. Once the page scrolls, the
+ * header condenses to a single bar and the content column is 1200px; after its
+ * 24px padding a side, the emblem, the search button and the CTA, the nav has
+ * **880px**. These seven entries measure **837**. That is 43px of slack, and an
+ * eighth entry needs about 96.
+ *
+ * Nothing breaks if you add one: `SiteHeader` measures itself and hands the nav
+ * to the sheet rather than letting the items overlap, so a 1280px laptop loses
+ * the inline row to the hamburger. At 1440 and above an eighth entry still fits.
+ * That is a design decision to make deliberately, not a bug to discover.
+ *
+ * If you need the row back at 1280, the cheapest 96px is a shorter label:
+ * "Associated Organisations" is 206px on its own — a quarter of the whole nav and
+ * more than double the average entry. Kept as it stands by decision (2026-08-27),
+ * to be revisited when Schemes moves out of Offerings and becomes the eighth.
+ *
+ * The arithmetic and the fallback live in `site-header.tsx` (the overflow
+ * measurement) and `header.css` (the condensed bar).
+ */
 const NAV: NavItem[] = [
   { label: "Home", href: "/website" },
   {
@@ -61,10 +89,10 @@ const NAV: NavItem[] = [
           { abbr: "SCW", name: "Senior Citizens Welfare", href: "/website/organisation/senior-citizens-welfarescw" },
           { abbr: "PM-AJAY", name: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojna", href: "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay" },
           { abbr: "SMILE", name: "National Portal for Transgender Persons", href: "/website/organisation/national-portal-for-transgender-persons" },
-          { abbr: "SMILE", name: "Support for Marginalized Individuals for Livelihood and Enterprise", href: "/website/organisation/support-for-marginalized-individuals-for-livelihood-and-enterprise-smile" },
+          { abbr: "SMILE", name: "Support for Marginalized Individuals for Livelihood and Enterprise", href: "/website/schemes-services/support-for-marginalized-individuals-for-livelihood-and-enterprise-smile" },
           { abbr: "NOS", name: "National Overseas Scholarship", href: "/website/organisation/national-overseas-scholarship" },
           { abbr: "NMBA", name: "Nasha Mukt Bharat Abhiyaan", href: "/website/organisation/nasha-mukt-bharat-abhiyaan" },
-          { abbr: "NHAA", name: "National Helpline Against Atrocities", href: "/website/organisation/national-helpline-against-atrorocities" },
+          { abbr: "NHAA", name: "National Helpline Against Atrocities", href: "/portals/nhapoa" },
         ],
       },
     ],
@@ -122,21 +150,44 @@ const NAV: NavItem[] = [
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
+  const { lang, t } = useTranslation();
+  const [langOpen, setLangOpen] = React.useState(false);
 
+  /* The masthead field holds its own text; this mirrors it so the suggestions can
+     be fetched for it. The field stays the source of truth for what is TYPED —
+     mirroring it here rather than controlling it keeps the header's existing
+     contract intact for every other consumer. */
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const suggestions = useSearchSuggestions(searchQuery);
+
+  /* Labels go through `t` on the way out. Only the labels: hrefs, emblem paths
+     and organisation abbreviations are identifiers, not prose, and translating
+     an abbreviation like NCSC would make the row unsearchable in every language
+     including its own. The full organisation NAMES are translated, because those
+     are the words a reader actually scans. */
   const nav: NavItem[] = NAV.map((item) => ({
     ...item,
+    label: t(item.label),
     active: item.href !== "#" && item.href === pathname,
+    children: item.children?.map((c) => ({ ...c, label: t(c.label) })),
+    columns: item.columns?.map((col) => ({
+      ...col,
+      heading: col.heading ? t(col.heading) : col.heading,
+      items: col.items?.map((o) => ({ ...o, name: t(o.name) })),
+      links: col.links?.map((l) => ({ ...l, label: t(l.label) })),
+    })),
   }));
 
   return (
+    <>
     <SiteHeader
       homeHref="/website"
       variant="website"
       emblemSrc={`${BP}/images/National-Emblem-logo.svg`}
       brandLines={{
-        org: "Government of India",
-        ministry: "Ministry of Social Justice & Empowerment",
-        department: "Department of Social Justice & Empowerment",
+        org: t("Government of India"),
+        ministry: t("Ministry of Social Justice & Empowerment"),
+        department: t("Department of Social Justice & Empowerment"),
       }}
       beta
       govLink={{
@@ -144,9 +195,17 @@ export function Header() {
         label: "Government of India",
         flagSrc: `${BP}/images/Indian-Flag.svg`,
       }}
-      language={{ label: "English" }}
+      language={{
+        // The control has always drawn a caret. Now something opens.
+        label: languageLabel(lang),
+        onClick: () => setLangOpen(true),
+      }}
       search={{
-        placeholder: "Search Schemes, Services, Documents",
+        /* Measured 2026-08-26: the field is 320px at desktop, 218 at tablet and 343
+           on a phone, and "Search Schemes, Services, Documents" rendered as
+           "Search Schemes, Services, Docu" at EVERY one of them. A truncated
+           placeholder is a truncated instruction. This fits at all three. */
+        placeholder: t("Search schemes and services"),
         // The masthead field is a real input now, so the query travels with the
         // navigation instead of dumping the reader on an empty results page.
         onSearch: (query) =>
@@ -155,16 +214,24 @@ export function Header() {
               ? `/website/search?q=${encodeURIComponent(query.trim())}`
               : "/website/search",
           ),
+        onQueryChange: setSearchQuery,
+        suggestions,
+        // A chosen suggestion goes straight to the thing. Pressing Enter without
+        // choosing one still runs the full search — the list is a shortcut, never
+        // the only route. [DBIM 9.viii]
+        onSuggestionSelect: (suggestion) => router.push(suggestion.id),
       }}
       cobranding={[
-        { src: `${BP}/images/digital-india-logo.svg`, alt: "Digital India — Power To Empower", height: 40 },
+        { src: `${BP}/images/digital-india-logo.svg`, alt: "Digital India — Power To Empower", href: "https://www.digitalindia.gov.in/", height: 40 },
       ]}
       nav={nav}
       actions={
         <Link href="/website/admin" className={buttonClasses()}>
-          Admin Login
+          {t("Admin Login")}
         </Link>
       }
     />
+    <LanguageDialog open={langOpen} onClose={() => setLangOpen(false)} />
+    </>
   );
 }

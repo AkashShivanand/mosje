@@ -13,27 +13,72 @@
    `--sa-layout-container` is the single answer to "how wide is the content".
    Bind to it; never re-state a max-width.
 
-   NOTE ON THE LITERAL: a CSS media query cannot read a custom property, so the
-   1768px threshold below cannot be expressed as a token reference. It is the one
-   value here that must be duplicated, and it is duplicated FROM the Tier-1 anchor
-   `ref/breakpoint/desktopXl` — if that token moves, this moves with it.
+   NOTE ON THE LITERALS: a CSS media query cannot read a custom property, so the
+   1600px and 1920px thresholds below cannot be expressed as token references.
+   They are the only values here that must be duplicated, and they are duplicated
+   FROM the Tier-1 anchors `ref/breakpoint/desktopXl` and
+   `ref/breakpoint/desktopWide` — if those tokens move, these move with them.
    Media-query breakpoints are advisory rather than gated under
    .claude/rules/documentation-ds-linkage.md for exactly this reason.
+
+   THE CAP IS THREE STEPS, NOT ONE (2026-08-24). It was 1200 with a single widen
+   to 1320 at 1768px, and that shape had two faults. The widen came too late — at
+   1768 a 1728-wide viewport carried 264px of margin each side against 1768's own
+   224px, so margins got NARROWER as the screen grew. And one widen could not
+   cover 1600 through 2560+, so a 2560 monitor rendered a 1320 column between
+   620px margins. The ladder now steps 1200 -> 1320 -> 1440 at 1280 / 1440 / 1920.
+
+   The middle anchor was 1600 for half a day. It moved to 1440 because 1600 left
+   the ladder's weakest point on its most common viewport: at 1536 — 1920 at 125%
+   Windows scaling — content held 75% of the screen, worse than 1280 (90%) and
+   worse than 1600 (78%). At 1440 that range reads 88 / 84 / 83%, and nothing at
+   1600 and above changes. It also puts the code on the same 1320 column the
+   Handoff frame draws at 1440.
 
    Requires tokens.css.
    ========================================================================== */
 
-/* --sa-container-page is DERIVED, not a token: it selects between the two real
-   tokens (--sa-container-content / --sa-container-contentXl) at the desktop-XL
-   anchor. It exists because an inline style cannot carry a media query, and
-   SiteHeader sets its cap through one. Do not add it to the token source. */
-:root {
-  --sa-container-page: var(--sa-container-content);
-}
+/* --sa-container-page and --sa-grid-margin-page ARE tokens now (container/page and
+   grid/margin/page), and they carry a mode per viewport in the Figma Viewport
+   collection. tokens.css emits the mobile-first BASE of each; what a media query
+   cannot be expressed in a variable, so the steps below re-point them — the CSS
+   media query and the Figma mode are the two halves of one ladder.
 
-@media (min-width: 1768px) {
+   This block used to say "DERIVED, not a token: do not add it to the token
+   source." That was true while the cap could not be modelled in Figma at all,
+   which is exactly the gap the Viewport collection closed: a designer opening a
+   1600-wide frame could not see that the cap is 1320 there. Re-point the steps,
+   never the base — the base belongs to the token. */
+
+@media (min-width: 1440px) {
   :root {
     --sa-container-page: var(--sa-container-contentXl);
+  }
+}
+
+@media (min-width: 1920px) {
+  :root {
+    --sa-container-page: var(--sa-container-contentWide);
+  }
+}
+
+/* The margin ladder, kept in the same shape as the cap's so the two can be read
+   together. Mobile-first base is `grid/margin/mobile`, from tokens.css. */
+@media (min-width: 768px) {
+  :root {
+    --sa-grid-margin-page: var(--sa-grid-margin-tablet);
+  }
+}
+
+/* The 32px rung waits for 1920, not 1440. Both steps still move with the CAP
+   rather than with a viewport anchor — the rule that removed the old narrowing
+   at 1280 — but taking 32 at 1440 would spend the widen on margin: content would
+   be 1256 instead of 1272, and 1272 is the number the Handoff's own frame draws
+   at that width. So the cap widens at 1440 and the margin widens at 1920, and
+   content still only ever grows: 1152 -> 1272 -> 1376. */
+@media (min-width: 1920px) {
+  :root {
+    --sa-grid-margin-page: var(--sa-grid-margin-desktop);
   }
 }
 
@@ -50,19 +95,17 @@
   width: 100%;
   max-width: var(--sa-container-page);
   margin-inline: auto;
-  padding-inline: var(--sa-grid-margin-mobile);
-}
 
-@media (min-width: 768px) {
-  .sa-container {
-    padding-inline: var(--sa-grid-margin-tablet);
-  }
-}
-
-@media (min-width: 1280px) {
-  .sa-container {
-    padding-inline: var(--sa-grid-margin-desktop);
-  }
+  /* One value, resolved above, instead of three rules re-deriving the ladder.
+     The 32px rung steps at 1920 and NOT at the desktop anchor, because the
+     margin moves with the CAP: a wider margin buys breathing room only while the
+     container is still fluid, and once the cap binds it buys nothing and costs
+     content. Stepping it at 1280 did exactly that — the cap was already 1200, so
+     content went 1152 -> 1136 as the viewport grew past it. Content now rises
+     monotonically: 1152 -> 1272 -> 1376. The step at 768 is deliberate and
+     different — the container is fluid there, so the margin is real breathing
+     room rather than a tax on a fixed column. */
+  padding-inline: var(--sa-grid-margin-page);
 }
 
 /* ----------------------------------------------------------------------------
@@ -110,9 +153,15 @@
 
 @media (min-width: 1280px) {
   /* The gutter absorbs the rail from here up, so the container goes back to a
-     symmetric margin rather than staying permanently lopsided. */
+     symmetric margin rather than staying permanently lopsided. SYMMETRIC is now
+     literally the same variable the other side reads, so this cannot drift out
+     of step with the ladder again — it briefly did, when the 32px rung moved to
+     1600 and this rule stayed on the desktop margin, leaving the website 24px on
+     the left against 32px on the right across the whole desktop range. This
+     selector is more specific than the plain `.sa-container` rule, so it wins on
+     the end side and has to be right. */
   [data-site="website"] .sa-container {
-    padding-inline-end: var(--sa-grid-margin-desktop);
+    padding-inline-end: var(--sa-grid-margin-page);
   }
 }
 

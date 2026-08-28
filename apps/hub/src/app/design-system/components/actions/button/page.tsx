@@ -173,11 +173,35 @@ export default function ButtonPage(): React.JSX.Element {
           interactive atom in SAMAVESH and the reference implementation for every
           other component page.
         </p>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.buttons)} target="_blank" rel="noopener noreferrer">
-            View in Figma <span aria-hidden="true">↗</span>
+        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
+          <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.buttonDoc)} target="_blank" rel="noopener noreferrer">
+            Button — Documentation <span aria-hidden="true">↗</span>
+          </a>
+          <a className={buttonClasses("neutral", "text", "md")} href={figmaUrl(FIGMA_NODES.buttons)} target="_blank" rel="noopener noreferrer">
+            The master <span aria-hidden="true">↗</span>
+          </a>
+          <a className={buttonClasses("neutral", "text", "md")} href={figmaUrl(FIGMA_NODES.buttonRecord)} target="_blank" rel="noopener noreferrer">
+            Component record <span aria-hidden="true">↗</span>
           </a>
         </div>
+        <Callout type="warning" title="One open defect remains, and it is listed here rather than hidden">
+          The 2026-08-25 audit found three defects shipping. All three are now closed:{" "}
+          <code>disabled</code> on a link-button is genuinely inert, and the size ladder is a{" "}
+          <code>min-height</code> that grows with the text instead of clipping it at 200%.
+          <code>tonal</code> has been <strong>retired</strong> — all four of its variants sat
+          between 1.21:1 and 1.52:1 against a white page where WCAG 1.4.11 asks for 3:1, and
+          darkening the border would simply have made it <code>outlined</code>. Its two
+          consumers are now <code>outlined</code>.
+          <br />
+          <br />
+          The audit also reported a fifth failure, &ldquo;neutral outlined, 2.15:1&rdquo;. That
+          one does not exist: it measured{" "}
+          <code>cmp/action/neutral/secondary/default/border</code>, a token this component does
+          not bind. The border it actually paints measures <strong>16.18:1</strong>. Evidence in{" "}
+          <code>docs/design-system/components/button-audit.md</code>; the boundaries are now
+          measured on every build by{" "}
+          <code>packages/tokens/test/action-nontext-contrast.test.mjs</code>.
+        </Callout>
       </header>
 
       {/* ============ 1. PURPOSE ============ */}
@@ -281,7 +305,7 @@ export default function ButtonPage(): React.JSX.Element {
         <Callout type="info" title="How variants map to the component API">
           The shared <code>Button</code> exposes a <code>variant</code> axis
           (primary · success · danger) and an <code>appearance</code> axis (filled
-          · outlined · text · tonal · inverse · inverseOutlined). The intents above
+          · outlined · text) plus a <code>tone</code> axis (default · inverse). The intents above
           map onto that API:{" "}
           <strong>secondary</strong> = <code>appearance=&quot;outlined&quot;</code>,{" "}
           <strong>ghost</strong> = <code>appearance=&quot;text&quot;</code>. The
@@ -289,8 +313,11 @@ export default function ButtonPage(): React.JSX.Element {
           surface — for a button placed directly on a solid brand-colour surface
           (a navy header, hero band), use{" "}
           <code>appearance=&quot;inverse&quot;</code> (emphasized) or{" "}
-          <code>appearance=&quot;inverseOutlined&quot;</code> (secondary) instead
-          of overriding <code>className</code>.
+          <code>tone=&quot;inverse&quot;</code> instead of overriding{" "}
+          <code>className</code>. It crosses <code>appearance</code>, so{" "}
+          <code>tone=&quot;inverse&quot; appearance=&quot;outlined&quot;</code> is the
+          secondary form — and unlike the old <code>inverseOutlined</code> it keeps the
+          variant&rsquo;s intent.
         </Callout>
         <div style={{ marginTop: "var(--sa-stack-24)" }}>
           <ButtonPlayground />
@@ -306,8 +333,12 @@ export default function ButtonPage(): React.JSX.Element {
           }}
         >
           <li>
-            Touch targets are always <strong>≥44px</strong>, enforced in CSS, on
-            every breakpoint.
+            Heights are <strong>minimums</strong> of <strong>32 / 40 / 48px</strong>, not
+            fixed heights — the box grows with the text rather than clipping it. All three clear the{" "}
+            <strong>24×24px</strong> WCAG 2.2 §2.5.8 Level AA minimum; only{" "}
+            <code>lg</code> reaches the <strong>44×44px</strong> UX4G recommends for
+            touch. On a touch surface, prefer <code>lg</code> or add spacing —
+            UX4G also asks for 8px between adjacent targets.
           </li>
           <li>
             For full-width mobile buttons, wrap with{" "}
@@ -315,10 +346,34 @@ export default function ButtonPage(): React.JSX.Element {
             full-width container.
           </li>
           <li>
-            Size <code>sm</code> shrinks padding and type, but still meets the 44px
-            height requirement.
+            Size <code>sm</code> is <strong>32px</strong> and does <em>not</em> reach
+            44px. That is a deliberate density choice for dense admin tables, not an
+            oversight — but it means <code>sm</code> is a pointer-surface size. This
+            page claimed the opposite in three places until 2026-08-25.
           </li>
         </ul>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--sa-stack-16)",
+            flexWrap: "wrap",
+            marginTop: "var(--sa-stack-24)",
+            padding: "var(--sa-padding-24)",
+            background: "var(--sa-bg-neutral-subtler)",
+            borderRadius: "var(--sa-shape-12)",
+          }}
+        >
+          <Button variant="primary" appearance="filled" size="sm">
+            Small &mdash; 32px
+          </Button>
+          <Button variant="primary" appearance="filled" size="md">
+            Medium &mdash; 40px
+          </Button>
+          <Button variant="primary" appearance="filled" size="lg">
+            Large &mdash; 48px
+          </Button>
+        </div>
         <CodeBlock>{`{/* Full-width on mobile, auto on larger screens */}
 <Button variant="primary" appearance="filled" style={{ width: "100%" }}>
   Submit application
@@ -366,16 +421,30 @@ import "@mosje/design-system/tokens.css";`}</CodeBlock>
           props={[
             {
               name: "variant",
-              type: '"primary" | "success" | "danger"',
+              type: '"primary" | "success" | "danger" | "neutral"',
               default: '"primary"',
               description: "Semantic colour role / intent of the action.",
             },
             {
               name: "appearance",
-              type: '"filled" | "outlined" | "text" | "tonal" | "inverse" | "inverseOutlined"',
+              type: '"filled" | "outlined" | "text"',
               default: '"filled"',
               description:
-                "Visual weight. outlined = secondary, text = ghost (tertiary). inverse/inverseOutlined are for a button placed directly on a solid brand-colour surface (e.g. a navy header) — use instead of overriding className.",
+                "Visual weight. outlined = secondary, text = ghost (tertiary). tonal was retired on 2026-08-27 (no perceivable edge — 1.21:1 to 1.52:1 against a 3:1 requirement). For a solid brand-colour surface use tone, not an appearance.",
+            },
+            {
+              name: "tone",
+              type: '"default" | "inverse"',
+              default: '"default"',
+              description:
+                "Which ground the button sits on. inverse is for a solid brand-colour surface — a navy header, the ticker bar. It CROSSES appearance, which is the point: as two appearance words (inverse/inverseOutlined) it could only have one look, so all four variants painted the same white-alpha border and danger silently lost its signal. Those two words still work as deprecated aliases.",
+            },
+            {
+              name: "loading",
+              type: "boolean",
+              default: "false",
+              description:
+                "Sets aria-busy, disables the control so a form cannot be submitted twice, and shows a spinner in the LEADING ICON’S place so the button does not change width mid-press. It does NOT swap the label — pass “Submitting…” yourself, because a control that loses its name mid-action is unusable with a screen reader. A busy button keeps full opacity with cursor: progress rather than the disabled wash: “working” and “forbidden” must not look the same.",
             },
             {
               name: "size",
@@ -491,8 +560,10 @@ export function ApplicationForm() {
         { id: "accessibility", label: "Accessibility", content: (<><section style={sectionStyle}>
         <h2 id="accessibility" style={h2Style}>Accessibility</h2>
         <p style={proseStyle}>
-          Buttons are government-grade controls — they must satisfy WCAG 2.1 AA and
-          GIGW. The checklist below is verified for every release.
+          Buttons are government-grade controls — they must satisfy{" "}
+          <strong>WCAG 2.2 AA</strong> and GIGW. Where an entry below records a gap,
+          it is a gap: this checklist is a statement of what is true, not of what
+          was intended.
         </p>
         <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <A11yChecklist
@@ -504,10 +575,16 @@ export function ApplicationForm() {
                   "The label communicates the action, not just “Click here” or a bare “Submit”. (WCAG 2.4.6)",
               },
               {
-                criterion: "44×44px minimum touch target",
+                criterion: "24×24px minimum target size",
                 level: "AA",
                 description:
-                  "Every variant — including size sm — meets the minimum target size. (WCAG 2.5.8)",
+                  "All three sizes (32 / 40 / 48px) clear the 24×24px Level AA minimum. 44×44 is 2.5.5 Target Size (Enhanced), Level AAA, which only lg reaches — UX4G recommends it for touch. (WCAG 2.2 §2.5.8)",
+              },
+              {
+                criterion: "Text resizes to 200% without clipping",
+                level: "AA",
+                description:
+                  "Each size sets min-height plus vertical padding, so the box grows with the text. A fixed height clipped the label until 2026-08-27 — an md button held 40px while its content needed 41. Pinned at the criterion's own 200% threshold in e2e/design-system/button.spec.ts. (WCAG 1.4.4)",
               },
               {
                 criterion: "Visible focus indicator",
@@ -519,13 +596,13 @@ export function ApplicationForm() {
                 criterion: "Communicates disabled state",
                 level: "AA",
                 description:
-                  "Disabled buttons expose aria-disabled and are not in the tab order. (WCAG 4.1.2)",
+                  "A disabled <button> uses the native disabled attribute, which removes it from the tab order. With href the component renders an <a> and DROPS the href, setting aria-disabled=\"true\" and role=\"link\" — an anchor without href is not focusable and not activatable, so the two paths carry the same semantics. Until 2026-08-27 it emitted <a disabled>, which the browser ignores entirely. (WCAG 4.1.2)",
               },
               {
-                criterion: "Loading state announced",
+                criterion: "Loading state — NOT IMPLEMENTED",
                 level: "AA",
                 description:
-                  "aria-busy=\"true\" is set during loading so the change is announced. (WCAG 4.1.3)",
+                  "NOT IMPLEMENTED. The component has no loading state and sets no aria-busy; a consumer must pass aria-busy itself. This checklist claimed otherwise until 2026-08-25.",
               },
             ]}
           />
@@ -647,15 +724,45 @@ export function ApplicationForm() {
               Submit application
             </Button>
           </StateRow>
-          <StateRow state="Disabled" note="Reduced opacity; not focusable; aria-disabled.">
-            <Button variant="primary" appearance="filled" disabled>
+          <StateRow state="Disabled" note="Reduced opacity; the native disabled attribute takes it out of the tab order. No aria-disabled is set — and none is needed on a <button>.">
+            <Button variant="primary" appearance="filled" disabled data-testid="btn-disabled">
               Submit application
             </Button>
           </StateRow>
-          <StateRow state="Loading" note="aria-busy=true; label swaps to a progress message.">
-            <Button variant="primary" appearance="filled" disabled aria-busy="true">
+          <StateRow state="Disabled link" note="A link-button carries the SAME disabled semantics as a button, which is the whole point: an <a> cannot use the native disabled attribute, so the component drops href entirely and sets aria-disabled. Without href an anchor is not focusable and not activatable, so no click-swallowing is needed and none is done.">
+            <Button
+              variant="primary"
+              appearance="filled"
+              href="/design-system/components/actions/button"
+              disabled
+              data-testid="btn-disabled-link"
+            >
+              Continue to eligibility
+            </Button>
+          </StateRow>
+          <StateRow state="Loading" note="loading sets aria-busy and disables the control, so a form cannot be submitted twice while the first submission is in flight. It deliberately does NOT swap the label — a control that loses its name mid-action is unusable with a screen reader, so pass “Submitting…” yourself.">
+            <Button variant="primary" appearance="filled" loading data-testid="btn-loading">
               Submitting…
             </Button>
+          </StateRow>
+          <StateRow state="Inverse tone" note="tone=&quot;inverse&quot; crosses appearance, so each variant keeps its own intent on a brand surface. Until 2026-08-27 the outlined form painted the same white-alpha border for all four — and at 2.25:1 on this background it was not a findable edge either. It paints in the portal login shell’s “Signing Into” bar, here, and in Storybook; the Ticker’s route-out strips its border in ticker.css and renders as a text link.">
+            <div
+              data-testid="inverse-strip"
+              style={{
+                display: "flex",
+                gap: "var(--sa-inline-8)",
+                padding: "var(--sa-padding-16)",
+                background: "var(--sa-color-primaryScale-600)",
+                borderRadius: "var(--sa-shape-8)",
+                flexWrap: "wrap",
+              }}
+            >
+              {(["primary", "success", "danger", "neutral"] as const).map((v) => (
+                <Button key={v} variant={v} tone="inverse" appearance="outlined" data-testid={`inv-${v}`}>
+                  {v}
+                </Button>
+              ))}
+            </div>
           </StateRow>
         </div>
         <Callout type="tip" title="Loading is a busy disabled state">

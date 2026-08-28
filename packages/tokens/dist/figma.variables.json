@@ -13,14 +13,14 @@
       "existing": 138
     },
     "Color": {
-      "total": 481,
+      "total": 495,
       "new": 9,
-      "existing": 472
+      "existing": 486
     },
     "Type": {
-      "total": 99,
+      "total": 103,
       "new": 0,
-      "existing": 99
+      "existing": 103
     },
     "Radius": {
       "total": 25,
@@ -38,9 +38,14 @@
       "existing": 8
     },
     "Static": {
-      "total": 56,
-      "new": 10,
+      "total": 68,
+      "new": 22,
       "existing": 46
+    },
+    "Viewport": {
+      "total": 2,
+      "new": 0,
+      "existing": 2
     }
   },
   "unmapped": [
@@ -2688,7 +2693,7 @@
               "name": "ref/space/16"
             }
           },
-          "description": "Use for the page’s side margin on a phone — the gap between the layout grid and the viewport edge. Bind it to the frame’s horizontal padding, not to the grid’s gutter, which is `grid/gutter`.",
+          "description": "BIND `grid/margin/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-grid-margin-mobile)"
           },
@@ -2709,7 +2714,7 @@
               "name": "ref/space/24"
             }
           },
-          "description": "Use for the page’s side margin on a tablet — the gap between the layout grid and the viewport edge. Bind it to the frame’s horizontal padding, not to the grid’s gutter, which is `grid/gutter`.",
+          "description": "BIND `grid/margin/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-grid-margin-tablet)"
           },
@@ -2730,7 +2735,7 @@
               "name": "ref/space/32"
             }
           },
-          "description": "Use for the page’s side margin on a desktop — the gap between the layout grid and the viewport edge. Bind it to the frame’s horizontal padding, not to the grid’s gutter, which is `grid/gutter`.",
+          "description": "BIND `grid/margin/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-grid-margin-desktop)"
           },
@@ -6733,6 +6738,27 @@
           "codeSyntax": {
             "WEB": "var(--sa-focus-ring)"
           }
+        },
+        {
+          "name": "overlay/neutral/boldest",
+          "path": "overlay/neutral/boldest",
+          "role": "brand-source",
+          "type": "COLOR",
+          "status": "existing",
+          "valuesByMode": {
+            "Blue": {
+              "type": "COLOR",
+              "value": "rgba(30, 33, 36, 0.5)"
+            },
+            "Navy": {
+              "type": "COLOR",
+              "value": "rgba(30, 32, 36, 0.5)"
+            }
+          },
+          "description": "Brand-aware source for Theme::overlay/neutral/boldest. Generated because that token’s light value is a literal that differs between Blue and Navy; without it the Navy brand is lost.",
+          "codeSyntax": {
+            "WEB": "var(--sa-overlay-neutral-boldest)"
+          }
         }
       ]
     },
@@ -6798,6 +6824,33 @@
           }
         },
         {
+          "name": "border/brand/primary/bolder",
+          "path": "border/brand/primary/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/600"
+            }
+          },
+          "description": "Use for the outline of a primary-brand control, such as a selected card or a focused input. Contrast 6.36:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-border-brand-primary-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 6.36,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "border/status/success/base",
           "path": "border/status/success/base",
           "type": "COLOR",
@@ -6820,6 +6873,33 @@
               "rung": "base",
               "min": 0,
               "measured": 11.67,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "border/status/success/bolder",
+          "path": "border/status/success/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600"
+            }
+          },
+          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-border-status-success-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 9.12,
               "meets": true
             }
           }
@@ -6852,6 +6932,33 @@
           }
         },
         {
+          "name": "border/status/error/bolder",
+          "path": "border/status/error/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/600"
+            }
+          },
+          "description": "Use for the outline of a control or callout reporting an error or destructive state. Contrast 6.68:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-border-status-error-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 6.68,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "border/status/warning/base",
           "path": "border/status/warning/base",
           "type": "COLOR",
@@ -6879,6 +6986,33 @@
           }
         },
         {
+          "name": "border/status/warning/bolder",
+          "path": "border/status/warning/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/600"
+            }
+          },
+          "description": "Use for the outline of a control or callout reporting a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-border-status-warning-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 5.68,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "border/status/info/base",
           "path": "border/status/info/base",
           "type": "COLOR",
@@ -6900,6 +7034,33 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
+              "measured": 6.3,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "border/status/info/bolder",
+          "path": "border/status/info/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/infoScale/600"
+            }
+          },
+          "description": "Use for the outline of a control or callout reporting an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-border-status-info-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
               "measured": 6.3,
               "meets": true
             }
@@ -8475,6 +8636,33 @@
           }
         },
         {
+          "name": "text/status/success/bolder",
+          "path": "text/status/success/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600"
+            }
+          },
+          "description": "Use for text that report a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-text-status-success-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 9.12,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "text/status/error/base",
           "path": "text/status/error/base",
           "type": "COLOR",
@@ -8497,6 +8685,33 @@
               "rung": "base",
               "min": 4.5,
               "measured": 9.1,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "text/status/error/bolder",
+          "path": "text/status/error/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/600"
+            }
+          },
+          "description": "Use for text that report an error or destructive state. Contrast 6.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-text-status-error-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 6.68,
               "meets": true
             }
           }
@@ -8529,6 +8744,33 @@
           }
         },
         {
+          "name": "text/status/warning/bolder",
+          "path": "text/status/warning/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/600"
+            }
+          },
+          "description": "Use for text that report a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-text-status-warning-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 5.68,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "text/status/info/base",
           "path": "text/status/info/base",
           "type": "COLOR",
@@ -8549,6 +8791,33 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "base",
+              "min": 4.5,
+              "measured": 6.3,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "text/status/info/bolder",
+          "path": "text/status/info/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/infoScale/600"
+            }
+          },
+          "description": "Use for text that report an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-text-status-info-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
               "min": 4.5,
               "measured": 6.3,
               "meets": true
@@ -8658,6 +8927,33 @@
           }
         },
         {
+          "name": "icon/neutral/subtler",
+          "path": "icon/neutral/subtler",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/500"
+            }
+          },
+          "description": "Use for non-essential text and quiet icons, never body copy. Contrast 4.65:1 vs bg/neutral/base — meets ≥3:1: non-essential text and quiet icons.",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-neutral-subtler)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "subtler",
+              "min": 3,
+              "measured": 4.65,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "icon/brand/primary/base",
           "path": "icon/brand/primary/base",
           "type": "COLOR",
@@ -8739,6 +9035,33 @@
           }
         },
         {
+          "name": "icon/status/success/bolder",
+          "path": "icon/status/success/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600"
+            }
+          },
+          "description": "Use for icons that report a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-status-success-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 9.12,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "icon/status/error/base",
           "path": "icon/status/error/base",
           "type": "COLOR",
@@ -8761,6 +9084,33 @@
               "rung": "base",
               "min": 4.5,
               "measured": 9.1,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "icon/status/error/bolder",
+          "path": "icon/status/error/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/600"
+            }
+          },
+          "description": "Use for icons that report an error or destructive state. Contrast 6.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-status-error-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 6.68,
               "meets": true
             }
           }
@@ -8793,6 +9143,33 @@
           }
         },
         {
+          "name": "icon/status/warning/bolder",
+          "path": "icon/status/warning/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/600"
+            }
+          },
+          "description": "Use for icons that report a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-status-warning-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
+              "min": 4.5,
+              "measured": 5.68,
+              "meets": true
+            }
+          }
+        },
+        {
           "name": "icon/status/info/base",
           "path": "icon/status/info/base",
           "type": "COLOR",
@@ -8813,6 +9190,33 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "base",
+              "min": 4.5,
+              "measured": 6.3,
+              "meets": true
+            }
+          }
+        },
+        {
+          "name": "icon/status/info/bolder",
+          "path": "icon/status/info/bolder",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Default": {
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/infoScale/600"
+            }
+          },
+          "description": "Use for icons that report an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "codeSyntax": {
+            "WEB": "var(--sa-icon-status-info-bolder)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/system.generated.json",
+            "in.gov.mosje.contrast": {
+              "rung": "bolder",
               "min": 4.5,
               "measured": 6.3,
               "meets": true
@@ -9613,8 +10017,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/100"
             }
           },
           "description": "Use for primary-brand secondary buttons at rest placed on a solid brand surface — the outline.",
@@ -9674,8 +10079,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/50"
             }
           },
           "description": "Use when the user hovers over a primary-brand secondary button placed on a solid brand surface — the outline.",
@@ -11102,8 +11508,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/100"
             }
           },
           "description": "Use for confirming secondary buttons at rest placed on a solid brand surface — the outline.",
@@ -11163,8 +11570,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/50"
             }
           },
           "description": "Use when the user hovers over a confirming secondary button placed on a solid brand surface — the outline.",
@@ -12591,8 +12999,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/100"
             }
           },
           "description": "Use for destructive secondary buttons at rest placed on a solid brand surface — the outline.",
@@ -12652,8 +13061,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/50"
             }
           },
           "description": "Use when the user hovers over a destructive secondary button placed on a solid brand surface — the outline.",
@@ -14080,8 +14490,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/100"
             }
           },
           "description": "Use for neutral secondary buttons at rest placed on a solid brand surface — the outline.",
@@ -14141,8 +14552,9 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/50"
             }
           },
           "description": "Use when the user hovers over a neutral secondary button placed on a solid brand surface — the outline.",
@@ -14305,7 +14717,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/neutralScale/700"
+              "name": "color/neutralScale/800"
             }
           },
           "description": "Use for neutral tertiary buttons at rest — the label.",
@@ -14367,7 +14779,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/neutralScale/700"
+              "name": "color/neutralScale/800"
             }
           },
           "description": "Use when the user hovers over a neutral tertiary button — the label.",
@@ -15031,11 +15443,12 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.5)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "overlay/neutral/boldest"
             }
           },
-          "description": "Use for the scrim behind a modal or drawer — it suppresses the page beneath rather than carrying content.",
+          "description": "The scrim behind a modal — neutral 800 at 50%. The NAVY line below is structural, not stylistic: Figma cannot express \"alias plus alpha\", so a translucent token can only be a LITERAL, and a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed. Without it, Navy inherited the BLUE neutral (#1E2124 instead of #1E2024) and the scrim was quietly the wrong brand — invisible in review, wrong in every Navy screenshot. Authoring the second value is what makes the exporter generate a brand-aware companion in Palette (which does carry the brand modes) and alias this token to it. Every other rgba() in this file is exposed to the same trap.",
           "codeSyntax": {
             "WEB": "var(--sa-overlay-neutral-boldest)"
           },
@@ -15112,7 +15525,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#e1560f"
+              "value": "#a25a00"
             }
           },
           "description": "Use as series 2 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15132,7 +15545,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#046a38"
+              "value": "#007668"
             }
           },
           "description": "Use as series 3 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15152,7 +15565,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#7e22ce"
+              "value": "#930121"
             }
           },
           "description": "Use as series 4 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15172,7 +15585,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#0e7490"
+              "value": "#719348"
             }
           },
           "description": "Use as series 5 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15192,7 +15605,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#b45309"
+              "value": "#b671a6"
             }
           },
           "description": "Use as series 6 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15212,7 +15625,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#be185d"
+              "value": "#7261a8"
             }
           },
           "description": "Use as series 7 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15232,7 +15645,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#1558b0"
+              "value": "#323ca8"
             }
           },
           "description": "Use as series 8 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15252,7 +15665,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#4d7c0f"
+              "value": "#5a406e"
             }
           },
           "description": "Use as series 9 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15272,7 +15685,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#9f1239"
+              "value": "#594d00"
             }
           },
           "description": "Use as series 10 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15292,7 +15705,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#0f766e"
+              "value": "#c02865"
             }
           },
           "description": "Use as series 11 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15312,7 +15725,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#475569"
+              "value": "#4c90ac"
             }
           },
           "description": "Use as series 12 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -17379,158 +17792,38 @@
           }
         },
         {
-          "name": "ref/font/weight/regular",
-          "path": "font/weight/regular",
-          "type": "FLOAT",
+          "name": "ref/font/family/icon",
+          "path": "font/family/icon",
+          "type": "STRING",
           "valuesByMode": {
             "Website · Desktop": {
               "type": "STRING",
-              "value": "Regular"
+              "value": "Material Symbols Rounded"
             },
             "Website · Tablet": {
               "type": "STRING",
-              "value": "Regular"
+              "value": "Material Symbols Rounded"
             },
             "Website · Mobile": {
               "type": "STRING",
-              "value": "Regular"
+              "value": "Material Symbols Rounded"
             },
             "Portal · Desktop": {
               "type": "STRING",
-              "value": "Regular"
+              "value": "Material Symbols Rounded"
             },
             "Portal · Tablet": {
               "type": "STRING",
-              "value": "Regular"
+              "value": "Material Symbols Rounded"
             },
             "Portal · Mobile": {
               "type": "STRING",
-              "value": "Regular"
+              "value": "Material Symbols Rounded"
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "The ICON face — Material Symbols Rounded, the official SAMAVESH icon system. It is here for the same reason every other family is: a Material Symbols glyph is TEXT, not artwork, so its family is a typographic decision the design system owns rather than a constant three files happen to agree on. Before this token the name was a literal in `icons.css` (twice) and in all seven Figma `Icon/*` text styles, which is four places to change and no way to prove they still match. The stack is the family plus a generic, so a failed webfont falls back to a real face rather than to nothing; Figma takes only the first entry (`primaryFontFamily`), which is exactly the family name its picker resolves. NOT a Tier-2 role — bind `font/icon` from anything that renders. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-font-weight-regular)"
-          },
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/weight/medium",
-          "path": "font/weight/medium",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "STRING",
-              "value": "Medium"
-            },
-            "Website · Tablet": {
-              "type": "STRING",
-              "value": "Medium"
-            },
-            "Website · Mobile": {
-              "type": "STRING",
-              "value": "Medium"
-            },
-            "Portal · Desktop": {
-              "type": "STRING",
-              "value": "Medium"
-            },
-            "Portal · Tablet": {
-              "type": "STRING",
-              "value": "Medium"
-            },
-            "Portal · Mobile": {
-              "type": "STRING",
-              "value": "Medium"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-weight-medium)"
-          },
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/weight/semibold",
-          "path": "font/weight/semibold",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "STRING",
-              "value": "SemiBold"
-            },
-            "Website · Tablet": {
-              "type": "STRING",
-              "value": "SemiBold"
-            },
-            "Website · Mobile": {
-              "type": "STRING",
-              "value": "SemiBold"
-            },
-            "Portal · Desktop": {
-              "type": "STRING",
-              "value": "SemiBold"
-            },
-            "Portal · Tablet": {
-              "type": "STRING",
-              "value": "SemiBold"
-            },
-            "Portal · Mobile": {
-              "type": "STRING",
-              "value": "SemiBold"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-weight-semibold)"
-          },
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/weight/bold",
-          "path": "font/weight/bold",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "STRING",
-              "value": "Bold"
-            },
-            "Website · Tablet": {
-              "type": "STRING",
-              "value": "Bold"
-            },
-            "Website · Mobile": {
-              "type": "STRING",
-              "value": "Bold"
-            },
-            "Portal · Desktop": {
-              "type": "STRING",
-              "value": "Bold"
-            },
-            "Portal · Tablet": {
-              "type": "STRING",
-              "value": "Bold"
-            },
-            "Portal · Mobile": {
-              "type": "STRING",
-              "value": "Bold"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-weight-bold)"
+            "WEB": "var(--sa-ref-font-family-icon)"
           },
           "status": "existing",
           "$extensions": {
@@ -18137,7 +18430,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/1/size",
+          "name": "type/display/1/size",
           "path": "font/role/display/1/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18183,7 +18476,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/1/lh",
+          "name": "type/display/1/lh",
           "path": "font/role/display/1/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18229,7 +18522,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/1/para",
+          "name": "type/display/1/para",
           "path": "font/role/display/1/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18275,7 +18568,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/2/size",
+          "name": "type/display/2/size",
           "path": "font/role/display/2/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18321,7 +18614,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/2/lh",
+          "name": "type/display/2/lh",
           "path": "font/role/display/2/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18367,7 +18660,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/2/para",
+          "name": "type/display/2/para",
           "path": "font/role/display/2/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18413,7 +18706,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/3/size",
+          "name": "type/display/3/size",
           "path": "font/role/display/3/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18459,7 +18752,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/3/lh",
+          "name": "type/display/3/lh",
           "path": "font/role/display/3/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18505,7 +18798,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/3/para",
+          "name": "type/display/3/para",
           "path": "font/role/display/3/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18551,7 +18844,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/4/size",
+          "name": "type/display/4/size",
           "path": "font/role/display/4/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18597,7 +18890,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/4/lh",
+          "name": "type/display/4/lh",
           "path": "font/role/display/4/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18643,7 +18936,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/4/para",
+          "name": "type/display/4/para",
           "path": "font/role/display/4/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18689,7 +18982,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/5/size",
+          "name": "type/display/5/size",
           "path": "font/role/display/5/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18735,7 +19028,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/5/lh",
+          "name": "type/display/5/lh",
           "path": "font/role/display/5/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18781,7 +19074,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/5/para",
+          "name": "type/display/5/para",
           "path": "font/role/display/5/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18827,7 +19120,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/6/size",
+          "name": "type/display/6/size",
           "path": "font/role/display/6/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18873,7 +19166,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/6/lh",
+          "name": "type/display/6/lh",
           "path": "font/role/display/6/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18919,7 +19212,7 @@
           }
         },
         {
-          "name": "ref/font/role/display/6/para",
+          "name": "type/display/6/para",
           "path": "font/role/display/6/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -18965,7 +19258,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/1/size",
+          "name": "type/headline/1/size",
           "path": "font/role/headline/1/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19011,7 +19304,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/1/lh",
+          "name": "type/headline/1/lh",
           "path": "font/role/headline/1/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19057,7 +19350,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/1/para",
+          "name": "type/headline/1/para",
           "path": "font/role/headline/1/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19103,7 +19396,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/2/size",
+          "name": "type/headline/2/size",
           "path": "font/role/headline/2/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19149,7 +19442,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/2/lh",
+          "name": "type/headline/2/lh",
           "path": "font/role/headline/2/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19195,7 +19488,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/2/para",
+          "name": "type/headline/2/para",
           "path": "font/role/headline/2/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19241,7 +19534,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/3/size",
+          "name": "type/headline/3/size",
           "path": "font/role/headline/3/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19287,7 +19580,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/3/lh",
+          "name": "type/headline/3/lh",
           "path": "font/role/headline/3/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19333,7 +19626,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/3/para",
+          "name": "type/headline/3/para",
           "path": "font/role/headline/3/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19379,7 +19672,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/4/size",
+          "name": "type/headline/4/size",
           "path": "font/role/headline/4/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19425,7 +19718,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/4/lh",
+          "name": "type/headline/4/lh",
           "path": "font/role/headline/4/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19471,7 +19764,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/4/para",
+          "name": "type/headline/4/para",
           "path": "font/role/headline/4/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19517,7 +19810,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/5/size",
+          "name": "type/headline/5/size",
           "path": "font/role/headline/5/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19563,7 +19856,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/5/lh",
+          "name": "type/headline/5/lh",
           "path": "font/role/headline/5/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19609,7 +19902,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/5/para",
+          "name": "type/headline/5/para",
           "path": "font/role/headline/5/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19655,7 +19948,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/6/size",
+          "name": "type/headline/6/size",
           "path": "font/role/headline/6/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19701,7 +19994,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/6/lh",
+          "name": "type/headline/6/lh",
           "path": "font/role/headline/6/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19747,7 +20040,7 @@
           }
         },
         {
-          "name": "ref/font/role/headline/6/para",
+          "name": "type/headline/6/para",
           "path": "font/role/headline/6/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19793,7 +20086,7 @@
           }
         },
         {
-          "name": "ref/font/role/title/1/size",
+          "name": "type/title/1/size",
           "path": "font/role/title/1/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19839,7 +20132,7 @@
           }
         },
         {
-          "name": "ref/font/role/title/1/lh",
+          "name": "type/title/1/lh",
           "path": "font/role/title/1/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19885,7 +20178,7 @@
           }
         },
         {
-          "name": "ref/font/role/title/1/para",
+          "name": "type/title/1/para",
           "path": "font/role/title/1/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19931,7 +20224,7 @@
           }
         },
         {
-          "name": "ref/font/role/title/2/size",
+          "name": "type/title/2/size",
           "path": "font/role/title/2/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -19977,7 +20270,7 @@
           }
         },
         {
-          "name": "ref/font/role/title/2/lh",
+          "name": "type/title/2/lh",
           "path": "font/role/title/2/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20023,7 +20316,7 @@
           }
         },
         {
-          "name": "ref/font/role/title/2/para",
+          "name": "type/title/2/para",
           "path": "font/role/title/2/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20069,7 +20362,7 @@
           }
         },
         {
-          "name": "ref/font/role/title/3/size",
+          "name": "type/title/3/size",
           "path": "font/role/title/3/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20115,7 +20408,7 @@
           }
         },
         {
-          "name": "ref/font/role/title/3/lh",
+          "name": "type/title/3/lh",
           "path": "font/role/title/3/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20161,7 +20454,7 @@
           }
         },
         {
-          "name": "ref/font/role/title/3/para",
+          "name": "type/title/3/para",
           "path": "font/role/title/3/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20207,7 +20500,7 @@
           }
         },
         {
-          "name": "ref/font/role/body/1/size",
+          "name": "type/body/1/size",
           "path": "font/role/body/1/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20253,7 +20546,7 @@
           }
         },
         {
-          "name": "ref/font/role/body/1/lh",
+          "name": "type/body/1/lh",
           "path": "font/role/body/1/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20299,7 +20592,7 @@
           }
         },
         {
-          "name": "ref/font/role/body/1/para",
+          "name": "type/body/1/para",
           "path": "font/role/body/1/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20345,7 +20638,7 @@
           }
         },
         {
-          "name": "ref/font/role/body/2/size",
+          "name": "type/body/2/size",
           "path": "font/role/body/2/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20391,7 +20684,7 @@
           }
         },
         {
-          "name": "ref/font/role/body/2/lh",
+          "name": "type/body/2/lh",
           "path": "font/role/body/2/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20437,7 +20730,7 @@
           }
         },
         {
-          "name": "ref/font/role/body/2/para",
+          "name": "type/body/2/para",
           "path": "font/role/body/2/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20483,7 +20776,7 @@
           }
         },
         {
-          "name": "ref/font/role/body/3/size",
+          "name": "type/body/3/size",
           "path": "font/role/body/3/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20529,7 +20822,7 @@
           }
         },
         {
-          "name": "ref/font/role/body/3/lh",
+          "name": "type/body/3/lh",
           "path": "font/role/body/3/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20575,7 +20868,7 @@
           }
         },
         {
-          "name": "ref/font/role/body/3/para",
+          "name": "type/body/3/para",
           "path": "font/role/body/3/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20621,7 +20914,7 @@
           }
         },
         {
-          "name": "ref/font/role/label/1/size",
+          "name": "type/label/1/size",
           "path": "font/role/label/1/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20667,7 +20960,7 @@
           }
         },
         {
-          "name": "ref/font/role/label/1/lh",
+          "name": "type/label/1/lh",
           "path": "font/role/label/1/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20713,7 +21006,7 @@
           }
         },
         {
-          "name": "ref/font/role/label/1/para",
+          "name": "type/label/1/para",
           "path": "font/role/label/1/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20759,7 +21052,7 @@
           }
         },
         {
-          "name": "ref/font/role/label/2/size",
+          "name": "type/label/2/size",
           "path": "font/role/label/2/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20805,7 +21098,7 @@
           }
         },
         {
-          "name": "ref/font/role/label/2/lh",
+          "name": "type/label/2/lh",
           "path": "font/role/label/2/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20851,7 +21144,7 @@
           }
         },
         {
-          "name": "ref/font/role/label/2/para",
+          "name": "type/label/2/para",
           "path": "font/role/label/2/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20897,7 +21190,7 @@
           }
         },
         {
-          "name": "ref/font/role/label/3/size",
+          "name": "type/label/3/size",
           "path": "font/role/label/3/size",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20943,7 +21236,7 @@
           }
         },
         {
-          "name": "ref/font/role/label/3/lh",
+          "name": "type/label/3/lh",
           "path": "font/role/label/3/lh",
           "type": "FLOAT",
           "valuesByMode": {
@@ -20989,7 +21282,7 @@
           }
         },
         {
-          "name": "ref/font/role/label/3/para",
+          "name": "type/label/3/para",
           "path": "font/role/label/3/para",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21035,7 +21328,7 @@
           }
         },
         {
-          "name": "ref/font/tracking/display/1",
+          "name": "type/display/1/tracking",
           "path": "font/tracking/display/1",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21081,7 +21374,7 @@
           }
         },
         {
-          "name": "ref/font/tracking/display/2",
+          "name": "type/display/2/tracking",
           "path": "font/tracking/display/2",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21127,7 +21420,7 @@
           }
         },
         {
-          "name": "ref/font/tracking/display/3",
+          "name": "type/display/3/tracking",
           "path": "font/tracking/display/3",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21173,7 +21466,7 @@
           }
         },
         {
-          "name": "ref/font/tracking/display/4",
+          "name": "type/display/4/tracking",
           "path": "font/tracking/display/4",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21219,7 +21512,7 @@
           }
         },
         {
-          "name": "ref/font/tracking/display/5",
+          "name": "type/display/5/tracking",
           "path": "font/tracking/display/5",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21265,7 +21558,7 @@
           }
         },
         {
-          "name": "ref/font/tracking/display/6",
+          "name": "type/display/6/tracking",
           "path": "font/tracking/display/6",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21311,7 +21604,7 @@
           }
         },
         {
-          "name": "ref/font/tracking/heading",
+          "name": "type/heading/tracking",
           "path": "font/tracking/heading",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21357,7 +21650,7 @@
           }
         },
         {
-          "name": "ref/font/tracking/title",
+          "name": "type/title/tracking",
           "path": "font/tracking/title",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21403,7 +21696,7 @@
           }
         },
         {
-          "name": "ref/font/tracking/body",
+          "name": "type/body/tracking",
           "path": "font/tracking/body",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21449,7 +21742,7 @@
           }
         },
         {
-          "name": "ref/font/tracking/label",
+          "name": "type/label/tracking",
           "path": "font/tracking/label",
           "type": "FLOAT",
           "valuesByMode": {
@@ -21671,6 +21964,292 @@
           "description": "Tabular and code contexts. A system stack, deliberately not a webfont.",
           "codeSyntax": {
             "WEB": "var(--sa-font-mono)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "font/weight/light",
+          "path": "font/weight/light",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "STRING",
+              "value": "Light"
+            },
+            "Website · Tablet": {
+              "type": "STRING",
+              "value": "Light"
+            },
+            "Website · Mobile": {
+              "type": "STRING",
+              "value": "Light"
+            },
+            "Portal · Desktop": {
+              "type": "STRING",
+              "value": "Light"
+            },
+            "Portal · Tablet": {
+              "type": "STRING",
+              "value": "Light"
+            },
+            "Portal · Mobile": {
+              "type": "STRING",
+              "value": "Light"
+            }
+          },
+          "description": "300 — the ICON cut, and the only place the estate uses it. Every Figma `Icon/*` text style is Material Symbols Rounded / Light and `<Icon>` defaults to 300, so this is the one token both read. NOT for prose: 300 on Noto Sans at body sizes thins the stroke below what the ramp is drawn for.",
+          "codeSyntax": {
+            "WEB": "var(--sa-font-weight-light)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "font/weight/regular",
+          "path": "font/weight/regular",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "STRING",
+              "value": "Regular"
+            },
+            "Website · Tablet": {
+              "type": "STRING",
+              "value": "Regular"
+            },
+            "Website · Mobile": {
+              "type": "STRING",
+              "value": "Regular"
+            },
+            "Portal · Desktop": {
+              "type": "STRING",
+              "value": "Regular"
+            },
+            "Portal · Tablet": {
+              "type": "STRING",
+              "value": "Regular"
+            },
+            "Portal · Mobile": {
+              "type": "STRING",
+              "value": "Regular"
+            }
+          },
+          "description": "Body copy and anything that is read rather than scanned.",
+          "codeSyntax": {
+            "WEB": "var(--sa-font-weight-regular)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "font/weight/medium",
+          "path": "font/weight/medium",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "STRING",
+              "value": "Medium"
+            },
+            "Website · Tablet": {
+              "type": "STRING",
+              "value": "Medium"
+            },
+            "Website · Mobile": {
+              "type": "STRING",
+              "value": "Medium"
+            },
+            "Portal · Desktop": {
+              "type": "STRING",
+              "value": "Medium"
+            },
+            "Portal · Tablet": {
+              "type": "STRING",
+              "value": "Medium"
+            },
+            "Portal · Mobile": {
+              "type": "STRING",
+              "value": "Medium"
+            }
+          },
+          "description": "Titles and labels — the weight that separates a heading from its paragraph without shouting.",
+          "codeSyntax": {
+            "WEB": "var(--sa-font-weight-medium)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "font/weight/semibold",
+          "path": "font/weight/semibold",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "STRING",
+              "value": "SemiBold"
+            },
+            "Website · Tablet": {
+              "type": "STRING",
+              "value": "SemiBold"
+            },
+            "Website · Mobile": {
+              "type": "STRING",
+              "value": "SemiBold"
+            },
+            "Portal · Desktop": {
+              "type": "STRING",
+              "value": "SemiBold"
+            },
+            "Portal · Tablet": {
+              "type": "STRING",
+              "value": "SemiBold"
+            },
+            "Portal · Mobile": {
+              "type": "STRING",
+              "value": "SemiBold"
+            }
+          },
+          "description": "Headlines, and the emphasised cut of body copy.",
+          "codeSyntax": {
+            "WEB": "var(--sa-font-weight-semibold)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "font/weight/bold",
+          "path": "font/weight/bold",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "STRING",
+              "value": "Bold"
+            },
+            "Website · Tablet": {
+              "type": "STRING",
+              "value": "Bold"
+            },
+            "Website · Mobile": {
+              "type": "STRING",
+              "value": "Bold"
+            },
+            "Portal · Desktop": {
+              "type": "STRING",
+              "value": "Bold"
+            },
+            "Portal · Tablet": {
+              "type": "STRING",
+              "value": "Bold"
+            },
+            "Portal · Mobile": {
+              "type": "STRING",
+              "value": "Bold"
+            }
+          },
+          "description": "Reserved. The estate's headings stop at semibold; bold is for the rare in-line emphasis a heading cannot carry.",
+          "codeSyntax": {
+            "WEB": "var(--sa-font-weight-bold)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "font/weight/displayMedium",
+          "path": "font/weight/displayMedium",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "STRING",
+              "value": "Display Medium"
+            },
+            "Website · Tablet": {
+              "type": "STRING",
+              "value": "Display Medium"
+            },
+            "Website · Mobile": {
+              "type": "STRING",
+              "value": "Display Medium"
+            },
+            "Portal · Desktop": {
+              "type": "STRING",
+              "value": "Display Medium"
+            },
+            "Portal · Tablet": {
+              "type": "STRING",
+              "value": "Display Medium"
+            },
+            "Portal · Mobile": {
+              "type": "STRING",
+              "value": "Display Medium"
+            }
+          },
+          "description": "The Display cut at Medium — 500 on `Noto Sans Display` for the 40-80px ramp. It is a SEPARATE token from `medium` because Figma does not model the Display cut as a family: it is the STYLE string \"Display Medium\" of Noto Sans, which is why the build special-cases this one name instead of projecting 500 to \"Medium\". In CSS the same pairing is `font/display` plus this weight.",
+          "codeSyntax": {
+            "WEB": "var(--sa-font-weight-displayMedium)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "font/icon",
+          "path": "font/icon",
+          "type": "STRING",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            },
+            "Website · Tablet": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            },
+            "Website · Mobile": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            },
+            "Portal · Desktop": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            },
+            "Portal · Tablet": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            },
+            "Portal · Mobile": {
+              "type": "ALIAS",
+              "collection": "Type",
+              "name": "ref/font/family/icon"
+            }
+          },
+          "description": "Material Symbols Rounded — the face every icon glyph renders in. Bind this from `.material-symbols-rounded`, never the Tier-1 primitive. The `@font-face` rule in icons.css still names the family literally because a font-face descriptor cannot take a custom property; that literal is the font LOADER, this token is what everything else reads.",
+          "codeSyntax": {
+            "WEB": "var(--sa-font-icon)"
           },
           "status": "existing",
           "$extensions": {
@@ -23521,6 +24100,27 @@
           }
         },
         {
+          "name": "ref/breakpoint/laptop",
+          "path": "breakpoint/laptop",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 1024,
+              "unit": "px"
+            }
+          },
+          "description": "The third anchor, and the one the ladder was missing. Between tablet (768) and desktop (1280) sat a 512px void with no token in it — which is where iPad landscape, 11-13\" laptops and every half-screen window on a 2K monitor live. Anything needing to change at 1024 had to hardcode it or round to one of the neighbours. Matches Tailwind's `lg`, so the token and the utility variant used across this estate finally agree. Viewport anchor. The ladder follows Material 3's window size classes, which are derived from measured device distribution rather than from one framework's grid: compact <600, medium 600-839, expanded 840-1199, large 1200-1599, extra-large >=1600. UX4G publishes the two content widths but no breakpoints at all, so there is nothing to diverge FROM here; where its guidance and interface quality met, quality won, per .claude/rules/standards-precedence.md. Recorded in docs/guidelines/README.md. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
+          "codeSyntax": {
+            "WEB": "var(--sa-ref-breakpoint-laptop)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "ref",
+            "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
           "name": "ref/breakpoint/desktop",
           "path": "breakpoint/desktop",
           "type": "FLOAT",
@@ -23548,11 +24148,11 @@
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 1768,
+              "value": 1440,
               "unit": "px"
             }
           },
-          "description": "The fourth anchor — where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). UX4G states the two widths as guidance (\"max content width: 1200px desktop, 1320px desktop XL\") without publishing a breakpoint, so the anchor comes from the estate's own viewport ladder, where desktop is 1440 and desktop-XL is 1768. Bootstrap's `container-xxl` engages at 1400 and was rejected for this: at 1400 the 1440 design frame would take the 1320 cap, contradicting the 1200-at-desktop guidance and the website Handoff, which shows the wide margin of a 1200 column at 1440. UX4G's Bootstrap CONTAINER LADDER is a separate thing and is kept faithfully as `container/sm`…`container/2xl`; this token governs the CONTENT CAP only. Not part of the type curve either — `clamp()` still tops out at 1280, so this anchor resizes no glyph. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
+          "description": "Where the content cap widens from `container/content` (1200) to `container/contentXl` (1320). 1768 -> 1600 -> 1440 over 2026-08-24, each step decided by measuring the page rather than by citing a ladder. 1768 was abandoned because a 1728-wide viewport carried 264px of margin each side against 1768's own 224px — margins NARROWING as the screen grew. 1600 (Material 3's extra-large window class) was then abandoned because it left the ladder's WEAKEST POINT sitting on its most common viewport: at 1536 — 1920 at 125% Windows scaling, the single most common desktop width — content held only 75% of the screen, worse than at 1280 (90%) and worse than at 1600 (78%). 1440 fixes the range that carries the most users: 1440 goes 80% -> 88%, 1512 76% -> 84%, 1536 75% -> 83%. Nothing at 1600 and above changes. THE FLOOR THAT WAS DROPPED, deliberately: earlier notes held that 1440 must stay on the 1200 cap because UX4G says '1200px desktop'. UX4G publishes no breakpoints at all, so it never fixed where desktop ends; and `.claude/rules/standards-precedence.md` puts interface quality above it, which is the whole point of that rule. Recorded as divergence #6 in docs/guidelines/README.md. It also makes the code agree with the Handoff, whose Home frame draws a 1320 container on a 1440 artboard — the frame was right and the note calling it wrong has been withdrawn. Not part of the type curve — `clamp()` still tops out at 1280, so this anchor resizes no glyph. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-breakpoint-desktopXl)"
           },
@@ -23560,6 +24160,207 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "ref/breakpoint/desktopWide",
+          "path": "breakpoint/desktopWide",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 1920,
+              "unit": "px"
+            }
+          },
+          "description": "The fifth anchor, where the cap widens a second time to `container/contentWide` (1440). Without it a 2560-wide monitor rendered a 1320 column between 620px margins — 48% of the screen given to nothing, which is the complaint that started this. One step is not enough for the range 1600-2560+: a single cap either starves the desktop or sprawls on the monitor. Stops at 1440 rather than continuing to grow because beyond that a 12-column grid starts costing more in eye travel than it returns in density. Viewport anchor. The ladder follows Material 3's window size classes, which are derived from measured device distribution rather than from one framework's grid: compact <600, medium 600-839, expanded 840-1199, large 1200-1599, extra-large >=1600. UX4G publishes the two content widths but no breakpoints at all, so there is nothing to diverge FROM here; where its guidance and interface quality met, quality won, per .claude/rules/standards-precedence.md. Recorded in docs/guidelines/README.md. Viewport anchor. The fluid type curve is built from these; they are not a layout property to bind.",
+          "codeSyntax": {
+            "WEB": "var(--sa-ref-breakpoint-desktopWide)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "ref",
+            "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/ink",
+          "path": "brand/samavesh/ink",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#1f2428"
+            }
+          },
+          "description": "The wordmark's own ink. NOT `text/neutral/base` (#1E2124) — close enough to pass a glance, far enough to be a defect.",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-ink)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/blue",
+          "path": "brand/samavesh/blue",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#06038d"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-blue)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/green",
+          "path": "brand/samavesh/green",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#046a38"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-green)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/orange",
+          "path": "brand/samavesh/orange",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#ff671f"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-orange)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/saffron",
+          "path": "brand/samavesh/saffron",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#ed8a1d"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-saffron)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/navy",
+          "path": "brand/samavesh/navy",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#003366"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-navy)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/white",
+          "path": "brand/samavesh/white",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#ffffff"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-white)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/samavesh/black",
+          "path": "brand/samavesh/black",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#000000"
+            }
+          },
+          "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`).",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-samavesh-black)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "brand/digilocker/purple",
+          "path": "brand/digilocker/purple",
+          "type": "COLOR",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "COLOR",
+              "value": "#5330e6"
+            }
+          },
+          "description": "DigiLocker's own purple, for the DigiLocker lockup only. A partner's colour is theirs, so it is a constant here and never a role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-brand-digilocker-purple)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
           }
         },
         {
@@ -23720,7 +24521,7 @@
               "unit": "px"
             }
           },
-          "description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor.",
+          "description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor. BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-container-content)"
           },
@@ -23741,9 +24542,30 @@
               "name": "container/2xl"
             }
           },
-          "description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages; Bootstrap — whose ladder UX4G's is — engages `container-xxl` at 1400, so that is the anchor.",
+          "description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages, so the anchor is the estate's own `breakpoint/desktopXl` — 1440 since 2026-08-24 (it read 1768, then 1600, before the page itself was measured). Bootstrap's `container-xxl` at 1400 was considered and rejected: at 1400 the 1440 design frame would take this cap, contradicting the 1200-at-desktop guidance. (This note said 1400 WAS the anchor until 2026-08-24; it never was — the token has read 1768, then 1600, and now 1440.) BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
           "codeSyntax": {
             "WEB": "var(--sa-container-contentXl)"
+          },
+          "status": "new",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "container/contentWide",
+          "path": "container/contentWide",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 1440,
+              "unit": "px"
+            }
+          },
+          "description": "The content cap at `breakpoint/desktopWide` (1920) and above — the third and last step of the page container (1200 -> 1320 -> 1440). Exists because two steps left a 2560-wide monitor rendering a 1320 column between 620px margins. Stops here rather than tracking the viewport: past ~1440 a 12-column grid costs more in eye travel than it returns in density, and the line lengths inside it stop being scannable. Consumed only through `--sa-container-page` in foundations/layout.css; never restate it in a component. BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size.",
+          "codeSyntax": {
+            "WEB": "var(--sa-container-contentWide)"
           },
           "status": "new",
           "$extensions": {
@@ -23920,12 +24742,118 @@
           }
         }
       ]
+    },
+    {
+      "name": "Viewport",
+      "axis": "viewport",
+      "modes": [
+        "Mobile",
+        "Tablet",
+        "Laptop",
+        "Desktop",
+        "Desktop XL",
+        "Desktop Wide"
+      ],
+      "variables": [
+        {
+          "name": "container/page",
+          "path": "container/page",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mobile": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/content"
+            },
+            "Tablet": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/content"
+            },
+            "Laptop": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/content"
+            },
+            "Desktop": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/content"
+            },
+            "Desktop XL": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/contentXl"
+            },
+            "Desktop Wide": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "container/contentWide"
+            }
+          },
+          "description": "The RESOLVED page cap at a given window size — what `.sa-container` actually applies, and the one container token a page skeleton should bind. `content`/`contentXl`/`contentWide` are the three rungs; this is which rung is in force. It carries a mode per viewport, so a designer opening a frame in Desktop XL sees 1320 without having to know the media query that picks it. That was previously impossible: the CSS derived `--sa-container-page` in a media query, and a Figma variable cannot express a media query, so the cap was the one layout value the library could not represent at all. $value is the mobile-first base, which is `content` — the cap is 1200 everywhere below 1600.",
+          "codeSyntax": {
+            "WEB": "var(--sa-container-page)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "grid/margin/page",
+          "path": "grid/margin/page",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mobile": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/mobile"
+            },
+            "Tablet": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/tablet"
+            },
+            "Laptop": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/tablet"
+            },
+            "Desktop": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/tablet"
+            },
+            "Desktop XL": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/tablet"
+            },
+            "Desktop Wide": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "grid/margin/desktop"
+            }
+          },
+          "description": "The RESOLVED page margin at a given window size — the companion to `container/page`, and what `.sa-container` applies as its inline padding. `mobile`/`tablet`/`desktop` are the three rungs; this is which rung is in force. It steps with the CAP, not with the viewport anchors: a wider margin only buys breathing room while the container is still fluid, and once the cap binds it buys nothing and costs content. Stepping it at the desktop anchor did exactly that — content went 1152 -> 1136 crossing 1280 — so Laptop, Desktop and Desktop XL hold the tablet rung and the 32px step waits for Desktop Wide. Keeping 24 at Desktop XL is also what makes the content there exactly 1272 — the width the Handoff's own frame draws. $value is the mobile-first base.",
+          "codeSyntax": {
+            "WEB": "var(--sa-grid-margin-page)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        }
+      ]
     }
   ],
   "contrast": {
     "$description": "Contrast classes are MEASURED against each token's own surface, across every brand, and the worst case is what the description states. A token absent from this summary carries no contrast sentence because the prominence ladder does not describe it — see build/contrast-contract.mjs.",
-    "measured": 80,
-    "meets": 64,
+    "measured": 94,
+    "meets": 78,
     "shortfall": [
       "Color::bg/brand/accent/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
       "Color::bg/brand/primary/bold — 2.46:1 vs ≥3:1 (\"bold\")",

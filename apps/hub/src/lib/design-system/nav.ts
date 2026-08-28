@@ -295,12 +295,31 @@ export const NAV: NavGroup[] = [
         "href": "/design-system/components/feedback/stepper"
       },
       {
+        "label": "Ticker",
+        "href": "/design-system/components/feedback/ticker"
+      },
+      {
         "label": "Toast",
         "href": "/design-system/components/feedback/toast"
       },
       {
         "label": "Tooltip",
         "href": "/design-system/components/feedback/tooltip"
+      }
+    ]
+  },
+  {
+    "title": "Data Visualisation",
+    "items": [
+      {
+        "label": "Library",
+        "href": "/design-system/data-visualisation",
+        "badge": "Beta"
+      },
+      {
+        "label": "Dashboard Archetypes",
+        "href": "/design-system/data-visualisation/archetypes",
+        "badge": "Beta"
       }
     ]
   },

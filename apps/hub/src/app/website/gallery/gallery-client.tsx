@@ -16,7 +16,7 @@ const IMAGES: GalleryImage[] = [
   { src: "/website/images/Banner-8.png", caption: "Scholarship felicitation ceremony" },
   { src: "/website/images/Banner-9.png", caption: "Nasha Mukt Bharat Abhiyaan awareness drive" },
   { src: "/website/images/Banner-10.png", caption: "Dr. Ambedkar Jayanti commemoration" },
-  { src: "/website/images/portal-banner-images.png", caption: "Launch of citizen-service portals" },
+  { src: "/website/images/samavesh-citizens-4x3.jpg", caption: "SAMAVESH campaign artwork — the communities the citizen portals serve" },
   { src: "/website/images/5-234x300.jpg", caption: "Beneficiary interaction camp" },
   { src: "/website/images/3-300x251.jpg", caption: "Community empowerment workshop" },
   { src: "/website/images/65811748325059-300x291.jpg", caption: "Field visit to an Adarsh Gram" },
@@ -47,7 +47,7 @@ export function GalleryClient() {
       description="A glimpse of events, programmes and initiatives of the Department of Social Justice & Empowerment."
     >
       <section>
-        <div className="mx-auto max-w-[1280px] px-4 py-10">
+        <div className="sa-container py-10">
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {IMAGES.map((image, index) => (
               <li key={image.src}>

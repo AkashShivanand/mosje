@@ -144,9 +144,29 @@
     "    thing telling them apart), which makes primaryScale.300 a MID tone in Navy rather than a",
     "    tint: navy 900 on navy 300 measured 4.33:1. The tonal progression therefore shifts down a",
     "    step to 50/100/200 for the brand intent only — the other three ramps are brand-invariant",
-    "    and keep their headroom at 100/200/300."
+    "    and keep their headroom at 100/200/300.",
+    "",
+    "  neutral/tertiary/{default,hover}/text — added 2026-08-25. On every OTHER ramp, 700 is a",
+    "    saturated hue that could not be mistaken for body copy. On the neutral ramp 700 IS",
+    "    `text/muted` (#3a3d41) — the exact ink disclaimers and secondary prose use. A chrome-less",
+    "    control painted in the muted body ink is indistinguishable from the paragraph beside it,",
+    "    which is precisely what happened in the chatbot footer: the reset control came out the",
+    "    same colour as the note it sits next to. 800 is the body-text ink, so the control sits a",
+    "    step ABOVE muted instead of level with it. Holding text constant across default/hover",
+    "    also matches button.css, where `--_color` never changes and the state is carried",
+    "    entirely by the background wash."
   ],
   "overrides": {
+    "neutral": {
+      "tertiary": {
+        "default": {
+          "text": "800"
+        },
+        "hover": {
+          "text": "800"
+        }
+      }
+    },
     "brand": {
       "tonal": {
         "default": {
@@ -165,9 +185,29 @@
     }
   },
   "$inverseNotes": [
-    "For a button sitting on a solid brand surface (e.g. a navy page header). Modelled as a",
-    "qualifier so it composes with the variants above instead of needing new variant words.",
-    "Values are white-alpha, so they work on ANY solid surface rather than assuming navy."
+    "For a button sitting on a solid brand surface (e.g. a navy page header, the ticker bar).",
+    "Modelled as a qualifier so it composes with the variants above instead of needing new",
+    "variant words.",
+    "",
+    "THE FILL SIDE IS WHITE-ALPHA AND STAYS THAT WAY: a white fill works on any solid",
+    "surface, and the intent rides on the LABEL ink (brand #004b96 vs destructive #8b1f18),",
+    "which is why an inverse filled button never lost its signal.",
+    "",
+    "THE OUTLINED SIDE USED TO BE WHITE-ALPHA TOO, AND THAT WAS TWO BUGS IN ONE VALUE.",
+    "A flat white40 border was identical for all four intents, so `danger` was",
+    "indistinguishable from `brand` (finding #8) — and at 2.25:1 on the ticker bar and",
+    "1.91:1 on gov-blue it was not a findable edge at all (WCAG 1.4.11). It cleared 3:1 on",
+    "navy alone, which is the one brand surface the 2026-08-25 audit measured.",
+    "",
+    "So the border now takes the INTENT'S OWN SCALE at its lightest usable rungs:",
+    "100 at rest, 50 on hover, white when pressed — brighter as the control is engaged,",
+    "which is the correct direction on a dark ground. Measured on the ticker bar (#005eb9):",
+    "brand 4.49, success 4.19, danger 4.14, neutral 4.72 — all clear of 3:1 with room,",
+    "not by a hundredth.",
+    "",
+    "The TEXT deliberately stays white. A 100-rung tint as the label measures 4.49:1 on that",
+    "same bar, which misses 1.4.3's 4.5 by a hundredth — so the border carries the signal",
+    "and the label keeps the readability. Two jobs, two values."
   ],
   "inverse": {
     "primary": {
@@ -196,12 +236,12 @@
       "default": {
         "bg": "transparent",
         "text": "white",
-        "border": "white40"
+        "border": "100"
       },
       "hover": {
         "bg": "white10",
         "text": "white",
-        "border": "white64"
+        "border": "50"
       },
       "active": {
         "bg": "white16",

@@ -258,41 +258,58 @@
       ]
     },
     {
-      "node": "55828:766",
-      "where": "Chatbot — Documentation › 02 Anatomy › FOOTER",
-      "figma": "A pill composer, the honest note, and End chat as a BORDERED BUTTON sharing the note’s row, hard right. An underlined word reads as a link — something that navigates — and this is the control that ends the conversation.",
+      "node": "55828:758",
+      "where": "Chatbot — Documentation › 02 Anatomy › HEADER",
+      "figma": "The mascot at 40px, the bilingual title block, then start over (restart_alt), expand (open_in_full) and minimise (close) as 32px targets, in that order — ✕ last, because the top-right corner is where every user reaches to dismiss. Every glyph is a Material Symbols Rounded instance, never a drawn path. The row gap is 8, not 12: at 12 the third control left the brand 125px for a title needing 128, and “Samajik Sahayak” wrapped onto two lines.",
       "expect": [
         {
           "kind": "text",
-          "value": "BORDERED BUTTON"
+          "value": "✕ last"
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/feedback/chatbot.tsx",
-          "pattern": "<div className=\"ds-chatbot__footer-row\">",
-          "hint": "The note and the button share one row; the button is not a word inside the paragraph."
+          "pattern": "restart_alt[\\s\\S]*?open_in_full[\\s\\S]*?aria-label=\"Minimise chat\"",
+          "flags": "s",
+          "hint": "Start over, then expand, then ✕ LAST. The top-right corner is where people reach to dismiss and nothing may take that slot."
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/feedback/chatbot.css",
-          "pattern": "\\.ds-chatbot__end \\{[^}]*border: 1px solid var\\(--sa-border-status-error-base\\)",
+          "pattern": "\\.ds-chatbot__header \\{[^}]*gap: var\\(--sa-inline-8\\)",
           "flags": "s",
-          "hint": "A bounded target is what says 'button'. Without the border this reads as a link, which is what it looked like before."
+          "hint": "8, not 12. With three controls the brand had 125px for a title needing 128 — a three-pixel shortfall, enough to wrap the title onto two lines. Pinned in e2e/chatbot/end-chat.spec.ts as well, because it breaks silently."
+        }
+      ]
+    },
+    {
+      "node": "55828:766",
+      "where": "Chatbot — Documentation › 02 Anatomy › FOOTER",
+      "figma": "A pill composer and the honest note, at the full width of the panel — and nothing else. Start over lived here through THREE arrangements and each broke something measurable: hard right put it 25px under Send in the same 32px column; at the head of the note’s row its 101px pushed the disclaimer 109px off the panel’s left edge and rewrapped it to three lines; on its own line it added 24px of height to a panel already tight on a phone. It is a HEADER control now, with expand and close. The footer is where the citizen SAYS things; a panel-level reset is not something they say.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "and nothing else"
         },
         {
           "kind": "source",
-          "file": "packages/design-system/components/feedback/chatbot.css",
-          "pattern": "\\.ds-chatbot__end \\{[^}]*text-decoration: underline",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "<div className=\"ds-chatbot__footer-row\">\\s*<p className=\"ds-chatbot__note\">\\{note\\}</p>\\s*</div>",
           "flags": "s",
-          "absent": true,
-          "hint": "An underline says 'this navigates'. It ends the conversation and clears the transcript."
+          "hint": "The footer block holds the note and NOTHING else. Three arrangements put Start over in here and each broke something measurable — Send's column, the panel's left edge, 24px of height on a phone."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.tsx",
+          "pattern": "className=\"ds-chatbot__icon-btn ds-chatbot__end\"",
+          "hint": "Start over is the HEADER's own icon button, matching expand and minimise. It was a DS Button while it lived in the footer, which was right there and would be wrong here: three icons in one corner must match."
         }
       ]
     },
     {
       "node": "55829:804",
       "where": "Chatbot — Documentation › 07 Tokens › GEOMETRY",
-      "figma": "width 400, height 719, launcher 84, bubbleMax 246, typingDot 5. Bound to the frames here and resolved by chatbot.css there, so neither side can move alone.",
+      "figma": "width 400, height 719 (a CAP, not a fixed height — the panel sizes to its content), launcher 84, bubbleMax 246, typingDot 5. Bound to the frames here and resolved by chatbot.css there, so neither side can move alone.",
       "expect": [
         {
           "kind": "token",
@@ -320,6 +337,101 @@
           "file": "packages/design-system/components/feedback/chatbot.css",
           "pattern": "--ds-chatbot-width: var\\(--sa-layout-chatbot-width\\)",
           "hint": "The stylesheet must RESOLVE these, not restate the numbers."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/feedback/chatbot.css",
+          "pattern": "max-height: min\\(\\s*var\\(--ds-chatbot-height\\)",
+          "flags": "s",
+          "hint": "719 is the ceiling. Pinned there as a height, the opening state was 435px of white under the header — about 45% of the panel."
+        }
+      ]
+    },
+    {
+      "node": "56162:1799",
+      "where": "Button — Documentation › 03 Size",
+      "figma": "32, 40 and 48px. All three clear the 24x24 WCAG 2.2 (2.5.8) Level AA minimum. 44x44 is 2.5.5 Target Size (Enhanced), Level AAA — only lg reaches it, and UX4G 3.0 recommends it on mobile along with 8px between adjacent targets. Treat 44 as a touch-context recommendation, never as a WCAG failure on a pointer surface.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "24x24"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--sm \\{[^}]*min-height: 32px",
+          "flags": "s",
+          "hint": "sm is 32px. This page said sm 'meets the 44px height requirement' in three places, including inside the accessibility checklist, until 2026-08-25. The regex names min-height deliberately: `height: 32px` also matches `min-height: 32px`, so the looser pattern would keep passing if the fix were ever reverted."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--lg \\{[^}]*min-height: 48px",
+          "flags": "s",
+          "hint": "lg is the only size reaching 44."
+        }
+      ]
+    },
+    {
+      "node": "56162:1811",
+      "where": "Button — Documentation › 03 Size › How it scales",
+      "figma": "The height is a MINIMUM, not a fixed height. Each size sets min-height plus vertical padding, so the box grows with the text instead of clipping it: at 200% an md button used to hold 40px while its content needed 41. min-height is what makes a button 32/40/48 at 100%; the padding stays under that and becomes the breathing room as the text scales. WCAG 1.4.4 Resize Text.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "MINIMUM, not a fixed height"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--md \\{[^}]*min-height: 40px",
+          "flags": "s",
+          "hint": "md is a minimum. Reverting to a fixed `height` reintroduces the 1.4.4 clipping this section describes."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--(?:sm|md|lg) \\{[^}]*?(?<!min-)(?<!line-)height:",
+          "flags": "s",
+          "absent": true,
+          "hint": "NO bare `height` in any of the three SIZE rules — the assertion that actually holds the fix, since a min-height on md means nothing if sm or lg quietly keeps a fixed one. Two corrections on 2026-08-27: it was `^\\s+height:` over the whole file, which fired on the busy spinner's legitimate `height: 1em`; and the first narrowing excluded `min-` but not `line-`, so it matched the size rules' own `line-height`. Both lookbehinds are load-bearing."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.css",
+          "pattern": "\\.ds-btn--md \\{[^}]*padding: var\\(--sa-padding-6\\) var\\(--sa-padding-24\\)",
+          "flags": "s",
+          "hint": "The vertical padding is half the fix. Without it min-height alone still centres a clipped label."
+        }
+      ]
+    },
+    {
+      "node": "56162:1816",
+      "where": "Button — Documentation › 04 States",
+      "figma": "Default, hover, pressed, focused and disabled are drawn here as variants so a designer can see them. In CODE there is no state prop — CSS drives hover, active and disabled. Never add one. Loading IS a prop as of 2026-08-27: loading sets aria-busy and disables the control, but it deliberately does not swap the label — pass “Submitting…” yourself.",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "no state prop"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.tsx",
+          "pattern": "state\\?:",
+          "absent": true,
+          "hint": "State is a Figma variant axis only. A state prop in code would be the drift this line exists to prevent."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.tsx",
+          "pattern": "loading\\?: boolean",
+          "hint": "The loading prop exists. This page claimed the component set aria-busy, then that it had no loading state at all; it now has one and says so."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/actions/button.tsx",
+          "pattern": "const isDisabled = disabled === true \\|\\| loading",
+          "hint": "Busy implies disabled. A button that says “Submitting…” and still submits is the double-submission this prop exists to prevent."
         }
       ]
     }

@@ -1,0 +1,874 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+/* ── Ticker ───────────────────────────────────────────────────────────────
+   The full-bleed announcement strip that runs under the masthead on public
+   pages — "Latest Updates" on the DoSJE website.
+
+   SOURCE OF TRUTH: Figma "MoSJE Handoff" › Latest Updates (8137:48790),
+   recreated as SAMAVESH › Ticker. Everything below binds to a token; the
+   Figma variables map straight across:
+
+     Primary/500  #0373df → --sa-color-action-primary-default   (the bar)
+     Primary/700  #004b96 → --sa-color-action-primary-hover     (the plinth)
+     Text/Light   #ffffff → --sa-text-neutral-inverse
+     radius-md    8       → --sa-shape-8
+     spacing sm/lg/2xl    → --sa-inline-8 / -16 / -24
+     Title/title-3        → --sa-type-title-3-*   (the headline line)
+     Body/body-3          → --sa-type-body-3-*    (the sentence under it)
+     Label/label-1        → the DS Button's own type ramp
+
+   THREE DELIBERATE DIVERGENCES FROM THE FIGMA FRAME, each recorded because a
+   later reader will otherwise "fix" them back:
+
+   1. THE PLINTH HUGS ITS LABEL; it is not a 265px rectangle. In the frame the
+      darker block is an absolutely-placed 265×72 rect that happens to end just
+      past "Latest Updates" in English. It does not in Hindi — "नवीनतम अपडेट"
+      and every other scheduled language set a different width — and it does
+      not once a citizen raises their browser font size. A fixed rectangle
+      would clip the label or trail empty colour past it. So the plinth IS the
+      heading's own background and ends where the heading ends.
+
+   2. THE PAUSE CONTROL IS ADDED. The frame draws prev and next only. This
+      strip auto-advances, so WCAG 2.2.2 (Pause, Stop, Hide) requires a
+      mechanism to stop it, and there is no way to satisfy that with two
+      stepping buttons. Per the estate's standards-precedence rule a published
+      set of values is a FLOOR, not a ceiling: we add what is missing rather
+      than ship the frame as drawn. The control is first in the row, so it is
+      the first thing a keyboard user reaches after the message.
+
+   3. THE NAV GAP IS 8px, NOT 16px. The frame spaces two arrows; this row runs
+      three controls because of (2), and at 16px the extra button costs another
+      56px of a row that already had to be taught to compress. Eight keeps the
+      cluster inside the footprint the frame budgeted for it.
+
+   4. THE TILE BORDER IS 1px, NOT 0.5px. Half a pixel is not a colour any
+      display renders predictably — it dithers to a lighter grey at 1x and
+      disappears entirely against the white tile at some zoom levels. One
+      opaque pixel of the same token is the honest version of the same line. */
+
+@layer components {
+  /* Wrapped in `@layer components` so Tailwind's utilities can override it. Unlayered, this
+     file sits ABOVE the utilities layer and a plain class selector here beats any utility a
+     consumer writes — the defect that made `hidden md:flex` a no-op on seven portal shells. */
+  .sa-ticker {
+    /* THE GROUND IS primaryScale/600, NOT /500, AND THAT IS A CONTRAST FIX.
+       White on /500 (#0373df) measures 4.64:1 — it clears WCAG 1.4.3's 4.5:1
+       by four hundredths — and the moment secondary text is dimmed at all it
+       fails outright: 90% is 4.06:1 and 80% is 3.52:1. This component shipped
+       an 80% description line on that ground and its own documentation claimed
+       6.3:1, which was simply wrong.
+
+       On /600 (#005eb9) the primary line is 6.36:1 and 80% is 4.66:1, so the
+       title/subtitle structure this needs is possible at all. The plinth moves
+       to /800 with it, keeping the tonal step at 1.77:1 — the 1.85:1 the two
+       had before, so nothing about the shape changes. */
+    --sa-ticker-bar: var(--sa-color-primaryScale-600);
+    --sa-ticker-plinth: var(--sa-color-primaryScale-800);
+    --sa-ticker-ink: var(--sa-text-neutral-inverse);
+    /* The tile is a fixed 32px square in the frame. It is chrome, not type, so
+       it does not scale with the font — but it is expressed in rem so that a
+       root-size change (the AccessibilityBar's A+ / A-) still moves it. */
+    --sa-ticker-mark: 2rem;
+    /* 40px: 24px glyph + 8px of padding either side. Comfortably past the
+       24×24 floor of WCAG 2.5.8, and the same square the nav arrows use. */
+    --sa-ticker-control: 2.5rem;
+
+    position: relative;
+    isolation: isolate;
+    /* THE BAR REFLOWS ON ITS OWN WIDTH, NOT THE VIEWPORT'S. It was written
+       full-bleed, so viewport media queries were the same measurement — until
+       it appeared in a 659px docs column at a 1512px viewport, kept its whole
+       control row, and squeezed the message to 73px. With the text no longer
+       clipped that did not truncate, it wrapped one word per line and made the
+       bar 346px tall. A container query asks the only question that was ever
+       meant: how much room does THIS strip have. */
+    container-type: inline-size;
+    container-name: sa-ticker;
+
+    display: flex;
+    justify-content: center;
+    min-block-size: 4.5rem;
+    background-color: var(--sa-ticker-bar);
+    color: var(--sa-ticker-ink);
+    box-shadow: var(--sa-elevation-raised);
+  }
+
+  .sa-ticker__container {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    /* The nav and the action are the container's own children now, not the
+       body's, so the container owns the spacing between them. */
+    gap: var(--sa-inline-24);
+    min-width: 0;
+    max-width: var(--sa-container-page);
+    padding-inline: var(--sa-padding-24);
+  }
+
+  /* ── Heading — the plinth ────────────────────────────────────────────── */
+
+  .sa-ticker__heading {
+    position: relative;
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    align-self: stretch;
+    padding-inline: var(--sa-padding-16);
+    padding-block: var(--sa-padding-16);
+  }
+
+  /* The darker block. It is a pseudo-element rather than a sibling rect so it
+     cannot drift out of step with the label it sits behind, and it bleeds LEFT
+     to the edge of the viewport — the container's own margin is bar-coloured
+     in the frame, and a plinth that stops at the content column reads as a
+     floating chip rather than a masthead band. */
+  .sa-ticker__heading::before {
+    content: "";
+    position: absolute;
+    inset-block: 0;
+    inset-inline: calc(-1 * var(--sa-padding-24)) 0;
+    z-index: -1;
+    background-color: var(--sa-ticker-plinth);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  /* On a viewport wider than the content column the margin is not 24px, it is
+     however much is left over — so the plinth is pushed out with a very large
+     negative start inset and clipped by the bar's own overflow. */
+  @media (min-width: 1440px) {
+    .sa-ticker__heading::before {
+      inset-inline-start: -100vw;
+    }
+  }
+
+  /* ── The mark ────────────────────────────────────────────────────────────
+     NO TILE. It used to be a 32px white rounded square holding a small blue
+     glyph, and on the plinth's navy that read as a sticker pasted onto the bar:
+     a white block beside white text, edged with `border-neutral-subtle` — a
+     hairline drawn for a white tile on a LIGHT ground, invisible on navy, so
+     the block floated with no edge at all. The mark now paints in the strip's
+     single ink directly on the ground, like everything else on it.
+
+     IT ANIMATES WITH THE STRIP, NOT ON ITS OWN. The arcs pulse only while the
+     list is moving; pausing stops them. A mark that keeps broadcasting over a
+     stopped list contradicts the control the citizen just pressed. */
+  .sa-ticker__mark {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .sa-ticker__mark > img {
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    object-fit: contain;
+  }
+
+  .sa-ticker__wave {
+    opacity: 0.4;
+    /* The mouth of the horn, so the arcs travel OUTWARD from the source rather
+       than breathing around their own centres. */
+    transform-origin: 13px 12px;
+  }
+
+  .sa-ticker[data-animate] .sa-ticker__wave {
+    animation: sa-ticker-broadcast 2.4s ease-in-out infinite;
+  }
+
+  .sa-ticker[data-animate] .sa-ticker__wave--2 {
+    animation-delay: 0.35s;
+  }
+
+  /* Freezes with the list rather than snapping back to its resting arc — the
+     mark is a readout of the strip's state, so it stops where the strip did. */
+  .sa-ticker[data-paused] .sa-ticker__wave {
+    animation-play-state: paused;
+  }
+
+  /* Scaled from the horn's mouth, so the arcs travel OUTWARD from the source
+     rather than breathing around their own centres. */
+  @keyframes sa-ticker-broadcast {
+    0%,
+    100% {
+      opacity: 0.3;
+      transform: scale(0.9);
+    }
+    45% {
+      opacity: 1;
+      transform: scale(1.06);
+    }
+  }
+
+  .sa-ticker__label {
+    /* It may be rendered as a heading (see `labelAs`), so its own type is
+       stated rather than inherited — a browser's h2 default would drag the
+       plinth to 32px and break the strip's height. */
+    margin: 0;
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    letter-spacing: var(--sa-type-title-tracking);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ── Body — the message, the controls, the way out ───────────────────── */
+
+  .sa-ticker__body {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    min-width: 0;
+    padding-block: var(--sa-padding-16);
+  }
+
+  /* A BASIS, NOT `auto`. `flex: 1 1 auto` sized this from its content, and once
+     the text was allowed to wrap its min-content width became one word — so the
+     optional controls beside it, which never shrink, could take the row and
+     leave the message a column of single words. 16rem is the measure the
+     message claims BEFORE anything optional gets its share. */
+  .sa-ticker__viewport {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+  }
+
+  /* SCOPED TO THE BAR, and it has to be. The panel's container is a COLUMN, so
+     a flex-basis here lands on the block axis and silently outranks the
+     measured `block-size` — the panel came out 16rem tall regardless of how
+     many rows it was asked for, which is the kind of bug that looks like the
+     measurement failing. */
+  .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__viewport {
+    flex: 1 1 16rem;
+  }
+
+  /* ONE ITEM IS IN THE DOM AT A TIME. The frame stacks every slide absolutely
+     and fades the inactive ones to opacity 0, which is right on a canvas and
+     wrong in a browser: an opacity-0 link is still in the tab order and still
+     read out, so a citizen tabbing through the strip would walk eight invisible
+     links. Rendering only the active item costs the exit animation — the entry
+     animation below carries the movement on its own — and buys a tab order
+     that matches what is on screen. */
+  .sa-ticker__item {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: var(--sa-stack-2);
+    padding-inline: var(--sa-padding-8);
+    margin-inline: calc(-1 * var(--sa-padding-8));
+    border-radius: var(--sa-shape-8);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 150ms ease;
+    /* A STRONG EASE-OUT, not Material's cubic-bezier(0.4, 0, 0.2, 1). That
+       curve eases IN as well as out, so the first third of the travel is slow —
+       and the first third is exactly when a citizen is looking hardest at a
+       message that just changed. This one starts at full speed and settles.
+
+       240ms AND 12px, DOWN FROM 320ms AND 32px. A citizen reading this page for
+       a minute sees the message change a dozen times, and at that frequency the
+       job of the movement is to say "this is new" and then get out of the way.
+       32px of travel over a third of a second announces itself every five
+       seconds; 12px is enough to register as arrival without becoming the thing
+       you watch. Keyframes rather than a transition because the item MOUNTS —
+       only the active message is in the DOM, so there is no previous value for
+       a transition to interpolate from. */
+    animation: sa-ticker-enter 240ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  /* IT ENTERS FROM THE SIDE IT CAME FROM.
+     The offset was a fixed +2rem, so a message summoned by PREVIOUS still slid
+     in from the right — the motion saying "forward" while the control said
+     "back". On a stepped component that is the difference between holding a
+     position and reshuffling.
+
+     Logical, not physical: in Urdu the estate runs `dir="rtl"`, where "next"
+     travels leftward, so the sign flips with the writing direction. */
+  .sa-ticker__item {
+    --sa-ticker-enter-from: 0.75rem;
+  }
+
+  .sa-ticker[data-step="back"] .sa-ticker__item {
+    --sa-ticker-enter-from: -0.75rem;
+  }
+
+  [dir="rtl"] .sa-ticker__item {
+    --sa-ticker-enter-from: -0.75rem;
+  }
+
+  [dir="rtl"] .sa-ticker[data-step="back"] .sa-ticker__item {
+    --sa-ticker-enter-from: 0.75rem;
+  }
+
+  @keyframes sa-ticker-enter {
+    from {
+      opacity: 0;
+      transform: translateX(var(--sa-ticker-enter-from));
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* ── The panel: orientation="vertical" ───────────────────────────────────
+     A DIFFERENT SHAPE, NOT A DIFFERENT TRANSITION. The bar shows one message on
+     a full-bleed strip; the panel stacks the same items as rows and scrolls
+     them upward under a header. Several headlines legible at once, which is
+     what a notice board is for, and no stepping because the list moves itself.
+
+     IT IS BUILT FROM THE BAR'S OWN PARTS, deliberately. The header is the bar's
+     NAVY PLINTH — same `primaryScale/700` behind the same mark and name — over
+     the same `primaryScale/500` ground, in the same single ink. Read side by
+     side the two are obviously one component in two shapes, which they are. The
+     panel had its own treatment (a transparent header over a hairline rule)
+     until 2026-08-25 and looked like a different component wearing the same
+     colours.
+
+     NO RULE UNDER THE HEADER. The plinth's colour change already separates it;
+     a hairline on top of that is a second boundary doing the first one's job.
+
+     THE LOOP IS SEAMLESS BECAUSE THE LIST IS RENDERED TWICE and the track
+     travels exactly -50%. At -50% the second copy sits precisely where the
+     first began, so the reset is invisible; any other distance produces a jump.
+     A percentage of the TRACK is also the only figure that survives rows of
+     DIFFERENT heights, which wrapping guarantees.
+
+     IT STOPS ON HOVER AND ON FOCUS, not only on the button. A moving row is a
+     moving tap target: without this the line a citizen is reading walks out
+     from under the pointer just as they reach for it. `:focus-within` covers
+     the keyboard, where a focused row that scrolls away takes the ring with it. */
+  /* HEIGHT: `auto` STANDS, `fill` TAKES THE ROW.
+     `auto` is the header plus the `rows` window — the widget on its own.
+     `fill` takes the height of the row it shares, and `rows` becomes a floor.
+
+     It is driven by a prop rather than inferred. `block-size: 100%` looked like
+     it would do this for free — `auto` against an auto-height parent, the row
+     otherwise — and in practice it filled almost everywhere, because a flex
+     parent has a resolved height by the time the child asks. A panel standing
+     alone in a plain column stretched too. Only the consumer knows which it is.
+
+     What follows either way: whether the list scrolls is a MEASUREMENT, not a
+     count. A tall enough row fits the whole list, and a marquee moving content
+     that is already on screen is motion for its own sake. See the component. */
+  .sa-ticker--vertical {
+    --sa-ticker-rows: 4;
+    --sa-ticker-duration: 40s;
+    /* Set from the measured height of the first `rows` items — see the
+       component. Rows WRAP, so their heights differ and no arithmetic on a
+       nominal row height can be right. The fallback is a sane first paint. */
+    --sa-ticker-window: 14rem;
+
+    min-block-size: 0;
+    border-radius: var(--sa-shape-12);
+    overflow: hidden;
+  }
+
+  .sa-ticker--vertical[data-height="fill"] {
+    block-size: 100%;
+  }
+
+  .sa-ticker--vertical .sa-ticker__container {
+    flex-direction: column;
+    align-items: stretch;
+    padding-inline: 0;
+  }
+
+  .sa-ticker--vertical[data-height="fill"] .sa-ticker__container {
+    block-size: 100%;
+  }
+
+  /* The bar's plinth, doing the bar's job. */
+  .sa-ticker--vertical .sa-ticker__header {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    padding-inline: var(--sa-padding-16);
+    padding-block: var(--sa-padding-12);
+    background-color: var(--sa-ticker-plinth);
+  }
+
+  .sa-ticker--vertical .sa-ticker__heading {
+    flex: 1 1 auto;
+    min-width: 0;
+    align-self: auto;
+    padding: 0;
+    background-color: transparent;
+  }
+
+  .sa-ticker--vertical .sa-ticker__heading::before {
+    content: none;
+  }
+
+  .sa-ticker--vertical .sa-ticker__label {
+    white-space: normal;
+  }
+
+  .sa-ticker--vertical .sa-ticker__viewport {
+    display: block;
+    block-size: var(--sa-ticker-window);
+    /* NOT `hidden`. A panel that is not scrolling itself must let the citizen
+       scroll it — clipping a list nobody can reach strands the notices past the
+       fold and leaves them focusable but invisible. */
+    overflow-y: auto;
+  }
+
+  /* Filling: the `rows` window becomes the floor and `flex: 1` takes the rest of
+     the row. `min-block-size: 0` is what lets a flex child shrink at all. */
+  .sa-ticker--vertical[data-height="fill"] .sa-ticker__viewport {
+    flex: 1 1 auto;
+    block-size: auto;
+    min-block-size: var(--sa-ticker-window);
+  }
+
+  .sa-ticker--vertical .sa-ticker__viewport[data-scroll] {
+    overflow-y: hidden;
+  }
+
+  /* THE EDGES FADE ONLY WHILE IT MOVES. A scrolling window cuts whatever row
+     happens to straddle it, and a notice sliced mid-word against a hard edge
+     reads as a rendering fault rather than as more text arriving. Twenty pixels
+     of fade at each end says "this continues" — the oldest marquee affordance
+     there is, and the honest one.
+
+     IT IS GATED ON `[data-scroll]` for a reason worth keeping: a STILL list has
+     no row straddling the edge, so a fade there would dim the last notice for
+     nothing. That is precisely the defect the reference implementation carries
+     on mobile, where the fade stayed behind after the scrolling was removed and
+     left the newest item half-erased. */
+  /* ds-exempt-start(optical): these stops are ALPHA, not colour. A mask reads only
+     the alpha channel, so the hex here is the opaque end of an opacity ramp and
+     never reaches a pixel — binding it to an ink token would imply the fade
+     changes with the brand, which it cannot. */
+  .sa-ticker--vertical .sa-ticker__viewport[data-scroll] {
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0,
+      #000000 20px,
+      #000000 calc(100% - 20px),
+      transparent 100%
+    );
+  }
+  /* ds-exempt-end */
+
+  /* The animated wrapper. It holds one list when still and two when scrolling,
+     and it is the ONLY element that moves — see the component for why. */
+  .sa-ticker__track {
+    display: flow-root;
+  }
+
+  .sa-ticker__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* THE ANIMATION IS ALWAYS ON WHEN THE LIST CAN SCROLL; only its play-state
+     moves. Gating the `animation` property itself on "is it playing" is what
+     made the pause button reset the scroll — removing the property returns the
+     track to translateY(0), so resuming started again from the top. */
+  .sa-ticker__viewport[data-scroll] .sa-ticker__track {
+    /* LINEAR, and it must stay linear. Any easing makes a continuous marquee
+       visibly hesitate at the loop point, which is the one place it must not. */
+    animation: sa-ticker-scroll var(--sa-ticker-duration) linear infinite;
+    /* Promoted for the duration: a long, slow, continuously running transform
+       is exactly the case that benefits, and the hint is scoped to while it
+       actually runs rather than left on the element for the life of the page. */
+    will-change: transform;
+  }
+
+  .sa-ticker__viewport[data-paused] .sa-ticker__track {
+    animation-play-state: paused;
+  }
+
+  /* HOVER STOPS IT — but only where hovering is a real thing. On a touch screen
+     `:hover` sticks after a tap, so an untethered rule would freeze the list
+     for the rest of the visit on the one device that cannot un-hover. */
+  @media (hover: hover) and (pointer: fine) {
+    .sa-ticker__viewport[data-scroll]:hover .sa-ticker__track {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Focus is not gated: a keyboard user has no pointer to withdraw, and a row
+     that scrolls out from under the focus ring takes the ring with it. */
+  .sa-ticker__viewport[data-scroll]:focus-within .sa-ticker__track {
+    animation-play-state: paused;
+  }
+
+  @keyframes sa-ticker-scroll {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-50%);
+    }
+  }
+
+  .sa-ticker__row {
+    display: block;
+  }
+
+  /* SPACING SEPARATES THE ROWS, NOT A DIVIDER. Rows wrap, so the gap between
+     two notices has to beat the gap between the two lines of one: 16px of
+     padding either side puts 32px between rows against the 20px inside them.
+     A hairline would have done the same job by drawing more furniture. */
+  /* THE MARKER EARNS ITS PLACE BECAUSE THE TITLES WRAP AND THE LIST MOVES.
+     Without it every line in the rail starts at the same x, so nothing but a
+     vertical gap says whether a line begins a notice or continues the one
+     above — and the gap is 32px against the 20px inside a wrapped title, a
+     ratio of 1.6 that is thin enough to misread while the list is scrolling
+     past. A reader here is re-acquiring the list constantly, items arriving
+     clipped at one edge and leaving at the other; a fixed column of dots is a
+     stable anchor that survives the movement.
+
+     THE HANGING INDENT IS THE POINT, NOT THE DOT. A marker with the text
+     wrapping back underneath it would be decoration and nothing more. Set in
+     its own grid column, the dot is the ONLY thing at the outer edge, so item
+     starts are the one thing the eye can pick out of the left margin without
+     reading a word. The grid does this with no extra DOM: dot in column one,
+     title and subtitle stacked in column two.
+
+     Not on the bar, which shows one message and has no list to scan. */
+  .sa-ticker__rowlink {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--sa-stack-2) var(--sa-inline-8);
+    padding-inline: var(--sa-padding-16);
+    padding-block: var(--sa-padding-16);
+    color: inherit;
+    text-decoration: none;
+    transition: background-color 150ms ease;
+  }
+
+  .sa-ticker__rowlink::before {
+    content: "";
+    grid-column: 1;
+    grid-row: 1;
+    inline-size: 0.3125rem;
+    block-size: 0.3125rem;
+    /* Optically centred on the FIRST line, not the row: the row is two or three
+       lines tall and a dot halfway down it would point at nothing. */
+    margin-block-start: calc((var(--sa-type-title-3-lh) - 0.3125rem) / 2);
+    border-radius: var(--sa-shape-full);
+    /* The top of the transparency ramp, and deliberately not full ink: at 100%
+       six dots read as a column of holes punched down the rail and compete with
+       the words they exist to index. The dot carries no meaning of its own —
+       the list semantics do — so it has no 3:1 floor to meet; it needs only to
+       be findable when looked for and quiet when not. */
+    background-color: var(--sa-color-transparent-white-48);
+  }
+
+  /* Grid placement is the PANEL's business — its row is a two-column grid so
+     the marker can hang. The bar renders the same two spans in a flex column,
+     where these would be inert; scoping them says so rather than relying on
+     them being harmlessly ignored. */
+  .sa-ticker__rowlink .sa-ticker__rowtitle {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .sa-ticker__rowlink .sa-ticker__rowmeta {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  /* THE WHOLE ROW IS THE TARGET, so the whole row lights — and that is the ONLY
+     hover cue it needs. The underline that used to come with it was doing no
+     work: WCAG 1.4.1 asks that a link be distinguishable from the text AROUND
+     it, and in a list where every row is a link there is no surrounding text to
+     be confused with. On a wrapped two-line notice it also struck through both
+     lines at once and fought the subtitle for the same few pixels. */
+  .sa-ticker__rowlink:hover {
+    background-color: var(--sa-color-transparent-white-8);
+  }
+
+  .sa-ticker__rowlink:active {
+    background-color: var(--sa-color-transparent-white-16);
+  }
+
+  .sa-ticker__rowlink:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: calc(-1 * var(--sa-focus-width));
+    background-color: var(--sa-color-transparent-white-8);
+  }
+
+  /* Title over subtitle — the bar's structure, in the panel. */
+  .sa-ticker__rowtitle {
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    letter-spacing: var(--sa-type-title-tracking);
+    font-weight: 500;
+    text-wrap: pretty;
+  }
+
+  /* 80% white on the /600 ground is 4.66:1 — past 1.4.3's 4.5:1 for normal
+     text. It would have been 3.52:1 on /500, which is why the ground moved. */
+  .sa-ticker__rowmeta {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    letter-spacing: var(--sa-type-body-tracking);
+    opacity: 0.8;
+  }
+
+  /* The bar's trailing call to action. Underlined because it sits INSIDE a
+     sentence — which is the case 1.4.1 is actually about, and the opposite of
+     a list row where every line is a link and there is no surrounding text to
+     tell it apart from. */
+  .sa-ticker__more {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  /* ── Controls ────────────────────────────────────────────────────────── */
+
+  .sa-ticker__nav {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  .sa-ticker__control {
+    display: grid;
+    place-items: center;
+    transition: background-color 150ms ease, transform 160ms cubic-bezier(0.23, 1, 0.32, 1);
+    inline-size: var(--sa-ticker-control);
+    block-size: var(--sa-ticker-control);
+    padding: 0;
+    border: 0;
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  /* A white wash rather than a second colour: the strip has exactly one ink,
+     and every state layer on a solid brand surface in this estate is a
+     transparency of it — the same two steps Button's `inverseOutlined` uses. */
+  @media (hover: hover) and (pointer: fine) {
+    .sa-ticker__control:hover {
+      background-color: var(--sa-color-transparent-white-16);
+    }
+  }
+
+  /* It has to feel pressed. A control that changes nothing under the finger
+     reads as not having registered — and this one's whole job is to answer
+     immediately, because the citizen pressed it to stop something moving. */
+  .sa-ticker__control:active {
+    background-color: var(--sa-color-transparent-white-24);
+    transform: scale(0.94);
+  }
+
+  /* THE FOCUS RING IS INVERSE INK, NOT --sa-focus-ring. The ring token is
+     #0373DF, which is this bar's own fill — it measures 1:1 against it and
+     fails the 3:1 floor of WCAG 1.4.11 / 2.4.11 completely. The same defect
+     was found and fixed on AccessibilityBar; do not "restore the token" here. */
+  .sa-ticker__control:focus-visible,
+  .sa-ticker__item:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-8);
+  }
+
+  .sa-ticker__action {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  /* THE HAIRLINE BETWEEN THE CONTROL AND THE ROUTE.
+     They are two different kinds of thing sharing one end of the row: one
+     governs the strip, the other leaves it. It was scoped to the narrow bar,
+     so the desktop bar and every panel had the pause and the route abutting
+     with nothing between them while the library drew a divider — a divergence
+     in the direction that matters least to notice and most to fix.
+
+     ADJACENT SIBLING, deliberately. The nav is only rendered when something can
+     actually move, so this draws itself exactly when there is a control to
+     separate from and vanishes with it. A rule keyed on the shape or the width
+     would have to guess. */
+  .sa-ticker__nav + .sa-ticker__action {
+    padding-inline-start: var(--sa-padding-16);
+    border-inline-start: 1px solid var(--sa-color-transparent-white-24);
+  }
+
+  /* ── Reflow ──────────────────────────────────────────────────────────────
+     The row could not compress: at full complement it fixed itself at ~266px,
+     which pushed a 390px viewport to 481px of scrollWidth — a WCAG 1.4.10
+     failure on a public government page, at every mobile visit. Things drop in
+     order of how much they cost against what they do.
+
+     PAUSE STAYS AT EVERY WIDTH. Dropping it would trade a reflow failure for a
+     2.2.2 failure, which is not a trade. Prev/next go first: the strip cycles
+     on its own and the same items are on the linked page. The action button
+     goes next, being the single widest item in the row. The label text goes
+     last — the section's accessible name already carries it, so a screen
+     reader loses nothing. */
+  @container sa-ticker (max-width: 639px) {
+    /* THE LABEL STAYS. It used to go at this width to buy room in a single
+       crowded row; below 1024px the plinth has a full line to itself, so the
+       width the name costs is width nothing else was competing for — and a
+       strip that shows only a mark has stopped saying what it is. Prev/next
+       still go: they are the one thing here the citizen can do without, since
+       the strip cycles on its own. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__step {
+      display: none;
+    }
+
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__heading {
+      padding-inline: var(--sa-padding-12);
+    }
+
+    .sa-ticker__body {
+      gap: var(--sa-inline-8);
+      padding-inline-start: var(--sa-padding-12);
+    }
+  }
+
+  /* THE ROUTE OUT IS NOT DROPPED — THE ROW WRAPS.
+     The action used to be `display: none` below 1023px, which is the one drop
+     in this ladder that removes a DESTINATION rather than a convenience. Prev
+     and next are conveniences: the strip cycles on its own and the same items
+     are on the linked page. The label is a convenience: the section's
+     accessible name still carries it. But "View All" is the only way from this
+     strip to the archive behind it, and a citizen on a phone — the likeliest
+     person to want the list rather than one rotating headline — was the only
+     one who could not get there.
+
+     So the message takes the full width and the controls drop to a second
+     line beneath it. The bar has a MINIMUM height rather than a fixed one
+     precisely so it can grow, so this costs height it was already able to
+     spend, and it costs nothing at all above 1023px. Reflow (1.4.10) asks that
+     content REORGANISE rather than be lost; hiding the only link out was the
+     wrong reading of it. */
+  @container sa-ticker (max-width: 1023px) {
+    /* THE BAR ADOPTS THE PANEL'S HEADER.
+       The previous answer wrapped the controls under the message, which left
+       the plinth a narrow square holding a mark and no name — the component
+       losing its identity at the width where identity matters most, to save a
+       line it then spent anyway.
+
+       Here the plinth becomes a FULL-WIDTH HEADER carrying the name, the pause
+       and the route out, with the message on the ground beneath it. That is
+       exactly the vertical panel's header, so at narrow widths the two shapes
+       CONVERGE on one layout instead of diverging into three. Nothing is
+       dropped: 1.4.10 asks that content reorganise, and this reorganises it
+       into a shape the citizen has already seen elsewhere on the page. */
+    /* THE NAVY GOES ON THE CONTAINER, NOT ON `.sa-ticker`.
+       A container query cannot style the element that ESTABLISHES the
+       container, and `.sa-ticker` is the one carrying `container-type`. The
+       first version of this rule set the header colour there and it silently
+       did nothing — the header rendered on the ground blue and the whole point
+       of the layout was lost. The container is the outermost descendant, so it
+       is the first element the query can actually reach. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__container {
+      flex-wrap: wrap;
+      gap: var(--sa-inline-8);
+      padding-inline: 0;
+      background-color: var(--sa-ticker-plinth);
+    }
+
+    /* The pseudo-element plinth is retired here — the whole line is the plinth
+       now, so a second navy block behind part of it would only mis-align. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__heading::before {
+      display: none;
+    }
+
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__heading {
+      flex: 1 1 auto;
+      padding-inline-start: var(--sa-padding-16);
+    }
+
+    /* A hairline between the control and the route, as in the reference: they
+       are two different kinds of thing sharing one end of the header. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__action {
+      order: 3;
+      margin-inline-end: var(--sa-padding-16);
+    }
+
+    /* THE ROUTE BECOMES A LINK, NOT A BUTTON, ON THE HEADER LINE — IN BOTH
+       SHAPES. One rule by container width rather than by shape: the outlined
+       button appears only where the strip is at least 1024px wide. The bar is
+       that wide when it runs full-bleed; the PANEL never is — it is a column,
+       408px at desktop and 326px on a phone — so it always takes the link.
+
+       That is not a special case for the panel, it is the same measurement
+       reaching a different answer. An outlined button costs 32px of padding
+       plus a border, and in a 408px header already carrying a mark, the name
+       and the pause it is the single widest element competing with the
+       component's own identity. The outline is doing decorative work there,
+       not affordance work: a header row is a place a citizen expects links,
+       and the hairline already separates it from the control.
+       An outlined button is ~164px; the header also has to hold a mark, the
+       name and the pause, and at 312px the button simply dropped to a third
+       line — which is how a two-line layout quietly becomes three. Stripped to
+       a text link it is ~110px and the header holds on one line.
+
+       It loses nothing by it: the hairline to its left already separates it
+       from the control, and a header row is a place a citizen expects links.
+       The tap target keeps the header's own 44px block, so 2.5.8 still holds.
+       This restyles the CONSUMER'S element, which is why it is scoped tightly
+       to the direct child of our own wrapper and does nothing above 1024px. */
+    .sa-ticker__action > :is(a, button) {
+      padding-inline: 0;
+      border: 0;
+      background: transparent;
+    }
+
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__nav {
+      order: 2;
+    }
+
+    /* The message takes the whole second line, on the ground rather than the
+       plinth — which is what separates the two, exactly as it does in the
+       panel. No rule between them: the colour change already does that job. */
+    .sa-ticker:not(.sa-ticker--vertical) .sa-ticker__body {
+      order: 4;
+      flex: 1 1 100%;
+      background-color: var(--sa-ticker-bar);
+      padding-inline: var(--sa-padding-16);
+    }
+  }
+
+  /* ── Reduced motion ──────────────────────────────────────────────────────
+     The entry animation goes. The auto-advance is stopped in the component
+     itself, not here, because a CSS media query cannot pause a JS interval —
+     and an interval that keeps firing while the animation is suppressed would
+     still snap the message from one item to the next every four seconds. */
+  /* REDUCED MOTION MEANS LESS MOVEMENT, NOT LESS MEANING. The travel goes —
+     the marquee, the arcs, the message's slide — but the message keeps a plain
+     fade, because a line of text that swaps with no transition at all is the
+     jarring change the setting is meant to prevent. */
+  @media (prefers-reduced-motion: reduce) {
+    .sa-ticker__track,
+    .sa-ticker[data-animate] .sa-ticker__wave {
+      animation: none;
+    }
+
+    .sa-ticker__item {
+      animation-name: sa-ticker-fade;
+      animation-duration: 200ms;
+    }
+
+    .sa-ticker__control:active {
+      transform: none;
+    }
+  }
+
+  @keyframes sa-ticker-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

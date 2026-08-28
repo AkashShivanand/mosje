@@ -82,7 +82,7 @@ export default function ScwReportPage() {
 
       <main id="main-content" className="flex-1">
         <div className="border-b border-border bg-surface">
-          <div className="mx-auto max-w-[1280px] px-6 pb-8 pt-10">
+          <div className="sa-container pb-8 pt-10">
             <nav aria-label="Breadcrumb" className="mb-6">
               <ol className="flex items-center gap-2 text-sm text-ink-muted">
                 <li><Link href="/" className="hover:text-primary hover:underline">Home</Link></li>
@@ -127,7 +127,7 @@ export default function ScwReportPage() {
           </div>
         </div>
 
-        <div className="mx-auto max-w-[1280px] space-y-6 px-6 py-10">
+        <div className="sa-container space-y-6 py-10">
           {audit.screens.map((screen) => (
             <section key={screen.slug} className="rounded-2xl border border-border bg-surface p-6">
               <div className="flex flex-wrap items-center justify-between gap-3">

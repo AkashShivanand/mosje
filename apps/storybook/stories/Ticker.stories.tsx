@@ -1,0 +1,337 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import { Ticker, buttonClasses } from "@mosje/design-system";
+
+/**
+ * **Ticker** — the full-bleed announcement strip that runs under the masthead
+ * on public pages. A named plinth, one message at a time, and the controls to
+ * move through them.
+ *
+ * **Structural, not content-bound.** Every string, href and route arrives as a
+ * prop, so the website's notices and a portal's scheme alerts are the same
+ * component with different data.
+ *
+ * **A strip that moves on its own must be stoppable.** The pause control is not
+ * decoration and not optional — WCAG 2.2.2 requires a mechanism to stop motion
+ * that starts automatically and runs past five seconds, and prev/next do not
+ * satisfy it. It is the one control that survives every breakpoint; never hide
+ * it to win space. The Figma frame draws prev and next only, and this is the
+ * documented divergence: a published set of values is a floor, not a ceiling.
+ *
+ * **Reduced motion means it does not advance** — not that it advances without a
+ * transition. Suppressing only the animation leaves the message replacing itself
+ * every few seconds, which is the part that hurts. The timer never starts, and
+ * the citizen steps through with the arrows.
+ *
+ * **The live region is `off` while it is playing.** An auto-rotating region set
+ * to `polite` interrupts a screen-reader user every interval with text they did
+ * not ask for. Pausing is what signals intent, so pausing is what turns
+ * announcements on.
+ *
+ * **One item is in the DOM at a time.** The frame stacks the slides and fades
+ * the inactive ones to `opacity: 0`, which is right on a canvas and wrong in a
+ * browser — an invisible link is still in the tab order. Rendering only the
+ * active item costs the exit animation and buys a tab order that matches what
+ * is on screen.
+ *
+ * **`orientation` picks one of TWO SHAPES.** `horizontal` is the **bar**: the
+ * 72px full-bleed strip, one message at a time, stepped with prev/next.
+ * `vertical` is the **panel**: the same items stacked as rows scrolling upward
+ * under a header. Several headlines are legible at once, and there is no
+ * stepping because the list moves on its own. Both shapes lay a row out the
+ * same way: `title` is the notice, `description` and `date` the quieter line
+ * beneath it.
+ *
+ * **The panel stops on hover and on focus, not only on the button.** A moving
+ * row is a moving tap target — without it the line somebody is reading walks
+ * out from under the pointer. It also does not scroll at all below 640px,
+ * where there is no hover to stop it with.
+ *
+ * **Nothing that cannot move shows controls that govern motion.** Below two
+ * items (bar), or when the list is no longer than its own window (panel), the
+ * whole cluster goes — a pause button on something that is not moving is worse
+ * than absent, because it advertises motion to escape from.
+ *
+ * **Nothing is truncated.** Both shapes wrapped to an ellipsis until it met the
+ * real list: two DoSJE notices both open "Extension of Application Submission
+ * Date for Financial Adviser (FA) Post at…" and clipped to the *same visible
+ * string* — two links reading identically and going to different pages. Text
+ * wraps; the bar has a minimum height and grows, and the panel measures its
+ * window with a `ResizeObserver` rather than calculating it from a nominal row
+ * height that wrapping makes meaningless.
+ *
+ * **The panel is built from the bar's parts.** Its header is the bar's navy
+ * plinth, over the bar's blue ground, in the bar's single ink, with rows set in
+ * the bar's own title role. Side by side they read as one component in two
+ * shapes — which is what they are.
+ *
+ * **Each row is a title over a subtitle** — the structure the live site uses and
+ * the one the bar already had. The notice is the title; its kind and date are
+ * the subtitle. A subtitle is allowed to repeat, which is why the kind can be
+ * shown at all — as a bold lead-in on the notice's own line it could not.
+ *
+ * **Each row is marked, and the marker hangs.** A small dot in its own grid
+ * column, with wrapped lines returning to the text column — so the dot is the
+ * only thing at the outer edge and item starts are pickable out of the left
+ * margin without reading a word. It matters because the list *moves*: a reader
+ * re-acquires it constantly. The bar has none; one message, no list to scan.
+ *
+ * **Rows do not underline on hover.** WCAG 1.4.1 asks that a link be
+ * distinguishable from the text *around* it; in a list where every row is a
+ * link there is no surrounding text. The wash and the cursor carry it.
+ *
+ * **Pause holds its place.** The animation is applied whenever the list *can*
+ * scroll and only `animation-play-state` moves — gating the property itself on
+ * "is it playing" reset the track to zero.
+ *
+ * **The ground is `primaryScale/600`, and that is a contrast fix.** White on
+ * `/500` is 4.64:1 and any dimming fails (80% is 3.52:1). On `/600` the title
+ * is 6.36:1 and the subtitle 4.66:1.
+ *
+ * **`height`**: `auto` stands at the `rows` window; `fill` takes the height of
+ * the row it shares. A prop rather than something inferred — `block-size: 100%`
+ * fills almost everywhere in practice, because a flex parent already has a
+ * resolved height by the time the child asks.
+ *
+ * **The loop is seamless because one animated wrapper holds two copies** and
+ * travels exactly −50% — one list, exactly where the second copy already sits.
+ * Each copy used to animate itself by −50% of *its own* height, which moved the
+ * list half a length per cycle and snapped back: one visible jump per loop.
+ *
+ * **`fill` needs a parent whose height does not come from the panel** — a grid
+ * item is sized by its own content, so a long list grows the row and the panel
+ * fills what it just inflated. Take the rail out of flow.
+ *
+ * **Whether it scrolls is measured, not counted.** One copy of the list against
+ * the viewport. Give the panel a tall enough row and the whole list fits, at
+ * which point a marquee would be moving content already entirely on screen — so
+ * it does not run, and the controls that govern it are not offered.
+ *
+ * **`date` is optional and separate from `description`.** The component owns the
+ * separator, so a notice with no date does not trail a dangling middot, and the
+ * date renders as a real `<time>`.
+ *
+ * **The mark is `<TickerMark>`, a bespoke animated SVG** — a megaphone whose
+ * arcs pulse while the strip moves and stop when it is paused. It replaced a
+ * white rounded tile, which on the navy plinth read as a sticker pasted onto
+ * the bar. It is a bespoke mark rather than an `<Icon>` because it animates in
+ * parts and answers to the strip's state; a font glyph can do neither.
+ *
+ * **A row with no `description` and no `date` is its title alone** — the
+ * subtitle is not rendered, rather than rendered empty. There is no colon and
+ * no bold lead-in anywhere: that was the shape until 2026-08-25, and it drew
+ * the same bold word down the whole rail wherever the categories repeat.
+ *
+ * **The message enters from the side it came from.** `data-step` carries the
+ * direction, so Previous slides in from the left and Next from the right —
+ * and both flip under `dir="rtl"`, where "next" travels leftward. 240ms on a
+ * strong ease-out: seen a dozen times a minute, the movement should say
+ * "this is new" and then get out of the way.
+ *
+ * **The action slot needs `inverseOutlined`.** The strip is a solid brand
+ * surface, so a normal outlined button draws its border in a blue nobody can
+ * see against it.
+ *
+ * Lifecycle: **Stable**.
+ */
+const ITEMS = [
+  {
+    id: "funding",
+    title: "New Funding Alert!",
+    description: "Government announces fresh grants for the food processing sector.",
+    href: "#funding",
+    linkLabel: "Learn More",
+  },
+  {
+    id: "skill-india",
+    title: "New Opportunity!",
+    description:
+      "Ministry launches ‘Skill India Connect’ to train marginalised youth for digital and green jobs.",
+    href: "#skill-india",
+    linkLabel: "Learn More",
+  },
+  {
+    id: "nos-result",
+    title: "National Overseas Scholarship",
+    description: "Second-round results for the 2025-26 selection year are now published.",
+    href: "#nos",
+    linkLabel: "Learn More",
+  },
+];
+
+/** Enough notices to overflow a four-row window, so the panel has something to
+ *  scroll past. */
+const LONG_LIST = [
+  ...ITEMS,
+  { id: "vacancy", title: "Vacancies", description: "Financial Adviser at DAF and BJRNF — application window extended.", href: "#vacancy" },
+  { id: "tender", title: "Tender", description: "Supply and installation of assistive devices, Phase III.", href: "#tender" },
+  { id: "report", title: "Documents", description: "Annual Report 2025-26 is now available in English and Hindi.", href: "#report" },
+];
+
+const meta = {
+  title: "Components/Ticker",
+  component: Ticker,
+  args: {
+    items: ITEMS,
+    label: "Latest Updates",
+    orientation: "horizontal",
+    interval: 5000,
+    autoplay: true,
+    action: (
+      <a href="#all" className={buttonClasses("primary", "inverseOutlined", "sm")}>
+        View All Updates
+      </a>
+    ),
+  },
+  argTypes: {
+    action: { control: false },
+    icon: { control: false },
+    linkAs: { control: false },
+    orientation: { control: "inline-radio", options: ["horizontal", "vertical"] },
+    interval: { control: { type: "number", min: 2000, step: 500 } },
+  },
+  parameters: { layout: "fullscreen" },
+} satisfies Meta<typeof Ticker>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+/** The default: the frame as drawn, plus the pause control it needs. */
+export const Default: Story = {};
+
+/** Stopped on mount. Note that the live region flips to `polite` — this is the
+ *  state in which a screen reader is told about the message. */
+export const Paused: Story = {
+  args: { autoplay: false },
+};
+
+/**
+ * Headline only. `description` is optional, and without it the strip runs
+ * single-line at 56px rather than 72px — the shape the DoSJE website shipped
+ * before this component existed.
+ */
+export const SingleLine: Story = {
+  args: {
+    items: ITEMS.map(({ id, title, href }) => ({ id, title, href })),
+  },
+};
+
+/**
+ * The **panel** — items stacked and scrolling upward under a header. Hover it
+ * and the scroll stops; tab into it and it stops too. With six items over a
+ * four-row window there is something to scroll past, so it moves.
+ */
+export const Vertical: Story = {
+  args: { orientation: "vertical", items: LONG_LIST },
+};
+
+/**
+ * A taller panel. `rows` is what sets the height, and the travel is per row, so
+ * a longer list takes proportionally longer to loop — the reading speed stays
+ * the same however many notices the ministry publishes.
+ */
+export const VerticalSixRows: Story = {
+  args: { orientation: "vertical", items: LONG_LIST, rows: 6, interval: 3000 },
+};
+
+/**
+ * `height="fill"` inside a 560px row, beside a block standing in for the content
+ * it would share the row with. The panel takes the row rather than its `rows`
+ * window — and because that window is now tall enough for the whole list, it
+ * stops scrolling and offers no pause control, which is the point: a marquee
+ * moving content that is already on screen is motion for its own sake.
+ */
+export const VerticalFillsItsRow: Story = {
+  args: { orientation: "vertical", items: LONG_LIST, height: "fill", rows: 3 },
+  render: (args) => (
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 320px", gap: "var(--sa-inline-24)", height: 560 }}>
+      <div
+        style={{
+          borderRadius: "var(--sa-shape-12)",
+          background: "var(--sa-bg-neutral-subtle)",
+          display: "grid",
+          placeItems: "center",
+          color: "var(--sa-text-neutral-subtle)",
+        }}
+      >
+        the content it shares the row with
+      </div>
+      <Ticker {...args} />
+    </div>
+  ),
+};
+
+/** A notice with no date — the subtitle is the kind alone, and there is no
+ *  dangling middot after it. */
+export const VerticalWithoutDates: Story = {
+  args: {
+    orientation: "vertical",
+    items: LONG_LIST.map(({ id, title, href }) => ({ id, title, description: "Notice", href })),
+  },
+};
+
+/**
+ * A panel with nothing to scroll past — four items in a four-row window. It is
+ * a still list, and the pause control is gone with the motion it governed.
+ */
+export const VerticalStatic: Story = {
+  args: { orientation: "vertical", items: LONG_LIST.slice(0, 4) },
+};
+
+/**
+ * Rows with **no `description`** — the shape the DoSJE website actually uses,
+ * because its notice categories repeat ("Documents" seven times out of eight)
+ * and a lead-in mapped from one would draw the same bold word down the rail.
+ * Each row is the notice alone, with no subtitle rendered beneath it.
+ */
+export const VerticalTitlesOnly: Story = {
+  args: {
+    orientation: "vertical",
+    rows: 4,
+    items: LONG_LIST.map(({ id, title, description, href }) => ({
+      id,
+      title: description ?? title,
+      href,
+    })),
+  },
+};
+
+/**
+ * One item, and therefore **no controls at all**. The timer never starts below
+ * two, so pause, prev and next would be three buttons that visibly do nothing —
+ * and a pause control on a strip that is not moving is worse than absent,
+ * because it advertises motion a citizen might be trying to escape. The message
+ * and the action remain.
+ */
+export const SingleItem: Story = {
+  args: { items: [ITEMS[0]!] },
+};
+
+/**
+ * No action slot. The strip is complete without it; the "View All" route is a
+ * convenience the consuming site owns, and it is the first thing to go below
+ * 1024px.
+ */
+export const WithoutAction: Story = {
+  args: { action: undefined },
+};
+
+/**
+ * A renamed strip. `label` is the plinth text AND the section's accessible
+ * name, so it is also what the pause and step buttons announce themselves
+ * against — "Pause Scheme Alerts", "Next scheme alerts".
+ */
+export const RenamedStrip: Story = {
+  args: {
+    label: "Scheme Alerts",
+    items: ITEMS,
+  },
+};
+
+/**
+ * An empty list renders nothing at all — no plinth, no empty blue band. A strip
+ * with no message is chrome with nothing to say, and leaving the band in place
+ * pushes the page down for no reason.
+ */
+export const Empty: Story = {
+  args: { items: [] },
+};

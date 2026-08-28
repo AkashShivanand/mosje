@@ -293,6 +293,22 @@ six divergences recorded below — five of which need a human decision because
    specimens and visual tests. Mobile collapses the right-hand cluster, as Figma does.
 
 > **One deliberate exemption inside #6, and it is an accessibility one.** Figma's
+> **Where the cluster GOES (27 August 2026).** Dropping it was always half the story;
+> for a long time it was the whole story, and the controls simply ceased to exist below
+> 768px. Measured at 375px on the live site: font size, accessibility options and language
+> all had `offsetParent: null` and nothing rendered them anywhere else. `SiteHeader` now
+> renders `AccessibilityControls variant="sheet"` inside `NavSheet` — the same three
+> controls as labelled rows, sharing one text-size store (`font-scale.ts`) so the bar and
+> the sheet can never disagree. The UX4G floating button, previously hidden estate-wide,
+> is un-hidden below 768px as a second route and suppressed only while the sheet is open.
+> The section hides itself from 768 up, where the bar takes the controls back — between
+> 768 and 1023 both the bar and the sheet exist, and two live copies of one control is
+> worse than none.
+>
+> **`layout="page"` (27 August 2026).** `wide` is a flat 1200 that never steps;
+> `--sa-container-page` runs 1200 / 1320 / 1440. A bar on `wide` above rows on `page` is
+> 60px narrower than them at 1440 and 120px at 1920. `SiteHeader` passes `page`.
+>
 > Mobile variant drops the *entire* right cluster including the skip link. The code
 > keeps the **skip link** on mobile: it is the page's WCAG 2.4.1 bypass mechanism, and
 > `.claude/rules/guidelines.md` places accessibility/legal requirements above brand and

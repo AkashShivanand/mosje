@@ -28,6 +28,7 @@ export function HeroCarousel() {
         <div
           className={`absolute inset-0 transition-opacity duration-700 ${index === 0 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}
           aria-hidden={index !== 0}
+          inert={index !== 0}
         >
           <div className="h-full w-full bg-white grid grid-cols-1 md:grid-cols-12 items-center">
             {/* Left Content */}
@@ -75,6 +76,7 @@ export function HeroCarousel() {
         <div
           className={`absolute inset-0 transition-opacity duration-700 ${index === 1 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}
           aria-hidden={index !== 1}
+          inert={index !== 1}
         >
           <Image
             src="/website/images/Banner-7.png"
@@ -88,6 +90,7 @@ export function HeroCarousel() {
         <div
           className={`absolute inset-0 transition-opacity duration-700 ${index === 2 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}
           aria-hidden={index !== 2}
+          inert={index !== 2}
         >
           <Image
             src="/website/images/Banner-8.png"
@@ -101,6 +104,7 @@ export function HeroCarousel() {
         <div
           className={`absolute inset-0 transition-opacity duration-700 ${index === 3 ? "opacity-100 z-10" : "opacity-0 z-0 pointer-events-none"}`}
           aria-hidden={index !== 3}
+          inert={index !== 3}
         >
           <Image
             src="/website/images/Banner-9.png"

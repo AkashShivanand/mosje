@@ -155,3 +155,56 @@ export const FilteringAList: Story = {
 export const Disabled: Story = {
   args: { disabled: true, value: "Locked while the report is generating" },
 };
+
+/**
+ * **Autocomplete.** Pass `suggestions` and the field becomes an ARIA 1.2
+ * combobox: `↓` / `↑` move the highlight **without moving focus out of the
+ * input**, `Esc` closes the list and keeps the text, `Enter` opens the
+ * highlighted row — and `Enter` on raw text still submits, so the list is a
+ * shortcut and never the only route.
+ *
+ * `onSuggestionSelect` fires for a click or an `Enter` on the highlight;
+ * `suggestionsLabel` names the listbox for a screen reader (default "Search
+ * suggestions"). Omit `suggestions` entirely — do not pass `[]` — for a field
+ * with no autocomplete: an empty array still announces the field as a combobox.
+ *
+ * The component neither fetches nor debounces. That belongs to the owner, because
+ * an in-memory list and a network route want different intervals; the website's
+ * masthead debounces 150ms and aborts in-flight lookups.
+ */
+export const Autocomplete: Story = {
+  render: function Render(args) {
+    const catalogue = [
+      { id: "/pre-matric", label: "Pre-Matric Scholarship for SC Students", group: "Schemes", iconName: "volunteer_activism", description: "Class 9–10 support for Scheduled Caste students." },
+      { id: "/post-matric", label: "Post-Matric Scholarship for OBC Students", group: "Schemes", iconName: "volunteer_activism", description: "Fees and maintenance beyond class 10." },
+      { id: "/nos", label: "National Overseas Scholarship", group: "Schemes", iconName: "volunteer_activism", description: "Postgraduate study abroad for SC candidates." },
+      { id: "/nsfdc", label: "National Scheduled Castes Finance and Development Corporation", group: "Organisations", iconName: "corporate_fare", description: "Concessional credit through State Channelising Agencies." },
+      { id: "/nskfdc", label: "National Safai Karamcharis Finance and Development Corporation", group: "Organisations", iconName: "corporate_fare", description: "Livelihood finance for sanitation workers." },
+    ];
+    const [value, setValue] = React.useState("scholar");
+    const [chosen, setChosen] = React.useState<string | null>(null);
+    const matches = value.trim()
+      ? catalogue.filter((row) => row.label.toLowerCase().includes(value.trim().toLowerCase()))
+      : [];
+
+    return (
+      <div style={{ display: "grid", gap: 12 }}>
+        <Search
+          {...args}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onClear={() => setValue("")}
+          onSubmit={(v) => setChosen(`Searched for “${v}”`)}
+          suggestions={matches}
+          suggestionsLabel="Scheme and organisation suggestions"
+          onSuggestionSelect={(s) => setChosen(`Opened ${s.label}`)}
+          placeholder="Search schemes, organisations, documents…"
+          aria-label="Search this website"
+        />
+        <p style={{ margin: 0, color: "var(--sa-text-neutral-subtle)" }}>
+          {chosen ?? "Type, then use ↓ ↑ and Enter — or press Enter on the raw text."}
+        </p>
+      </div>
+    );
+  },
+};

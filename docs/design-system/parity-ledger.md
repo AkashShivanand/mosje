@@ -7,14 +7,14 @@
 
 | Verdict | Count | Meaning |
 |---|---:|---|
-| `mapped` | 43 | A Figma component set with a confirmed code counterpart |
+| `mapped` | 44 | A Figma component set with a confirmed code counterpart |
 | `figma-only` | 30 | Designed, never built. Backlog item or retire from the library |
-| `code-only` | 50 | Built, never designed. Figma backlog item |
-| `deliberately-unmapped` (Figma) | 11 | Internal sub-parts and brand assets |
+| `code-only` | 90 | Built, never designed. Figma backlog item |
+| `deliberately-unmapped` (Figma) | 14 | Internal sub-parts and brand assets |
 | `deliberately-unmapped` (code) | 8 | Demo tooling, providers, utilities |
 | `broken-pairing` | 0 | Pairing names a code export that no longer exists — **fix immediately** |
 
-**84** published component sets · **85** code components · **43** paired.
+**88** published component sets · **126** code components · **44** paired.
 
 ## Figma → code
 
@@ -102,6 +102,10 @@
 | Table / Row | Tables | `DataTable` | `mapped` | [3836:4647](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=3836-4647) |
 | Tabs / Tab | Tabs | `Tabs` | `mapped` | [2316:353](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=2316-353) |
 | Tabs / Tab (Alt) | Tabs | `Tabs` | `mapped` | [2725:1217](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=2725-1217) |
+| Ticker | Ticker | `Ticker` | `mapped` | [56159:903](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56159-903) |
+| Ticker / Action | Ticker | _Internal sub-part of Ticker — its interaction states_ | `deliberately-unmapped` | [56155:37470](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56155-37470) |
+| Ticker / Control | Ticker | _Internal sub-part of Ticker — its interaction states_ | `deliberately-unmapped` | [56155:1797](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56155-1797) |
+| Ticker / Row | Ticker | _Internal sub-part of Ticker — the message, in BOTH shapes_ | `deliberately-unmapped` | [56167:900](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=56167-900) |
 | Toggle | Toggle | `Toggle` | `mapped` | [23:599](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=23-599) |
 | Tooltip | Tooltip | `Tooltip` | `mapped` | [320:67518](https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/SAMAVESH-Design-System?node-id=320-67518) |
 
@@ -110,12 +114,22 @@
 | Code component | Source | Verdict |
 |---|---|---|
 | `AadhaarInput` | `./components/forms/aadhaar-input` | `code-only` |
+| `AccessibilityBar` | `./components/utilities/accessibility-bar` | `code-only` |
+| `Accordion` | `./components/data-display/accordion` | `code-only` |
+| `AccordionItem` | `./components/data-display/accordion` | `code-only` |
 | `AccountMenu` | `./components/navigation/header` | `code-only` |
+| `AccountPrompt` | `./components/auth/auth-parts` | `code-only` |
+| `ActionBanner` | `./components/feedback/action-banner` | `code-only` |
 | `ApprovalTimeline` | `./components/data-display/approval-timeline` | `code-only` |
+| `AppShell` | `./components/layout/app-shell` | `code-only` |
 | `AppSwitcherPanel` | `./components/navigation/app-switcher-panel` | `deliberately-unmapped` — _Demo tooling — never product UI_ |
 | `AreaChart` | `./components/data-display/charts` | `code-only` |
+| `AuthDivider` | `./components/auth/auth-parts` | `code-only` |
+| `Band` | `./components/layout/band` | `code-only` |
 | `BarChart` | `./components/data-display/charts` | `code-only` |
+| `BrandGlyph` | `./components/utilities/brand-glyph` | `code-only` |
 | `BrandLockup` | `./components/navigation/header` | `code-only` |
+| `CaptchaField` | `./components/forms/captcha-field` | `code-only` |
 | `CardBody` | `./components/data-display/card` | `code-only` |
 | `CardFooter` | `./components/data-display/card` | `code-only` |
 | `CardHeader` | `./components/data-display/card` | `code-only` |
@@ -123,48 +137,78 @@
 | `CardTitle` | `./components/data-display/card` | `code-only` |
 | `ChartCard` | `./components/dashboard/chart-card` | `code-only` |
 | `ChartTooltip` | `./components/data-display/charts` | `code-only` |
+| `Chatbot` | `./components/feedback/chatbot` | `code-only` |
+| `ChatbotMascot` | `./components/feedback/chatbot-mascot` | `code-only` |
 | `ColorModeProvider` | `./foundations/color-mode-provider` | `deliberately-unmapped` — _Non-visual provider_ |
 | `ComboChart` | `./components/data-display/charts` | `code-only` |
+| `ConsentLine` | `./components/auth/auth-parts` | `code-only` |
+| `Container` | `./components/layout/container` | `code-only` |
 | `DashboardGrid` | `./components/dashboard/dashboard-grid` | `code-only` |
 | `DeclarationCheckbox` | `./components/forms/declaration-checkbox` | `code-only` |
 | `DemoAccountsPanel` | `./demo` | `deliberately-unmapped` — _Demo tooling — never product UI_ |
 | `DemoDock` | `./demo` | `deliberately-unmapped` — _Demo tooling — never product UI_ |
 | `DemoFab` | `./demo` | `deliberately-unmapped` — _Demo tooling — never product UI_ |
+| `Divider` | `./components/layout/divider` | `code-only` |
 | `DonutChart` | `./components/data-display/charts` | `code-only` |
+| `DropdownItem` | `./components/navigation/header` | `code-only` |
 | `FilterBar` | `./components/dashboard/filter-bar` | `code-only` |
+| `FlaskIcon` | `./demo` | `code-only` |
 | `FormCard` | `./components/forms/form-card` | `code-only` |
 | `FormField` | `./components/forms/form-field` | `code-only` |
 | `FormSection` | `./components/forms/form-section` | `code-only` |
 | `FunnelChart` | `./components/data-display/charts` | `code-only` |
 | `Gauge` | `./components/data-display/charts` | `code-only` |
 | `GeoPhotoInput` | `./components/forms/geo-photo-input` | `code-only` |
+| `Grid` | `./components/layout/grid` | `code-only` |
+| `GridItem` | `./components/layout/grid` | `code-only` |
 | `Heatmap` | `./components/data-display/charts` | `code-only` |
-| `Icon` | `./components/icon` | `deliberately-unmapped` — _Handled by the single icon mapping, not one per glyph_ |
+| `Icon` | `./components/utilities/icon` | `deliberately-unmapped` — _Handled by the single icon mapping, not one per glyph_ |
 | `KpiRow` | `./components/dashboard/kpi-row` | `code-only` |
 | `Legend` | `./components/data-display/charts` | `code-only` |
 | `Lightbox` | `./components/feedback/lightbox` | `code-only` |
 | `LiveRegion` | `./components/utilities/live-region` | `deliberately-unmapped` — _Non-visual accessibility utility_ |
+| `MaskedContactRow` | `./components/auth/auth-parts` | `code-only` |
 | `MediaGalleryInput` | `./components/forms/media-gallery-input` | `code-only` |
 | `MediaUpload` | `./components/forms/media-upload` | `code-only` |
+| `MegaMenu` | `./components/navigation/header` | `code-only` |
+| `MegaMenuItem` | `./components/navigation/header` | `code-only` |
+| `MenuToggle` | `./components/navigation/header` | `code-only` |
 | `MetricCard` | `./components/data-display/metric-card` | `code-only` |
+| `NavDropdown` | `./components/navigation/header` | `code-only` |
+| `NavItemLink` | `./components/navigation/header` | `code-only` |
+| `NavSheet` | `./components/navigation/header` | `code-only` |
 | `OtpInput` | `./components/forms/otp-input` | `code-only` |
+| `PageHeader` | `./components/layout/page-header` | `code-only` |
+| `Pagination` | `./components/navigation/pagination` | `code-only` |
 | `PanInput` | `./components/forms/pan-input` | `code-only` |
 | `PasswordInput` | `./components/forms/password-input` | `code-only` |
+| `PasswordStrengthMeter` | `./components/forms/password-strength-meter` | `code-only` |
 | `PieChart` | `./components/data-display/charts` | `code-only` |
 | `PortalLoginShell` | `./components/auth/portal-login-shell` | `code-only` |
+| `PortalLoginTemplate` | `./components/auth/portal-login-template` | `code-only` |
+| `ProfileCard` | `./components/data-display/profile-card` | `code-only` |
 | `Progress` | `./components/data-display/charts` | `code-only` |
+| `ResendTimer` | `./components/auth/auth-parts` | `code-only` |
 | `ReviewItem` | `./components/forms/wizard` | `code-only` |
 | `ReviewSection` | `./components/forms/wizard` | `code-only` |
 | `ScatterChart` | `./components/data-display/charts` | `code-only` |
 | `SectionTitle` | `./components/layout/section` | `code-only` |
 | `SegmentedControl` | `./components/dashboard/filter-bar` | `code-only` |
+| `SheetToggle` | `./components/navigation/header` | `code-only` |
 | `SideSheet` | `./components/feedback/side-sheet` | `code-only` |
+| `SigningIntoBar` | `./components/auth/auth-parts` | `code-only` |
+| `SiteFooter` | `./components/navigation/site-footer` | `code-only` |
+| `SiteLayout` | `./components/layout/site-layout` | `code-only` |
 | `Skeleton` | `./components/feedback/skeleton` | `code-only` |
 | `SkeletonRow` | `./components/feedback/skeleton` | `code-only` |
 | `SkeletonText` | `./components/feedback/skeleton` | `code-only` |
 | `SlaProgressIndicator` | `./components/feedback/sla-progress-indicator` | `code-only` |
 | `Sparkline` | `./components/data-display/charts` | `code-only` |
+| `SSOButton` | `./components/auth/auth-parts` | `code-only` |
 | `TabPanel` | `./components/navigation/tabs` | `code-only` |
 | `ToastProvider` | `./components/feedback/toast` | `deliberately-unmapped` — _Non-visual provider_ |
+| `VerticalTimeline` | `./components/data-display/vertical-timeline` | `code-only` |
+| `VerticalTimelineItem` | `./components/data-display/vertical-timeline` | `code-only` |
+| `VisitorCounter` | `./components/data-display/visitor-counter` | `code-only` |
 | `Wizard` | `./components/forms/wizard` | `code-only` |
 

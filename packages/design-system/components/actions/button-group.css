@@ -1,0 +1,78 @@
+/* Declare the order before using it — see the note at the top of button.css. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     ButtonGroup — related actions kept together, and kept apart.
+
+     Two jobs, and the second is the one that is usually forgotten. It groups the
+     actions semantically (`role="group"` plus a name, so a screen reader announces
+     "Record actions, group" rather than reading four loose buttons), and it holds them
+     8px apart.
+
+     8px IS NOT A TASTE DECISION. UX4G 3.0 asks for 8px between adjacent targets, and
+     WCAG 2.2 2.5.8 lets a 24x24 target be met by SPACING when the control itself is
+     smaller. Adjacent `sm` buttons with no gap are the case that fails, and a group is
+     precisely where adjacency happens.
+     ============================================================================ */
+  .ds-btn-group {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    flex-wrap: wrap;
+  }
+
+  /* Vertical stacking, for a narrow column or a card footer on a phone. */
+  .ds-btn-group--vertical {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Push the group to the end of its container — the usual dialog/footer placement.
+     Kept as a modifier rather than a prop on every consumer so the alignment vocabulary
+     lives in one file. */
+  .ds-btn-group--end {
+    justify-content: flex-end;
+  }
+
+  .ds-btn-group--between {
+    justify-content: space-between;
+  }
+
+  /* ATTACHED: one segmented control rather than a row of separate buttons. The gap goes
+     and the seam is collapsed so adjacent borders do not double into a 2px line.
+
+     There is deliberately no spacing exemption here: attached buttons are ONE control
+     visually, so 2.5.8's adjacent-target spacing does not apply the way it does to the
+     spaced form — but each segment must still meet 24x24 on its own, which the size
+     ladder already guarantees. */
+  .ds-btn-group--attached {
+    gap: 0;
+  }
+
+  .ds-btn-group--attached > .ds-btn:not(:first-child) {
+    margin-inline-start: -1px;
+  }
+
+  .ds-btn-group--attached > .ds-btn:not(:first-child, :last-child) {
+    border-radius: 0;
+  }
+
+  .ds-btn-group--attached > .ds-btn:first-child:not(:last-child) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
+  }
+
+  .ds-btn-group--attached > .ds-btn:last-child:not(:first-child) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+  }
+
+  /* A focused or hovered segment must paint its whole border, including the seam it
+     shares with the segment before it. */
+  .ds-btn-group--attached > .ds-btn:hover,
+  .ds-btn-group--attached > .ds-btn:focus-visible {
+    position: relative;
+    z-index: 1;
+  }
+}

@@ -8,9 +8,15 @@
 // are given.
 //
 // PROPERTY COVERAGE
-//   Device -> deliberatelyOmitted. Figma-only: the grid is CSS, and below 1024px it
-//             does not render — NavSheet flattens the columns into one list, because
-//             a 344px sheet has no room for a grid.
+//   Device -> deliberatelyOmitted. Figma-only: the three variants are CSS breakpoints.
+//             Desktop is a 1272 panel of 400px columns 3-up; Tablet is 768 with 360px
+//             columns 2-up; Mobile is not a grid at all but a vertical stack, which
+//             is what NavSheet renders below 1024px — columns, headings and org rows
+//             intact, not flattened to a list.
+//
+// NO COLUMN DIVIDERS. Figma's Col frames carry no strokes and the panel holds no
+// divider nodes at any Device; 24px of gap does the separating. Hairlines were added
+// in code once and removed again on 2026-08-24 when the design was actually checked.
 import figma from "figma";
 
 export default {

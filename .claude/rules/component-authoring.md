@@ -53,8 +53,10 @@ enough" is not the bar; "would this survive review in Carbon/Polaris" is.
   before the component is done. "Mostly tokenised" is not tokenised.
 - **Semantic over primitive.** Bind to the role/semantic layer (`bg/*`, `text/*`,
   `icon/*`, `border/*`, `on/*`, `inline/*`, `stack/*`, `padding/*`, `shape/*`,
-  `icon/size/*`, `ref/font/role/*`), not to `ref/*` primitives, unless no semantic
-  token exists — in which case **add one** (§3), don't reach past the layer.
+  `icon/size/*`, `type/*`), NEVER to a `ref/*` primitive — every Tier-1 variable in the
+  library is hidden from publishing as of 2026-08-26, so a consuming file cannot bind one
+  even by accident. If no semantic token exists, **add one** (§3) — never reach past the
+  layer.
 - **Use `on/*` pairing** for content on a coloured surface, and honour the contrast
   convention: filled surfaces sit one rung deeper than the same-family ink.
 - **Set scopes and WEB code syntax** on every new variable (`var(--…)`); never leave
@@ -256,6 +258,37 @@ context. It is not a tagline. It carries, in this order:
 
 Write the rules as *prohibitions and consequences*, not description. "Never add a
 tone prop" prevents a defect; "supports theming" prevents nothing.
+
+**NEVER ROUND-TRIP `description`.** Reading it returns text that is already
+HTML-escaped; writing that text back escapes it a second time. Do that a few
+times and an apostrophe walks `'` → `&#39;` → `&amp;#39;` → `&amp;amp;#39;`,
+and the briefing an agent is handed fills with entity noise. Demonstrated
+2026-08-25, not assumed: one naive `n.description = n.description` on
+`Navbar/NavDropdown` reintroduced the damage immediately.
+
+The rule is therefore about the **cycle**, not the field:
+
+- **Writing fresh text to `description` is fine.** The setter escapes exactly
+  once, which is the correct stored form. A single-level `&#39;` or `&quot;`
+  is Figma's normal projection and renders as the character — it is **not** a
+  defect, and 113 of the library's 119 components legitimately carry them.
+- **If you must edit existing text, decode what you read first** — collapse
+  every `&amp;` chain, then decode `&#NN;` / `&quot;` / `&lt;` / `&gt;` — and
+  write real characters back.
+- **`descriptionMarkdown` round-trips unchanged and is idempotent**, so prefer
+  it when authoring something new. But **it is empty on any component authored
+  through `description`**, so never read it as your source without checking:
+  a sweep that did exactly that reported 53 damaged components as "already
+  clean", because `unescape("") === ""`.
+
+**Audit for chained entities only.** Match `/&(amp;)+(#\d+|quot|lt|gt|apos);/`
+— one or more `amp;` means real damage. Matching `/&\w+;/` instead flags every
+healthy description in the library; that error turned six genuinely damaged
+components into a reported 53.
+
+Raw `<Tag />` in `descriptionMarkdown` is correct and survives; a pre-escaped
+`&lt;Tag&gt;` there gets double-escaped into the projection. Probed both ways
+before relying on either.
 
 ### Why this is a rule
 

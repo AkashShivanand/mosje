@@ -50,7 +50,7 @@ export default function DashboardPage() {
       lastUpdated="06 Jun 2026"
     >
       <section>
-        <div className="mx-auto max-w-[1280px] px-4 py-10 md:py-12">
+        <div className="sa-container py-10 md:py-12">
           {/* KPI stat cards */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {KPIS.map(({ label, value, icon: iconName }) => (

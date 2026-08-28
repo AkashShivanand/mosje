@@ -27,7 +27,7 @@ import "./header.css";
    ========================================================================== */
 
 const IcCaret = () => <Icon name="keyboard_arrow_down" size={16} className="ds-hdr-ic" />;
-const IcMegaChevron = () => <Icon name="chevron_right" size={20} className="ds-hdr-ic" />;
+const IcMegaChevron = () => <Icon name="chevron_right" size={24} className="ds-hdr-ic" />;
 
 /** WCAG 3.2.5 — a link that leaves the tab has to say so, visibly and to AT. */
 export const NewTabHint = (): React.JSX.Element => (
@@ -131,14 +131,43 @@ export interface DropdownItemProps {
 export function DropdownItem({ item, onSelect, className }: DropdownItemProps): React.JSX.Element {
   return (
     <a
-      href={item.href}
-      className={cn("ds-hdr-nav__drop-link", item.active && "is-active", className)}
-      target={item.external ? "_blank" : undefined}
-      rel={item.external ? "noreferrer" : undefined}
-      onClick={onSelect}
+      href={item.disabled ? undefined : item.href}
+      className={cn(
+        "ds-hdr-nav__drop-link",
+        item.active && "is-active",
+        item.disabled && "is-disabled",
+        className,
+      )}
+      aria-disabled={item.disabled || undefined}
+      target={item.external && !item.disabled ? "_blank" : undefined}
+      rel={item.external && !item.disabled ? "noreferrer" : undefined}
+      onClick={item.disabled ? undefined : onSelect}
     >
       {item.label}
-      {item.external && <NewTabHint />}
+      {item.external && !item.disabled && <NewTabHint />}
+    </a>
+  );
+}
+
+/**
+ * The parent entry's own page, offered inside the panel it opens.
+ *
+ * A nav item that carries a menu renders as `<a href>` and then cancels its own
+ * click, so its destination is unreachable by mouse or keyboard — "Department" is
+ * a real page that nothing in the masthead could open. Rather than take the href
+ * away (it is the no-JS fallback, and middle-click still uses it), the panel
+ * carries the destination as a row of its own.
+ */
+export interface NavOverview {
+  label: string;
+  href: string;
+}
+
+function OverviewRow({ overview, onSelect }: { overview: NavOverview; onSelect?: () => void }): React.JSX.Element {
+  return (
+    <a className="ds-hdr-nav__overview" href={overview.href} onClick={onSelect}>
+      <span>All of {overview.label}</span>
+      <Icon name="arrow_forward" size={20} aria-hidden="true" />
     </a>
   );
 }
@@ -147,12 +176,14 @@ export interface NavDropdownProps {
   id?: string;
   label?: string;
   items: NavLink[];
+  /** The parent entry's own page, rendered as a closing row. */
+  overview?: NavOverview;
   onSelect?: () => void;
   className?: string;
 }
 
 /** NavDropdown — a simple single-column menu (Figma `Navbar/NavDropdown`). */
-export function NavDropdown({ id, label, items, onSelect, className }: NavDropdownProps): React.JSX.Element {
+export function NavDropdown({ id, label, items, overview, onSelect, className }: NavDropdownProps): React.JSX.Element {
   return (
     <div className={cn("ds-hdr-nav__drop-wrap", className)}>
       <ul id={id} className="ds-hdr-nav__drop" aria-label={label}>
@@ -161,6 +192,11 @@ export function NavDropdown({ id, label, items, onSelect, className }: NavDropdo
             <DropdownItem item={c} onSelect={onSelect} />
           </li>
         ))}
+        {overview && (
+          <li>
+            <OverviewRow overview={overview} onSelect={onSelect} />
+          </li>
+        )}
       </ul>
     </div>
   );
@@ -178,17 +214,28 @@ export interface MegaMenuItemProps {
 export function MegaMenuItem({ item, onSelect, className }: MegaMenuItemProps): React.JSX.Element {
   return (
     <a
-      href={item.href}
-      className={cn("ds-hdr-mega-item", item.active && "is-active", className)}
-      target={item.external ? "_blank" : undefined}
-      rel={item.external ? "noreferrer" : undefined}
-      onClick={onSelect}
+      href={item.disabled ? undefined : item.href}
+      className={cn(
+        "ds-hdr-mega-item",
+        item.active && "is-active",
+        item.disabled && "is-disabled",
+        className,
+      )}
+      aria-disabled={item.disabled || undefined}
+      target={item.external && !item.disabled ? "_blank" : undefined}
+      rel={item.external && !item.disabled ? "noreferrer" : undefined}
+      onClick={item.disabled ? undefined : onSelect}
     >
-      <span className="ds-hdr-mega-item__logo">
+      <span className={cn("ds-hdr-mega-item__logo", !item.iconSrc && "is-fallback")}>
         {item.iconSrc ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={item.iconSrc} alt="" loading="lazy" />
-        ) : null}
+        ) : (
+          /* Not a monogram: the abbreviation is already the row's title, and
+             repeating "NC" beside "NCSC" is noise. An institution glyph says
+             "organisation, no emblem supplied" — an empty frame says "broken". */
+          <Icon name="account_balance" size={24} aria-hidden="true" />
+        )}
       </span>
       <span className="ds-hdr-mega-item__copy">
         <span className="ds-hdr-mega-item__abbr">{item.abbr}</span>
@@ -203,12 +250,14 @@ export interface MegaMenuProps {
   id?: string;
   label?: string;
   columns: NavColumn[];
+  /** The parent entry's own page, rendered as a closing row. */
+  overview?: NavOverview;
   onSelect?: () => void;
   className?: string;
 }
 
 /** MegaMenu — the multi-column organisation grid (Figma `Navbar/MegaMenu`). */
-export function MegaMenu({ id, label, columns, onSelect, className }: MegaMenuProps): React.JSX.Element {
+export function MegaMenu({ id, label, columns, overview, onSelect, className }: MegaMenuProps): React.JSX.Element {
   return (
     <div className={cn("ds-hdr-nav__drop-wrap is-mega", className)}>
       <div id={id} className="ds-hdr-nav__mega" role="group" aria-label={label}>
@@ -234,6 +283,11 @@ export function MegaMenu({ id, label, columns, onSelect, className }: MegaMenuPr
             )}
           </div>
         ))}
+        {overview && (
+          <div className="ds-hdr-nav__mega-foot">
+            <OverviewRow overview={overview} onSelect={onSelect} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -255,44 +309,160 @@ export interface NavItemLinkProps {
  * matching the type's documented contract.
  */
 export function NavItemLink({ item, open = false, onOpenChange, className }: NavItemLinkProps): React.JSX.Element {
+  /* Open is deliberately slower than a flick across the row; close is slower
+     still, so travelling from the label to the panel — or across a sibling on the
+     way to a centred one — does not drop what you were reaching for. */
+  const OPEN_MS = 100;
+  const CLOSE_MS = 300;
+  const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const liRef = React.useRef<HTMLLIElement>(null);
+  const linkRef = React.useRef<HTMLAnchorElement>(null);
+  const clear = () => {
+    if (timer.current !== undefined) clearTimeout(timer.current);
+    timer.current = undefined;
+  };
+  React.useEffect(() => clear, []);
+  const schedule = (next: boolean, ms: number) => {
+    clear();
+    timer.current = setTimeout(() => onOpenChange?.(next), ms);
+  };
   const hasMega = !!item.columns?.length;
   const hasChildren = !hasMega && !!item.children?.length;
-  const hasMenu = hasMega || hasChildren;
+  // A disabled entry opens nothing — the caret would promise a menu it will not show.
+  const hasMenu = !item.disabled && (hasMega || hasChildren);
   const dropId = `ds-hdr-drop-${item.label.toLowerCase().replace(/\s+/g, "-")}`;
   const close = () => onOpenChange?.(false);
+  /* The parent's own page, offered inside the panel — see `NavOverview`. Only when
+     there is somewhere real to go: "#" and "" are not destinations. */
+  const overview =
+    hasMenu && item.href && item.href !== "#" ? { label: item.label, href: item.href } : undefined;
+
+  /** Every focusable row inside the open panel, in document order. */
+  const panelItems = () =>
+    Array.from(
+      liRef.current?.querySelectorAll<HTMLElement>(
+        ".ds-hdr-nav__drop a[href], .ds-hdr-nav__mega a[href]",
+      ) ?? [],
+    );
+
+  const focusAt = (list: HTMLElement[], ix: number) => {
+    if (list.length === 0) return;
+    const wrapped = ((ix % list.length) + list.length) % list.length;
+    list[wrapped]?.focus();
+  };
+
+  /**
+   * ARROW KEYS INTO AND AROUND THE PANEL.
+   *
+   * This is the ARIA Disclosure Navigation pattern, which is why the trigger is a
+   * link and not a `menuitem` — but APG's own note is that arrow support is what
+   * makes a large disclosure usable, and the organisations panel runs to thirty
+   * rows. Without it the only way past "Associated Organisations" to "Offerings"
+   * was thirty presses of Tab. Tab still walks the panel exactly as before; these
+   * are additions, not a replacement.
+   */
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (!hasMenu) return;
+    const list = open ? panelItems() : [];
+    const onTrigger = e.target === linkRef.current;
+
+    switch (e.key) {
+      case "ArrowDown":
+        e.preventDefault();
+        clear();
+        if (!open) {
+          onOpenChange?.(true);
+          // The panel is not in the DOM until the next paint.
+          requestAnimationFrame(() => focusAt(panelItems(), 0));
+        } else {
+          focusAt(list, onTrigger ? 0 : list.indexOf(document.activeElement as HTMLElement) + 1);
+        }
+        break;
+      case "ArrowUp":
+        e.preventDefault();
+        clear();
+        if (!open) {
+          onOpenChange?.(true);
+          requestAnimationFrame(() => {
+            const l = panelItems();
+            focusAt(l, l.length - 1);
+          });
+        } else if (onTrigger) {
+          focusAt(list, list.length - 1);
+        } else {
+          focusAt(list, list.indexOf(document.activeElement as HTMLElement) - 1);
+        }
+        break;
+      case "Home":
+        if (open && !onTrigger) {
+          e.preventDefault();
+          focusAt(list, 0);
+        }
+        break;
+      case "End":
+        if (open && !onTrigger) {
+          e.preventDefault();
+          focusAt(list, list.length - 1);
+        }
+        break;
+      case "Escape":
+        if (open) {
+          e.preventDefault();
+          clear();
+          close();
+          linkRef.current?.focus();
+        }
+        break;
+      default:
+        break;
+    }
+  };
 
   return (
     <li
+      ref={liRef}
       className={cn("ds-hdr-nav__item", className)}
-      onMouseEnter={() => hasMenu && onOpenChange?.(true)}
-      onMouseLeave={() => onOpenChange?.(false)}
+      onMouseEnter={() => hasMenu && schedule(true, OPEN_MS)}
+      /* GATED ON `hasMenu`, and it has to be. Unconditionally, an entry with no
+         menu of its own scheduled a close on every mouse-leave — so brushing past
+         "Home" on the way to the centred organisations panel shut that panel
+         300ms later, from a nav item that owns nothing. An item that has a menu
+         still closes its own. */
+      onMouseLeave={() => hasMenu && schedule(false, CLOSE_MS)}
+      onKeyDown={onKeyDown}
     >
       <a
-        href={item.href}
-        className={cn("ds-hdr-nav__link", item.active && "is-active")}
-        target={item.external ? "_blank" : undefined}
-        rel={item.external ? "noreferrer" : undefined}
+        ref={linkRef}
+        href={item.disabled ? undefined : item.href}
+        className={cn(
+          "ds-hdr-nav__link",
+          item.active && "is-active",
+          item.disabled && "is-disabled",
+        )}
+        aria-disabled={item.disabled || undefined}
+        target={item.external && !item.disabled ? "_blank" : undefined}
+        rel={item.external && !item.disabled ? "noreferrer" : undefined}
         aria-expanded={hasMenu ? open : undefined}
-        aria-haspopup={hasMenu ? true : undefined}
         aria-controls={hasMenu && open ? dropId : undefined}
         aria-current={item.active ? "page" : undefined}
         onClick={(e) => {
           if (hasMenu) {
             e.preventDefault();
+            clear();
             onOpenChange?.(!open);
           }
         }}
       >
         {item.label}
         {hasMenu && <IcCaret />}
-        {item.external && <NewTabHint />}
+        {item.external && !item.disabled && <NewTabHint />}
       </a>
 
       {hasChildren && open && (
-        <NavDropdown id={dropId} label={item.label} items={item.children!} onSelect={close} />
+        <NavDropdown id={dropId} label={item.label} items={item.children!} overview={overview} onSelect={close} />
       )}
       {hasMega && open && (
-        <MegaMenu id={dropId} label={item.label} columns={item.columns!} onSelect={close} />
+        <MegaMenu id={dropId} label={item.label} columns={item.columns!} overview={overview} onSelect={close} />
       )}
     </li>
   );

@@ -25,6 +25,17 @@ import {
  * `"schemes"`, and the tab list picks them up on its own.
  */
 
+/**
+ * The four claims the design sets beside the list [WEB-N-02]. They are the
+ * section's own copy from the Handoff frame, not a summary written here.
+ */
+const NARRATIVE = [
+  "Promotes equality and social participation for all communities.",
+  "Builds skills and education pathways for self-reliance.",
+  "Enables financial inclusion and livelihood opportunities.",
+  "Provides rehabilitation and welfare support for vulnerable groups.",
+];
+
 export function Organisations() {
   const [activeCategory, setActiveCategory] = useState<OrganisationCategory | "all">("all");
 
@@ -36,71 +47,112 @@ export function Organisations() {
   return (
     <section className="bg-surface-muted">
       <div className="sa-container py-12 md:py-16">
-        <div className="text-center">
-          <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
-            Our Organisations
-          </h2>
-          <p className="mx-auto mt-3 max-w-3xl text-[16px] text-ink-muted">
-            The Ministry of Social Justice and Empowerment works through key
-            organisations that drive social inclusion, economic empowerment, and
-            equal opportunity across India.
-          </p>
-        </div>
+        {/* Two columns, not one centred stack [WEB-N-01]: the narrative sits
+            beside the organisations rather than above them. The right column is
+            8/12 of the content box — 848px at 1440 — so its 2-up cards are
+            ~410px, WIDER than the 368px the 3-up full-width grid gave. The name
+            wrapping that #176 fixed stays fixed; it does not regress here. */}
+        <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-10">
+          {/* ---- Left: heading, narrative ---- */}
+          <div className="lg:col-span-4">
+            <h2 className="text-[32px] font-semibold leading-tight text-primary-dark">
+              Our Organisations
+            </h2>
+            {/* This subtitle belongs here. It was rendering under Activity
+                Corner, where it described the wrong section [WEB-N-03/T-04]. */}
+            <p className="mt-1 text-[15px] font-medium text-ink-muted">
+              Explore our affiliated bodies
+            </p>
+            <p className="mt-4 text-[16px] leading-relaxed text-ink-muted">
+              The Ministry of Social Justice and Empowerment works through key
+              organisations that drive social inclusion, economic empowerment, and
+              equal opportunity across India.
+            </p>
 
-        {/* Category Pills */}
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
-          {organisationCategoryTabs().map((cat) => {
-            const isActive = cat.key === activeCategory;
-            return (
-              <button
-                key={cat.key}
-                type="button"
-                onClick={() => setActiveCategory(cat.key)}
-                className={cn(
-                  "rounded-full px-5 py-2 text-[14px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
-                  isActive
-                    ? "bg-primary text-white shadow-sm"
-                    : "bg-white border border-gray-200 text-ink-muted hover:border-primary/40 hover:text-primary"
-                )}
-              >
-                {cat.label} ({cat.count})
-              </button>
-            );
-          })}
-        </div>
+            {/* `list-inside` puts the marker in the text flow, so a wrapped
+                second line runs back under the bullet. Markers stay outside and
+                the list carries the indent instead, giving a real hanging indent. */}
+            <ul className="mt-6 list-disc space-y-3 border-l-2 border-primary/25 py-1 pl-9">
+              {NARRATIVE.map((claim) => (
+                <li
+                  key={claim}
+                  className="text-[14px] italic leading-snug text-ink-muted marker:text-primary/60"
+                >
+                  {claim}
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        <ul className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {filtered.map((org) => (
-            <li key={org.id}>
-              <Link href={org.profileHref} className="group block h-full">
-                <Card className="flex h-full flex-col justify-between p-5 transition hover:shadow-md hover:border-primary/40">
-                  <div>
-                    <div className="flex items-center justify-between gap-3">
-                      <span className="inline-block rounded bg-primary px-2 py-0.5 text-[11px] font-bold text-white uppercase">
-                        {org.abbr}
-                      </span>
+          {/* ---- Right: filters and the organisations ---- */}
+          <div className="lg:col-span-8">
+            <div className="flex flex-wrap gap-2">
+              {organisationCategoryTabs().map((cat) => {
+                const isActive = cat.key === activeCategory;
+                return (
+                  <button
+                    key={cat.key}
+                    type="button"
+                    aria-pressed={isActive}
+                    onClick={() => setActiveCategory(cat.key)}
+                    className={cn(
+                      "rounded-full px-4 py-1.5 text-[13px] font-medium transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+                      isActive
+                        ? "bg-primary text-white shadow-sm"
+                        : // Outlined BLUE when inactive, per the design — the
+                          // build had a grey hairline that read as disabled
+                          // rather than as an available filter [WEB-N-04].
+                          // primary-dark, not gov-blue: 7.52:1 on surface-muted
+                          // against gov-blue's 4.07:1, which is under AA.
+                          "border border-primary-dark/45 bg-transparent text-primary-dark hover:bg-primary/10"
+                    )}
+                  >
+                    {cat.label}{" "}
+                    {/* No opacity on the count: at 70% the white-on-gov-blue
+                        active chip fell to 3.04:1. */}
+                    <span className={isActive ? "" : "text-primary-dark/75"}>
+                      {cat.count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+              {filtered.map((org) => (
+                <li key={org.id}>
+                  <Link href={org.profileHref} className="group block h-full">
+                    {/* Logo beside the name on a tinted ground, as designed —
+                        the build stacked an abbreviation badge over the name
+                        with a trailing arrow [WEB-N-05]. */}
+                    <Card className="flex h-full flex-row items-center gap-3 border border-primary/20 bg-primary-50/60 p-4 transition hover:border-primary/50 hover:shadow-md">
                       {org.logoSrc && (
-                        <Image
-                          src={org.logoSrc}
-                          alt={org.abbr}
-                          width={32}
-                          height={32}
-                          className="h-8 w-8 object-contain"
-                        />
+                        <span className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-full border border-primary/15 bg-white">
+                          <Image
+                            src={org.logoSrc}
+                            alt=""
+                            width={32}
+                            height={32}
+                            className="h-8 w-8 object-contain"
+                          />
+                        </span>
                       )}
-                    </div>
-                    <h3 className="mt-4 text-[15px] font-medium leading-snug text-ink group-hover:text-primary transition-colors">
-                      {org.name}
-                    </h3>
-                  </div>
-                  <div className="mt-4 flex justify-end">
-                    <Icon name="arrow_outward" size={16} className="text-gray-400 transition-colors group-hover:text-primary" />
-                  </div>
-                </Card>
-              </Link>
-            </li>
-          ))}
-        </ul>
+                      <h3 className="min-w-0 flex-1 text-[14px] font-medium leading-snug text-ink transition-colors group-hover:text-primary">
+                        {org.name}
+                      </h3>
+                      <Icon
+                        name="arrow_outward"
+                        size={16}
+                        aria-hidden
+                        className="shrink-0 text-gray-400 transition-colors group-hover:text-primary"
+                      />
+                    </Card>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   );

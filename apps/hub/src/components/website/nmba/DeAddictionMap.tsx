@@ -11,6 +11,8 @@ import {
   TOTAL_CENTRES,
   PUBLISHED_TOTAL,
   HELPLINE,
+  isPlottable,
+  PLOTTABLE_CENTRES,
   type CentreType,
   type DeAddictionCentre,
 } from "@/content/website/deaddiction-centres";
@@ -41,7 +43,19 @@ function distanceKm(a: [number, number], b: [number, number]) {
   return 2 * R * Math.asin(Math.sqrt(s));
 }
 
-export function DeAddictionMap() {
+export interface DeAddictionMapProps {
+  /**
+   * Which side the map sits on. The dedicated locator page leads with the list
+   * (`"right"`, the default); the home-page section leads with the map, which is
+   * how the Figma frame has it. Only the column order changes — same component,
+   * same behaviour, so the two surfaces cannot drift apart.
+   */
+  mapSide?: "left" | "right";
+  /** Shorter map + list on the home page, where the locator is one section of many. */
+  compact?: boolean;
+}
+
+export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddictionMapProps = {}) {
   const [query, setQuery] = React.useState("");
   const [state, setState] = React.useState("");
   const [district, setDistrict] = React.useState("");
@@ -197,9 +211,20 @@ export function DeAddictionMap() {
       </div>
 
       {/* Split view: list + sticky map */}
-      <div className="mt-4 grid overflow-hidden rounded-xl border border-gray-200 shadow-sm lg:grid-cols-[360px_1fr]">
+      <div
+        className={cn(
+          "mt-4 grid overflow-hidden rounded-xl border border-gray-200 shadow-sm",
+          mapSide === "left" ? "lg:grid-cols-[1fr_400px]" : "lg:grid-cols-[360px_1fr]",
+        )}
+      >
         {/* List */}
-        <div className="flex max-h-[560px] flex-col border-b border-gray-200 bg-white lg:max-h-none lg:border-b-0 lg:border-r">
+        <div
+          className={cn(
+            "flex flex-col border-b border-gray-200 bg-white lg:max-h-none lg:border-b-0",
+            compact ? "max-h-[420px]" : "max-h-[560px]",
+            mapSide === "left" ? "lg:order-2 lg:border-l" : "lg:border-r",
+          )}
+        >
           <div className="flex items-center justify-between border-b border-gray-100 px-4 py-2.5">
             <span className="text-[13px] font-semibold text-ink">
               {filtered.length} centre{filtered.length === 1 ? "" : "s"}
@@ -228,7 +253,13 @@ export function DeAddictionMap() {
               No centres match. Try a wider filter, or call the helpline.
             </p>
           ) : (
-            <ul ref={listRef} className="flex-1 divide-y divide-gray-100 overflow-y-auto lg:max-h-[560px]">
+            <ul
+              ref={listRef}
+              className={cn(
+                "flex-1 divide-y divide-gray-100 overflow-y-auto",
+                compact ? "lg:max-h-[420px]" : "lg:max-h-[560px]",
+              )}
+            >
               {shown.map((c, i) => {
                 const meta = CENTRE_TYPE_META[c.type];
                 const active = selected ? centreKey(selected) === centreKey(c) : false;
@@ -296,13 +327,28 @@ export function DeAddictionMap() {
         </div>
 
         {/* Map */}
-        <div className="h-[420px] lg:h-[620px]">
-          <CentreMapCanvas centres={filtered} selected={selected} userLoc={userLoc} onSelect={selectCentre} />
+        <div
+          className={cn(
+            "h-[420px]",
+            compact ? "lg:h-[560px]" : "lg:h-[620px]",
+            mapSide === "left" && "lg:order-1",
+          )}
+        >
+          {/* The map takes only centres with usable coordinates. `fitBounds` fits
+              the cluster's bounds, so one bad row drags the viewport off the
+              planet — the list still shows all of them. */}
+          <CentreMapCanvas
+            centres={filtered.filter(isPlottable)}
+            selected={selected}
+            userLoc={userLoc}
+            onSelect={selectCentre}
+          />
         </div>
       </div>
 
       <p className="mt-3 text-center text-[12px] text-ink-muted">
-        {TOTAL_CENTRES} geo-tagged centres shown, from {PUBLISHED_TOTAL} nationwide. Source: Nasha Mukt Bharat Abhiyaan.
+        {PLOTTABLE_CENTRES.length} centres plotted, of {TOTAL_CENTRES} geo-tagged and {PUBLISHED_TOTAL}{" "}
+        published nationwide. Source: Nasha Mukt Bharat Abhiyaan.
       </p>
     </div>
   );

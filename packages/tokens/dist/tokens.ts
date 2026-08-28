@@ -604,13 +604,8 @@ export const tokens = {
       "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
       "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
       "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
-      "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
-    },
-    "weight": {
-      "regular": 400,
-      "medium": 500,
-      "semibold": 600,
-      "bold": 700
+      "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace",
+      "icon": "\"Material Symbols Rounded\", sans-serif"
     },
     "size": {
       "11": "0.6875rem",
@@ -763,7 +758,16 @@ export const tokens = {
     "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
     "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
     "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
-    "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+    "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace",
+    "weight": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700,
+      "displayMedium": 500
+    },
+    "icon": "\"Material Symbols Rounded\", sans-serif"
   },
   "shadow": {
     "none": "none",
@@ -819,21 +823,26 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "base": "#0373df"
+        "base": "#0373df",
+        "bolder": "#005eb9"
       }
     },
     "status": {
       "success": {
-        "base": "#004220"
+        "base": "#004220",
+        "bolder": "#00542b"
       },
       "error": {
-        "base": "#8b1f18"
+        "base": "#8b1f18",
+        "bolder": "#aa2f25"
       },
       "warning": {
-        "base": "#704b00"
+        "base": "#704b00",
+        "bolder": "#8b5e00"
       },
       "info": {
-        "base": "#0a5cc3"
+        "base": "#0a5cc3",
+        "bolder": "#0a5cc3"
       }
     }
   },
@@ -902,8 +911,10 @@ export const tokens = {
   "breakpoint": {
     "mobile": "360px",
     "tablet": "768px",
+    "laptop": "1024px",
     "desktop": "1280px",
-    "desktopXl": "1768px"
+    "desktopXl": "1440px",
+    "desktopWide": "1920px"
   },
   "density": {
     "control": {
@@ -923,6 +934,21 @@ export const tokens = {
     },
     "section": {
       "gap": "24px"
+    }
+  },
+  "brand": {
+    "samavesh": {
+      "ink": "#1f2428",
+      "blue": "#06038d",
+      "green": "#046a38",
+      "orange": "#ff671f",
+      "saffron": "#ed8a1d",
+      "navy": "#003366",
+      "white": "#ffffff",
+      "black": "#000000"
+    },
+    "digilocker": {
+      "purple": "#5330e6"
     }
   },
   "leading": {
@@ -1029,16 +1055,20 @@ export const tokens = {
     },
     "status": {
       "success": {
-        "base": "#004220"
+        "base": "#004220",
+        "bolder": "#00542b"
       },
       "error": {
-        "base": "#8b1f18"
+        "base": "#8b1f18",
+        "bolder": "#aa2f25"
       },
       "warning": {
-        "base": "#704b00"
+        "base": "#704b00",
+        "bolder": "#8b5e00"
       },
       "info": {
-        "base": "#0a5cc3"
+        "base": "#0a5cc3",
+        "bolder": "#0a5cc3"
       }
     }
   },
@@ -1127,17 +1157,17 @@ export const tokens = {
   "chart": {
     "cat": {
       "1": "#0373df",
-      "2": "#e1560f",
-      "3": "#046a38",
-      "4": "#7e22ce",
-      "5": "#0e7490",
-      "6": "#b45309",
-      "7": "#be185d",
-      "8": "#1558b0",
-      "9": "#4d7c0f",
-      "10": "#9f1239",
-      "11": "#0f766e",
-      "12": "#475569"
+      "2": "#a25a00",
+      "3": "#007668",
+      "4": "#930121",
+      "5": "#719348",
+      "6": "#b671a6",
+      "7": "#7261a8",
+      "8": "#323ca8",
+      "9": "#5a406e",
+      "10": "#594d00",
+      "11": "#c02865",
+      "12": "#4c90ac"
     },
     "seq": {
       "50": "#e8f2fd",
@@ -1283,7 +1313,8 @@ export const tokens = {
       "base": "#1e2124",
       "subtle": "#3a3d41",
       "disabled": "rgba(30, 33, 36, 0.48)",
-      "inverse": "#ffffff"
+      "inverse": "#ffffff",
+      "subtler": "#6f757d"
     },
     "brand": {
       "primary": {
@@ -1293,16 +1324,20 @@ export const tokens = {
     },
     "status": {
       "success": {
-        "base": "#004220"
+        "base": "#004220",
+        "bolder": "#00542b"
       },
       "error": {
-        "base": "#8b1f18"
+        "base": "#8b1f18",
+        "bolder": "#aa2f25"
       },
       "warning": {
-        "base": "#704b00"
+        "base": "#704b00",
+        "bolder": "#8b5e00"
       },
       "info": {
-        "base": "#0a5cc3"
+        "base": "#0a5cc3",
+        "bolder": "#0a5cc3"
       }
     }
   },
@@ -1314,8 +1349,10 @@ export const tokens = {
     "2xl": "1320px",
     "content": "1200px",
     "contentXl": "1320px",
+    "contentWide": "1440px",
     "narrow": "720px",
-    "wide": "1200px"
+    "wide": "1200px",
+    "page": "1200px"
   },
   "grid": {
     "columns": 12,
@@ -1323,7 +1360,8 @@ export const tokens = {
     "margin": {
       "mobile": "16px",
       "tablet": "24px",
-      "desktop": "32px"
+      "desktop": "32px",
+      "page": "16px"
     }
   },
   "layout": {
@@ -1512,12 +1550,12 @@ export const tokens = {
           "default": {
             "bg": "rgba(0, 0, 0, 0)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "border": "#c0dbff"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.1)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.64)"
+            "border": "#ecf4ff"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.16)",
@@ -1646,12 +1684,12 @@ export const tokens = {
           "default": {
             "bg": "rgba(0, 0, 0, 0)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "border": "#bed8c5"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.1)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.64)"
+            "border": "#ecf4ee"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.16)",
@@ -1780,12 +1818,12 @@ export const tokens = {
           "default": {
             "bg": "rgba(0, 0, 0, 0)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "border": "#ffc2b8"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.1)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.64)"
+            "border": "#ffe4e0"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.16)",
@@ -1914,12 +1952,12 @@ export const tokens = {
           "default": {
             "bg": "rgba(0, 0, 0, 0)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "border": "#dcdee1"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.1)",
             "text": "#ffffff",
-            "border": "rgba(255, 255, 255, 0.64)"
+            "border": "#eef0f3"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.16)",
@@ -1936,12 +1974,12 @@ export const tokens = {
       "tertiary": {
         "default": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "#3a3d41",
+          "text": "#1e2124",
           "border": "rgba(0, 0, 0, 0)"
         },
         "hover": {
           "bg": "#eef0f3",
-          "text": "#3a3d41",
+          "text": "#1e2124",
           "border": "rgba(0, 0, 0, 0)"
         },
         "active": {

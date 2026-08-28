@@ -13,13 +13,32 @@
 
 ## Task Summary Rule (MANDATORY — every task, every conversation)
 
-End every response with:
+End every response with a summary in **plain, non-technical language**, written for
+someone who did not watch you work. Always last. No exceptions, however small the task.
 
-**What I did:** one or two sentences on what changed.
+**Where anything changed, lead with a before → after table**, one row per change:
+
+| What | Before | After | Why |
+|---|---|---|---|
+| the thing, named the way a non-developer would name it | what it did / looked like | what it does now | the reason, in one sentence a non-developer can act on |
+
+Then:
+
+**What I did:** one or two sentences covering the whole change.
 **What's working:** what the user can now do or see.
 **What's next / Recommendations:** follow-ups, pending items, things to know.
 
-Plain, non-technical language, as if to someone who didn't watch you work. Always last.
+Rules for the table:
+- **Every change gets a row.** If it was worth doing, it is worth one line. A change
+  left out of the summary is a change the user cannot review.
+- **Name things by what they look like, not what they are called in code.** "The button
+  that clears the chat", not `.ds-chatbot__end`.
+- **"Why" is the load-bearing column.** "It was red, which on this estate means a
+  rejected application" tells the user something; "improved semantics" does not.
+- **Say what did NOT change** when a reader might reasonably assume it did.
+- **Anything left undone, blocked, or deliberately skipped goes in the summary**, not
+  only in the body — including work that needs a human (a Figma edit, a secret, an
+  approval).
 
 ## What this is
 
@@ -122,7 +141,14 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
 - **MANDATORY VISUAL AUDIT:** every component, page, wizard or portal change must be
   screenshotted and audited against SAMAVESH standards **before** declaring completion.
   Lint/typecheck passing without visual verification is forbidden.
-- Mobile-first responsive; content max-width **1280px**.
+- Mobile-first responsive. **Content width is `.sa-container`, never a restated number** —
+  UX4G 3.0 ("Grid and layout") publishes **1200px desktop / 1320px desktop-XL** but **no
+  breakpoints at all**, so where each engages is the estate's own decision. The cap is a
+  **three-step ladder** — 1200, then 1320 from **1440**, then 1440 from **1920** — and the
+  margin ladder (16 / 24 from 768 / 32 from 1920) steps with the CAP, not the viewport, so
+  content only ever grows: **1152 → 1272 → 1376**. The `≥1768px` this line used to name was a
+  retired anchor, and it was never UX4G's. Bind to `.sa-container` and add no `px-*` of your
+  own — it owns the cap *and* the responsive margin.
 - **AI design contract:** read `packages/design-system/design.md` before building or
   changing UI. Its companions `AGENTS.md` and `/design-system/llms.txt` stay in sync →
   `.claude/rules/design-system.md`.

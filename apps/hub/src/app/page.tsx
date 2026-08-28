@@ -72,7 +72,7 @@ export default async function HomePage() {
           {/* The estate's signature surface — shared verbatim with the gate. */}
           <EstateField />
 
-          <div className="relative mx-auto max-w-[1280px] px-6 py-20 sm:py-24">
+          <div className="sa-container relative py-20 sm:py-24">
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary shadow-xs backdrop-blur">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
               Government of India
@@ -113,7 +113,7 @@ export default async function HomePage() {
         {/* ── Destination cards ────────────────────────────────────────── */}
         <section
           aria-labelledby="destinations-heading"
-          className="mx-auto max-w-[1280px] px-6 py-16"
+          className="sa-container py-16"
         >
           <div className="mb-8">
             <h2
@@ -158,7 +158,7 @@ export default async function HomePage() {
           aria-labelledby="glance-heading"
           className="border-y border-border bg-surface"
         >
-          <div className="mx-auto max-w-[1280px] px-6 py-12">
+          <div className="sa-container py-12">
             <h2
               id="glance-heading"
               className="mb-8 text-xs font-semibold uppercase tracking-[0.16em] text-ink-muted"

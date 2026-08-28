@@ -51,17 +51,35 @@ import {
  * puts its disclaimer, and it deliberately does not copy live's "can make
  * mistakes" wording, which describes a generative model this is not.
  *
- * ### The header controls are EXPAND and MINIMISE, never "end chat"
+ * ### Closing and clearing are two controls, and neither does the other's job
  *
  * `launcherLabel` is the launcher's accessible name — it carries the assistant's
  * name, because "open chat" tells a screen-reader user nothing about which
  * assistant they are opening on a page that may also have a demo dock and an
  * accessibility widget in the same corner.
  *
- * `endChatLabel` names the end-chat action, which lives quietly in the footer.
- * It wipes the transcript, and the top-right of a panel is where every user
- * expects a harmless dismiss — putting it there means people lose their
- * conversation reaching for close.
+ * The header's ✕ ("Minimise chat") closes and KEEPS the conversation.
+ * `endChatLabel` names the reset — **"Start over"** — which DESTROYS NOTHING.
+ * It rules the transcript off with a labelled separator (`restartNotice`, "New
+ * conversation" by default) and greets again beneath it, leaving every earlier
+ * turn scrolled up and the panel open. Since it is an icon, that label is its
+ * `aria-label` and `title` rather than visible text.
+ *
+ * **It is a HEADER control, first of three, with ✕ last.** It was "End chat"
+ * and closed the panel; then it CLEARED the transcript, which made a mis-tap
+ * cost a citizen every answer they had given. It lived in the footer through
+ * three arrangements and each broke something: hard right put it 25px under
+ * Send in the same 32px column, the head of the note's row pushed the
+ * disclaimer 109px off the panel's left edge, and its own line cost 24px of
+ * height. The premise had changed underneath all three — it appends now, so
+ * the danger that kept it out of the header is gone.
+ *
+ * `restartNotice` is a prop rather than a constant because this estate serves
+ * Hindi as well as English.
+ *
+ * It is the design system's `Button` at `variant="neutral" appearance="text"`.
+ * Hand-rolled, it drifted into the estate's rejection red for an action that is
+ * housekeeping — see the Button story for what `neutral` is for.
  *
  * ### Accessibility
  *
@@ -257,7 +275,12 @@ export const ControlledOpenState: Story = {
           open={open}
           onOpenChange={setOpen}
           quickReplies={SCHEME_REPLIES}
-          onEndChat={() => setOpen(false)}
+          // A CONTROLLED consumer owns its transcript, so the append is ITS
+          // job: carry the turns it is showing, add its own `from: "system"`
+          // separator, and greet again beneath. It must NOT clear — that is the
+          // behaviour this control was moved away from. This story has no
+          // transcript of its own, so it only has to keep the panel open.
+          onEndChat={() => setOpen(true)}
         />
       </div>
     );

@@ -8,7 +8,7 @@ import { LatestUpdates } from "@/components/website/LatestUpdates";
 import { AboutUs } from "@/components/website/AboutUs";
 import { Offerings } from "@/components/website/Offerings";
 import { Organisations } from "@/components/website/Organisations";
-import { PortalBanner } from "@/components/website/PortalBanner";
+import { SamaveshJusticeBanner } from "@/components/website/SamaveshJusticeBanner";
 import { RecentDocuments } from "@/components/website/RecentDocuments";
 import { ActivityCorner } from "@/components/website/ActivityCorner";
 import { SocialMedia } from "@/components/website/SocialMedia";
@@ -31,7 +31,7 @@ export default function NmbaPlacementPreview() {
     <>
       {/* Review-only control bar */}
       <div className="sticky top-0 z-[1000] border-b border-border-ds bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center gap-3 px-4 py-2.5">
+        <div className="sa-container flex flex-wrap items-center gap-3 py-2.5">
           <span className="text-xs font-semibold uppercase tracking-wide text-ink-muted">
             NMBA placement preview
           </span>
@@ -72,7 +72,7 @@ export default function NmbaPlacementPreview() {
         <AboutUs />
         <Offerings />
         <Organisations />
-        <PortalBanner />
+        <SamaveshJusticeBanner />
 
         {option === "A" && <NashaMuktBharat variant="full" />}
         {option === "C" && <NashaMuktBharat variant="map" />}

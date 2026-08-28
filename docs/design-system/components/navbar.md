@@ -91,7 +91,7 @@ assembled mastheads, then menus, then navigation parts, then brand.
 | Frame widths | `ref/viewport/mobile` · `ref/viewport/tablet` · `ref/viewport/desktop` |
 | Surfaces | `bg/neutral/*`, `bg/brand/primary/*` |
 | Ink | `text/neutral/*`, `on/*` on filled surfaces |
-| Icons | `Icon/16` · `Icon/20` · `Icon/24` (Material Symbols Rounded, Light) |
+| Icons | `Icon/16/Outline` · `Icon/20/Outline` · `Icon/24/Outline` (Material Symbols Rounded, Light) |
 | Type | the 21-role ramp — `Display/*`, `Headline/*`, `Title/*`, `Body/*`, `Label/*` |
 | Radius | `shape/*` |
 | Spacing | `padding/*`, `stack/*`, `inline/*`, `section/*` |
@@ -190,31 +190,78 @@ Semantics: `nav[aria-label]` landmark · `aria-current="page"` on the active ite
    reachable from the Navbar or Accessibility Bar pages, so its home page is unknown. Zero
    Navbar instances reference it.
 
-## Adoption — not yet complete
+## Scroll behaviour — added 27 August 2026
 
-`SiteHeader` is used by the website, `smile-admin`, `pm-ajay`, `nmba/admin-shell`,
-`nmba/treatment-centre` and the hub's own pages. **Four surfaces still hand-roll a
-masthead** and must be converted:
+**`sticky` defaults ON for every variant**, not just portals. The public masthead used
+to scroll away entirely: 200px of chrome, then no navigation, no search and no identity
+for the length of a scheme page. Search is the fallback for navigation and GIGW 5.2 wants
+it in a consistent position on every page; neither survives a masthead that leaves.
 
-| File | Fit |
-| --- | --- |
-| `apps/hub/src/components/tg/gov-chrome.tsx` | Clean — `{org, ministry, department}` maps exactly |
-| `apps/hub/src/components/nmba/public-shell.tsx` | Clean — same three-line stack |
-| `apps/hub/src/components/scw/gov-chrome.tsx` | Good — `{org, department}`; its bold line is the ministry |
-| `apps/hub/src/components/nhapoa/gov-chrome.tsx` | **Blocked** — needs a `tagline` slot (below) |
+**The accessibility bar is not pinned with it.** The header sticks at
+`top: calc(-1 * var(--sa-hdr-abar-h))`, so tier 1 scrolls away and tiers 2–3 stay. It
+carries page-level preferences, not per-scroll chrome.
 
-Each currently carries hardcoded values the DS would remove: `text-[10px]`, `text-[11px]`,
-`bg-amber-300/80`, `text-amber-900`, `max-w-[210px]`, and a raw `<img>` emblem.
+**`collapseOnScroll` swaps the three tiers for one bar** (`.ds-hdr-cond`), 200 → 65 on
+desktop and 258 → 57 on a phone. This REPLACED the old Figma `State=On Scroll`, which
+dropped the lockup's ministry line to take the brand row 100 → 88 — measured 146 → 134
+on the live portal, twelve pixels, for a class, a listener, a media-query set and a
+variant.
 
-**Two things must be settled first:**
+| | Resting | Condensed |
+| --- | --- | --- |
+| Accessibility bar | 46px | scrolled away |
+| Brand row | 100px, emblem 64 + 3 lines + BETA | emblem 32, no text |
+| Nav | own 54px tier | same items, inline on the bar |
+| Search | 320px field | 40px icon, expands in place |
+| **Total** | **200px** | **65px** |
 
-1. **The `right` slot.** All four expose `<GovMasthead right={…} />`, and ~8 call sites pass
-   a bespoke `UserMenu`. `SiteHeader` has no arbitrary trailing slot — it has `account` +
-   `accountMenu`. The correct conversion maps each portal's `UserMenu` onto those props;
-   adding a `trailing?: ReactNode` escape hatch would be faster but weakens the contract.
-2. **`BrandLines` needs `tagline?: string`.** NHAPOA's lockup is `SAMBAL संबल` (bold) with
-   `National Helpline Against Atrocities` beneath it. `BrandLines` is `{org?, ministry?,
-   department}` and renders in that order, so the tagline can only go *above* the bold line
-   today — inverting the design. Adding the field also requires a story mention
-   (`check:storybook:parity`), a `design.md` entry (`check:design-context`) and a changelog
-   entry (`check:changelog`), all CI-enforced.
+**The emblem holds the same left edge in both states.** It is also the go-home control,
+and an identity mark that crosses the screen on scroll reads as a different site. The
+department NAME is the sacrifice — one scroll back up, and still in the page title, the
+h1 and the footer. Printing restores the full masthead (`beforeprint`), because on paper
+the name is gone for good.
+
+**Threshold 120px down, 40px back**, not one value. A single threshold on a state that
+changes document height is a latch waiting to oscillate.
+
+### Capacity
+
+At 1280px the content column is 1200; after its padding, the emblem, the search button
+and the CTA, the nav has **880px**. Seven entries measure **837** — 43px of slack against
+the ~96px an eighth needs. `SiteHeader` measures itself and hands the nav to `NavSheet`
+rather than letting items overlap, so a 1280px laptop trades the inline row for the sheet
+trigger; 1440 and up still fit eight. The note lives beside the nav array in
+`apps/hub/src/components/website/Header.tsx`, where the eighth entry gets added.
+
+### Mobile accessibility controls
+
+Below `breakpoint/tablet` the accessibility bar sheds font size, accessibility options and
+language — the Figma master's own call. `NavSheet` renders them as a labelled section
+(`AccessibilityControls`, `variant="sheet"`), and the UX4G floating button returns on
+mobile as a second route, suppressed only while the sheet is open. Until 27 August 2026
+nothing picked them up at all: measured at 375px, all three had `offsetParent: null` and
+the sheet held no replacement.
+
+### Container
+
+Every tier takes `--sa-container-page` — the 1200 / 1320 / 1440 ladder — on website and
+compact, and full-bleed on portal. Tier 1 used `--sa-container-wide`, a flat 1200, so on
+a 1440 screen the accessibility bar sat 60px narrower than the masthead below it and
+120px at 1920. `AccessibilityBar` gained `layout="page"` for this.
+
+## Adoption — complete
+
+`SiteHeader` is the masthead on every surface in the estate: the website, all portal
+shells (`e-anudaan`, `eutthan`, `nhapoa`, `nmba` × 3, `pm-ajay`, `scw`, `smile-admin`,
+`tg`) and the hub's own index, admin and reports pages. `npm run check:chrome` enforces
+it across 855 files and passes — no surface hand-rolls a masthead or an accessibility bar.
+
+The four conversions this document previously listed as outstanding — `tg/gov-chrome`,
+`nmba/public-shell`, `scw/gov-chrome` and `nhapoa/gov-chrome` — have all landed, and the
+`right` slot question resolved as the document proposed: each portal's `UserMenu` maps
+onto `account` + `accountMenu`, with no arbitrary trailing slot added.
+
+**`BrandLines` still has no `tagline`.** NHAPOA ships the inversion this document warned
+about: `ministry: "National Helpline Against Atrocities"` above `department: "SAMBAL संबल"`,
+so the tagline reads above the bold line rather than beneath it. That is a live
+compromise, not a solved problem — reopen it if a second portal needs the same shape.

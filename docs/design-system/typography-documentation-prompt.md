@@ -67,7 +67,7 @@ the files — if any is wrong, that discrepancy is itself a finding to report):
 - **The Display-cut asymmetry is intentional:** CSS loads it as a separate *family*
   (`"Noto Sans Display"`); Figma exposes it as a *style* of Noto Sans (`Display Medium`), because
   Figma's style axis conflates cut and weight. Document this as a decision, never as drift.
-- **Figma has no numeric font weight.** `ref/font/weight/*` is a STRING (`Regular`/`Medium`/
+- **Figma has no numeric font weight.** `font/weight/*` is a STRING (`Regular`/`Medium`/
   `SemiBold`/`Bold`) scoped `FONT_STYLE`; CSS needs `400/500/600/700`. Both are correct.
 - **A Figma text style bakes fixed values and cannot flip per Surface mode.** The source of truth
   is mode-aware *variables bound to text nodes*; the two style folders (`Website/…`, `Portal/…`)
@@ -163,7 +163,9 @@ library-shaped work. Read them; don't improvise the Plugin API.
 - Confirm `ref/font/family/*` values are **font-picker-resolvable names**, not CSS stacks, and
   that every family named is actually loaded by the apps (a token naming an unloaded font is how
   Hindi silently lost its typeface once already).
-- Confirm `ref/font/weight/*` are STRING style names scoped `FONT_STYLE`.
+- Confirm `font/weight/*` are STRING style names scoped `FONT_STYLE`. They are Tier 2 as of
+  2026-08-26 — a weight is a role a brand pack can change, and while it sat at Tier 1 every
+  text style in the library was bound to a reference token because nothing else existed.
 - Every variable gets a **description** — one sentence, written for a designer: what it's for and
   when to reach for it. An undescribed variable is an undocumented one.
 - Hide from publishing anything that cannot resolve in Figma (e.g. the mono system stack), and

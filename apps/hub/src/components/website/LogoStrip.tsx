@@ -68,18 +68,28 @@ const logos: EcosystemLogo[] = [...GOVERNMENT_PLATFORMS, ...ORGANISATION_LOGOS];
 
 export function LogoStrip() {
   return (
-    <section className="bg-surface-muted">
+    <section className="bg-surface">
       <div className="sa-container py-8">
-        <ul className="flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
+        {/* A uniform box per mark so the row wraps evenly. Without it the five
+            wide wordmarks and the eight small circular marks packed 9 + 5, and
+            the short second row read as an accident rather than a row [WEB-F-07,
+            in part — the marks themselves stay, per WEB-X-03]. */}
+        <ul className="flex flex-wrap items-center justify-center gap-x-8 gap-y-7">
           {logos.map((logo) => {
             const isExternal = logo.href.startsWith("http");
             return (
-              <li key={logo.src}>
+              <li key={logo.src} className="flex min-w-[128px] justify-center">
                 <a
                   href={logo.href}
                   target={isExternal ? "_blank" : undefined}
                   rel={isExternal ? "noreferrer" : undefined}
-                  className="block opacity-80 transition-opacity hover:opacity-100"
+                  /* No blanket dimming. Every mark was rendered at 80%
+                     opacity, which on the palest of them — the NeGD wordmark —
+                     was the difference between faint and barely there
+                     [WEB-F-08]. The artwork is an embedded bitmap and is an
+                     official mark, so it is not recoloured; it is simply no
+                     longer dimmed. */
+                  className="block transition-opacity hover:opacity-80"
                 >
                   <Image
                     src={logo.src}

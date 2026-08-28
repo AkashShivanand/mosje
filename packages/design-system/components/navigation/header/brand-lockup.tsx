@@ -32,7 +32,8 @@ export interface BrandLockupProps {
 /**
  * SAMAVESH BrandLockup — the National Emblem + government text stack, matching the
  * UX4G / Portal Navbar Figma: a BETA badge on its own row above "Government of
- * India" (12px) · "Ministry …" (14px) · "Department …" (20px bold).
+ * India" (12/16) · "Ministry …" (12/16) · "Department …" (20/24 SemiBold), the four
+ * rows flush at gap 0. Emblem 40x64. Measured against Figma 4235:3652.
  *
  * Server-safe; renders a plain <a>/<img> so it works in any basePath-ed zone.
  * Per estate rule, always the National Emblem — never an invented mark.
