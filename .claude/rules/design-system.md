@@ -76,14 +76,14 @@ library** — they are the design system's contract for machines:
   Never hand-copy token *values* into it; it points to the generated SoT.
 - **`packages/design-system/AGENTS.md`** — the agent entrypoint (read-first +
   edit map + finish checklist).
-- **`apps/docs/src/app/llms.txt/route.ts`** → served at `/design-system/llms.txt`
-  — generated from `apps/docs/src/lib/nav.ts`, so it self-syncs with the portal.
+- **`apps/hub/src/app/design-system/llms.txt/route.ts`** → served at `/design-system/llms.txt`
+  — generated from `apps/hub/src/lib/design-system/nav.ts`, so it self-syncs with the portal.
 
 **The rule:** any change to a token, a component, or a Figma sync MUST also:
 1. Update `design.md` (and `AGENTS.md` if the component inventory changed) and
    bump the `Last reviewed` date in `design.md`.
-2. Update the SAMAVESH portal (`apps/docs`) — the relevant foundation/component
-   page **and** `apps/docs/src/lib/nav.ts` if pages were added/removed (this
+2. Update the SAMAVESH portal (`apps/hub/src/app/design-system/`) — the relevant foundation/component
+   page **and** `apps/hub/src/lib/design-system/nav.ts` if pages were added/removed (this
    keeps `llms.txt` correct automatically).
 3. Re-run `npm run build -w @mosje/tokens` && `npm test -w @mosje/tokens`.
 

@@ -38,7 +38,7 @@ Target file: **${ARGUMENTS:-https://www.figma.com/design/3FF5l0SMNIwdpZrKkeyPTm/
 4. **On approval, edit `packages/tokens/src/primitive.json` / `semantic.json`** with the new values (keep the 3-tier structure + `$extensions.mosje.themes` for dark/hc/compact).
 5. `npm run build -w @mosje/tokens` (regenerate all outputs) → `npm test -w @mosje/tokens` (asserts the backward-compatible `--ds-*` contract).
 6. **Verify** `npm --prefix apps/dosje run build` stays green; spot-check a page if colours changed.
-7. **Refresh the AI design context (required — `.claude/rules/design-system.md`).** If tokens/components changed: update `packages/design-system/design.md` (bump its `Last reviewed` date), `packages/design-system/AGENTS.md` if the inventory changed, and the matching SAMAVESH portal page(s) + `apps/docs/src/lib/nav.ts` (regenerates `/design-system/llms.txt`). Commit everything together.
+7. **Refresh the AI design context (required — `.claude/rules/design-system.md`).** If tokens/components changed: update `packages/design-system/design.md` (bump its `Last reviewed` date), `packages/design-system/AGENTS.md` if the inventory changed, and the matching SAMAVESH portal page(s) + `apps/hub/src/lib/design-system/nav.ts` (regenerates `/design-system/llms.txt`). Commit everything together.
 
 ## code → Figma (push token changes to the Figma library)
 - The generated **`packages/tokens/dist/figma.tokens.json`** is a DTCG file. Import it into the Figma DS file via a Tokens-Studio-style plugin to update the Figma variables from code. (Manual/designer step; document the diff for them.)

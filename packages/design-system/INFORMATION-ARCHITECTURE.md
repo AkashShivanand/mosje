@@ -260,7 +260,7 @@ the barrel `index.ts` plus a small metadata file) is the single source of truth.
      ┌─────────────┼───────────────┬───────────────┐
      ▼             ▼               ▼               ▼
  docs nav      llms.txt        design.md        Figma pages
- (apps/docs)  (from nav)     (section order)   (Code Connect)
+ (hub DS route)(from nav)     (section order)   (Code Connect)
 ```
 
 - The docs nav is **generated** from the registry; `llms.txt` is generated from
