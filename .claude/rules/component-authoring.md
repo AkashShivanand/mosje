@@ -53,8 +53,10 @@ enough" is not the bar; "would this survive review in Carbon/Polaris" is.
   before the component is done. "Mostly tokenised" is not tokenised.
 - **Semantic over primitive.** Bind to the role/semantic layer (`bg/*`, `text/*`,
   `icon/*`, `border/*`, `on/*`, `inline/*`, `stack/*`, `padding/*`, `shape/*`,
-  `icon/size/*`, `ref/font/role/*`), not to `ref/*` primitives, unless no semantic
-  token exists — in which case **add one** (§3), don't reach past the layer.
+  `icon/size/*`, `type/*`), NEVER to a `ref/*` primitive — every Tier-1 variable in the
+  library is hidden from publishing as of 2026-08-26, so a consuming file cannot bind one
+  even by accident. If no semantic token exists, **add one** (§3) — never reach past the
+  layer.
 - **Use `on/*` pairing** for content on a coloured surface, and honour the contrast
   convention: filled surfaces sit one rung deeper than the same-family ink.
 - **Set scopes and WEB code syntax** on every new variable (`var(--…)`); never leave

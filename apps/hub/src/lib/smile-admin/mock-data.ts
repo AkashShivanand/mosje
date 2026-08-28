@@ -107,9 +107,9 @@ export const SHELTER_HOMES_BY_STATE = STATES.slice(0, 18).map((s, i) => ({
 
 /* ---------- Beneficiary profile breakdowns ---------- */
 export const GENDER_DISTRIBUTION = [
-  { name: "Male", value: 10843, color: "var(--sa-chart-cat-8)" },
-  { name: "Female", value: 7156, color: "var(--sa-chart-cat-10)" },
-  { name: "Transgender / Other", value: 1811, color: "var(--sa-chart-cat-6)" },
+  { name: "Male", value: 10843, color: "var(--sa-chart-cat-1)" },
+  { name: "Female", value: 7156, color: "var(--sa-chart-cat-2)" },
+  { name: "Transgender / Other", value: 1811, color: "var(--sa-chart-cat-3)" },
 ];
 
 export const AGE_DISTRIBUTION = [

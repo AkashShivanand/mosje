@@ -603,13 +603,8 @@
       "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
       "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
       "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
-      "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
-    },
-    "weight": {
-      "regular": 400,
-      "medium": 500,
-      "semibold": 600,
-      "bold": 700
+      "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace",
+      "icon": "\"Material Symbols Rounded\", sans-serif"
     },
     "size": {
       "11": "0.6875rem",
@@ -762,7 +757,16 @@
     "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
     "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
     "display": "\"Noto Sans Display\", \"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
-    "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace"
+    "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace",
+    "weight": {
+      "light": 300,
+      "regular": 400,
+      "medium": 500,
+      "semibold": 600,
+      "bold": 700,
+      "displayMedium": 500
+    },
+    "icon": "\"Material Symbols Rounded\", sans-serif"
   },
   "shadow": {
     "none": "none",
@@ -818,21 +822,26 @@
     },
     "brand": {
       "primary": {
-        "base": "#0373df"
+        "base": "#0373df",
+        "bolder": "#005eb9"
       }
     },
     "status": {
       "success": {
-        "base": "#004220"
+        "base": "#004220",
+        "bolder": "#00542b"
       },
       "error": {
-        "base": "#8b1f18"
+        "base": "#8b1f18",
+        "bolder": "#aa2f25"
       },
       "warning": {
-        "base": "#704b00"
+        "base": "#704b00",
+        "bolder": "#8b5e00"
       },
       "info": {
-        "base": "#0a5cc3"
+        "base": "#0a5cc3",
+        "bolder": "#0a5cc3"
       }
     }
   },
@@ -924,6 +933,21 @@
     },
     "section": {
       "gap": "24px"
+    }
+  },
+  "brand": {
+    "samavesh": {
+      "ink": "#1f2428",
+      "blue": "#06038d",
+      "green": "#046a38",
+      "orange": "#ff671f",
+      "saffron": "#ed8a1d",
+      "navy": "#003366",
+      "white": "#ffffff",
+      "black": "#000000"
+    },
+    "digilocker": {
+      "purple": "#5330e6"
     }
   },
   "leading": {
@@ -1030,16 +1054,20 @@
     },
     "status": {
       "success": {
-        "base": "#004220"
+        "base": "#004220",
+        "bolder": "#00542b"
       },
       "error": {
-        "base": "#8b1f18"
+        "base": "#8b1f18",
+        "bolder": "#aa2f25"
       },
       "warning": {
-        "base": "#704b00"
+        "base": "#704b00",
+        "bolder": "#8b5e00"
       },
       "info": {
-        "base": "#0a5cc3"
+        "base": "#0a5cc3",
+        "bolder": "#0a5cc3"
       }
     }
   },
@@ -1128,17 +1156,17 @@
   "chart": {
     "cat": {
       "1": "#0373df",
-      "2": "#e1560f",
-      "3": "#046a38",
-      "4": "#7e22ce",
-      "5": "#0e7490",
-      "6": "#b45309",
-      "7": "#be185d",
-      "8": "#1558b0",
-      "9": "#4d7c0f",
-      "10": "#9f1239",
-      "11": "#0f766e",
-      "12": "#475569"
+      "2": "#a25a00",
+      "3": "#007668",
+      "4": "#930121",
+      "5": "#719348",
+      "6": "#b671a6",
+      "7": "#7261a8",
+      "8": "#323ca8",
+      "9": "#5a406e",
+      "10": "#594d00",
+      "11": "#c02865",
+      "12": "#4c90ac"
     },
     "seq": {
       "50": "#e8f2fd",
@@ -1284,7 +1312,8 @@
       "base": "#1e2124",
       "subtle": "#3a3d41",
       "disabled": "rgba(30, 33, 36, 0.48)",
-      "inverse": "#ffffff"
+      "inverse": "#ffffff",
+      "subtler": "#6f757d"
     },
     "brand": {
       "primary": {
@@ -1294,16 +1323,20 @@
     },
     "status": {
       "success": {
-        "base": "#004220"
+        "base": "#004220",
+        "bolder": "#00542b"
       },
       "error": {
-        "base": "#8b1f18"
+        "base": "#8b1f18",
+        "bolder": "#aa2f25"
       },
       "warning": {
-        "base": "#704b00"
+        "base": "#704b00",
+        "bolder": "#8b5e00"
       },
       "info": {
-        "base": "#0a5cc3"
+        "base": "#0a5cc3",
+        "bolder": "#0a5cc3"
       }
     }
   },

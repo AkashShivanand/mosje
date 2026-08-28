@@ -246,11 +246,19 @@
         "base": {
           "$value": "{color.status.success}",
           "$description": "Use for text that report a successful or completed state."
+        },
+        "bolder": {
+          "$value": "{color.successScale.600}",
+          "$description": "Use for text that report a successful or completed state."
         }
       },
       "error": {
         "base": {
           "$value": "{color.status.danger}",
+          "$description": "Use for text that report an error or destructive state."
+        },
+        "bolder": {
+          "$value": "{color.dangerScale.600}",
           "$description": "Use for text that report an error or destructive state."
         }
       },
@@ -258,11 +266,19 @@
         "base": {
           "$value": "{color.status.warning}",
           "$description": "Use for text that report a warning or a state needing attention."
+        },
+        "bolder": {
+          "$value": "{color.warningScale.600}",
+          "$description": "Use for text that report a warning or a state needing attention."
         }
       },
       "info": {
         "base": {
           "$value": "{color.status.info}",
+          "$description": "Use for text that report an informational or in-progress state."
+        },
+        "bolder": {
+          "$value": "{color.infoScale.600}",
           "$description": "Use for text that report an informational or in-progress state."
         }
       }
@@ -313,6 +329,10 @@
       "inverse": {
         "$value": "{color.text.onPrimary}",
         "$description": "Use for icons placed on an inverted or solid brand surface."
+      },
+      "subtler": {
+        "$value": "{color.neutralScale.500}",
+        "$description": "Use for non-essential text and quiet icons, never body copy."
       }
     },
     "brand": {
@@ -332,11 +352,19 @@
         "base": {
           "$value": "{color.status.success}",
           "$description": "Use for icons that report a successful or completed state."
+        },
+        "bolder": {
+          "$value": "{color.successScale.600}",
+          "$description": "Use for icons that report a successful or completed state."
         }
       },
       "error": {
         "base": {
           "$value": "{color.status.danger}",
+          "$description": "Use for icons that report an error or destructive state."
+        },
+        "bolder": {
+          "$value": "{color.dangerScale.600}",
           "$description": "Use for icons that report an error or destructive state."
         }
       },
@@ -344,11 +372,19 @@
         "base": {
           "$value": "{color.status.warning}",
           "$description": "Use for icons that report a warning or a state needing attention."
+        },
+        "bolder": {
+          "$value": "{color.warningScale.600}",
+          "$description": "Use for icons that report a warning or a state needing attention."
         }
       },
       "info": {
         "base": {
           "$value": "{color.status.info}",
+          "$description": "Use for icons that report an informational or in-progress state."
+        },
+        "bolder": {
+          "$value": "{color.infoScale.600}",
           "$description": "Use for icons that report an informational or in-progress state."
         }
       }
@@ -368,6 +404,10 @@
         "base": {
           "$value": "{color.action.primary.default}",
           "$description": "Use for the outline of a primary-brand control, such as a selected card or a focused input."
+        },
+        "bolder": {
+          "$value": "{color.primaryScale.600}",
+          "$description": "Use for the outline of a primary-brand control, such as a selected card or a focused input."
         }
       }
     },
@@ -376,11 +416,19 @@
         "base": {
           "$value": "{color.status.success}",
           "$description": "Use for the outline of a control or callout reporting a successful or completed state."
+        },
+        "bolder": {
+          "$value": "{color.successScale.600}",
+          "$description": "Use for the outline of a control or callout reporting a successful or completed state."
         }
       },
       "error": {
         "base": {
           "$value": "{color.status.danger}",
+          "$description": "Use for the outline of a control or callout reporting an error or destructive state."
+        },
+        "bolder": {
+          "$value": "{color.dangerScale.600}",
           "$description": "Use for the outline of a control or callout reporting an error or destructive state."
         }
       },
@@ -388,11 +436,19 @@
         "base": {
           "$value": "{color.status.warning}",
           "$description": "Use for the outline of a control or callout reporting a warning or a state needing attention."
+        },
+        "bolder": {
+          "$value": "{color.warningScale.600}",
+          "$description": "Use for the outline of a control or callout reporting a warning or a state needing attention."
         }
       },
       "info": {
         "base": {
           "$value": "{color.status.info}",
+          "$description": "Use for the outline of a control or callout reporting an informational or in-progress state."
+        },
+        "bolder": {
+          "$value": "{color.infoScale.600}",
           "$description": "Use for the outline of a control or callout reporting an informational or in-progress state."
         }
       }
