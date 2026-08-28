@@ -80,7 +80,7 @@ const MIN_SURFACE_CONTRAST = 3;
  * the claim and the palette move together. Consumers that need more series must
  * bucket the remainder rather than reach for slot 6.
  */
-const CATEGORICAL_SAFE_COUNT = 5;
+const CATEGORICAL_SAFE_COUNT = 9;
 
 /* ── Reading the built CSS ──────────────────────────────────────────────── */
 
@@ -153,23 +153,27 @@ function separated(a, b) {
 const RATCHETS = {
   /**
    * Colliding pairs across the full twelve, at the estate separation rule.
-   * Currently cat-1/cat-8 (two blues), cat-2/cat-6 (two oranges), cat-3/cat-9
-   * (two greens), cat-7/cat-10 (two magentas) — four hue families that each
-   * appear twice because twelve slots at one lightness must reuse the wheel.
+   * Zero since the ramp was regenerated. It used to be four — cat-1/cat-8,
+   * cat-2/cat-6, cat-3/cat-9 and cat-7/cat-10, each a hue family appearing
+   * twice because twelve slots at one lightness must reuse the wheel.
    */
-  fullRampCollisions: 4,
+  fullRampCollisions: 0,
 
   /**
-   * Worst perceptual distance between any two of the FIRST FIVE slots once a
-   * dichromacy is applied. 5.7 is deuteranopia collapsing cat-1 (#0373df blue)
-   * and cat-4 (#7e22ce purple) onto nearly the same colour — the single most
-   * consequential pair, because blue and purple are the two most common defaults
-   * for a two-series chart.
+   * Worst perceptual distance between any two of the first nine slots once a
+   * dichromacy is applied. 8.0 clears the threshold with nothing to spare,
+   * which is the point: the ramp was solved to this bound, not past it. The
+   * old ramp managed 5.7 across only five slots and 1.0 across twelve.
    */
-  cvdWorstDeltaEInSafeRange: 5.7,
+  cvdWorstDeltaEInSafeRange: 8.0,
 
-  /** Worst across all twelve: protanopia merges cat-2 and cat-9 almost exactly. */
-  cvdWorstDeltaEFullRamp: 1.0,
+  /**
+   * Worst across all twelve. Slots 10-12 are EXTENSION colours: mutually
+   * distinct in full colour, deliberately not CVD-guaranteed, and reached only
+   * by a consumer that has already ignored the cap. The number is low by design
+   * and is ratcheted so it cannot quietly get lower still.
+   */
+  cvdWorstDeltaEFullRamp: 1.5,
 };
 
 /** Ratchet direction: bigger is better for dE, smaller is better for a count. */
@@ -196,21 +200,7 @@ function assertRatchet(name, measured, baseline, betterIsHigher) {
  * Failures that are KNOWN and individually named. May only shrink; the stale
  * test at the bottom fails once an entry is fixed and its line is not deleted.
  */
-const PALETTE_LEDGER = new Map([
-  [
-    "categorical-vs-semantic::cat-3|trend-up",
-    "Identical: both resolve to #046a38, so the measurement is 0 degrees and dE 0.0. Not a " +
-      "near-miss to be nudged apart — categorical slot 3 IS the success green.\n\n" +
-      "Recorded rather than fixed because the fix is not a test's to make. `cat-3` is consumed " +
-      "by three live surfaces (the NMBA facility map, the de-addiction centre directory, the " +
-      "SCW home-type breakdown) and is mirrored in the Figma library, so moving it is a token " +
-      "change that must travel to Figma in the same pass. The SMILE dashboard already routes " +
-      "around it explicitly.\n\n" +
-      "The fix, when taken: re-anchor `cat-3` off the success hue (~155 degrees). Slots 5 and " +
-      "11 already hold the cool end, and slot 9 (#4d7c0f olive) is the other green-adjacent " +
-      "slot worth moving in the same pass.",
-  ],
-]);
+const PALETTE_LEDGER = new Map([]);
 
 const hit = new Set();
 const ledgered = (brand, rule, detail) => {

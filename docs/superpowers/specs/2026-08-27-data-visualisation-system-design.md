@@ -305,22 +305,27 @@ ramp** (`50`–`900`), a **7-step diverging ramp**, plus grid, axis, tooltip,
 trend and region inks. 38 `--sa-chart-*` tokens in total. Four rules govern
 their use.
 
-**1 · Twelve slots is not twelve distinguishable series — it is FIVE.** This
-was written as "six to eight" from general design lore. The gate then measured
-this palette and the lore was wrong for it: slots 1-5 are mutually separated,
-and collision starts at slot 6, where `cat-2` (#e1560f) meets `cat-6` (#b45309)
-— two oranges, 8 degrees and dE 8.8 apart.
+**1 · Twelve slots is not twelve distinguishable series — it is NINE.**
 
-That is not a flaw in these particular colours. All twelve sit at near-constant
-lightness (L 44-63), so they are told apart by hue alone, and twelve hues at one
-lightness cannot all be far apart. Any 12-colour ramp built this way has the same
-ceiling; the number is a property of the construction, not of the choices.
+This has now been wrong twice, and the sequence is worth keeping because it is
+how the number was actually earned. It was first written as "six to eight" from
+general design lore. The gate then measured the shipping ramp and found **five** —
+collision started at slot 6, where two oranges sat 8 degrees apart. The ramp was
+then regenerated against that measurement and reaches **nine**.
 
-So the scene builder caps rendered series at **5** and buckets the remainder as
-`Other`, with the full breakdown preserved in the SR table. This is a refusal,
-and it is deliberate. Raising the cap requires regenerating the ramp against
-lightness as well as hue — and `chart-palette.test.mjs` fails if the published
-count is raised without it.
+The diagnosis that made nine possible: the old ramp held lightness nearly
+constant (L 44-63) across all twelve slots, so the only channel separating them
+was hue — and hue is the channel a dichromat loses. Treating lightness as a
+first-class variable rather than holding it flat for tidiness is the whole
+difference between a ramp that fails colour-vision deficiency at three slots and
+one that survives nine.
+
+So the scene builder caps rendered series at **9** and buckets the remainder as
+`Other`, with the full breakdown preserved in the SR table. Slots 10-12 remain
+as extension colours: mutually distinct in full colour, deliberately **not**
+CVD-guaranteed, and reached only by a consumer that has already ignored the cap.
+Raising the cap again requires regenerating the ramp again — and
+`chart-palette.test.mjs` fails if the published count is raised without it.
 
 **2 · Semantic hue is reserved.** In government reporting green and red mean
 approved and rejected, above and below target. A categorical slot that is green
@@ -328,13 +333,15 @@ makes an arbitrary series read as "good" — which, on a caste-category or
 religion breakdown, is not a cosmetic problem. Categorical slots must not collide
 in hue with the trend and status inks, and the gate below enforces it.
 
-> **This is already violated, exactly.** `--sa-chart-cat-3` resolves to
-> `#046a38`, which is byte-identical to `--sa-chart-trend-up`. Categorical slot
-> 3 *is* the semantic success green — so any three-series chart that takes the
-> first three slots renders its third series in "good". `--sa-chart-cat-9`
-> (`#4d7c0f`) sits close to the same hue. Catching this pair is the first thing
-> the gate below must do, and a same-hex collision is the cheapest possible
-> test case to write first.
+> **This was violated exactly, and is now fixed.** `--sa-chart-cat-3` used to
+> resolve to `#046a38` — byte-identical to `--sa-chart-trend-up`, so categorical
+> slot 3 *was* the semantic success green and any three-series chart rendered its
+> third series in "good". `cat-9` (`#4d7c0f`) sat close to the same hue.
+>
+> The regenerated ramp holds every slot at least dE 12 **or** 25 degrees from
+> every semantic ink, which is a real clearance rather than the minimal
+> not-confusable bar. Slot 3 is now teal (`#007668`). The gate enforces the
+> clearance, so the collision cannot come back.
 
 **3 · The diverging default is blue–orange.** Red–green remains available and is
 flagged in the docs as CVD-hostile. This inverts the convention most enterprise
@@ -370,26 +377,37 @@ alongside the existing Tier-1 leakage test, and it fails the build.
 
 **What it found on its first run**, beyond the `cat-3`/`trend-up` identity above:
 
-- The ramp holds for five slots, not eight (rule 1).
-- **It fails colour-vision deficiency at every slot count, including three.**
-  There is no cap at which the current ramp is CVD-safe. The worst case is
+- The ramp held for five slots, not the eight this document had claimed.
+- **It failed colour-vision deficiency at every slot count, including three.**
+  There was no cap at which the shipping ramp was CVD-safe. The worst case was
   protanopia collapsing `cat-2` and `cat-9` to dE 1.0 — effectively one colour.
-  Within even the first five, deuteranopia merges `cat-1` (blue) and `cat-4`
-  (purple) to dE 5.7, which is the most consequential single pair because blue
-  and purple are the commonest defaults for a two-series chart.
+  Within even the first five, deuteranopia merged `cat-1` (blue) and `cat-4`
+  (purple) to dE 5.7, the most consequential single pair because blue and purple
+  are the commonest defaults for a two-series chart.
 
-Neither is repairable by a test, so both are held as **ratchets**: the measured
-numbers are recorded, may only improve, and the gate fails if anything gets
-worse *or* if a number improves without the baseline being tightened. Repair
-means regenerating the categorical ramp against CVD and lightness as well as
-hue — a design change that must travel to the Figma library in the same pass and
-that repaints live surfaces.
+**Both are now fixed, by regenerating the ramp rather than by moving a
+threshold.** The search was constrained to what the estate actually needs — gov
+blue anchored at slot 1, every slot ≥ 3:1 on both the base and elevated surface,
+every slot clear of the semantic inks, chroma and lightness bounded so the result
+reads as a government palette rather than a test pattern — and then solved for
+the largest CVD-safe set. That set is nine.
 
-**This is why rule 4 is load-bearing rather than a nicety.** A palette that fails
-CVD at three slots means the colour layer alone is insufficient, which is exactly
-what "colour is never the only encoding" already assumes. Direct labelling,
-distinct markers, pattern fills and the screen-reader table are what actually
-carry the data; the ramp is a convenience on top of them.
+| | before | after |
+|---|---|---|
+| Mutually distinguishable slots | 5 | **9** |
+| Colliding pairs across all 12 | 4 | **0** |
+| Worst CVD separation, safe range | dE 5.7 (over 5 slots) | **dE 8.0 (over 9)** |
+| Slots clear of every semantic ink | 11 of 12 | **12 of 12** |
+
+The measured state is held as **ratchets**: the numbers are recorded, may only
+improve, and the gate fails if anything gets worse *or* if a number improves
+without the baseline being tightened.
+
+**Rule 4 remains load-bearing even now.** Nine CVD-safe slots is a real result,
+but it is nine — a chart with more series, or slots 10-12, is outside the
+guarantee. Direct labelling, distinct markers, pattern fills and the
+screen-reader table are what actually carry the data; the ramp is a convenience
+on top of them.
 
 ### Dark mode — deferred values, fixed structure
 

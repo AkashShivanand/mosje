@@ -15525,7 +15525,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#e1560f"
+              "value": "#a25a00"
             }
           },
           "description": "Use as series 2 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15545,7 +15545,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#046a38"
+              "value": "#007668"
             }
           },
           "description": "Use as series 3 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15565,7 +15565,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#7e22ce"
+              "value": "#930121"
             }
           },
           "description": "Use as series 4 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15585,7 +15585,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#0e7490"
+              "value": "#719348"
             }
           },
           "description": "Use as series 5 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15605,7 +15605,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#b45309"
+              "value": "#b671a6"
             }
           },
           "description": "Use as series 6 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15625,7 +15625,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#be185d"
+              "value": "#7261a8"
             }
           },
           "description": "Use as series 7 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15645,7 +15645,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#1558b0"
+              "value": "#323ca8"
             }
           },
           "description": "Use as series 8 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15665,7 +15665,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#4d7c0f"
+              "value": "#5a406e"
             }
           },
           "description": "Use as series 9 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15685,7 +15685,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#9f1239"
+              "value": "#594d00"
             }
           },
           "description": "Use as series 10 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15705,7 +15705,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#0f766e"
+              "value": "#c02865"
             }
           },
           "description": "Use as series 11 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
@@ -15725,7 +15725,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#475569"
+              "value": "#4c90ac"
             }
           },
           "description": "Use as series 12 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
