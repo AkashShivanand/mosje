@@ -2665,12 +2665,12 @@ Sync workflow for tokens: `/sync-figma`.
 - [ ] Has a paired `.css` file in the same directory as the component `.tsx`
 - [ ] Exported from `index.ts` barrel with full TypeScript types
 - [ ] Added to the Component Catalogue section in this `design.md`
-- [ ] Navigation entry added to `apps/docs/src/lib/nav.ts`
-- [ ] Reviewed by the Design System Guardian agent (`.Codex/agents/design-system-guardian`)
+- [ ] Navigation entry added to `apps/hub/src/lib/design-system/nav.ts`
+- [ ] Reviewed by the Design System Guardian agent (`.claude/agents/design-system-guardian.md`)
 
 ### Specification Maintenance
 
 Whenever a new component is added, a token contract is updated, or a page pattern changes:
 1. Update this `design.md` (Component Catalogue and/or relevant section).
 2. Bump the `Last reviewed` date in the HTML comment header.
-3. Run `npm run dev` in `apps/docs` and verify the change renders at `/design-system/resources/design-context`.
+3. Run `npm run dev` (repo root, port 3007) and verify the change renders at `/design-system/resources/design-context`.

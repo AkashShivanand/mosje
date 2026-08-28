@@ -32,7 +32,7 @@ npm run build -w @mosje/tokens   # generate the token artifacts
 1. Follow the existing pattern: `"use client"`, `forwardRef`, `cn()`, a dependency-free
    `.ds-*` CSS file referencing tokens (no hex).
 2. Export it from `packages/design-system/index.ts`; add its CSS to `components.css`.
-3. Add a **doc page + stories** in `apps/docs` following the 13-section template
+3. Add a **doc page + stories** in `apps/hub/src/app/design-system/` following the 13-section template
    (purpose · anatomy · when to use/not · variants · states · behavior/keyboard ·
    **accessibility** · **content/voice (EN+HI)** · code/props · responsive · evidence ·
    related · changelog).
