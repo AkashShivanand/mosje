@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-27 · System version: v0.35.0 (START OVER DESTROYS NOTHING,
+  Last reviewed: 2026-08-28 · System version: v0.35.0 (START OVER DESTROYS NOTHING,
   AND LEAVES SEND'S COLUMN. The chatbot's reset sat 25px directly below Send, in the
   same 32px column, with the whole of Send's width above it — the most-pressed
   control in the panel stacked on the rarest and the only destructive one. Every
@@ -1896,6 +1896,16 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 **Purpose**: The primary content container. Use sub-components to structure card content.  
 **Rule**: Never nest `<Card>` inside another `<Card>`.
 
+#### FactStrip
+**Purpose**: The row of standing facts under a page hero — headquarters, number of components, who a scheme serves. One card divided by hairlines, not a row of cards.
+**Key props**: `items` (`{icon, value, label}[]`), `overlap`, `ariaLabel`
+**Rules**:
+- **NOT `MetricCard`.** A metric is a measurement that moves and carries a trend; MetricCard has the change pill to prove it. These are facts that never trend, so the two differ in what they may *contain*, not only in how they look. Giving MetricCard a centred variant would have put a change arrow one prop away from a headquarters address.
+- **One surface, not four cards.** Separate cards read as four things to compare; a divided surface reads as one summary of one organisation, which is what it is.
+- `ariaLabel` is required. Unlabelled, the strip is announced as the bare run "New Delhi, Headquarters, 3, Scheme components".
+- Renders as a `<dl>`; the value is moved above the label with `order`, so the DOM keeps `<dt>` first and the pair is read "Headquarters: New Delhi".
+- `overlap` pulls the card up over the band above it. Use it only directly under a hero — elsewhere it bites into whatever precedes it.
+
 #### Avatar
 **Purpose**: Circular user or entity representation.  
 **Rule**: Always provide `alt` text. For decorative-only avatars, `alt=""`.
@@ -2017,6 +2027,57 @@ container with actions slot + loading/empty states + grid `span`), `DashboardGri
 tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 `SegmentedControl` (filter row + period toggle).
 
+**States**: `CardState` and `CardSkeleton` are what a card shows when it has
+nothing to draw. Pass `ChartCard` a `state` and a `skeleton` rather than reaching
+for either directly — the card also suppresses its own footer and export control
+while it cannot show data, and a footer still reading "2023-24 is the largest
+year at 7,343 approvals" over a body saying the figures did not arrive is a card
+contradicting itself.
+
+`CardStateKind` is **six reasons, not two, and the distinction is the point**.
+"No data to display" fits every one of them and helps with none:
+
+| kind | means | the action is |
+| --- | --- | --- |
+| `empty` | the selection is valid and holds nothing | nobody's |
+| `no-results` | a filter matched nothing | **the reader's** — say which filter |
+| `not-published` | the source does not publish this yet | nobody's, and it is not a failure |
+| `error` | the request failed, locally to this card | sometimes the reader's — offer it |
+| `restricted` | the figures exist; this viewer may not see them | not the reader's |
+| `offline` | the device has no connection | the reader's |
+
+Telling someone "nothing to show yet" about a figure that will never appear under
+their current filters sends them hunting for a control that does not exist.
+
+The illustrations are **drawn in the chart vocabulary**, not borrowed from an icon
+set: an axis, a baseline, bars, a ring, arranged to depict what happened, so a
+card whose chart is missing shows that chart's own skeleton with the data taken
+out. Three things make the six a family — a shared axis, two shared ink layers
+(`ghost` for the chart that would have been there, `ink` for what happened to
+it), and one two-layer plate. **Three tones, not six**: neutral where there is
+nothing to do, info where the reader can change something, warning where
+something went wrong. Colour is never the only signal.
+
+`CardSkeletonShape` is `bars · line · donut · rows · region · figures`. **Match
+it to the chart the card actually holds.** A donut card that shimmers as a bar
+chart promises the wrong picture and then replaces it, which is worse than a
+plain block because it was specific and wrong. Every shape shimmers on one clock
+and staggers on one 90ms step, so six loading cards read as a page arriving
+rather than six spinners.
+
+Give `onRetry` an action that genuinely resolves what is on screen. A "Try again"
+that cannot change the state is worse than no button; omit it where nothing the
+reader can do would help.
+
+**Export**: pass `exportable` to a `ChartCard` for a header download control
+(`ChartExport`) offering **PNG · SVG · CSV**. It needs no wiring — it reads the
+chart's own `<svg>` (PNG rasterised via canvas at 2×, SVG with the live theme's
+paint inlined so it stands alone) and the screen-reader `<table>` (CSV, UTF-8
+with a BOM so Excel reads Indian-digit grouping). The same functions ship as
+`downloadPng` / `downloadSvg` / `downloadCsv` for bespoke controls. `ChartExport`
+is a client component (it touches the DOM); `ChartCard` stays a server component
+and renders it only when `exportable`.
+
 **Rules**:
 - Always pass a `title` — it is the chart's accessible name and SR-table caption.
 - Never encode meaning by colour alone: the SR table + per-mark `aria-label` +
@@ -2037,6 +2098,19 @@ tiles — reuses `MetricCard`, not a re-implementation), `FilterBar` +
 ---
 
 ### Navigation
+
+#### ContentNav
+**Purpose**: The grouped section index beside a long website content page — a table of contents for a document, sticky as the reader scrolls.
+**Key props**: `groups` (`{label?, items: {label, href, current?, children?}[]}[]`), `ariaLabel`, `sticky`, `linkAs`
+**Rules**:
+- **NOT `SidebarNav`.** SidebarNav is a portal application rail: an icon per item, collapsible, `"use client"` because it owns state. ContentNav is a document index — no icons, no state, no client bundle. If the destinations are sections of the current page it is this; if they are screens of an application it is SidebarNav.
+- **`ariaLabel` is required.** A page already carries a masthead nav and a breadcrumb nav; a third announced as "navigation" tells a screen-reader user nothing.
+- **Exactly one item may carry `current`.** It renders as the filled pill *and* sets `aria-current="page"`, so state is not conveyed by the blue fill alone (WCAG 1.4.1).
+- **Group labels are not headings.** They render as a banded caps label inside the nav landmark, because the page's heading outline should describe its content, not its navigation.
+- **Mark off-site entries `external`** (on an item or a child). An index reads as a list of places on *this page*; an entry that is really a PDF on another host has to say so, or the reader finds out when a download starts. It renders a real `<a target="_blank">` with the launch glyph **and** a screen-reader phrase — the glyph alone conveys the fact by icon only.
+- **`current` is a prop, not a behaviour.** The component does no scroll-spying, deliberately: otherwise every page with an index ships client JavaScript for it. A consumer that wants the section in view highlighted computes `current` itself — `OrganisationIndex` (`apps/hub/src/components/website/templates/`) is the reference, and is the only client component on an otherwise server-rendered page.
+- `sticky` (default) caps the index's height and scrolls it internally, so a long index cannot hide its own tail. It disables itself below 1024px, where the index sits above the article in normal flow.
+- Pass `linkAs={Link}` in the hub so in-page navigation is not a full reload.
 
 #### AccessibilityBar
 **Purpose**: The government top utility bar (UX4G / GIGW) — the Government of India link plus the accessibility controls (skip to content, font size A−/A/A+, accessibility, language). The a11y surface itself; matches the SAMAVESH Figma *Accessibility Bar* component.  
@@ -2579,6 +2653,136 @@ inventing a page-local variant.
 - Category/tag `Badge` colours are taxonomy, not severity — never map a neutral category to `danger`/`warning`; reserve those for actual error/warning states elsewhere on the same screen.
 - Every icon-only status indicator (e.g. a "featured/pinned" star) needs a screen-reader-visible label, not just a `title` tooltip.
 - Grid and list views must share the same action set (view/edit/delete/download) and the same selection/lightbox state — the view toggle changes density, not capability.
+
+### Organisation Detail Page (Website)
+
+**Every organisation page in the estate renders this, and the order below is the pattern —
+not one page's layout.** Source: Figma *MoSJE [Handoff] → Organisation Details* (`69:589`).
+Implemented by `apps/hub/src/components/website/templates/OrganisationDetail.tsx`, driven by
+the ingested record plus a hand-authored entry in
+`apps/hub/src/content/website/organisation-details.ts`.
+
+```
+<PageLayout>                       {/* masthead + banner + footer */}
+  <PageHero>                       {/* blue band: emblem, H1, lead, optional CTA */}
+  <FactStrip overlap />            {/* straddles the banner's lower edge */}
+  <div class="orgd">               {/* ONE grid: index rail | bands */}
+    <OrganisationIndex />          {/* column 1, spans the whole page; wraps
+                                        ContentNav to mark the section in view —
+                                        the page's ONLY client component */}
+    <section id="about-…">         {/* tinted  — ingested prose */}
+    <section id="components">      {/* white   — cards that open the child pages */}
+    <section id="circulars-…">     {/* tinted  — documents.json, filtered */}
+    <section id="resources">       {/* white   — documents.json, filtered */}
+    <section id="downloads">       {/* tinted  — published files, grouped */}
+    <section id="gallery">         {/* white   */}
+    <section id="contact">         {/* white   — support + officer tables */}
+  </div>
+</PageLayout>                      {/* SiteFooter already ends the page with
+                                        its own "Need support?" ActionBanner */}
+```
+
+**Rules**:
+- **THE INDEX CARRIES PLACES, NOT FILES.** Every `ContentNav` entry is a section
+  of this page, a sub-page, or another site. A PDF is not a place — put the files in
+  a `downloads` section as cards and let the index link to *that*. This is written
+  down because it was got wrong: the source site inlines ten PDF links in its
+  sidebar, and copying that shape produced an index where half the entries silently
+  started a download. The card carries what the index cannot — the file type, and an
+  action that says what will happen.
+- **A download card states its KIND, taken from the destination.** `PDF`,
+  `Presentation (PPTX)`, `Web page` — and the action follows it, so a link to an HTML
+  page never offers to "download" anything.
+- **The band tones ALTERNATE and must keep alternating.** Each band is a different kind of
+  thing — prose, destinations, documents, pictures, people — and the tone change is the only
+  separator between them. Two tinted bands in a row merge into one, and a reader scanning for
+  the contact table loses the landmark they were counting against.
+- **The index spans the page, not the first band.** `.orgd` is one grid with the rail in
+  column one and every band in column two. A nav that scrolls away at the second section is
+  not an index.
+- **Bands bleed with a pseudo-element, and the wrapper uses `overflow-x: clip`, never
+  `hidden`.** `hidden` makes the wrapper a scroll container, and a scroll container is what
+  `position: sticky` sticks to — the rail would pin to the top of the page and stop moving.
+- **A section with no data is omitted, never stubbed.** An organisation with no gallery has
+  no gallery band. An "empty state" for content that was never promised is noise.
+- **Documents are FILTERED, never re-typed.** Circulars and resources come from
+  `documents.json` by title match, so the lists follow the next content ingest on their own.
+- **Hand-authored structure does NOT go in `organisation.json`.** That file is the scrape and
+  is rewritten wholesale on ingest. Facts, index and contacts live in
+  `organisation-details.ts`, keyed by the same slug.
+- **Only facts the source page states.** A founding year, a budget or a beneficiary count that
+  dosje.gov.in does not publish must not appear — an invented statistic on a government page
+  is a defect of a different order from a layout bug.
+- Section ids are stable and are what `ContentNav` links to; one `<h1>` (the banner) and every
+  band opening at `<h2>`. An id may sit on a group *inside* a band (the two download lists do)
+  when the index needs to reach it — and every anchor target carries `scroll-margin-top`, or the
+  heading lands under the sticky masthead (WCAG 2.2 §2.4.11).
+- **Documents and downloads render from ONE card definition** (`FileGrid`). A circular and a
+  published format are the same object to a reader: a name, a line saying what it is, and a way
+  in. Two card definitions on one page is how the two drift a padding step apart.
+
+---
+
+### Data page motion (any page with a dashboard section)
+
+Four movements, and no more. Each answers a question the reader is already
+asking; none is decoration. Primitive: `useScrollReveal` +
+`foundations/reveal.css`. Reference implementation:
+`apps/hub/src/components/website/AdarshGramDashboard.tsx` and its stylesheet.
+
+| Movement | Driver | Why it earns its place |
+| --- | --- | --- |
+| Bars grow from the left, once, on load | plain CSS animation | the fill IS the number, so drawing it is the number arriving |
+| Blocks rise and fade as they REACH the viewport | `useScrollReveal` (IntersectionObserver) | tells a reader scrolling a long section they have arrived somewhere new |
+| Chart marks fade in, lines draw left to right | CSS, held until the block reveals | the chart assembles as the reader gets to it, rather than three screens early |
+| Sticky header condenses when it pins | `data-pinned` from an IntersectionObserver sentinel | shows the controls changing state from heading to toolbar |
+
+```tsx
+const root = React.useRef<HTMLElement>(null);
+useScrollReveal(root);
+
+<section ref={root}>
+  <div data-sa-reveal>…</div>
+  <ChartCard data-sa-reveal title="…">…</ChartCard>
+</section>
+```
+
+Rules that are not negotiable:
+
+1. **Entry motion is OBSERVER-driven, not scroll-LINKED.** `animation-timeline:
+   view()` ties progress to scroll POSITION, so a range resolves to whatever
+   fraction the reader's scroll implies and can rest there indefinitely: this
+   estate measured a chart card at `opacity: 0.34` while the reader was looking
+   at it, and earlier stranded a ~1800px grid at `0.06` because a block taller
+   than the viewport never resolved its `entry` range. An observer decides only
+   WHEN to start; the transition then runs to completion on its own clock and
+   cannot be parked half-way. **That difference is what makes a fade safe here
+   and unsafe there** — a scroll-linked entry must be transform-only, an
+   observer-driven one need not be.
+2. **The hidden state is gated on an attribute only JavaScript sets.**
+   `useScrollReveal` writes `data-sa-reveal-root` on mount, and the stylesheet
+   hides nothing without it. No script — or no `IntersectionObserver` — means no
+   motion and no hidden content, rather than a page of invisible government
+   figures. Never put `data-sa-reveal-root` in markup.
+3. **Reveal once. Never un-reveal.** A block that fades back out on scroll-up is
+   a block that has to be read twice, and re-reading a number is exactly what a
+   government page must not ask for.
+4. **Chart marks FADE. They never scale or slide.** A bar caught mid-scale is a
+   bar showing a value that is not true; a half-opaque bar is still exactly as
+   long as its number. Lines draw along the axis direction, using
+   `pathLength="1"` so one keyframe serves every series length.
+5. **Never animate a value past its own number.** Bars are critically damped, no
+   overshoot — a bar that springs past and settles back has, for a moment, told
+   the reader something untrue.
+6. **A sticky header cannot condense itself with `view()`.** A scroll-driven
+   range measures an element's position in the scrollport, and a pinned
+   element's position stops changing — which is the exact moment to detect. Use
+   a zero-height sentinel in normal flow and an observer; the first attempt at
+   this managed a 4px padding nudge and never read as condensed.
+7. **Everything is gated on `prefers-reduced-motion: reduce`**, and every
+   reduced-motion path ends with the content visible.
+8. **No scroll listeners.** IntersectionObserver or nothing; a `scroll` handler
+   re-rendering React per frame is banned.
 
 ### Informational Page (Website)
 

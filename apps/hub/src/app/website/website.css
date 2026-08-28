@@ -155,7 +155,15 @@
   line-height: 1.7;
   text-align: left;
 }
+/* The scraped organisation content arrives inside a nested wrapper div, so its
+   paragraphs are grandchildren of .gov-prose and the direct-child combinator
+   never reached them: Preflight's reset won and the paragraphs ran together
+   with no gap at all. Spacing belongs on the block elements themselves, at any
+   depth, so injected HTML gets the same rhythm as authored markup. */
 .gov-prose > * + * { margin-top: 1rem; }
+.gov-prose :is(p, ul, ol, blockquote, table, pre) + :is(p, ul, ol, blockquote, table, pre) {
+  margin-top: 1rem;
+}
 .gov-prose h2 {
   color: var(--primary-dark);
   font-size: 22px;
@@ -183,3 +191,35 @@
 .gov-prose li { margin-top: 0.375rem; }
 .gov-prose strong { color: var(--ink); font-weight: 600; }
 .gov-prose hr { border-color: var(--sa-border-neutral-base); margin: 1.5rem 0; }
+
+/* ── Organisation article, matched to Figma "Organisation Details" (51858:48298)
+
+   The template specifies Headline/headline-3 for the section heading and
+   Body/body-1 for the copy, where `.gov-prose` carries the website's older ramp
+   (22/700 heading, 15/1.7 body). These overrides live HERE, beside the rules
+   they modify and equally unlayered, because `.gov-prose` sits outside
+   `@layer base` — an override in `@layer components` loses to it no matter how
+   specific it is, which is exactly what happened on the first attempt.
+
+   Known divergence: Figma sets 0.5px body tracking; the estate's type tokens
+   define tracking as 0 for both body and headings. Bound to the token, so this
+   is a token conversation rather than a literal. */
+.sd-article :is(h1, h2) {
+  font-size: var(--sa-type-headline-3-size);
+  line-height: var(--sa-type-headline-3-lh);
+  letter-spacing: var(--sa-type-heading-tracking);
+  font-weight: 600;
+  color: var(--sa-color-action-primary-hover);
+  margin-top: 0;
+  /* Figma 51858:48299 puts a 24px gap between the heading and the copy. The
+     paragraph-spacing rule only reaches sibling blocks, and the heading is not
+     one of them, so the gap has to be stated here. */
+  margin-bottom: var(--sa-stack-24);
+}
+
+.sd-article :is(p, li) {
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
+  letter-spacing: var(--sa-type-body-tracking);
+  color: var(--sa-text-neutral-base);
+}

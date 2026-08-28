@@ -90,6 +90,10 @@ export const DOCUMENTED_BY = {
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
   ChartTooltip: "Legend",
   AccordionItem: "Accordion", VerticalTimelineItem: "VerticalTimeline",
+  // ChartExport is the download control ChartCard renders in its header when
+  // `exportable`; it cannot stand alone (it reads the sibling chart's <svg> and
+  // <table> from the DOM), so it is shown and documented through ChartCard.
+  ChartExport: "ChartCard",
 };
 
 /**

@@ -30,7 +30,8 @@ import {
  * - **`ChartCard`** is the container: title, actions, body, footer, and — the
  *   part worth using — **`loading` and `empty` states built in**. A dashboard
  *   whose tiles collapse to nothing while data arrives is the usual reason the
- *   layout jumps on load. Set `loading`, don't render nothing.
+ *   layout jumps on load. Set `loading`, don't render nothing. Add `exportable`
+ *   for a header download control (PNG · SVG · CSV) via `ChartExport`.
  * - **`KpiRow`** lays out `MetricCard` tiles. It reuses `MetricCard` rather
  *   than reimplementing it, so a change to the card reaches every dashboard.
  * - **`FilterBar`** is layout only. It hosts controls; it holds no state and
@@ -109,17 +110,17 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** A single card. `actions` sits in the header; `footer` carries the source line. */
+/**
+ * A single card. `exportable` adds the real download control (PNG · SVG · CSV)
+ * to the header — it exports the chart in this card with no wiring. `footer`
+ * carries the source line.
+ */
 export const Card: Story = {
   render: (args) => (
     <div style={{ maxWidth: 640 }}>
       <ChartCard
         {...args}
-        actions={
-          <Button size="sm" appearance="text">
-            Export
-          </Button>
-        }
+        exportable
         footer="Source: district submissions as at 04 August 2026."
       >
         <LineChart

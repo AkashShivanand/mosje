@@ -9,6 +9,7 @@ import { bandScale, linearScale, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
+import { CardState } from "../../dashboard/card-state";
 import type { ChartSeries } from "./types";
 
 export interface ComboChartProps {
@@ -47,7 +48,7 @@ export function ComboChart({
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const [active, setActive] = React.useState<number | null>(null);
   if (labels.length === 0 || (bars.length === 0 && lines.length === 0))
-    return <p className="ds-chart__empty">No data to display.</p>;
+    return <CardState kind="empty" compact />;
 
   const barColors = bars.map((s, i) => seriesColor(s.color, i));
   const lineColors = lines.map((s, i) => seriesColor(s.color, bars.length + i));

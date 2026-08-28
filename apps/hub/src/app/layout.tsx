@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans, Noto_Sans_Display } from "next/font/google";
 import { ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
+import { DataModeProvider } from "@/lib/data-mode/context";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { ConditionalChatbot } from "@/components/conditional-chatbot";
 import { ConditionalDemoDock } from "@/components/conditional-demo-dock";
@@ -91,6 +92,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           attributes onto <body> before React hydrates — benign, React-recommended. */}
       <body className="min-h-full font-sans bg-surface-muted text-ink" suppressHydrationWarning>
         <ColorModeProvider>
+          {/* Which figures the dashboards show — live, illustrative, or both.
+              Client-side and cookie-backed, exactly like the colour mode above
+              it, so reading it never opts a static route into dynamic
+              rendering. See lib/data-mode/context.tsx. */}
+          <DataModeProvider>
           {children}
           <UX4GAccessibilityWidget />
           {/* Ordered deliberately: the accessibility widget owns the
@@ -98,6 +104,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               around it rather than the other way round. */}
           <ConditionalChatbot enabledPaths={chatbotPaths} />
           <ConditionalDemoDock apps={apps} enabled={demoToolsEnabled} />
+          </DataModeProvider>
         </ColorModeProvider>
       </body>
     </html>

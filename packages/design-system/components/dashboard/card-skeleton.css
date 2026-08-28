@@ -1,0 +1,227 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ══ CardSkeleton ══════════════════════════════════════════════════════════
+
+     A loading placeholder shaped like the thing it precedes.
+
+     ONE SHIMMER, DEFINED ONCE, INHERITED BY EVERY SHAPE. That is what makes six
+     different silhouettes read as one page loading rather than six widgets each
+     doing their own thing — the travelling highlight is on the same clock
+     everywhere, and every shape staggers on the same 90ms step.
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  .ds-skel {
+    width: 100%;
+    height: 220px;
+  }
+
+  /* The shimmer. Applied by every part below rather than by the container, so
+     each part carries its own rounded shape. */
+  .ds-skel :where(span) {
+    background: linear-gradient(
+      90deg,
+      var(--sa-bg-neutral-subtler) 25%,
+      var(--sa-border-neutral-subtle) 37%,
+      var(--sa-bg-neutral-subtler) 63%
+    );
+    background-size: 400% 100%;
+    animation: ds-skel-shimmer 1.4s ease infinite;
+  }
+
+  @keyframes ds-skel-shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: 0 0; }
+  }
+
+  /* ── Bars ───────────────────────────────────────────────────────────────── */
+
+  .ds-skel--bars {
+    display: flex;
+    align-items: flex-end;
+    gap: 2.4%;
+    padding-bottom: var(--sa-padding-8);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-skel__bar {
+    flex: 1 1 0;
+    border-radius: var(--sa-shape-4) var(--sa-shape-4) 0 0;
+    transform-origin: bottom center;
+    /* Grows in on its own delay, so the chart assembles left to right rather
+       than appearing whole. `both` holds the grown state — a bar must never
+       collapse back mid-wait. */
+    animation:
+      ds-skel-shimmer 1.4s ease infinite,
+      ds-skel-grow 520ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  @keyframes ds-skel-grow {
+    from { transform: scaleY(0.15); }
+    to { transform: none; }
+  }
+
+  /* ── Line ───────────────────────────────────────────────────────────────── */
+
+  .ds-skel--line {
+    display: block;
+  }
+
+  .ds-skel__svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .ds-skel__grid {
+    stroke: var(--sa-border-neutral-subtle);
+    stroke-width: 1;
+    vector-effect: non-scaling-stroke;
+  }
+
+  /* Drawn rather than shimmered: a line's shape is its length, so tracing it is
+     the honest placeholder. `pathLength` normalises the dash to the path. */
+  .ds-skel__path {
+    fill: none;
+    stroke: var(--sa-border-neutral-base);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vector-effect: non-scaling-stroke;
+    /* `pathLength="1"` is set on the element (an SVG attribute, not a CSS
+       property), which normalises the dash to the path whatever its length. */
+    stroke-dasharray: 1;
+    animation: ds-skel-draw 1.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes ds-skel-draw {
+    0% { stroke-dashoffset: 1; }
+    55%, 100% { stroke-dashoffset: 0; }
+  }
+
+  /* ── Donut ──────────────────────────────────────────────────────────────── */
+
+  .ds-skel--donut {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .ds-skel__ring {
+    width: 160px;
+    height: 160px;
+    max-width: 70%;
+    border-radius: var(--sa-shape-full);
+    /* A ring, not a disc: the hole is what makes it a donut rather than a pie,
+       and the placeholder should not promise the wrong chart. */
+    /* ds-exempt(demo-geometry): a mask's stops are ALPHA, not paint. Nothing
+       here is ever rendered — `#000000` means "keep this pixel" and
+       `transparent` means "cut it" — so binding it to a colour token would
+       claim a design decision the value does not make, and would break the
+       moment that token's value changed. */
+    mask: radial-gradient(circle, transparent 54%, #000000 56%);
+    animation:
+      ds-skel-shimmer 1.4s ease infinite,
+      ds-skel-ring 620ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  @keyframes ds-skel-ring {
+    from { transform: scale(0.88); opacity: 0; }
+    to { transform: none; opacity: 1; }
+  }
+
+  /* ── Rows ───────────────────────────────────────────────────────────────── */
+
+  .ds-skel--rows {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--sa-stack-16);
+  }
+
+  .ds-skel__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    /* The row itself carries no fill; its two children do. */
+    background: none !important;
+    animation: ds-skel-rise 480ms cubic-bezier(0.22, 0.61, 0.36, 1) both !important;
+  }
+
+  .ds-skel__row-label {
+    width: 42%;
+    height: 10px;
+    border-radius: var(--sa-shape-full);
+  }
+
+  .ds-skel__row-track {
+    height: 8px;
+    border-radius: var(--sa-shape-full);
+  }
+
+  @keyframes ds-skel-rise {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  /* ── Region ─────────────────────────────────────────────────────────────── */
+
+  .ds-skel--region {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Deliberately vague. A map has no geometry a placeholder can honestly
+     promise, so this promises a shape and no more. */
+  .ds-skel__region {
+    width: 62%;
+    height: 88%;
+    border-radius: 42% 58% 47% 53% / 38% 44% 56% 62%;
+  }
+
+  /* ── Figures ────────────────────────────────────────────────────────────── */
+
+  .ds-skel--figures {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-content: center;
+    gap: var(--sa-stack-24) var(--sa-inline-32);
+  }
+
+  .ds-skel__figure {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    background: none !important;
+    animation: ds-skel-rise 480ms cubic-bezier(0.22, 0.61, 0.36, 1) both !important;
+  }
+
+  .ds-skel__figure-value {
+    width: 58%;
+    height: 20px;
+    border-radius: var(--sa-shape-4);
+  }
+
+  .ds-skel__figure-label {
+    width: 82%;
+    height: 9px;
+    border-radius: var(--sa-shape-full);
+  }
+
+  /* ── Motion off ───────────────────────────────────────────────────────────
+
+     The shape stays; only the movement goes. A skeleton with no animation is
+     still a truthful placeholder, where a skeleton with no shape is not. */
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-skel :where(span),
+    .ds-skel__path {
+      animation: none;
+    }
+  }
+}

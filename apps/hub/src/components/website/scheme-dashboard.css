@@ -1,0 +1,948 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ══ SCHEME DASHBOARD ══════════════════════════════════════════════════════
+
+     ONE stylesheet for every PM-AJAY component dashboard — Adarsh Gram,
+     Grants-in-Aid, Hostels — because they are three components of one scheme and
+     a citizen moving between them should not have to relearn the page. The `sd-`
+     prefix is "scheme dashboard"; it was `ag-` while Adarsh Gram was the only
+     one, which is exactly how a second page ends up with a copy of the first
+     page's CSS.
+
+     What varies between the three is the DATA and how much of the chrome the
+     data earns — the hostel feed publishes three fields and no parameters, so
+     that page gets no filter toolbar and a header that does not stick.
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  /* ── The band ──────────────────────────────────────────────────────────── */
+
+  .sd-dash {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-32);
+    scroll-margin-top: var(--sa-padding-80);
+  }
+
+  /* Every figure on this page is a number in a column of numbers. Tabular
+     figures keep the digits on a shared grid so a column of values reads as a
+     column, not as ragged text. */
+  .sd-dash :where(.sd-dash__figure, .sd-dash__hero-value, .sd-dash__ratio-value, .ds-metric-card__value) {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Section header ────────────────────────────────────────────────────
+
+     Same treatment as every other section heading on an organisation page:
+     26px, bold, primary-dark, over a hairline rule. The dashboard is a section
+     of this document, not a guest on it. ──────────────────────────────────── */
+
+  .sd-dash__head {
+    display: flex;
+    flex-wrap: wrap;
+    /* CENTRE, not flex-end. The title and the 40px pills are different heights,
+       so bottom-aligning them sat the title's baseline below the pills' centre —
+       which is what read as misaligned. Nothing here is a column any more, so
+       there is nothing to bottom-align to. */
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-16);
+    padding-bottom: var(--sa-padding-16);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  /* Figma style Headline/headline-3 — 28/32, weight 600. Note the drift: the
+     article's own h2 is 26px/700 in code against the same Figma style, so this
+     heading follows the DESIGN and its neighbours do not. Worth reconciling in
+     the article separately; not silently matching the drift here. */
+  .sd-dash__title {
+    margin: 0;
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    letter-spacing: var(--sa-type-heading-tracking);
+    font-weight: 600;
+    color: var(--sa-color-action-primary-hover);
+  }
+
+  .sd-dash__hero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sa-stack-24);
+    padding: var(--sa-padding-32);
+    border-radius: var(--sa-shape-16);
+    background-color: var(--sa-bg-brand-primary-base);
+  }
+
+  @media (min-width: 900px) {
+    .sd-dash__hero {
+      grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+      gap: var(--sa-inline-40);
+      align-items: center;
+      padding: var(--sa-padding-40);
+    }
+  }
+
+  .sd-dash__hero-label {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    letter-spacing: var(--sa-type-label-tracking);
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sd-dash__hero-value {
+    display: block;
+    margin-top: var(--sa-stack-8);
+    font-size: var(--sa-type-display-2-size);
+    line-height: var(--sa-type-display-2-lh);
+    letter-spacing: var(--sa-type-display-2-tracking);
+    font-weight: 700;
+    color: var(--sa-color-action-primary-hover);
+  }
+
+  .sd-dash__hero-of {
+    margin: var(--sa-stack-8) 0 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .sd-dash__hero-track {
+    margin-top: var(--sa-stack-20);
+    height: var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    overflow: hidden;
+  }
+
+  .sd-dash__hero-fill {
+    display: block;
+    height: 100%;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-action-primary-default);
+    transform-origin: left center;
+  }
+
+  @keyframes sd-dash-grow {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+  }
+
+  /* ── The three ratios that ride alongside the hero ─────────────────────
+
+     Tinted with primary-50 — the same blue wash the page already uses behind
+     its component-card icons. ──────────────────────────────────────────── */
+
+  .sd-dash__ratios {
+    display: grid;
+    gap: var(--sa-stack-12);
+  }
+
+  .sd-dash__ratio {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-6);
+    padding: var(--sa-padding-16);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .sd-dash__ratio-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+  }
+
+  .sd-dash__ratio-label {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .sd-dash__ratio-value {
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    letter-spacing: var(--sa-type-title-tracking);
+    font-weight: 700;
+    color: var(--sa-color-action-primary-hover);
+  }
+
+  .sd-dash__ratio-track {
+    height: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-subtler);
+    overflow: hidden;
+  }
+
+  .sd-dash__ratio-fill {
+    display: block;
+    height: 100%;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-action-primary-default);
+    transform-origin: left center;
+  }
+
+  .sd-dash__ratio-note {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Filters, in the header of the card they control ───────────────────── */
+
+  .sd-dash__filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  /* One row from tablet up. The three controls are a single toolbar, and a
+     toolbar that folds onto two lines doubles the height of a strip that is
+     pinned to the top of the viewport while the reader scrolls. `nowrap` plus
+     `flex: 0 0 auto` stops the header's own flex sizing squeezing the group
+     narrower than its contents. */
+  @media (min-width: 768px) {
+    .sd-dash__filters {
+      flex: 0 0 auto;
+      flex-wrap: nowrap;
+    }
+  }
+
+  /* Matches the pills' 40px so the row reads as one control group rather than
+     a button that happens to sit near two dropdowns. */
+  .sd-dash__reset {
+    min-height: 40px;
+    border-radius: var(--sa-shape-full);
+    white-space: nowrap;
+  }
+
+  /* The control is a native <select>, so keyboard, screen-reader and mobile
+     picker behaviour all come for free. Only the width is ours: long state
+     names would otherwise stretch the card header past the title. */
+  /* ── Figure pair ───────────────────────────────────────────────────────────
+
+     Two related counts stated above a chart, where the chart answers "how has
+     it moved" and the pair answers "how much is there". Used where a ratio would
+     be wrong because the two numbers share no denominator. */
+
+  .sd-dash__pair {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-32);
+    padding-bottom: var(--sa-padding-16);
+    margin-bottom: var(--sa-stack-8);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .sd-dash__pair-item {
+    min-width: 0;
+  }
+
+  .sd-dash__pair-label {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sd-dash__pair-value {
+    display: block;
+    margin-top: var(--sa-stack-2);
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sd-dash__pair-note {
+    margin: var(--sa-stack-2) 0 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Chart captions ────────────────────────────────────────────────────── */
+
+  .sd-dash__caption {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sd-dash__caption strong {
+    color: var(--sa-text-neutral-base);
+    font-weight: 600;
+  }
+
+  /* ── Ranked list under the map ─────────────────────────────────────────── */
+
+  .sd-dash__rank {
+    display: flex;
+    flex-direction: column;
+    margin: var(--sa-stack-16) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sd-dash__rank-row {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr auto;
+    align-items: baseline;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-8) 0;
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  /* The chosen state, wherever it lands in the ranking. */
+  .sd-dash__rank-row--on {
+    background-color: var(--sa-bg-brand-primary-base);
+    border-radius: var(--sa-shape-6);
+    padding-inline: var(--sa-padding-8);
+    margin-inline: calc(var(--sa-padding-8) * -1);
+  }
+
+  .sd-dash__rank-row--on .sd-dash__rank-name {
+    font-weight: 700;
+    color: var(--sa-color-action-primary-hover);
+  }
+
+  .sd-dash__rank-pos {
+    color: var(--sa-text-neutral-subtler);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sd-dash__rank-name {
+    color: var(--sa-text-neutral-base);
+  }
+
+  .sd-dash__rank-value {
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Convergence rows: achievement against target ──────────────────────── */
+
+  .sd-dash__conv {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    margin: 0;
+  }
+
+  .sd-dash__conv-row {
+    display: grid;
+    gap: var(--sa-stack-6);
+  }
+
+  .sd-dash__conv-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+  }
+
+  .sd-dash__conv-label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .sd-dash__conv-figure {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sd-dash__conv-figure b {
+    color: var(--sa-text-neutral-bolder);
+    font-weight: 700;
+  }
+
+  /* The convergence rows live on a WHITE card, so they cannot borrow the hero's
+     track — that one is white at 24% opacity, which is invisible here. Without
+     a visible track the bar has nothing to be a fraction OF, and "45%" stops
+     being readable from the picture. */
+  .sd-dash__conv-track {
+    height: var(--sa-padding-6);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-subtler);
+    overflow: hidden;
+  }
+
+  .sd-dash__conv-fill {
+    display: block;
+    height: 100%;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-chart-seq-500);
+    transform-origin: left center;
+    animation: sd-dash-grow 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sd-dash__conv-fill {
+      animation: none;
+    }
+  }
+
+  /* ── Reference strip: the counts that set the scale ────────────────────── */
+
+  .sd-dash__ref-head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sa-inline-12);
+    /* This block is deliberately quieter than everything above it — these are
+       context, not performance. The rule is the demotion made visible. */
+    padding-top: var(--sa-padding-24);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .sd-dash__ref-title {
+    margin: 0;
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    letter-spacing: var(--sa-type-title-tracking);
+    font-weight: 700;
+    color: var(--sa-color-action-primary-hover);
+  }
+
+  .sd-dash__ref-sub {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sd-dash__ref-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: var(--sa-stack-16) var(--sa-inline-24);
+    margin: 0;
+  }
+
+  /* Eight quiet facts. A hairline groups them; eight tinted boxes gave each the
+     same weight as a chart, which is exactly the flattening this page exists to
+     undo. */
+  /* No rules between the figures. Eight of them each boxed off by a hairline
+     read as a ledger; spacing alone groups them and lets the numbers lead. */
+  .sd-dash__ref-item {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: var(--sa-stack-2);
+    padding: var(--sa-padding-8) 0;
+  }
+
+  .sd-dash__ref-value {
+    margin: 0;
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    letter-spacing: var(--sa-type-title-tracking);
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sd-dash__ref-label {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The DS ChartCard defaults to a 12px radius. Every other card in this
+     article is 16px with a hairline border, so the charts match the page
+     rather than the page matching the charts. This is a consumer-side
+     override inside the layer — the component is untouched. */
+  /* Hairline only. A drop shadow on every card turns a page of information
+     into a page of objects, and nothing here is floating above anything else. */
+  .sd-dash .ds-chart-card {
+    border-radius: var(--sa-shape-16);
+    border-color: var(--sa-border-neutral-subtle);
+    box-shadow: none;
+  }
+
+  /* Cards in a row share a height (grid stretch). The body then TOP-aligns its
+     content and lets whatever can grow, grow — never centres a short chart in a
+     tall box, which is what padded the funnel by 150px and the map card by
+     250px. This is the Google-Analytics discipline: a tile is as tall as its
+     row needs, and the chart inside fills that height rather than floating in
+     the middle of it. */
+  .sd-dash .ds-dash-grid {
+    align-items: stretch;
+  }
+
+  .sd-dash .ds-chart-card__body {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--sa-stack-12);
+    flex: 1 1 auto;
+  }
+
+  .sd-dash .ds-chart-card__body > * {
+    width: 100%;
+  }
+
+  /* Each chart is a <figure class="ds-chart"> inside the body. Let it grow to
+     the card height so whatever it wraps can fill. */
+  .sd-dash .ds-chart-card__body > .ds-chart {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+  }
+
+  /* The funnel is a column of div bars, so unlike the aspect-locked SVG charts
+     it CAN stretch: it grows to the figure height and spaces its stages out to
+     fill, reaching its neighbour's height instead of leaving a gap under the
+     last stage. */
+  .sd-dash .ds-chart-card__body > .ds-chart > .ds-funnel {
+    flex: 1 1 auto;
+    justify-content: space-between;
+  }
+
+  /* ── Motion ───────────────────────────────────────────────────────────────
+
+     Three movements, and no more. Each answers a question a reader is already
+     asking; none of them is decoration.
+
+       1. Bars grow from the left, once, on load — the fill IS the number, so
+          drawing it is the number arriving.
+       2. Blocks rise and fade as they REACH the viewport, which tells a reader
+          scrolling a long section that they have arrived somewhere new, and
+          draws each chart in as they get to it. That lives in the design
+          system (`useScrollReveal` + `foundations/reveal.css`), so any page
+          built the same way inherits it.
+       3. The sticky header condenses when it pins (below), which shows the
+          controls have changed state from heading to toolbar.
+
+     All three are gated on `prefers-reduced-motion`.
+
+     What used to be here was 2 done with `animation-timeline: view()`, and it
+     failed in both directions at once: a scroll-LINKED range can rest part-way
+     — measured at opacity 0.34 on a card the reader was looking at — so the
+     fade had to be stripped out, and what was left (a 10px rise, completed by
+     `entry 20%`) had already finished before any card below the first screen
+     came into view. Observer-driven fixes both: it decides only WHEN to start,
+     and the transition then runs to completion on its own clock.
+     ─────────────────────────────────────────────────────────────────────── */
+
+  .sd-dash__hero-fill,
+  .sd-dash__ratio-fill,
+  .sd-dash__conv-fill {
+    animation: sd-dash-grow 900ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  /* Critically damped, no overshoot: a bar that springs past its own value and
+     settles back has, for a moment, told the reader a number that is not true. */
+
+  @media (prefers-reduced-motion: reduce) {
+    .sd-dash__hero-fill,
+    .sd-dash__ratio-fill,
+    .sd-dash__conv-fill {
+      animation: none;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .sd-dash__hero,
+    .sd-dash__ref-item,
+    .sd-dash .ds-chart-card {
+      border-color: var(--sa-border-neutral-bolder-default);
+    }
+
+    .sd-dash__ratio {
+      border: 1px solid var(--sa-border-neutral-bolder-default);
+    }
+  }
+}
+
+@layer components {
+  /* ── "At a glance" aside ─────────────────────────────────────────────────
+
+     The right third of the intro row. It holds the scheme's own rules, which
+     were previously buried mid-paragraph, and the sibling components the page
+     can reach. Tinted rather than bordered so it reads as a note beside the
+     text rather than a second article competing with it. ─────────────────── */
+
+  /* The aside is a COLUMN of panels, not a panel. Splitting the facts from the
+     sibling links stopped one box doing two jobs; this rail is what holds them
+     together and what carries the 516px the Figma layout fixes it at. */
+  .sd-aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    .sd-aside {
+      width: 516px;
+      flex: 0 0 516px;
+    }
+  }
+
+  .sd-aside__card {
+    padding: var(--sa-padding-24);
+    border-radius: var(--sa-shape-16);
+  }
+
+  .sd-aside__card--facts {
+    background-color: var(--sa-bg-brand-primary-base);
+  }
+
+  .sd-aside__card--nav {
+    padding: var(--sa-padding-20);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .sd-aside__title {
+    margin: 0 0 var(--sa-stack-16);
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    letter-spacing: var(--sa-type-title-tracking);
+    font-weight: 700;
+    color: var(--sa-color-action-primary-hover);
+  }
+
+  /* RULES AND WEIGHT, both. Superseded an attempt at the opposite — spacing
+     instead of dividers, and only the figures bolded — which tested worse to
+     read. Two reasons, and they are the general lesson rather than a preference:
+     a light label over a FULLY bold value is one clean step of contrast the eye
+     resolves without effort, where a part-bold value is three weights on one
+     line and reads as noise; and a hairline is what makes a label belong to the
+     value under it rather than to the value above it. Air alone left that
+     ambiguous at this line length. */
+  .sd-aside__list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+  }
+
+  .sd-aside__row + .sd-aside__row {
+    padding-top: var(--sa-padding-12);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .sd-aside__row dt {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 400;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sd-aside__row dd {
+    margin: var(--sa-stack-2) 0 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* The `<b>` around figures stays in the markup but carries no extra weight —
+     the whole value is bold. It keeps the digits on a shared grid, and it is
+     what a screen reader and a future restyle both still want to find. */
+  .sd-aside__row dd b {
+    font-weight: inherit;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sd-aside__subtitle {
+    margin: 0 0 var(--sa-stack-12);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* TILES SIDE BY SIDE, not a stacked list — and the reason is arithmetic, not
+     taste. Two full-width rows plus this card's own heading and padding made the
+     aside 127px taller than the article beside it, which is 127px of white under
+     a paragraph. Side by side, the same two destinations cost one row instead of
+     two and the columns finish together. It also stops reading as a third
+     "fact" below the four in the panel above. */
+  .sd-aside__links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sa-inline-12);
+  }
+
+  @media (max-width: 479px) {
+    .sd-aside__links {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .sd-aside__link {
+    display: flex;
+    /* HUG THE TEXT, MATCH THE SIBLING. `height: 100%` in a stretched grid cell
+       is what keeps the two tiles the same height when one title wraps to a
+       second line — so equal heights come from the grid, not from a floor.
+
+       A `min-height: 56px` floor did the opposite of both: it padded a single
+       20px line out to 58, which read as dead space under the row and left the
+       card bottom-heavy against its own 20px padding. The tile is now 46px,
+       which still clears WCAG 2.2 AA's 24x24 target minimum (2.5.8) roughly
+       twice over. */
+    height: 100%;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-12);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    /* 14px, not 12. These are navigation targets, and the estate already made
+       this call once on ContentNav: 12px is too small to read comfortably for
+       something a citizen is meant to click. */
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+    /* The default link blue lands at 4.19:1 here, under the 4.5:1 AA floor for
+       body text. This is the same hue several steps darker, at 7.75:1. */
+    color: var(--sa-color-action-primary-hover);
+    text-decoration: none;
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  .sd-aside__link:hover {
+    background-color: var(--sa-bg-brand-primary-base);
+    border-color: var(--sa-border-brand-primary-base);
+  }
+
+  .sd-aside__link-text {
+    min-width: 0;
+  }
+
+  /* The arrow is the affordance, so it answers the pointer by stepping forward
+     3px — far enough to feel, not far enough to reflow the title beside it. The
+     circled badge went with the stacked rows: at tile width it ate the line the
+     title needed. */
+  .sd-aside__link-arrow {
+    display: inline-flex;
+    flex: 0 0 auto;
+    margin-top: 1px;
+    color: var(--sa-icon-brand-primary-base);
+    transition: transform 0.15s ease;
+  }
+
+  .sd-aside__link:hover .sd-aside__link-arrow,
+  .sd-aside__link:focus-visible .sd-aside__link-arrow {
+    transform: translateX(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sd-aside__link,
+    .sd-aside__link-arrow {
+      transition: none;
+    }
+
+    .sd-aside__link:hover .sd-aside__link-arrow,
+    .sd-aside__link:focus-visible .sd-aside__link-arrow {
+      transform: none;
+    }
+  }
+
+}
+
+@layer components {
+  /* ── Sticky dashboard header ───────────────────────────────────────────────
+
+     The filters travel with the reader instead of scrolling away, so a state or
+     year can be changed from anywhere in the section. It is the header that
+     sticks, not the "At a glance" panel: the panel is read once at the top,
+     while the filters are the one control the whole section depends on.
+     ─────────────────────────────────────────────────────────────────────── */
+
+  /* A marker in normal flow, read by `useStickyRange`.
+     1PX, NOT ZERO, AND THAT IS THE WHOLE RULE. An IntersectionObserver fires on
+     a change in intersection RATIO, and a zero-area target's ratio is always 0
+     — so it never changes and the callback never runs again after the first.
+     The end marker silently stopped reporting and the toolbar outlived its
+     section; a single pixel restores the area the observer needs. */
+  .sd-dash__sentinel {
+    height: 1px;
+    margin: 0;
+    /* Out of the flow's rhythm: it must not add a pixel between sections. */
+    margin-block-end: -1px;
+  }
+
+  .sd-dash__head {
+    position: sticky;
+    /* MEASURED, not guessed. The site masthead is itself sticky at `top: -46px`
+       and collapses to 111px once scrolled, so its bottom edge rests at 65px.
+       Sitting 1px under that closes the strip page content was scrolling
+       through — the gap that was visible above this header. */
+    top: 64px;
+    z-index: 3;
+    background-color: var(--sa-bg-neutral-base);
+    padding-block: var(--sa-padding-16);
+    /* Widen to the container edges so nothing slides past on either side. */
+    margin-inline: calc(var(--sa-padding-16) * -1);
+    padding-inline: var(--sa-padding-16);
+    border-bottom: 1px solid transparent;
+    /* Named properties, never `all`: `all` would also animate the sticky
+       `top`, which fights the browser's own pinning. */
+    transition:
+      transform 260ms var(--sd-ease-out),
+      opacity 200ms var(--sd-ease-out),
+      border-color 0.18s ease,
+      padding-block 0.18s ease,
+      box-shadow 0.18s ease;
+  }
+
+  /* ── Pinned ───────────────────────────────────────────────────────────────
+
+     The heading has done its work by the time a reader is deep in the charts;
+     what has to survive is the two filters. So the title steps down a size, the
+     strapline collapses and the padding tightens — the strip goes from a
+     section heading to a toolbar, in about 45px less height.
+
+     Driven by a `data-stick` attribute `useStickyRange` sets, NOT by
+     `animation-timeline: view()`. A scroll-driven timeline measures an
+     element's position in the scrollport, and a pinned element's position stops
+     changing at exactly the moment we need to detect — so the earlier version
+     of this only ever managed a 4px padding nudge and never read as condensed.
+     ─────────────────────────────────────────────────────────────────────── */
+
+  /* No filters to keep on screen means nothing to pin. A strip fixed to the top
+     of the viewport carrying only a heading the reader has already read is
+     chrome charging rent. */
+  .sd-dash__head--static {
+    position: static;
+    margin-inline: 0;
+    padding-inline: 0;
+    padding-block: 0 var(--sa-padding-16);
+  }
+
+  /* A stronger curve than the built-in `ease-out`, which is too weak to read as
+     deliberate at this distance. Movement starts immediately, which is what
+     makes a withdrawal feel like a decision rather than a lag. */
+  .sd-dash {
+    --sd-ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  /* ── Retired ──────────────────────────────────────────────────────────────
+
+     The reader has reached the last row and is reading it, so the toolbar
+     withdraws UPWARD — the direction it came from, and the direction it will
+     return from. Sliding it sideways or fading it in place would break that
+     spatial contract: a thing should leave the way it arrived.
+
+     It stays in the layout (still `sticky`) rather than being removed, so
+     nothing below it shifts. `pointer-events: none` because a control you
+     cannot see must not be clickable. */
+  .sd-dash__head[data-stick="retired"] {
+    transform: translateY(calc(-100% - 8px));
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .sd-dash__head[data-stick="pinned"] {
+    padding-block: var(--sa-padding-8);
+    border-bottom-color: var(--sa-border-neutral-subtle);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
+  }
+
+  .sd-dash__title {
+    transition:
+      font-size 0.18s ease,
+      line-height 0.18s ease;
+  }
+
+  .sd-dash__head[data-stick="pinned"] .sd-dash__title {
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sd-dash__head,
+    .sd-dash__head .sd-dash__title {
+      transition: none;
+    }
+
+    /* Motion off: it still withdraws, because the REASON is obstruction rather
+       than decoration — it simply does so instantly. */
+    .sd-dash__head[data-stick="retired"] {
+      transform: none;
+      visibility: hidden;
+    }
+  }
+
+  /* Below the fold-out breakpoint the header is not sticky, so it never pins
+     and never condenses — a 40%-of-viewport toolbar on a phone is worse than
+     scrolling back up for it. */
+  @media (max-width: 767px) {
+    .sd-dash__head {
+      position: static;
+      margin-top: 0;
+    }
+  }
+  /* A reference grid that has to FILL its card rather than sit at the top of
+     it. Two columns so four figures make two rows, and the rows spread down the
+     height the card inherits from its neighbour. Use it only where the card has
+     no chart to take up the slack. */
+  /* A chart beside the figures it reads, in one card. The ring is capped rather
+     than fluid: a donut given a 1200px card scales to 500px of ring for one
+     percentage, and the numbers beside it then float in the middle of nothing. */
+  .sd-dash__split {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-32);
+  }
+
+  /* A donut is a ratio, not a canvas. Left fluid it scales to the card's width
+     — 630px of ring for one percentage — and everything beside it floats in the
+     middle of nothing. Cap it and centre it. */
+  .sd-dash__ring {
+    width: 100%;
+    max-width: 280px;
+    margin-inline: auto;
+  }
+
+  .sd-dash__split-figure {
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 260px;
+    margin-inline: auto;
+  }
+
+  .sd-dash__split .sd-dash__ref-grid {
+    flex: 1 1 320px;
+  }
+
+  .sd-dash__ref-grid--fill {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--sa-stack-24);
+  }
+
+  .sd-dash__ref-grid--fill .sd-dash__ref-value {
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
+  }
+
+}

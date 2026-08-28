@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
+import { CardState } from "../../dashboard/card-state";
 import { categoricalColor } from "./internal/palette";
 import { formatIndian, formatPercent } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
@@ -24,7 +25,7 @@ export interface FunnelChartProps {
  * share of the first stage; the trailing value shows the conversion %.
  */
 export function FunnelChart({ stages, title, valueFormat = formatIndian, className }: FunnelChartProps) {
-  if (stages.length === 0) return <p className="ds-chart__empty">No data to display.</p>;
+  if (stages.length === 0) return <CardState kind="empty" compact />;
   const top = stages[0]?.value || 1;
 
   return (

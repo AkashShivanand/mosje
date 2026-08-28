@@ -1,0 +1,447 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── Provenance chip ───────────────────────────────────────────────────────
+
+     Shown on every dashboard card, in every mode. Quiet enough to be a footnote
+     and loud enough to survive a screenshot — which is the whole point, because
+     the risk this guards against is an illustrative figure reaching a deck as a
+     departmental one.
+
+     NEVER COLOUR ALONE (WCAG 1.4.1): each state carries its own word, so it
+     still reads in greyscale and to a colour-blind viewer. The dot is a
+     redundant cue, not the signal. */
+
+  .dm-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    flex: 0 0 auto;
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: help;
+  }
+
+  /* The dot takes the chip's own ink. Stated per variant rather than as
+     `currentcolor`, which the token gate reads as an unbound colour. */
+  .dm-chip__dot {
+    width: 6px;
+    height: 6px;
+    border-radius: var(--sa-shape-full);
+  }
+
+  .dm-chip--live {
+    background-color: var(--sa-bg-status-success-subtler);
+    color: var(--sa-text-status-success-base);
+  }
+
+  .dm-chip--live .dm-chip__dot {
+    background-color: var(--sa-text-status-success-base);
+  }
+
+  .dm-chip--mixed {
+    background-color: var(--sa-bg-status-warning-subtler);
+    color: var(--sa-text-status-warning-base);
+  }
+
+  .dm-chip--mixed .dm-chip__dot {
+    background-color: var(--sa-text-status-warning-base);
+  }
+
+  .dm-chip--mock {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .dm-chip--mock .dm-chip__dot {
+    background-color: var(--sa-text-neutral-bolder);
+  }
+
+  /* Inline beside a label, on a line of its own weight. Sits after the words so
+     the label still reads first. */
+  .sd-dash__hero-label .dm-chip,
+  .sd-dash__ratio-label .dm-chip {
+    margin-left: var(--sa-inline-8);
+    vertical-align: middle;
+  }
+
+  .sd-dash__ratio-label {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  /* ── The demo rail's Data tab ──────────────────────────────────────────────
+
+     `.ds-demodock__body` carries NO padding — every tab supplies its own, the
+     way the Colour tab does. Omitting it here ran the content to the panel's
+     edges, which is what read as the dock being broken. Same 16/14 as Colour,
+     so the three tabs line up when you switch between them.
+     ─────────────────────────────────────────────────────────────────────── */
+
+  .dm-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    padding: 16px 14px;
+    font-family: var(--sa-font-latin);
+  }
+
+  .dm-panel__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+  }
+
+  .dm-panel__group + .dm-panel__group {
+    padding-top: var(--sa-padding-16);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .dm-panel__legend {
+    margin: 0;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Data source: three rows, hairline-divided, one tinted ──────────────── */
+
+  .dm-panel__opts {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    overflow: hidden;
+  }
+
+  .dm-panel__opt {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    cursor: pointer;
+    /* Response lands on the press, not the release. */
+    transition: background-color 0.12s ease;
+  }
+
+  .dm-panel__opt + .dm-panel__opt {
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .dm-panel__opt:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .dm-panel__opt.is-on {
+    background-color: var(--sa-bg-brand-primary-base);
+  }
+
+  .dm-panel__opt:focus-within {
+    outline: 2px solid var(--sa-focus-ring);
+    outline-offset: -2px;
+  }
+
+  /* The native input is the control; this is its face. Keeping the input in
+     the accessibility tree rather than rebuilding a radio out of divs. */
+  .dm-panel__radio {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .dm-panel__dot {
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: inset 0 0 0 0 var(--sa-color-action-primary-default);
+    transition:
+      box-shadow 0.18s cubic-bezier(0.22, 0.61, 0.36, 1),
+      border-color 0.18s ease;
+  }
+
+  /* An inset ring grown from nothing, rather than a child element faded in:
+     one property, no layout, and it reads as the dot filling. */
+  .dm-panel__opt.is-on .dm-panel__dot {
+    border-color: var(--sa-color-action-primary-default);
+    box-shadow: inset 0 0 0 4px var(--sa-color-action-primary-default);
+  }
+
+  .dm-panel__opt-label {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* Only the SELECTED option explains itself. Three blurbs at once was 400px
+     of prose to read before anything could be chosen. */
+  .dm-panel__explain {
+    margin: 0;
+    min-height: 2.5em;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    animation: dm-explain 0.26s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  @keyframes dm-explain {
+    from {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* ── The marks switch ───────────────────────────────────────────────────── */
+
+  .dm-panel__switch {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-inline-12);
+    cursor: pointer;
+  }
+
+  .dm-panel__switch-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .dm-panel__track {
+    position: relative;
+    flex: 0 0 auto;
+    width: 34px;
+    height: 20px;
+    margin-top: 1px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-subtle);
+    transition: background-color 0.18s ease;
+  }
+
+  .dm-panel__knob {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 22%);
+    /* Slight overshoot: the knob is thrown, and a thrown thing settles. The
+       only place on this panel that bounces, because it is the only control
+       that physically travels. */
+    transition: transform 0.24s cubic-bezier(0.34, 1.4, 0.64, 1);
+  }
+
+  .dm-panel__switch-input:checked + .dm-panel__track {
+    background-color: var(--sa-color-action-primary-default);
+  }
+
+  .dm-panel__switch-input:checked + .dm-panel__track .dm-panel__knob {
+    transform: translateX(14px);
+  }
+
+  .dm-panel__switch-input:focus-visible + .dm-panel__track {
+    outline: 2px solid var(--sa-focus-ring);
+    outline-offset: 2px;
+  }
+
+  .dm-panel__switch-body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    min-width: 0;
+  }
+
+  .dm-panel__hint {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Edge-state chips ───────────────────────────────────────────────────── */
+
+  .dm-panel__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-6);
+  }
+
+  .dm-panel__chip {
+    padding: var(--sa-padding-6) var(--sa-padding-12);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+    cursor: pointer;
+    transition:
+      background-color 0.12s ease,
+      border-color 0.12s ease,
+      color 0.12s ease,
+      transform 0.12s ease;
+  }
+
+  .dm-panel__chip:hover {
+    border-color: var(--sa-border-brand-primary-base);
+  }
+
+  .dm-panel__chip:active {
+    transform: scale(0.96);
+  }
+
+  .dm-panel__chip.is-on {
+    border-color: var(--sa-color-action-primary-default);
+    background-color: var(--sa-color-action-primary-default);
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  /* ── The sub-choice ───────────────────────────────────────────────────────
+
+     Indented under a rule, so it is visibly SUBORDINATE to the chips above
+     rather than a second row of them. Appears only once an edge state is
+     chosen, so it arrives rather than blinking into existence. */
+
+  .dm-panel__sub {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--sa-stack-8);
+    margin-left: var(--sa-inline-4);
+    padding-left: var(--sa-padding-12);
+    border-left: 2px solid var(--sa-border-brand-primary-base);
+    animation: dm-explain 0.26s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+  }
+
+  .dm-panel__sub-label {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ONE OBJECT WITH TWO POSITIONS, not two pills. A joined track with a raised
+     thumb is structurally a different control from the loose chips above it,
+     which is what stops the two rows reading as one list. */
+  .dm-panel__seg {
+    display: inline-flex;
+    padding: 3px;
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-subtle);
+  }
+
+  .dm-panel__seg-btn {
+    padding: var(--sa-padding-4) var(--sa-padding-12);
+    border: 0;
+    border-radius: var(--sa-shape-6);
+    background-color: transparent;
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-subtle);
+    cursor: pointer;
+    transition:
+      background-color 0.16s ease,
+      color 0.16s ease,
+      box-shadow 0.16s ease;
+  }
+
+  .dm-panel__seg-btn:hover {
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* The thumb: raised out of the track, the way a physical switch position is. */
+  .dm-panel__seg-btn.is-on {
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+  }
+
+  .dm-panel__seg-btn:focus-visible {
+    outline: 2px solid var(--sa-focus-ring);
+    outline-offset: 1px;
+  }
+
+  .dm-panel__note {
+    margin: 0;
+    padding-top: var(--sa-padding-12);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .dm-panel__opt,
+    .dm-panel__dot,
+    .dm-panel__track,
+    .dm-panel__knob,
+    .dm-panel__chip {
+      transition: none;
+    }
+
+    .dm-panel__chip:active {
+      transform: none;
+    }
+
+    .dm-panel__explain,
+    .dm-panel__sub {
+      animation: none;
+    }
+  }
+
+  /* ── Section banner ────────────────────────────────────────────────────────
+
+     Shown above a dashboard when the whole section is illustrative. The chips
+     say it per card; this says it once, before the reader has started. */
+
+  .dm-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-radius: var(--sa-shape-8);
+    border-left: 4px solid var(--sa-border-status-warning-base);
+    background-color: var(--sa-bg-status-warning-subtler);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .dm-banner b {
+    font-weight: 700;
+  }
+}

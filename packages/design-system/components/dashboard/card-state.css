@@ -1,0 +1,236 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ══ CardState ═════════════════════════════════════════════════════════════
+
+     What a card shows when it has nothing to draw. Six reasons, one family.
+
+     THE FAMILY RESEMBLANCE IS DELIBERATE and it comes from three things, not
+     from the drawings being similar: every illustration stands on the same
+     axis, every one splits into a `ghost` layer (the chart that would have
+     been there) and an `ink` layer (what happened to it), and every one sits on
+     the same two-layer plate. Change any of the three and the set stops reading
+     as one system.
+     ═══════════════════════════════════════════════════════════════════════ */
+
+  .ds-card-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-stack-8);
+    /* Fills the card's body rather than sitting at the top of it. A card that
+       stretches to match a chart beside it otherwise puts one grey line at the
+       top of 600px of white. */
+    height: 100%;
+    min-height: 200px;
+    padding: var(--sa-padding-32) var(--sa-padding-20);
+    text-align: center;
+  }
+
+  .ds-card-state--compact {
+    min-height: 132px;
+    padding: var(--sa-padding-20) var(--sa-padding-16);
+  }
+
+  /* ── The plate ─────────────────────────────────────────────────────────────
+
+     Two layers. A soft tinted well, and a hairline ring set INSIDE it catching
+     the top edge, which is what makes it read as a material the drawing is set
+     into. One flat disc reads as a placeholder nobody finished. The ring is its
+     own element rather than a border so it does not change the box. */
+
+  .ds-card-state__plate {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 72px;
+    margin-bottom: var(--sa-stack-8);
+    border-radius: var(--sa-shape-16);
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-card-state--compact .ds-card-state__plate {
+    width: 72px;
+    height: 54px;
+    margin-bottom: var(--sa-stack-4);
+  }
+
+  .ds-card-state__plate-ring {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    border: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-card-state__plate > .ds-state-art {
+    position: relative;
+    width: 64px;
+    height: 48px;
+  }
+
+  .ds-card-state--compact .ds-card-state__plate > .ds-state-art {
+    width: 48px;
+    height: 36px;
+  }
+
+  /* ── The two ink layers ───────────────────────────────────────────────────
+
+     `ghost` is the chart that would have been there and sits back; `ink` is
+     what happened to it and comes forward. The axis is quieter than both — it
+     is the floor, not the subject. */
+
+  /* The axis is the floor, not the subject, so it sits below both ink layers
+     rather than competing with them. */
+  .ds-state-art__axis {
+    stroke: var(--sa-border-neutral-subtle);
+  }
+
+  .ds-state-art__ghost {
+    stroke: var(--sa-border-neutral-base);
+  }
+
+  .ds-state-art__ink {
+    stroke: var(--sa-icon-neutral-subtle);
+  }
+
+  .ds-state-art__cut {
+    stroke: var(--sa-text-status-warning-base);
+  }
+
+  /* ── Tone ─────────────────────────────────────────────────────────────────
+
+     Three, not six. A tone per state would make the set a traffic light and
+     leave a reader decoding colour before reading words; these group by what
+     the reader has to DO. Neutral: nothing to do. Info: something you can
+     change. Warning: something went wrong. Colour is never the only signal —
+     each state carries its own headline (WCAG 1.4.1). */
+
+  .ds-card-state--info .ds-card-state__plate {
+    background-color: var(--sa-bg-brand-primary-base);
+  }
+
+  .ds-card-state--info .ds-card-state__plate-ring {
+    border-color: var(--sa-border-brand-primary-base);
+  }
+
+  .ds-card-state--info .ds-state-art__ink {
+    stroke: var(--sa-color-action-primary-default);
+  }
+
+  .ds-card-state--warning .ds-card-state__plate {
+    background-color: var(--sa-bg-status-warning-subtler);
+  }
+
+  .ds-card-state--warning .ds-card-state__plate-ring {
+    border-color: var(--sa-border-status-warning-base);
+  }
+
+  .ds-card-state--warning .ds-state-art__ink {
+    stroke: var(--sa-text-status-warning-base);
+  }
+
+  /* ── Words ────────────────────────────────────────────────────────────── */
+
+  .ds-card-state__title {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-card-state__body {
+    /* A measure, not a full-width line. An explanation running the width of a
+       1,200px card reads as a banner and gets skipped. */
+    max-width: 38ch;
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-card-state__action {
+    margin-top: var(--sa-stack-12);
+  }
+
+  /* ── Entry ────────────────────────────────────────────────────────────────
+
+     It earns its place: these states replace content the reader was expecting,
+     so arriving rather than blinking in is the difference between "this is the
+     answer" and "something failed to render". It runs on mount and finishes on
+     its own clock, so nothing can be left part-way through the way a
+     scroll-linked range can. */
+
+  @media (prefers-reduced-motion: no-preference) {
+    .ds-card-state__plate {
+      animation: ds-state-plate 460ms cubic-bezier(0.34, 1.36, 0.64, 1) both;
+    }
+
+    /* The drawing arrives after its plate, so the plate reads as the container
+       and the drawing as its contents. 90ms is enough to be sequential and not
+       enough to be a wait. */
+    .ds-state-art {
+      animation: ds-state-draw 420ms cubic-bezier(0.22, 0.61, 0.36, 1) 90ms both;
+    }
+
+    .ds-card-state__title {
+      animation: ds-state-rise 380ms cubic-bezier(0.22, 0.61, 0.36, 1) 130ms both;
+    }
+
+    .ds-card-state__body {
+      animation: ds-state-rise 380ms cubic-bezier(0.22, 0.61, 0.36, 1) 180ms both;
+    }
+
+    .ds-card-state__action {
+      animation: ds-state-rise 380ms cubic-bezier(0.22, 0.61, 0.36, 1) 230ms both;
+    }
+  }
+
+  @keyframes ds-state-plate {
+    from {
+      opacity: 0;
+      transform: scale(0.86);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes ds-state-draw {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes ds-state-rise {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    .ds-card-state__plate-ring {
+      border-color: var(--sa-border-neutral-bolder-default);
+    }
+  }
+}

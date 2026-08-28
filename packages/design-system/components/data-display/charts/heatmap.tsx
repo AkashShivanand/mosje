@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { CardState } from "../../dashboard/card-state";
 import { ChartFrame } from "./internal/chart-frame";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { sequentialColor, divergingColor } from "./internal/palette";
@@ -35,7 +36,7 @@ export function Heatmap({
 }: HeatmapProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const flat = matrix.flat();
-  if (flat.length === 0) return <p className="ds-chart__empty">No data to display.</p>;
+  if (flat.length === 0) return <CardState kind="empty" compact />;
 
   const min = Math.min(...flat);
   const max = Math.max(...flat);

@@ -1,0 +1,407 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     Organisation Detail page — Figma "Organisation Details" (69:589)
+
+     The page is one grid: an index rail in column one, the bands in column two.
+     The bands reach the viewport edge through a pseudo-element, so a section can
+     be full-bleed while its content stays in the grid beside a rail that is
+     still on screen twelve sections later.
+     ============================================================================ */
+
+  .orgd {
+    position: relative;
+    /* `clip`, NOT `hidden`. Both stop the bleeding pseudo-elements from opening
+       a horizontal scrollbar, but `hidden` makes this a scroll container and a
+       scroll container is what `position: sticky` sticks to — the rail would
+       pin to the top of the page and never move. `clip` clips without
+       scrolling, so the rail still sticks to the viewport. */
+    overflow-x: clip;
+  }
+
+  /* No `align-items: start`. A grid item stretches to the row by default, and
+     that stretch is what gives the rail's sticky child something to travel
+     inside: `start` shrank the rail's cell to the nav's own 506px, so the nav
+     unstuck after half a screen and scrolled away for the rest of the page. */
+  .orgd__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 1024px) {
+    .orgd--railed .orgd__grid {
+      grid-template-columns: 280px minmax(0, 1fr);
+      column-gap: var(--sa-inline-40);
+    }
+  }
+
+  /* `z-index: 1` puts the rail above the bands. Both the rail's sticky nav and
+     each `.orgd__band` create a stacking context (sticky; `isolation: isolate`),
+     and with both on `auto` the later one in DOM order wins — so every tinted
+     band painted straight over the sticky index as the reader scrolled past it.
+     The bands stay on auto; only the rail is lifted. */
+  .orgd__rail {
+    position: relative;
+    z-index: 1;
+    align-self: stretch;
+    padding-block: var(--sa-padding-40);
+  }
+
+  .orgd__main {
+    min-width: 0;
+  }
+
+  /* ── Bands ─────────────────────────────────────────────────────────────── */
+
+  .orgd__band {
+    position: relative;
+    isolation: isolate;
+    padding-block: var(--sa-padding-48);
+    /* Clears the sticky masthead when the index jumps to this section —
+       without it the heading lands underneath the header (WCAG 2.2 §2.4.11). */
+    scroll-margin-top: var(--sa-padding-120);
+  }
+
+  /* The tint reaches both viewport edges by OVERSHOOTING them, not by centring a
+     100vw box on the band. Centring assumes the band's midpoint is the
+     viewport's; here the band sits in column two, offset right by the rail, so a
+     centred 100vw box was pushed right with it and left a 280px white margin
+     down the left of every tinted section. Overshooting cannot be offset wrong,
+     and `.orgd`'s `overflow-x: clip` trims what hangs over. */
+  .orgd__band--tint::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset-block: 0;
+    left: -100vw;
+    right: -100vw;
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  /* Sections carry their own top rhythm, so the heading row only needs the gap
+     below it. */
+  .orgd__band > .ds-section-title {
+    margin-bottom: var(--sa-stack-24);
+  }
+
+  .orgd__prose + .orgd__prose {
+    margin-top: var(--sa-stack-24);
+  }
+
+  .orgd__empty {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Component cards ───────────────────────────────────────────────────── */
+
+  .orgd__cards {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--sa-stack-20);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .orgd__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-24);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+    text-decoration: none;
+    transition: box-shadow 150ms ease, border-color 150ms ease;
+  }
+
+  .orgd__card:hover {
+    border-color: var(--sa-border-brand-primary-base);
+    box-shadow: var(--sa-elevation-raised);
+  }
+
+  .orgd__card:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: 2px;
+  }
+
+  .orgd__card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-padding-56);
+    height: var(--sa-padding-56);
+    margin-bottom: var(--sa-stack-8);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .orgd__card-title {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .orgd__card-desc {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* `margin-top: auto` pins the call to action to the bottom, so a row of cards
+     with different description lengths still lines its actions up. */
+  .orgd__card-cta {
+    margin-top: auto;
+    padding-top: var(--sa-padding-12);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: 600;
+    color: var(--sa-text-link-brand-default);
+  }
+
+  .orgd__card:hover .orgd__card-cta {
+    color: var(--sa-text-link-brand-hover);
+  }
+
+  /* ── Document lists ────────────────────────────────────────────────────── */
+
+  /* 220, not 260: beside the 280px rail the content column is ~950px, and at 260
+     only three cards fit — which left the fourth circular alone on a second row.
+     220 fits the four the section shows. */
+  .orgd__doclist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--sa-stack-16);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .orgd__doc {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-6);
+    padding: var(--sa-padding-20);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .orgd__doc-date {
+    margin: 0;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .orgd__doc-title {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .orgd__doc-action {
+    margin-top: auto;
+    padding-top: var(--sa-padding-12);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: 600;
+    color: var(--sa-text-link-brand-default);
+    text-decoration: none;
+  }
+
+  .orgd__doc-action:hover {
+    color: var(--sa-text-link-brand-hover);
+    text-decoration: underline;
+  }
+
+  .orgd__doc-action:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: 2px;
+  }
+
+  /* ── Downloads ─────────────────────────────────────────────────────────── */
+
+  /* The scroll offset is what makes the index's two download links land on the
+     right group rather than under the sticky masthead. */
+  .orgd__dlgroup {
+    scroll-margin-top: var(--sa-padding-120);
+  }
+
+  .orgd__dlgroup + .orgd__dlgroup {
+    margin-top: var(--sa-stack-32);
+  }
+
+  /* ── Gallery ───────────────────────────────────────────────────────────── */
+
+  .orgd__gallery {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--sa-stack-20);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .orgd__shot {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-6);
+    overflow: hidden;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .orgd__shot-frame {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    background-color: var(--sa-bg-neutral-subtle);
+  }
+
+  .orgd__shot-frame img {
+    object-fit: cover;
+  }
+
+  .orgd__shot-date {
+    margin: var(--sa-stack-16) var(--sa-padding-20) 0;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .orgd__shot-caption {
+    margin: 0 var(--sa-padding-20) var(--sa-padding-20);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 500;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* ── Contact ───────────────────────────────────────────────────────────── */
+
+  .orgd__contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-32);
+  }
+
+  .orgd__subhead {
+    margin: 0 0 var(--sa-stack-12);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .orgd__support-row {
+    margin: 0 0 var(--sa-stack-12);
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-inline-12);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .orgd__support-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: var(--sa-padding-40);
+    height: var(--sa-padding-40);
+    border-radius: var(--sa-shape-12);
+    /* Saffron, as the Figma template has it. Bound by RESOLVED VALUE: the
+       accent ramp reads green, and `accent` only sounded like the right name.
+       #c34700 on #ffd4c4 measures 3.67:1 — over the 3:1 WCAG 2.2 §1.4.11 floor
+       for a non-text graphic. */
+    background-color: var(--sa-bg-brand-secondary-subtler);
+    color: var(--sa-color-secondaryScale-600);
+  }
+
+  .orgd__support-note {
+    display: block;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* A table is the right structure for a directory of officers, and it must not
+     shrink its columns to fit a phone — it scrolls in its own box instead, so
+     the page itself never scrolls sideways. */
+  .orgd__tablewrap {
+    overflow-x: auto;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .orgd__table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .orgd__table th,
+  .orgd__table td {
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    text-align: left;
+    vertical-align: top;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .orgd__table thead th {
+    background-color: var(--sa-bg-neutral-subtler);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--sa-text-neutral-subtle);
+    white-space: nowrap;
+  }
+
+  .orgd__table tbody tr + tr th,
+  .orgd__table tbody tr + tr td {
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .orgd__table tbody th {
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* A phone link alone in a cell is 17px tall on its own. It already clears
+     WCAG 2.2 §2.5.8 by the spacing exception — the row is 41px and the nearest
+     other target is a cell away — but padding it to 24 means the target does not
+     depend on an exception at all. */
+  .orgd__table a {
+    display: inline-block;
+    min-height: 24px;
+    padding-block: var(--sa-padding-4);
+    color: var(--sa-text-link-brand-default);
+  }
+
+  /* ── Facts ─────────────────────────────────────────────────────────────── */
+
+  /* The strip is pulled up over the banner by FactStrip's own `overlap`, so this
+     wrapper only has to stop the page's next band from closing the gap. */
+  .orgd__facts {
+    position: relative;
+    z-index: 1;
+  }
+}
