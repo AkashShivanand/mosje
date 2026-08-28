@@ -205,6 +205,78 @@ if (broken.length) {
   process.exit(1);
 }
 
+// ── Anchors inside INGESTED CONTENT ─────────────────────────────────────────
+/**
+ * The checks above scan the website's own source. They cannot see a dead link
+ * that arrived in `content/website/*.json`, because ingested HTML is a string in
+ * a data file, not an `href` in a component.
+ *
+ * That gap shipped: the NCBC judgments table carried three
+ * `href="PLACEHOLDER_URL_1..3"` anchors, rendering a "View" button per row that
+ * went nowhere. They came in verbatim from the upstream dosje.gov.in page, which
+ * still serves them today — so this is not a bug the ingest introduced, and
+ * re-running the ingest would reinstate it. Hence a gate rather than a one-time
+ * content edit.
+ *
+ * A usable destination is absolute (http/https/mailto/tel), site-relative, or a
+ * fragment. Anything else — a bare token like `PLACEHOLDER_URL_1`, an empty
+ * href — is a link the reader can click that does nothing.
+ */
+const USABLE_HREF = /^(https?:\/\/|mailto:|tel:|\/|#)/i;
+const contentDead = [];
+
+const walkStrings = (node, visit) => {
+  if (typeof node === "string") return visit(node);
+  if (Array.isArray(node)) return node.forEach((n) => walkStrings(n, visit));
+  if (node && typeof node === "object") return Object.values(node).forEach((n) => walkStrings(n, visit));
+};
+
+const contentFiles = existsSync(CONTENT)
+  ? readdirSync(CONTENT).filter((f) => f.endsWith(".json"))
+  : [];
+
+for (const file of contentFiles) {
+  const raw = readFileSync(join(CONTENT, file), "utf8");
+  let parsed;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    fail(`content file is not valid JSON: ${file}`);
+  }
+  walkStrings(parsed, (str) => {
+    if (!str.includes("<a")) return;
+    for (const m of str.matchAll(/<a\b[^>]*>/gi)) {
+      const href = m[0].match(/\bhref\s*=\s*["']([^"']*)["']/i)?.[1];
+      if (href === undefined) continue; // an anchor with no href is not a link
+      if (!USABLE_HREF.test(href.trim())) {
+        contentDead.push({ file, href: href.trim() || "(empty)" });
+      }
+    }
+  });
+}
+
+if (contentDead.length) {
+  console.error(
+    `✖ website-links: ${contentDead.length} anchor(s) in ingested content point at nothing.\n`,
+  );
+  const byFile = new Map();
+  for (const d of contentDead) {
+    if (!byFile.has(d.file)) byFile.set(d.file, []);
+    byFile.get(d.file).push(d.href);
+  }
+  for (const [file, hrefs] of byFile) {
+    console.error(`  apps/hub/src/content/website/${file}`);
+    for (const h of hrefs) console.error(`    href="${h}"`);
+  }
+  console.error(
+    "\n  These render as clickable controls that do nothing. If the real document\n" +
+      "  exists, link it (or copy it under apps/hub/public/website/content/). If it\n" +
+      "  does not, drop the anchor and leave the label as plain text — never ship a\n" +
+      "  control that lies about being one.\n",
+  );
+  process.exit(1);
+}
+
 const linkCount = files.reduce(
   (n, f) => n + [...stripComments(readFileSync(f, "utf8")).matchAll(LINK_KEYS)]
     .filter((m) => /^\/(website|portals)(\/|$)/.test(m[1])).length,
@@ -212,5 +284,6 @@ const linkCount = files.reduce(
 );
 console.log(
   `✔ website-links: ${linkCount} internal link(s) across ${files.length} files — every one resolves ` +
-    `(${routes.size} static routes, ${DYNAMIC.length} dynamic routes).`,
+    `(${routes.size} static routes, ${DYNAMIC.length} dynamic routes); ` +
+    `every anchor in ${contentFiles.length} ingested content file(s) has a usable destination.`,
 );
