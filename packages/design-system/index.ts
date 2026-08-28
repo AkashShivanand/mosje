@@ -40,6 +40,10 @@ export {
   useColorMode,
   type ColorModeProviderProps,
 } from "./foundations/color-mode-provider";
+export { useScrollReveal } from "./foundations/reveal";
+export { useOnlineStatus } from "./foundations/online-status";
+export { useStickyRange } from "./foundations/sticky-range";
+export type { StickyRangeOptions, StickyState } from "./foundations/sticky-range";
 
 // ---- Components: Icon -------------------------------------------------------
 // Material Symbols Outlined — the official icon system for all MoSJE apps.
@@ -95,7 +99,7 @@ export {
 export { Textarea } from "./components/forms/textarea";
 export type { TextareaProps } from "./components/forms/textarea";
 export { Select } from "./components/forms/select";
-export type { SelectProps, SelectOption } from "./components/forms/select";
+export type { SelectProps, SelectAppearance, SelectOption } from "./components/forms/select";
 export { PasswordStrengthMeter, strengthFromScore } from "./components/forms/password-strength-meter";
 export type { PasswordStrengthMeterProps, PasswordStrength } from "./components/forms/password-strength-meter";
 export { CaptchaField } from "./components/forms/captcha-field";
@@ -188,6 +192,9 @@ export type { ToastVariant } from "./components/feedback/toast";
 // ---- Components: Data display ------------------------------------------------
 export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/data-display/card";
 export { Avatar } from "./components/data-display/avatar";
+export { FactStrip } from "./components/data-display/fact-strip";
+export type { FactStripProps, FactStripItem } from "./components/data-display/fact-strip";
+
 export { MetricCard } from "./components/data-display/metric-card";
 export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
 export { DataTable } from "./components/data-display/data-table";
@@ -255,6 +262,23 @@ export type {
 // ---- Components: Dashboard composition ---------------------------------------
 export { ChartCard } from "./components/dashboard/chart-card";
 export type { ChartCardProps } from "./components/dashboard/chart-card";
+// What a card shows when it has nothing to draw — six reasons, one family,
+// drawn in the chart vocabulary rather than borrowed from an icon set. And the
+// loading placeholder that wears the shape of what is coming.
+export { CardState } from "./components/dashboard/card-state";
+export type { CardStateProps, CardStateKind } from "./components/dashboard/card-state";
+export { CardSkeleton } from "./components/dashboard/card-skeleton";
+export type { CardSkeletonProps, CardSkeletonShape } from "./components/dashboard/card-skeleton";
+export { ChartExport } from "./components/dashboard/chart-export";
+export type { ChartExportProps, ChartExportFormat } from "./components/dashboard/chart-export";
+export {
+  downloadPng,
+  downloadSvg,
+  downloadCsv,
+  svgToPngBlob,
+  serialiseSvg,
+  tableToCsv,
+} from "./components/data-display/charts/internal/export";
 export { DashboardGrid } from "./components/dashboard/dashboard-grid";
 export type { DashboardGridProps } from "./components/dashboard/dashboard-grid";
 export { KpiRow } from "./components/dashboard/kpi-row";
@@ -299,6 +323,14 @@ export type {
 } from "./components/navigation/header";
 
 // Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
+export { ContentNav } from "./components/navigation/content-nav";
+export type {
+  ContentNavProps,
+  ContentNavGroup,
+  ContentNavItem,
+  ContentNavChild,
+} from "./components/navigation/content-nav";
+
 export { SidebarNav } from "./components/navigation/sidebar";
 export { Pagination } from "./components/navigation/pagination";
 export type { PaginationProps } from "./components/navigation/pagination";
@@ -477,6 +509,7 @@ export {
 export type {
   DemoAccountsPanelProps,
   DemoDockProps,
+  DemoDockTab,
   FlaskIconProps,
   DemoAccountSet,
 } from "./demo";

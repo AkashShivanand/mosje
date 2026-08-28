@@ -353,9 +353,34 @@ function ColourTab() {
   );
 }
 
+/**
+ * A route-specific tab supplied by the app, for demo controls the design system
+ * has no business knowing about.
+ *
+ * `Sign in` is the built-in precedent: a tab that exists only where the route
+ * has something for it. The estate's data-mode switch is the second such case —
+ * it belongs on the three dashboard pages and nowhere else, and "which pages
+ * have a dashboard" is hub knowledge, not design-system knowledge. Rather than
+ * teach the dock about dashboards, it takes the tab.
+ */
+export interface DemoDockTab {
+  /** Stable id. Must not collide with `signin`, `apps` or `colour`. */
+  id: string;
+  label: string;
+  content: React.ReactNode;
+}
+
 export interface DemoDockProps {
   /** Override the default estate registry, passed through to the Apps tab. */
   apps?: AppEntry[];
+  /**
+   * Route-specific tabs, shown ahead of Apps and Colour. Like `Sign in`, these
+   * are the reason a reviewer opens the dock on the route that supplies them,
+   * so they lead. They get no door on the rail — the rail's three doors are
+   * fixed, for the same reason `Sign in` has none: a door that appears and
+   * vanishes by route is the defect the bottom-left FAB was moved for.
+   */
+  extraTabs?: DemoDockTab[];
   /** Current hub-origin path. Drives the active app and which accounts show. */
   pathname: string | null;
   /** FAB label, and the panel's header title. @default "Demo tools" */
@@ -369,6 +394,7 @@ export interface DemoDockProps {
  */
 export function DemoDock({
   apps = DEFAULT_APPS,
+  extraTabs,
   pathname,
   label = "Demo tools",
   className,
@@ -413,13 +439,17 @@ export function DemoDock({
 
   // Sign in, when it applies, leads — it's the reason a reviewer opens the
   // dock on a login page. Apps and Colour keep their order behind it.
+  const extras = React.useMemo(() => extraTabs ?? [], [extraTabs]);
   const tabs: TabDef[] = React.useMemo(() => {
     const base: TabDef[] = [
       { id: "apps", label: "Apps" },
       { id: "colour", label: "Colour" },
     ];
-    return showSignIn ? [{ id: "signin", label: "Sign in" }, ...base] : base;
-  }, [showSignIn]);
+    const lead: TabDef[] = extras.map((t) => ({ id: t.id, label: t.label }));
+    return showSignIn
+      ? [{ id: "signin", label: "Sign in" }, ...lead, ...base]
+      : [...lead, ...base];
+  }, [showSignIn, extras]);
 
   // A mirror of `tabs` that `openPanel` can read without taking `tabs` as a
   // dependency — the list is rebuilt per route, and rebuilding `openPanel`
@@ -672,8 +702,11 @@ export function DemoDock({
   // complete set of destinations, so a member missing from it is a hole. The
   // lead already opened the panel on its first tab, which IS Sign in on a
   // login route — the behaviour existed and simply was not visible.
-  const leadTabId = showSignIn ? "signin" : null;
-  const leadLabel = leadTabId === "signin" ? "Sign in" : label;
+  // The lead lights for the first tab that has NO DOOR on the rail — Sign in
+  // where it applies, otherwise a route-supplied tab. Apps and Colour have
+  // doors of their own and must not be indicated twice.
+  const leadTabId = showSignIn ? "signin" : (extras[0]?.id ?? null);
+  const leadLabel = showSignIn ? "Sign in" : (extras[0]?.label ?? label);
 
   return (
     <div ref={rootRef} className={cn("ds-demodock", className)}>
@@ -745,6 +778,14 @@ export function DemoDock({
                   onUse={closePanel}
                 />
               </TabPanel>
+            )}
+            {extras.map(
+              (t) =>
+                activeTabId === t.id && (
+                  <TabPanel key={t.id} idBase={idBase} tabId={t.id}>
+                    {t.content}
+                  </TabPanel>
+                ),
             )}
             {activeTabId === "apps" && (
               <TabPanel idBase={idBase} tabId="apps">

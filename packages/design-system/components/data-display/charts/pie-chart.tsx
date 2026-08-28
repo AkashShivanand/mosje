@@ -5,6 +5,7 @@ import { Legend } from "./internal/legend";
 import { categoricalColor } from "./internal/palette";
 import { arcPath } from "./internal/geometry";
 import { formatPercent } from "./internal/format";
+import { CardState } from "../../dashboard/card-state";
 import type { ChartDatum } from "./types";
 
 /**
@@ -13,7 +14,7 @@ import type { ChartDatum } from "./types";
  */
 export function PieChart({ data, title }: { data: ChartDatum[]; title: string }) {
   const total = data.reduce((sum, d) => sum + d.value, 0);
-  if (total === 0) return <p className="ds-chart__empty">No data to display.</p>;
+  if (total === 0) return <CardState kind="empty" compact />;
 
   let cursor = 0;
   const slices = data.map((d, i) => {

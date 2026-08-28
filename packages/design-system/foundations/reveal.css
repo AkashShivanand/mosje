@@ -1,0 +1,138 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── Scroll reveal ────────────────────────────────────────────────────────
+
+     Entry motion for a long, data-heavy page: a block moves and fades in the
+     moment it reaches the viewport, so a reader scrolling a page of near-
+     identical cards can feel where one ends and the next begins.
+
+     THE HIDDEN STATE IS GATED ON `[data-sa-reveal-root]`, WHICH ONLY JAVASCRIPT
+     EVER SETS. That gate is the whole safety argument. `opacity: 0` written
+     unconditionally means a page whose script failed to run — or ran before an
+     older browser gave it an IntersectionObserver — is a page of invisible
+     government figures. With the gate, no script means no hidden state, and the
+     page renders exactly as it did before this file existed.
+
+     It is also why this is observer-driven rather than
+     `animation-timeline: view()`. A scroll-LINKED range resolves to whatever
+     fraction the scroll position implies, so it can sit at 34% — a third-faded
+     card — for as long as the reader leaves it there. An observer only decides
+     WHEN to start; the transition then runs to completion on its own clock and
+     cannot be parked half-way. That is what makes fading safe here and unsafe
+     there.
+     ─────────────────────────────────────────────────────────────────────── */
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-sa-reveal-root] [data-sa-reveal] {
+      opacity: 0;
+      transform: translate3d(0, 18px, 0);
+      will-change: opacity, transform;
+    }
+
+    [data-sa-reveal-root] [data-sa-reveal][data-sa-revealed] {
+      opacity: 1;
+      transform: none;
+      will-change: auto;
+      transition:
+        opacity 560ms cubic-bezier(0.22, 0.61, 0.36, 1),
+        transform 560ms cubic-bezier(0.22, 0.61, 0.36, 1);
+      /* Set per element by the page when a row should arrive in order rather
+         than all at once. Absent, everything moves together. */
+      transition-delay: var(--sa-reveal-delay, 0ms);
+    }
+  }
+
+  /* ── Chart entry ──────────────────────────────────────────────────────────
+
+     Charts inside a revealed block draw themselves in. Two rules cover every
+     chart in the system, and both were picked for what they CANNOT do:
+
+       · Marks (bars, points, slices, cells) FADE. They never scale or slide,
+         because a bar caught mid-scale is a bar showing a value that is not
+         true, and a fifty-per-cent-opaque bar is still exactly as long as the
+         number it stands for. Fading is the only entry that cannot misreport.
+       · Lines DRAW, left to right, which is the direction the axis already
+         reads in.
+
+     The stagger is capped at ten steps. Past that the last mark waits longer
+     than a reader will, and a chart that is still assembling itself when the
+     eye arrives is slower than one that was simply there.
+     ─────────────────────────────────────────────────────────────────────── */
+
+  @media (prefers-reduced-motion: no-preference) {
+    [data-sa-reveal-root] [data-sa-reveal] :is(.ds-chart__mark, .ds-chart__region, .ds-chart__cell) {
+      animation: sa-chart-mark-in 460ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+      animation-play-state: paused;
+    }
+
+    [data-sa-reveal-root] [data-sa-reveal] .ds-chart__line-draw {
+      animation: sa-chart-line-draw 900ms cubic-bezier(0.4, 0, 0.2, 1) both;
+      animation-play-state: paused;
+    }
+
+    /* Held until the block is revealed, so a chart three screens down is not
+       already finished by the time the reader gets there. */
+    [data-sa-reveal-root] [data-sa-reveal][data-sa-revealed] :is(
+        .ds-chart__mark,
+        .ds-chart__region,
+        .ds-chart__cell,
+        .ds-chart__line-draw
+      ) {
+      animation-play-state: running;
+    }
+
+    /* The `g` wrapping each mark is the only per-mark hook CSS has, so the
+       stagger is written out rather than computed. Ten steps, then flat. */
+    [data-sa-reveal-root] [data-sa-reveal] g:nth-of-type(1) .ds-chart__mark { animation-delay: 60ms; }
+    [data-sa-reveal-root] [data-sa-reveal] g:nth-of-type(2) .ds-chart__mark { animation-delay: 105ms; }
+    [data-sa-reveal-root] [data-sa-reveal] g:nth-of-type(3) .ds-chart__mark { animation-delay: 150ms; }
+    [data-sa-reveal-root] [data-sa-reveal] g:nth-of-type(4) .ds-chart__mark { animation-delay: 195ms; }
+    [data-sa-reveal-root] [data-sa-reveal] g:nth-of-type(5) .ds-chart__mark { animation-delay: 240ms; }
+    [data-sa-reveal-root] [data-sa-reveal] g:nth-of-type(6) .ds-chart__mark { animation-delay: 285ms; }
+    [data-sa-reveal-root] [data-sa-reveal] g:nth-of-type(7) .ds-chart__mark { animation-delay: 330ms; }
+    [data-sa-reveal-root] [data-sa-reveal] g:nth-of-type(8) .ds-chart__mark { animation-delay: 375ms; }
+    [data-sa-reveal-root] [data-sa-reveal] g:nth-of-type(9) .ds-chart__mark { animation-delay: 420ms; }
+    [data-sa-reveal-root] [data-sa-reveal] g:nth-of-type(n + 10) .ds-chart__mark { animation-delay: 465ms; }
+  }
+
+  @keyframes sa-chart-mark-in {
+    from {
+      opacity: 0;
+    }
+
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* `pathLength="1"` on the path normalises every line to a unit length, so one
+     keyframe draws a two-point sparkline and an eighty-point series alike. */
+  @keyframes sa-chart-line-draw {
+    from {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 1;
+    }
+
+    to {
+      stroke-dasharray: 1;
+      stroke-dashoffset: 0;
+    }
+  }
+
+  /* The system-wide off switch. Everything above is inside a
+     `no-preference` query, so this is belt and braces for anything a consumer
+     adds under the same attributes. */
+  @media (prefers-reduced-motion: reduce) {
+    [data-sa-reveal-root] [data-sa-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}

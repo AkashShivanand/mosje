@@ -30,7 +30,8 @@ import {
  * - **`ChartCard`** is the container: title, actions, body, footer, and — the
  *   part worth using — **`loading` and `empty` states built in**. A dashboard
  *   whose tiles collapse to nothing while data arrives is the usual reason the
- *   layout jumps on load. Set `loading`, don't render nothing.
+ *   layout jumps on load. Set `loading`, don't render nothing. Add `exportable`
+ *   for a header download control (PNG · SVG · CSV) via `ChartExport`.
  * - **`KpiRow`** lays out `MetricCard` tiles. It reuses `MetricCard` rather
  *   than reimplementing it, so a change to the card reaches every dashboard.
  * - **`FilterBar`** is layout only. It hosts controls; it holds no state and
@@ -109,17 +110,17 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/** A single card. `actions` sits in the header; `footer` carries the source line. */
+/**
+ * A single card. `exportable` adds the real download control (PNG · SVG · CSV)
+ * to the header — it exports the chart in this card with no wiring. `footer`
+ * carries the source line.
+ */
 export const Card: Story = {
   render: (args) => (
     <div style={{ maxWidth: 640 }}>
       <ChartCard
         {...args}
-        actions={
-          <Button size="sm" appearance="text">
-            Export
-          </Button>
-        }
+        exportable
         footer="Source: district submissions as at 04 August 2026."
       >
         <LineChart
@@ -134,8 +135,13 @@ export const Card: Story = {
 };
 
 /**
- * The two states worth wiring. `loading` holds the tile's height so the grid
- * does not jump; `empty` says so rather than leaving a blank frame.
+ * The original pair, kept because call sites still use them. `loading` holds the
+ * tile's height so the grid does not jump; `empty` says so rather than leaving a
+ * blank frame.
+ *
+ * `empty` is now a deprecated alias for `state="empty"`. It was never two states
+ * — see `EveryCardState` for the six reasons a card can have nothing to draw,
+ * and why each one offers the reader something different.
  */
 export const CardStates: Story = {
   render: (args) => (
@@ -329,4 +335,135 @@ export const AWholeDashboard: Story = {
       </div>
     );
   },
+};
+
+/**
+ * **Every reason a card has nothing to draw, and what each one offers the reader.**
+ *
+ * `state` replaced a pair of booleans because "empty" and "error" were being made
+ * to carry six different situations, and the right next action differs in each.
+ * Only some of them are the reader's to take: a filter that matched nothing is
+ * theirs to widen, a figure the source has not published yet is nobody's to fix.
+ * `onRetry` is therefore optional by design — omit it where no action would help,
+ * and the card states the reason without offering a button that cannot deliver.
+ *
+ * `retryLabel` defaults to what the state can actually do, so it is only worth
+ * setting when the wording should be more specific than "Try again".
+ *
+ * `emptyTitle`, `errorTitle` and `errorLabel` override the headline and the line
+ * beneath it. The deprecated `error` boolean still maps onto `state="error"` for
+ * call sites that predate the six-way `state`; new code should not reach for it.
+ */
+export const EveryCardState: Story = {
+  render: () => (
+    <div style={{ padding: "1.5rem" }}>
+      <DashboardGrid>
+        <ChartCard
+          span={4}
+          title="Districts reporting"
+          state="no-results"
+          emptyTitle="No districts match those filters"
+          emptyLabel="Nagpur division has no blocks with submissions after 31 March."
+          onRetry={() => {}}
+          retryLabel="Clear filters"
+        />
+
+        <ChartCard
+          span={4}
+          title="Per-capita disbursement"
+          state="not-published"
+          emptyTitle="Not published for 2026-27 yet"
+          emptyLabel="The source releases this figure after the fourth-quarter audit."
+        />
+
+        <ChartCard
+          span={4}
+          title="Verification throughput"
+          error
+          errorTitle="Could not load throughput"
+          errorLabel="The reporting service did not respond. The rest of this page is unaffected."
+          onRetry={() => {}}
+        />
+      </DashboardGrid>
+    </div>
+  ),
+};
+
+/**
+ * **A skeleton must share the silhouette of what is coming.**
+ *
+ * `skeleton` picks the shape of the loading placeholder. A donut card that
+ * shimmers as bars promises the wrong thing and makes the real chart feel like
+ * a substitution when it lands, so the shape is set per card rather than being
+ * one generic shimmer. `"region"` is the honest choice where there is no chart
+ * geometry to promise at all — a map, or a card whose body is prose.
+ */
+export const SkeletonShapes: Story = {
+  render: () => (
+    <div style={{ padding: "1.5rem" }}>
+      <DashboardGrid>
+        <ChartCard span={4} title="Monthly releases" loading skeleton="bars" />
+        <ChartCard span={4} title="Disbursement trend" loading skeleton="line" />
+        <ChartCard span={4} title="Share by category" loading skeleton="donut" />
+        <ChartCard span={6} title="Top districts" loading skeleton="rows" />
+        <ChartCard span={6} title="Coverage map" loading skeleton="region" />
+      </DashboardGrid>
+    </div>
+  ),
+};
+
+/**
+ * **Exporting what the reader is looking at.**
+ *
+ * `exportable` adds the download control; it exports the chart rendered inside
+ * this card with no wiring. `exportName` sets the filename stem and the heading
+ * on the download menu — worth setting when the card title is long or contains
+ * punctuation that reads badly as a filename.
+ *
+ * `exportFormats` narrows the offer. Restrict it where a format would mislead:
+ * CSV on a card whose body is a map has no sensible rows behind it, so offering
+ * it produces a file that looks authoritative and is not.
+ */
+export const ExportOptions: Story = {
+  render: () => (
+    <div style={{ padding: "1.5rem" }}>
+      <DashboardGrid>
+        <ChartCard
+          span={6}
+          title="Beneficiaries verified by district"
+          subtitle="All three formats"
+          exportable
+          exportName="beneficiaries-verified-by-district-2026-27"
+        >
+          <BarChart
+            orientation="horizontal"
+            title="Beneficiaries verified by district"
+            data={[
+              { label: "Thane", value: 402_310 },
+              { label: "Pune", value: 386_240 },
+              { label: "Nagpur", value: 298_105 },
+            ]}
+          />
+        </ChartCard>
+
+        <ChartCard
+          span={6}
+          title="Beneficiaries by category"
+          subtitle="Images only — no honest CSV behind a donut"
+          exportable
+          exportName="beneficiaries-by-category"
+          exportFormats={["png", "svg"]}
+        >
+          <DonutChart
+            title="Beneficiaries by category"
+            data={[
+              { label: "Scheduled Caste", value: 1_284_600 },
+              { label: "Other Backward Class", value: 742_310 },
+            ]}
+            centerSub="beneficiaries"
+          />
+        </ChartCard>
+      </DashboardGrid>
+    </div>
+  ),
 };

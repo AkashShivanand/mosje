@@ -65,10 +65,21 @@
     text-align: center;
   }
 
+  /* A chart with nothing to draw. Centred in whatever height it was given, so
+     it does not sit as one grey line at the top of a stretched card. Cards
+     should prefer ChartCard's `empty` state, which can say WHY; this is the
+     floor for a chart used on its own. */
   .ds-chart__empty {
-    padding: var(--sa-stack-40) 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 140px;
+    height: 100%;
+    padding: var(--sa-stack-40) var(--sa-padding-16);
+    margin: 0;
     text-align: center;
     font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     color: var(--sa-text-neutral-subtle);
   }
 

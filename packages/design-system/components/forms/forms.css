@@ -87,6 +87,57 @@
     outline: none;
   }
 
+  /* ── Filter appearance ─────────────────────────────────────────────────────
+     The pill from the Figma handoff's Filters component (51875:56255): 40px
+     tall, fully rounded, hairline border, 14/20 label, 18px caret, sized to sit
+     in a toolbar rather than in a form.
+
+     It is a SKIN, not a new control — still a native <select>, so keyboard,
+     screen readers and the mobile picker are untouched.
+
+     TWO THINGS THE SHAPE DECIDES FOR YOU.
+
+     · It is `inline-block`, not the form field's full-width block, because a
+       filter belongs beside its neighbours and a form field belongs above its
+       hint.
+     · It is WIDTH-CAPPED, and it has to be. A native <select> left to size
+       itself takes the width of its widest option, so one list of Indian state
+       names would set the whole toolbar to the width of "Andaman and Nicobar
+       Islands". The cap plus `text-overflow` truncates the closed control; the
+       open list is drawn by the platform and is never truncated. */
+  .ds-select--filter {
+    display: inline-block;
+    width: auto;
+    min-width: 9rem;
+    max-width: 12rem;
+  }
+
+  .ds-select--filter .ds-select__el {
+    width: 100%;
+    min-height: 40px;
+    padding: var(--sa-padding-8) var(--sa-padding-32) var(--sa-padding-8) var(--sa-padding-16);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 500;
+    border-radius: var(--sa-shape-full);
+    border-color: var(--sa-border-neutral-subtle);
+    color: var(--sa-text-neutral-bolder);
+    text-overflow: ellipsis;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .ds-select--filter .ds-select__el:hover:not(:disabled) {
+    border-color: var(--sa-border-neutral-bolder-default);
+  }
+
+  .ds-select--filter .ds-select__chevron {
+    right: 14px;
+    width: 18px;
+    height: 18px;
+  }
+
   .ds-input:disabled,
   .ds-textarea:disabled,
   .ds-select__el:disabled {

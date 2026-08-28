@@ -176,6 +176,8 @@ Open the file when you touch its area. Plain markdown; any tool can read them.
 | `.claude/rules/design-audit.md` | Auditing visual work |
 | `.claude/rules/portals.md` · `portal-appswitcher.md` · `portal-login-demos.md` | Portal work |
 | `.claude/rules/website.md` | The public website |
+| `.claude/rules/live-data-fallback.md` | Any page showing figures from a live API |
+| `.claude/rules/prototype-data-modes.md` | Dashboards that mix live and illustrative figures |
 | `.claude/rules/hub-integration.md` | Mounting an app into the hub |
 
 Deeper context: `MOSJE-ARCHITECTURE.md` (structure map),

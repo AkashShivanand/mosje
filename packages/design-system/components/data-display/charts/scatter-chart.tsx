@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { CardState } from "../../dashboard/card-state";
 import { ChartFrame } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
 import { Gridlines } from "./internal/axis";
@@ -44,7 +45,7 @@ export function ScatterChart({
 }: ScatterChartProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const all = series.flatMap((s) => s.points);
-  if (all.length === 0) return <p className="ds-chart__empty">No data to display.</p>;
+  if (all.length === 0) return <CardState kind="empty" compact />;
 
   const colors = series.map((s, i) => seriesColor(s.color, i));
   const xs = all.map((p) => p.x);

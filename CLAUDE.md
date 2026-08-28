@@ -135,6 +135,17 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   keyboard nav, visible focus, AA contrast. Run the `accessibility-auditor` agent before
   shipping a page.
 - **Real content, real assets** — no lorem/placeholder in production pages.
+- **Live first, snapshot second, never an empty state.** Any figure sourced from an API
+  renders live where the API answers and from a committed mirrored snapshot where it does
+  not — the page says which. A metric neither source publishes is left OFF the design, not
+  shown as "Not yet reported". Ratios take numerator and denominator from the same source;
+  mixing them published a `138%`. → `.claude/rules/live-data-fallback.md`
+- **A dashboard offers three data modes** — live, illustrative, and both — from the demo
+  rail. Figures merge by declared GROUP, never field: a missing part of a known sum is
+  derived, not mocked, and a zero is judged by whether its group has any figure at all.
+  Every card carries a provenance chip in every mode, because the real risk is an
+  illustrative number reaching a deck as a departmental one.
+  → `.claude/rules/prototype-data-modes.md`
 - `next/image` for images; **`<Icon>`** from `@mosje/design-system` for icons — **Material
   Symbols Rounded**, weight 300, size 24, stroke variant. Load once per app:
   `import "@mosje/design-system/icons.css"`. Brand/social logos are inline SVGs.

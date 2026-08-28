@@ -8,6 +8,7 @@ import { categoricalColor } from "./internal/palette";
 import { ringPath, polarToCartesian } from "./internal/geometry";
 import { formatIndian, formatPercent } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
+import { CardState } from "../../dashboard/card-state";
 import type { ChartDatum } from "./types";
 
 interface DonutBase {
@@ -57,7 +58,7 @@ export function DonutChart(props: DonutChartProps) {
 
   if (isSegments(props)) {
     const total = props.data.reduce((s, d) => s + d.value, 0);
-    if (total === 0) return <p className="ds-chart__empty">No data to display.</p>;
+    if (total === 0) return <CardState kind="empty" compact />;
 
     let cursor = 0;
     const segs = props.data.map((d, i) => {

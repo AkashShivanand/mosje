@@ -9,6 +9,7 @@ import { bandScale, linearScale, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor, CHART_INK } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
+import { CardState } from "../../dashboard/card-state";
 import type { ChartDatum, ChartSeries } from "./types";
 
 interface BarBase {
@@ -64,7 +65,7 @@ export function BarChart(props: BarChartProps) {
   const singleColors = single ? props.data.map((d, i) => d.color ?? categoricalColor(i)) : null;
 
   if (labels.length === 0 || series.length === 0)
-    return <p className="ds-chart__empty">No data to display.</p>;
+    return <CardState kind="empty" compact />;
 
   const stacked = !single && variant === "stacked" && series.length > 1;
   const seriesColors = series.map((s, i) => seriesColor(s.color, i));
@@ -170,7 +171,7 @@ export function BarChart(props: BarChartProps) {
                   y={by}
                   width={Math.max(1, bw)}
                   height={Math.max(0, h)}
-                  rx={3}
+                  rx={stacked ? 0 : 3}
                   fill={colorFor(li, si)}
                   className="ds-chart__mark"
                   tabIndex={0}
@@ -257,7 +258,12 @@ export function BarChart(props: BarChartProps) {
                 y={by}
                 width={Math.max(0, w)}
                 height={Math.max(1, bh)}
-                rx={3}
+                /* A stack is ONE bar made of parts. Rounding every segment drew
+                   each part as its own pill, so a 100%-stacked row read as three
+                   detached lozenges with notches between them rather than a
+                   single bar divided up. Only a bar that stands alone gets a
+                   radius. */
+                rx={stacked ? 0 : 3}
                 fill={colorFor(li, si)}
                 className="ds-chart__mark"
                 tabIndex={0}

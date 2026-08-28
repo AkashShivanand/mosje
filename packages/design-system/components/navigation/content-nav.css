@@ -1,0 +1,167 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css. Without this line the first component file to load registers
+   `components` ahead of Tailwind's `base`, and then Preflight's `* { padding: 0 }` outranks
+   every component rule in the estate. Repeating the statement is harmless — the first one
+   wins and the rest are no-ops. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — ContentNav
+     The grouped section index beside a long website content page.
+     Token-driven; no Tailwind, no raw values.
+     ============================================================================ */
+
+  /* Visually-hidden text exposed to assistive tech (shared a11y helper).
+     Repeated here rather than assumed: each component stylesheet is its own CSS
+     root, so a page rendering only this component would otherwise have the
+     class on the markup and no rule behind it. */
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: calc(-1 * var(--sa-padding-2));
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .ds-content-nav {
+    overflow: hidden;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-16);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  /* The offset clears the site masthead, which is sticky on every website page.
+     `max-height` + scroll is what stops a long index (PM-AJAY runs to sixteen
+     links) from growing taller than the viewport and hiding its own tail. */
+  .ds-content-nav--sticky {
+    position: sticky;
+    top: var(--sa-padding-120);
+    max-height: calc(100vh - var(--sa-padding-120) - var(--sa-padding-40));
+    overflow-y: auto;
+  }
+
+  .ds-content-nav__group + .ds-content-nav__group {
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  /* A banded caps label, not a heading — see the note on the component. */
+  .ds-content-nav__group-label {
+    margin: 0;
+    padding: var(--sa-padding-12) var(--sa-padding-20);
+    background-color: var(--sa-bg-neutral-subtler);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-content-nav__list,
+  .ds-content-nav__sublist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .ds-content-nav__list {
+    padding: var(--sa-padding-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+  }
+
+  .ds-content-nav__link {
+    display: block;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-8);
+    /* body-2 (14px), not body-3 (12px). This is a primary navigation control on
+       a citizen-facing page, not a caption — 12px was legible in review at a
+       laptop and small on anything else. The sub-links stay at 12px so the two
+       levels still read as different. */
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 500;
+    color: var(--sa-text-neutral-base);
+    text-decoration: none;
+  }
+
+  /* `base` is the PALEST rung of the brand ramp (#ecf4ff), not the brand ink —
+     the trap `documentation-ds-linkage.md` records. Bound here by resolved
+     value: the tint is `base` (#ecf4ff, 5.76:1 under the #005eb9 label) and the
+     filled pill is `bolder` (#005eb9, 6.38:1 under white). Binding the pill to
+     `base` by its name gave a near-white pill with near-white text on it. */
+  .ds-content-nav__link:hover {
+    background-color: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .ds-content-nav__link--current,
+  .ds-content-nav__link--current:hover {
+    background-color: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-text-neutral-inverse);
+    font-weight: 600;
+  }
+
+  /* The rule is the indent: a left border reads as "belongs to the item above"
+     without spending a bullet glyph or an icon on it. */
+  .ds-content-nav__sublist {
+    margin: var(--sa-stack-2) 0 var(--sa-stack-4) var(--sa-padding-20);
+    padding-left: var(--sa-padding-12);
+    border-left: 1px solid var(--sa-border-neutral-subtle);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .ds-content-nav__sublink {
+    display: block;
+    padding: var(--sa-padding-6) var(--sa-padding-8);
+    border-radius: var(--sa-shape-6);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    color: var(--sa-text-neutral-subtle);
+    text-decoration: none;
+  }
+
+  .ds-content-nav__sublink:hover {
+    color: var(--sa-text-brand-primary-bolder);
+    text-decoration: underline;
+  }
+
+  /* The glyph sits on the text baseline rather than trailing on its own line,
+     so a two-line label keeps the marker attached to its last word. */
+  .ds-content-nav__link--external,
+  .ds-content-nav__sublink--external {
+    display: block;
+  }
+
+  .ds-content-nav__ext {
+    display: inline;
+    margin-left: var(--sa-inline-4);
+    vertical-align: baseline;
+    opacity: 0.7;
+  }
+
+  .ds-content-nav__link:focus-visible,
+  .ds-content-nav__sublink:focus-visible {
+    outline: 2px solid var(--sa-border-brand-primary-base);
+    outline-offset: 2px;
+  }
+
+  /* Below the two-column breakpoint the index sits above the article and must
+     not stick — a sticky block in normal flow pins itself over the content the
+     reader just tapped through to. */
+  @media (max-width: 1023px) {
+    .ds-content-nav--sticky {
+      position: static;
+      max-height: none;
+    }
+  }
+}

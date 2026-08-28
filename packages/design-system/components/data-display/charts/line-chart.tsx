@@ -9,6 +9,7 @@ import { linearScale, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor, CHART_INK } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
+import { CardState } from "../../dashboard/card-state";
 import type { ChartMultiSeries } from "./types";
 
 export interface LineChartProps extends ChartMultiSeries {
@@ -46,7 +47,7 @@ export function LineChart({
   const [active, setActive] = React.useState<number | null>(null);
 
   if (labels.length === 0 || series.length === 0)
-    return <p className="ds-chart__empty">No data to display.</p>;
+    return <CardState kind="empty" compact />;
 
   const colors = series.map((s, i) => seriesColor(s.color, i));
   const rawMax = Math.max(1, ...series.flatMap((s) => s.data));
@@ -109,7 +110,21 @@ export function LineChart({
         area || s.fill ? <path key={`a-${s.name}`} d={areaPath(s.data)} fill={colors[si]} opacity={0.12} /> : null,
       )}
       {series.map((s, si) => (
-        <path key={`l-${s.name}`} d={linePath(s.data)} fill="none" stroke={colors[si]} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+        /* `pathLength={1}` normalises the line to a unit length so one
+           stroke-dasharray keyframe can draw a two-point sparkline and an
+           eighty-point series alike. The class is the hook the reveal
+           stylesheet animates; it is inert until a page opts in. */
+        <path
+          key={`l-${s.name}`}
+          className="ds-chart__line-draw"
+          pathLength={1}
+          d={linePath(s.data)}
+          fill="none"
+          stroke={colors[si]}
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
       ))}
 
       {active !== null && (

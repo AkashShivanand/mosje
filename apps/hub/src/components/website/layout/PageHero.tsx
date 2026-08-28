@@ -26,7 +26,6 @@ export function PageHero({
   badge,
   logoSrc,
   description,
-  lastUpdated,
   actions,
 }: PageHeroProps) {
   return (
@@ -62,14 +61,15 @@ export function PageHero({
                   </p>
                 )}
                 {actions && <div className="mt-6">{actions}</div>}
-                {/* GIGW 3.0 requires every content page to state when it was last reviewed.
-                    The prop was already declared and documented; the blue-hero refactor
-                    stopped rendering it. */}
-                {lastUpdated && (
-                  <p className="mt-4 text-[13px] text-white/80">
-                    Last Updated: <time dateTime={lastUpdated}>{lastUpdated}</time>
-                  </p>
-                )}
+                {/* No date here. GIGW 3.0 §5.1.5 requires every important entry
+                    page to publish its last reviewed/modified date, and DBIM 5.6
+                    names the footer as where "Last Updated On" lives — PageLayout
+                    already passes this same value to SiteFooter, so the rule is
+                    met once, on this page. Printing it in the banner as well put
+                    two different-looking dates on one screen (this one, and the
+                    data-currency stamp on the dashboard) with nothing to tell a
+                    reader which governed the figures. The Figma banner carries
+                    no date either. */}
               </div>
             </div>
 

@@ -12,6 +12,15 @@ export interface DashboardGridProps {
  * span via the `span` prop on `ChartCard`/`KpiRow` (or `--cmp-card-span`). On
  * mobile every child is full width.
  */
-export function DashboardGrid({ children, className }: DashboardGridProps) {
-  return <div className={cn("ds-dash-grid", className)}>{children}</div>;
-}
+/* Forwards a ref because a section-scoped toolbar has to MEASURE its last row to
+   know when to retire — see `useStickyRange`. The grid is the only element that
+   knows which card that is. */
+export const DashboardGrid = React.forwardRef<HTMLDivElement, DashboardGridProps>(
+  function DashboardGrid({ children, className }, ref) {
+    return (
+      <div ref={ref} className={cn("ds-dash-grid", className)}>
+        {children}
+      </div>
+    );
+  },
+);
