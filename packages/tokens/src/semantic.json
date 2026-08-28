@@ -1323,10 +1323,10 @@
     },
     "weight": {
       "$type": "fontWeight",
-      "$description": "Tier-2 font weights. They were Tier-1 `ref/font/weight/*` until 2026-08-26, and that was the whole reason 24 of the library's text styles bound a reference token: a text style has to name a cut, and no Tier-2 cut existed to name. They are a ROLE, not a raw step \u2014 a brand pack that ships a heavier body face changes them here, and every style follows. Figma has no numeric weight, so the build projects each one to the STYLE NAME its family is addressed by (see FIGMA_FONT_STYLES).",
+      "$description": "Tier-2 font weights. They were Tier-1 `ref/font/weight/*` until 2026-08-26, and that was the whole reason 24 of the library's text styles bound a reference token: a text style has to name a cut, and no Tier-2 cut existed to name. They are a ROLE, not a raw step — a brand pack that ships a heavier body face changes them here, and every style follows. Figma has no numeric weight, so the build projects each one to the STYLE NAME its family is addressed by (see FIGMA_FONT_STYLES).",
       "light": {
         "$value": 300,
-        "$description": "300 \u2014 the ICON cut, and the only place the estate uses it. Every Figma `Icon/*` text style is Material Symbols Rounded / Light and `<Icon>` defaults to 300, so this is the one token both read. NOT for prose: 300 on Noto Sans at body sizes thins the stroke below what the ramp is drawn for."
+        "$description": "300 — the ICON cut, and the only place the estate uses it. Every Figma `Icon/*` text style is Material Symbols Rounded / Light and `<Icon>` defaults to 300, so this is the one token both read. NOT for prose: 300 on Noto Sans at body sizes thins the stroke below what the ramp is drawn for."
       },
       "regular": {
         "$value": 400,
@@ -1334,7 +1334,7 @@
       },
       "medium": {
         "$value": 500,
-        "$description": "Titles and labels \u2014 the weight that separates a heading from its paragraph without shouting."
+        "$description": "Titles and labels — the weight that separates a heading from its paragraph without shouting."
       },
       "semibold": {
         "$value": 600,
@@ -1346,30 +1346,44 @@
       },
       "displayMedium": {
         "$value": 500,
-        "$description": "The Display cut at Medium \u2014 500 on `Noto Sans Display` for the 40-80px ramp. It is a SEPARATE token from `medium` because Figma does not model the Display cut as a family: it is the STYLE string \"Display Medium\" of Noto Sans, which is why the build special-cases this one name instead of projecting 500 to \"Medium\". In CSS the same pairing is `font/display` plus this weight."
+        "$description": "The Display cut at Medium — 500 on `Noto Sans Display` for the 40-80px ramp. It is a SEPARATE token from `medium` because Figma does not model the Display cut as a family: it is the STYLE string \"Display Medium\" of Noto Sans, which is why the build special-cases this one name instead of projecting 500 to \"Medium\". In CSS the same pairing is `font/display` plus this weight."
       }
     },
     "icon": {
       "$type": "fontFamily",
       "$value": "{font.family.icon}",
-      "$description": "Material Symbols Rounded \u2014 the face every icon glyph renders in. Bind this from `.material-symbols-rounded`, never the Tier-1 primitive. The `@font-face` rule in icons.css still names the family literally because a font-face descriptor cannot take a custom property; that literal is the font LOADER, this token is what everything else reads."
+      "$description": "Material Symbols Rounded — the face every icon glyph renders in. Bind this from `.material-symbols-rounded`, never the Tier-1 primitive. The `@font-face` rule in icons.css still names the family literally because a font-face descriptor cannot take a custom property; that literal is the font LOADER, this token is what everything else reads."
     }
   },
   "brand": {
     "$type": "color",
-    "$description": "MARK COLOURS \u2014 the fixed palette of a logo, not a role in the interface. They are Tier 2 and they alias NOTHING, which is the one place in this file where a literal is the correct answer: a mark does not re-colour when the brand pack changes, because the mark IS the brand. That is also why they belong in the mode-less Static collection rather than in Color \u2014 a value that must never move should not sit in a collection whose whole purpose is moving. Authored here on 2026-08-26; the library had carried them as hand-made `ref/brand/*` variables since before the pipeline, with a codeSyntax pointing at `--sa-ref-brand-samavesh-*` names that had never existed in any stylesheet. USE THEM ONLY inside the mark they belong to. The SAMAVESH ink is #1F2428 and the estate's text ink is #1E2124 \u2014 two colours that look identical in review and are not the same, which is exactly why the mark needs its own token rather than borrowing `text/neutral/base`.",
+    "$description": "MARK COLOURS — the fixed palette of a logo, not a role in the interface. They are Tier 2 and they alias NOTHING, which is the one place in this file where a literal is the correct answer: a mark does not re-colour when the brand pack changes, because the mark IS the brand. That is also why they belong in the mode-less Static collection rather than in Color — a value that must never move should not sit in a collection whose whole purpose is moving. Authored here on 2026-08-26; the library had carried them as hand-made `ref/brand/*` variables since before the pipeline, with a codeSyntax pointing at `--sa-ref-brand-samavesh-*` names that had never existed in any stylesheet. USE THEM ONLY inside the mark they belong to. The SAMAVESH ink is #1F2428 and the estate's text ink is #1E2124 — two colours that look identical in review and are not the same, which is exactly why the mark needs its own token rather than borrowing `text/neutral/base`.",
     "samavesh": {
       "ink": {
         "$value": "#1f2428",
-        "$description": "The wordmark's own ink. NOT `text/neutral/base` (#1E2124) \u2014 close enough to pass a glance, far enough to be a defect."
+        "$description": "The wordmark's own ink. NOT `text/neutral/base` (#1E2124) — close enough to pass a glance, far enough to be a defect."
       },
-      "blue": { "$value": "#06038d" },
-      "green": { "$value": "#046a38" },
-      "orange": { "$value": "#ff671f" },
-      "saffron": { "$value": "#ed8a1d" },
-      "navy": { "$value": "#003366" },
-      "white": { "$value": "#ffffff" },
-      "black": { "$value": "#000000" }
+      "blue": {
+        "$value": "#06038d"
+      },
+      "green": {
+        "$value": "#046a38"
+      },
+      "orange": {
+        "$value": "#ff671f"
+      },
+      "saffron": {
+        "$value": "#ed8a1d"
+      },
+      "navy": {
+        "$value": "#003366"
+      },
+      "white": {
+        "$value": "#ffffff"
+      },
+      "black": {
+        "$value": "#000000"
+      }
     },
     "digilocker": {
       "purple": {
@@ -1543,7 +1557,7 @@
     "neutral": {
       "boldest": {
         "$value": "rgba(30, 33, 36, 0.5)",
-        "$description": "The scrim behind a modal \u2014 neutral 800 at 50%. The NAVY line below is structural, not stylistic: Figma cannot express \"alias plus alpha\", so a translucent token can only be a LITERAL, and a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed. Without it, Navy inherited the BLUE neutral (#1E2124 instead of #1E2024) and the scrim was quietly the wrong brand \u2014 invisible in review, wrong in every Navy screenshot. Authoring the second value is what makes the exporter generate a brand-aware companion in Palette (which does carry the brand modes) and alias this token to it. Every other rgba() in this file is exposed to the same trap.",
+        "$description": "The scrim behind a modal — neutral 800 at 50%. The NAVY line below is structural, not stylistic: Figma cannot express \"alias plus alpha\", so a translucent token can only be a LITERAL, and a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed. Without it, Navy inherited the BLUE neutral (#1E2124 instead of #1E2024) and the scrim was quietly the wrong brand — invisible in review, wrong in every Navy screenshot. Authoring the second value is what makes the exporter generate a brand-aware companion in Palette (which does carry the brand modes) and alias this token to it. Every other rgba() in this file is exposed to the same trap.",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1895,7 +1909,7 @@
           }
         }
       },
-      "$description": "Twelve categorical series. DELIBERATELY LITERAL, and deliberately NOT tracking the brand ramps — do not \"fix\" these into references. A categorical palette has one job: twelve colours a reader can tell apart AT ONCE, which is a property of the SET, chosen and checked together. A reference would let one member move on its own: point cat/1 at primaryScale and a Blue-to-Navy brand swap slides it toward cat/8, already a dark blue, and two series in one chart become one. The set is fixed so that cannot happen.\n\nTwo members WERE retired brand colours; both were replaced on 2026-08-11, each decided by measurement rather than tidiness.\n\ncat/3 was Material green #2E7D32, sitting dE 3.2 from cat/9 (#4d7c0f) — two \"distinguishable\" series a reader cannot separate, the exact defect this palette exists to prevent. India Green #046A38 puts them 9.0 apart and lifts the set's worst pair from 3.2 to 5.8.\n\ncat/2 was the retired saffron #F97316 at 2.80:1 against the page — under the 3:1 that WCAG 1.4.11 asks of a graphical object you need in order to read the chart, and the only member of the twelve below it. It is now secondaryScale/500 #e1560f at 3.79:1, which is the SAME compromise secondaryRamp already documents for the same colour: bright India Saffron #FF671F cannot carry contrast (2.91:1 here), so the usable rung is a deeper burnt orange and the identity colour stays reachable at secondaryScale/400. Rung 600 was rejected by measurement, not by eye — 4.97:1 but only dE 3.3 from cat/6, which would have traded a contrast failure for a collision.\n\nThe set is now entirely at or above 3:1 against the page (lowest is cat/1 at 4.64:1 after cat/2), and its closest pairs are cat/5·cat/11 at dE 5.8 and cat/2·cat/6 at 8.8. If this palette is ever re-cut, re-cut all twelve together and re-measure both properties."
+      "$description": "Twelve categorical series. DELIBERATELY LITERAL, and deliberately NOT tracking the brand ramps — do not \"fix\" these into references. A categorical palette has one job: colours a reader can tell apart AT ONCE, which is a property of the SET, chosen and checked together. A reference would let one member move on its own: point cat/1 at primaryScale and a Blue-to-Navy brand swap slides it toward another blue, and two series in one chart become one. The set is fixed so that cannot happen.\n\nREGENERATED 2026-08-28, and the reason matters more than the values. The previous twelve sat at near-constant lightness (L 44-63), so they were separated by HUE ALONE — and hue is the channel a dichromat loses. Measured, that palette failed colour-vision deficiency at every slot count including three (worst pair dE 1.0 under protanopia, effectively one colour), held for only five slots before two oranges collided, and cat/3 was byte-identical to chart/trend/up, so slot 3 WAS the semantic success green.\n\nThis set varies lightness as well as hue. SLOTS 1-9 ARE GUARANTEED mutually distinguishable, including through protanopia, deuteranopia and tritanopia (worst pair dE 8.0); there are zero colliding pairs across all twelve; every member clears 3:1 against both the base and elevated surface; and every member is dE 12 or 25 degrees clear of every semantic ink, so none can be mistaken for \"good\" or \"bad\".\n\nSLOTS 10-12 ARE EXTENSION COLOURS. They are distinct in full colour and carry NO colour-vision guarantee. Reaching one throws the guarantee away for the whole chart — which is not hypothetical: the public NMBA facility locator sat at dE 1.5 under deuteranopia doing exactly that. tools/chart-slot-order/check.mjs now fails the build on it. Need more than nine categories? Bucket the tail as \"Other\".\n\ncat/1 is gov-blue #0373DF, the brand anchor, and is the one member that did not move. If this palette is ever re-cut, re-cut all twelve together and re-measure every property above — packages/tokens/test/chart-palette.test.mjs holds the numbers as ratchets."
     },
     "seq": {
       "50": {
