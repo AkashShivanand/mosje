@@ -12,6 +12,27 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-08-28 · System version: v0.36.0 (THE CATEGORICAL CHART RAMP IS
+  COLOUR-BLIND-SAFE FOR THE FIRST TIME, and the old one never was. The twelve slots sat
+  at near-constant lightness (L 44-63), so they were told apart by HUE ALONE — the one
+  channel a dichromat loses. Measured: it failed at every slot count including three,
+  worst pair dE 1.0 under protanopia, which is one colour; it held for only five slots
+  before two oranges collided; and cat/3 was byte-identical to chart/trend/up, so slot 3
+  WAS the success green. The regenerated set varies lightness as well as hue: slots 1-9
+  are guaranteed mutually distinguishable through every dichromacy (worst dE 8.0), zero
+  colliding pairs across all twelve, every member 3:1 on both grounds and dE 12 or 25
+  degrees clear of every semantic ink. cat/1 (gov-blue) did not move.
+  REGENERATING THE RAMP WAS NECESSARY AND NOT SUFFICIENT. Three of four consumers were
+  hand-picking slots including 10-12, which carry no guarantee: the PUBLIC NMBA facility
+  locator went dE 1.2 -> 1.5 across the regeneration, still one colour, and only reached
+  8.0 once it took slots in order. A guarantee about the ramp is not a guarantee about a
+  chart. tools/chart-slot-order/check.mjs enforces the boundary — never reach past 9 —
+  and deliberately not a no-gaps prefix, because one file can hold several independent
+  charts. packages/tokens/test/chart-palette.test.mjs is the new gate on the ramp itself,
+  with Machado 2009 dichromacy simulation in build/cvd.mjs. Pushed to Figma and re-read;
+  eight of nine collections reproduced their recorded checksums byte-for-byte, so only
+  Color moved.)
+
   Last reviewed: 2026-08-27 · System version: v0.35.0 (START OVER DESTROYS NOTHING,
   AND LEAVES SEND'S COLUMN. The chatbot's reset sat 25px directly below Send, in the
   same 32px column, with the whole of Send's width above it — the most-pressed

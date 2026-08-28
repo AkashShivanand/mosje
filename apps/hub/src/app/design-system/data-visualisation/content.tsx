@@ -472,12 +472,22 @@ export function DataVisualisationContent(): React.JSX.Element {
         </Specimen>
       </SpecimenGrid>
 
-      <Callout type="warning" title="Colour is never the only encoding">
+      <Callout type="warning" title="Colour is never the only encoding — and here is the measurement">
         Every specimen above is readable without hue: bars carry length, lines carry
         position and marker shape, the choropleth carries a labelled legend, and each chart
-        carries a screen-reader table with the exact values. Where a chart has six series
+        carries a screen-reader table with the exact values. Where a chart has nine series
         or fewer, direct labelling is preferred over a legend — for a citizen-facing
         audience it is the single highest-value default in this system.
+        <br />
+        <br />
+        Nine is measured, not asserted. The first nine slots of the categorical ramp stay
+        distinguishable from one another <em>and</em> under deuteranopia, protanopia and
+        tritanopia; slots 10&ndash;12 are extension colours that are distinct in full
+        colour but carry no colour-blindness guarantee. The ramp was regenerated to reach
+        that number &mdash; the previous one held for five slots and survived no dichromacy
+        at all, because it varied hue while holding lightness nearly flat, and lightness is
+        the channel a dichromat keeps. Enforced by{" "}
+        <code>packages/tokens/test/chart-palette.test.mjs</code>.
       </Callout>
     </>
   );

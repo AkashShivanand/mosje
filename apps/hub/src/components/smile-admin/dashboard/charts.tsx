@@ -23,16 +23,17 @@ import { BarChart, DonutChart, LineChart, categoricalColor } from "@mosje/design
 /**
  * Stable slot assignment for SMILE's three recurring activity series.
  *
- * Slot 3 is deliberately skipped: `--sa-chart-cat-3` is `#046a38`, which is
- * byte-identical to `--sa-chart-trend-up`. Using it would put the semantic
- * "good" green back on an arbitrary series by a different route. Slots 1, 5
- * and 2 are blue / teal / orange — mutually distinct and none of them a
- * semantic ink.
+ * This used to skip slot 3, because `--sa-chart-cat-3` was byte-identical to
+ * `--sa-chart-trend-up` and using it would have put the semantic "good" green
+ * on an arbitrary series by a different route. The categorical ramp has since
+ * been regenerated — no slot is within reach of a semantic ink now, and the
+ * first nine survive every dichromacy — so the workaround is gone and the
+ * natural first three slots are used.
  */
 const SERIES_COLOR = {
-  identified: categoricalColor(0), // cat-1  #0373df
-  mobilised: categoricalColor(4), // cat-5  #0e7490
-  rehabilitated: categoricalColor(1), // cat-2  #e1560f
+  identified: categoricalColor(0), // cat-1  gov blue
+  mobilised: categoricalColor(1), // cat-2  amber
+  rehabilitated: categoricalColor(2), // cat-3  teal
 } as const;
 
 const AGE_COLOR = categoricalColor(0);

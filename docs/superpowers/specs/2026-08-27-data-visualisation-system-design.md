@@ -305,10 +305,45 @@ ramp** (`50`–`900`), a **7-step diverging ramp**, plus grid, axis, tooltip,
 trend and region inks. 38 `--sa-chart-*` tokens in total. Four rules govern
 their use.
 
-**1 · Twelve slots is not twelve distinguishable series.** Past six to eight,
-readers stop telling colours apart. The scene builder caps rendered series at 8
-and buckets the remainder as `Other`, with the full breakdown preserved in the SR
-table. This is a refusal, and it is deliberate.
+**1 · Twelve slots is not twelve distinguishable series — it is NINE.**
+
+This has now been wrong twice, and the sequence is worth keeping because it is
+how the number was actually earned. It was first written as "six to eight" from
+general design lore. The gate then measured the shipping ramp and found **five** —
+collision started at slot 6, where two oranges sat 8 degrees apart. The ramp was
+then regenerated against that measurement and reaches **nine**.
+
+The diagnosis that made nine possible: the old ramp held lightness nearly
+constant (L 44-63) across all twelve slots, so the only channel separating them
+was hue — and hue is the channel a dichromat loses. Treating lightness as a
+first-class variable rather than holding it flat for tidiness is the whole
+difference between a ramp that fails colour-vision deficiency at three slots and
+one that survives nine.
+
+So the scene builder caps rendered series at **9** and buckets the remainder as
+`Other`, with the full breakdown preserved in the SR table. Slots 10-12 remain
+as extension colours: mutually distinct in full colour, deliberately **not**
+CVD-guaranteed, and reached only by a consumer that has already ignored the cap.
+Raising the cap again requires regenerating the ramp again — and
+`chart-palette.test.mjs` fails if the published count is raised without it.
+
+**1a · A guarantee over the ramp is not a guarantee over a chart.** Slots 1–9
+are guaranteed mutually distinguishable; 10–12 are extension colours with no such
+guarantee. That is a fact about the *ramp*, and it does not survive a consumer
+picking 1, 3, 4, 6 and 10.
+
+This is not hypothetical — it is what happened. Regenerating the ramp took it
+from zero colour-blind-safe slots to nine, and the NMBA de-addiction facility
+locator, a **public** citizen-facing map, did not improve: dE 1.2 to dE 1.5 under
+deuteranopia, still one colour, because it had hand-picked five slots including
+slot 10. Three of the four consumers in the estate were doing the same. Moving
+them onto slots taken in order took that page to dE 8.0.
+
+So the palette work was necessary and not sufficient. `tools/chart-slot-order/
+check.mjs` enforces the boundary that always holds — **never reach past slot
+9** — and deliberately does not enforce a no-gaps prefix, because a single file
+often holds several independent charts and which colours share a comparison set
+is not decidable from static text.
 
 **2 · Semantic hue is reserved.** In government reporting green and red mean
 approved and rejected, above and below target. A categorical slot that is green
@@ -316,13 +351,15 @@ makes an arbitrary series read as "good" — which, on a caste-category or
 religion breakdown, is not a cosmetic problem. Categorical slots must not collide
 in hue with the trend and status inks, and the gate below enforces it.
 
-> **This is already violated, exactly.** `--sa-chart-cat-3` resolves to
-> `#046a38`, which is byte-identical to `--sa-chart-trend-up`. Categorical slot
-> 3 *is* the semantic success green — so any three-series chart that takes the
-> first three slots renders its third series in "good". `--sa-chart-cat-9`
-> (`#4d7c0f`) sits close to the same hue. Catching this pair is the first thing
-> the gate below must do, and a same-hex collision is the cheapest possible
-> test case to write first.
+> **This was violated exactly, and is now fixed.** `--sa-chart-cat-3` used to
+> resolve to `#046a38` — byte-identical to `--sa-chart-trend-up`, so categorical
+> slot 3 *was* the semantic success green and any three-series chart rendered its
+> third series in "good". `cat-9` (`#4d7c0f`) sat close to the same hue.
+>
+> The regenerated ramp holds every slot at least dE 12 **or** 25 degrees from
+> every semantic ink, which is a real clearance rather than the minimal
+> not-confusable bar. Slot 3 is now teal (`#007668`). The gate enforces the
+> clearance, so the collision cannot come back.
 
 **3 · The diverging default is blue–orange.** Red–green remains available and is
 flagged in the docs as CVD-hostile. This inverts the convention most enterprise
@@ -335,8 +372,16 @@ in the system, and it is on by default for ≤ 6 series.
 
 ### The contrast gate
 
-Twelve categorical slots × six `data-brand` modes × two themes is **144
-palettes**, each of which must satisfy:
+An earlier draft of this section put the cross-product at **144 palettes** —
+twelve slots × six brand modes × two themes. That was an overestimate, and the
+gate is what corrected it: the categorical ramp is **brand-invariant**. Only
+`:root` declares `cat-1..12`; neither Navy nor any DBIM preview overrides one.
+DBIM does override the sixteen semantic and structural chart tokens (trend,
+diverging, grid, axis, tooltip, region), so only the categorical-vs-semantic
+sweep is per-brand. With no dark theme yet, the real surface today is twelve
+slots once, plus three brands' semantic inks.
+
+That makes the gate cheaper than feared and the rules no weaker. Each must hold:
 
 - ≥ 3:1 contrast between adjacent categorical swatches
 - ≥ 3:1 against both the base and elevated surface of its theme
@@ -345,12 +390,42 @@ palettes**, each of which must satisfy:
 - no categorical slot within a hue threshold of a semantic ink
 
 Nobody can review that by eye, and a design review that claims to have is not
-telling the truth. This ships as a build gate in `packages/tokens`, alongside the
-existing Tier-1 leakage test, and it fails the build.
+telling the truth. It ships as `packages/tokens/test/chart-palette.test.mjs`,
+alongside the existing Tier-1 leakage test, and it fails the build.
 
-**Build it now against the current 6 brand modes and one theme.** Proving the gate
-while its cross-product is half-size is the whole reason to do it before dark
-mode rather than with it.
+**What it found on its first run**, beyond the `cat-3`/`trend-up` identity above:
+
+- The ramp held for five slots, not the eight this document had claimed.
+- **It failed colour-vision deficiency at every slot count, including three.**
+  There was no cap at which the shipping ramp was CVD-safe. The worst case was
+  protanopia collapsing `cat-2` and `cat-9` to dE 1.0 — effectively one colour.
+  Within even the first five, deuteranopia merged `cat-1` (blue) and `cat-4`
+  (purple) to dE 5.7, the most consequential single pair because blue and purple
+  are the commonest defaults for a two-series chart.
+
+**Both are now fixed, by regenerating the ramp rather than by moving a
+threshold.** The search was constrained to what the estate actually needs — gov
+blue anchored at slot 1, every slot ≥ 3:1 on both the base and elevated surface,
+every slot clear of the semantic inks, chroma and lightness bounded so the result
+reads as a government palette rather than a test pattern — and then solved for
+the largest CVD-safe set. That set is nine.
+
+| | before | after |
+|---|---|---|
+| Mutually distinguishable slots | 5 | **9** |
+| Colliding pairs across all 12 | 4 | **0** |
+| Worst CVD separation, safe range | dE 5.7 (over 5 slots) | **dE 8.0 (over 9)** |
+| Slots clear of every semantic ink | 11 of 12 | **12 of 12** |
+
+The measured state is held as **ratchets**: the numbers are recorded, may only
+improve, and the gate fails if anything gets worse *or* if a number improves
+without the baseline being tightened.
+
+**Rule 4 remains load-bearing even now.** Nine CVD-safe slots is a real result,
+but it is nine — a chart with more series, or slots 10-12, is outside the
+guarantee. Direct labelling, distinct markers, pattern fills and the
+screen-reader table are what actually carry the data; the ramp is a convenience
+on top of them.
 
 ### Dark mode — deferred values, fixed structure
 

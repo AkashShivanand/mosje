@@ -29,7 +29,7 @@ export const META = {
     "primaryScale",
     "neutralScale"
   ],
-  "worstChartSeries": 3.79,
+  "worstChartSeries": 3.52,
   "generatedFrom": "packages/tokens/dist/tokens.css"
 } as const;
 
@@ -1412,68 +1412,68 @@ export const CHART = {
     {
       "n": 2,
       "token": "chart/cat/2",
-      "value": "#e1560f",
-      "onPage": 3.79
+      "value": "#a25a00",
+      "onPage": 5.25
     },
     {
       "n": 3,
       "token": "chart/cat/3",
-      "value": "#046a38",
-      "onPage": 6.72
+      "value": "#007668",
+      "onPage": 5.54
     },
     {
       "n": 4,
       "token": "chart/cat/4",
-      "value": "#7e22ce",
-      "onPage": 6.98
+      "value": "#930121",
+      "onPage": 9.26
     },
     {
       "n": 5,
       "token": "chart/cat/5",
-      "value": "#0e7490",
-      "onPage": 5.36
+      "value": "#719348",
+      "onPage": 3.52
     },
     {
       "n": 6,
       "token": "chart/cat/6",
-      "value": "#b45309",
-      "onPage": 5.02
+      "value": "#b671a6",
+      "onPage": 3.56
     },
     {
       "n": 7,
       "token": "chart/cat/7",
-      "value": "#be185d",
-      "onPage": 6.04
+      "value": "#7261a8",
+      "onPage": 5.26
     },
     {
       "n": 8,
       "token": "chart/cat/8",
-      "value": "#1558b0",
-      "onPage": 6.87
+      "value": "#323ca8",
+      "onPage": 8.95
     },
     {
       "n": 9,
       "token": "chart/cat/9",
-      "value": "#4d7c0f",
-      "onPage": 4.99
+      "value": "#5a406e",
+      "onPage": 8.77
     },
     {
       "n": 10,
       "token": "chart/cat/10",
-      "value": "#9f1239",
-      "onPage": 8.02
+      "value": "#594d00",
+      "onPage": 8.45
     },
     {
       "n": 11,
       "token": "chart/cat/11",
-      "value": "#0f766e",
-      "onPage": 5.47
+      "value": "#c02865",
+      "onPage": 5.63
     },
     {
       "n": 12,
       "token": "chart/cat/12",
-      "value": "#475569",
-      "onPage": 7.58
+      "value": "#4c90ac",
+      "onPage": 3.56
     }
   ],
   "sequential": [
