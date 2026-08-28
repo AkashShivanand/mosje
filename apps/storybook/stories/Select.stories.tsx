@@ -92,3 +92,21 @@ export const GroupedChildren: Story = {
     </Select>
   ),
 };
+
+/**
+ * **`appearance="filter"`** — the same control, sized and weighted for a filter
+ * bar rather than a form.
+ *
+ * The distinction is what the value *does*, not how it looks. In a form the
+ * select holds an answer the applicant is submitting, so it carries the height
+ * and the label treatment of every other field beside it. In a filter bar it
+ * narrows a view that is already on screen, takes effect immediately, and sits
+ * in a row of sibling controls — so it is more compact and reads as chrome.
+ *
+ * Use `"field"` (the default) inside a form. Reach for `"filter"` only where the
+ * change is instant and reversible; a filter-weighted select in a form implies
+ * the value is not part of what gets submitted.
+ */
+export const FilterAppearance: Story = {
+  args: { appearance: "filter", options: STATES, placeholder: "All states" },
+};

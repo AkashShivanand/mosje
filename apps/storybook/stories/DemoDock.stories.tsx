@@ -213,3 +213,33 @@ export const NoAccountsForThisPath: Story = {
     </>
   ),
 };
+
+/**
+ * **`extraTabs`** — teach the dock about a surface it does not ship knowledge of.
+ *
+ * The dock's three built-in tabs (`signin`, `apps`, `colour`) cover the estate as
+ * it stands. A demo that needs its own controls — seeding a dashboard, toggling
+ * between live and mock data, jumping to a specific record — appends them here
+ * rather than forking the component or mounting a second floating widget beside
+ * it, which is the thing the dock exists to have stopped.
+ *
+ * Ids must not collide with `signin`, `apps` or `colour`. Keep the count low:
+ * the dock is a floating panel on someone's screen during a live demo, not a
+ * settings page.
+ */
+export const WithExtraTabs: Story = {
+  args: {
+    pathname: "/portals/pm-ajay/dashboard",
+    extraTabs: [
+      {
+        id: "data",
+        label: "Data",
+        content: (
+          <p style={{ margin: 0, fontSize: "0.8125rem", lineHeight: 1.5 }}>
+            Switch this dashboard between live figures and the seeded prototype set.
+          </p>
+        ),
+      },
+    ],
+  },
+};
