@@ -178,6 +178,14 @@ export const GROUP = new Set([
   // `chart/grid` (a gridline colour); they are different objects and RULE 2 keeps them apart by
   // position, since a colour role takes a family in position 2.
   "grid",
+  // `brand` is a MARK's own palette — the SAMAVESH wordmark, a partner lockup. It is a group
+  // and not a colour role because it answers a different question: a role says what a colour is
+  // FOR in the interface and re-themes with the brand pack, while a mark colour says what a
+  // logo IS and must never move. That is also why its second segment is an ORGANISATION
+  // (`brand/samavesh/ink`, `brand/digilocker/purple`) where a role would take a family — RULE 2
+  // keeps the two readable apart by position. Added 2026-08-26, when nine of these came out of
+  // Figma's `ref/brand/*` where they had lived hand-made since before the pipeline.
+  "brand",
   // `layout` is PAGE-SKELETON geometry — the fixed measurements a shell needs (bar height,
   // sidebar width), as distinct from `grid`, which describes the column system inside it, and
   // from `container`, which is the content cap. The name matches the published Figma library,

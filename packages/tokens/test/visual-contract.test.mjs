@@ -39,6 +39,19 @@ const actual = resolveContract(cssText);
  * from this list — the compat layer was retargeted, not renamed.
  */
 const RENAMES = {
+  // 2026-08-26 — THE FONT WEIGHTS MOVED FROM TIER 1 TO TIER 2, so `--sa-ref-font-weight-*`
+  // becomes `--sa-font-weight-*`. Not cosmetic: a Figma text style has to NAME a cut, and
+  // while the only cut in the system was a Tier-1 reference, all 24 Noto Sans styles bound a
+  // reference token because there was nothing else to bind. A weight IS a role — a brand pack
+  // that ships a heavier body face changes it — so it belongs beside `font/latin`, which is
+  // where it now sits. `--sa-font-weight-*` is also the name the UX4G parity layer already
+  // reached for, so this closes that gap rather than opening one. Value-preserving by
+  // construction: the numbers are untouched, only the file they are authored in changed.
+  // The four entries were PROVEN value-preserving against the un-regenerated fixture — all
+  // nine assertions passed with the OLD fixture still in place — and only then was it
+  // rebaselined, so per the note at the top of this block they are deleted rather than left
+  // to outlive the move. `git show` this commit to see them.
+
   // 2026-08-18 — THE RADIUS LADDER WAS VALUE-NAMED, matching the spacing ladder renamed the
   // same day. `shape/md` -> `shape/8`, and the hidden Tier-1 `ref/radius/*` with it.
   //

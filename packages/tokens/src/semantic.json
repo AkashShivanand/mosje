@@ -1320,6 +1320,62 @@
       "$type": "fontFamily",
       "$value": "{font.family.mono}",
       "$description": "Tabular and code contexts. A system stack, deliberately not a webfont."
+    },
+    "weight": {
+      "$type": "fontWeight",
+      "$description": "Tier-2 font weights. They were Tier-1 `ref/font/weight/*` until 2026-08-26, and that was the whole reason 24 of the library's text styles bound a reference token: a text style has to name a cut, and no Tier-2 cut existed to name. They are a ROLE, not a raw step \u2014 a brand pack that ships a heavier body face changes them here, and every style follows. Figma has no numeric weight, so the build projects each one to the STYLE NAME its family is addressed by (see FIGMA_FONT_STYLES).",
+      "light": {
+        "$value": 300,
+        "$description": "300 \u2014 the ICON cut, and the only place the estate uses it. Every Figma `Icon/*` text style is Material Symbols Rounded / Light and `<Icon>` defaults to 300, so this is the one token both read. NOT for prose: 300 on Noto Sans at body sizes thins the stroke below what the ramp is drawn for."
+      },
+      "regular": {
+        "$value": 400,
+        "$description": "Body copy and anything that is read rather than scanned."
+      },
+      "medium": {
+        "$value": 500,
+        "$description": "Titles and labels \u2014 the weight that separates a heading from its paragraph without shouting."
+      },
+      "semibold": {
+        "$value": 600,
+        "$description": "Headlines, and the emphasised cut of body copy."
+      },
+      "bold": {
+        "$value": 700,
+        "$description": "Reserved. The estate's headings stop at semibold; bold is for the rare in-line emphasis a heading cannot carry."
+      },
+      "displayMedium": {
+        "$value": 500,
+        "$description": "The Display cut at Medium \u2014 500 on `Noto Sans Display` for the 40-80px ramp. It is a SEPARATE token from `medium` because Figma does not model the Display cut as a family: it is the STYLE string \"Display Medium\" of Noto Sans, which is why the build special-cases this one name instead of projecting 500 to \"Medium\". In CSS the same pairing is `font/display` plus this weight."
+      }
+    },
+    "icon": {
+      "$type": "fontFamily",
+      "$value": "{font.family.icon}",
+      "$description": "Material Symbols Rounded \u2014 the face every icon glyph renders in. Bind this from `.material-symbols-rounded`, never the Tier-1 primitive. The `@font-face` rule in icons.css still names the family literally because a font-face descriptor cannot take a custom property; that literal is the font LOADER, this token is what everything else reads."
+    }
+  },
+  "brand": {
+    "$type": "color",
+    "$description": "MARK COLOURS \u2014 the fixed palette of a logo, not a role in the interface. They are Tier 2 and they alias NOTHING, which is the one place in this file where a literal is the correct answer: a mark does not re-colour when the brand pack changes, because the mark IS the brand. That is also why they belong in the mode-less Static collection rather than in Color \u2014 a value that must never move should not sit in a collection whose whole purpose is moving. Authored here on 2026-08-26; the library had carried them as hand-made `ref/brand/*` variables since before the pipeline, with a codeSyntax pointing at `--sa-ref-brand-samavesh-*` names that had never existed in any stylesheet. USE THEM ONLY inside the mark they belong to. The SAMAVESH ink is #1F2428 and the estate's text ink is #1E2124 \u2014 two colours that look identical in review and are not the same, which is exactly why the mark needs its own token rather than borrowing `text/neutral/base`.",
+    "samavesh": {
+      "ink": {
+        "$value": "#1f2428",
+        "$description": "The wordmark's own ink. NOT `text/neutral/base` (#1E2124) \u2014 close enough to pass a glance, far enough to be a defect."
+      },
+      "blue": { "$value": "#06038d" },
+      "green": { "$value": "#046a38" },
+      "orange": { "$value": "#ff671f" },
+      "saffron": { "$value": "#ed8a1d" },
+      "navy": { "$value": "#003366" },
+      "white": { "$value": "#ffffff" },
+      "black": { "$value": "#000000" }
+    },
+    "digilocker": {
+      "purple": {
+        "$value": "#5330e6",
+        "$description": "DigiLocker's own purple, for the DigiLocker lockup only. A partner's colour is theirs, so it is a constant here and never a role."
+      }
     }
   },
   "leading": {
@@ -1487,12 +1543,14 @@
     "neutral": {
       "boldest": {
         "$value": "rgba(30, 33, 36, 0.5)",
+        "$description": "The scrim behind a modal \u2014 neutral 800 at 50%. The NAVY line below is structural, not stylistic: Figma cannot express \"alias plus alpha\", so a translucent token can only be a LITERAL, and a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed. Without it, Navy inherited the BLUE neutral (#1E2124 instead of #1E2024) and the scrim was quietly the wrong brand \u2014 invisible in review, wrong in every Navy screenshot. Authoring the second value is what makes the exporter generate a brand-aware companion in Palette (which does carry the brand modes) and alias this token to it. Every other rgba() in this file is exposed to the same trap.",
         "$extensions": {
           "mosje": {
             "themes": {
               "dark": "rgba(0, 0, 0, 0.6)"
             },
             "colorModes": {
+              "navy": "rgba(30, 32, 36, 0.5)",
               "dbim-blue": "rgba(21, 2, 2, 0.5)",
               "dbim-burgundy": "rgba(21, 2, 2, 0.5)",
               "dbim-purple": "rgba(21, 2, 2, 0.5)",

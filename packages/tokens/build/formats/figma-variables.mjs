@@ -189,6 +189,10 @@ function collectionFor(path, tier, type) {
   if (head === "size") return "Space";
   // Effect and viewport constants: mode-less, and neither is a spacing or a colour.
   if (head === "blur" || head === "breakpoint") return "Static";
+  // Mark colours. Static because a logo's palette must NOT move: it is mode-less on purpose,
+  // and putting it in Color — a collection whose job is to vary — would invite exactly the
+  // brand-follows-the-mark bug these tokens exist to prevent.
+  if (head === "brand") return "Static";
   // `radius` is the Tier-1 scale; `shape` is the Tier-2 group that aliases it and is what a
   // designer should bind to. Both belong in the Radius collection — the tier stays legible in
   // the variable name (`ref/radius/md` vs `shape/md`), exactly as it does in CSS.
@@ -320,8 +324,33 @@ export function figmaNameFor(path, tier = "sys", type) {
   return { collection, name: canonicalFigmaName(path, tier) };
 }
 
+/**
+ * The two type families whose Figma name must follow their CSS name, not their file.
+ *
+ * `font.role.*` and `font.tracking.*` are authored in primitive.json, so `tierOfFile` calls
+ * them Tier 1 — but `buildResponsiveType()` ships them as the FLAT `--sa-type-*` scale, with
+ * no `ref` marker, and that is the name apps consume and documentation quotes. So one token
+ * carried two tiers: `--sa-type-display-1-size` in code (Tier 2) and `ref/font/role/display/1/size`
+ * in Figma (Tier 1). A designer binding a text style had nothing else to bind, which is how
+ * all 24 Noto Sans styles came to sit on `ref/*` — not carelessness, but the only name the
+ * library offered.
+ *
+ * Project them onto the name the stylesheet already uses. `font/role/display/1/size` becomes
+ * `type/display/1/size` and `font/tracking/heading` becomes `type/heading/tracking`, which is
+ * exactly what `fromCssName("--sa-type-display-1-size")` parses back to — so the library and
+ * the stylesheet finally agree, and binding one is no longer a tier violation.
+ */
+function typeScaleName(path) {
+  if (path[0] !== "font") return null;
+  if (path[1] === "role") return ["type", ...path.slice(2)];
+  if (path[1] === "tracking") return ["type", ...path.slice(2), "tracking"];
+  return null;
+}
+
 /** The tier marker is the first segment for Tier 1 and Tier 3; Tier 2 is unmarked (§4.1). */
 export function canonicalFigmaName(path, tier) {
+  const typeScale = typeScaleName(path);
+  if (typeScale) return typeScale.join("/");
   return (tier === "sys" ? path : [tier, ...path]).join("/");
 }
 
@@ -451,7 +480,7 @@ function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
   // projected as one. Figma has no numeric weight: a text style selects a cut by STYLE NAME,
   // so the variable must be a STRING scoped FONT_STYLE. See figmaFontStyle.
   if (token.path?.[0] === "font" && token.path?.[1] === "weight") {
-    return { type: "STRING", value: figmaFontStyle(raw) };
+    return { type: "STRING", value: figmaFontStyle(raw, token.path?.[2]) };
   }
   if (t.type === "FLOAT") return { type: "FLOAT", value: t.number, unit: t.unit };
   if (token.path?.[0] === "font" && token.path?.[1] === "family") {
@@ -484,7 +513,17 @@ const FIGMA_FONT_STYLES = new Map([
   [600, "SemiBold"], [700, "Bold"], [800, "ExtraBold"], [900, "Black"],
 ]);
 
-function figmaFontStyle(weight) {
+/**
+ * Cuts Figma addresses by a compound style name, which no number can reach.
+ *
+ * `displayMedium` is 500 on the Display cut. Figma models that cut as a STYLE of Noto Sans
+ * ("Display Medium"), not as a family, so projecting its 500 would give "Medium" — a real
+ * style, on the wrong drawing, silently. Keyed by the token's own name for that reason.
+ */
+const FIGMA_STYLE_BY_NAME = new Map([["displayMedium", "Display Medium"]]);
+
+function figmaFontStyle(weight, name) {
+  if (name && FIGMA_STYLE_BY_NAME.has(name)) return FIGMA_STYLE_BY_NAME.get(name);
   const n = Number(weight);
   if (Number.isFinite(n) && FIGMA_FONT_STYLES.has(n)) return FIGMA_FONT_STYLES.get(n);
   return String(weight);

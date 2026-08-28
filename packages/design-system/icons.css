@@ -49,7 +49,15 @@
 }
 
 .material-symbols-rounded {
-  font-family: "Material Symbols Rounded", sans-serif;
+  /*
+   * The family is a TOKEN here, a literal in the @font-face above, and that asymmetry is
+   * required: a font-face descriptor names the face being defined, so it cannot be a custom
+   * property — there would be nothing to resolve it against. The literal is the LOADER; this
+   * token is what everything that renders reads, and it is the same value the seven Figma
+   * `Icon/*` text styles bind. The fallback keeps the class working when tokens.css is not
+   * loaded, which is the case for an app that imports icons.css on its own.
+   */
+  font-family: var(--sa-font-icon, "Material Symbols Rounded", sans-serif);
   font-style: normal;
   font-weight: normal;
   font-display: block;

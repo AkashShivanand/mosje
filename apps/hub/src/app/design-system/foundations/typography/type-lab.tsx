@@ -156,7 +156,7 @@ function RefTable({ prop }: { prop: Prop }): React.JSX.Element {
       <div className="ty-table-scroll"><table className="ty-table">
         <thead><tr><th>Token</th><th>Value</th><th>Used by</th></tr></thead>
         <tbody>{rows.map(([n, v, u]) => (
-          <tr key={n}><td><Copy text={`--sa-ref-font-weight-${n}`} /></td><td className="num">{v}</td><td className="use">{u}</td></tr>
+          <tr key={n}><td><Copy text={`--sa-font-weight-${n}`} /></td><td className="num">{v}</td><td className="use">{u}</td></tr>
         ))}</tbody>
       </table></div>
     );

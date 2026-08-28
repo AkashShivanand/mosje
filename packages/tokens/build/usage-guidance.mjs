@@ -277,6 +277,14 @@ export function guidanceFor(path, tier, parse) {
     return "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.";
   }
 
+  // MARK colours. The sentence a designer needs here is a warning, not a "use when": the risk
+  // is not picking the wrong step, it is painting interface furniture with a logo's colour —
+  // which then stops following the brand, silently, because a mark is not supposed to move.
+  if (path[0] === "brand") {
+    const owner = path[1] === "samavesh" ? "the SAMAVESH mark" : `the ${path[1]} lockup`;
+    return `A MARK colour \u2014 ${owner}'s own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (\`bg/*\`, \`text/*\`, \`border/*\`, \`icon/*\`).`;
+  }
+
   const grouped = groupGuidance(path);
   if (grouped) return grouped;
 
@@ -291,8 +299,9 @@ const TYPE_STYLE_FOLDER = { display: "Display", headline: "Headline", title: "Ti
 /**
  * Type primitives point at the TEXT STYLE, never at `type/*`.
  *
- * `type/*` is the CSS namespace (`--ds-type-display-1-size`). It has never existed as a Figma
- * variable — a search for "type/" in the picker returns nothing — yet this sentence was
+ * `type/*` is the CSS namespace (`--sa-type-display-1-size`). It did not exist as a Figma
+ * variable when this was written — a search for "type/" in the picker returned nothing, yet
+ * this sentence was
  * attached to all 108 variables in the Type collection, sending every designer who read it
  * after something unfindable. The sentence was written for a stylesheet reader and landed on
  * a canvas reader.

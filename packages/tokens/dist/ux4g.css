@@ -343,12 +343,12 @@
   --ux4g-ff-display: var(--ux4g-font-family-display);
   --ux4g-font-family-base: "Noto Sans",system-ui,sans-serif;
   --ux4g-font-family-display: "Noto Sans Display","Noto Sans",sans-serif;
-  --ux4g-font-weight-bold: var(--sa-ref-font-weight-bold);
-  --ux4g-font-weight-display-bold: var(--sa-ref-font-weight-bold);
-  --ux4g-font-weight-display-semibold: var(--sa-ref-font-weight-semibold);
-  --ux4g-font-weight-medium: var(--sa-ref-font-weight-medium);
-  --ux4g-font-weight-regular: var(--sa-ref-font-weight-regular);
-  --ux4g-font-weight-semibold: var(--sa-ref-font-weight-semibold);
+  --ux4g-font-weight-bold: var(--sa-font-weight-bold);
+  --ux4g-font-weight-display-bold: var(--sa-font-weight-bold);
+  --ux4g-font-weight-display-semibold: var(--sa-font-weight-semibold);
+  --ux4g-font-weight-medium: var(--sa-font-weight-medium);
+  --ux4g-font-weight-regular: var(--sa-font-weight-regular);
+  --ux4g-font-weight-semibold: var(--sa-font-weight-semibold);
   --ux4g-fs-11: var(--ux4g-size-11);
   --ux4g-fs-12: var(--ux4g-size-12);
   --ux4g-fs-14: var(--ux4g-size-14);
