@@ -20,11 +20,16 @@ if (typeof window !== "undefined") {
 // Categorical series from the DS chart scale — these are injected into inline
 // styles on DOM nodes (marker divs + legend swatches), so var() resolves.
 const FACILITY_COLORS: Record<FacilityType, string> = {
+  /* Slots 1-5, IN ORDER. Only the first nine slots are guaranteed mutually
+     distinguishable under a colour-vision deficiency; 10-12 are extension
+     colours with no such guarantee. This map used to reach to slot 10 for its
+     fifth category, which put ATF and DDAC at dE 1.5 under deuteranopia — one
+     colour, on a public facility locator. Take them in order. */
   IRCA: "var(--sa-chart-cat-1)",
-  CPLI: "var(--sa-chart-cat-3)",
-  ODIC: "var(--sa-chart-cat-6)",
+  CPLI: "var(--sa-chart-cat-2)",
+  ODIC: "var(--sa-chart-cat-3)",
   DDAC: "var(--sa-chart-cat-4)",
-  ATF: "var(--sa-chart-cat-10)",
+  ATF: "var(--sa-chart-cat-5)",
 };
 
 const FACILITY_LABELS: Record<FacilityType, string> = {

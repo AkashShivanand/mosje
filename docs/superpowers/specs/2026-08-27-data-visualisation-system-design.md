@@ -327,6 +327,24 @@ CVD-guaranteed, and reached only by a consumer that has already ignored the cap.
 Raising the cap again requires regenerating the ramp again — and
 `chart-palette.test.mjs` fails if the published count is raised without it.
 
+**1a · A guarantee over the ramp is not a guarantee over a chart.** Slots 1–9
+are guaranteed mutually distinguishable; 10–12 are extension colours with no such
+guarantee. That is a fact about the *ramp*, and it does not survive a consumer
+picking 1, 3, 4, 6 and 10.
+
+This is not hypothetical — it is what happened. Regenerating the ramp took it
+from zero colour-blind-safe slots to nine, and the NMBA de-addiction facility
+locator, a **public** citizen-facing map, did not improve: dE 1.2 to dE 1.5 under
+deuteranopia, still one colour, because it had hand-picked five slots including
+slot 10. Three of the four consumers in the estate were doing the same. Moving
+them onto slots taken in order took that page to dE 8.0.
+
+So the palette work was necessary and not sufficient. `tools/chart-slot-order/
+check.mjs` enforces the boundary that always holds — **never reach past slot
+9** — and deliberately does not enforce a no-gaps prefix, because a single file
+often holds several independent charts and which colours share a comparison set
+is not decidable from static text.
+
 **2 · Semantic hue is reserved.** In government reporting green and red mean
 approved and rejected, above and below target. A categorical slot that is green
 makes an arbitrary series read as "good" — which, on a caste-category or

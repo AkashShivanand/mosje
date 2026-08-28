@@ -23,10 +23,10 @@ export const CENTRE_TYPE_META: Record<
 > = {
   IRCA: { label: "Integrated Rehabilitation Centre for Addicts", short: "Inpatient counselling & treatment", color: "var(--sa-chart-cat-1)", count: 282 },
   DDAC: { label: "District De-addiction Centre", short: "One-stop centre \u2014 all services", color: "var(--sa-chart-cat-4)", count: 91 },
-  ATF: { label: "Addiction Treatment Facility", short: "Medical treatment facility", color: "var(--sa-chart-cat-10)", count: 56 },
-  ODIC: { label: "Outreach & Drop-in Centre", short: "Screening, assessment & counselling", color: "var(--sa-chart-cat-6)", count: 33 },
-  SLCA: { label: "State Level Coordinating Agency", short: "State coordination & monitoring", color: "var(--sa-chart-cat-11)", count: 15 },
-  CPLI: { label: "Community Peer Led Intervention", short: "Youth-focused prevention", color: "var(--sa-chart-cat-3)", count: 10 },
+  ATF: { label: "Addiction Treatment Facility", short: "Medical treatment facility", color: "var(--sa-chart-cat-5)", count: 56 },
+  ODIC: { label: "Outreach & Drop-in Centre", short: "Screening, assessment & counselling", color: "var(--sa-chart-cat-3)", count: 33 },
+  SLCA: { label: "State Level Coordinating Agency", short: "State coordination & monitoring", color: "var(--sa-chart-cat-6)", count: 15 },
+  CPLI: { label: "Community Peer Led Intervention", short: "Youth-focused prevention", color: "var(--sa-chart-cat-2)", count: 10 },
 };
 
 export const CENTRE_TYPE_ORDER: CentreType[] = ["IRCA", "DDAC", "ATF", "ODIC", "SLCA", "CPLI"];
