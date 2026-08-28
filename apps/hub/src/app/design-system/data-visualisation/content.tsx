@@ -472,12 +472,21 @@ export function DataVisualisationContent(): React.JSX.Element {
         </Specimen>
       </SpecimenGrid>
 
-      <Callout type="warning" title="Colour is never the only encoding">
+      <Callout type="warning" title="Colour is never the only encoding — and here is the measurement">
         Every specimen above is readable without hue: bars carry length, lines carry
         position and marker shape, the choropleth carries a labelled legend, and each chart
-        carries a screen-reader table with the exact values. Where a chart has six series
+        carries a screen-reader table with the exact values. Where a chart has five series
         or fewer, direct labelling is preferred over a legend — for a citizen-facing
         audience it is the single highest-value default in this system.
+        <br />
+        <br />
+        Five, not six, because the palette gate measured it. Slots 1&ndash;5 of the
+        categorical ramp are mutually distinguishable; collision starts at slot 6, where two
+        oranges sit 8 degrees apart. And under a colour-vision deficiency the ramp does not
+        hold at <em>any</em> count &mdash; deuteranopia collapses the blue and purple of
+        slots 1 and 4, the commonest pair on a two-series chart. That is why this rule is
+        load-bearing rather than a nicety: the colour layer alone is not sufficient, and
+        never was. See <code>packages/tokens/test/chart-palette.test.mjs</code>.
       </Callout>
     </>
   );

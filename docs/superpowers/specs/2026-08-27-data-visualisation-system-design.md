@@ -305,10 +305,22 @@ ramp** (`50`–`900`), a **7-step diverging ramp**, plus grid, axis, tooltip,
 trend and region inks. 38 `--sa-chart-*` tokens in total. Four rules govern
 their use.
 
-**1 · Twelve slots is not twelve distinguishable series.** Past six to eight,
-readers stop telling colours apart. The scene builder caps rendered series at 8
-and buckets the remainder as `Other`, with the full breakdown preserved in the SR
-table. This is a refusal, and it is deliberate.
+**1 · Twelve slots is not twelve distinguishable series — it is FIVE.** This
+was written as "six to eight" from general design lore. The gate then measured
+this palette and the lore was wrong for it: slots 1-5 are mutually separated,
+and collision starts at slot 6, where `cat-2` (#e1560f) meets `cat-6` (#b45309)
+— two oranges, 8 degrees and dE 8.8 apart.
+
+That is not a flaw in these particular colours. All twelve sit at near-constant
+lightness (L 44-63), so they are told apart by hue alone, and twelve hues at one
+lightness cannot all be far apart. Any 12-colour ramp built this way has the same
+ceiling; the number is a property of the construction, not of the choices.
+
+So the scene builder caps rendered series at **5** and buckets the remainder as
+`Other`, with the full breakdown preserved in the SR table. This is a refusal,
+and it is deliberate. Raising the cap requires regenerating the ramp against
+lightness as well as hue — and `chart-palette.test.mjs` fails if the published
+count is raised without it.
 
 **2 · Semantic hue is reserved.** In government reporting green and red mean
 approved and rejected, above and below target. A categorical slot that is green
@@ -335,8 +347,16 @@ in the system, and it is on by default for ≤ 6 series.
 
 ### The contrast gate
 
-Twelve categorical slots × six `data-brand` modes × two themes is **144
-palettes**, each of which must satisfy:
+An earlier draft of this section put the cross-product at **144 palettes** —
+twelve slots × six brand modes × two themes. That was an overestimate, and the
+gate is what corrected it: the categorical ramp is **brand-invariant**. Only
+`:root` declares `cat-1..12`; neither Navy nor any DBIM preview overrides one.
+DBIM does override the sixteen semantic and structural chart tokens (trend,
+diverging, grid, axis, tooltip, region), so only the categorical-vs-semantic
+sweep is per-brand. With no dark theme yet, the real surface today is twelve
+slots once, plus three brands' semantic inks.
+
+That makes the gate cheaper than feared and the rules no weaker. Each must hold:
 
 - ≥ 3:1 contrast between adjacent categorical swatches
 - ≥ 3:1 against both the base and elevated surface of its theme
@@ -345,12 +365,31 @@ palettes**, each of which must satisfy:
 - no categorical slot within a hue threshold of a semantic ink
 
 Nobody can review that by eye, and a design review that claims to have is not
-telling the truth. This ships as a build gate in `packages/tokens`, alongside the
-existing Tier-1 leakage test, and it fails the build.
+telling the truth. It ships as `packages/tokens/test/chart-palette.test.mjs`,
+alongside the existing Tier-1 leakage test, and it fails the build.
 
-**Build it now against the current 6 brand modes and one theme.** Proving the gate
-while its cross-product is half-size is the whole reason to do it before dark
-mode rather than with it.
+**What it found on its first run**, beyond the `cat-3`/`trend-up` identity above:
+
+- The ramp holds for five slots, not eight (rule 1).
+- **It fails colour-vision deficiency at every slot count, including three.**
+  There is no cap at which the current ramp is CVD-safe. The worst case is
+  protanopia collapsing `cat-2` and `cat-9` to dE 1.0 — effectively one colour.
+  Within even the first five, deuteranopia merges `cat-1` (blue) and `cat-4`
+  (purple) to dE 5.7, which is the most consequential single pair because blue
+  and purple are the commonest defaults for a two-series chart.
+
+Neither is repairable by a test, so both are held as **ratchets**: the measured
+numbers are recorded, may only improve, and the gate fails if anything gets
+worse *or* if a number improves without the baseline being tightened. Repair
+means regenerating the categorical ramp against CVD and lightness as well as
+hue — a design change that must travel to the Figma library in the same pass and
+that repaints live surfaces.
+
+**This is why rule 4 is load-bearing rather than a nicety.** A palette that fails
+CVD at three slots means the colour layer alone is insufficient, which is exactly
+what "colour is never the only encoding" already assumes. Direct labelling,
+distinct markers, pattern fills and the screen-reader table are what actually
+carry the data; the ramp is a convenience on top of them.
 
 ### Dark mode — deferred values, fixed structure
 
