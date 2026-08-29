@@ -47,6 +47,10 @@ graphify-out/
 .graphify_*
 # superpowers plugin scratch/brainstorm cache (tool working dir, not project code)
 .superpowers/
+# Codex CLI per-project config (local tool state, not project code)
+.codex/
+# Serena code-search tool's memory/index for this project (local tool state)
+.serena/
 .qc/
 docs/qc/portals/eutthan-admin/.qc/
 docs/qc/portals/eutthan-admin/_archive/
