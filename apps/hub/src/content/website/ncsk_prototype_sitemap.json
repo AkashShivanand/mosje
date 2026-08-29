@@ -1,0 +1,132 @@
+{
+  "organisation": "National Commission for Safai Karamcharis (NCSK)",
+  "rootUrl": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis",
+  "totalSubpages": 25,
+  "pages": {
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis": {
+      "title": "National Commission for Safai Karamcharis (NCSK)",
+      "slug": "national-commission-for-safai-karamcharis",
+      "sectionsCount": 3
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us": {
+      "title": "About Us",
+      "slug": "national-commission-for-safai-karamcharis/about-us",
+      "sectionsCount": 3
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable": {
+      "title": "Case Which Legal Heir Not Traceable",
+      "slug": "national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/citizen-charter": {
+      "title": "Citizen Charter",
+      "slug": "national-commission-for-safai-karamcharis/citizen-charter",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/contact-us": {
+      "title": "Contact Us",
+      "slug": "national-commission-for-safai-karamcharis/contact-us",
+      "sectionsCount": 0
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/current-commission": {
+      "title": "Current Commission",
+      "slug": "national-commission-for-safai-karamcharis/current-commission",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/details-of-previous-commissions": {
+      "title": "Details of Previous Commissions:",
+      "slug": "national-commission-for-safai-karamcharis/details-of-previous-commissions",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/faq": {
+      "title": "FAQ",
+      "slug": "national-commission-for-safai-karamcharis/faq",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/impact-of-commission-intervention": {
+      "title": "Impact of Commission Intervention",
+      "slug": "national-commission-for-safai-karamcharis/impact-of-commission-intervention",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/main-sewer-death": {
+      "title": "State-wise Records for Deaths / Compensation",
+      "slug": "national-commission-for-safai-karamcharis/main-sewer-death",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/meetings": {
+      "title": "Meetings",
+      "slug": "national-commission-for-safai-karamcharis/meetings",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/monitoring-committees": {
+      "title": "Monitoring Committees",
+      "slug": "national-commission-for-safai-karamcharis/monitoring-committees",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/ncsk-secretariat": {
+      "title": "NCSK Secretariat",
+      "slug": "national-commission-for-safai-karamcharis/ncsk-secretariat",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions": {
+      "title": "Rajya Sabha Questions",
+      "slug": "national-commission-for-safai-karamcharis/rajya-sabha-questions",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/right-to-information": {
+      "title": "Right to Information",
+      "slug": "national-commission-for-safai-karamcharis/right-to-information",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/sanitary-insanitary-latrines": {
+      "title": "Sanitary Insanitary Latrines",
+      "slug": "national-commission-for-safai-karamcharis/sanitary-insanitary-latrines",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/sewer-septic-tank-death-in-last-10-yrs": {
+      "title": "Sewer/Septic Tank Death in Last 10 Yrs",
+      "slug": "national-commission-for-safai-karamcharis/sewer-septic-tank-death-in-last-10-yrs",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/state-allocation": {
+      "title": "State Allocation",
+      "slug": "national-commission-for-safai-karamcharis/state-allocation",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/state-commissions-designated-agencies": {
+      "title": "State Commissions/Designated Agencies",
+      "slug": "national-commission-for-safai-karamcharis/state-commissions-designated-agencies",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/suo-motu-cognizance-by-the-commission": {
+      "title": "Suo-motu Cognizance by the Commission",
+      "slug": "national-commission-for-safai-karamcharis/suo-motu-cognizance-by-the-commission",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/total-no-of-deaths-compensation": {
+      "title": "Total No. Of Deaths / Compensation",
+      "slug": "national-commission-for-safai-karamcharis/total-no-of-deaths-compensation",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/total-no-of-deaths-compensation-list": {
+      "title": "Total No. Of Deaths / Compensation List",
+      "slug": "national-commission-for-safai-karamcharis/total-no-of-deaths-compensation-list",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission": {
+      "title": "Tour by the Commission",
+      "slug": "national-commission-for-safai-karamcharis/tour-by-the-commission",
+      "sectionsCount": 4
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/vigilance-committees": {
+      "title": "Vigilance Committees",
+      "slug": "national-commission-for-safai-karamcharis/vigilance-committees",
+      "sectionsCount": 1
+    },
+    "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/ncsk-grievances": {
+      "title": "NCSK Grievances & Redressal",
+      "slug": "national-commission-for-safai-karamcharis/ncsk-grievances",
+      "sectionsCount": 1
+    }
+  }
+}

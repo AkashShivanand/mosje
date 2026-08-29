@@ -147,11 +147,18 @@ const NAV: NavItem[] = [
   },
 ];
 
-export function Header() {
+export interface HeaderProps {
+  /** Hide the Admin Login button in the header actions. Defaults to false (or auto-hidden on /portals). */
+  hideAdminLogin?: boolean;
+}
+
+export function Header({ hideAdminLogin = false }: HeaderProps = {}) {
   const pathname = usePathname();
   const router = useRouter();
   const { lang, t } = useTranslation();
   const [langOpen, setLangOpen] = React.useState(false);
+
+  const shouldHideAdmin = hideAdminLogin || pathname === "/portals" || pathname?.startsWith("/portals");
 
   /* The masthead field holds its own text; this mirrors it so the suggestions can
      be fetched for it. The field stays the source of truth for what is TYPED —
@@ -226,9 +233,11 @@ export function Header() {
       ]}
       nav={nav}
       actions={
-        <Link href="/website/admin" className={buttonClasses()}>
-          {t("Admin Login")}
-        </Link>
+        shouldHideAdmin ? undefined : (
+          <Link href="/website/admin" className={buttonClasses()}>
+            {t("Admin Login")}
+          </Link>
+        )
       }
     />
     <LanguageDialog open={langOpen} onClose={() => setLangOpen(false)} />

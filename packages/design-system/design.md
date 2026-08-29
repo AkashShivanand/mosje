@@ -1913,6 +1913,21 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 
 ---
 
+#### ErrorView (Feedback)
+**Purpose**: The full-page dead end — what renders from a `not-found.tsx` or an `error.tsx` boundary when a whole route failed, rather than one region of a working page. Presets for `404`, `500`, `403` and `maintenance`, each with badge, icon, headline, body, optional search, up to two actions, optional diagnostics, and a row of wayfinding cards.
+**Why it exists**: the estate consolidated **13 legacy websites**, so a dead URL here is far more often a *moved* page than a missing one. A 404 that only apologises leaves the citizen guessing whether the scheme was renamed, relocated or never existed — and the ones who guess wrong leave. The wayfinding cards name the four places a lost page most likely moved to, which is the part that actually recovers the visit.
+**Variants**: `kind` = `404` (default) | `500` | `403` | `maintenance`
+**Key props**: `kind`, `badge`, `title`, `description`, `icon`, `searchUrl`, `primaryAction`, `secondaryAction`, `errorDetails`, `wayfindingLinks`, `className`
+**When NOT to reach for it**: not for a failure *inside* a working page. A panel that failed to load is an `Alert`; a filter that matched nothing is an `EmptyState` with `no-results`; a card with no figure to draw is `CardState`. Reaching for ErrorView there replaces a page the reader can still use with one they cannot.
+**Rules**:
+- **The preset is a starting point, not a straitjacket.** Every value it sets is individually overridable; `kind` exists so the four common cases do not each get hand-written copy that drifts apart.
+- **Offer search only where searching could help.** `404` gets it, because the page probably moved and the citizen can find it. Pass `searchUrl={null}` on `500`, `403` and `maintenance` — a server fault is not something the reader can route around, and a box that cannot help costs them an attempt before they learn it was never going to work. `null` removes the field rather than disabling it, for the same reason.
+- **`primaryAction` takes `onClick` as well as `href`.** That is what lets an `error.tsx` boundary wire "Try Again" to Next's `reset()` — a retry that re-renders in place instead of a link that reloads and loses state.
+- **`errorDetails` is staff-facing, and it is NOT environment-gated.** It renders inside a collapsed `<details>`, but the string is in the delivered HTML whether or not the reader opens it, and in production exactly as in dev. Pass a digest on citizen-facing surfaces if you must, never a raw stack or an internal message.
+- **Override `wayfindingLinks` where the surface knows better.** The defaults are estate-wide (schemes, tenders, officials directory, portals hub). A citizen who hit a dead end inside a scholarship journey is better served by scholarship destinations than by procurement tenders.
+
+---
+
 ### Data Display
 
 #### Card / CardHeader / CardBody / CardFooter / CardTitle / CardSubtitle

@@ -404,4 +404,537 @@
     position: relative;
     z-index: 1;
   }
+
+  /* ── Highlights (2x2 About cards) ────────────────────────────────────────── */
+
+  .orgd__highlights {
+    margin: var(--sa-stack-32) 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--sa-stack-20);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .orgd__highlight-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-24);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-brand-secondary-subtler);
+  }
+
+  /* ── Leadership ─────────────────────────────────────────────────────────── */
+
+  .orgd__leaders {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--sa-stack-24);
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+
+  .orgd__leader-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--sa-padding-24);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  .orgd__leader-frame {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin-bottom: var(--sa-stack-16);
+    border-radius: var(--sa-shape-full);
+    overflow: hidden;
+    border: 3px solid var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-neutral-subtle);
+  }
+
+  .orgd__leader-img {
+    object-fit: cover;
+  }
+
+  .orgd__leader-badge {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    white-space: nowrap;
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-brand-primary-base);
+    font-size: var(--sa-type-label-3-size);
+    font-weight: 600;
+  }
+
+  .orgd__leader-name {
+    margin: 0 0 var(--sa-stack-4);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .orgd__leader-role {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Initiatives & Schemes ──────────────────────────────────────────────── */
+
+  .orgd__initiatives {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--sa-stack-20);
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .orgd__initiative-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-24);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  .orgd__initiative-emblem {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .orgd__initiative-title {
+    margin: 0;
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .orgd__initiative-desc {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Featured Links / Pills ─────────────────────────────────────────────── */
+
+  .orgd__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-stack-12);
+  }
+
+  .orgd__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-8) var(--sa-padding-20);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-3-size);
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 150ms ease;
+  }
+
+  .orgd__pill:hover {
+    border-color: var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  /* ── Contact Grid ───────────────────────────────────────────────────────── */
+
+  .orgd__contact-grid {
+    display: grid;
+    gap: var(--sa-stack-20);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .orgd__contact-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-20);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  /* ── Major Activities (Figma 3751:10219) ────────────────────────────────── */
+
+  .orgd__activities {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--sa-stack-20);
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+
+  .orgd__activity-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-24) var(--sa-padding-16);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+
+  @media (hover: hover) {
+    .orgd__activity-card:hover {
+      box-shadow: var(--sa-elevation-raised);
+    }
+  }
+
+  .orgd__activity-card:active {
+    transform: scale(0.98);
+  }
+
+  .orgd__activity-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-padding-80);
+    height: var(--sa-padding-80);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .orgd__activity-title {
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+    text-wrap: balance;
+  }
+
+  .orgd__activity-cta {
+    margin-top: auto;
+  }
+
+  /* ── Horizontal Scheme Cards (Figma 3751:10248) ────────────────────────── */
+
+  .orgd__initiative-card--horizontal {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-20);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+    transition: box-shadow 150ms ease, border-color 150ms ease;
+  }
+
+  @media (min-width: 640px) {
+    .orgd__initiative-card--horizontal {
+      flex-direction: row;
+      align-items: stretch;
+    }
+  }
+
+  .orgd__initiative-media {
+    position: relative;
+    flex-shrink: 0;
+    width: 100%;
+    height: 160px;
+    border-radius: var(--sa-shape-12);
+    overflow: hidden;
+    background-color: var(--sa-bg-neutral-subtle);
+  }
+
+  @media (min-width: 640px) {
+    .orgd__initiative-media {
+      width: 150px;
+      height: auto;
+      min-height: 150px;
+    }
+  }
+
+  .orgd__initiative-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    gap: var(--sa-stack-8);
+  }
+
+  .orgd__initiative-tag {
+    align-self: flex-start;
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    border-radius: var(--sa-shape-4);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-bolder);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  /* ── Resources Bookshelf (Figma 3751:10372) ─────────────────────────────── */
+
+  .orgd__bookshelf {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--sa-stack-20);
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+
+  .orgd__book-card {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .orgd__book-link {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    gap: var(--sa-stack-8);
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .orgd__book-cover {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    border-radius: var(--sa-shape-8);
+    overflow: hidden;
+    border: 1px solid var(--sa-border-neutral-subtle);
+    background-color: var(--sa-bg-neutral-subtle);
+    box-shadow: var(--sa-elevation-card);
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+
+  @media (hover: hover) {
+    .orgd__book-link:hover .orgd__book-cover {
+      transform: translateY(-2px);
+      box-shadow: var(--sa-elevation-raised);
+    }
+  }
+
+  .orgd__book-title {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── Activity Corner (Figma 3751:10452) ─────────────────────────────────── */
+
+  .orgd__updates-grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--sa-stack-20);
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+
+  .orgd__update-card {
+    display: flex;
+    gap: var(--sa-inline-16);
+    padding: var(--sa-padding-20);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  .orgd__date-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    border: 1px solid var(--sa-border-brand-primary-base);
+    text-align: center;
+  }
+
+  .orgd__date-day {
+    font-size: var(--sa-type-title-1-size);
+    line-height: 1;
+    font-weight: 700;
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .orgd__date-month {
+    font-size: var(--sa-type-label-3-size);
+    line-height: 1.2;
+    font-weight: 600;
+    color: var(--sa-text-brand-primary-bolder);
+    text-transform: uppercase;
+    margin-top: var(--sa-stack-2);
+  }
+
+  .orgd__update-content {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    gap: var(--sa-stack-4);
+  }
+
+  .orgd__update-title {
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .orgd__update-desc {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .orgd__update-link {
+    margin-top: var(--sa-stack-6);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: 600;
+    color: var(--sa-text-link-brand-default);
+    text-decoration: none;
+  }
+
+  .orgd__update-link:hover {
+    color: var(--sa-text-link-brand-hover);
+    text-decoration: underline;
+  }
+
+  /* ── Social Media Stream (Figma 3751:10488) ─────────────────────────────── */
+
+  .orgd__social-grid {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--sa-stack-20);
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+
+  .orgd__social-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--sa-padding-20);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-card);
+  }
+
+  .orgd__social-text {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-base);
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* ── State Offices & Map (Figma 3751:10405) ─────────────────────────────── */
+
+  .orgd__state-map-layout {
+    display: grid;
+    gap: var(--sa-stack-24);
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .orgd__state-map-layout {
+      grid-template-columns: 280px 1fr;
+      align-items: start;
+    }
+  }
+
+  .orgd__state-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    max-height: 480px;
+    overflow-y: auto;
+  }
+
+  .orgd__state-card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-neutral-base);
+    transition: border-color 150ms ease, background-color 150ms ease;
+  }
+
+  .orgd__state-card:hover {
+    border-color: var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-brand-primary-subtler);
+  }
+
+  .orgd__map-container {
+    padding: var(--sa-padding-20);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 380px;
+  }
 }

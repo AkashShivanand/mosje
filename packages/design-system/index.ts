@@ -144,6 +144,12 @@ export type { SkeletonProps } from "./components/feedback/skeleton";
 export { Tooltip } from "./components/feedback/tooltip";
 export type { TooltipProps, TooltipSide } from "./components/feedback/tooltip";
 export { EmptyState } from "./components/feedback/empty-state";
+export { ErrorView } from "./components/feedback/error-view";
+export type {
+  ErrorViewProps,
+  ErrorViewKind,
+  WayfindingLink,
+} from "./components/feedback/error-view";
 export { SlaProgressIndicator } from "./components/feedback/sla-progress-indicator";
 export type {
   SlaProgressIndicatorProps,

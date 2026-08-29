@@ -1,0 +1,1280 @@
+[
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 2,
+    "tablesCount": 0
+  },
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/rss.xml",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 2,
+    "tablesCount": 0
+  },
+  {
+    "title": "https://ncsk.nic.in/sites/all/themes/unee/favicon.ico",
+    "legacyUrl": "https://ncsk.nic.in/sites/all/themes/unee/favicon.ico",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 0,
+    "tablesCount": 0
+  },
+  {
+    "title": "Sitemap",
+    "legacyUrl": "https://ncsk.nic.in/site-map",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "शिकायते दर्ज करें",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B6%E0%A4%BF%E0%A4%95%E0%A4%BE%E0%A4%AF%E0%A4%A4/%E0%A4%B6%E0%A4%BF%E0%A4%95%E0%A4%BE%E0%A4%AF%E0%A4%A4-%E0%A4%A6%E0%A4%B0%E0%A5%8D%E0%A4%9C-%E0%A4%95%E0%A4%B0%E0%A5%87%E0%A4%82",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "About NCSK",
+    "legacyUrl": "https://ncsk.nic.in/about-us/about-ncsk",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/about-us/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/about-us",
+    "prototypeSection": "About Us Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Organization Structure",
+    "legacyUrl": "https://ncsk.nic.in/about-us/organization-structure-0",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/about-us/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/about-us",
+    "prototypeSection": "About Us Subpage",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Current Commission",
+    "legacyUrl": "https://ncsk.nic.in/about-us/current-commission",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/current-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/current-commission",
+    "prototypeSection": "Current Commission Directory",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Details of Previous Commissions",
+    "legacyUrl": "https://ncsk.nic.in/about-us/details-previous-commissions",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/details-of-previous-commissions/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/details-of-previous-commissions",
+    "prototypeSection": "Previous Commissions Registry",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "NCSK Secretariat",
+    "legacyUrl": "https://ncsk.nic.in/about-us/ncsk-secretariat",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/ncsk-secretariat/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/ncsk-secretariat",
+    "prototypeSection": "Secretariat Staff Directory",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "State Allocation",
+    "legacyUrl": "https://ncsk.nic.in/about-us/state-allocation-0",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/state-allocation/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/state-allocation",
+    "prototypeSection": "State Allocation Table",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Grievances",
+    "legacyUrl": "https://ncsk.nic.in/about-us/ncsk-grievances",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 2,
+    "tablesCount": 1
+  },
+  {
+    "title": "State Commissions/Designated Agencies",
+    "legacyUrl": "https://ncsk.nic.in/state-commission-designated-agencie",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/state-commissions-designated-agencies/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/state-commissions-designated-agencies",
+    "prototypeSection": "State Commissions & Designated Agencies",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Monitoring Committees",
+    "legacyUrl": "https://ncsk.nic.in/monitoring-committee",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/monitoring-committees/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/monitoring-committees",
+    "prototypeSection": "Monitoring Committees Registry",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Vigilance Committees",
+    "legacyUrl": "https://ncsk.nic.in/vigilance-committee",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/vigilance-committees/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/vigilance-committees",
+    "prototypeSection": "Vigilance Committees Registry",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Sanitary Insanitary Latrines",
+    "legacyUrl": "https://ncsk.nic.in/about-us/sanitary-insanitary-latrines",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/sanitary-insanitary-latrines/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/sanitary-insanitary-latrines",
+    "prototypeSection": "Sanitary & Insanitary Latrines Survey",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Total No. Of Deaths / Compensation",
+    "legacyUrl": "https://ncsk.nic.in/total-no-of-sewer-death",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/main-sewer-death/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/main-sewer-death",
+    "prototypeSection": "State-wise Sewer Death Compensation Registry",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Cases in Which Legal Heir Not Traceable",
+    "legacyUrl": "https://ncsk.nic.in/case-which-legal-heir-not-traceable",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable",
+    "prototypeSection": "Cases Where Legal Heir Not Traceable",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Sewer/Septic Tank Death in Last 10 Yrs",
+    "legacyUrl": "https://ncsk.nic.in/about-us-sewerseptic-tank-death-cases/status-sewerseptic-tank-death-last-10-yrs",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/sewer-septic-tank-death-in-last-10-yrs/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/sewer-septic-tank-death-in-last-10-yrs",
+    "prototypeSection": "10-Year Sewer Death Statistics Table",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Citizen Charter",
+    "legacyUrl": "https://ncsk.nic.in/about-us/citizen-charter",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/citizen-charter/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/citizen-charter",
+    "prototypeSection": "Citizen Charter of NCSK",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Who's Who",
+    "legacyUrl": "https://ncsk.nic.in/about-us/whos-who",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/current-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/current-commission",
+    "prototypeSection": "Current Commission Directory",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Act/Rules",
+    "legacyUrl": "https://ncsk.nic.in/acts",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 9,
+    "tablesCount": 1
+  },
+  {
+    "title": "Notifications",
+    "legacyUrl": "https://ncsk.nic.in/notifications",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 11,
+    "tablesCount": 1
+  },
+  {
+    "title": "Dated 27.01.2026",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-27012026",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 20.01.2026",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-20012026",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 13.01.2026",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-13012026",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 19.11.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-19112025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 29.10.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-29102025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 19.09.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-19092025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 18.09.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-18092025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 01.09.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-01092025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 06.08.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-06082025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 16.05.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-16052025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 23.04.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-23042025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 27.03.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-27032025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 19.02.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-19022025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 11.12.2024",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-11122024",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 20.10.2023",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-20102023",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Dated 27.03.2014",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-27032014",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "SOP and Advisory",
+    "legacyUrl": "https://ncsk.nic.in/sop-advisory",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#sop-and-advisories",
+    "prototypeSection": "SOP and Advisories Band & Repository",
+    "documentsCount": 3,
+    "tablesCount": 1
+  },
+  {
+    "title": "Lok Sabha Question &amp; Answer",
+    "legacyUrl": "https://ncsk.nic.in/parliament-question-answer",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions",
+    "prototypeSection": "Rajya Sabha & Lok Sabha Questions Subpage",
+    "documentsCount": 11,
+    "tablesCount": 1
+  },
+  {
+    "title": "Schemes For Welfare(to be updated soon)",
+    "legacyUrl": "https://ncsk.nic.in/scheme-for-welfare",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 8,
+    "tablesCount": 2
+  },
+  {
+    "title": "Right to Information",
+    "legacyUrl": "https://ncsk.nic.in/rti",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/right-to-information/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/right-to-information",
+    "prototypeSection": "Right to Information Subpage",
+    "documentsCount": 2,
+    "tablesCount": 1
+  },
+  {
+    "title": "Gallery of Hon&#039;ble Chairperson",
+    "legacyUrl": "https://ncsk.nic.in/gallery_of_chairperson",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Gallery of Hon&#039;ble Vice-Chairperson",
+    "legacyUrl": "https://ncsk.nic.in/gallery_of_vice_chairperson",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Gallery of Hon&#039;ble Members",
+    "legacyUrl": "https://ncsk.nic.in/gallery_of_members",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Gallery of Hon&#039;ble Member 02",
+    "legacyUrl": "https://ncsk.nic.in/gallery_of_member02",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Tour by Hon'ble Chairperson",
+    "legacyUrl": "https://ncsk.nic.in/tour-by-the-commission-honble-chairperson",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission",
+    "prototypeSection": "Tours by Commission Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Tour by Hon'ble Vice-Chairperson",
+    "legacyUrl": "https://ncsk.nic.in/tour-by-honble-vice-chairperson",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission",
+    "prototypeSection": "Tours by Commission Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Tour by Hon'ble Member",
+    "legacyUrl": "https://ncsk.nic.in/tour-by-honble-member",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission",
+    "prototypeSection": "Tours by Commission Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Tour by Hon'ble Member 02",
+    "legacyUrl": "https://ncsk.nic.in/tour-by-honble-member02",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission",
+    "prototypeSection": "Tours by Commission Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Annual Report",
+    "legacyUrl": "https://ncsk.nic.in/annual-report",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#annual-reports",
+    "prototypeSection": "Annual Reports Band & Documents Repository",
+    "documentsCount": 21,
+    "tablesCount": 1
+  },
+  {
+    "title": "Contact Us",
+    "legacyUrl": "https://ncsk.nic.in/contactus",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/contact-us/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/contact-us",
+    "prototypeSection": "Contact & Headquarters Section",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Lodge Complaint",
+    "legacyUrl": "https://ncsk.nic.in/complaints/lodge-complaint",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "https://ncsk.nic.in/complaints/lodge-complaint",
+    "prototypeSection": "Grievance Redressal / e-GMP External Link",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Track Complaints",
+    "legacyUrl": "https://ncsk.nic.in/complaints/track-complaints",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "https://ncsk.nic.in/complaints/lodge-complaint",
+    "prototypeSection": "Grievance Redressal / e-GMP External Link",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "FAQ",
+    "legacyUrl": "https://ncsk.nic.in/faq",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/faq/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/faq",
+    "prototypeSection": "NCSK FAQ Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Rules Of Procedure",
+    "legacyUrl": "https://ncsk.nic.in/rules-procedure",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 3,
+    "tablesCount": 1
+  },
+  {
+    "title": "List of meetings held regarding review of payment of compensation in Sewer Death cases",
+    "legacyUrl": "https://ncsk.nic.in/meeting-notices",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/meetings/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/meetings",
+    "prototypeSection": "Meetings & Notices Subpage",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Tenders",
+    "legacyUrl": "https://ncsk.nic.in/tender",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Video Gallery",
+    "legacyUrl": "https://ncsk.nic.in/video-gallery",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Vacancy",
+    "legacyUrl": "https://ncsk.nic.in/vacancy",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Manual Scavengers Act",
+    "legacyUrl": "https://ncsk.nic.in/manual-scavengers-act",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Suo-motu Cognizance by the Commission",
+    "legacyUrl": "https://ncsk.nic.in/suo_motu_cognizance_commission",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/suo-motu-cognizance-by-the-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/suo-motu-cognizance-by-the-commission",
+    "prototypeSection": "Suo-Motu Cognizance Register",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Key Initaiative/Achivement",
+    "legacyUrl": "https://ncsk.nic.in/key-initaiativeachivement",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/impact-of-commission-intervention",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/impact-of-commission-intervention/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/impact-of-commission-intervention",
+    "prototypeSection": "Impact of Commission Interventions",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Gallery",
+    "legacyUrl": "https://ncsk.nic.in/gallery",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Website Policies",
+    "legacyUrl": "https://ncsk.nic.in/website-policy",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Help",
+    "legacyUrl": "https://ncsk.nic.in/help",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 2
+  },
+  {
+    "title": "Feedback",
+    "legacyUrl": "https://ncsk.nic.in/feedback",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Disclaimer",
+    "legacyUrl": "https://ncsk.nic.in/disclaimer",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Terms &amp; Conditions",
+    "legacyUrl": "https://ncsk.nic.in/terms-conditions",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "साइट का नक्‍शा",
+    "legacyUrl": "https://ncsk.nic.in/hi/site-map",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Page not found",
+    "legacyUrl": "https://ncsk.nic.in/complaints",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "https://ncsk.nic.in/complaints/lodge-complaint",
+    "prototypeSection": "Grievance Redressal / e-GMP External Link",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/hi",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 2,
+    "tablesCount": 0
+  },
+  {
+    "title": "एनसीएसके के बारे में",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B9%E0%A4%AE%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AC%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AE%E0%A5%87%E0%A4%82/%E0%A4%8F%E0%A4%A8%E0%A4%B8%E0%A5%80%E0%A4%8F%E0%A4%B8%E0%A4%95%E0%A5%87-%E0%A4%95%E0%A5%87-%E0%A4%AC%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AE%E0%A5%87%E0%A4%82",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "संगठन संरचना",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B9%E0%A4%AE%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AC%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AE%E0%A5%87%E0%A4%82/%E0%A4%B8%E0%A4%82%E0%A4%97%E0%A4%A0%E0%A4%A8-%E0%A4%B8%E0%A4%82%E0%A4%B0%E0%A4%9A%E0%A4%A8%E0%A4%BE",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "वर्तमान आयोग",
+    "legacyUrl": "https://ncsk.nic.in/hi/about-us/current-commission",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/current-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/current-commission",
+    "prototypeSection": "Current Commission Directory",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "पिछले आयोगों का विवरण",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B9%E0%A4%AE%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AC%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AE%E0%A5%87%E0%A4%82/%E0%A4%AA%E0%A4%BF%E0%A4%9B%E0%A4%B2%E0%A5%87-%E0%A4%86%E0%A4%AF%E0%A5%8B%E0%A4%97%E0%A5%8B%E0%A4%82-%E0%A4%95%E0%A4%BE-%E0%A4%B5%E0%A4%BF%E0%A4%B5%E0%A4%B0%E0%A4%A3",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "एनसीएसके सचिवालय",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B9%E0%A4%AE%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AC%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AE%E0%A5%87%E0%A4%82/%E0%A4%8F%E0%A4%A8%E0%A4%B8%E0%A5%80%E0%A4%8F%E0%A4%B8%E0%A4%95%E0%A5%87-%E0%A4%B8%E0%A4%9A%E0%A4%BF%E0%A4%B5%E0%A4%BE%E0%A4%B2%E0%A4%AF",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "शिकायत",
+    "legacyUrl": "https://ncsk.nic.in/hi/about-us/ncsk-grievances",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 2,
+    "tablesCount": 1
+  },
+  {
+    "title": "राज्य आवंटन",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B9%E0%A4%AE%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AC%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AE%E0%A5%87%E0%A4%82/%E0%A4%B0%E0%A4%BE%E0%A4%9C%E0%A5%8D%E0%A4%AF-%E0%A4%86%E0%A4%B5%E0%A4%82%E0%A4%9F%E0%A4%A8-1",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "राज्य आयोग / नामित प्राधिकरण",
+    "legacyUrl": "https://ncsk.nic.in/hi/state-commission-designated-agencie",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/state-commissions-designated-agencies/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/state-commissions-designated-agencies",
+    "prototypeSection": "State Commissions & Designated Agencies",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "अनुवीक्षण समितियां",
+    "legacyUrl": "https://ncsk.nic.in/hi/monitoring-committee",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/monitoring-committees/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/monitoring-committees",
+    "prototypeSection": "Monitoring Committees Registry",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "सतर्कता समितियां",
+    "legacyUrl": "https://ncsk.nic.in/hi/vigilance-committee",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/vigilance-committees/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/vigilance-committees",
+    "prototypeSection": "Vigilance Committees Registry",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "सेनेटरी अस्वास्थ्यकर शौचालय",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B8%E0%A5%87%E0%A4%A8%E0%A5%87%E0%A4%9F%E0%A4%B0%E0%A5%80-%E0%A4%85%E0%A4%B8%E0%A5%8D%E0%A4%B5%E0%A4%BE%E0%A4%B8%E0%A5%8D%E0%A4%A5%E0%A5%8D%E0%A4%AF%E0%A4%95%E0%A4%B0-%E0%A4%B6%E0%A5%8C%E0%A4%9A%E0%A4%BE%E0%A4%B2%E0%A4%AF",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "सीवर से होने वाली मौतों की कुल संख्या/मुआवजा",
+    "legacyUrl": "https://ncsk.nic.in/hi/total-no-of-sewer-death",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/main-sewer-death/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/main-sewer-death",
+    "prototypeSection": "State-wise Sewer Death Compensation Registry",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "मामले जिनमें कानूनी वारिस का पता नहीं चल पाया",
+    "legacyUrl": "https://ncsk.nic.in/hi/case-which-legal-heir-not-traceable",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable",
+    "prototypeSection": "Cases Where Legal Heir Not Traceable",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "पिछले 10 वर्षों में सीवर/सेप्टिक टैंक से होने वाली मौतों की स्थिति",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B9%E0%A4%AE%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AC%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AE%E0%A5%87%E0%A4%82-%E0%A4%B8%E0%A5%80%E0%A4%B5%E0%A4%B0%E0%A4%B8%E0%A5%87%E0%A4%AA%E0%A5%8D%E0%A4%9F%E0%A4%BF%E0%A4%95-%E0%A4%9F%E0%A5%88%E0%A4%82%E0%A4%95-%E0%A4%AE%E0%A5%8C%E0%A4%A4-%E0%A4%95%E0%A5%87-%E0%A4%AE%E0%A4%BE%E0%A4%AE%E0%A4%B2%E0%A5%87/%E0%A4%AA%E0%A4%BF%E0%A4%9B%E0%A4%B2%E0%A5%87-10-%E0%A4%B5%E0%A4%B0%E0%A5%8D%E0%A4%B7%E0%A5%8B%E0%A4%82-%E0%A4%AE%E0%A5%87%E0%A4%82-%E0%A4%B8%E0%A5%80%E0%A4%B5%E0%A4%B0%E0%A4%B8%E0%A5%87%E0%A4%AA%E0%A5%8D%E0%A4%9F%E0%A4%BF%E0%A4%95-%E0%A4%9F%E0%A5%88%E0%A4%82%E0%A4%95-%E0%A4%B8%E0%A5%87-%E0%A4%B9%E0%A5%8B%E0%A4%A8%E0%A5%87-%E0%A4%B5%E0%A4%BE%E0%A4%B2%E0%A5%80-%E0%A4%AE%E0%A5%8C%E0%A4%A4%E0%A5%8B%E0%A4%82",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "नागरिक चार्टर",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B9%E0%A4%AE%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AC%E0%A4%BE%E0%A4%B0%E0%A5%87-%E0%A4%AE%E0%A5%87%E0%A4%82/%E0%A4%A8%E0%A4%BE%E0%A4%97%E0%A4%B0%E0%A4%BF%E0%A4%95-%E0%A4%9A%E0%A4%BE%E0%A4%B0%E0%A5%8D%E0%A4%9F%E0%A4%B0",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "कौन क्या है",
+    "legacyUrl": "https://ncsk.nic.in/hi/about-us/whos-who",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/current-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/current-commission",
+    "prototypeSection": "Current Commission Directory",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "अधिनियम/नियम",
+    "legacyUrl": "https://ncsk.nic.in/hi/acts",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 9,
+    "tablesCount": 1
+  },
+  {
+    "title": "सूचनाएं",
+    "legacyUrl": "https://ncsk.nic.in/hi/notifications",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 11,
+    "tablesCount": 1
+  },
+  {
+    "title": "दिनांक 27.01.2026",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-27012026",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 20.01.2026",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-20012026",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 13.01.2026",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-13012026",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 19.11.2025",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-19112025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 29.10.2025",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-29102025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 19.09.2025",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-19092025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 18.09.2025",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-18092025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 01.09.2025",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-01092025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 06.08.2025",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-06082025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 16.05.2025",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-16052025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 23.04.2025",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-23042025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 27.03.2025",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-27032025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 19.02.2025",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-19022025",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 11.12.2024",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-11122024",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 20.10.2023",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-20102023",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "दिनांक 27.03.2014",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%85%E0%A4%A7%E0%A4%BF%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B8%E0%A5%82%E0%A4%9A%E0%A4%A8%E0%A4%BE%E0%A4%8F%E0%A4%82-%E0%A4%B8%E0%A4%B0%E0%A5%8D%E0%A4%B5%E0%A5%8B%E0%A4%9A%E0%A5%8D%E0%A4%9A-%E0%A4%A8%E0%A5%8D%E0%A4%AF%E0%A4%BE%E0%A4%AF%E0%A4%BE%E0%A4%B2%E0%A4%AF-%E0%A4%95%E0%A5%87-%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%A3%E0%A4%AF/%E0%A4%A6%E0%A4%BF%E0%A4%A8%E0%A4%BE%E0%A4%82%E0%A4%95-27032014",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "एसओपी एवं परामर्श",
+    "legacyUrl": "https://ncsk.nic.in/hi/sop-advisory",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#sop-and-advisories",
+    "prototypeSection": "SOP and Advisories Band & Repository",
+    "documentsCount": 3,
+    "tablesCount": 1
+  },
+  {
+    "title": "Lok Sabha Question &amp; Answer",
+    "legacyUrl": "https://ncsk.nic.in/hi/parliament-question-answer",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions",
+    "prototypeSection": "Rajya Sabha & Lok Sabha Questions Subpage",
+    "documentsCount": 11,
+    "tablesCount": 1
+  },
+  {
+    "title": "Schemes For Welfare(to be updated soon)",
+    "legacyUrl": "https://ncsk.nic.in/hi/scheme-for-welfare",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 8,
+    "tablesCount": 2
+  },
+  {
+    "title": "सूचना का अधिकार",
+    "legacyUrl": "https://ncsk.nic.in/hi/rti",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/right-to-information/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/right-to-information",
+    "prototypeSection": "Right to Information Subpage",
+    "documentsCount": 2,
+    "tablesCount": 1
+  },
+  {
+    "title": "माननीय अध्यक्ष की गैलरी",
+    "legacyUrl": "https://ncsk.nic.in/hi/gallery_of_chairperson",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "माननीय उपाध्यक्ष की गैलरी",
+    "legacyUrl": "https://ncsk.nic.in/hi/gallery_of_vice_chairperson",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "माननीय सदस्य की गैलरी",
+    "legacyUrl": "https://ncsk.nic.in/hi/gallery_of_members",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "माननीय सदस्य की गैलरी 02",
+    "legacyUrl": "https://ncsk.nic.in/hi/gallery_of_member02",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Tour by Hon'ble Chairperson",
+    "legacyUrl": "https://ncsk.nic.in/hi/tour-by-the-commission-honble-chairperson",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission",
+    "prototypeSection": "Tours by Commission Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Tour by Hon'ble Vice-Chairperson",
+    "legacyUrl": "https://ncsk.nic.in/hi/tour-by-honble-vice-chairperson",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission",
+    "prototypeSection": "Tours by Commission Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Tour by Hon'ble Member",
+    "legacyUrl": "https://ncsk.nic.in/hi/tour-by-honble-member",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission",
+    "prototypeSection": "Tours by Commission Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "Tour by Hon'ble Member 02",
+    "legacyUrl": "https://ncsk.nic.in/hi/tour-by-honble-member02",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission",
+    "prototypeSection": "Tours by Commission Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "वार्षिक रिपोर्ट",
+    "legacyUrl": "https://ncsk.nic.in/hi/annual-report",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#annual-reports",
+    "prototypeSection": "Annual Reports Band & Documents Repository",
+    "documentsCount": 21,
+    "tablesCount": 1
+  },
+  {
+    "title": "शिकायतों को ट्रैक करें",
+    "legacyUrl": "https://ncsk.nic.in/hi/complaints/track-complaints",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "https://ncsk.nic.in/complaints/lodge-complaint",
+    "prototypeSection": "Grievance Redressal / e-GMP External Link",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "हमसे संपर्क करें",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B9%E0%A4%AE%E0%A4%B8%E0%A5%87-%E0%A4%B8%E0%A4%82%E0%A4%AA%E0%A4%B0%E0%A5%8D%E0%A4%95-%E0%A4%95%E0%A4%B0%E0%A5%87%E0%A4%82",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "सामान्य प्रश्न",
+    "legacyUrl": "https://ncsk.nic.in/hi/faq",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/faq/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/faq",
+    "prototypeSection": "NCSK FAQ Subpage",
+    "documentsCount": 1,
+    "tablesCount": 1
+  },
+  {
+    "title": "प्रक्रिया के नियम",
+    "legacyUrl": "https://ncsk.nic.in/hi/rules-procedure",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#acts-and-rules",
+    "prototypeSection": "Acts & Rules Band & Documents Repository",
+    "documentsCount": 2,
+    "tablesCount": 1
+  },
+  {
+    "title": "List of meetings held regarding review of payment of compensation in Sewer Death cases",
+    "legacyUrl": "https://ncsk.nic.in/hi/meeting-notices",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/meetings/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/meetings",
+    "prototypeSection": "Meetings & Notices Subpage",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "निविदाएं",
+    "legacyUrl": "https://ncsk.nic.in/hi/tender",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "वीडियो गैलरी",
+    "legacyUrl": "https://ncsk.nic.in/hi/video-gallery",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis#gallery",
+    "prototypeSection": "Interactive Photo Gallery Band",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "रिक्ति",
+    "legacyUrl": "https://ncsk.nic.in/hi/vacancy",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "वेबसाइट नीतियां",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B5%E0%A5%87%E0%A4%AC%E0%A4%B8%E0%A4%BE%E0%A4%87%E0%A4%9F-%E0%A4%A8%E0%A5%80%E0%A4%A4%E0%A4%BF%E0%A4%AF%E0%A4%BE%E0%A4%82",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "सहायता",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%B8%E0%A4%B9%E0%A4%BE%E0%A4%AF%E0%A4%A4%E0%A4%BE",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 2
+  },
+  {
+    "title": "फीडबैक",
+    "legacyUrl": "https://ncsk.nic.in/hi/feedback",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "डिस्क्लेमर",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%A1%E0%A4%BF%E0%A4%B8%E0%A5%8D%E0%A4%95%E0%A5%8D%E0%A4%B2%E0%A5%87%E0%A4%AE%E0%A4%B0",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "नियम व शर्त",
+    "legacyUrl": "https://ncsk.nic.in/hi/%E0%A4%A8%E0%A4%BF%E0%A4%AF%E0%A4%AE-%E0%A4%B5-%E0%A4%B6%E0%A4%B0%E0%A5%8D%E0%A4%A4",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 1,
+    "tablesCount": 0
+  },
+  {
+    "title": "Archive State Commissions/Designated Agencies",
+    "legacyUrl": "https://ncsk.nic.in/archive-state-commission-designated-agencie",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/state-commissions-designated-agencies/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/state-commissions-designated-agencies",
+    "prototypeSection": "State Commissions & Designated Agencies",
+    "documentsCount": 11,
+    "tablesCount": 1
+  },
+  {
+    "title": "Archive Monitoring Committees",
+    "legacyUrl": "https://ncsk.nic.in/archive-monitoring-committee",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/monitoring-committees/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/monitoring-committees",
+    "prototypeSection": "Monitoring Committees Registry",
+    "documentsCount": 11,
+    "tablesCount": 1
+  },
+  {
+    "title": "Archive Vigilance Committees",
+    "legacyUrl": "https://ncsk.nic.in/archive-vigilance-committee",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/vigilance-committees/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/vigilance-committees",
+    "prototypeSection": "Vigilance Committees Registry",
+    "documentsCount": 11,
+    "tablesCount": 1
+  },
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/archive-sewer-death",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/main-sewer-death/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/main-sewer-death",
+    "prototypeSection": "State-wise Sewer Death Compensation Registry",
+    "documentsCount": 11,
+    "tablesCount": 1
+  },
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/archive-case-which-legal-heir-not-traceable",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable",
+    "prototypeSection": "Cases Where Legal Heir Not Traceable",
+    "documentsCount": 11,
+    "tablesCount": 1
+  },
+  {
+    "title": "Notifications",
+    "legacyUrl": "https://ncsk.nic.in/notifications?page=1",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis",
+    "prototypeSection": "Main NCSK Detail Hub (#about-the-scheme / #components)",
+    "documentsCount": 8,
+    "tablesCount": 1
+  },
+  {
+    "title": "Lok Sabha Question &amp; Answer",
+    "legacyUrl": "https://ncsk.nic.in/parliament-question-answer?page=1",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions",
+    "prototypeSection": "Rajya Sabha & Lok Sabha Questions Subpage",
+    "documentsCount": 11,
+    "tablesCount": 1
+  },
+  {
+    "title": "Lok Sabha Question &amp; Answer",
+    "legacyUrl": "https://ncsk.nic.in/parliament-question-answer?page=2",
+    "liveUrl": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions/",
+    "prototypeRoute": "/website/organisation/national-commission-for-safai-karamcharis/rajya-sabha-questions",
+    "prototypeSection": "Rajya Sabha & Lok Sabha Questions Subpage",
+    "documentsCount": 11,
+    "tablesCount": 1
+  }
+]

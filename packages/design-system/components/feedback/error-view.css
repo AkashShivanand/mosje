@@ -1,0 +1,295 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     ErrorView — MoSJE / SAMAVESH Resilient Error & 404 Architecture
+     Built with Apple fluid design, refined typography, wayfinding & tokens.
+     ============================================================================ */
+
+  .ds-error-view {
+    position: relative;
+    width: 100%;
+    max-width: 1080px;
+    margin-inline: auto;
+    padding: var(--sa-padding-32) var(--sa-padding-20);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .ds-error-view {
+      padding: var(--sa-padding-48) var(--sa-padding-24);
+    }
+  }
+
+  /* ── Hero Status Indicator ───────────────────────────────────────────────── */
+
+  .ds-error-view__hero {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: var(--sa-stack-20);
+  }
+
+  .ds-error-view__halo {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 140px;
+    height: 140px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    filter: blur(32px);
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .ds-error-view__icon-box {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    box-shadow: var(--sa-elevation-card);
+    color: var(--sa-text-brand-primary-base);
+    margin-bottom: var(--sa-stack-16);
+    transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 200ms ease;
+  }
+
+  @media (hover: hover) {
+    .ds-error-view:hover .ds-error-view__icon-box {
+      transform: scale(1.05);
+      box-shadow: var(--sa-elevation-raised);
+    }
+  }
+
+  .ds-error-view__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    padding: var(--sa-padding-4) var(--sa-padding-12);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-subtler);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    color: var(--sa-text-neutral-bolder);
+    font-size: 11px;
+    line-height: 1.4;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  /* ── Typography ──────────────────────────────────────────────────────────── */
+
+  .ds-error-view__title {
+    margin: var(--sa-stack-12) 0 var(--sa-stack-8);
+    font-size: clamp(24px, 4vw, 34px);
+    line-height: 1.25;
+    font-weight: 700;
+    color: var(--sa-text-neutral-bolder);
+    text-wrap: balance;
+    letter-spacing: -0.02em;
+  }
+
+  .ds-error-view__desc {
+    margin: 0 0 var(--sa-stack-24);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+    max-width: 560px;
+    text-wrap: pretty;
+  }
+
+  /* ── Search Bar ──────────────────────────────────────────────────────────── */
+
+  .ds-error-view__search-form {
+    width: 100%;
+    max-width: 480px;
+    margin-bottom: var(--sa-stack-24);
+  }
+
+  .ds-error-view__search-box {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-4) var(--sa-padding-16);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    box-shadow: var(--sa-elevation-card);
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+
+  .ds-error-view__search-box:focus-within {
+    border-color: var(--sa-border-brand-primary-base);
+    box-shadow: 0 0 0 3px var(--sa-bg-brand-primary-subtler);
+  }
+
+  .ds-error-view__search-input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    padding: var(--sa-padding-6) 0;
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-bolder);
+    outline: none;
+  }
+
+  .ds-error-view__search-input::placeholder {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Actions Row ─────────────────────────────────────────────────────────── */
+
+  .ds-error-view__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-inline-12);
+    flex-wrap: wrap;
+    margin-bottom: var(--sa-stack-32);
+  }
+
+  /* ── Wayfinding Cards Grid ───────────────────────────────────────────────── */
+
+  .ds-error-view__wayfinding {
+    width: 100%;
+    margin-top: var(--sa-stack-12);
+    padding-top: var(--sa-padding-24);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    text-align: left;
+  }
+
+  .ds-error-view__wayfinding-title {
+    margin: 0 0 var(--sa-stack-20);
+    font-size: 12px;
+    line-height: 1;
+    font-weight: 700;
+    color: var(--sa-text-neutral-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-align: center;
+  }
+
+  .ds-error-view__grid {
+    display: grid;
+    gap: var(--sa-stack-16);
+    grid-template-columns: 1fr;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 600px) {
+    .ds-error-view__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .ds-error-view__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .ds-error-view__card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: var(--sa-padding-20);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    box-shadow: var(--sa-elevation-card);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 150ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 150ms ease, border-color 150ms ease;
+  }
+
+  @media (hover: hover) {
+    .ds-error-view__card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--sa-elevation-raised);
+      border-color: var(--sa-border-brand-primary-base);
+    }
+  }
+
+  .ds-error-view__card:active {
+    transform: scale(0.98);
+  }
+
+  .ds-error-view__card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-padding-40);
+    height: var(--sa-padding-40);
+    border-radius: var(--sa-shape-8);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-bolder);
+    margin-bottom: var(--sa-stack-12);
+  }
+
+  .ds-error-view__card-heading {
+    margin: 0 0 var(--sa-stack-6);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-error-view__card-desc {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Diagnostics / Details ───────────────────────────────────────────────── */
+
+  .ds-error-view__details {
+    width: 100%;
+    max-width: 680px;
+    margin-top: var(--sa-stack-20);
+    border-radius: var(--sa-shape-12);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    background-color: var(--sa-bg-neutral-subtler);
+    overflow: hidden;
+    text-align: left;
+  }
+
+  .ds-error-view__details-summary {
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: 600;
+    color: var(--sa-text-neutral-subtle);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ds-error-view__details-content {
+    padding: var(--sa-padding-16);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 12px;
+    line-height: 1.5;
+    color: var(--sa-text-neutral-bolder);
+    background-color: var(--sa-bg-neutral-base);
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+}
