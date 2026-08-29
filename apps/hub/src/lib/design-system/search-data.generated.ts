@@ -429,6 +429,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Error View",
+    "section": "Feedback & Status",
+    "href": "/design-system/components/feedback/error-view",
+    "keywords": "error view feedback & status playground 1. usage principles props accessibility &amp; standards kind badge title description searchUrl primaryAction secondaryAction wayfindingLinks errorDetails tokens wcag accessibility",
+    "description": "A full-page resilient error state with Apple-inspired fluid motion, integrated search, recovery actions, and citizen wayfinding.",
+    "type": "component",
+    "iconName": "notifications"
+  },
+  {
     "title": "Filter Bar",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/filter-bar",
