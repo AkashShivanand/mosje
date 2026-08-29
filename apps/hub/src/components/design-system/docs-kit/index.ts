@@ -10,3 +10,4 @@ export * from './a11y-checklist';
 export * from './terminal-code';
 export * from './syntax';
 export * from "./docs-tabs";
+export * from "./feedback-bar";

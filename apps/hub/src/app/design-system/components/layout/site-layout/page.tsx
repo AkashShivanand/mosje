@@ -1,28 +1,200 @@
-import * as React from "react";
 import type { Metadata } from "next";
+import {
+  DocsTabs,
+  PropsTable,
+  DoDont,
+  A11yChecklist,
+  StatusBadge,
+  CodeBlock,
+  FeedbackBar,
+} from "@/components/design-system/docs-kit/index";
+import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
-  title: "Site Layout - SAMAVESH Design System",
-  description: "SAMAVESH Site Layout component.",
+  title: "Site Layout",
+  description: "Top-level layout shell for the unified public MoSJE website, hosting the 3-tier masthead, main body, and comprehensive statutory footer.",
 };
 
-export default function SiteLayoutPage(): React.JSX.Element {
+/* ── Layout primitives ── */
+const sectionStyle: React.CSSProperties = {
+  marginTop: "var(--sa-section-48)",
+  scrollMarginTop: "var(--docs-anchor-offset)",
+};
+
+const h2Style: React.CSSProperties = {
+  fontSize: "var(--sa-type-headline-1-size)",
+  lineHeight: "var(--sa-type-headline-1-lh)",
+  fontWeight: 700,
+  color: "var(--sa-text-neutral-base)",
+  marginBottom: "var(--sa-stack-16)",
+  paddingBottom: "var(--sa-padding-8)",
+  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
+};
+
+const proseStyle: React.CSSProperties = {
+  color: "var(--sa-text-neutral-subtle)",
+  fontSize: "var(--sa-type-body-1-size)",
+  lineHeight: 1.7,
+  maxWidth: "68ch",
+};
+
+export default function SiteLayoutDocPage(): React.JSX.Element {
   return (
-    <main className="ds-prose" style={{ maxWidth: "800px", padding: "var(--sa-padding-40) var(--sa-padding-24)" }}>
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1 style={{ fontSize: "var(--sa-type-headline-1-size)", margin: "0 0 var(--sa-stack-16) 0" }}>
-          Site Layout
-        </h1>
-        <p className="ds-lead" style={{ fontSize: "var(--sa-type-headline-3-size)", color: "var(--sa-text-neutral-subtle)" }}>
-          SAMAVESH Site Layout component.
+    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
+      {/* ── Header ── */}
+      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
+          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
+            Site Layout
+          </h1>
+          <StatusBadge status="Stable" />
+        </div>
+        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
+          {"Top-level layout shell for the unified public MoSJE website, hosting the 3-tier masthead, main body, and comprehensive statutory footer."}
         </p>
+        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
+          <a
+            className="docs-page-header__link"
+            href={figmaUrl()}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Figma Component Spec <span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </header>
-      
-      <div className="ds-alert ds-alert--info" style={{ padding: "var(--sa-padding-16)", backgroundColor: "var(--sa-bg-brand-primary-subtler)", borderRadius: "var(--sa-shape-8)", borderLeft: "4px solid var(--sa-border-brand-primary-base)" }}>
-        <p style={{ margin: 0, color: "var(--sa-text-brand-primary-bolder)" }}>
-          <strong>Documentation Stub:</strong> This page was auto-generated to mirror the codebase and is waiting for full documentation content.
-        </p>
-      </div>
-    </main>
+
+      {/* ── Tabbed Content ── */}
+      <DocsTabs
+        tabs={[
+          {
+            id: "design",
+            label: "Design",
+            content: (
+              <>
+                <section style={sectionStyle}>
+                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
+                  <p style={proseStyle}>
+                    {"Site Layout is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
+                  </p>
+                  
+                  <div
+                    style={{
+                      marginTop: "var(--sa-stack-24)",
+                      padding: "var(--sa-padding-32)",
+                      background: "var(--sa-bg-neutral-subtler)",
+                      borderRadius: "var(--sa-shape-8)",
+                      border: "1px solid var(--sa-border-neutral-subtle)",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "var(--sa-stack-16)",
+                    }}
+                  >
+                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
+                      Live Component Specimen
+                    </div>
+                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
+                      <div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)", overflow: "hidden" }}><div style={{ padding: "var(--sa-padding-12)", background: "var(--sa-bg-brand-primary-boldest)", color: "var(--sa-text-neutral-inverse)" }}>Public Site Header</div><div style={{ padding: "var(--sa-padding-24)" }}>Public Informational Content</div><div style={{ padding: "var(--sa-padding-12)", background: "var(--sa-bg-neutral-subtler)" }}>Statutory Footer</div></div>
+                    </div>
+                  </div>
+                </section>
+
+                <section style={sectionStyle}>
+                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
+                  <DoDont
+                    cards={[
+                      {
+                        type: "do",
+                        label: "Use SiteLayout for all public informational website pages.",
+                        preview: (
+                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
+                            Recommended Practice
+                          </div>
+                        ),
+                      },
+                      {
+                        type: "dont",
+                        label: "Do not confuse SiteLayout (public website) with AppShell (internal portals).",
+                        preview: (
+                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
+                            Anti-pattern
+                          </div>
+                        ),
+                      },
+                    ]}
+                  />
+                </section>
+              </>
+            ),
+          },
+          {
+            id: "code",
+            label: "Code",
+            content: (
+              <>
+                <section style={sectionStyle}>
+                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
+                  <CodeBlock>{`import { SiteLayout } from "@mosje/design-system";`}</CodeBlock>
+                </section>
+
+                <section style={sectionStyle}>
+                  <h2 id="props" style={h2Style}>Props Reference</h2>
+                  <PropsTable props={[
+  {
+    "name": "header",
+    "type": "React.ReactNode",
+    "required": true,
+    "description": "SiteHeader masthead."
+  },
+  {
+    "name": "footer",
+    "type": "React.ReactNode",
+    "required": true,
+    "description": "SiteFooter statutory footer."
+  },
+  {
+    "name": "children",
+    "type": "React.ReactNode",
+    "required": true,
+    "description": "Page content."
+  }
+]} />
+                </section>
+
+                <section style={sectionStyle}>
+                  <h2 id="example" style={h2Style}>Code Example</h2>
+                  <CodeBlock>{`<div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)", overflow: "hidden" }}><div style={{ padding: "var(--sa-padding-12)", background: "var(--sa-bg-brand-primary-boldest)", color: "var(--sa-text-neutral-inverse)" }}>Public Site Header</div><div style={{ padding: "var(--sa-padding-24)" }}>Public Informational Content</div><div style={{ padding: "var(--sa-padding-12)", background: "var(--sa-bg-neutral-subtler)" }}>Statutory Footer</div></div>`}</CodeBlock>
+                </section>
+              </>
+            ),
+          },
+          {
+            id: "accessibility",
+            label: "Accessibility",
+            content: (
+              <>
+                <section style={sectionStyle}>
+                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
+                  <p style={proseStyle}>
+                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
+                  </p>
+                  <A11yChecklist items={[
+  {
+    "criterion": "1.3.1 Info and Relationships",
+    "level": "AA",
+    "description": "Standard landmarks for header, main, and footer."
+  }
+]} />
+                </section>
+
+              </>
+            ),
+          },
+        ]}
+      />
+
+      {/* ── Feedback & Continuous Improvement ── */}
+      <FeedbackBar componentName="Site Layout" />
+    </article>
   );
 }

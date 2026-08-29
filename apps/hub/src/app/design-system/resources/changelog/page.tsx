@@ -22,9 +22,21 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.63.0",
+    date: "2026-08-29",
+    current: true,
+    changes: [
+      { kind: "Added", text: "FULL DOCUMENTATION FOR ALL 52 COMPONENT STUBS. Completed end-to-end design system documentation across all components (Auth, Dashboard, Data Display, Feedback, Layout, Navigation, Utilities) with live interactive specimens, strict TypeScript prop contracts, WCAG 2.2 AA & GIGW 3.0 compliance checklists, and keyboard navigation tables." },
+      { kind: "Added", text: "SIDEBAR INSTANT FILTER & COLLAPSIBLE GROUP ACCORDIONS. The design system sidebar now features instant live text filtering with match counters, collapsible accordion sections by category, path-aware active states, and standardized status pill badges (Stable, Beta, Alpha, New)." },
+      { kind: "Added", text: "DYNAMIC SEARCH INDEX AUTOMATION PIPELINE. Added `scripts/build-docs-search-index.mjs` and `npm run check:docs-search` gate that automatically indexes all 117 documentation pages and feeds the global ⌘K command search modal." },
+      { kind: "Added", text: "BILINGUAL PLAYGROUND SANDBOXES & FEEDBACK BAR. Enhanced interactive component playgrounds with English/Hindi dual-language previews, HTML vs JSX tab modes, tokenized typography, and embedded 'Was this page helpful?' feedback bars across all doc articles." },
+      { kind: "Fixed", text: "STANDARDIZED ACCESSIBILITY LANDMARK HIERARCHY. Normalized all documentation pages from nested `<main>` tags to `<article className=\"docs-article\">` with dynamic On-This-Page table of contents re-scanning and mobile bottom drawer launcher." },
+    ],
+  },
+  {
     version: "v0.62.0",
     date: "2026-08-27",
-    current: true,
+    current: false,
     changes: [
       { kind: "Changed", text: "\u201cSTART OVER\u201d NO LONGER THROWS THE CONVERSATION AWAY. It rules the transcript off with a labelled separator \u2014 \u201cNew conversation\u201d \u2014 and greets again underneath, leaving every answer the citizen already gave scrolled up above it. A mis-tap now costs a scroll instead of five questions about caste, income and disability asked a second time. Nothing is destroyed, so there is no undo to build, no confirmation to sit through, and no snapshot to keep" },
       { kind: "Fixed", text: "IT ALSO SAT DIRECTLY UNDER SEND, AND EVERY MEASUREMENT SAID THAT WAS FINE. On a 375px phone it was 25px below Send in the SAME 32px column, with the whole of Send\u2019s width above it \u2014 the most-pressed control in the panel stacked on the rarest and the only destructive one. WCAG 2.2 \u00a72.5.8 wants 24px targets and these are 32; UX4G wants 8px between them and the gaps were 24\u201336. Nothing failed, because frequency-versus-severity adjacency is not something a checklist can see. IT IS A HEADER CONTROL NOW, and the footer is back to the composer and the disclaimer alone. Three footer arrangements were tried and each broke something measurable: hard right stacked it under Send; at the head of the disclaimer\u2019s row its 101px pushed that text 109px off the panel\u2019s left edge and rewrapped it to three lines; on its own line it cost 24px of height on a panel already tight at 375px. The premise had changed underneath all three \u2014 it appends now, so the danger that kept it out of the header (an unlabelled icon beside \u2715, on a control that used to WIPE the transcript) is gone. Order is start over, expand, \u2715 \u2014 \u2715 last, because that corner is where everyone reaches to dismiss" },

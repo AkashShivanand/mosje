@@ -37,7 +37,7 @@ export default function TickerPage(): React.JSX.Element {
   const strong: React.CSSProperties = { color: "var(--sa-text-neutral-bolder)" };
 
   return (
-    <main
+    <article
       className="ds-prose"
       style={{ maxWidth: "800px", padding: "var(--sa-padding-40) var(--sa-padding-24)" }}
     >
@@ -499,6 +499,6 @@ export default function TickerPage(): React.JSX.Element {
           },
         ]}
       />
-    </main>
+    </article>
   );
 }

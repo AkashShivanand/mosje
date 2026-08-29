@@ -32,7 +32,7 @@ export default function ChipPage(): React.JSX.Element {
   };
 
   return (
-    <main
+    <article
       className="ds-prose"
       style={{
         maxWidth: "800px",
@@ -171,6 +171,6 @@ return (
         ]}
       />
 
-    </main>
+    </article>
   );
 }

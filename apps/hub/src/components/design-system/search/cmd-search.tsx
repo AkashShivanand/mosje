@@ -4,7 +4,7 @@ import * as React from "react";
 import { useRouter } from "next/navigation";
 import Fuse from "fuse.js";
 import { Icon } from "@mosje/design-system";
-import { SEARCH_DATA, type SearchEntry } from "@/lib/design-system/search-data";
+import { SEARCH_DATA, type SearchEntry } from "@/lib/design-system/search-data.generated";
 import "./cmd-search.css";
 
 type CategoryFilter = "all" | "component" | "foundation" | "pattern" | "resource";

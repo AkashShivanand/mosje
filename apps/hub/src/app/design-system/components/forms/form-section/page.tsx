@@ -32,7 +32,7 @@ export default function FormSectionPage(): React.JSX.Element {
   };
 
   return (
-    <main
+    <article
       className="ds-prose"
       style={{
         maxWidth: "800px",
@@ -164,6 +164,6 @@ export default function FormSectionPage(): React.JSX.Element {
         ]}
       />
 
-    </main>
+    </article>
   );
 }

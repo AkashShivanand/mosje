@@ -138,7 +138,7 @@ function KeyTable({
 
 export default function ButtonPage(): React.JSX.Element {
   return (
-    <main
+    <article
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
@@ -888,7 +888,7 @@ export function ApplicationForm() {
         </div>
       </section></>) }
       ]} />
-</main>
+</article>
   );
 }
 
