@@ -192,6 +192,90 @@
 .gov-prose strong { color: var(--ink); font-weight: 600; }
 .gov-prose hr { border-color: var(--sa-border-neutral-base); margin: 1.5rem 0; }
 
+/* ── Tables inside prose (WCAG 2.2 AA compliant, design token responsive tables) ── */
+.gov-prose table {
+  width: 100%;
+  margin-top: var(--sa-stack-20);
+  margin-bottom: var(--sa-stack-24);
+  border-collapse: collapse;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-cmp-card-radius);
+  background-color: var(--sa-bg-neutral-base);
+  overflow: hidden;
+}
+
+.gov-prose thead th {
+  background-color: var(--sa-bg-neutral-subtler);
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--sa-text-neutral-bolder);
+  padding: var(--sa-padding-12) var(--sa-padding-16);
+  text-align: left;
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  white-space: nowrap;
+}
+
+.gov-prose th,
+.gov-prose td {
+  padding: var(--sa-padding-12) var(--sa-padding-16);
+  text-align: left;
+  vertical-align: top;
+  color: var(--sa-text-neutral-base);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+
+.gov-prose tbody tr:last-child td,
+.gov-prose tbody tr:last-child th {
+  border-bottom: none;
+}
+
+.gov-prose tbody tr:nth-child(even) {
+  background-color: color-mix(in srgb, var(--sa-bg-neutral-subtler) 40%, transparent);
+}
+
+.gov-prose tbody tr:hover {
+  background-color: var(--sa-bg-neutral-subtler);
+}
+
+.gov-prose table a {
+  color: var(--sa-text-link-brand-default);
+  text-decoration: none;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-inline-4);
+}
+
+.gov-prose table a:hover {
+  color: var(--sa-text-link-brand-hover);
+  text-decoration: underline;
+}
+
+/* Responsive table wrapper for horizontal scroll without breaking viewport */
+.table-responsive,
+.orgd__tablewrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: var(--sa-stack-16);
+  margin-bottom: var(--sa-stack-24);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-cmp-card-radius);
+  background-color: var(--sa-bg-neutral-base);
+}
+
+.table-responsive > table,
+.orgd__tablewrap > table {
+  margin: 0;
+  border: none;
+  border-radius: 0;
+}
+
 /* ── Organisation article, matched to Figma "Organisation Details" (51858:48298)
 
    The template specifies Headline/headline-3 for the section heading and

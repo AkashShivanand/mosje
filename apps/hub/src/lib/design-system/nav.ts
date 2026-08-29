@@ -267,6 +267,10 @@ export const NAV: NavGroup[] = [
         "href": "/design-system/components/feedback/empty-state"
       },
       {
+        "label": "Error View",
+        "href": "/design-system/components/feedback/error-view"
+      },
+      {
         "label": "Lightbox",
         "href": "/design-system/components/feedback/lightbox"
       },

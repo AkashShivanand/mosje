@@ -1,0 +1,642 @@
+[
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis"
+  },
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/rss.xml",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis"
+  },
+  {
+    "title": "https://ncsk.nic.in/sites/all/themes/unee/favicon.ico",
+    "legacyUrl": "https://ncsk.nic.in/sites/all/themes/unee/favicon.ico",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Sitemap",
+    "legacyUrl": "https://ncsk.nic.in/site-map",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "About NCSK",
+    "legacyUrl": "https://ncsk.nic.in/about-us/about-ncsk",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/about-us/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "Organization Structure",
+    "legacyUrl": "https://ncsk.nic.in/about-us/organization-structure-0",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/about-us/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "Current Commission",
+    "legacyUrl": "https://ncsk.nic.in/about-us/current-commission",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/current-commission/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "Details of Previous Commissions",
+    "legacyUrl": "https://ncsk.nic.in/about-us/details-previous-commissions",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/details-of-previous-commissions/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "NCSK Secretariat",
+    "legacyUrl": "https://ncsk.nic.in/about-us/ncsk-secretariat",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/ncsk-secretariat/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "State Allocation",
+    "legacyUrl": "https://ncsk.nic.in/about-us/state-allocation-0",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/state-allocation/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "Grievances",
+    "legacyUrl": "https://ncsk.nic.in/about-us/ncsk-grievances",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/about-us/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "State Commissions/Designated Agencies",
+    "legacyUrl": "https://ncsk.nic.in/state-commission-designated-agencie",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/state-commissions-designated-agencies/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/state-commissions-designated-agencies"
+  },
+  {
+    "title": "Monitoring Committees",
+    "legacyUrl": "https://ncsk.nic.in/monitoring-committee",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/monitoring-committees/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/monitoring-committees"
+  },
+  {
+    "title": "Vigilance Committees",
+    "legacyUrl": "https://ncsk.nic.in/vigilance-committee",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/vigilance-committees/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/vigilance-committees"
+  },
+  {
+    "title": "Sanitary Insanitary Latrines",
+    "legacyUrl": "https://ncsk.nic.in/about-us/sanitary-insanitary-latrines",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/sanitary-insanitary-latrines/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "Total No. Of Deaths / Compensation",
+    "legacyUrl": "https://ncsk.nic.in/total-no-of-sewer-death",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/total-no-of-deaths-compensation/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/total-no-of-deaths-compensation"
+  },
+  {
+    "title": "Cases in Which Legal Heir Not Traceable",
+    "legacyUrl": "https://ncsk.nic.in/case-which-legal-heir-not-traceable",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/case-which-legal-heir-not-traceable"
+  },
+  {
+    "title": "Sewer/Septic Tank Death in Last 10 Yrs",
+    "legacyUrl": "https://ncsk.nic.in/about-us-sewerseptic-tank-death-cases/status-sewerseptic-tank-death-last-10-yrs",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/sewer-septic-tank-death-in-last-10-yrs/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "Citizen Charter",
+    "legacyUrl": "https://ncsk.nic.in/about-us/citizen-charter",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/citizen-charter/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "Who's Who",
+    "legacyUrl": "https://ncsk.nic.in/about-us/whos-who",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/about-us/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/about-us"
+  },
+  {
+    "title": "Act/Rules",
+    "legacyUrl": "https://ncsk.nic.in/acts",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #acts-and-rules"
+  },
+  {
+    "title": "Notifications",
+    "legacyUrl": "https://ncsk.nic.in/notifications",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Dated 27.01.2026",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-27012026",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 20.01.2026",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-20012026",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 13.01.2026",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-13012026",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 19.11.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-19112025",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 29.10.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-29102025",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 19.09.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-19092025",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 18.09.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-18092025",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 01.09.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-01092025",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 06.08.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-06082025",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 16.05.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-16052025",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 23.04.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-23042025",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 27.03.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-27032025",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 19.02.2025",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-19022025",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 11.12.2024",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-11122024",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 20.10.2023",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-20102023",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "Dated 27.03.2014",
+    "legacyUrl": "https://ncsk.nic.in/actnotification-supreme-court-judgment/dated-27032014",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #circulars-notifications"
+  },
+  {
+    "title": "SOP and Advisory",
+    "legacyUrl": "https://ncsk.nic.in/sop-advisory",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #sop-and-advisories"
+  },
+  {
+    "title": "Lok Sabha Question &amp; Answer",
+    "legacyUrl": "https://ncsk.nic.in/parliament-question-answer",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Schemes For Welfare(to be updated soon)",
+    "legacyUrl": "https://ncsk.nic.in/scheme-for-welfare",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Right to Information",
+    "legacyUrl": "https://ncsk.nic.in/rti",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/right-to-information/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/right-to-information"
+  },
+  {
+    "title": "Gallery of Hon&#039;ble Chairperson",
+    "legacyUrl": "https://ncsk.nic.in/gallery_of_chairperson",
+    "liveStatus": "INTEGRATED_INTO_MAIN_GALLERY",
+    "liveLocation": "Main Org Page Gallery Band",
+    "protoStatus": "INTEGRATED_IN_GALLERY",
+    "protoLocation": "Main Hub #gallery"
+  },
+  {
+    "title": "Gallery of Hon&#039;ble Vice-Chairperson",
+    "legacyUrl": "https://ncsk.nic.in/gallery_of_vice_chairperson",
+    "liveStatus": "INTEGRATED_INTO_MAIN_GALLERY",
+    "liveLocation": "Main Org Page Gallery Band",
+    "protoStatus": "INTEGRATED_IN_GALLERY",
+    "protoLocation": "Main Hub #gallery"
+  },
+  {
+    "title": "Gallery of Hon&#039;ble Members",
+    "legacyUrl": "https://ncsk.nic.in/gallery_of_members",
+    "liveStatus": "INTEGRATED_INTO_MAIN_GALLERY",
+    "liveLocation": "Main Org Page Gallery Band",
+    "protoStatus": "INTEGRATED_IN_GALLERY",
+    "protoLocation": "Main Hub #gallery"
+  },
+  {
+    "title": "Gallery of Hon&#039;ble Member 02",
+    "legacyUrl": "https://ncsk.nic.in/gallery_of_member02",
+    "liveStatus": "INTEGRATED_INTO_MAIN_GALLERY",
+    "liveLocation": "Main Org Page Gallery Band",
+    "protoStatus": "INTEGRATED_IN_GALLERY",
+    "protoLocation": "Main Hub #gallery"
+  },
+  {
+    "title": "Tour by Hon'ble Chairperson",
+    "legacyUrl": "https://ncsk.nic.in/tour-by-the-commission-honble-chairperson",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission"
+  },
+  {
+    "title": "Tour by Hon'ble Vice-Chairperson",
+    "legacyUrl": "https://ncsk.nic.in/tour-by-honble-vice-chairperson",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "CONSOLIDATED_IN_TOURS",
+    "protoLocation": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission"
+  },
+  {
+    "title": "Tour by Hon'ble Member",
+    "legacyUrl": "https://ncsk.nic.in/tour-by-honble-member",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "CONSOLIDATED_IN_TOURS",
+    "protoLocation": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission"
+  },
+  {
+    "title": "Tour by Hon'ble Member 02",
+    "legacyUrl": "https://ncsk.nic.in/tour-by-honble-member02",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "CONSOLIDATED_IN_TOURS",
+    "protoLocation": "/website/organisation/national-commission-for-safai-karamcharis/tour-by-the-commission"
+  },
+  {
+    "title": "Annual Report",
+    "legacyUrl": "https://ncsk.nic.in/annual-report",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Annual Reports Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #annual-reports (1994-Present)"
+  },
+  {
+    "title": "Contact Us",
+    "legacyUrl": "https://ncsk.nic.in/contactus",
+    "liveStatus": "PRESENT_ON_HOMEPAGE_FOOTER",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/contact-us"
+  },
+  {
+    "title": "Lodge Complaint",
+    "legacyUrl": "https://ncsk.nic.in/complaints/lodge-complaint",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "DIRECT_WORKFLOW_LINK",
+    "protoLocation": "Nav Rail & Featured Links"
+  },
+  {
+    "title": "Track Complaints",
+    "legacyUrl": "https://ncsk.nic.in/complaints/track-complaints",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "DIRECT_WORKFLOW_LINK",
+    "protoLocation": "Nav Rail & Featured Links"
+  },
+  {
+    "title": "FAQ",
+    "legacyUrl": "https://ncsk.nic.in/faq",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/faq/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/faq"
+  },
+  {
+    "title": "Rules Of Procedure",
+    "legacyUrl": "https://ncsk.nic.in/rules-procedure",
+    "liveStatus": "MISSING_AS_PAGE_INGESTED_AS_PDF",
+    "liveLocation": "Main Org Page Document Band",
+    "protoStatus": "INDEXED_IN_HUB_DOWNLOADS",
+    "protoLocation": "Main Hub #rules-of-procedure"
+  },
+  {
+    "title": "List of meetings held regarding review of payment of compensation in Sewer Death cases",
+    "legacyUrl": "https://ncsk.nic.in/meeting-notices",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Tenders",
+    "legacyUrl": "https://ncsk.nic.in/tender",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "GLOBAL_MOSJE_SECTION",
+    "protoLocation": "/website/documents"
+  },
+  {
+    "title": "Video Gallery",
+    "legacyUrl": "https://ncsk.nic.in/video-gallery",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Vacancy",
+    "legacyUrl": "https://ncsk.nic.in/vacancy",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "GLOBAL_MOSJE_SECTION",
+    "protoLocation": "/website/documents"
+  },
+  {
+    "title": "Manual Scavengers Act",
+    "legacyUrl": "https://ncsk.nic.in/manual-scavengers-act",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Suo-motu Cognizance by the Commission",
+    "legacyUrl": "https://ncsk.nic.in/suo_motu_cognizance_commission",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/suo-motu-cognizance-by-the-commission/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis/suo-motu-cognizance-by-the-commission"
+  },
+  {
+    "title": "Key Initaiative/Achivement",
+    "legacyUrl": "https://ncsk.nic.in/key-initaiativeachivement",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/impact-of-commission-intervention",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis"
+  },
+  {
+    "title": "Gallery",
+    "legacyUrl": "https://ncsk.nic.in/gallery",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "INTEGRATED_IN_GALLERY",
+    "protoLocation": "Main Hub #gallery"
+  },
+  {
+    "title": "Website Policies",
+    "legacyUrl": "https://ncsk.nic.in/website-policy",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "GLOBAL_MOSJE_FOOTER",
+    "protoLocation": "Global Footer / Accessibility Bar"
+  },
+  {
+    "title": "Help",
+    "legacyUrl": "https://ncsk.nic.in/help",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "GLOBAL_MOSJE_FOOTER",
+    "protoLocation": "Global Footer / Accessibility Bar"
+  },
+  {
+    "title": "Feedback",
+    "legacyUrl": "https://ncsk.nic.in/feedback",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "GLOBAL_MOSJE_FOOTER",
+    "protoLocation": "Global Footer / Accessibility Bar"
+  },
+  {
+    "title": "Disclaimer",
+    "legacyUrl": "https://ncsk.nic.in/disclaimer",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "GLOBAL_MOSJE_FOOTER",
+    "protoLocation": "Global Footer / Accessibility Bar"
+  },
+  {
+    "title": "Terms &amp; Conditions",
+    "legacyUrl": "https://ncsk.nic.in/terms-conditions",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "GLOBAL_MOSJE_FOOTER",
+    "protoLocation": "Global Footer / Accessibility Bar"
+  },
+  {
+    "title": "Page not found",
+    "legacyUrl": "https://ncsk.nic.in/complaints",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/hi",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis"
+  },
+  {
+    "title": "Archive State Commissions/Designated Agencies",
+    "legacyUrl": "https://ncsk.nic.in/archive-state-commission-designated-agencie",
+    "liveStatus": "ARCHIVED_NOT_MIGRATED",
+    "liveLocation": "None (Omitted from Live)",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Archive Monitoring Committees",
+    "legacyUrl": "https://ncsk.nic.in/archive-monitoring-committee",
+    "liveStatus": "ARCHIVED_NOT_MIGRATED",
+    "liveLocation": "None (Omitted from Live)",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Archive Vigilance Committees",
+    "legacyUrl": "https://ncsk.nic.in/archive-vigilance-committee",
+    "liveStatus": "ARCHIVED_NOT_MIGRATED",
+    "liveLocation": "None (Omitted from Live)",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/archive-sewer-death",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis"
+  },
+  {
+    "title": "National Commission for Safai Karamcharis",
+    "legacyUrl": "https://ncsk.nic.in/archive-case-which-legal-heir-not-traceable",
+    "liveStatus": "PRESENT",
+    "liveLocation": "https://www.dosje.gov.in/organisation/national-commission-for-safai-karamcharis/",
+    "protoStatus": "PRESENT",
+    "protoLocation": "http://localhost:3007/website/organisation/national-commission-for-safai-karamcharis"
+  },
+  {
+    "title": "Notifications",
+    "legacyUrl": "https://ncsk.nic.in/notifications?page=1",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Lok Sabha Question &amp; Answer",
+    "legacyUrl": "https://ncsk.nic.in/parliament-question-answer?page=1",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  },
+  {
+    "title": "Lok Sabha Question &amp; Answer",
+    "legacyUrl": "https://ncsk.nic.in/parliament-question-answer?page=2",
+    "liveStatus": "MISSING",
+    "liveLocation": "None",
+    "protoStatus": "MISSING",
+    "protoLocation": "None"
+  }
+]

@@ -11,6 +11,8 @@ export interface ContentNavChild {
    * screen-reader note, rather than routing through `linkAs`.
    */
   external?: boolean;
+  /** Marks a dedicated sub-page transition (renders a chevron indicator). */
+  isSubpage?: boolean;
 }
 
 export interface ContentNavItem {
@@ -20,6 +22,8 @@ export interface ContentNavItem {
   current?: boolean;
   /** See `ContentNavChild.external`. */
   external?: boolean;
+  /** Marks a dedicated sub-page transition (renders a chevron indicator). */
+  isSubpage?: boolean;
   /** Sub-links rendered under the item, indented and always visible. */
   children?: ContentNavChild[];
 }
@@ -103,8 +107,7 @@ export function ContentNav({
   /**
    * One renderer for both levels. `external` decides the element, not the depth:
    * an in-page anchor routes through `linkAs`, an off-site file gets a real
-   * anchor with the new-tab affordances. Written once so a child link cannot
-   * quietly drift from the parent's treatment.
+   * anchor with the new-tab affordances.
    */
   const renderLink = (
     entry: ContentNavItem | ContentNavChild,
@@ -112,21 +115,27 @@ export function ContentNav({
   ) => {
     const base = `ds-content-nav__${variant}`;
     const current = "current" in entry ? entry.current : false;
+    const isExternal = entry.external === true;
+    const isSubpage =
+      !isExternal &&
+      (entry.isSubpage === true ||
+        (entry.href.startsWith("/") && !entry.href.includes("#")));
 
-    if (entry.external === true) {
+    if (isExternal) {
       return (
         <a
           href={entry.href}
-          className={cn(base, `${base}--external`)}
+          className={cn(base, `${base}--external`, current === true && `${base}--current`)}
           target="_blank"
           rel="noreferrer noopener"
+          aria-current={current === true ? "page" : undefined}
         >
-          {entry.label}
+          <span className="ds-content-nav__label">{entry.label}</span>
           <svg
             className="ds-content-nav__ext"
             viewBox="0 0 16 16"
-            width="12"
-            height="12"
+            width="14"
+            height="14"
             fill="none"
             aria-hidden="true"
           >
@@ -143,13 +152,41 @@ export function ContentNav({
       );
     }
 
+    if (isSubpage) {
+      return (
+        <Link
+          href={entry.href}
+          className={cn(base, `${base}--subpage`, current === true && `${base}--current`)}
+          aria-current={current === true ? "page" : undefined}
+        >
+          <span className="ds-content-nav__label">{entry.label}</span>
+          <svg
+            className="ds-content-nav__chevron"
+            viewBox="0 0 16 16"
+            width="14"
+            height="14"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M6 3.5L10.5 8L6 12.5"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </Link>
+      );
+    }
+
     return (
       <Link
         href={entry.href}
         className={cn(base, current === true && `${base}--current`)}
         aria-current={current === true ? "page" : undefined}
       >
-        {entry.label}
+        <span className="ds-content-nav__label">{entry.label}</span>
       </Link>
     );
   };

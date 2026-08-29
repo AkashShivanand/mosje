@@ -6,6 +6,7 @@ export interface PageHeroProps {
   breadcrumb: Crumb[];
   badge?: string;
   logoSrc?: string;
+  featuredImage?: string;
   description?: string;
   lastUpdated?: string;
   actions?: React.ReactNode;
@@ -25,9 +26,14 @@ export function PageHero({
   breadcrumb,
   badge,
   logoSrc,
+  featuredImage,
   description,
   actions,
 }: PageHeroProps) {
+  // Use explicit featuredImage or check if logoSrc is a wide banner
+  const bannerImage = featuredImage ?? (logoSrc && (logoSrc.includes("Banner") || logoSrc.includes("banner") || logoSrc.includes("NCSC-2") || logoSrc.includes("smile-beggary")) ? logoSrc : undefined);
+  const actualLogo = logoSrc && logoSrc !== bannerImage ? logoSrc : undefined;
+
   return (
     <>
       {/* 1. Breadcrumbs sit in their own white bar above the hero */}
@@ -38,64 +44,73 @@ export function PageHero({
       </div>
 
       {/* 2. Blue hero section */}
-      <section className="relative overflow-hidden bg-[#0373DF]">
-        <div className="sa-container relative py-12 md:py-16">
+      <section className="relative overflow-hidden bg-[var(--sa-color-primaryScale-600)]">
+        <div className="sa-container relative py-10 md:py-14">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
             {/* Left Content Column */}
-            <div className="lg:col-span-8 flex gap-5 md:gap-6 items-stretch">
+            <div className="lg:col-span-7 xl:col-span-8 flex gap-5 md:gap-6 items-stretch">
               {/* Left Accent Pipe */}
               <div className="w-1.5 rounded-full bg-white shrink-0" aria-hidden="true" />
               
               <div className="flex flex-col justify-center">
-                {badge && (
-                  <span className="inline-block rounded bg-white/20 px-2.5 py-1 text-xs font-bold text-white uppercase tracking-wide mb-3 self-start">
-                    {badge}
-                  </span>
-                )}
-                <h1 className="text-[32px] sm:text-[40px] font-bold leading-tight text-white">
+                <div className="flex items-center gap-3 mb-3 flex-wrap">
+                  {actualLogo && (
+                    <div className="h-12 w-12 relative rounded-full bg-white p-1 shadow-sm shrink-0 overflow-hidden border border-white/40">
+                      <Image src={actualLogo} alt={title} fill className="object-contain p-0.5" />
+                    </div>
+                  )}
+                  {badge && (
+                    <span className="inline-block rounded bg-white/20 px-2.5 py-1 text-xs font-bold text-white uppercase tracking-wide">
+                      {badge}
+                    </span>
+                  )}
+                </div>
+
+                <h1 className="text-[30px] sm:text-[36px] font-bold leading-tight text-white">
                   {title}
                 </h1>
                 {description && (
-                  <p className="mt-3 text-[16px] md:text-[18px] leading-relaxed text-white/95 max-w-3xl">
+                  <p className="mt-3 text-[15px] md:text-[17px] leading-relaxed text-white/95 max-w-3xl">
                     {description}
                   </p>
                 )}
                 {actions && <div className="mt-6">{actions}</div>}
-                {/* No date here. GIGW 3.0 §5.1.5 requires every important entry
-                    page to publish its last reviewed/modified date, and DBIM 5.6
-                    names the footer as where "Last Updated On" lives — PageLayout
-                    already passes this same value to SiteFooter, so the rule is
-                    met once, on this page. Printing it in the banner as well put
-                    two different-looking dates on one screen (this one, and the
-                    data-currency stamp on the dashboard) with nothing to tell a
-                    reader which governed the figures. The Figma banner carries
-                    no date either. */}
               </div>
             </div>
 
-            {/* Right Side Graphic / Circular Plaque */}
-            <div className="lg:col-span-4 absolute right-0 top-1/2 -translate-y-1/2 hidden md:flex items-center justify-end pointer-events-none opacity-20 lg:opacity-100 select-none pr-8">
-              {logoSrc ? (
-                 <div className="h-48 w-48 relative rounded-full shadow-2xl border-4 border-white overflow-hidden bg-white">
-                   <Image src={logoSrc} alt={title} fill className="object-contain p-4" />
-                 </div>
-              ) : (
-                /* Default 3D Ministry Plaque Representation */
-                <div className="w-[380px] h-[380px] rounded-full border-[10px] border-[#0256a8] bg-[#0365c4] shadow-2xl flex items-center justify-center relative translate-x-12">
-                  <div className="w-[320px] h-[320px] rounded-full border-2 border-[#024991] bg-gradient-to-br from-[#047aeb] to-[#025bb3] flex flex-col items-center justify-center text-center p-8 gap-4 shadow-inner">
+            {/* Right Side Graphic: Circular Photo Plaque with Halo Effect (Figma 3751:10132) */}
+            <div className="lg:col-span-5 xl:col-span-4 flex items-center justify-center lg:justify-end select-none">
+              <div className="relative w-[260px] h-[260px] sm:w-[300px] sm:h-[300px] md:w-[340px] md:h-[340px] flex items-center justify-center">
+                {/* Ambient Halo Glow */}
+                <div
+                  className="absolute inset-2 rounded-full bg-white/20 blur-2xl transform scale-105 pointer-events-none"
+                  aria-hidden="true"
+                />
+                {bannerImage ? (
+                  <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white/40 shadow-2xl bg-white/10 backdrop-blur-sm">
+                    <Image
+                      src={bannerImage}
+                      alt={title}
+                      fill
+                      className="object-cover"
+                      priority
+                    />
+                  </div>
+                ) : (
+                  <div className="relative w-full h-full rounded-full border-4 border-white/40 bg-gradient-to-br from-white/25 to-white/10 shadow-2xl flex flex-col items-center justify-center p-6 text-center backdrop-blur-sm">
                     <Image
                       src="/website/images/National_Emblem_logo_white.svg"
                       alt="National Emblem of India"
-                      width={100}
-                      height={120}
-                      className="drop-shadow-md"
+                      width={90}
+                      height={110}
+                      className="drop-shadow-lg"
                     />
-                    <div className="text-white font-bold tracking-widest text-[11px] leading-tight uppercase opacity-90 drop-shadow-sm">
+                    <div className="text-white font-bold tracking-widest text-[10px] leading-tight uppercase opacity-95 drop-shadow-sm mt-3">
                       Ministry of Social Justice<br />&amp; Empowerment
                     </div>
                   </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
         </div>

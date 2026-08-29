@@ -29,13 +29,14 @@ export function getContentSyncedDate(): string {
 }
 
 const organisations = organisationData as SectionRecord[];
+const orgMap = new Map<string, SectionRecord>(organisations.map((o) => [o.slug, o]));
 
 export function getOrganisations(): SectionRecord[] {
   return organisations;
 }
 
 export function getOrganisation(slug: string): SectionRecord | undefined {
-  return organisations.find((o) => o.slug === slug);
+  return orgMap.get(slug);
 }
 
 const schemes = schemesData as SectionRecord[];

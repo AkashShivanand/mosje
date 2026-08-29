@@ -68,6 +68,34 @@ function storybookRewrites() {
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "durwo6bhtjtqt.cloudfront.net",
+      },
+      {
+        protocol: "https",
+        hostname: "*.cloudfront.net",
+      },
+      {
+        protocol: "https",
+        hostname: "www.dosje.gov.in",
+      },
+      {
+        protocol: "https",
+        hostname: "dosje.gov.in",
+      },
+      {
+        protocol: "https",
+        hostname: "*.gov.in",
+      },
+      {
+        protocol: "https",
+        hostname: "*.nic.in",
+      },
+    ],
+  },
   // Told to the proxy so its dev zone-probe knows to leave /storybook alone
   // when the static build is serving it. Without this the probe finds :6006
   // down and rewrites to the "app not running" page, shadowing the very files

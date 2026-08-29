@@ -47,15 +47,24 @@
     overflow-y: auto;
   }
 
+  .ds-content-nav__group {
+    position: relative;
+  }
+
   .ds-content-nav__group + .ds-content-nav__group {
     border-top: 1px solid var(--sa-border-neutral-subtle);
   }
 
-  /* A banded caps label, not a heading — see the note on the component. */
+  /* A banded caps label that sticks to the top of the nav card until the reader
+     scrolls past to the next group, matching the Figma prototype. */
   .ds-content-nav__group-label {
+    position: sticky;
+    top: 0;
+    z-index: 2;
     margin: 0;
     padding: var(--sa-padding-12) var(--sa-padding-20);
     background-color: var(--sa-bg-neutral-subtler);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
     font-weight: 600;
@@ -79,7 +88,10 @@
   }
 
   .ds-content-nav__link {
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
     padding: var(--sa-padding-8) var(--sa-padding-12);
     border-radius: var(--sa-shape-8);
     /* body-2 (14px), not body-3 (12px). This is a primary navigation control on
@@ -93,6 +105,17 @@
     text-decoration: none;
   }
 
+  .ds-content-nav__label {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .ds-content-nav__chevron {
+    flex: 0 0 auto;
+    opacity: 0.5;
+    color: currentColor;
+  }
+
   /* `base` is the PALEST rung of the brand ramp (#ecf4ff), not the brand ink —
      the trap `documentation-ds-linkage.md` records. Bound here by resolved
      value: the tint is `base` (#ecf4ff, 5.76:1 under the #005eb9 label) and the
@@ -103,11 +126,19 @@
     color: var(--sa-text-brand-primary-bolder);
   }
 
+  .ds-content-nav__link:hover .ds-content-nav__chevron {
+    opacity: 1;
+  }
+
   .ds-content-nav__link--current,
   .ds-content-nav__link--current:hover {
     background-color: var(--sa-bg-brand-primary-bolder);
     color: var(--sa-text-neutral-inverse);
     font-weight: 600;
+  }
+
+  .ds-content-nav__link--current .ds-content-nav__chevron {
+    opacity: 0.9;
   }
 
   /* The rule is the indent: a left border reads as "belongs to the item above"
