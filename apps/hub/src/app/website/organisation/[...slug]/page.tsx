@@ -168,26 +168,20 @@ export default async function OrganisationDetailPage({
 }: {
   params: Promise<{ slug: string[] }>;
 }) {
-
   const { slug } = await params;
   const key = slug.join("/");
   const org = getOrganisation(key);
   if (!org) notFound();
 
-  const rootSlug = slug[0];
+  const rootSlug = slug[0] ?? "";
   const allOrgs = getOrganisations();
+  const rootOrg = allOrgs.find((o) => o.slug === rootSlug);
   const relatedPages = allOrgs.filter((o) => o.slug === rootSlug || o.slug.startsWith(`${rootSlug}/`));
   const detail = getOrganisationDetail(key);
-  // Fetched on the server so the figures are live without shipping the endpoint
-  // to the browser; falls back to the mirrored snapshot if the feed is down.
-  // Fetched on the server so the figures are live without shipping the endpoint
-  // to the browser; each client falls back to its mirrored snapshot if the feed
-  // is down. Only the one this page needs is fetched.
+  const isSubPage = slug.length > 1;
+
   const adarshGram = key === ADARSH_GRAM_SLUG ? await getAdarshGramCounts() : null;
   const gia = key === GIA_SLUG ? await getGiaData() : null;
-  // The gender split is fetched with the approvals total it is scaled against,
-  // so an illustrative distribution can never contradict the live figure above
-  // it. See GIA_GENDER_DESCRIPTOR for why it is illustrative at all.
   const giaGender = gia
     ? await getGiaGender(
         gia.years.reduce((t, y) => t + (y.approvals.total ?? y.mock.totalApproved), 0),
@@ -200,21 +194,59 @@ export default async function OrganisationDetailPage({
   );
   const glance = GLANCE[key];
 
+  const orgHref = (s: string) => `/website/organisation/${s}`;
+
   const chrome = {
     title: org.title,
-    badge: "Associated Organisation",
-    breadcrumb: [
-      { label: "Associated Organisations", href: "/website" },
-      { label: org.title },
-    ],
+    badge: isSubPage ? (rootOrg?.title ?? "Associated Organisation") : "Associated Organisation",
+    breadcrumb: isSubPage
+      ? [
+          { label: "Associated Organisations", href: "/website" },
+          { label: rootOrg?.title ?? "Organisation", href: orgHref(rootSlug) },
+          { label: org.title },
+        ]
+      : [
+          { label: "Associated Organisations", href: "/website" },
+          { label: org.title },
+        ],
     lastUpdated: getContentSyncedDate(),
-    logoSrc: detail?.logo ?? org.featuredImage,
+    logoSrc: detail?.logo ?? (rootOrg as { logo?: string })?.logo ?? "/website/images/National-Emblem-logo.svg",
+    featuredImage: detail?.featuredImage ?? org.featuredImage ?? rootOrg?.featuredImage,
     description:
-      detail?.lead ??
-      (org as { description?: string }).description,
-    actions: org.website ? (
+      (org as { description?: string }).description ??
+      detail?.lead,
+    actions: detail?.quickActions && detail.quickActions.length > 0 ? (
+      <div className="flex flex-wrap gap-2.5 items-center mt-2">
+        {detail.quickActions.map((qa) => {
+          const isExternal = qa.external || qa.href.startsWith("http");
+          return (
+            <a
+              key={qa.href}
+              href={qa.href}
+              target={isExternal ? "_blank" : undefined}
+              rel={isExternal ? "noreferrer" : undefined}
+              className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-[13px] font-semibold transition-all shadow-sm ${
+                qa.variant === "primary"
+                  ? "bg-white text-[var(--sa-color-primaryScale-600)] hover:bg-white/90 shadow-md font-bold"
+                  : qa.variant === "danger"
+                  ? "bg-amber-400 text-slate-900 hover:bg-amber-300 font-bold"
+                  : "bg-white/15 text-white hover:bg-white/25 border border-white/30 backdrop-blur-sm"
+              }`}
+            >
+              {qa.icon && <Icon name={qa.icon} size={16} />}
+              <span>{qa.label}</span>
+              {isExternal ? (
+                <Icon name="open_in_new" size={16} className="opacity-80" />
+              ) : (
+                <Icon name="arrow_forward" size={16} className="opacity-80" />
+              )}
+            </a>
+          );
+        })}
+      </div>
+    ) : (org.website ?? rootOrg?.website) ? (
       <a
-        href={org.website}
+        href={org.website ?? rootOrg?.website}
         target="_blank"
         rel="noreferrer"
         className={buttonClasses("primary", "filled", "sm", "text-xs px-4 py-2 flex items-center gap-1.5")}
@@ -225,25 +257,13 @@ export default async function OrganisationDetailPage({
   };
 
   /*
-   * THE PM-AJAY COMPONENT PAGES KEEP THEIR OWN LAYOUT, DELIBERATELY.
-   *
-   * These three are the only organisation pages in the estate that carry a
-   * dashboard, and the dashboard is what sets the column geometry: the article
-   * and the "At a glance" panel line up with the charts below them. Folding
-   * them into the shared template would mean either the template growing a
-   * three-page special case or the dashboards losing that alignment. Each is
-   * reachable from the parent page's Components card, which is the link the
-   * template is responsible for.
+   * THE PM-AJAY COMPONENT PAGES KEEP THEIR OWN 2-COLUMN DASHBOARD LAYOUT (Figma 51858:48299).
    */
   if (glance) {
     return (
       <PageLayout {...chrome}>
         <section className="py-10 md:py-14 bg-surface-muted/30">
           <div className="sa-container flex flex-col gap-6 lg:flex-row lg:items-start">
-            {/* Figma 51858:48299 — one flexible content column beside a fixed
-                516px aside with a single 24px gutter. The 12-column version put
-                two empty columns between them, which is the gap that read as
-                wasted space. */}
             <article className="gov-prose sd-article min-w-0 lg:flex-1">
               {org.sections.map((s, i) => (
                 <section key={s.heading ?? i} className="mb-8">
@@ -262,12 +282,6 @@ export default async function OrganisationDetailPage({
               ))}
             </article>
 
-            {/* TWO PANELS, NOT ONE. The rules and the sibling links were in a
-                single box, which asked one container to be a reference card and
-                a navigation list at once — so the links read as a fifth fact
-                about the scheme rather than as somewhere to go. Splitting them
-                also lets each take the surface its job wants: the rules keep the
-                brand wash, the links sit on white where a hover state reads. */}
             <div className="sd-aside">
               <aside className="sd-aside__card sd-aside__card--facts" aria-labelledby="sd-aside-title">
                 <h2 id="sd-aside-title" className="sd-aside__title">
@@ -306,17 +320,63 @@ export default async function OrganisationDetailPage({
           </div>
         </section>
 
-        {/* Figma: MoSJE [Handoff] → "Organisation Details". The template runs as
-            full-bleed bands — grey for the write-up, white for the block beneath
-            it, pale blue for Need Support. The dashboard IS that white band, at
-            the same container as every other section. */}
         <section className="bg-white py-12 md:py-14">
           <div className="sa-container">
-            {adarshGram && (
-              <AdarshGramDashboard feed={adarshGram} />
-            )}
+            {adarshGram && <AdarshGramDashboard feed={adarshGram} />}
             {gia && giaGender && <GiaDashboard data={gia} gender={giaGender} />}
             {hostel && <HostelDashboard data={hostel} />}
+          </div>
+        </section>
+      </PageLayout>
+    );
+  }
+
+  /*
+   * CANONICAL SUBPAGE LAYOUT (Figma node 3751:7943).
+   *
+   * Renders the complete, authentic scraped content for the subpage in full-width
+   * structured container sections without synthetic fabrication or artificial 2-column squeezing.
+   */
+  if (isSubPage) {
+    return (
+      <PageLayout {...chrome}>
+        <section className="py-10 md:py-14 bg-surface-muted/30">
+          <div className="sa-container max-w-7xl mx-auto">
+            {org.sections.length === 0 ? (
+              <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-neutral-subtle">
+                <p className="orgd__empty">
+                  This page is being prepared. In the meantime the source page is available on{" "}
+                  <a href={org.sourceUrl} target="_blank" rel="noreferrer noopener">
+                    dosje.gov.in
+                  </a>
+                  .
+                </p>
+              </div>
+            ) : (
+              <div className="flex flex-col gap-8">
+                {org.sections.map((s, i) => (
+                  <section
+                    key={s.heading ?? i}
+                    className="bg-white p-6 md:p-10 rounded-2xl shadow-sm border border-neutral-subtle"
+                  >
+                    {s.heading && slugify(s.heading) !== slugify(org.title) && (
+                      <h2
+                        id={slugify(s.heading)}
+                        className="text-[22px] md:text-[26px] font-semibold text-primary-dark pb-3 mb-6 border-b border-neutral-subtle scroll-mt-28"
+                      >
+                        {s.heading}
+                      </h2>
+                    )}
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: withAssetBasePath(trimRedundantOpening(s.html)),
+                      }}
+                      className="gov-prose text-ink text-[16px] leading-relaxed max-w-none"
+                    />
+                  </section>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       </PageLayout>

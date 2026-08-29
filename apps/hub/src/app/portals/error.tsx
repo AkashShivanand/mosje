@@ -1,14 +1,43 @@
 "use client";
-export default function Error({ reset }: { reset: () => void }) {
+
+import { useEffect } from "react";
+import { ErrorView } from "@mosje/design-system";
+
+export default function PortalsError({
+  error,
+  reset,
+}: {
+  error: Error & { digest?: string };
+  reset: () => void;
+}) {
+  useEffect(() => {
+    console.error("Portal error:", error);
+  }, [error]);
+
   return (
-    <div className="flex min-h-[50vh] flex-col items-center justify-center gap-4 p-8 text-center">
-      <h2 className="text-xl font-semibold text-ink">Something went wrong</h2>
-      <button
-        onClick={reset}
-        className="rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white hover:opacity-90"
-      >
-        Try again
-      </button>
-    </div>
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-surface-base">
+      <ErrorView
+        kind="500"
+        badge="500 · Portal Error"
+        title="Portal Session Error"
+        description="An unexpected error occurred while loading this portal workflow. Your transaction data has been preserved where possible."
+        searchUrl={null}
+        primaryAction={{
+          label: "Try Again",
+          onClick: reset,
+          icon: "refresh",
+        }}
+        secondaryAction={{
+          label: "Back to Portals",
+          href: "/portals",
+          icon: "arrow_back",
+        }}
+        errorDetails={
+          error.digest
+            ? `Error Digest: ${error.digest}\nMessage: ${error.message}`
+            : error.message || "Unknown portal error"
+        }
+      />
+    </main>
   );
 }

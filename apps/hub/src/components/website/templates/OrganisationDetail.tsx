@@ -1,8 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import {
+  BrandGlyph,
   FactStrip,
   Icon,
+  IndiaMap,
   SectionTitle,
   buttonClasses,
 } from "@mosje/design-system";
@@ -179,6 +181,23 @@ const downloadCards = (items: OrgDownload[]): FileCardItem[] =>
     actionLabel: DOWNLOAD_KIND[f.kind].action,
   }));
 
+export function formatOrgHtml(rawHtml: string): string {
+  let html = withAssetBasePath(trimRedundantOpening(rawHtml));
+  // Strip any residual unconstrained widget images
+  html = html.replace(/<a[^>]*>\s*<img[^>]*class="rounded-[34]"[^>]*>\s*<\/a>/gi, "");
+  html = html.replace(/<img[^>]*class="rounded-[34]"[^>]*>/gi, "");
+  html = html.replace(/<img[^>]*src="[^"]*schemes-768x768[^"]*"[^>]*>/gi, "");
+  // Wrap any <table> in .orgd__tablewrap if not already wrapped
+  html = html.replace(/(<table[\s\S]*?<\/table>)/gi, (match) => {
+    let table = match.replace(/class="[^"]*table[^"]*"/gi, 'class="orgd__table"');
+    if (!table.includes('class="')) {
+      table = table.replace('<table', '<table class="orgd__table"');
+    }
+    return `<div class="orgd__tablewrap">${table}</div>`;
+  });
+  return html;
+}
+
 export function OrganisationDetail({
   org,
   detail,
@@ -189,44 +208,104 @@ export function OrganisationDetail({
   const circulars = matchDocuments(documents, detail?.circulars, 4);
   const resources = matchDocuments(documents, detail?.resources, 4);
 
+  const isSubPage = org.slug.includes("/");
+  const rootSlug = org.slug.split("/")[0] ?? org.slug;
+
   // Without a hand-authored index, fall back to the child pages the scrape
   // found. A page with neither is a single column, which is the right answer
   // for a page with one section.
-  const navGroups =
+  const rawNavGroups =
     detail?.nav ??
     (relatedPages.length > 1
       ? [
           {
-            label: "In this organisation",
+            label: "ABOUT US",
+            items: [
+              {
+                label: "About Organisation",
+                href: isSubPage ? orgHref(rootSlug) : "#about-the-scheme",
+                current: !isSubPage,
+              },
+            ],
+          },
+          {
+            label: "OUR WORK & IMPACT",
             items: relatedPages
-              .filter((p) => p.slug !== org.slug)
-              .map((p) => ({ label: p.title, href: orgHref(p.slug) })),
+              .filter((p) => p.slug !== rootSlug)
+              .map((p) => ({
+                label: p.title,
+                href: orgHref(p.slug),
+                current: p.slug === org.slug,
+              })),
+          },
+          {
+            label: "CONNECT & ENGAGE",
+            items: [
+              {
+                label: "Contact & Information",
+                href: isSubPage ? `${orgHref(rootSlug)}#contact` : "#contact",
+              },
+            ],
           },
         ]
       : []);
 
+  // When on a sub-page, resolve in-page anchor links back to the root organisation page
+  const navGroups = rawNavGroups.map((g) => ({
+    ...g,
+    items: g.items.map((i) => {
+      let href = i.href;
+      if (isSubPage && href.startsWith("#")) {
+        href = `${orgHref(rootSlug)}${href}`;
+      }
+      return {
+        ...i,
+        href,
+        current: i.href === orgHref(org.slug),
+      };
+    }),
+  }));
+
   const hasRail = navGroups.length > 0;
 
   const bands: { id: string; body: React.ReactNode }[] = [];
+
+  const aboutSubpage = relatedPages.find((p) => {
+    const s = p.slug.toLowerCase();
+    return (
+      s.endsWith("/about-us") ||
+      s.endsWith("/about") ||
+      s.includes("/about-") ||
+      s.endsWith("/about-the-commission") ||
+      s.endsWith("/about-bjrnf") ||
+      s.endsWith("/about-dapsc")
+    );
+  });
+
+  const effectiveAboutAction =
+    detail?.aboutAction ??
+    (aboutSubpage
+      ? { label: "Know More →", href: orgHref(aboutSubpage.slug) }
+      : undefined);
 
   bands.push({
     id: "about-the-scheme",
     body: (
       <>
         <SectionTitle as={2} title={detail?.aboutHeading ?? "About"} headingId="about-heading">
-          {detail?.aboutAction != null && (
+          {effectiveAboutAction != null && (
             <Link
-              href={detail.aboutAction.href}
+              href={effectiveAboutAction.href}
               className={buttonClasses("primary", "outlined", "sm")}
             >
-              {detail.aboutAction.label}
+              {effectiveAboutAction.label}
             </Link>
           )}
         </SectionTitle>
         {detail?.aboutHtml != null ? (
           <div
             className="gov-prose orgd__prose"
-            dangerouslySetInnerHTML={{ __html: detail.aboutHtml }}
+            dangerouslySetInnerHTML={{ __html: formatOrgHtml(detail.aboutHtml) }}
           />
         ) : org.sections.length === 0 ? (
           <p className="orgd__empty">
@@ -242,14 +321,186 @@ export function OrganisationDetail({
               key={s.heading ?? i}
               className="gov-prose orgd__prose"
               dangerouslySetInnerHTML={{
-                __html: withAssetBasePath(trimRedundantOpening(s.html)),
+                __html: formatOrgHtml(s.html),
               }}
             />
           ))
         )}
+        {detail?.aboutHighlights != null && detail.aboutHighlights.length > 0 && (
+          <ul className="orgd__highlights">
+            {detail.aboutHighlights.map((h) => (
+              <li key={h.title} className="orgd__highlight-card">
+                <span className="orgd__card-icon">
+                  <Icon name={h.icon ?? "verified"} size={32} />
+                </span>
+                <h3 className="orgd__card-title">{h.title}</h3>
+                <p className="orgd__card-desc">{h.description}</p>
+                {h.href != null && (
+                  <Link href={h.href} className="orgd__card-cta">
+                    {h.ctaLabel ?? "Learn more"}
+                    <Icon name="arrow_forward" size={16} />
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
       </>
     ),
   });
+
+  if (detail?.leadership != null) {
+    const l = detail.leadership;
+    bands.push({
+      id: "leadership",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={l.heading}
+            description={l.description}
+            headingId="leadership-heading"
+          >
+            {l.action != null && (
+              <Link href={l.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+                {l.action.label}
+              </Link>
+            )}
+          </SectionTitle>
+          <ul className="orgd__leaders">
+            {l.items.map((m) => (
+              <li key={m.name} className="orgd__leader-card">
+                <div className="orgd__leader-frame">
+                  {m.image ? (
+                    <Image
+                      src={m.image}
+                      alt={m.name}
+                      width={140}
+                      height={140}
+                      className="orgd__leader-img w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-surface-muted">
+                      <Icon name="person" size={64} className="text-neutral-subtle" />
+                    </div>
+                  )}
+                  {m.roleTag != null && (
+                    <span className="orgd__leader-badge">{m.roleTag}</span>
+                  )}
+                </div>
+                <h3 className="orgd__leader-name">{m.name}</h3>
+                <p className="orgd__leader-role">{m.designation}</p>
+              </li>
+            ))}
+          </ul>
+        </>
+      ),
+    });
+  }
+
+  if (detail?.majorActivities != null) {
+    const ma = detail.majorActivities;
+    bands.push({
+      id: "major-activities",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={ma.heading}
+            description={ma.description}
+            headingId="major-activities-heading"
+          >
+            {ma.action != null && (
+              <Link href={ma.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+                {ma.action.label}
+              </Link>
+            )}
+          </SectionTitle>
+          <ul className="orgd__activities">
+            {ma.items.map((act) => (
+              <li key={act.title} className="orgd__activity-card">
+                <div className="orgd__activity-icon">
+                  <Icon name={act.icon ?? "verified"} size={40} />
+                </div>
+                <h3 className="orgd__activity-title">{act.title}</h3>
+                {act.href && (
+                  <Link
+                    href={act.href}
+                    className={buttonClasses("primary", "outlined", "sm", "orgd__activity-cta")}
+                  >
+                    {act.actionLabel ?? "View Details"}
+                    <Icon name="arrow_forward" size={16} />
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ul>
+        </>
+      ),
+    });
+  }
+
+  if (detail?.initiatives != null) {
+    const init = detail.initiatives;
+    bands.push({
+      id: "national-initiatives",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={init.heading}
+            description={init.description}
+            headingId="initiatives-heading"
+          >
+            {init.action != null && (
+              <Link href={init.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+                {init.action.label}
+              </Link>
+            )}
+          </SectionTitle>
+          <ul className="orgd__initiatives">
+            {init.items.map((it) => (
+              <li key={it.title} className="orgd__initiative-card--horizontal">
+                {it.image ? (
+                  <div className="orgd__initiative-media">
+                    <Image
+                      src={it.image}
+                      alt={it.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                ) : (
+                  <div className="orgd__initiative-media flex items-center justify-center p-4 bg-brand-primary-subtler">
+                    <Image
+                      src="/website/images/National-Emblem-logo.svg"
+                      alt="National Emblem of India"
+                      width={56}
+                      height={56}
+                    />
+                  </div>
+                )}
+                <div className="orgd__initiative-body">
+                  <span className="orgd__initiative-tag">
+                    Ministry of Social Justice &amp; Empowerment
+                  </span>
+                  <h3 className="orgd__initiative-title">{it.title}</h3>
+                  <p className="orgd__initiative-desc">{it.description}</p>
+                  <Link
+                    href={it.href ?? orgHref(it.slug ?? "")}
+                    className={buttonClasses("primary", "outlined", "sm", "mt-auto self-start flex items-center gap-1.5")}
+                  >
+                    {it.actionLabel ?? "Know More"}
+                    <Icon name="arrow_forward" size={16} />
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
+      ),
+    });
+  }
 
   if (detail?.components != null) {
     bands.push({
@@ -261,13 +512,19 @@ export function OrganisationDetail({
             title={detail.components.heading}
             description={detail.components.description}
             headingId="components-heading"
-          />
+          >
+            {detail.components.action != null && (
+              <Link
+                href={detail.components.action.href}
+                className={buttonClasses("primary", "outlined", "sm")}
+              >
+                {detail.components.action.label}
+              </Link>
+            )}
+          </SectionTitle>
           <ul className="orgd__cards">
             {detail.components.items.map((c) => (
               <li key={c.slug}>
-                {/* The whole card is the link. A card with a "Read more" link
-                    inside it gives a pointer user a large target and a keyboard
-                    user a small one; this gives both the same target. */}
                 <Link href={orgHref(c.slug)} className="orgd__card">
                   <span className="orgd__card-icon" aria-hidden="true">
                     <Icon name={c.icon} size={32} />
@@ -284,6 +541,68 @@ export function OrganisationDetail({
           </ul>
         </>
       ),
+    });
+  }
+
+  if (detail?.resourcesBookshelf != null) {
+    const rb = detail.resourcesBookshelf;
+    bands.push({
+      id: "resources-bookshelf",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={rb.heading}
+            description={rb.description}
+            headingId="resources-bookshelf-heading"
+          >
+            {rb.action != null && (
+              <Link href={rb.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+                {rb.action.label}
+              </Link>
+            )}
+          </SectionTitle>
+          <ul className="orgd__bookshelf">
+            {rb.items.map((book) => (
+              <li key={book.title} className="orgd__book-card">
+                <Link href={book.href ?? "#"} className="orgd__book-link">
+                  <div className="orgd__book-cover">
+                    <Image
+                      src={book.image}
+                      alt={book.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <h3 className="orgd__book-title">{book.title}</h3>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </>
+      ),
+    });
+  }
+
+  if (detail?.downloads != null) {
+    const downloads = detail.downloads;
+    downloads.groups.forEach((g) => {
+      bands.push({
+        id: g.id,
+        body: (
+          <>
+            <SectionTitle as={2} title={g.heading} headingId={`${g.id}-heading`}>
+              <Link
+                href={g.viewAllHref ?? "/website/publications"}
+                className={buttonClasses("primary", "outlined", "sm")}
+              >
+                View all
+              </Link>
+            </SectionTitle>
+            <FileGrid items={downloadCards(g.items)} />
+          </>
+        ),
+      });
     });
   }
 
@@ -325,28 +644,34 @@ export function OrganisationDetail({
     });
   }
 
-  if (detail?.downloads != null) {
-    const downloads = detail.downloads;
+  if (detail?.featuredLinks != null && detail.featuredLinks.items.length > 0) {
+    const fl = detail.featuredLinks;
     bands.push({
-      id: "downloads",
+      id: "featured-links",
       body: (
         <>
           <SectionTitle
             as={2}
-            title={downloads.heading}
-            description={downloads.description}
-            headingId="downloads-heading"
+            title={fl.heading ?? "Featured Links"}
+            headingId="featured-links-heading"
           />
-          {/* Two labelled groups inside one band rather than two bands: these
-              are one kind of thing — files published for the scheme — split by
-              which scheme published them. The group ids are what the page index
-              links to, which is why they sit on the group and not the band. */}
-          {downloads.groups.map((g) => (
-            <div className="orgd__dlgroup" key={g.id} id={g.id}>
-              <h3 className="orgd__subhead">{g.heading}</h3>
-              <FileGrid items={downloadCards(g.items)} />
-            </div>
-          ))}
+          <div className="orgd__pills">
+            {fl.items.map((p) => {
+              const isExternal = p.external || p.href.startsWith("http://") || p.href.startsWith("https://");
+              return (
+                <Link
+                  key={p.href}
+                  href={p.href}
+                  className="orgd__pill"
+                  target={isExternal ? "_blank" : undefined}
+                  rel={isExternal ? "noreferrer" : undefined}
+                >
+                  <span>{p.label}</span>
+                  <Icon name={isExternal ? "open_in_new" : "arrow_forward"} size={16} />
+                </Link>
+              );
+            })}
+          </div>
         </>
       ),
     });
@@ -358,10 +683,39 @@ export function OrganisationDetail({
       body: (
         <>
           <SectionTitle as={2} title={detail.gallery.heading} headingId="gallery-heading">
-            <Link href="/website/gallery" className={buttonClasses("primary", "outlined", "sm")}>
+            <Link
+              href={detail.gallery.viewAllHref ?? "/website/gallery"}
+              className={buttonClasses("primary", "outlined", "sm")}
+            >
               View all photos
             </Link>
           </SectionTitle>
+          {/* Segmented Media Tabs (Figma 5326:27984) */}
+          <div className="flex items-center gap-2 mb-6 flex-wrap">
+            <div className="inline-flex rounded-lg p-1 bg-surface-muted border border-neutral-subtle gap-1">
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md bg-surface text-ink font-semibold text-[13px] shadow-sm"
+              >
+                <Icon name="image" size={16} className="text-primary-base" />
+                <span>All Photos</span>
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-ink-subtle hover:text-ink font-medium text-[13px] transition-colors"
+              >
+                <Icon name="movie" size={16} />
+                <span>Videos</span>
+              </button>
+              <button
+                type="button"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-md text-ink-subtle hover:text-ink font-medium text-[13px] transition-colors"
+              >
+                <Icon name="event" size={16} />
+                <span>Events</span>
+              </button>
+            </div>
+          </div>
           <ul className="orgd__gallery">
             {detail.gallery.items.map((g) => (
               <li key={g.image} className="orgd__shot">
@@ -378,41 +732,225 @@ export function OrganisationDetail({
     });
   }
 
+  if (detail?.stateOfficesMap != null && detail.stateOfficesMap.offices.length > 0) {
+    const som = detail.stateOfficesMap;
+    bands.push({
+      id: "state-offices",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={som.heading}
+            description={som.description}
+            headingId="state-offices-heading"
+          >
+            {som.action != null && (
+              <Link href={som.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+                {som.action.label}
+              </Link>
+            )}
+          </SectionTitle>
+          <div className="orgd__state-map-layout">
+            <ul className="orgd__state-list">
+              {som.offices.map((office) => (
+                <li key={office.name} className="orgd__state-card">
+                  <div className="flex items-center justify-between w-full">
+                    <span className="font-semibold text-ink text-[15px]">{office.name}</span>
+                    <Icon name="chevron_right" size={20} className="text-neutral-subtle" />
+                  </div>
+                  {office.address && (
+                    <p className="text-[13px] text-neutral-subtle mt-1">{office.address}</p>
+                  )}
+                </li>
+              ))}
+            </ul>
+            <div className="orgd__map-container">
+              <IndiaMap
+                data={som.offices.map((o) => ({ state: o.stateCode, value: 1 }))}
+                title="State & Regional Offices"
+              />
+            </div>
+          </div>
+        </>
+      ),
+    });
+  }
+
+  if (detail?.activityCorner != null) {
+    const ac = detail.activityCorner;
+    bands.push({
+      id: "activity-corner",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={ac.heading}
+            description={ac.description}
+            headingId="activity-corner-heading"
+          >
+            {ac.action != null && (
+              <Link href={ac.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+                {ac.action.label}
+              </Link>
+            )}
+          </SectionTitle>
+          <ul className="orgd__updates-grid">
+            {ac.items.map((item) => (
+              <li key={item.title} className="orgd__update-card">
+                <div className="orgd__date-badge">
+                  <span className="orgd__date-day">{item.day}</span>
+                  <span className="orgd__date-month">{item.monthYear}</span>
+                </div>
+                <div className="orgd__update-content">
+                  <h3 className="orgd__update-title">{item.title}</h3>
+                  <p className="orgd__update-desc">{item.description}</p>
+                  {item.href && (
+                    <Link href={item.href} className="orgd__update-link">
+                      <span>Read More</span>
+                      <Icon name="arrow_forward" size={16} />
+                    </Link>
+                  )}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
+      ),
+    });
+  }
+
+  if (detail?.socialFeed != null && (detail.socialFeed.posts?.length || detail.socialFeed.handles?.length)) {
+    const sf = detail.socialFeed;
+    bands.push({
+      id: "social-feed",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={sf.heading}
+            headingId="social-feed-heading"
+          />
+          {sf.handles && sf.handles.length > 0 && (
+            <div className="flex items-center gap-3 mb-6 flex-wrap">
+              {sf.handles.map((h) => (
+                <a
+                  key={h.url}
+                  href={h.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-neutral-subtle bg-surface hover:bg-surface-muted text-[13px] font-medium text-ink transition-colors"
+                >
+                  <BrandGlyph name={h.platform} size={16} />
+                  <span>{h.handle}</span>
+                  <Icon name="open_in_new" size={16} className="text-neutral-subtle" />
+                </a>
+              ))}
+            </div>
+          )}
+          {sf.posts && sf.posts.length > 0 && (
+            <ul className="orgd__social-grid">
+              {sf.posts.map((post, idx) => (
+                <li key={idx} className="orgd__social-card">
+                  <div className="flex items-center justify-between gap-3 mb-3">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-brand-primary-subtler flex items-center justify-center text-brand-primary-bolder">
+                        <BrandGlyph name={post.platform} size={20} />
+                      </div>
+                      <div>
+                        <p className="text-[13px] font-bold text-ink leading-tight m-0">{post.author}</p>
+                        <p className="text-[11px] text-neutral-subtle leading-tight m-0">{post.handle}</p>
+                      </div>
+                    </div>
+                    <span className="text-[11px] text-neutral-subtle">{post.date}</span>
+                  </div>
+                  <p className="orgd__social-text">{post.content}</p>
+                  {post.image && (
+                    <div className="w-full h-36 relative rounded-lg overflow-hidden my-3 border border-neutral-subtle">
+                      <Image src={post.image} alt={post.content.slice(0, 40)} fill className="object-cover" />
+                    </div>
+                  )}
+                  {(post.likes || post.shares) && (
+                    <div className="flex items-center gap-4 pt-3 border-t border-neutral-subtle text-[12px] text-neutral-subtle mt-auto">
+                      {post.likes && (
+                        <span className="flex items-center gap-1">
+                          <Icon name="favorite" size={16} className="text-danger-base" /> {post.likes}
+                        </span>
+                      )}
+                      {post.shares && (
+                        <span className="flex items-center gap-1">
+                          <Icon name="share" size={16} /> {post.shares}
+                        </span>
+                      )}
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </>
+      ),
+    });
+  }
+
   if (detail?.contact != null) {
     const contact = detail.contact;
+    const contactAction = contact.action ?? {
+      label: "View Directory",
+      href: `/website/directory?org=${org.slug}`,
+    };
     bands.push({
       id: "contact",
       body: (
         <>
-          <SectionTitle as={2} title={contact.heading} headingId="contact-heading" />
+          <SectionTitle as={2} title={contact.heading} headingId="contact-heading">
+            <Link href={contactAction.href} className={buttonClasses("primary", "outlined", "sm")}>
+              {contactAction.label}
+            </Link>
+          </SectionTitle>
           <div className="orgd__contact">
-            <div className="orgd__support">
-              <h3 className="orgd__subhead">Technical support</h3>
+            <div className="orgd__contact-grid">
+              {contact.address != null && (
+                <div className="orgd__contact-card">
+                  <div className="flex items-center gap-2 text-primary-dark font-semibold text-[15px]">
+                    <Icon name="location_on" size={20} />
+                    <span>Headquarters</span>
+                  </div>
+                  <p className="text-[14px] text-ink leading-relaxed m-0">{contact.address}</p>
+                </div>
+              )}
               {contact.supportPhone != null && (
-                <p className="orgd__support-row">
-                  <span className="orgd__support-icon" aria-hidden="true">
+                <div className="orgd__contact-card">
+                  <div className="flex items-center gap-2 text-primary-dark font-semibold text-[15px]">
                     <Icon name="call" size={20} />
-                  </span>
-                  <span>
-                    <a href={`tel:${contact.supportPhone.replace(/[^+\d]/g, "")}`}>
+                    <span>Telephone / Helpline</span>
+                  </div>
+                  <p className="text-[14px] text-ink m-0">
+                    <a href={`tel:${contact.supportPhone.replace(/[^+\d]/g, "")}`} className="text-link hover:underline">
                       {contact.supportPhone}
                     </a>
-                    {contact.supportHours != null && (
-                      <span className="orgd__support-note">{contact.supportHours}</span>
-                    )}
-                  </span>
-                </p>
+                  </p>
+                  {contact.supportHours != null && (
+                    <span className="text-[12px] text-ink-subtle">{contact.supportHours}</span>
+                  )}
+                </div>
               )}
               {contact.supportEmail != null && (
-                <p className="orgd__support-row">
-                  <span className="orgd__support-icon" aria-hidden="true">
+                <div className="orgd__contact-card">
+                  <div className="flex items-center gap-2 text-primary-dark font-semibold text-[15px]">
                     <Icon name="mail" size={20} />
-                  </span>
-                  {/* Addresses are published obfuscated on the source site and
-                      stay that way — de-obfuscating them here would publish a
-                      harvestable government mailbox. */}
-                  <span>{contact.supportEmail}</span>
-                </p>
+                    <span>Official Email</span>
+                  </div>
+                  <p className="text-[14px] text-ink m-0">{contact.supportEmail}</p>
+                </div>
+              )}
+              {contact.regionalOffices != null && (
+                <div className="orgd__contact-card">
+                  <div className="flex items-center gap-2 text-primary-dark font-semibold text-[15px]">
+                    <Icon name="domain" size={20} />
+                    <span>State & Regional Offices</span>
+                  </div>
+                  <p className="text-[14px] text-ink leading-relaxed m-0">{contact.regionalOffices}</p>
+                </div>
               )}
             </div>
 

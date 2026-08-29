@@ -1,11 +1,25 @@
-import Link from "next/link";
+import { ErrorView } from "@mosje/design-system";
 
-export default function NotFound() {
+export default function RootNotFound() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 p-8 text-center">
-      <h1 className="text-2xl font-bold text-ink">Page Not Found</h1>
-      <p className="text-ink-muted">The page you requested does not exist.</p>
-      <Link href="/" className="text-sm font-semibold text-primary hover:underline">Go to Home</Link>
+    <main className="flex min-h-screen flex-col items-center justify-center p-6 bg-surface-base">
+      <ErrorView
+        kind="404"
+        badge="404 · Page Not Found"
+        title="We Couldn’t Find That Page"
+        description="The resource you requested does not exist on the Ministry of Social Justice & Empowerment digital estate."
+        searchUrl="/website/search?q="
+        primaryAction={{
+          label: "Go to Main Website",
+          href: "/website",
+          icon: "home",
+        }}
+        secondaryAction={{
+          label: "View All Portals",
+          href: "/portals",
+          icon: "apps",
+        }}
+      />
     </main>
   );
 }

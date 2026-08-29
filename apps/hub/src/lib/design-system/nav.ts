@@ -308,6 +308,10 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "Error View",
+        "href": "/design-system/components/feedback/error-view"
+      },
+      {
         "label": "Lightbox",
         "href": "/design-system/components/feedback/lightbox",
         "badge": "Beta"

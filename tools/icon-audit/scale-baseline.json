@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 200,
+    "offScale": 199,
     "classSized": 4
   },
   "files": {
@@ -273,10 +273,6 @@
     },
     "apps/hub/src/components/nmba/treatment-centre/tc-list.tsx": {
       "offScale": 3,
-      "classSized": 0
-    },
-    "apps/hub/src/components/portals-explorer.tsx": {
-      "offScale": 1,
       "classSized": 0
     },
     "apps/hub/src/components/scw/ui.tsx": {
