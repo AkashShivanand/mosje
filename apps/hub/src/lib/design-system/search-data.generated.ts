@@ -59,7 +59,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Account Menu",
     "section": "Navigation",
     "href": "/design-system/components/navigation/account-menu",
-    "keywords": "account menu navigation overview & purpose usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance keyboard navigation Dr. R. Sharma Dr. R. Sharma tokens wcag accessibility",
+    "keywords": "account menu navigation overview & purpose usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance keyboard navigation Dr. R. Sharma tokens wcag accessibility",
     "description": "Dropdown profile menu displaying logged-in officer credentials, designation, portal switch links, and secure sign-out actions.",
     "type": "component",
     "badge": "Stable",

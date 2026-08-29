@@ -8,7 +8,7 @@ import {
   CodeBlock,
   FeedbackBar,
 } from "@/components/design-system/docs-kit/index";
-import { Lightbox } from "@mosje/design-system";
+import { LightboxSpecimen } from "./lightbox-specimen";
 import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
@@ -95,7 +95,7 @@ export default function LightboxDocPage(): React.JSX.Element {
                       Live Component Specimen
                     </div>
                     <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <Lightbox open={true} items={[{ type: "image", src: "/design-system/samavesh-logo.svg", caption: "Beneficiary Camp 2026" }]} onClose={() => console.log("close")} />
+                      <LightboxSpecimen />
                     </div>
                   </div>
                 </section>

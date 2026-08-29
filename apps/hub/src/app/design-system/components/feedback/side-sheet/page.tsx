@@ -8,7 +8,7 @@ import {
   CodeBlock,
   FeedbackBar,
 } from "@/components/design-system/docs-kit/index";
-import { SideSheet } from "@mosje/design-system";
+import { SideSheetSpecimen } from "./side-sheet-specimen";
 import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
@@ -95,7 +95,7 @@ export default function SideSheetDocPage(): React.JSX.Element {
                       Live Component Specimen
                     </div>
                     <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <SideSheet open={true} title="Application Details" onClose={() => console.log("close")}><div style={{ padding: "var(--sa-padding-20)" }}><p style={{ margin: 0 }}>Beneficiary application deep inspection panel.</p></div></SideSheet>
+                      <SideSheetSpecimen />
                     </div>
                   </div>
                 </section>

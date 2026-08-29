@@ -8,7 +8,7 @@ import {
   CodeBlock,
   FeedbackBar,
 } from "@/components/design-system/docs-kit/index";
-import { Tabs } from "@mosje/design-system";
+import { TabsOverflowSpecimen } from "./tabs-overflow-specimen";
 import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
@@ -95,7 +95,7 @@ export default function TabsOverflowDocPage(): React.JSX.Element {
                       Live Component Specimen
                     </div>
                     <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <Tabs idBase="tabs-demo" tabs={[{ id: "1", label: "Overview" }, { id: "2", label: "Eligibility" }, { id: "3", label: "Guidelines" }, { id: "4", label: "Grievances" }]} active={0} onChange={(i: number) => console.log(i)} overflow={true} />
+                      <TabsOverflowSpecimen />
                     </div>
                   </div>
                 </section>

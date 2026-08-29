@@ -8,7 +8,7 @@ import {
   CodeBlock,
   FeedbackBar,
 } from "@/components/design-system/docs-kit/index";
-import { AppSwitcherPanel } from "@mosje/design-system";
+import { AppSwitcherPanelSpecimen } from "./app-switcher-panel-specimen";
 import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
@@ -95,7 +95,7 @@ export default function AppSwitcherPanelDocPage(): React.JSX.Element {
                       Live Component Specimen
                     </div>
                     <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <AppSwitcherPanel pathname="/portals/pm-ajay" onNavigate={() => console.log("nav")} />
+                      <AppSwitcherPanelSpecimen />
                     </div>
                   </div>
                 </section>

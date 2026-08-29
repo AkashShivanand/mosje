@@ -8,7 +8,7 @@ import {
   CodeBlock,
   FeedbackBar,
 } from "@/components/design-system/docs-kit/index";
-import { AccountMenu } from "@mosje/design-system";
+import { AccountMenuSpecimen } from "./account-menu-specimen";
 import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
@@ -95,7 +95,7 @@ export default function AccountMenuDocPage(): React.JSX.Element {
                       Live Component Specimen
                     </div>
                     <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <AccountMenu account={{ name: "Dr. R. Sharma", role: "State Admin" }} items={[{ label: "My Profile", onSelect: () => console.log("profile") }, { label: "Sign Out", onSelect: () => console.log("logout") }]} />
+                      <AccountMenuSpecimen />
                     </div>
                   </div>
                 </section>
