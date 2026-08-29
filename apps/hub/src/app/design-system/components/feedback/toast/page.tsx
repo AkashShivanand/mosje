@@ -32,7 +32,7 @@ export default function ToastPage(): React.JSX.Element {
   };
 
   return (
-    <main
+    <article
       className="ds-prose"
       style={{
         maxWidth: "800px",
@@ -166,6 +166,6 @@ export function SaveProfile() {
         ]}
       />
 
-    </main>
+    </article>
   );
 }

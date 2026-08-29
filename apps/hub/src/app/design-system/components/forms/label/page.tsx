@@ -32,7 +32,7 @@ export default function LabelPage(): React.JSX.Element {
   };
 
   return (
-    <main
+    <article
       className="ds-prose"
       style={{
         maxWidth: "800px",
@@ -156,6 +156,6 @@ export default function LabelPage(): React.JSX.Element {
         ]}
       />
 
-    </main>
+    </article>
   );
 }

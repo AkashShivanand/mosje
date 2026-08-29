@@ -71,7 +71,7 @@ function CodeBlock({ children }: { children: string }): React.JSX.Element {
 
 export default function TabsPage(): React.JSX.Element {
   return (
-    <main
+    <article
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
@@ -537,6 +537,6 @@ function ClinicalRecord() {
         ]}
       />
 
-    </main>
+    </article>
   );
 }

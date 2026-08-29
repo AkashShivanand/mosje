@@ -1,5 +1,7 @@
 "use client";
 import * as React from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Icon } from "@mosje/design-system";
 import { NAV } from "@/lib/design-system/nav";
 
@@ -12,21 +14,14 @@ interface DocsHeaderProps {
 }
 
 function useBreadcrumb(): [string, string] | null {
-  const [crumb, setCrumb] = React.useState<[string, string] | null>(null);
+  const pathname = usePathname();
 
-  // Reads window.location, so it can only run after mount (SSR-safe seed is
-  // null) — the standard client-hydration pattern, hence the scoped disables.
-  React.useEffect(() => {
-    const p = window.location.pathname.replace(/\/$/, "");
-    if (p === "/design-system") {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setCrumb(null);
-      return;
+  return React.useMemo(() => {
+    const p = (pathname ?? "").replace(/\/$/, "");
+    if (!p || p === "/design-system") {
+      return null;
     }
-    // Pick the BEST-matching nav item, not the first: prefer a real page item
-    // (no #hash) and the most specific (longest) base path. Avoids anchor items
-    // that share a base path winning — e.g. Patterns "#patterns" shadowing
-    // Resources/Overview on /design-system/resources.
+
     let best: { group: string; label: string; len: number; hasHash: boolean } | null = null;
     for (const group of NAV) {
       for (const item of group.items) {
@@ -41,16 +36,17 @@ function useBreadcrumb(): [string, string] | null {
         if (better) best = { group: group.title, label: item.label, len: hrefBase.length, hasHash };
       }
     }
-    setCrumb(best ? [best.group, best.label] : null);
-  }, []);
-
-  return crumb;
+    return best ? [best.group, best.label] : null;
+  }, [pathname]);
 }
 
 export function DocsHeader({ onSearchOpen, navOpen, onMenuToggle }: DocsHeaderProps): React.JSX.Element {
   const breadcrumb = useBreadcrumb();
-
-
+  const isMac = React.useSyncExternalStore(
+    () => () => {},
+    () => typeof navigator !== "undefined" && /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgent || navigator.platform),
+    () => true
+  );
 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -76,9 +72,9 @@ export function DocsHeader({ onSearchOpen, navOpen, onMenuToggle }: DocsHeaderPr
         <Icon name={navOpen ? "close" : "menu"} size={20} />
       </button>
       <nav className="docs-header__breadcrumb" aria-label="Breadcrumb">
-        <a href="/design-system" className="docs-header__breadcrumb-home">
+        <Link href="/design-system" className="docs-header__breadcrumb-home">
           SAMAVESH
-        </a>
+        </Link>
         {breadcrumb && (
           <>
             <span className="docs-header__breadcrumb-sep" aria-hidden="true">/</span>
@@ -91,12 +87,12 @@ export function DocsHeader({ onSearchOpen, navOpen, onMenuToggle }: DocsHeaderPr
       <button
         className="docs-header__search-btn"
         onClick={onSearchOpen}
-        aria-label="Search documentation (Cmd K)"
+        aria-label={`Search documentation (${isMac ? "Cmd K" : "Ctrl K"})`}
         type="button"
       >
         <Icon name="search" size={16} />
         <span className="docs-header__search-label">Search docs…</span>
-        <kbd className="docs-header__search-kbd">⌘K</kbd>
+        <kbd className="docs-header__search-kbd">{isMac ? "⌘K" : "Ctrl K"}</kbd>
       </button>
     </header>
   );

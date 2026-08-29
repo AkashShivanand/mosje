@@ -142,7 +142,7 @@ function AnatomyBand({
 
 export default function HeaderPage(): React.JSX.Element {
   return (
-    <main
+    <article
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
@@ -730,6 +730,6 @@ export default function HeaderPage(): React.JSX.Element {
         </ul>
       </section></>) }
       ]} />
-</main>
+</article>
   );
 }

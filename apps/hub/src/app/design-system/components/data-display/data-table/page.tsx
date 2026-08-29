@@ -13,7 +13,7 @@ export default function DataTablePage(): React.JSX.Element {
   const proseStyle: React.CSSProperties = { color: "var(--sa-text-neutral-base)", fontSize: "var(--sa-type-body-1-size)", lineHeight: 1.6 };
 
   return (
-    <main className="ds-prose" style={{ maxWidth: "1000px", padding: "var(--sa-padding-40) var(--sa-padding-24)" }}>
+    <article className="ds-prose" style={{ maxWidth: "1000px", padding: "var(--sa-padding-40) var(--sa-padding-24)" }}>
       <header style={{ marginBottom: "var(--sa-stack-40)" }}>
         <h1 style={{ fontSize: "var(--sa-type-headline-1-size)", margin: "0 0 var(--sa-stack-16) 0" }}>Data Table</h1>
         <p className="ds-lead" style={{ fontSize: "var(--sa-type-headline-3-size)", color: "var(--sa-text-neutral-subtle)" }}>
@@ -106,7 +106,7 @@ export function ApplicantList({ data }) {
         ]}
       />
 
-    </main>
+    </article>
   );
 }
 

@@ -46,7 +46,7 @@ export default function ChatbotPage(): React.JSX.Element {
   };
 
   return (
-    <main
+    <article
       className="ds-prose"
       style={{ maxWidth: "800px", padding: "var(--sa-padding-40) var(--sa-padding-24)" }}
     >
@@ -308,6 +308,6 @@ export default function ChatbotPage(): React.JSX.Element {
           ]}
         />
       </section>
-    </main>
+    </article>
   );
 }

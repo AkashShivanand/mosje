@@ -315,7 +315,7 @@ export default function PatternsPage(): React.JSX.Element {
 
 <div style={{ display: "flex" }}>
   <SidebarNav open={sidebarOpen} groups={NAV_GROUPS} />
-  <main id="main-content" style={{ flex: 1, padding: "var(--sa-stack-24)" }}>
+  <article id="main-content" style={{ flex: 1, padding: "var(--sa-stack-24)" }}>
 
     {/* Row 1: KPI MetricCards — 4 col desktop, 2 tablet, 1 mobile */}
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: "var(--sa-stack-16)" }}>
@@ -334,7 +334,7 @@ export default function PatternsPage(): React.JSX.Element {
       <DataTable columns={columns} data={rows} pagination />
     </Card>
 
-  </main>
+  </article>
 </div>
 
 <Footer links={FOOTER_LINKS} />`}</pre>

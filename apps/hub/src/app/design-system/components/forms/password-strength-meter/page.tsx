@@ -32,7 +32,7 @@ export default function PasswordStrengthMeterPage(): React.JSX.Element {
   };
 
   return (
-    <main
+    <article
       className="ds-prose"
       style={{
         maxWidth: "800px",
@@ -167,6 +167,6 @@ function RegistrationForm() {
         ]}
       />
 
-    </main>
+    </article>
   );
 }

@@ -74,7 +74,7 @@ const PORTAL_DS_SIDEBAR_URL =
 
 export default function SidebarPage(): React.JSX.Element {
   return (
-    <main
+    <article
       style={{
         maxWidth: "1024px",
         margin: "0 auto",
@@ -546,6 +546,6 @@ const { sidebarCollapsed, setSidebarCollapsed } = useApp();
         ]}
       />
 
-    </main>
+    </article>
   );
 }

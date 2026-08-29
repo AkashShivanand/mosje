@@ -32,7 +32,7 @@ export default function WizardPage(): React.JSX.Element {
   };
 
   return (
-    <main
+    <article
       className="ds-prose"
       style={{
         maxWidth: "800px",
@@ -173,6 +173,6 @@ export default function WizardPage(): React.JSX.Element {
         ]}
       />
 
-    </main>
+    </article>
   );
 }
