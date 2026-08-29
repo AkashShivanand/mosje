@@ -483,7 +483,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
 
   "national-commission-for-safai-karamcharis": {
     logo: "/design-system/org-logos/ncsk.png",
-    featuredImage: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Banner-NCSK.png",
+    featuredImage: "/website/images/organisations/banner-ncsk.png",
     lead: "The National Commission for Safai Karamcharis (NCSK) was constituted on 12th August, 1994 as a statutory body by an Act of Parliament viz. ‘National Commission for Safai Karamcharis Act, 1993’, for a period of three years i.e. up to 31st March, 1997. As per sub-section (4) of Section 1 of the Act, it was to cease to exist after 31.3.1997. However, validity of the Act was extended up to March, 2002, and then up to February, 2004 vide Amendment Acts passed in 1997 and 2001 respectively.",
     quickActions: [
       {
@@ -612,19 +612,19 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           name: "Shri Hardeep Singh Gill",
           designation: "Hon'ble Vice-Chairperson",
           roleTag: "Hon'ble Vice-Chairperson",
-          image: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/Hardeep_Singh_Gill.jpg",
+          image: "/website/images/organisations/hardeep_singh_gill.jpg",
         },
         {
           name: "Shri Karam Singh Karma",
           designation: "Hon'ble Member",
           roleTag: "Hon'ble Member",
-          image: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/05/WhatsApp-Image-2026-05-20-at-2.56.31-PM-1024x887.jpeg",
+          image: "/website/images/organisations/whatsapp-image-2026-05-20-at-2.56.31-pm-1024x887.jpeg",
         },
         {
           name: "Shri Rahul Kashyap",
           designation: "Secretary to Commission",
           roleTag: "Secretary",
-          image: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/WhatsApp-Image-2026-06-02-at-1.13.17-PM.jpeg",
+          image: "/website/images/organisations/whatsapp-image-2026-06-02-at-1.13.17-pm.jpeg",
         },
       ],
     },
@@ -665,14 +665,14 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         {
           title: "Revised Scheme Guidelines For inclusion of Waste Pickers Component under NAMASTE",
           description: "Comprehensive guidelines for inclusion, skilling, and capital subsidy assistance for waste pickers.",
-          image: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/schemes-768x768.jpg",
+          image: "/website/images/organisations/schemes-768x768.jpg",
           href: "/website/documents/sample/advisory-sop-sample.pdf",
           actionLabel: "Download Guidelines",
         },
         {
           title: "Revised Scheme Guidelines of National Action for Mechanised Sanitation Ecosystem (NAMASTE)",
           description: "Joint initiative of MoSJE and MoHUA to ensure zero fatalities in sanitation work and 100% mechanization.",
-          image: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/schemes-768x768.jpg",
+          image: "/website/images/organisations/schemes-768x768.jpg",
           href: "/website/documents/sample/advisory-sop-sample.pdf",
           actionLabel: "Download Guidelines",
         },
@@ -872,17 +872,17 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       viewAllHref: "/website/gallery?org=ncsk",
       items: [
         {
-          image: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-28-at-12.47.56-PM-2-768x1024.jpeg",
+          image: "/website/images/organisations/whatsapp-image-2026-06-28-at-12.47.56-pm-2-768x1024.jpeg",
           caption: "माननीय सदस्य श्री कर्म सिंह कर्मा जी का मुंडका सेप्टिक टैंक दुर्घटना पीड़ित परिजनों से मुलाकात एवं समीक्षा",
           date: "27 Jun 2026",
         },
         {
-          image: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-28-at-7.08.02-AM-1024x682.jpeg",
+          image: "/website/images/organisations/whatsapp-image-2026-06-28-at-7.08.02-am-1024x682.jpeg",
           caption: "सफाई कर्मचारी राहत एवं पुनर्वास समन्वय बैठक",
           date: "28 Jun 2026",
         },
         {
-          image: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/06/WhatsApp-Image-2026-06-27-at-6.32.41-PM-1-1024x768.jpeg",
+          image: "/website/images/organisations/whatsapp-image-2026-06-27-at-6.32.41-pm-1-1024x768.jpeg",
           caption: "राष्ट्रीय सफाई कर्मचारी आयोग द्वारा सुरक्षा मानकों की समीक्षा",
           date: "27 Jun 2026",
         },
@@ -969,8 +969,8 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
   },
 
   "national-commission-for-scheduled-castes": {
-    logo: "https://www.dosje.gov.in/wp-content/uploads/2025/10/ncsc-logo.png",
-    featuredImage: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/NCSC-2.png",
+    logo: "/website/images/organisations/ncsc-logo.png",
+    featuredImage: "/website/images/organisations/ncsc-2.png",
     lead: "The National Commission for Scheduled Castes (NCSC) is a constitutional body established under Article 338 of the Constitution of India to safeguard the rights and interests of the Scheduled Castes and the Anglo-Indian community against exploitation and discrimination.",
     aboutHeading: "About the Commission",
     aboutAction: { label: "Know More →", href: "/website/organisation/national-commission-for-scheduled-castes/about-the-commission" },
@@ -1048,25 +1048,25 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           name: "Shri Kishor Makwana",
           designation: "Hon'ble Chairperson",
           roleTag: "Hon'ble Chairperson",
-          image: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Kishor-Makwana.png",
+          image: "/website/images/organisations/shri-kishor-makwana.png",
         },
         {
           name: "Shri Love Kush Kumar",
           designation: "Hon'ble Member",
           roleTag: "Hon'ble Member",
-          image: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Love-Kush-Kumar.png",
+          image: "/website/images/organisations/shri-love-kush-kumar.png",
         },
         {
           name: "Shri Vaddepalli Ramchander",
           designation: "Hon'ble Member",
           roleTag: "Hon'ble Member",
-          image: "https://www.dosje.gov.in/wp-content/uploads/2025/11/Shri-Vaddepalli-Ramchander.png",
+          image: "/website/images/organisations/shri-vaddepalli-ramchander.png",
         },
         {
           name: "Dr. Partha Biswas",
           designation: "Joint Secretary to Commission",
           roleTag: "Joint Secretary",
-          image: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/04/Dr-Partha-Biswas.jpg",
+          image: "/website/images/organisations/dr-partha-biswas.jpg",
         },
       ],
     },
@@ -1078,21 +1078,21 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         {
           title: "Spot Visits by the Commission",
           description: "On-site inquiry and fact-finding visits conducted across various states to investigate atrocities and deprivation of rights.",
-          image: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2025/11/Spot.png",
+          image: "/website/images/organisations/spot.png",
           href: "/website/organisation/national-commission-for-scheduled-castes/spot-visits-by-the-commission",
           actionLabel: "View Details",
         },
         {
           title: "PSU / PSB Reservation Policy Reviews",
           description: "Review meetings undertaken to assess and monitor implementation of reservation policy and employee safeguards in Public Sector Undertakings and Banks.",
-          image: "https://www.dosje.gov.in/wp-content/uploads/2025/11/activity-img-2.png",
+          image: "/website/images/organisations/activity-img-2.png",
           href: "/website/organisation/national-commission-for-scheduled-castes/psu-psb-reviews",
           actionLabel: "View Details",
         },
         {
           title: "State Development & Safeguard Reviews",
           description: "State-level comprehensive reviews evaluating progress of welfare schemes and implementation of constitutional safeguards.",
-          image: "https://www.dosje.gov.in/wp-content/uploads/2025/11/activity-img-3.png",
+          image: "/website/images/organisations/activity-img-3.png",
           href: "/website/organisation/national-commission-for-scheduled-castes/state-reviews",
           actionLabel: "View Details",
         },
