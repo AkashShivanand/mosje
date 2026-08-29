@@ -12,6 +12,12 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-08-30 · System version: v0.37.0 (SAMAVESH BANNER & ACCORDION
+  PORTAL DISCOVERY DRAWER. Canonical token-driven SamaveshBanner component matching
+  Figma node 7116:33784 & 7298:29968 with accessible expand/collapse transitions,
+  portal discovery cards for SCW, SMILE-Transgender, NOS, NMBA, and admin placement
+  configuration across website pages.)
+
   Last reviewed: 2026-08-28 · System version: v0.36.0 (THE CATEGORICAL CHART RAMP IS
   COLOUR-BLIND-SAFE FOR THE FIRST TIME, and the old one never was. The twelve slots sat
   at near-constant lightness (L 44-63), so they were told apart by HUE ALONE — the one
@@ -2198,6 +2204,15 @@ and renders it only when `exportable`.
 - **`lastUpdated` must be the CURRENT PAGE's date** — pass it down from the page layout, never the site-wide build date, or the footer contradicts the page hero.
 - **Do not put the same destination behind two labels.** The link graph is deduplicated deliberately: "Vision & Mission" and "Help & Support" both pointed at pages already linked one line above them. The two remaining shared destinations are role-distinct and intended (the support CTA vs the Help nav entry; the Digital India related-link vs its mandated credit logo).
 - Every `<nav>` is labelled, the footer is named by a visually-hidden `<h2>`, and one focus ring is defined once for the subtree — do not add per-control rings.
+
+#### SamaveshBanner
+**Purpose**: The canonical top banner and portal exploration drawer for SAMAVESH (Figma node `7116:33784` & `7298:29968`). Consolidates the saffron identity bar with an interactive accordion drawer to discover and access the ministry's portals (SCW, SMILE-Transgender, NOS, NMBA, etc.).
+**Key props**: `defaultOpen`, `isOpen`, `onToggle`, `portals`, `drawerTitle`, `viewAllHref`, `viewAllLabel`, `logoSrc`, `title`, `subline`, `exploreLabel`
+**Rules**:
+- **Single Source of Truth.** Replaces all hand-rolled website banners with a unified token-driven component exported from `@mosje/design-system`.
+- **Tokenised.** Header ground binds to `var(--sa-color-brand-saffron)` (#ff671f), badge ground to `var(--sa-bg-neutral-base)`, drawer ground to `var(--sa-color-brand-saffronLight)` / warm gradient, and Explore CTA to `var(--sa-color-status-success)`. Zero hardcoded hex.
+- **Accessible State Machine.** The Explore button manages `aria-expanded` and `aria-controls` targeting the drawer. Escape key collapses the open drawer automatically. Keyboard navigation reaches each portal card in sequence.
+- **Responsive Layout.** Collapses into a clean stacked layout on mobile viewports (<640px) while maintaining full tap targets (min 44px) and WCAG 2.2 AA contrast.
 
 #### SiteHeader
 **Purpose**: The SAMAVESH Navbar. **One component serves every placement in the estate** — there is no second masthead to reach for and none to write.  

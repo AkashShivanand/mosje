@@ -1,37 +1,43 @@
-import Image from "next/image";
-import Link from "next/link";
-import { Divider, Icon, buttonClasses } from "@mosje/design-system";
+"use client";
 
-export function SamaveshBanner() {
-  return (
-    <section className="bg-saffron text-white">
-      <div className="sa-container flex min-h-[76px] flex-wrap items-center gap-4 py-2">
-        <Image
-          src="/website/images/samavesh.png"
-          alt="SAMAVESH"
-          width={120}
-          height={120}
-          className="h-12 w-auto"
-          style={{ width: "auto" }}
-        />
-        <div className="flex items-center gap-4">
-          <span className="text-[28px] font-semibold leading-none tracking-[0.5px]">
-            SAMAVESH
-          </span>
-          <Divider orientation="vertical" tone="inverse-subtle" length={36} className="hidden sm:block" />
-          <span className="text-[15px] leading-snug">
-            Single Access Mechanism for All Verticals of Empowerment &amp; Social
-            Harmony
-          </span>
-        </div>
-        <Link
-          href="/website/samavesh-citizen-portals"
-          className={buttonClasses("success", "filled", "sm", "ml-auto")}
-        >
-          Explore
-          <span className="ds-btn__icon" aria-hidden="true"><Icon name="arrow_forward" size={16} /></span>
-        </Link>
-      </div>
-    </section>
-  );
+import * as React from "react";
+import { usePathname } from "next/navigation";
+import {
+  SamaveshBanner as DSSamaveshBanner,
+  type SamaveshBannerProps,
+} from "@mosje/design-system";
+import { useSamaveshBanner } from "@/lib/samavesh-banner/context";
+
+export interface WebsiteSamaveshBannerProps extends SamaveshBannerProps {
+  /** Explicit force show/hide flag. */
+  forceShow?: boolean;
+}
+
+/**
+ * Website SAMAVESH Banner consumer component.
+ *
+ * Integrates the canonical @mosje/design-system SamaveshBanner with estate-wide
+ * admin placement settings (All pages, All pages except organisation details, Only homepage).
+ */
+export function SamaveshBanner({
+  forceShow,
+  ...props
+}: WebsiteSamaveshBannerProps) {
+  const pathname = usePathname();
+  const { shouldShow } = useSamaveshBanner();
+
+  const isHomepage =
+    pathname === "/website" ||
+    pathname === "/website/" ||
+    pathname === "/" ||
+    pathname === "";
+  const isOrgDetails = Boolean(pathname && pathname.startsWith("/website/organisation"));
+
+  const visible = forceShow ?? shouldShow({ pathname, isHomepage, isOrgDetails });
+
+  if (!visible) {
+    return null;
+  }
+
+  return <DSSamaveshBanner {...props} />;
 }

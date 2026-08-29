@@ -248,6 +248,11 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "SAMAVESH Banner",
+        "href": "/design-system/components/navigation/samavesh-banner",
+        "badge": "New"
+      },
+      {
         "label": "Site Footer",
         "href": "/design-system/components/navigation/site-footer",
         "badge": "Stable"

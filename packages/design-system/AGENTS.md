@@ -83,7 +83,7 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
   `Label` (standalone label for controls **outside** `FormField`) and the input atoms
   (forms); `SectionTitle` (the shared eyebrow/heading/count/actions row — never hand-roll a
   `flex justify-between` with its own heading classes) (layout);
-  `ApprovalTimeline` (multi-tier approval audit trail, data-display); `SiteHeader`, `SidebarNav`, `Footer`,
+  `ApprovalTimeline` (multi-tier approval audit trail, data-display); `SiteHeader`, `SiteFooter`, `SamaveshBanner` (canonical top identity banner + accordion portal discovery drawer), `SidebarNav`, `Footer`,
   `AppSwitcherPanel` (the searchable, grouped Website/Portals/Reports/Resources destination
   list — pure content, no fixed positioning; used by `DemoDock`'s Apps tab, see Demo Tooling
   below — the standalone `AppSwitcher` FAB it used to live inside no longer exists),

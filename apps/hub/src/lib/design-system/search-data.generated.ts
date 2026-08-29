@@ -870,6 +870,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "menu_book"
   },
   {
+    "title": "SAMAVESH Banner — Design System",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/samavesh-banner",
+    "keywords": "samavesh banner — design system navigation interactive specimen implementation & guidelines overview & principles usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance component props defaultOpen isOpen onToggle portals drawerTitle viewAllHref viewAllLabel title subline exploreLabel tokens wcag accessibility",
+    "description": "Top identity banner and portal discovery drawer implementing Figma node 7116:33784 & 7298:29968.",
+    "type": "component",
+    "badge": "Stable",
+    "iconName": "navigation"
+  },
+  {
     "title": "Scatter Chart",
     "section": "Data Display",
     "href": "/design-system/components/data-display/scatter-chart",

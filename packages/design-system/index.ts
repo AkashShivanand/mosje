@@ -379,6 +379,16 @@ export type {
   SiteFooterCredit,
 } from "./components/navigation/site-footer";
 
+// SamaveshBanner — the canonical top banner and portal discovery drawer (Figma 7116:33784).
+export {
+  SamaveshBanner,
+  DEFAULT_SAMAVESH_PORTALS,
+} from "./components/navigation/samavesh-banner";
+export type {
+  SamaveshBannerProps,
+  SamaveshBannerPortalItem,
+} from "./components/navigation/samavesh-banner";
+
 // AppSwitcherPanel — the searchable cross-zone content, reused by DemoDock's
 // Apps tab. The interactive component lives in a "use client" module. (The
 // old standalone `AppSwitcher` FAB shell is superseded by `DemoDock` below
