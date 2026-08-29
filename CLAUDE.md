@@ -27,6 +27,8 @@ Then:
 **What I did:** one or two sentences covering the whole change.
 **What's working:** what the user can now do or see.
 **What's next / Recommendations:** follow-ups, pending items, things to know.
+**Agents & tokens used:** which model(s) or helper agents did the work, and an
+approximate token cost for the task.
 
 Rules for the table:
 - **Every change gets a row.** If it was worth doing, it is worth one line. A change
@@ -39,6 +41,19 @@ Rules for the table:
 - **Anything left undone, blocked, or deliberately skipped goes in the summary**, not
   only in the body — including work that needs a human (a Figma edit, a secret, an
   approval).
+
+Rules for the agents & tokens line:
+- **Say what was requested, never what was confirmed.** There is no way to verify from
+  inside a conversation which model actually executed a call — not even this one's own.
+  Phrase it as "Opus 5 (main session) requested" or "Sonnet helper requested for
+  parallel search," never "ran on" or "handled by," which claims certainty that
+  doesn't exist.
+- **If no helper agents were used, say so plainly** rather than skipping the line.
+- **The token figure is an estimate**, taken from the session's running token budget
+  (`<total_tokens>` remaining) before vs. after the task — always label it "approx."
+  Never present it as an exact or billed number.
+- If no reliable figure is available, say "not tracked for this task" instead of
+  guessing.
 
 ## What this is
 
