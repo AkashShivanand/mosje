@@ -34,6 +34,24 @@ import {
  * the indicator count. They are a summary of the article beside them, not a
  * separate content type, and inventing a CMS field for four lines that exist to
  * summarise the paragraph next to them would be the wrong kind of tidy.
+ *
+ * EVERY FACT HERE MUST BE STATED POLICY, NEVER A FIGURE FROM THE FEED.
+ *
+ * This panel is static JSX. It carries no provenance chip and it does not move
+ * when the demo rail's data-mode switch moves. The dashboard directly beneath it
+ * does both. So a feed number typed in here is a number that will, sooner or
+ * later, contradict the chart under it — and the typed one is the one that looks
+ * official.
+ *
+ * It had already happened. Hostels claimed "2,30,977 places / 1,25,485 in
+ * occupation" above a dashboard reading 1,57,708 and 89,776: the panel was
+ * quoting a stale snapshot while the chart read the feed, on the same screen.
+ * GIA claimed "four interventions" three inches from prose saying the component
+ * "falls into three broad categories".
+ *
+ * Both panels now carry what the source states permanently — the 15%/10% GIA
+ * floors, the 70% hostel reservation, who qualifies — and leave every count to
+ * the dashboard, which is built to report one.
  */
 const PMAJAY = "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay";
 
@@ -81,33 +99,33 @@ const GLANCE: Record<string, GlanceFact[]> = {
   [GIA_SLUG]: [
     {
       term: "Grant goes to",
-      detail: "State governments and district administrations, not to individuals directly",
+      detail:
+        "State governments and Union Territories, which design projects to suit local requirements",
     },
     {
-      term: "Four interventions",
+      term: "Three broad categories",
       detail: (
         <>
-          Income generation, skilling, infrastructure and special tutoring — each
-          approved project sits under exactly one
+          Comprehensive Livelihood Projects, Infrastructure Development Projects
+          and Special Tutoring
         </>
       ),
     },
     {
-      term: "Approved so far",
+      term: "Reserved for SC women",
       detail: (
         <>
-          {/* `{" "}` and a literal en dash, not `&ndash;`: an HTML entity in a
-              JSX text node makes SWC re-trim the node, and the space after the
-              preceding `</b>` was silently eaten — "across fivefinancial". */}
-          <b>8,772</b> projects across <b>five</b>{" "}financial years, from 2022–23
+          At least <b>15%</b> of funds released to a State or UT go to
+          income-generating schemes for Scheduled Caste women
         </>
       ),
     },
     {
-      term: "Largest instrument",
+      term: "Reserved for skilling",
       detail: (
         <>
-          Income generation, at roughly <b>half</b> of all approved projects
+          At least <b>10%</b> of funds released go to skill development
+          programmes
         </>
       ),
     },
@@ -116,27 +134,26 @@ const GLANCE: Record<string, GlanceFact[]> = {
     {
       term: "Funds",
       detail:
-        "Construction of new hostels and repair of existing ones for Scheduled Caste students",
+        "Construction of new hostels and repair of existing ones, including those built under the earlier Babu Jagjivan Ram Chhatrawas Yojana",
     },
     {
-      term: "Beneficiaries covered",
+      term: "Seats reserved",
       detail: (
         <>
-          <b>2,30,977</b> places provided for across the component
+          Institutions receiving support must reserve <b>70%</b> of hostel seats
+          for Scheduled Caste students
         </>
       ),
     },
     {
-      term: "In occupation",
-      detail: (
-        <>
-          <b>1,25,485</b> — just over <b>half</b> the places covered
-        </>
-      ),
+      term: "Girls' hostels",
+      detail:
+        "Required to have lady wardens and guards available at all times",
     },
     {
-      term: "Reported through",
-      detail: "The PM-AJAY hostel management information system, summarised publicly",
+      term: "Who can receive it",
+      detail:
+        "Higher educational institutions ranked under the NIRF, other Central Institutes, and State institutions and schools funded by the Centre or a State",
     },
   ],
 };
@@ -199,14 +216,21 @@ export default async function OrganisationDetailPage({
   const chrome = {
     title: org.title,
     badge: isSubPage ? (rootOrg?.title ?? "Associated Organisation") : "Associated Organisation",
+    // "Associated Organisations" carries NO href. It used to point at /website —
+    // the site home, which is exactly where the "Home" crumb beside it already
+    // goes, so the trail read Home › Home › … A crumb that lies about its
+    // destination is worse than one that does not offer to travel. There is no
+    // listing page to point it at either: the header entry of that name is a
+    // mega-menu (`href: "#"`), not a route. Label-only is the honest form, and
+    // PageLayout already renders crumbs without an href.
     breadcrumb: isSubPage
       ? [
-          { label: "Associated Organisations", href: "/website" },
+          { label: "Associated Organisations" },
           { label: rootOrg?.title ?? "Organisation", href: orgHref(rootSlug) },
           { label: org.title },
         ]
       : [
-          { label: "Associated Organisations", href: "/website" },
+          { label: "Associated Organisations" },
           { label: org.title },
         ],
     lastUpdated: getContentSyncedDate(),

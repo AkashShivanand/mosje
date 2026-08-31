@@ -316,3 +316,45 @@ nineteen file cards get four full bands.
    policy and they are what the page is actually about.
 7. **Fix the two dead cross-links** — the breadcrumb crumb and the shared
    "View all" — and register the three gallery photographs on `/website/gallery`.
+
+## 10. Everything in §9 implemented
+
+| § | Fix | Done |
+|---|---|---|
+| 9.1 | Four file bands → one "Documents & downloads" with filter chips | 17 documents, chips All / Circulars / Formats / Presentations / Manuals & guides / Reports |
+| 9.2 | Real meta line on every card | Date where the ingest has one, else audience ("For Gram Panchayats · read aloud at village level"). File type moved to the button, where it already was |
+| 9.3 | Titles that are titles | "Presentation" → "PMAGY scheme overview"; the department's own name kept beneath as *Published as "…"* |
+| 9.4 | Circular titles clamped | Two lines then ellipsis. The forty-word one no longer sets the height of its row; the full string is still the element's text, so screen readers and in-page search still get all of it |
+| 9.5 | PACC Meeting List + Notional Allocation moved into Reports | New "Allocation & approvals" group, beside Villages / Adarsh Gram / VDP |
+| 9.6 | Component substance promoted | Each card now carries its own stated rule — the 40%/500 threshold, the 15%/10% floors, the 70% seat reservation |
+| 9.7 | Dead cross-links + gallery | Breadcrumb crumb no longer links; "View all" points at Forms & Templates; the three photographs are registered on `/website/gallery` |
+
+And the three open decisions from §7, all taken:
+
+- **`guidelines` now carries PM-AJAY's own guidelines** and is in the index under
+  PUBLICATIONS & REPORTS. It held the SMILE Beggary Scheme's, cloned from the
+  source's own filing error.
+- **Both "At a glance" panels carry stated policy, never a feed figure.** The rule
+  is written into the file that holds them, with the evidence: Hostels had claimed
+  "2,30,977 places / 1,25,485 in occupation" directly above a dashboard reading
+  **1,57,708** and **89,776**. They were contradicting each other on one screen —
+  not drifting toward it. GIA had claimed "four interventions" three inches from
+  prose reading "three broad categories".
+- **Every PM-AJAY document resolves inside this estate**, to the sample store NCSK
+  already used. The one entry that is genuinely a live page — Implementation
+  Status — keeps its real destination, because a "View page" card handing over a
+  PDF would be its own small lie.
+
+### A gate, because nothing caught the near-miss
+
+Collapsing four bands into one silently orphaned an index entry — `#circulars-notifications`
+pointed at a band that no longer existed — and every check stayed green.
+`check:website-links` walks page links and ingested anchors; it never compares an
+index entry's `#id` against the ids the template emits.
+
+`tools/org-anchors/check.mjs` now does, and runs in `npm run check`. It found six
+entries **already** broken before this work — NCSK's Annual Reports, SOP and
+Advisory, Acts and Rules, Circulars, Rules of Procedure, and NCSC's Annual
+Reports. Those are other organisations' content and are recorded as a baseline
+rather than guessed at; the gate fails on anything new, and on any baseline entry
+that starts resolving. **The list only ever shrinks.**

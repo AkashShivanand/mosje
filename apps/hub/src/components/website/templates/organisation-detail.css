@@ -539,6 +539,99 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /* ── Library band (one shelf, chip-filtered) ────────────────────────────── */
+
+  .orgl__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin-block-end: var(--sa-stack-16);
+  }
+
+  .orgl__count {
+    margin-block-end: var(--sa-stack-16);
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-3-size);
+  }
+
+  .orgl__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: var(--sa-stack-16);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .orgl__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-16);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-md);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .orgl__meta {
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-4-size);
+  }
+
+  /*
+   * Two lines, then ellipsis. One circular on this page carries a forty-word
+   * official file name; unclamped it grew its card to three times its
+   * neighbours' height and tore the row open. The full name is still the
+   * element's text, so it is read out in full and found by in-page search.
+   */
+  .orgl__title {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+  }
+
+  .orgl__official {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-4-size);
+  }
+
+  /* Pushes the action to the card's foot so every row's buttons line up. */
+  .orgl__action {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    margin-block-start: auto;
+    padding-block-start: var(--sa-padding-8);
+    color: var(--sa-text-brand-primary-base);
+    font-size: var(--sa-type-body-3-size);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .orgl__action:hover {
+    text-decoration: underline;
+  }
+
+  .orgl__empty {
+    padding: var(--sa-padding-24);
+    color: var(--sa-text-neutral-base);
+    text-align: center;
+  }
+
+  .orgl__footer {
+    margin-block-start: var(--sa-stack-16);
+  }
+
   /* ── Report groups ──────────────────────────────────────────────────────── */
 
   /* One labelled pill row per group, as the source page groups them. */

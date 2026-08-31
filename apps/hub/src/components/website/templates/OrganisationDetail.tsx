@@ -16,6 +16,7 @@ import type {
 import { withAssetBasePath } from "@/lib/website/content";
 import { trimRedundantOpening } from "@/lib/website/organisation-prose";
 import { OrganisationIndex } from "./OrganisationIndex";
+import { OrgLibrary, type LibraryItem } from "@/components/website/OrgLibrary";
 import "./organisation-detail.css";
 
 /**
@@ -120,48 +121,8 @@ function matchDocuments(
  * Rendering them from two card definitions is how the two drift a card's padding
  * apart on one page.
  */
-interface FileCardItem {
-  key: string;
-  /** Small line above the title — a date, or a file type. */
-  meta: string;
-  title: string;
-  href: string;
-  actionLabel: string;
-}
-
-function FileGrid({ items }: { items: FileCardItem[] }) {
-  return (
-    <ul className="orgd__doclist">
-      {items.map((f) => (
-        <li key={f.key} className="orgd__doc">
-          <p className="orgd__doc-date">{f.meta}</p>
-          <h3 className="orgd__doc-title">{f.title}</h3>
-          <a
-            className="orgd__doc-action"
-            href={f.href}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            {f.actionLabel}
-            <Icon name="open_in_new" size={16} />
-            {/* Say where it goes rather than letting a new tab open unannounced
-                (GIGW 5.2 on external links). */}
-            <span className="sr-only"> (opens on dosje.gov.in in a new tab)</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-const documentCards = (items: FileRecord[]): FileCardItem[] =>
-  items.map((d) => ({
-    key: d.slug,
-    meta: formatDate(d.date),
-    title: d.title,
-    href: d.fileUrl ?? d.sourceUrl,
-    actionLabel: "View document",
-  }));
+/** A destination that leaves this site, and therefore opens in a new tab. */
+const isHttp = (href: string) => /^https?:\/\//.test(href);
 
 /** What a download's card says it is, and what its button offers to do. */
 const DOWNLOAD_KIND: Record<OrgDownload["kind"], { meta: string; action: string }> = {
@@ -171,15 +132,6 @@ const DOWNLOAD_KIND: Record<OrgDownload["kind"], { meta: string; action: string 
   // only discovers after clicking.
   page: { meta: "Web page", action: "View page" },
 };
-
-const downloadCards = (items: OrgDownload[]): FileCardItem[] =>
-  items.map((f) => ({
-    key: f.href,
-    meta: DOWNLOAD_KIND[f.kind].meta,
-    title: f.label,
-    href: f.href,
-    actionLabel: DOWNLOAD_KIND[f.kind].action,
-  }));
 
 export function formatOrgHtml(rawHtml: string): string {
   let html = withAssetBasePath(trimRedundantOpening(rawHtml));
@@ -584,72 +536,74 @@ export function OrganisationDetail({
     });
   }
 
-  if (detail?.downloads != null) {
-    const downloads = detail.downloads;
-    downloads.groups.forEach((g) => {
-      bands.push({
-        id: g.id,
-        body: (
-          <>
-            <SectionTitle as={2} title={g.heading} headingId={`${g.id}-heading`}>
-              <Link
-                href={g.viewAllHref ?? "/website/publications"}
-                className={buttonClasses("primary", "outlined", "sm")}
-              >
-                View all
-              </Link>
-            </SectionTitle>
-            <FileGrid items={downloadCards(g.items)} />
-          </>
-        ),
-      });
-    });
-  }
-
-  if (circulars.length > 0) {
-    bands.push({
-      id: "circulars-notifications",
-      body: (
-        <>
-          <SectionTitle as={2} title="Circulars & Notifications" headingId="circulars-heading">
-            <Link
-              href={detail!.circulars!.viewAllHref}
-              className={buttonClasses("primary", "outlined", "sm")}
-            >
-              View all
-            </Link>
-          </SectionTitle>
-          <FileGrid items={documentCards(circulars)} />
-        </>
-      ),
-    });
-  }
-
-  if (resources.length > 0) {
-    bands.push({
-      id: "resources",
-      body: (
-        <>
-          <SectionTitle as={2} title="Resources" headingId="resources-heading">
-            <Link
-              href={detail!.resources!.viewAllHref}
-              className={buttonClasses("primary", "outlined", "sm")}
-            >
-              View all
-            </Link>
-          </SectionTitle>
-          <FileGrid items={documentCards(resources)} />
-        </>
-      ),
-    });
-  }
-
   /*
-   * Reports the organisation publishes AS LINKS, in the source's own groups.
-   * Reuses the pill row rather than the file grid on purpose: these are live
-   * reports, not documents, and a file card would promise a download that
-   * never arrives.
+   * ONE library band where four grids used to be. The hand-listed downloads and
+   * the two document-ingest pulls (circulars, resources) are the same object to
+   * a reader — a file with a name and a date — so they are merged into one list
+   * and separated by a chip instead of by three headings and 1,200px of scroll.
+   *
+   * Each source declares its own chip: the downloads carry `group` in the
+   * content, and the two ingest pulls take the name of what they are. Nothing
+   * here guesses a category from a file extension.
    */
+  const libraryItems: LibraryItem[] = [
+    ...circulars.map((d) => ({
+      key: `circular-${d.slug}`,
+      group: "Circulars",
+      meta: formatDate(d.date),
+      title: d.title,
+      href: d.fileUrl ?? d.sourceUrl,
+      actionLabel: "View document",
+      external: isHttp(d.fileUrl ?? d.sourceUrl),
+    })),
+    ...resources.map((d) => ({
+      key: `resource-${d.slug}`,
+      group: "Formats",
+      meta: formatDate(d.date),
+      title: d.title,
+      href: d.fileUrl ?? d.sourceUrl,
+      actionLabel: "View document",
+      external: isHttp(d.fileUrl ?? d.sourceUrl),
+    })),
+    ...(detail?.downloads?.groups ?? []).flatMap((g) =>
+      g.items.map((f) => ({
+        key: `download-${f.href}-${f.label}`,
+        group: f.group ?? "Formats",
+        meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
+        title: f.label,
+        officialName: f.officialName,
+        href: f.href,
+        actionLabel: DOWNLOAD_KIND[f.kind].action,
+        external: isHttp(f.href),
+      })),
+    ),
+  ];
+
+  if (libraryItems.length > 0) {
+    const lib = detail?.downloads;
+    bands.push({
+      id: "documents-downloads",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={lib?.heading ?? "Documents & downloads"}
+            description={lib?.description}
+            headingId="documents-downloads-heading"
+          />
+          <OrgLibrary
+            items={libraryItems}
+            viewAllHref={
+              lib?.groups?.[0]?.viewAllHref ??
+              detail?.circulars?.viewAllHref ??
+              "/website/publications"
+            }
+          />
+        </>
+      ),
+    });
+  }
+
   if (detail?.reports != null && detail.reports.groups.length > 0) {
     const rp = detail.reports;
     bands.push({
