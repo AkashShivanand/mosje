@@ -644,6 +644,52 @@ export function OrganisationDetail({
     });
   }
 
+  /*
+   * Reports the organisation publishes AS LINKS, in the source's own groups.
+   * Reuses the pill row rather than the file grid on purpose: these are live
+   * reports, not documents, and a file card would promise a download that
+   * never arrives.
+   */
+  if (detail?.reports != null && detail.reports.groups.length > 0) {
+    const rp = detail.reports;
+    bands.push({
+      id: "reports",
+      body: (
+        <>
+          <SectionTitle
+            as={2}
+            title={rp.heading}
+            description={rp.description}
+            headingId="reports-heading"
+          />
+          {rp.groups.map((g) => (
+            <div key={g.heading} className="orgd__report-group">
+              <h3 className="orgd__report-group-title">{g.heading}</h3>
+              <div className="orgd__pills">
+                {g.items.map((p) => {
+                  const isExternal =
+                    p.external || p.href.startsWith("http://") || p.href.startsWith("https://");
+                  return (
+                    <Link
+                      key={p.href}
+                      href={p.href}
+                      className="orgd__pill"
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noreferrer" : undefined}
+                    >
+                      <span>{p.label}</span>
+                      <Icon name={isExternal ? "open_in_new" : "arrow_forward"} size={16} />
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </>
+      ),
+    });
+  }
+
   if (detail?.featuredLinks != null && detail.featuredLinks.items.length > 0) {
     const fl = detail.featuredLinks;
     bands.push({

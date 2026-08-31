@@ -539,6 +539,20 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /* ── Report groups ──────────────────────────────────────────────────────── */
+
+  /* One labelled pill row per group, as the source page groups them. */
+  .orgd__report-group + .orgd__report-group {
+    margin-block-start: var(--sa-stack-24);
+  }
+
+  .orgd__report-group-title {
+    margin-block-end: var(--sa-stack-12);
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+  }
+
   /* ── Featured Links / Pills ─────────────────────────────────────────────── */
 
   .orgd__pills {

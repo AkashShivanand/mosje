@@ -187,6 +187,18 @@ export interface OrganisationDetail {
     description?: string;
     groups: OrgDownloadGroup[];
   };
+  /**
+   * Report indexes the organisation publishes. Groups of LINKS, not files:
+   * each opens a live, query-driven report on dosje.gov.in. They are linked
+   * rather than mirrored for the same reason the downloads are — the figures
+   * behind them are generated on request from a database this estate does not
+   * hold, and a mirrored copy would be a snapshot presented as a live report.
+   */
+  reports?: {
+    heading: string;
+    description?: string;
+    groups: { heading: string; items: OrgLinkPill[] }[];
+  };
   featuredLinks?: {
     heading?: string;
     items: OrgLinkPill[];
@@ -270,6 +282,8 @@ export interface OrganisationDetail {
 }
 
 const PM_AJAY = "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay";
+/** The scheme on the source site. The reports below are generated there, not here. */
+const PM_AJAY_SRC = `https://www.dosje.gov.in/organisation/${PM_AJAY}`;
 
 export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
   [PM_AJAY]: {
@@ -304,6 +318,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           // the page now, and these link to it.
           { label: "Downloads (PM-AJAY)", href: "#downloads-pm-ajay" },
           { label: "Downloads (pmagy)", href: "#downloads-pmagy" },
+          { label: "Reports (PM-AGY)", href: "#reports" },
         ],
       },
       {
@@ -417,6 +432,44 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
             { label: "Work Flow for Interim VDP", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/Flow-Diagram-to-Generate-the-Interim-VDP.pdf", kind: "pdf" },
             { label: "Sample VDP", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/SampleVDP.pdf", kind: "pdf" },
             { label: "District User Manual", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/User_Manual_of_AGY.pdf", kind: "pdf" },
+          ],
+        },
+      ],
+    },
+
+    // The "Reports PM-AGY" band the source page carries, in the source's own
+    // three groups and its own labels. Every one is a live report generated on
+    // request at dosje.gov.in, so each is linked out rather than mirrored — for
+    // a stronger reason than the downloads above: a mirrored copy of a live
+    // report is a snapshot wearing a live report's clothes.
+    reports: {
+      heading: "Reports (PM-AGY)",
+      description:
+        "Village, Adarsh Gram and VDP reports published for the scheme. Each opens on dosje.gov.in.",
+      groups: [
+        {
+          heading: "Villages",
+          items: [
+            { label: "Covered Villages", href: `${PM_AJAY_SRC}/villages-covered-under-pmagy/`, external: true },
+            { label: "Covered Villages Mission Utkarsh", href: `${PM_AJAY_SRC}/villages-covered-under-mission-utkarsh/`, external: true },
+            { label: "Covered Villages (40% SC Population)", href: `${PM_AJAY_SRC}/covered-villages-40-sc-population/`, external: true },
+            { label: "All Villages Score", href: `${PM_AJAY_SRC}/all-villages-score-in-descending-order/`, external: true },
+            { label: "Villages between scores", href: `${PM_AJAY_SRC}/villages-between-scores/`, external: true },
+            { label: "Village At Glance", href: `${PM_AJAY_SRC}/village-summary-at-glance/`, external: true },
+            { label: "Phase one villages", href: `${PM_AJAY_SRC}/phase-one-villages/`, external: true },
+            { label: "Pilot phase villages", href: `${PM_AJAY_SRC}/pilot-phase-villages/`, external: true },
+          ],
+        },
+        {
+          heading: "Adarsh Gram",
+          items: [
+            { label: "Adarsh Gram Declaration Status", href: `${PM_AJAY_SRC}/adarsh-gram-report/`, external: true },
+          ],
+        },
+        {
+          heading: "VDP",
+          items: [
+            { label: "Selection Year Wise VDP", href: `${PM_AJAY_SRC}/number-of-villages-selected-and-vdp-generated/`, external: true },
           ],
         },
       ],
