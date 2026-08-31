@@ -22,9 +22,21 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.81.0",
+    version: "v0.82.0",
     date: "2026-08-31",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THE HALO WAS NEVER RUNNING, AND THREE PASSES OF TUNING HAD NO EFFECT. `.sa-siteheader__pulse` sets `position: absolute; z-index: 0`; `.sa-siteheader__halo > *` sets `position: relative; z-index: 1` to lift the portrait — and the pulse is a CHILD, so it matched both. Equal specificity (0,1,0), so the later rule won. `getComputedStyle` on the shipped page returned `position: relative` and `z-index: 1` on the element the stylesheet spends forty lines describing: an in-flow grid item taking its own row in a `place-items: center` grid, drawing a shadow around a ZERO-SIZED box, above the picture rather than behind it" },
+      { kind: "Fixed", text: "THE LESSON IS THE DIAGNOSIS, NOT THE FIX. Each earlier pass verified by LOOKING at a small screenshot rather than asking the browser what it had computed, so three rounds of durations, easings and opacity envelopes were tuned against a component rendering none of them. The first measurement found it in one call. The lift is now scoped with `:not(.sa-siteheader__pulse)` so the rules cannot tie — deliberately NOT fixed by moving a block up the file, because source order is not a contract and the next reorder would reintroduce it silently" },
+      { kind: "Changed", text: "FIVE RINGS, NOT THREE, AND A 12px BAND RATHER THAN 28. With the bug fixed the motion was visible for the first time, and three rings on a 9s loop emit one every 3s — which leaves a visible PAUSE at the portrait's rim between one ring leaving and the next appearing, and the eye locks onto a pause. Five on an 8s loop emit every 1.6s, and because the delays are exact fifths there is always a ring within a fifth of a cycle of the rim BY CONSTRUCTION rather than by luck: measured live at 1.076 / 1.160 / 1.244 / 1.328 / 1.412, evenly spread across the track" },
+      { kind: "Changed", text: "THE BAND NARROWED AND THE TRAVEL WIDENED TOGETHER (×1.29 → ×1.42), and they are one decision: five rings ~15px apart need a band narrower than the gap between them or they merge into a single moving wash and stop reading as rings at all. Five rings need five boxes and an element has two pseudo-elements, so the halo's own ::before/::after now carry two of them alongside the `__pulse` span and its two" },
+      { kind: "Changed", text: "THE FADES ARE ASYMMETRIC ON PURPOSE — 10% in, 32% out. A ring appears at the rim where the eye already is, so it has to arrive too quickly to be watched arriving; it leaves at the band's outer reaches, where a long dissolve is invisible. Symmetrical fades made every birth a small event, which is the thing that made it read as a pulse rather than as flow" },
+      { kind: "Changed", text: "REDUCED MOTION PARKS TWO AND HIDES THREE. The handoff draws three rings in total — the static inner one plus a mid and an outer band — and the other three exist only to make the loop read as continuous, which is exactly what this media query switches off. Parking all five would draw five concentric outlines the design does not have" },
+    ],
+  },
+  {
+    version: "v0.81.0",
+    date: "2026-08-31",
     changes: [
       { kind: "Added", text: "`IndiaBubbleMap` — ONE CIRCLE PER STATE, AREA PROPORTIONAL TO THE VALUE, and it exists because `IndiaMap` is the wrong instrument for a count. A choropleth gives each state as much ink as it has LAND, so a map of counts reports “big state” as “big number”: PM-AJAY's Rajasthan (1,493 villages) and Delhi (1) differ 1,493× in the data and roughly 250× in area, and when those two effects fight, area wins. Use the choropleth for a RATE — literacy, coverage, a percentage, anything that genuinely belongs to the whole territory — and the bubble map for a count" },
       { kind: "Added", text: "AREA, NOT RADIUS: `r ∝ √v`. Scaling the radius by the value squares the difference the eye receives — a 4× count would draw 16× the ink — which is the most common defect in published bubble maps. Circles paint largest-first so small ones stay visible and clickable inside their neighbours; each is keyboard-reachable and announced, and the frame emits the full screen-reader table" },

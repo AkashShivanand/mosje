@@ -1022,3 +1022,72 @@ then releases to zero, so a ring is simply *present* for most of its life.
 
 9s rather than 8.7 so the three delays are exact thirds; uneven spacing is what
 makes a flow read as a set of separate pulses.
+
+## 27. The halo was never running — a specificity tie, found by measuring
+
+§26 tuned the motion and reported it working. It was not. The tuning was correct
+and had no effect, because the element it applied to had been overridden into a
+different kind of box entirely.
+
+```css
+.sa-siteheader__pulse        { position: absolute; z-index: 0; }   /* line 235 */
+.sa-siteheader__halo > *     { position: relative; z-index: 1; }   /* line 266 */
+```
+
+Both are **specificity (0,1,0)**. `.sa-siteheader__pulse` is a child of the halo,
+so it matches the second rule too — and at equal specificity the later rule wins.
+`getComputedStyle` on the shipped page returned:
+
+| property | intended | actual |
+| --- | --- | --- |
+| `position` | `absolute` | **`relative`** |
+| `z-index` | `0` | **`1`** |
+
+So what shipped was an in-flow grid item taking its own row in a
+`place-items: center` grid, drawing a 28px shadow around a **zero-sized box**,
+painting *above* the portrait instead of behind it.
+
+**The lesson is the diagnosis, not the fix.** Three passes had tuned durations,
+easings and opacity envelopes against a component that was not rendering any of
+them, because each pass verified by *looking* at a small screenshot rather than
+by asking the browser what it had computed. The first measurement found it in
+one call.
+
+The fix scopes the lift with `:not(.sa-siteheader__pulse)` so the two rules can
+never tie. It is deliberately **not** fixed by moving a block up the file: source
+order is not a contract, and the next person to reorder the stylesheet would
+reintroduce it silently.
+
+### And then: five rings, because three left a gap
+
+With the bug fixed the motion was visible for the first time — and three rings on
+a 9s loop emit one every 3s, which leaves a **visible pause at the portrait's rim**
+between one ring departing and the next appearing. The eye locks onto a pause,
+which is the opposite of flow.
+
+Five rings on an 8s loop emit every 1.6s. Because the delays are exact fifths,
+the five scales are always `{s, s+0.084, s+0.168, s+0.252, s+0.336}` — so there
+is **always** a ring within a fifth of a cycle of the rim, by construction rather
+than by luck. Measured live: 1.076 / 1.160 / 1.244 / 1.328 / 1.412, evenly spread
+across the whole track.
+
+| | §26 | now |
+| --- | --- | --- |
+| rings | 3 | **5** |
+| cycle | 9s | 8s |
+| emission | every 3s | **every 1.6s** |
+| band width | 28px | **12px** |
+| travel | ×1.29 | ×1.42 |
+
+The band narrowed and the travel widened together, and they are one decision:
+five rings ~15px apart need a band narrower than the gap between them, or they
+merge into a single moving wash and stop reading as rings. At ×1.29 with 28px
+bands they did exactly that.
+
+Five rings need five boxes, and an element has two pseudo-elements — hence the
+halo's own `::before`/`::after` **plus** the `__pulse` span and its two.
+
+The fades are deliberately asymmetric: short in (10%), long out (32%). A ring
+appears at the rim where the eye already is, so it must arrive too quickly to be
+watched arriving; it leaves at the band's outer reaches, where a long dissolve is
+invisible. Symmetrical fades made every birth a small event.
