@@ -13,6 +13,23 @@
    hold 2,30,977 / 1,25,485 under a date of 28 August 2026 while the feed said
    1,57,708 / 89,776 — a 32% gap, invisible until someone put both on one screen.
 
+   WHAT DRIFT MEANS IN EACH OF THE THREE MODES. The dashboards render Live,
+   Illustrative, or Live + illustrative (`prototype-data-modes.md`), and the two
+   sources answer a different question in each:
+
+     Live               the feed only. Drift is irrelevant — the snapshot is not
+                        on screen. An all-zero group renders an empty state.
+     Illustrative       the snapshot only, under its own *_AS_ON date. Drift is
+                        the whole point: this is the number the banner dates, so
+                        it must be what the department published on that day.
+     Live+illustrative  live where the feed answers, snapshot for the gaps. Drift
+                        decides which figure a reader sees, so a stale snapshot
+                        is a stale card carrying a "Part illustrative" chip.
+
+   So the fix for drift is NEVER to make the two equal — a fallback that tracks
+   live is not a fallback. It is to re-capture the snapshot and move its date
+   with it, together, so the banner's claim stays true.
+
    REPORT, NOT GATE. This calls live government endpoints, so it must never
    decide whether a build passes: a ministry API being slow is not a reason to
    fail CI, and drift is a judgement call rather than a defect. Run it before
@@ -38,6 +55,7 @@ const SNAPSHOTS = [
     file: "apps/hub/src/lib/website/pmajay-stats.ts → HOSTEL_FALLBACK",
     url: `${PMAJAY}/hostel/summary`,
     pick: (d) => d,
+    asOn: "HOSTEL_AS_ON — 31 August 2026",
     committed: { completed_hostels: 0, beneficiaries_covered: 157708, beneficiaries_occupied: 89776 },
   },
   {
@@ -45,12 +63,14 @@ const SNAPSHOTS = [
     file: "apps/hub/src/lib/website/pmajay-stats.ts → GIA_ALL_PHYSICAL_FALLBACK",
     url: `${PMAJAY}/gia/physical-progress?fin_year=all`,
     pick: (d) => ({ total_projects: d.total_projects, in_progress_projects: d.in_progress_projects }),
+    asOn: "GIA_AS_ON — 28 August 2026",
     committed: { total_projects: 23802, in_progress_projects: 150 },
   },
   {
     name: "Adarsh Gram counters",
     file: "apps/hub/src/lib/website/adarsh-gram-stats.ts → ADARSH_GRAM_COUNTS_FALLBACK",
     url: ADARSH,
+    asOn: "ADARSH_GRAM_AS_ON — 24 August 2026",
     pick: (d) => d.counts,
     committed: {
       states_covered: 26,
@@ -88,6 +108,7 @@ for (const snap of SNAPSHOTS) {
   const live = await read(snap.url, snap.pick);
   console.log(`\n${snap.name}`);
   console.log(`  ${snap.file}`);
+  console.log(`  dated ${snap.asOn}`);
 
   if (!live.ok) {
     console.log(`  — feed ${live.why}. Nothing to compare; the snapshot is doing its job.`);
@@ -119,7 +140,9 @@ for (const snap of SNAPSHOTS) {
 console.log(
   `\n${moved} field(s) differ, ${zeroed} feed(s) fully zeroed.\n` +
     "Differing is normal — a snapshot is a dated mirror, not a live copy. What is NOT\n" +
-    "normal is a figure from either source appearing on a page as plain prose, with no\n" +
-    "provenance and no response to the data-mode switch. That is what put 2,30,977\n" +
-    "above a chart reading 1,57,708.\n",
+    "normal is a snapshot whose *_AS_ON date no longer describes it, because that date\n" +
+    "is shown to the reader in Illustrative mode — nor a figure from either source\n" +
+    "appearing on a page as plain prose, with no provenance and no response to the\n" +
+    "data-mode switch. That is what put 2,30,977 above a chart reading 1,57,708.\n\n" +
+    "To fix drift: re-capture the snapshot AND move its date in the same change.\n",
 );

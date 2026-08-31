@@ -411,3 +411,44 @@ cannot hand a component function across the RSC boundary, and this component is
 **slot** (`viewAllSlot`), which is an element and crosses fine, and the cards are
 plain `<a>` — correct anyway, since every one resolves to a file or another site
 and client-side routing buys a PDF download nothing.
+
+## 12. Syncing, read through the three modes
+
+`prototype-data-modes.md` settles what "in sync" can even mean here, and the
+answer is that **the snapshot must never equal the feed by policy** — it is what
+Illustrative mode shows, and a fallback that tracks live is not a fallback. Each
+mode asks a different question of the two sources:
+
+| Mode | Source | What drift means |
+|---|---|---|
+| **Live** | feed only | Irrelevant — the snapshot is not on screen. An unpopulated group shows a real empty state |
+| **Illustrative** | snapshot only, under its own `*_AS_ON` | The whole point: this is the number the banner dates, so it must be what was published that day |
+| **Live + illustrative** | live where answered, snapshot for gaps | Decides which figure a reader sees; a stale snapshot is a stale card wearing a "Part illustrative" chip |
+
+### The root cause was one date over two captures
+
+`PMAJAY_AS_ON` covered GIA *and* Hostels — two endpoints captured on different
+days — and it is **shown to the reader**: the Illustrative banner reads "as on
+{date}". Refreshing hostels and bumping the shared date would have claimed a
+freshness GIA never had; leaving it claimed staleness hostels no longer had.
+Either way the page states something untrue, and nothing compared figures to feed.
+
+Split into `GIA_AS_ON` (28 August) and `HOSTEL_AS_ON` (31 August), each dashboard
+citing its own. `PMAJAY_AS_ON` remains as a deprecated alias. Verified in the
+browser: the hostel Illustrative banner now reads "mirrored on 31 Aug".
+
+### A card was calling itself Illustrative while showing nothing
+
+Live mode on the GIA page put an **Illustrative** chip on three breakdown cards,
+whose tooltip told the reader "what is shown is illustrative" over cards where
+nothing was shown at all. `mergeData` was innocent — it never invents in Live
+mode. `breakdownFor` computed provenance as `liveYears > 0 ? "live" : "mock"`, so
+a card that drew no rows of either kind fell through to `"mock"`.
+
+Provenance now describes what is on screen: illustrative only when an
+illustrative row was actually drawn. Verified across all three modes on the GIA
+page — **Live 8/8 Live chips (was 5 Live + 3 Illustrative), Illustrative 8/8,
+Live + illustrative a genuine mix.**
+
+Neither GIA snapshot was refreshed, deliberately: its feeds answer 0 for every
+field of every year, which is a degraded endpoint, not a reading.
