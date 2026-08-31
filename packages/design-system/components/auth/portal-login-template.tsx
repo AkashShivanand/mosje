@@ -2,12 +2,15 @@
 
 import * as React from "react";
 import { PortalLoginShell, PortalLoginTab } from "./portal-login-shell";
+import { portalLoginUrl, roleFromUrl } from "./portal-login-url";
 import {
   PortalLoginConfig,
   PortalAuthMode,
   PortalAuthModeOption,
   LoginSubmitPayload,
 } from "./types";
+
+export { portalLoginUrl, roleFromUrl, ROLE_PARAM } from "./portal-login-url";
 
 export interface PortalLoginTemplateProps {
   /** Declarative configuration object for the portal */
@@ -20,6 +23,25 @@ export interface PortalLoginTemplateProps {
   error?: string | null;
   /** Called when a footer link is clicked */
   onFooterLinkClick?: (link: "privacy" | "contact" | "about") => void;
+  /**
+   * Force the active role, overriding both the URL and `config.defaultRoleId`.
+   *
+   * For a caller that already knows who is arriving — a route that only officers
+   * reach, say. Leave it unset to let the URL decide.
+   */
+  roleId?: string;
+  /** Called with the role id whenever the active tab changes. */
+  onRoleChange?: (roleId: string) => void;
+  /**
+   * Select the role from the URL on mount, and keep the URL in step as the
+   * reader switches tabs. @default true
+   *
+   * Reads `?role=<id>` first, then `#role-<id>` — the second because that was
+   * the tab anchor's href before this existed, so links already shared keep
+   * working. An id that matches no role is IGNORED rather than treated as an
+   * error: a stale link should open the default tab, not break the page.
+   */
+  deepLinkRole?: boolean;
 }
 
 export function PortalLoginTemplate({
@@ -28,6 +50,9 @@ export function PortalLoginTemplate({
   loading = false,
   error = null,
   onFooterLinkClick,
+  roleId,
+  onRoleChange,
+  deepLinkRole = true,
 }: PortalLoginTemplateProps) {
   const initialRole =
     config.roles.find((r) => r.id === config.defaultRoleId) || config.roles[0];
@@ -35,6 +60,36 @@ export function PortalLoginTemplate({
   const [activeRoleId, setActiveRoleId] = React.useState<string>(
     initialRole ? initialRole.id : ""
   );
+
+  const roleIds = React.useMemo(() => config.roles.map((r) => r.id), [config.roles]);
+
+  /*
+   * An explicit `roleId` wins over everything. Kept as an effect rather than as
+   * initial state so a caller that resolves the role asynchronously — from a
+   * session, say — still lands on the right tab.
+   */
+  React.useEffect(() => {
+    if (roleId && roleIds.includes(roleId)) setActiveRoleId(roleId);
+  }, [roleId, roleIds]);
+
+  /*
+   * URL -> tab, ONCE, AFTER MOUNT. Deliberately not a lazy `useState`
+   * initialiser: that runs on the server too, where there is no `window`, and
+   * guarding it with `typeof window` makes the server and the client disagree on
+   * the first render — a hydration mismatch, which is worse than what this costs.
+   *
+   * What it costs is one frame of the default tab before the linked one takes
+   * over. That is visible only as a flicker on a slow device and is the accepted
+   * trade; the alternative is making this component read a framework's router,
+   * which would tie a framework-agnostic package to Next.
+   */
+  React.useEffect(() => {
+    if (!deepLinkRole || roleId) return;
+    const wanted = roleFromUrl(window.location.href);
+    if (wanted && roleIds.includes(wanted)) setActiveRoleId(wanted);
+    // Mount only: later URL changes are the router's business, not this component's.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const activeRole =
     config.roles.find((r) => r.id === activeRoleId) || config.roles[0];
@@ -101,9 +156,23 @@ export function PortalLoginTemplate({
     }
   }, [activeRoleId, authOptions]);
 
-  const handleRoleChange = (roleId: string, e: React.MouseEvent) => {
+  const handleRoleChange = (nextRoleId: string, e: React.MouseEvent) => {
     e.preventDefault();
-    setActiveRoleId(roleId);
+    setActiveRoleId(nextRoleId);
+    onRoleChange?.(nextRoleId);
+
+    /*
+     * `replaceState`, NOT `pushState`. A tab is a view of one page, not a place
+     * you travelled to — pushing would make Back undo a tab switch instead of
+     * leaving the page, so a reader who tried three tabs would need four presses
+     * to get out. Replacing keeps the URL shareable and reload-safe without
+     * putting anything in the history stack.
+     */
+    if (!deepLinkRole || typeof window === "undefined") return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("role", nextRoleId);
+    url.hash = "";
+    window.history.replaceState(null, "", url.toString());
   };
 
   const handleSendOtp = () => {
@@ -132,7 +201,11 @@ export function PortalLoginTemplate({
   // Convert role config into tabs for PortalLoginShell
   const tabs: PortalLoginTab[] = config.roles.map((r) => ({
     label: r.label,
-    href: `#role-${r.id}`,
+    // A real link, so middle-click and "copy link address" both land on this tab.
+    href: portalLoginUrl(
+      typeof window === "undefined" ? "" : window.location.pathname,
+      r.id,
+    ),
     active: r.id === activeRoleId,
     onClick: (e) => handleRoleChange(r.id, e),
   }));

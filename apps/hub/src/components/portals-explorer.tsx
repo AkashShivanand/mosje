@@ -2,18 +2,42 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Icon, deriveAbbr, type AppEntry, buttonClasses } from "@mosje/design-system";
+import {
+  Icon,
+  PortalCard,
+  portalLabel,
+  portalSummary,
+  portalCategoriesIn,
+  type AppEntry,
+  buttonClasses,
+} from "@mosje/design-system";
 import "./portals-gateway.css";
 
-type StatusFilter = "all" | "live" | "planned";
-
-const CATEGORIES = [
-  { id: "all", label: "All Portals" },
-  { id: "Schemes & scholarships", label: "Schemes & Scholarships" },
-  { id: "Finance & development corporations", label: "Finance & Credit" },
-  { id: "Social defence & welfare", label: "Social Defence & Welfare" },
-  { id: "Commissions & boards", label: "Commissions & Boards" },
-] as const;
+/*
+ * THE DIRECTORY LISTS LIVE PORTALS ONLY, and the status filter went with that
+ * decision rather than surviving it as a control with one outcome.
+ *
+ * It used to render unbuilt portals as non-interactive cards badged "Under
+ * Onboarding", beside live ones badged "Live Portal". Two badges on a page where
+ * one state is now the only state is two pieces of furniture that say nothing —
+ * and a citizen arriving at a government directory to find half of it is not
+ * usable yet learns something about the department that is not true. What ships
+ * is what is listed.
+ */
+/*
+ * THE TAB LIST IS DERIVED, never restated — see `categories` below.
+ *
+ * It used to be a hand-typed array: "Schemes & scholarships", "Finance &
+ * development corporations". The registry's vocabulary had since moved to the
+ * design's five (Commission · Scheme Portals · Corporations · Training &
+ * Capacity Building · Foundation & Autonomous Bodies) and nothing matched, so
+ * every tab read 0 and selecting one emptied the grid. A second copy of a
+ * vocabulary is a copy that goes stale, and this one had.
+ *
+ * "All Portals" is the only tab that is not a category, so it is the only one
+ * written here.
+ */
+const ALL_TAB = { id: "all", label: "All Portals" };
 
 export interface PortalsExplorerProps {
   portals: AppEntry[];
@@ -22,7 +46,6 @@ export interface PortalsExplorerProps {
 export function PortalsExplorer({ portals }: PortalsExplorerProps) {
   const [query, setQuery] = React.useState("");
   const [category, setCategory] = React.useState<string>("all");
-  const [status, setStatus] = React.useState<StatusFilter>("all");
 
   // Filter & Sort Portals (Live portals always appear first)
   const filteredPortals = React.useMemo(() => {
@@ -30,12 +53,10 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
       // Exclude Website, Reports, and Resources from the portal grid
       if (portal.group !== "Portals") return false;
 
-      // Status filter
-      if (status !== "all") {
-        const isLive = (portal.status ?? "live") === "live";
-        if (status === "live" && !isLive) return false;
-        if (status === "planned" && isLive) return false;
-      }
+      // LIVE ONLY. The registry is the single source of what exists, exactly as
+      // it is for the banner drawer — so a portal cannot be listed here and be
+      // unreachable, which is the failure that shipped a 404 on every page.
+      if ((portal.status ?? "live") !== "live") return false;
 
       // Category filter
       if (category !== "all" && portal.category !== category) {
@@ -49,27 +70,52 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
         const matchDesc = (portal.desc ?? "").toLowerCase().includes(q);
         const matchOrg = (portal.org ?? "").toLowerCase().includes(q);
         const matchCategory = (portal.category ?? "").toLowerCase().includes(q);
-        const matchAbbr = deriveAbbr(portal).toLowerCase().includes(q);
-        return matchName || matchDesc || matchOrg || matchCategory || matchAbbr;
+        // Search the CITIZEN-FACING pair too, or a reader typing the name they
+        // can see ("SAMBAL", "e-Utthaan") finds nothing — the registry calls
+        // those "National Action Plan for Older Persons" and "E-Utthan Admin".
+        const label = portalLabel(portal);
+        const matchLabel =
+          label.short.toLowerCase().includes(q) || label.full.toLowerCase().includes(q);
+        return matchName || matchDesc || matchOrg || matchCategory || matchLabel;
       }
 
       return true;
     });
 
-    // In all statuses and views, live portals must come first
-    return list.sort((a, b) => {
-      const aLive = (a.status ?? "live") === "live" ? 0 : 1;
-      const bLive = (b.status ?? "live") === "live" ? 0 : 1;
-      return aLive - bLive;
-    });
-  }, [portals, query, category, status]);
+    // No sort. Every entry is live, so registry order is the order — and that
+    // order is itself governed (live before planned within a category), so
+    // re-sorting here would silently compete with the registry's own rule.
+    return list;
+  }, [portals, query, category]);
 
   // Counts for tabs
+  /*
+   * ONLY CATEGORIES THAT HAVE SOMETHING IN THEM.
+   *
+   * The tab strip listed all five of the registry's vocabulary and four of them
+   * read 0 — four controls that empty the grid, on a directory whose whole job is
+   * getting a citizen to a service. It is the same rule the SAMAVESH banner's
+   * chip row already follows: a filter exists only when it would DO something.
+   * The tabs come back on their own as the first commission or corporation ships.
+   */
+  const categories = React.useMemo(() => {
+    const live = portals.filter(
+      (p) => p.group === "Portals" && (p.status ?? "live") === "live",
+    );
+    const present = portalCategoriesIn(live);
+    return present.length > 1
+      ? [ALL_TAB, ...present.map((c) => ({ id: c as string, label: c as string }))]
+      : [];
+  }, [portals]);
+
   const categoryCounts = React.useMemo(() => {
-    const portalOnly = portals.filter((p) => p.group === "Portals");
-    const counts: Record<string, number> = {
-      all: portalOnly.length,
-    };
+    // LIVE only, matching the grid. Counting every registry entry made a tab
+    // promise 14 portals and render 3 — a count that disagrees with what it
+    // filters is worse than no count.
+    const portalOnly = portals.filter(
+      (p) => p.group === "Portals" && (p.status ?? "live") === "live",
+    );
+    const counts: Record<string, number> = { all: portalOnly.length };
     for (const p of portalOnly) {
       if (p.category) {
         counts[p.category] = (counts[p.category] || 0) + 1;
@@ -78,9 +124,10 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
     return counts;
   }, [portals]);
 
-  const liveCount = portals.filter((p) => p.group === "Portals" && (p.status ?? "live") === "live").length;
-  const totalCount = portals.filter((p) => p.group === "Portals").length;
-  const onboardingCount = totalCount - liveCount;
+  const liveCount = portals.filter(
+    (p) => p.group === "Portals" && (p.status ?? "live") === "live",
+  ).length;
+
 
   return (
     <div className="portals-gw">
@@ -106,23 +153,19 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
               </p>
             </div>
 
-            {/* Quick Summary KPIs */}
-            <div className="portals-gw__kpis" role="region" aria-label="Portals summary statistics">
-              <div className="portals-gw__kpi-card">
-                <span className="portals-gw__kpi-value">{totalCount}</span>
-                <span className="portals-gw__kpi-label">Total Portals</span>
-              </div>
+            {/*
+              TWO FIGURES, NOT FOUR. "Total 21 / Live 8 / Onboarding 13" was a
+              headline saying most of the department's estate does not work yet —
+              on the page a citizen lands on to find a service. Onboarding went
+              with the planned cards; Total became the live count, because with
+              nothing else listed the two were the same number reported twice.
+            */}
+            <div className="portals-gw__kpis" role="region" aria-label="Portals summary">
               <div className="portals-gw__kpi-card">
                 <span className="portals-gw__kpi-value">{liveCount}</span>
-                <span className="portals-gw__kpi-label">Active Live</span>
-              </div>
-              <div className="portals-gw__kpi-card">
-                <span className="portals-gw__kpi-value">{onboardingCount}</span>
-                <span className="portals-gw__kpi-label">Onboarding</span>
-              </div>
-              <div className="portals-gw__kpi-card">
-                <span className="portals-gw__kpi-value">4</span>
-                <span className="portals-gw__kpi-label">Key Sectors</span>
+                <span className="portals-gw__kpi-label">
+                  {liveCount === 1 ? "Portal available" : "Portals available"}
+                </span>
               </div>
             </div>
           </div>
@@ -156,37 +199,12 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
             )}
           </div>
 
-          <div className="portals-gw__status-filter" role="group" aria-label="Filter by deployment status">
-            <button
-              type="button"
-              onClick={() => setStatus("all")}
-              className={`portals-gw__status-btn ${status === "all" ? "portals-gw__status-btn--active" : ""}`}
-              aria-pressed={status === "all"}
-            >
-              All Statuses
-            </button>
-            <button
-              type="button"
-              onClick={() => setStatus("live")}
-              className={`portals-gw__status-btn ${status === "live" ? "portals-gw__status-btn--active" : ""}`}
-              aria-pressed={status === "live"}
-            >
-              Live Only ({liveCount})
-            </button>
-            <button
-              type="button"
-              onClick={() => setStatus("planned")}
-              className={`portals-gw__status-btn ${status === "planned" ? "portals-gw__status-btn--active" : ""}`}
-              aria-pressed={status === "planned"}
-            >
-              Under Onboarding
-            </button>
-          </div>
         </div>
 
-        {/* Category Tabs */}
+        {/* Category Tabs — absent while every portal shares one category. */}
+        {categories.length > 0 && (
         <div className="portals-gw__category-tabs" role="tablist" aria-label="Portal categories">
-          {CATEGORIES.map((cat) => {
+          {categories.map((cat) => {
             const isActive = category === cat.id;
             const count = categoryCounts[cat.id] ?? 0;
             return (
@@ -203,6 +221,7 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
             );
           })}
         </div>
+        )}
       </section>
 
       {/* 3. Portals Grid Content */}
@@ -210,68 +229,33 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
         {filteredPortals.length > 0 ? (
           <ul className="portals-gw__grid">
             {filteredPortals.map((portal) => {
-              const isLive = (portal.status ?? "live") === "live";
-              const abbr = deriveAbbr(portal);
+              /*
+                ONE CARD, SHARED. This grid drew its own `portals-gw__card` while
+                the SAMAVESH banner drawer drew a `PortalCard` — two components
+                for one object, which is what `PortalCard` was extracted to end
+                and did not, until now. It renders the `detailed` variant: same
+                rule, ground, tile and saffron code as the banner's `compact`
+                one, plus the description, category and action this surface has
+                room for.
 
-              if (isLive) {
-                return (
-                  <li key={portal.path}>
-                    <Link
-                      href={portal.path}
-                      className="group portals-gw__card portals-gw__card--live focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
-                    >
-                      <div className="portals-gw__card-header">
-                        <div className="portals-gw__icon-box" aria-hidden="true">{abbr}</div>
-                        <span className="portals-gw__status-badge portals-gw__status-badge--live">
-                          <span className="portals-gw__status-dot animate-pulse" aria-hidden="true" />
-                          Live Portal
-                        </span>
-                      </div>
-
-                      <h3 className="portals-gw__card-title">{portal.name}</h3>
-                      {portal.org && <p className="portals-gw__card-org">{portal.org}</p>}
-                      <p className="portals-gw__card-desc">{portal.desc}</p>
-
-                      <div className="portals-gw__card-footer">
-                        <span className="portals-gw__card-category">
-                          {portal.category?.replace("& development corporations", "& Credit") ?? "Service"}
-                        </span>
-                        <span className="portals-gw__card-cta">
-                          Open Portal
-                          <Icon name="arrow_forward" size={16} className="transition-transform duration-150 group-hover:translate-x-1" />
-                        </span>
-                      </div>
-                    </Link>
-                  </li>
-                );
-              }
-
+                The mark comes from the OrgLogo registry via the route. The old
+                card drew a TEXT ABBREVIATION in a coloured box — a derived
+                two-letter code where the department has an actual crest.
+              */
               return (
                 <li key={portal.path}>
-                  <div
-                    className="portals-gw__card portals-gw__card--planned"
-                    aria-label={`${portal.name} — planned, not yet available`}
-                  >
-                    <div className="portals-gw__card-header">
-                      <div className="portals-gw__icon-box opacity-60" aria-hidden="true">{abbr}</div>
-                      <span className="portals-gw__status-badge portals-gw__status-badge--planned">
-                        Under Onboarding
-                      </span>
-                    </div>
-
-                    <h3 className="portals-gw__card-title">{portal.name}</h3>
-                    {portal.org && <p className="portals-gw__card-org">{portal.org}</p>}
-                    <p className="portals-gw__card-desc">{portal.desc}</p>
-
-                    <div className="portals-gw__card-footer">
-                      <span className="portals-gw__card-category">
-                        {portal.category?.replace("& development corporations", "& Credit") ?? "Service"}
-                      </span>
-                      <span className="text-neutral-subtle text-xs font-semibold">
-                        Coming Soon
-                      </span>
-                    </div>
-                  </div>
+                  <PortalCard
+                    variant="detailed"
+                    code={portalLabel(portal).short}
+                    name={portalLabel(portal).full}
+                    href={portal.path}
+                    path={portal.path}
+                    description={portalSummary(portal)}
+                    category={portal.category?.replace(
+                      "& development corporations",
+                      "& Credit",
+                    )}
+                  />
                 </li>
               );
             })}
@@ -288,7 +272,6 @@ export function PortalsExplorer({ portals }: PortalsExplorerProps) {
               onClick={() => {
                 setQuery("");
                 setCategory("all");
-                setStatus("all");
               }}
               className={buttonClasses("primary", "outlined", "sm", "mt-4")}
             >

@@ -85,6 +85,16 @@ export const NAV: NavGroup[] = [
     ]
   },
   {
+    "title": "Brand",
+    "items": [
+      {
+        "label": "Org Logo",
+        "href": "/design-system/components/brand/org-logo",
+        "badge": "New"
+      }
+    ]
+  },
+  {
     "title": "Actions",
     "items": [
       {
@@ -246,6 +256,11 @@ export const NAV: NavGroup[] = [
         "label": "Sidebar",
         "href": "/design-system/components/section-templates/sidebar",
         "badge": "Stable"
+      },
+      {
+        "label": "Portal Card",
+        "href": "/design-system/components/navigation/portal-card",
+        "badge": "New"
       },
       {
         "label": "SAMAVESH Banner",

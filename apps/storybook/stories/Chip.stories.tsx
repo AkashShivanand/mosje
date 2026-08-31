@@ -118,3 +118,27 @@ export const Variants: Story = {
     </div>
   ),
 };
+
+/**
+ * **`tone` changes the SELECTED state only.**
+ *
+ * `brand` is the default and is right almost everywhere — it is the estate's
+ * blue selection colour. Reach for `success` only when the chip sits on a
+ * surface with no blue in it: the SAMAVESH banner's saffron-and-green drawer is
+ * the case that asked for this, where a blue pill was a third colour family on
+ * a two-family panel. An UNSELECTED chip is identical in both tones, so this is
+ * not a way to colour-code categories.
+ */
+export const Tones: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: 12 }}>
+      <Chip selected onSelectedChange={() => {}}>
+        Selected · brand
+      </Chip>
+      <Chip tone="success" selected onSelectedChange={() => {}}>
+        Selected · success
+      </Chip>
+      <Chip onSelectedChange={() => {}}>Unselected (identical in both)</Chip>
+    </div>
+  ),
+};

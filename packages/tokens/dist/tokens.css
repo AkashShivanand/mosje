@@ -520,12 +520,17 @@
   --sa-ref-motion-easing-out: cubic-bezier(0, 0, 0.2, 1);
   --sa-ref-motion-easing-in: cubic-bezier(0.4, 0, 1, 1);
   --sa-ref-motion-easing-inOut: cubic-bezier(0.4, 0, 0.2, 1);
+  --sa-ref-motion-easing-outStrong: cubic-bezier(0.22, 1, 0.36, 1);
   --sa-motion-enter-duration: 250ms;
   --sa-motion-enter-easing: cubic-bezier(0, 0, 0.2, 1);
   --sa-motion-exit-duration: 150ms;
   --sa-motion-exit-easing: cubic-bezier(0.4, 0, 1, 1);
   --sa-motion-emphasis-duration: 400ms;
   --sa-motion-emphasis-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --sa-motion-reveal-duration: 400ms;
+  --sa-motion-reveal-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --sa-motion-press-duration: 150ms;
+  --sa-motion-press-easing: cubic-bezier(0.22, 1, 0.36, 1);
   --sa-ref-border-width-none: 0px;
   --sa-ref-border-width-sm: 1px;
   --sa-ref-border-width-md: 2px;

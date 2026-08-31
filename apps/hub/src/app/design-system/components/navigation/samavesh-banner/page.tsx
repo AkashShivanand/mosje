@@ -8,7 +8,7 @@ import {
   CodeBlock,
   FeedbackBar,
 } from "@/components/design-system/docs-kit/index";
-import { figmaUrl } from "@/lib/design-system/figma";
+import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 import { SamaveshBanner } from "@mosje/design-system";
 
 export const metadata: Metadata = {
@@ -39,6 +39,50 @@ const proseStyle: React.CSSProperties = {
   maxWidth: "68ch",
 };
 
+/**
+ * A MIXED set, so the specimen shows the category filter.
+ *
+ * The live banner passes no `portals` and therefore renders every LIVE portal —
+ * all of which are scheme portals today, so the real site shows no filter at
+ * all. Showing that here would document a control nobody can see, so the
+ * specimen supplies portals spanning three categories instead. The rule is in
+ * the Accessibility tab and in `portal-categories.test.ts`.
+ */
+const SPECIMEN_PORTALS = [
+  {
+    id: "scw",
+    shortName: "SCW",
+    name: "Senior Citizens Welfare",
+    href: "/portals/scw",
+    category: "Scheme Portals" as const,
+    logoSrc: "/design-system/org-logos/scw.png",
+  },
+  {
+    id: "nmba",
+    shortName: "NMBA",
+    name: "Nasha Mukt Bharat Abhiyaan",
+    href: "/portals/nmba",
+    category: "Scheme Portals" as const,
+    logoSrc: "/design-system/org-logos/nmba.png",
+  },
+  {
+    id: "ncsc",
+    shortName: "NCSC",
+    name: "National Commission for Scheduled Castes",
+    href: "/portals/ncsc",
+    category: "Commission" as const,
+    logoSrc: "/design-system/org-logos/ncsc.png",
+  },
+  {
+    id: "nsfdc",
+    shortName: "NSFDC",
+    name: "National SC Finance & Development Corporation",
+    href: "/portals/nsfdc",
+    category: "Corporations" as const,
+    logoSrc: "/design-system/org-logos/nsfdc.png",
+  },
+];
+
 const PROPS = [
   {
     name: "defaultOpen",
@@ -62,7 +106,22 @@ const PROPS = [
     name: "portals",
     type: "SamaveshBannerPortalItem[]",
     default: "DEFAULT_SAMAVESH_PORTALS",
-    description: "Array of portal cards to display inside the expanded accordion drawer.",
+    description:
+      "Portal cards shown in the drawer. Leave each item's `status` unset: it is resolved from the estate registry, so a portal that is not built yet renders as a labelled card instead of a link.",
+  },
+  {
+    name: "tone",
+    type: '"light" | "dark" | "tint"',
+    default: '"light"',
+    description:
+      "Band colouring. `light` is white on India Saffron and matches the Figma reference \u2014 it FAILS WCAG 2 at 2.91:1, deliberately and on record. `dark` is near-black on the same saffron (6.50:1). `tint` is near-black on pale saffron (17.29:1) and is the only tone that clears both WCAG 2 and APCA for body text. See the Variants section.",
+  },
+  {
+    name: "sticky",
+    type: "boolean",
+    default: "true",
+    description:
+      "Pin the band directly under the masthead and keep it there. It reads the header\u2019s live `--sa-header-stuck` offset, so it stays flush in both of the masthead\u2019s states, and condenses with it \u2014 the subline and rule drop and the band goes 80\u219252px (86\u219252 on a phone). Pass `false` for an inline specimen: pinned, an example detaches from the prose explaining it, and stacked tone specimens would cover each other. Every specimen on this page passes it.",
   },
   {
     name: "drawerTitle",
@@ -73,14 +132,37 @@ const PROPS = [
   {
     name: "viewAllHref",
     type: "string",
-    default: '"/website/samavesh-citizen-portals"',
-    description: "URL destination for the full portal directory link.",
+    default: '"/portals"',
+    description:
+      "URL for the footer link. The drawer lists LIVE portals for quick access; /portals is the full directory, including those still in development.",
+  },
+  {
+    name: "emptyLabel",
+    type: "string",
+    default: '"No portals are available right now."',
+    description:
+      "Shown when there is nothing to list. It CAN happen \u2014 the list is derived from the estate registry, so a registry with nothing marked live leaves it empty. A heading above an empty list reads as a broken page; saying so reads as an answer.",
+  },
+  {
+    name: "viewAllPrompt",
+    type: "string",
+    default: '"Are you an officer or administrator?"',
+    description:
+      "The question above the footer link. A SIGNPOST, not a claim about the list \u2014 both surfaces show the same live portals, so copy promising more on /portals is false. What is true is who the second route is for: a citizen has arrived where they are going, an officer needs the directory to reach the portal they sign in to. Pass an empty string to render the link alone.",
   },
   {
     name: "viewAllLabel",
     type: "string",
-    default: '"View all citizen portals"',
-    description: "Label for the full portal directory link.",
+    default: '"Find your portal"',
+    description:
+      "Label for the footer link. It says what is DIFFERENT about the destination rather than \u201cview all\u201d \u2014 a link that reads as more of the same, below a list that is already complete, is a link nobody has a reason to follow.",
+  },
+  {
+    name: "allLabel",
+    type: "string",
+    default: '"All"',
+    description:
+      "Label on the \u201cno category filter\u201d chip. The chip row renders only when the portals on show span more than one category, so on the live site it is currently unused \u2014 every portal built today is a scheme portal.",
   },
   {
     name: "title",
@@ -132,7 +214,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
           >
             SAMAVESH Banner
           </h1>
-          <StatusBadge status="Stable" />
+          <StatusBadge status="New" />
         </div>
         <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
           {
@@ -149,11 +231,11 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
         >
           <a
             className="docs-page-header__link"
-            href={figmaUrl("7116-33784")}
+            href={figmaUrl(FIGMA_NODES.samaveshBanner)}
             target="_blank"
             rel="noopener noreferrer"
           >
-            Figma Component (7116:33784)
+            Figma Component Spec <span aria-hidden="true">↗</span>
           </a>
         </div>
       </header>
@@ -163,15 +245,37 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
         <h2 id="specimen-heading" style={h2Style}>
           Interactive Specimen
         </h2>
+        {/*
+          NO `overflow: hidden`, and a reserved block below the band. The drawer
+          is `position: absolute` so that it OVERLAYS the page instead of pushing
+          it down; a clipping specimen frame would hide the very thing this
+          section exists to show, and a specimen that silently disagrees with the
+          live component is worse than no specimen. The reserved height is what
+          stops the open drawer overlapping the next section of this page.
+        */}
         <div
           style={{
             borderRadius: "var(--sa-shape-16)",
             border: "1px solid var(--sa-border-neutral-subtle)",
-            overflow: "hidden",
             backgroundColor: "var(--sa-bg-neutral-base)",
+            // ds-exempt(demo-geometry): room for the OPEN drawer, which is
+            // `position: absolute` so that it overlays the page rather than
+            // pushing it down. This is the measured height of the open panel in
+            // this frame, not a spacing decision — no token models "as tall as
+            // that component happens to be", and snapping it to the nearest
+            // space rung would either clip the specimen or leave a gap.
+            paddingBottom: "420px",
           }}
         >
-          <SamaveshBanner defaultOpen={true} />
+          {/* A SPECIMEN, so it opts out of pinning. `sticky` defaults ON — the
+              band is masthead chrome — and an inline example that pins itself
+              over the documentation explaining it is demonstrating the page
+              rather than the component. Same call SiteHeader's own previews make. */}
+          <SamaveshBanner
+            defaultOpen={true}
+            sticky={false}
+            portals={SPECIMEN_PORTALS}
+          />
         </div>
       </section>
 
@@ -273,13 +377,37 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
                           criterion: "4.1.2 Name, Role, Value",
                           level: "A",
                           description:
-                            "aria-expanded and aria-controls accurately communicate the drawer state to screen readers.",
+                            "aria-expanded and aria-controls communicate the drawer state. The portal cards are a real <ul>/<li> of <a> inside a named <nav> \u2014 never role=\"listitem\" on the anchor, which REPLACES its link role and announces four list items with no links between them.",
+                        },
+                        {
+                          criterion: "1.3.1 Info and Relationships",
+                          level: "A",
+                          description:
+                            "The drawer title is a <p> naming the <nav>, not an <h2>. The banner renders before every page's <h1>, so a heading here would invert the document outline \u2014 and mounting it outside <main> does not fix that, because heading order is a property of the document rather than of the landmark.",
                         },
                         {
                           criterion: "1.4.3 Contrast (Minimum)",
                           level: "AA",
                           description:
-                            "White text and badges against India Saffron (#ff671f) and dark green / saffron headings meet 4.5:1+ text contrast requirements.",
+                            "The band's text is INK on India Saffron at 5.56:1, not white \u2014 white on that ground is 2.91:1 and fails at every size, including the title as large text. Explore is white on India Green at 6.72:1; the drawer heading is 12.9:1 on the peach ground.",
+                        },
+                        {
+                          criterion: "1.4.11 Non-text Contrast",
+                          level: "AA",
+                          description:
+                            "The Explore focus ring is ink rather than white (5.56:1 against saffron), and the portal card border is saffronDark at 6.02:1 \u2014 it is the card's only boundary, so the 3:1 threshold applies to it.",
+                        },
+                        {
+                          criterion: "2.4.3 Focus Order / 2.4.7 Focus Visible",
+                          level: "AA",
+                          description:
+                            "Escape closes the drawer and returns focus to the Explore button. Without that return, focus stays on a card the collapse has just made invisible, leaving no focus indicator anywhere on the page.",
+                        },
+                        {
+                          criterion: "2.3.3 Animation from Interactions",
+                          level: "AAA",
+                          description:
+                            "prefers-reduced-motion: reduce removes the drawer tween and the card hover lift. The drawer still opens and closes \u2014 only the travel stops.",
                         },
                       ]}
                     />
@@ -291,7 +419,115 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
         />
       </section>
 
-      {/* ── Props Table ── */}
+      {/* ── Variants & the research behind them ── */}
+      <section style={sectionStyle} aria-labelledby="variants-heading">
+        <h2 id="variants-heading" style={h2Style}>
+          Band tones, and why the default fails contrast on purpose
+        </h2>
+        <p style={proseStyle}>
+          {
+            "India Saffron is a saturated mid-tone, which is the one ground no ink sits on comfortably \u2014 too light to carry white, too vivid and dark to carry reading-size dark text. This is a named problem in the field, not a quirk of this component, and the three tones exist because it has no single right answer."
+          }
+        </p>
+
+        <div style={{ marginTop: "var(--sa-stack-24)", overflowX: "auto" }}>
+          <table style={{ borderCollapse: "collapse", width: "100%", fontSize: "var(--sa-type-body-2-size)" }}>
+            <caption style={{ textAlign: "left", paddingBottom: "var(--sa-padding-8)", color: "var(--sa-text-neutral-subtle)" }}>
+              Measured on the shipped colours. WCAG 2 needs 4.5:1 body / 3:1 large; APCA needs Lc 75 body / 45 headline.
+            </caption>
+            <thead>
+              <tr>
+                {["tone", "ink on ground", "WCAG 2", "APCA Lc", "body text", "large text"].map((h) => (
+                  <th key={h} style={{ textAlign: "left", padding: "var(--sa-padding-8)", borderBottom: "2px solid var(--sa-border-neutral-subtle)" }}>
+                    {h}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["light (default)", "#ffffff on #ff671f", "2.91 \u2717", "59.8", "fails both", "fails WCAG, passes APCA"],
+                ["dark", "#0e1114 on #ff671f", "6.50 \u2713", "48.9", "passes WCAG only", "passes both"],
+                ["tint", "#0e1114 on #fff2ed", "17.29 \u2713", "99.1", "passes both", "passes both"],
+              ].map((row) => (
+                <tr key={row[0]}>
+                  {row.map((cell, i) => (
+                    <td key={i} style={{ padding: "var(--sa-padding-8)", borderBottom: "1px solid var(--sa-border-neutral-subtle)", fontWeight: i === 0 ? 600 : 400 }}>
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Three live bands, collapsed — the numbers above are only half the
+            answer, and the reason this component ships three tones is that the
+            trade-off is visible rather than arguable. */}
+        <div style={{ marginTop: "var(--sa-stack-32)", display: "flex", flexDirection: "column", gap: "var(--sa-stack-24)" }}>
+          {([
+            ["light", "Default. Matches Figma. 2.91:1 \u2014 fails WCAG 2. Best APCA score on this ground (Lc 59.8)."],
+            ["dark", "Compliant on the saffron band: 6.50:1. APCA Lc 48.9 \u2014 headline only, not body."],
+            ["tint", "Clears both standards for body text: 17.29:1, APCA Lc 99.1. Saffron becomes the accent."],
+          ] as const).map(([tone, note]) => (
+            <div key={tone}>
+              <p
+                style={{
+                  fontSize: "var(--sa-type-label-1-size)",
+                  fontWeight: 600,
+                  color: "var(--sa-text-neutral-base)",
+                  margin: "0 0 var(--sa-stack-8)",
+                }}
+              >
+                <code>tone=&quot;{tone}&quot;</code>{" "}
+                <span style={{ fontWeight: 400, color: "var(--sa-text-neutral-subtle)" }}>{note}</span>
+              </p>
+              <div style={{ borderRadius: "var(--sa-shape-16)", border: "1px solid var(--sa-border-neutral-subtle)", overflow: "hidden" }}>
+                <SamaveshBanner tone={tone} sticky={false} portals={SPECIMEN_PORTALS} />
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <h3 style={{ ...h2Style, fontSize: "var(--sa-type-headline-4-size)", marginTop: "var(--sa-stack-32)" }}>
+          Why the two standards disagree
+        </h3>
+        <p style={proseStyle}>
+          {
+            "WCAG 2 computes relative luminance only. The Helmholtz\u2013Kohlrausch effect means a saturated colour appears far brighter to the eye than its luminance measures, so WCAG 2 systematically misjudges vivid mid-tones. APCA \u2014 the perceptual algorithm built to correct this \u2014 ranks the inks on saffron in the OPPOSITE order: white (Lc 59.8) beats near-black (48.9), which beats the deep brand green (43.9, below APCA\u2019s 45 floor for headline text)."
+          }
+        </p>
+
+        <h3 style={{ ...h2Style, fontSize: "var(--sa-type-headline-4-size)", marginTop: "var(--sa-stack-32)" }}>
+          What user testing found
+        </h3>
+        <p style={proseStyle}>
+          {
+            "In the most-cited study on this question (Bounteous / Seastrand, ~20 colour-blind participants) 61% preferred white text and 39% black, rising to 71% for white among protanopia. The single monochrome participant preferred black. One participant described black on orange as having \u201ca slight halo effect around it\u201d; another said of white that it \u201cfalls into the background\u201d. Both effects are real and they affect different people, which is why this component ships alternatives instead of one answer."
+          }
+        </p>
+
+        <h3 style={{ ...h2Style, fontSize: "var(--sa-type-headline-4-size)", marginTop: "var(--sa-stack-32)" }}>
+          The finding that settles it
+        </h3>
+        <p style={proseStyle}>
+          {
+            "Scanning roughly 700,000 colours against #ff671f: ZERO clear WCAG 2\u2019s 4.5:1 and APCA\u2019s Lc 75 for the 14px subline. Not one, in the entire colour space \u2014 and still none when relaxed to Lc 60. For the large bold wordmark, 34,887 inks clear both. So the constraint is the ground, not the ink, and the argument about black versus white cannot be won on this band."
+          }
+        </p>
+
+        <h3 style={{ ...h2Style, fontSize: "var(--sa-type-headline-4-size)", marginTop: "var(--sa-stack-32)" }}>
+          Why APCA does not simply decide it
+        </h3>
+        <p style={proseStyle}>
+          {
+            "APCA was removed from WCAG 3 consideration in 2023 and was only ever exploratory content; WCAG 3\u2019s contrast algorithm is still undecided and no Recommendation is expected before roughly 2028. WCAG 2.1/2.2 AA remains the enforceable standard, and GIGW 3.0 binds this estate to it. The default tone is therefore a recorded NON-CONFORMANCE chosen for reference fidelity and perceptual legibility \u2014 not a conformance argument. It is entry 8 in the divergence register at docs/guidelines/README.md, and `tone=\"tint\"` is the one-word remedy if an audit challenges it."
+          }
+        </p>
+      </section>
+
+      {/* \u2500\u2500 Props Table \u2500\u2500 */}
       <section style={sectionStyle} aria-labelledby="props-heading">
         <h2 id="props-heading" style={h2Style}>
           Component Props

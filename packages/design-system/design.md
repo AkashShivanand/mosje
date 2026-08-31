@@ -12,11 +12,66 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-08-30 · System version: v0.37.0 (SAMAVESH BANNER & ACCORDION
-  PORTAL DISCOVERY DRAWER. Canonical token-driven SamaveshBanner component matching
-  Figma node 7116:33784 & 7298:29968 with accessible expand/collapse transitions,
-  portal discovery cards for SCW, SMILE-Transgender, NOS, NMBA, and admin placement
-  configuration across website pages.)
+  Last reviewed: 2026-08-31 · System version: v0.40.0 (A BRUTAL AUDIT OF THE SAMAVESH
+  PATTERN FOUND TWO LIVE ACCESSIBILITY FAILURES, ONE OF THEM SELF-INFLICTED. Escape
+  left keyboard focus 1,380px off the top of the screen, because the exit animation
+  added a release earlier carried the focused toggle away with the band; closing
+  while pinned now has a PARKED phase that holds the band still while focus is on
+  it. The drawer's footer link measured 4.24:1 on the peach ground — below AA, and
+  passing only on hover. Alongside: the panel's three competing brand hues cut to
+  two, the heading left-aligned onto the grid's own axis and dropped from 32px to
+  22px, every card's mark top-aligned so a row's logos share one line, press
+  feedback added and hover gated behind a pointer query, the card's two lines given
+  a real size step, the stagger stopped running on exit, and `motion/reveal` +
+  `motion/press` added so the pattern binds motion instead of typing it.)
+
+  Last reviewed: 2026-08-31 · System version: v0.39.0 (EVERY ORGANISATION MARK NOW
+  RESOLVES THROUGH ONE COMPONENT, AND `PortalCard` FINALLY ENDED THE DUPLICATION IT
+  WAS EXTRACTED FOR. The same 16 marks sat in two byte-identical public directories
+  while `organisation-details.ts` reached into three roots for them, so a mark
+  replaced in one place stayed stale in the others. `OrgLogo` owns every path,
+  `check:org-logos` is a per-file ratchet over the 99 literals that remain, and
+  design.md had specified this component as "when built" for weeks. `PortalCard`
+  grew a `detailed` variant and the `/portals` directory adopted it — it had kept
+  drawing its own card with a derived two-letter code where the department has an
+  actual crest, and its own labels, so the same portal read "PM / PM-AJAY" there
+  and "PM-AJAY / Pradhan Mantri Anusuchit Jaati Abhyuday Yojana" in the banner.
+  `PORTAL_LABELS` moved beside the registry so both surfaces answer alike; a
+  `selected` state landed for the change-portal side sheet; `planned` and the
+  live/onboarding badges went, because the estate lists live portals only. The
+  band now pins ONLY while its panel is open — pinning always forced a condense,
+  and the condense cost the subline, which is the wrong thing to trade.)
+
+  Last reviewed: 2026-08-30 · System version: v0.38.0 (THE SAMAVESH BAND NOW TRAVELS
+  WITH THE MASTHEAD INSTEAD OF DETACHING FROM IT BY UP TO 155px. It pinned to
+  `--sa-header-pinned`, which is written ONLY while the masthead is resting because
+  `scroll-padding-top` has to clear its taller state — so once the masthead condensed
+  the band stayed at 154/212 against a header ending at 65/57, and a strip of page
+  content ran between the two: 89px on desktop, 155px on a phone. `SiteHeader` now
+  publishes `--sa-header-stuck`, the same edge measured in whichever state it is
+  actually in, plus `data-sa-header-condensed` on `:root` so chrome underneath can
+  condense with it rather than run a second copy of the scroll thresholds. The band
+  pins ALWAYS rather than only while its drawer is open — SAMAVESH is the estate's
+  single access mechanism, and a door that exists at one scroll depth is not one —
+  and it condenses with the masthead, 80→52 desktop and 86→52 phone, which is what
+  makes that affordable. Two further defects surfaced on the way: `measure()` read
+  `condensed` from a stale effect closure and wrote the CONDENSED height into
+  `--sa-header-pinned`, the one value that must never hold it, leaving an anchor
+  155px short of clearing an expanded masthead; and a permanently pinned band owes
+  the document its own share of `scroll-padding-top`, or every anchor and skip link
+  lands underneath it. Both are WCAG 2.4.11, both invisible without measuring.)
+
+  Last reviewed: 2026-08-30 · System version: v0.37.0 (THE SAMAVESH BAND'S TEXT WAS
+  WHITE ON INDIA SAFFRON AT 2.91:1, AND THREE DOCUMENTS SAID IT PASSED AA. It failed
+  for the subline and — as large text, which still needs 3:1 — for the title too. The
+  saffron did not move; the INK did, to 5.56:1 on the same unchanged ground, so the
+  brand paid nothing for it. Figma node 7116:33784 still carries the white version.
+  Shipped alongside: NOS stopped 404-ing on every page of the website because portal
+  status is now RESOLVED from the registry rather than restated here; the band adopted
+  `.sa-container`, which fixed a 16px misalignment and a card running under the
+  Important Links rail in one move; the badge went from a 743 KB eager SVG to 13 KB;
+  and the drawer's `<h2>` moved out of `<main>`, where it had been sitting above every
+  inner page's `<h1>`.)
 
   Last reviewed: 2026-08-28 · System version: v0.36.0 (THE CATEGORICAL CHART RAMP IS
   COLOUR-BLIND-SAFE FOR THE FIRST TIME, and the old one never was. The twelve slots sat
@@ -996,7 +1051,7 @@ graph TD
 | Render the canonical `<SiteHeader>` with the functional accessibility toolbar. | Banned: Placing decorative Indian tricolour stripes in the header, footer, or hero section. |
 | Configure `variant="website"` for public portals, `variant="portal"` for authenticated dashboards. | Do not override the official National Emblem with abstract logos or custom marks. |
 | Let `NavSheet` keep the mega-menu's COLUMNS — headings, emblems and full organisation names. | Do not flatten the mega-menu to bare abbreviations in the drawer: "NCSK" alone is hardest to place on the smallest screen. |
-| Leave `sticky` and `collapseOnScroll` at their defaults (both ON, every variant). Read the pinned height from `--sa-header-pinned`. | Do not hardcode a pixel offset for sidebar top positioning, and do not pass `collapseOnScroll` "only on portal" — it serves the website too. |
+| Leave `sticky` and `collapseOnScroll` at their defaults (both ON, every variant). Read the masthead's height from the variable that matches the job: **`--sa-header-stuck`** to pin something underneath it (current state), **`--sa-header-pinned`** for `scroll-padding` (resting state, the taller one), **`--sa-header-bottom`** to cap a panel hanging off it. `:root[data-sa-header-condensed]` says which state it is in. | Do not hardcode a pixel offset for sidebar top positioning, and do not pass `collapseOnScroll` "only on portal" — it serves the website too. **Do not pin to `--sa-header-pinned`** — it is deliberately frozen at the resting height, so anything pinned to it detaches by 89–155px the moment the masthead condenses. |
 | Pass `sticky={false}` on a documentation SPECIMEN. | Do not let an inline example pin itself over the page it is illustrating. |
 
 ### D. Forms & Inputs
@@ -1466,7 +1521,7 @@ one. Each segment still meets 24×24 on its own, which the size ladder guarantee
 **Rules**:
 - Use the Material Symbols Rounded **font glyph** for any icon in the Material set — never inline SVG for those.
 - Brand/social marks are **not** in Material Symbols. **Social platform marks come from `BrandGlyph`** (below) — do not paste vendor path data at a call site. Other brand artwork (National Emblem, Digital India, NeGD) is a hyperlinked asset, not an icon.
-- **Org/scheme logos** (NCSC, NMBA, SMILE, PM-AJAY, …) come from the shared **`org-logo`** component (Figma: `org-logo` set, instance-swap; code: `<OrgLogo org="…" />` when built) — a single source of truth. Never paste an org logo as a raster image; instance the component so a logo fix in one place updates every consumer.
+- **Org/scheme logos** (NCSC, NMBA, SMILE, PM-AJAY, …) come from the shared **`OrgLogo`** component — a single source of truth, and **built as of 2026-08-31**. Never paste an org logo as a raster image and never write its path: `<OrgLogo path="/portals/nmba" />` or `<OrgLogo org="nmba" />`, so a mark fix in one place updates every consumer. `npm run check:org-logos` fails the build on a path written anywhere else.
 - **Hover-revealed icons (house pattern):** keep the glyph **always visible at low opacity (~0.4)** and raise it to `1` on hover/focus — *not* `opacity: 0`. Persistent-faint keeps the affordance discoverable, avoids a blank reserved gap, and causes **no layout shift**. Mark the glyph `aria-hidden`; respect `prefers-reduced-motion` on the fade.
 
 #### BrandGlyph
@@ -2205,14 +2260,86 @@ and renders it only when `exportable`.
 - **Do not put the same destination behind two labels.** The link graph is deduplicated deliberately: "Vision & Mission" and "Help & Support" both pointed at pages already linked one line above them. The two remaining shared destinations are role-distinct and intended (the support CTA vs the Help nav entry; the Digital India related-link vs its mandated credit logo).
 - Every `<nav>` is labelled, the footer is named by a visually-hidden `<h2>`, and one focus ring is defined once for the subtree — do not add per-control rings.
 
+#### OrgLogo
+**Purpose**: An organisation or scheme mark in the estate's standard tile — and **the only place a mark's path is written**.
+**Key props**: `path`, `org`, `size`, `name`, `src`
+**Also exports**: `ORG_LOGOS`, `PORTAL_ORG_LOGOS`, `orgLogoSrc`, `portalLogoSrc`, `SAMAVESH_MARK`, `SAMAVESH_MARK_VECTOR`, `NATIONAL_EMBLEM`, `NATIONAL_EMBLEM_INVERSE` — all from `org-logo-registry.ts`, which carries **no `"use client"`**
+**Rules**:
+- **NEVER write a mark's path anywhere else.** Before this existed the same 16 files sat in TWO byte-identical public directories — `/design-system/org-logos/` and `/website/images/org-logos/` — and `organisation-details.ts` reached into THREE roots for the same class of asset, one of them used by a single organisation. Nothing reconciled them, so a mark replaced in one place stayed stale in the others and nobody could say where "the others" were. `/design-system/org-logos/` is canonical: these are design-system assets and the website is a consumer of them, not their owner.
+- **`npm run check:org-logos` enforces it, as a RATCHET.** 99 literals across 48 files are frozen as declared debt; a new file that writes one fails, a baselined file that grows fails, and a baselined file that SHRINKS also fails — telling you to re-baseline, so one surface's cleanup cannot be spent silently on another's regression. Same shape as `check:storybook` and `check:radius-linkage`. An unavoidable literal declares itself: `// org-logo-exempt(portal-local): why`.
+- **Pass `path` or `org`, never a file.** `path` is a portal route and is the normal case, because a route is what the registry hands you. `src` exists only for a mark not yet in the registry and every use is reported by the gate.
+- **The tile belongs to the component.** White ground, hairline rule, `shape/8`, three sizes (32 / 48 / 56). Four surfaces drew it by hand at three different radii before this existed. Never re-draw it.
+- **The mark is CONTAINED, never cropped.** `object-fit: contain`, always. A departmental crest with its edges cut off is a brand error, not a layout one.
+- **Leave `name` off.** A mark beside the org's name in real text is decorative and takes an empty alt [WCAG H67]; a name here makes a screen reader read the organisation twice. Pass one only where the mark stands alone.
+- **THE DATA AND THE RESOLVERS LIVE IN `org-logo-registry.ts`, WITH NO `"use client"`.** They are plain values that SERVER code needs — page metadata, an og:image, a server-rendered directory. In the component file a server component importing `ORG_LOGOS` got a client-reference proxy: `Object.keys()` returned `[]`, the documentation page's catalogue of every mark rendered as nothing, and no error appeared anywhere. The component re-exports them so callers see one module.
+- **FIGMA PARITY: 17 marks, one per `org-logo` variant, on the library's `Brand` page.** Moved off Iconography 2026-08-31 — a departmental crest is a brand asset, not an icon — so the Figma page, the code folder (`components/brand/`) and the docs route (`/design-system/components/brand/org-logo`) now all read the same. A move preserves the component key, so every instance followed.
+- **THREE GAPS IN THE ARTWORK, recorded rather than papered over.** NCSK, DAF, DWBDNC and SCW share one image hash (the State Emblem) — a correct fallback, but if any has its own crest it was never supplied. DAIC carries two stacked image fills. SAMBAL had no usable export until 2026-08-31: its device sat under a 74-node, one-text-node-per-character strapline inside the 56px box, so it had never been exported and `/portals/nhapoa` fell back to the emblem. Repaired in the library and exported; do not re-add a strapline at this size.
+- **The fallback is the State Emblem and it is CORRECT, not a placeholder.** A portal with no bespoke mark is still a Government of India property. Never substitute a grey box, an initial or a generic icon — which is exactly what `/portals` did, drawing a derived two-letter code in a coloured box where the department has an actual crest.
+
+#### PortalCard
+**Purpose**: One portal in a grid of them, in two densities. Used by the SAMAVESH banner drawer, the `/portals` directory, and the change-portal side sheet on a login page.
+**Key props**: `variant`, `code`, `name`, `href`, `path`, `org`, `description`, `category`, `ctaLabel`, `selected`, `external`
+**Rules**:
+- **TWO VARIANTS, ONE VISUAL LANGUAGE.** `compact` (default) is mark + code + name, for a reader who already knows which portal they want and is FINDING it. `detailed` adds description, category and an action, for a reader CHOOSING. The rule, ground, tile, saffron code and every shared measurement are identical between them — three surfaces show the same object, and a reader who learns to recognise it in one must recognise it in the others. Pick by which the reader is doing, never by how much space is going spare.
+- **`description` and `category` render on `detailed` ONLY.** `compact` ignores both rather than truncating them, so passing them to the wrong variant loses content silently.
+- **It is DUMB on purpose.** It takes strings and renders them. Which portals to show belongs to the caller reading the registry — a card that looked up its own status would put that query in three places.
+- **THE MARK COMES FROM `OrgLogo`.** Pass `path` (a route) or `org` (a slug), never a file. `logoSrc` is GONE: a card that named its own asset is how the estate got the same 16 marks in two directories and three roots.
+- **`href` IS REQUIRED and `planned` IS GONE.** Every surface lists LIVE portals only, so the non-interactive "In development" card has no caller — and an OPTIONAL destination is how an unbuilt portal got rendered as a link, which shipped a 404 to citizens on every page of the website. A required prop makes that impossible at build time rather than at runtime.
+- **NO RESTING SHADOW; elevation is reserved for hover and selected.** The card already has a saffron rule doing the separating, and a shadow under a border is two boundary treatments for one edge — the handoff reference carries none either. If every card is elevated, elevation says nothing. Press removes the shadow entirely, so the card reads as going DOWN rather than merely shrinking.
+- **`selected` is a heavier rule plus a filled check, never a fill.** A tinted card competes with the saffron code for the same attention. It sets `aria-current="true"` and carries a visually-hidden "Current portal", because a green tick alone is colour and shape carrying meaning [WCAG 1.4.1]. Its padding subtracts the extra border pixel so selecting a card does not shift the grid.
+- **MOTION BINDS `motion/reveal/*` AND `motion/press/*`; no duration or curve is typed.** The pattern used to hand-type seven durations and four curves while the system had motion tokens, and one literal was character-identical to `--sa-motion-exit-easing` — a literal that merely equals a token is a defect. Binding to the existing pairs alone would have been a downgrade (the built-in decelerate curve is too weak on a large surface), so `outStrong` was **added** rather than the good curve deleted.
+- **THE MARK AND THE CONTENT TOP-ALIGN; nothing in the card is vertically centred.** Grid rows stretch cards to the tallest in the row, so centring put every mark on a different baseline — the head row centred against names of one to three lines, and the card centred its content inside the stretched box. Two causes one level apart, one visible defect. Slack falls below the text.
+- **HOVER IS GATED, PRESS IS NOT.** `:hover` sticks on a touchscreen — the card stayed lifted after the tap. The lift is a pointer affordance and lives behind `(hover: hover) and (pointer: fine)`; `:active` is the only feedback a touch reader gets and the card had none.
+- **THE BORDER AND THE CODE SIT ON DIFFERENT SAFFRON STEPS, and that is the whole trick.** They have different jobs and therefore different thresholds: the border is the card's ONLY boundary so WCAG 1.4.11 asks 3:1; the code is 16px BOLD, which is not "large" (that starts at 18.66px bold), so 1.4.3 asks 4.5:1. Binding both to one token lets the stricter govern both and makes the card darker than it needs to be. Measured on white / on the pale saffron drawer: `secondaryScale-400` `#ff671f` 2.91 / 2.66 (**the Figma reference's choice — fails both**), `-500` `#e1560f` 3.79 / 3.46 (border ✓, text ✗), `-600` `#c34700` 4.97 / 4.54 (both ✓), `-700` 6.60 / 6.02. **Border takes 500, code and CTA take 600, the focus ring takes 600** — the lightest pair that clears both, two steps lighter on the border than the single token this used to carry. Do not copy the reference: at 2.91:1 its border fails non-text contrast and its code fails text contrast.
+- **Radius is `shape/20` and `selected` washes saffronLight → white**, matching the handoff's change-portal side sheet.
+- **Never put `role="listitem"` on it.** An explicit role REPLACES the implicit `link` one. Wrap it in a real `<li>` instead.
+- **`external` carries its own cue** — an `open_in_new` glyph plus a visually-hidden "(opens in a new tab)", both, because the glyph is `aria-hidden` and a label is invisible to a sighted reader [WCAG G201]. Every portal is a separate property in production, so this ends up on for all of them — which is exactly why it is NOT a separate card style. A directory where every card carries the same decoration is one where the decoration says nothing.
+- **Not a generic link card.** The accent slot expects a short code and the palette is bound to SAMAVESH saffron. Use `Card` for general content.
+
 #### SamaveshBanner
-**Purpose**: The canonical top banner and portal exploration drawer for SAMAVESH (Figma node `7116:33784` & `7298:29968`). Consolidates the saffron identity bar with an interactive accordion drawer to discover and access the ministry's portals (SCW, SMILE-Transgender, NOS, NMBA, etc.).
-**Key props**: `defaultOpen`, `isOpen`, `onToggle`, `portals`, `drawerTitle`, `viewAllHref`, `viewAllLabel`, `logoSrc`, `title`, `subline`, `exploreLabel`
+**Purpose**: The canonical top banner and portal exploration drawer for SAMAVESH (Figma: the library set `56479:42386`, Tone × State; nodes `7116:33784` / `7298:29968` are the original handoff MOCKUPS, not a component, so Code Connect cannot resolve them). Consolidates the saffron identity bar with an interactive accordion drawer to discover and access the ministry's portals (SCW, SMILE-Transgender, NOS, NMBA, etc.).
+**Key props**: `defaultOpen`, `isOpen`, `onToggle`, `portals`, `sticky`, `tone`, `drawerTitle`, `viewAllHref`, `viewAllLabel`, `allLabel`, `logoSrc`, `title`, `subline`, `exploreLabel`
 **Rules**:
 - **Single Source of Truth.** Replaces all hand-rolled website banners with a unified token-driven component exported from `@mosje/design-system`.
-- **Tokenised.** Header ground binds to `var(--sa-color-brand-saffron)` (#ff671f), badge ground to `var(--sa-bg-neutral-base)`, drawer ground to `var(--sa-color-brand-saffronLight)` / warm gradient, and Explore CTA to `var(--sa-color-status-success)`. Zero hardcoded hex.
-- **Accessible State Machine.** The Explore button manages `aria-expanded` and `aria-controls` targeting the drawer. Escape key collapses the open drawer automatically. Keyboard navigation reaches each portal card in sequence.
-- **Responsive Layout.** Collapses into a clean stacked layout on mobile viewports (<640px) while maintaining full tap targets (min 44px) and WCAG 2.2 AA contrast.
+- **THE BAND HAS THREE TONES AND THE DEFAULT KNOWINGLY FAILS WCAG 2.** `tone` is `light` (default) | `dark` | `tint`. This is the single most consequential thing to know about the component, and it is a researched decision rather than a preference:
+
+  | tone | ink on ground | WCAG 2 | APCA Lc | body | large |
+  |---|---|---|---|---|---|
+  | `light` **(default)** | `#ffffff` on `#ff671f` | **2.91 ✗** | 59.8 | fails both | fails WCAG, passes APCA |
+  | `dark` | `#0e1114` on `#ff671f` | 6.50 ✓ | 48.9 | WCAG only | passes both |
+  | `tint` | `#0e1114` on `#fff2ed` | 17.29 ✓ | 99.1 | **passes both** | **passes both** |
+
+  - **The ground is the constraint, not the ink.** India Saffron is a saturated mid-tone — too light for white, too vivid and dark for reading-size dark text. Scanning ~700,000 colours against `#ff671f` found **ZERO** that clear WCAG 2's 4.5:1 *and* APCA's Lc 75 for the 14px subline; still zero relaxed to Lc 60. For the large bold wordmark, 34,887 clear both. The black-versus-white argument cannot be won on this band.
+  - **Why the standards disagree.** WCAG 2 measures relative luminance only; the Helmholtz–Kohlrausch effect makes saturated colours read far brighter than their luminance, so WCAG 2 misjudges vivid mid-tones. This is a named field problem — "the orange button problem" — and APCA ranks the inks in the opposite order.
+  - **User testing sides with APCA.** 61% of ~20 colour-blind participants preferred white, 71% among protanopia (Bounteous/Seastrand); the monochrome participant preferred black. Both a "halo effect" around dark text and white "falling into the background" are real and affect different people, which is why alternatives ship rather than one answer.
+  - **APCA is NOT a compliance defence.** Removed from WCAG 3 consideration in 2023, only ever exploratory; WCAG 2.1/2.2 AA remains enforceable and GIGW binds this estate to it. The default is a **recorded non-conformance** — entry 8 in `docs/guidelines/README.md` — chosen for reference fidelity and perceptual legibility. `tone="tint"` is the one-word remedy if an audit challenges it, and needs no redesign.
+  - **Do not substitute the brand green for `dark`.** `--sa-color-status-successStrong` measures 4.85:1 and Lc **43.9** — below APCA's 45 headline floor, making it the worst of the credible dark inks despite looking the most on-brand.
+  - **The saffron itself is never altered by any tone.** Only the ink and the ground's role change. Figma node 7116:33784 draws the `light` tone.
+- **The Explore CTA is `--sa-brand-samavesh-green`** (India Green, white at 6.72:1), not `--sa-color-status-success`. It is simultaneously closer to the Figma reference's mid-green and more accessible than it — the reference's own #198754 measures 4.53:1.
+- **Tokenised.** Header ground `--sa-color-brand-saffron`, badge ground `--sa-bg-neutral-base`, drawer ground **flat `--sa-color-brand-saffronLight`** (matching the Figma render exactly — it was a `color-mix(…, white)` gradient, which was both an unbound literal and a different colour), card ground `--sa-bg-neutral-base`, card border `--sa-color-brand-saffronDark` (6.02:1 — it is the card's only boundary, so 1.4.11 applies). Type binds to `--sa-type-*`; there are no raw font sizes and no colour keywords.
+- **It owns no width.** Both rows carry `.sa-container`, which supplies the 1200/1320/1440 ladder AND the right-wall gutter that keeps the last portal card clear of `ImportantLinks`. A restated `max-width` here is a defect — the one that existed put the banner 16px out of line with the rest of the page.
+- **The portal list is DERIVED from the registry, never restated.** `liveSamaveshPortals()` returns every `DEFAULT_APPS` entry the registry reports as built; a planned portal cannot appear at all. This is why NOS no longer ships a 404 on every page of the website. A `PORTAL_LABELS` map owns only how each portal READS (short code + full name), because the registry's `name` is an admin label and its `abbr` a two-letter icon code.
+- **The category filter renders only when it would DO something.** `portalCategoriesIn` reports the categories present; below two, the chip row is not rendered — "All (8)" beside "Scheme Portals (8)" is two controls with one outcome. Every portal live today is a scheme portal, so the live banner shows no filter, and it will appear by itself when a commission or corporation ships. Pinned in `portal-categories.test.ts`.
+- **`PORTAL_CATEGORIES` is the estate's ONE portal-filter vocabulary** — `Commission · Scheme Portals · Corporations · Training & Capacity Building · Foundation & Autonomous Bodies`, from the design. Anything that filters portals uses these and only these.
+- **The drawer OVERLAYS the page; it does not push it.** In flow it moved everything below down by ~300px, so opening it read as the page rebuilding itself. `position: absolute` off the band, dismissed by Escape (focus returns to the toggle) or a click outside (focus does not — the pointer has already moved on).
+- **Below 768px the button IS the band.** A 375px row cannot hold the wordmark, a subline and a labelled pill, and the subline is the half that earns its place — so the pill loses its chrome and label, stretches over the whole band, and leaves only its chevron. One control, one node in the accessibility tree.
+- **The drawer's bottom rule belongs to the OPEN state only.** A collapsed drawer still reserves its border in layout while `visibility: hidden` stops it painting — which showed the page background through as a 2px white line under the orange band, on every page, at every width.
+- **Accessible state machine.** Explore manages `aria-expanded` / `aria-controls`. Escape collapses the drawer **and returns focus to the toggle** — without that, focus is stranded on a card the collapse just hid. Cards are `<li>` wrapping real `<a>`; never put `role="listitem"` on the anchor, which replaces its link role.
+- **Site-wide chrome — mount it BETWEEN the header and `<main>`, never inside.** Its drawer title is a `<p>` naming a `<nav>`, deliberately NOT an `<h2>`: the banner renders before every page's `<h1>`, so a heading there inverts the document outline, and moving it out of `<main>` does not fix that — heading order is a property of the document, not the landmark. The footer's `sr-only` `<h2>` is fine only because it comes after the `<h1>`.
+- **The drawer animates on `grid-template-rows`, not `max-height`.** A `max-height` cap is a guess that clips silently once `portals` grows. `prefers-reduced-motion` removes the tween and the card hover lift; the drawer still opens.
+- **IT CONDENSES WHILE PINNED, AND THE SUBLINE STAYS.** `:root[data-sa-header-condensed]` (published by `SiteHeader`) drives it, so the band and the masthead condense on the same scroll with the same asymmetric hysteresis rather than two components sampling `scrollY` independently. Padding 12→6, badge 52→40, wordmark and subline one type step each, the Explore control tighter: **80px → 60px**, measured. This is affordable HERE and was not when the band pinned permanently — shrinking something ALWAYS present forces you to drop the subline; shrinking something present only while the reader is choosing a portal does not. Reducing scale is a different act from deleting content, and only the second was wrong.
+- **PLACEMENT DEFAULTS TO THE HOMEPAGE ONLY** (`DEFAULT_SAMAVESH_BANNER_PLACEMENT`). It is an ENTRY POINT: it earns 80px where a reader is deciding where to go, and costs 80px on every page where they already have. The other two placements — all pages, all except organisation details — are an admin setting at `/admin/portals`, applied without a redeploy.
+- **AN EMPTY STATE EXISTS BECAUSE THE LIST IS DERIVED.** A registry with nothing marked live, a failed read, or a filter matching nothing leaves it empty; a heading over an empty `<ul>` reads as a broken page. `emptyLabel` says so, and the footer link stays because it is the route that still works.
+- **`grid-template-rows` IS A LAYOUT ANIMATION AND THAT COST IS ACCEPTED, NOT MISSED.** 0fr → 1fr re-lays-out eight cards and their images every frame. The obvious fix — transform + opacity, which the panel can afford because it is `position: absolute` and pushes nothing — was implemented and REVERTED on 2026-08-31: `--open`'s transform and opacity did not take effect while `visibility` from the same rule did, and the page cannot read the stylesheet to find what overrode them. A rewrite of a panel's show/hide that cannot be verified is worse than a measured cost that works.
+- **CLOSING WHILE PINNED HAS THREE PHASES, AND THE MIDDLE ONE EXISTS FOR THE KEYBOARD.** `idle` → `parked` → `leaving`. Escape returns focus to the toggle, the toggle is INSIDE the band, and an exit animation carried it off-screen: measured at `top: -1380` with no visible focus indicator [WCAG 2.4.7]. Guarding the animation was not enough — the teleport sat underneath it. So while focus is inside, the band stays **parked**: pinned, full opacity, anchor visible. It leaves on **`focusout`, the next scroll, or a pointer-down outside** — all three were needed: with only `focusout`, a reader who pressed Escape and then simply SCROLLED kept a band pinned to the top of every screen for the rest of the session, and a click on empty page space fires `focusout` with a null `relatedTarget` that is indistinguishable from a window blur. **A modal may return focus to its trigger because the trigger does not move; ours does.** Never collapse this back to two states.
+- **`Node.contains` THROWS on a non-Node**, so both outside-click handlers guard with `instanceof Node` before calling it. A thrown listener leaves the band parked forever with no error anyone sees.
+- **CLOSING WHILE PINNED IS AN EXIT, NOT A DISAPPEARANCE.** Dropping `--open` reverts the band to `relative` in the same frame, which returns it to a flow position a thousand pixels above the fold — not a slide, an absence, and an 80px bar vanishing out of the top of the viewport reads as a rendering fault. `--closing` holds it pinned for 260ms and translates it up and out, the path it would have taken if the reader had scrolled it away, then releases it once it is off-screen. Guarded twice: only when ACTUALLY pinned (measured from the element's own rect against its resolved `top`, not re-derived from scroll position), and never under `prefers-reduced-motion`. Reopening mid-exit cancels it.
+- **THE BAND PINS WHILE ITS PANEL IS OPEN, AND ONLY THEN.** `sticky` defaults to `true` and governs that state alone; closed, the band scrolls away like any other. The pin exists to keep the TOGGLE with the PANEL — without it ~540px of scroll took the band, and the only visible way to close, off the top while the panel stayed over the page. That problem exists only in the open state, so the fix lives only there.
+  - **Pin to `--sa-header-stuck`, NEVER `--sa-header-pinned`.** They are different measurements of the same edge. `--sa-header-pinned` is written only while the masthead is RESTING, because `scroll-padding-top` has to clear its taller state; a sticky offset needs whichever state it is in NOW. Reading the wrong one put the band at 154/212 against a condensed header ending at 65/57 — an 89px strip of page content between the two on desktop, 155px on a phone. **That was the real defect, and it was about WHICH VARIABLE, not about when the band pins.**
+  - **THE SUBLINE SURVIVES EVERY STATE.** A version that pinned ALWAYS had to condense to be affordable, and the condense cost the subline — the one line telling a first visitor SAMAVESH is a single access mechanism rather than a logo. Trading the component's only explanatory sentence for chrome that is present when nobody is using it is the wrong way round. Do not reintroduce a condensed band.
+  - **It owes the document NO `scroll-padding-top`.** A permanently pinned band does, and briefly published `--sa-band-rest` for that; pinning only while open removes the debt, because a closed band obscures nothing and an open panel is not a state you land an anchor in. Leaving that rule behind would have over-padded every anchor on every page by 80–86px forever.
+- **`sticky={false}` for every inline specimen.** A pinned example detaches from the prose explaining it, and three stacked tone specimens pin to the same offset and cover each other. Both documentation specimens and every Storybook story pass it, exactly as `SiteHeader`'s own previews do.
+- **The badge default is a 13 KB raster, not the 743 KB master SVG.** The mark renders at 44–52px; the master is a traced 80-path emblem and was `loading="eager"` on every page of the website. Pass `logoSrc` to use the vector where the mark is rendered large.
 
 #### SiteHeader
 **Purpose**: The SAMAVESH Navbar. **One component serves every placement in the estate** — there is no second masthead to reach for and none to write.  

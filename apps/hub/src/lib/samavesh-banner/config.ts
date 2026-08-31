@@ -25,7 +25,19 @@ export interface SamaveshBannerConfig {
   placement: SamaveshBannerPlacement;
 }
 
-export const DEFAULT_SAMAVESH_BANNER_PLACEMENT: SamaveshBannerPlacement = "all";
+/**
+ * HOMEPAGE ONLY BY DEFAULT.
+ *
+ * It defaulted to "all", which put an 80px identity band above every page on the
+ * site — a scheme page, an organisation profile, a press release. The band is an
+ * ENTRY POINT: it earns its space where a reader is deciding where to go, and
+ * costs 80px of every other page where they have already decided. A citizen deep
+ * in a scheme page is not looking for a portal directory.
+ *
+ * The other two placements stay available at /admin/portals and take effect
+ * without a redeploy, so widening it is one setting rather than a release.
+ */
+export const DEFAULT_SAMAVESH_BANNER_PLACEMENT: SamaveshBannerPlacement = "homepage_only";
 
 export function samaveshBannerConfig(placement: SamaveshBannerPlacement): SamaveshBannerConfig {
   return { version: SAMAVESH_BANNER_CONFIG_VERSION, placement };

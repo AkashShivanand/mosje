@@ -1,0 +1,55 @@
+@layer theme, base, components, utilities;
+
+/* ============================================================================
+   MoSJE / SAMAVESH — OrgLogo
+   An organisation or scheme mark in the estate's standard tile.
+
+   THE TILE BELONGS TO THE COMPONENT, not to the caller. Four surfaces drew it by
+   hand before this existed, at three different radii and two different tile
+   sizes, and each one re-derived the asset path as well.
+
+   The marks are supplied artwork — a departmental crest, a scheme's own device —
+   so they are CONTAINED, never cropped and never stretched. A government mark
+   with its edges cut off is a brand error, not a layout one.
+   ============================================================================ */
+
+@layer components {
+  .ds-org-logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    overflow: hidden;
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    padding: var(--sa-padding-4);
+  }
+
+  /* Tile sizes are component geometry, not spacing steps — the mark is a
+     fixed-size object like an avatar, and the three rungs are the three places
+     the estate actually shows one: inline beside a label, on a card, and as the
+     lead of a directory row. */
+  .ds-org-logo--sm {
+    width: 32px;
+    height: 32px;
+    padding: var(--sa-padding-2);
+  }
+
+  .ds-org-logo--md {
+    width: 48px;
+    height: 48px;
+  }
+
+  .ds-org-logo--lg {
+    width: 56px;
+    height: 56px;
+  }
+
+  .ds-org-logo img {
+    width: 100%;
+    height: 100%;
+    /* CONTAIN, never cover. `cover` crops, and these are supplied marks. */
+    object-fit: contain;
+  }
+}

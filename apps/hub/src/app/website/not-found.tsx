@@ -8,8 +8,8 @@ export default function WebsiteNotFound() {
   return (
     <>
       <Header />
+      <SamaveshBanner />
       <main id="content" className="flex-1 bg-surface-base">
-        <SamaveshBanner />
         <div className="py-12 md:py-16">
           <ErrorView
             kind="404"

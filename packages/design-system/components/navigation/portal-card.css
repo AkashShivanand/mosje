@@ -1,0 +1,342 @@
+@layer theme, base, components, utilities;
+
+/* ============================================================================
+   MoSJE / SAMAVESH — PortalCard
+   One portal in a grid of them, in two densities.
+
+   ONE VISUAL LANGUAGE, TWO VARIANTS. `compact` and `detailed` differ only in how
+   much they SAY — the rule, the ground, the tile, the saffron code over a dark
+   name and every measurement they share are identical. That is deliberate: the
+   banner drawer, the change-portal side sheet and the `/portals` directory show
+   the same object, and a reader who learns to recognise it in one place must
+   recognise it in the others.
+
+   THE BORDER AND THE CODE SIT ON DIFFERENT SAFFRON STEPS, AND THAT IS THE WHOLE
+   TRICK. They have different jobs and therefore different thresholds: the border
+   is the card's ONLY boundary, so WCAG 1.4.11 asks 3:1 of it; the code is 16px
+   BOLD text, which is not "large" (large starts at 18.66px bold), so 1.4.3 asks
+   4.5:1. Binding both to one token means the stricter of the two governs both,
+   and the card gets darker than it needs to be.
+
+   Measured on the two grounds this card actually sits on — its own white
+   interior, and the pale saffron drawer behind it:
+
+       step                       white   peach   border 3:1   code 4.5:1
+       400  #ff671f  (reference)   2.91    2.66      FAIL        FAIL
+       500  #e1560f  BORDER        3.79    3.46      pass        fail
+       600  #c34700  CODE          4.97    4.54      pass        pass
+       700  #a43a00  (was both)    6.60    6.02      pass        pass
+
+   THE FIGMA REFERENCE USES 400 FOR BOTH and cannot be copied: at 2.91:1 its
+   border fails non-text contrast and its code fails text contrast. 500/600 is
+   the lightest pair that clears both — two steps lighter on the border and one
+   on the code than the single 700 this used to carry, which is the visible
+   difference asked for, without the failure that came with it.
+   ============================================================================ */
+
+@layer components {
+  /*
+    NO RESTING SHADOW. The card already has a 1px saffron rule doing the
+    separating; a shadow underneath it is a SECOND boundary treatment for one
+    edge, and the handoff reference carries none either — it puts a shadow on the
+    SELECTED state only.
+
+    The deeper reason is hierarchy: if every card is elevated, elevation says
+    nothing. Reserving it for hover and for selected buys two states a signal they
+    could not otherwise have, and costs the resting state nothing — it is still
+    perfectly separated from the peach behind it by its own border. Press then
+    removes the shadow entirely, so the card reads as going DOWN rather than
+    merely shrinking.
+  */
+  .ds-portal-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+    padding: var(--sa-padding-16);
+    width: 100%;
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-color-secondaryScale-500);
+    border-radius: var(--sa-shape-20);
+    text-decoration: none;
+    color: var(--sa-color-text-default);
+    transition:
+      transform var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      box-shadow var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      border-color var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+    outline: none;
+  }
+
+  /* Card height is component geometry, not a spacing step. The compact card has a
+     floor so a one-line name and a two-line name sit in the same grid without the
+     row height jumping; the detailed card has none, because its description is
+     the thing that varies and capping it would clip real content. */
+  /*
+    CONTENT STARTS AT THE TOP, IT IS NOT CENTRED IN THE CARD.
+
+    Grid rows stretch every card to the tallest in the row. Centring the content
+    inside that stretched box put each card's mark at a different height — a row
+    whose first card had a three-line name showed its logo 8px above its three
+    neighbours, which is exactly the misalignment `align-items` on the head row
+    was meant to fix and could not, because the offset was one level up.
+
+    `min-height` stays: it keeps a row of one-line cards from looking cramped. The
+    slack now falls at the BOTTOM of the card, below the text, where a ragged edge
+    is normal — rather than being split above and below the mark, where it is not.
+  */
+  .ds-portal-card--compact {
+    justify-content: flex-start;
+  }
+
+  /*
+    THE NAME RESERVES TWO LINES, AND THAT IS WHAT MAKES THE TILES IDENTICAL.
+
+    The card used to carry `min-height: 96px` instead. That floored the CARD but
+    not its CONTENT, so the slack landed below the text in different amounts
+    depending on the name: a one-line card sat in a 96px box needing 82 and
+    showed 29px under its last line, while a two-line card in the same row showed
+    17px. Two adjacent tiles with visibly different bottom margins read as a
+    defect, and it was reported as one.
+
+    Reserving two lines on the NAME moves the decision to the thing that actually
+    varies. Every compact tile is now 98px with 16px under its text, whether the
+    name runs to one line or two — and a three-line name still grows, because
+    this is a floor and not a cap.
+
+    It does NOT replace grid row-stretch, and it should not: a row whose partner
+    genuinely runs to three lines will still stretch its neighbour, which is the
+    grid doing its job rather than a bug.
+  */
+  .ds-portal-card--compact .ds-portal-card__name {
+    min-height: calc(2 * var(--sa-type-body-2-lh));
+  }
+
+  .ds-portal-card--detailed {
+    padding: var(--sa-padding-20);
+    gap: var(--sa-stack-16);
+  }
+
+  /*
+    HOVER IS GATED, PRESS IS NOT.
+
+    Ungated, `:hover` STICKS on a touchscreen: the card stays lifted with a raised
+    shadow after the tap, until you tap something else. The lift is a pointer
+    affordance and it belongs behind a pointer query.
+
+    The press is the opposite — it is the only feedback a touch reader gets, and
+    it is the one this component was missing entirely. The card is the primary tap
+    target of the whole pattern; the DS Button has had `scale(0.97)` since it
+    shipped and the thing people actually tap had nothing.
+  */
+  @media (hover: hover) and (pointer: fine) {
+    .ds-portal-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--sa-elevation-card);
+    }
+  }
+
+  .ds-portal-card:active {
+    transform: scale(0.985);
+    box-shadow: none;
+  }
+
+  /* The focus ring keeps the DARKER step. A focus indicator owes 3:1 against
+     BOTH the card it surrounds and the page behind it, and it is the one part of
+     this component a keyboard user depends on finding. */
+  .ds-portal-card:focus-visible {
+    outline: 2px solid var(--sa-color-secondaryScale-600);
+    outline-offset: 2px;
+  }
+
+  /*
+    SELECTED — the change-portal side sheet's current entry.
+
+    A HEAVIER RULE PLUS A MARK, never a fill. A tinted card would compete with the
+    saffron code for the same attention and re-open the contrast question the
+    border token was chosen to settle; a 2px rule reads as "this one" without
+    changing anything the reader is trying to read. The green is the same India
+    Green the Explore control uses, so the estate has one "yes" colour.
+
+    The padding compensates for the extra border pixel, so a selected card does
+    not grow by 2px and shove its neighbours in the grid.
+  */
+  /* ds-exempt-start(optical): the `- 1px` is the extra border pixel, subtracted
+     so a selected card's BOX stays identical to an unselected one. There is no
+     token for "one border-width less" and minting one would be a token that means
+     nothing outside this rule. Without it a selected card grows 2px and shoves
+     its neighbours in the grid, which is a layout shift caused by a selection. */
+  .ds-portal-card--selected {
+    border-width: 2px;
+    box-shadow: var(--sa-elevation-card);
+    padding: calc(var(--sa-padding-16) - 1px);
+    /* The reference washes the card from a pale saffron at the top to white —
+       enough to read as chosen, nowhere near enough to fight the code for
+       attention. Both stops are tokens; neither changes the ink's ground at the
+       point the text sits, which stays effectively white. */
+    background-image: linear-gradient(
+      180deg,
+      var(--sa-color-brand-saffronLight) 0%,
+      var(--sa-bg-neutral-base) 60%
+    );
+  }
+
+  .ds-portal-card--detailed.ds-portal-card--selected {
+    padding: calc(var(--sa-padding-20) - 1px);
+  }
+  /* ds-exempt-end */
+
+  /*
+    THE MARK TOP-ALIGNS, IT DOES NOT CENTRE.
+
+    Centred, every mark in a row sits at a different height, because the names
+    below them wrap to one, two or three lines — so a four-across grid showed four
+    logos on four different baselines and read as broken alignment. Top-aligned,
+    they form one line across the row and the ragged edge falls where it belongs:
+    on the text, which is where ragged edges are normal.
+
+    A small optical nudge keeps the 48px tile square with the CODE's cap-height
+    rather than its line box, which is what the eye actually aligns to.
+  */
+  .ds-portal-card__head {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-inline-12);
+    min-width: 0;
+  }
+
+  .ds-portal-card__head > .ds-org-logo {
+    margin-top: var(--sa-stack-2);
+  }
+
+  /* The mark is `OrgLogo` — its tile, its sizes and its asset path all belong to
+     that component. This file must never draw a tile or name a file. */
+
+  .ds-portal-card__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  /* THE CODE IS A STEP LARGER THAN THE NAME. `title-3` and `body-2` both resolve
+     to 14px, so the token names promised a hierarchy the scale does not deliver
+     and the two lines separated on weight and colour alone. The code is what a
+     reader scans for, so it gets the size. */
+  .ds-portal-card__code {
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: 700;
+    color: var(--sa-color-secondaryScale-600);
+    letter-spacing: 0.01em;
+  }
+
+  .ds-portal-card__name {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 500;
+    color: var(--sa-color-text-default);
+  }
+
+  /* INHERITS the name's ink, deliberately. A muted glyph would be an informative
+     icon carrying meaning, so it would owe 3:1 of its own under WCAG 1.4.11 — and
+     the first attempt reached for a `--sa-color-text-subtle` that does not exist,
+     which CSS drops silently. Inheriting is both correct and unbreakable. */
+  .ds-portal-card__external {
+    vertical-align: text-bottom;
+  }
+
+  /* Visually hidden, still announced. `display: none` and `visibility: hidden`
+     both remove it from the accessibility tree, which is the opposite of what
+     this is for. */
+  .ds-portal-card__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Check size is component geometry — it is a mark, not a control, so it owes
+     nothing to the 24px target minimum: the whole card is the target. */
+  .ds-portal-card__check {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-brand-samavesh-green);
+    color: var(--sa-color-text-onPrimary);
+  }
+
+  /* ── detailed only ──────────────────────────────────────────────────────── */
+
+  .ds-portal-card__desc {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-portal-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+    margin-top: auto;
+    padding-top: var(--sa-padding-12);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  /* The category is a LABEL, not a badge. A pill here would read as a status —
+     which is exactly what the retired "Live Portal" / "Under Onboarding" badges
+     did, on a directory where every entry is now live and the badge said nothing. */
+  .ds-portal-card__category {
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-subtle);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-portal-card__cta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    flex-shrink: 0;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: 600;
+    color: var(--sa-color-secondaryScale-600);
+  }
+
+  .ds-portal-card__cta .material-symbols-rounded {
+    transition: transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  .ds-portal-card:hover .ds-portal-card__cta .material-symbols-rounded {
+    transform: translateX(3px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-portal-card,
+    .ds-portal-card__cta .material-symbols-rounded {
+      transition: none;
+    }
+    .ds-portal-card:hover {
+      transform: none;
+    }
+    .ds-portal-card:hover .ds-portal-card__cta .material-symbols-rounded {
+      transform: none;
+    }
+  }
+}

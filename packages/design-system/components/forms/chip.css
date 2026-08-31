@@ -95,6 +95,28 @@
     border-color: var(--sa-border-brand-primary-base);
   }
 
+  /*
+    `tone="success"` — the SELECTED state only, for chips on a surface with no
+    blue in it. The SAMAVESH banner's drawer is saffron and green; a blue
+    selection pill there was a third colour family on a two-family panel.
+    Deep green on the tonal green ground measures well clear of AA.
+  */
+  .ds-chip--selected-success {
+    background-color: var(--sa-color-status-successTonal);
+    color: var(--sa-color-status-successStrong);
+    border-color: var(--sa-color-status-successStrong);
+  }
+
+  .ds-chip--selected-success.ds-chip--interactive:hover,
+  .ds-chip--selected-success.ds-chip--interactive:active {
+    background-color: color-mix(
+      in srgb,
+      var(--sa-color-status-success) 22%,
+      var(--sa-bg-neutral-base)
+    );
+    border-color: var(--sa-color-status-successStrong);
+  }
+
   .ds-chip--selected.ds-chip--interactive:hover {
     background-color: color-mix(
       in srgb,

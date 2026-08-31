@@ -140,6 +140,9 @@ export default function PortalLoginTemplateDocPage(): React.JSX.Element {
                 <section style={sectionStyle}>
                   <h2 id="props" style={h2Style}>Props Reference</h2>
                   <PropsTable props={[
+                    { name: "roleId", type: "string", default: "undefined", description: "Force the active role, overriding the URL and `config.defaultRoleId`. For a caller that already knows who is arriving." },
+                    { name: "onRoleChange", type: "(roleId: string) => void", default: "undefined", description: "Called with the role id whenever the active tab changes." },
+                    { name: "deepLinkRole", type: "boolean", default: "true", description: "Select the role from `?role=` on mount and keep the URL in step as tabs change. The legacy `#role-` hash is read as a fallback so links shared before this existed still work." },
   {
     "name": "roles",
     "type": "PortalRoleTab[]",
@@ -159,6 +162,29 @@ export default function PortalLoginTemplateDocPage(): React.JSX.Element {
     "description": "List of enabled single sign-on providers."
   }
 ]} />
+                </section>
+
+                <section style={sectionStyle}>
+                  <h2 id="deep-link" style={h2Style}>Linking straight to a role tab</h2>
+                  <p style={proseStyle}>
+                    {
+                      "A login page opened from a citizen-facing surface should land on the citizen tab; one opened from an officer directory should land on the officer tab. Build the link with `portalLoginUrl` rather than concatenating \u2014 it is the single place that knows the parameter is called `role`, so a rename cannot leave callers behind."
+                    }
+                  </p>
+                  <CodeBlock>{`import { portalLoginUrl } from "@mosje/design-system";
+
+portalLoginUrl("/portals/scw/login", "officer");
+// "/portals/scw/login?role=officer"
+
+// An existing role is REPLACED, never appended \u2014 ?role=a&role=b is
+// ambiguous and different parsers disagree about which one wins.
+portalLoginUrl("/portals/scw/login?role=citizen", "officer");
+// "/portals/scw/login?role=officer"`}</CodeBlock>
+                  <p style={{ ...proseStyle, marginTop: "var(--sa-stack-16)" }}>
+                    {
+                      "Three behaviours worth knowing. An id matching no role is IGNORED, so a stale link opens the default tab rather than breaking the page. Switching tabs rewrites the URL with `replaceState`, not `pushState` \u2014 a tab is a view of one page, not a place you travelled to, so Back should leave the page rather than undo a tab switch. And the selection happens in an effect AFTER mount, which costs one frame of the default tab: reading `window` during render would make the server and the client disagree, and a hydration mismatch is worse than a flicker."
+                    }
+                  </p>
                 </section>
 
                 <section style={sectionStyle}>

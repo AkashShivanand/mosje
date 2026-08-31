@@ -15,6 +15,30 @@ import type { PortalLoginConfig } from "@mosje/design-system";
  * screen in any portal.) Submitting calls `onSubmit` with a `LoginSubmitPayload`
  * carrying the role, the mode and the credentials.
  *
+ * ### Landing on a specific role tab
+ *
+ * `deepLinkRole` (on by default) selects the role from `?role=<id>` on mount and
+ * keeps the URL in step as the reader switches tabs, so a login opened from a
+ * citizen surface lands on the citizen tab and one opened from an officer
+ * directory lands on the officer tab. Build the link with `portalLoginUrl`
+ * rather than concatenating — it is the one place that knows the parameter is
+ * called `role`. The legacy `#role-<id>` hash is still read as a fallback, so
+ * links shared before this existed keep working.
+ *
+ * `roleId` overrides both the URL and `config.defaultRoleId` for a caller that
+ * already knows who is arriving; `onRoleChange` reports every switch. Set
+ * `deepLinkRole={false}` to opt out entirely — worth doing for a specimen or a
+ * story, where rewriting the page's URL would be surprising.
+ *
+ * Three behaviours that are easy to get wrong, and are deliberate: an id
+ * matching no role is IGNORED so a stale link opens the default tab rather than
+ * breaking; the URL is rewritten with `replaceState` not `pushState`, because a
+ * tab is a view of one page and Back should leave the page rather than undo
+ * three tab switches; and the selection runs in an effect AFTER mount, costing
+ * one frame of the default tab, because reading `window` during render would
+ * make the server and client disagree and a hydration mismatch is worse than a
+ * flicker.
+ *
  * **When to reach for which.** Use this when a portal's login is one of the
  * shapes the handoff already describes — which is most of them, and the reason
  * it exists is that those shapes kept being re-typed per portal. Use
@@ -90,7 +114,14 @@ const eAnudaan: PortalLoginConfig = {
 const meta = {
   title: "Components/PortalLoginTemplate",
   component: PortalLoginTemplate,
-  args: { config: eAnudaan, loading: false, error: null },
+  /*
+   * `deepLinkRole` is OFF for every story. It is on by default in the product,
+   * but in Storybook a story that rewrote the surrounding page's URL on each tab
+   * click would fight the addon's own routing and leave `?role=` on the docs
+   * page. The behaviour is demonstrated in the DeepLinkedRole story below by
+   * passing `roleId` directly, which is the same code path minus the URL write.
+   */
+  args: { config: eAnudaan, loading: false, error: null, deepLinkRole: false },
   argTypes: {
     config: { control: false },
     loading: { control: "boolean" },
@@ -174,5 +205,24 @@ export const SingleRole: Story = {
         </p>
       ),
     },
+  },
+};
+
+/**
+ * **Landing on a specific role tab.**
+ *
+ * In the product this comes from the URL — `/portals/e-anudaan/login?role=ngo`,
+ * built with `portalLoginUrl`. Here it is passed as `roleId`, which is the same
+ * selection path without the URL write, so the story does not rewrite the page's
+ * address on every click.
+ *
+ * Note what is NOT happening: the config's own `defaultRoleId` is being
+ * overridden. That is the point — the tab a reader lands on should follow the
+ * door they came through, not a constant baked into the portal.
+ */
+export const DeepLinkedRole: Story = {
+  args: {
+    roleId: eAnudaan.roles[eAnudaan.roles.length - 1]?.id,
+    onRoleChange: (id: string) => console.info("role ->", id),
   },
 };
