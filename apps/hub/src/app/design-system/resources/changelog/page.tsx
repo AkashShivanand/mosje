@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.84.0",
+    version: "v0.85.0",
     date: "2026-08-31",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THE HALO LOOP WAS PERIODIC BUT NOT SEAMLESS, and the audit had to separate the two. Sampling all three discs at t and t+2s returns byte-identical state, so the loop repeats exactly — that part was already true. But a disc's wrap (scale 1.365 teleporting back to scale 1) was hidden by a claim that turned out to be false on most of the estate: that `scale(1)` is behind the portrait, so a disc reappearing there at 0.48 cannot be seen" },
+      { kind: "Fixed", text: "THE PORTRAIT IS NOT OPAQUE. `PageHero` draws a mark or the State Emblem as `object-contain` on a `bg-white/10` circle — 90% transparent — and only a PHOTOGRAPH gets `object-cover` and fills it. All 23 root organisation pages take the transparent path because none carries a featured photograph. Measured on Dr. Ambedkar Foundation: the innermost disc sits at edge 171.8 at full opacity against a portrait radius of 170, plainly visible through the circle. A fresh disc appeared there instantly every two seconds — a 13-point step in composite alpha, behind the emblem, on a government landing page" },
+      { kind: "Changed", text: "THE LOOP IS NOW A CROSSFADE. A disc is born at opacity 0 and dies at opacity 0, and — the part that matters — the fade-in and fade-out are EXACT COMPLEMENTS OFFSET BY THE STAGGER: both run over 30% of the cycle (in at 3.33→33.33%, out at 70→100%) and the discs are two thirds of a cycle apart, so the one fading in and the one fading out are always in their fade at the same time with slopes that cancel. A(p) + C(p+⅔) = 0.48 for every p. The dying disc hands its opacity to the newborn exactly" },
+      { kind: "Changed", text: "MEASURED AFTER THE CHANGE: total ink across the loop is 0.9600 → 0.9601, constant to four decimals; the composite behind the portrait went from a 13-point INSTANT step to a smooth 0.6997 → 0.7296 ripple with a largest frame-to-frame change of 0.0041; speed is unchanged at 0.0608/s with a spread of 0.0024 across fourteen intervals; and the state at t still equals the state at t+2s. The residual ripple is the non-linearity of alpha compositing — `1 − ∏(1 − a)` is not linear, so a constant SUM is not a constant COMPOSITE — and at 0.0041 it is imperceptible and, crucially, continuous" },
+      { kind: "Changed", text: "FIXED IN THE ANIMATION, NOT THE PORTRAIT. Making `PageHero`'s circle opaque would have worked for today's markup and broken again the next time a consumer renders something translucent inside the halo. An animation should not depend on what is drawn on top of it" },
+    ],
+  },
+  {
+    version: "v0.84.0",
+    date: "2026-08-31",
     changes: [
       { kind: "Changed", text: "ONE SPEED, START TO FINISH — AND THE DESIGN'S OWN SAMPLES WERE NOT IT. The published states step +64, +48, +40, which is a DECELERATING curve, and the previous pass declared all three as keyframes so linear interpolation would reproduce it faithfully. Faithful to the drawing, wrong for the motion: each wave lunged away from the portrait and then crawled, so the waves bunched towards the outside and the flow visibly changed pace. Water does not do that — a wave leaving a still surface travels at one speed, and every wave travels at the same one" },
       { kind: "Changed", text: "`scale` IS NOW INTERPOLATED LINEARLY ACROSS THE WHOLE CYCLE AND NOWHERE ELSE. Because radius is 170 × scale, a scale linear in time IS a radius linear in time — constant radial velocity. Measured on the running page at 300ms intervals: 0.0606 · 0.0621 · 0.0603 · 0.0604 · 0.0608 · 0.0618 · 0.0605 · 0.0608 · 0.0606 · 0.0608 · 0.0604 · 0.0607 · 0.0620 scale/second — constant at 0.0608, which is exactly 0.365 ÷ 6s. The spread is `setTimeout` jitter in the sampler, not the animation. The three states remain the source for how FAR a disc travels; they are no longer the source for how it gets there" },

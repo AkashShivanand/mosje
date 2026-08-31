@@ -1215,3 +1215,70 @@ rim is thinner than the reference's — 10px on a 340px portrait against 8px on 
 416px one — so ours emerged at ~0.75 and fell to 0.48, a darkening pulse at the
 rim every two seconds. Flat from the start removes it and costs nothing: at
 `scale(1)` the disc is behind the portrait either way.
+
+## 30. Audit: the loop was periodic but not seamless
+
+Asked to audit the halo for seamless looping, and the honest answer had two
+halves.
+
+**Periodic: yes, and provably.** Sampling all three discs at `t` and `t + 2s`
+returns byte-identical state — `182.51@0.48 · 203.19@0.48 · 223.87@0.211`. The
+composite repeats exactly every 2s, which is the stagger period.
+
+**Seamless: no.** A disc's only discontinuity is the wrap — `scale(1.365)`
+teleporting back to `scale(1)`. That was hidden by two claims: opacity is 0 at
+the end (true), and `scale(1)` is behind the portrait so the reappearance at
+0.48 cannot be seen (**false on most of this estate**).
+
+### The portrait is not opaque
+
+`PageHero` draws a mark or the State Emblem as `object-contain p-12` on a
+`bg-white/10` circle — 90% transparent. Only a *photograph* gets `object-cover`
+and fills the circle.
+
+**All 23 root organisation pages take the transparent path**, because none of
+them carries a featured photograph. Measured on Dr. Ambedkar Foundation:
+
+```
+object-fit: contain      portrait background: white / 0.1
+innermost disc edge 171.8 @ 0.48   against a portrait radius of 170
+```
+
+So a fresh disc appeared instantly at full opacity, exactly filling the circle,
+directly behind the emblem — a **13-point step in composite alpha, every two
+seconds**, on a government landing page.
+
+### The fix is a crossfade, not an occlusion
+
+A disc is now born at opacity **0** and dies at opacity **0**, and — the part
+that matters — the fade-in and the fade-out are **exact complements offset by
+the stagger**. Both run over 30% of the cycle (in at 3.33→33.33%, out at
+70→100%), and the discs are two thirds of a cycle apart, so the one fading in
+and the one fading out are always in their fade simultaneously with slopes that
+cancel:
+
+```
+A(p) + C(p + ⅔)  =  0.48·x + 0.48·(1 − x)  =  0.48,  for every p
+```
+
+The dying disc hands its opacity to the newborn exactly.
+
+### Measured after the change
+
+| | before | after |
+| --- | --- | --- |
+| total ink across the loop | stepped at the wrap | **0.9600 → 0.9601** — constant to four decimals |
+| composite behind the portrait | 13-point instant step | **0.6997 → 0.7296**, a smooth ripple |
+| largest frame-to-frame change | a discontinuity | **0.0041** |
+| speed | constant | still constant — 0.0608/s, spread **0.0024** across 14 intervals |
+| state at `t` vs `t + 2s` | identical | still identical |
+
+The residual 3-point ripple is the non-linearity of alpha compositing —
+`1 − ∏(1 − a)` is not linear, so a constant *sum* is not a constant *composite*.
+At a maximum step of 0.0041 it is imperceptible, and it is continuous, which is
+the property that was missing.
+
+**The right place to fix it was the animation, not the portrait.** Making
+`PageHero`'s circle opaque would have worked for today's markup and broken again
+the next time a consumer renders something translucent in the halo. An animation
+should not depend on what is drawn on top of it.

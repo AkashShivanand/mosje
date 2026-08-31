@@ -317,30 +317,64 @@
    * constant radial velocity. The three states remain the source for how FAR a
    * disc goes; they are no longer the source for how it gets there.
    *
-   * ── AND IT IS ALWAYS THERE ──────────────────────────────────────────────────
+   * ── THE LOOP IS A CROSSFADE, AND THAT IS WHAT MAKES IT SEAMLESS ─────────────
    *
-   * Opacity holds FLAT at 0.48 for the first 70% and only then releases. A disc
-   * is therefore a steady presence for almost its whole life rather than an
-   * event with a peak, and the composite of three never thins out: at any
-   * instant the innermost disc sits between scale 1 and 1.122, so the field just
-   * outside the portrait is covered continuously, forever, by construction.
+   * A disc is born at opacity ZERO and dies at opacity ZERO, so the instant it
+   * wraps — `scale(1.365)` teleporting back to `scale(1)` — it is contributing
+   * nothing and the jump cannot be seen. That is necessary but not sufficient.
    *
-   * The earlier `opacity: 1` at birth is gone with the deceleration. It was the
-   * component's value for a disc still hidden behind the image, but our dark rim
-   * is thinner than the reference's, so ours emerged at ~0.75 and fell to 0.48 —
-   * a darkening pulse at the rim every two seconds. Flat from the start removes
-   * it, and costs nothing: at `scale(1)` the disc is behind the portrait anyway.
+   * The sufficient part: THE FADE-IN AND THE FADE-OUT ARE EXACT COMPLEMENTS,
+   * OFFSET BY THE STAGGER. Both run over 30% of the cycle — in at 3.33→33.33%,
+   * out at 70→100% — and the discs are two thirds of a cycle apart, so the disc
+   * fading in and the disc fading out are always in their fade at the same time,
+   * with slopes that cancel:
    *
-   * BOTH ENDS STAY UNWATCHABLE. Birth happens behind the picture; death happens
-   * at the widest and faintest point, dissolving into a band it already matches.
-   * There is no frame at which a wave can be seen starting or stopping.
+   *     A(p) + C(p + ⅔) = 0.48 · x + 0.48 · (1 − x) = 0.48, for every p
+   *
+   * The dying disc hands its opacity to the newborn exactly. Total ink is
+   * constant, there is no frame where the field gains or loses density, and the
+   * loop has no seam rather than merely hiding one.
+   *
+   * ── WHY THAT MATTERS, MEASURED ──────────────────────────────────────────────
+   *
+   * A disc used to be born at 0.48 outright, on the reasoning that `scale(1)` is
+   * behind the portrait so nobody can see it arrive. That holds only while the
+   * portrait is OPAQUE — and on this estate it usually is not. `PageHero` draws
+   * a mark or the State Emblem as `object-contain` on a `bg-white/10` circle,
+   * which is 90% transparent, and all 23 root organisation pages take that path
+   * because none of them carries a featured photograph. Measured on Dr. Ambedkar
+   * Foundation: the innermost disc sits at edge 171.8 against a portrait radius
+   * of 170, at full opacity, plainly visible through the circle. Every two
+   * seconds a fresh disc appeared there instantly — a 13-point step in composite
+   * alpha, behind the emblem, on a government landing page.
+   *
+   * The crossfade removes it without needing the portrait to be opaque, which is
+   * the right place to fix it: the animation should not depend on what a
+   * consumer happens to render inside the halo.
+   *
+   * ── ALWAYS THERE ────────────────────────────────────────────────────────────
+   *
+   * Opacity holds FLAT at 0.48 from a third of the way out until 70%, so a disc
+   * is a steady presence for the middle of its life rather than an event with a
+   * peak. The composite never thins: at any instant the innermost disc sits
+   * between scale 1 and 1.122, so the field just outside the portrait is covered
+   * continuously, forever, by construction rather than by tuning.
    */
   @keyframes sa-halo-flow {
     0% {
       transform: scale(1);
+      opacity: 0;
+    }
+    /* Every `transform` below is exactly 1 + 0.365 × offset, so the speed is
+       constant across all five stops and none of them is a hinge. */
+    3.33% {
+      transform: scale(1.0122);
+      opacity: 0;
+    }
+    33.33% {
+      transform: scale(1.1217);
       opacity: 0.48;
     }
-    /* 1 + 0.365 × 0.70 — on the line, so the speed does not change here. */
     70% {
       transform: scale(1.2555);
       opacity: 0.48;
