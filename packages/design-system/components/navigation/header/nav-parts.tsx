@@ -444,7 +444,12 @@ export function NavItemLink({ item, open = false, onOpenChange, className }: Nav
         rel={item.external && !item.disabled ? "noreferrer" : undefined}
         aria-expanded={hasMenu ? open : undefined}
         aria-controls={hasMenu && open ? dropId : undefined}
-        aria-current={item.active ? "page" : undefined}
+        /* "page" only when this entry IS a page. An entry that owns a menu carries
+           `href="#"` and is a SECTION — it is active because the reader is somewhere
+           beneath it, not because they are on it. Announcing "current page" there
+           names a destination that does not exist; `true` says "the current one of
+           these", which is what is true. */
+        aria-current={item.active ? (hasMenu ? true : "page") : undefined}
         onClick={(e) => {
           if (hasMenu) {
             e.preventDefault();
