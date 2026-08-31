@@ -586,3 +586,43 @@ decorating the glyph.
 2. There is no emitted **inverse border** token, so a white rule on a brand band
    has nothing correct to bind to. This component uses the inverse *text* token
    for a *border*, which is the right colour bound to the wrong role.
+
+## 16. The hero photograph, and an animated halo
+
+### The picture was ours to take and we had not taken it
+
+§15 gave every landing page a portrait but PM-AJAY still had no photograph, so it
+fell back to its own logo — a small mark stretched into a 300px circle. The source
+site publishes a real hero, `Banner.png`: a composite of the three components — a
+hostel block, Adarsh Gram village works, and skilling. It is mirrored to
+`public/website/images/organisations/banner-pm-ajay.png`, beside the NCSK banner,
+and set as PM-AJAY's `featuredImage`.
+
+### Why the halo animates when almost nothing else on this band should
+
+A header band is seen **once per page**, not a hundred times a day, and the halo
+is the one element on it carrying no information — the portrait is `aria-hidden`
+and the copy says everything the picture does. Rarely-seen decoration is exactly
+where motion is affordable; a keyboard-triggered menu is exactly where it is not.
+
+**It breathes rather than pulses.** A ring that expands and fades to nothing on a
+loop is the visual language of a spinner or a recording dot, and a reader waits
+for those to finish. Two rings easing between `scale(1)` and `scale(1.035)` —
+never disappearing, and offset by 2.4s so they are never in step — read as depth
+instead of as progress.
+
+**Seven seconds, deliberately.** UI motion belongs under 300ms because the user is
+waiting on it. Nobody waits on this, and at UI speed an ambient loop becomes a
+twitch at the edge of vision that pulls attention off the title.
+
+**Everything is a token.** Easing and the entrance duration come from
+`--sa-motion-*`; the ring colour is `color-mix` over `--sa-color-primaryScale-800`
+rather than Figma's raw `#003366`, so the halo rethemes with `data-brand` like the
+gradient behind it.
+
+**And it obeys the rules that matter:** transform and opacity only, so it runs on
+the GPU; CSS rather than JS, so it stays smooth while the page hydrates; the
+entrance starts at `scale(0.96)`, never `scale(0)`; and
+`prefers-reduced-motion: reduce` stops the loop while keeping the rings at their
+resting size — gentler, not absent, because removing them would change the layout
+for the people who asked for less movement.

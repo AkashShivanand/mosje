@@ -308,6 +308,11 @@ const PM_AJAY_SRC = `https://www.dosje.gov.in/organisation/${PM_AJAY}`;
 export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
   [PM_AJAY]: {
     logo: "/website/images/org-logos/pm-ajay.png",
+    // The scheme's own hero photograph, as the source site publishes it — a
+    // composite of the three components: a hostel block, Adarsh Gram village
+    // works, and skilling. Mirrored locally rather than hot-linked from the
+    // source CDN, like the gallery images beside it.
+    featuredImage: "/website/images/organisations/banner-pm-ajay.png",
     lead:
       "PM-AJAY is a flagship scheme of the Ministry of Social Justice & Empowerment dedicated to the socio-economic empowerment of Scheduled Castes. The scheme promotes livelihood opportunities, strengthens village infrastructure, and enhances access to education and residential facilities for sustainable and inclusive development.",
 

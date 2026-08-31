@@ -127,12 +127,35 @@
   }
 
   /*
-   * The halo: two concentric translucent rings behind the portrait, as the
-   * handoff draws it. Pseudo elements rather than two more divs, because they
-   * are decoration and have no business in the accessibility tree.
+   * ── THE HALO ────────────────────────────────────────────────────────────────
+   *
+   * Two concentric translucent rings behind the portrait, as the handoff draws
+   * it, breathing on a slow loop. Pseudo elements rather than two more divs:
+   * they are decoration and have no business in the accessibility tree.
    *
    * The ring colour is the brand's own dark shade rather than Figma's #003366,
    * so the halo rethemes with `data-brand` like everything else on the band.
+   *
+   * ── WHY THIS ONE ANIMATES, WHEN ALMOST NOTHING ELSE HERE SHOULD ─────────────
+   *
+   * A header band is seen once per page, not a hundred times a day, and this is
+   * the one element on it that carries no information — the portrait is
+   * `aria-hidden`, and the copy says everything the picture does. Decoration
+   * that is seen rarely is exactly where motion is affordable.
+   *
+   * It BREATHES rather than pulses outward. A ring that expands and fades to
+   * nothing on a loop is the visual language of a loading spinner or a live
+   * recording dot; a reader would wait for it to finish. Two rings easing
+   * between 1 and 1.035, never disappearing and never in step with each other,
+   * read as depth rather than as progress.
+   *
+   * SLOW, DELIBERATELY. UI motion belongs under 300ms because the user is
+   * waiting on it. Nobody waits on this, and at UI speed an ambient loop becomes
+   * a twitch in the corner of the eye that pulls attention off the title. Seven
+   * seconds is slow enough to be felt rather than watched.
+   *
+   * Transform and opacity only, so it runs on the GPU; CSS rather than JS, so it
+   * keeps running smoothly while the page is still hydrating.
    */
   .sa-siteheader__halo {
     position: relative;
@@ -141,6 +164,8 @@
     flex-shrink: 0;
     width: 300px;
     height: 300px;
+    /* Never from scale(0) — nothing in the world appears out of nothing. */
+    animation: sa-halo-enter var(--sa-motion-emphasis-duration) var(--sa-motion-enter-easing) both;
   }
 
   .sa-siteheader__halo::before,
@@ -153,6 +178,7 @@
       var(--sa-color-primaryScale-800) 48%,
       transparent
     );
+    animation: sa-halo-breathe 7s var(--sa-motion-emphasis-easing) infinite;
   }
 
   .sa-siteheader__halo::before {
@@ -160,15 +186,53 @@
     height: 380px;
   }
 
+  /*
+   * The inner ring runs the same loop a beat behind the outer one. In step they
+   * read as one thick ring changing size; offset, they read as two.
+   */
   .sa-siteheader__halo::after {
     width: 345px;
     height: 345px;
+    animation-delay: -2.4s;
   }
 
-  /* The portrait sits above both rings. */
+  /* The portrait sits above both rings and does not move. */
   .sa-siteheader__halo > * {
     position: relative;
     z-index: 1;
+  }
+
+  @keyframes sa-halo-enter {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+
+  @keyframes sa-halo-breathe {
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: scale(1.035);
+      opacity: 0.82;
+    }
+  }
+
+  /*
+   * Reduced motion means gentler, not none: the rings stay, at their resting
+   * size, and only the entrance fade survives. Removing the halo entirely would
+   * change the layout for the people who asked for less movement, which is a
+   * different thing from what they asked for.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .sa-siteheader__halo,
+    .sa-siteheader__halo::before,
+    .sa-siteheader__halo::after {
+      animation: none;
+    }
   }
 
   .sa-siteheader__overlay {
