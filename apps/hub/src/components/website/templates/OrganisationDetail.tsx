@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   BrandGlyph,
+  DocumentLibrary,
+  type DocumentLibraryItem,
   FactStrip,
   Icon,
   IndiaMap,
@@ -16,7 +18,6 @@ import type {
 import { withAssetBasePath } from "@/lib/website/content";
 import { trimRedundantOpening } from "@/lib/website/organisation-prose";
 import { OrganisationIndex } from "./OrganisationIndex";
-import { OrgLibrary, type LibraryItem } from "@/components/website/OrgLibrary";
 import "./organisation-detail.css";
 
 /**
@@ -121,6 +122,21 @@ function matchDocuments(
  * Rendering them from two card definitions is how the two drift a card's padding
  * apart on one page.
  */
+/*
+ * Chip order for the library band, most-wanted first. Guidelines lead because
+ * they are the document every other file on the shelf assumes you have read;
+ * manuals trail because you go looking for one already knowing it exists.
+ * Groups absent from a given organisation's items simply do not render.
+ */
+const LIBRARY_GROUP_ORDER = [
+  "Guidelines",
+  "Circulars",
+  "Formats",
+  "Presentations",
+  "Manuals & guides",
+  "Reports",
+];
+
 /** A destination that leaves this site, and therefore opens in a new tab. */
 const isHttp = (href: string) => /^https?:\/\//.test(href);
 
@@ -546,9 +562,9 @@ export function OrganisationDetail({
    * content, and the two ingest pulls take the name of what they are. Nothing
    * here guesses a category from a file extension.
    */
-  const libraryItems: LibraryItem[] = [
+  const libraryItems: DocumentLibraryItem[] = [
     ...circulars.map((d) => ({
-      key: `circular-${d.slug}`,
+      id: `circular-${d.slug}`,
       group: "Circulars",
       meta: formatDate(d.date),
       title: d.title,
@@ -557,7 +573,7 @@ export function OrganisationDetail({
       external: isHttp(d.fileUrl ?? d.sourceUrl),
     })),
     ...resources.map((d) => ({
-      key: `resource-${d.slug}`,
+      id: `resource-${d.slug}`,
       group: "Formats",
       meta: formatDate(d.date),
       title: d.title,
@@ -567,7 +583,7 @@ export function OrganisationDetail({
     })),
     ...(detail?.downloads?.groups ?? []).flatMap((g) =>
       g.items.map((f) => ({
-        key: `download-${f.href}-${f.label}`,
+        id: `download-${f.href}-${f.label}`,
         group: f.group ?? "Formats",
         meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
         title: f.label,
@@ -591,12 +607,20 @@ export function OrganisationDetail({
             description={lib?.description}
             headingId="documents-downloads-heading"
           />
-          <OrgLibrary
+          <DocumentLibrary
             items={libraryItems}
-            viewAllHref={
-              lib?.groups?.[0]?.viewAllHref ??
-              detail?.circulars?.viewAllHref ??
-              "/website/publications"
+            groupOrder={LIBRARY_GROUP_ORDER}
+            viewAllSlot={
+              <Link
+                href={
+                  lib?.groups?.[0]?.viewAllHref ??
+                  detail?.circulars?.viewAllHref ??
+                  "/website/publications"
+                }
+                className={buttonClasses("primary", "outlined", "sm")}
+              >
+                View all documents
+              </Link>
             }
           />
         </>

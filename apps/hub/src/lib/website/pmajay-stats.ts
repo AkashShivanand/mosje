@@ -681,8 +681,8 @@ export interface HostelCounts {
  */
 export const HOSTEL_FALLBACK: HostelCounts = {
   completed_hostels: 0,
-  beneficiaries_covered: 230977,
-  beneficiaries_occupied: 125485,
+  beneficiaries_covered: 157708,
+  beneficiaries_occupied: 89776,
 };
 
 /**
@@ -693,7 +693,7 @@ export const HOSTEL_FALLBACK: HostelCounts = {
  * exists to avoid making. So this figure is DERIVED and its derivation is
  * stated, rather than picked:
  *
- *   230,977 places covered ÷ 100 seats a hostel ≈ 2,310
+ *   157,708 places covered ÷ 100 seats a hostel ≈ 1,577
  *
  * 100 seats is an indicative institutional hostel; it is a modelling
  * assumption, not a published norm, which is why the figure never appears
@@ -702,5 +702,5 @@ export const HOSTEL_FALLBACK: HostelCounts = {
  */
 export const HOSTEL_FALLBACK_ILLUSTRATIVE: HostelCounts = {
   ...HOSTEL_FALLBACK,
-  completed_hostels: 2310,
+  completed_hostels: 1577,
 };

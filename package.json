@@ -68,7 +68,8 @@
     "check:search-index": "node scripts/build-search-index.mjs --check",
     "build:search-index": "node scripts/build-search-index.mjs",
     "check:chart-slots": "node tools/chart-slot-order/check.mjs",
-    "check:org-anchors": "node tools/org-anchors/check.mjs"
+    "check:org-anchors": "node tools/org-anchors/check.mjs",
+    "check:feed-drift": "node tools/feed-drift/check.mjs"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",

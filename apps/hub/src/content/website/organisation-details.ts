@@ -466,6 +466,26 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           heading: "Documents & downloads",
           viewAllHref: "/website/forms-templates",
           items: [
+            // The scheme's own guidelines lead the shelf. They are the document a
+            // reader is most often after and the one every other file here
+            // assumes you have read, so they sit first and under their own chip
+            // rather than being filed among the formats.
+            {
+              label: "PM-AJAY operational guidelines",
+              officialName: "Guidelines of Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY)",
+              meta: "The scheme's governing document",
+              href: "/website/documents/sample/acts-rules-sample.pdf",
+              kind: "pdf",
+              group: "Guidelines",
+            },
+            {
+              label: "PM-AJAY guidelines — consolidated advisory",
+              officialName: "PM-AJAY Guidelines",
+              meta: "Advisory · read alongside the operational guidelines",
+              href: "/website/documents/sample/advisory-sop-sample.pdf",
+              kind: "pdf",
+              group: "Guidelines",
+            },
             {
               label: "Utilization certificate format (GFR 12-C)",
               officialName: "Utilization Certificate",

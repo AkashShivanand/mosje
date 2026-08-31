@@ -358,3 +358,56 @@ Advisory, Acts and Rules, Circulars, Rules of Procedure, and NCSC's Annual
 Reports. Those are other organisations' content and are recorded as a baseline
 rather than guessed at; the gate fails on anything new, and on any baseline entry
 that starts resolving. **The list only ever shrinks.**
+
+## 11. Guidelines on the shelf · the drift's real cause · the library in the DS
+
+### The guidelines document, placed
+
+Two guidelines files now lead the library under their own chip, first in the
+order: they are the document every other file on that shelf assumes you have
+read. The sub-page keeps its table; the shelf is where a reader looking for "the
+rules" actually arrives.
+
+### The drift had a cause, and it was not the panel
+
+The panel was the *symptom*. The cause is that **`PMAJAY_AS_ON` is a hand-typed
+date that nothing verifies.** It can be bumped while the figures beneath it are
+not re-captured, and the file then asserts a freshness it does not have. That is
+how the hostel snapshot came to hold 2,30,977 / 1,25,485 under a date of
+28 August 2026 while the feed answered 1,57,708 / 89,776.
+
+The snapshot is refreshed to what the feed says today, and the illustrative
+`completed_hostels` re-derived from it (1,57,708 ÷ 100 ≈ **1,577**, was 2,310).
+
+**Two other snapshots were deliberately left alone**, and that is the important
+part. `GIA_ALL_PHYSICAL_FALLBACK` and the gender feed answer **0 for every field
+of every year** — a degraded endpoint, not a department that approved nothing.
+Copying those zeros over a good snapshot would have destroyed real data in the
+name of being "in sync". Adarsh Gram differs on nine fields, three of them zeros
+of the same kind.
+
+So: **snapshot and feed are not supposed to be equal.** A fallback that tracks
+live is not a fallback. What they must be is *honest* — the numbers the feed gave
+on the date the file claims — and no figure from either may appear as plain prose
+with no provenance and no response to the data-mode switch.
+
+`tools/feed-drift/check.mjs` (`npm run check:feed-drift`) reports the comparison
+field by field and names the all-zero feeds as degraded. It is a **report, not a
+gate**, and deliberately outside `npm run check`: a ministry API being slow is not
+a reason to fail a build, and drift is a judgement a human makes.
+
+### The library is now a design-system component
+
+`DocumentLibrary` lives in `packages/design-system/components/data-display/`,
+exports from the barrel, and has a Storybook entry covering the long-title clamp,
+the single-group case, the empty state and a renamed noun. The hub keeps only the
+mapping from its own content shapes into `DocumentLibraryItem[]`.
+
+**One design decision the move forced.** The first cut took `linkAs` — pass
+`next/link` — copying `SiteFooter`. That crashed every organisation route:
+*"Functions cannot be passed directly to Client Components"*. A server page
+cannot hand a component function across the RSC boundary, and this component is
+`"use client"` because filtering is its whole purpose. So the footer control is a
+**slot** (`viewAllSlot`), which is an element and crosses fine, and the cards are
+plain `<a>` — correct anyway, since every one resolves to a file or another site
+and client-side routing buys a PDF download nothing.

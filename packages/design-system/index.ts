@@ -199,6 +199,11 @@ export type { ToastVariant } from "./components/feedback/toast";
 export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/data-display/card";
 export { Avatar } from "./components/data-display/avatar";
 export { FactStrip } from "./components/data-display/fact-strip";
+export { DocumentLibrary } from "./components/data-display/document-library";
+export type {
+  DocumentLibraryProps,
+  DocumentLibraryItem,
+} from "./components/data-display/document-library";
 export type { FactStripProps, FactStripItem } from "./components/data-display/fact-strip";
 
 export { MetricCard } from "./components/data-display/metric-card";
