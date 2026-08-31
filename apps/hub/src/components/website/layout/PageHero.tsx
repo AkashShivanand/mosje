@@ -175,7 +175,14 @@ export function PageHero({
         }
         media={
           portrait ? (
-            <span className="relative block size-[300px] overflow-hidden rounded-full border-4 border-white/40 bg-white/10 shadow-2xl">
+            /*
+             * 340px. The handoff's portrait is 385 inside a 489 plaque; at the
+             * estate's 1320 cap the trailing column is ~416, so the picture takes
+             * 340 and its rings bleed past the column into the band — which is
+             * what the frame does too, clipping the outermost ring at the right
+             * edge. The band already carries `overflow: clip` for exactly this.
+             */
+            <span className="relative block size-[340px] overflow-hidden rounded-full bg-white/10">
               <Image
                 src={portrait}
                 alt=""

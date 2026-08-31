@@ -135,89 +135,90 @@
     margin-block-start: var(--sa-stack-12);
   }
 
+  /*
+   * The halo is wider than its column — 340 of picture plus 72 of rings on each
+   * side — and that is deliberate: the frame lets the outermost ring run off the
+   * right edge. `overflow: visible` lets it, and the band's own `overflow: clip`
+   * stops it escaping the page.
+   */
   .sa-siteheader__media {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     min-width: 0;
+    overflow: visible;
   }
 
   /*
    * ── THE HALO ────────────────────────────────────────────────────────────────
    *
-   * Two concentric translucent rings behind the portrait, as the handoff draws
-   * it, breathing on a slow loop. Pseudo elements rather than two more divs:
-   * they are decoration and have no business in the accessibility tree.
+   * A portrait inside three concentric rings, with two more rippling outward
+   * through them. The handoff draws the static plaque; the ripple is ours.
    *
-   * The ring colour is the brand's own dark shade rather than Figma's #003366,
-   * so the halo rethemes with `data-brand` like everything else on the band.
+   * THE STATIC RINGS ARE ONE `box-shadow`, NOT THREE ELEMENTS. Three spreads on
+   * one shadow give three perfectly concentric rings that can never drift out of
+   * register, cost no extra DOM, and stay out of the accessibility tree. Each
+   * step is lighter and more transparent than the one inside it, so the plaque
+   * reads as depth receding into the band rather than as three drawn outlines.
    *
-   * ── WHY THIS ONE ANIMATES, WHEN ALMOST NOTHING ELSE HERE SHOULD ─────────────
-   *
-   * A header band is seen once per page, not a hundred times a day, and this is
-   * the one element on it that carries no information — the portrait is
-   * `aria-hidden`, and the copy says everything the picture does. Decoration
-   * that is seen rarely is exactly where motion is affordable.
-   *
-   * IT PULSES OUTWARD. Rings grow from just outside the portrait and dissipate,
-   * the way a ripple leaves a stone.
-   *
-   * The risk with an outward pulse is that it reads as a spinner — something the
-   * reader waits on. Three things keep it decorative: it is slow (4.5s, where a
-   * spinner is under 1s), it is faint (it starts at 45% and never reaches full
-   * strength), and the two rings are half a cycle apart so there is always one
-   * dissipating and one arriving rather than a single repeating "tick".
-   *
-   * SLOW, DELIBERATELY. UI motion belongs under 300ms because the user is
-   * waiting on it. Nobody waits on this, and at UI speed an ambient loop becomes
-   * a twitch in the corner of the eye that pulls attention off the title. Seven
-   * seconds is slow enough to be felt rather than watched.
-   *
-   * Transform and opacity only, so it runs on the GPU; CSS rather than JS, so it
-   * keeps running smoothly while the page is still hydrating.
+   * THE INNERMOST RING IS THE DARKEST THING ON THE BAND. It is what separates a
+   * photograph from a blue gradient — without it the picture bleeds into the
+   * background at its lower edge, where the band is darkest.
    */
   .sa-siteheader__halo {
     position: relative;
     display: grid;
     place-items: center;
     flex-shrink: 0;
-    width: 300px;
-    height: 300px;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 10px color-mix(in srgb, var(--sa-color-primaryScale-900) 88%, transparent),
+      0 0 0 40px color-mix(in srgb, var(--sa-color-primaryScale-800) 46%, transparent),
+      0 0 0 72px color-mix(in srgb, var(--sa-color-primaryScale-800) 24%, transparent);
     /* Never from scale(0) — nothing in the world appears out of nothing. */
     animation: sa-halo-enter var(--sa-motion-emphasis-duration) var(--sa-motion-enter-easing) both;
   }
 
+  /*
+   * ── WHY THIS ANIMATES AT ALL ────────────────────────────────────────────────
+   *
+   * A header band is seen once per page, not a hundred times a day, and the halo
+   * is the one element on it carrying no information — the portrait is
+   * `aria-hidden` and the copy says everything the picture does. Rarely-seen
+   * decoration is exactly where motion is affordable.
+   *
+   * TWO PSEUDO ELEMENTS, FOUR RIPPLES. Each carries two rings of its own through
+   * a second `box-shadow`, and the pair runs half a cycle apart. One layer was
+   * too quiet to read as motion at all; four, staggered, means there is always a
+   * ring mid-flight and the band never looks frozen.
+   *
+   * The risk with an outward pulse is that it reads as a spinner — something a
+   * reader waits on. Three things keep it decorative: it is slow (5s, where a
+   * spinner is under one), it never reaches full strength, and it dissolves
+   * before it stops growing rather than snapping off at the end.
+   */
   .sa-siteheader__halo::before,
   .sa-siteheader__halo::after {
     content: "";
     position: absolute;
+    inset: 0;
     border-radius: 50%;
-    background-color: color-mix(
-      in srgb,
-      var(--sa-color-primaryScale-800) 48%,
-      transparent
-    );
-    /* ease-out: the ring is LEAVING, and an exit that starts fast then settles
-       reads as a ripple. ease-in would hold still and then lunge. */
-    animation: sa-halo-pulse 4.5s var(--sa-motion-enter-easing) infinite;
+    box-shadow:
+      0 0 0 24px color-mix(in srgb, var(--sa-color-primaryScale-900) 55%, transparent),
+      0 0 0 64px color-mix(in srgb, var(--sa-color-primaryScale-800) 30%, transparent);
+    /* ease-out: the rings are LEAVING, and an exit that starts fast then settles
+       reads as a ripple. ease-in would hold still, then lunge. */
+    animation: sa-halo-pulse 5s var(--sa-motion-enter-easing) infinite;
   }
 
-  /* Both rings share one resting size; the animation is what separates them. */
-  .sa-siteheader__halo::before,
+  /* Half a cycle behind, so one pair is always arriving as the other leaves. */
   .sa-siteheader__halo::after {
-    width: 320px;
-    height: 320px;
+    animation-delay: -2.5s;
   }
 
-  /*
-   * Exactly half a cycle behind, so one ring is always arriving as the other
-   * dissipates. In step they would read as a single repeating tick.
-   */
-  .sa-siteheader__halo::after {
-    animation-delay: -2.25s;
-  }
-
-  /* The portrait sits above both rings and does not move. */
+  /* The portrait sits above every ring and does not move. */
   .sa-siteheader__halo > * {
     position: relative;
     z-index: 1;
@@ -231,32 +232,36 @@
   }
 
   /*
-   * Starts at 0.92 — just inside the portrait's edge — never at 0. Nothing in
-   * the world appears out of nothing, and a ring born at zero reads as a glitch.
-   * It fades out before it stops growing, so it dissolves rather than snapping.
+   * Starts just inside the photograph's edge, never at 0 — a ring born at zero
+   * reads as a glitch. Fades out before it stops growing, so it dissolves
+   * instead of snapping.
    */
   @keyframes sa-halo-pulse {
     from {
-      transform: scale(0.92);
-      opacity: 0.45;
+      transform: scale(0.94);
+      opacity: 0.55;
     }
     to {
-      transform: scale(1.18);
+      transform: scale(1.34);
       opacity: 0;
     }
   }
 
   /*
-   * Reduced motion means gentler, not none: the rings stay, at their resting
-   * size, and only the entrance fade survives. Removing the halo entirely would
-   * change the layout for the people who asked for less movement, which is a
-   * different thing from what they asked for.
+   * Reduced motion means gentler, not none: the plaque and its three static
+   * rings stay exactly as they are, and only the ripple stops. Removing the halo
+   * would change the layout for people who asked for less movement, which is a
+   * different request from the one they made.
    */
   @media (prefers-reduced-motion: reduce) {
-    .sa-siteheader__halo,
+    .sa-siteheader__halo {
+      animation: none;
+    }
+
     .sa-siteheader__halo::before,
     .sa-siteheader__halo::after {
       animation: none;
+      opacity: 0;
     }
   }
 

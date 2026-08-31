@@ -648,3 +648,38 @@ edge, reserve room for it.* `overlay` remains the right slot for anything new �
 this exists because the organisation template already drew its own card and pulls
 it up itself, and the honest fix was to tell the band rather than to move the
 card.
+
+## 18. The halo, rebuilt
+
+The first cut had **no static rings at all** — only one faint pulsing pair, too
+quiet to read as motion, over a portrait 45 points smaller than the frame's.
+
+| | Was | Now |
+|---|---|---|
+| Portrait | 300px | **340px** (frame: 385 in a 489 plaque; at the estate's 1320 cap the trailing column is ~416, so the picture takes 340 and its rings bleed past it) |
+| Static rings | **none** | **Three**, one `box-shadow` with three spreads: 10px at 88%, 40px at 46%, 72px at 24% |
+| Outline | a 4px white border | The **darkest thing on the band** — `primaryScale-900` at 88% |
+| Ripple | 2 layers, 1 ring each | **4 layers**, 2 rings each on two pseudo-elements, half a cycle apart |
+
+**Three spreads on one shadow, not three elements.** They can never drift out of
+register, cost no extra DOM, and stay out of the accessibility tree. Each step is
+lighter and more transparent than the one inside it, so the plaque reads as depth
+receding into the band rather than as three drawn outlines.
+
+**The dark inner ring is load-bearing, not decoration.** It is what separates a
+photograph from a blue gradient; without it the picture bleeds into the
+background at its lower edge, where the band is darkest. The white border it
+replaces was doing that job badly.
+
+**The rings bleed past their column deliberately.** The frame lets the outermost
+ring run off the right edge, so `.sa-siteheader__media` is `overflow: visible`
+and the band's own `overflow: clip` stops it escaping the page.
+
+**Still under the same motion rules:** transform and opacity only; CSS not JS;
+`scale(0.94)` not `scale(0)`; ease-out because the rings are leaving; 5s so it
+cannot be mistaken for a spinner; and `prefers-reduced-motion` stops the ripple
+while leaving all three static rings exactly where they are.
+
+Every colour is `color-mix` over `--sa-color-primaryScale-800/900`, so the whole
+plaque rethemes with `data-brand`. Verified on PM-AJAY, NCSK and SMILE — one
+component, same halo, and no organisation now spends a fact slot on the ministry.
