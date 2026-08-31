@@ -22,9 +22,21 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.79.0",
+    version: "v0.80.0",
     date: "2026-08-31",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "EVERY BAND ON EVERY ORGANISATION PAGE WAS THE SAME GREY, and nothing said so. The page wrapper carried `bg/neutral/subtler` — added so the fact card had a surface to lift off — while bands alternate by tinting only the EVEN ones and leaving the odd ones transparent. A transparent band over a grey wrapper is a grey band, so tinted and untinted measured identically: the alternation the template computes so carefully was still being computed and had nothing left to express. The wrapper is white now, and the card's surface was never the wrapper's job — the strip paints its own grey and the first band is always the tinted one, so the grey runs unbroken underneath it" },
+      { kind: "Fixed", text: "AND `transparent` WAS NOT THE FIX, which cost a second pass. `body` is itself `#eef0f3` across this site, so a transparent wrapper still showed grey and the repair looked like no repair at all. An alternation needs a white the page OWNS, not the absence of a colour" },
+      { kind: "Changed", text: "THE FACT CARD OVERLAPS THE BANNER BY 64, NOT 40 — measured off the handoff rather than judged: the blue band is 572 tall and `Org at a Glance` starts at 508. Forty was the card's own top padding, which looked deliberate and was never measured; at that depth the card rests against the band instead of straddling it. THREE rules carry that one number — the card's pull, the band's reservation and the surface's inset — and a comment in each now names the other two, because moving one alone either paints grey over the band or leaves a strip of banner under the card" },
+      { kind: "Changed", text: "THE HALO PULSES THREE RINGS INSTEAD OF TWO, a third of a period apart rather than a half — the handoff's halo is a photograph plus three rings, one opaque hugging the image and two translucent. They still share ONE track: animating each on its own radius makes one arrive exactly where the next sits at rest, and the edges beat against each other, which is the defect the previous two passes existed to remove" },
+      { kind: "Added", text: "A `sa-siteheader__pulse` SPAN, because an element has only two pseudo-elements and three rings need three boxes. It carries the first ring on itself and the other two on its own ::before and ::after. Purely decorative — the media column is already `aria-hidden` and the span is absolutely positioned, so it adds nothing to layout and nothing to the accessibility tree. Its `z-index: 0` is load-bearing: the halo lifts the portrait to 1, and without it a later sibling would paint over the picture" },
+      { kind: "Changed", text: "THE LOOP SLOWED 5s → 6s AND THE PEAK DIMMED 0.85 → 0.7. Three rings on a 5s loop emit every 1.67s, which reads as a pulse to watch rather than as ambience; and three overlapping rings put half again as much ink on the band as two, so the peak comes down to keep the total weight where it was" },
+    ],
+  },
+  {
+    version: "v0.79.0",
+    date: "2026-08-31",
     changes: [
       { kind: "Changed", text: "THE PAGE HEADER’S HALO NOW MOVES, EXCEPT FOR THE RING THAT HOLDS THE PICTURE. It was three static rings with one ripple leaving the outermost; it is now ONE static ring — the dark inner outline — with two rings travelling out from its edge, half a cycle apart. The innermost stays because it is the only ring doing structural work: it separates a photograph from a blue gradient at the picture’s lower edge, where the band is darkest, and a portrait whose own boundary breathes reads as a rendering fault rather than as motion" },
       { kind: "Fixed", text: "THE OBVIOUS WAY TO ANIMATE RINGS 2 AND 3 REBUILDS THE DEFECT THEY WERE FIXED FOR. Expanded on their OWN radii, ring 2 leaving 40 arrives exactly where ring 3 sits at rest, and the two edges cross and beat — which is the seven-edge collision the previous pass removed. Both rings therefore share ONE track, offset by half the period, so nothing ever coincides. The plaque’s old “denser near, fainter far” gradient survives as a property of travel rather than of three drawn outlines" },

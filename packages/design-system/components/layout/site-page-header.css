@@ -30,16 +30,19 @@
    * The same reservation, for a card this component does NOT render.
    *
    * The estate's organisation template draws the "at a glance" card itself and
-   * pulls it up over the band with `FactStrip --overlap` (−40). The band knew
-   * nothing about that, so the card ate 40 of the 64 points of air the content
-   * had beneath it — on a page with no call-to-action button the standfirst
-   * ended almost against the card's top edge.
+   * pulls it up over the band with `FactStrip --overlap` (−64). The band knew
+   * nothing about that, so the card ate the air the content had beneath it — on
+   * a page with no call-to-action button the standfirst ended almost against the
+   * card's top edge.
    *
-   * Reserving the same 40 the sibling takes back leaves the content its full
+   * Reserving the same 64 the sibling takes back leaves the content its full
    * breathing room and lets the card overlap into padding instead of into text.
+   * The number is the handoff's: `Org at a Glance` starts 64 above the bottom of
+   * the blue band. Change it here, in `.ds-fact-strip--overlap` and in
+   * `.orgd__facts::before` together, or the overlap stops being one measurement.
    */
   .sa-siteheader__band--reserved {
-    padding-block-end: var(--sa-stack-40);
+    padding-block-end: var(--sa-stack-64);
   }
 
   /*
@@ -178,48 +181,65 @@
   }
 
   /*
-   * ── TWO RINGS, ONE TRACK ────────────────────────────────────────────────────
+   * ── THREE RINGS, ONE TRACK ──────────────────────────────────────────────────
    *
-   * BOTH RINGS RUN THE SAME PATH, HALF A CYCLE APART. That is the whole design,
-   * and it is a correction of two earlier attempts.
+   * ALL THREE RUN THE SAME PATH, A THIRD OF A CYCLE APART. That is the whole
+   * design, and it is a correction of three earlier attempts.
    *
    * The first drew three static rings AND four sweeping ones through them —
    * seven edges in the same 484px, so a reader could not tell which circles were
-   * the object. The obvious repair was one ripple leaving a static plaque, which
-   * was coherent but is not what was asked for here.
+   * the object. The second reduced that to one ripple leaving a static plaque:
+   * coherent, but the brief is that the outer rings move.
    *
-   * The trap in "animate rings 2 and 3" is animating them ON THEIR OWN RADII:
-   * ring 2 expanding from 40 arrives exactly where ring 3 sits at rest, and the
-   * two edges cross and beat against each other — the original defect, rebuilt.
+   * The trap in "animate the outer rings" is animating them ON THEIR OWN RADII.
+   * A ring expanding from 40 arrives exactly where the ring at 72 sits at rest,
+   * and the two edges cross and beat against each other — the original defect,
+   * rebuilt. So they share ONE track. Each is born on the static ring's outer
+   * edge, brightens as it detaches, and dissolves into the band; the next is a
+   * third of a period behind it. Nothing ever coincides, and the plaque's old
+   * "denser near, fainter far" gradient survives as a property of travel rather
+   * than of three drawn outlines.
    *
-   * So they share ONE track instead. Each is born on the static ring's outer
-   * edge, brightens as it detaches, and dissolves into the band; the second is
-   * offset by half the period, so one is always leaving while the other is
-   * halfway out. Nothing ever coincides, and the plaque's old "denser near,
-   * fainter far" gradient survives — as a property of travel rather than of
-   * three drawn outlines.
+   * THREE BOXES, BECAUSE AN ELEMENT HAS ONLY TWO PSEUDO-ELEMENTS. `__pulse`
+   * carries the first ring on itself and the other two on its own ::before and
+   * ::after — which is why the component renders that span at all.
    *
-   * 5s, so a ring leaves every 2.5s. Two rings on a 4s loop would emit at 0.5Hz,
-   * which reads as a pulse to watch rather than as ambience.
+   * 6s, so a ring leaves every 2s. At 5s three rings emit at 0.6Hz, which reads
+   * as a pulse to watch rather than as ambience; peak opacity drops to 0.7 for
+   * the same reason, since three overlapping rings carry more ink than two.
    */
-  .sa-siteheader__halo::before,
-  .sa-siteheader__halo::after {
+  .sa-siteheader__pulse,
+  .sa-siteheader__pulse::before,
+  .sa-siteheader__pulse::after {
     content: "";
     position: absolute;
-    /* -10 = the static ring's spread, so the travelling ring starts flush
-       against its outer edge and can only ever move away from it. */
+    /* -10 = the static ring's spread, so a travelling ring starts flush against
+       its outer edge and can only ever move away from it. */
     inset: -10px;
     border-radius: 50%;
     box-shadow: 0 0 0 32px color-mix(in srgb, var(--sa-color-primaryScale-800) 52%, transparent);
     /* ease-out: the ring is LEAVING. An exit that starts fast then settles reads
        as a ripple; ease-in would hold still, then lunge. */
-    animation: sa-halo-ripple 5s var(--sa-motion-enter-easing) infinite;
+    animation: sa-halo-ripple 6s var(--sa-motion-enter-easing) infinite;
   }
 
-  /* Negative delay, not positive: the second ring starts already half-travelled
-     on the first frame, so the band is never briefly a bare disc on load. */
-  .sa-siteheader__halo::after {
-    animation-delay: -2.5s;
+  /*
+   * Behind the portrait, not in front of it. `.sa-siteheader__halo > *` lifts
+   * the picture to z-index 1; without this the pulse — a later sibling — would
+   * paint over it.
+   */
+  .sa-siteheader__pulse {
+    z-index: 0;
+  }
+
+  /* Negative delays, not positive: the trailing rings start already part-way out
+     on the very first frame, so the band is never briefly a bare disc on load. */
+  .sa-siteheader__pulse::before {
+    animation-delay: -2s;
+  }
+
+  .sa-siteheader__pulse::after {
+    animation-delay: -4s;
   }
 
   /* The portrait sits above every ring and does not move. */
@@ -246,10 +266,10 @@
    * keyframe hands its segmentation to the interval the opacity stop creates,
    * and the travel then eases twice from a point nobody chose.
    *
-   * 0.85 peak against a 52% ring resolves to ~44% alpha at the plaque's edge —
-   * the weight the old static mid ring carried — decaying through ~24% at the
-   * old outer ring's radius. The plaque's "denser near, fainter far" gradient is
-   * preserved, as a property of travel rather than of three drawn outlines.
+   * 0.7 peak against a 52% ring resolves to ~36% alpha at the plaque's edge,
+   * decaying as it travels. It was 0.85 with two rings; three rings put half
+   * again as much ink on the band at any instant, so the peak comes down to keep
+   * the total weight where it was.
    */
   @keyframes sa-halo-ripple {
     0% {
@@ -258,7 +278,7 @@
     }
     12% {
       transform: scale(1.05);
-      opacity: 0.85;
+      opacity: 0.7;
     }
     100% {
       transform: scale(1.4);
@@ -268,31 +288,40 @@
 
   /*
    * Reduced motion means gentler, not none — and here it means the drawing the
-   * handoff actually published: the two travelling rings stop where they would
-   * have been at rest, restoring the three static concentric rings. Removing the
-   * halo would change the layout for people who asked for less movement, which
-   * is a different request from the one they made.
+   * handoff actually published: the travelling rings stop at the radii the
+   * static mid and outer bands occupied, restoring the three concentric rings.
+   * Removing the halo would change the layout for people who asked for less
+   * movement, which is a different request from the one they made.
+   *
+   * The THIRD ring is hidden rather than parked: the handoff draws three rings
+   * in total, and the third exists only to make the loop read as continuous.
+   * Parking it would add an outline the design does not have.
    */
   @media (prefers-reduced-motion: reduce) {
     .sa-siteheader__halo {
       animation: none;
     }
 
-    .sa-siteheader__halo::before,
-    .sa-siteheader__halo::after {
+    .sa-siteheader__pulse,
+    .sa-siteheader__pulse::before,
+    .sa-siteheader__pulse::after {
       animation: none;
     }
 
     /* The mid band: 10 → 40 out from the portrait. */
-    .sa-siteheader__halo::before {
+    .sa-siteheader__pulse {
       inset: -10px;
       box-shadow: 0 0 0 30px color-mix(in srgb, var(--sa-color-primaryScale-800) 46%, transparent);
     }
 
     /* The outer band: 40 → 72. */
-    .sa-siteheader__halo::after {
+    .sa-siteheader__pulse::before {
       inset: -40px;
       box-shadow: 0 0 0 32px color-mix(in srgb, var(--sa-color-primaryScale-800) 24%, transparent);
+    }
+
+    .sa-siteheader__pulse::after {
+      display: none;
     }
   }
 

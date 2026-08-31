@@ -20,11 +20,24 @@
     box-shadow: var(--sa-elevation-raised);
   }
 
-  /* Straddles the band above. The negative margin is the card's own top padding,
-     so the hero keeps a full section's worth of breathing room above the fold
-     and the card still reads as belonging to it. */
+  /*
+   * Straddles the band above.
+   *
+   * 64, MEASURED FROM THE HANDOFF RATHER THAN CHOSEN. In `Header` (3751:10129)
+   * the blue band is 572 tall and `Org at a Glance` starts at 508 — so 64 of the
+   * card's 164 sits on the blue, a little under two fifths of it. It was 40,
+   * which is the card's own top padding and looked deliberate but was not
+   * measured; at that depth the card reads as resting against the band rather
+   * than straddling it.
+   *
+   * TWO OTHER RULES MUST MOVE WITH THIS ONE, and they are not in this file:
+   * `.sa-siteheader__band--reserved` reserves the same distance so the card
+   * overlaps into padding rather than into the band's own text, and
+   * `.orgd__facts::before` insets the surface below it by the same distance so
+   * the blue shows through. All three are one measurement.
+   */
   .ds-fact-strip--overlap {
-    margin-top: calc(var(--sa-stack-40) * -1);
+    margin-top: calc(var(--sa-stack-64) * -1);
   }
 
   .ds-fact-strip__list {

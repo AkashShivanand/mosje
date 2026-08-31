@@ -442,13 +442,35 @@
   .orgd__facts::before {
     content: "";
     position: absolute;
-    inset: var(--sa-stack-40) 0 0 0;
+    inset: var(--sa-stack-64) 0 0 0;
     z-index: -1;
     background-color: var(--sa-bg-neutral-subtler);
   }
 
+  /*
+   * ── `.orgd` IS NOT TINTED, AND THAT IS THE FIX FOR A SILENT REGRESSION ─────
+   *
+   * It carried `background-color: var(--sa-bg-neutral-subtler)`, added so the
+   * fact card had a surface to lift off. The side effect was total: bands
+   * alternate white/grey by giving only the EVEN ones a tint, and an untinted
+   * band is transparent — so with the wrapper grey, every band rendered
+   * `#eef0f3`. Tinted and untinted measured identically. The alternation the
+   * template computes so carefully was still being computed and had nothing
+   * left to express.
+   *
+   * The card's surface never needed this. `.orgd__facts::before` paints its own
+   * grey, and the first band is always the tinted one, so the grey runs
+   * unbroken from under the card into the section below it — which is the
+   * "surface the card lifts off" the original note was reaching for. The
+   * wrapper only ever had to not be white.
+   *
+   * WHITE, NOT TRANSPARENT — and that distinction cost a second pass. Made
+   * transparent, the bands showed `body`, which is itself `#eef0f3` across this
+   * site, so every band was still grey and the fix looked like no fix at all.
+   * The alternation needs a white the page OWNS, not the absence of a colour.
+   */
   .orgd {
-    background-color: var(--sa-bg-neutral-subtler);
+    background-color: var(--sa-bg-neutral-base);
   }
 
   /* ── Highlights (2x2 About cards) ────────────────────────────────────────── */

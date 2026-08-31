@@ -862,3 +862,74 @@ The bars are shaded from the **same sequential ramp as the map**, floored at
 contradicting the choropleth above them, and the ramp's bottom rung is a
 near-white that drew Maharashtra's 311 as an invisible sliver — under the 3:1
 WCAG 2.2 §1.4.11 floor for a non-text graphic.
+
+## 24. The halo, the overlap, and a regression the alternation hid
+
+Three corrections, all measured against `MoSJE [Handoff]` node `3751:10124`
+(`Ds5qx61QsI0ZkYSrLKxo0A`) rather than judged by eye.
+
+### The overlap was 40. The handoff says 64.
+
+| node | y | height |
+| --- | --- | --- |
+| `Header` (3751:10130) — the blue band | 0 | **572** |
+| `Org at a Glance` (3751:10140) | **508** | 164 |
+
+572 − 508 = **64**. Sixty-four of the card's 164 sits on the blue — a little
+under two fifths of it. It was 40, which is the card's own top padding: it
+looked deliberate but was never measured, and at that depth the card reads as
+resting against the band rather than straddling it.
+
+**Three rules carry that one number** and must move together, or the overlap
+stops being a single measurement:
+
+| rule | file | what it does |
+| --- | --- | --- |
+| `.ds-fact-strip--overlap` | `fact-strip.css` | pulls the card up |
+| `.sa-siteheader__band--reserved` | `site-page-header.css` | reserves the same distance so the card overlaps into padding, not into the standfirst |
+| `.orgd__facts::before` | `organisation-detail.css` | insets the grey surface by the same distance so the blue shows through |
+
+### Three rings, not two
+
+The handoff's halo component (`3751:10133`) is a photograph plus **three**
+rings — one opaque `#036` hugging the image, then two at `rgba(0,51,102,0.48)`.
+The brief is that all three outer rings pulse in a loop, so the implementation
+went from two travelling rings to three, still on one shared track, now a
+**third** of a period apart rather than a half.
+
+**An element has only two pseudo-elements**, which is why `SitePageHeader` now
+renders a `sa-siteheader__pulse` span: it carries the first ring on itself and
+the other two on its own `::before` and `::after`.
+
+The period moved 5s → **6s** so a ring still leaves every 2s rather than every
+1.67s, and the peak opacity 0.85 → **0.7**, because three overlapping rings put
+half again as much ink on the band as two.
+
+The trap remains what it was in §21: animating the rings on their *own* radii
+makes one arrive exactly where the next sits at rest, and the edges beat. One
+track is what prevents that.
+
+### The white/grey band pattern had been gone, silently
+
+`.orgd` carried `background-color: var(--sa-bg-neutral-subtler)`, added so the
+fact card had a surface to lift off. The side effect was total.
+
+Bands alternate by tinting only the **even** ones; an untinted band is
+transparent. With the wrapper grey, an untinted band showed grey — so every band
+on every organisation page rendered `#eef0f3`, tinted and untinted measuring
+identically. The alternation the template computes so carefully was still being
+computed and had nothing left to express.
+
+```
+                       tinted band   untinted band
+before   .orgd grey      #eef0f3        #eef0f3     ← no pattern
+after    .orgd white     #eef0f3        #ffffff
+```
+
+The card's surface never needed it: `.orgd__facts::before` paints its own grey,
+and the first band is always the tinted one, so the grey runs unbroken from
+under the card into the section below.
+
+**`transparent` is not the fix — `body` is itself `#eef0f3` across this site**,
+so a transparent wrapper still showed grey and the repair looked like no repair
+at all. The alternation needs a white the page owns.
