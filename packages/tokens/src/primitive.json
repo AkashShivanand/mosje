@@ -2235,6 +2235,10 @@
       },
       "inOut": {
         "$value": "cubic-bezier(0.4, 0, 0.2, 1)"
+      },
+      "outStrong": {
+        "$value": "cubic-bezier(0.22, 1, 0.36, 1)",
+        "$description": "Exponential ease-out. The built-in decelerate curve is too weak to read as intentional on a large surface: it leaves the gate slowly, which is the exact moment the reader is watching. This leaves fast and settles, so a panel reads as arriving under its own momentum rather than being played back at a fixed rate. Use it for anything the reader opens."
       }
     }
   },

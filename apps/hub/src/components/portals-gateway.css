@@ -30,7 +30,11 @@
   }
 
   .portals-gw__hero-container {
-    max-width: 1280px;
+    /* The estate cap ladder (1200 / 1320 / 1440), not a restated 1280 — which
+       was on no rung of it. `--sa-container-page` re-points itself at 1440 and
+       1920, so this now grows with every other content column instead of
+       standing still. See foundations/layout.css. */
+    max-width: var(--sa-container-page);
     margin-inline: auto;
   }
 
@@ -139,7 +143,11 @@
   /* ── Filter & Search Toolbar ─────────────────────────────────────────────── */
 
   .portals-gw__toolbar {
-    max-width: 1280px;
+    /* The estate cap ladder (1200 / 1320 / 1440), not a restated 1280 — which
+       was on no rung of it. `--sa-container-page` re-points itself at 1440 and
+       1920, so this now grows with every other content column instead of
+       standing still. See foundations/layout.css. */
+    max-width: var(--sa-container-page);
     margin-inline: auto;
     width: 100%;
     padding: var(--sa-padding-24) var(--sa-padding-20) 0;
@@ -298,7 +306,11 @@
   /* ── Portal Grid ─────────────────────────────────────────────────────────── */
 
   .portals-gw__content {
-    max-width: 1280px;
+    /* The estate cap ladder (1200 / 1320 / 1440), not a restated 1280 — which
+       was on no rung of it. `--sa-container-page` re-points itself at 1440 and
+       1920, so this now grows with every other content column instead of
+       standing still. See foundations/layout.css. */
+    max-width: var(--sa-container-page);
     margin-inline: auto;
     width: 100%;
     padding: var(--sa-padding-24) var(--sa-padding-20) var(--sa-padding-48);
@@ -317,6 +329,14 @@
     list-style: none;
     margin: 0;
     padding: 0;
+  }
+
+  /* The <li> stretches and the card fills it, so a two-line description does not
+     leave its neighbour's footer floating half a card higher. `PortalCard` puts
+     `margin-top: auto` on its footer for exactly this — but only if something
+     gives it height to push against. */
+  .portals-gw__grid > li {
+    display: flex;
   }
 
   @media (min-width: 680px) {

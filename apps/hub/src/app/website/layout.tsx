@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 
 import { TranslationProvider } from "@/components/i18n/translation-provider";
+import { resolveSamaveshBannerPlacement } from "@/lib/samavesh-banner/resolve";
+import { SamaveshBannerProvider } from "@/lib/samavesh-banner/context";
 import "./website.css";
 
 export const metadata: Metadata = {
@@ -35,20 +37,24 @@ export const metadata: Metadata = {
  * website.css, which the original applied via `body { @apply bg-background
  * text-foreground }`.
  */
-export default function WebsiteLayout({
+export default async function WebsiteLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const placement = await resolveSamaveshBannerPlacement();
+
   return (
     /* TranslationProvider wraps the whole site, not just the masthead: `lang` and
        `dir` belong on <html>, and a reader who switches language expects it to
        hold as they move between pages. It renders English until something asks
        for a translation, so pages that have not adopted <T> are unaffected. */
     <TranslationProvider>
-      <div data-site="website" className="flex min-h-screen flex-col">
-        {children}
-      </div>
+      <SamaveshBannerProvider placement={placement}>
+        <div data-site="website" className="flex min-h-screen flex-col">
+          {children}
+        </div>
+      </SamaveshBannerProvider>
     </TranslationProvider>
   );
 }

@@ -737,6 +737,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Org Logo — Design System",
+    "section": "Brand",
+    "href": "/design-system/components/brand/org-logo",
+    "keywords": "org logo — design system brand every mark the estate ships figma parity, and what is still missing three sizes, and the fallback implementation &amp; guidelines why one component owns every path code example accessibility component props path org size name src tokens wcag accessibility",
+    "description": "Organisation and scheme marks in the estate",
+    "type": "component",
+    "badge": "New",
+    "iconName": "widgets"
+  },
+  {
     "title": "OtpInput",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/otp-input",
@@ -803,6 +813,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Portal Card — Design System",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/portal-card",
+    "keywords": "portal card — design system navigation interactive specimen implementation &amp; guidelines when to use it, and when not code example accessibility component props code name href logoSrc planned note external tokens wcag accessibility",
+    "description": "One portal in a grid of them — org mark, short code, full name, and a note when the portal is not built yet.",
+    "type": "component",
+    "badge": "New",
+    "iconName": "navigation"
+  },
+  {
     "title": "Portal Login Shell",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/portal-login-shell",
@@ -816,7 +836,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Portal Login Template",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/portal-login-template",
-    "keywords": "portal login template auth & dashboard overview & purpose usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance keyboard navigation  tokens wcag accessibility",
+    "keywords": "portal login template auth & dashboard overview & purpose usage guidelines installation & import props reference linking straight to a role tab code example wcag 2.2 aa & gigw 3.0 compliance keyboard navigation roleId onRoleChange deepLinkRole tokens wcag accessibility",
     "description": "A pre-configured template composing role-based login tabs (Citizen, Officer, State Admin), OTP verification, Captcha validation, and DigiLocker SSO integration.",
     "type": "component",
     "badge": "Stable",
@@ -868,6 +888,16 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Where SAMAVESH is heading — what is shipped now (v0.5), what is coming next (v0.6), and the longer-term plan toward v1.0.",
     "type": "resource",
     "iconName": "menu_book"
+  },
+  {
+    "title": "SAMAVESH Banner — Design System",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/samavesh-banner",
+    "keywords": "samavesh banner — design system navigation interactive specimen implementation & guidelines overview & principles usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance band tones, and why the default fails contrast on purpose component props Senior Citizens Welfare Nasha Mukt Bharat Abhiyaan National Commission for Scheduled Castes National SC Finance & Development Corporation defaultOpen isOpen onToggle portals tone sticky drawerTitle viewAllHref emptyLabel viewAllPrompt viewAllLabel tokens wcag accessibility",
+    "description": "Top identity banner and portal discovery drawer implementing Figma node 7116:33784 & 7298:29968.",
+    "type": "component",
+    "badge": "New",
+    "iconName": "navigation"
   },
   {
     "title": "Scatter Chart",

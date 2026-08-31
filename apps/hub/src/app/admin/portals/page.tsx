@@ -24,6 +24,10 @@ import { readRegistryConfig } from "@/lib/registry/config";
 import { CHATBOT_DEFAULT_ON, readChatbotConfig } from "@/lib/chatbot/config";
 import { demoToolsEnabled, readDemoToolsConfig } from "@/lib/demo-tools/config";
 import { cookieBannerEnabled, readCookieBannerConfig } from "@/lib/cookie-banner/config";
+import {
+  readSamaveshBannerConfig,
+  samaveshBannerPlacement,
+} from "@/lib/samavesh-banner/config";
 import { resetRegistry, saveRegistry } from "./actions";
 import { RegistryForm, type RegistryRow } from "./registry-form";
 
@@ -53,11 +57,12 @@ export default async function AdminPortalsPage({
 
   // Read uncached: this page must show what is stored, not what a cached
   // render decided a few minutes ago.
-  const [config, chatbot, demoTools, cookieBanner] = await Promise.all([
+  const [config, chatbot, demoTools, cookieBanner, samaveshBanner] = await Promise.all([
     readRegistryConfig(),
     readChatbotConfig(),
     readDemoToolsConfig(),
     readCookieBannerConfig(),
+    readSamaveshBannerConfig(),
   ]);
   const byPath = new Map(DEFAULT_APPS.map((entry) => [entry.path, entry]));
 
@@ -151,6 +156,7 @@ export default async function AdminPortalsPage({
             process.env.NEXT_PUBLIC_DEMO_TOOLS,
           )}
           cookieBannerEnabled={cookieBannerEnabled(cookieBanner)}
+          samaveshBannerPlacement={samaveshBannerPlacement(samaveshBanner)}
           saveAction={saveRegistry}
           resetAction={resetRegistry}
           storeConfigured={settingsConfigured()}

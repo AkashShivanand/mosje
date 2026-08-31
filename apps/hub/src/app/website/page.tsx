@@ -25,8 +25,10 @@ export default async function Home() {
   return (
     <>
       <Header />
+      {/* Site-wide chrome, so it sits BETWEEN the header and <main>. Inside <main>
+          its drawer heading is an <h2> that lands above the page's own <h1>. */}
+      <SamaveshBanner />
       <main id="main-content" className="flex-1">
-        <SamaveshBanner />
         <HeroCarousel />
         <AboutUs />
         <Offerings />

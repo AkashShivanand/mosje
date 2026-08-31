@@ -37,6 +37,22 @@ const BP = "/website";
  * The arithmetic and the fallback live in `site-header.tsx` (the overflow
  * measurement) and `header.css` (the condensed bar).
  */
+/** Trailing slashes are noise; "/" is the one path that keeps its own. */
+const norm = (href: string) => (href === "/" ? href : href.replace(/\/+$/, ""));
+
+/** Every destination a nav entry can reach through its menu. */
+function destinations(item: NavItem): string[] {
+  return [
+    ...(item.children ?? []).map((c) => c.href),
+    ...(item.columns ?? []).flatMap((col) => [
+      ...(col.items ?? []).map((o) => o.href),
+      ...(col.links ?? []).map((l) => l.href),
+    ]),
+  ];
+}
+
+const hasMenu = (item: NavItem) => !!(item.children?.length || item.columns?.length);
+
 const NAV: NavItem[] = [
   { label: "Home", href: "/website" },
   {
@@ -102,6 +118,19 @@ const NAV: NavItem[] = [
     href: "#",
     children: [
       { label: "Schemes & Services", href: "/website/schemes-services" },
+      /*
+       * UNDER OFFERINGS, NOT AS AN EIGHTH TOP-LEVEL ITEM. The row has 43px of
+       * slack and an eighth entry needs about 96 — see the capacity note above —
+       * so promoting this would drop the inline nav to the hamburger at 1280.
+       * The directory is a thing the department OFFERS, which is what this menu
+       * already collects, so it belongs here on meaning as well as on space.
+       *
+       * It also closes a real wayfinding hole: /portals was reachable from the
+       * hub root and from error pages, but from nowhere in the website's own
+       * navigation. Until this entry existed, the SAMAVESH banner drawer's
+       * footer link was the ONLY route to it from the website.
+       */
+      { label: "Citizen Portals", href: "/portals" },
       { label: "Vacancies", href: "/website/vacancies" },
       { label: "Tenders", href: "/website/tenders" },
     ],
@@ -172,16 +201,37 @@ export function Header({ hideAdminLogin = false }: HeaderProps = {}) {
      an abbreviation like NCSC would make the row unsearchable in every language
      including its own. The full organisation NAMES are translated, because those
      are the words a reader actually scans. */
+  /** Is this destination the page we are on, or an ancestor of it? */
+  const onPath = (href?: string) => {
+    if (!href || href === "#" || !pathname) return false;
+    const h = norm(href);
+    return pathname === h || pathname.startsWith(`${h}/`);
+  };
+
   const nav: NavItem[] = NAV.map((item) => ({
     ...item,
     label: t(item.label),
-    active: item.href !== "#" && item.href === pathname,
-    children: item.children?.map((c) => ({ ...c, label: t(c.label) })),
+    /**
+     * WHERE YOU ARE, not which link you clicked.
+     *
+     * This was `item.href === pathname`, and every entry that owns a menu carries
+     * `href: "#"` — so no parent could ever be active, and the only page in the
+     * estate that lit anything was /website itself. Open any organisation and the
+     * masthead said nothing about where you were.
+     *
+     * A parent is active when any destination BENEATH it is the current page or an
+     * ancestor of it, so /website/organisation/ncsc/achievements still lights
+     * "Associated Organisations". A leaf like Home matches exactly, because
+     * /website is an ancestor of every page on the site and would otherwise be
+     * permanently lit.
+     */
+    active: hasMenu(item) ? destinations(item).some(onPath) : norm(item.href) === pathname,
+    children: item.children?.map((c) => ({ ...c, label: t(c.label), active: onPath(c.href) })),
     columns: item.columns?.map((col) => ({
       ...col,
       heading: col.heading ? t(col.heading) : col.heading,
-      items: col.items?.map((o) => ({ ...o, name: t(o.name) })),
-      links: col.links?.map((l) => ({ ...l, label: t(l.label) })),
+      items: col.items?.map((o) => ({ ...o, name: t(o.name), active: onPath(o.href) })),
+      links: col.links?.map((l) => ({ ...l, label: t(l.label), active: onPath(l.href) })),
     })),
   }));
 

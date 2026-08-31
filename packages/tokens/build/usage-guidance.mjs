@@ -215,9 +215,11 @@ function groupGuidance(path) {
     return rest[0] === "radius"
       ? "Use for the corner radius of an interactive control — buttons, inputs, selects. One radius keeps controls a family."
       : "Use for the border width of an interactive control.";
-  if (head === "motion" && ["enter", "exit", "emphasis"].includes(rest[0]))
+  if (head === "motion" && ["enter", "exit", "emphasis", "reveal", "press"].includes(rest[0]))
     return rest[0] === "enter" ? `Use for something ARRIVING — the ${rest[1]} half of the pair. Entering decelerates and may take its time.`
       : rest[0] === "exit" ? `Use for something LEAVING — the ${rest[1]} half of the pair. Leaving accelerates and gets out of the way.`
+      : rest[0] === "reveal" ? `Use for a surface the reader DELIBERATELY OPENED — a drawer, a disclosure panel — the ${rest[1]} half of the pair. Slower than a plain enter because it is a large area and the reader is watching it, and on the strong curve so it decelerates into place rather than easing in at a constant rate.`
+      : rest[0] === "press" ? `Use for FEEDBACK — a press, a hover lift, an icon nudge — the ${rest[1]} half of the pair. Short on purpose: past about 200ms a press stops confirming the interface heard you and starts looking like a delay.`
       : `Use for a deliberate, attention-carrying move — the ${rest[1]} half of the pair. Reserve it; everything cannot be emphasis.`;
   if (head === "focus" && (rest[0] === "width" || rest[0] === "offset"))
     return `Use for the focus ring’s ${rest[0]}. The ring’s colour was tokenised long before its geometry, so this was hardcoded — WCAG 2.4.7 governs all three.`;

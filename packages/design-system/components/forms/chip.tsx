@@ -4,10 +4,23 @@ import * as React from "react";
 import { cn } from "../../utils/cn";
 import "./chip.css";
 
+export type ChipTone = "brand" | "success";
+
 export interface ChipProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect"> {
   /** Controlled selected state. When provided the chip behaves as a toggle. */
   selected?: boolean;
+  /**
+   * Which family the SELECTED state paints in. `brand` (the default) is the
+   * estate's blue selection colour and is right almost everywhere.
+   *
+   * `success` exists for chips sitting on a surface that has no blue in it —
+   * the SAMAVESH banner's saffron/green drawer being the case that asked for
+   * it, where a blue pill was a third colour family on a two-family panel.
+   * It changes the SELECTED state only; an unselected chip is identical.
+   * @default "brand"
+   */
+  tone?: ChipTone;
   /** Called with the next selected value when the chip is toggled. */
   onSelectedChange?: (selected: boolean) => void;
   /** Optional icon rendered before the label. */
@@ -34,6 +47,7 @@ export interface ChipProps
 export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
   {
     selected = false,
+    tone = "brand",
     onSelectedChange,
     leadingIcon,
     onDismiss,
@@ -83,6 +97,7 @@ export const Chip = React.forwardRef<HTMLDivElement, ChipProps>(function Chip(
       className={cn(
         "ds-chip",
         selected && "ds-chip--selected",
+        selected && tone !== "brand" && `ds-chip--selected-${tone}`,
         disabled && "ds-chip--disabled",
         interactive && "ds-chip--interactive",
         className,

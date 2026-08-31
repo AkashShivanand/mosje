@@ -19,8 +19,12 @@ export function PageLayout({
   return (
     <>
       <Header />
+      {/* OUTSIDE <main>, deliberately. This is site-wide chrome like the header,
+          and its drawer carries an <h2> — rendered inside <main> that <h2> sits
+          above the page's own <h1>, which reverses the heading order on every
+          inner page the moment a reader opens the drawer. */}
+      {showBanner && <SamaveshBanner />}
       <main id="content" className="flex-1">
-        {showBanner && <SamaveshBanner />}
         <PageHero {...hero} />
         {children}
       </main>

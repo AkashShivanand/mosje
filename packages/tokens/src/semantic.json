@@ -2748,6 +2748,24 @@
       "easing": {
         "$value": "{motion.easing.inOut}"
       }
+    },
+    "reveal": {
+      "$description": "A surface the reader deliberately opened - a drawer, a disclosure panel. Slower than a plain enter because it is a large area and the reader is watching it, and on the strong curve so it decelerates into place instead of easing in at a constant rate.",
+      "duration": {
+        "$value": "{motion.duration.slow}"
+      },
+      "easing": {
+        "$value": "{motion.easing.outStrong}"
+      }
+    },
+    "press": {
+      "$description": "Feedback for a press, a hover lift, or an icon nudge. Short enough to feel like a response rather than an animation: past about 200ms a press stops confirming the interface heard you and starts looking like a delay.",
+      "duration": {
+        "$value": "{motion.duration.fast}"
+      },
+      "easing": {
+        "$value": "{motion.easing.outStrong}"
+      }
     }
   },
   "control": {

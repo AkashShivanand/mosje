@@ -97,12 +97,123 @@ export function matchActivePath(
 }
 
 /** Sub-group labels used by the estate gate, in display order. */
+/**
+ * The estate's ONE portal-filter vocabulary, taken from the SAMAVESH banner
+ * design (Figma 7116:33784). Anything that filters portals — the banner drawer,
+ * the portals explorer, the citizen-portals page — uses these and only these.
+ *
+ * They classify the ORGANISATION TYPE, not the subject matter. That is a real
+ * change from the four function-based names this replaced ("Schemes &
+ * scholarships", "Social defence & welfare", …), and it has a consequence worth
+ * knowing: every portal live today is a scheme portal, so a filter over the LIVE
+ * set currently has one category and therefore renders nothing. That is
+ * deliberate — see `portalCategoriesIn` — and it resolves itself as the
+ * commissions and corporations ship.
+ *
+ * Ordered as the design orders them.
+ */
 export const PORTAL_CATEGORIES = [
-  "Finance & development corporations",
-  "Schemes & scholarships",
-  "Social defence & welfare",
-  "Commissions & boards",
+  "Commission",
+  "Scheme Portals",
+  "Corporations",
+  "Training & Capacity Building",
+  "Foundation & Autonomous Bodies",
 ] as const;
+
+export type PortalCategory = (typeof PORTAL_CATEGORIES)[number];
+
+/**
+ * How each portal PRESENTS TO A CITIZEN: the short code, and the full name under
+ * it, exactly as the design pairs them.
+ *
+ * IT LIVES HERE, BESIDE THE REGISTRY, BECAUSE TWO SURFACES NEED THE SAME ANSWER.
+ * It began inside the SAMAVESH banner, so the banner showed "PM-AJAY / Pradhan
+ * Mantri Anusuchit Jaati Abhyuday Yojana" while the `/portals` directory — with
+ * no access to it — fell back to `deriveAbbr` and the registry's own `name`, and
+ * showed "PM / PM-AJAY" and "EU / E-Utthan Admin". Two directories of the same
+ * portals, disagreeing about what they are called, one of them leaking an
+ * internal admin label to citizens.
+ *
+ * Note what this map does and does not own. The registry owns whether a portal
+ * EXISTS — that is the fact a hand-kept copy got wrong and shipped a 404 with.
+ * This owns only how it READS, because the registry's `name` is an admin label
+ * ("E-Utthan Admin", "Transgender Persons") and its `abbr` a two-letter icon code
+ * ("EU", "TG"), and neither is what a citizen should be shown.
+ *
+ * A portal missing from this map still renders, from its registry name.
+ */
+export const PORTAL_LABELS: Record<string, { short: string; full: string }> = {
+  "/portals/scw": { short: "SCW", full: "Senior Citizens Welfare" },
+  "/portals/tg": {
+    short: "SMILE - Transgender",
+    full: "National Portal for Transgender Persons",
+  },
+  "/portals/nmba": { short: "NMBA", full: "Nasha Mukt Bharat Abhiyaan" },
+  "/portals/pm-ajay": {
+    short: "PM-AJAY",
+    full: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana",
+  },
+  "/portals/smile-admin": { short: "SMILE", full: "Beggary Rehabilitation" },
+  "/portals/e-anudaan": { short: "e-Anudaan", full: "Grant-in-Aid Management" },
+  "/portals/eutthan-admin": { short: "e-Utthaan", full: "Scheme Administration" },
+  "/portals/nhapoa": { short: "SAMBAL", full: "National Action Plan for Older Persons" },
+  "/portals/nos": { short: "NOS", full: "National Overseas Scholarship" },
+};
+
+/**
+ * The portal's description with its own name taken out of it.
+ *
+ * The registry's `desc` is written for the Apps list, where the name is not
+ * always beside it — so several read "MIS dashboard — Pradhan Mantri Anusuchit
+ * Jaati Abhyuday Yojana", which on a card titled "Pradhan Mantri Anusuchit Jaati
+ * Abhyuday Yojana" prints the name twice, six words apart.
+ *
+ * Splits on the em dash and drops any part that restates the title. Returns the
+ * whole thing unchanged when nothing repeats, so a description that was already
+ * written well is never truncated.
+ */
+export function portalSummary(entry: {
+  path: string;
+  name: string;
+  desc?: string;
+}): string | undefined {
+  const desc = entry.desc?.trim();
+  if (!desc) return undefined;
+  const { full, short } = portalLabel(entry);
+  const parts = desc.split("—").map((part) => part.trim()).filter(Boolean);
+  const kept = parts.filter(
+    (part) =>
+      part.toLowerCase() !== full.toLowerCase() &&
+      part.toLowerCase() !== short.toLowerCase(),
+  );
+  return kept.length > 0 ? kept.join(" — ") : desc;
+}
+
+/** How a portal reads to a citizen — the labelled pair, or the registry's own. */
+export function portalLabel(entry: {
+  path: string;
+  name: string;
+  desc?: string;
+}): { short: string; full: string } {
+  const label = PORTAL_LABELS[entry.path];
+  return {
+    short: label?.short ?? entry.name,
+    full: label?.full ?? (entry.desc?.split("—")[0] ?? entry.name).trim(),
+  };
+}
+
+/**
+ * The categories actually represented in a set of entries, in PORTAL_CATEGORIES
+ * order. A filter is only worth showing when this returns more than one — one
+ * chip filters nothing, and "All (8) · Scheme Portals (8)" is two controls that
+ * do the same thing.
+ */
+export function portalCategoriesIn(
+  entries: ReadonlyArray<{ category?: string }>,
+): PortalCategory[] {
+  const present = new Set(entries.map((e) => e.category).filter(Boolean));
+  return PORTAL_CATEGORIES.filter((c) => present.has(c));
+}
 
 /**
  * Default MoSJE estate registry — the single source of truth for the gate and
@@ -130,7 +241,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Concessional loan & skill-development scheme administration",
     org: "National Scheduled Castes Finance & Development Corporation",
     group: "Portals",
-    category: "Finance & development corporations",
+    category: "Corporations",
     status: "planned",
   },
   {
@@ -140,7 +251,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Sanitation-worker loan, rehabilitation & livelihood schemes",
     org: "National Safai Karamcharis Finance & Development Corporation",
     group: "Portals",
-    category: "Finance & development corporations",
+    category: "Corporations",
     status: "planned",
   },
   {
@@ -150,7 +261,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Concessional credit & self-employment scheme administration",
     org: "National Backward Classes Finance & Development Corporation",
     group: "Portals",
-    category: "Finance & development corporations",
+    category: "Corporations",
     status: "planned",
   },
 
@@ -162,7 +273,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "MIS dashboard — Pradhan Mantri Anusuchit Jaati Abhyuday Yojana",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Schemes & scholarships",
+    category: "Scheme Portals",
     status: "live",
   },
   {
@@ -172,7 +283,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Scheme management & monitoring",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Schemes & scholarships",
+    category: "Scheme Portals",
     status: "live",
   },
   {
@@ -182,7 +293,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Grant-in-Aid Management — NGO applications under SHRESHTA, AVYAY, NAPDDR & SMILE through the Programme Division and Integrated Finance Division approval chains",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Schemes & scholarships",
+    category: "Scheme Portals",
     status: "live",
   },
   {
@@ -192,7 +303,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Overseas study scholarship for SC, DNT & landless labourers",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Schemes & scholarships",
+    category: "Scheme Portals",
     status: "planned",
   },
   {
@@ -202,7 +313,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Young Achievers Scholarship — OBC, EBC & DNT",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Schemes & scholarships",
+    category: "Scheme Portals",
     status: "planned",
   },
   {
@@ -212,7 +323,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Pre-matric scholarship for SC & other eligible students",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Schemes & scholarships",
+    category: "Scheme Portals",
     status: "planned",
   },
   {
@@ -222,7 +333,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Post-matric scholarship for Scheduled Caste students",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Schemes & scholarships",
+    category: "Scheme Portals",
     status: "planned",
   },
   {
@@ -232,7 +343,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Top-class education scholarship — OBC, EBC & DNT",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Schemes & scholarships",
+    category: "Scheme Portals",
     status: "planned",
   },
 
@@ -244,7 +355,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Rehabilitation admin portal for persons engaged in begging",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Social defence & welfare",
+    category: "Scheme Portals",
     status: "live",
   },
   {
@@ -254,7 +365,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Drug-free India campaign management",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Social defence & welfare",
+    category: "Scheme Portals",
     status: "live",
   },
   {
@@ -264,7 +375,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "National Helpline Against Atrocities (formerly NHAA) — grievance redressal, rescue & relief under the PoA Act",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Social defence & welfare",
+    category: "Scheme Portals",
     status: "live",
   },
   {
@@ -274,7 +385,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "National Portal for Transgender Persons — certificate/ID application, review workflow & welfare access",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Social defence & welfare",
+    category: "Scheme Portals",
     status: "live",
   },
   {
@@ -288,7 +399,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Senior-citizen services — JEEVAN, ARJUN, SHATAYU, SAGE registration, volunteering & the service directory",
     org: "Ministry of Social Justice & Empowerment",
     group: "Portals",
-    category: "Social defence & welfare",
+    category: "Scheme Portals",
     status: "live",
   },
   {
@@ -298,7 +409,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Training, capacity-building & programme administration",
     org: "National Institute of Social Defence",
     group: "Portals",
-    category: "Social defence & welfare",
+    category: "Training & Capacity Building",
     status: "planned",
   },
 
@@ -310,7 +421,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Grievance & workflow portal",
     org: "National Commission for Scheduled Castes",
     group: "Portals",
-    category: "Commissions & boards",
+    category: "Commission",
     status: "planned",
   },
   {
@@ -320,7 +431,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Grievance & workflow portal",
     org: "National Commission for Safai Karamcharis",
     group: "Portals",
-    category: "Commissions & boards",
+    category: "Commission",
     status: "planned",
   },
   {
@@ -330,7 +441,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Grievance & workflow portal",
     org: "National Commission for Backward Classes",
     group: "Portals",
-    category: "Commissions & boards",
+    category: "Commission",
     status: "planned",
   },
   {
@@ -340,7 +451,7 @@ export const DEFAULT_APPS: AppEntry[] = [
     desc: "Board for Denotified, Nomadic & Semi-Nomadic communities",
     org: "Development & Welfare Board for DNT Communities",
     group: "Portals",
-    category: "Commissions & boards",
+    category: "Commission",
     status: "planned",
   },
 

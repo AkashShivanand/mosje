@@ -18,6 +18,7 @@ import {
   SETTING_COOKIE_BANNER,
   SETTING_DEMO_TOOLS,
   SETTING_PORTAL_REGISTRY,
+  SETTING_SAMAVESH_BANNER,
   writeSetting,
 } from "@/lib/settings/store";
 import { REGISTRY_TAG } from "@/lib/registry/resolve";
@@ -26,6 +27,14 @@ import { DEMO_TOOLS_TAG } from "@/lib/demo-tools/resolve";
 import { DEMO_TOOLS_DEFAULT_ENABLED } from "@/lib/demo-tools/config";
 import { COOKIE_BANNER_DEFAULT_ENABLED } from "@/lib/cookie-banner/config";
 import { COOKIE_BANNER_TAG } from "@/lib/cookie-banner/resolve";
+import { SAMAVESH_BANNER_TAG } from "@/lib/samavesh-banner/resolve";
+import {
+  DEFAULT_SAMAVESH_BANNER_PLACEMENT,
+  VALID_SAMAVESH_BANNER_PLACEMENTS,
+  samaveshBannerConfig,
+  serializeSamaveshBannerConfig,
+  type SamaveshBannerPlacement,
+} from "@/lib/samavesh-banner/config";
 import { serializeToggle, toggleConfig } from "@/lib/settings/toggle";
 import {
   CHATBOT_CONFIG_MAX_BYTES,
@@ -168,6 +177,16 @@ async function persistCookieBanner(serialized: string): Promise<void> {
   updateTag(COOKIE_BANNER_TAG);
 }
 
+/** The SAMAVESH banner placement row and tag. */
+async function persistSamaveshBanner(serialized: string): Promise<void> {
+  try {
+    await writeSetting(SETTING_SAMAVESH_BANNER, serialized);
+  } catch {
+    redirect("/admin/portals?error=store");
+  }
+  updateTag(SAMAVESH_BANNER_TAG);
+}
+
 /** The assistant's own row and tag. Same failure handling as the registry's. */
 async function persistAssistant(serialized: string): Promise<void> {
   try {
@@ -213,12 +232,21 @@ export async function saveRegistry(formData: FormData): Promise<void> {
   const cookieRaw = String(formData.get("cookieBanner") ?? "");
   if (cookieRaw !== "on" && cookieRaw !== "off") redirect("/admin/portals?error=payload");
 
+  const samaveshRaw = String(formData.get("samaveshBanner") ?? "");
+  if (!VALID_SAMAVESH_BANNER_PLACEMENTS.includes(samaveshRaw as SamaveshBannerPlacement)) {
+    redirect("/admin/portals?error=payload");
+  }
+  const samaveshSerialized = serializeSamaveshBannerConfig(
+    samaveshBannerConfig(samaveshRaw as SamaveshBannerPlacement)
+  );
+
   // Registry first: it is the one the proxy enforces, so if only one of the
   // three lands it should be the one that governs reachability.
   await persist(serialized);
   await persistAssistant(assistantSerialized);
   await persistDemoTools(serializeToggle(toggleConfig(demoRaw === "on")));
   await persistCookieBanner(serializeToggle(toggleConfig(cookieRaw === "on")));
+  await persistSamaveshBanner(samaveshSerialized);
   redirect("/admin/portals?saved=1");
 }
 
@@ -235,5 +263,8 @@ export async function resetRegistry(): Promise<void> {
   await persistAssistant(serializeChatbotConfig(emptyChatbotConfig()));
   await persistDemoTools(serializeToggle(toggleConfig(DEMO_TOOLS_DEFAULT_ENABLED)));
   await persistCookieBanner(serializeToggle(toggleConfig(COOKIE_BANNER_DEFAULT_ENABLED)));
+  await persistSamaveshBanner(
+    serializeSamaveshBannerConfig(samaveshBannerConfig(DEFAULT_SAMAVESH_BANNER_PLACEMENT))
+  );
   redirect("/admin/portals?saved=reset");
 }

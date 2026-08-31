@@ -23,6 +23,11 @@ export const FIGMA_NODES = {
   iconography: "2316:246", // "Iconography" — the Icon component, bespoke marks,
   //                              emblems, org logos and the documentation, all on one page
   accessibility: "2382:295905", // "Accessibility Bar and Widget"
+  brand: "56507:971", // "Brand" — the page, added 2026-08-31 between Iconography and
+  //                          the COMPONENTS divider. A departmental crest is a brand
+  //                          asset, not an icon, so the org marks moved off Iconography.
+  orgLogo: "4273:720", // the `org-logo` component set on that page — 17 variants, one
+  //                          per Org, matching ORG_LOGOS in the code registry one for one.
   // `logosIcons` removed 2026-08-12: the "Logos and Misc Icons" and "Org Logos" pages were
   // merged into Iconography above and deleted, so the id no longer resolves. It had no callers.
   motion: "4162:695", // "Motion" (authored from @mosje/tokens)
@@ -58,6 +63,13 @@ export const FIGMA_NODES = {
   //                          standalone frame beside the prototype flow (55852:893), which
   //                          gave all three loops one borrowed 10s duration; the loops now
   //                          live on the masters and the section demonstrates them.
+  /* Section Templates — authored 2026-08-30, page "SAMAVESH Banner" between
+     Navbar and Footer. Tone (Light|Dark|Tint) x State (Closed|Open), six
+     variants, zero unbound values. */
+  samaveshBanner: "56479:42386",
+  /* Navigation — page "Portal Card" between Pagination and Stepper, matching
+     where the component lives in code. Status (Live|Planned). */
+  portalCard: "56486:832",
   loader: "2141:323879",
   avatars: "2141:296702",
   emptyState: "2141:296719",

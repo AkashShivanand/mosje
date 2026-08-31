@@ -41,6 +41,10 @@ const EXCLUDED = {
   "/nmba-options": "internal design-option preview — variants of one page, not content",
   "/nmba-placement-preview": "internal design-option preview — a layout sandbox, not content",
   "/search": "the results page itself — a search result pointing at the search page is a loop",
+  "/samavesh-citizen-portals":
+    "retired — redirects to /portals, which is the same directory with search and filters. " +
+    "A redirect has no title of its own and must not appear as a result: indexing it would " +
+    "put two entries in search for one destination.",
 };
 
 /**

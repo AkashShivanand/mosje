@@ -59,8 +59,8 @@ export default function NmbaPlacementPreview() {
       </div>
 
       <Header />
+      <SamaveshBanner />
       <main id="main-content" className="flex-1">
-        <SamaveshBanner />
         <HeroCarousel />
 
         {option === "C" && <NashaMuktBharat variant="band" />}

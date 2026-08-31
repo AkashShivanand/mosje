@@ -230,6 +230,9 @@ export function SiteHeader({
   const [scrolled, setScrolled] = React.useState(false);
   /** Held true across printing, so scroll anchoring cannot re-condense the header. */
   const printingRef = React.useRef(false);
+  /** Held true across the condense/expand morph — see the effect that sets it. */
+  const morphingRef = React.useRef(false);
+  const [morphing, setMorphing] = React.useState(false);
   /** The condensed bar's search, expanded in place over the nav. */
   const [condSearchOpen, setCondSearchOpen] = React.useState(false);
   /** The condensed nav has run out of room; fall back to the sheet. */
@@ -238,6 +241,10 @@ export function SiteHeader({
   const condSearchRef = React.useRef<HTMLInputElement>(null);
   const condInRef = React.useRef<HTMLDivElement>(null);
   const condListRef = React.useRef<HTMLUListElement>(null);
+  /** The morphing box, and the two faces it crossfades between. */
+  const morphRef = React.useRef<HTMLDivElement>(null);
+  const restFaceRef = React.useRef<HTMLDivElement>(null);
+  const condFaceRef = React.useRef<HTMLDivElement>(null);
   // Default to 100% for portal app-shells so the brand row aligns with full-width topbar,
   // or default to estate container variable for static website headers.
   const inner = {
@@ -280,7 +287,7 @@ export function SiteHeader({
     let frame = 0;
     const read = () => {
       frame = 0;
-      if (printingRef.current) return;
+      if (printingRef.current || morphingRef.current) return;
       const y = window.scrollY;
       setScrolled((was) => (was ? y > 40 : y > 120));
     };
@@ -301,6 +308,8 @@ export function SiteHeader({
    *   --sa-hdr-abar-h     the accessibility bar's height (on the header)
    *   --sa-header-pinned  what stays on screen when scrolled, AT REST (on :root)
    *   --sa-header-bottom  what stays on screen right now (on :root)
+   *   --sa-header-stuck   where the masthead's bottom edge lands once pinned,
+   *                       IN WHICHEVER STATE IT IS IN NOW (on :root)
    *
    * `scroll-padding-top` used to be four hardcoded numbers — 150 / 72 / 204, and
    * 132 below 767px against a mobile header measured at 258. A 126px shortfall is
@@ -312,12 +321,37 @@ export function SiteHeader({
    * `--sa-header-pinned` is only written while RESTING. Anchors and skip links can
    * land while the header is at its full height, so the padding has to clear the
    * taller of the two states, not whichever happens to be showing.
+   *
+   * `--sa-header-stuck` IS THE OPPOSITE, and the distinction is the whole reason it
+   * exists. A `scroll-padding` has to clear the taller state; a sticky OFFSET has to
+   * match the current one. Anything that pins itself below the masthead and read
+   * `--sa-header-pinned` therefore pinned to a height the header no longer has the
+   * moment it condensed — measured on the website with the SAMAVESH band open: an
+   * 89px strip of page content showing between the two on desktop, 155px on a phone,
+   * because the band sat at 154/212 while the condensed header ended at 65/57.
+   *
+   * Only a STICKY header publishes it. A non-sticky specimen — the three on the
+   * SiteHeader documentation page — contributes nothing to a sticky offset, and a
+   * page rendering several headers must not have the last one to measure win.
    */
   React.useEffect(() => {
     const el = headerRef.current;
     if (!el || typeof ResizeObserver === "undefined") return;
     const root = document.documentElement;
     const measure = () => {
+      /* READ THE STATE OFF THE DOM BEING MEASURED, never off the `condensed`
+         React value this effect closed over. The two disagree for one frame at
+         every transition: React re-renders, the condensed bar is in the DOM at
+         its new height, and the ResizeObserver registered by the PREVIOUS effect
+         is still the one attached — so `measure` fires with the new geometry and
+         the old flag. Caught by measuring: `--sa-header-pinned` was being written
+         as 57px while condensed, when it exists precisely to hold the RESTING
+         212px. That number is `scroll-padding-top`, so the frame that got it
+         wrong left an anchor 155px short of clearing an expanded masthead —
+         WCAG 2.4.11, and invisible unless you go looking. `is-scrolled` is set
+         from the same render that produced the geometry, so it cannot be a frame
+         out of step with it. */
+      const isCondensed = el.classList.contains("is-scrolled");
       const abar = el.querySelector<HTMLElement>(".sa-abar");
       const abarH = abar?.offsetHeight ?? 0;
       const pinned = Math.max(0, el.offsetHeight - abarH);
@@ -330,8 +364,9 @@ export function SiteHeader({
          is no bar left to allow for. Erring tall costs a panel a little height it
          could have used; erring short puts rows off-screen with no way to reach
          them, which is the defect this whole variable exists to close. */
-      root.style.setProperty("--sa-header-bottom", `${condensed ? pinned : el.offsetHeight}px`);
-      if (!condensed) root.style.setProperty("--sa-header-pinned", `${pinned}px`);
+      root.style.setProperty("--sa-header-bottom", `${isCondensed ? pinned : el.offsetHeight}px`);
+      if (!isCondensed) root.style.setProperty("--sa-header-pinned", `${pinned}px`);
+      if (isSticky) root.style.setProperty("--sa-header-stuck", `${pinned}px`);
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -341,7 +376,35 @@ export function SiteHeader({
       ro.disconnect();
       window.removeEventListener("resize", measure);
     };
-  }, [condensed]);
+  }, [condensed, isSticky]);
+
+
+  /**
+   * Publish the condensed state, so chrome pinned UNDER the masthead can condense
+   * with it rather than run a second copy of the thresholds.
+   *
+   * An attribute rather than a variable, because what a consumer needs is a
+   * SELECTOR, not a number — and the two thresholds (past 120, back under 40) are
+   * deliberately asymmetric so the bar cannot flutter at one scroll position. A
+   * second component re-deriving that from `scrollY` is a second place for the
+   * hysteresis to be got wrong, and the two would disagree for the frames in
+   * between. Same shape as `data-sa-abar-a11y` in `accessibility-entry-point.md`.
+   *
+   * Its consumer is the SAMAVESH band, which condenses while pinned over an open
+   * panel. This was removed once, correctly, when that consumer briefly had no
+   * condensed state — governance that governs nothing is worse than none — and is
+   * back because the consumer is back. Do not keep it if the last one goes again.
+   *
+   * Written only by a STICKY header: a non-sticky specimen never condenses, and a
+   * page rendering several headers must not have the last one to measure win.
+   */
+  React.useEffect(() => {
+    if (!isSticky) return;
+    const root = document.documentElement;
+    if (condensed) root.setAttribute("data-sa-header-condensed", "");
+    else root.removeAttribute("data-sa-header-condensed");
+    return () => root.removeAttribute("data-sa-header-condensed");
+  }, [condensed, isSticky]);
 
   /**
    * Print the FULL masthead, whatever the reader had scrolled to.
@@ -441,6 +504,81 @@ export function SiteHeader({
    * credited with fixing exactly that; the disappearing bar turned out to be a
    * test harness scrolling the target into view before clicking it.)
    */
+  /**
+   * Give the morphing box a height it can actually animate to.
+   *
+   * `height: auto` does not transition, and the two faces are different heights by
+   * 135px, so something has to hand CSS a number. Both faces stay MOUNTED — the
+   * inactive one is `visibility: hidden`, which still lays out, so it can be
+   * measured at any time — and this writes whichever height is current.
+   *
+   * The resting face is the one left in normal flow, so before this effect has ever
+   * run the box is already the right height and the server-rendered masthead is not
+   * a 46px stub waiting for JavaScript.
+   */
+  React.useEffect(() => {
+    if (!wantsScrollCollapse) return;
+    const morph = morphRef.current;
+    const rest = restFaceRef.current;
+    const cond = condFaceRef.current;
+    if (!morph || !rest || !cond || typeof ResizeObserver === "undefined") return;
+    const apply = () => {
+      const h = condensed ? cond.offsetHeight : rest.offsetHeight;
+      if (h > 0) morph.style.height = `${h}px`;
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(rest);
+    ro.observe(cond);
+    return () => ro.disconnect();
+  }, [condensed, wantsScrollCollapse]);
+
+  /**
+   * Hold the trigger still while the box is moving, and clip it while it moves.
+   *
+   * TWO PROBLEMS, ONE FLAG.
+   *
+   * The box shrinks by ~89px of PINNED height, all of it above the viewport, so the
+   * browser's scroll anchoring shifts `scrollY` down by the same amount to keep the
+   * content still — and that shift is a scroll event the handler would read back.
+   * Measured: condensing at 130 landed at 52. The restore threshold is 40, so
+   * condensing a few pixels past the 120 trigger would land within single digits of
+   * un-condensing, and the animation would be driving its own trigger. The read is
+   * suspended for the length of the transition and taken once at the end.
+   *
+   * And the outgoing face is 200px tall inside a box on its way to 65, so for the
+   * length of the crossfade it OVERFLOWS — its ghost paints over the page below.
+   * Caught in a frame captured 125ms in: the emblem and department line sitting on
+   * the content under a bar that had already arrived. The box clips only while it is
+   * moving, because at rest it must not clip at all: the dropdowns and the mega-menu
+   * hang below the header and would be cut off.
+   *
+   * The duration is READ FROM THE ELEMENT rather than repeated here, so the guard
+   * cannot drift from the CSS — including under reduced motion, where the height
+   * snaps and this collapses to nothing.
+   */
+  const firstMorph = React.useRef(true);
+  React.useEffect(() => {
+    if (!wantsScrollCollapse) return;
+    if (firstMorph.current) {
+      firstMorph.current = false;
+      return;
+    }
+    const morph = morphRef.current;
+    const ms = morph
+      ? Math.max(0, parseFloat(getComputedStyle(morph).transitionDuration || "0") * 1000)
+      : 0;
+    morphingRef.current = true;
+    setMorphing(true);
+    const t = window.setTimeout(() => {
+      morphingRef.current = false;
+      setMorphing(false);
+      const y = window.scrollY;
+      setScrolled((was) => (was ? y > 40 : y > 120));
+    }, ms + 20);
+    return () => window.clearTimeout(t);
+  }, [condensed, wantsScrollCollapse]);
+
   React.useEffect(() => {
     if (condSearchOpen) condSearchRef.current?.focus({ preventScroll: true });
   }, [condSearchOpen]);
@@ -683,6 +821,84 @@ export function SiteHeader({
     </div>
   );
 
+  /* The three tiers at rest. Extracted so the morph can render them as one of its
+     two faces, and a non-condensing header can render them on their own. */
+  const restingTiers = (
+    <>
+      {/* ── Tier 2: Brand row ── */}
+        <div className="ds-hdr-brand">
+          <div className="ds-hdr-brand__in" style={inner}>
+            {onToggleNav && (
+              <MenuToggle
+                expanded={navExpanded}
+                onToggle={onToggleNav}
+                controlsId={navControlsId}
+              />
+            )}
+
+            <BrandLockup
+              className="ds-hdr-brand__lockup"
+              emblemSrc={emblemSrc}
+              emblemAlt={emblemAlt}
+              lines={brandLines}
+              href={homeHref}
+              beta={isCompact ? false : beta}
+              compact={isCompact}
+            />
+
+            {/* A DIRECT CHILD of the brand row, not part of the trailing cluster —
+                that is what lets it wrap onto its own full-width line below
+                `breakpoint/tablet` instead of disappearing. It used to hide at 900px
+                while the nav row survived to 1024, so between the two the reader had
+                neither. */}
+            {searchField}
+
+            <div className="ds-hdr-brand__trailing">
+              {marks.map((m) =>
+                m.href ? (
+                  /* [DBIM 5.6] Hyperlinked logos — the same treatment the footer
+                     gives its credits. `href` has been in `BrandMark` all along and
+                     was never read, so Digital India sat in every public masthead as
+                     an inert image. */
+                  <a
+                    key={m.src}
+                    className="ds-hdr-cobrand-link"
+                    href={m.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+                    <span className="ds-hdr-sr"> (opens in a new window)</span>
+                  </a>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+                ),
+              )}
+
+              {isCompact && navRow}
+
+              {account && <AccountMenu account={account} items={accountMenu} />}
+
+              <span className="ds-hdr-brand__actions">{actions}</span>
+
+              {hasNav && (
+                <SheetToggle
+                  open={drawerOpen}
+                  onOpen={() => setDrawerOpen(true)}
+                  controlsId={drawerId}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Tier 3: Navigation row (website / portal) ── */}
+        {!isCompact && navRow}
+    </>
+  );
+
   return (
     <header
       ref={headerRef}
@@ -718,83 +934,42 @@ export function SiteHeader({
         />
       )}
 
-      {condensed ? (
-        condensedBar
-      ) : (
-        <>
-          {/* ── Tier 2: Brand row ── */}
-          <div className="ds-hdr-brand">
-            <div className="ds-hdr-brand__in" style={inner}>
-              {onToggleNav && (
-                <MenuToggle
-                  expanded={navExpanded}
-                  onToggle={onToggleNav}
-                  controlsId={navControlsId}
-                />
-              )}
+      {/* ── The morph ──────────────────────────────────────────────────────────
+         Both faces are rendered whenever the header can condense, because a
+         crossfade needs two things to cross. The conditional render this replaced
+         swapped one subtree for another in a single frame: 200px of masthead became
+         65px of bar with nothing in between, which is the abruptness.
 
-              <BrandLockup
-                className="ds-hdr-brand__lockup"
-                emblemSrc={emblemSrc}
-                emblemAlt={emblemAlt}
-                lines={brandLines}
-                href={homeHref}
-                beta={isCompact ? false : beta}
-                compact={isCompact}
-              />
+         The inactive face is `inert` as well as visually hidden — it is real DOM
+         carrying real links, and a keyboard reader must not be able to tab into a
+         masthead that is not on screen.
 
-              {/* A DIRECT CHILD of the brand row, not part of the trailing cluster —
-                  that is what lets it wrap onto its own full-width line below
-                  `breakpoint/tablet` instead of disappearing. It used to hide at 900px
-                  while the nav row survived to 1024, so between the two the reader had
-                  neither. */}
-              {searchField}
-
-              <div className="ds-hdr-brand__trailing">
-                {marks.map((m) =>
-                  m.href ? (
-                    /* [DBIM 5.6] Hyperlinked logos — the same treatment the footer
-                       gives its credits. `href` has been in `BrandMark` all along and
-                       was never read, so Digital India sat in every public masthead as
-                       an inert image. */
-                    <a
-                      key={m.src}
-                      className="ds-hdr-cobrand-link"
-                      href={m.href}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
-                      <span className="ds-hdr-sr"> (opens in a new window)</span>
-                    </a>
-                  ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
-                  ),
-                )}
-
-                {isCompact && navRow}
-
-                {account && <AccountMenu account={account} items={accountMenu} />}
-
-                <span className="ds-hdr-brand__actions">{actions}</span>
-
-                {hasNav && (
-                  <SheetToggle
-                    open={drawerOpen}
-                    onOpen={() => setDrawerOpen(true)}
-                    controlsId={drawerId}
-                  />
-                )}
-              </div>
-            </div>
+         A header that does NOT condense keeps the old single-face markup: compact is
+         one 65px tier already, and a consumer passing `collapseOnScroll={false}` has
+         asked for no morph at all. Neither should pay for this. */}
+      {wantsScrollCollapse ? (
+        <div className="ds-hdr__morph" ref={morphRef} data-morphing={morphing ? "" : undefined}>
+          <div
+            className="ds-hdr__face ds-hdr__face--rest"
+            ref={restFaceRef}
+            data-active={condensed ? undefined : ""}
+            inert={condensed || undefined}
+          >
+            {restingTiers}
           </div>
-
-          {/* ── Tier 3: Navigation row (website / portal) ── */}
-          {!isCompact && navRow}
-        </>
+          <div
+            className="ds-hdr__face ds-hdr__face--cond"
+            ref={condFaceRef}
+            data-active={condensed ? "" : undefined}
+            inert={!condensed || undefined}
+          >
+            {condensedBar}
+          </div>
+        </div>
+      ) : (
+        restingTiers
       )}
+
 
       {/* ── Mobile navigation (Figma Navbar/NavSheet) ── */}
       {hasNav && (
