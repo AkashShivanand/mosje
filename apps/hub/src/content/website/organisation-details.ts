@@ -1525,6 +1525,13 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         ],
       },
       {
+        label: "PUBLICATIONS & REPORTS",
+        items: [
+          { label: "Documents & downloads", href: "#documents-downloads" },
+          { label: "SOPs", href: "/website/organisation/support-for-marginalized-individuals-for-livelihood-and-enterprise-smile/sop" },
+        ],
+      },
+      {
         label: "CONNECT & ENGAGE",
         items: [
           { label: "Scheme Nodal Desk", href: "#contact" },
@@ -1532,6 +1539,44 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         ],
       },
     ],
+    // The two guidelines the source site publishes on PM-AJAY's guidelines page.
+    // They are SMILE's — the Beggary Scheme's operational guidelines and the
+    // model guidelines for shelter homes — and they were filed under PM-AJAY
+    // upstream, which is that site's own mistake. They belong here, and this is
+    // the only place in the estate that holds them.
+    downloads: {
+      heading: "Documents & downloads",
+      description:
+        "Guidelines and standard operating procedures published for the SMILE Beggary Scheme.",
+      groups: [
+        {
+          id: "documents-downloads",
+          heading: "Documents & downloads",
+          viewAllHref: "/website/forms-templates",
+          items: [
+            {
+              label: "SMILE Beggary Scheme — operational guidelines",
+              officialName:
+                "Operational Guidelines for SMILE (Support for Marginalized Individuals for Livelihood and Enterprise) - Beggary Scheme",
+              meta: "The scheme's governing document",
+              href: "/website/documents/sample/acts-rules-sample.pdf",
+              kind: "pdf",
+              group: "Guidelines",
+            },
+            {
+              label: "Shelter homes — model guidelines",
+              officialName:
+                "Model Guidelines on Care, Rehabilitation and Management of Beggars' / Shelter Homes",
+              meta: "For implementing agencies running shelter homes",
+              href: "/website/documents/sample/advisory-sop-sample.pdf",
+              kind: "pdf",
+              group: "Guidelines",
+            },
+          ],
+        },
+      ],
+    },
+
     components: {
       heading: "Core Implementation Areas",
       items: [

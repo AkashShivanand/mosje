@@ -1,0 +1,135 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /*
+   * The band's gradient runs brighter at the leading edge to deeper at the
+   * trailing one, both stops from the brand ramp so `data-brand` rethemes it.
+   * Figma paints the trailing stop as a raw #3f83c6 with no variable behind it;
+   * see the component's doc comment for why that hex is not reproduced here.
+   */
+  .sa-siteheader__band {
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(
+      to left,
+      var(--sa-color-primaryScale-600),
+      var(--sa-color-primaryScale-500)
+    );
+    isolation: isolate;
+    overflow: clip;
+  }
+
+  /* Reserves the space the overlay card sits in, so the card overlaps the band
+     rather than pushing the content below it down. */
+  .sa-siteheader__band--overlaid {
+    padding-block-end: var(--sa-padding-64);
+    margin-block-end: calc(-1 * var(--sa-padding-64));
+  }
+
+  /*
+   * `Container` owns the cap AND the side margin — see its own doc comment, which
+   * is explicit that giving it horizontal padding narrows the column below the
+   * grid. So this rule sets the vertical rhythm and the columns, and nothing
+   * horizontal.
+   */
+  .sa-siteheader__container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sa-stack-24);
+    align-items: center;
+    padding-block: var(--sa-padding-64);
+  }
+
+  .sa-siteheader--landing .sa-siteheader__container {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  .sa-siteheader__col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-20);
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .sa-siteheader__eyebrow {
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .sa-siteheader__logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .sa-siteheader__title {
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-headline-1-size);
+    font-weight: 600;
+    line-height: 1.2;
+    /* Long official names break mid-word rather than overflowing the band. */
+    overflow-wrap: anywhere;
+  }
+
+  /*
+   * The standfirst against a left rule. The rule is a border, not a pseudo
+   * element, so it grows with the text it marks however many lines that runs to.
+   */
+  .sa-siteheader__lead {
+    border-inline-start: 4px solid var(--sa-border-neutral-inverse);
+    padding-inline-start: var(--sa-padding-24);
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-body-1-size);
+    font-style: italic;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+  }
+
+  .sa-siteheader__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin-block-start: var(--sa-stack-12);
+  }
+
+  .sa-siteheader__media {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 0;
+  }
+
+  .sa-siteheader__overlay {
+    position: relative;
+    z-index: 1;
+  }
+
+  /*
+   * Below the landing breakpoint the portrait is dropped rather than shrunk.
+   * At a phone's width it would be a decorative circle taking a third of the
+   * fold from the title and the call to action, which are the reasons the page
+   * exists.
+   */
+  @media (width < 64rem) {
+    .sa-siteheader--landing .sa-siteheader__container {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sa-siteheader__media {
+      display: none;
+    }
+  }
+
+  @media (width < 48rem) {
+    .sa-siteheader__container {
+      padding-block: var(--sa-padding-32);
+    }
+
+    .sa-siteheader__band--overlaid {
+      padding-block-end: var(--sa-padding-64);
+    }
+  }
+}

@@ -452,3 +452,61 @@ Live + illustrative a genuine mix.**
 
 Neither GIA snapshot was refreshed, deliberately: its feeds answer 0 for every
 field of every year, which is a degraded endpoint, not a reading.
+
+## 13. SMILE's guidelines, the breadcrumb, and the L1/L2 header
+
+### The SMILE guidelines were removed and never rehomed
+
+§11 replaced the PM-AJAY guidelines page — it carried the SMILE Beggary Scheme's
+guidelines, the source site's own filing error — with PM-AJAY's own. What it did
+not do was put the SMILE documents anywhere. They existed nowhere in the estate
+afterwards, which is content lost rather than content moved.
+
+They are now on SMILE's page, in a Documents & downloads shelf under a Guidelines
+chip, with a PUBLICATIONS & REPORTS group in its index pointing at it. The
+official names are kept verbatim.
+
+### The breadcrumb: 64 pages claimed two current pages
+
+**Is a non-linked middle crumb good practice?** It is defensible, and it is this
+estate's convention: the trail describes where a page sits, and a section is a
+real level of that hierarchy even when it has no page. "Department", "Documents",
+"Connect" and "Associated Organisations" are mega-menu categories with no route,
+and 64 pages pass one as a middle crumb. What is not defensible is offering it as
+a link to somewhere it does not go — which is what "Associated Organisations"
+did, pointing at `/website`, exactly where the Home crumb beside it went.
+
+**The real defect was in the component.** It rendered every non-linked crumb as
+`<span aria-current="page">`, so on all 64 of those pages a screen-reader user was
+told twice they were on the current page, once about a section they were not on.
+`aria-current` marks exactly one thing; two is worse than none, because the wrong
+one comes first. `aria-current` is now on the last crumb only, and a section crumb
+renders as plain text. One component fix, 64 pages corrected.
+
+### SitePageHeader — the L1 and L2 bands
+
+`packages/design-system/components/layout/site-page-header.tsx`, exported, with
+five stories. `variant="landing"` is Figma L1 (logo, title, italic standfirst
+against a left rule, action, portrait, overlapping fact card);
+`variant="inner"` is L2 (back link, title, nothing else).
+
+**It is not `PageHeader`, and both earn their place.** `PageHeader` is the portal
+title row — heading, meta line, actions, on the page's own background — and **80
+files render it**. This is a full-bleed banner with a brand gradient and an
+overlapping card, for the 8 website hero surfaces. They share a word in English
+and nothing else.
+
+**One thing the Figma file needs from its owner.** The band is painted
+`#0373df → #3f83c6`. The first is the `Primary/Source` variable; the second is a
+RAW HEX with no variable behind it — confirmed by reading the node's variable
+definitions, which list `Primary/Source` and no second colour. Reproducing that
+hex would freeze the band to the blue brand, and this estate is white-label:
+`data-brand="navy"` and DBIM must retheme it. The second stop is therefore the
+brand ramp's own next shade. **The unbound fill should be bound to a variable in
+the library**, and until it is, this component deliberately does not match that
+one hex.
+
+**Not yet adopted.** The website's 8 pages still render the hub's own `PageHero`.
+Switching them over is a separate change, and one worth doing: `PageHero` picks
+its banner image with hardcoded string matching (`logoSrc.includes("NCSC-2")`),
+which is exactly the kind of thing a design-system component exists to end.
