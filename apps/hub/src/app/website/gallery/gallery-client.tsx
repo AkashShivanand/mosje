@@ -20,6 +20,12 @@ const IMAGES: GalleryImage[] = [
   { src: "/website/images/5-234x300.jpg", caption: "Beneficiary interaction camp" },
   { src: "/website/images/3-300x251.jpg", caption: "Community empowerment workshop" },
   { src: "/website/images/65811748325059-300x291.jpg", caption: "Field visit to an Adarsh Gram" },
+  // PM-AJAY's three photographs. They were mirrored locally and captioned for
+  // the scheme page, but never registered here — so that page's "View all
+  // photos" led to a gallery its own pictures were missing from.
+  { src: "/website/content/organisation/pmajay-training1.jpg", caption: "Capacity building of Uttarakhand state and district officers on the PM-AJAY MIS (23 September 2022)" },
+  { src: "/website/content/organisation/pmajay-training5.jpg", caption: "PM-AJAY MIS training session for Uttarakhand officers (23 September 2022)" },
+  { src: "/website/content/organisation/pmajay-training6.jpg", caption: "PM-AJAY MIS training workshop, Uttarakhand (23 September 2022)" },
 ];
 
 export function GalleryClient() {

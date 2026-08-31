@@ -11,7 +11,7 @@ import {
   useScrollReveal,
 } from "@mosje/design-system";
 import { HOSTEL_DESCRIPTOR, type HostelData } from "@/lib/website/pmajay-api";
-import { PMAJAY_AS_ON } from "@/lib/website/pmajay-stats";
+import { HOSTEL_AS_ON } from "@/lib/website/pmajay-stats";
 import { cardStateFor, useDataMode } from "@/lib/data-mode/context";
 import type { CardStateKind } from "@mosje/design-system";
 import { mergeData, provenanceOf } from "@/lib/data-mode/merge";
@@ -116,7 +116,7 @@ export function HostelDashboard({ data }: HostelDashboardProps) {
         <p className="dm-banner">
           <b>Illustrative figures.</b>&nbsp;The live summary feed is not
           answering, so these are the last published totals, mirrored on{" "}
-          {PMAJAY_AS_ON}. Nothing here is a current departmental figure.
+          {HOSTEL_AS_ON}. Nothing here is a current departmental figure.
         </p>
       )}
 

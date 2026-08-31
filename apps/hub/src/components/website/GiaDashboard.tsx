@@ -28,7 +28,7 @@ import {
   type GiaKey,
 } from "@/lib/website/pmajay-api";
 import type { DataMode } from "@/lib/data-mode/types";
-import { PMAJAY_AS_ON } from "@/lib/website/pmajay-stats";
+import { GIA_AS_ON } from "@/lib/website/pmajay-stats";
 import { cardStateFor, useDataMode } from "@/lib/data-mode/context";
 import type { CardStateKind } from "@mosje/design-system";
 import { mergeData, provenanceOf } from "@/lib/data-mode/merge";
@@ -207,9 +207,22 @@ function breakdownFor(
     .filter((r) => r.value > 0)
     .sort((a, b) => b.value - a.value)
     .slice(0, limit);
+  /*
+   * PROVENANCE DESCRIBES WHAT IS ON SCREEN, NOT WHAT WAS ASKED FOR.
+   *
+   * `mockYears > 0` is the only thing that makes a card illustrative, because it
+   * is the only branch above that actually draws a mocked row. The old test
+   * ended `: "mock"`, so a card that drew NOTHING — no live rows, no mock rows —
+   * was labelled Illustrative, and its tooltip told the reader "what is shown is
+   * illustrative" over an empty card where nothing was shown.
+   *
+   * Live mode hit that on every GIA breakdown, because the feed answers 0 for
+   * every intervention in every year and live mode deliberately declines to
+   * substitute. The card was right to be empty and wrong about why.
+   */
   return {
     rows,
-    prov: liveYears > 0 && mockYears > 0 ? "mixed" : liveYears > 0 ? "live" : "mock",
+    prov: mockYears > 0 ? (liveYears > 0 ? "mixed" : "mock") : "live",
   };
 }
 
@@ -416,7 +429,7 @@ export function GiaDashboard({ data, gender }: GiaDashboardProps) {
         <p className="dm-banner">
           <b>Illustrative figures.</b>&nbsp;The live report feed is not
           answering, so these are the last published totals, mirrored on{" "}
-          {PMAJAY_AS_ON}. Nothing here is a current departmental figure.
+          {GIA_AS_ON}. Nothing here is a current departmental figure.
         </p>
       )}
 

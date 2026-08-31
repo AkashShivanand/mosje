@@ -7,7 +7,7 @@
  * a slug here in the same change that adds a dashboard, or the switch will be
  * missing on the one page that needs it.
  */
-const PMAJAY = "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/components";
+const PMAJAY = "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay";
 
 export const DATA_MODE_ROUTES: string[] = [
   `${PMAJAY}/development-of-sc-dominated-villages-into-adarsh-gram`,

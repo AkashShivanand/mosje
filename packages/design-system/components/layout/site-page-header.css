@@ -1,0 +1,304 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /*
+   * The band's gradient runs brighter at the leading edge to deeper at the
+   * trailing one, both stops from the brand ramp so `data-brand` rethemes it.
+   * Figma paints the trailing stop as a raw #3f83c6 with no variable behind it;
+   * see the component's doc comment for why that hex is not reproduced here.
+   */
+  .sa-siteheader__band {
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(
+      to left,
+      var(--sa-color-primaryScale-600),
+      var(--sa-color-primaryScale-500)
+    );
+    isolation: isolate;
+    overflow: clip;
+  }
+
+  /* Reserves the space the overlay card sits in, so the card overlaps the band
+     rather than pushing the content below it down. */
+  .sa-siteheader__band--overlaid {
+    padding-block-end: var(--sa-padding-64);
+    margin-block-end: calc(-1 * var(--sa-padding-64));
+  }
+
+  /*
+   * The same reservation, for a card this component does NOT render.
+   *
+   * The estate's organisation template draws the "at a glance" card itself and
+   * pulls it up over the band with `FactStrip --overlap` (−40). The band knew
+   * nothing about that, so the card ate 40 of the 64 points of air the content
+   * had beneath it — on a page with no call-to-action button the standfirst
+   * ended almost against the card's top edge.
+   *
+   * Reserving the same 40 the sibling takes back leaves the content its full
+   * breathing room and lets the card overlap into padding instead of into text.
+   */
+  .sa-siteheader__band--reserved {
+    padding-block-end: var(--sa-stack-40);
+  }
+
+  /*
+   * `Container` owns the cap AND the side margin — see its own doc comment, which
+   * is explicit that giving it horizontal padding narrows the column below the
+   * grid. So this rule sets the vertical rhythm and the columns, and nothing
+   * horizontal.
+   */
+  .sa-siteheader__container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sa-stack-24);
+    align-items: center;
+    padding-block: var(--sa-padding-64);
+  }
+
+  .sa-siteheader--landing .sa-siteheader__container {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  /*
+   * An inner header is two short lines. Sixty-four points of padding above and
+   * below them leaves a band mostly made of nothing, so it takes the smaller
+   * step — the handoff's own L2 is a shallow strip, not a hero.
+   */
+  .sa-siteheader--inner .sa-siteheader__container {
+    padding-block: var(--sa-padding-32);
+  }
+
+  .sa-siteheader__col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-20);
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  /*
+   * The back link belongs to the title, not beside it: 8pt, as the handoff sets
+   * it, so the two read as one block rather than as two stacked items.
+   */
+  .sa-siteheader--inner .sa-siteheader__col {
+    gap: var(--sa-stack-8);
+  }
+
+  .sa-siteheader__eyebrow {
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .sa-siteheader__logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .sa-siteheader__title {
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-headline-1-size);
+    font-weight: 600;
+    line-height: 1.2;
+    /* Long official names break mid-word rather than overflowing the band. */
+    overflow-wrap: anywhere;
+  }
+
+  /*
+   * The standfirst against its rule. The rule is a border, not a pseudo element,
+   * so it grows with the text it marks however many lines that runs to.
+   *
+   * COLOURED WITH THE *TEXT* INVERSE TOKEN, DELIBERATELY. `--sa-border-neutral-
+   * inverse` is named in the token source but is NOT emitted into the running
+   * cascade — it resolves to nothing, which made the whole `border` declaration
+   * invalid and dropped it to `none`. The rule simply did not draw. Flagged for
+   * the token owner; until it ships, this uses the inverse token that does
+   * resolve, which is the same white.
+   */
+  .sa-siteheader__lead {
+    border-inline-start: 4px solid var(--sa-text-neutral-inverse);
+    padding-inline-start: var(--sa-padding-24);
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-body-1-size);
+    font-style: italic;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+  }
+
+  .sa-siteheader__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin-block-start: var(--sa-stack-12);
+  }
+
+  /*
+   * The halo is wider than its column — 340 of picture plus 72 of rings on each
+   * side — and that is deliberate: the frame lets the outermost ring run off the
+   * right edge. `overflow: visible` lets it, and the band's own `overflow: clip`
+   * stops it escaping the page.
+   */
+  .sa-siteheader__media {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  /*
+   * ── THE HALO ────────────────────────────────────────────────────────────────
+   *
+   * A portrait inside three concentric rings, with two more rippling outward
+   * through them. The handoff draws the static plaque; the ripple is ours.
+   *
+   * THE STATIC RINGS ARE ONE `box-shadow`, NOT THREE ELEMENTS. Three spreads on
+   * one shadow give three perfectly concentric rings that can never drift out of
+   * register, cost no extra DOM, and stay out of the accessibility tree. Each
+   * step is lighter and more transparent than the one inside it, so the plaque
+   * reads as depth receding into the band rather than as three drawn outlines.
+   *
+   * THE INNERMOST RING IS THE DARKEST THING ON THE BAND. It is what separates a
+   * photograph from a blue gradient — without it the picture bleeds into the
+   * background at its lower edge, where the band is darkest.
+   */
+  .sa-siteheader__halo {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    box-shadow:
+      0 0 0 10px color-mix(in srgb, var(--sa-color-primaryScale-900) 88%, transparent),
+      0 0 0 40px color-mix(in srgb, var(--sa-color-primaryScale-800) 46%, transparent),
+      0 0 0 72px color-mix(in srgb, var(--sa-color-primaryScale-800) 24%, transparent);
+    /* Never from scale(0) — nothing in the world appears out of nothing. */
+    animation: sa-halo-enter var(--sa-motion-emphasis-duration) var(--sa-motion-enter-easing) both;
+  }
+
+  /*
+   * ── ONE RIPPLE, LEAVING THE PLAQUE ──────────────────────────────────────────
+   *
+   * The plaque above is the design; this is the only thing that moves.
+   *
+   * WHAT WAS BROKEN. There were two ring systems in the same 484px: three static
+   * rings, and four more sweeping from scale(0.94) to 1.34 straight THROUGH
+   * them. Seven edges on screen at once, beating against each other — a reader
+   * saw circles that stood still and circles that did not, in the same place,
+   * and could not tell which was the object. Motion added on top of a form
+   * instead of belonging to it.
+   *
+   * WHAT IT IS NOW. A single ring, born exactly on the outermost static ring at
+   * zero opacity, brightening as it leaves and dissolving into the band. It
+   * never crosses the plaque, so there is nothing to double: the plaque stays
+   * still and something leaves it. One idea instead of two.
+   *
+   * 4s, not 5 — a loop near 0.2Hz sits in the band that reads as a pulse to
+   * watch rather than as ambience, and Apple's motion guidance flags it
+   * specifically. It also never exceeds 40% opacity, because a large moving
+   * object should stay semi-transparent while it travels.
+   */
+  .sa-siteheader__halo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    /* Spread 72 — the same radius as the outermost static ring, so it starts
+       coincident with the plaque's edge and can only move outward from there. */
+    box-shadow: 0 0 0 72px color-mix(in srgb, var(--sa-color-primaryScale-800) 34%, transparent);
+    /* ease-out: the ring is LEAVING. An exit that starts fast then settles reads
+       as a ripple; ease-in would hold still, then lunge. */
+    animation: sa-halo-ripple 4s var(--sa-motion-enter-easing) infinite;
+  }
+
+  /* The portrait sits above every ring and does not move. */
+  .sa-siteheader__halo > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes sa-halo-enter {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+
+  /*
+   * Born AT the plaque's edge (scale 1) rather than inside it, and at zero
+   * opacity rather than full — so it appears to detach from the outer ring
+   * instead of springing out of the photograph. It reaches its brightest early,
+   * then spends most of the cycle dissolving, which is how a real ripple loses
+   * energy: fast at first, then slowly.
+   */
+  @keyframes sa-halo-ripple {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    18% {
+      opacity: 0.4;
+    }
+    100% {
+      transform: scale(1.26);
+      opacity: 0;
+    }
+  }
+
+  /*
+   * Reduced motion means gentler, not none: the plaque and its three static
+   * rings stay exactly as they are, and only the ripple stops. Removing the halo
+   * would change the layout for people who asked for less movement, which is a
+   * different request from the one they made.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .sa-siteheader__halo {
+      animation: none;
+    }
+
+    .sa-siteheader__halo::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
+
+  .sa-siteheader__overlay {
+    position: relative;
+    z-index: 1;
+  }
+
+  /*
+   * Below the landing breakpoint the portrait is dropped rather than shrunk.
+   * At a phone's width it would be a decorative circle taking a third of the
+   * fold from the title and the call to action, which are the reasons the page
+   * exists.
+   */
+  @media (width < 64rem) {
+    .sa-siteheader--landing .sa-siteheader__container {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sa-siteheader__media {
+      display: none;
+    }
+  }
+
+  @media (width < 48rem) {
+    .sa-siteheader__container {
+      padding-block: var(--sa-padding-32);
+    }
+
+    .sa-siteheader--inner .sa-siteheader__container {
+      padding-block: var(--sa-padding-24);
+    }
+
+    .sa-siteheader__band--overlaid {
+      padding-block-end: var(--sa-padding-64);
+    }
+  }
+}
