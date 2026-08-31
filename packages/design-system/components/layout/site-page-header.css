@@ -297,43 +297,52 @@
   }
 
   /*
-   * ── ONE DISC'S WHOLE LIFE, TAKEN STRAIGHT FROM THE COMPONENT ────────────────
+   * ── ONE DISC'S WHOLE LIFE ───────────────────────────────────────────────────
    *
-   * The four stops ARE the published states, converted to scale against the
-   * 416px image they were drawn at:
+   * The extent comes from the component: a disc's life runs 416 → 568 against a
+   * 416px image, so `scale(1)` → `scale(1.365)`.
    *
-   *   416 op 1     →  scale 1      opacity 1
-   *   480 op 0.48  →  scale 1.154  opacity 0.48
-   *   528 op 0.48  →  scale 1.269  opacity 0.48
-   *   568 op 0     →  scale 1.365  opacity 0
+   * ── ONE SPEED, START TO FINISH — AND THE DESIGN'S OWN SAMPLES ARE NOT IT ────
    *
-   * BORN OPAQUE AND INVISIBLE. `scale(1)` is exactly the portrait's box and the
-   * disc sits behind it, so its opaque first instant cannot be seen. That is
-   * what makes the loop seamless with no fade-in: nothing appears out of
-   * nothing, because the appearing happens where nobody can look. What emerges
-   * past the picture's edge is already on its way down towards 0.48, and that
-   * extra density right at the rim is what keeps the portrait's edge crisp.
+   * The published states step +64, +48, +40, which is a DECELERATING curve, and
+   * an earlier pass declared all three as keyframes so linear interpolation
+   * would reproduce it. That was faithful to the drawing and wrong for the
+   * motion: each wave lunged away from the portrait and then crawled, so the
+   * waves bunched up at the outside and the flow visibly changed pace.
    *
-   * IT ENDS AT ZERO, so the death is equally invisible — the disc is at its
-   * largest and faintest, dissolving into a band it already matches.
+   * Water does not do that. A wave leaving a still surface travels at ONE speed,
+   * and every wave travels at the same one. So `scale` is now interpolated
+   * linearly across the whole cycle and nowhere else — and because radius is
+   * `170 × scale`, a scale linear in time IS a radius linear in time, which is
+   * constant radial velocity. The three states remain the source for how FAR a
+   * disc goes; they are no longer the source for how it gets there.
    *
-   * `linear`, because the deceleration is IN THE SAMPLES. The sizes step +64,
-   * +48, +40; interpolating linearly between the published stops reproduces the
-   * designer's curve exactly. Putting `ease-out` on top would ease an
-   * already-eased set of values twice, which is how an animation ends up
-   * lurching at its start and stalling at its end.
+   * ── AND IT IS ALWAYS THERE ──────────────────────────────────────────────────
+   *
+   * Opacity holds FLAT at 0.48 for the first 70% and only then releases. A disc
+   * is therefore a steady presence for almost its whole life rather than an
+   * event with a peak, and the composite of three never thins out: at any
+   * instant the innermost disc sits between scale 1 and 1.122, so the field just
+   * outside the portrait is covered continuously, forever, by construction.
+   *
+   * The earlier `opacity: 1` at birth is gone with the deceleration. It was the
+   * component's value for a disc still hidden behind the image, but our dark rim
+   * is thinner than the reference's, so ours emerged at ~0.75 and fell to 0.48 —
+   * a darkening pulse at the rim every two seconds. Flat from the start removes
+   * it, and costs nothing: at `scale(1)` the disc is behind the portrait anyway.
+   *
+   * BOTH ENDS STAY UNWATCHABLE. Birth happens behind the picture; death happens
+   * at the widest and faintest point, dissolving into a band it already matches.
+   * There is no frame at which a wave can be seen starting or stopping.
    */
   @keyframes sa-halo-flow {
     0% {
       transform: scale(1);
-      opacity: 1;
-    }
-    33.33% {
-      transform: scale(1.154);
       opacity: 0.48;
     }
-    66.66% {
-      transform: scale(1.269);
+    /* 1 + 0.365 × 0.70 — on the line, so the speed does not change here. */
+    70% {
+      transform: scale(1.2555);
       opacity: 0.48;
     }
     100% {

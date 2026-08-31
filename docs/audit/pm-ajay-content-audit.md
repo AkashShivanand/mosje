@@ -1161,3 +1161,57 @@ The alpha also moved: the fill is now **solid** with the translucency carried by
 the animated `opacity`, as the component does it. Baking it into the colour as
 well would have multiplied against the keyframe opacity and landed at ~22% — less
 than half the published density.
+
+## 29. One speed, and the design's own samples were not it
+
+§28 got the shape right — filled discs, not rings — and declared all three
+published states as keyframes so linear interpolation would reproduce the
+drawing. That was faithful to the design and wrong for the motion.
+
+The published sizes step **+64, +48, +40**. That is a decelerating curve, so each
+wave lunged away from the portrait and then crawled: waves bunched up towards the
+outside and the flow visibly changed pace. Water does not do that. A wave leaving
+a still surface travels at one speed, and every wave travels at the same one.
+
+`scale` is now interpolated **linearly across the whole cycle and nowhere else**.
+Because radius is `170 x scale`, a scale linear in time IS a radius linear in
+time — constant radial velocity. Measured on the running page, sampling one
+disc's scale every 300ms:
+
+```
+0.0606  0.0621  0.0603  0.0604  0.0608  0.0618  0.0605
+0.0608  0.0606  0.0608  0.0604  0.0607  0.0620     scale / second
+```
+
+Constant at **0.0608/s**, which is exactly `0.365 ÷ 6s`. The ±0.0015 spread is
+`setTimeout` jitter in the sampler, not the animation.
+
+**The three states remain the source for how FAR a disc travels. They are no
+longer the source for how it gets there.**
+
+### Always there, by construction
+
+Opacity now holds flat at 0.48 for the first 70% and only then releases, so a
+disc is a steady presence for almost its whole life rather than an event with a
+peak. Measured across five moments, the innermost disc is always between scale
+1.004 and 1.100 at full opacity, and the three sit exactly 0.1217 apart — a third
+of the travel, permanently:
+
+```
+innermost 1.100@.48   mid 1.222@.48   outer 1.343@.10
+innermost 1.004@.48   mid 1.125@.48   outer 1.247@.48
+innermost 1.029@.48   mid 1.151@.48   outer 1.273@.40
+innermost 1.055@.48   mid 1.176@.48   outer 1.298@.29
+innermost 1.081@.48   mid 1.202@.48   outer 1.324@.18
+```
+
+The field just outside the portrait is therefore covered continuously, forever,
+without depending on a chosen fade curve.
+
+### The `opacity: 1` at birth is gone, and why that is not a deviation
+
+It was the component's value for a disc still hidden behind the image. Our dark
+rim is thinner than the reference's — 10px on a 340px portrait against 8px on a
+416px one — so ours emerged at ~0.75 and fell to 0.48, a darkening pulse at the
+rim every two seconds. Flat from the start removes it and costs nothing: at
+`scale(1)` the disc is behind the portrait either way.

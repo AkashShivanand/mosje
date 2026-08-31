@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.83.0",
+    version: "v0.84.0",
     date: "2026-08-31",
     current: true,
+    changes: [
+      { kind: "Changed", text: "ONE SPEED, START TO FINISH — AND THE DESIGN'S OWN SAMPLES WERE NOT IT. The published states step +64, +48, +40, which is a DECELERATING curve, and the previous pass declared all three as keyframes so linear interpolation would reproduce it faithfully. Faithful to the drawing, wrong for the motion: each wave lunged away from the portrait and then crawled, so the waves bunched towards the outside and the flow visibly changed pace. Water does not do that — a wave leaving a still surface travels at one speed, and every wave travels at the same one" },
+      { kind: "Changed", text: "`scale` IS NOW INTERPOLATED LINEARLY ACROSS THE WHOLE CYCLE AND NOWHERE ELSE. Because radius is 170 × scale, a scale linear in time IS a radius linear in time — constant radial velocity. Measured on the running page at 300ms intervals: 0.0606 · 0.0621 · 0.0603 · 0.0604 · 0.0608 · 0.0618 · 0.0605 · 0.0608 · 0.0606 · 0.0608 · 0.0604 · 0.0607 · 0.0620 scale/second — constant at 0.0608, which is exactly 0.365 ÷ 6s. The spread is `setTimeout` jitter in the sampler, not the animation. The three states remain the source for how FAR a disc travels; they are no longer the source for how it gets there" },
+      { kind: "Changed", text: "AND IT IS ALWAYS THERE, BY CONSTRUCTION. Opacity holds flat at 0.48 for the first 70% and only then releases, so a disc is a steady presence for almost its whole life rather than an event with a peak. Measured across five moments the innermost disc is always between scale 1.004 and 1.100 at full opacity, and the three sit exactly 0.1217 apart — a third of the travel, permanently. The field just outside the portrait is covered continuously without depending on a chosen fade curve" },
+      { kind: "Removed", text: "THE `opacity: 1` AT BIRTH. It was the component's value for a disc still hidden behind the image — but our dark rim is thinner than the reference's (10px on a 340px portrait against 8px on a 416px one), so ours emerged at ~0.75 and fell to 0.48: a darkening pulse at the rim every two seconds. Flat from the start removes it and costs nothing, because at `scale(1)` the disc is behind the portrait either way" },
+    ],
+  },
+  {
+    version: "v0.83.0",
+    date: "2026-08-31",
     changes: [
       { kind: "Fixed", text: "THE HALO WAS NEVER A RING. Every version up to here drew ANNULI — `box-shadow: 0 0 0 <n>px`, which paints a band and leaves its interior untouched. The component (`Image Container with Halo Effect/lg`, node 99:1334) is a stack of filled circles with a solid #036 fill and a layer opacity — not a stroke among them. The concentric bands a reader sees are not outlines at all: they are WHERE TRANSLUCENT DISCS OVERLAP, and each band's edge is simply where one more disc stops contributing" },
       { kind: "Fixed", text: "WHICH IS WHY NO AMOUNT OF RETIMING COULD FIX IT. A ring leaves a gap behind it, so the flow needs enough rings to keep that gap covered and the eye reads a procession of separate objects — hence the escalation to five. A disc covers everything inside it, so THREE suffice and the field between the portrait and the outer edge is never empty for an instant" },
