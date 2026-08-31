@@ -105,3 +105,37 @@ one level down.
 
 **Check the child, not the frame.** After any change to a component set's size,
 assert that no descendant of an instance exceeds its instance's bounds.
+
+## 5. Two things that bite when a component comes from ANOTHER file
+
+**A remote component cannot be repaired here, and it cannot be safely scaled.**
+The SAMAVESH seal is `remote: true` — it lives in a different library file — so
+`set_fills` on it fails with *"Cannot write to internal and read-only node"*. Its
+inner groups carry mixed constraints, and the damage that causes is measurable:
+
+| instance size | inner groups that distort |
+|---|---|
+| 48 | 2 — `SAMAVESH LOGO` 0.989→1.004, `Group` 2.364→**2.539** |
+| 44 | 2 — `Group` 2.364→2.453 |
+| **40 (natural)** | **0** |
+
+So a remote component is used at its NATURAL size or not at all, until its owning
+file is fixed. Anything the band needs around it — the white circular ground the
+code draws as `.ds-samavesh-banner__badge` — is built HERE, as a wrapper, not by
+editing the component.
+
+**A failed `use_figma` call rolls the whole script back.** A variant reorder and a
+padding change were both written before a later `set_fills` threw, and both were
+silently undone — the screenshot afterwards looked wrong for a reason that had
+nothing to do with the edits themselves. After any error, re-read the state before
+assuming the earlier half of the script survived. It did not.
+
+## 6. The default variant is the one that PASSES
+
+A component set's FIRST variant is what a fresh instance gets. The SAMAVESH Banner
+led with `Tone=Light` — white on `#ff671f`, **2.9:1**, below AA — while `Tone=Dark`
+measures about 6.5:1 on the same ground. Dark leads now.
+
+Where a set carries a conformant option and a non-conformant one, the conformant
+one is the default and the other is the deliberate exception. Shipping it the other
+way round means every instance starts out failing and someone has to know to change it.
