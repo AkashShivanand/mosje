@@ -786,7 +786,8 @@ export const tokens = {
     "easing": {
       "out": "cubic-bezier(0, 0, 0.2, 1)",
       "in": "cubic-bezier(0.4, 0, 1, 1)",
-      "inOut": "cubic-bezier(0.4, 0, 0.2, 1)"
+      "inOut": "cubic-bezier(0.4, 0, 0.2, 1)",
+      "outStrong": "cubic-bezier(0.22, 1, 0.36, 1)"
     },
     "enter": {
       "duration": "250ms",
@@ -799,6 +800,14 @@ export const tokens = {
     "emphasis": {
       "duration": "400ms",
       "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+    },
+    "reveal": {
+      "duration": "400ms",
+      "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+    },
+    "press": {
+      "duration": "150ms",
+      "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
     }
   },
   "border": {

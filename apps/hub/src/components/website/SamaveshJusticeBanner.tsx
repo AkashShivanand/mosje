@@ -106,7 +106,7 @@ export function SamaveshJusticeBanner() {
 
             <div className="mt-4 lg:mt-[1.26cqw]">
               <Link
-                href="/website/samavesh-citizen-portals"
+                href="/portals"
                 className={buttonClasses("primary", "filled", "md", "bg-ink text-white hover:bg-ink-strong rounded-lg px-5")}
               >
                 Explore

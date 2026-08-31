@@ -68,6 +68,7 @@ function storybookRewrites() {
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  staticPageGenerationTimeout: 180,
   images: {
     remotePatterns: [
       {

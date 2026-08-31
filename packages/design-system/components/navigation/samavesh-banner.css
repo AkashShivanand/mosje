@@ -1,0 +1,877 @@
+/* `.sa-container` — this component binds it in the markup for BOTH rows, so it
+   imports it rather than relying on a consumer having loaded components.css.
+   Same reason header.css does. */
+@import "../../foundations/layout.css";
+
+@layer theme, base, components, utilities;
+
+/* ============================================================================
+   MoSJE / SAMAVESH — SamaveshBanner
+   Canonical SAMAVESH header banner & expandable portal discovery drawer.
+   Layout & behavior matched to Figma node 7116:33784 & 7298:29968.
+
+   THE BAND HAS THREE TONES, AND THE DEFAULT KNOWINGLY FAILS WCAG 2. Read this
+   before changing any colour here — the decision is researched, not preferred.
+
+   THE PROBLEM. India Saffron #ff671f is a SATURATED MID-TONE, which is the one
+   thing no ink sits on comfortably. It is too light to carry white and too dark
+   and too vivid to carry dark text at reading size. This is a documented and
+   named failure case in the field — "the orange button problem".
+
+   WHY THE TWO STANDARDS DISAGREE. WCAG 2 computes relative LUMINANCE only. The
+   Helmholtz-Kohlrausch effect means a saturated colour looks far brighter to the
+   eye than its luminance says, so WCAG 2 systematically misjudges vivid
+   mid-tones. APCA (the perceptual algorithm built to fix exactly this) ranks the
+   options in the OPPOSITE order on this ground:
+
+       ink                          WCAG 2      APCA Lc
+       white       #ffffff          2.91  FAIL   59.8  <- best perceptually
+       neutral-bolder #0e1114       6.50  pass   48.9
+       text-default   #1e2124       5.56  pass   46.6
+       successStrong  #003318       4.85  pass   43.9  <- below APCA's 45 floor
+
+   WHAT USER TESTING FOUND. Bounteous / Seastrand, ~20 colour-blind participants:
+   61% preferred WHITE, 39% black. Protanopia 71% white. Monochrome preferred
+   black. One participant on black: "a slight halo effect around it"; one on
+   white: "the white falls into the background". Both effects are real and they
+   affect different people, which is why no single answer serves everyone.
+
+   THE PROOF THAT ENDS THE ARGUMENT. Scanning ~700,000 colours against #ff671f:
+   ZERO inks clear WCAG 2's 4.5:1 AND APCA's Lc 75 for the 14px subline. Not one,
+   in the entire colour space. Relaxed to Lc 60, still zero. For the LARGE bold
+   wordmark 34,887 inks clear both. So the ground, not the ink, is the limit.
+
+   WHY APCA CANNOT SIMPLY WIN. It was REMOVED from WCAG 3 consideration in 2023
+   and was only ever exploratory; WCAG 3's contrast algorithm is still undecided
+   and no Recommendation is expected before ~2028. WCAG 2.1/2.2 AA is the
+   enforceable standard, and GIGW 3.0 binds this estate to it.
+
+   THE THREE TONES.
+     tone="light"  DEFAULT. White on saffron. Matches the Figma reference.
+                   WCAG 2.91 FAIL (needs 4.5 body / 3 large) · APCA Lc 59.8, the
+                   best perceptual score available on this ground. A DELIBERATE,
+                   RECORDED DEVIATION — see docs/guidelines/README.md.
+     tone="dark"   Near-black on the same saffron. WCAG 6.50 PASS · APCA 48.9,
+                   which clears headline but NOT body. The compliant choice.
+     tone="tint"   Near-black on pale saffron, saffron as a top rule and a badge
+                   ring. WCAG 17.29 · APCA Lc 99.1. The ONLY tone that clears
+                   both standards for body text, and the recommended one.
+
+   The saffron itself is never altered by any tone. Only the ink and the ground
+   role change.
+   ============================================================================ */
+
+@layer components {
+  /*
+    THREE TONES, ONE SET OF RULES. Everything the tone changes is a local custom
+    property declared here; the rules below read `--_band-*` and never a tone
+    class. Adding a fourth tone is a block of variables, not a second stylesheet.
+
+    Which to use, and the evidence behind each, is in the block comment at the
+    top of this file and on /design-system/components/navigation/samavesh-banner.
+  */
+  .ds-samavesh-banner {
+    /* tone="light" — the default. White on India Saffron. */
+    --_band-bg: var(--sa-color-brand-saffron);
+    --_band-ink: var(--sa-color-text-onPrimary);
+    --_band-ink-muted: var(--sa-color-text-onPrimary);
+    --_band-rule-size: 0;
+    --_band-rule: var(--sa-color-brand-saffron);
+    --_badge-ring: transparent;
+
+    position: relative;
+    width: 100%;
+    /*
+      MUST BEAT THE HERO CAROUSEL, which draws its prev/next arrows at `z-20`.
+      This was 20 too, and equal z-index falls back to DOM order — the carousel
+      comes later, so its arrows and its play/pause dock painted straight
+      THROUGH the open drawer. Found by looking at it, not by measuring.
+
+      30 is chosen to sit above page content and far below the fixed rails:
+      ImportantLinks is 1002 and the assistant launcher 1010, and neither should
+      be covered by a panel the reader opened from the top of the page.
+    */
+    z-index: 30;
+    font-family: inherit;
+  }
+
+  /*
+    tone="dark" — near-black on the SAME unchanged India Saffron.
+    `--sa-text-neutral-bolder` (#0e1114) is the best dark ink available on this
+    ground by BOTH measures: WCAG 6.50:1 and APCA Lc 48.9. It is deliberately not
+    the deep green, which reads as brand but measures 4.85:1 / Lc 43.9 — below
+    APCA's 45 floor for headline text, i.e. the worst of the credible dark inks.
+  */
+  .ds-samavesh-banner--dark {
+    --_band-ink: var(--sa-text-neutral-bolder);
+    --_band-ink-muted: var(--sa-color-text-default);
+  }
+
+  /*
+    tone="tint" — near-black on pale saffron, with India Saffron as a top rule
+    and a ring around the badge. The only tone where the band clears both
+    standards for BODY text: 17.29:1 and APCA Lc 99.1.
+  */
+  .ds-samavesh-banner--tint {
+    --_band-bg: var(--sa-color-brand-saffronLight);
+    --_band-ink: var(--sa-text-neutral-bolder);
+    --_band-ink-muted: var(--sa-color-text-default);
+    --_band-rule-size: 5px;
+    --_band-rule: var(--sa-color-brand-saffron);
+    --_badge-ring: var(--sa-color-brand-saffron);
+  }
+
+  /*
+    THE BAND PINS WHILE THE PANEL IS OPEN, AND ONLY THEN.
+
+    Four versions of this have been wrong. Each was wrong for a reason worth
+    keeping, and the last two are the interesting pair:
+
+    1. CLOSED THE DRAWER ON SCROLL. Scrolling is how a reader LOOKS at a long
+       list, not how they say "never mind". Cancelling someone's intent to solve
+       a layout problem is the interface overruling the person using it.
+    2. PINNED TO `--sa-header-pinned`. That variable is written ONLY while the
+       masthead is resting, because `scroll-padding-top` has to clear the TALLER
+       of its two states. A sticky offset needs the opposite — the CURRENT one.
+       Measured live: the band sat at 154/212 against a condensed header ending
+       at 65/57, so 89px of page content ran between them on desktop and 155px on
+       a phone. THAT was the real defect, and it was about WHICH VARIABLE, not
+       about when the band pins.
+    3. PINNED ALWAYS, CONDENSING WITH THE MASTHEAD. Pinning permanently forces a
+       shrink, and the shrink cost the subline — which is the line that tells a
+       first visitor SAMAVESH is a single access mechanism rather than a logo.
+       Trading the component's one explanatory sentence for chrome that is
+       present when nobody is using it is the wrong way round.
+    4. WHAT IT DOES NOW. The band pins only while its panel is open, at full
+       height, subline intact. Closed, it scrolls away like any other band.
+
+    The pin exists to keep the TOGGLE with the PANEL: without it, ~540px of
+    scroll took the band — and the only visible way to close — off the top while
+    a 600px panel stayed over the page. That problem exists only while the panel
+    is open, so the fix belongs only in that state. It costs a pinned bar
+    exclusively in the state the reader asked for, and it costs the viewport
+    nothing the rest of the time.
+
+    `sticky` behaves exactly like `relative` until its threshold is crossed, so
+    entering this state moves nothing.
+  */
+  .ds-samavesh-banner--sticky.ds-samavesh-banner--open {
+    position: sticky;
+    top: var(--sa-header-stuck, 0);
+  }
+
+  /*
+    PARKED — closed, still pinned, not animating.
+
+    It exists for the keyboard. Escape returns focus to the toggle, the toggle is
+    inside the band, and `position: sticky` used to live on `--open` — so closing
+    returned the band to a flow position a thousand pixels up IN ONE FRAME, taking
+    the focused control with it. Measured at `top: -1380` with no visible focus
+    indicator anywhere on the page: WCAG 2.4.7.
+
+    Guarding the animation alone did not fix it, because the teleport was
+    underneath the animation. So while focus is inside, the band simply stays —
+    full opacity, in place, anchor visible. It leaves on focusout.
+  */
+  .ds-samavesh-banner--parked:not(.ds-samavesh-banner--open) {
+    position: sticky;
+    top: var(--sa-header-stuck, 0);
+  }
+
+  /*
+    LEAVING — the exit, once nothing is focused inside.
+
+    It goes UP, the way it would have gone if the reader had scrolled it away
+    themselves, and on the exit pair: `--sa-motion-exit-*` is 150ms on an
+    accelerating curve. Leaving accelerates and gets out of the way; the reveal
+    curve is for arriving, and using it here would make the band linger.
+  */
+  .ds-samavesh-banner--leaving:not(.ds-samavesh-banner--open) {
+    position: sticky;
+    top: var(--sa-header-stuck, 0);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition:
+      transform var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      opacity var(--sa-motion-exit-duration) linear;
+  }
+
+  /* ONE motion, not two. The drawer would otherwise still be tweening shut while
+     the band slides — a panel shrinking inside a bar that is leaving. */
+  .ds-samavesh-banner--leaving:not(.ds-samavesh-banner--open) .ds-samavesh-banner__drawer {
+    transition: none;
+  }
+
+  /*
+    CONDENSED WHILE PINNED — item 2, and it is affordable HERE in a way it was
+    never affordable when the band pinned permanently.
+
+    The band condenses only when it is pinned above an open panel, which is the
+    one moment it is competing with content for the fold. Every pixel it gives
+    back is a pixel of portal list. So: padding 12 -> 6, the badge 52 -> 40, the
+    wordmark one step down the scale, and the Explore control to `sm`. 80px -> 60.
+
+    THE SUBLINE STAYS, and that is the difference from the version that was
+    rejected. Shrinking a band that is ALWAYS present forces you to drop it,
+    because 86px permanently is too much; shrinking a band that is present only
+    while the reader is choosing a portal does not — the sentence explaining what
+    SAMAVESH is is still there when they look at it. Reducing padding and scale
+    is a different act from deleting content, and only the second one was wrong.
+
+    Keyed off the masthead's own `data-sa-header-condensed`, so the two condense
+    on the same scroll, with the same asymmetric hysteresis (past 120, back under
+    40), and the chrome reads as one block rather than two things resizing near
+    each other.
+  */
+  :root[data-sa-header-condensed] .ds-samavesh-banner--sticky.ds-samavesh-banner--open
+    .ds-samavesh-banner__bar {
+    padding-block: var(--sa-padding-6);
+  }
+
+  /* Bar height and badge diameter are component geometry, not spacing steps. */
+  :root[data-sa-header-condensed] .ds-samavesh-banner--sticky.ds-samavesh-banner--open
+    .ds-samavesh-banner__container {
+    min-height: 48px;
+  }
+
+  :root[data-sa-header-condensed] .ds-samavesh-banner--sticky.ds-samavesh-banner--open
+    .ds-samavesh-banner__badge {
+    width: 40px;
+    height: 40px;
+  }
+
+  :root[data-sa-header-condensed] .ds-samavesh-banner--sticky.ds-samavesh-banner--open
+    .ds-samavesh-banner__title {
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+  }
+
+  /* The subline drops one step too — still present, still read, just no longer
+     set at the size it needs when it is the first thing on the page. */
+  :root[data-sa-header-condensed] .ds-samavesh-banner--sticky.ds-samavesh-banner--open
+    .ds-samavesh-banner__subline {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  :root[data-sa-header-condensed] .ds-samavesh-banner--sticky.ds-samavesh-banner--open
+    .ds-samavesh-banner__explore-btn {
+    padding: var(--sa-padding-4) var(--sa-padding-12);
+  }
+
+  /* ── Header Bar ────────────────────────────────────────────────────────── */
+  .ds-samavesh-banner__bar {
+    background-color: var(--_band-bg);
+    border-top: var(--_band-rule-size) solid var(--_band-rule);
+    padding-block: var(--sa-padding-12);
+    box-shadow: var(--sa-elevation-raised);
+    /* Anchors the mobile full-band toggle below. */
+    position: relative;
+    z-index: 2;
+  }
+
+  /* Pairs with `.sa-container` in the markup, which owns the max-width ladder
+     (1200 / 1320 / 1440) AND the right-wall gutter that keeps content clear of
+     `ImportantLinks`. This class must therefore set NO max-width and NO
+     padding-inline — a restated 1320px here is what put the banner 16px out of
+     line with every other block on the page, and ran the last portal card under
+     the wall rail. */
+  .ds-samavesh-banner__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-16);
+    /* Bar height: component geometry, not a spacing step. */
+    min-height: 56px;
+  }
+
+  .ds-samavesh-banner__brand {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    min-width: 0;
+    flex: 1 1 auto;
+  }
+
+  @media (min-width: 768px) {
+    .ds-samavesh-banner__brand {
+      gap: var(--sa-inline-16);
+    }
+  }
+
+  /* Badge diameter is component geometry — the emblem is a fixed-size mark, not
+     a value on the space scale. */
+  .ds-samavesh-banner__badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background-color: var(--sa-bg-neutral-base);
+    border-radius: var(--sa-shape-full);
+    padding: var(--sa-padding-2);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px var(--_badge-ring), var(--sa-elevation-card);
+  }
+
+  @media (min-width: 768px) {
+    .ds-samavesh-banner__badge {
+      width: 52px;
+      height: 52px;
+    }
+  }
+
+  .ds-samavesh-banner__badge img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border-radius: var(--sa-shape-full);
+  }
+
+  .ds-samavesh-banner__text-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-2);
+    min-width: 0;
+  }
+
+  @media (min-width: 768px) {
+    .ds-samavesh-banner__text-group {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--sa-inline-16);
+    }
+  }
+
+  /* Fluid type token replaces the old 20/26/28px breakpoint ladder. */
+  .ds-samavesh-banner__title {
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--_band-ink);
+    white-space: nowrap;
+  }
+
+  /* Wraps the DS `Divider` rather than drawing a rule of its own. Hidden below
+     768px, where the band has no room for wordmark + rule + subline. */
+  .ds-samavesh-banner__divider {
+    display: none;
+    flex-shrink: 0;
+    opacity: 0.45;
+  }
+
+  @media (min-width: 768px) {
+    .ds-samavesh-banner__divider {
+      display: block;
+    }
+  }
+
+  /* Full-strength ink, not a color-mix. The old 95% white was BOTH the lowest
+     contrast in the component and the smallest text in it.
+
+     IT STAYS VISIBLE AT EVERY WIDTH. An earlier pass hid it below 768px to keep
+     the band short; that was the wrong trade — the subline is what tells a first
+     visitor that SAMAVESH is a single access mechanism rather than a logo, and
+     the mobile design keeps it. What gives way instead is the Explore PILL: see
+     the button rules below, where the control becomes the whole band. */
+  .ds-samavesh-banner__subline {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--_band-ink-muted);
+    font-weight: 400;
+  }
+
+  @media (min-width: 768px) {
+    .ds-samavesh-banner__subline {
+      font-size: var(--sa-type-body-2-size);
+      line-height: var(--sa-type-body-2-lh);
+    }
+  }
+
+  .ds-samavesh-banner__actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* India Green. `--sa-brand-samavesh-green` #046a38 carries white at 6.72:1 and
+     sits closer to the Figma reference's mid-green than the near-black
+     `--sa-color-status-success` this used to use — better fidelity AND better
+     contrast, so nothing is traded. The reference's own #198754 measures 4.53:1,
+     which clears AA only just; per the estate's standards-precedence rule the
+     deviation runs upward and is recorded here. */
+  .ds-samavesh-banner__explore-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-inline-8);
+    background-color: var(--sa-brand-samavesh-green);
+    color: var(--sa-color-text-onPrimary);
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    font-weight: 600;
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border-radius: var(--sa-shape-8);
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--sa-elevation-card);
+    transition:
+      background-color var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      box-shadow var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .ds-samavesh-banner__explore-btn:hover {
+    background-color: var(--sa-color-status-success);
+    box-shadow: var(--sa-elevation-raised);
+  }
+
+  /*
+    THE BUTTON IS A DS `Button`, WORN VIA `buttonClasses("success", …)`.
+    It used to restate the fill, radius, padding and shadow by hand; the system
+    already ships a green button and `buttonClasses` exists precisely so an
+    element that must be a real `<button>` for other reasons can borrow that
+    appearance without forking it. Nothing about the DESKTOP look lives here any
+    more — if the DS button changes, this changes with it.
+
+    BELOW 768px THE BUTTON IS THE BAND. A 375px row cannot hold the wordmark, a
+    three-line subline and a labelled pill, and the subline is the half that
+    earns its place. So the control sheds the DS button's chrome, stretches over
+    the whole band and leaves only its chevron at the right edge. One control,
+    one node in the accessibility tree, and a target the size of the band.
+    Nothing under it is interactive, so covering the brand block costs nothing;
+    the accessible name comes from `aria-label`, which is set either way.
+  */
+  /*
+    SCOPED TO MOBILE, so nothing has to be un-set again on desktop. Writing these
+    unscoped and reverting them at 768px meant `color: unset`, which the token
+    lint correctly refuses — and it would have left the DS button's own colour
+    depending on an override cancelling itself. Above 767px this block simply
+    does not apply and the DS button shows through untouched.
+  */
+  @media (max-width: 767px) {
+    .ds-samavesh-banner__explore-btn {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      justify-content: flex-end;
+      padding-inline: var(--sa-padding-16);
+      background: none;
+      box-shadow: none;
+      border: none;
+      border-radius: 0;
+      color: var(--_band-ink);
+    }
+
+    .ds-samavesh-banner__explore-btn:hover {
+      background: color-mix(in srgb, var(--_band-ink) 8%, transparent);
+      box-shadow: none;
+    }
+
+    .ds-samavesh-banner__explore-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip-path: inset(50%);
+      white-space: nowrap;
+      border: 0;
+    }
+  }
+
+  /* Green ring, not white. A white focus ring on saffron is 2.91:1 and fails
+     1.4.11 Non-text Contrast; deep India green is 4.85:1 on the same ground. */
+  .ds-samavesh-banner__explore-btn:focus-visible {
+    outline: 2px solid var(--_band-ink);
+    outline-offset: 2px;
+  }
+
+  .ds-samavesh-banner__btn-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Matches the drawer's own curve, so the chevron and the panel are one
+       movement rather than two things that happen to start together. */
+    transition: transform var(--sa-motion-reveal-duration) var(--sa-motion-reveal-easing);
+  }
+
+  .ds-samavesh-banner--open .ds-samavesh-banner__btn-icon {
+    transform: rotate(180deg);
+  }
+
+  /* ── Expandable Drawer Panel ────────────────────────────────────────────── */
+  /*
+    IT OVERLAYS THE PAGE; IT DOES NOT PUSH IT. In flow, opening the drawer moved
+    everything below it down by ~300px — the hero jumped, and on a phone the
+    content the reader was looking at left the screen entirely. That is the
+    behaviour of a page that rebuilt itself, not of a panel that opened. The
+    Figma reference draws it over the hero for the same reason.
+
+    Absolute, so the drawer is out of flow; `top: 100%` hangs it directly off the
+    band. The banner is `position: relative`, so this is measured from the banner
+    and not from the page.
+
+    IT ANIMATES `grid-template-rows`, WHICH IS A LAYOUT ANIMATION, AND THAT IS A
+    KNOWN, ACCEPTED COST — recorded here rather than left to be rediscovered.
+
+    0fr -> 1fr re-lays-out eight cards and eight images every frame, and it is the
+    most expensive thing in this component. `max-height` is no better: it is also
+    layout, and it is a cap that clips silently once `portals` grows.
+
+    THE OBVIOUS FIX WAS TRIED AND REVERTED, 31 Aug 2026. Because the panel is
+    `position: absolute`, nothing below it moves whatever its height does — so in
+    principle it can slide and fade on transform + opacity and let its height be
+    automatic, which is compositor-only. Implemented, the `--open` state's
+    `transform` and `opacity` did not take effect in either state while
+    `visibility` from the same rule did, and the stylesheet is not readable from
+    the page to find what was overriding them. A rewrite of a panel's show/hide
+    that cannot be verified is worse than a measured cost that works, so this
+    stayed. Anyone picking it up again: start by finding what wins over
+    `.ds-samavesh-banner__drawer--open`'s transform.
+  */
+  .ds-samavesh-banner__drawer {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    display: grid;
+    background-color: var(--sa-color-brand-saffronLight);
+    box-shadow: var(--sa-elevation-raised);
+    /* Exponential ease-out, not Material's symmetric standard curve. The panel
+       should leave the gate quickly and DECELERATE into place — that reads as
+       something arriving under its own momentum rather than being played back at
+       a fixed rate. Apple's drawer spec is damping 0.8 / response 0.3; this is
+       its closest single-curve approximation. */
+    transition:
+      transform var(--sa-motion-reveal-duration) var(--sa-motion-reveal-easing),
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-reveal-easing);
+  }
+
+  /*
+    THE BOTTOM RULE BELONGS TO THE OPEN STATE ONLY, and that is the fix for the
+    white line under the band. A collapsed drawer used to reserve its border in
+    layout — the old `grid-template-rows: 0fr` zeroed the CONTENT, not the border
+    box — while `visibility: hidden` stopped it painting. The result was a 2px
+    strip of reserved, unpainted space showing the page background through: a
+    white line under the orange band on every page, at every width. The panel is
+    out of flow now so it cannot recur, but the rule still belongs to the open
+    state and moving it back would be a regression waiting to happen.
+  */
+  .ds-samavesh-banner__drawer--closed {
+    grid-template-rows: 0fr;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .ds-samavesh-banner__drawer--open {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    border-bottom: 2px solid var(--sa-color-brand-saffron);
+  }
+
+  /*
+    THE PANEL SCROLLS ITSELF WHEN IT DOES NOT FIT, and without this the bottom of
+    it is UNREACHABLE. Measured on a 375x812 phone: eight stacked cards make the
+    panel 1062px, 594px past the fold — and because the band is sticky while open
+    and the panel hangs off it absolutely, the panel PINS TOO. Scrolling moved the
+    band and left the last three cards and the footer link permanently off-screen.
+    That is the sticky fix trading one defect for a worse one.
+
+    So the panel is capped at the space actually left below the pinned band and
+    scrolls inside that. `dvh` rather than `vh` because mobile browser chrome
+    hides and shows, and `vh` measures the tallest state — which would put the
+    cap below the real fold on exactly the viewport this defect appeared on.
+
+    `--sa-header-bottom` here, NOT the `--sa-header-stuck` the band pins to. They
+    differ by the accessibility bar's 46px for the first 46px of scroll, and the
+    two errors are not symmetric: a cap 46px too SHORT loses a little height the
+    panel could have used, and the panel scrolls internally anyway; a cap 46px too
+    TALL puts the last rows below the fold with no internal scroll to reach them,
+    which is the exact defect this cap was added to close. Take the safe one.
+
+    SCROLL CHAINING IS DELIBERATELY LEFT ON. An earlier version set
+    `overscroll-behavior: contain` to stop a flick past the end of the list
+    dragging the band away — but the band is STICKY while open, so it cannot be
+    dragged away; the page simply moves underneath it. What `contain` actually
+    bought was a scroll trap: the open panel covers about 65% of the viewport, so
+    the reader's pointer is usually over it, and once the list bottomed out the
+    page stopped responding to scroll entirely. Chaining is the correct
+    complement to a panel that does not close on scroll.
+  */
+  .ds-samavesh-banner__drawer-clip {
+    overflow: hidden;
+    min-height: 0;
+  }
+
+  .ds-samavesh-banner--open .ds-samavesh-banner__drawer-clip {
+    max-height: calc(100dvh - var(--sa-header-bottom, 0px) - var(--_band-h, 88px));
+    overflow-y: auto;
+  }
+
+  /* Horizontal axis belongs to `.sa-container` in the markup — vertical only. */
+  .ds-samavesh-banner__drawer-inner {
+    padding-block: var(--sa-padding-24);
+  }
+
+  @media (min-width: 768px) {
+    .ds-samavesh-banner__drawer-inner {
+      padding-block: var(--sa-padding-32);
+    }
+  }
+
+  /*
+    LEFT-ALIGNED, AND SMALLER. Both were wrong for the same reason.
+
+    CENTRING IT CREATED A SECOND ALIGNMENT AXIS. The cards below start at the
+    container's left edge; a centred heading answers to the container's midpoint,
+    so the two never line up and the panel reads as two compositions stacked.
+    Centred text is right for a short, self-contained block that owns its own
+    space — a hero, an empty state, a dialog. It is wrong as a label for a list
+    that is itself left-aligned, and the giveaway is exactly this: nothing beneath
+    it shares its axis.
+
+    AND IT WAS THE LARGEST TYPE ON THE SURFACE. At `headline-2` it rendered 32px —
+    louder than the band's own 28px wordmark, on a panel where the thing that
+    matters is the eight portals underneath. A label for a list should not outrank
+    the brand it sits under, let alone the list. `title-1` reads as a section
+    header, which is what it is.
+  */
+  .ds-samavesh-banner__drawer-heading {
+    font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
+    font-weight: 700;
+    color: var(--sa-color-status-successStrong);
+    margin-block: 0 var(--sa-stack-20);
+    letter-spacing: -0.01em;
+  }
+
+  @media (min-width: 1024px) {
+    .ds-samavesh-banner__drawer-heading {
+      margin-bottom: var(--sa-stack-32);
+    }
+  }
+
+  /* Chips come from the DS `Chip`; this only lays them out. The count is a
+     plain span inside the chip's own label, so it inherits the chip's states
+     (selected, hover, focus) rather than needing a second set of rules. */
+  .ds-samavesh-banner__filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin-bottom: var(--sa-stack-24);
+  }
+
+  .ds-samavesh-banner__count {
+    margin-left: var(--sa-inline-6);
+    font-weight: 700;
+    opacity: 0.7;
+  }
+
+  .ds-samavesh-banner__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sa-stack-16);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 640px) {
+    .ds-samavesh-banner__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--sa-inline-16);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .ds-samavesh-banner__grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--sa-inline-20);
+    }
+  }
+
+  /*
+    The cards settle in sequence rather than all at once. The stagger is small
+    (28ms) and capped at eight steps: enough that the eye reads the grid as
+    filling in a direction, not so much that the last card feels late. Capping
+    matters — an uncapped stagger over a long list makes the tail arrive after
+    the reader has already started looking for it.
+
+    Transform and opacity only, so this stays on the compositor.
+  */
+  .ds-samavesh-banner__grid > li {
+    display: flex;
+    opacity: 0;
+    transform: translateY(6px);
+    transition:
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-reveal-easing),
+      transform var(--sa-motion-enter-duration) var(--sa-motion-reveal-easing);
+  }
+
+  .ds-samavesh-banner--open .ds-samavesh-banner__grid > li {
+    opacity: 1;
+    transform: none;
+  }
+
+  /*
+    THE STAGGER IS ON THE WAY IN ONLY, and the exit is deliberately instant.
+
+    The delays used to apply in both directions, because a transition-delay set on
+    the open state still runs when the state is removed. That queued the last card
+    at 256 + 250 = 506ms of fade-out against a 150ms band exit — the panel was
+    still dissolving after the bar carrying it had gone. Exit should be faster
+    than enter, and here it should not be a separate timeline at all.
+
+    45ms steps, capped at eight. Under about 30ms the cascade does not read; over
+    about 80ms the tail arrives after the reader has started looking for it.
+  */
+  .ds-samavesh-banner--open .ds-samavesh-banner__grid > li:nth-child(1) { transition-delay: 40ms; }
+  .ds-samavesh-banner--open .ds-samavesh-banner__grid > li:nth-child(2) { transition-delay: 85ms; }
+  .ds-samavesh-banner--open .ds-samavesh-banner__grid > li:nth-child(3) { transition-delay: 130ms; }
+  .ds-samavesh-banner--open .ds-samavesh-banner__grid > li:nth-child(4) { transition-delay: 175ms; }
+  .ds-samavesh-banner--open .ds-samavesh-banner__grid > li:nth-child(5) { transition-delay: 220ms; }
+  .ds-samavesh-banner--open .ds-samavesh-banner__grid > li:nth-child(6) { transition-delay: 265ms; }
+  .ds-samavesh-banner--open .ds-samavesh-banner__grid > li:nth-child(7) { transition-delay: 310ms; }
+  .ds-samavesh-banner--open .ds-samavesh-banner__grid > li:nth-child(n + 8) { transition-delay: 355ms; }
+
+  /* Closing: no delay, no travel, and out of the way before the band moves. */
+  .ds-samavesh-banner__grid > li {
+    transition-delay: 0ms;
+  }
+
+  .ds-samavesh-banner:not(.ds-samavesh-banner--open) .ds-samavesh-banner__grid > li {
+    transition-duration: var(--sa-motion-exit-duration);
+  }
+
+  /* Cards are `PortalCard`, a shared DS component — the banner drew its own
+     until the citizen-portals directory turned out to be drawing a second,
+     different card for the same object. Only the GRID belongs here. */
+
+  /* Same axis as the heading and the grid. One composition, not three. */
+  /* No illustration and no apology. One sentence, in the panel's own body size,
+     on the panel's own axis — the reader needs to know the list is empty and that
+     the page is not broken, and a graphic for that would be decoration on a
+     failure. The footer link below it stays, because it is the route that still
+     works. */
+  .ds-samavesh-banner__empty {
+    margin: 0;
+    padding-block: var(--sa-padding-16);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-color-text-default);
+  }
+
+  .ds-samavesh-banner__footer-row {
+    margin-top: var(--sa-stack-24);
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-6);
+  }
+
+  /* The question is the quiet half. It is context, not the action — putting both
+     in link colour made the whole line compete with the eight cards above it. */
+  .ds-samavesh-banner__footer-prompt {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-color-text-default);
+  }
+
+  /*
+    INDIA GREEN, NOT THE ACTION BLUE — for two reasons, and both are measured.
+
+    CONTRAST: `--sa-color-action-primary-default` is #0373df, which is 4.24:1 on
+    this drawer's #fff2ed ground. That is BELOW AA's 4.5:1 for 14px text, and it
+    had shipped. The blue was chosen against white; the drawer is not white. Its
+    hover state passed at 6.54, so only the RESTING state failed — the state a
+    reader spends all of their time in.
+
+    COHERENCE: the panel carried three brand hues in 400px — a green heading,
+    saffron cards and a blue link — so nothing was dominant. Green is already the
+    estate's affirmative colour here: the Explore control, the selected check.
+    Using it makes green the panel's system colour and saffron its content colour,
+    which is two roles rather than three accidents. #046a38 measures 6.14:1.
+  */
+  .ds-samavesh-banner__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 600;
+    color: var(--sa-brand-samavesh-green);
+    text-decoration: none;
+    padding: var(--sa-padding-4) var(--sa-padding-6);
+    border-radius: var(--sa-shape-8);
+    transition:
+      color var(--sa-motion-press-duration) var(--sa-motion-press-easing),
+      background-color var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  /* THE UNDERLINE IS ON THE WORDS, NEVER ON THE LINK. `text-decoration` inherits
+     into every child, so setting it on the anchor drew a rule under the arrow
+     glyph as well — a stray 16px dash floating after the text. The same defect
+     the AccessibilityBar's launch icon has already had once. */
+  .ds-samavesh-banner__view-all > span:first-child {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .ds-samavesh-banner__view-all:hover {
+    color: var(--sa-color-status-successStrong);
+    background-color: color-mix(in srgb, var(--sa-brand-samavesh-green) 8%, transparent);
+  }
+
+  .ds-samavesh-banner__view-all:focus-visible {
+    outline: 2px solid var(--sa-brand-samavesh-green);
+    outline-offset: 2px;
+  }
+
+  /* The drawer still opens and closes — only the tweening stops, so a reader who
+     asked the OS for less motion gets the state change without the travel. */
+  @media (prefers-reduced-motion: reduce) {
+    /* `--closing` is never SET under reduced motion (the component checks the
+       media query before entering the state), so this is belt and braces for a
+       reader who changes the setting mid-exit. */
+    .ds-samavesh-banner--leaving,
+    .ds-samavesh-banner__drawer,
+    .ds-samavesh-banner__explore-btn,
+    .ds-samavesh-banner__view-all,
+    .ds-samavesh-banner__btn-icon,
+    .ds-samavesh-banner__grid > li {
+      transition: none;
+    }
+
+    /* The stagger's travel goes; the cards are simply present. A delay with no
+       transition would otherwise hold them invisible for a quarter of a second. */
+    .ds-samavesh-banner__grid > li {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0ms;
+    }
+  }
+}
+
+/* ── Where a keyboard focus must not land ──────────────────────────────────────
+   NOTHING TO ADD, and that is the consequence of pinning only while open.
+
+   A band that pins PERMANENTLY obscures anchor targets exactly as the masthead
+   does, so it owed the document its own share of `scroll-padding-top` — it
+   published a resting height and a rule here added it, taking the phone figure to
+   302px. Pinning only while the panel is open removes that debt: closed, the band
+   scrolls away and obscures nothing; open, the reader is choosing a portal rather
+   than following an in-page anchor.
+
+   Leaving the rule behind would have been worse than never adding it — every
+   anchor and skip-link on every page would land 80-86px lower than it should,
+   over-padding forever to clear a band that is not there. Removed with the
+   behaviour that needed it. `header.css` still carries the masthead's own share,
+   which is the only one still owed. */

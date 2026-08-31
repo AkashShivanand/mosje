@@ -55,6 +55,12 @@ export const SETTING_DEMO_TOOLS = "demo_tools";
  */
 export const SETTING_COOKIE_BANNER = "cookie_banner";
 
+/**
+ * Where the top SAMAVESH banner is shown across the website, as serialised
+ * `SamaveshBannerConfig` JSON ("all" | "except_org_details" | "homepage_only").
+ */
+export const SETTING_SAMAVESH_BANNER = "samavesh_banner";
+
 const CACHE_TTL_MS = 60_000;
 const FETCH_TIMEOUT_MS = 1_500;
 

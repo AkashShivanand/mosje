@@ -534,3 +534,40 @@ export { ActionBanner } from "./components/feedback/action-banner";
 export type { ActionBannerProps, ActionBannerVariant } from "./components/feedback/action-banner";
 export { Ticker } from "./components/feedback/ticker";
 export type { TickerProps, TickerItem, TickerOrientation, TickerHeight } from "./components/feedback/ticker";
+
+/* ── Restored 2026-08-31 ──────────────────────────────────────────────────────
+ * These exports belong to the SamaveshBanner / OrgLogo / PortalCard work in
+ * progress on `feat/samavesh-banner`. They were overwritten in this working
+ * tree by a parallel session copying its own barrel over this file, and are
+ * reinstated here from the modules' own public surface and from every name the
+ * estate actually imports — not from memory.
+ *
+ * If the shape below is not what that work intended, it is this block that is
+ * wrong, not the modules.
+ * ------------------------------------------------------------------------- */
+export { SamaveshBanner, DEFAULT_SAMAVESH_PORTALS } from "./components/navigation/samavesh-banner";
+export type { SamaveshBannerProps } from "./components/navigation/samavesh-banner";
+export { OrgLogo } from "./components/brand/org-logo";
+export type { OrgLogoProps, OrgLogoSize } from "./components/brand/org-logo";
+export {
+  ORG_LOGOS,
+  ORG_LOGO_FALLBACK,
+  PORTAL_ORG_LOGOS,
+  SAMAVESH_MARK,
+  SAMAVESH_MARK_VECTOR,
+  NATIONAL_EMBLEM,
+  NATIONAL_EMBLEM_INVERSE,
+  orgLogoSrc,
+  portalLogoSrc,
+} from "./components/brand/org-logo-registry";
+export type { OrgSlug } from "./components/brand/org-logo-registry";
+export { PortalCard } from "./components/navigation/portal-card";
+export type { PortalCardProps, PortalCardVariant } from "./components/navigation/portal-card";
+export {
+  PORTAL_LABELS,
+  portalLabel,
+  portalSummary,
+  portalCategoriesIn,
+} from "./components/navigation/app-switcher-utils";
+export type { PortalCategory } from "./components/navigation/app-switcher-utils";
+export { portalLoginUrl } from "./components/auth/portal-login-url";

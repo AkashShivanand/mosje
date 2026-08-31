@@ -11,10 +11,11 @@
  * keywords are attached at read time in `build.ts` — they belong to the concept,
  * not to the route, so they are not baked in here.
  *
- * 3 route(s) are deliberately absent:
+ * 4 route(s) are deliberately absent:
  *   /nmba-options — internal design-option preview — variants of one page, not content
  *   /nmba-placement-preview — internal design-option preview — a layout sandbox, not content
  *   /search — the results page itself — a search result pointing at the search page is a loop
+ *   /samavesh-citizen-portals — retired — redirects to /portals, which is the same directory with search and filters. A redirect has no title of its own and must not appear as a result: indexing it would put two entries in search for one destination.
  */
 
 export interface StaticPageEntry {
@@ -513,13 +514,6 @@ export const STATIC_PAGES: StaticPageEntry[] = [
     "title": "SAMAVESH — Admin Portals",
     "description": "Administrative consoles for MoSJE schemes and organisations (authorised access).",
     "href": "/website/samavesh-admin-portals",
-    "section": "Portals",
-    "iconName": "apps"
-  },
-  {
-    "title": "SAMAVESH — Citizen Portals",
-    "description": "Single access to all citizen-facing portals and schemes under MoSJE.",
-    "href": "/website/samavesh-citizen-portals",
     "section": "Portals",
     "iconName": "apps"
   },

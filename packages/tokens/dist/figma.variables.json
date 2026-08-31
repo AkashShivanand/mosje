@@ -28,9 +28,9 @@
       "existing": 25
     },
     "Motion": {
-      "total": 12,
+      "total": 17,
       "new": 0,
-      "existing": 12
+      "existing": 17
     },
     "Density": {
       "total": 8,
@@ -22970,6 +22970,26 @@
           }
         },
         {
+          "name": "ref/motion/easing/outStrong",
+          "path": "motion/easing/outStrong",
+          "type": "STRING",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "STRING",
+              "value": "cubic-bezier(0.22, 1, 0.36, 1)"
+            }
+          },
+          "description": "Exponential ease-out. The built-in decelerate curve is too weak to read as intentional on a large surface: it leaves the gate slowly, which is the exact moment the reader is watching. This leaves fast and settles, so a panel reads as arriving under its own momentum rather than being played back at a fixed rate. Use it for anything the reader opens. Raw motion step.",
+          "codeSyntax": {
+            "WEB": "var(--sa-ref-motion-easing-outStrong)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "ref",
+            "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
           "name": "motion/enter/duration",
           "path": "motion/enter/duration",
           "type": "FLOAT",
@@ -23088,6 +23108,90 @@
           "description": "Use for a deliberate, attention-carrying move — the easing half of the pair. Reserve it; everything cannot be emphasis.",
           "codeSyntax": {
             "WEB": "var(--sa-motion-emphasis-easing)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "motion/reveal/duration",
+          "path": "motion/reveal/duration",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Motion",
+              "name": "ref/motion/duration/slow"
+            }
+          },
+          "description": "Use for a surface the reader DELIBERATELY OPENED — a drawer, a disclosure panel — the duration half of the pair. Slower than a plain enter because it is a large area and the reader is watching it, and on the strong curve so it decelerates into place rather than easing in at a constant rate.",
+          "codeSyntax": {
+            "WEB": "var(--sa-motion-reveal-duration)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "motion/reveal/easing",
+          "path": "motion/reveal/easing",
+          "type": "STRING",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Motion",
+              "name": "ref/motion/easing/outStrong"
+            }
+          },
+          "description": "Use for a surface the reader DELIBERATELY OPENED — a drawer, a disclosure panel — the easing half of the pair. Slower than a plain enter because it is a large area and the reader is watching it, and on the strong curve so it decelerates into place rather than easing in at a constant rate.",
+          "codeSyntax": {
+            "WEB": "var(--sa-motion-reveal-easing)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "motion/press/duration",
+          "path": "motion/press/duration",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Motion",
+              "name": "ref/motion/duration/fast"
+            }
+          },
+          "description": "Use for FEEDBACK — a press, a hover lift, an icon nudge — the duration half of the pair. Short on purpose: past about 200ms a press stops confirming the interface heard you and starts looking like a delay.",
+          "codeSyntax": {
+            "WEB": "var(--sa-motion-press-duration)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "motion/press/easing",
+          "path": "motion/press/easing",
+          "type": "STRING",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Motion",
+              "name": "ref/motion/easing/outStrong"
+            }
+          },
+          "description": "Use for FEEDBACK — a press, a hover lift, an icon nudge — the easing half of the pair. Short on purpose: past about 200ms a press stops confirming the interface heard you and starts looking like a delay.",
+          "codeSyntax": {
+            "WEB": "var(--sa-motion-press-easing)"
           },
           "status": "existing",
           "$extensions": {

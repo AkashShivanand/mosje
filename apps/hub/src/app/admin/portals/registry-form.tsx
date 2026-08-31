@@ -17,6 +17,7 @@ import * as React from "react";
 import { useFormStatus } from "react-dom";
 import { Alert, Badge, Button, Icon, Input, Select, Toggle } from "@mosje/design-system";
 import type { RegistryStatus } from "@mosje/design-system/registry";
+import type { SamaveshBannerPlacement } from "@/lib/samavesh-banner/config";
 
 export interface RegistryRow {
   path: string;
@@ -66,6 +67,8 @@ export interface RegistryFormProps {
   demoToolsEnabled: boolean;
   /** The cookie consent banner's switch. Currently off pending a redesign. */
   cookieBannerEnabled: boolean;
+  /** SAMAVESH top banner placement across website pages. */
+  samaveshBannerPlacement: SamaveshBannerPlacement;
   saveAction: (formData: FormData) => Promise<void>;
   resetAction: () => Promise<void>;
   storeConfigured: boolean;
@@ -73,6 +76,12 @@ export interface RegistryFormProps {
   savedMessage?: string;
   errorMessage?: string;
 }
+
+const SAMAVESH_BANNER_OPTIONS = [
+  { value: "all", label: "All pages (Default)" },
+  { value: "except_org_details", label: "All pages except organisation details" },
+  { value: "homepage_only", label: "Only the homepage" },
+];
 
 const STATUS_OPTIONS = [
   { value: "live", label: "Live — shown and clickable" },
@@ -134,6 +143,7 @@ export function RegistryForm({
   assistantEnabled: initialAssistantEnabled,
   demoToolsEnabled: initialDemoToolsEnabled,
   cookieBannerEnabled: initialCookieBannerEnabled,
+  samaveshBannerPlacement: initialSamaveshBannerPlacement,
   saveAction,
   resetAction,
   storeConfigured,
@@ -146,6 +156,9 @@ export function RegistryForm({
   const [demoToolsEnabled, setDemoToolsEnabled] = React.useState(initialDemoToolsEnabled);
   const [cookieBannerEnabled, setCookieBannerEnabled] = React.useState(
     initialCookieBannerEnabled,
+  );
+  const [samaveshBannerPlacement, setSamaveshBannerPlacement] = React.useState<SamaveshBannerPlacement>(
+    initialSamaveshBannerPlacement,
   );
   const [expanded, setExpanded] = React.useState<string | null>(null);
   const [announcement, setAnnouncement] = React.useState("");
@@ -309,6 +322,11 @@ export function RegistryForm({
           name="cookieBanner"
           value={cookieBannerEnabled ? "on" : "off"}
         />
+        <input
+          type="hidden"
+          name="samaveshBanner"
+          value={samaveshBannerPlacement}
+        />
 
         <section className="mb-4 rounded-xl border border-border bg-surface p-5 shadow-xs">
           <div className="flex flex-wrap items-start justify-between gap-4">
@@ -403,6 +421,34 @@ export function RegistryForm({
               }}
               label={cookieBannerEnabled ? "On" : "Off"}
             />
+          </div>
+        </section>
+
+        <section className="mb-6 rounded-xl border border-border bg-surface p-5 shadow-xs">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div className="max-w-xl">
+              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
+                SAMAVESH Banner
+              </h2>
+              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+                Controls where the top saffron SAMAVESH banner and expandable portal exploration drawer appear across the website.
+              </p>
+              <p className="mt-2 text-xs leading-relaxed text-ink-hint">
+                Choose between displaying on all pages, hiding specifically on organisation detail profiles, or restricting exclusively to the homepage.
+              </p>
+            </div>
+            <div className="w-full sm:w-80">
+              <Select
+                value={samaveshBannerPlacement}
+                options={SAMAVESH_BANNER_OPTIONS}
+                onChange={(event) => {
+                  const next = event.target.value as SamaveshBannerPlacement;
+                  setSamaveshBannerPlacement(next);
+                  setAnnouncement(`SAMAVESH banner placement set to ${next}.`);
+                }}
+                aria-label="SAMAVESH Banner placement"
+              />
+            </div>
           </div>
         </section>
 

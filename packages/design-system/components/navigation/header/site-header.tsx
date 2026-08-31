@@ -308,6 +308,8 @@ export function SiteHeader({
    *   --sa-hdr-abar-h     the accessibility bar's height (on the header)
    *   --sa-header-pinned  what stays on screen when scrolled, AT REST (on :root)
    *   --sa-header-bottom  what stays on screen right now (on :root)
+   *   --sa-header-stuck   where the masthead's bottom edge lands once pinned,
+   *                       IN WHICHEVER STATE IT IS IN NOW (on :root)
    *
    * `scroll-padding-top` used to be four hardcoded numbers — 150 / 72 / 204, and
    * 132 below 767px against a mobile header measured at 258. A 126px shortfall is
@@ -319,12 +321,37 @@ export function SiteHeader({
    * `--sa-header-pinned` is only written while RESTING. Anchors and skip links can
    * land while the header is at its full height, so the padding has to clear the
    * taller of the two states, not whichever happens to be showing.
+   *
+   * `--sa-header-stuck` IS THE OPPOSITE, and the distinction is the whole reason it
+   * exists. A `scroll-padding` has to clear the taller state; a sticky OFFSET has to
+   * match the current one. Anything that pins itself below the masthead and read
+   * `--sa-header-pinned` therefore pinned to a height the header no longer has the
+   * moment it condensed — measured on the website with the SAMAVESH band open: an
+   * 89px strip of page content showing between the two on desktop, 155px on a phone,
+   * because the band sat at 154/212 while the condensed header ended at 65/57.
+   *
+   * Only a STICKY header publishes it. A non-sticky specimen — the three on the
+   * SiteHeader documentation page — contributes nothing to a sticky offset, and a
+   * page rendering several headers must not have the last one to measure win.
    */
   React.useEffect(() => {
     const el = headerRef.current;
     if (!el || typeof ResizeObserver === "undefined") return;
     const root = document.documentElement;
     const measure = () => {
+      /* READ THE STATE OFF THE DOM BEING MEASURED, never off the `condensed`
+         React value this effect closed over. The two disagree for one frame at
+         every transition: React re-renders, the condensed bar is in the DOM at
+         its new height, and the ResizeObserver registered by the PREVIOUS effect
+         is still the one attached — so `measure` fires with the new geometry and
+         the old flag. Caught by measuring: `--sa-header-pinned` was being written
+         as 57px while condensed, when it exists precisely to hold the RESTING
+         212px. That number is `scroll-padding-top`, so the frame that got it
+         wrong left an anchor 155px short of clearing an expanded masthead —
+         WCAG 2.4.11, and invisible unless you go looking. `is-scrolled` is set
+         from the same render that produced the geometry, so it cannot be a frame
+         out of step with it. */
+      const isCondensed = el.classList.contains("is-scrolled");
       const abar = el.querySelector<HTMLElement>(".sa-abar");
       const abarH = abar?.offsetHeight ?? 0;
       const pinned = Math.max(0, el.offsetHeight - abarH);
@@ -337,8 +364,9 @@ export function SiteHeader({
          is no bar left to allow for. Erring tall costs a panel a little height it
          could have used; erring short puts rows off-screen with no way to reach
          them, which is the defect this whole variable exists to close. */
-      root.style.setProperty("--sa-header-bottom", `${condensed ? pinned : el.offsetHeight}px`);
-      if (!condensed) root.style.setProperty("--sa-header-pinned", `${pinned}px`);
+      root.style.setProperty("--sa-header-bottom", `${isCondensed ? pinned : el.offsetHeight}px`);
+      if (!isCondensed) root.style.setProperty("--sa-header-pinned", `${pinned}px`);
+      if (isSticky) root.style.setProperty("--sa-header-stuck", `${pinned}px`);
     };
     measure();
     const ro = new ResizeObserver(measure);
@@ -348,7 +376,35 @@ export function SiteHeader({
       ro.disconnect();
       window.removeEventListener("resize", measure);
     };
-  }, [condensed]);
+  }, [condensed, isSticky]);
+
+
+  /**
+   * Publish the condensed state, so chrome pinned UNDER the masthead can condense
+   * with it rather than run a second copy of the thresholds.
+   *
+   * An attribute rather than a variable, because what a consumer needs is a
+   * SELECTOR, not a number — and the two thresholds (past 120, back under 40) are
+   * deliberately asymmetric so the bar cannot flutter at one scroll position. A
+   * second component re-deriving that from `scrollY` is a second place for the
+   * hysteresis to be got wrong, and the two would disagree for the frames in
+   * between. Same shape as `data-sa-abar-a11y` in `accessibility-entry-point.md`.
+   *
+   * Its consumer is the SAMAVESH band, which condenses while pinned over an open
+   * panel. This was removed once, correctly, when that consumer briefly had no
+   * condensed state — governance that governs nothing is worse than none — and is
+   * back because the consumer is back. Do not keep it if the last one goes again.
+   *
+   * Written only by a STICKY header: a non-sticky specimen never condenses, and a
+   * page rendering several headers must not have the last one to measure win.
+   */
+  React.useEffect(() => {
+    if (!isSticky) return;
+    const root = document.documentElement;
+    if (condensed) root.setAttribute("data-sa-header-condensed", "");
+    else root.removeAttribute("data-sa-header-condensed");
+    return () => root.removeAttribute("data-sa-header-condensed");
+  }, [condensed, isSticky]);
 
   /**
    * Print the FULL masthead, whatever the reader had scrolled to.

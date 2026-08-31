@@ -26,7 +26,21 @@ export const BARREL = process.env.DS_BARREL ?? "packages/design-system/index.ts"
 export const NOT_COMPONENTS = new Set([
   // Constants
   "COLOR_MODES", "COLOR_MODE_ATTR", "COLOR_MODE_COOKIE", "DEFAULT_COLOR_MODE",
-  "DEFAULT_APPS", "PORTAL_CATEGORIES", "PAN_HOLDER_TYPES",
+  "DEFAULT_APPS", "PORTAL_CATEGORIES", "PAN_HOLDER_TYPES", "PORTAL_LABELS",
+  // The mark registry. Data and pure resolvers — the paths of every organisation
+  // mark, the estate's own marks, and the route -> slug map. The COMPONENT that
+  // renders them (OrgLogo) has its own story, and `Catalogue` in it renders every
+  // entry of ORG_LOGOS, so the data is on screen even though the constant is not
+  // a component. `check:org-logos` is what actually guards this registry.
+  "ORG_LOGOS", "ORG_LOGO_FALLBACK", "PORTAL_ORG_LOGOS",
+  "SAMAVESH_MARK", "SAMAVESH_MARK_VECTOR", "NATIONAL_EMBLEM", "NATIONAL_EMBLEM_INVERSE",
+  "orgLogoSrc", "portalLogoSrc", "portalLabel", "portalSummary", "portalCategoriesIn",
+  // The four portals SamaveshBanner features by default, and the helper that
+  // reads each one's build status out of DEFAULT_APPS. A data array and a pure
+  // function — same category as DEFAULT_APPS itself, and both are rendered by
+  // SamaveshBanner.stories.tsx, which passes the array as `portals` and shows
+  // the planned-portal treatment the resolver produces.
+  "DEFAULT_SAMAVESH_PORTALS", "resolvePortalStatus",
   "SLA_DEFAULT_THRESHOLDS", "UX4G_A11Y_WIDGET_SRC",
   // DEMO_ACCOUNTS is a pathname-keyed data registry (packages/design-system/
   // demo/demo-accounts.ts), not a component — same category as DEFAULT_APPS

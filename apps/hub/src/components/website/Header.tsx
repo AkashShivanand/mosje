@@ -102,6 +102,19 @@ const NAV: NavItem[] = [
     href: "#",
     children: [
       { label: "Schemes & Services", href: "/website/schemes-services" },
+      /*
+       * UNDER OFFERINGS, NOT AS AN EIGHTH TOP-LEVEL ITEM. The row has 43px of
+       * slack and an eighth entry needs about 96 — see the capacity note above —
+       * so promoting this would drop the inline nav to the hamburger at 1280.
+       * The directory is a thing the department OFFERS, which is what this menu
+       * already collects, so it belongs here on meaning as well as on space.
+       *
+       * It also closes a real wayfinding hole: /portals was reachable from the
+       * hub root and from error pages, but from nowhere in the website's own
+       * navigation. Until this entry existed, the SAMAVESH banner drawer's
+       * footer link was the ONLY route to it from the website.
+       */
+      { label: "Citizen Portals", href: "/portals" },
       { label: "Vacancies", href: "/website/vacancies" },
       { label: "Tenders", href: "/website/tenders" },
     ],

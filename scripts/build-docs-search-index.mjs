@@ -49,6 +49,7 @@ function extractMetadata(content) {
 
 function deriveSection(route) {
   if (route.startsWith("/foundations")) return "Foundations";
+  if (route.startsWith("/components/brand")) return "Brand";
   if (route.startsWith("/components/actions")) return "Actions";
   if (route.startsWith("/components/forms")) return "Forms & Inputs";
   if (route.startsWith("/components/navigation") || route.startsWith("/components/section-templates")) return "Navigation";

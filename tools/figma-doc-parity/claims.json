@@ -434,6 +434,149 @@
           "hint": "Busy implies disabled. A button that says “Submitting…” and still submits is the double-submission this prop exists to prevent."
         }
       ]
+    },
+    {
+      "node": "56524:1664",
+      "where": "SAMAVESH Banner — Documentation › 07 Tokens › What the masthead publishes",
+      "figma": "--sa-header-stuck is the header's CURRENT pinned height and exists only on sticky headers. --sa-header-bottom is where the header ends right now. The distinction is the whole fix: the gap was about WHICH variable, never about when the band pins.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/header/site-header.tsx",
+          "pattern": "--sa-header-stuck",
+          "hint": "The masthead must PUBLISH the pinned height. Reading the resting height instead is what put a gap between header and band."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/samavesh-banner.css",
+          "pattern": "var\\(--sa-header-stuck",
+          "hint": "The band's sticky `top` must RESOLVE the published value, never restate a header height. The header has three."
+        }
+      ]
+    },
+    {
+      "node": "56524:1550",
+      "where": "SAMAVESH Banner — Documentation › 02 Closing › A POINTER LANDS OUTSIDE",
+      "figma": "pointerdown",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/samavesh-banner.tsx",
+          "pattern": "pointerdown",
+          "hint": "Clicking empty space moves focus to <body> with a null relatedTarget, indistinguishable from a tab switch — so focusout alone cannot release the parked band."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/samavesh-banner.tsx",
+          "pattern": "instanceof Node",
+          "hint": "The guard is load-bearing, not defensive styling: band.contains(window) THROWS, and a listener that throws leaves the band parked forever with no error anyone sees."
+        }
+      ]
+    },
+    {
+      "node": "56524:1563",
+      "where": "SAMAVESH Banner — Documentation › 03 Placement › homepage_only",
+      "figma": "homepage_only",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "apps/hub/src/lib/samavesh-banner/config.ts",
+          "pattern": "DEFAULT_SAMAVESH_BANNER_PLACEMENT[^=]*=\\s*\"homepage_only\"",
+          "hint": "The band is an entry point: it earns its height where a reader is deciding where to go. Defaulting to \"all\" put it on every page."
+        },
+        {
+          "kind": "text",
+          "value": "homepage_only"
+        }
+      ]
+    },
+    {
+      "node": "56527:865",
+      "where": "Portal Card — Documentation › 03 Elevation › REST",
+      "figma": "No shadow",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/portal-card.css",
+          "pattern": "\\.ds-portal-card \\{(?:(?!\\}).)*box-shadow:",
+          "flags": "s",
+          "absent": true,
+          "hint": "The resting card carries NO shadow. The colon is load-bearing: the base rule names box-shadow in its `transition` list as a property to ANIMATE, and a pattern without the colon matches that and reports a shadow the card does not have. It already has a saffron rule doing the separating — a shadow under a border is two boundary treatments for one edge, and if every card is elevated then elevation says nothing."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/portal-card.css",
+          "pattern": ":active[^{]*\\{[^}]*box-shadow:\\s*none",
+          "flags": "s",
+          "hint": "Press REMOVES the shadow. That is what makes it read as going down rather than merely shrinking."
+        }
+      ]
+    },
+    {
+      "node": "56527:913",
+      "where": "Portal Card — Documentation › 05 Do & Don't › href is required",
+      "figma": "It is required",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/portal-card.tsx",
+          "pattern": "\\n\\s*href: string;",
+          "hint": "REQUIRED, not optional. An optional destination rendered an unbuilt portal as a link and shipped a 404 on every page of the website; a required prop makes that a build error rather than a runtime one."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/navigation/portal-card.tsx",
+          "pattern": "href\\?: string",
+          "absent": true,
+          "hint": "If href ever becomes optional again, this claim and the guarantee behind it are void."
+        }
+      ]
+    },
+    {
+      "node": "56530:1024",
+      "where": "Brand — Documentation › 01 Catalogue › BY SLUG",
+      "figma": "When you have the slug rather than the route. An explicit slug BEATS a derived path.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/brand/org-logo.tsx",
+          "pattern": "org != null \\? orgLogoSrc\\(org\\) : portalLogoSrc\\(path\\)",
+          "hint": "Precedence, fixed 2026-08-31. PortalCard passes path={path ?? href} and href is REQUIRED, so under the old `path !== undefined` test the org branch was unreachable — every card carrying an org silently rendered the State Emblem."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/brand/org-logo.tsx",
+          "pattern": "path !== undefined \\? portalLogoSrc\\(path\\) : orgLogoSrc\\(org\\)",
+          "absent": true,
+          "hint": "The old precedence. Restoring it re-breaks every external card's mark."
+        }
+      ]
+    },
+    {
+      "node": "56530:739",
+      "where": "Brand — Documentation › hero › org marks",
+      "figma": "One variant each, plus an Emblem variant for the fallback — 18 in all, mirroring ORG_LOGOS and ORG_LOGO_FALLBACK.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/brand/org-logo-registry.ts",
+          "pattern": "ORG_LOGO_FALLBACK",
+          "hint": "17 organisations in ORG_LOGOS plus ORG_LOGO_FALLBACK, against 18 library variants — 17 orgs plus Emblem. The fallback is deliberately NOT one of the seventeen."
+        },
+        {
+          "kind": "source",
+          "file": "apps/hub/src/app/design-system/components/brand/org-logo/page.tsx",
+          "pattern": "Seventeen marks",
+          "hint": "The page said 'Sixteen marks' in its header while its own body said seventeen — it contradicted itself until 2026-08-31."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/brand/org-logo-registry.ts",
+          "pattern": "\"/portals/e-anudaan\"",
+          "absent": true,
+          "hint": "e-Anudaan and e-Utthaan must NOT be in PORTAL_ORG_LOGOS — they resolve through the fallback to the State Emblem, which is what the library's Emblem variant now draws for them."
+        }
+      ]
     }
   ],
   "tokenTables": [
