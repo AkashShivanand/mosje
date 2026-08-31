@@ -14,7 +14,8 @@
 
   .ds-fact-strip {
     position: relative;
-    border-radius: var(--sa-cmp-card-radius);
+    padding: var(--sa-padding-24) var(--sa-padding-16);
+    border-radius: var(--sa-shape-20);
     background-color: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-raised);
   }
@@ -37,24 +38,26 @@
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: var(--sa-stack-4);
-    padding: var(--sa-padding-24) var(--sa-padding-20);
+    gap: var(--sa-stack-12);
+    padding: 0 var(--sa-padding-12);
   }
 
-  /* A hairline between cells rather than a border on each, so the strip reads as
-     one surface divided — not four cards pushed together. */
-  .ds-fact-strip__item + .ds-fact-strip__item {
-    box-shadow: inset 1px 0 0 var(--sa-border-neutral-subtle);
-  }
+  /*
+   * NO DIVIDERS. There used to be a hairline between cells, on the reasoning
+   * that the strip should read as one surface divided rather than as cards
+   * pushed together. The handoff draws no rule at all, and it is right: the
+   * icons already give each fact a strong left-to-right rhythm, and four
+   * vertical lines under a hero add furniture to the one band that should be
+   * the calmest thing on the page.
+   */
 
+  /* 12 of padding around a 32 icon, as the handoff sets it. */
   .ds-fact-strip__icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--sa-padding-48);
-    height: var(--sa-padding-48);
-    margin-bottom: var(--sa-stack-8);
-    border-radius: var(--sa-shape-12);
+    padding: var(--sa-padding-12);
+    border-radius: var(--sa-shape-8);
     /* Saffron, as the Figma template has it. Bound by RESOLVED VALUE: the accent
        ramp reads green — `accent` only sounded like the right name. #c34700 on
        #ffd4c4 measures 3.67:1, over the 3:1 WCAG 2.2 §1.4.11 floor for a
@@ -73,12 +76,14 @@
     order: 0;
   }
 
+  /* headline-5 in the handoff: 20/24, weight 600 — not the heavier title-1/700
+     this used to draw, which competed with the H1 in the band above it. */
   .ds-fact-strip__value {
     order: 1;
     margin: 0;
-    font-size: var(--sa-type-title-1-size);
-    line-height: var(--sa-type-title-1-lh);
-    font-weight: 700;
+    font-size: var(--sa-type-headline-5-size);
+    line-height: var(--sa-type-headline-5-lh);
+    font-weight: 600;
     color: var(--sa-text-neutral-bolder);
   }
 
@@ -86,39 +91,23 @@
      equalises cell heights, so without it a value that wraps to two lines drops
      its own label a line below its neighbours' — one tile visibly out of step.
      Pinned to the bottom, the labels read as a row whatever the values do. */
+  /* body-1 in the handoff: 16/24 with 0.5 tracking. It was 12px, which made the
+     label read as a caption rather than as the thing the value answers. */
   .ds-fact-strip__label {
     order: 2;
     margin-top: auto;
-    padding-top: var(--sa-padding-4);
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
-    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    letter-spacing: 0.5px;
+    color: var(--sa-text-neutral-base);
   }
 
-  /* Two-up on a phone: four cells at 200px each would each be a column of
-     wrapped single words. The divider follows the wrap, so the inset shadow is
-     re-declared per row rather than left running across a fold. */
+  /* Two-up on a phone: cells at 200px each would be columns of wrapped single
+     words. With the dividers gone the rows need their own vertical rhythm. */
   @media (max-width: 639px) {
     .ds-fact-strip__list {
       grid-template-columns: repeat(2, 1fr);
-    }
-
-    .ds-fact-strip__item {
-      padding: var(--sa-padding-20) var(--sa-padding-12);
-      box-shadow: inset 1px 0 0 var(--sa-border-neutral-subtle),
-        inset 0 1px 0 var(--sa-border-neutral-subtle);
-    }
-
-    .ds-fact-strip__item:nth-child(odd) {
-      box-shadow: inset 0 1px 0 var(--sa-border-neutral-subtle);
-    }
-
-    .ds-fact-strip__item:nth-child(-n + 2) {
-      box-shadow: inset 1px 0 0 var(--sa-border-neutral-subtle);
-    }
-
-    .ds-fact-strip__item:first-child {
-      box-shadow: none;
+      row-gap: var(--sa-stack-24);
     }
   }
 }

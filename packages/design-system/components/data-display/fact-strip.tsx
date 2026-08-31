@@ -74,7 +74,7 @@ export function FactStrip({
         {items.map((item) => (
           <div className="ds-fact-strip__item" key={item.label + item.value}>
             <span className="ds-fact-strip__icon" aria-hidden="true">
-              <Icon name={item.icon} size={24} />
+              <Icon name={item.icon} size={32} />
             </span>
             <dt className="ds-fact-strip__label">{item.label}</dt>
             <dd className="ds-fact-strip__value">{item.value}</dd>

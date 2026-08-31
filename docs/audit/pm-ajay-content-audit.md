@@ -683,3 +683,44 @@ while leaving all three static rings exactly where they are.
 Every colour is `color-mix` over `--sa-color-primaryScale-800/900`, so the whole
 plaque rethemes with `data-brand`. Verified on PM-AJAY, NCSK and SMILE — one
 component, same halo, and no organisation now spends a fact slot on the ministry.
+
+## 19. The fact card — styled to the frame, and one invented fact removed
+
+### A fact I made up
+
+§17 replaced the constant "Implementing ministry" with "**2021–22 · Scheme
+launched**". That was **not sourced**. The About page says the three precursor
+schemes *merged into* PM-AJAY from 2021–22, which is not the same claim as a
+launch date — turning one into the other invents a fact and dresses it as
+departmental. Removed.
+
+PM-AJAY now carries **three** facts, which is what the source actually states:
+Headquarters, Scheme components, Who it serves. The strip stretches to whatever
+it is given and does not need filling. SMILE is three now too, for the same
+reason — its fourth was a "2 sub-schemes" tile whose label ran to six words.
+
+### Styled to node 3751:10140
+
+| | Was | Frame |
+|---|---|---|
+| Dividers between cells | a hairline on each | **none** |
+| Card radius / padding | 12px, per-cell 24/20 | **20px**, card 24/16 |
+| Icon container | 48×48, radius 12, 24px glyph | **56×56** (12 of padding round a **32** glyph), radius 8 |
+| Value | title-1, weight **700** | **headline-5** — 20/24, weight **600** |
+| Label | body-3, **12px** | **body-1** — 16/24, 0.5 tracking |
+
+**The dividers went because the frame draws none, and the frame is right.** The
+icons already give each fact a strong left-to-right rhythm; four vertical rules
+under a hero add furniture to the one band that should be the calmest thing on
+the page. The value dropping from 700 to 600 matters for the same reason — at
+700 it competed with the H1 directly above it.
+
+### The white patch
+
+The card floated on white, met a white band below it, and the surface the frame
+draws — a light grey the white card lifts off — never existed. The page wrapper
+is white, and both the facts band and the content zone were transparent over it.
+
+Both now take `--sa-bg-neutral-subtler`, so they are one field with the card
+lifted over it. The card's own −40 pull happens inside that box, so its top still
+escapes upward over the banner without dragging the background with it.

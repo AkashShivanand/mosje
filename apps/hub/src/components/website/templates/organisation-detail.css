@@ -400,9 +400,28 @@
 
   /* The strip is pulled up over the banner by FactStrip's own `overlap`, so this
      wrapper only has to stop the page's next band from closing the gap. */
+  /*
+   * The fact card sits ON the first content section's background, not on a white
+   * strip of its own.
+   *
+   * The page wrapper is white, so before this the card floated on white, met a
+   * white band below it, and the "surface" the handoff draws — a light grey the
+   * white card lifts off — never appeared. The card looked like it was resting
+   * on nothing.
+   *
+   * The wrapper takes the surface colour and the content zone below continues
+   * it, so the two are one field with the card lifted over both. The card's own
+   * −40 pull happens inside this box, so its top escapes upward over the banner
+   * without dragging this background with it.
+   */
   .orgd__facts {
     position: relative;
     z-index: 1;
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .orgd {
+    background-color: var(--sa-bg-neutral-subtler);
   }
 
   /* ── Highlights (2x2 About cards) ────────────────────────────────────────── */
