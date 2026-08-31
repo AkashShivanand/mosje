@@ -165,3 +165,71 @@ Twenty pages live under the scheme on the source site. Each is accounted for:
 | **Folded into the index** | 1 | contact-us — the source publishes only an email, hours and a mobile there, and all three are in this page's own Contact section |
 
 Nothing is unaccounted for, and nothing is served that the source does not publish.
+
+## 7. Sidebar regrouped, and the open questions it exposed
+
+The index now carries **every page and every section**, grouped as NCSK's is —
+what the scheme IS, what it DOES, what it PUBLISHES, and how to reach it:
+
+| Group | Entries |
+|---|---|
+| ABOUT US | About the Scheme `#` · **About Us** (page) |
+| OUR WORK & IMPACT | Components `#` · Circulars & Notifications `#` · Illustrative list of domain under GIA (page) · Flow Chart (page) |
+| PUBLICATIONS & REPORTS | Resources `#` · Downloads (PM-AJAY) `#` · Downloads (pmagy) `#` · Reports (PM-AGY) `#` |
+| CONNECT & ENGAGE | Find Courses (external) · Gallery `#` · Contact `#` |
+
+**About Us was reachable from exactly one place** — the "Know more" button inside
+the About band. A page reachable from one button is a page most readers never
+find. It is now in the index where NCSK puts its equivalents.
+
+**One deliberate deviation from the source's grouping.** The source files both
+download lists under OUR WORK & IMPACT, leaving that group holding six entries
+that mix the scheme's programme with its filing cabinet. Splitting the filing
+cabinet into PUBLICATIONS & REPORTS is NCSK's distinction and reads better; it is
+the only place this index departs from the source's own.
+
+### Still open — three findings this pass surfaced but did not change
+
+**a. `guidelines` is still the only page not in the index.** It cannot be added
+until its content is settled: the page carries the SMILE Beggary Scheme's
+guidelines, not PM-AJAY's. Linking it would put another scheme's rules under
+PM-AJAY's index. Note that the real thing is already in our own ingest —
+`documents.json` holds "Guidelines of Pradhan Mantri Abhudaya Yojana (PM AJAY)"
+and "PM-AJAY Guidelines" — so the page could be pointed at those instead. That is
+a content decision, not a wiring one.
+
+**b. Two "At a glance" panels state feed figures as fixed prose.** GIA's "8,772
+projects across five financial years" and Hostels' "2,30,977 places / 1,25,485 in
+occupation" are the mirrored-snapshot values from `pmajay-stats.ts`, typed into
+static JSX. The dashboard directly beneath renders the same figures *with* a
+provenance chip and *responding* to the demo rail's data-mode switch — the panel
+does neither. Flip the rail to live and the panel silently contradicts the
+dashboard. This is what `live-data-fallback.md` and `prototype-data-modes.md`
+exist to prevent.
+
+Worse, the panels spend those four slots on numbers while omitting policy the
+source states plainly and permanently:
+
+- GIA: at least **15%** of funds released to States/UTs go to income-generating
+  schemes for Scheduled Caste women, and at least **10%** to skill development.
+- GIA: the source names **three** broad categories (Comprehensive Livelihood,
+  Infrastructure Development, Special Tutoring). Our panel says "four
+  interventions", which contradicts the page it summarises.
+- Hostels: institutions must reserve **70%** of seats for Scheduled Caste
+  students; girls' hostels must have lady wardens and guards at all times.
+
+Adarsh Gram's panel is sound — all four of its facts are on the source page
+verbatim.
+
+**c. Documents do not use the estate's sample-document convention.** All 21
+sample-PDF references in `organisation-details.ts` belong to NCSK; PM-AJAY has
+none. Its ten downloads point at cloudfront and dosje.gov.in, and its circulars
+and resources resolve to `sourceUrl` because `documents.json` carries no
+`fileUrl` field at all. The "View all" cross-links to the global pages are
+correct and in place — but the global pages link outward too, so this is an
+estate-wide gap that PM-AJAY simply shares.
+
+**The gallery cross-link is broken in a smaller, fixable way.** "View all photos"
+goes to `/website/gallery`, which holds ten images, none of them PM-AJAY's three.
+The three photographs are mirrored locally and captioned; they are just not
+registered on the global page.

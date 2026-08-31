@@ -302,15 +302,34 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     ],
 
     nav: [
+      // Grouped as NCSK's index is: what the body IS, what it DOES, what it
+      // PUBLISHES, and how to reach it. The source's own sidebar files the
+      // download lists under "OUR WORK & IMPACT", which leaves that group
+      // holding six entries that mix the scheme's programme with its filing
+      // cabinet. Splitting the filing cabinet out is the one place this index
+      // deliberately reads better than the source's.
       {
         label: "ABOUT US",
-        items: [{ label: "About the Scheme", href: "#about-the-scheme" }],
+        items: [
+          { label: "About the Scheme", href: "#about-the-scheme" },
+          // The sub-page the About band's "Know more" opens. It was reachable
+          // only from that one button; a page reachable from exactly one place
+          // is a page most readers never find.
+          { label: "About Us", href: `/website/organisation/${PM_AJAY}/about-us` },
+        ],
       },
       {
         label: "OUR WORK & IMPACT",
         items: [
           { label: "Components", href: "#components" },
           { label: "Circulars & Notifications", href: "#circulars-notifications" },
+          { label: "Illustrative list of domain under GIA", href: `/website/organisation/${PM_AJAY}/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme` },
+          { label: "Flow Chart", href: `/website/organisation/${PM_AJAY}/flow-chart` },
+        ],
+      },
+      {
+        label: "PUBLICATIONS & REPORTS",
+        items: [
           { label: "Resources", href: "#resources" },
           // Sections, not files. The index is a table of contents: every entry
           // here is a place on this page, a sub-page, or another site. The
@@ -324,8 +343,6 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       {
         label: "CONNECT & ENGAGE",
         items: [
-          { label: "Illustrative list of domain under GIA", href: `/website/organisation/${PM_AJAY}/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme` },
-          { label: "Flow Chart", href: `/website/organisation/${PM_AJAY}/flow-chart` },
           { label: "Find Courses", href: "https://nsdcindia.org/qp-nos-results", external: true },
           { label: "Gallery", href: "#gallery" },
           { label: "Contact", href: "#contact" },
