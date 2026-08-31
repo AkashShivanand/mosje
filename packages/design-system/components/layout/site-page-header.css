@@ -44,6 +44,15 @@
     grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
   }
 
+  /*
+   * An inner header is two short lines. Sixty-four points of padding above and
+   * below them leaves a band mostly made of nothing, so it takes the smaller
+   * step — the handoff's own L2 is a shallow strip, not a hero.
+   */
+  .sa-siteheader--inner .sa-siteheader__container {
+    padding-block: var(--sa-padding-32);
+  }
+
   .sa-siteheader__col {
     display: flex;
     flex-direction: column;
@@ -51,6 +60,14 @@
     align-items: flex-start;
     justify-content: center;
     min-width: 0;
+  }
+
+  /*
+   * The back link belongs to the title, not beside it: 8pt, as the handoff sets
+   * it, so the two read as one block rather than as two stacked items.
+   */
+  .sa-siteheader--inner .sa-siteheader__col {
+    gap: var(--sa-stack-8);
   }
 
   .sa-siteheader__eyebrow {
@@ -75,11 +92,18 @@
   }
 
   /*
-   * The standfirst against a left rule. The rule is a border, not a pseudo
-   * element, so it grows with the text it marks however many lines that runs to.
+   * The standfirst against its rule. The rule is a border, not a pseudo element,
+   * so it grows with the text it marks however many lines that runs to.
+   *
+   * COLOURED WITH THE *TEXT* INVERSE TOKEN, DELIBERATELY. `--sa-border-neutral-
+   * inverse` is named in the token source but is NOT emitted into the running
+   * cascade — it resolves to nothing, which made the whole `border` declaration
+   * invalid and dropped it to `none`. The rule simply did not draw. Flagged for
+   * the token owner; until it ships, this uses the inverse token that does
+   * resolve, which is the same white.
    */
   .sa-siteheader__lead {
-    border-inline-start: 4px solid var(--sa-border-neutral-inverse);
+    border-inline-start: 4px solid var(--sa-text-neutral-inverse);
     padding-inline-start: var(--sa-padding-24);
     color: var(--sa-text-neutral-inverse);
     font-size: var(--sa-type-body-1-size);
@@ -100,6 +124,51 @@
     justify-content: flex-end;
     align-items: center;
     min-width: 0;
+  }
+
+  /*
+   * The halo: two concentric translucent rings behind the portrait, as the
+   * handoff draws it. Pseudo elements rather than two more divs, because they
+   * are decoration and have no business in the accessibility tree.
+   *
+   * The ring colour is the brand's own dark shade rather than Figma's #003366,
+   * so the halo rethemes with `data-brand` like everything else on the band.
+   */
+  .sa-siteheader__halo {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 300px;
+    height: 300px;
+  }
+
+  .sa-siteheader__halo::before,
+  .sa-siteheader__halo::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    background-color: color-mix(
+      in srgb,
+      var(--sa-color-primaryScale-800) 48%,
+      transparent
+    );
+  }
+
+  .sa-siteheader__halo::before {
+    width: 380px;
+    height: 380px;
+  }
+
+  .sa-siteheader__halo::after {
+    width: 345px;
+    height: 345px;
+  }
+
+  /* The portrait sits above both rings. */
+  .sa-siteheader__halo > * {
+    position: relative;
+    z-index: 1;
   }
 
   .sa-siteheader__overlay {
@@ -126,6 +195,10 @@
   @media (width < 48rem) {
     .sa-siteheader__container {
       padding-block: var(--sa-padding-32);
+    }
+
+    .sa-siteheader--inner .sa-siteheader__container {
+      padding-block: var(--sa-padding-24);
     }
 
     .sa-siteheader__band--overlaid {

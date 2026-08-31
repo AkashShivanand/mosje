@@ -555,3 +555,34 @@ photograph keep L1; the rest take L2 and give the fold back to their content.
 
 Verified: NCSK L1 with its portrait, PM-AJAY L1 without, sub-pages and content
 pages L2 with the back link. The emblem plaque appears on none of them.
+
+## 15. Visual audit against the handoff — five defects
+
+A read of the rendered bands beside the Figma frames, after adoption.
+
+| Defect | Cause | Fix |
+|---|---|---|
+| The halo portrait was missing from L1's trailing edge | The portrait rendered only where a `featuredImage` existed. PM-AJAY has none, so two thirds of its band was empty blue | A landing page always gets one, falling back logo → emblem. An inner page never does |
+| The quote rule before the standfirst did not draw | `--sa-border-neutral-inverse` is named in the token source but **is not emitted into the running cascade** — it resolves to nothing, which makes the whole `border` declaration invalid and drops it to `none` | Uses the inverse token that does resolve. **Flagged for the token owner** |
+| "Associated Organisation" sat above the L1 title | The eyebrow rendered on both levels | Eyebrow is `inner`-only. It said what the breadcrumb above already said, smaller |
+| The back link underlined its arrow glyph | `hover:underline` on the anchor underlines every child, glyph included | The underline is on the text span alone |
+| L2's band was a hero-height slab of empty blue | Both levels took the same 64pt block padding, for two short lines | `inner` takes the 32pt step, and its eyebrow-to-title gap is the handoff's 8, not 20. **281px → 145px** |
+
+### Is a link right for "back"?
+
+Yes, and it stays one. It goes to a **known URL** — the parent organisation — not
+backwards through history. A button would strip it of middle-click, of
+open-in-new-tab, and of the destination a screen reader announces. Figma draws it
+as a `<button>`, which is a Figma artifact rather than a specification: the frame
+has nowhere to navigate to.
+
+What was wrong was the *styling*, not the element. It now rests without an
+underline and underlines its text on hover, which reads as a link without
+decorating the glyph.
+
+### Two things the Figma library needs
+
+1. `#3f83c6`, the band's trailing gradient stop, is an unbound raw fill (§13).
+2. There is no emitted **inverse border** token, so a white rule on a brand band
+   has nothing correct to bind to. This component uses the inverse *text* token
+   for a *border*, which is the right colour bound to the wrong role.

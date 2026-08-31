@@ -83,9 +83,26 @@ export function PageHero({
       ? logoSrc
       : undefined;
 
-  const portrait = featuredImage ?? bannerFromLogo;
-  const mark = logoSrc && logoSrc !== portrait ? logoSrc : undefined;
-  const variant = level ?? (portrait ? "landing" : "inner");
+  const photo = featuredImage ?? bannerFromLogo;
+  const mark = logoSrc && logoSrc !== photo ? logoSrc : undefined;
+  const variant = level ?? (photo ? "landing" : "inner");
+
+  /*
+   * A LANDING PAGE ALWAYS GETS THE PORTRAIT; AN INNER PAGE NEVER DOES.
+   *
+   * This is the distinction that matters, and an earlier pass got it half right
+   * by dropping the plaque from everything. The handoff's L1 is built around the
+   * haloed circle on the trailing edge — without it the band is two thirds empty
+   * blue — while its L2 has no picture at all.
+   *
+   * So: on a landing page, fall back through the department's own marks rather
+   * than leaving the space blank. On an inner page, nothing, whatever exists.
+   */
+  const portrait =
+    variant === "landing"
+      ? (photo ?? mark ?? "/website/images/National_Emblem_logo_white.svg")
+      : undefined;
+  const portraitIsEmblem = variant === "landing" && !photo && !mark;
 
   return (
     <>
@@ -100,9 +117,22 @@ export function PageHero({
         title={title}
         eyebrow={
           badge && backHref ? (
-            <Link href={backHref} className="inline-flex items-center gap-2 text-inherit hover:underline">
-              <Icon name="arrow_left_alt" size={24} />
-              <span>{badge}</span>
+            /*
+             * A LINK, and it stays one: this goes to a known URL — the parent
+             * organisation — not backwards through history. A button would
+             * strip it of middle-click, of open-in-new-tab, and of the address
+             * a screen reader reads out.
+             *
+             * The underline is on the TEXT ONLY. Putting `hover:underline` on
+             * the anchor drew a rule under the arrow glyph too, which reads as a
+             * typographic error rather than a link.
+             */
+            <Link
+              href={backHref}
+              className="group inline-flex items-center gap-2 text-inherit no-underline"
+            >
+              <Icon name="arrow_left_alt" size={20} aria-hidden />
+              <span className="group-hover:underline">{badge}</span>
             </Link>
           ) : (
             badge
@@ -119,8 +149,16 @@ export function PageHero({
         }
         media={
           portrait ? (
-            <span className="relative block size-[300px] overflow-hidden rounded-full border-4 border-white/40 shadow-2xl">
-              <Image src={portrait} alt="" fill className="object-cover" priority />
+            <span className="relative block size-[300px] overflow-hidden rounded-full border-4 border-white/40 bg-white/10 shadow-2xl">
+              <Image
+                src={portrait}
+                alt=""
+                fill
+                /* A photograph fills the circle; a mark or the emblem is padded
+                   so it is not cropped into by the round frame. */
+                className={portraitIsEmblem || !photo ? "object-contain p-12" : "object-cover"}
+                priority
+              />
             </span>
           ) : undefined
         }

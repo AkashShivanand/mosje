@@ -17,7 +17,14 @@ export interface SitePageHeaderProps extends React.HTMLAttributes<HTMLElement> {
   variant?: "landing" | "inner";
   /** The page's `<h1>`. */
   title: string;
-  /** Rendered above the title. On `inner` this is the back link to the parent. */
+  /**
+   * `inner` only — the back link to the parent, above the title.
+   *
+   * Deliberately NOT rendered on `landing`. A landing page is the top of its own
+   * branch: it has nothing to go back to, and the handoff's L1 has no eyebrow.
+   * Labelling it "Associated Organisation" said only what the breadcrumb above
+   * already said, in a smaller font.
+   */
   eyebrow?: React.ReactNode;
   /** `landing` only — the organisation's mark, shown at 100px. */
   logo?: React.ReactNode;
@@ -32,7 +39,13 @@ export interface SitePageHeaderProps extends React.HTMLAttributes<HTMLElement> {
   lead?: React.ReactNode;
   /** `landing` only — primary call to action, e.g. "Login as Citizen". */
   actions?: React.ReactNode;
-  /** `landing` only — the portrait in its halo, on the trailing edge. */
+  /**
+   * `landing` only — the portrait on the trailing edge.
+   *
+   * The halo is drawn by this component, not by the caller: the rings are the
+   * band's own treatment and every landing page should get the same one. Pass
+   * the picture; the plaque is ours.
+   */
   media?: React.ReactNode;
   /**
    * A band that OVERLAPS the header's lower edge — the "at a glance" fact card.
@@ -91,7 +104,9 @@ export function SitePageHeader({
       >
         <Container size="page" className="sa-siteheader__container">
           <div className="sa-siteheader__col">
-            {eyebrow ? <div className="sa-siteheader__eyebrow">{eyebrow}</div> : null}
+            {!isLanding && eyebrow ? (
+              <div className="sa-siteheader__eyebrow">{eyebrow}</div>
+            ) : null}
             {isLanding && logo ? <div className="sa-siteheader__logo">{logo}</div> : null}
             <h1 id={headingId} className="sa-siteheader__title">
               {title}
@@ -106,7 +121,7 @@ export function SitePageHeader({
               not already say, so a reader who never sees it loses nothing. */}
           {isLanding && media ? (
             <div className="sa-siteheader__media" aria-hidden="true">
-              {media}
+              <div className="sa-siteheader__halo">{media}</div>
             </div>
           ) : null}
         </Container>
