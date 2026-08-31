@@ -366,21 +366,21 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           description:
             "Develops Scheduled Caste dominated villages into model villages, with a village development plan and gap-filling funds.",
           icon: "holiday_village",
-          slug: `${PM_AJAY}/components/development-of-sc-dominated-villages-into-adarsh-gram`,
+          slug: `${PM_AJAY}/development-of-sc-dominated-villages-into-adarsh-gram`,
         },
         {
           title: "Grants-in-aid to State/Districts",
           description:
             "Livelihood, skilling and infrastructure projects for the economic betterment of Scheduled Castes.",
           icon: "payments",
-          slug: `${PM_AJAY}/components/grants-in-aid-to-state-districts`,
+          slug: `${PM_AJAY}/grants-in-aid-to-state-districts`,
         },
         {
           title: "Construction/Repair of Hostels",
           description:
             "Supports the construction and repair of hostels for Scheduled Caste students, to reduce dropout rates.",
           icon: "apartment",
-          slug: `${PM_AJAY}/components/construction-repair-of-hostels`,
+          slug: `${PM_AJAY}/construction-repair-of-hostels`,
         },
       ],
     },
@@ -416,6 +416,11 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           id: "downloads-pm-ajay",
           heading: "PM-AJAY",
           items: [
+            // Two live reports the source sidebar files under this heading rather than
+            // with the reports below. Kept where the source keeps them, and linked
+            // out for the same reason as the reports: they are generated on request.
+            { label: "PACC Meeting List", href: `${PM_AJAY_SRC}/pacc-meeting-list/`, kind: "page" },
+            { label: "Notional Allocation", href: `${PM_AJAY_SRC}/notional-allocation-report/`, kind: "page" },
             { label: "Utilization Certificate", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/UC-GFR-12-C.pdf", kind: "pdf" },
             { label: "Implementation Status", href: "https://www.dosje.gov.in/documents/pm-ajay-releases-and-utilization-implementation-status/", kind: "page" },
             { label: "Presentation about Scheme", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/PMAJAY-FINAL-PPT.pptx", kind: "pptx" },

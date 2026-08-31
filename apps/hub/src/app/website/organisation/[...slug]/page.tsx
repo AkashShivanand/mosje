@@ -35,7 +35,7 @@ import {
  * separate content type, and inventing a CMS field for four lines that exist to
  * summarise the paragraph next to them would be the wrong kind of tidy.
  */
-const PMAJAY = "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/components";
+const PMAJAY = "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay";
 
 const ADARSH_GRAM_SLUG = `${PMAJAY}/development-of-sc-dominated-villages-into-adarsh-gram`;
 const GIA_SLUG = `${PMAJAY}/grants-in-aid-to-state-districts`;

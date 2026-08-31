@@ -82,3 +82,75 @@ human's attention, neither of which an agent should decide alone:
 - Reports band renders in three groups with all ten links, external icons and `rel="noreferrer"`
 - Heading order H2 → H3; pill text 18.94:1 contrast; 36px targets
 - `lint`, `lint:css`, `typecheck`, `check:website-links`, `check:search-index` all pass
+
+## 4. Sidebar parity — checked entry by entry (second pass)
+
+The source page carries its index as a 26-entry left menu held as JSON inside the
+Elementor widget rather than as markup, which is why a plain link scrape missed
+part of it the first time. Parsed in full and compared against ours:
+
+| Live sidebar entry | Ours |
+|---|---|
+| **ABOUT US** (header) | ✔ |
+| About the Scheme | ✔ `#about-the-scheme` |
+| **OUR WORK & IMPACT** (header) | ✔ |
+| Circulars & Notifications | ✔ `#circulars-notifications` |
+| Resources | ✔ `#resources` |
+| Reports PM-AJY | ✔ `#reports` — labelled "Reports (PM-AGY)", after the source's own body heading rather than its sidebar typo |
+| **Downloads (PM-AJAY)** (header) | ✔ `#downloads-pm-ajay` |
+| PACC Meeting List | ✔ **added this pass** |
+| Utilization Certificate | ✔ |
+| Notional Allocation | ✔ **added this pass** |
+| Implementation Status | ✔ |
+| Presentation about Scheme (PPT) | ✔ |
+| Institute Registration Form | ✔ |
+| **Downloads (pmagy)** (header) | ✔ `#downloads-pmagy` |
+| Presentation CSMC Meeting 12 Feb 2020 | ✔ |
+| Presentation | ✔ |
+| Announcement in village (Hindi) | ✔ |
+| PMAGY Work Flow | — deliberately absent: its link is empty upstream (a pop-up), so there is no destination to offer |
+| Work Flow for Interim VDP | ✔ |
+| Sample VDP | ✔ |
+| District User Manual | ✔ |
+| **CONNECT & ENGAGE** (header) | ✔ |
+| Illustrative list of domain under GIA | ✔ |
+| FlowCharts | ✔ — labelled "Flow Chart", as that page's own H1 has it |
+| Find Courses | ✔ |
+| Contact | ✔ `#contact` |
+
+**Two entries were missing and are now present.** PACC Meeting List and Notional
+Allocation are live report pages that the source files under its Downloads
+(PM-AJAY) heading rather than with the reports. They are kept where the source
+keeps them, and linked out for the reports' reason: both are generated on request
+from a database this estate does not hold.
+
+**Two of ours have no sidebar counterpart, deliberately.** `Components` and
+`Gallery` point at sections the source page genuinely has; the source simply does
+not index them. Indexing a section that exists improves the index — it does not
+invent content.
+
+## 5. Component pages moved to the source's own URLs
+
+The three component pages were built under an invented `/components/` segment. The
+source has no such segment, so they now answer at the source's own paths:
+
+| Was | Now |
+|---|---|
+| `…/components/construction-repair-of-hostels` | `…/construction-repair-of-hostels` |
+| `…/components/development-of-sc-dominated-villages-into-adarsh-gram` | `…/development-of-sc-dominated-villages-into-adarsh-gram` |
+| `…/components/grants-in-aid-to-state-districts` | `…/grants-in-aid-to-state-districts` |
+
+The **pages themselves are unchanged** — the newer editorial two-column design,
+with its "At a glance" panel and live dashboard, is what now answers at those URLs.
+
+Four things had to move together: the slugs in `organisation.json`, the component
+cards' `slug` fields, the dashboard lookup in the organisation route, and
+`lib/data-mode/routes.ts`. Miss that last one and the demo rail's data-mode switch
+silently vanishes from the three pages that most need it.
+
+### Still namespaced, and worth the same treatment
+
+`pmajy/about-us`, `reports/flow-chart` and `reports/illustrative-list-…` carry the
+same invented segment for the same reason, and the source publishes all three at
+flat paths. They were left alone only because this pass was scoped to the component
+pages. Flattening them is the same four-step change and would finish the job.
