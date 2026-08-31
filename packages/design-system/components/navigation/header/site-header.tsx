@@ -230,6 +230,9 @@ export function SiteHeader({
   const [scrolled, setScrolled] = React.useState(false);
   /** Held true across printing, so scroll anchoring cannot re-condense the header. */
   const printingRef = React.useRef(false);
+  /** Held true across the condense/expand morph — see the effect that sets it. */
+  const morphingRef = React.useRef(false);
+  const [morphing, setMorphing] = React.useState(false);
   /** The condensed bar's search, expanded in place over the nav. */
   const [condSearchOpen, setCondSearchOpen] = React.useState(false);
   /** The condensed nav has run out of room; fall back to the sheet. */
@@ -238,6 +241,10 @@ export function SiteHeader({
   const condSearchRef = React.useRef<HTMLInputElement>(null);
   const condInRef = React.useRef<HTMLDivElement>(null);
   const condListRef = React.useRef<HTMLUListElement>(null);
+  /** The morphing box, and the two faces it crossfades between. */
+  const morphRef = React.useRef<HTMLDivElement>(null);
+  const restFaceRef = React.useRef<HTMLDivElement>(null);
+  const condFaceRef = React.useRef<HTMLDivElement>(null);
   // Default to 100% for portal app-shells so the brand row aligns with full-width topbar,
   // or default to estate container variable for static website headers.
   const inner = {
@@ -280,7 +287,7 @@ export function SiteHeader({
     let frame = 0;
     const read = () => {
       frame = 0;
-      if (printingRef.current) return;
+      if (printingRef.current || morphingRef.current) return;
       const y = window.scrollY;
       setScrolled((was) => (was ? y > 40 : y > 120));
     };
@@ -441,6 +448,81 @@ export function SiteHeader({
    * credited with fixing exactly that; the disappearing bar turned out to be a
    * test harness scrolling the target into view before clicking it.)
    */
+  /**
+   * Give the morphing box a height it can actually animate to.
+   *
+   * `height: auto` does not transition, and the two faces are different heights by
+   * 135px, so something has to hand CSS a number. Both faces stay MOUNTED — the
+   * inactive one is `visibility: hidden`, which still lays out, so it can be
+   * measured at any time — and this writes whichever height is current.
+   *
+   * The resting face is the one left in normal flow, so before this effect has ever
+   * run the box is already the right height and the server-rendered masthead is not
+   * a 46px stub waiting for JavaScript.
+   */
+  React.useEffect(() => {
+    if (!wantsScrollCollapse) return;
+    const morph = morphRef.current;
+    const rest = restFaceRef.current;
+    const cond = condFaceRef.current;
+    if (!morph || !rest || !cond || typeof ResizeObserver === "undefined") return;
+    const apply = () => {
+      const h = condensed ? cond.offsetHeight : rest.offsetHeight;
+      if (h > 0) morph.style.height = `${h}px`;
+    };
+    apply();
+    const ro = new ResizeObserver(apply);
+    ro.observe(rest);
+    ro.observe(cond);
+    return () => ro.disconnect();
+  }, [condensed, wantsScrollCollapse]);
+
+  /**
+   * Hold the trigger still while the box is moving, and clip it while it moves.
+   *
+   * TWO PROBLEMS, ONE FLAG.
+   *
+   * The box shrinks by ~89px of PINNED height, all of it above the viewport, so the
+   * browser's scroll anchoring shifts `scrollY` down by the same amount to keep the
+   * content still — and that shift is a scroll event the handler would read back.
+   * Measured: condensing at 130 landed at 52. The restore threshold is 40, so
+   * condensing a few pixels past the 120 trigger would land within single digits of
+   * un-condensing, and the animation would be driving its own trigger. The read is
+   * suspended for the length of the transition and taken once at the end.
+   *
+   * And the outgoing face is 200px tall inside a box on its way to 65, so for the
+   * length of the crossfade it OVERFLOWS — its ghost paints over the page below.
+   * Caught in a frame captured 125ms in: the emblem and department line sitting on
+   * the content under a bar that had already arrived. The box clips only while it is
+   * moving, because at rest it must not clip at all: the dropdowns and the mega-menu
+   * hang below the header and would be cut off.
+   *
+   * The duration is READ FROM THE ELEMENT rather than repeated here, so the guard
+   * cannot drift from the CSS — including under reduced motion, where the height
+   * snaps and this collapses to nothing.
+   */
+  const firstMorph = React.useRef(true);
+  React.useEffect(() => {
+    if (!wantsScrollCollapse) return;
+    if (firstMorph.current) {
+      firstMorph.current = false;
+      return;
+    }
+    const morph = morphRef.current;
+    const ms = morph
+      ? Math.max(0, parseFloat(getComputedStyle(morph).transitionDuration || "0") * 1000)
+      : 0;
+    morphingRef.current = true;
+    setMorphing(true);
+    const t = window.setTimeout(() => {
+      morphingRef.current = false;
+      setMorphing(false);
+      const y = window.scrollY;
+      setScrolled((was) => (was ? y > 40 : y > 120));
+    }, ms + 20);
+    return () => window.clearTimeout(t);
+  }, [condensed, wantsScrollCollapse]);
+
   React.useEffect(() => {
     if (condSearchOpen) condSearchRef.current?.focus({ preventScroll: true });
   }, [condSearchOpen]);
@@ -683,6 +765,84 @@ export function SiteHeader({
     </div>
   );
 
+  /* The three tiers at rest. Extracted so the morph can render them as one of its
+     two faces, and a non-condensing header can render them on their own. */
+  const restingTiers = (
+    <>
+      {/* ── Tier 2: Brand row ── */}
+        <div className="ds-hdr-brand">
+          <div className="ds-hdr-brand__in" style={inner}>
+            {onToggleNav && (
+              <MenuToggle
+                expanded={navExpanded}
+                onToggle={onToggleNav}
+                controlsId={navControlsId}
+              />
+            )}
+
+            <BrandLockup
+              className="ds-hdr-brand__lockup"
+              emblemSrc={emblemSrc}
+              emblemAlt={emblemAlt}
+              lines={brandLines}
+              href={homeHref}
+              beta={isCompact ? false : beta}
+              compact={isCompact}
+            />
+
+            {/* A DIRECT CHILD of the brand row, not part of the trailing cluster —
+                that is what lets it wrap onto its own full-width line below
+                `breakpoint/tablet` instead of disappearing. It used to hide at 900px
+                while the nav row survived to 1024, so between the two the reader had
+                neither. */}
+            {searchField}
+
+            <div className="ds-hdr-brand__trailing">
+              {marks.map((m) =>
+                m.href ? (
+                  /* [DBIM 5.6] Hyperlinked logos — the same treatment the footer
+                     gives its credits. `href` has been in `BrandMark` all along and
+                     was never read, so Digital India sat in every public masthead as
+                     an inert image. */
+                  <a
+                    key={m.src}
+                    className="ds-hdr-cobrand-link"
+                    href={m.href}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+                    <span className="ds-hdr-sr"> (opens in a new window)</span>
+                  </a>
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
+                ),
+              )}
+
+              {isCompact && navRow}
+
+              {account && <AccountMenu account={account} items={accountMenu} />}
+
+              <span className="ds-hdr-brand__actions">{actions}</span>
+
+              {hasNav && (
+                <SheetToggle
+                  open={drawerOpen}
+                  onOpen={() => setDrawerOpen(true)}
+                  controlsId={drawerId}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Tier 3: Navigation row (website / portal) ── */}
+        {!isCompact && navRow}
+    </>
+  );
+
   return (
     <header
       ref={headerRef}
@@ -718,83 +878,42 @@ export function SiteHeader({
         />
       )}
 
-      {condensed ? (
-        condensedBar
-      ) : (
-        <>
-          {/* ── Tier 2: Brand row ── */}
-          <div className="ds-hdr-brand">
-            <div className="ds-hdr-brand__in" style={inner}>
-              {onToggleNav && (
-                <MenuToggle
-                  expanded={navExpanded}
-                  onToggle={onToggleNav}
-                  controlsId={navControlsId}
-                />
-              )}
+      {/* ── The morph ──────────────────────────────────────────────────────────
+         Both faces are rendered whenever the header can condense, because a
+         crossfade needs two things to cross. The conditional render this replaced
+         swapped one subtree for another in a single frame: 200px of masthead became
+         65px of bar with nothing in between, which is the abruptness.
 
-              <BrandLockup
-                className="ds-hdr-brand__lockup"
-                emblemSrc={emblemSrc}
-                emblemAlt={emblemAlt}
-                lines={brandLines}
-                href={homeHref}
-                beta={isCompact ? false : beta}
-                compact={isCompact}
-              />
+         The inactive face is `inert` as well as visually hidden — it is real DOM
+         carrying real links, and a keyboard reader must not be able to tab into a
+         masthead that is not on screen.
 
-              {/* A DIRECT CHILD of the brand row, not part of the trailing cluster —
-                  that is what lets it wrap onto its own full-width line below
-                  `breakpoint/tablet` instead of disappearing. It used to hide at 900px
-                  while the nav row survived to 1024, so between the two the reader had
-                  neither. */}
-              {searchField}
-
-              <div className="ds-hdr-brand__trailing">
-                {marks.map((m) =>
-                  m.href ? (
-                    /* [DBIM 5.6] Hyperlinked logos — the same treatment the footer
-                       gives its credits. `href` has been in `BrandMark` all along and
-                       was never read, so Digital India sat in every public masthead as
-                       an inert image. */
-                    <a
-                      key={m.src}
-                      className="ds-hdr-cobrand-link"
-                      href={m.href}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
-                      <span className="ds-hdr-sr"> (opens in a new window)</span>
-                    </a>
-                  ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
-                  ),
-                )}
-
-                {isCompact && navRow}
-
-                {account && <AccountMenu account={account} items={accountMenu} />}
-
-                <span className="ds-hdr-brand__actions">{actions}</span>
-
-                {hasNav && (
-                  <SheetToggle
-                    open={drawerOpen}
-                    onOpen={() => setDrawerOpen(true)}
-                    controlsId={drawerId}
-                  />
-                )}
-              </div>
-            </div>
+         A header that does NOT condense keeps the old single-face markup: compact is
+         one 65px tier already, and a consumer passing `collapseOnScroll={false}` has
+         asked for no morph at all. Neither should pay for this. */}
+      {wantsScrollCollapse ? (
+        <div className="ds-hdr__morph" ref={morphRef} data-morphing={morphing ? "" : undefined}>
+          <div
+            className="ds-hdr__face ds-hdr__face--rest"
+            ref={restFaceRef}
+            data-active={condensed ? undefined : ""}
+            inert={condensed || undefined}
+          >
+            {restingTiers}
           </div>
-
-          {/* ── Tier 3: Navigation row (website / portal) ── */}
-          {!isCompact && navRow}
-        </>
+          <div
+            className="ds-hdr__face ds-hdr__face--cond"
+            ref={condFaceRef}
+            data-active={condensed ? "" : undefined}
+            inert={!condensed || undefined}
+          >
+            {condensedBar}
+          </div>
+        </div>
+      ) : (
+        restingTiers
       )}
+
 
       {/* ── Mobile navigation (Figma Navbar/NavSheet) ── */}
       {hasNav && (
