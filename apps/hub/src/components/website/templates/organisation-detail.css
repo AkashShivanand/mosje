@@ -410,18 +410,67 @@
    * on nothing.
    *
    * The wrapper takes the surface colour and the content zone below continues
-   * it, so the two are one field with the card lifted over both. The card's own
-   * −40 pull happens inside this box, so its top escapes upward over the banner
-   * without dragging this background with it.
+   * it, so the two are one field with the card lifted over both.
+   *
+   * ── THE SURFACE STARTS 40 DOWN, AND THAT IS THE WHOLE POINT ────────────────
+   *
+   * This block used to paint its background on the element itself, with a note
+   * claiming the card's −40 pull "escapes upward over the banner without
+   * dragging this background with it". Measured, it does the opposite. The
+   * wrapper has no padding or border, so the card's negative top margin
+   * COLLAPSES THROUGH it and moves the wrapper's own top edge up by 40 — taking
+   * the grey with it. The band's last 40 points were painted over in grey, the
+   * banner simply looked 40 shorter, and the card sat flush on a surface instead
+   * of straddling anything. Every check stayed green because nothing overlapped
+   * incorrectly; the overlap merely never happened.
+   *
+   * So the surface moves to a pseudo-element inset by the same 40 the card pulls
+   * up. The wrapper's top 40 is now transparent, the blue shows through it, and
+   * the card genuinely straddles the band's lower edge — as the handoff draws
+   * it. `z-index: -1` keeps it behind the card while `z-index: 1` on the wrapper
+   * keeps the whole group above the banner.
+   *
+   * The inset MUST stay equal to `.ds-fact-strip--overlap`'s pull. They are two
+   * halves of one measurement: raise one without the other and either grey
+   * reappears over the band, or a strip of banner appears under the card.
    */
   .orgd__facts {
     position: relative;
     z-index: 1;
+  }
+
+  .orgd__facts::before {
+    content: "";
+    position: absolute;
+    inset: var(--sa-stack-64) 0 0 0;
+    z-index: -1;
     background-color: var(--sa-bg-neutral-subtler);
   }
 
+  /*
+   * ── `.orgd` IS NOT TINTED, AND THAT IS THE FIX FOR A SILENT REGRESSION ─────
+   *
+   * It carried `background-color: var(--sa-bg-neutral-subtler)`, added so the
+   * fact card had a surface to lift off. The side effect was total: bands
+   * alternate white/grey by giving only the EVEN ones a tint, and an untinted
+   * band is transparent — so with the wrapper grey, every band rendered
+   * `#eef0f3`. Tinted and untinted measured identically. The alternation the
+   * template computes so carefully was still being computed and had nothing
+   * left to express.
+   *
+   * The card's surface never needed this. `.orgd__facts::before` paints its own
+   * grey, and the first band is always the tinted one, so the grey runs
+   * unbroken from under the card into the section below it — which is the
+   * "surface the card lifts off" the original note was reaching for. The
+   * wrapper only ever had to not be white.
+   *
+   * WHITE, NOT TRANSPARENT — and that distinction cost a second pass. Made
+   * transparent, the bands showed `body`, which is itself `#eef0f3` across this
+   * site, so every band was still grey and the fix looked like no fix at all.
+   * The alternation needs a white the page OWNS, not the absence of a colour.
+   */
   .orgd {
-    background-color: var(--sa-bg-neutral-subtler);
+    background-color: var(--sa-bg-neutral-base);
   }
 
   /* ── Highlights (2x2 About cards) ────────────────────────────────────────── */

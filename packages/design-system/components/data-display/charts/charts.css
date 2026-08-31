@@ -229,6 +229,20 @@
     stroke-width: 1.5;
   }
 
+  /* A bubble that can be selected says so on approach. Every circle is
+     focusable for the tooltip, so the focus ring lives on the base `circle`
+     rather than on this modifier — a keyboard reader must see where they are
+     whether or not the map is interactive. */
+  .ds-chart__svg circle:focus-visible {
+    outline: none;
+    stroke: var(--sa-icon-neutral-base);
+    stroke-width: 2.5;
+  }
+
+  .ds-bubble--interactive {
+    cursor: pointer;
+  }
+
   /* ── Categorical palette (12 series) ─────────────────────────────────────── */
   .ds-chart-fill-0 { fill: var(--sa-chart-cat-1); }
   .ds-chart-fill-1 { fill: var(--sa-chart-cat-2); }

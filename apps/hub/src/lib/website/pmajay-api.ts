@@ -1,5 +1,10 @@
 import type { Descriptor, Reading } from "@/lib/data-mode/types";
 import {
+  PMAJAY_REACH_SNAPSHOT,
+  type ReachDataset,
+  type ReachSnapshot,
+} from "./pmajay-map-snapshot";
+import {
   GIA_ALL_PHYSICAL_FALLBACK,
   GIA_YEARS_FALLBACK,
   HOSTEL_FALLBACK_ILLUSTRATIVE,
@@ -13,11 +18,14 @@ import {
  * is that a figure the department publishes is never replaced on this estate by
  * a dash, a zero or "not yet reported".
  *
- * Two feeds, four endpoints, one deliberate omission:
+ * Three feeds, five endpoints, one deliberate omission:
  *
  *   · Grants-in-Aid, approved projects by domain — per financial year
  *   · Grants-in-Aid, physical progress — per financial year, plus `all`
  *   · Hostels, summary — no parameters; it ignores `fin_year`
+ *   · Map points — every Adarsh Gram village and every hostel, with coordinates.
+ *     ~3.5 MB, so it is aggregated to state level here and the coordinates are
+ *     discarded; see `getPmajayReach` for why the page never sees them.
  *   · Gender distribution — NOT CONSUMED. Every figure it returns is 0, for
  *     every intervention, and `gender_overall` on the domain report agrees. A
  *     zeroed chart states that no women were reached, which is false rather
@@ -78,11 +86,15 @@ function prettyBreakdown(raw: string): string {
     .join(" — ");
 }
 
-async function getJson<T>(path: string): Promise<T | null> {
+async function getJson<T>(
+  path: string,
+  timeoutMs: number = TIMEOUT_MS,
+  base: string = BASE,
+): Promise<T | null> {
   try {
-    const res = await fetch(`${BASE}/${path}`, {
+    const res = await fetch(`${base}/${path}`, {
       next: { revalidate: REVALIDATE },
-      signal: AbortSignal.timeout(TIMEOUT_MS),
+      signal: AbortSignal.timeout(timeoutMs),
     });
     if (!res.ok) return null;
     const body = (await res.json()) as { data?: T };
@@ -381,3 +393,157 @@ export async function getGiaGender(totalApproved: number): Promise<GenderReading
     mock,
   };
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   REACH — where PM-AJAY has landed, by state
+   ══════════════════════════════════════════════════════════════════════════ */
+
+export type ReachKey =
+  | "villages"
+  | "villageStates"
+  | "villageDistricts"
+  | "hostels"
+  | "hostelStates"
+  | "hostelDistricts";
+
+export interface ReachData {
+  /** Per-state rows as the feed reported them. `null` when it did not answer. */
+  live: ReachSnapshot | null;
+  reading: Reading<ReachKey>;
+  mock: ReachSnapshot;
+  reachable: boolean;
+}
+
+interface RawMapPoints {
+  vdp_villages: { state_name?: string; district_code?: number | string }[];
+  hostels: { state_name?: string; district_id?: number | string }[];
+}
+
+/**
+ * "JAMMU AND KASHMIR" → "Jammu and Kashmir".
+ *
+ * Kept identical to `scripts/build-pmajay-map-snapshot.mjs`, deliberately and by
+ * hand: that script runs in bare Node with no bundler and cannot import from
+ * here, and a shared package for eleven lines would buy a build step to save a
+ * duplication. If one changes, change both — a live row spelled differently from
+ * its mirrored twin sorts into a different place in the same list.
+ */
+const REACH_JOINERS = new Set(["and", "of", "the"]);
+
+function titleCaseState(raw: string): string {
+  return raw
+    .toLowerCase()
+    .split(/\s+/)
+    .map((w, i) => (i > 0 && REACH_JOINERS.has(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)))
+    .join(" ");
+}
+
+function aggregateReach<T extends Record<string, unknown>>(
+  points: T[],
+  stateKey: keyof T,
+  districtKey: keyof T,
+): ReachDataset {
+  const byState = new Map<string, number>();
+  const districts = new Set<string>();
+  for (const p of points) {
+    const state = titleCaseState(String(p[stateKey] ?? "").trim());
+    if (!state) continue;
+    byState.set(state, (byState.get(state) ?? 0) + 1);
+    districts.add(`${String(p[stateKey])}:${String(p[districtKey])}`);
+  }
+  const rows = [...byState]
+    .map(([state, value]) => ({ state, value }))
+    // Descending by count, then alphabetical — `component-authoring.md` §10.
+    .sort((a, b) => b.value - a.value || a.state.localeCompare(b.state));
+  return { rows, total: points.length, states: rows.length, districts: districts.size };
+}
+
+/**
+ * Where the scheme has reached, aggregated to states.
+ *
+ * THE COORDINATES NEVER LEAVE THIS FUNCTION, AND THAT IS THE DESIGN. The feed
+ * publishes a point per village and per hostel — 19,767 and 202 of them, about
+ * 3.5 MB. The page draws a state choropleth beside a ranked list, so all it can
+ * use is two lists of about two dozen rows. Aggregating here means the render
+ * ships ~2 KB rather than ~3.5 MB of latitudes it would immediately discard, and
+ * the hourly `revalidate` means the large fetch happens once an hour rather than
+ * once a view.
+ *
+ * A LONGER TIMEOUT THAN ITS SIBLINGS, BUT NOT AN UNBOUNDED ONE. Six seconds is
+ * right for a summary object and short for a multi-megabyte body; 8 is the
+ * compromise, and the ceiling matters more than the floor here. It was 20, and
+ * `live-data-fallback.md` is explicit that a slow feed must degrade to the
+ * snapshot rather than to a slow page — with 20 it degraded to both, holding the
+ * server render for 12.5s before falling back anyway. `revalidate: 3600` means
+ * one request an hour pays this at all.
+ *
+ * ITS OWN BASE URL, because this endpoint alone is unwell. The production
+ * gateway currently answers `504` on it after ~29s while serving every other
+ * PM-AJAY report in milliseconds — the payload is simply too big for it — and
+ * the department's dev host returns the same 3.5 MB in 2.2s. The default stays
+ * PRODUCTION, because a citizen-facing page must not quietly read from a `-dev`
+ * host; `NEXT_PUBLIC_PMAJAY_MAP_API` points a demo or a staging build at one
+ * without a code change. Until prod is fixed, the map draws from the mirror and
+ * says so.
+ *
+ * TWO DATASETS, NOT THREE. Grants-in-Aid has no point data in this feed, so the
+ * map speaks for two of PM-AJAY's three components and the section says so.
+ * Drawing an empty third layer to make the set look complete would state that
+ * GIA has reached nowhere, which is false rather than merely absent.
+ */
+const MAP_BASE = process.env.NEXT_PUBLIC_PMAJAY_MAP_API ?? BASE;
+
+export async function getPmajayReach(): Promise<ReachData> {
+  const mock = PMAJAY_REACH_SNAPSHOT;
+  const raw = await getJson<RawMapPoints>("map-points", 8_000, MAP_BASE);
+  if (!raw || !Array.isArray(raw.vdp_villages) || !Array.isArray(raw.hostels)) {
+    return { live: null, reading: {}, mock, reachable: false };
+  }
+
+  const villages = aggregateReach(raw.vdp_villages, "state_name", "district_code");
+  const hostels = aggregateReach(raw.hostels, "state_name", "district_id");
+
+  return {
+    live: { villages, hostels },
+    reading: {
+      villages: villages.total,
+      villageStates: villages.states,
+      villageDistricts: villages.districts,
+      hostels: hostels.total,
+      hostelStates: hostels.states,
+      hostelDistricts: hostels.districts,
+    },
+    mock,
+    reachable: true,
+  };
+}
+
+/**
+ * NO INVARIANTS, AND THAT IS A FINDING RATHER THAN AN OMISSION.
+ *
+ * Nothing here is a part of anything else. Villages and hostels are separate
+ * components counted in different units; a state count and a district count are
+ * cardinalities of one set at two grains, not the subset relation the merge can
+ * solve for. Declaring a `sum` between any pair would be a rule the data does
+ * not obey, and the merge would then "derive" a figure from it — which is worse
+ * than mocking one, because a derived figure is presented as trustworthy.
+ *
+ * The per-state ROWS are not fields here either. The merge resolves scalars, and
+ * a list whose length the feed decides has no fixed key set — so the rows follow
+ * the provenance of their own dataset's total. See `PmajayReachMap`.
+ *
+ * Zeros are all `missing`: a scheme with 19,767 villages on the books has not
+ * reached zero states, so a zero in any of these is an unpopulated column.
+ */
+export const PMAJAY_REACH_DESCRIPTOR: Descriptor<ReachKey> = {
+  id: "pmajay-reach",
+  fields: {
+    villages: { label: "Adarsh Gram villages", zero: "missing" },
+    villageStates: { label: "States with villages", zero: "missing" },
+    villageDistricts: { label: "Districts with villages", zero: "missing" },
+    hostels: { label: "Hostels", zero: "missing" },
+    hostelStates: { label: "States with hostels", zero: "missing" },
+    hostelDistricts: { label: "Districts with hostels", zero: "missing" },
+  },
+  invariants: [],
+};

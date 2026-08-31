@@ -71,6 +71,8 @@
     "check:chart-slots": "node tools/chart-slot-order/check.mjs",
     "check:org-anchors": "node tools/org-anchors/check.mjs",
     "check:feed-drift": "node tools/feed-drift/check.mjs",
+    "snapshot:pmajay-map": "node scripts/build-pmajay-map-snapshot.mjs",
+    "snapshot:pmajay-map:check": "node scripts/build-pmajay-map-snapshot.mjs --check",
     "check:org-logos": "node tools/org-logo/check.mjs",
     "check:org-logos:baseline": "node tools/org-logo/check.mjs --baseline",
     "check:org-logos:report": "node tools/org-logo/check.mjs --report"

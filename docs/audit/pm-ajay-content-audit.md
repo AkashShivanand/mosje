@@ -749,3 +749,536 @@ band. One idea instead of two.
 
 `prefers-reduced-motion` still stops the ripple and leaves all three static rings
 exactly where they are.
+
+## 21. The halo, again — the outer rings move and the inner one does not
+
+§20 left the plaque static with one ring leaving it. The brief now is that
+**everything except the innermost dark circle should animate**, and the
+interesting part is that the obvious implementation rebuilds §20's defect.
+
+Rings 2 and 3 sit at radii 40 and 72. Expand each **on its own radius** and ring
+2 arrives, at roughly a third of its travel, exactly where ring 3 sits at rest.
+Two edges cross and beat against each other in the same 484px — which is the
+seven-edge collision §20 exists to record.
+
+So they share **one track**. Each is born flush against the static ring's outer
+edge, brightens as it detaches, and dissolves into the band; the second is offset
+by **half the period**, so one is always leaving while the other is halfway out.
+Nothing ever coincides.
+
+| Before (§20) | After | Why |
+| --- | --- | --- |
+| 3 static rings + 1 ripple | **1** static ring + **2** travelling rings | The brief: only the picture's own outline holds still |
+| Ripple born at radius 72 (the outer static ring) | Both born at radius 10 — the dark ring's outer edge | With rings 2 and 3 gone, the plaque's edge IS the dark ring |
+| One pseudo-element | Two, same keyframes, `animation-delay: -2.5s` on the second | A negative delay starts it already half-travelled, so the first frame is never a bare disc |
+| 4s loop, peak opacity 0.40 | **5s**, peak **0.85** against a 52% ring | 5s means a ring leaves every 2.5s rather than every 2s; 0.85 × 52% ≈ 44% alpha at the edge, which is the weight the old static mid ring carried |
+| Travel to `scale(1.26)` | `scale(1.4)` from a smaller start radius | Same outer extent on screen |
+| Reduced motion: ripple stops, 3 static rings remain | Reduced motion: **both rings freeze at the mid and outer radii** | It restores the drawing the handoff published, rather than leaving a bare disc where the animation was |
+
+**The innermost ring stays static for a structural reason, not an aesthetic one.**
+It is what separates a photograph from a blue gradient at the picture's lower
+edge, where the band is darkest. A portrait whose own boundary breathes reads as
+a rendering fault rather than as motion.
+
+## 22. The fact card never overlapped the banner
+
+The card is supposed to straddle the band's lower edge. It did not, and the
+stylesheet asserted that it did:
+
+> "The card's own −40 pull happens inside this box, so its top escapes upward
+> over the banner without dragging this background with it."
+
+Measured, the opposite. `.orgd__facts` has no padding and no border, so the
+card's negative top margin **collapses through it** and moves the wrapper's own
+top edge up by 40 — taking the grey surface with it. The band's last 40 points
+were painted over in grey, the banner simply looked 40 shorter, and the card sat
+flush on a surface instead of straddling anything.
+
+```
+before   band ──────────────┐              after   band ──────────────┐
+                grey ═══════╪══ (over the blue)              blue ════╪══ (visible)
+                ┌───────────┴──┐                            ┌─────────┴────┐
+                │  fact card   │                            │  fact card   │
+```
+
+The surface moved to a pseudo-element inset by the same 40 the card pulls up, so
+the wrapper's top 40 is transparent and the blue shows through it.
+
+**Nothing detected this because nothing overlapped *wrongly*.** Every check was
+green; the overlap merely never happened. The inset and `.ds-fact-strip--overlap`'s
+pull are two halves of one measurement and a comment now says so — raise one
+without the other and either the grey reappears over the band, or a strip of
+banner appears under the card.
+
+## 23. "Where PM-AJAY has reached" — the map band
+
+A new band on the scheme's own page, immediately after the components cards,
+fed by the department's `map-points` endpoint.
+
+**Placement.** Directly under the components, because the reader has just been
+told the scheme has three of them and "where has it actually landed" is the next
+question they have. Further down — after the documents — the same map is a
+curiosity rather than evidence for the cards above it. The index entry sits in
+the same position, because an index whose order disagrees with the page teaches
+the reader it cannot be trusted.
+
+**A choropleth, not the points the feed publishes.** `map-points` carries a
+coordinate for every one of 19,767 Adarsh Gram villages and 202 hostels — about
+3.5 MB. Plotted raw that is a smear over the Gangetic plain: 19,767 dots at
+national scale is ink, not information, and it is unreadable without a mouse.
+Aggregated to states, it answers the question a reader of this page has. The
+aggregation happens server-side, so the page ships about 2 KB instead.
+
+**Two layers, and the third is deliberately absent.** Grants-in-Aid has no point
+data in this feed. An empty third layer would state that GIA has reached nowhere
+— false rather than merely absent — so the toggle offers two and the footnote
+says why.
+
+**Provenance.** Six scalars merge through `PMAJAY_REACH_DESCRIPTOR`, which
+declares **no invariants** — and that is a finding rather than an omission.
+Nothing here is a part of anything else: villages and hostels are different
+components in different units, and a state count and a district count are two
+grains of one set, not a subset relation. Declaring a sum between any pair would
+be a rule the data does not obey, and the merge would then *derive* a figure from
+it — worse than mocking one, because a derived figure is presented as
+trustworthy. The per-state rows follow the provenance their own dataset's total
+resolved to, so a live map can never sit under mirrored totals.
+
+**The snapshot is generated, not typed.** `scripts/build-pmajay-map-snapshot.mjs`
+mirrors the feed to `pmajay-map-snapshot.ts` with an `AS_ON` date, and is
+deliberately not run by the build: a mirror that silently tracks the feed is a
+second copy of the feed wearing a stale date. `--check` reports drift without
+failing anything.
+
+### Two layout defects found by measuring, not by looking
+
+| Defect | Measured | Fix |
+| --- | --- | --- |
+| Ranking labels at **5.9px** | The band sits behind a 280px index rail, so at a 1280 viewport it is ~808px. Split 3:2, the chart got a 281px box for a 480-unit viewBox — a 0.58 scale on 10px labels. Half the estate's own 11px floor | Stack instead of two columns; the ranking gets the full width and its labels land at 12–17px. A 640-unit viewBox keeps them there at every width |
+| The map collapsed to **351px** in a 790px card | `.pmr__map` was `display: flex` to centre the chart, and a flex item sizes to its content on the main axis | `margin-inline: auto` on a block child, capped at 620px — centred without taking its width away |
+
+The bars are shaded from the **same sequential ramp as the map**, floored at
+0.3: the categorical default gave ten instances of one thing ten different hues,
+contradicting the choropleth above them, and the ramp's bottom rung is a
+near-white that drew Maharashtra's 311 as an invisible sliver — under the 3:1
+WCAG 2.2 §1.4.11 floor for a non-text graphic.
+
+## 24. The halo, the overlap, and a regression the alternation hid
+
+Three corrections, all measured against `MoSJE [Handoff]` node `3751:10124`
+(`Ds5qx61QsI0ZkYSrLKxo0A`) rather than judged by eye.
+
+### The overlap was 40. The handoff says 64.
+
+| node | y | height |
+| --- | --- | --- |
+| `Header` (3751:10130) — the blue band | 0 | **572** |
+| `Org at a Glance` (3751:10140) | **508** | 164 |
+
+572 − 508 = **64**. Sixty-four of the card's 164 sits on the blue — a little
+under two fifths of it. It was 40, which is the card's own top padding: it
+looked deliberate but was never measured, and at that depth the card reads as
+resting against the band rather than straddling it.
+
+**Three rules carry that one number** and must move together, or the overlap
+stops being a single measurement:
+
+| rule | file | what it does |
+| --- | --- | --- |
+| `.ds-fact-strip--overlap` | `fact-strip.css` | pulls the card up |
+| `.sa-siteheader__band--reserved` | `site-page-header.css` | reserves the same distance so the card overlaps into padding, not into the standfirst |
+| `.orgd__facts::before` | `organisation-detail.css` | insets the grey surface by the same distance so the blue shows through |
+
+### Three rings, not two
+
+The handoff's halo component (`3751:10133`) is a photograph plus **three**
+rings — one opaque `#036` hugging the image, then two at `rgba(0,51,102,0.48)`.
+The brief is that all three outer rings pulse in a loop, so the implementation
+went from two travelling rings to three, still on one shared track, now a
+**third** of a period apart rather than a half.
+
+**An element has only two pseudo-elements**, which is why `SitePageHeader` now
+renders a `sa-siteheader__pulse` span: it carries the first ring on itself and
+the other two on its own `::before` and `::after`.
+
+The period moved 5s → **6s** so a ring still leaves every 2s rather than every
+1.67s, and the peak opacity 0.85 → **0.7**, because three overlapping rings put
+half again as much ink on the band as two.
+
+The trap remains what it was in §21: animating the rings on their *own* radii
+makes one arrive exactly where the next sits at rest, and the edges beat. One
+track is what prevents that.
+
+### The white/grey band pattern had been gone, silently
+
+`.orgd` carried `background-color: var(--sa-bg-neutral-subtler)`, added so the
+fact card had a surface to lift off. The side effect was total.
+
+Bands alternate by tinting only the **even** ones; an untinted band is
+transparent. With the wrapper grey, an untinted band showed grey — so every band
+on every organisation page rendered `#eef0f3`, tinted and untinted measuring
+identically. The alternation the template computes so carefully was still being
+computed and had nothing left to express.
+
+```
+                       tinted band   untinted band
+before   .orgd grey      #eef0f3        #eef0f3     ← no pattern
+after    .orgd white     #eef0f3        #ffffff
+```
+
+The card's surface never needed it: `.orgd__facts::before` paints its own grey,
+and the first band is always the tinted one, so the grey runs unbroken from
+under the card into the section below.
+
+**`transparent` is not the fix — `body` is itself `#eef0f3` across this site**,
+so a transparent wrapper still showed grey and the repair looked like no repair
+at all. The alternation needs a white the page owns.
+
+## 25. "Where PM-AJAY works" — rebuilt to the standalone mockup
+
+The section §23 introduced was built from first principles. A standalone design
+for it already existed — `MapA.dc.html`, from the *भारत मैप इंटीग्रेशन* session —
+and this rebuilds against it. The mockup is a **design reference**, not code:
+its own README says so, and the values live in its inline styles.
+
+| | §23 build | Mockup | Now |
+| --- | --- | --- | --- |
+| heading | "Where PM-AJAY has reached" | **"Where PM-AJAY works"** | matches |
+| map | state **choropleth** | **proportional circles** | matches |
+| companion | horizontal `BarChart` **below** | ranked rail **beside** | matches |
+| layers | 2 (villages, hostels) | 3, counts in the tab | 3, GIA disabled |
+| footer | caption only | fact + utilities | fact + CSV |
+
+### A choropleth was the wrong instrument, and the mockup was right
+
+`IndiaMap` shades the state itself, so the ink a state receives is its **land
+area**. For a rate that is fine. For a **count** it is a systematic error:
+Rajasthan reports 1,493 villages and Delhi 1 — a ratio of 1,493 — while their
+areas differ by roughly 250×. Shaded, the two effects fight and area wins.
+
+`IndiaBubbleMap` was added to the design system for this, with `r ∝ √v` so a 4×
+count draws 4× the ink and not 16×. Its state centroids are **derived from the
+generated paths** rather than stored beside them — a committed table is a second
+copy of geometry that no build checks — and it takes the centroid of each
+state's largest closed ring, so Andaman and Nicobar's circle lands on an island
+rather than in the water between them.
+
+### Three tabs, two maps
+
+Grants-in-Aid sits on the tab strip carrying its live project total, and is
+**not selectable**. The alternatives were both worse: leaving it off tells a
+reader PM-AJAY has two components, and drawing it as an empty map tells them it
+has reached nowhere. A named, disabled tab with a real figure says the true
+thing — the projects exist, their locations are not published.
+
+### The rail is text, and that is why it fits
+
+§23 had to stack its companion because a scaled SVG shrinks rather than
+reflows — at this page's width the chart's labels rendered at 5.9px. Rows of
+real text reflow, so the rail sits beside the map as the mockup draws it and
+reads at full size at every width.
+
+### The production gateway 504s on this endpoint
+
+Found while verifying, not assumed: `map-points` returns **504 after ~29s** from
+`pmajay-api-admin.mosje.in`, while every other PM-AJAY report answers in
+milliseconds and the department's **dev** host returns the same 3.5 MB in 2.2s.
+The payload is simply too big for the production gateway.
+
+Two consequences, both handled:
+
+1. **The timeout came down 20s → 8s.** `live-data-fallback.md` is explicit that
+   a slow feed must degrade to the snapshot rather than to a slow page. At 20 it
+   degraded to *both* — a 12.5s server render before falling back anyway.
+2. **The endpoint got its own base URL**, `NEXT_PUBLIC_PMAJAY_MAP_API`,
+   defaulting to production. A citizen-facing page must not quietly read from a
+   `-dev` host, but a demo or a staging build can point at one without a code
+   change. Until production is fixed the map draws from the mirror and says so.
+
+## 26. The halo, measured rather than judged
+
+The reference prototype recording was read as a **kymograph** — a single row of
+pixels through the halo's centre, stacked over time, which turns every ring edge
+into a line whose slope is its speed. That gives numbers instead of impressions:
+
+| | measured | previous build |
+| --- | --- | --- |
+| rings on screen | 3 | 3 ✓ |
+| emission interval | ~2.9s | 2s |
+| ring lifetime | ~8.7s | 6s |
+| travel | r153 → r197 (**×1.29**) | ×1.40 |
+| speed | ~constant | ease-out |
+
+Every difference points the same way: the implementation was faster, further and
+front-loaded. **`linear` is the whole fix.** An eased ring visibly accelerates
+away from the portrait and stalls at the end, and the stall is where the eye
+catches the loop; at constant speed and even spacing there is no moment that
+reads as a beginning.
+
+The second change is the opacity envelope. It peaked at 12% and decayed, which
+gives every ring one bright instant — and three bright instants a cycle is a
+pulse however smooth the travel is. It now rises to 0.55, **holds flat** to 72%,
+then releases to zero, so a ring is simply *present* for most of its life.
+
+9s rather than 8.7 so the three delays are exact thirds; uneven spacing is what
+makes a flow read as a set of separate pulses.
+
+## 27. The halo was never running — a specificity tie, found by measuring
+
+§26 tuned the motion and reported it working. It was not. The tuning was correct
+and had no effect, because the element it applied to had been overridden into a
+different kind of box entirely.
+
+```css
+.sa-siteheader__pulse        { position: absolute; z-index: 0; }   /* line 235 */
+.sa-siteheader__halo > *     { position: relative; z-index: 1; }   /* line 266 */
+```
+
+Both are **specificity (0,1,0)**. `.sa-siteheader__pulse` is a child of the halo,
+so it matches the second rule too — and at equal specificity the later rule wins.
+`getComputedStyle` on the shipped page returned:
+
+| property | intended | actual |
+| --- | --- | --- |
+| `position` | `absolute` | **`relative`** |
+| `z-index` | `0` | **`1`** |
+
+So what shipped was an in-flow grid item taking its own row in a
+`place-items: center` grid, drawing a 28px shadow around a **zero-sized box**,
+painting *above* the portrait instead of behind it.
+
+**The lesson is the diagnosis, not the fix.** Three passes had tuned durations,
+easings and opacity envelopes against a component that was not rendering any of
+them, because each pass verified by *looking* at a small screenshot rather than
+by asking the browser what it had computed. The first measurement found it in
+one call.
+
+The fix scopes the lift with `:not(.sa-siteheader__pulse)` so the two rules can
+never tie. It is deliberately **not** fixed by moving a block up the file: source
+order is not a contract, and the next person to reorder the stylesheet would
+reintroduce it silently.
+
+### And then: five rings, because three left a gap
+
+With the bug fixed the motion was visible for the first time — and three rings on
+a 9s loop emit one every 3s, which leaves a **visible pause at the portrait's rim**
+between one ring departing and the next appearing. The eye locks onto a pause,
+which is the opposite of flow.
+
+Five rings on an 8s loop emit every 1.6s. Because the delays are exact fifths,
+the five scales are always `{s, s+0.084, s+0.168, s+0.252, s+0.336}` — so there
+is **always** a ring within a fifth of a cycle of the rim, by construction rather
+than by luck. Measured live: 1.076 / 1.160 / 1.244 / 1.328 / 1.412, evenly spread
+across the whole track.
+
+| | §26 | now |
+| --- | --- | --- |
+| rings | 3 | **5** |
+| cycle | 9s | 8s |
+| emission | every 3s | **every 1.6s** |
+| band width | 28px | **12px** |
+| travel | ×1.29 | ×1.42 |
+
+The band narrowed and the travel widened together, and they are one decision:
+five rings ~15px apart need a band narrower than the gap between them, or they
+merge into a single moving wash and stop reading as rings. At ×1.29 with 28px
+bands they did exactly that.
+
+Five rings need five boxes, and an element has two pseudo-elements — hence the
+halo's own `::before`/`::after` **plus** the `__pulse` span and its two.
+
+The fades are deliberately asymmetric: short in (10%), long out (32%). A ring
+appears at the rim where the eye already is, so it must arrive too quickly to be
+watched arriving; it leaves at the band's outer reaches, where a long dissolve is
+invisible. Symmetrical fades made every birth a small event.
+
+## 28. It was never a ring — the discs are filled
+
+§27 fixed the specificity bug and the halo began animating for the first time.
+It was still wrong, and this time the error was the **mechanism**, not the
+timing. Every version up to here drew **annuli** — `box-shadow: 0 0 0 <n>px`,
+which paints a band and leaves its interior untouched.
+
+The component draws **filled circles**. `Image Container with Halo Effect/lg`
+(`SVMfm1KApR7KYHSbwNBnOM`, node `99:1334`) is a stack of `rounded-rectangle`
+layers with a solid `#036` fill and a layer opacity, not a stroke among them.
+The concentric bands a reader sees are not outlines at all: they are **where
+translucent discs overlap**, and each band's edge is simply where one more disc
+stops contributing.
+
+That is why no amount of retiming could make rings look right. A ring leaves a
+gap behind it, so the flow needs enough rings to keep the gap covered and the eye
+reads a procession of separate objects. A disc covers everything inside it, so
+three suffice and the field is never empty for an instant.
+
+### The three states ARE the keyframes
+
+The component publishes `State=1`, `State=2` and `State=3`. They are not three
+designs. Read by **disc identity** rather than by z-order, the layer names track
+individual discs moving through the frames:
+
+| disc | State 1 | State 2 | State 3 |
+| --- | --- | --- | --- |
+| `0` | 416 · op **1** | 480 · .48 | 528 · .48 |
+| `1` | 480 · .48 | 528 · .48 | 568 · **0** |
+| `2` | 528 · .48 | 568 · .48 | — |
+| `3` | — | **416** born | 480 · .48 |
+
+So one disc's whole life is `416 → 480 → 528 → 568` while its opacity runs
+`1 → .48 → .48 → 0`; a new one is born every step; **three are alive at once**.
+Against the 416px image that is `scale 1 → 1.154 → 1.269 → 1.365`.
+
+### Two properties fall out of that, and both matter
+
+**It is born opaque, and the birth is invisible.** A disc starts at exactly the
+portrait's size, *behind* the portrait, so its opaque first instant is occluded.
+Nothing appears out of nothing — the appearing happens where nobody can look. It
+also means no fade-in is needed, which is what makes the loop genuinely seamless.
+The extra density just past the picture's edge, on its way down to 0.48, is what
+keeps the portrait's rim crisp.
+
+**It ends at zero**, at its largest and faintest, dissolving into a band it
+already matches. Birth and death are both unwatchable, which is the whole trick.
+
+### `linear`, because the easing is in the samples
+
+The published sizes step **+64, +48, +40** — decelerating. Those samples are
+declared as keyframes, so linear interpolation between them reproduces the
+designer's curve exactly. Adding `ease-out` on top would ease an already-eased
+set of values twice, which is how an animation ends up lurching at its start and
+stalling at its end.
+
+| | §27 | now |
+| --- | --- | --- |
+| shape | annulus (`box-shadow` band) | **filled disc (`background-color`)** |
+| count | 5 | **3** |
+| cycle | 8s | **6s** — one born every 2s |
+| travel | ×1.42 | **×1.365** (568 ÷ 416) |
+| opacity | 0 → .5 → .5 → 0 | **1 → .48 → .48 → 0** |
+| timing | linear over invented stops | linear over the **published** stops |
+
+The alpha also moved: the fill is now **solid** with the translucency carried by
+the animated `opacity`, as the component does it. Baking it into the colour as
+well would have multiplied against the keyframe opacity and landed at ~22% — less
+than half the published density.
+
+## 29. One speed, and the design's own samples were not it
+
+§28 got the shape right — filled discs, not rings — and declared all three
+published states as keyframes so linear interpolation would reproduce the
+drawing. That was faithful to the design and wrong for the motion.
+
+The published sizes step **+64, +48, +40**. That is a decelerating curve, so each
+wave lunged away from the portrait and then crawled: waves bunched up towards the
+outside and the flow visibly changed pace. Water does not do that. A wave leaving
+a still surface travels at one speed, and every wave travels at the same one.
+
+`scale` is now interpolated **linearly across the whole cycle and nowhere else**.
+Because radius is `170 x scale`, a scale linear in time IS a radius linear in
+time — constant radial velocity. Measured on the running page, sampling one
+disc's scale every 300ms:
+
+```
+0.0606  0.0621  0.0603  0.0604  0.0608  0.0618  0.0605
+0.0608  0.0606  0.0608  0.0604  0.0607  0.0620     scale / second
+```
+
+Constant at **0.0608/s**, which is exactly `0.365 ÷ 6s`. The ±0.0015 spread is
+`setTimeout` jitter in the sampler, not the animation.
+
+**The three states remain the source for how FAR a disc travels. They are no
+longer the source for how it gets there.**
+
+### Always there, by construction
+
+Opacity now holds flat at 0.48 for the first 70% and only then releases, so a
+disc is a steady presence for almost its whole life rather than an event with a
+peak. Measured across five moments, the innermost disc is always between scale
+1.004 and 1.100 at full opacity, and the three sit exactly 0.1217 apart — a third
+of the travel, permanently:
+
+```
+innermost 1.100@.48   mid 1.222@.48   outer 1.343@.10
+innermost 1.004@.48   mid 1.125@.48   outer 1.247@.48
+innermost 1.029@.48   mid 1.151@.48   outer 1.273@.40
+innermost 1.055@.48   mid 1.176@.48   outer 1.298@.29
+innermost 1.081@.48   mid 1.202@.48   outer 1.324@.18
+```
+
+The field just outside the portrait is therefore covered continuously, forever,
+without depending on a chosen fade curve.
+
+### The `opacity: 1` at birth is gone, and why that is not a deviation
+
+It was the component's value for a disc still hidden behind the image. Our dark
+rim is thinner than the reference's — 10px on a 340px portrait against 8px on a
+416px one — so ours emerged at ~0.75 and fell to 0.48, a darkening pulse at the
+rim every two seconds. Flat from the start removes it and costs nothing: at
+`scale(1)` the disc is behind the portrait either way.
+
+## 30. Audit: the loop was periodic but not seamless
+
+Asked to audit the halo for seamless looping, and the honest answer had two
+halves.
+
+**Periodic: yes, and provably.** Sampling all three discs at `t` and `t + 2s`
+returns byte-identical state — `182.51@0.48 · 203.19@0.48 · 223.87@0.211`. The
+composite repeats exactly every 2s, which is the stagger period.
+
+**Seamless: no.** A disc's only discontinuity is the wrap — `scale(1.365)`
+teleporting back to `scale(1)`. That was hidden by two claims: opacity is 0 at
+the end (true), and `scale(1)` is behind the portrait so the reappearance at
+0.48 cannot be seen (**false on most of this estate**).
+
+### The portrait is not opaque
+
+`PageHero` draws a mark or the State Emblem as `object-contain p-12` on a
+`bg-white/10` circle — 90% transparent. Only a *photograph* gets `object-cover`
+and fills the circle.
+
+**All 23 root organisation pages take the transparent path**, because none of
+them carries a featured photograph. Measured on Dr. Ambedkar Foundation:
+
+```
+object-fit: contain      portrait background: white / 0.1
+innermost disc edge 171.8 @ 0.48   against a portrait radius of 170
+```
+
+So a fresh disc appeared instantly at full opacity, exactly filling the circle,
+directly behind the emblem — a **13-point step in composite alpha, every two
+seconds**, on a government landing page.
+
+### The fix is a crossfade, not an occlusion
+
+A disc is now born at opacity **0** and dies at opacity **0**, and — the part
+that matters — the fade-in and the fade-out are **exact complements offset by
+the stagger**. Both run over 30% of the cycle (in at 3.33→33.33%, out at
+70→100%), and the discs are two thirds of a cycle apart, so the one fading in
+and the one fading out are always in their fade simultaneously with slopes that
+cancel:
+
+```
+A(p) + C(p + ⅔)  =  0.48·x + 0.48·(1 − x)  =  0.48,  for every p
+```
+
+The dying disc hands its opacity to the newborn exactly.
+
+### Measured after the change
+
+| | before | after |
+| --- | --- | --- |
+| total ink across the loop | stepped at the wrap | **0.9600 → 0.9601** — constant to four decimals |
+| composite behind the portrait | 13-point instant step | **0.6997 → 0.7296**, a smooth ripple |
+| largest frame-to-frame change | a discontinuity | **0.0041** |
+| speed | constant | still constant — 0.0608/s, spread **0.0024** across 14 intervals |
+| state at `t` vs `t + 2s` | identical | still identical |
+
+The residual 3-point ripple is the non-linearity of alpha compositing —
+`1 − ∏(1 − a)` is not linear, so a constant *sum* is not a constant *composite*.
+At a maximum step of 0.0041 it is imperceptible, and it is continuous, which is
+the property that was missing.
+
+**The right place to fix it was the animation, not the portrait.** Making
+`PageHero`'s circle opaque would have worked for today's markup and broken again
+the next time a consumer renders something translucent in the halo. An animation
+should not depend on what is drawn on top of it.

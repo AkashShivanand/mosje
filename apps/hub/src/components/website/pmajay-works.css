@@ -1,0 +1,278 @@
+/* Declare the order before using it — see `.claude/rules/design-system-architecture.md` §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     PM-AJAY — "Where PM-AJAY works"
+     Layer tabs, a proportional-circle map, and the ranked state rail beside it.
+     Built to the standalone mockup from the Bharat-map session.
+     ============================================================================ */
+
+  .pmw__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--sa-inline-16);
+  }
+
+  .pmw__headline {
+    max-width: 62ch;
+  }
+
+  .pmw__title {
+    margin: 0;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: 700;
+  }
+
+  .pmw__lead {
+    margin: var(--sa-stack-8) 0 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  /* ── Tabs ────────────────────────────────────────────────────────────────── */
+
+  /*
+   * An underline strip, not a pill group. The mockup marks the active tab with a
+   * rule beneath it, which keeps the row reading as one horizontal band of
+   * options rather than four separate buttons — and leaves the counts, which are
+   * the actual content, as the loudest thing in each tab.
+   */
+  .pmw__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-24);
+    margin: var(--sa-stack-20) 0 0;
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .pmw__tab {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-8) 0 var(--sa-padding-12);
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: none;
+    color: var(--sa-text-neutral-subtle);
+    font: inherit;
+    font-size: var(--sa-type-body-2-size);
+    cursor: pointer;
+    /* The strip's own 1px rule and this 2px marker overlap by design; without
+       the pull the active tab sits a pixel below the line it should sit on. */
+    margin-bottom: -1px;
+  }
+
+  .pmw__tab--on {
+    color: var(--sa-text-neutral-bolder);
+    border-bottom-color: var(--sa-color-successScale-600);
+    font-weight: 600;
+  }
+
+  /*
+   * Disabled, and it still has to be READABLE — it carries a real figure.
+   * `opacity` would take the count down with it, so the state is carried by the
+   * cursor and the missing marker instead. 4.6:1 on white; the standard
+   * `not-allowed` cursor and the tooltip say why it does not respond.
+   */
+  .pmw__tab--off {
+    cursor: not-allowed;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .pmw__dot {
+    width: 8px;
+    height: 8px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-600);
+  }
+
+  .pmw__tab--off .pmw__dot {
+    background-color: var(--sa-border-neutral-base);
+  }
+
+  .pmw__tab-count {
+    color: var(--sa-text-neutral-base);
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+  }
+
+  /* ── Panel: map beside rail ──────────────────────────────────────────────── */
+
+  /*
+   * BESIDE, not stacked — and that is only safe because the rail is TEXT.
+   * The earlier version of this section put a horizontal `BarChart` here and had
+   * to stack it: a scaled SVG shrinks rather than reflows, and in this column
+   * (the page grid leaves ~808px behind a 280px index rail) its labels rendered
+   * at 5.9px. Rows of real text reflow, so they survive the narrow column that
+   * defeated the chart.
+   */
+  .pmw__panel {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sa-stack-24);
+    margin-top: var(--sa-stack-24);
+  }
+
+  @media (min-width: 900px) {
+    .pmw__panel {
+      grid-template-columns: minmax(0, 1.55fr) minmax(260px, 1fr);
+      align-items: start;
+    }
+  }
+
+  .pmw__mapcard {
+    padding: var(--sa-padding-20);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  .pmw__mapnote {
+    margin: var(--sa-stack-12) 0 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  /* ── Rail ────────────────────────────────────────────────────────────────── */
+
+  .pmw__railhead {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    padding-bottom: var(--sa-padding-8);
+  }
+
+  .pmw__raileyebrow {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .pmw__railcount {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pmw__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  /* 20 / flexible / 58, as the mockup sets the row. The fixed value column is
+     what keeps four- and one-digit figures on one right edge. */
+  .pmw__row {
+    display: grid;
+    grid-template-columns: 20px minmax(0, 1fr) 58px;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    padding: 9px 10px;
+    border-radius: var(--sa-shape-8);
+  }
+
+  @media (hover: hover) {
+    .pmw__row:hover {
+      background-color: var(--sa-bg-status-success-base);
+    }
+  }
+
+  .pmw__rank {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .pmw__rowbody {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+  }
+
+  .pmw__state {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .pmw__track {
+    height: 4px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-subtler);
+    overflow: hidden;
+  }
+
+  .pmw__fill {
+    display: block;
+    height: 100%;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-color-successScale-600);
+  }
+
+  .pmw__value {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+  }
+
+  .pmw__more {
+    margin-top: var(--sa-stack-8);
+    padding: var(--sa-padding-8) 10px;
+    border: 0;
+    background: none;
+    color: var(--sa-text-brand-primary-base);
+    font: inherit;
+    font-size: var(--sa-type-body-3-size);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .pmw__more:hover {
+    text-decoration: underline;
+  }
+
+  /* ── Foot ────────────────────────────────────────────────────────────────── */
+
+  .pmw__foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-inline-16);
+    margin-top: var(--sa-stack-16);
+    padding-top: var(--sa-padding-12);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .pmw__footfact {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+  }
+
+  .pmw__footlink {
+    color: var(--sa-text-brand-primary-base);
+    font-size: var(--sa-type-body-3-size);
+    font-weight: 600;
+  }
+}

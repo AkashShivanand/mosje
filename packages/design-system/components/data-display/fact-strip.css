@@ -12,34 +12,76 @@
      The row of standing facts under a page hero. Token-driven; no raw values.
      ============================================================================ */
 
+  /*
+   * `--sa-elevation-modal`, BOUND BY RESOLVED VALUE RATHER THAN BY NAME.
+   *
+   * The handoff's card carries the published `Shadows/shadow-lg` effect:
+   * `0 12px 16px -4px #21212114` over `0 4px 6px -2px #21212108`. Our
+   * `elevation-modal` is that, offset for offset and alpha for alpha, in the
+   * estate's own neutral ink. `elevation-raised` — which this used — is a
+   * tighter, higher shadow (4px/6px against 12px/16px), so the card sat close to
+   * the page instead of floating clear of the band it straddles.
+   *
+   * The name says "modal" and the thing is a card. `documentation-ds-linkage.md`
+   * settles that: bind to the variable whose RESOLVED VALUE matches the intended
+   * appearance. Renaming the rung is a token-system change, not a licence to
+   * pick a shadow that is visibly wrong.
+   */
   .ds-fact-strip {
     position: relative;
     padding: var(--sa-padding-24) var(--sa-padding-16);
     border-radius: var(--sa-shape-20);
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: var(--sa-elevation-raised);
+    box-shadow: var(--sa-elevation-modal);
   }
 
-  /* Straddles the band above. The negative margin is the card's own top padding,
-     so the hero keeps a full section's worth of breathing room above the fold
-     and the card still reads as belonging to it. */
+  /*
+   * Straddles the band above.
+   *
+   * 64, MEASURED FROM THE HANDOFF RATHER THAN CHOSEN. In `Header` (3751:10129)
+   * the blue band is 572 tall and `Org at a Glance` starts at 508 — so 64 of the
+   * card's 164 sits on the blue, a little under two fifths of it. It was 40,
+   * which is the card's own top padding and looked deliberate but was not
+   * measured; at that depth the card reads as resting against the band rather
+   * than straddling it.
+   *
+   * TWO OTHER RULES MUST MOVE WITH THIS ONE, and they are not in this file:
+   * `.sa-siteheader__band--reserved` reserves the same distance so the card
+   * overlaps into padding rather than into the band's own text, and
+   * `.orgd__facts::before` insets the surface below it by the same distance so
+   * the blue shows through. All three are one measurement.
+   */
   .ds-fact-strip--overlap {
-    margin-top: calc(var(--sa-stack-40) * -1);
+    margin-top: calc(var(--sa-stack-64) * -1);
   }
 
+  /* 12 between cells, as the handoff's card sets it. It was 0 here with 12 of
+     padding on each cell instead, which is the same idea done twice: it put 24
+     between neighbours and left 12 of dead space inside the card's own edges. */
   .ds-fact-strip__list {
     margin: 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    column-gap: var(--sa-inline-12);
   }
 
+  /*
+   * GAP 0, NOT 12 — the 12 belongs between the icon and the copy block, and
+   * nowhere else.
+   *
+   * The handoff nests a `Copy` frame holding the value and the label at `gap:
+   * 0`: two 24px lines, flush, reading as one two-line block. A flat 12px gap
+   * across all three children put that same 12 between the value and its own
+   * label, which broke the pair apart and made the label read as a third,
+   * unrelated line. The icon carries the spacing itself instead, so the pair
+   * stays a pair without needing an extra wrapper element.
+   */
   .ds-fact-strip__item {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: var(--sa-stack-12);
-    padding: 0 var(--sa-padding-12);
+    gap: 0;
   }
 
   /*
@@ -58,11 +100,21 @@
     justify-content: center;
     padding: var(--sa-padding-12);
     border-radius: var(--sa-shape-8);
-    /* Saffron, as the Figma template has it. Bound by RESOLVED VALUE: the accent
-       ramp reads green — `accent` only sounded like the right name. #c34700 on
-       #ffd4c4 measures 3.67:1, over the 3:1 WCAG 2.2 §1.4.11 floor for a
-       non-text graphic. */
-    background-color: var(--sa-bg-brand-secondary-subtler);
+    /*
+     * Saffron, as the handoff has it — the PALE rung, not the one below it.
+     *
+     * The handoff paints `rgba(249,115,22,0.08)`, which over white is #fef4ee.
+     * `bg/brand/secondary/base` resolves to #fff2ed: the same tint to within two
+     * points per channel. This was bound to `subtler` (#ffd4c4), four rungs
+     * heavier — a peach tile rather than the barely-there wash the design draws,
+     * and loud enough that four of them competed with the figures they label.
+     *
+     * The rung names read backwards until you know the system: `base` is the
+     * LIGHTEST rung (50) and the ramp runs quiet → loud from there. Contrast
+     * improves with the change rather than suffering: #c34700 on #fff2ed is
+     * 4.40:1, against 3.67:1 before, on a 3:1 floor (WCAG 2.2 §1.4.11).
+     */
+    background-color: var(--sa-bg-brand-secondary-base);
     color: var(--sa-color-secondaryScale-600);
   }
 
@@ -72,8 +124,10 @@
      value alone put the icon BETWEEN the value and its label.
      The icon staying first also keeps the chips on one line across the row when
      one value wraps to two lines and its neighbours do not. */
+  /* The item's only vertical gap lives here — see the `gap: 0` note above. */
   .ds-fact-strip__icon {
     order: 0;
+    margin-bottom: var(--sa-stack-12);
   }
 
   /* headline-5 in the handoff: 20/24, weight 600 — not the heavier title-1/700
@@ -84,7 +138,10 @@
     font-size: var(--sa-type-headline-5-size);
     line-height: var(--sa-type-headline-5-lh);
     font-weight: 600;
-    color: var(--sa-text-neutral-bolder);
+    /* #1e2124 against the handoff's #1f2428 — the same ink to within a point per
+       channel. It was `bolder` (#0e1114), which is near-black and made the four
+       figures heavier than the H1 in the band above them. */
+    color: var(--sa-text-neutral-base);
   }
 
   /* `margin-top: auto` bottom-aligns the labels across the row. The grid already
@@ -99,7 +156,11 @@
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
     letter-spacing: 0.5px;
-    color: var(--sa-text-neutral-base);
+    /* #3a3d41 against the handoff's #343a40 — the same grey to within a few
+       points, and 10.9:1 on white. It shared `base` with the value above it, so
+       the pair had no tonal hierarchy at all: the label competed with the figure
+       it exists to caption. */
+    color: var(--sa-text-neutral-subtle);
   }
 
   /* Two-up on a phone: cells at 200px each would be columns of wrapped single
