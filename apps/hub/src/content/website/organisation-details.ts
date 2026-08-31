@@ -357,8 +357,12 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           // (PM-AJAY), Downloads (pmagy) and Reports — four labels for what a
           // reader experiences as "the files". Three of them are one band now.
           { label: "Documents & downloads", href: "#documents-downloads" },
+          // No separate "Guidelines" entry: the guidelines are the first chip in
+          // Documents & downloads. They had their own sub-page for one pass — a
+          // bare table of the same two documents, pointing at the same two
+          // files — which is a second copy to keep in sync and a second place to
+          // look. Same call as `contact-us`.
           { label: "Reports (PM-AGY)", href: "#reports" },
-          { label: "Guidelines", href: `/website/organisation/${PM_AJAY}/guidelines` },
         ],
       },
       {

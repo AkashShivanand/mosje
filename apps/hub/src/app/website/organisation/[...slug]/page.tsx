@@ -206,14 +206,33 @@ export default async function OrganisationDetailPage({
     : null;
   const hostel = key === HOSTEL_SLUG ? await getHostelData() : null;
 
-  const siblingComponents = relatedPages.filter(
-    (p) => p.slug !== key && p.slug.includes("/components/"),
-  );
+  /*
+   * The other two components, for the "Other PM-AJAY components" card.
+   *
+   * MATCHED BY SLUG, NOT BY PATH SHAPE. This used to test
+   * `slug.includes("/components/")`, which was true only while the three pages
+   * lived under an invented `/components/` segment. Moving them onto the source
+   * site's own flat paths silently emptied this list and the card disappeared
+   * from all three pages — no error, no failing check, just a missing card.
+   *
+   * These three slugs are already declared above because the dashboards key off
+   * them, so matching against that set costs nothing and cannot rot when a URL
+   * changes again.
+   */
+  const COMPONENT_SLUGS = new Set([ADARSH_GRAM_SLUG, GIA_SLUG, HOSTEL_SLUG]);
+  const siblingComponents = COMPONENT_SLUGS.has(key)
+    ? relatedPages.filter((p) => p.slug !== key && COMPONENT_SLUGS.has(p.slug))
+    : [];
   const glance = GLANCE[key];
 
   const orgHref = (s: string) => `/website/organisation/${s}`;
 
   const chrome = {
+    // This route KNOWS which header level it is rendering, so it says rather
+    // than letting PageHero guess from whether an image happens to exist.
+    level: (isSubPage ? "inner" : "landing") as "inner" | "landing",
+    // Only a sub-page has somewhere to go back TO.
+    backHref: isSubPage ? orgHref(rootSlug) : undefined,
     title: org.title,
     badge: isSubPage ? (rootOrg?.title ?? "Associated Organisation") : "Associated Organisation",
     // "Associated Organisations" carries NO href. It used to point at /website —

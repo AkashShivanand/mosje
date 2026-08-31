@@ -510,3 +510,48 @@ one hex.
 Switching them over is a separate change, and one worth doing: `PageHero` picks
 its banner image with hardcoded string matching (`logoSrc.includes("NCSC-2")`),
 which is exactly the kind of thing a design-system component exists to end.
+
+## 14. Adoption, a duplicate page, and a regression this audit caused
+
+### The sibling-components card had silently disappeared
+
+The three component pages each carry an "Other PM-AJAY components" card linking
+the other two. It selected them with `slug.includes("/components/")` — true only
+while those pages lived under the invented `/components/` segment. §5 moved them
+onto the source's flat paths and **emptied that list on all three pages**. No
+error, no failing gate, just a missing card, and it went unnoticed for four
+commits.
+
+It matches on the three declared slugs now — the same constants the dashboards
+key off — so it cannot rot the next time a URL changes. Verified: each page again
+links the other two.
+
+**The lesson is the gate that does not exist.** A URL change broke a filter
+written against URL shape, and nothing caught it, exactly as the same change
+orphaned `#circulars-notifications` until `check:org-anchors` was written. Path
+substrings are not a way to identify a page.
+
+### The guidelines sub-page was a second copy
+
+`…/guidelines` held a bare table of the same two documents already on the shelf,
+pointing at the same two files. It is removed: the Guidelines chip in Documents &
+downloads is the single home, the same call as `contact-us`. Note that its
+content was ours, not the source's — the source's version carried SMILE's
+guidelines, now rehomed to SMILE.
+
+Accounting updated: **6 pages cloned, 12 linked out, 2 folded into the index.**
+
+### SitePageHeader is adopted
+
+`PageHero` now renders it, so every website page picks it up through
+`PageLayout` — no page-level churn. The route that knows says which level it is:
+the organisation route passes `level` and, for a sub-page, `backHref`.
+
+**Most pages lost a decorative plaque, and should have.** `PageHero` drew the L1
+layout everywhere, and where a page had no image it filled the 340px circle with
+the National Emblem and the ministry's name. That is a fallback deciding a
+layout: no page asked for a portrait, so every page got one. Pages with a real
+photograph keep L1; the rest take L2 and give the fold back to their content.
+
+Verified: NCSK L1 with its portrait, PM-AJAY L1 without, sub-pages and content
+pages L2 with the back link. The emblem plaque appears on none of them.
