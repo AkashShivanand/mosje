@@ -233,3 +233,86 @@ estate-wide gap that PM-AJAY simply shares.
 goes to `/website/gallery`, which holds ten images, none of them PM-AJAY's three.
 The three photographs are mirrored locally and captioned; they are just not
 registered on the global page.
+
+## 8. Correction — About Us should never have gone in the index
+
+§7 added the `/about-us` sub-page to the ABOUT US group and justified it as
+following NCSK. **It does the opposite.** NCSK reaches its own about-us page from
+the About band's "Know More →" and deliberately keeps it out of the sidebar; its
+ABOUT US group lists only *other* pages (Previous Commissions, Secretariat, State
+Allocation, Citizen Charter, RTI). Adding ours put "About the Scheme" and "About
+Us" adjacent in one group — two labels a reader cannot tell apart, pointing at the
+same subject. Reverted.
+
+The rest of §7's regrouping stands. A sweep for the same fault found no other
+destination reachable twice from anything this audit added.
+
+Two duplicate destinations do remain, both pre-existing:
+
+- The breadcrumb's **"Associated Organisations" points at `/website`** — the site
+  home, the same place its own "Home" crumb goes. A crumb that lies about where it
+  leads is worse than no crumb.
+- **Both Downloads bands' "View all" go to `/website/publications`.** Neither
+  group sets `viewAllHref`, so both fall through to the same default — and
+  "publications" is not where scheme formats and presentations live anyway.
+
+## 9. Brutal IA audit
+
+### What is wrong
+
+**Five consecutive list bands.** Between Components and Gallery the page is
+Downloads (PM-AJAY), Downloads (PMAGY), Circulars & Notifications, Resources,
+Reports — 29 items, four of them rendering the identical file card. A reader
+scrolling past sees one undifferentiated wall. The distinctions between
+"Downloads", "Resources" and "Circulars" are the department's filing categories,
+not answers to anything a citizen came to ask.
+
+**The Downloads split is by scheme era, not by need.** PMAGY is the predecessor
+programme folded into PM-AJAY's Adarsh Gram component. Nobody outside the
+department knows that, and the page never says it — the two bands are simply
+labelled "PM-AJAY" and "PMAGY" and left to be guessed at.
+
+**The cards throw away their most valuable line.** Every download card's meta
+reads "PDF" — directly above a button that reads "Download PDF". Six cards in the
+PMAGY band, six identical metas, six identical buttons. The slot that could carry
+a date or an audience carries a restatement of the button.
+
+**Several titles are filenames, not titles.** "Presentation". "Sample VDP".
+"District User Manual". "Work Flow for Interim VDP". A citizen cannot tell what
+any of these is about, who it is for, or whether it is current. "Presentation" is
+the worst: it is a card whose entire content is the word *presentation*.
+
+**The circulars have the opposite failure.** Their titles are the full
+bureaucratic file names — one runs to forty words and ends "-reg" — so that card
+grows to three times its neighbours' height and tears a hole in the grid.
+
+**Two live reports are filed as downloads.** PACC Meeting List and Notional
+Allocation are the same kind of object as the ten in the Reports band. They sit in
+Downloads only because the source's sidebar filed them there. We inherited an
+upstream filing mistake and made it structural.
+
+**The substance is one card deep.** The three component pages hold what a citizen
+actually needs — the 70% hostel seat reservation, the 15%/10% GIA floors, who
+qualifies as an Adarsh Gram. On the index each gets a two-line blurb, while
+nineteen file cards get four full bands.
+
+### What would make it better
+
+1. **Collapse four file bands into one "Documents & downloads" band with tabs or
+   filter chips** (Circulars · Formats · Presentations · Manuals). Same items, one
+   band, one mental model — and the era split disappears into a filter rather than
+   a heading nobody can parse.
+2. **Give the download cards a real meta line:** publication date where the ingest
+   has one, else the audience ("For State/UT officials"). Move the file type onto
+   the button, where it already is.
+3. **Title the files like titles.** "Presentation" → "PMAGY scheme overview
+   (2019)". Keep the official name as the card's secondary line so nothing is lost.
+4. **Truncate circular titles to two lines with the full name on hover/expand**, so
+   one forty-word file name stops dictating the height of a four-card row.
+5. **Move PACC Meeting List and Notional Allocation into the Reports band**, where
+   the other ten live reports are, and note the departure from the source.
+6. **Promote the component substance.** Put the 70%, the 15%/10% and the Adarsh
+   Gram threshold on the component cards themselves — they are stable, stated
+   policy and they are what the page is actually about.
+7. **Fix the two dead cross-links** — the breadcrumb crumb and the shared
+   "View all" — and register the three gallery photographs on `/website/gallery`.

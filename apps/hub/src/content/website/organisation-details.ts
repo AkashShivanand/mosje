@@ -311,11 +311,12 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       {
         label: "ABOUT US",
         items: [
+          // NOT the /about-us sub-page. The About band's "Know more" already
+          // opens it, and NCSK — the pattern this index follows — keeps its own
+          // about-us out of the sidebar for that reason. Listing both would put
+          // "About the Scheme" and "About Us" side by side in one group, two
+          // labels a reader cannot tell apart pointing at the same subject.
           { label: "About the Scheme", href: "#about-the-scheme" },
-          // The sub-page the About band's "Know more" opens. It was reachable
-          // only from that one button; a page reachable from exactly one place
-          // is a page most readers never find.
-          { label: "About Us", href: `/website/organisation/${PM_AJAY}/about-us` },
         ],
       },
       {
