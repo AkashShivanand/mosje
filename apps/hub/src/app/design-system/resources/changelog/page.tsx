@@ -22,9 +22,21 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.82.0",
+    version: "v0.83.0",
     date: "2026-08-31",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THE HALO WAS NEVER A RING. Every version up to here drew ANNULI — `box-shadow: 0 0 0 <n>px`, which paints a band and leaves its interior untouched. The component (`Image Container with Halo Effect/lg`, node 99:1334) is a stack of filled circles with a solid #036 fill and a layer opacity — not a stroke among them. The concentric bands a reader sees are not outlines at all: they are WHERE TRANSLUCENT DISCS OVERLAP, and each band's edge is simply where one more disc stops contributing" },
+      { kind: "Fixed", text: "WHICH IS WHY NO AMOUNT OF RETIMING COULD FIX IT. A ring leaves a gap behind it, so the flow needs enough rings to keep that gap covered and the eye reads a procession of separate objects — hence the escalation to five. A disc covers everything inside it, so THREE suffice and the field between the portrait and the outer edge is never empty for an instant" },
+      { kind: "Changed", text: "THE COMPONENT'S THREE STATES ARE THE KEYFRAMES, not three designs. Read by DISC IDENTITY rather than z-order, the layer names track individual discs moving through the frames: disc `0` goes 416 → 480 → 528, disc `1` goes 480 → 528 → 568-at-zero, and a disc `3` is born at 416 in State 2. So one disc's life is 416 → 480 → 528 → 568 while its opacity runs 1 → .48 → .48 → 0, one is born every step, and three are alive at once — scale 1 → 1.154 → 1.269 → 1.365 against the 416px image" },
+      { kind: "Changed", text: "IT IS BORN OPAQUE AND THE BIRTH IS INVISIBLE. A disc starts at exactly the portrait's size, BEHIND the portrait, so its opaque first instant is occluded — nothing appears out of nothing because the appearing happens where nobody can look. That removes the need for a fade-in entirely, which is what finally makes the loop seamless; and the extra density just past the picture's edge, on its way down to .48, is what keeps the rim crisp. It ends at zero, largest and faintest, dissolving into a band it already matches" },
+      { kind: "Changed", text: "`linear`, BECAUSE THE EASING IS IN THE SAMPLES. The published sizes step +64, +48, +40 — decelerating — and those samples are declared as keyframes, so linear interpolation between them reproduces the designer's curve exactly. Putting `ease-out` on top would ease an already-eased set of values twice, which is how an animation ends up lurching at its start and stalling at its end" },
+      { kind: "Fixed", text: "THE FILL IS SOLID NOW, with the translucency carried by the animated `opacity` as the component does it. Baking the alpha into the colour AND animating opacity multiplies the two and lands at ~22% — less than half the published density" },
+    ],
+  },
+  {
+    version: "v0.82.0",
+    date: "2026-08-31",
     changes: [
       { kind: "Fixed", text: "THE HALO WAS NEVER RUNNING, AND THREE PASSES OF TUNING HAD NO EFFECT. `.sa-siteheader__pulse` sets `position: absolute; z-index: 0`; `.sa-siteheader__halo > *` sets `position: relative; z-index: 1` to lift the portrait — and the pulse is a CHILD, so it matched both. Equal specificity (0,1,0), so the later rule won. `getComputedStyle` on the shipped page returned `position: relative` and `z-index: 1` on the element the stylesheet spends forty lines describing: an in-flow grid item taking its own row in a `place-items: center` grid, drawing a shadow around a ZERO-SIZED box, above the picture rather than behind it" },
       { kind: "Fixed", text: "THE LESSON IS THE DIAGNOSIS, NOT THE FIX. Each earlier pass verified by LOOKING at a small screenshot rather than asking the browser what it had computed, so three rounds of durations, easings and opacity envelopes were tuned against a component rendering none of them. The first measurement found it in one call. The lift is now scoped with `:not(.sa-siteheader__pulse)` so the rules cannot tie — deliberately NOT fixed by moving a block up the file, because source order is not a contract and the next reorder would reintroduce it silently" },

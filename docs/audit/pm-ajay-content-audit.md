@@ -1091,3 +1091,73 @@ The fades are deliberately asymmetric: short in (10%), long out (32%). A ring
 appears at the rim where the eye already is, so it must arrive too quickly to be
 watched arriving; it leaves at the band's outer reaches, where a long dissolve is
 invisible. Symmetrical fades made every birth a small event.
+
+## 28. It was never a ring — the discs are filled
+
+§27 fixed the specificity bug and the halo began animating for the first time.
+It was still wrong, and this time the error was the **mechanism**, not the
+timing. Every version up to here drew **annuli** — `box-shadow: 0 0 0 <n>px`,
+which paints a band and leaves its interior untouched.
+
+The component draws **filled circles**. `Image Container with Halo Effect/lg`
+(`SVMfm1KApR7KYHSbwNBnOM`, node `99:1334`) is a stack of `rounded-rectangle`
+layers with a solid `#036` fill and a layer opacity, not a stroke among them.
+The concentric bands a reader sees are not outlines at all: they are **where
+translucent discs overlap**, and each band's edge is simply where one more disc
+stops contributing.
+
+That is why no amount of retiming could make rings look right. A ring leaves a
+gap behind it, so the flow needs enough rings to keep the gap covered and the eye
+reads a procession of separate objects. A disc covers everything inside it, so
+three suffice and the field is never empty for an instant.
+
+### The three states ARE the keyframes
+
+The component publishes `State=1`, `State=2` and `State=3`. They are not three
+designs. Read by **disc identity** rather than by z-order, the layer names track
+individual discs moving through the frames:
+
+| disc | State 1 | State 2 | State 3 |
+| --- | --- | --- | --- |
+| `0` | 416 · op **1** | 480 · .48 | 528 · .48 |
+| `1` | 480 · .48 | 528 · .48 | 568 · **0** |
+| `2` | 528 · .48 | 568 · .48 | — |
+| `3` | — | **416** born | 480 · .48 |
+
+So one disc's whole life is `416 → 480 → 528 → 568` while its opacity runs
+`1 → .48 → .48 → 0`; a new one is born every step; **three are alive at once**.
+Against the 416px image that is `scale 1 → 1.154 → 1.269 → 1.365`.
+
+### Two properties fall out of that, and both matter
+
+**It is born opaque, and the birth is invisible.** A disc starts at exactly the
+portrait's size, *behind* the portrait, so its opaque first instant is occluded.
+Nothing appears out of nothing — the appearing happens where nobody can look. It
+also means no fade-in is needed, which is what makes the loop genuinely seamless.
+The extra density just past the picture's edge, on its way down to 0.48, is what
+keeps the portrait's rim crisp.
+
+**It ends at zero**, at its largest and faintest, dissolving into a band it
+already matches. Birth and death are both unwatchable, which is the whole trick.
+
+### `linear`, because the easing is in the samples
+
+The published sizes step **+64, +48, +40** — decelerating. Those samples are
+declared as keyframes, so linear interpolation between them reproduces the
+designer's curve exactly. Adding `ease-out` on top would ease an already-eased
+set of values twice, which is how an animation ends up lurching at its start and
+stalling at its end.
+
+| | §27 | now |
+| --- | --- | --- |
+| shape | annulus (`box-shadow` band) | **filled disc (`background-color`)** |
+| count | 5 | **3** |
+| cycle | 8s | **6s** — one born every 2s |
+| travel | ×1.42 | **×1.365** (568 ÷ 416) |
+| opacity | 0 → .5 → .5 → 0 | **1 → .48 → .48 → 0** |
+| timing | linear over invented stops | linear over the **published** stops |
+
+The alpha also moved: the fill is now **solid** with the translucency carried by
+the animated `opacity`, as the component does it. Baking it into the colour as
+well would have multiplied against the keyframe opacity and landed at ~22% — less
+than half the published density.

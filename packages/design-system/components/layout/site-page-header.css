@@ -181,96 +181,105 @@
   }
 
   /*
-   * ── FIVE RINGS, ONE TRACK, NEVER EMPTY ──────────────────────────────────────
+   * ── THREE FILLED DISCS, NOT RINGS ───────────────────────────────────────────
    *
-   * ALL FIVE RUN THE SAME PATH, A FIFTH OF A CYCLE APART, FOREVER. A ring is
-   * born at the portrait's rim, drifts outward at a constant rate, and dissolves
-   * into the band; the next is already a fifth of the way behind it. At 8s that
-   * is one leaving every 1.6s, so the track between the portrait and the band's
-   * edge always carries four of them. Nothing on screen ever stops, and no
-   * single ring's birth or death is ever the loudest thing happening — which is
-   * what "flowing water" means and what three rings on a 9s loop could not do:
-   * at 3s apart there was a visible pause at the rim between one ring leaving
-   * and the next appearing, and the eye locks onto a pause.
+   * THIS IS THE CORRECTION THAT MATTERS. Every earlier version drew ANNULI —
+   * `box-shadow: 0 0 0 <n>px`, which paints a band and leaves its interior
+   * untouched. The component draws **filled circles**. The concentric bands a
+   * reader sees are not outlines at all: they are where translucent discs
+   * OVERLAP, and the edge of each band is simply where one more disc stops
+   * contributing.
    *
-   * ── THE BUG THAT MADE ALL OF THE ABOVE INVISIBLE ────────────────────────────
+   * That difference is why rings could never look right no matter how they were
+   * timed. A ring leaves a gap behind it, so the flow needs enough of them to
+   * keep the gap covered, and the eye reads a procession of separate objects. A
+   * disc covers everything inside it, so three are sufficient and the field
+   * between the portrait and the outermost edge is never empty for an instant.
+   *
+   * ── THE KEYFRAMES ARE THE COMPONENT'S OWN STATES ────────────────────────────
+   *
+   * `Image Container with Halo Effect/lg` (99:1334) publishes State=1/2/3, and
+   * they are not three designs — they are three frames of one animation. Read by
+   * DISC IDENTITY rather than by z-order, the layer names track individual discs
+   * moving through the states:
+   *
+   *   disc 0:  416 op 1    →  480 op .48  →  528 op .48
+   *   disc 1:  480 op .48  →  528 op .48  →  568 op 0     (dead)
+   *   disc 2:  528 op .48  →  568 op .48  →  —
+   *   disc 3:  —           →  416 (born)  →  480 op .48
+   *
+   * So one disc's whole life is 416 → 480 → 528 → 568 while its opacity goes
+   * 1 → .48 → .48 → 0, a new one is born every step, and three are alive at any
+   * moment. Against the 416 image that is scale 1 → 1.154 → 1.269 → 1.365.
+   *
+   * ── WHY IT IS BORN OPAQUE, AND WHY THAT IS INVISIBLE ────────────────────────
+   *
+   * A disc starts at exactly the portrait's size, BEHIND the portrait, so its
+   * opaque first instant is completely occluded. Nothing pops into existence —
+   * the birth genuinely cannot be seen, which is what makes the loop seamless
+   * without needing a fade-in. What emerges past the portrait's edge a moment
+   * later is already on its way down from 1 to .48, and that brief extra density
+   * right at the rim is what keeps the picture's edge crisp.
+   *
+   * ── TIMING ──────────────────────────────────────────────────────────────────
+   *
+   * `linear`, deliberately, and it is NOT a contradiction of the ease-out the
+   * spacing implies. The published sizes step +64, +48, +40 — decelerating — and
+   * those samples are declared as keyframes here. Interpolating LINEARLY between
+   * them reproduces the design's own curve; adding `ease-out` on top would ease
+   * an already-eased set of samples twice.
+   *
+   * 6s per disc, so one is born every 2s — "after a few seconds another circle",
+   * as specified. Exact thirds, because uneven spacing is what makes a flow read
+   * as separate pulses.
+   *
+   * ── THE BUG THAT HID ALL OF THIS FOR THREE PASSES ───────────────────────────
    *
    * `.sa-siteheader__halo > *` sets `position: relative; z-index: 1` to lift the
-   * portrait above the rings. `.sa-siteheader__pulse` is a CHILD, so it matched
-   * too — and at equal specificity (0,1,0) the rule that comes later in the file
-   * wins. The span's own `position: absolute` and `z-index: 0` lost both.
+   * portrait above the halo. `.sa-siteheader__pulse` is a CHILD, so it matched
+   * too — and at equal specificity (0,1,0) the later rule wins. `getComputedStyle`
+   * on the shipped page returned `position: relative` and `z-index: 1`: an
+   * in-flow grid item taking its own row in a `place-items: center` grid, drawing
+   * around a ZERO-SIZED box, above the picture instead of behind it.
    *
-   * What shipped, therefore, was a `position: relative` span: an in-flow grid
-   * item taking its own row in a `place-items: center` grid, drawing a 28px blob
-   * around a zero-sized box, above the picture rather than behind it. Measured,
-   * not guessed — `getComputedStyle` returned `position: relative` and
-   * `z-index: 1` on the element this file spends forty lines describing.
-   *
-   * The lift is now scoped with `:not()`, so the two rules cannot tie: the
-   * portrait is lifted, the pulse is explicitly not. Never fix a tie like this
-   * by moving a block up the file — source order is not a contract, and the next
-   * person to reorder the stylesheet reintroduces it silently.
-   *
-   * ── WHY FIVE BOXES EXIST AT ALL ─────────────────────────────────────────────
-   *
-   * An element has two pseudo-elements, so five rings need three elements' worth
-   * of them: the halo's own `::before` and `::after`, plus the `__pulse` span
-   * and its two. That span is the only DOM this costs, it is inside an
-   * `aria-hidden` column, and it is absolutely positioned — it adds nothing to
-   * the layout and nothing to the accessibility tree.
-   *
-   * ── THE NUMBERS ─────────────────────────────────────────────────────────────
-   *
-   * Travel and pacing come from the reference recording, read as a kymograph:
-   * one row of pixels through the halo's centre, stacked over time, so each ring
-   * edge becomes a line whose slope IS its speed. It showed constant-speed
-   * outward drift — which is why this is `linear` and not eased. An eased ring
-   * accelerates away from the portrait and stalls at the outside, and the stall
-   * is exactly where a loop becomes visible.
-   *
-   * Travel is 1 → 1.42 rather than the 1.29 measured there. With five rings the
-   * spacing is the constraint: 1.42 puts them ~15px apart at this radius, which
-   * against a 12px band leaves a clean 3px gap. At 1.29 they overlapped into a
-   * single wash and the flow stopped reading as rings at all.
+   * The lift is scoped with `:not()` below so the two rules cannot tie. Not fixed
+   * by reordering the file — source order is not a contract, and the next
+   * reshuffle would reintroduce it silently.
    */
-  .sa-siteheader__halo::before,
-  .sa-siteheader__halo::after,
   .sa-siteheader__pulse,
   .sa-siteheader__pulse::before,
   .sa-siteheader__pulse::after {
     content: "";
     position: absolute;
-    /* -10 = the static ring's spread, so a travelling ring starts flush against
-       its outer edge and can only ever move away from it. */
-    inset: -10px;
+    /* Exactly the portrait's box, so a newborn disc is hidden behind it. */
+    inset: 0;
     border-radius: 50%;
-    /* 12, not 28. Five rings 15px apart need a band narrower than the gap
-       between them, or they merge into one moving field. */
-    box-shadow: 0 0 0 12px color-mix(in srgb, var(--sa-color-primaryScale-800) 46%, transparent);
-    animation: sa-halo-flow 8s linear infinite;
+    /*
+     * SOLID, with the translucency carried by `opacity` in the keyframes — as
+     * the component does it, where the fill is `#036` and the LAYER is set to
+     * 48%. Baking the alpha into the colour instead would multiply against the
+     * animated opacity and land at ~22%, less than half the published density.
+     *
+     * `primaryScale-800` rather than the literal #003366: it is the primary
+     * ramp's deep rung, which is what `--primary/source` means in that file, and
+     * it follows `data-brand` where a fixed navy could not.
+     */
+    background-color: var(--sa-color-primaryScale-800);
+    animation: sa-halo-flow 6s linear infinite;
   }
 
-  /* Negative delays, not positive: every ring is already part-way along on the
-     first frame, so the band is never briefly a bare disc on load. Exact fifths
-     — uneven spacing is what makes a flow read as separate pulses. */
-  .sa-siteheader__halo::after {
-    animation-delay: -1.6s;
-  }
-
-  .sa-siteheader__pulse {
-    animation-delay: -3.2s;
-  }
-
+  /* Negative delays, not positive: the other two discs are already part-way out
+     on the first frame, so the band is never briefly bare on load. */
   .sa-siteheader__pulse::before {
-    animation-delay: -4.8s;
+    animation-delay: -2s;
   }
 
   .sa-siteheader__pulse::after {
-    animation-delay: -6.4s;
+    animation-delay: -4s;
   }
 
   /*
-   * The portrait sits above every ring and does not move.
+   * The portrait sits above every disc and does not move.
    *
    * `:not()` EXCLUDES THE PULSE DELIBERATELY — see the bug note above. Without
    * it this rule ties with the pulse's own and silently wins on source order.
@@ -288,91 +297,83 @@
   }
 
   /*
-   * A RING'S WHOLE LIFE: born on the portrait's rim, drifting outward at a
-   * constant rate, gone before it reaches anything.
+   * ── ONE DISC'S WHOLE LIFE, TAKEN STRAIGHT FROM THE COMPONENT ────────────────
    *
-   * THE OPACITY HOLDS FLAT THROUGH THE MIDDLE, which is what separates flow from
-   * a pulse. A peak-then-decay curve gives every ring a visible moment of
-   * maximum brightness, and five of those a cycle IS a pulse however smooth the
-   * travel is. Rising to 0.5 by 10%, holding to 68%, then releasing to 0 means a
-   * ring is simply *present* for most of its life and the eye finds no beat to
-   * lock onto. Birth and death both happen at zero, so neither pops.
+   * The four stops ARE the published states, converted to scale against the
+   * 416px image they were drawn at:
    *
-   * THE FADES ARE SHORT AT THE START AND LONG AT THE END, deliberately. A ring
-   * appears at the portrait's rim, where the eye already is, so it has to arrive
-   * quickly enough not to be watched arriving; it leaves at the band's outer
-   * reaches, where a long dissolve is invisible. Symmetrical fades made every
-   * birth a small event.
+   *   416 op 1     →  scale 1      opacity 1
+   *   480 op 0.48  →  scale 1.154  opacity 0.48
+   *   528 op 0.48  →  scale 1.269  opacity 0.48
+   *   568 op 0     →  scale 1.365  opacity 0
    *
-   * TRANSFORM IS DECLARED AT EVERY OFFSET, and the values are exactly linear in
-   * the offsets (0.42 × 0.10 = 0.042, 0.42 × 0.68 = 0.286). Leaving it out of
-   * the middle stops makes the browser segment its interpolation around the
-   * opacity stops, and the drift then changes pace at points nobody chose — the
-   * one thing `linear` is here to prevent.
+   * BORN OPAQUE AND INVISIBLE. `scale(1)` is exactly the portrait's box and the
+   * disc sits behind it, so its opaque first instant cannot be seen. That is
+   * what makes the loop seamless with no fade-in: nothing appears out of
+   * nothing, because the appearing happens where nobody can look. What emerges
+   * past the picture's edge is already on its way down towards 0.48, and that
+   * extra density right at the rim is what keeps the portrait's edge crisp.
    *
-   * 0.5 against a 46% ring is ~23% alpha at its brightest, and the 12px bands
-   * sit ~15px apart so they do not overlap: the band never carries more than one
-   * ring's worth of ink at any one point. Subtle, as asked.
+   * IT ENDS AT ZERO, so the death is equally invisible — the disc is at its
+   * largest and faintest, dissolving into a band it already matches.
+   *
+   * `linear`, because the deceleration is IN THE SAMPLES. The sizes step +64,
+   * +48, +40; interpolating linearly between the published stops reproduces the
+   * designer's curve exactly. Putting `ease-out` on top would ease an
+   * already-eased set of values twice, which is how an animation ends up
+   * lurching at its start and stalling at its end.
    */
   @keyframes sa-halo-flow {
     0% {
       transform: scale(1);
-      opacity: 0;
+      opacity: 1;
     }
-    10% {
-      transform: scale(1.042);
-      opacity: 0.5;
+    33.33% {
+      transform: scale(1.154);
+      opacity: 0.48;
     }
-    68% {
-      transform: scale(1.286);
-      opacity: 0.5;
+    66.66% {
+      transform: scale(1.269);
+      opacity: 0.48;
     }
     100% {
-      transform: scale(1.42);
+      transform: scale(1.365);
       opacity: 0;
     }
   }
 
   /*
-   * Reduced motion means gentler, not none — and here it means the drawing the
-   * handoff actually published: the two bands it draws, parked at the radii it
-   * draws them at. Removing the halo would change the layout for people who
-   * asked for less movement, which is a different request from the one they made.
+   * Reduced motion means gentler, not none — and here it means exactly State=1,
+   * which is the drawing the component publishes at rest: a disc at 480 and one
+   * at 528, both at 48%, over the portrait and its dark rim. Removing the halo
+   * would change the layout for people who asked for less movement, which is a
+   * different request from the one they made.
    *
-   * TWO OF THE FIVE ARE PARKED AND THREE ARE HIDDEN. The handoff has three rings
-   * in total — the static inner one on the halo itself, plus a mid and an outer
-   * band. The other three exist only to make the loop read as continuous, and a
-   * continuous loop is exactly what this media query is switching off. Parking
-   * all five would draw five concentric outlines the design does not have.
+   * The THIRD disc is hidden rather than parked. At rest it would sit at scale 1
+   * — entirely behind the portrait, contributing nothing but a composited layer.
    */
   @media (prefers-reduced-motion: reduce) {
     .sa-siteheader__halo,
-    .sa-siteheader__halo::before,
-    .sa-siteheader__halo::after,
     .sa-siteheader__pulse,
     .sa-siteheader__pulse::before,
     .sa-siteheader__pulse::after {
       animation: none;
     }
 
-    /* The mid band: 10 → 40 out from the portrait. */
-    .sa-siteheader__halo::before {
-      inset: -10px;
-      opacity: 1;
-      transform: none;
-      box-shadow: 0 0 0 30px color-mix(in srgb, var(--sa-color-primaryScale-800) 46%, transparent);
+    /* State=1's disc "1": 480 against a 416 image. */
+    .sa-siteheader__pulse {
+      transform: scale(1.154);
+      opacity: 0.48;
     }
 
-    /* The outer band: 40 → 72. */
-    .sa-siteheader__halo::after {
-      inset: -40px;
-      opacity: 1;
-      transform: none;
-      box-shadow: 0 0 0 32px color-mix(in srgb, var(--sa-color-primaryScale-800) 24%, transparent);
+    /* State=1's disc "2": 528. */
+    .sa-siteheader__pulse::before {
+      transform: scale(1.269);
+      opacity: 0.48;
     }
 
-    .sa-siteheader__pulse,
-    .sa-siteheader__pulse::before,
+    /* State=1's disc "0" sits at 416 — behind the portrait, so it draws nothing
+       and is simply not rendered. */
     .sa-siteheader__pulse::after {
       display: none;
     }
