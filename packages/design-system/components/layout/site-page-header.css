@@ -182,40 +182,38 @@
   }
 
   /*
-   * ── WHY THIS ANIMATES AT ALL ────────────────────────────────────────────────
+   * ── ONE RIPPLE, LEAVING THE PLAQUE ──────────────────────────────────────────
    *
-   * A header band is seen once per page, not a hundred times a day, and the halo
-   * is the one element on it carrying no information — the portrait is
-   * `aria-hidden` and the copy says everything the picture does. Rarely-seen
-   * decoration is exactly where motion is affordable.
+   * The plaque above is the design; this is the only thing that moves.
    *
-   * TWO PSEUDO ELEMENTS, FOUR RIPPLES. Each carries two rings of its own through
-   * a second `box-shadow`, and the pair runs half a cycle apart. One layer was
-   * too quiet to read as motion at all; four, staggered, means there is always a
-   * ring mid-flight and the band never looks frozen.
+   * WHAT WAS BROKEN. There were two ring systems in the same 484px: three static
+   * rings, and four more sweeping from scale(0.94) to 1.34 straight THROUGH
+   * them. Seven edges on screen at once, beating against each other — a reader
+   * saw circles that stood still and circles that did not, in the same place,
+   * and could not tell which was the object. Motion added on top of a form
+   * instead of belonging to it.
    *
-   * The risk with an outward pulse is that it reads as a spinner — something a
-   * reader waits on. Three things keep it decorative: it is slow (5s, where a
-   * spinner is under one), it never reaches full strength, and it dissolves
-   * before it stops growing rather than snapping off at the end.
+   * WHAT IT IS NOW. A single ring, born exactly on the outermost static ring at
+   * zero opacity, brightening as it leaves and dissolving into the band. It
+   * never crosses the plaque, so there is nothing to double: the plaque stays
+   * still and something leaves it. One idea instead of two.
+   *
+   * 4s, not 5 — a loop near 0.2Hz sits in the band that reads as a pulse to
+   * watch rather than as ambience, and Apple's motion guidance flags it
+   * specifically. It also never exceeds 40% opacity, because a large moving
+   * object should stay semi-transparent while it travels.
    */
-  .sa-siteheader__halo::before,
   .sa-siteheader__halo::after {
     content: "";
     position: absolute;
     inset: 0;
     border-radius: 50%;
-    box-shadow:
-      0 0 0 24px color-mix(in srgb, var(--sa-color-primaryScale-900) 55%, transparent),
-      0 0 0 64px color-mix(in srgb, var(--sa-color-primaryScale-800) 30%, transparent);
-    /* ease-out: the rings are LEAVING, and an exit that starts fast then settles
-       reads as a ripple. ease-in would hold still, then lunge. */
-    animation: sa-halo-pulse 5s var(--sa-motion-enter-easing) infinite;
-  }
-
-  /* Half a cycle behind, so one pair is always arriving as the other leaves. */
-  .sa-siteheader__halo::after {
-    animation-delay: -2.5s;
+    /* Spread 72 — the same radius as the outermost static ring, so it starts
+       coincident with the plaque's edge and can only move outward from there. */
+    box-shadow: 0 0 0 72px color-mix(in srgb, var(--sa-color-primaryScale-800) 34%, transparent);
+    /* ease-out: the ring is LEAVING. An exit that starts fast then settles reads
+       as a ripple; ease-in would hold still, then lunge. */
+    animation: sa-halo-ripple 4s var(--sa-motion-enter-easing) infinite;
   }
 
   /* The portrait sits above every ring and does not move. */
@@ -232,17 +230,22 @@
   }
 
   /*
-   * Starts just inside the photograph's edge, never at 0 — a ring born at zero
-   * reads as a glitch. Fades out before it stops growing, so it dissolves
-   * instead of snapping.
+   * Born AT the plaque's edge (scale 1) rather than inside it, and at zero
+   * opacity rather than full — so it appears to detach from the outer ring
+   * instead of springing out of the photograph. It reaches its brightest early,
+   * then spends most of the cycle dissolving, which is how a real ripple loses
+   * energy: fast at first, then slowly.
    */
-  @keyframes sa-halo-pulse {
-    from {
-      transform: scale(0.94);
-      opacity: 0.55;
+  @keyframes sa-halo-ripple {
+    0% {
+      transform: scale(1);
+      opacity: 0;
     }
-    to {
-      transform: scale(1.34);
+    18% {
+      opacity: 0.4;
+    }
+    100% {
+      transform: scale(1.26);
       opacity: 0;
     }
   }
@@ -258,7 +261,6 @@
       animation: none;
     }
 
-    .sa-siteheader__halo::before,
     .sa-siteheader__halo::after {
       animation: none;
       opacity: 0;

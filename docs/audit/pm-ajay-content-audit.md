@@ -724,3 +724,28 @@ is white, and both the facts band and the content zone were transparent over it.
 Both now take `--sa-bg-neutral-subtler`, so they are one field with the card
 lifted over it. The card's own −40 pull happens inside that box, so its top still
 escapes upward over the banner without dragging the background with it.
+
+## 20. The pulse was two systems fighting
+
+**Seven ring edges were on screen at once.** Three static — spreads 10, 40, 72 —
+and four more on two pseudo-elements, sweeping `scale(0.94) → 1.34` **straight
+through** them. A reader saw circles that stood still and circles that did not,
+in the same 484px, and could not tell which was the object. That is motion added
+on top of a form rather than belonging to it, and it is why it read as broken
+rather than as subtle.
+
+| Before | After | Why |
+| --- | --- | --- |
+| 3 static rings + 4 moving rings, overlapping | 3 static + **1** moving, never overlapping | Two ring systems in one space have no visual hierarchy; the eye cannot tell the object from the effect |
+| Ripple swept `scale(0.94) → 1.34` **through** the plaque | Starts at `scale(1)` — coincident with the outermost static ring — and only travels outward | A ripple that crosses the thing it came from doubles every edge it passes |
+| Ripple began at `opacity: 0.55`, fully visible | Begins at **0**, peaks at **0.4** at 18%, dissolves | It now appears to detach from the outer ring rather than spring out of the photograph |
+| Two pseudo-elements, offset −2.5s | One. `::before` deleted | The second existed to fill a gap the first left; with the plaque static there is no gap to fill |
+| 5s loop | **4s** | A loop near 0.2 Hz reads as a pulse to watch rather than as ambience — Apple's motion guidance flags that band specifically |
+| Peak opacity 0.55 | **0.4** | A large object should stay semi-transparent while it travels |
+
+**What it is now:** the plaque is the design and holds still; one ring is born on
+its outer edge at zero opacity, brightens as it leaves, and dissolves into the
+band. One idea instead of two.
+
+`prefers-reduced-motion` still stops the ripple and leaves all three static rings
+exactly where they are.
