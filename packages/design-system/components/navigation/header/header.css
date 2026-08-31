@@ -276,8 +276,10 @@
     transition: background-color var(--sa-motion-exit-duration) ease;
   }
 
-  .ds-hdr-brand__toggle:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-brand__toggle:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+    }
   }
 
   /* Flip the menu_open icon when the sidebar is collapsed to point right */
@@ -434,8 +436,10 @@
     transition: background-color var(--sa-motion-exit-duration) ease;
   }
 
-  .ds-hdr-account.is-button:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-account.is-button:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+    }
   }
 
   .ds-hdr-account.is-button:active {
@@ -545,8 +549,10 @@
     transition: background-color var(--sa-motion-exit-duration) ease;
   }
 
-  .ds-hdr-burger:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-burger:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+    }
   }
 
   @media (min-width: 1024px) {
@@ -622,9 +628,11 @@
     transition: color var(--sa-motion-exit-duration) ease, background-color var(--sa-motion-exit-duration) ease;
   }
 
-  .ds-hdr-nav__link:hover {
-    background-color: var(--sa-bg-brand-primary-subtler);
-    color: var(--sa-text-brand-primary-base);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-nav__link:hover {
+      background-color: var(--sa-bg-brand-primary-subtler);
+      color: var(--sa-text-brand-primary-base);
+    }
   }
 
   /* Visible keyboard focus — WCAG 2.4.7. Applies to every interactive control in
@@ -647,6 +655,17 @@
     font-weight: 600;
   }
 
+  /* THE INDICATOR WAS PAINTED IN THE TINT, NOT THE BRAND BLUE.
+     `bg/brand/primary/base` is #ecf4ff — the pale ground the condensed pill uses —
+     and on the nav row's white it measured 1.11:1. WCAG 1.4.11 asks 3:1 of anything
+     that indicates the state of a component, so the bar marking WHERE YOU ARE was
+     the one thing on the row nobody could see; the active entry was distinguishable
+     by its text colour alone. `text/brand/primary/base` is the blue that text
+     already uses — 4.64:1 — so the mark and the word it underlines now agree.
+
+     Shape still differs between the two masthead states, deliberately: a 4px bar
+     sits on the row's own bottom edge at rest, and there is no such edge under a
+     36px pill in the condensed bar, where the same blue reads as a tint instead. */
   .ds-hdr-nav__link.is-active::after {
     content: "";
     position: absolute;
@@ -654,7 +673,7 @@
     left: 0;
     right: 0;
     height: 4px;
-    background-color: var(--sa-bg-brand-primary-base);
+    background-color: var(--sa-text-brand-primary-base);
     border-radius: var(--sa-shape-4) var(--sa-shape-4) 0 0;
   }
 
@@ -692,9 +711,11 @@
     text-decoration: none;
   }
 
-  .ds-hdr-nav__drop-link:hover {
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-brand-primary-base);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-nav__drop-link:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+      color: var(--sa-text-brand-primary-base);
+    }
   }
 
   /* Mega-menu — multi-column dropdown for org-heavy nav items
@@ -821,9 +842,11 @@
 
   /* Same trade as the condensed active pill: the tint costs the text 0.34 of its
      contrast ratio, which is the difference between passing AA and not. */
-  .ds-hdr-nav__overview:hover {
-    background-color: var(--sa-bg-brand-primary-base);
-    color: var(--sa-text-brand-primary-bolder);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-nav__overview:hover {
+      background-color: var(--sa-bg-brand-primary-base);
+      color: var(--sa-text-brand-primary-bolder);
+    }
   }
 
   .ds-hdr-nav__overview:focus-visible {
@@ -946,16 +969,28 @@
   /* Figma State=Hover carries a 1px stroke and NO effect; the elevation that used
      to be here was code's own addition. State=Focused is the reverse — a drop
      shadow, no stroke — which the :focus-visible rule below supplies. */
-  .ds-hdr-mega-item:hover,
   .ds-hdr-mega-item:focus-visible {
     outline: none;
     background-color: var(--sa-bg-neutral-base);
     box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
   }
 
-  .ds-hdr-mega-item:hover .ds-hdr-ic,
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-mega-item:hover {
+      outline: none;
+      background-color: var(--sa-bg-neutral-base);
+      box-shadow: inset 0 0 0 1px var(--sa-border-neutral-subtle);
+    }
+  }
+
   .ds-hdr-mega-item:focus-visible .ds-hdr-ic {
     opacity: 1;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-mega-item:hover .ds-hdr-ic {
+      opacity: 1;
+    }
   }
 
   /* Figma ships a State=Disabled variant for MegaMenuItem, DropdownItem and NavItem
@@ -1036,9 +1071,11 @@
     text-decoration: none;
   }
 
-  .ds-hdr-drawer__sublink:hover {
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-brand-primary-base);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-drawer__sublink:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+      color: var(--sa-text-brand-primary-base);
+    }
   }
 
   /* ── Account dropdown popover (SiteHeader portal account) ──────────────── */
@@ -1109,21 +1146,34 @@
     cursor: pointer;
   }
 
-  .ds-hdr-acct__menu-item:hover,
   .ds-hdr-acct__menu-item:focus-visible {
     outline: none;
     background-color: var(--sa-bg-brand-primary-subtler);
     color: var(--sa-text-brand-primary-base);
   }
 
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-acct__menu-item:hover {
+      outline: none;
+      background-color: var(--sa-bg-brand-primary-subtler);
+      color: var(--sa-text-brand-primary-base);
+    }
+  }
+
   .ds-hdr-acct__menu-item.is-danger {
     color: var(--sa-text-status-error-base);
   }
 
-  .ds-hdr-acct__menu-item.is-danger:hover,
   .ds-hdr-acct__menu-item.is-danger:focus-visible {
     background-color: var(--sa-bg-status-error-base);
     color: var(--sa-text-status-error-base);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-acct__menu-item.is-danger:hover {
+      background-color: var(--sa-bg-status-error-base);
+      color: var(--sa-text-status-error-base);
+    }
   }
 
   .ds-hdr-acct__menu-icon {
@@ -1235,6 +1285,17 @@
       display: none;
     }
   }
+
+  /* ── Hover is gated on a pointer that can actually hover ──────────────────
+     A touch device fires :hover on tap and LEAVES IT THERE until the reader taps
+     something else, so every tint below used to stick to the last thing touched —
+     a nav item that looks selected when it is not, on a masthead whose whole job
+     is saying where you are. Sixteen rules, none of them gated.
+
+     `:focus-visible` is deliberately NOT inside these queries. Four of these rules
+     paired the two states in one selector list, and gating the pair would have
+     taken the focus ring off a tablet with a keyboard attached — trading a cosmetic
+     bug for WCAG 2.4.7. They are split: focus unconditional, hover gated. */
 
   /* ── Press feedback ───────────────────────────────────────────────────────
      Sixteen hover rules and, before this, ONE `:active` state in the whole
@@ -1407,8 +1468,10 @@
     transition: background-color var(--sa-motion-exit-duration) ease;
   }
 
-  .ds-hdr-cond__iconbtn:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-cond__iconbtn:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+    }
   }
 
   .ds-hdr-cond__iconbtn:focus-visible {
@@ -1491,8 +1554,10 @@
     border-radius: var(--sa-shape-8);
   }
 
-  .ds-hdr-nav.is-cond .ds-hdr-nav__link:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-hdr-nav.is-cond .ds-hdr-nav__link:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+    }
   }
 
   /* The 4px underbar wants a row edge to sit on — in the resting nav it lands flush
@@ -1599,8 +1664,10 @@
     transition: background-color var(--sa-motion-exit-duration) ease;
   }
 
-  .ds-navsheet__close:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-navsheet__close:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+    }
   }
 
   .ds-navsheet__actions {
@@ -1636,8 +1703,10 @@
     cursor: pointer;
   }
 
-  .ds-navsheet__link:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-navsheet__link:hover {
+      background-color: var(--sa-bg-neutral-subtler);
+    }
   }
 
   .ds-navsheet__link.is-active {
@@ -1664,9 +1733,11 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .ds-navsheet__sublink:hover {
-    color: var(--sa-text-neutral-base);
-    background-color: var(--sa-bg-neutral-subtle);
+  @media (hover: hover) and (pointer: fine) {
+    .ds-navsheet__sublink:hover {
+      color: var(--sa-text-neutral-base);
+      background-color: var(--sa-bg-neutral-subtle);
+    }
   }
 
   .ds-navsheet__close:focus-visible,
