@@ -267,7 +267,13 @@
     background: transparent;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
     cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+    /* `ease`, not `exit-easing`. `motion/exit` is an ACCELERATE curve —
+       cubic-bezier(0.4, 0, 1, 1) — which starts slow. On a hover that is the exact
+       moment the pointer has arrived and the reader is looking, so the control
+       appears to lag its own cursor. It is also the wrong half of the pair: a
+       hover is as much an arrival as a departure, and `exit` was being used for
+       both directions of every one of these. Four of them read this way. */
+    transition: background-color var(--sa-motion-exit-duration) ease;
   }
 
   .ds-hdr-brand__toggle:hover {
@@ -536,7 +542,7 @@
     background: transparent;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
     cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+    transition: background-color var(--sa-motion-exit-duration) ease;
   }
 
   .ds-hdr-burger:hover {
@@ -1230,6 +1236,95 @@
     }
   }
 
+  /* ── Press feedback ───────────────────────────────────────────────────────
+     Sixteen hover rules and, before this, ONE `:active` state in the whole
+     masthead — a background change on the account trigger. Every icon control here
+     could be hovered and none of them acknowledged being pressed, which is the
+     difference between an interface that responds and one that merely reacts after
+     the fact. 0.96 is small enough to read as pressure rather than as movement, and
+     `exit` timing (150ms) is the right length for it: press feedback wants to be
+     the fastest thing on the page.
+
+     Scoped to controls that are BUTTONS. The nav links are links: they navigate,
+     and a press state on something that is about to unload the page is motion the
+     reader never finishes seeing. */
+  .ds-hdr-brand__toggle,
+  .ds-hdr-burger,
+  .ds-hdr-cond__iconbtn,
+  .ds-hdr-cond__toggle {
+    transition:
+      background-color var(--sa-motion-exit-duration) ease,
+      transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+  }
+
+  .ds-hdr-brand__toggle:active,
+  .ds-hdr-burger:active,
+  .ds-hdr-cond__iconbtn:active,
+  .ds-hdr-cond__toggle:active {
+    transform: scale(0.96);
+  }
+
+  /* ── The morph between the two states ─────────────────────────────────────
+     The condense used to be a conditional render: one subtree swapped for another
+     in a single frame, 200px of masthead becoming 65px of bar with nothing in
+     between. Both faces are mounted now and this crossfades them while the box
+     animates its height.
+
+     `enter` easing, not `exit`. This is a decelerate curve — fast first, settling
+     last — and the condense is a response to the reader's own scroll, so the
+     movement has to start the instant they ask for it. `exit` is an ACCELERATE
+     curve: it starts slow, which on a gesture response reads as lag.
+
+     HEIGHT IS THE ONE PROPERTY HERE THAT IS NOT CHEAP. Everything else animated in
+     this package is transform or opacity. There is no transform that shortens a
+     header — the box genuinely changes size and the page below genuinely moves up,
+     which is the whole point — so this is the exception, on one element, for 250ms. */
+  .ds-hdr__morph {
+    position: relative;
+    transition: height var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+
+  /* CLIPPED ONLY WHILE IT MOVES. The outgoing face is 200px tall inside a box on
+     its way to 65, so mid-crossfade its ghost paints over the page below — caught
+     in a frame 125ms in, the emblem and department line sitting on the content
+     under a bar that had already arrived. At rest this must NOT clip: the
+     dropdowns and the mega-menu hang below the header. `SiteHeader` sets the
+     attribute for exactly the length of the transition. */
+  .ds-hdr__morph[data-morphing] {
+    overflow: hidden;
+  }
+
+  .ds-hdr__face {
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing),
+      /* Stepped at the END, so the outgoing face stays visible for the whole
+         crossfade and only then leaves the accessibility tree. */
+      visibility 0s linear var(--sa-motion-enter-duration);
+  }
+
+  .ds-hdr__face[data-active] {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+
+  /* THE RESTING FACE STAYS IN NORMAL FLOW. It is what gives the box its height
+     before any script has measured anything, so a server-rendered masthead is never
+     a 46px stub waiting for hydration. While it is the inactive face it overflows
+     the shortened box — invisibly, since `visibility: hidden` neither paints nor
+     takes pointer events, and the box's own height is explicit so nothing grows. */
+  .ds-hdr__face--rest {
+    position: relative;
+  }
+
+  .ds-hdr__face--cond {
+    position: absolute;
+    inset-inline: 0;
+    top: 0;
+  }
+
   /* ── The condensed bar (scroll state) ──────────────────────────────────────
      Three tiers become one. 200 -> 64 on desktop, 258 -> 56 on a phone, against
      the 12px the retired "State=On Scroll" returned.
@@ -1309,7 +1404,7 @@
     background: transparent;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
     cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+    transition: background-color var(--sa-motion-exit-duration) ease;
   }
 
   .ds-hdr-cond__iconbtn:hover {
@@ -1501,7 +1596,7 @@
     background: transparent;
     color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
     cursor: pointer;
-    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+    transition: background-color var(--sa-motion-exit-duration) ease;
   }
 
   .ds-navsheet__close:hover {
@@ -1643,6 +1738,19 @@
       animation-duration: 0.01ms !important;
       animation-iteration-count: 1 !important;
       scroll-behavior: auto !important;
+    }
+
+    /* GENTLER, NOT ZERO. Reduced motion asks for less movement, not for no
+       transitions at all — a crossfade carries no motion and is what stops the two
+       states reading as a glitch. The HEIGHT still snaps: a size change on an
+       element pinned to the top of the viewport is the one thing here most likely
+       to provoke the symptom this preference exists for. */
+    .ds-hdr__face {
+      transition-duration: var(--sa-motion-exit-duration) !important;
+    }
+
+    .ds-hdr__morph {
+      transition-duration: 0.01ms !important;
     }
   }
 
