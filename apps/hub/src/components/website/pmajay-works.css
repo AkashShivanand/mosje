@@ -1,222 +1,459 @@
-/* Declare the order before using it — see `.claude/rules/design-system-architecture.md` §2a. */
+/* ============================================================================
+   "Where PM-AJAY works" — the reach section on the PM-AJAY organisation page.
+
+   Layout is a two-column panel (map beside a ranked rail) that stacks below
+   1024px. Everything is token-bound; there are no raw colours and no raw
+   spacing values.
+   ============================================================================ */
+
 @layer theme, base, components, utilities;
 
 @layer components {
-  /* ============================================================================
-     PM-AJAY — "Where PM-AJAY works"
-     Layer tabs, a proportional-circle map, and the ranked state rail beside it.
-     Built to the standalone mockup from the Bharat-map session.
-     ============================================================================ */
+  /* ── Heading ───────────────────────────────────────────────────────────── */
 
   .pmw__head {
     display: flex;
-    flex-wrap: wrap;
     align-items: flex-start;
     justify-content: space-between;
     gap: var(--sa-inline-16);
+    margin-bottom: var(--sa-stack-24);
   }
 
   .pmw__headline {
-    max-width: 62ch;
+    max-width: 68ch;
   }
 
   .pmw__title {
-    margin: 0;
-    color: var(--sa-text-neutral-bolder);
-    font-size: var(--sa-type-headline-3-size);
-    line-height: var(--sa-type-headline-3-lh);
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
     font-weight: 700;
+    color: var(--sa-text-neutral-base);
+    margin: 0 0 var(--sa-stack-8);
   }
 
   .pmw__lead {
-    margin: var(--sa-stack-8) 0 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
     color: var(--sa-text-neutral-subtle);
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
+    margin: 0;
   }
 
-  /* ── Tabs ────────────────────────────────────────────────────────────────── */
+  /* ── Component cards, which are also the layer switches ────────────────── */
+
+  .pmw__layers {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--sa-inline-12);
+    margin-bottom: var(--sa-stack-20);
+  }
+
+  .pmw__layer {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "swatch name"
+      "value  value"
+      "meta   meta";
+    align-items: center;
+    gap: var(--sa-stack-4) var(--sa-inline-8);
+    padding: var(--sa-padding-16);
+    text-align: left;
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    /* The resting state of a switched-OFF layer. `--on` lifts it. */
+    color: var(--sa-text-neutral-subtle);
+    transition:
+      border-color 160ms ease-out,
+      box-shadow 160ms ease-out,
+      transform 160ms ease-out;
+  }
+
+  button.pmw__layer {
+    cursor: pointer;
+  }
+
+  button.pmw__layer:active {
+    transform: scale(0.99);
+  }
+
+  .pmw__layer--on {
+    border-color: var(--sa-border-brand-primary-base);
+    box-shadow: var(--sa-elevation-raised);
+    color: var(--sa-text-neutral-base);
+  }
 
   /*
-   * An underline strip, not a pill group. The mockup marks the active tab with a
-   * rule beneath it, which keeps the row reading as one horizontal band of
-   * options rather than four separate buttons — and leaves the counts, which are
-   * the actual content, as the loudest thing in each tab.
-   */
-  .pmw__tabs {
+    The "off" state is carried by more than colour: the swatch loses its fill
+    and the whole card drops to the subtle ink. `aria-pressed` carries it for
+    assistive technology.
+  */
+  .pmw__layer:not(.pmw__layer--on, .pmw__layer--absent) .pmw__layerswatch {
+    opacity: 0.35;
+  }
+
+  .pmw__layer--absent {
+    background-color: var(--sa-bg-neutral-subtler);
+    border-style: dashed;
+  }
+
+  .pmw__layerswatch {
+    grid-area: swatch;
+    width: var(--sa-icon-size-16);
+    height: var(--sa-icon-size-16);
+    border-radius: var(--sa-shape-4);
+  }
+
+  /* A miniature of the density ramp, so the card and the map agree. */
+  .pmw__layerswatch--density {
+    background-image: linear-gradient(
+      90deg,
+      var(--sa-chart-seq-100),
+      var(--sa-chart-seq-500),
+      var(--sa-chart-seq-900)
+    );
+  }
+
+  /* Three dots, matching the three hostel marks. */
+  .pmw__layerswatch--pins {
+    background-image: radial-gradient(
+        circle at 17% 50%,
+        var(--sa-chart-cat-3) 0 21%,
+        transparent 23%
+      ),
+      radial-gradient(circle at 50% 50%, var(--sa-chart-cat-2) 0 21%, transparent 23%),
+      radial-gradient(circle at 83% 50%, var(--sa-chart-axis) 0 21%, transparent 23%);
+  }
+
+  .pmw__layerswatch--absent {
+    border: 1px dashed var(--sa-border-neutral-base);
+  }
+
+  .pmw__layername {
+    grid-area: name;
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+  }
+
+  .pmw__layervalue {
+    grid-area: value;
+    font-size: var(--sa-type-headline-3-size);
+    line-height: var(--sa-type-headline-3-lh);
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    color: inherit;
+  }
+
+  .pmw__layermeta {
+    grid-area: meta;
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Toolbar ───────────────────────────────────────────────────────────── */
+
+  .pmw__toolbar {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--sa-inline-24);
-    margin: var(--sa-stack-20) 0 0;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    padding-bottom: var(--sa-stack-16);
+    margin-bottom: var(--sa-stack-16);
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }
 
-  .pmw__tab {
+  .pmw__crumbs {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    font-size: var(--sa-type-body-2-size);
+  }
+
+  .pmw__crumb {
+    padding: var(--sa-padding-4) var(--sa-padding-8);
+    border-radius: var(--sa-shape-6);
+    color: var(--sa-text-brand-primary-base);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .pmw__crumb:hover:not(:disabled) {
+    background-color: var(--sa-bg-brand-primary-base);
+  }
+
+  .pmw__crumb:disabled {
+    color: var(--sa-text-neutral-subtle);
+    font-weight: 400;
+    cursor: default;
+  }
+
+  .pmw__crumb--here {
+    color: var(--sa-text-neutral-base);
+    font-weight: 600;
+  }
+
+  .pmw__crumbsep {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .pmw__search {
+    flex: 1 1 14rem;
+    min-width: 10rem;
+  }
+
+  .pmw__searchinput {
+    width: 100%;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-base);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-6);
+  }
+
+  .pmw__searchinput::placeholder {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .pmw__chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .pmw__chip {
     display: inline-flex;
     align-items: center;
-    gap: var(--sa-inline-8);
-    padding: var(--sa-padding-8) 0 var(--sa-padding-12);
-    border: 0;
-    border-bottom: 2px solid transparent;
-    background: none;
+    gap: var(--sa-inline-6);
+    /* 24px minimum target (WCAG 2.2 SC 2.5.8) comes from the padding + text. */
+    padding: var(--sa-padding-6) var(--sa-padding-12);
+    font-size: var(--sa-type-body-3-size);
     color: var(--sa-text-neutral-subtle);
-    font: inherit;
-    font-size: var(--sa-type-body-2-size);
-    cursor: pointer;
-    /* The strip's own 1px rule and this 2px marker overlap by design; without
-       the pull the active tab sits a pixel below the line it should sit on. */
-    margin-bottom: -1px;
-  }
-
-  .pmw__tab--on {
-    color: var(--sa-text-neutral-bolder);
-    border-bottom-color: var(--sa-color-successScale-600);
-    font-weight: 600;
-  }
-
-  /*
-   * Disabled, and it still has to be READABLE — it carries a real figure.
-   * `opacity` would take the count down with it, so the state is carried by the
-   * cursor and the missing marker instead. 4.6:1 on white; the standard
-   * `not-allowed` cursor and the tooltip say why it does not respond.
-   */
-  .pmw__tab--off {
-    cursor: not-allowed;
-    color: var(--sa-text-neutral-subtle);
-  }
-
-  .pmw__dot {
-    width: 8px;
-    height: 8px;
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-full);
-    background-color: var(--sa-color-successScale-600);
+    cursor: pointer;
+    transition: border-color 160ms ease-out;
   }
 
-  .pmw__tab--off .pmw__dot {
-    background-color: var(--sa-border-neutral-base);
-  }
-
-  .pmw__tab-count {
+  .pmw__chip--on {
     color: var(--sa-text-neutral-base);
-    font-variant-numeric: tabular-nums;
-    font-weight: 600;
+    border-color: var(--sa-border-neutral-bolder-default);
+    background-color: var(--sa-bg-neutral-subtler);
   }
 
-  /* ── Panel: map beside rail ──────────────────────────────────────────────── */
+  /* Off is not signalled by colour alone — the dot empties out. */
+  .pmw__chip:not(.pmw__chip--on) .pmw__chipdot {
+    background-color: transparent !important;
+    box-shadow: inset 0 0 0 1px var(--sa-border-neutral-bolder-default);
+  }
 
-  /*
-   * BESIDE, not stacked — and that is only safe because the rail is TEXT.
-   * The earlier version of this section put a horizontal `BarChart` here and had
-   * to stack it: a scaled SVG shrinks rather than reflows, and in this column
-   * (the page grid leaves ~808px behind a 280px index rail) its labels rendered
-   * at 5.9px. Rows of real text reflow, so they survive the narrow column that
-   * defeated the chart.
-   */
+  .pmw__chipdot {
+    width: var(--sa-icon-size-16);
+    height: var(--sa-icon-size-16);
+    border-radius: var(--sa-shape-full);
+    flex: none;
+  }
+
+  .pmw__chipcount {
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Panel: map + rail ─────────────────────────────────────────────────── */
+
   .pmw__panel {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--sa-stack-24);
-    margin-top: var(--sa-stack-24);
-  }
+    /*
+      The rail is a bounded column and the map takes the rest. The rail holds
+      real text, so it must not shrink with the map — an SVG scales, a list
+      reflows, and a previous build let the rail's labels render at 5.9px.
 
-  @media (min-width: 900px) {
-    .pmw__panel {
-      grid-template-columns: minmax(0, 1.55fr) minmax(260px, 1fr);
-      align-items: start;
-    }
+      It is CLAMPED rather than fixed. At a flat 22rem the rail took 42% of the
+      panel on a 1280px screen and the map was left 422px wide to draw a
+      thousand density cells in. The floor keeps the state names off two lines;
+      the percentage lets the map take the benefit of a wider screen.
+    */
+    grid-template-columns: minmax(0, 1fr) clamp(15rem, 28%, 22rem);
+    gap: var(--sa-inline-24);
+    align-items: start;
   }
 
   .pmw__mapcard {
-    padding: var(--sa-padding-20);
-    border: 1px solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-cmp-card-radius);
     background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    padding: var(--sa-padding-16);
   }
 
   .pmw__mapnote {
-    margin: var(--sa-stack-12) 0 0;
-    color: var(--sa-text-neutral-subtle);
+    margin: var(--sa-stack-8) 0 0;
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
   }
 
-  /* ── Rail ────────────────────────────────────────────────────────────────── */
+  /* ── Legend ────────────────────────────────────────────────────────────── */
+
+  .pmw__legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-24);
+    margin-top: var(--sa-stack-12);
+  }
+
+  .pmw__legendgroup {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+  }
+
+  .pmw__legendlabel {
+    font-size: var(--sa-type-label-3-size);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .pmw__ramp {
+    display: flex;
+    width: 11rem;
+    height: var(--sa-stack-8);
+    border-radius: var(--sa-shape-4);
+    overflow: hidden;
+  }
+
+  .pmw__rampstep {
+    flex: 1;
+  }
+
+  .pmw__rampends {
+    display: flex;
+    justify-content: space-between;
+    width: 11rem;
+    font-size: var(--sa-type-body-3-size);
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .pmw__keys {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-12);
+  }
+
+  .pmw__key {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .pmw__keydot {
+    width: var(--sa-icon-size-16);
+    height: var(--sa-icon-size-16);
+    border-radius: var(--sa-shape-full);
+  }
+
+  /* ── Rail ──────────────────────────────────────────────────────────────── */
+
+  .pmw__rail {
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    padding: var(--sa-padding-16);
+  }
 
   .pmw__railhead {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--sa-inline-8);
-    padding-bottom: var(--sa-padding-8);
+    padding-bottom: var(--sa-stack-8);
+    margin-bottom: var(--sa-stack-8);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }
 
   .pmw__raileyebrow {
-    color: var(--sa-text-neutral-subtle);
-    font-size: var(--sa-type-label-2-size);
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-size: var(--sa-type-label-3-size);
     text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--sa-text-neutral-subtle);
   }
 
   .pmw__railcount {
-    color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-body-3-size);
     font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
   }
 
   .pmw__list {
+    list-style: none;
     margin: 0;
     padding: 0;
-    list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 2px;
   }
 
-  /* 20 / flexible / 58, as the mockup sets the row. The fixed value column is
-     what keeps four- and one-digit figures on one right edge. */
   .pmw__row {
-    display: grid;
-    grid-template-columns: 20px minmax(0, 1fr) 58px;
-    align-items: center;
-    gap: var(--sa-inline-12);
-    padding: 9px 10px;
-    border-radius: var(--sa-shape-8);
+    display: block;
   }
 
-  @media (hover: hover) {
-    .pmw__row:hover {
-      background-color: var(--sa-bg-status-success-base);
-    }
+  .pmw__rowinner {
+    display: grid;
+    grid-template-columns: 1.5rem minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    width: 100%;
+    padding: var(--sa-padding-6) var(--sa-padding-4);
+    text-align: left;
+    border-radius: var(--sa-shape-6);
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+  }
+
+  button.pmw__rowinner {
+    cursor: pointer;
+  }
+
+  .pmw__rowinner:hover {
+    background-color: var(--sa-bg-neutral-subtler);
   }
 
   .pmw__rank {
-    color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-body-3-size);
     font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
     text-align: right;
   }
 
   .pmw__rowbody {
-    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-4);
+    min-width: 0;
   }
 
   .pmw__state {
-    color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-body-2-size);
-    font-weight: 600;
-    white-space: nowrap;
+    color: var(--sa-text-neutral-base);
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .pmw__track {
-    height: 4px;
+    display: block;
+    height: var(--sa-stack-4);
     border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-subtler);
+    background-color: var(--sa-bg-neutral-subtle);
     overflow: hidden;
   }
 
@@ -224,26 +461,45 @@
     display: block;
     height: 100%;
     border-radius: var(--sa-shape-full);
-    background-color: var(--sa-color-successScale-600);
+    background-color: var(--sa-chart-seq-600);
+  }
+
+  .pmw__values {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--sa-stack-2);
   }
 
   .pmw__value {
-    color: var(--sa-text-neutral-bolder);
-    font-size: var(--sa-type-body-2-size);
-    font-weight: 600;
+    font-size: var(--sa-type-body-3-size);
     font-variant-numeric: tabular-nums;
-    text-align: right;
+    color: var(--sa-text-neutral-base);
+    white-space: nowrap;
+  }
+
+  .pmw__value--alt {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .pmw__valuenote {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .pmw__empty {
+    margin: var(--sa-stack-12) 0;
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-subtle);
   }
 
   .pmw__more {
     margin-top: var(--sa-stack-8);
-    padding: var(--sa-padding-8) 10px;
-    border: 0;
-    background: none;
-    color: var(--sa-text-brand-primary-base);
-    font: inherit;
+    padding: var(--sa-padding-6) 0;
     font-size: var(--sa-type-body-3-size);
     font-weight: 600;
+    color: var(--sa-text-brand-primary-base);
+    background: none;
+    border: 0;
     cursor: pointer;
   }
 
@@ -251,28 +507,77 @@
     text-decoration: underline;
   }
 
-  /* ── Foot ────────────────────────────────────────────────────────────────── */
+  /* ── Footer ────────────────────────────────────────────────────────────── */
 
   .pmw__foot {
     display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
+    align-items: flex-start;
     justify-content: space-between;
     gap: var(--sa-inline-16);
     margin-top: var(--sa-stack-16);
-    padding-top: var(--sa-padding-12);
+    padding-top: var(--sa-stack-16);
     border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .pmw__footfacts {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    max-width: 72ch;
   }
 
   .pmw__footfact {
     margin: 0;
-    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .pmw__coverage {
+    margin: 0;
     font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
   }
 
   .pmw__footlink {
-    color: var(--sa-text-brand-primary-base);
+    flex: none;
     font-size: var(--sa-type-body-3-size);
     font-weight: 600;
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .pmw__footlink:hover {
+    text-decoration: underline;
+  }
+
+  /* ── Responsive ────────────────────────────────────────────────────────── */
+
+  @media (max-width: 1024px) {
+    .pmw__panel {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  @media (max-width: 720px) {
+    .pmw__layers {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pmw__head,
+    .pmw__foot {
+      flex-direction: column;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pmw__layer,
+    .pmw__chip {
+      transition: none;
+    }
+
+    button.pmw__layer:active {
+      transform: none;
+    }
   }
 }

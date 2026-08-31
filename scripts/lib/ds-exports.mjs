@@ -59,6 +59,15 @@ export const NOT_COMPONENTS = new Set([
   // TheSet and OpticalSizing stories iterate it, and documented in the
   // BrandGlyph section of design.md.
   "BRAND_GLYPHS",
+  // The India map's geometry constants (packages/design-system/components/
+  // data-display/charts/geo/india-projection.ts): the two degree ranges that
+  // decide whether a coordinate is plausibly Indian, the default hex radius the
+  // density lattice is built on, and the per-state bounding boxes derived from
+  // the baked outlines at module load. Numbers and a Map — nothing to render.
+  // They are exercised by IndiaPointMap.stories.tsx, which bins live PM-AJAY
+  // coordinates through them, and the projection is verified against the
+  // outlines it must agree with.
+  "INDIA_LAT_RANGE", "INDIA_LON_RANGE", "INDIA_HEX_RADIUS", "INDIA_STATE_BOXES",
   // Types (exported via `export type`, but belt and braces)
   "ColorMode", "ColorModeId", "ColorModeProviderProps", "ColorModeSwitcherProps",
 ]);

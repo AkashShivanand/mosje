@@ -2005,6 +2005,16 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Renders as a `<dl>`; the value is moved above the label with `order`, so the DOM keeps `<dt>` first and the pair is read "Headquarters: New Delhi".
 - `overlap` pulls the card up over the band above it. Use it only directly under a hero — elsewhere it bites into whatever precedes it.
 
+#### SitePageHeader
+**Purpose**: The blue band every **website** page opens with, in the two levels the Figma handoff defines — **L1** an organisation or scheme's own front page, **L2** any page beneath one.
+**Key props**: `level`, `eyebrow`, `title`, `lead`, `media`, `overlay`, `reservesOverlap`, `breadcrumb`
+**Rules**:
+- **Not `PageHeader`.** That one is the portal title row — a heading, a meta line and some buttons on the page's own background, used by 80 admin pages. This is a full-bleed banner with a brand gradient, a portrait and an overlapping fact card. They share a word in English and nothing else.
+- **The gradient is built from the brand ramp, never from the handoff's second hex.** The design paints the band `#0373df → #3f83c6`; only the first is a Figma variable and the second is an unbound raw fill (flagged for the library owner). Reproducing it would freeze the band to the blue brand, and this estate is white-label — `data-brand="navy"` and the DBIM palette must retheme it, so the second stop is the ramp's own next shade.
+- `overlay` is the slot the "at a glance" card sits in — normally a `FactStrip` with `overlap`. It straddles the band's lower edge by 64px: the header reserves the space, the page decides what goes in it.
+- **`reservesOverlap` is for a page with no overlay that sits beside pages that have one.** It pads the band by the same 64px so the blue does not change height as a reader moves between an organisation's front page and its inner pages. It is ignored when `overlay` is present — reserving the space twice leaves a gutter of empty blue.
+- **The halo behind `media` is three filled discs on one 6s loop, not three rings.** Each is born at the portrait's exact radius, so it is opaque where nobody can see it and emerges already fading; each dies at zero. That is what makes the loop seamless without a fade-in, and it is why the keyframes are `linear` — the deceleration is in the published samples, and easing an already-eased set of values twice makes the motion lurch then stall. Under `prefers-reduced-motion` two discs park at the component's own resting drawing and the third is not rendered.
+
 #### Avatar
 **Purpose**: Circular user or entity representation.  
 **Rule**: Always provide `alt` text. For decorative-only avatars, `alt=""`.
@@ -2120,6 +2130,7 @@ optional `valueFormat` (defaults to `en-IN` grouping).
 | `ComboChart` | Bars (left axis) + lines (right axis) | `labels`, `bars`, `lines`, `leftLabel`, `rightLabel` |
 | `IndiaMap` | State choropleth (pre-baked geo paths) | `data: { state, value }[]`, `title`, `highlightState` |
 | `IndiaBubbleMap` | State bubble map, **area** ∝ value (same geo paths) | `data: { state, value }[]`, `title`, `maxRadius`, `highlightState`, `onSelectState` |
+| `IndiaPointMap` | Real coordinates: hex **density** + proportional **bubbles** + categorical **pins**, with state zoom | `bins`, `pins`, `pinKinds`, `bubbles`, `bubbleVariant`, `focusRegion`, `highlightRegion`, `onSelectRegion`, `table` |
 
 **Composition primitives** (dashboard layout): `ChartCard` (titled widget
 container with actions slot + loading/empty states + grid `span`), `DashboardGrid`
@@ -2192,6 +2203,41 @@ and renders it only when `exportable`.
   squares the difference the eye receives and is the usual defect in bubble maps.
   Both share the generated geometry; the bubble map derives each state's centroid
   from the largest closed ring of its path, so archipelagos land on land.
+- **`IndiaPointMap` when the data is a list of PLACES, not a per-state figure.**
+  The other two maps take a value already aggregated to a region and draw it at
+  that region's centre; both therefore discard coordinates. That is right for a
+  quantity that belongs to the whole territory and wrong for a list of points.
+  PM-AJAY's 19,768 Adarsh Gram villages are a belt across West Bengal, Bihar and
+  north Tamil Nadu — 44% of them in the first two states — and no per-state mark
+  can show it. Three marks, for three different questions: `bins` for a density
+  too thick to tell apart (overplotting, not resolution, is what would ruin the
+  answer), `bubbles` for named units at a zoomed grain, `pins` for records few
+  enough to be individuals. Combining them is normal — draw villages as density
+  and hostels as pins rather than forcing one mark on both.
+  - **Bin on the server.** `binIndiaPoints()` runs where the coordinates are, so
+    a page ships ~1,000 cells instead of 19,768 latitudes — ~85 KB out of 5.4 MB
+    for PM-AJAY. It must use the same `hexRadius` the map renders, and it bins in
+    PROJECTED space: bin in lon/lat and the cells shrink towards the Himalaya,
+    painting a density gradient that is purely an artefact of the projection.
+  - **`repairIndiaCoordinate()` before you plot anything.** Government point
+    feeds transpose latitude and longitude — 155 of PM-AJAY's 19,971 records do.
+    The swap is unambiguous here only because India's latitude band (6–37.6) and
+    longitude band (68–97.5) do not overlap; for a country that straddles the
+    equator it would be a guess. It never snaps a bad coordinate towards land: a
+    point invented at a district's centre is indistinguishable, to a reader, from
+    a village that is really there. Count the records it rejects and SAY SO on
+    the page.
+  - **The ramp is `log1p`, not linear**, because cell counts run 1 → ~390 with a
+    long tail and a linear ramp leaves 95% of the map on the palest step. Print
+    the real counts in your legend; the component will not guess what a shade is
+    worth.
+  - **A hex is deliberately not keyboard-reachable.** A density cell is not an
+    entity and has no identity to land on; tabbing through a thousand would be
+    hostile. Pass `table` so the named rows reach a screen reader — that is what
+    a keyboard user actually wants. Bubbles and pins ARE focusable and announced.
+  - **`bubbleVariant="outlined"` whenever a density field is already underneath.**
+    Two filled layers encoding the same quantity double the ink and the reader
+    adds them up by eye.
 - Charts are CSS-var driven (no Tailwind), so they work in every app including
   pm-ajay (no Tailwind) and the v3/v4 portals.
 - **`Legend` is `aria-hidden` on purpose, and that is not a bug to fix.** The real

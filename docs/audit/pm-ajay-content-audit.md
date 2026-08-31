@@ -1282,3 +1282,82 @@ the property that was missing.
 `PageHero`'s circle opaque would have worked for today's markup and broken again
 the next time a consumer renders something translucent in the halo. An animation
 should not depend on what is drawn on top of it.
+
+---
+
+## §31 · The reach map, rebuilt on the coordinates the feed actually publishes
+
+**2026-09-01.** The department's `map-points` endpoint carries 19,768 Adarsh Gram
+village points and 203 hostel points, each with a latitude, a longitude, a state
+and a district; the hostels also carry a type. Two builds of this section used
+**one field of that** — the state name — and threw the rest away on the server.
+
+| what the feed carries | used before | used now |
+| --- | --- | --- |
+| village coordinates (19,768) | discarded | hex density field |
+| hostel coordinates (203) | discarded | individual pins |
+| hostel type (Girls / Boys / Sanctioned) | discarded | filter + mark colour |
+| district name (547 distinct) | counted only | drill-down rail + rings |
+| state name | the whole chart | rail + zoom |
+
+### What the old chart was hiding
+
+Aggregating to 24 per-state circles does not merely lose detail — it changes what
+the page asserts. PM-AJAY read as a scheme spread evenly across two dozen states.
+It is a scheme **concentrated in a belt**: West Bengal (5,792) and Bihar (2,853)
+alone hold **44%** of every Adarsh Gram village, with a second concentration
+across northern Tamil Nadu. No mark placed at a state's centroid can show that,
+and the coordinates were published precisely so that it could be.
+
+### Three data-quality defects found in the feed, and what each is
+
+| defect | count | evidence | treatment |
+| --- | --- | --- | --- |
+| latitude and longitude **transposed** | 155 | an Assam hostel at `lat 90.71, lon 26.47` — the Pacific | swapped back and drawn; India's lat band (6–37.6) and lon band (68–97.5) do not overlap, so at most one reading can be inside the country and **zero rows are ambiguous** |
+| **no usable coordinate** — absent, `0,0`, or outside every range | 423 | 111 villages at exactly `0,0`; one at `35.805, −79.074`, which is North Carolina | counted, not drawn |
+| **plausible but wrong** — passes every range check, lands in the sea | 70 | 33 aggregation cells adrift off Gujarat and Kerala | counted, not drawn |
+
+The third class is the one no bounds test can see, and it is why
+`isOnIndianLand` exists. Its 6-unit (~25 km) tolerance is **required, not
+generous**: the outlines are simplified TopoJSON, and a strict point-in-polygon
+condemned 58 genuine Konkan and Sundarbans cells as bad data. The tolerance sits
+where the measured distribution has its gap — 58 cells lie within 6 units of
+land, and the next one out is at 9.
+
+**All 493 unplaceable records are still COUNTED**, and the page says so in a line
+beside the figures, not in a log. A map that omits 493 places while printing
+"19,768 villages" underneath is telling the reader it drew them all.
+
+### A field that looked like two, and would have published a falsehood
+
+`hostel_type` and `is_legacy` are **the same partition**. All 137 `Sanctioned
+Hostel` rows have `is_legacy: true`; all 66 `Girls`/`Boys` rows have
+`is_legacy: false`. They are one fact wearing two names — older records never
+captured whose hostel it is.
+
+Offering both as independent filters would have let a reader select *Girls* and
+*legacy*, get zero, and conclude PM-AJAY built no girls' hostels in its earlier
+years. That is **false**, not merely unknown. The map offers one dimension whose
+third value is named "Type not recorded".
+
+### Deliberately not shipped
+
+`project_id` encodes what looks like a sanction financial year — `ST28-**2324**-001349`
+— and it parses for 188 of 203 rows (`2324` ×118, `2425` ×36, `2526` ×31,
+`2627` ×2, plus one anomalous `2022`); 15 do not parse at all. A year inferred
+from a substring of an identifier, validated against nothing the department
+publishes, is exactly the sort of figure that reaches a deck as a departmental
+one. **Reported here rather than built**: if the ministry publishes the sanction
+year as a field, the filter is a small change.
+
+### Still open
+
+- The production gateway answers **504** on `map-points` after ~29s while
+  serving every other PM-AJAY report in milliseconds. The page draws from the
+  committed mirror and says so; the fix is the ministry raising the limit.
+- The feed publishes **no coordinates for Grants-in-Aid**, a third of the
+  scheme. Its real project total is on the page with the reason it is not on the
+  map.
+- 21 village codes appear on more than one row with different coordinates.
+  Counted as published; not deduplicated, because which row is right is the
+  department's call.

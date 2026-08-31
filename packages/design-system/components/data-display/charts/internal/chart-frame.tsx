@@ -20,6 +20,15 @@ export interface ChartFrameProps {
   overlay?: React.ReactNode;
   /** Ref forwarded to the positioned canvas (for tooltip coordinate maths). */
   canvasRef?: React.Ref<HTMLDivElement>;
+  /**
+   * Ref forwarded to the <svg> itself.
+   *
+   * For charts that map a pointer BACK into viewBox units — `IndiaPointMap`
+   * resolves which of ~1,000 hex bins is under the cursor without giving each
+   * one a DOM node, which needs `getScreenCTM()` on the element that owns the
+   * coordinate system.
+   */
+  svgRef?: React.Ref<SVGSVGElement>;
   className?: string;
   /** Extra class on the <svg>. */
   svgClassName?: string;
@@ -41,6 +50,7 @@ export function ChartFrame({
   legend,
   overlay,
   canvasRef,
+  svgRef,
   className,
   svgClassName,
   children,
@@ -53,6 +63,7 @@ export function ChartFrame({
     <figure className={cn("ds-chart", className)}>
       <div className="ds-chart__canvas" ref={canvasRef}>
         <svg
+          ref={svgRef}
           viewBox={viewBox}
           className={cn("ds-chart__svg", svgClassName)}
           role="img"

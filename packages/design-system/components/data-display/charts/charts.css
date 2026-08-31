@@ -58,6 +58,24 @@
     overflow: visible;
   }
 
+  /*
+    A CHART THAT ZOOMS MUST CLIP ITSELF.
+
+    `.ds-chart__svg` is `overflow: visible` so a mark sitting on the very edge
+    of the plot — a focus ring, the last bar's stroke — is not sheared off by
+    one pixel. That is right for a chart whose viewBox always frames its own
+    data, which is every chart here except the maps.
+
+    `IndiaPointMap` narrows its viewBox to zoom to a state, and the rest of
+    India keeps drawing at full size outside it. Unclipped, a zoom to Tamil Nadu
+    painted a pale grey landmass across the section's own heading and cards.
+    Clipping is therefore a property of the CHART, not of the page that holds
+    it — a consumer cannot be expected to know which charts overflow.
+  */
+  .ds-chart__svg--clip {
+    overflow: hidden;
+  }
+
   .ds-chart__caption {
     margin-top: var(--sa-stack-8);
     font-size: var(--sa-type-body-3-size);
