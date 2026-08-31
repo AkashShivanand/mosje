@@ -56,6 +56,17 @@ export interface SitePageHeaderProps extends React.HTMLAttributes<HTMLElement> {
    * is the page's business.
    */
   overlay?: React.ReactNode;
+  /**
+   * A card the CALLER renders overlaps this band's lower edge — reserve room for
+   * it, without rendering it.
+   *
+   * Use when the overlap already exists elsewhere. The estate's organisation
+   * template draws its own "at a glance" card and pulls it up over the band; the
+   * band knew nothing about that, so the card ate into the standfirst instead of
+   * into padding. Prefer `overlay` for anything new — this exists because that
+   * template got there first.
+   */
+  reservesOverlap?: boolean;
   /** Set on the heading so a region can point `aria-labelledby` at it. */
   headingId?: string;
 }
@@ -90,6 +101,7 @@ export function SitePageHeader({
   actions,
   media,
   overlay,
+  reservesOverlap = false,
   headingId,
   className,
   ...rest
@@ -99,7 +111,11 @@ export function SitePageHeader({
   return (
     <div className={cn("sa-siteheader", `sa-siteheader--${variant}`, className)}>
       <header
-        className={cn("sa-siteheader__band", overlay ? "sa-siteheader__band--overlaid" : undefined)}
+        className={cn(
+          "sa-siteheader__band",
+          overlay ? "sa-siteheader__band--overlaid" : undefined,
+          !overlay && reservesOverlap ? "sa-siteheader__band--reserved" : undefined,
+        )}
         {...rest}
       >
         <Container size="page" className="sa-siteheader__container">

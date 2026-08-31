@@ -626,3 +626,25 @@ entrance starts at `scale(0.96)`, never `scale(0)`; and
 `prefers-reduced-motion: reduce` stops the loop while keeping the rings at their
 resting size — gentler, not absent, because removing them would change the layout
 for the people who asked for less movement.
+
+## 17. Five corrections against the L1 frame
+
+| # | Was | Now | Why it was wrong |
+|---|---|---|---|
+| 1 | Logo at **72px** | **100px**, explicit `width`/`height` instead of `fill` | The handoff sets 100. Worse, `fill` without `sizes` made Next pick a **36px** candidate off the srcset and upscale it into the circle — the mark arrived so soft it read as an empty white disc |
+| 2 | Halo **breathed** | Halo **pulses outward** — rings grow from just outside the portrait and dissipate | Asked for. Three things keep it from reading as a spinner: 4.5s (a spinner is under 1s), it starts at 45% opacity and never reaches full, and the two rings sit half a cycle apart so one is always arriving as the other leaves |
+| 3 | Hero photograph | **Already the live site's** `Banner.png` — confirmed by extracting the images in the live hero region, which contains exactly two: the logo and this | Verified rather than assumed |
+| 4 | **24px** between standfirst and fact card | **64px**, matching the frame | The template pulls its fact card up 40px over the band (`FactStrip --overlap`) and the band knew nothing about it, so the card ate 40 of the 64 points of air beneath the content. On a page with no CTA button the standfirst ended almost against the card |
+| 5 | "Implementing ministry — Social Justice & Empowerment" | "**2021–22 · Scheme launched**" | Every organisation on the estate answers that identically, and the masthead above already says it. A fact constant across the estate is not a fact about the thing being described |
+
+**The same constant was removed from SMILE**, which also carried it, and replaced
+with the two sub-schemes its own About prose names. No organisation now spends a
+fact slot on the ministry.
+
+### The band now knows about a card it does not draw
+
+`reservesOverlap` is a deliberately narrow prop: *a sibling overlaps my lower
+edge, reserve room for it.* `overlay` remains the right slot for anything new —
+this exists because the organisation template already drew its own card and pulls
+it up itself, and the honest fix was to tell the band rather than to move the
+card.

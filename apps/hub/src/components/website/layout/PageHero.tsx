@@ -30,6 +30,12 @@ export interface PageHeroProps {
    * that goes nowhere is worse than no arrow.
    */
   backHref?: string;
+  /**
+   * This page draws a fact card that overlaps the band's lower edge, so the band
+   * should reserve room for it. Set by the organisation route, which knows
+   * whether the organisation has facts to show.
+   */
+  hasOverlappingFacts?: boolean;
 }
 
 /**
@@ -66,6 +72,7 @@ export function PageHero({
   actions,
   level,
   backHref,
+  hasOverlappingFacts,
 }: PageHeroProps) {
   /*
    * A wide banner arriving through `logoSrc` is a portrait, not a mark. The
@@ -114,6 +121,7 @@ export function PageHero({
 
       <SitePageHeader
         variant={variant}
+        reservesOverlap={hasOverlappingFacts}
         title={title}
         eyebrow={
           badge && backHref ? (
@@ -142,8 +150,26 @@ export function PageHero({
         actions={actions}
         logo={
           mark ? (
-            <span className="relative block size-[72px] overflow-hidden rounded-full border border-white/40 bg-white p-1.5">
-              <Image src={mark} alt="" fill className="object-contain p-0.5" />
+            /*
+             * 100px, as the handoff sets it. It was 72 and read as an
+             * afterthought beside a 40px title.
+             *
+             * EXPLICIT width/height, not `fill`. With `fill` and no `sizes`,
+             * Next picked a 36px candidate off the srcset and upscaled it into a
+             * 100px circle — the mark arrived soft to the point of looking
+             * blank. A real intrinsic size lets it optimise for the size the
+             * logo is actually drawn at, and `priority` keeps an above-the-fold
+             * mark out of the lazy queue.
+             */
+            <span className="grid size-[100px] place-items-center overflow-hidden rounded-full border border-white/40 bg-white">
+              <Image
+                src={mark}
+                alt=""
+                width={100}
+                height={100}
+                priority
+                className="size-[84px] object-contain"
+              />
             </span>
           ) : undefined
         }

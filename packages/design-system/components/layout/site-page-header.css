@@ -27,6 +27,22 @@
   }
 
   /*
+   * The same reservation, for a card this component does NOT render.
+   *
+   * The estate's organisation template draws the "at a glance" card itself and
+   * pulls it up over the band with `FactStrip --overlap` (−40). The band knew
+   * nothing about that, so the card ate 40 of the 64 points of air the content
+   * had beneath it — on a page with no call-to-action button the standfirst
+   * ended almost against the card's top edge.
+   *
+   * Reserving the same 40 the sibling takes back leaves the content its full
+   * breathing room and lets the card overlap into padding instead of into text.
+   */
+  .sa-siteheader__band--reserved {
+    padding-block-end: var(--sa-stack-40);
+  }
+
+  /*
    * `Container` owns the cap AND the side margin — see its own doc comment, which
    * is explicit that giving it horizontal padding narrows the column below the
    * grid. So this rule sets the vertical rhythm and the columns, and nothing
@@ -143,11 +159,14 @@
    * `aria-hidden`, and the copy says everything the picture does. Decoration
    * that is seen rarely is exactly where motion is affordable.
    *
-   * It BREATHES rather than pulses outward. A ring that expands and fades to
-   * nothing on a loop is the visual language of a loading spinner or a live
-   * recording dot; a reader would wait for it to finish. Two rings easing
-   * between 1 and 1.035, never disappearing and never in step with each other,
-   * read as depth rather than as progress.
+   * IT PULSES OUTWARD. Rings grow from just outside the portrait and dissipate,
+   * the way a ripple leaves a stone.
+   *
+   * The risk with an outward pulse is that it reads as a spinner — something the
+   * reader waits on. Three things keep it decorative: it is slow (4.5s, where a
+   * spinner is under 1s), it is faint (it starts at 45% and never reaches full
+   * strength), and the two rings are half a cycle apart so there is always one
+   * dissipating and one arriving rather than a single repeating "tick".
    *
    * SLOW, DELIBERATELY. UI motion belongs under 300ms because the user is
    * waiting on it. Nobody waits on this, and at UI speed an ambient loop becomes
@@ -178,22 +197,24 @@
       var(--sa-color-primaryScale-800) 48%,
       transparent
     );
-    animation: sa-halo-breathe 7s var(--sa-motion-emphasis-easing) infinite;
+    /* ease-out: the ring is LEAVING, and an exit that starts fast then settles
+       reads as a ripple. ease-in would hold still and then lunge. */
+    animation: sa-halo-pulse 4.5s var(--sa-motion-enter-easing) infinite;
   }
 
-  .sa-siteheader__halo::before {
-    width: 380px;
-    height: 380px;
+  /* Both rings share one resting size; the animation is what separates them. */
+  .sa-siteheader__halo::before,
+  .sa-siteheader__halo::after {
+    width: 320px;
+    height: 320px;
   }
 
   /*
-   * The inner ring runs the same loop a beat behind the outer one. In step they
-   * read as one thick ring changing size; offset, they read as two.
+   * Exactly half a cycle behind, so one ring is always arriving as the other
+   * dissipates. In step they would read as a single repeating tick.
    */
   .sa-siteheader__halo::after {
-    width: 345px;
-    height: 345px;
-    animation-delay: -2.4s;
+    animation-delay: -2.25s;
   }
 
   /* The portrait sits above both rings and does not move. */
@@ -209,15 +230,19 @@
     }
   }
 
-  @keyframes sa-halo-breathe {
-    0%,
-    100% {
-      transform: scale(1);
-      opacity: 1;
+  /*
+   * Starts at 0.92 — just inside the portrait's edge — never at 0. Nothing in
+   * the world appears out of nothing, and a ring born at zero reads as a glitch.
+   * It fades out before it stops growing, so it dissolves rather than snapping.
+   */
+  @keyframes sa-halo-pulse {
+    from {
+      transform: scale(0.92);
+      opacity: 0.45;
     }
-    50% {
-      transform: scale(1.035);
-      opacity: 0.82;
+    to {
+      transform: scale(1.18);
+      opacity: 0;
     }
   }
 

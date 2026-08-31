@@ -316,13 +316,21 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     lead:
       "PM-AJAY is a flagship scheme of the Ministry of Social Justice & Empowerment dedicated to the socio-economic empowerment of Scheduled Castes. The scheme promotes livelihood opportunities, strengthens village infrastructure, and enhances access to education and residential facilities for sustainable and inclusive development.",
 
-    // Four facts, all stated on the source page: the headquarters line under the
-    // banner, the three named components, the implementing ministry, and the
-    // group the scheme is for. No year, no budget — the source gives neither.
+    // Four facts, each stated on the source and each specific TO THIS SCHEME.
+    //
+    // "Implementing ministry — Social Justice & Empowerment" used to hold the
+    // third slot and is gone. Every organisation on this estate has the same
+    // answer, so the card spent a quarter of itself telling the reader something
+    // the masthead above it already says and that never distinguishes one page
+    // from another. A fact that is constant across the estate is not a fact
+    // about the thing being described.
+    //
+    // Its replacement is the year the scheme began, which the About page states:
+    // the three precursor schemes merged into PM-AJAY from 2021–22.
     facts: [
+      { icon: "event", value: "2021–22", label: "Scheme launched" },
       { icon: "location_on", value: "New Delhi", label: "Headquarters" },
       { icon: "widgets", value: "3", label: "Scheme components" },
-      { icon: "account_balance", value: "Social Justice & Empowerment", label: "Implementing ministry" },
       { icon: "groups", value: "Scheduled Castes", label: "Who it serves" },
     ],
 
@@ -1516,7 +1524,12 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       { icon: "groups", value: "Transgender & Destitute", label: "Target beneficiaries" },
       { icon: "location_city", value: "30 Pilot Cities", label: "Begging eradication" },
       { icon: "handshake", value: "Shelter & Livelihood", label: "Scheme pillars" },
-      { icon: "account_balance", value: "Social Justice & Empowerment", label: "Implementing ministry" },
+      // Was "Implementing ministry — Social Justice & Empowerment", which every
+      // organisation on the estate answers identically and the masthead already
+      // states. A fact constant across the estate is not a fact about this
+      // scheme. Replaced with the two sub-schemes SMILE actually comprises,
+      // which its own About prose names.
+      { icon: "account_tree", value: "2 sub-schemes", label: "Transgender welfare & begging rehabilitation" },
     ],
     nav: [
       {

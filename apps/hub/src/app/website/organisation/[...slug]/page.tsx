@@ -233,6 +233,8 @@ export default async function OrganisationDetailPage({
     level: (isSubPage ? "inner" : "landing") as "inner" | "landing",
     // Only a sub-page has somewhere to go back TO.
     backHref: isSubPage ? orgHref(rootSlug) : undefined,
+    // The template draws a fact card that straddles the band's lower edge.
+    hasOverlappingFacts: (detail?.facts?.length ?? 0) > 0,
     title: org.title,
     badge: isSubPage ? (rootOrg?.title ?? "Associated Organisation") : "Associated Organisation",
     // "Associated Organisations" carries NO href. It used to point at /website —
