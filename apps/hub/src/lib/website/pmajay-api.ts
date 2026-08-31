@@ -86,9 +86,13 @@ function prettyBreakdown(raw: string): string {
     .join(" — ");
 }
 
-async function getJson<T>(path: string, timeoutMs: number = TIMEOUT_MS): Promise<T | null> {
+async function getJson<T>(
+  path: string,
+  timeoutMs: number = TIMEOUT_MS,
+  base: string = BASE,
+): Promise<T | null> {
   try {
-    const res = await fetch(`${BASE}/${path}`, {
+    const res = await fetch(`${base}/${path}`, {
       next: { revalidate: REVALIDATE },
       signal: AbortSignal.timeout(timeoutMs),
     });
@@ -465,18 +469,33 @@ function aggregateReach<T extends Record<string, unknown>>(
  * the hourly `revalidate` means the large fetch happens once an hour rather than
  * once a view.
  *
- * A LONGER TIMEOUT THAN ITS SIBLINGS, for the same reason. Six seconds is right
- * for a summary object; on a multi-megabyte body it is a coin flip — and a
- * timeout here does not degrade to a smaller map, it degrades to the mirror.
+ * A LONGER TIMEOUT THAN ITS SIBLINGS, BUT NOT AN UNBOUNDED ONE. Six seconds is
+ * right for a summary object and short for a multi-megabyte body; 8 is the
+ * compromise, and the ceiling matters more than the floor here. It was 20, and
+ * `live-data-fallback.md` is explicit that a slow feed must degrade to the
+ * snapshot rather than to a slow page — with 20 it degraded to both, holding the
+ * server render for 12.5s before falling back anyway. `revalidate: 3600` means
+ * one request an hour pays this at all.
+ *
+ * ITS OWN BASE URL, because this endpoint alone is unwell. The production
+ * gateway currently answers `504` on it after ~29s while serving every other
+ * PM-AJAY report in milliseconds — the payload is simply too big for it — and
+ * the department's dev host returns the same 3.5 MB in 2.2s. The default stays
+ * PRODUCTION, because a citizen-facing page must not quietly read from a `-dev`
+ * host; `NEXT_PUBLIC_PMAJAY_MAP_API` points a demo or a staging build at one
+ * without a code change. Until prod is fixed, the map draws from the mirror and
+ * says so.
  *
  * TWO DATASETS, NOT THREE. Grants-in-Aid has no point data in this feed, so the
  * map speaks for two of PM-AJAY's three components and the section says so.
  * Drawing an empty third layer to make the set look complete would state that
  * GIA has reached nowhere, which is false rather than merely absent.
  */
+const MAP_BASE = process.env.NEXT_PUBLIC_PMAJAY_MAP_API ?? BASE;
+
 export async function getPmajayReach(): Promise<ReachData> {
   const mock = PMAJAY_REACH_SNAPSHOT;
-  const raw = await getJson<RawMapPoints>("map-points", 20_000);
+  const raw = await getJson<RawMapPoints>("map-points", 8_000, MAP_BASE);
   if (!raw || !Array.isArray(raw.vdp_villages) || !Array.isArray(raw.hostels)) {
     return { live: null, reading: {}, mock, reachable: false };
   }

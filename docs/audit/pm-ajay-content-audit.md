@@ -933,3 +933,92 @@ under the card into the section below.
 **`transparent` is not the fix — `body` is itself `#eef0f3` across this site**,
 so a transparent wrapper still showed grey and the repair looked like no repair
 at all. The alternation needs a white the page owns.
+
+## 25. "Where PM-AJAY works" — rebuilt to the standalone mockup
+
+The section §23 introduced was built from first principles. A standalone design
+for it already existed — `MapA.dc.html`, from the *भारत मैप इंटीग्रेशन* session —
+and this rebuilds against it. The mockup is a **design reference**, not code:
+its own README says so, and the values live in its inline styles.
+
+| | §23 build | Mockup | Now |
+| --- | --- | --- | --- |
+| heading | "Where PM-AJAY has reached" | **"Where PM-AJAY works"** | matches |
+| map | state **choropleth** | **proportional circles** | matches |
+| companion | horizontal `BarChart` **below** | ranked rail **beside** | matches |
+| layers | 2 (villages, hostels) | 3, counts in the tab | 3, GIA disabled |
+| footer | caption only | fact + utilities | fact + CSV |
+
+### A choropleth was the wrong instrument, and the mockup was right
+
+`IndiaMap` shades the state itself, so the ink a state receives is its **land
+area**. For a rate that is fine. For a **count** it is a systematic error:
+Rajasthan reports 1,493 villages and Delhi 1 — a ratio of 1,493 — while their
+areas differ by roughly 250×. Shaded, the two effects fight and area wins.
+
+`IndiaBubbleMap` was added to the design system for this, with `r ∝ √v` so a 4×
+count draws 4× the ink and not 16×. Its state centroids are **derived from the
+generated paths** rather than stored beside them — a committed table is a second
+copy of geometry that no build checks — and it takes the centroid of each
+state's largest closed ring, so Andaman and Nicobar's circle lands on an island
+rather than in the water between them.
+
+### Three tabs, two maps
+
+Grants-in-Aid sits on the tab strip carrying its live project total, and is
+**not selectable**. The alternatives were both worse: leaving it off tells a
+reader PM-AJAY has two components, and drawing it as an empty map tells them it
+has reached nowhere. A named, disabled tab with a real figure says the true
+thing — the projects exist, their locations are not published.
+
+### The rail is text, and that is why it fits
+
+§23 had to stack its companion because a scaled SVG shrinks rather than
+reflows — at this page's width the chart's labels rendered at 5.9px. Rows of
+real text reflow, so the rail sits beside the map as the mockup draws it and
+reads at full size at every width.
+
+### The production gateway 504s on this endpoint
+
+Found while verifying, not assumed: `map-points` returns **504 after ~29s** from
+`pmajay-api-admin.mosje.in`, while every other PM-AJAY report answers in
+milliseconds and the department's **dev** host returns the same 3.5 MB in 2.2s.
+The payload is simply too big for the production gateway.
+
+Two consequences, both handled:
+
+1. **The timeout came down 20s → 8s.** `live-data-fallback.md` is explicit that
+   a slow feed must degrade to the snapshot rather than to a slow page. At 20 it
+   degraded to *both* — a 12.5s server render before falling back anyway.
+2. **The endpoint got its own base URL**, `NEXT_PUBLIC_PMAJAY_MAP_API`,
+   defaulting to production. A citizen-facing page must not quietly read from a
+   `-dev` host, but a demo or a staging build can point at one without a code
+   change. Until production is fixed the map draws from the mirror and says so.
+
+## 26. The halo, measured rather than judged
+
+The reference prototype recording was read as a **kymograph** — a single row of
+pixels through the halo's centre, stacked over time, which turns every ring edge
+into a line whose slope is its speed. That gives numbers instead of impressions:
+
+| | measured | previous build |
+| --- | --- | --- |
+| rings on screen | 3 | 3 ✓ |
+| emission interval | ~2.9s | 2s |
+| ring lifetime | ~8.7s | 6s |
+| travel | r153 → r197 (**×1.29**) | ×1.40 |
+| speed | ~constant | ease-out |
+
+Every difference points the same way: the implementation was faster, further and
+front-loaded. **`linear` is the whole fix.** An eased ring visibly accelerates
+away from the portrait and stalls at the end, and the stall is where the eye
+catches the loop; at constant speed and even spacing there is no moment that
+reads as a beginning.
+
+The second change is the opacity envelope. It peaked at 12% and decayed, which
+gives every ring one bright instant — and three bright instants a cycle is a
+pulse however smooth the travel is. It now rises to 0.55, **holds flat** to 72%,
+then releases to zero, so a ring is simply *present* for most of its life.
+
+9s rather than 8.7 so the three delays are exact thirds; uneven spacing is what
+makes a flow read as a set of separate pulses.

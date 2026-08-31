@@ -2119,6 +2119,7 @@ optional `valueFormat` (defaults to `en-IN` grouping).
 | `Heatmap` | Matrix (sequential/diverging) | `xLabels`, `yLabels`, `matrix`, `scale` |
 | `ComboChart` | Bars (left axis) + lines (right axis) | `labels`, `bars`, `lines`, `leftLabel`, `rightLabel` |
 | `IndiaMap` | State choropleth (pre-baked geo paths) | `data: { state, value }[]`, `title`, `highlightState` |
+| `IndiaBubbleMap` | State bubble map, **area** ∝ value (same geo paths) | `data: { state, value }[]`, `title`, `maxRadius`, `highlightState`, `onSelectState` |
 
 **Composition primitives** (dashboard layout): `ChartCard` (titled widget
 container with actions slot + loading/empty states + grid `span`), `DashboardGrid`
@@ -2183,6 +2184,14 @@ and renders it only when `exportable`.
   tooltip carry values. `IndiaMap` announces each region's value on focus.
 - Pie/donut: prefer ≤ 6 slices; group the remainder into "Other".
 - `IndiaMap` geometry is generated — see `components/data-display/charts/geo/README.md`.
+- **`IndiaMap` for a RATE, `IndiaBubbleMap` for a COUNT.** A choropleth gives each
+  state as much ink as it has land, so a map of counts reports "big state" as "big
+  number" — Rajasthan's 1,493 villages and Delhi's 1 differ 1,493× in the data and
+  ~250× in area, and shading lets area win. Circles carry their own area, so the
+  ratio survives. `IndiaBubbleMap` scales the RADIUS by `√v`: scaling it by `v`
+  squares the difference the eye receives and is the usual defect in bubble maps.
+  Both share the generated geometry; the bubble map derives each state's centroid
+  from the largest closed ring of its path, so archipelagos land on land.
 - Charts are CSS-var driven (no Tailwind), so they work in every app including
   pm-ajay (no Tailwind) and the v3/v4 portals.
 - **`Legend` is `aria-hidden` on purpose, and that is not a bug to fix.** The real

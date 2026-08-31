@@ -204,9 +204,29 @@
    * carries the first ring on itself and the other two on its own ::before and
    * ::after — which is why the component renders that span at all.
    *
-   * 6s, so a ring leaves every 2s. At 5s three rings emit at 0.6Hz, which reads
-   * as a pulse to watch rather than as ambience; peak opacity drops to 0.7 for
-   * the same reason, since three overlapping rings carry more ink than two.
+   * ── THE NUMBERS ARE MEASURED FROM THE PROTOTYPE, NOT CHOSEN ────────────────
+   *
+   * The reference recording was read as a kymograph — one row of pixels through
+   * the halo's centre, stacked over time — which turns each ring edge into a
+   * line whose slope IS its speed. Three edges, all drifting outward together,
+   * a new one appearing at the portrait's rim every ~2.9s and the outermost
+   * fading out. Measured against a 385px portrait:
+   *
+   *   emission interval   ~2.9s          → three rings ⇒ ~8.7s each
+   *   travel              r153 → r197    → scale 1 → ~1.29
+   *   speed               ~constant      → LINEAR, not eased
+   *
+   * The earlier version ran 6s at 1.4 with an ease-out. Every one of those is
+   * wrong in the same direction: too fast, too far, and front-loaded, so it read
+   * as a repeating pulse rather than as flow. `linear` is the whole difference —
+   * an eased ring visibly accelerates away from the portrait and stalls at the
+   * end, and the stall is where the eye catches the loop. At constant speed,
+   * evenly spaced, there is no moment that reads as a beginning.
+   *
+   * 9s and not 8.7 so the thirds are exact: a ring leaves every 3s, and three
+   * rings sit at scale 1, 1.10 and 1.19 at any instant — ~18px apart at this
+   * radius, which is the ~16px the prototype holds, scaled for our larger
+   * portrait.
    */
   .sa-siteheader__pulse,
   .sa-siteheader__pulse::before,
@@ -217,10 +237,8 @@
        its outer edge and can only ever move away from it. */
     inset: -10px;
     border-radius: 50%;
-    box-shadow: 0 0 0 32px color-mix(in srgb, var(--sa-color-primaryScale-800) 52%, transparent);
-    /* ease-out: the ring is LEAVING. An exit that starts fast then settles reads
-       as a ripple; ease-in would hold still, then lunge. */
-    animation: sa-halo-ripple 6s var(--sa-motion-enter-easing) infinite;
+    box-shadow: 0 0 0 28px color-mix(in srgb, var(--sa-color-primaryScale-800) 46%, transparent);
+    animation: sa-halo-flow 9s linear infinite;
   }
 
   /*
@@ -233,13 +251,15 @@
   }
 
   /* Negative delays, not positive: the trailing rings start already part-way out
-     on the very first frame, so the band is never briefly a bare disc on load. */
+     on the very first frame, so the band is never briefly a bare disc on load.
+     Exact thirds of the 9s cycle — uneven spacing is what makes a flow read as
+     a set of separate pulses. */
   .sa-siteheader__pulse::before {
-    animation-delay: -2s;
+    animation-delay: -3s;
   }
 
   .sa-siteheader__pulse::after {
-    animation-delay: -4s;
+    animation-delay: -6s;
   }
 
   /* The portrait sits above every ring and does not move. */
@@ -256,32 +276,41 @@
   }
 
   /*
-   * Born ON the static ring's edge (scale 1) rather than inside it, and at zero
-   * opacity rather than full — so it appears to detach from the portrait's
-   * outline instead of springing out of the photograph. It reaches its brightest
-   * almost immediately, then spends the rest of the cycle dissolving, which is
-   * how a real ripple loses energy: fast at first, then slowly.
+   * A RING'S WHOLE LIFE: born on the portrait's rim, drifting outward at a
+   * constant rate, gone before it reaches anything.
    *
-   * Every offset declares BOTH properties. Leaving `transform` out of the middle
-   * keyframe hands its segmentation to the interval the opacity stop creates,
-   * and the travel then eases twice from a point nobody chose.
+   * THE OPACITY HOLDS FLAT THROUGH THE MIDDLE, which is what separates flow from
+   * a pulse. A peak-then-decay curve gives every ring a visible moment of
+   * maximum brightness, and three of those a cycle IS a pulse however smooth the
+   * travel is. Rising to 0.55 by 14%, holding to 72%, then releasing to 0 means
+   * a ring is simply *present* for most of its life and the eye finds no beat to
+   * lock onto. Birth and death both happen at zero, so neither pops.
    *
-   * 0.7 peak against a 52% ring resolves to ~36% alpha at the plaque's edge,
-   * decaying as it travels. It was 0.85 with two rings; three rings put half
-   * again as much ink on the band at any instant, so the peak comes down to keep
-   * the total weight where it was.
+   * TRANSFORM IS DECLARED AT EVERY OFFSET. Leaving it out of the middle stops
+   * makes the browser segment its interpolation around the opacity stops, and
+   * the drift then changes pace at points nobody chose — the exact thing
+   * `linear` is here to avoid.
+   *
+   * 0.55 against a 46% ring is ~25% alpha at its brightest. Three rings overlap
+   * only at their edges, so the band never carries more than about a third of
+   * that at any one point: subtle, as asked, and well under the threshold where
+   * a large moving object starts to demand attention.
    */
-  @keyframes sa-halo-ripple {
+  @keyframes sa-halo-flow {
     0% {
       transform: scale(1);
       opacity: 0;
     }
-    12% {
-      transform: scale(1.05);
-      opacity: 0.7;
+    14% {
+      transform: scale(1.04);
+      opacity: 0.55;
+    }
+    72% {
+      transform: scale(1.21);
+      opacity: 0.55;
     }
     100% {
-      transform: scale(1.4);
+      transform: scale(1.29);
       opacity: 0;
     }
   }

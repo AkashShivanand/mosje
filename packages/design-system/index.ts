@@ -235,6 +235,7 @@ export {
   Heatmap,
   ComboChart,
   IndiaMap,
+  IndiaBubbleMap,
   Legend,
   useChartTooltip,
   ChartTooltip,
@@ -266,6 +267,8 @@ export type {
   ComboChartProps,
   IndiaMapProps,
   IndiaMapDatum,
+  IndiaBubbleMapProps,
+  IndiaBubbleDatum,
   LegendItem,
   ValueFormat,
 } from "./components/data-display/charts";
