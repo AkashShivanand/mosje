@@ -38,12 +38,12 @@ static-generated, and every one referenced by exactly one thing: its own definit
 
 | Removed (flat slug) | Kept, because it is the one that is linked |
 |---|---|
-| `about-us` | `pmajy/about-us` — a strict superset; all 61 sentences present |
+| `about-us` (flat, thin copy) | the fuller `pmajy/about-us` — a strict superset, all 61 sentences present. *Since flattened back to `about-us`; see §5.* |
 | `construction-repair-of-hostels` | `components/construction-repair-of-hostels` |
 | `development-of-sc-dominated-villages-into-adarsh-gram` | `components/development-of-sc-dominated-villages-into-adarsh-gram` |
 | `grants-in-aid-to-state-districts` | `components/grants-in-aid-to-state-districts` |
-| `flow-chart` | `reports/flow-chart` — byte-identical |
-| `illustrative-list-…-under-the-scheme` | `reports/illustrative-list-…-under-the-scheme` — identical text |
+| `flow-chart` (duplicate) | `reports/flow-chart` — byte-identical. *Since flattened back to `flow-chart`; see §5.* |
+| `illustrative-list-…` (duplicate) | `reports/illustrative-list-…` — identical text. *Since flattened back; see §5.* |
 | `contact-us` | *nothing* — see below |
 | `pmajy/contact-us` | *nothing* — see below |
 
@@ -148,9 +148,20 @@ cards' `slug` fields, the dashboard lookup in the organisation route, and
 `lib/data-mode/routes.ts`. Miss that last one and the demo rail's data-mode switch
 silently vanishes from the three pages that most need it.
 
-### Still namespaced, and worth the same treatment
+### Every sub-page now sits at the source's own path
 
-`pmajy/about-us`, `reports/flow-chart` and `reports/illustrative-list-…` carry the
-same invented segment for the same reason, and the source publishes all three at
-flat paths. They were left alone only because this pass was scoped to the component
-pages. Flattening them is the same four-step change and would finish the job.
+`pmajy/about-us`, `reports/flow-chart` and `reports/illustrative-list-…` carried the
+same invented segment for the same reason, and were flattened in the same way. No
+PM-AJAY URL in this estate now contains a segment the source does not publish.
+
+## 6. Final accounting — every live sub-page, and what we do with it
+
+Twenty pages live under the scheme on the source site. Each is accounted for:
+
+| Treatment | Count | Pages |
+|---|---|---|
+| **Cloned as a page** | 7 | about-us · construction-repair-of-hostels · development-of-sc-dominated-villages-into-adarsh-gram · grants-in-aid-to-state-districts · flow-chart · illustrative-list-… · guidelines |
+| **Linked out** (live reports) | 12 | the ten in the Reports band, plus pacc-meeting-list and notional-allocation-report under Downloads (PM-AJAY) |
+| **Folded into the index** | 1 | contact-us — the source publishes only an email, hours and a mobile there, and all three are in this page's own Contact section |
+
+Nothing is unaccounted for, and nothing is served that the source does not publish.

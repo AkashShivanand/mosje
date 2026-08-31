@@ -324,8 +324,8 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       {
         label: "CONNECT & ENGAGE",
         items: [
-          { label: "Illustrative list of domain under GIA", href: `/website/organisation/${PM_AJAY}/reports/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme` },
-          { label: "Flow Chart", href: `/website/organisation/${PM_AJAY}/reports/flow-chart` },
+          { label: "Illustrative list of domain under GIA", href: `/website/organisation/${PM_AJAY}/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme` },
+          { label: "Flow Chart", href: `/website/organisation/${PM_AJAY}/flow-chart` },
           { label: "Find Courses", href: "https://nsdcindia.org/qp-nos-results", external: true },
           { label: "Gallery", href: "#gallery" },
           { label: "Contact", href: "#contact" },
@@ -354,7 +354,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       "</ol>",
     ].join(""),
 
-    aboutAction: { label: "Know more", href: `/website/organisation/${PM_AJAY}/pmajy/about-us` },
+    aboutAction: { label: "Know more", href: `/website/organisation/${PM_AJAY}/about-us` },
 
     components: {
       heading: "Components",
