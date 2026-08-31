@@ -355,6 +355,10 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         label: "OUR WORK & IMPACT",
         items: [
           { label: "Components", href: "#components" },
+          // Directly under Components, because the band is directly under it on
+          // the page. An index whose order disagrees with the page's teaches the
+          // reader that it cannot be trusted to find things.
+          { label: "Where PM-AJAY has reached", href: "#reach" },
           // No "Circulars & Notifications" entry: the circulars are a chip inside
           // Documents & downloads now, and a second label pointing at that same
           // band is the duplicate-destination fault this index already made once.

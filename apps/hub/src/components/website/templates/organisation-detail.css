@@ -410,13 +410,40 @@
    * on nothing.
    *
    * The wrapper takes the surface colour and the content zone below continues
-   * it, so the two are one field with the card lifted over both. The card's own
-   * −40 pull happens inside this box, so its top escapes upward over the banner
-   * without dragging this background with it.
+   * it, so the two are one field with the card lifted over both.
+   *
+   * ── THE SURFACE STARTS 40 DOWN, AND THAT IS THE WHOLE POINT ────────────────
+   *
+   * This block used to paint its background on the element itself, with a note
+   * claiming the card's −40 pull "escapes upward over the banner without
+   * dragging this background with it". Measured, it does the opposite. The
+   * wrapper has no padding or border, so the card's negative top margin
+   * COLLAPSES THROUGH it and moves the wrapper's own top edge up by 40 — taking
+   * the grey with it. The band's last 40 points were painted over in grey, the
+   * banner simply looked 40 shorter, and the card sat flush on a surface instead
+   * of straddling anything. Every check stayed green because nothing overlapped
+   * incorrectly; the overlap merely never happened.
+   *
+   * So the surface moves to a pseudo-element inset by the same 40 the card pulls
+   * up. The wrapper's top 40 is now transparent, the blue shows through it, and
+   * the card genuinely straddles the band's lower edge — as the handoff draws
+   * it. `z-index: -1` keeps it behind the card while `z-index: 1` on the wrapper
+   * keeps the whole group above the banner.
+   *
+   * The inset MUST stay equal to `.ds-fact-strip--overlap`'s pull. They are two
+   * halves of one measurement: raise one without the other and either grey
+   * reappears over the band, or a strip of banner appears under the card.
    */
   .orgd__facts {
     position: relative;
     z-index: 1;
+  }
+
+  .orgd__facts::before {
+    content: "";
+    position: absolute;
+    inset: var(--sa-stack-40) 0 0 0;
+    z-index: -1;
     background-color: var(--sa-bg-neutral-subtler);
   }
 

@@ -152,18 +152,17 @@
   /*
    * ── THE HALO ────────────────────────────────────────────────────────────────
    *
-   * A portrait inside three concentric rings, with two more rippling outward
-   * through them. The handoff draws the static plaque; the ripple is ours.
+   * A portrait, ONE static ring holding its edge, and two rings travelling
+   * outward from that edge. The handoff draws three concentric rings; the
+   * innermost is the object's own outline and stays put, and the outer two are
+   * the ones that move.
    *
-   * THE STATIC RINGS ARE ONE `box-shadow`, NOT THREE ELEMENTS. Three spreads on
-   * one shadow give three perfectly concentric rings that can never drift out of
-   * register, cost no extra DOM, and stay out of the accessibility tree. Each
-   * step is lighter and more transparent than the one inside it, so the plaque
-   * reads as depth receding into the band rather than as three drawn outlines.
-   *
-   * THE INNERMOST RING IS THE DARKEST THING ON THE BAND. It is what separates a
-   * photograph from a blue gradient — without it the picture bleeds into the
-   * background at its lower edge, where the band is darkest.
+   * WHY ONLY THE INNERMOST IS STATIC. It is the darkest thing on the band and
+   * the only ring doing structural work: it separates a photograph from a blue
+   * gradient at the picture's lower edge, where the band is darkest. Animate it
+   * and the portrait's own boundary breathes, which reads as a rendering fault
+   * rather than as motion. Everything outside it is atmosphere, and atmosphere
+   * can move.
    */
   .sa-siteheader__halo {
     position: relative;
@@ -173,47 +172,54 @@
     width: 340px;
     height: 340px;
     border-radius: 50%;
-    box-shadow:
-      0 0 0 10px color-mix(in srgb, var(--sa-color-primaryScale-900) 88%, transparent),
-      0 0 0 40px color-mix(in srgb, var(--sa-color-primaryScale-800) 46%, transparent),
-      0 0 0 72px color-mix(in srgb, var(--sa-color-primaryScale-800) 24%, transparent);
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--sa-color-primaryScale-900) 88%, transparent);
     /* Never from scale(0) — nothing in the world appears out of nothing. */
     animation: sa-halo-enter var(--sa-motion-emphasis-duration) var(--sa-motion-enter-easing) both;
   }
 
   /*
-   * ── ONE RIPPLE, LEAVING THE PLAQUE ──────────────────────────────────────────
+   * ── TWO RINGS, ONE TRACK ────────────────────────────────────────────────────
    *
-   * The plaque above is the design; this is the only thing that moves.
+   * BOTH RINGS RUN THE SAME PATH, HALF A CYCLE APART. That is the whole design,
+   * and it is a correction of two earlier attempts.
    *
-   * WHAT WAS BROKEN. There were two ring systems in the same 484px: three static
-   * rings, and four more sweeping from scale(0.94) to 1.34 straight THROUGH
-   * them. Seven edges on screen at once, beating against each other — a reader
-   * saw circles that stood still and circles that did not, in the same place,
-   * and could not tell which was the object. Motion added on top of a form
-   * instead of belonging to it.
+   * The first drew three static rings AND four sweeping ones through them —
+   * seven edges in the same 484px, so a reader could not tell which circles were
+   * the object. The obvious repair was one ripple leaving a static plaque, which
+   * was coherent but is not what was asked for here.
    *
-   * WHAT IT IS NOW. A single ring, born exactly on the outermost static ring at
-   * zero opacity, brightening as it leaves and dissolving into the band. It
-   * never crosses the plaque, so there is nothing to double: the plaque stays
-   * still and something leaves it. One idea instead of two.
+   * The trap in "animate rings 2 and 3" is animating them ON THEIR OWN RADII:
+   * ring 2 expanding from 40 arrives exactly where ring 3 sits at rest, and the
+   * two edges cross and beat against each other — the original defect, rebuilt.
    *
-   * 4s, not 5 — a loop near 0.2Hz sits in the band that reads as a pulse to
-   * watch rather than as ambience, and Apple's motion guidance flags it
-   * specifically. It also never exceeds 40% opacity, because a large moving
-   * object should stay semi-transparent while it travels.
+   * So they share ONE track instead. Each is born on the static ring's outer
+   * edge, brightens as it detaches, and dissolves into the band; the second is
+   * offset by half the period, so one is always leaving while the other is
+   * halfway out. Nothing ever coincides, and the plaque's old "denser near,
+   * fainter far" gradient survives — as a property of travel rather than of
+   * three drawn outlines.
+   *
+   * 5s, so a ring leaves every 2.5s. Two rings on a 4s loop would emit at 0.5Hz,
+   * which reads as a pulse to watch rather than as ambience.
    */
+  .sa-siteheader__halo::before,
   .sa-siteheader__halo::after {
     content: "";
     position: absolute;
-    inset: 0;
+    /* -10 = the static ring's spread, so the travelling ring starts flush
+       against its outer edge and can only ever move away from it. */
+    inset: -10px;
     border-radius: 50%;
-    /* Spread 72 — the same radius as the outermost static ring, so it starts
-       coincident with the plaque's edge and can only move outward from there. */
-    box-shadow: 0 0 0 72px color-mix(in srgb, var(--sa-color-primaryScale-800) 34%, transparent);
+    box-shadow: 0 0 0 32px color-mix(in srgb, var(--sa-color-primaryScale-800) 52%, transparent);
     /* ease-out: the ring is LEAVING. An exit that starts fast then settles reads
        as a ripple; ease-in would hold still, then lunge. */
-    animation: sa-halo-ripple 4s var(--sa-motion-enter-easing) infinite;
+    animation: sa-halo-ripple 5s var(--sa-motion-enter-easing) infinite;
+  }
+
+  /* Negative delay, not positive: the second ring starts already half-travelled
+     on the first frame, so the band is never briefly a bare disc on load. */
+  .sa-siteheader__halo::after {
+    animation-delay: -2.5s;
   }
 
   /* The portrait sits above every ring and does not move. */
@@ -230,40 +236,63 @@
   }
 
   /*
-   * Born AT the plaque's edge (scale 1) rather than inside it, and at zero
-   * opacity rather than full — so it appears to detach from the outer ring
-   * instead of springing out of the photograph. It reaches its brightest early,
-   * then spends most of the cycle dissolving, which is how a real ripple loses
-   * energy: fast at first, then slowly.
+   * Born ON the static ring's edge (scale 1) rather than inside it, and at zero
+   * opacity rather than full — so it appears to detach from the portrait's
+   * outline instead of springing out of the photograph. It reaches its brightest
+   * almost immediately, then spends the rest of the cycle dissolving, which is
+   * how a real ripple loses energy: fast at first, then slowly.
+   *
+   * Every offset declares BOTH properties. Leaving `transform` out of the middle
+   * keyframe hands its segmentation to the interval the opacity stop creates,
+   * and the travel then eases twice from a point nobody chose.
+   *
+   * 0.85 peak against a 52% ring resolves to ~44% alpha at the plaque's edge —
+   * the weight the old static mid ring carried — decaying through ~24% at the
+   * old outer ring's radius. The plaque's "denser near, fainter far" gradient is
+   * preserved, as a property of travel rather than of three drawn outlines.
    */
   @keyframes sa-halo-ripple {
     0% {
       transform: scale(1);
       opacity: 0;
     }
-    18% {
-      opacity: 0.4;
+    12% {
+      transform: scale(1.05);
+      opacity: 0.85;
     }
     100% {
-      transform: scale(1.26);
+      transform: scale(1.4);
       opacity: 0;
     }
   }
 
   /*
-   * Reduced motion means gentler, not none: the plaque and its three static
-   * rings stay exactly as they are, and only the ripple stops. Removing the halo
-   * would change the layout for people who asked for less movement, which is a
-   * different request from the one they made.
+   * Reduced motion means gentler, not none — and here it means the drawing the
+   * handoff actually published: the two travelling rings stop where they would
+   * have been at rest, restoring the three static concentric rings. Removing the
+   * halo would change the layout for people who asked for less movement, which
+   * is a different request from the one they made.
    */
   @media (prefers-reduced-motion: reduce) {
     .sa-siteheader__halo {
       animation: none;
     }
 
+    .sa-siteheader__halo::before,
     .sa-siteheader__halo::after {
       animation: none;
-      opacity: 0;
+    }
+
+    /* The mid band: 10 → 40 out from the portrait. */
+    .sa-siteheader__halo::before {
+      inset: -10px;
+      box-shadow: 0 0 0 30px color-mix(in srgb, var(--sa-color-primaryScale-800) 46%, transparent);
+    }
+
+    /* The outer band: 40 → 72. */
+    .sa-siteheader__halo::after {
+      inset: -40px;
+      box-shadow: 0 0 0 32px color-mix(in srgb, var(--sa-color-primaryScale-800) 24%, transparent);
     }
   }
 

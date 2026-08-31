@@ -749,3 +749,116 @@ band. One idea instead of two.
 
 `prefers-reduced-motion` still stops the ripple and leaves all three static rings
 exactly where they are.
+
+## 21. The halo, again — the outer rings move and the inner one does not
+
+§20 left the plaque static with one ring leaving it. The brief now is that
+**everything except the innermost dark circle should animate**, and the
+interesting part is that the obvious implementation rebuilds §20's defect.
+
+Rings 2 and 3 sit at radii 40 and 72. Expand each **on its own radius** and ring
+2 arrives, at roughly a third of its travel, exactly where ring 3 sits at rest.
+Two edges cross and beat against each other in the same 484px — which is the
+seven-edge collision §20 exists to record.
+
+So they share **one track**. Each is born flush against the static ring's outer
+edge, brightens as it detaches, and dissolves into the band; the second is offset
+by **half the period**, so one is always leaving while the other is halfway out.
+Nothing ever coincides.
+
+| Before (§20) | After | Why |
+| --- | --- | --- |
+| 3 static rings + 1 ripple | **1** static ring + **2** travelling rings | The brief: only the picture's own outline holds still |
+| Ripple born at radius 72 (the outer static ring) | Both born at radius 10 — the dark ring's outer edge | With rings 2 and 3 gone, the plaque's edge IS the dark ring |
+| One pseudo-element | Two, same keyframes, `animation-delay: -2.5s` on the second | A negative delay starts it already half-travelled, so the first frame is never a bare disc |
+| 4s loop, peak opacity 0.40 | **5s**, peak **0.85** against a 52% ring | 5s means a ring leaves every 2.5s rather than every 2s; 0.85 × 52% ≈ 44% alpha at the edge, which is the weight the old static mid ring carried |
+| Travel to `scale(1.26)` | `scale(1.4)` from a smaller start radius | Same outer extent on screen |
+| Reduced motion: ripple stops, 3 static rings remain | Reduced motion: **both rings freeze at the mid and outer radii** | It restores the drawing the handoff published, rather than leaving a bare disc where the animation was |
+
+**The innermost ring stays static for a structural reason, not an aesthetic one.**
+It is what separates a photograph from a blue gradient at the picture's lower
+edge, where the band is darkest. A portrait whose own boundary breathes reads as
+a rendering fault rather than as motion.
+
+## 22. The fact card never overlapped the banner
+
+The card is supposed to straddle the band's lower edge. It did not, and the
+stylesheet asserted that it did:
+
+> "The card's own −40 pull happens inside this box, so its top escapes upward
+> over the banner without dragging this background with it."
+
+Measured, the opposite. `.orgd__facts` has no padding and no border, so the
+card's negative top margin **collapses through it** and moves the wrapper's own
+top edge up by 40 — taking the grey surface with it. The band's last 40 points
+were painted over in grey, the banner simply looked 40 shorter, and the card sat
+flush on a surface instead of straddling anything.
+
+```
+before   band ──────────────┐              after   band ──────────────┐
+                grey ═══════╪══ (over the blue)              blue ════╪══ (visible)
+                ┌───────────┴──┐                            ┌─────────┴────┐
+                │  fact card   │                            │  fact card   │
+```
+
+The surface moved to a pseudo-element inset by the same 40 the card pulls up, so
+the wrapper's top 40 is transparent and the blue shows through it.
+
+**Nothing detected this because nothing overlapped *wrongly*.** Every check was
+green; the overlap merely never happened. The inset and `.ds-fact-strip--overlap`'s
+pull are two halves of one measurement and a comment now says so — raise one
+without the other and either the grey reappears over the band, or a strip of
+banner appears under the card.
+
+## 23. "Where PM-AJAY has reached" — the map band
+
+A new band on the scheme's own page, immediately after the components cards,
+fed by the department's `map-points` endpoint.
+
+**Placement.** Directly under the components, because the reader has just been
+told the scheme has three of them and "where has it actually landed" is the next
+question they have. Further down — after the documents — the same map is a
+curiosity rather than evidence for the cards above it. The index entry sits in
+the same position, because an index whose order disagrees with the page teaches
+the reader it cannot be trusted.
+
+**A choropleth, not the points the feed publishes.** `map-points` carries a
+coordinate for every one of 19,767 Adarsh Gram villages and 202 hostels — about
+3.5 MB. Plotted raw that is a smear over the Gangetic plain: 19,767 dots at
+national scale is ink, not information, and it is unreadable without a mouse.
+Aggregated to states, it answers the question a reader of this page has. The
+aggregation happens server-side, so the page ships about 2 KB instead.
+
+**Two layers, and the third is deliberately absent.** Grants-in-Aid has no point
+data in this feed. An empty third layer would state that GIA has reached nowhere
+— false rather than merely absent — so the toggle offers two and the footnote
+says why.
+
+**Provenance.** Six scalars merge through `PMAJAY_REACH_DESCRIPTOR`, which
+declares **no invariants** — and that is a finding rather than an omission.
+Nothing here is a part of anything else: villages and hostels are different
+components in different units, and a state count and a district count are two
+grains of one set, not a subset relation. Declaring a sum between any pair would
+be a rule the data does not obey, and the merge would then *derive* a figure from
+it — worse than mocking one, because a derived figure is presented as
+trustworthy. The per-state rows follow the provenance their own dataset's total
+resolved to, so a live map can never sit under mirrored totals.
+
+**The snapshot is generated, not typed.** `scripts/build-pmajay-map-snapshot.mjs`
+mirrors the feed to `pmajay-map-snapshot.ts` with an `AS_ON` date, and is
+deliberately not run by the build: a mirror that silently tracks the feed is a
+second copy of the feed wearing a stale date. `--check` reports drift without
+failing anything.
+
+### Two layout defects found by measuring, not by looking
+
+| Defect | Measured | Fix |
+| --- | --- | --- |
+| Ranking labels at **5.9px** | The band sits behind a 280px index rail, so at a 1280 viewport it is ~808px. Split 3:2, the chart got a 281px box for a 480-unit viewBox — a 0.58 scale on 10px labels. Half the estate's own 11px floor | Stack instead of two columns; the ranking gets the full width and its labels land at 12–17px. A 640-unit viewBox keeps them there at every width |
+| The map collapsed to **351px** in a 790px card | `.pmr__map` was `display: flex` to centre the chart, and a flex item sizes to its content on the main axis | `margin-inline: auto` on a block child, capped at 620px — centred without taking its width away |
+
+The bars are shaded from the **same sequential ramp as the map**, floored at
+0.3: the categorical default gave ten instances of one thing ten different hues,
+contradicting the choropleth above them, and the ramp's bottom rung is a
+near-white that drew Maharashtra's 311 as an invisible sliver — under the 3:1
+WCAG 2.2 §1.4.11 floor for a non-text graphic.

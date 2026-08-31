@@ -249,3 +249,55 @@ test("but a sum sibling DOES — a total aggregates its parts", () => {
   assert.equal(r.provenance.c, "live");
   assert.equal(r.values.c, 0);
 });
+
+// ── Fields with NO declared relationship are separate groups ─────────────────
+
+// The real `map-points` shape: villages and hostels are different components
+// counted in different units, and a state count and a district count are two
+// grains of one set. Nothing here is part of anything else, so the descriptor
+// declares no invariants — and the point of these two tests is that "no
+// invariants" is a working configuration rather than an unfinished one.
+type Reach = "villages" | "villageStates" | "hostels" | "hostelStates";
+const REACH: Descriptor<Reach> = {
+  id: "reach",
+  fields: {
+    villages: { label: "Villages", zero: "missing" },
+    villageStates: { label: "States with villages", zero: "missing" },
+    hostels: { label: "Hostels", zero: "missing" },
+    hostelStates: { label: "States with hostels", zero: "missing" },
+  },
+  invariants: [],
+};
+const REACH_MOCK = { villages: 19767, villageStates: 24, hostels: 202, hostelStates: 21 };
+
+test("one ungrouped field falling back does not drag the others with it", () => {
+  // Villages answered; hostels did not. With no invariant tying them together
+  // they are two groups of two, so the live half must stay live — the failure
+  // mode being a whole map reverting to the mirror because one layer was quiet.
+  const r = mergeData(
+    REACH,
+    { villages: 19801, villageStates: 25, hostels: null, hostelStates: null },
+    REACH_MOCK,
+    "hybrid",
+  );
+  assert.equal(r.provenance.villages, "live");
+  assert.equal(r.values.villages, 19801);
+  assert.equal(r.provenance.hostels, "mock");
+  assert.equal(provenanceOf(r, ["villages", "villageStates"]), "live");
+  assert.equal(provenanceOf(r, ["hostels", "hostelStates"]), "mock");
+});
+
+test("an ungrouped zero is a gap, because nothing can corroborate it", () => {
+  // A scheme with 19,767 villages on the books has not reached zero states.
+  // `zero: "missing"` is the declaration that says so; without it the map would
+  // draw an India with nothing on it and call the reading live.
+  const r = mergeData(
+    REACH,
+    { villages: 0, villageStates: 0, hostels: 202, hostelStates: 21 },
+    REACH_MOCK,
+    "hybrid",
+  );
+  assert.equal(r.provenance.villages, "mock");
+  assert.equal(r.values.villages, 19767);
+  assert.equal(r.provenance.hostels, "live");
+});

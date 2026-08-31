@@ -22,9 +22,19 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.78.0",
+    version: "v0.79.0",
     date: "2026-08-31",
     current: true,
+    changes: [
+      { kind: "Changed", text: "THE PAGE HEADER’S HALO NOW MOVES, EXCEPT FOR THE RING THAT HOLDS THE PICTURE. It was three static rings with one ripple leaving the outermost; it is now ONE static ring — the dark inner outline — with two rings travelling out from its edge, half a cycle apart. The innermost stays because it is the only ring doing structural work: it separates a photograph from a blue gradient at the picture’s lower edge, where the band is darkest, and a portrait whose own boundary breathes reads as a rendering fault rather than as motion" },
+      { kind: "Fixed", text: "THE OBVIOUS WAY TO ANIMATE RINGS 2 AND 3 REBUILDS THE DEFECT THEY WERE FIXED FOR. Expanded on their OWN radii, ring 2 leaving 40 arrives exactly where ring 3 sits at rest, and the two edges cross and beat — which is the seven-edge collision the previous pass removed. Both rings therefore share ONE track, offset by half the period, so nothing ever coincides. The plaque’s old “denser near, fainter far” gradient survives as a property of travel rather than of three drawn outlines" },
+      { kind: "Changed", text: "REDUCED MOTION NOW RESTORES THE DRAWING THE HANDOFF PUBLISHED rather than simply stopping. The two travelling rings freeze at the radii the static mid and outer bands occupied, so a reader who asked for less movement gets the three-ring plaque — not a bare disc with a hole where the animation was" },
+      { kind: "Fixed", text: "THE FACT CARD NEVER ACTUALLY OVERLAPPED THE BANNER, and a comment in the stylesheet asserted that it did. The wrapper has no padding or border, so the card’s −40 margin COLLAPSED THROUGH it and moved the wrapper’s own top edge up 40 — taking the grey surface with it and painting over the band’s last 40 points. The banner just looked 40 shorter and the card sat flush on grey. The surface moved to a pseudo-element inset by the same 40, so the blue now shows behind the card’s top edge as the handoff draws it. Nothing detected this because nothing overlapped WRONGLY — the overlap merely never happened" },
+    ],
+  },
+  {
+    version: "v0.78.0",
+    date: "2026-08-31",
     changes: [
       { kind: "Changed", text: "THE BANNER NOW DEFAULTS TO THE HOMEPAGE ONLY. It defaulted to every page, which put an 80px identity band above every scheme page, organisation profile and press release on the site. It is an ENTRY POINT: it earns its space where a reader is deciding where to go, and costs 80px everywhere they have already decided. The three-way placement setting at /admin/portals is unchanged and still applies without a redeploy \u2014 widening it is one click" },
       { kind: "Fixed", text: "PARKED COULD LAST FOREVER, WHICH MADE THE BANNER PERMANENTLY PINNED BY ACCIDENT. It ended only on `focusout`, so a reader who pressed Escape and then simply SCROLLED kept a band pinned to the top of every screen for the rest of the session \u2014 the exact state this component deliberately does not have. It now also ends on the next scroll and on a pointer-down outside. The third was needed because a click on empty page space moves focus to `<body>` and fires `focusout` with a NULL relatedTarget, which is indistinguishable from a window blur and is correctly ignored" },

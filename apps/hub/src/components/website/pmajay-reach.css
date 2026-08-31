@@ -1,0 +1,121 @@
+/* Declare the order before using it — see `.claude/rules/design-system-architecture.md` §2a.
+   Each component stylesheet is its own CSS root, so whichever loads first fixes the layer
+   order for the document; repeating the statement makes every file correct on its own. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     PM-AJAY — "Where PM-AJAY has reached"
+     A state choropleth beside the ranking that makes it readable.
+     ============================================================================ */
+
+  .pmr__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-12);
+  }
+
+  .pmr__totals {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: var(--sa-stack-12);
+    margin: var(--sa-stack-20) 0 var(--sa-stack-24);
+  }
+
+  .pmr__total {
+    padding: var(--sa-padding-16);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  /* The label leads in the DOM so a screen reader announces "Villages: 19,767";
+     the value is promoted visually by `order`, which is the same arrangement
+     `FactStrip` uses and for the same reason. */
+  .pmr__total-label {
+    order: 2;
+    margin: 0;
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-3-size);
+  }
+
+  .pmr__total-value {
+    order: 1;
+    margin: 0;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
+    font-weight: 600;
+  }
+
+  .pmr__total {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+  }
+
+  /*
+   * MAP FIRST, RANKING UNDER IT — STACKED, NEVER SIDE BY SIDE.
+   *
+   * The obvious layout is two columns, and it was built that way first. It does
+   * not work here, for a reason worth writing down because it is not visible
+   * until it is measured.
+   *
+   * `ChartFrame` scales its SVG to the width it is given, so a label's rendered
+   * size is the authored size times (container ÷ viewBox). This band sits in
+   * column two of the page grid, behind a 280px index rail, so at a 1280px
+   * viewport the whole band is ~808px. Split three-to-two, the ranking got a
+   * 281px box for a 480-unit viewBox — a 0.58 scale, which rendered its 10px
+   * labels at **5.9px**. Half the estate's own 11px floor, on a government page.
+   * Even at a 1920px viewport a 50/50 split only reaches ~10.6px.
+   *
+   * The band is simply not wide enough for a twelve-bar horizontal chart beside
+   * a map of India. Stacked, the ranking gets the full ~808–1090px and its
+   * labels land between 12 and 17px at every width the estate supports.
+   *
+   * The `state-offices` band further down this page IS two columns, and stays
+   * that way: its companion is a list of text, which reflows. A scaled SVG does
+   * not reflow, it shrinks.
+   */
+  .pmr__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--sa-stack-24);
+  }
+
+  .pmr__map,
+  .pmr__rank {
+    padding: var(--sa-padding-20);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  /*
+   * The map is CENTRED AND CAPPED, not stretched.
+   *
+   * `.ds-chart__svg` is `width: 100%`, so a full-width card would draw India at
+   * 790px across and 553 tall — a picture taller than the fold, above a ranking
+   * nobody would then scroll to. 620 is the width at which every state the
+   * scheme reports is separable by eye, which is the only thing the map has to
+   * do; the figures are the ranking's job.
+   *
+   * NOT `display: flex` on the card. It was, briefly, to centre the chart — and
+   * a flex item sizes to its content on the main axis, so the map collapsed to
+   * its intrinsic 351px and ignored the card entirely. `margin-inline: auto` on
+   * a block child centres it without taking its width away.
+   */
+  .pmr__map > * {
+    max-width: 620px;
+    margin-inline: auto;
+  }
+
+  .pmr__note {
+    margin: var(--sa-stack-16) 0 0;
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    max-width: 72ch;
+  }
+}
