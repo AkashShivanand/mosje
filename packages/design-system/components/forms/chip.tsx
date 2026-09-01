@@ -4,7 +4,15 @@ import * as React from "react";
 import { cn } from "../../utils/cn";
 import "./chip.css";
 
-export type ChipTone = "brand" | "success";
+/**
+ * What a selected chip is coloured with.
+ *
+ * `neutral` is for a FILTER THAT SITS BESIDE SOMETHING LOUDER — a row of type
+ * filters next to a chart's own legend, where three brand-blue pills outshout
+ * the two keys they belong to and the eye reads the filter before the thing
+ * being filtered. It is still unmistakably selected; it just stops competing.
+ */
+export type ChipTone = "brand" | "success" | "neutral";
 
 export type ChipSize = "sm" | "md";
 

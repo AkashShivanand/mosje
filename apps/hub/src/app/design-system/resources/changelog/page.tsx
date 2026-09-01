@@ -22,9 +22,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.90.0",
+    version: "v0.91.0",
     date: "2026-09-01",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "THE INDIA MAPS FRAMED 39% OCEAN. `INDIA_STATES_VIEWBOX` was `0 0 800 560`, but every path in the file lives between x=161 and x=647 — India measures 486x550 and is very nearly square. Framed at 1.43:1 the map was width-bound in every consumer: a 646px column drew it 435px tall and left a 221px band of white inside PM-AJAY's panel. The window is the land plus a margin now, `153 -17 502 567`, and the same map draws about 1.6x larger in the same box. Nothing else moved — the projection, the paths and `INDIA_STATE_BOXES` share one coordinate space and a viewBox only chooses which part of it is shown. `IndiaMap` and `IndiaBubbleMap` follow automatically" },
+      { kind: "Fixed", text: "`IndiaPointMap` HARDCODED 800 AND 560 IN TWO PLACES — the aspect it holds a zoomed state to, and the divisor that keeps marks optically constant. Both now read the national viewBox, so the unzoomed map is exactly 1 and a future reframing cannot leave a stale constant behind making every mark 1.6x too large" },
+      { kind: "Added", text: "`Chip` GAINS `tone=\"neutral\"`. For a FILTER THAT SITS BESIDE SOMETHING LOUDER — a row of type filters next to a chart's own legend, where three brand-blue pills outshout the two keys they belong to and the eye reads the filter before the thing being filtered. A filled neutral rather than a tint: at `sm` a tinted selected state and an unselected one differ by too little to read across a control bar" },
+    ],
+  },
+  {
+    version: "v0.90.0",
+    date: "2026-09-01",
     changes: [
       { kind: "Fixed", text: "`Search` AT `size=\"sm\"` CHANGED THE BOX AND NOT THE TYPE, WHICH IS HALF A SIZE. It set a 40px shell and left the input at `body-1`, so a field sized for a card rail carried 16px text — out of proportion with the 12px and 14px beside it, and wide enough that a placeholder the field had room for clipped anyway. The type steps with the box now: `sm` takes `body-2`, `md` and `lg` are unchanged" },
     ],

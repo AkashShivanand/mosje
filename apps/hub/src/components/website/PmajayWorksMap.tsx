@@ -566,6 +566,10 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
    */
   const autoScope: "places" | "villages" = placeMatches === 0 ? "villages" : "places";
   const activeScope = scope ?? autoScope;
+  /** True while the open state publishes no village names at all. */
+  const namelessState =
+    focus != null && snapshot.coverage.statesWithoutVillageNames.includes(focus);
+
   // A district being open is not a search — the village list IS the level.
   const showVillageList = district != null || (wantsVillages && activeScope === "villages");
   const listLength = showVillageList ? villageHits.length : visibleRows.length;
@@ -618,6 +622,25 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
       on: showHostels,
     },
   ];
+
+  /**
+   * How many hostels of each type are in view.
+   *
+   * Lifted out of the render because it is asked twice now — once to decide
+   * whether the filter group exists at all, and once per chip — and a filter
+   * that scans 203 pins three times to draw itself was already doing more work
+   * than the answer is worth.
+   */
+  const hostelKindCounts = React.useMemo(
+    () =>
+      HOSTEL_KINDS.map((kind) => ({
+        kind,
+        n: snapshot.hostels.filter(
+          (h) => h.type === kind.kind && (focus == null || h.state === focus),
+        ).length,
+      })),
+    [snapshot.hostels, focus],
+  );
 
   const csvHref = React.useMemo(() => {
     const head = focus == null ? "State,Districts reached" : "District,State";
@@ -789,15 +812,26 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               }}
             />
 
+          {/*
+            A BADGE THAT CAN ONLY EVER SAY 0 IS NOT A FILTER, IT IS FURNITURE.
+
+            West Bengal has 5,792 Adarsh Gram villages and no hostels at all,
+            so opening it rendered "Girls 0 · Boys 0 · Sanctioned Hostel 0" —
+            three controls that do nothing, next to a Hostels key already
+            reading 0. The filter is only a filter where there is something to
+            filter, so each chip appears only when its own type is present, and
+            the group disappears with the last of them.
+
+            The Hostels KEY still says 0, which is the fact; three dead
+            controls beneath it were the noise.
+          */}
           <div className="pmw__filters">
-            {showHostels && (
+            {showHostels && hostelKindCounts.some(({ n }) => n > 0) && (
               <fieldset className="pmw__chips">
                 <legend className="ds-sr-only">Hostel type</legend>
-                {HOSTEL_KINDS.map((k) => {
+                {hostelKindCounts.map(({ kind: k, n }) => {
+                  if (n === 0) return null;
                   const on = types.has(k.kind);
-                  const n = snapshot.hostels.filter(
-                    (h) => h.type === k.kind && (focus == null || h.state === focus),
-                  ).length;
                   return (
                     /*
                       THE DS CHIP, NOT A PILL OF MY OWN. This was a hand-rolled
@@ -815,6 +849,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                     */
                     <Chip
                       key={k.kind}
+                      tone="neutral"
                       selected={on}
                       onSelectedChange={() => toggleType(k.kind)}
                       leadingIcon={
@@ -1180,43 +1215,31 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                 </p>
               ) : villageHits.length === 0 ? (
                 /*
-                  THE MOST IMPORTANT SENTENCE IN THIS SECTION.
+                  ONE SENTENCE, AND ONLY WHERE SILENCE WOULD MISLEAD.
 
-                  A reader from Bankura searching for their village finds
-                  nothing, and the true reason is not that the village is
-                  outside the scheme — West Bengal has 5,792 Adarsh Gram
-                  villages, more than any other state — but that the MIS
-                  publishes no name for any of them. Left unsaid, an empty
-                  result tells 44% of the programme's villages that they are
-                  not in it.
+                  A reader searching for a village in West Bengal finds nothing,
+                  and the true reason is not that the village is outside the
+                  scheme — West Bengal holds 5,792 Adarsh Gram villages, more
+                  than any other state — but that the register names none of
+                  them. Left unsaid, an empty result tells 44% of the
+                  programme's villages that they are not in it.
+
+                  It used to be three lines. The district level that carried the
+                  longer version is no longer reachable in those states at all,
+                  so what is left is the clause, not the paragraph.
                 */
                 <p className="pmw__empty">
-                  {district != null
-                    ? /*
-                        A DISTRICT WITH VILLAGES BUT NO NAMES. Bankura holds 480
-                        Adarsh Gram villages and the register names none of
-                        them, so the count above and the empty list below are
-                        both true and look like a contradiction. Say the number,
-                        then say why the names are missing — anything less
-                        reads as "we lost them".
-                      */
-                      `The scheme covers ${formatIndian(
-                        railRows.find((r) => r.name === district)?.villages ?? 0,
-                      )} villages in ${district}. The Management Information System does not publish their names, so they cannot be listed individually.`
-                    : `No village named “${query.trim()}” is in the register.`}
-                  {district == null && snapshot.coverage.statesWithoutVillageNames.length > 0 && (
-                    <>
-                      {" "}
-                      {`Village names are not published for ${listOf(
-                        snapshot.coverage.statesWithoutVillageNames,
-                      )}, so a village in ${
-                        snapshot.coverage.statesWithoutVillageNames.length === 1 ? "that state" : "those states"
-                      } cannot be found by name here.`}
-                    </>
-                  )}
+                  {`No village named “${query.trim()}” is in the register.`}
+                  {snapshot.coverage.statesWithoutVillageNames.length > 0 &&
+                    ` Names are not published for ${listOf(
+                      snapshot.coverage.statesWithoutVillageNames,
+                    )}.`}
                 </p>
               ) : (
-                <ol className="pmw__list pmw__list--villages">
+                <ol
+                  className="pmw__list pmw__list--villages"
+                  style={{ "--pmw-rows": PAGE_SIZE } as React.CSSProperties}
+                >
                   {villagePage.map((v) => (
                     <li key={`${v.state}/${v.district}/${v.name}`} className="pmw__row">
                       {/*
@@ -1263,13 +1286,28 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                   : "Both components are switched off, so there is nothing to list."}
               </p>
             ) : (
-              <ol className="pmw__list">
+              <ol
+                className="pmw__list"
+                /* The grid's track count. Written once, here, so the stylesheet
+                   cannot disagree with `PAGE_SIZE` about how many rows a page
+                   holds. */
+                style={{ "--pmw-rows": PAGE_SIZE } as React.CSSProperties}
+              >
                 {pageRows.map((r) => {
                   // At India level a row opens a state; inside a state a row
                   // opens a district. Both are the same gesture on the same
                   // control, one level apart.
                   const opens = r.opens ?? (focus == null ? r.name : null);
-                  const opensDistrict = focus != null ? r.name : null;
+                  /*
+                    A DISTRICT ONLY OPENS WHERE THERE ARE NAMES TO OPEN.
+                    Drilling into a West Bengal district reached a level whose
+                    entire content was a sentence explaining why it was empty —
+                    a click that is only ever answered with an apology should
+                    not be offered. The state's row still lists the district and
+                    its counts; there is simply nothing underneath it.
+                  */
+                  const opensDistrict =
+                    focus != null && !namelessState ? r.name : null;
                   const clickable = opens != null || opensDistrict != null;
                   const Row = clickable ? "button" : "div";
                   return (

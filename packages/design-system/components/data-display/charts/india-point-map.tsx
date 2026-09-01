@@ -7,6 +7,21 @@ import { sequentialColor, CHART_INK } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
 import { INDIA_STATES_PATHS, INDIA_STATES_VIEWBOX } from "./geo/india-states.paths";
+
+/**
+ * The national window's own width and height, parsed once.
+ *
+ * Everything that used to restate `800` and `560` reads these instead. Two
+ * constants were hardcoded against a viewBox that later changed shape, and a
+ * hardcoded copy of a value that lives somewhere else is a defect waiting for
+ * that value to move.
+ */
+const [, , BASE_W, BASE_H] = INDIA_STATES_VIEWBOX.split(/\s+/).map(Number) as [
+  number,
+  number,
+  number,
+  number,
+];
 import {
   projectIndia,
   normalizeRegionName,
@@ -245,8 +260,11 @@ export function IndiaPointMap({
     const y = box.y - pad;
     const w = box.width + pad * 2;
     const h = box.height + pad * 2;
-    // Hold the 800:560 aspect so nothing is stretched.
-    const target = 800 / 560;
+    // Hold the NATIONAL aspect so a zoomed state is not stretched. Read from
+    // the viewBox rather than restated: it was hardcoded `800 / 560`, and when
+    // the national window was tightened to the land that constant silently
+    // became a different shape from the map it was framing.
+    const target = BASE_W / BASE_H;
     const have = w / h;
     const fw = have > target ? w : h * target;
     const fh = have > target ? w / target : h;
@@ -255,8 +273,17 @@ export function IndiaPointMap({
     )} ${fh.toFixed(1)}`;
   }, [focusKey]);
 
-  /** Marks shrink with the viewBox so they stay optically constant when zoomed. */
-  const zoom = React.useMemo(() => (Number(viewBox.split(/\s+/)[2]) || 800) / 800, [viewBox]);
+  /**
+   * Marks shrink with the viewBox so they stay optically constant when zoomed.
+   *
+   * Divided by the NATIONAL width, so the unzoomed map is exactly 1. Hardcoding
+   * 800 here made every mark 1.6x too large the moment the national window
+   * stopped being 800 wide.
+   */
+  const zoom = React.useMemo(
+    () => (Number(viewBox.split(/\s+/)[2]) || BASE_W) / BASE_W,
+    [viewBox],
+  );
 
   const maxBin = React.useMemo(
     () => (bins && bins.length ? Math.max(...bins.map((b) => b.count)) : 0),

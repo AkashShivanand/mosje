@@ -132,6 +132,30 @@
     selection pill there was a third colour family on a two-family panel.
     Deep green on the tonal green ground measures well clear of AA.
   */
+  /*
+    `tone="neutral"` — selected, but not competing.
+
+    A filled neutral rather than a tint: at `sm`, a tinted selected state and
+    an unselected one differ by too little to read at a glance, and this chip
+    has to carry its state from across a control bar.
+  */
+  .ds-chip--selected-neutral {
+    background-color: var(--sa-bg-neutral-bold);
+    border-color: var(--sa-bg-neutral-bold);
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .ds-chip--selected-neutral .ds-chip__count {
+    color: var(--sa-text-neutral-inverse);
+    opacity: 0.75;
+  }
+
+  .ds-chip--selected-neutral.ds-chip--interactive:hover,
+  .ds-chip--selected-neutral.ds-chip--interactive:active {
+    background-color: var(--sa-bg-neutral-inverse);
+    border-color: var(--sa-bg-neutral-inverse);
+  }
+
   .ds-chip--selected-success {
     background-color: var(--sa-color-status-successTonal);
     color: var(--sa-color-status-successStrong);
