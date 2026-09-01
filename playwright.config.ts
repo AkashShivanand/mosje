@@ -66,7 +66,20 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: "npm run dev:hub",
+    /*
+     * IN CI, SERVE THE BUILT APP.
+     *
+     * `dev:hub` resolves `./node_modules/.bin/next` relative to `apps/hub`,
+     * which does not exist under a hoisted `npm ci` install — the runner exits
+     * 127 before Playwright ever starts. CI builds the hub immediately before
+     * this step anyway, so `next start` is both the thing that works and the
+     * more honest target: the accessibility suite then measures the production
+     * output rather than a dev server's.
+     *
+     * Locally it stays on the dev server, and `reuseExistingServer` keeps it
+     * from fighting one already running on 3007.
+     */
+    command: process.env.CI ? "npm --prefix apps/hub run start" : "npm run dev:hub",
     url: "http://localhost:3007/portals/nmba/treatment-centre/login-otp",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,
