@@ -226,11 +226,29 @@ const totals = Object.fromEntries(KINDS.map((k) => [k, gated.filter((f) => f.kin
 /* ── --update-baseline ──────────────────────────────────────────────────── */
 
 if (process.argv.includes("--update-baseline")) {
+  /*
+   * KEEP THE NOTE THAT IS ALREADY THERE.
+   *
+   * This block used to write the seed note unconditionally, so every re-baseline
+   * silently replaced the file's prose with the boilerplate below — and the first
+   * real re-baseline ate two paragraphs recording WHY certain counts are what they
+   * are (a baseline once generated from a dirty tree, and the fifty-two commits of
+   * inherited debt from a merge). A ratchet's note is the only place that reasoning
+   * lives; a tool that overwrites its own documentation on every run is worse than
+   * one that has none, because the loss is invisible in the diff's noise.
+   *
+   * The seed note is now exactly that — a SEED, used only when there is no baseline
+   * yet. Edit the note in the JSON by hand; this writer will not touch it again.
+   */
+  const priorNote = existsSync(BASELINE)
+    ? JSON.parse(readFileSync(BASELINE, "utf8")).note
+    : null;
+
   writeFileSync(
     BASELINE,
     `${JSON.stringify(
       {
-        note: [
+        note: priorNote ?? [
           "Known, pre-existing typography debt, PER FILE. Written by",
           "`node tools/type-linkage/check.mjs --update-baseline`.",
           "",
