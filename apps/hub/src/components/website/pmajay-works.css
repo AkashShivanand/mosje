@@ -22,31 +22,13 @@
 @layer components {
   /* ── Heading ───────────────────────────────────────────────────────────── */
 
+  /*
+    The heading is `SectionTitle` — the same component every other band on this
+    page uses. Nothing here restyles it; the class exists only to space it from
+    the panel below, which is the one thing a section owns about its own header.
+  */
   .pmw__head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--sa-inline-16);
-    margin-bottom: var(--sa-stack-20);
-  }
-
-  .pmw__headline {
-    max-width: 62ch;
-  }
-
-  .pmw__title {
-    font-size: var(--sa-type-headline-2-size);
-    line-height: var(--sa-type-headline-2-lh);
-    font-weight: 700;
-    color: var(--sa-text-neutral-base);
-    margin: 0 0 var(--sa-stack-8);
-  }
-
-  .pmw__lead {
-    font-size: var(--sa-type-body-1-size);
-    line-height: var(--sa-type-body-1-lh);
-    color: var(--sa-text-neutral-subtle);
-    margin: 0;
+    margin-bottom: var(--sa-stack-16);
   }
 
   /* ── The instrument ────────────────────────────────────────────────────── */
@@ -72,11 +54,17 @@
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }
 
+  /*
+    The gap BETWEEN keys has to beat the gap inside one, or the row reads as a
+    single run and each key's swatch drifts toward whichever label is nearer.
+    Inside a key the swatch sits 8px from its own words; between keys it is 16
+    plus each key's own padding.
+  */
   .pmw__layers {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--sa-inline-8);
+    gap: var(--sa-inline-16);
   }
 
   /*
@@ -143,11 +131,18 @@
     flex: 1;
   }
 
+  /*
+    NO FIXED WIDTH. This carried `width: 3.5rem`, copied from the ramp beside
+    it so the two keys would line up. The three dots only ink 28px of that 56px,
+    so the key sat 36px from the word "Hostels" while the ramp sat 8px from its
+    own label — and only 16px from the villages key on the other side, which is
+    why the dots read as belonging to villages. A key belongs to its label;
+    matching the width of an unrelated key is not a reason to separate them.
+  */
   .pmw__dots {
     display: flex;
     align-items: center;
     gap: var(--sa-inline-2);
-    width: 3.5rem;
   }
 
   .pmw__dot {
@@ -300,19 +295,18 @@
       Clamped rather than fixed: at a flat 22rem the rail took 42% of the panel
       on a 1280px screen and the map was left 422px to draw a thousand cells in.
     */
-    grid-template-columns: minmax(0, 1fr) clamp(18rem, 28%, 21rem);
+    grid-template-columns: minmax(0, 1fr) clamp(19rem, 28%, 21rem);
     align-items: stretch;
     /*
       A FLOOR, so neither region is starved by the other's natural size.
 
-      With the list filling the rail, the panel's height is whatever the map's
-      aspect gives it — at this page's 832px content column that is 387px, which
-      left the list six rows tall against a twenty-eight row list. The floor
-      buys the list a couple more rows and costs the map only a symmetric band
-      of quiet above and below, which is composition rather than the 741px of
-      one-sided slack this layout started with.
+      The rail has to hold its head, its column labels, seven rows and the
+      pager; the map's height is only ever its own width over 800:560. The floor
+      is what the rail needs, and it costs the map a symmetric band of quiet
+      above and below — composition, rather than the 741px of one-sided slack
+      this layout started with.
     */
-    min-height: 27rem;
+    min-height: 30rem;
   }
 
   /*
@@ -401,18 +395,16 @@
     display: flex;
     flex-direction: column;
     /*
-      FILLS THE RAIL rather than guessing a height. At a fixed 21rem the list
-      stopped 52px short of the panel's bottom edge — a dead gap — and ended on
-      a whole row, so nothing told the reader there were twenty more. Filling
-      means the last visible row is always a PARTIAL row, which is the oldest
-      and clearest "there is more below" signal there is.
+      NO SCROLL. A page holds a fixed seven rows, so the list has a fixed height
+      and needs no overflow of its own — which is the point: a nested scroll
+      region inside a card is a trap on a phone, where a reader flicking the
+      page down lands in the list and moves the list instead.
+
+      `flex: 1` still, so a short last page leaves its space rather than pulling
+      the pager up and shortening the panel.
     */
     flex: 1 1 0;
-    min-height: 10rem;
-    overflow-y: auto;
-    /* Not `contain`: when the list bottoms out the page should carry on
-       scrolling, or a reader who lands on it while flicking past is stuck. */
-    overscroll-behavior: auto;
+    min-height: 0;
   }
 
   .pmw__row {
@@ -519,6 +511,23 @@
     padding-right: var(--sa-padding-16);
   }
 
+  /*
+    Pinned to the bottom of the rail by `margin-top: auto`, so it holds still
+    while the rows above it change — a control that moves between pages is a
+    control you have to re-find every time you use it.
+  */
+  /*
+    The rail's floor is 19rem because THIS has to fit on one line: the DS
+    pagination's numbers and its "Next" step need 267px, and at 18rem the rail
+    gave it 255 and it wrapped, so the control read as two stray rows rather
+    than one.
+  */
+  .pmw__pager {
+    flex: none;
+    margin-top: auto;
+    padding-top: var(--sa-padding-8);
+  }
+
   .pmw__empty {
     margin: var(--sa-stack-12) 0;
     font-size: var(--sa-type-body-2-size);
@@ -529,18 +538,8 @@
 
   .pmw__foot {
     display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: var(--sa-inline-24);
-    margin-top: var(--sa-stack-12);
-  }
-
-  .pmw__coverage {
-    margin: 0;
-    max-width: 78ch;
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
-    color: var(--sa-text-neutral-subtle);
+    justify-content: flex-end;
+    margin-top: var(--sa-stack-8);
   }
 
   .pmw__footlink {
@@ -575,12 +574,9 @@
       align-content: start;
     }
 
-    /* Nothing stretches the rail here, so the list needs its own ceiling —
-       without one it would run to twenty-eight rows and put the section's own
-       footnote a screen and a half below the map. */
+    /* Seven rows is seven rows here too; nothing to cap and nothing to scroll. */
     .pmw__list {
       flex: 0 1 auto;
-      max-height: 26rem;
     }
   }
 

@@ -627,7 +627,7 @@ export function OrganisationDetail({
         <>
           <SectionTitle
             as={2}
-            title={lib?.heading ?? "Documents & downloads"}
+            title={lib?.heading ?? "Documents & Downloads"}
             description={lib?.description}
             headingId="documents-downloads-heading"
           />

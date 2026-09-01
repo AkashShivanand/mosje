@@ -150,6 +150,14 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   keyboard nav, visible focus, AA contrast. Run the `accessibility-auditor` agent before
   shipping a page.
 - **Real content, real assets** — no lorem/placeholder in production pages.
+- **Nothing on the screen the screen does not need, and copy in a government
+  register.** The interface shows the citizen's information; it never narrates
+  its own construction. Feed diagnostics, absence notes and instructions for
+  reading a chart belong in `docs/audit/*.md`, the PR body or the chat — not
+  under a map. Copy is plain, formal and factual, prefers the department's own
+  words, and **all titles are Title Case** unless stated otherwise. Section
+  headings are the DS `SectionTitle`, never hand-rolled.
+  → `.claude/rules/ui-restraint-and-copy.md`
 - **Live first, snapshot second, never an empty state.** Any figure sourced from an API
   renders live where the API answers and from a committed mirrored snapshot where it does
   not — the page says which. A metric neither source publishes is left OFF the design, not

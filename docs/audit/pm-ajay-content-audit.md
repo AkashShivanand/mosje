@@ -1514,3 +1514,94 @@ And one that only appeared after the fixes: **the list keeps its scroll position
 across a change of grain**, so scrolling down to Karnataka and clicking it opened
 Karnataka's districts already 400px down. Reset on every change of focus, query
 or layer.
+
+---
+
+## §34 · Third design pass — DS compliance, copy register, and pagination
+
+**2026-09-01.**
+
+### The section was not using the design system's heading
+
+| | before | after |
+| --- | --- | --- |
+| heading component | hand-rolled `.pmw__title` | **DS `SectionTitle`** |
+| heading size/weight | 26.3px / 700 | **20px / 600** — identical to all six siblings |
+| description size | 16px | **12px** |
+| provenance chip | its own flex row | `SectionTitle`'s actions slot |
+
+Six of the seven bands on this page render `SectionTitle`. Mine did not, and
+`SectionTitle`'s own docstring says to use it *"instead of hand-rolling a
+`<div className='flex justify-between'>` with its own heading classes, so
+section headers stay identical estate-wide."* That is exactly what had been
+done. All seven headings now measure 20px/600 with 12px descriptions.
+
+### The caption was API documentation
+
+What sat under the map recited the feed's data quality: how many records were
+drawn, how many carried no coordinates, how many were published outside India,
+how many had latitude and longitude reversed. Every number was true and none of
+it was a caption. **Removed.** The figures live in §31 and §33 of this document,
+where the people who can act on them will look.
+
+Grant-in-Aid's "not on this map" sentence went with it, and the `giaTotal` prop
+and its live fetch were removed from the page as dead weight. The section's
+description names exactly what is drawn, so it is complete on its own terms and
+the Components band above introduces all three components.
+
+**This is now a standing rule:** `.claude/rules/ui-restraint-and-copy.md`.
+
+### Copy moved into a government register
+
+| | before | after |
+| --- | --- | --- |
+| Components | "PM-AJAY is delivered through three components. Each is administered separately, with its own guidelines and reporting." | "The scheme has three components. Each is administered separately under its own guidelines and reporting." |
+| Documents | "…PMAGY, the programme **folded into** its Adarsh Gram component." | "…PMAGY, **which was merged into** the Adarsh Gram component." |
+| Reports | "Each is generated on request and **opens on dosje.gov.in**." | "Each report is generated on request **on the Department's portal**." |
+
+**Component cards were cut to two sentences each** — the department's own
+description, then the one stated rule a reader most often needs. The Adarsh Gram
+70-out-of-100 score, the ODF condition and the lady-warden requirement were a
+card becoming a page; they are on each component's own page, one click away.
+
+### Title Case, including where it diverges from the source
+
+Applied on instruction to **every** title on the page. Four now differ in
+capitalisation from what `dosje.gov.in` publishes, recorded here as required:
+
+| ours | source |
+| --- | --- |
+| Development of SC **D**ominated **V**illages into "Adarsh Gram" | …dominated villages… |
+| Grants-in-**A**id to State/Districts | Grants-in-aid… |
+| Documents & **D**ownloads | Documents & downloads |
+| Illustrative **L**ist of **D**omain **U**nder GIA | Illustrative list of domain under GIA |
+
+Wording is unchanged; only capitalisation differs.
+
+### Pagination replaced the scroll region
+
+The list scrolled inside the panel, which held the page height still but bought
+a **nested scroll** — a trap on a phone, where a reader flicking the page
+downwards lands in the list and moves the list instead.
+
+Seven rows per page, the DS `Pagination` component, `siblings={0}` so the
+control never wraps in a 304px rail. The rail's floor is **19rem** because the
+pagination's numbers plus its "Next" step need 267px and at 18rem it had 255 and
+wrapped to two rows.
+
+- Desktop section height: **741px**, constant.
+- Mobile: **no nested scroll at all** — `overflow: visible`, seven rows, pager on
+  one line, no horizontal overflow, no target under 24px.
+- Any change to what is listed — focus, search, either layer, a hostel type —
+  returns to page one, from the handlers rather than an effect.
+
+### The legend's dots were 28px of ink in a 56px box
+
+`.pmw__dots` carried `width: 3.5rem`, copied from the ramp beside it so the two
+keys would line up. The three dots only ink 28px, so the key sat **36px** from
+the word "Hostels" while the ramp sat **8px** from its own label — and only 16px
+from the villages key on the other side, which is why the dots read as belonging
+to villages.
+
+Fixed width removed; both keys now sit 8px from their own labels, and the gap
+*between* keys was raised to 16px so grouping beats proximity.

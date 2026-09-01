@@ -358,11 +358,11 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           // Directly under Components, because the band is directly under it on
           // the page. An index whose order disagrees with the page's teaches the
           // reader that it cannot be trusted to find things.
-          { label: "Scheme coverage", href: "#reach" },
+          { label: "Scheme Coverage", href: "#reach" },
           // No "Circulars & Notifications" entry: the circulars are a chip inside
           // Documents & downloads now, and a second label pointing at that same
           // band is the duplicate-destination fault this index already made once.
-          { label: "Illustrative list of domain under GIA", href: `/website/organisation/${PM_AJAY}/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme` },
+          { label: "Illustrative List of Domain Under GIA", href: `/website/organisation/${PM_AJAY}/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme` },
           { label: "Flow Chart", href: `/website/organisation/${PM_AJAY}/flow-chart` },
         ],
       },
@@ -372,7 +372,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
           // One entry, not four. This group used to list Resources, Downloads
           // (PM-AJAY), Downloads (pmagy) and Reports — four labels for what a
           // reader experiences as "the files". Three of them are one band now.
-          { label: "Documents & downloads", href: "#documents-downloads" },
+          { label: "Documents & Downloads", href: "#documents-downloads" },
           // No separate "Guidelines" entry: the guidelines are the first chip in
           // Documents & downloads. They had their own sub-page for one pass — a
           // bare table of the same two documents, pointing at the same two
@@ -417,32 +417,36 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     components: {
       heading: "Components",
       description:
-        "PM-AJAY is delivered through three components. Each is administered separately, with its own guidelines and reporting.",
-      // Each card carries the ONE stated rule a reader most often needs from that
-      // component — the qualifying threshold, the two funding floors, the seat
-      // reservation. These were previously a sub-page deep: the index gave each
-      // component two generic lines while nineteen file cards took four bands.
-      // Every figure here is stated policy on the component's own page, so none
-      // of it drifts the way a feed count would.
+        "The scheme has three components. Each is administered separately under its own guidelines and reporting.",
+      // TWO SENTENCES, AND NO MORE. The first is the department's own
+      // description of the component, verbatim from the About text. The second
+      // is the ONE stated rule a reader most often needs — the qualifying
+      // threshold, the funding floors, the seat reservation — taken from the
+      // component's own page, so none of it drifts the way a feed count would.
+      //
+      // Everything else that used to be here (the 70-out-of-100 Adarsh Gram
+      // score, the ODF condition, the lady-warden requirement) is a card
+      // becoming a page. It is on the component's own page, one click away,
+      // which is where a reader who wants that level of detail is going.
       items: [
         {
-          title: "Development of SC dominated villages into “Adarsh Gram”",
+          title: "Development of SC Dominated Villages into “Adarsh Gram”",
           description:
-            "Develops Scheduled Caste dominated villages into model villages. A village qualifies with over 40% Scheduled Caste population and 500 or more residents, and is declared an Adarsh Gram at a score of 70 out of 100 plus Open Defecation Free status.",
+            "Develops Scheduled Caste dominated villages into model villages. A village qualifies with over 40% Scheduled Caste population and 500 or more residents.",
           icon: "holiday_village",
           slug: `${PM_AJAY}/development-of-sc-dominated-villages-into-adarsh-gram`,
         },
         {
-          title: "Grants-in-aid to State/Districts",
+          title: "Grants-in-Aid to State/Districts",
           description:
-            "Livelihood, skilling and infrastructure projects for the economic betterment of Scheduled Castes. At least 15% of funds released to a State or UT go to income-generating schemes for Scheduled Caste women, and at least 10% to skill development.",
+            "Livelihood, skilling and infrastructure projects for the economic betterment of Scheduled Castes. At least 15% of funds are earmarked for Scheduled Caste women and 10% for skill development.",
           icon: "payments",
           slug: `${PM_AJAY}/grants-in-aid-to-state-districts`,
         },
         {
           title: "Construction/Repair of Hostels",
           description:
-            "Supports the construction and repair of hostels for Scheduled Caste students, to reduce dropout rates. Institutions receiving support must reserve 70% of hostel seats for Scheduled Caste students; girls’ hostels must have lady wardens and guards at all times.",
+            "Supports the construction and repair of hostels for Scheduled Caste students, to reduce dropout rates. Institutions receiving support reserve 70% of seats for Scheduled Caste students.",
           icon: "apartment",
           slug: `${PM_AJAY}/construction-repair-of-hostels`,
         },
@@ -477,13 +481,13 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     // rule that documents are served from here rather than hot-linked. The
     // department's own name for each file is kept in `officialName`.
     downloads: {
-      heading: "Documents & downloads",
+      heading: "Documents & Downloads",
       description:
-        "Guidelines, formats, presentations and manuals published for the scheme and for PMAGY, the programme folded into its Adarsh Gram component.",
+        "Guidelines, formats, presentations and manuals published for the scheme and for PMAGY, which was merged into the Adarsh Gram component.",
       groups: [
         {
           id: "documents-downloads",
-          heading: "Documents & downloads",
+          heading: "Documents & Downloads",
           viewAllHref: "/website/forms-templates",
           items: [
             // The scheme's own guidelines lead the shelf. They are the document a
@@ -609,7 +613,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     reports: {
       heading: "Reports (PM-AGY)",
       description:
-        "Village, Adarsh Gram, VDP and allocation reports published for the scheme. Each is generated on request and opens on dosje.gov.in.",
+        "Village, Adarsh Gram, VDP and allocation reports published for the scheme. Each report is generated on request on the Department's portal.",
       groups: [
         {
           heading: "Villages",
@@ -1551,7 +1555,7 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       {
         label: "PUBLICATIONS & REPORTS",
         items: [
-          { label: "Documents & downloads", href: "#documents-downloads" },
+          { label: "Documents & Downloads", href: "#documents-downloads" },
           { label: "SOPs", href: "/website/organisation/support-for-marginalized-individuals-for-livelihood-and-enterprise-smile/sop" },
         ],
       },
@@ -1569,13 +1573,13 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     // upstream, which is that site's own mistake. They belong here, and this is
     // the only place in the estate that holds them.
     downloads: {
-      heading: "Documents & downloads",
+      heading: "Documents & Downloads",
       description:
         "Guidelines and standard operating procedures published for the SMILE Beggary Scheme.",
       groups: [
         {
           id: "documents-downloads",
-          heading: "Documents & downloads",
+          heading: "Documents & Downloads",
           viewAllHref: "/website/forms-templates",
           items: [
             {

@@ -1,7 +1,14 @@
 "use client";
 
 import * as React from "react";
-import { IndiaPointMap, formatIndian, type MapPin, type MapBubble } from "@mosje/design-system";
+import {
+  IndiaPointMap,
+  Pagination,
+  SectionTitle,
+  formatIndian,
+  type MapPin,
+  type MapBubble,
+} from "@mosje/design-system";
 import { PMAJAY_REACH_DESCRIPTOR, type ReachData, type ReachKey } from "@/lib/website/pmajay-api";
 import type { HostelType, ReachSnapshot, StateRow } from "@/lib/website/pmajay-map-reduce";
 import { PMAJAY_REACH_AS_ON } from "@/lib/website/pmajay-map-snapshot";
@@ -36,8 +43,6 @@ const HOSTEL_LABEL: Record<HostelType, string> = {
 
 export interface PmajayWorksMapProps {
   data: ReachData;
-  /** Live Grants-in-Aid project total, for the third card. `null` when unread. */
-  giaTotal: number | null;
 }
 
 /**
@@ -79,13 +84,15 @@ export interface PmajayWorksMapProps {
  * Drawing both with one mark would flatter neither: the villages would become an
  * unreadable smear of 19,000 dots, or the hostels would vanish into a shade.
  *
- * ── THE THIRD COMPONENT IS ON THE PAGE AND NOT ON THE MAP ───────────────────
+ * ── THE THIRD COMPONENT IS NOT HERE, AND THE HEADING SAYS SO ────────────────
  *
- * Grants-in-Aid is a third of PM-AJAY and its project total is live, but this
- * feed publishes no coordinates for it. It gets a card carrying its real figure
- * and saying plainly that its locations are not published. The alternatives were
- * to leave it off — which tells a reader PM-AJAY has two components — or to draw
- * an empty layer, which tells them it has reached nowhere.
+ * Grants-in-Aid is a third of PM-AJAY and this feed publishes no coordinates
+ * for it. It had a greyed-out card, then a sentence in a footnote; both were a
+ * section explaining its own absences to a reader who had not asked.
+ *
+ * The description under the heading names exactly what is drawn — villages
+ * declared as Adarsh Gram, hostels sanctioned — so the section is complete on
+ * its own terms, and the Components band directly above introduces all three.
  *
  * ── THE COVERAGE LINE IS NOT A FOOTNOTE ─────────────────────────────────────
  *
@@ -100,7 +107,7 @@ export interface PmajayWorksMapProps {
  * says how many are drawn, because a map that silently omits 493 places while
  * printing "19,768 villages" underneath is telling the reader it drew them all.
  */
-export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
+export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
   const [showVillages, setShowVillages] = React.useState(true);
   const [showHostels, setShowHostels] = React.useState(true);
   const [types, setTypes] = React.useState<Set<HostelType>>(
@@ -109,21 +116,32 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
   const [focus, setFocus] = React.useState<string | null>(null);
   const [query, setQuery] = React.useState("");
   const [hoverRow, setHoverRow] = React.useState<string | null>(null);
-  const listRef = React.useRef<HTMLOListElement | null>(null);
+  const [page, setPage] = React.useState(1);
   const { mode, marks } = useDataMode();
 
-  /*
-   * A SCROLLED LIST MUST NOT HAND ITS POSITION TO THE NEXT ONE.
+  /**
+   * How many rows a page of the list holds.
    *
-   * The list scrolls in place, and React keeps the same node across a change of
-   * grain — so scrolling down to find Karnataka and clicking it opened
-   * Karnataka's districts already 400px down, with the largest ones cut off
-   * above the fold. Same for typing into the search: the matches would land
-   * below the visible window.
+   * PAGES, NOT A SCROLL REGION. The list scrolled inside the panel, which fixed
+   * the page-length jump but bought a nested scroll — and a nested scroll on a
+   * phone is a trap: a reader flicking the page downwards lands in the list and
+   * moves the list instead. Seven rows fit the panel at every width, so the
+   * same control works on a phone and on a desk.
    */
-  React.useEffect(() => {
-    if (listRef.current) listRef.current.scrollTop = 0;
-  }, [focus, query, showVillages, showHostels]);
+  const PAGE_SIZE = 7;
+
+  /**
+   * Any change of WHAT IS BEING LISTED starts at page one.
+   *
+   * Landing on page 4 of Karnataka's districts because that is where you were
+   * in the list of states is the paging equivalent of inheriting a scroll
+   * position — the defect this list had before it was paged.
+   *
+   * Called from the handlers rather than an effect: an effect that syncs state
+   * to state renders twice for every one of these, and there is nothing
+   * asynchronous here to justify it.
+   */
+  const resetPaging = () => setPage(1);
 
   const mockScalars = React.useMemo(() => scalarsOf(data.mock), [data.mock]);
   const merged = React.useMemo(
@@ -266,6 +284,11 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
    */
   const barMax = Math.max(1, ...visibleRows.map(barOf));
 
+  const totalPages = Math.max(1, Math.ceil(visibleRows.length / PAGE_SIZE));
+  // A filter can shrink the set under the page you are on.
+  const currentPage = Math.min(page, totalPages);
+  const pageRows = visibleRows.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
   /* ── Totals ────────────────────────────────────────────────────────────── */
 
   /*
@@ -282,8 +305,6 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
 
   const maxBin = bins.length ? Math.max(...bins.map((b) => b.count)) : 0;
 
-  const cov = snapshot.coverage;
-
   const csvHref = React.useMemo(() => {
     const head = focus == null ? "State,Districts reached" : "District,State";
     const body = [
@@ -295,7 +316,8 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
     return `data:text/csv;charset=utf-8,${encodeURIComponent(body)}`;
   }, [visibleRows, focus]);
 
-  const toggleType = (t: HostelType) =>
+  const toggleType = (t: HostelType) => {
+    resetPaging();
     setTypes((prev) => {
       const next = new Set(prev);
       // Never let the last one out: an empty set draws an empty map that looks
@@ -304,38 +326,32 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
       else next.add(t);
       return next;
     });
+  };
 
   return (
     <>
-      <div className="pmw__head">
-        <div className="pmw__headline">
-          {/*
-            THE REGISTER OF THIS PAGE, NOT OF A PRODUCT LAUNCH.
+      {/*
+        THE DESIGN SYSTEM'S SECTION HEADING, NOT A HAND-ROLLED ONE.
 
-            "Where PM-AJAY works" was a claim; every other band on this page is
-            a plain label — About the Scheme, Components, Documents & downloads,
-            Reports, Gallery, Contact — and a headline among labels reads as
-            marketing that wandered onto a departmental page. The lead was worse:
-            "drawn where the department records it standing" is a writer's
-            sentence, not a department's.
+        This was a `.pmw__head` of my own: an h2 at 26.3px/700 over a 16px lead,
+        while all six sibling bands on this page render `SectionTitle` at
+        18.6px/600 over a 12px description. `SectionTitle`'s own docstring says
+        to use it "instead of hand-rolling a `<div className='flex
+        justify-between'>` with its own heading classes, so section headers stay
+        identical estate-wide" — which is exactly what had been done here.
 
-            What replaces them names the thing and cites the source, which is
-            what a government section heading does. It is also SHORT: the first
-            attempt, "Coverage across States and Districts", was accurate and
-            wrapped to two lines beside one-word siblings, which made it the odd
-            heading out again in a different register. The lead does the
-            explaining; the heading is a label.
-          */}
-          <h2 id="reach-heading" className="pmw__title">
-            Scheme coverage
-          </h2>
-          <p className="pmw__lead">
-            Villages declared as Adarsh Gram and hostels sanctioned under the scheme,
-            shown at the locations recorded in the PM-AJAY Management Information System.
-          </p>
-        </div>
+        The provenance chip goes in the component's `children`, which is its
+        right-aligned actions slot; it does not need a row of its own.
+      */}
+      <SectionTitle
+        as={2}
+        headingId="reach-heading"
+        title="Scheme Coverage"
+        description="Villages declared as Adarsh Gram and hostels sanctioned under the scheme, at the locations recorded in the PM-AJAY Management Information System."
+        className="pmw__head"
+      >
         <ProvenanceChip kind={prov} />
-      </div>
+      </SectionTitle>
 
       {marks && prov === "mock" && (
         <p className="dm-banner">
@@ -382,7 +398,10 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
               type="button"
               className={`pmw__layer${showVillages ? " pmw__layer--on" : ""}`}
               aria-pressed={showVillages}
-              onClick={() => setShowVillages((v) => !v)}
+              onClick={() => {
+                setShowVillages((v) => !v);
+                resetPaging();
+              }}
             >
               {/*
                 The scale reads off the ramp's own ends rather than a caption
@@ -415,7 +434,10 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
               type="button"
               className={`pmw__layer${showHostels ? " pmw__layer--on" : ""}`}
               aria-pressed={showHostels}
-              onClick={() => setShowHostels((v) => !v)}
+              onClick={() => {
+                setShowHostels((v) => !v);
+                resetPaging();
+              }}
             >
               <span className="pmw__dots" aria-hidden>
                 {HOSTEL_KINDS.map((k) => (
@@ -506,6 +528,7 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                 if (!hit) return;
                 setFocus(region);
                 setQuery("");
+                resetPaging();
               }}
               /*
                 NO LEGEND PROP, AND NO CAPTION UNDER THE MAP. Both moved into the
@@ -543,6 +566,7 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                     className="pmw__crumb"
                     onClick={() => {
                       setFocus(null);
+                      resetPaging();
                     }}
                     aria-current={focus == null ? "true" : undefined}
                     disabled={focus == null}
@@ -570,7 +594,10 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                     className="pmw__searchinput"
                     placeholder={focus == null ? "Find a state…" : `Find a district in ${focus}…`}
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
+                    onChange={(e) => {
+                      setQuery(e.target.value);
+                      resetPaging();
+                    }}
                   />
                 </label>
               </div>
@@ -612,8 +639,8 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                   : "Both components are switched off, so there is nothing to list."}
               </p>
             ) : (
-              <ol className="pmw__list" ref={listRef}>
-                {visibleRows.map((r) => {
+              <ol className="pmw__list">
+                {pageRows.map((r) => {
                   const clickable = focus == null;
                   const Row = clickable ? "button" : "div";
                   return (
@@ -625,6 +652,7 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                               onClick: () => {
                                 setFocus(r.name);
                                 setQuery("");
+                                resetPaging();
                               },
                             }
                           : {})}
@@ -689,40 +717,34 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
               </ol>
             )}
 
+            {totalPages > 1 && (
+              <Pagination
+                page={currentPage}
+                totalPages={totalPages}
+                onPageChange={setPage}
+                siblings={0}
+                label={focus == null ? "States" : "Districts"}
+                className="pmw__pager"
+              />
+            )}
           </div>
         </div>
       </div>
 
       {/*
-        THE COVERAGE LINE IS THE FOOTNOTE, AND IT IS THE ONLY THING IN IT.
+        ONE LINK, NOT A PARAGRAPH OF DIAGNOSTICS.
 
-        The totals used to be printed three times in this section — in the
-        cards, in the standfirst, and again here — so the one line that was not
-        a repetition, the one saying what the map could not draw, read as the
-        least important text on screen. It says it once now, and Grant-in-Aid
-        joins it: a component with no published coordinates is a sentence, not a
-        greyed-out card for a layer that can never be switched on.
+        What stood here recited the feed's data quality — how many records were
+        drawn, how many carried no coordinates, how many were published outside
+        India, how many had latitude and longitude reversed. Every number was
+        true and none of it belonged on a citizen's page: it read as the
+        documentation of an API rather than a caption, and a caption that needs
+        four clauses is telling you the thing above it has not been made clear.
+
+        The figures are not lost — they are in `docs/audit/pm-ajay-content-audit.md`,
+        where the people who can act on them will look.
       */}
       <div className="pmw__foot">
-        <p className="pmw__coverage">
-          {`${formatIndian(cov.villagesPlaced + cov.hostelsPlaced)} of ${formatIndian(
-            cov.villagesTotal + cov.hostelsTotal,
-          )} records are drawn. ${formatIndian(
-            cov.villagesUnplaceable + cov.hostelsUnplaceable,
-          )} carry no usable coordinates and ${formatIndian(
-            cov.villagesOffshore + cov.hostelsOffshore,
-          )} are published at a point outside India; both are counted here but not placed on the map. ${formatIndian(
-            cov.villagesRepaired + cov.hostelsRepaired,
-          )} had latitude and longitude reversed and are drawn corrected.`}
-          {giaTotal != null && (
-            <>
-              {" "}
-              {`Grant-in-Aid’s ${formatIndian(
-                giaTotal,
-              )} projects are not on this map at all: the department publishes no locations for them.`}
-            </>
-          )}
-        </p>
         <a
           className="pmw__footlink"
           href={csvHref}
