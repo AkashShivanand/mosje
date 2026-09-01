@@ -145,3 +145,24 @@ export const WrongToolForCounts: Story = {
     </div>
   ),
 };
+
+/**
+ * **`valueFormat` changes what the tooltip says, not what the circle is.** It
+ * defaults to `formatIndian`, so 19768 reads as "19,768" — the lakh/crore
+ * grouping a reader of a government page expects, not the thousands grouping.
+ *
+ * Override it when the raw count is not the useful unit. Budget in rupees is the
+ * common case: nobody reads ₹92,50,00,00,000, they read ₹9,250 Cr. The circle
+ * still scales on the underlying number, so the geometry is unchanged and only
+ * the label is translated.
+ *
+ * Keep the unit IN the string. A tooltip reading "9,250" beside a map titled
+ * "Allocation" invites the reader to supply their own unit, and they will
+ * usually guess wrong by a factor of a hundred.
+ */
+export const CustomValueFormat: Story = {
+  args: {
+    title: "FY 2025-26 allocation by State / UT",
+    valueFormat: (v: number) => `₹${(v / 1e7).toLocaleString("en-IN")} Cr`,
+  },
+};
