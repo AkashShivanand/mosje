@@ -606,10 +606,21 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
       id: "villages",
       label: "Adarsh Gram villages",
       value: formatIndian(villageTotal),
-      color: "var(--sa-chart-seq-500)",
-      swatch: "ramp",
-      colors: SEQ_STEPS.map((step) => `var(--sa-chart-seq-${step})`),
-      scale: ["1", maxBin > 0 ? formatIndian(maxBin) : "—"],
+      /*
+       * A SOLID SWATCH, BECAUSE THE RAMP MOVED ONTO THE MAP.
+       *
+       * This key carried the whole ten-stop ramp with its two endpoints —
+       * `1 [▓▓▓] 387  Adarsh Gram villages  19,767`, five things in one pill.
+       * At 375px it broke "Adarsh Gram / villages" across two lines, and a key
+       * whose own label wraps is a key that has stopped being scannable.
+       *
+       * The ramp was also in the wrong place on the merits. A sequential scale
+       * describes the DENSITY FIELD, and the conventional home for that is a
+       * scale bar on the map itself — see `.pmw__scalebar` below. What belongs
+       * in a layer key is the answer to "which layer is this and how much of
+       * it is there", and one swatch says that.
+       */
+      color: "var(--sa-chart-seq-600)",
       on: showVillages,
     },
     {
@@ -951,6 +962,41 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                 rows: visibleRows.map((r) => [r.name, r.villages, r.hostels]),
               }}
             />
+
+            {/*
+              ── THE DENSITY SCALE, WHERE A MAP READER LOOKS FOR IT ──────────
+
+              Bottom-left, which is where a printed map has put its scale for a
+              century and where every mapping library still puts one. It was
+              inside the villages key until now, which crowded that key onto two
+              lines on a phone and put a statement about the HEX FIELD into a
+              control about a LAYER.
+
+              It is the DS `Legend` with one `ramp` item and no `onToggle`, so
+              it stays decorative and `aria-hidden` — the values reach a screen
+              reader through the map's own data table, and a second numberless
+              recital of "1 to 387" helps nobody.
+
+              Only while the layer it describes is drawn: a scale for a field
+              that is switched off is a legend for nothing.
+
+              Measured before placing: a 34px bar has 167px of clear width in
+              that corner, against the ~120px this needs.
+            */}
+            {showVillages && bins.length > 0 && (
+              <Legend
+                className="pmw__scalebar"
+                items={[
+                  {
+                    label: "villages per cell",
+                    color: "var(--sa-chart-seq-600)",
+                    swatch: "ramp",
+                    colors: SEQ_STEPS.map((step) => `var(--sa-chart-seq-${step})`),
+                    scale: ["1", maxBin > 0 ? formatIndian(maxBin) : "—"],
+                  },
+                ]}
+              />
+            )}
           </div>
 
           <div className="pmw__rail">

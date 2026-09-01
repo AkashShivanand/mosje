@@ -206,12 +206,21 @@
     display: flex;
     align-items: center;
     gap: var(--sa-stack-8);
-    /* 26px, past the 24px minimum target (WCAG 2.2 SC 2.5.8) — and stated
-       rather than left to the content, so a key sits at exactly the height of
-       the `Chip`s beside it. Left to its content it came out 24px and the
-       control bar had two pill heights in one row. */
-    min-height: 26px;
-    padding: var(--sa-padding-2) var(--sa-padding-8);
+    /*
+      32px, NOT THE 24px MINIMUM.
+
+      It was 26 — past SC 2.5.8's floor and sized to match the `Chip`s that
+      used to sit beside it. Both reasons expired: those chips moved onto
+      PM-AJAY's map, and a floor is not a target. 26px of pill carrying an
+      11px key and a label reads as a caption that happens to respond, which is
+      exactly what a reader told us: they could not tell these were tappable.
+
+      32 is the smallest height at which a pill reads as a control rather than
+      as a label, and it costs one row of chrome nothing — the bar it lives in
+      is 43px tall either way.
+    */
+    min-height: 32px;
+    padding: var(--sa-padding-4) var(--sa-padding-12);
     border: 1px solid var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-subtler);
@@ -221,8 +230,26 @@
       border-color 160ms ease-out;
   }
 
+  /*
+    Hover moves the BORDER and the ground together. A border-only change is
+    legible on a desk and invisible to the half of readers who arrive with a
+    finger and never produce a hover state at all — for them the affordance has
+    to be in the resting pill, which is what the height above buys.
+  */
   .ds-chart__legend-toggle:hover {
     border-color: var(--sa-border-neutral-bolder-default);
+    background-color: var(--sa-bg-neutral-subtle);
+  }
+
+  /*
+    A COARSE POINTER GETS A FULL TOUCH TARGET. 32px is comfortable under a
+    mouse; UX4G asks for 44 under a thumb, and a chart key is exactly the kind
+    of small control that gets mis-tapped at anything less.
+  */
+  @media (pointer: coarse) {
+    .ds-chart__legend-toggle {
+      min-height: 44px;
+    }
   }
 
   .ds-chart__legend-toggle:active {

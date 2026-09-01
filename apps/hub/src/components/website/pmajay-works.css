@@ -48,12 +48,9 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    /*
-      The gap BETWEEN the keys and the filters has to beat the gap inside
-      either, or the row reads as one run and each key's swatch drifts toward
-      whichever label is nearer.
-    */
-    gap: var(--sa-inline-12) var(--sa-inline-24);
+    /* One gap, and it is the only thing separating the two keys now — see
+       `.pmw__group`, where the divider that used to double up on it went. */
+    gap: var(--sa-inline-12) var(--sa-inline-16);
     padding: var(--sa-padding-8) var(--sa-padding-16);
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }
@@ -72,30 +69,24 @@
   }
 
   /*
-    ── ONE GROUP PER LAYER ──────────────────────────────────────────────────
+    ── THE DIVIDER IS GONE, BECAUSE THERE ARE NO LONGER TWO GROUPS ──────────
 
-    The bar was five siblings at one gap — two keys and three chips — so the
-    chips read as peers of the keys rather than as the Hostels key's own
-    controls. They filter hostels and nothing else, and they disappear when the
-    hostels layer is switched off, which is the giveaway nobody could see.
+    It was drawn when the bar held a layer key AND that key's three type
+    filters, and it said "these two clusters are different things". The filters
+    sit on the map now, so the bar holds two keys and nothing else — and a rule
+    between two pills separates two pills, which is what the gap already does.
 
-    Each layer is one group now, and the RULE between the groups is what says
-    so: a divider is a stronger statement than any amount of extra gap, and it
-    survives the row wrapping onto two lines, which a gap does not.
+    It was also visibly wrong: 24px of row gap on one side of the line and 16px
+    of group padding on the other, so the divider sat off-centre between the
+    keys it was meant to be equidistant from. Two spacings for one relationship
+    is one too many; the survivor is the gap.
   */
   .pmw__group {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    /* The chips belong to the key beside them, so they sit NEARER it than the
-       groups sit to each other — 8 inside, 16 plus a rule between. */
     gap: var(--sa-inline-8);
     min-width: 0;
-  }
-
-  .pmw__group + .pmw__group {
-    padding-left: var(--sa-padding-16);
-    border-left: 1px solid var(--sa-border-neutral-subtle);
   }
 
   /*
@@ -319,10 +310,6 @@
     return to the bar, which is what a short map has room for.
   */
   @media (min-width: 1025px) {
-    .pmw__map {
-      position: relative;
-    }
-
     /*
       NO CARD BEHIND THEM, AND THAT IS WHAT MAKES ONE ROW FIT.
 
@@ -363,6 +350,56 @@
     .pmw__key .pmw__chips {
       flex-wrap: wrap;
       gap: var(--sa-stack-4);
+    }
+  }
+
+  /*
+    ── THE DENSITY SCALE: IN FLOW ON A PHONE, ON THE MAP ON A DESK ──────────
+
+    Bottom-left is where a printed map has put its scale for a century and
+    where every mapping library still puts one, so that is where it goes when
+    there is room for it.
+
+    THERE IS NOT ALWAYS ROOM, and the reason is a unit mismatch worth stating.
+    The bar's width is CSS pixels — a 56px ramp, its two figures and a caption,
+    about 196px — while the clear sea it sits in is measured in viewBox units
+    and shrinks with the artwork. At 574px of map that corner offers 167px and
+    the bar fits with room to spare; at 285px it offers 83px, and the bar
+    covered the Konkan coast: 172 sampled points on drawn land.
+
+    So below 1025px it does not float at all. It sits under the map, in flow,
+    right-aligned to line up with the badges above it — which is how most maps
+    on a phone carry their legend anyway. There is no room to float one, and
+    pretending otherwise puts the key on top of the thing it explains.
+  */
+  .pmw__scalebar {
+    justify-content: flex-end;
+    margin: var(--sa-stack-4) 0 0;
+    padding: var(--sa-padding-6) 0 0;
+    background: none;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+  }
+
+  .pmw__scalebar .ds-chart__legend-label {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  @media (min-width: 1025px) {
+    .pmw__scalebar {
+      position: absolute;
+      left: var(--sa-padding-12);
+      bottom: var(--sa-padding-12);
+      /* Same 1 as the filter strip: above its sibling SVG, and no part of the
+         estate's z-index ladder — see `.pmw__filters.pmw__key`. */
+      z-index: 1;
+      justify-content: flex-start;
+      margin: 0;
+      padding: var(--sa-padding-6) var(--sa-padding-8);
+      border-radius: var(--sa-shape-6);
+      /* A ground, because a 10-stop ramp over pale hexes is unreadable at its
+         light end — the first three stops and the sea are the same value. */
+      background-color: var(--sa-bg-neutral-base);
     }
   }
 
