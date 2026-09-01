@@ -169,6 +169,11 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   Every card carries a provenance chip in every mode, because the real risk is an
   illustrative number reaching a deck as a departmental one.
   → `.claude/rules/prototype-data-modes.md`
+- **Every state a data-driven surface can be in is designed** — loading, empty, error,
+  filtered-to-nothing, too-much — for every chart, map, table, list and counter. And
+  **one request gets one answer**: a key and a map reading the same feed must resolve it
+  with the same expression, or the page shows two contradictory figures and the reader
+  cannot tell which is true. That shipped once. → `.claude/rules/data-state-completeness.md`
 - `next/image` for images; **`<Icon>`** from `@mosje/design-system` for icons — **Material
   Symbols Rounded**, weight 300, size 24, stroke variant. Load once per app:
   `import "@mosje/design-system/icons.css"`. Brand/social logos are inline SVGs.

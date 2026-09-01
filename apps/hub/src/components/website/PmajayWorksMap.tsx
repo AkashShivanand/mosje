@@ -18,6 +18,7 @@ import {
 import { PMAJAY_REACH_DESCRIPTOR, type ReachData, type ReachKey } from "@/lib/website/pmajay-api";
 import type { HostelType, ReachSnapshot, StateRow } from "@/lib/website/pmajay-map-reduce";
 import { PMAJAY_REACH_AS_ON } from "@/lib/website/pmajay-map-snapshot";
+import { useVillageIndex, matchVillages } from "@/lib/website/pmajay-villages";
 import { useDataMode } from "@/lib/data-mode/context";
 import { mergeData, provenanceOf } from "@/lib/data-mode/merge";
 import { ProvenanceChip } from "./ProvenanceChip";
@@ -38,7 +39,14 @@ import "./pmajay-works.css";
 const HOSTEL_KINDS: { kind: HostelType; label: string; color: string }[] = [
   { kind: "girls", label: "Girls", color: "var(--sa-chart-cat-3)" },
   { kind: "boys", label: "Boys", color: "var(--sa-chart-cat-2)" },
-  { kind: "unrecorded", label: "Not recorded", color: "var(--sa-chart-axis)" },
+  /*
+    "Sanctioned Hostel" is the feed's own third value, not our word for an
+    absence. This chip used to read "Not recorded", which was an INFERENCE
+    printed over what the department published — see `HostelType`. A citizen
+    cannot check "Not recorded" against anything, and an officer comparing this
+    page with the MIS finds a category that exists in neither.
+  */
+  { kind: "sanctioned", label: "Sanctioned Hostel", color: "var(--sa-chart-axis)" },
 ];
 
 /** Which column the rail is ordered by. */
@@ -129,7 +137,7 @@ function SortHeader({
 const HOSTEL_LABEL: Record<HostelType, string> = {
   girls: "Girls' hostel",
   boys: "Boys' hostel",
-  unrecorded: "Hostel, type not recorded",
+  sanctioned: "Sanctioned Hostel",
 };
 
 export interface PmajayWorksMapProps {
@@ -202,11 +210,23 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
   const [showVillages, setShowVillages] = React.useState(true);
   const [showHostels, setShowHostels] = React.useState(true);
   const [types, setTypes] = React.useState<Set<HostelType>>(
-    () => new Set<HostelType>(["girls", "boys", "unrecorded"]),
+    () => new Set<HostelType>(["girls", "boys", "sanctioned"]),
   );
   const [focus, setFocus] = React.useState<string | null>(null);
   const [query, setQuery] = React.useState("");
   const [sort, setSort] = React.useState<SortState>(null);
+  /**
+   * Which list the search is showing — or `null`, meaning "whichever has the
+   * answer".
+   *
+   * NULL IS THE DEFAULT AND IT IS LOAD-BEARING. Searching "kall" matches no
+   * state and 23 villages; pinned to `places` the rail said "Nothing matches
+   * kall" while the answer sat behind a chip the reader had no reason to press.
+   * A stored default cannot know that, so the default is stored as *unset* and
+   * resolved below against what actually matched. An explicit press pins it,
+   * and a changed query releases it again.
+   */
+  const [scope, setScope] = React.useState<"places" | "villages" | null>(null);
   const [hoverRow, setHoverRow] = React.useState<string | null>(null);
   const [page, setPage] = React.useState(1);
   const { mode, marks } = useDataMode();
@@ -251,11 +271,37 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
   ]);
 
   /*
-   * The geography follows the totals' provenance, not the feed's availability.
-   * In `mock` mode the feed may well have answered — the reader asked for the
-   * mirror, and a live map under mirrored totals would contradict the chip.
+   * ── THE MAP AND THE TOTALS ARE ONE READING, NOT TWO ─────────────────────
+   *
+   * This line used to end `: data.mock`, and that produced the section's worst
+   * defect. Asked for LIVE ONLY against a feed that had not answered, the merge
+   * correctly resolved every total to 0 and marked it live — and then this line
+   * fell back to the mirror anyway, so the keys read "Adarsh Gram villages 0 ·
+   * Hostels 0" above a map drawing 19,768 villages and a list of 28 states.
+   * Two contradictory answers to the same question, on a government page, with
+   * no way for a reader to tell which was true.
+   *
+   * `mergeData`'s own comment says a live-mode miss stays 0 "so the card can
+   * show a real empty state". The card never showed one, because the map had
+   * quietly opted out of the same decision.
+   *
+   * So the geography is resolved from the SAME decision as the figures:
+   *   · mirrored totals  → the mirror, or a live map would contradict the chip
+   *   · a live reading   → that reading
+   *   · live-only, none  → NOTHING, and the section says so
+   *   · otherwise        → the mirror, which is the documented fallback
    */
-  const snapshot: ReachSnapshot = prov === "mock" || data.live == null ? data.mock : data.live;
+  const reading: ReachSnapshot | null =
+    prov === "mock" ? data.mock : (data.live ?? (mode === "live" ? null : data.mock));
+
+  /*
+   * Hooks cannot be called conditionally, so the derivations below run against
+   * an EMPTY reading rather than behind an early return. Everything downstream
+   * then resolves to nothing on its own — no bins, no pins, no rows — and the
+   * render branches once, on `hasReading`, to say why.
+   */
+  const hasReading = reading != null;
+  const snapshot: ReachSnapshot = reading ?? EMPTY_REACH;
 
   /* ── Filtering ─────────────────────────────────────────────────────────── */
 
@@ -355,6 +401,21 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
    * combine the two, because ORDERING by "how much of this scheme is here"
    * is a legitimate question where DRAWING one bar for it is not.
    */
+  /*
+   * ── THE VILLAGE INDEX LOADS ON THE SECOND CHARACTER, NOT ON MOUNT ────────
+   *
+   * 83 KB gzipped, for a lookup most readers never run. One character is not a
+   * search — "a" matches two thousand villages — so two is where a query first
+   * means something, and a reader who clicks the field and changes their mind
+   * downloads nothing at all.
+   */
+  const wantsVillages = query.trim().length >= 2;
+  const villageIndex = useVillageIndex(wantsVillages);
+  const villageHits = React.useMemo(
+    () => (wantsVillages ? matchVillages(villageIndex.villages, query) : []),
+    [villageIndex.villages, query, wantsVillages],
+  );
+
   const barOf = (r: RailRow) => (showVillages ? r.villages : r.hostels);
   const rankOf = (r: RailRow) => (showVillages ? r.villages : 0) + (showHostels ? r.hostels : 0);
 
@@ -423,10 +484,39 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
    */
   const barMax = Math.max(1, ...visibleRows.map(barOf));
 
-  const totalPages = Math.max(1, Math.ceil(visibleRows.length / PAGE_SIZE));
+  /*
+   * ── ONE PAGER, TWO LISTS ────────────────────────────────────────────────
+   *
+   * The scope switch decides which list the rail is showing, and the paging
+   * follows it rather than each list carrying its own — two pagers in a 304px
+   * column, only one ever usable, is worse than one that moves.
+   *
+   * `showVillageList` is deliberately not just `scope === "villages"`: the
+   * switch is only rendered while a query is running, so a stale `villages`
+   * scope left behind by a cleared search must not strand the reader on an
+   * empty village list with no visible way back.
+   */
+  const placeMatches = visibleRows.length;
+  /*
+   * NO PLACE MATCHED, SO THEY WERE NOT LOOKING FOR A PLACE.
+   *
+   * Not `placeMatches === 0 && villageHits.length > 0` — that reads well until
+   * the search finds nothing anywhere, and then it lands the reader on "Nothing
+   * matches Bankura" instead of on the village list's answer, which is the one
+   * that explains that West Bengal publishes no village names at all. A reader
+   * typing a village name into a list of states needs that sentence most
+   * precisely when the search failed.
+   */
+  const autoScope: "places" | "villages" = placeMatches === 0 ? "villages" : "places";
+  const activeScope = scope ?? autoScope;
+  const showVillageList = wantsVillages && activeScope === "villages";
+  const listLength = showVillageList ? villageHits.length : visibleRows.length;
+
+  const totalPages = Math.max(1, Math.ceil(listLength / PAGE_SIZE));
   // A filter can shrink the set under the page you are on.
   const currentPage = Math.min(page, totalPages);
   const pageRows = visibleRows.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const villagePage = villageHits.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
 
   /* ── Totals ────────────────────────────────────────────────────────────── */
 
@@ -543,6 +633,27 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
         strip above it is one — and going full-bleed here would break the
         container rhythm the estate holds every other section to.
       */}
+      {/*
+        NOTHING TO DRAW, AND THE SECTION SAYS SO RATHER THAN DRAWING THE MIRROR.
+
+        Reached only in live-only mode against a feed that published nothing.
+        Every other mode has a mirror to fall back on, which is the estate's
+        documented behaviour; live-only is the reader deliberately asking to see
+        the feed and nothing else, so the honest answer is that it is empty.
+
+        One sentence, no diagnostics: which endpoint timed out belongs in the
+        audit doc, not under a heading on a citizen's page.
+      */}
+      {!hasReading ? (
+        <div className="pmw__instrument pmw__instrument--empty">
+          <Icon name="location_off" size={32} className="pmw__emptyicon" aria-hidden />
+          <p className="pmw__emptytitle">The live feed published no coverage figures.</p>
+          <p className="pmw__emptybody">
+            Switch the demo rail back to mirrored data to see the department&rsquo;s last
+            published position.
+          </p>
+        </div>
+      ) : (
       <div className="pmw__instrument">
         <div className="pmw__controls">
           {/*
@@ -739,7 +850,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               */}
               <span className="pmw__railcount">
                 {query.trim()
-                  ? `${formatIndian(visibleRows.length)} matching`
+                  ? `${formatIndian(listLength)} matching`
                   : focus == null
                     ? `${formatIndian(visibleRows.length)} of 36`
                     : `${formatIndian(visibleRows.length)} districts`}
@@ -765,10 +876,15 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                   value={query}
                   onChange={(e) => {
                     setQuery(e.target.value);
+                    // Release the pin: the next query's answer may be in the
+                    // other list, and a scope chosen for the last one must not
+                    // hide it.
+                    setScope(null);
                     resetPaging();
                   }}
                   onClear={() => {
                     setQuery("");
+                    setScope(null);
                     resetPaging();
                   }}
                 />
@@ -781,6 +897,56 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               "Andhra Pradesh" were rendering ellipsised on a government page.
               Naming the columns once buys the names their width back.
             */}
+            {/*
+              THE SCOPE SWITCH ONLY EXISTS WHILE A SEARCH IS RUNNING.
+
+              A search box over a list of states answers "which state" — it
+              cannot answer the question a citizen actually arrives with, which
+              is *is my village in this scheme*. The index that answers it is
+              10,157 names, so it is a second list, not more rows in this one:
+              a village has no district count and no hostel count, and forcing
+              it into those columns would print a dash in both.
+
+              Two chips, with their counts, so the reader can see there ARE
+              village matches before deciding to look at them. Hidden entirely
+              when nothing is being searched, because a switch between two
+              things when one of them is empty is a control that does nothing.
+            */}
+            {wantsVillages && (
+              <div className="pmw__scope" role="group" aria-label="Search results">
+                <Chip
+                  size="sm"
+                  selected={activeScope === "places"}
+                  onSelectedChange={() => {
+                    setScope("places");
+                    resetPaging();
+                  }}
+                  count={placeMatches}
+                  countLabel={focus == null ? "states" : "districts"}
+                >
+                  {focus == null ? "States" : "Districts"}
+                </Chip>
+                <Chip
+                  size="sm"
+                  selected={activeScope === "villages"}
+                  onSelectedChange={() => {
+                    setScope("villages");
+                    resetPaging();
+                  }}
+                  count={
+                    villageIndex.status === "ready"
+                      ? villageHits.length
+                      : villageIndex.status === "loading"
+                        ? "\u2026"
+                        : undefined
+                  }
+                  countLabel="villages"
+                >
+                  Villages
+                </Chip>
+              </div>
+            )}
+
             {/*
               THE HEADINGS ARE THE SORT CONTROL.
 
@@ -795,7 +961,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               user to expect a navigation model that is not here. The button
               names carry the state instead.
             */}
-            {visibleRows.length > 0 && (showVillages || showHostels) && (
+            {!showVillageList && visibleRows.length > 0 && (showVillages || showHostels) && (
               <div className="pmw__railcols">
                 <SortHeader
                   label={focus == null ? "By state" : "By district"}
@@ -827,7 +993,79 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               </div>
             )}
 
-            {visibleRows.length === 0 ? (
+            {showVillageList ? (
+              /*
+                FOUR STATES, AND EVERY ONE OF THEM REACHES THE SCREEN.
+
+                `idle` never does here — the list is only rendered once the
+                query has asked for the index — but `loading`, `error` and
+                `ready`-with-nothing all do, and each says a different thing.
+                An 83 KB fetch on a rural connection is a real wait, and a
+                blank panel during it reads as "no villages".
+              */
+              villageIndex.status === "loading" ? (
+                <p className="pmw__empty" role="status">
+                  Looking through the village register…
+                </p>
+              ) : villageIndex.status === "error" ? (
+                <p className="pmw__empty" role="status">
+                  The village register could not be loaded.{" "}
+                  <button type="button" className="pmw__retry" onClick={villageIndex.retry}>
+                    Try again
+                  </button>
+                </p>
+              ) : villageHits.length === 0 ? (
+                /*
+                  THE MOST IMPORTANT SENTENCE IN THIS SECTION.
+
+                  A reader from Bankura searching for their village finds
+                  nothing, and the true reason is not that the village is
+                  outside the scheme — West Bengal has 5,792 Adarsh Gram
+                  villages, more than any other state — but that the MIS
+                  publishes no name for any of them. Left unsaid, an empty
+                  result tells 44% of the programme's villages that they are
+                  not in it.
+                */
+                <p className="pmw__empty">
+                  {`No village named “${query.trim()}” is in the register.`}
+                  {snapshot.coverage.statesWithoutVillageNames.length > 0 && (
+                    <>
+                      {" "}
+                      {`Village names are not published for ${listOf(
+                        snapshot.coverage.statesWithoutVillageNames,
+                      )}, so a village in ${
+                        snapshot.coverage.statesWithoutVillageNames.length === 1 ? "that state" : "those states"
+                      } cannot be found by name here.`}
+                    </>
+                  )}
+                </p>
+              ) : (
+                <ol className="pmw__list pmw__list--villages">
+                  {villagePage.map((v) => (
+                    <li key={`${v.state}/${v.district}/${v.name}`} className="pmw__row">
+                      <button
+                        type="button"
+                        className="pmw__rowinner pmw__rowinner--village"
+                        onClick={() => {
+                          // A village has no view of its own; the honest thing
+                          // it can do is take the reader to its state.
+                          setFocus(v.state);
+                          setQuery("");
+                          setScope(null);
+                          resetPaging();
+                        }}
+                      >
+                        <span className="pmw__rowbody">
+                          <span className="pmw__state">{v.name}</span>
+                          <span className="pmw__villageplace">{`${v.district}, ${v.state}`}</span>
+                        </span>
+                        <Icon name="chevron_right" size={16} className="pmw__go" aria-hidden />
+                      </button>
+                    </li>
+                  ))}
+                </ol>
+              )
+            ) : visibleRows.length === 0 ? (
               <p className="pmw__empty">
                 {query
                   ? `Nothing matches “${query}”.`
@@ -915,20 +1153,44 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               </ol>
             )}
 
-            {totalPages > 1 && (
-              <Pagination
-                page={currentPage}
-                totalPages={totalPages}
-                onPageChange={setPage}
-                size="sm"
-                siblings={0}
-                label={focus == null ? "States" : "Districts"}
-                className="pmw__pager"
-              />
+            {/*
+              THE PAGER SITS WITH THE COUNT IT PAGES, NOT ALONE UNDER THE LIST.
+
+              Centred in its own strip it read as a second footer — the rail
+              already has one below the panel — and left the range unstated, so
+              "1 2 3 4" was the only clue how much list there was. A row that
+              says WHICH rows you are looking at, with the control to change
+              them at the other end, answers both in the space one of them used
+              to take.
+
+              The range is not a duplicate of the head count: "28 of 36" up
+              there is how much of the country the scheme has reached, this is
+              where you are inside that list.
+            */}
+            {listLength > 0 && (
+              <div className="pmw__pagerow">
+                <span className="pmw__range">
+                  {`${formatIndian((currentPage - 1) * PAGE_SIZE + 1)}\u2013${formatIndian(
+                    Math.min(currentPage * PAGE_SIZE, listLength),
+                  )} of ${formatIndian(listLength)}`}
+                </span>
+                {totalPages > 1 && (
+                  <Pagination
+                    page={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                    size="sm"
+                    siblings={0}
+                    label={showVillageList ? "Villages" : focus == null ? "States" : "Districts"}
+                    className="pmw__pager"
+                  />
+                )}
+              </div>
             )}
           </div>
         </div>
       </div>
+      )}
 
       {/*
         ONE LINK, NOT A PARAGRAPH OF DIAGNOSTICS.
@@ -943,6 +1205,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
         The figures are not lost — they are in `docs/audit/pm-ajay-content-audit.md`,
         where the people who can act on them will look.
       */}
+      {hasReading && (
       <div className="pmw__foot">
         {/*
           THE SCHEME'S SPREAD, WHICH THE KEYS DO NOT CARRY.
@@ -963,16 +1226,74 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
             snapshot.states.length,
           )} States and Union Territories.`}
         </p>
+        {/*
+          IT WAS DROPPING TO ITS OWN LINE WITH THE ROW HALF EMPTY.
+
+          `.pmw__foot` is a `space-between` row and the two children fit twice
+          over — but the sentence beside it is a `<p>` at `flex: 0 1 auto`, so
+          the moment the row was measured the paragraph claimed its full
+          intrinsic width and pushed the link past the edge. The link was then
+          the thing that wrapped, under a line with 400px of space to its right.
+
+          The fix is to let the SENTENCE be the flexible one and pin the link,
+          which is also the right reading order: the fact is the content, the
+          download is an action on it.
+        */}
         <a
           className="pmw__footlink"
           href={csvHref}
           download={`pm-ajay-${focus == null ? "by-state" : `${focus.toLowerCase().replace(/\s+/g, "-")}-by-district`}.csv`}
         >
+          <Icon name="download" size={16} aria-hidden />
           Download CSV
         </a>
       </div>
+      )}
     </>
   );
+}
+
+/**
+ * A reading with nothing in it.
+ *
+ * Not a fallback and never rendered as data: it exists so the derivations can
+ * run unconditionally while the section shows its "the feed published nothing"
+ * state. Every count is a real zero.
+ */
+const EMPTY_REACH: ReachSnapshot = {
+  bins: [],
+  hostels: [],
+  districts: [],
+  states: [],
+  coverage: {
+    villagesTotal: 0,
+    villagesPlaced: 0,
+    villagesRepaired: 0,
+    villagesUnplaceable: 0,
+    villagesOffshore: 0,
+    hostelsTotal: 0,
+    hostelsPlaced: 0,
+    hostelsRepaired: 0,
+    hostelsUnplaceable: 0,
+    hostelsOffshore: 0,
+    villagesNamed: 0,
+    statesWithoutVillageNames: [],
+  },
+  districtCount: 0,
+  villageTotal: 0,
+  hostelTotal: 0,
+};
+
+/**
+ * `["West Bengal", "Bihar", "Delhi"]` → `"West Bengal, Bihar and Delhi"`.
+ *
+ * The list goes into a sentence a citizen reads, so it is punctuated as a
+ * sentence and not as a CSV. No Oxford comma: the estate's copy follows Indian
+ * government usage, which does not use one.
+ */
+function listOf(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? "";
+  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
 }
 
 /** The ten rungs of the sequential ramp, for the legend strip. */

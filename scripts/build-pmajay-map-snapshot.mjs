@@ -41,12 +41,21 @@
  * build because a ministry API changed a number is not.
  */
 
-import { writeFileSync, readFileSync, existsSync } from "node:fs";
+import { writeFileSync, readFileSync, existsSync, mkdirSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { dirname, join, resolve } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "apps/hub/src/lib/website/pmajay-map-snapshot.ts");
+/*
+ * The village index is a FETCHED ASSET, not part of the page's bundle.
+ *
+ * Baked into the snapshot module it took the page's mirrored data from 21 KB
+ * gzipped to 106 KB — a fivefold rise, on every visit, for a lookup most
+ * readers never run. As a public file it costs the page nothing until someone
+ * types in the rail's search. See `VillageName` in the reduce.
+ */
+const NAMES_OUT = join(ROOT, "apps/hub/public/website/data/pmajay-villages.json");
 const REDUCE = join(ROOT, "apps/hub/src/lib/website/pmajay-map-reduce.ts");
 
 const BASE =
@@ -170,20 +179,40 @@ export const PMAJAY_REACH_SNAPSHOT: ReachSnapshot = {
 `;
 }
 
+/** One village per line, so a name added or corrected shows as one diff row. */
+function renderNames(payload, date) {
+  const rows = payload.villages.map((v) => `  ${JSON.stringify(v)}`).join(",\n");
+  return `{\n  "asOn": ${JSON.stringify(date)},\n  "villages": [\n${rows}\n  ]\n}\n`;
+}
+
 function summarise(s) {
   const c = s.coverage;
   return [
     `  villages   ${c.villagesTotal} total · ${c.villagesPlaced} placed · ${c.villagesRepaired} transposed-and-repaired · ${c.villagesUnplaceable} unplaceable · ${c.villagesOffshore} outside India`,
     `  hostels    ${c.hostelsTotal} total · ${c.hostelsPlaced} placed · ${c.hostelsRepaired} transposed-and-repaired · ${c.hostelsUnplaceable} unplaceable · ${c.hostelsOffshore} outside India`,
     `  bins       ${s.bins.length}`,
+    `  names      ${c.villagesNamed} of ${c.villagesTotal} villages named` +
+      (c.statesWithoutVillageNames.length
+        ? ` · none in ${c.statesWithoutVillageNames.join(", ")}`
+        : ""),
     `  districts  ${s.districts.length}   states ${s.states.length}`,
   ].join("\n");
 }
 
-const { reducePmajayMapPoints } = await import(REDUCE);
+const { reducePmajayMapPointsFull } = await import(REDUCE);
 
 const raw = await load();
-const snapshot = reducePmajayMapPoints(raw);
+const { snapshot, villageNames } = reducePmajayMapPointsFull(raw);
+
+/*
+ * Packed three-to-a-tuple rather than as objects: 10,157 rows of
+ * `{"name":…,"state":…,"district":…}` spend 40% of the file on the same three
+ * keys repeated. The reader rehydrates them.
+ */
+const namesPayload = {
+  asOn: "",
+  villages: villageNames.map((v) => [v.name, v.state, v.district]),
+};
 
 console.log(summarise(snapshot));
 
@@ -197,7 +226,9 @@ if (CHECK) {
   // Compare the DATA, not the file: the as-on date differs by construction on
   // every run, and reporting that as drift would make --check useless.
   const next = render(snapshot, currentAsOn);
-  if (next === current) {
+  const namesCurrent = existsSync(NAMES_OUT) ? readFileSync(NAMES_OUT, "utf8") : "";
+  const namesNext = renderNames(namesPayload, currentAsOn);
+  if (next === current && namesNext === namesCurrent) {
     console.log("\n✓ mirror matches the feed");
   } else {
     console.log("\n△ the feed has moved since the mirror was taken");
@@ -208,5 +239,8 @@ if (CHECK) {
 
 const date = asOn();
 writeFileSync(OUT, render(snapshot, date));
+mkdirSync(dirname(NAMES_OUT), { recursive: true });
+writeFileSync(NAMES_OUT, renderNames(namesPayload, date));
 console.log(`\n✓ wrote ${OUT}`);
+console.log(`✓ wrote ${NAMES_OUT}`);
 console.log(`  PMAJAY_REACH_AS_ON = ${date}`);

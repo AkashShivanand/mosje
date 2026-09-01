@@ -319,7 +319,28 @@
     border-radius: var(--sa-shape-4);
     flex-shrink: 0;
   }
+  /*
+    ── THE KEY MUST BE CLOSER TO ITSELF THAN TO ITS LABEL ───────────────────
+
+    An entry is three things in a row — key, label, value — and a `ramp` key is
+    itself three things: a low end, the strip, a high end. At one uniform gap
+    they all read as one run, so PM-AJAY's villages key rendered
+
+        1 [▓▓▓▓] 387  Adarsh Gram villages  19,768
+
+    with "387" exactly as close to the label as the label is to its own total.
+    Nothing said which number belonged to which, and a reader taking "1 to 387"
+    as a qualifier on "Adarsh Gram villages" is reading it the way the spacing
+    told them to. It is the same defect as the dots that once floated between
+    two labels — proximity is the only thing grouping any of this, so it has to
+    be graded rather than flat.
+
+    Three steps, each visibly larger than the last: 4 inside the key, 12 from
+    the key to its label, 8 from the label to its value. The value stays nearer
+    its label than the key is, because the value belongs to the label.
+  */
   .ds-chart__legend-label {
+    margin-left: var(--sa-inline-4);
     color: var(--sa-text-neutral-base);
   }
   .ds-chart__legend-pct {

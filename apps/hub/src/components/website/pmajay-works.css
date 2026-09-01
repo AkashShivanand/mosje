@@ -185,6 +185,78 @@
     border-radius: var(--sa-shape-full);
   }
 
+  /*
+    ── NOTHING TO DRAW ──────────────────────────────────────────────────────
+    Same card as the instrument it replaces, so the section keeps its shape on
+    the page and the reader does not read a collapsed layout as a broken one.
+  */
+  .pmw__instrument--empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-stack-8);
+    min-height: 18rem;
+    padding: var(--sa-padding-40) var(--sa-padding-24);
+    text-align: center;
+  }
+
+  .pmw__emptyicon {
+    color: var(--sa-icon-neutral-subtler);
+  }
+
+  .pmw__emptytitle {
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .pmw__emptybody {
+    max-width: 28rem;
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Search scope: places or villages ─────────────────────────────────── */
+
+  .pmw__scope {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-6);
+    margin-bottom: var(--sa-stack-8);
+  }
+
+  /* A village row has a place under it instead of a bar and two figures. */
+  .pmw__rowinner--village {
+    align-items: center;
+  }
+
+  .pmw__villageplace {
+    display: block;
+    margin-top: var(--sa-stack-2);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The retry inside the error sentence — a link in prose, not a button box. */
+  .pmw__retry {
+    padding: 0;
+    font: inherit;
+    color: var(--sa-text-brand-primary-base);
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .pmw__retry:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
   /* ── Panel: map | rail, divided by a hairline ──────────────────────────── */
 
   .pmw__panel {
@@ -488,10 +560,35 @@
     gave it 255 and it wrapped, so the control read as two stray rows rather
     than one.
   */
-  .pmw__pager {
+  /*
+    The pager sits with the range it pages, at the foot of the rail. Centred
+    alone it read as a second footer under a section that already has one, and
+    left "how much list is there" unanswered.
+  */
+  .pmw__pagerow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
     flex: none;
     margin-top: auto;
     padding-top: var(--sa-padding-8);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .pmw__range {
+    flex: 0 0 auto;
+    font-size: var(--sa-type-body-3-size);
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .pmw__pager {
+    flex: 0 0 auto;
+    /* The DS pager centres itself; inside this row it is the right-hand end. */
+    justify-content: flex-end;
+    margin-left: auto;
   }
 
   .pmw__empty {
@@ -510,14 +607,29 @@
     margin-top: var(--sa-stack-8);
   }
 
+  /*
+    THE SENTENCE FLEXES, THE LINK DOES NOT.
+
+    Both children were `flex: 0 1 auto`, so the paragraph claimed its full
+    intrinsic width and the link wrapped under it with 400px of empty row to
+    its right. `min-width: 0` plus `flex: 1 1 auto` makes the sentence the one
+    that gives, which is also the correct reading order: the fact is content,
+    the download is an action on it.
+  */
   .pmw__reach {
+    flex: 1 1 auto;
+    min-width: 0;
     margin: 0;
     font-size: var(--sa-type-body-3-size);
     color: var(--sa-text-neutral-subtle);
   }
 
   .pmw__footlink {
-    flex: none;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    white-space: nowrap;
     /* 18px of text is under the 24px minimum target (WCAG 2.2 SC 2.5.8); the
        padding, not the type size, is what carries it there. */
     padding-block: var(--sa-padding-4);

@@ -1662,3 +1662,80 @@ Indian digit grouping throughout, a per-State breakdown beside the map, a
 choropleth for the national view, and a visible "as on" date for the figures —
 LokOS prints *"Last Updated 20 Aug, 2026"* in its footer, and this estate
 carries the same idea in `ProvenanceChip` plus `PMAJAY_REACH_AS_ON`.
+
+## §36 — Design-director pass: the hostel feed, and the two figures that disagreed
+
+Six items raised on 2026-09-01, after the sort and search pass.
+
+### What the hostel feed does and does not carry
+
+All 203 rows audited against the saved `map-points` body.
+
+| Gap | Detail |
+|---|---|
+| **No hostel name** | Nine fields per row and none of them names the building. A village row carries `village_name`; a hostel carries only `project_id` (`ST28-2324-001349`). A pin can be placed but not labelled. |
+| **No capacity, sanction year, status or cost** | The facts a hostel scheme is judged on. None published. |
+| **Type unknown for 137 of 203 (67.5%)** | `Sanctioned Hostel`, correlating exactly with `is_legacy: true`. |
+| **26 rows transposed** | Latitude and longitude the wrong way round. Repaired on read. |
+| **3 rows unusable** | Nagaland/Mokokchung `(99.31, 26.19)`; Uttar Pradesh/Aligarh `(19.1, 22.5)`; Uttar Pradesh/Gonda `(9.0, 8.0)` — the last is in the Gulf of Guinea. The two UP rows are whole-degree placeholders. |
+| **25 rows share 11 coordinates** | Four Bageshwar hostels on one point; five Nagaland districts duplicated. These read as district centres entered as a stand-in. |
+| **15 of 36 States/UTs have no hostel** | Seven of them have Adarsh Gram villages. Whether that is the footprint or a reporting gap is not answerable from this feed. |
+
+### "Not recorded" was our word, not the department's — corrected
+
+`hostel_type` publishes three values: `Girls` (34), `Boys` (32), `Sanctioned Hostel`
+(137). The map relabelled the third "Not recorded", which is an *inference* printed
+over what the department published. A citizen cannot check it against anything and an
+officer comparing the page with the MIS finds a category that exists in neither. All
+three values are now the feed's own.
+
+The `is_legacy` correlation still earns its keep — it is why the map offers ONE
+dimension rather than two, since type and era are one fact wearing two names.
+
+### The two figures that disagreed — root cause
+
+In live-only mode against a feed that had not answered, the key read
+`Adarsh Gram villages 0 · Hostels 0` above a map drawing 19,768 villages and a list of
+28 states.
+
+`mergeData` resolved every total to 0 and marked it live, correctly — its own comment
+says a live miss stays 0 "so the card can show a real empty state". The map then read
+
+```ts
+const snapshot = prov === "mock" || data.live == null ? data.mock : data.live;
+```
+
+and fell back to the mirror anyway. Two views of one request, resolving it two ways.
+Fixed by resolving once and branching the render on the result; the section now shows a
+real empty state. Generalised into `.claude/rules/data-state-completeness.md`.
+
+### Village names — 48.6% are missing, and not at random
+
+`village_name` is published for 10,157 of 19,768 records.
+
+| | |
+|---|---|
+| States naming ~every village | 22 (Tamil Nadu, Rajasthan, Odisha, Madhya Pradesh, Jharkhand, Punjab, Telangana, Uttarakhand, Himachal Pradesh, Gujarat, Tripura all at 100%) |
+| **States naming NONE** | **West Bengal (0 of 5,792), Bihar (0 of 2,853), Delhi (0 of 1)** |
+| Uttar Pradesh | 1,143 of 2,083 — 54.9%, the only partial state |
+
+West Bengal and Bihar are 44% of the whole programme. That shape decided the
+interaction: a browsable "villages in this district" level would open on a page of
+blanks for the two largest states, reading as "your village is not covered" when the
+truth is "the MIS has not published its name". A **search** answers the citizen's
+question for the 22 states that can answer it, and its empty state names the three that
+cannot.
+
+**Weight:** baked into the page bundle the index took PM-AJAY's mirrored data from
+21 KB gzipped to 106 KB. It is written to `public/website/data/pmajay-villages.json`
+and fetched on the second character typed, so the page pays nothing until the feature
+is used.
+
+### Still open
+
+- **No hostel name, capacity or sanction year** — needs the department to publish them.
+- **3 unusable and 25 duplicated hostel coordinates** — data-entry defects at source.
+- **The place search cannot find a district from the India view.** "Bankura" matches no
+  state, and districts are only listed once a state is open. The snapshot carries all
+  547; searching them across states would complete the lookup, and would mean relabelling
+  the scope chip from "States" to "Places".

@@ -22,9 +22,16 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.88.0",
+    version: "v0.89.0",
     date: "2026-09-01",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "A LEGEND KEY WAS AS CLOSE TO ITS LABEL AS THE LABEL WAS TO ITS OWN TOTAL. An entry is three things in a row — key, label, value — and a `ramp` key is itself three more: a low end, the strip, a high end. At one uniform gap they read as one run, so PM-AJAY's villages key rendered `1 [▓▓▓] 387  Adarsh Gram villages  19,768` with nothing saying which number belonged to which. A reader taking \"1 to 387\" as a qualifier on \"Adarsh Gram villages\" was reading it exactly as the spacing told them to. Three graded steps now — 4 inside the key, 12 from key to label, 8 from label to value — because proximity is the only thing grouping any of it. Same defect as the dots that once floated between two labels" },
+    ],
+  },
+  {
+    version: "v0.88.0",
+    date: "2026-09-01",
     changes: [
       { kind: "Changed", text: "AN INTERACTIVE `Legend` NOW LOOKS LIKE ONE, WHICH REVERSES AN EARLIER CALL. It was deliberately quiet — bare text with a hover ground — on the reasoning that a row of buttons would compete with the chart it labels. That reasoning cost the feature: a reader who cannot see that a key is pressable does not press it, and \"hover to discover it\" is not an answer on a touchscreen. Each entry is a bordered pill in `Chip`'s language now, at `Chip`'s own 26px, because a `Chip` is usually what sits beside it doing the same job" },
       { kind: "Changed", text: "A SWITCHED-OFF SERIES SAYS SO THREE WAYS. Its pill empties and its border goes dashed, its `solid` key goes HOLLOW — the switched-off checkbox convention, and the one cue that survives a greyscale print — and `aria-pressed` reports it. A hollow key also keeps its identity: a reader can still see WHICH series is off, which a uniformly greyed key cannot say. A `ramp` and `dots` fade instead, having no single shape to empty" },
