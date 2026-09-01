@@ -1361,3 +1361,82 @@ year as a field, the filter is a small change.
 - 21 village codes appear on more than one row with different coordinates.
   Counted as published; not deduplicated, because which row is right is the
   department's call.
+
+---
+
+## §32 · Design audit of the reach section — placement and style
+
+**2026-09-01.** Audited as a design director, at 1280px, against the page it sits
+in rather than on its own.
+
+### What the audit found
+
+**The page introduced the three components twice, 200px apart.** The
+"Components" band directly above already presents Adarsh Gram, Grants-in-aid and
+Hostels as three cards with icons, descriptions and "Read more" links. The reach
+section then opened with three cards for the same three components, in a
+different order and a different card style. A reader who scans hits the triad
+twice and has to work out whether they are the same thing.
+
+**The map got 23% of its own section.** Measured:
+
+| | before | after |
+| --- | --- | --- |
+| section height | 1045px | **839px** |
+| map canvas | 534 × 374 | **542 × 379** |
+| map share of the section | 23.0% | **29.4%** |
+| height before the map appears | 397px (38%) | **230px (27%)** |
+| control chrome | 169px (cards 113 + toolbar 56) | **58px** |
+| bordered, rounded containers in the section | 5 | **1** |
+| truncated state names at 1280px | 2 | **0** |
+
+**Other defects, all fixed:** "Uttar Pradesh" and "Andhra Pradesh" rendered
+ellipsised in the rail; three lines of instructions sat under the map; the
+totals were printed three times in one section; provenance was said twice; and
+the coverage line — the one sentence that was not a repetition — was the least
+prominent text on screen.
+
+### The three calls, and why
+
+**1. Strip the section rather than merge it into "Components".** Merging was the
+tempting move. It is wrong here: that band is the department's own account of
+its scheme, with links to real pages; this map is an interpretation layer on top
+of it. On a government estate the department's structure stays intact and our
+layer stays visibly ours. Merging would also have cost a sidebar anchor that
+`check:org-anchors` gates and citizens use for wayfinding.
+
+The duplication dies a better way. **The three cards became legend entries.** A
+line reading `1 ▨▨▨ 387  Adarsh Gram villages  19,768` cannot be mistaken for a
+second telling of the components — it reads as a key, which is what it is, it
+happens to be clickable, which is what a legend on an interactive map should be,
+and it costs one line instead of a 113px card.
+
+Grant-in-Aid, which has no coordinates, stopped being a greyed-out card. A card
+for a layer that can never be switched on is odd; a sentence in the footnote
+saying the department publishes no locations for its 8,772 projects is exact.
+
+**2. The breadcrumb and the search moved into the list.** They were in the map's
+control bar, where they pushed it to two rows and left the second holding
+"India  [Find a state…]" alone against the right edge. They were also in the
+wrong place: the search filters *that list*, and the breadcrumb names the grain
+*that list* is at. Moving them made the map's control bar one row of key, which
+is what a map's own chrome should be.
+
+**3. One panel, not a card mosaic — but still a panel.** The map and the ranked
+list are two regions of one instrument, so they are two regions of one white
+panel divided by a hairline. The panel keeps its border and radius: the family
+this page belongs to is contained white surfaces on a tinted band, and the
+estate holds every section to `.sa-container`. Full-bleed would have read as a
+different product. What was wrong was never the container; it was having five.
+
+### Considered and rejected: promoting the numbers to the hero
+
+The hero's "at a glance" card carries **New Delhi · 3 · Scheduled Castes** while
+19,768 villages and 203 hostels sit at 40% scroll depth. Moving them up was
+proposed and then dropped: `FactStrip`'s own contract in `design.md` says it
+holds "facts that never trend" and is explicitly **not** `MetricCard`, the
+component that exists for moving measurements. 19,768 moves every month. Putting
+it there would break a component used on 23 pages to improve one.
+
+The observation stands and is recorded here for whoever revisits the hero: the
+page's two most arresting figures are the ones a reader reaches last.

@@ -28,7 +28,7 @@ const RAIL_LIMIT = 8;
 const HOSTEL_KINDS: { kind: HostelType; label: string; color: string }[] = [
   { kind: "girls", label: "Girls", color: "var(--sa-chart-cat-3)" },
   { kind: "boys", label: "Boys", color: "var(--sa-chart-cat-2)" },
-  { kind: "unrecorded", label: "Type not recorded", color: "var(--sa-chart-axis)" },
+  { kind: "unrecorded", label: "Not recorded", color: "var(--sa-chart-axis)" },
 ];
 
 const HOSTEL_LABEL: Record<HostelType, string> = {
@@ -55,6 +55,21 @@ export interface PmajayWorksMapProps {
  * was thrown away on the server. The visible consequence was that PM-AJAY looked
  * like a scheme distributed across states, when it is a scheme concentrated in a
  * belt: West Bengal and Bihar alone hold 44% of every Adarsh Gram village.
+ *
+ * ── THE SECTION IS ONE INSTRUMENT, NOT SIX SURFACES ────────────────────────
+ *
+ * It was a heading block, a row of three component cards, a filter bar, a
+ * bordered map card, a bordered list card and a footnote — six surfaces, in
+ * which the map got 23% of the area and arrived 397px in. Worse, those three
+ * cards restated the three components that the "Components" section directly
+ * above already introduces, in a different order and a different card style,
+ * 200px apart.
+ *
+ * Now: a key that is also the switch, then one panel holding the map and the
+ * ranked list as two regions divided by a hairline, then one footnote. The
+ * counts survive in the key, the switches survive in the key, and the
+ * duplication is gone because a legend entry cannot be mistaken for a second
+ * telling of the components.
  *
  * ── TWO COMPONENTS, TWO MARKS, BECAUSE THEY ARE NOT THE SAME KIND OF THING ──
  *
@@ -221,13 +236,17 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
   const shown = expanded ? visibleRows : visibleRows.slice(0, RAIL_LIMIT);
   const top = visibleRows[0] ? primary(visibleRows[0]) : 1;
 
-  /* ── Totals for the cards ──────────────────────────────────────────────── */
+  /* ── Totals ────────────────────────────────────────────────────────────── */
 
+  /*
+    The KEY carries the scheme's total, always. The map's accessible SUMMARY
+    carries what is on screen after the filters and the zoom. They are
+    different numbers on purpose: a legend that changed its figure every time
+    you switched a chip would stop being a statement about the scheme.
+  */
   const villageTotal = merged.values.villages;
   const hostelTotal = merged.values.hostels;
 
-  /** In a filtered or zoomed view the cards must show what is on screen. */
-  const filtered = focus != null || types.size < 3;
   const shownVillages = focus == null ? villageTotal : railRows.reduce((t, r) => t + r.villages, 0);
   const shownHostels = hostels.length;
 
@@ -265,8 +284,7 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
           </h2>
           <p className="pmw__lead">
             Every village declared an Adarsh Gram and every hostel sanctioned under the
-            scheme, drawn where the department records it standing. Switch a component
-            off, filter the hostels, or open a state to see its districts.
+            scheme, drawn where the department records it standing.
           </p>
         </div>
         <ProvenanceChip kind={prov} />
@@ -281,327 +299,351 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
       )}
 
       {/*
-        The component cards ARE the layer switches. A separate legend plus a
-        separate toggle row would say the same three things twice; putting the
-        count, the swatch and the control in one card means the thing a reader
-        wants to switch off is the thing they are reading.
+        ONE PANEL, NOT THREE CARDS ON A TINT.
+
+        The section used to be six stacked surfaces — a heading block, a row of
+        three component cards, a filter bar, a bordered map card, a bordered
+        list card, and a footnote. The map, which is the only reason the section
+        exists, was the fifth thing a reader reached and got 23% of the section's
+        area. Everything else was a container.
+
+        The map and the ranked list are two regions of ONE instrument, so they
+        are two regions of one panel divided by a hairline, not two cards
+        floating side by side. The panel keeps a border because the family this
+        page belongs to is contained white surfaces on a tinted band — the fact
+        strip above it is one — and going full-bleed here would break the
+        container rhythm the estate holds every other section to.
       */}
-      <div className="pmw__layers">
-        <button
-          type="button"
-          className={`pmw__layer${showVillages ? " pmw__layer--on" : ""}`}
-          aria-pressed={showVillages}
-          onClick={() => setShowVillages((v) => !v)}
-        >
-          <span className="pmw__layerswatch pmw__layerswatch--density" aria-hidden />
-          <span className="pmw__layername">Adarsh Gram villages</span>
-          <span className="pmw__layervalue">{formatIndian(villageTotal)}</span>
-          <span className="pmw__layermeta">
-            {formatIndian(merged.values.villageStates)} states ·{" "}
-            {formatIndian(merged.values.villageDistricts)} districts
-          </span>
-        </button>
+      <div className="pmw__instrument">
+        <div className="pmw__controls">
+          {/*
+            THE LEGEND IS THE LAYER SWITCH, AND IT CARRIES THE COUNT.
 
-        <button
-          type="button"
-          className={`pmw__layer${showHostels ? " pmw__layer--on" : ""}`}
-          aria-pressed={showHostels}
-          onClick={() => setShowHostels((v) => !v)}
-        >
-          <span className="pmw__layerswatch pmw__layerswatch--pins" aria-hidden />
-          <span className="pmw__layername">Hostels</span>
-          <span className="pmw__layervalue">{formatIndian(hostelTotal)}</span>
-          <span className="pmw__layermeta">
-            {formatIndian(merged.values.hostelStates)} states ·{" "}
-            {formatIndian(merged.values.hostelDistricts)} districts
-          </span>
-        </button>
+            These were three cards, and the section directly above this one —
+            "Components" — already introduces the same three components with
+            icons, descriptions and Read more links. Two card rows for one set
+            of three things, 200px apart, in different orders, is a reader
+            stopping to work out whether they are the same thing.
 
-        {/*
-          Not a button, because there is nothing to switch. A disabled toggle
-          invites a click that will never do anything; a card states the fact.
-        */}
-        <div className="pmw__layer pmw__layer--absent">
-          <span className="pmw__layerswatch pmw__layerswatch--absent" aria-hidden />
-          <span className="pmw__layername">Grant-in-Aid</span>
-          <span className="pmw__layervalue">{giaTotal == null ? "—" : formatIndian(giaTotal)}</span>
-          <span className="pmw__layermeta">Project locations are not published</span>
-        </div>
-      </div>
-
-      <div className="pmw__toolbar">
-        <nav className="pmw__crumbs" aria-label="Map area">
-          <button
-            type="button"
-            className="pmw__crumb"
-            onClick={() => {
-              setFocus(null);
-              setExpanded(false);
-            }}
-            aria-current={focus == null ? "true" : undefined}
-            disabled={focus == null}
-          >
-            India
-          </button>
-          {focus != null && (
-            <>
-              <span className="pmw__crumbsep" aria-hidden>
-                ›
+            A legend entry cannot be mistaken for that. It reads as a key,
+            which is what it is; it happens to be clickable, which is what a
+            legend on an interactive map should be; and it costs one line
+            instead of a 113px card.
+          */}
+          <div className="pmw__layers">
+            <button
+              type="button"
+              className={`pmw__layer${showVillages ? " pmw__layer--on" : ""}`}
+              aria-pressed={showVillages}
+              onClick={() => setShowVillages((v) => !v)}
+            >
+              {/*
+                The scale reads off the ramp's own ends rather than a caption
+                below it. A second line under the key made every key 44px tall
+                and the whole control bar a third taller than the map deserved,
+                and "1 ▨▨▨ 387" is how a density key has been drawn for a
+                century.
+              */}
+              <span className="pmw__scale" aria-hidden>
+                <span className="pmw__scaleend">1</span>
+                <span className="pmw__ramp">
+                  {SEQ_STEPS.map((s) => (
+                    <span
+                      key={s}
+                      className="pmw__rampstep"
+                      style={{ backgroundColor: `var(--sa-chart-seq-${s})` }}
+                    />
+                  ))}
+                </span>
+                <span className="pmw__scaleend">{maxBin > 0 ? formatIndian(maxBin) : "—"}</span>
               </span>
-              <span className="pmw__crumb pmw__crumb--here" aria-current="true">
-                {focus}
+              <span className="pmw__layername">Adarsh Gram villages</span>
+              <span className="pmw__layervalue">{formatIndian(villageTotal)}</span>
+              <span className="ds-sr-only">
+                {`, shaded by villages per locality, 1 to ${formatIndian(maxBin)}`}
               </span>
-            </>
-          )}
-        </nav>
+            </button>
 
-        <label className="pmw__search">
-          <span className="ds-sr-only">
-            Search {focus == null ? "states" : `districts in ${focus}`}
-          </span>
-          <input
-            type="search"
-            className="pmw__searchinput"
-            placeholder={focus == null ? "Find a state…" : `Find a district in ${focus}…`}
-            value={query}
-            onChange={(e) => {
-              setQuery(e.target.value);
-              setExpanded(true);
-            }}
-          />
-        </label>
-
-        {showHostels && (
-          <fieldset className="pmw__chips">
-            <legend className="ds-sr-only">Hostel type</legend>
-            {HOSTEL_KINDS.map((k) => {
-              const on = types.has(k.kind);
-              const n = snapshot.hostels.filter(
-                (h) => h.type === k.kind && (focus == null || h.state === focus),
-              ).length;
-              return (
-                <button
-                  key={k.kind}
-                  type="button"
-                  className={`pmw__chip${on ? " pmw__chip--on" : ""}`}
-                  aria-pressed={on}
-                  onClick={() => toggleType(k.kind)}
-                >
+            <button
+              type="button"
+              className={`pmw__layer${showHostels ? " pmw__layer--on" : ""}`}
+              aria-pressed={showHostels}
+              onClick={() => setShowHostels((v) => !v)}
+            >
+              <span className="pmw__dots" aria-hidden>
+                {HOSTEL_KINDS.map((k) => (
                   <span
-                    className="pmw__chipdot"
+                    key={k.kind}
+                    className="pmw__dot"
                     style={{ backgroundColor: k.color }}
-                    aria-hidden
                   />
-                  {k.label}
-                  <span className="pmw__chipcount">{formatIndian(n)}</span>
-                </button>
-              );
-            })}
-          </fieldset>
-        )}
-      </div>
+                ))}
+              </span>
+              <span className="pmw__layername">Hostels</span>
+              <span className="pmw__layervalue">{formatIndian(hostelTotal)}</span>
+            </button>
 
-      <div className="pmw__panel">
-        <div className="pmw__mapcard">
-          <IndiaPointMap
-            title={
-              focus == null
-                ? "PM-AJAY across India"
-                : `PM-AJAY in ${focus}`
-            }
-            summary={`${formatIndian(shownVillages)} Adarsh Gram villages and ${formatIndian(
-              shownHostels,
-            )} hostels${focus == null ? " across India" : ` in ${focus}`}.`}
-            bins={showVillages ? bins : undefined}
-            binNoun="villages"
-            bubbles={districtRings}
-            bubbleVariant="outlined"
-            maxBubbleRadius={26}
-            highlightBubbleId={focus != null ? hoverRow : null}
-            pins={pins}
-            pinKinds={HOSTEL_KINDS}
-            /*
-              Individually reachable only once the map is framed on a state.
-              Across India there are 195 of them, and 195 tab stops between the
-              heading and the ranked list is a barrier, not access — the list is
-              how a keyboard reader gets to a state in the first place. Inside
-              one state there are at most a few dozen, each a building someone
-              might be looking for.
-            */
-            interactivePins={focus != null}
-            focusRegion={focus}
-            highlightRegion={focus == null ? hoverRow : null}
-            onSelectRegion={(region) => {
-              // Only states the scheme has actually reached are worth opening;
-              // zooming to an empty state is a dead end the reader has to undo.
-              const hit = snapshot.states.find((s) => s.state === region);
-              if (!hit) return;
-              setFocus(region);
-              setQuery("");
-              setExpanded(false);
-            }}
-            legend={
-              <div className="pmw__legend">
-                {showVillages && maxBin > 0 && (
-                  <div className="pmw__legendgroup">
-                    <span className="pmw__legendlabel">Villages per locality</span>
-                    <span className="pmw__ramp" aria-hidden>
-                      {Array.from({ length: 10 }, (_, i) => (
-                        <span
-                          key={i}
-                          className="pmw__rampstep"
-                          style={{ backgroundColor: `var(--sa-chart-seq-${SEQ_STEPS[i]})` }}
-                        />
-                      ))}
-                    </span>
-                    <span className="pmw__rampends">
-                      <span>1</span>
-                      <span>{formatIndian(maxBin)}</span>
-                    </span>
-                  </div>
-                )}
-                {showHostels && (
-                  <div className="pmw__legendgroup">
-                    <span className="pmw__legendlabel">Hostels</span>
-                    <span className="pmw__keys">
-                      {HOSTEL_KINDS.filter((k) => types.has(k.kind)).map((k) => (
-                        <span key={k.kind} className="pmw__key">
-                          <span
-                            className="pmw__keydot"
-                            style={{ backgroundColor: k.color }}
-                            aria-hidden
-                          />
-                          {k.label}
-                        </span>
-                      ))}
-                    </span>
-                  </div>
-                )}
-              </div>
-            }
-            table={{
-              columns: [focus == null ? "State" : "District", "Adarsh Gram villages", "Hostels"],
-              rows: visibleRows.map((r) => [r.name, r.villages, r.hostels]),
-            }}
-          />
-          <p className="pmw__mapnote">
-            {showVillages
-              ? "Each cell shades by how many Adarsh Gram villages stand within a few kilometres of it. "
-              : ""}
-            {showHostels && pins.length > 0 ? "Each dot is one hostel. " : ""}
-            {focus == null
-              ? "Select a state on the map or in the list to open its districts."
-              : "Rings mark districts; hover a row to find one."}
-          </p>
-        </div>
-
-        <div className="pmw__rail">
-          <div className="pmw__railhead">
-            <span className="pmw__raileyebrow">{focus == null ? "By state" : "By district"}</span>
-            <span className="pmw__railcount">
-              {formatIndian(visibleRows.length)}
-              {focus == null ? " of 36" : ""}
-            </span>
+            {showHostels && (
+              <fieldset className="pmw__chips">
+                <legend className="ds-sr-only">Hostel type</legend>
+                {HOSTEL_KINDS.map((k) => {
+                  const on = types.has(k.kind);
+                  const n = snapshot.hostels.filter(
+                    (h) => h.type === k.kind && (focus == null || h.state === focus),
+                  ).length;
+                  return (
+                    <button
+                      key={k.kind}
+                      type="button"
+                      className={`pmw__chip${on ? " pmw__chip--on" : ""}`}
+                      aria-pressed={on}
+                      onClick={() => toggleType(k.kind)}
+                    >
+                      <span
+                        className="pmw__chipdot"
+                        style={{ backgroundColor: k.color }}
+                        aria-hidden
+                      />
+                      {k.label}
+                      <span className="pmw__chipcount">{formatIndian(n)}</span>
+                    </button>
+                  );
+                })}
+              </fieldset>
+            )}
           </div>
 
-          {visibleRows.length === 0 ? (
-            <p className="pmw__empty">
-              {query
-                ? `Nothing matches “${query}”.`
-                : "Both components are switched off, so there is nothing to list."}
-            </p>
-          ) : (
-            <ol className="pmw__list">
-              {shown.map((r, i) => {
-                const clickable = focus == null;
-                const Row = clickable ? "button" : "div";
-                return (
-                  <li key={r.key} className="pmw__row">
-                    <Row
-                      {...(clickable
-                        ? {
-                            type: "button" as const,
-                            onClick: () => {
-                              setFocus(r.name);
-                              setQuery("");
-                              setExpanded(false);
-                            },
-                          }
-                        : {})}
-                      className="pmw__rowinner"
-                      onPointerEnter={() => setHoverRow(r.key)}
-                      onPointerLeave={() => setHoverRow(null)}
-                      onFocus={() => setHoverRow(r.key)}
-                      onBlur={() => setHoverRow(null)}
-                    >
-                      <span className="pmw__rank">{i + 1}</span>
-                      <span className="pmw__rowbody">
-                        <span className="pmw__state">{r.name}</span>
-                        {/* Decorative: the figures beside it carry the same value,
-                            so a screen reader would otherwise hear it twice. */}
-                        <span className="pmw__track" aria-hidden>
-                          <span
-                            className="pmw__fill"
-                            style={{ width: `${Math.max(2, (primary(r) / top) * 100)}%` }}
-                          />
-                        </span>
+        </div>
+
+        <div className="pmw__panel">
+          <div className="pmw__map">
+            <IndiaPointMap
+              title={focus == null ? "PM-AJAY across India" : `PM-AJAY in ${focus}`}
+              summary={`${formatIndian(shownVillages)} Adarsh Gram villages and ${formatIndian(
+                shownHostels,
+              )} hostels${focus == null ? " across India" : ` in ${focus}`}.`}
+              bins={showVillages ? bins : undefined}
+              binNoun="villages"
+              bubbles={districtRings}
+              bubbleVariant="outlined"
+              maxBubbleRadius={26}
+              highlightBubbleId={focus != null ? hoverRow : null}
+              pins={pins}
+              pinKinds={HOSTEL_KINDS}
+              /*
+                Individually reachable only once the map is framed on a state.
+                Across India there are 195 of them, and 195 tab stops between the
+                heading and the ranked list is a barrier, not access — the list is
+                how a keyboard reader gets to a state in the first place. Inside
+                one state there are at most a few dozen, each a building someone
+                might be looking for.
+              */
+              interactivePins={focus != null}
+              focusRegion={focus}
+              highlightRegion={focus == null ? hoverRow : null}
+              onSelectRegion={(region) => {
+                // Only states the scheme has actually reached are worth opening;
+                // zooming to an empty state is a dead end the reader has to undo.
+                const hit = snapshot.states.find((s) => s.state === region);
+                if (!hit) return;
+                setFocus(region);
+                setQuery("");
+                setExpanded(false);
+              }}
+              /*
+                NO LEGEND PROP, AND NO CAPTION UNDER THE MAP. Both moved into the
+                controls above, where the key is also the control. What sat here
+                was three lines of 12px instructions — "Each cell shades by…
+                Each dot is… Select a state on the map or in the list to…" — and
+                a map that needs instructions has a legend problem, not an
+                instructions problem.
+              */
+              table={{
+                columns: [focus == null ? "State" : "District", "Adarsh Gram villages", "Hostels"],
+                rows: visibleRows.map((r) => [r.name, r.villages, r.hostels]),
+              }}
+            />
+          </div>
+
+          <div className="pmw__rail">
+            {/*
+              THE BREADCRUMB AND THE SEARCH BELONG TO THE LIST, NOT THE MAP.
+
+              They sat in the map's control bar, where they pushed it to two
+              rows and left the second one holding "India  [Find a state…]"
+              alone against the right edge, reading as an orphan rather than a
+              group. They are also simply in the wrong place: the search filters
+              THIS list, and the breadcrumb names the grain THIS list is at.
+
+              What is left in the control bar is only the key, which is what a
+              map's own chrome should be.
+            */}
+            <div className="pmw__railhead">
+              <div className="pmw__where">
+                <nav className="pmw__crumbs" aria-label="Map area">
+                  <button
+                    type="button"
+                    className="pmw__crumb"
+                    onClick={() => {
+                      setFocus(null);
+                      setExpanded(false);
+                    }}
+                    aria-current={focus == null ? "true" : undefined}
+                    disabled={focus == null}
+                  >
+                    India
+                  </button>
+                  {focus != null && (
+                    <>
+                      <span className="pmw__crumbsep" aria-hidden>
+                        ›
                       </span>
-                      <span className="pmw__values">
+                      <span className="pmw__crumb pmw__crumb--here" aria-current="true">
+                        {focus}
+                      </span>
+                    </>
+                  )}
+                </nav>
+
+                <label className="pmw__search">
+                  <span className="ds-sr-only">
+                    Search {focus == null ? "states" : `districts in ${focus}`}
+                  </span>
+                  <input
+                    type="search"
+                    className="pmw__searchinput"
+                    placeholder={focus == null ? "Find a state…" : `Find a district in ${focus}…`}
+                    value={query}
+                    onChange={(e) => {
+                      setQuery(e.target.value);
+                      setExpanded(true);
+                    }}
+                  />
+                </label>
+              </div>
+              <span className="pmw__railcount">
+                {formatIndian(visibleRows.length)}
+                {focus == null ? " of 36" : ""}
+              </span>
+            </div>
+
+            {/*
+              COLUMN HEADINGS, so the figures can be bare.
+              Every row used to carry its own " villages" and " hostels" on two
+              stacked lines. Twenty-eight rows repeating two words each, and the
+              state name squeezed into 83px as a result — "Uttar Pradesh" and
+              "Andhra Pradesh" were rendering ellipsised on a government page.
+              Naming the columns once buys the names their width back.
+            */}
+            {visibleRows.length > 0 && (showVillages || showHostels) && (
+              <div className="pmw__railcols" aria-hidden>
+                <span>{focus == null ? "By state" : "By district"}</span>
+                {showVillages && <span>Villages</span>}
+                {showHostels && <span>Hostels</span>}
+              </div>
+            )}
+
+            {visibleRows.length === 0 ? (
+              <p className="pmw__empty">
+                {query
+                  ? `Nothing matches “${query}”.`
+                  : "Both components are switched off, so there is nothing to list."}
+              </p>
+            ) : (
+              <ol className="pmw__list">
+                {shown.map((r) => {
+                  const clickable = focus == null;
+                  const Row = clickable ? "button" : "div";
+                  return (
+                    <li key={r.key} className="pmw__row">
+                      <Row
+                        {...(clickable
+                          ? {
+                              type: "button" as const,
+                              onClick: () => {
+                                setFocus(r.name);
+                                setQuery("");
+                                setExpanded(false);
+                              },
+                            }
+                          : {})}
+                        className="pmw__rowinner"
+                        onPointerEnter={() => setHoverRow(r.key)}
+                        onPointerLeave={() => setHoverRow(null)}
+                        onFocus={() => setHoverRow(r.key)}
+                        onBlur={() => setHoverRow(null)}
+                      >
+                        <span className="pmw__rowbody">
+                          <span className="pmw__state">{r.name}</span>
+                          {/* Decorative: the figures beside it carry the same value,
+                              so a screen reader would otherwise hear it twice. */}
+                          <span className="pmw__track" aria-hidden>
+                            <span
+                              className="pmw__fill"
+                              style={{ width: `${Math.max(2, (primary(r) / top) * 100)}%` }}
+                            />
+                          </span>
+                        </span>
                         {showVillages && (
                           <span className="pmw__value">
                             {formatIndian(r.villages)}
-                            <span className="pmw__valuenote"> villages</span>
+                            <span className="ds-sr-only"> villages</span>
                           </span>
                         )}
                         {showHostels && (
                           <span className="pmw__value pmw__value--alt">
                             {formatIndian(r.hostels)}
-                            <span className="pmw__valuenote"> hostels</span>
+                            <span className="ds-sr-only"> hostels</span>
                           </span>
                         )}
-                      </span>
-                    </Row>
-                  </li>
-                );
-              })}
-            </ol>
-          )}
+                      </Row>
+                    </li>
+                  );
+                })}
+              </ol>
+            )}
 
-          {visibleRows.length > RAIL_LIMIT && (
-            <button type="button" className="pmw__more" onClick={() => setExpanded((v) => !v)}>
-              {expanded
-                ? "Show fewer"
-                : `Show all ${formatIndian(visibleRows.length)} ${focus == null ? "states" : "districts"}`}
-            </button>
-          )}
+            {visibleRows.length > RAIL_LIMIT && (
+              <button type="button" className="pmw__more" onClick={() => setExpanded((v) => !v)}>
+                {expanded
+                  ? "Show fewer"
+                  : `Show all ${formatIndian(visibleRows.length)} ${focus == null ? "states" : "districts"}`}
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
+      {/*
+        THE COVERAGE LINE IS THE FOOTNOTE, AND IT IS THE ONLY THING IN IT.
+
+        The totals used to be printed three times in this section — in the
+        cards, in the standfirst, and again here — so the one line that was not
+        a repetition, the one saying what the map could not draw, read as the
+        least important text on screen. It says it once now, and Grant-in-Aid
+        joins it: a component with no published coordinates is a sentence, not a
+        greyed-out card for a layer that can never be switched on.
+      */}
       <div className="pmw__foot">
-        <div className="pmw__footfacts">
-          <p className="pmw__footfact">
-            {filtered ? "Showing " : ""}
-            {formatIndian(shownVillages)} villages and {formatIndian(shownHostels)} hostels
-            {focus == null ? " across India" : ` in ${focus}`}
-            {prov === "mock" ? " · illustrative" : ""}
-          </p>
-          {/*
-            The coverage line, not a footnote. See the component's own note: a
-            map that omits 423 places while printing the full total underneath
-            is telling the reader it drew them all.
-          */}
-          <p className="pmw__coverage">
-            {`${formatIndian(cov.villagesPlaced + cov.hostelsPlaced)} of ${formatIndian(
-              cov.villagesTotal + cov.hostelsTotal,
-            )} records are drawn. ${formatIndian(
-              cov.villagesUnplaceable + cov.hostelsUnplaceable,
-            )} carry no usable coordinates and ${formatIndian(
-              cov.villagesOffshore + cov.hostelsOffshore,
-            )} are published at a point outside India; both are counted here but not placed on the map. ${formatIndian(
-              cov.villagesRepaired + cov.hostelsRepaired,
-            )} had latitude and longitude reversed and are drawn corrected.`}
-          </p>
-        </div>
+        <p className="pmw__coverage">
+          {`${formatIndian(cov.villagesPlaced + cov.hostelsPlaced)} of ${formatIndian(
+            cov.villagesTotal + cov.hostelsTotal,
+          )} records are drawn. ${formatIndian(
+            cov.villagesUnplaceable + cov.hostelsUnplaceable,
+          )} carry no usable coordinates and ${formatIndian(
+            cov.villagesOffshore + cov.hostelsOffshore,
+          )} are published at a point outside India; both are counted here but not placed on the map. ${formatIndian(
+            cov.villagesRepaired + cov.hostelsRepaired,
+          )} had latitude and longitude reversed and are drawn corrected.`}
+          {giaTotal != null && (
+            <>
+              {" "}
+              {`Grant-in-Aid’s ${formatIndian(
+                giaTotal,
+              )} projects are not on this map at all: the department publishes no locations for them.`}
+            </>
+          )}
+        </p>
         <a
           className="pmw__footlink"
           href={csvHref}
