@@ -15,6 +15,24 @@ export interface DataTableColumn<T> {
   exportValue?: (row: T) => string;
   /** Exclude this column from copy/export (e.g. action buttons). */
   noExport?: boolean;
+  /**
+   * Make the column sortable. The header becomes a button and the `<th>` carries
+   * `aria-sort`, which this table had on NO column — so a screen-reader user was
+   * never told a register was ordered, or by what.
+   */
+  sortable?: boolean;
+  /**
+   * The value to sort by, when the cell's display comes from `render`. Without
+   * it a rendered cell sorts by `String(row[key])`, which orders "₹1,20,000"
+   * before "₹9,000" — the classic government-register defect.
+   */
+  sortValue?: (row: T) => string | number;
+}
+
+/** Which column a register is ordered by, and which way. */
+export interface DataTableSort {
+  key: string;
+  direction: "asc" | "desc";
 }
 
 export interface DataTableProps<T> {
@@ -32,6 +50,16 @@ export interface DataTableProps<T> {
   caption?: string;
   /** Empty-state message. @default "No records found." */
   emptyLabel?: React.ReactNode;
+  /**
+   * Controlled sort. Omit to let the table hold its own — the uncontrolled form
+   * is right for a register the reader is browsing; the controlled form is for a
+   * page that sorts on the server or reflects the order in its URL.
+   */
+  sort?: DataTableSort | null;
+  /** Fires with the next sort. Required to change a CONTROLLED sort. */
+  onSortChange?: (sort: DataTableSort | null) => void;
+  /** Initial sort for the uncontrolled form. */
+  defaultSort?: DataTableSort | null;
   className?: string;
 }
 
@@ -61,18 +89,69 @@ export function DataTable<T extends Record<string, unknown>>({
   showPageSizes = true,
   caption,
   emptyLabel = "No records found.",
+  sort: controlledSort,
+  onSortChange,
+  defaultSort = null,
   className,
 }: DataTableProps<T>) {
   const [page, setPage] = React.useState(1);
+  const [ownSort, setOwnSort] = React.useState<DataTableSort | null>(defaultSort);
+  const sort = controlledSort !== undefined ? controlledSort : ownSort;
   const [pageSize, setPageSize] = React.useState<number>(pageSizes[0] ?? 10);
 
   React.useEffect(() => {
     setPage(1);
   }, [total]);
 
+  const byKey = React.useMemo(
+    () => new Map(columns.map((c) => [c.key, c])),
+    [columns],
+  );
+
+  /*
+   * SORT THE WHOLE SET, THEN PAGE IT. Sorting the visible page instead would
+   * reorder ten rows inside a register of four thousand and read as correct.
+   *
+   * A CONTROLLED sort is the caller's business — they are sorting on the server
+   * — so the rows arrive already ordered and are left alone.
+   */
+  const sorted = React.useMemo(() => {
+    if (!sort || controlledSort !== undefined) return data;
+    const col = byKey.get(sort.key);
+    if (!col) return data;
+    const value = (row: T): string | number => {
+      if (col.sortValue) return col.sortValue(row);
+      const raw = row[sort.key];
+      return typeof raw === "number" ? raw : String(raw ?? "");
+    };
+    const dir = sort.direction === "asc" ? 1 : -1;
+    return [...data].sort((a, b) => {
+      const av = value(a);
+      const bv = value(b);
+      if (typeof av === "number" && typeof bv === "number") return (av - bv) * dir;
+      // `en-IN` with `numeric` so "Block 2" precedes "Block 10" — a register of
+      // districts, blocks and scheme codes is full of embedded numbers.
+      return String(av).localeCompare(String(bv), "en-IN", { numeric: true, sensitivity: "base" }) * dir;
+    });
+  }, [data, sort, byKey, controlledSort]);
+
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
   const safePage = Math.min(page, totalPages);
-  const visibleData = data.slice((safePage - 1) * pageSize, safePage * pageSize);
+  const visibleData = sorted.slice((safePage - 1) * pageSize, safePage * pageSize);
+
+  const setSort = (key: string) => {
+    const next: DataTableSort | null =
+      sort?.key === key
+        ? sort.direction === "asc"
+          ? { key, direction: "desc" }
+          : /* third press clears it — a reader must be able to get back to the
+               order the department published, which is what "no sort" means. */
+            null
+        : { key, direction: "asc" };
+    setPage(1);
+    if (controlledSort === undefined) setOwnSort(next);
+    onSortChange?.(next);
+  };
 
   const pageNumbers = React.useMemo<Array<number | "…">>(() => {
     if (totalPages <= 7) return Array.from({ length: totalPages }, (_, i) => i + 1);
@@ -81,18 +160,73 @@ export function DataTable<T extends Record<string, unknown>>({
     return [1, "…", safePage - 1, safePage, safePage + 1, "…", totalPages];
   }, [safePage, totalPages]);
 
+  /*
+   * PAGING AND SORTING ANNOUNCED NOTHING.
+   *
+   * Both replace every row in the table without moving focus, so a screen-reader
+   * user pressed "Next" or a column header and heard silence — then had to go
+   * hunting to find out whether anything had happened. A persistent live region,
+   * mounted once and written into, is how a change to content the reader did not
+   * navigate to gets reported. It must exist BEFORE the text changes, which is
+   * why it is not conditionally rendered.
+   */
+  const sortedColumn = sort ? byKey.get(sort.key) : undefined;
+  const announcement = [
+    `Page ${safePage} of ${totalPages}`,
+    sortedColumn
+      ? `sorted by ${sortedColumn.header}, ${sort?.direction === "asc" ? "ascending" : "descending"}`
+      : "not sorted",
+  ].join(", ");
+
   return (
     <div className={cn("ds-table", className)}>
+      <div className="ds-table__live" role="status" aria-live="polite">
+        {announcement}
+      </div>
       <div className="ds-table__scroll">
         <table className="ds-table__table">
           {caption && <caption className="ds-table__caption">{caption}</caption>}
           <thead className="ds-table__head">
             <tr>
-              {columns.map((col) => (
-                <th key={col.key} scope="col" className={cn("ds-table__th", col.className)}>
-                  {col.header}
-                </th>
-              ))}
+              {columns.map((col) => {
+                if (!col.sortable) {
+                  return (
+                    <th key={col.key} scope="col" className={cn("ds-table__th", col.className)}>
+                      {col.header}
+                    </th>
+                  );
+                }
+                const active = sort?.key === col.key;
+                return (
+                  <th
+                    key={col.key}
+                    scope="col"
+                    /*
+                     * `aria-sort` goes on the CELL, not the button — it describes
+                     * the column, and a screen reader reads it as it enters the
+                     * column rather than only when focus lands on the control.
+                     */
+                    aria-sort={active ? (sort.direction === "asc" ? "ascending" : "descending") : "none"}
+                    className={cn("ds-table__th", "ds-table__th--sortable", col.className)}
+                  >
+                    {/*
+                      A BUTTON, not a click handler on the `<th>`. A cell with an
+                      onClick is unreachable by keyboard and has no role, which is
+                      how a sortable table ends up sortable only by mouse.
+                    */}
+                    <button
+                      type="button"
+                      className="ds-table__sort"
+                      onClick={() => setSort(col.key)}
+                    >
+                      {col.header}
+                      <span className="ds-table__sort-mark" aria-hidden="true">
+                        {active ? (sort.direction === "asc" ? "↑" : "↓") : "↕"}
+                      </span>
+                    </button>
+                  </th>
+                );
+              })}
             </tr>
           </thead>
           <tbody>

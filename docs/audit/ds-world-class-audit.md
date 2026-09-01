@@ -13,6 +13,39 @@ fixed · ✗ disputed — the finding was wrong, and the correction is stated.
 
 ---
 
+## 0a. The eight lenses — who ran, when, and the finding each is proudest of
+
+Every lens was told the same thing: **find the reason to reject.** A verdict of
+"looks good" was a failed audit. Each ran with a different question it was
+allowed to kill the work with, and each produced findings in one shape — severity,
+file path, a falsifiable sentence, the cost, and the concrete fix. A finding with
+no file path was thrown out unread.
+
+**Three passes.** All eight ran over the original system (Part I). Four re-ran
+over the finished foundations (Part II — architect, senior developer, UI/UX,
+design director). Four re-ran over the finished work (Part III — design system
+manager, CTO, business analyst, product manager). 12 lens-runs, ~190 findings.
+
+| Lens | Its question | The sharpest thing it found |
+|---|---|---|
+| **Design Director** | Does this look designed, or assembled? Would it survive next to GOV.UK and Carbon? | The page title was set at **four different type roles** across 111 pages, so on 41 pages the `h1` was the same size as the `h2` on 59 others. And the prose measure took **seventeen** distinct values — 57 of which were `1024px` inside a column that is 804px wide, i.e. dead code someone would eventually "fix" by widening the wrong thing. |
+| **Senior Design System Manager** | Can a team adopt this without asking us a question? | **Six version numbers for one system** — the same release published as `v0.94.0` and `v0.42.0` in near-identical prose while `package.json` said `0.6.0`. And the `--ds-*` token contract was retired in a MINOR while `GOVERNANCE.md` still said breaking it was a major; `grep -c -- "--ds-"` on `tokens.css` returns 0, and CSS drops an unresolvable `var()` in silence. |
+| **Technical Architect** | What breaks at scale? | The package declared **no `sideEffects`**, so 104 CSS-importing modules could not be tree-shaken and a portal using six components paid for ninety. Then, on the re-audit, that a union props type returns its **intersection** — so the generator I had just built published `BarChartProps` with none of `data`, `labels` or `series`, making its own headline claim false for the exact case its docstring cited. |
+| **CTO** | What does this cost, and what is the risk I report upward? | **Eight advisories in shipped dependencies, one critical**, with no scanner of any kind — while 22 bespoke gates enforced radius tokens and icon pixel sizes. "The gate portfolio is optimised for the risk the team finds interesting, not the risk that ends the programme." |
+| **Senior Developer** | Can I use this component in ten minutes from the page alone? | Of twelve props tables audited against their implementations, **one** matched. `ChartCard` documented a prop named `action`; the prop is `actions`. `AppShell` marked two optional props required. `OtpInput` documented `onChange`, which does not exist. |
+| **Business Analyst** | Which requirement does each component satisfy? | **Twelve of twenty portals have no captured requirements at all**, so every component gap is an inference from the eight that exist and is "incomplete by construction". And the citizen-facing portals have **no Hindi** while the informational website has sixteen languages — "precisely backwards". |
+| **Product Manager** | Who reads this, and where does it fail them? | The roadmap listed `DatePicker` and `FileUpload` as **shipped**; neither has ever existed. Then, on the re-audit, that the page held back as "the estate's best" had the **most drifted table in the catalogue** — three props that do not exist, seven missing, four of them demonstrated by its own specimen a few lines above. |
+| **UI/UX Designer** | Every state, every breakpoint, every input modality. | **17 of 17 charts had no loading state and no error state**; six had no empty state at all; none had filtered-to-nothing. The three India maps drew a complete grey map from an empty feed and announced "across 0 states". |
+
+### What the lenses got wrong
+
+Recorded because an audit that cannot be wrong cannot be trusted either. The
+detail is in §4: the "no shared chart layer" premise was false (`charts/internal`
+is a real 890-LOC layer), "zero charts render a table equivalent" was false (11
+of 15 do), and "no CVD validation exists" was false — the estate's CVD gate is
+rigorous and uses the correct Machado matrices. The real palette finding was
+narrower and more interesting than any of them.
+
 ## 0. The headline, in one paragraph
 
 The design system *package* is in better shape than its reputation: zero `any`, zero

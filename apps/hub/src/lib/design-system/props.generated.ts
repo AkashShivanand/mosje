@@ -2156,11 +2156,24 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "defaultSort",
+        "type": "DataTableSort | null",
+        "required": false,
+        "default": "null",
+        "description": "Initial sort for the uncontrolled form."
+      },
+      {
         "name": "emptyLabel",
         "type": "React.ReactNode",
         "required": false,
         "default": "\"No records found.\"",
         "description": "Empty-state message."
+      },
+      {
+        "name": "onSortChange",
+        "type": "(sort: DataTableSort | null) => void",
+        "required": false,
+        "description": "Fires with the next sort. Required to change a CONTROLLED sort."
       },
       {
         "name": "pageSizes",
@@ -2175,6 +2188,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "true",
         "description": "Show the page-size buttons (\"Showing 10 50 100 of N items\"). Set false for the government register pattern, which states the visible range instead (\"Showing 1–10 of 71\") and fixes the page size at the first entry of `pageSizes`."
+      },
+      {
+        "name": "sort",
+        "type": "DataTableSort | null",
+        "required": false,
+        "description": "Controlled sort. Omit to let the table hold its own — the uncontrolled form is right for a register the reader is browsing; the controlled form is for a page that sorts on the server or reflects the order in its URL."
       }
     ]
   },

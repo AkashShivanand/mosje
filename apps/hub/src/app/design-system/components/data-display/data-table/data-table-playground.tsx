@@ -21,9 +21,21 @@ const mockData: Scheme[] = Array.from({ length: 45 }).map((_, i) => ({
 }));
 
 const columns: DataTableColumn<Scheme>[] = [
-  { key: "id", header: "Scheme ID" },
-  { key: "name", header: "Scheme Name" },
-  { key: "applicants", header: "Applicants", className: "ds-text-right", render: (row) => row.applicants.toLocaleString("en-IN") },
+  { key: "id", header: "Scheme ID", sortable: true },
+  { key: "name", header: "Scheme Name", sortable: true },
+  {
+    key: "applicants",
+    header: "Applicants",
+    className: "ds-text-right",
+    sortable: true,
+    /*
+     * `sortValue` because the cell's DISPLAY is a formatted string. Without it
+     * the column sorts by "1,20,000" and "9,000" as text, which puts the larger
+     * figure first — the classic government-register defect.
+     */
+    sortValue: (row) => row.applicants,
+    render: (row) => row.applicants.toLocaleString("en-IN"),
+  },
   {
     key: "status",
     header: "Status",

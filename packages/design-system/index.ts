@@ -209,7 +209,11 @@ export type { FactStripProps, FactStripItem } from "./components/data-display/fa
 export { MetricCard } from "./components/data-display/metric-card";
 export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
 export { DataTable } from "./components/data-display/data-table";
-export type { DataTableProps, DataTableColumn } from "./components/data-display/data-table";
+export type {
+  DataTableProps,
+  DataTableColumn,
+  DataTableSort,
+} from "./components/data-display/data-table";
 // VisitorCounter — the footer's "Total Visits" figure. MOCK DATA by design:
 // derived from a seeded baseline, not measured. See the component's own note.
 export { VisitorCounter } from "./components/data-display/visitor-counter";
