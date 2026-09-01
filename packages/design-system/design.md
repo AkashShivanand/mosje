@@ -1699,8 +1699,13 @@ Docs: `/design-system/components/sla-progress`.
 **Rule**: Always wrap in `<FormField>` with a descriptive label. `Toggle` is for immediate-effect settings (e.g. notifications on/off), not for form submission.
 
 #### Chip
-**Purpose**: Compact filter badge. Used for multi-select filter groups.  
-**Rule**: Use `<Chip>` for tag-style multi-selects, not for navigation or status display.
+**Purpose**: Compact filter badge. Used for multi-select filter groups.
+**Key props**: `selected` + `onSelectedChange`, `onDismiss`, `leadingIcon`, `count`, `countLabel`, `size`, `tone`, `trailingDropdown`
+**Rules**:
+- Use `<Chip>` for tag-style multi-selects, not for navigation or status display.
+- **`count` is a prop, not something you write into the label.** Two callers were already doing it by hand and disagreeing — `DocumentLibrary` wrote `{group} ({count})` into the children, PM-AJAY's coverage map appended a muted `<span>`. It renders muted, `tabular-nums`, and OUTSIDE the label, so a screen reader hears "Guidelines, 2 documents" rather than "Guidelines open bracket two close bracket". Name the unit with `countLabel`. Pass a **string** when the figure needs Indian grouping (`formatIndian(n)`).
+- **`size="sm"` is for a dense filter row** — chips sharing a line with other controls, where `md`'s 32px pushes the row onto a second line. It stays past the 24px minimum target (WCAG 2.2 SC 2.5.8). It is not a licence to fit more chips into a space that is simply too small.
+- A `leadingIcon` may carry a **colour key** rather than a glyph, for chips that filter classes of mark on a chart or map. Keep the key **filled in both states**: the chip's own selected treatment carries the state, and a key that changes with selection stops matching the thing it keys.
 
 #### MediaUpload
 **Purpose**: Image/file upload with drag-and-drop, preview, replace/remove, and client-side type + size validation. Reads to a data-URL (no network).  
@@ -2240,7 +2245,24 @@ and renders it only when `exportable`.
     adds them up by eye.
 - Charts are CSS-var driven (no Tailwind), so they work in every app including
   pm-ajay (no Tailwind) and the v3/v4 portals.
-- **`Legend` is `aria-hidden` on purpose, and that is not a bug to fix.** The real
+- **`Legend` can be the SWITCH for what it keys.** Pass `onToggle` and each
+  entry becomes a control — `role="button"`, `aria-pressed`, Enter and Space —
+  and set `item.on` to say which series are drawn. Charts whose series can be
+  switched on and off are ubiquitous, and until this existed every one of them
+  hand-rolled a row of buttons beside a legend that could not do it. The
+  capability arrives with the handler, exactly as `Chip`'s `onSelectedChange`
+  and `Pagination`'s `onPageChange` do. An entry that is off dims its key AND
+  reports `aria-pressed="false"`, so state is never carried by colour alone.
+- **`item.swatch` draws the key the way its series is drawn.** `solid` (default)
+  is one square, right for a categorical series. `ramp` builds the sequential
+  scale from `colors` — give it `scale` so a reader can tell what a shade is
+  worth, because a gradient with no numbers says only "more is darker", which
+  they could already see. `dots` is for a series that is itself a GROUP of
+  marks drawn separately; PM-AJAY's hostels are one layer rendered in three
+  colours by type, and one square would have keyed a colour the map never uses.
+- **`Legend` is `aria-hidden` WHILE IT IS ONLY A KEY, and that is not a bug to
+  fix.** Passing `onToggle` removes it, because a control may never be hidden
+  from assistive technology. Without it, the real
   values live in `ChartFrame`'s screen-reader data table; the legend is the sighted
   reader's colour key and would otherwise read out a second, redundant list of
   labels with no numbers. The consequence is the rule above restated with teeth:

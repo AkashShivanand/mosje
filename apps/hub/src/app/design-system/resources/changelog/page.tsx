@@ -22,9 +22,22 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.86.0",
+    version: "v0.87.0",
     date: "2026-09-01",
     current: true,
+    changes: [
+      { kind: "Added", text: "`Chip` GAINS `count` — AND IT IS A PROP BECAUSE TWO CALLERS WERE ALREADY DOING IT BY HAND, DIFFERENTLY. `DocumentLibrary` wrote `{group} ({count})` into the chip's children; PM-AJAY's coverage map appended a muted `<span>`. One idea, two typographic answers, and one of them inside the design system. It now renders once — muted, `tabular-nums`, and OUTSIDE the label, so a screen reader hears \"Guidelines, 2 documents\" rather than \"Guidelines open bracket two close bracket\". `countLabel` names the unit; pass a string when the figure needs Indian grouping" },
+      { kind: "Added", text: "`Chip` GAINS `size`, matching `Badge`, which has had one all along. `sm` is 26px against `md`'s 32 and drops the type one step rather than shrinking the padding alone, so the pill stays in proportion to what is in it. It exists for a DENSE FILTER ROW: PM-AJAY's map needed two legend keys plus three type filters in an 798px bar, they wanted 816px, and eighteen pixels are not worth a second row of chrome above a map. Still past the 24px minimum target (SC 2.5.8), and not a licence to fit more chips into a space that is simply too small" },
+      { kind: "Added", text: "`Legend` CAN NOW BE THE SWITCH FOR WHAT IT KEYS. Pass `onToggle` and every entry becomes a control — `role=\"button\"`, `aria-pressed`, Enter and Space — with `item.on` saying which series are drawn. Charts whose series can be switched on and off are ubiquitous and the estate had none: every one of them hand-rolled a row of buttons beside a legend that could not do it, PM-AJAY's map being the latest. The capability arrives with the handler, exactly as `Chip`'s `onSelectedChange` and `Pagination`'s `onPageChange` do, rather than through a flag someone can forget to pair with it" },
+      { kind: "Changed", text: "`Legend`'s `aria-hidden` IS NOW CONDITIONAL, and the condition is the whole point. A decorative legend stays hidden — the real values reach assistive tech through `ChartFrame`'s screen-reader table, and a second numberless recital of the same labels helps nobody. An INTERACTIVE legend may never be hidden, because a control that changes the chart has to be reachable. Passing `onToggle` removes it and adds an `aria-label`" },
+      { kind: "Added", text: "`Legend` GAINS `item.swatch` — `solid` · `ramp` · `dots`. A key should be drawn the way its series is drawn, and a solid square could only ever key a solid mark. `ramp` builds the sequential scale from `colors` and takes `scale` for its two ends, because a gradient with no numbers on it says only \"more is darker\", which the reader could already see. `dots` is for a series that is itself a GROUP of marks: PM-AJAY's hostels are one layer rendered in three colours by type, and one square would have keyed a colour the map never uses" },
+      { kind: "Changed", text: "AN OFF SERIES DIMS ITS KEY AND REPORTS `aria-pressed=\"false\"`. State on a legend is never carried by colour alone (WCAG 1.4.1) — which matters more here than usual, because the thing whose colour would carry it IS the colour key" },
+      { kind: "Fixed", text: "`DocumentLibrary` migrated to `count`, so the design system stops shipping the hand-formatted version of a pattern it now supports" },
+    ],
+  },
+  {
+    version: "v0.86.0",
+    date: "2026-09-01",
     changes: [
       { kind: "Added", text: "`IndiaPointMap` — REAL COORDINATES, WHICH THE ESTATE HAD NO WAY TO DRAW. `IndiaMap` shades a state and `IndiaBubbleMap` puts a circle at its centroid; both take a value already aggregated to a region, so both discard coordinates by construction. That is right for a rate and wrong for a list of PLACES. PM-AJAY's 19,768 Adarsh Gram villages are not a per-state quantity — they are a belt across West Bengal, Bihar and northern Tamil Nadu, with 44% of the whole programme in the first two states, and twenty-four circles at twenty-four centroids cannot say so" },
       { kind: "Added", text: "THREE MARKS, BECAUSE DENSITY AND IDENTITY ARE DIFFERENT QUESTIONS. `bins` is a hex density field for points too many to tell apart — what would ruin that answer is overplotting, not resolution. `bubbles` is proportional circles at named units for a zoomed grain. `pins` is one mark per record when the records are few enough to be individuals. PM-AJAY combines two of them on one canvas: 19,283 villages as density and 195 hostels as pins, because those are genuinely different kinds of thing and one mark flatters neither" },

@@ -6,9 +6,11 @@ import {
   Icon,
   IndiaPointMap,
   Input,
+  Legend,
   Pagination,
   SectionTitle,
   formatIndian,
+  type LegendItem,
   type MapPin,
   type MapBubble,
 } from "@mosje/design-system";
@@ -308,6 +310,33 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
 
   const maxBin = bins.length ? Math.max(...bins.map((b) => b.count)) : 0;
 
+  /*
+   * The two keys, as data. Villages draw a sequential ramp with its ends named
+   * — a shade means nothing without them — and hostels draw the three marks the
+   * map actually uses, so the key and the map cannot drift apart.
+   */
+  const legendItems: LegendItem[] = [
+    {
+      id: "villages",
+      label: "Adarsh Gram villages",
+      value: formatIndian(villageTotal),
+      color: "var(--sa-chart-seq-500)",
+      swatch: "ramp",
+      colors: SEQ_STEPS.map((step) => `var(--sa-chart-seq-${step})`),
+      scale: ["1", maxBin > 0 ? formatIndian(maxBin) : "—"],
+      on: showVillages,
+    },
+    {
+      id: "hostels",
+      label: "Hostels",
+      value: formatIndian(hostelTotal),
+      color: HOSTEL_KINDS[0]!.color,
+      swatch: "dots",
+      colors: HOSTEL_KINDS.map((k) => k.color),
+      on: showHostels,
+    },
+  ];
+
   const csvHref = React.useMemo(() => {
     const head = focus == null ? "State,Districts reached" : "District,State";
     const body = [
@@ -395,66 +424,26 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
             which is what it is; it happens to be clickable, which is what a
             legend on an interactive map should be; and it costs one line
             instead of a 113px card.
+
+            IT IS THE DS `Legend` NOW. It was a pair of hand-rolled buttons,
+            because the DS legend was `aria-hidden` decoration whose swatch
+            could only be a solid colour — it could not toggle and it could not
+            draw a ramp. Both are now properties of the component rather than of
+            this page, so the next chart that wants to switch its own series
+            does not hand-roll a third version.
           */}
-          <div className="pmw__layers">
-            <button
-              type="button"
-              className={`pmw__layer${showVillages ? " pmw__layer--on" : ""}`}
-              aria-pressed={showVillages}
-              onClick={() => {
-                setShowVillages((v) => !v);
-                resetPaging();
-              }}
-            >
-              {/*
-                The scale reads off the ramp's own ends rather than a caption
-                below it. A second line under the key made every key 44px tall
-                and the whole control bar a third taller than the map deserved,
-                and "1 ▨▨▨ 387" is how a density key has been drawn for a
-                century.
-              */}
-              <span className="pmw__scale" aria-hidden>
-                <span className="pmw__scaleend">1</span>
-                <span className="pmw__ramp">
-                  {SEQ_STEPS.map((s) => (
-                    <span
-                      key={s}
-                      className="pmw__rampstep"
-                      style={{ backgroundColor: `var(--sa-chart-seq-${s})` }}
-                    />
-                  ))}
-                </span>
-                <span className="pmw__scaleend">{maxBin > 0 ? formatIndian(maxBin) : "—"}</span>
-              </span>
-              <span className="pmw__layername">Adarsh Gram villages</span>
-              <span className="pmw__layervalue">{formatIndian(villageTotal)}</span>
-              <span className="ds-sr-only">
-                {`, shaded by villages per locality, 1 to ${formatIndian(maxBin)}`}
-              </span>
-            </button>
+          <Legend
+            className="pmw__layers"
+            label="Scheme components drawn on the map"
+            items={legendItems}
+            onToggle={(id) => {
+              if (id === "villages") setShowVillages((v) => !v);
+              else setShowHostels((v) => !v);
+              resetPaging();
+            }}
+          />
 
-            <button
-              type="button"
-              className={`pmw__layer${showHostels ? " pmw__layer--on" : ""}`}
-              aria-pressed={showHostels}
-              onClick={() => {
-                setShowHostels((v) => !v);
-                resetPaging();
-              }}
-            >
-              <span className="pmw__dots" aria-hidden>
-                {HOSTEL_KINDS.map((k) => (
-                  <span
-                    key={k.kind}
-                    className="pmw__dot"
-                    style={{ backgroundColor: k.color }}
-                  />
-                ))}
-              </span>
-              <span className="pmw__layername">Hostels</span>
-              <span className="pmw__layervalue">{formatIndian(hostelTotal)}</span>
-            </button>
-
+          <div className="pmw__filters">
             {showHostels && (
               <fieldset className="pmw__chips">
                 <legend className="ds-sr-only">Hostel type</legend>
@@ -485,10 +474,12 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                       leadingIcon={
                         <span className="pmw__chipdot" style={{ backgroundColor: k.color }} />
                       }
+                      size="sm"
+                      count={formatIndian(n)}
+                      countLabel="hostels"
                       className="pmw__chip"
                     >
                       {k.label}
-                      <span className="pmw__chipcount">{formatIndian(n)}</span>
                     </Chip>
                   );
                 })}

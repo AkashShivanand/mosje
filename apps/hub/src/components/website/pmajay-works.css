@@ -48,9 +48,13 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--sa-inline-12) var(--sa-inline-16);
-    padding: var(--sa-padding-12) var(--sa-padding-16);
+    /*
+      The gap BETWEEN the keys and the filters has to beat the gap inside
+      either, or the row reads as one run and each key's swatch drifts toward
+      whichever label is nearer.
+    */
+    gap: var(--sa-inline-12) var(--sa-inline-24);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }
 
@@ -68,98 +72,22 @@
   }
 
   /*
-    A legend entry that happens to be a button. Quiet at rest, and the only
-    things that change when it is switched off are that its key empties and its
-    ink drops — no border, no fill, nothing that would make a row of keys read
-    as a row of cards again.
+    The keys are the DS `Legend` now — see `Legend`'s own `onToggle` and its
+    `ramp` / `dots` swatches, which were added for exactly this. All that is
+    left here is where the row sits.
   */
-  .pmw__layer {
-    display: flex;
-    align-items: center;
-    gap: var(--sa-inline-8);
-    padding: var(--sa-padding-6) var(--sa-padding-8);
-    border: 0;
-    border-radius: var(--sa-shape-6);
-    background: none;
-    text-align: left;
-    color: var(--sa-text-neutral-subtle);
-    cursor: pointer;
-    transition: background-color 160ms ease-out;
-  }
-
-  .pmw__layer:hover {
-    background-color: var(--sa-bg-neutral-subtler);
-  }
-
-  .pmw__layer:active {
-    transform: scale(0.99);
-  }
-
-  .pmw__layer--on {
-    color: var(--sa-text-neutral-base);
-  }
-
-  /* Off is not carried by colour alone — the key itself empties out. */
-  .pmw__layer:not(.pmw__layer--on) .pmw__scale,
-  .pmw__layer:not(.pmw__layer--on) .pmw__dots {
-    opacity: 0.3;
-  }
-
-  /* "1 ▨▨▨▨▨ 387" — the key and its scale, on one line. */
-  .pmw__scale {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-4);
-    font-size: var(--sa-type-body-3-size);
-    font-variant-numeric: tabular-nums;
-    color: var(--sa-text-neutral-subtle);
-  }
-
-  .pmw__scaleend {
-    line-height: 1;
-  }
-
-  .pmw__ramp {
-    display: flex;
-    width: 3.5rem;
-    height: var(--sa-stack-8);
-    border-radius: var(--sa-shape-2);
-    overflow: hidden;
-  }
-
-  .pmw__rampstep {
-    flex: 1;
-  }
-
   /*
-    NO FIXED WIDTH. This carried `width: 3.5rem`, copied from the ramp beside
-    it so the two keys would line up. The three dots only ink 28px of that 56px,
-    so the key sat 36px from the word "Hostels" while the ramp sat 8px from its
-    own label — and only 16px from the villages key on the other side, which is
-    why the dots read as belonging to villages. A key belongs to its label;
-    matching the width of an unrelated key is not a reason to separate them.
+    `0 1 auto`, not `1 1 auto`: stretched, the keys took the whole row and
+    pushed the filters onto a second one even where both would have fitted.
   */
-  .pmw__dots {
+  .pmw__layers {
+    flex: 0 1 auto;
+    margin: 0;
+  }
+
+  .pmw__filters {
     display: flex;
     align-items: center;
-    gap: var(--sa-inline-2);
-  }
-
-  .pmw__dot {
-    width: var(--sa-stack-8);
-    height: var(--sa-stack-8);
-    border-radius: var(--sa-shape-full);
-  }
-
-  .pmw__layername {
-    font-size: var(--sa-type-body-2-size);
-    font-weight: 600;
-  }
-
-  .pmw__layervalue {
-    font-size: var(--sa-type-body-2-size);
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
   }
 
   .pmw__chips {
@@ -182,18 +110,6 @@
     width: var(--sa-stack-8);
     height: var(--sa-stack-8);
     border-radius: var(--sa-shape-full);
-  }
-
-  /* The chip's label and its count share a line. */
-  .pmw__chip .ds-chip__label {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-6);
-  }
-
-  .pmw__chipcount {
-    font-variant-numeric: tabular-nums;
-    color: var(--sa-text-neutral-subtle);
   }
 
   /* ── Where am I: breadcrumb + search ───────────────────────────────────── */

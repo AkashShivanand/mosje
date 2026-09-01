@@ -176,6 +176,97 @@
     align-items: center;
     gap: var(--sa-stack-8);
   }
+
+  /* ── An interactive legend: each entry switches its own series ──────────
+     Only present when `onToggle` is passed. Quiet at rest — a legend that
+     looked like a row of buttons would compete with the chart it labels — and
+     the only thing that changes when a series is off is that its key empties
+     and its ink drops. */
+  .ds-chart__legend--interactive {
+    gap: var(--sa-stack-4);
+  }
+
+  .ds-chart__legend-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-6) var(--sa-padding-8);
+    border-radius: var(--sa-shape-6);
+    cursor: pointer;
+    transition: background-color 160ms ease-out;
+  }
+
+  .ds-chart__legend-toggle:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-chart__legend-toggle:active {
+    transform: scale(0.99);
+  }
+
+  /* Off is not carried by colour alone: the key fades AND `aria-pressed`
+     reports it. */
+  .ds-chart__legend-toggle.is-off {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-chart__legend-toggle.is-off .ds-chart__swatch,
+  .ds-chart__legend-toggle.is-off .ds-chart__ramp,
+  .ds-chart__legend-toggle.is-off .ds-chart__dots {
+    opacity: 0.3;
+  }
+
+  /* ── `swatch: "ramp"` — a sequential scale, with its ends named ─────────
+     Endpoints beside the strip rather than a caption below it: a key that
+     needs a second line stops being a key. */
+  .ds-chart__scale {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-4);
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-chart__scale-end {
+    line-height: 1;
+  }
+
+  .ds-chart__ramp {
+    display: flex;
+    width: 3.5rem;
+    height: var(--sa-stack-8);
+    border-radius: var(--sa-shape-2);
+    overflow: hidden;
+  }
+
+  .ds-chart__ramp-step {
+    flex: 1;
+  }
+
+  /* ── `swatch: "dots"` — a series that is itself a group of marks ────────
+     No fixed width. Matching the ramp's width would leave dead space inside
+     the key and push it away from the label it belongs to. */
+  .ds-chart__dots {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-2);
+  }
+
+  .ds-chart__dot {
+    width: var(--sa-stack-8);
+    height: var(--sa-stack-8);
+    border-radius: var(--sa-shape-full);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-chart__legend-toggle {
+      transition: none;
+    }
+
+    .ds-chart__legend-toggle:active {
+      transform: none;
+    }
+  }
   .ds-chart__swatch {
     width: 12px;
     height: 12px;
