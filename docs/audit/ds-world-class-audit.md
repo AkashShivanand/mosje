@@ -536,3 +536,70 @@ makes a defect in this record rather than only in the work.
 - **Nothing consumes any of it.** The five shadow UI kits (~45 re-implemented
   components across four live portals) are untouched, and `FeedbackBar` still
   transmits nothing, so there is no instrument that would show adoption either way.
+
+---
+
+# PART IV — CLOSING THE CARRIED-FORWARD LIST
+
+Part III ended with a list of things recorded and not fixed, and an honest score
+of five of ten Definition-of-Done conditions met. This is what happened to that
+list.
+
+## Closed
+
+| Carried forward | Now |
+|---|---|
+| **58 of 100 pages still hand-write their props table** | **3.** 54 converted, 3,533 lines of hand-typed table deleted. The three that remain are the cases the type checker genuinely cannot reach — `axis` and `toast` take inline parameter objects rather than interfaces, and `identity-inputs` is an overview page covering three components at once. Each says so in the file. The ratchet is now 3 and may only fall. |
+| **338 accessibility rows unverified with no ratchet** | `check:a11y-evidence` — 117/526 verified, ratcheted, both failure modes exercised. |
+| **No axe, no Playwright, in any pipeline** | `e2e/a11y/axe.spec.ts` over five routes, wired into Apps CI, serving the BUILT hub. Serious and critical block; moderate and minor report. |
+| **The jspdf 2→4 major was never exercised** | Split `buildCommitteePdf` out of the browser-download path, replaced the `as unknown as` cast with a declared augmentation, and added three tests. They pass — `lastAutoTable.finalY` survives, so the minutes table is not drawn on top of the committee table. |
+| **Nothing consumes the illustration system; `StateArt` still runs alongside it** | `CardState` renders `Illustration`. 110 lines of duplicate drawing deleted, and the tone axis now recolours the illustration's accent layer. |
+| **The scene set has no `rejected`, `disbursed`, `window-closed`, `verification-failed`** | All four added. A process that can only be drawn succeeding is half drawn. |
+| **Four scenes illegible at `spot`** | `sa-ill__detail` marks texture, and `spot` drops it; dash patterns go solid at half scale. |
+| **The package has no ESLint config — 117 files, ~29,700 lines never linted** | `packages/design-system/eslint.config.mjs` with `react-hooks` and `jsx-a11y`, gated by `check:ds-lint`, 50 findings frozen per file. |
+| **The five shadow UI kits are untouched** | `check:shadow-ui` — 41 collisions in 16 files, ratcheted. PM-AJAY's dashboard kit migrated as the reference; its status pill measured identical to two decimal places, four colliding names renamed, nothing moved a pixel. Four kits remain, now counted and frozen. |
+| **The Vercel deployment fails** | Fixed, and the diagnosis was right: `output: "standalone"` is set only OFF Vercel now. **The preview deploys.** |
+
+## What the axe suite found the day it first ran
+
+The estate had claimed WCAG 2.2 AA for months with nothing checking it. On the
+first run, over five routes:
+
+- **`text/brand/primary/base` — gov-blue — used as TEXT in sixteen places** at
+  3.28–4.19:1: the active sidebar item, the active tab on every page in the
+  design system, the landing page's section eyebrows, the props-table prop
+  names, the ⌘K search, and `--_color` on the **Button**, i.e. every outlined
+  and text button in every portal. All moved to `bolder`: 5.57–5.74:1.
+- **`VisitorCounter` hung its entire reading on `aria-label` on a roleless
+  `<div>`** — which ARIA forbids and assistive technology may discard — with
+  both visible spans `aria-hidden`. In the worst case the count was announced
+  to nobody. Now `role="status"` with the reading as real text.
+- **The install snippet on the design system's own landing page** rendered
+  dark-theme syntax inks on a light chip painted *inside* the dark shell:
+  1.14:1 to 2.75:1, sixteen spans. A global `code:not([class])` rule leaking
+  into `.terminal-code`.
+- **`terminal-code__title`** at white/45% on the shell.
+
+One violation is **declared, not excluded**: the SAMAVESH banner's 2.91:1 is a
+recorded decision with APCA evidence in the component itself, and the spec names
+the selector and the reasoning. An allowance you can read and argue with is not
+the same as a selector quietly dropped from a scan.
+
+## Still open, and why
+
+- **62 of 385 generated props render an em dash for their description**, because
+  the component source has no TSDoc for them. The generated table cannot invent
+  a sentence — that is the point — so the fix is TSDoc in
+  `packages/design-system/**` and a regenerate. Worst: `ChartCardProps` 8/21,
+  `CaptchaFieldProps` 4/10, `GeoPhotoInputProps` 4/14.
+- **Four shadow kits remain** (~34 collisions). The PM-AJAY migration surfaced
+  why: the DS has **no sortable table** and **no listbox-style filter select**,
+  and those are what the portal dashboards need. Building them unblocks the rest.
+- **`ComponentDocPage` still has no documentation page of its own**, and the
+  illustration foundations page hand-rolls the header the template renders.
+- **The docs' Suspense fallback has no tab handler**, so with JavaScript off only
+  the Design panel is reachable.
+- **`since` is on 2 of 100 pages**; 69 say `Stable` with no version. The six
+  conflicting version numbers (R11) are unresolved.
+- **Twelve of twenty portals still have no captured requirements**, which is why
+  every component gap in §3 is an inference from the eight that exist.
