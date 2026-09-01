@@ -283,12 +283,18 @@
     answer without carving a safe area out of the map: the band begins at
     x=367 and Kashmir ends at x=330, so the strip never approaches it.
 
-    THE INSET FROM THE RIGHT IS NOT DECORATION. Flush at 16px, an earlier and
-    much taller version of this panel put its bottom-right corner on the tip of
-    Arunachal Pradesh — 22 of 2,451 sampled points on drawn land. Under one per
-    cent, and not something to shrug at: this is a Government of India map and
-    the north-east is the part that must never be obscured. Stepping left keeps
-    the strip over Nepal and the plateau whatever it grows to hold.
+    AND IT IS A STRIP, WHICH IS WHY IT FITS. 288 units was the width of the
+    tallest free rectangle in that corner — the binding constraint was HEIGHT,
+    set by Arunachal Pradesh's tip reaching up on the right. A one-row strip is
+    about 37 units tall, and at that height the only land in the band is the
+    very top of Kashmir, ending at x=330: roughly 360px of clear width, against
+    the 320px three chips need.
+
+    That also removes the hazard the stacked version had. Flush at 16px, a
+    171-unit-tall panel put its bottom-right corner on Arunachal — 22 of 2,451
+    sampled points on drawn land. Under one per cent, and not something to
+    shrug at on a Government of India map, where the north-east is the part
+    that must never be obscured. A strip never reaches that far down.
 
     DESKTOP ONLY. Below 1025px the map and rail stack, the map column goes wide
     and short, and that plateau is no longer 160 units tall — so the filters
@@ -299,24 +305,37 @@
       position: relative;
     }
 
+    /*
+      NO CARD BEHIND THEM, AND THAT IS WHAT MAKES ONE ROW FIT.
+
+      The three chips measure 78 + 79 + 162 = 319px, and 331 with their gaps.
+      The clear band is 332px from the SVG's right edge, so a card's 6px padding
+      and 1px border on each side — 14px — was the difference between one row
+      and two. It bought nothing either: these are opaque pills with their own
+      borders, so they already read as controls sitting ON something. A card
+      around a card is the thing `refactoring-ui` calls out.
+
+      Anchored to the MAP COLUMN rather than to the artwork, which reclaims the
+      12px the SVG letterboxes on that side — 344px of clear space against 327
+      needed, so the row has 17px of slack rather than being 15px short.
+    */
     .pmw__filters.pmw__key {
       position: absolute;
-      top: var(--sa-padding-16);
-      right: var(--sa-padding-56);
+      top: var(--sa-padding-12);
+      right: var(--sa-padding-4);
       z-index: 1;
-      max-width: 15rem;
-      padding: var(--sa-padding-8);
-      border: 1px solid var(--sa-border-neutral-subtle);
-      border-radius: var(--sa-shape-12);
-      background-color: var(--sa-bg-neutral-base);
-      box-shadow: var(--sa-elevation-raised);
     }
 
-    /* Stacked, so three long labels do not need 400px of plateau. */
+    /*
+      One row, right-aligned. `wrap` is the fallback and not the plan: if a
+      longer label ever pushes past the band the row breaks upward from the
+      right, into empty sky, which is the one direction this strip can afford
+      to grow.
+    */
     .pmw__key .pmw__chips {
-      flex-direction: column;
-      align-items: stretch;
-      gap: var(--sa-stack-6);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: var(--sa-stack-4);
     }
   }
 
