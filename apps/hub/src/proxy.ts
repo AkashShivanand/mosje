@@ -123,6 +123,16 @@ const PM_AJAY_SESSION_COOKIE = "pmajay_session"; // set by the client auth-conte
  */
 const GATE_PUBLIC_ASSETS = [GATE_EMBLEM_SRC];
 
+/**
+ * Routes that render inside somebody else's page and so cannot be gated.
+ *
+ * An explicit list, not `startsWith("/embed/")`. A prefix means the next embed
+ * route is public the moment its folder is created, which is exactly the kind
+ * of "it happened to be nested under the right path" that a wall should never
+ * do on its own.
+ */
+const EMBED_ROUTES = ["/embed/pmajay-coverage"];
+
 async function gateRedirect(req: NextRequest): Promise<NextResponse | null> {
   const expected = await resolveGateToken();
   // No configured token ⇒ gate disabled. This is the local-dev path, and it is
@@ -135,6 +145,31 @@ async function gateRedirect(req: NextRequest): Promise<NextResponse | null> {
   // gate password is lost or a bad value is written. It has its own password.
   if (pathname === "/admin" || pathname.startsWith("/admin/")) return null;
   if (GATE_PUBLIC_ASSETS.includes(pathname)) return null;
+  /*
+   * ── /embed/* IS OUTSIDE THE GATE, AND THAT IS A DELIBERATE HOLE ──────────
+   *
+   * The gate is an access wall for a prototype, and its own comment says a wall
+   * with holes in it is not a wall. This is a hole, so it is worth being exact
+   * about what it opens.
+   *
+   * An embed is framed by a page on another origin — the department's own
+   * WordPress site — and a framed password wall is not a wall either: nobody
+   * can type into it, so the embed simply renders as a login box inside an
+   * article. The alternatives are worse. Sharing the gate cookie cross-origin
+   * means SameSite=None, which weakens the cookie everywhere else; putting the
+   * password in the iframe URL publishes it in the host page's source.
+   *
+   * WHAT IT ACTUALLY EXPOSES: one section of one page, built from figures the
+   * department already publishes on dosje.gov.in, plus the mirrored snapshot in
+   * this repository. No portal, no login, no admin surface, and `EMBED_ROUTES`
+   * is an explicit list rather than a prefix wildcard — a route is reachable
+   * because someone added it here, never because it happened to be nested
+   * under /embed.
+   *
+   * The frame-ancestors header in next.config.ts is the other half: this makes
+   * the route reachable, that decides who is allowed to frame it.
+   */
+  if (EMBED_ROUTES.includes(pathname)) return null;
 
   const presented = req.cookies.get(GATE_COOKIE)?.value;
   if (presented && safeEqual(presented, expected)) return null;
