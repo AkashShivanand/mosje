@@ -334,6 +334,100 @@ yet.
 
 ---
 
+## 9. The Vercel preview on PR #247 fails — diagnosis, corrected
+
+**Corrected 2026-09-02.** An earlier version of this section called it a likely
+infrastructure flake. It is not: it reproduced on a second, independent deployment
+of a different commit, with the identical error.
+
+Both GitHub Actions gates pass on both commits — **hub lint + typecheck + build**
+and **quality** — and `npm run verify` passes locally, including a full production
+build with the same `output: "standalone"` config.
+
+```
+✓ Compiled successfully
+✓ Generating static pages using 1 worker (832/832) in 36.6s
+  Finalizing page optimization ...
+  Running onBuildComplete from Vercel          ← Vercel's own builder hook
+> Build error occurred
+Error: ENOENT: no such file or directory, open
+  '/vercel/path0/apps/hub/.next/next-server.js.nft.json'
+```
+
+What the log establishes:
+
+- The build **compiled and rendered all 832 pages**. Nothing in this branch fails
+  to build.
+- The failure is in **`onBuildComplete`, Vercel's own hook**, reading the
+  file-tracing manifest that `output: "standalone"` produces. Locally that file is
+  written (116 KB) and the build succeeds.
+- **This branch does not touch `apps/hub/next.config.ts`.** `output: "standalone"`
+  is on `main`, unchanged, and `main` deployed successfully before this branch
+  existed.
+- The build output is large: `.next/server` **454 MB**, `.next/standalone`
+  **648 MB**. Vercel reported `1 worker`, which is what it does under memory
+  pressure.
+
+The likely mechanism is therefore resource exhaustion at the standalone
+copy/trace step, which this branch's size tipped over rather than caused. One
+hypothesis was tested and is weak: `props.generated.ts` (240 KB) appears in only
+**6** server output files, not once per route, so it is not multiplying the trace.
+
+**The recommended fix is one line, and it is a deployment decision rather than a
+design-system one, so it is not made here.** `output: "standalone"` exists for
+self-hosting and containers; Vercel does not need it and builds its own output,
+so removing it would remove the 648 MB standalone copy and the trace manifest
+this hook is failing to read. It affects how the whole estate deploys, so it
+belongs to whoever owns the deployment. The alternative is raising the build
+resources.
+
+# PART II — THE RE-AUDIT, 2026-09-02
+
+The finished foundations were put back through four of the same hostile lenses,
+scoped to the NEW work only. It returned 58 findings. The most valuable were the
+ones that faulted the fix rather than the original defect, and several were errors
+of mine that the first audit could not have caught because the code did not exist
+yet.
+
+## What the re-audit caught, and what was done
+
+| # | Finding | Status |
+|---|---|---|
+| **The build was RED** — the docs-coverage baseline held 15 names from the moment before the illustration primitives were withdrawn from the barrel, so every PR would have failed before reaching the build step. | ✅ Re-baselined |
+| **The gate's failure message was wrong.** It could not tell "gained a page" from "no longer exported" and reported both as "now documented" — so it sent the reader to find fifteen pages that had never been written. | ✅ Third branch added, with its own sentence |
+| **80 lines of new chart CSS sat OUTSIDE `@layer components`** — finding F9 of this same programme, reintroduced in the code that answers it. A chart could be overridden by a consumer utility in its populated branch and not in its state branch. | ✅ Layer closed at end of file |
+| **A union props type returned its INTERSECTION.** `BarChartProps = BarSingle \| BarMulti` published `title` and none of `data`, `labels` or `series` — so the generator's headline claim was false for the exact case its own docstring cited. | ✅ Arms walked separately and merged, with an `onlyIn` marker naming which arm accepts each prop |
+| **Cross-file type aliases never expanded.** `getSymbolAtLocation` returns the import specifier, so `CardStateKind` printed expanded where it was local and bare where it was imported — the same type documented two ways in one file — and `ChartState`, the whole state contract, printed bare on all eighteen components that accept it. | ✅ `getAliasedSymbol`, plus nested-alias flattening: `ChartState` now prints all seven states |
+| **`defaultOf` did not read destructured defaults**, though its docstring said it did. 78% of props rendered an em dash that reads as "no default" — `BarChart.orientation` published `—` against a source that reads `orientation = "vertical"`. | ✅ Reads both the parameter pattern and the `const { … } = props` body form that every union-typed chart uses. 207 → 333 defaults |
+| **An empty description rendered as a blank `<td>`** beside a Default column rendering an em dash — the same absence, two renderings. | ✅ |
+| **The three new palette tests were named as conformance claims** and passed at the failing value: "every categorical slot sits inside the lightness band" ✔ with four slots outside it. Three green ticks beside three untrue sentences — the exact defect the `A11yChecklist` rebuild was for, moved into the test suite. | ✅ Renamed to what they measure: "the lightness-band deficit does not grow" |
+| **`role="img"` pruned the charts' own focusable marks.** Nine charts put `tabIndex={0}` and an `aria-label` on every bar, point, cell and region; inside `role="img"` those labels are pruned, so a keyboard reader tabbed through thirty stops that announced nothing. | ✅ `marksAreFocusable` switches the SVG to `role="group"`. **Verified in a browser: role is now `group` and all six marks announce their labels** |
+| **The CSS barrel declared a `demo` rank and never walked `demo/`** — the same silent-absence failure the generator was written to end, at smaller scale. | ✅ 69 → 73 imports |
+| **Dependabot watched npm and not the workflow actions** — the half of the supply chain that runs with repository credentials. | ✅ |
+| **"Related Components" used a raw `<a>`** in a shell where every other link is `next/link`, so the one link whose job is moving between pages re-downloaded the shell, the sidebar and the search index. | ✅ |
+
+## What it caught in the illustration system — all of it mine
+
+| Finding | Status |
+|---|---|
+| **Nine of fourteen scenes floated above the floor** the language calls the family's binding trait, making it "a decorative underline beneath unrelated objects". | ✅ **Every scene now bottoms at exactly y = 40**, measured in a browser. Sheets were grounded; the rule was also restated honestly — an object that stands meets the floor, a ring or a lens is not an object and does not. |
+| **Round caps hung every grounded mark two units BELOW the floor** — a round cap extends half the stroke past the endpoint, so at `scene` that is 6px of bar dangling below the baseline on the five drawings carrying the family's only shared idea. | ✅ Butt caps for grounded marks, stated in §4 |
+| **`complete` shipped TWO accents**, breaking the language's own one-accent rule on the scene that means "finished". | ✅ Ring keeps the accent; the tick moved to ink |
+| **`empty` and `not-published` were the same composition** separated only by a height array — and four EQUAL dashed bars read as four equal VALUES, the one thing an empty state must not say. | ✅ `empty` is now the plot area with no bar shape in it; the dashed ghost outline is `not-published`'s alone |
+| **Two of six scene names diverged from `CardStateKind`**, so `<Illustration name={kind} />` did not typecheck and no translation table existed. | ✅ `no-data`→`empty`, `feed-error`→`error` |
+
+## What the re-audit found that is NOT fixed, and why
+
+- **Four `spot`-tier scenes are illegible at 32×24.** `Sheet` renders 10px wide with three 1px rules; `Ring` becomes a dot. The tier contract claims a drawing "is correct at every size", and for those four it is not. The honest options are per-tier variants or restricting `spot` to the scenes that survive it; both are design work, not a patch.
+- **Nothing in the estate consumes the illustration system yet**, and `CardState`'s `StateArt` still hand-draws six scenes to the same 64×48 grid under a different class family. §7 above explains why they were not merged (a tone axis the language deliberately lacks); the re-audit is right that two systems on one grid is a cost, and the names now line up so the merge is a small change when someone takes the tone decision.
+- **The template's `h1` is `display-1`** — up to 80px at 1920, and 40px/800 in a 288px column at 320px. The re-audit argues for `headline-1`, citing GOV.UK at 36px and Carbon at 42. That is a house-style decision with 100 pages behind it, and it belongs to a human.
+- **Without JavaScript the Suspense fallback has no tab handler**, so only the Design panel is reachable and the props table and accessibility checklist are JS-gated. The fix is to render all three panels as headings in the fallback and enhance on hydration.
+- **The docs kit has no forced-colors support**, so the active tab indicator — drawn with `background` and `color` — disappears in Windows High Contrast.
+- **`--cdp-measure` is a page-kit local, not a token.** One value, correctly, and bound to nothing in `--sa-*`.
+- **`ComponentDocPage` has no documentation page of its own**, and the illustration foundations page hand-rolls the header the template exists to render — it scores 0/6 and the gate cannot see it, because the gate only walks `components/`. Dogfooding is the cheapest credibility a design system has and this is where it is missing.
+
+---
+
 ## 9. The Vercel preview on PR #247 failed — diagnosis
 
 Both GitHub Actions gates pass: **hub lint + typecheck + build (5m10s)** and
