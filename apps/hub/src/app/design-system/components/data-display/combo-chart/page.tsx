@@ -1,226 +1,187 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { ComboChart } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { ComboChartSpecimen } from "./specimen";
 
 export const metadata: Metadata = {
-  title: "Combo Chart",
-  description: "Dual-axis composite visualization pairing bar columns (target amounts) with an overlaid line trend (actual realization percentage).",
+  title: "Combo Chart — Design System",
+  description:
+    "Bars and a line on one canvas with two independent y axes, for a count and a rate that share a period but not a scale.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    status: "verified",
+    description:
+      "Rendered through ChartFrame, which draws an SVG <title> and <desc> and a visually hidden table carrying both the bar series and the line series against the shared labels.",
+    evidence: "ChartFrame's `table` and `summary` props, passed by combo-chart.tsx on every render.",
+  },
+  {
+    criterion: "1.4.1 Use of Color",
+    level: "A",
+    status: "verified",
+    description:
+      "The two families are separated by form before colour — bars are filled rectangles, the overlay is a stroked line — so the reading survives a monochrome print and a colour-vision difference.",
+    evidence: "combo-chart.tsx renders `bars` as rect marks and `lines` as a path, both labelled in the legend.",
+  },
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    status: "partial",
+    description:
+      "The screen-reader table holds both scales' figures, but it does not state which axis each row belongs to. Name the axes through leftLabel and rightLabel so the relationship is at least stated visually.",
+    evidence: "combo-chart.tsx composes one `table` from both series without an axis column.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    status: "partial",
+    description:
+      'Figures are reachable through the screen-reader table. The per-category hit areas set tabIndex={0} beneath an SVG carrying role="img", which prunes its descendants, so those stops have no accessible name.',
+    evidence: 'Open gap, recorded 2026-09-02: role="img" in chart-frame.tsx against tabIndex={0} at combo-chart.tsx line 191.',
+  },
+  {
+    criterion: "GIGW 3.0 — Data Presentation",
+    level: "GIGW",
+    status: "verified",
+    description: "Values format through formatIndian by default, so a figure reads 4,50,000 rather than 450,000.",
+    evidence: "`valueFormat` defaults to formatIndian in combo-chart.tsx.",
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function ComboChartDocPage(): React.JSX.Element {
+export default function ComboChartPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Combo Chart
-          </h1>
-          <StatusBadge status="Beta" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Dual-axis composite visualization pairing bar columns (target amounts) with an overlaid line trend (actual realization percentage)."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+    <ComponentDocPage
+      name="Combo Chart"
+      status="Beta"
+      summary="Bars and a line over the same categories, each read against its own y axis. It is the chart for a count and a rate that belong together but do not share a scale."
+      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      specimen={<ComboChartSpecimen />}
+      propsFrom="ComboChartProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A quantity and a rate share a period — funds released in crore against the percentage utilised.",
+          "A measured figure is read against a target or a benchmark drawn as a line over it.",
+          "Exactly two scales are in play, and each is named.",
+        ],
+        avoid: [
+          "Both series share a scale — put them in one Bar Chart or one Line Chart; a second axis that measures the same thing invites a false comparison.",
+          "There are three or more scales. There are two axes; a third reading has no honest place to be read from.",
+          "The reader only needs the trend of one figure — use a Line Chart.",
+          "The parts sum to a whole — use a stacked Bar Chart, or a Donut Chart where the total is the reading.",
+        ],
+      }}
+      related={[
+        { label: "Bar Chart", href: "/design-system/components/data-display/bar-chart", reason: "when one scale is enough" },
+        { label: "Line Chart", href: "/design-system/components/data-display/line-chart", reason: "when only the trend is read" },
+        { label: "Legend", href: "/design-system/components/data-display/legend", reason: "the key that names both families" },
+        { label: "Chart Frame", href: "/design-system/components/data-display/chart-frame", reason: "the shell every chart renders through" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">
+              The States It Draws
+            </h2>
+            <p>
+              The specimen shows loading, empty, error and filtered-to-nothing. On a combo chart the
+              distinction matters more than usual: a reader who has filtered to one quarter and sees a
+              blank panel has no way to tell that from a feed being down.
+            </p>
+            <ul>
+              <li>
+                <strong>Loading</strong> — a skeleton at the chart&apos;s aspect ratio, carrying{" "}
+                <code>role=&quot;status&quot;</code>.
+              </li>
+              <li>
+                <strong>Empty</strong> — answered, nothing to draw. No retry.
+              </li>
+              <li>
+                <strong>Error</strong> — the request failed; <code>onRetry</code> renders
+                &ldquo;Try again&rdquo;.
+              </li>
+              <li>
+                <strong>Filtered to nothing</strong> — <code>filterLabel</code> names the filter the
+                reader applied.
+              </li>
+            </ul>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-axes">
+            <h2 id="cdp-axes" className="cdp__h2">
+              Two Axes, Two Names
+            </h2>
+            <p>
+              <strong>Always set <code>leftLabel</code> and <code>rightLabel</code>.</strong> A second
+              y axis is only readable when the reader is told which series belongs to which, and an
+              unlabelled pair invites exactly the comparison a dual axis cannot support — that a bar
+              taller than the line means anything at all. The two scales are independent; only the
+              shape of each series against its own axis is a reading.
+            </p>
+            <p>
+              Keep it to one bar series and one line. Two of each is four series over two scales, and
+              at that point the chart is a table.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { ComboChart } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Combo Chart is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <ComboChart title="Quarterly Targets vs Realization" labels={["Q1", "Q2", "Q3", "Q4"]} bars={[{ name: "Target", data: [100, 150, 200, 250] }]} lines={[{ name: "Actual", data: [95, 142, 198, 240] }]} />
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use combo charts to compare targets against actual utilization rates.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not combine more than two metrics with wildly divergent scales.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { ComboChart } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "title",
-    "type": "string",
-    "required": true,
-    "description": "Accessible chart title."
-  },
-  {
-    "name": "labels",
-    "type": "string[]",
-    "required": true,
-    "description": "X-axis category labels."
-  },
-  {
-    "name": "bars",
-    "type": "ChartSeries[]",
-    "required": true,
-    "description": "Grouped bar series on left axis."
-  },
-  {
-    "name": "lines",
-    "type": "ChartSeries[]",
-    "required": true,
-    "description": "Line series on right axis."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<ComboChart title="Quarterly Targets vs Realization" labels={["Q1", "Q2", "Q3", "Q4"]} bars={[{ name: "Target", data: [100, 150, 200, 250] }]} lines={[{ name: "Actual", data: [95, 142, 198, 240] }]} />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.4.1 Use of Color",
-    "level": "AA",
-    "description": "Both series use distinctive shapes and stroke patterns in addition to color."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Tab</kbd></td>
-                          <td>{"Cycles through data points on both axes."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Combo Chart" />
-    </article>
+<ComboChart
+  title="Quarterly Target Against Utilisation"
+  labels={["Q1", "Q2", "Q3", "Q4"]}
+  bars={[{ name: "Target", data: [100, 150, 200, 250] }]}
+  lines={[{ name: "Utilisation", data: [95, 94, 99, 96] }]}
+  leftLabel="₹ crore released"
+  rightLabel="Per cent utilised"
+/>`}</CodeBlock>
+          <p>
+            Both families come from one request, so both take one resolved state. Deriving them
+            separately is how a page ends up with bars drawn and a line missing, with nothing on
+            screen saying why.
+          </p>
+          <CodeBlock>{`<ComboChart
+  title="Quarterly Target Against Utilisation"
+  labels={labels}
+  bars={bars}
+  lines={lines}
+  state={reading == null ? "error" : undefined}
+  onRetry={refetch}
+  filterLabel="quarter filter"
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-sr">
+          <h2 id="cdp-sr" className="cdp__h2">
+            What a Screen Reader Gets
+          </h2>
+          <p>
+            One image with a name and a summary, then a visually hidden table whose columns are the
+            shared labels and whose rows are every bar and line series. Because the two scales are
+            different, name them in the series names as well as on the axes — &ldquo;Utilisation
+            (%)&rdquo; reads correctly in the table where &ldquo;Utilisation&rdquo; alone does not.
+          </p>
+          <p>
+            <strong>The open gap.</strong> The per-category hit areas are focusable but sit beneath{" "}
+            <code>role=&quot;img&quot;</code> and are pruned from the accessibility tree, so they
+            announce as nothing.
+          </p>
+        </section>
+      }
+    />
   );
 }

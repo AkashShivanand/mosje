@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { sequentialColor, CHART_INK } from "./internal/palette";
 import { formatIndian } from "./internal/format";
@@ -104,7 +104,7 @@ export interface PinKindStyle {
   color: string;
 }
 
-export interface IndiaPointMapProps {
+export interface IndiaPointMapProps extends ChartStateProps {
   title: string;
   /** Density field, pre-binned by the caller at the same `hexRadius`. */
   bins?: readonly HexBin[];
@@ -236,6 +236,9 @@ export function IndiaPointMap({
   table,
   summary,
   className,
+  state,
+  onRetry,
+  filterLabel,
 }: IndiaPointMapProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const svgRef = React.useRef<SVGSVGElement | null>(null);
@@ -391,8 +394,38 @@ export function IndiaPointMap({
     </>
   );
 
+  /*
+   * WITH NOTHING TO PLOT THIS DREW A COMPLETE GREY INDIA — the land is painted
+   * unconditionally as a frame of reference, so an absent feed and a country
+   * with no marks were the same picture. All three layers are checked, because
+   * this map can legitimately carry any one of them alone.
+   *
+   * Placed after every hook: the derivation runs against the empty inputs and
+   * resolves to nothing; only the RENDER branches.
+   */
+  const resolved =
+    state ??
+    (binPaths.length === 0 && projectedBubbles.length === 0 && projectedPins.length === 0
+      ? "empty"
+      : undefined);
+  if (resolved)
+    return (
+      <ChartFrame
+        marksAreFocusable
+        title={title}
+        viewBox={viewBox}
+        className={className}
+        state={resolved}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+      >
+        {null}
+      </ChartFrame>
+    );
+
   return (
     <ChartFrame
+      marksAreFocusable
       title={title}
       summary={summary}
       viewBox={viewBox}

@@ -24,6 +24,9 @@ export const BARREL = process.env.DS_BARREL ?? "packages/design-system/index.ts"
  * being forgotten.
  */
 export const NOT_COMPONENTS = new Set([
+  // The illustration set's own index — a string array naming every scene, used
+  // by the specimen sheet and by anything that needs to enumerate them.
+  "SCENE_NAMES",
   // Constants
   "COLOR_MODES", "COLOR_MODE_ATTR", "COLOR_MODE_COOKIE", "DEFAULT_COLOR_MODE",
   "DEFAULT_APPS", "PORTAL_CATEGORIES", "PAN_HOLDER_TYPES", "PORTAL_LABELS",

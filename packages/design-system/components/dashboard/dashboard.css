@@ -144,6 +144,25 @@
     transform: scale(0.97);
   }
 
+  /* THE ESTATE'S ONLY ERROR-RECOVERY CONTROL, and it had `:hover` and `:active`
+     and no `:focus-visible` — so the one button a keyboard reader most needs to
+     find gave them nothing to find it by. WCAG 2.2 AA 2.4.7 / 2.4.11. */
+  .ds-card-state__retry:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* An `outline` survives forced-colors, but its COLOUR does not — the token
+     resolves to a translucent brand blue the mode discards. `Highlight` is the
+     system's own focus colour, which is the whole point of the mode. (A ring
+     built from `box-shadow` would not be painted here at all.) */
+  @media (forced-colors: active) {
+    .ds-card-state__retry:focus-visible {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .ds-card-state__retry {
       transition: none;
@@ -164,6 +183,17 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: var(--sa-stack-16);
+  }
+
+  /* With nothing to hold, the row stops being a grid of tiles and becomes one
+     statement. `auto-fit` on a single child would stretch it across the whole
+     width and leave a very wide, very short plate. */
+  .ds-kpi-row--empty {
+    display: block;
+    padding: var(--sa-padding-16);
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-cmp-card-radius);
   }
 
   /* ── FilterBar ───────────────────────────────────────────────────────────── */

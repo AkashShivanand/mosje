@@ -1,201 +1,244 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
+  Callout,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
+  ComponentDocPage,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
 import { Icon } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
-  title: "Icon",
-  description: "Material Symbols Rounded icon component with strict 24px token grid alignment, optical sizing, and accessibility hiding defaults.",
+  title: "Icon — Design System",
+  description:
+    "A Material Symbols Rounded glyph — the estate's only icon system. Decorative by default, announced only when it is given a label.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+/*
+ * Read off `IconProps` in packages/design-system/components/utilities/icon.tsx.
+ * `size` is typed `number` rather than a union, because the glyph's optical-size axis
+ * tracks it continuously; the scale below is the set of values the estate uses.
+ */
+const PROPS: PropDef[] = [
+  {
+    name: "name",
+    type: "string",
+    required: true,
+    description:
+      "The Material Symbols ligature, in snake_case — \"home\", \"arrow_forward\", \"account_circle\". The full catalogue is at fonts.google.com/icons. A name the font does not carry renders as the literal word, which is how a typo is spotted.",
+  },
+  {
+    name: "size",
+    type: "number",
+    default: "24",
+    description:
+      "Pixel size. It sets the font size and the `opsz` variation axis together, so the glyph is redrawn for the size rather than scaled to it. The estate's scale is 16 · 20 · 24 · 32 · 40 · 48 · 64.",
+  },
+  {
+    name: "fill",
+    type: "boolean",
+    default: "false",
+    description: "The `FILL` axis. False is the stroke variant, which is the SAMAVESH default; true is the solid one.",
+  },
+  {
+    name: "weight",
+    type: "100 | 200 | 300 | 400 | 500 | 600 | 700",
+    default: "300",
+    description:
+      "The `wght` axis. 300 is the MoSJE standard and is correct for interface chrome; 400 is for a standalone decorative glyph that needs to hold its own beside heavier type.",
+  },
+  {
+    name: "aria-label",
+    type: "string",
+    default: "undefined",
+    description:
+      "Give it only when the glyph itself carries the meaning and no adjacent text says the same thing. Setting it makes the icon `role=\"img\"` and it is announced. On an icon-only button, the label belongs on the button, not here.",
+  },
+  {
+    name: "aria-hidden",
+    type: 'boolean | "true" | "false"',
+    default: "true unless aria-label is set",
+    description:
+      "Rarely needed. The component decides: labelled icons are exposed, unlabelled ones are hidden. Pass `false` explicitly only for the rare glyph that must be in the accessibility tree without a label of its own.",
+  },
+  {
+    name: "className",
+    type: "string",
+    default: "undefined",
+    description: "Appended to `material-symbols-rounded`; the font class is never replaced.",
+  },
+  {
+    name: "style",
+    type: "React.CSSProperties",
+    default: "undefined",
+    description:
+      "Merged after the glyph's own rules, for placement — display, margin, opacity. Never re-set the font size here; pass `size`, or the optical-size axis stops tracking and the glyph is drawn for the wrong size.",
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    description:
+      "A Material Symbols glyph is real text, so an unmarked icon is read aloud as the stray word \"arrow back\". The component hides every unlabelled icon from assistive technology by default, and exposes a labelled one as `role=\"img\"`.",
+  },
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    description:
+      "A labelled icon is announced as an image with that name. An icon-only control takes its name from the control, not from the glyph, so the name is announced once rather than twice.",
+  },
+  {
+    criterion: "1.4.4 Resize Text",
+    level: "AA",
+    description:
+      "The glyph is text and is sized in px by this component, so it does not follow the reader's font-size choice. Where an icon must scale with its label, size the icon from the surrounding type in CSS instead of passing a fixed number.",
+  },
+  {
+    criterion: "1.4.11 Non-text Contrast",
+    level: "AA",
+    description:
+      "An icon that conveys meaning must clear 3:1 against its background. The glyph inherits `currentColor`, so this is a property of where it is placed rather than of the component.",
+  },
+];
 
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function IconDocPage(): React.JSX.Element {
+export default function IconPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Icon
-          </h1>
-          <StatusBadge status="Stable" />
+    <ComponentDocPage
+      name="Icon"
+      status="Stable"
+      summary="A Material Symbols Rounded glyph — the SAMAVESH icon system, and the only one. It is decorative by default and announced only when it is given a label, because an unmarked glyph is read aloud as the stray word its ligature spells."
+      figma={{ node: "iconography" }}
+      specimen={
+        <div>
+          <p>
+            <Icon name="home" size={16} /> <Icon name="home" size={20} /> <Icon name="home" size={24} />{" "}
+            <Icon name="home" size={32} /> <Icon name="home" size={40} /> <Icon name="home" size={48} />{" "}
+            <Icon name="home" size={64} />
+          </p>
+          <p>
+            <Icon name="account_circle" size={32} /> <Icon name="account_circle" size={32} fill />{" "}
+            <Icon name="account_circle" size={32} weight={400} /> <Icon name="account_circle" size={32} fill weight={400} />
+          </p>
+          <p>
+            <Icon name="search" size={24} /> <Icon name="download" size={24} /> <Icon name="arrow_forward" size={24} />{" "}
+            <Icon name="check_circle" size={24} /> <Icon name="warning" size={24} /> <Icon name="close" size={24} />
+          </p>
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Material Symbols Rounded icon component with strict 24px token grid alignment, optical sizing, and accessibility hiding defaults."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+      }
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A control needs a glyph beside its label, or an icon-only button needs its mark.",
+          "A status, a category or a direction is shown alongside the words that name it.",
+          "A list, a table or a card carries a small repeated mark that helps a reader scan.",
+        ],
+        avoid: [
+          "The mark is an organisation's crest or a scheme's device — use Org Logo, which owns every mark's path and its tile.",
+          "The mark is a brand or social logo — those are inline SVGs, not font glyphs.",
+          "An emoji would do — it would not: an emoji renders differently on every platform, carries its own colour, and is read aloud by name.",
+        ],
+      }}
+      related={[
+        { label: "Org Logo", href: "/design-system/components/brand/org-logo", reason: "for an organisation or scheme mark, which is a brand asset rather than an icon" },
+        { label: "Button", href: "/design-system/components/actions/button", reason: "takes a glyph through iconLeft and iconRight, already marked decorative" },
+        { label: "Badge", href: "/design-system/components/feedback/badge", reason: "for a status that needs a word beside its mark" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-axes">
+            <h2 id="cdp-axes" className="cdp__h2">
+              One Font, Four Axes
+            </h2>
+            <p>
+              Material Symbols Rounded is a single variable font, so stroke and fill, and every
+              weight between 100 and 700, are the same file. Switching between them at runtime
+              costs no additional network request &mdash; which is why the component exposes the
+              axes as props rather than shipping a second icon set.
+            </p>
+            <p>
+              The SAMAVESH default is <strong>weight 300, stroke, size 24</strong>. Use it for
+              interface chrome. Weight 400 is for a standalone glyph that has to hold its own
+              beside heavier type; the filled variant is for a selected or active state, where the
+              change from stroke to fill is the signal.
+            </p>
+            <Callout type="info" title="The scale is seven values, and 16 is not a mistake">
+              16 · 20 · 24 · 32 · 40 · 48 · 64, bound as <code>--sa-icon-size-*</code>. DBIM 3.0
+              §3.4 publishes four of them &mdash; 24, 32, 48, 64 &mdash; as an asset bank; the three
+              smaller steps are the estate&rsquo;s addition, because 16px is the correct size beside
+              14px body text and forcing 24px would visibly enlarge the glyph in every dense table,
+              button and form row.
+            </Callout>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-load">
+            <h2 id="cdp-load" className="cdp__h2">
+              Load the Font Once
+            </h2>
+            <p>
+              The component renders a ligature and nothing else, so without the font it renders the
+              word. Import the stylesheet once per app, in the root layout:
+            </p>
+            <CodeBlock>{`import "@mosje/design-system/icons.css";`}</CodeBlock>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Icon } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Icon is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <div style={{ display: "flex", gap: "var(--sa-stack-16)", alignItems: "center" }}><Icon name="home" size={24} /><Icon name="search" size={20} /><Icon name="settings" size={16} /></div>
-                    </div>
-                  </div>
-                </section>
+// Default — 24px, weight 300, stroke, and already hidden from assistive tech.
+<Icon name="home" />
 
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use Material Symbols Rounded with weight 300 across all MoSJE interfaces.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not insert emoji characters as UI icons; use Icon component instead.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { Icon } from "@mosje/design-system";`}</CodeBlock>
-                </section>
+// Filled, at the next size up.
+<Icon name="notifications" size={20} fill />
 
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "name",
-    "type": "string",
-    "required": true,
-    "description": "Material Symbols icon name (e.g. \"search\", \"home\", \"close\")."
-  },
-  {
-    "name": "size",
-    "type": "16 | 20 | 24 | 32 | 40",
-    "default": "24",
-    "description": "Icon optical size in pixels."
-  },
-  {
-    "name": "className",
-    "type": "string",
-    "default": "undefined",
-    "description": "CSS utility class name."
-  }
-]} />
-                </section>
+// Icon-only control: the LABEL BELONGS ON THE BUTTON, not on the glyph.
+<button aria-label="Search"><Icon name="search" size={20} /></button>
 
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<div style={{ display: "flex", gap: "var(--sa-stack-16)", alignItems: "center" }}><Icon name="home" size={24} /><Icon name="search" size={20} /><Icon name="settings" size={16} /></div>`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.1.1 Non-text Content",
-    "level": "AA",
-    "description": "Decorative by default with `aria-hidden=\"true\"`. Interactive buttons must provide explicit `aria-label`."
-  }
-]} />
-                </section>
-
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Icon" />
-    </article>
+// A standalone meaningful glyph, with no control to carry the name.
+<Icon name="verified" aria-label="Verified" />`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-decision">
+          <h2 id="cdp-decision" className="cdp__h2">
+            Labelled or Hidden — There Is No Third Option
+          </h2>
+          <p>
+            The Iconography documentation has always said every icon is either hidden from
+            assistive technology or given a label. As an unenforced convention it was missed at 533
+            of 718 call sites across the estate, which is what a convention relying on 533 separate
+            acts of memory converges to. So the component decides instead of the caller:
+          </p>
+          <ul>
+            <li>
+              <code>aria-label</code> given &mdash; the icon is meaningful. It is exposed as{" "}
+              <code>role=&quot;img&quot;</code> and announced.
+            </li>
+            <li>otherwise &mdash; decorative, and hidden.</li>
+          </ul>
+          <p>
+            The one case that still needs care is the icon-only control. Put the name on the{" "}
+            <code>&lt;button&gt;</code>, not on the glyph: labelling both makes a screen reader read
+            &ldquo;Search, Search&rdquo;.
+          </p>
+          <p>
+            The full icon inventory, its bespoke marks and the emblems live on the{" "}
+            <a href={figmaUrl(FIGMA_NODES.iconography)} target="_blank" rel="noopener noreferrer">
+              Iconography page in Figma
+            </a>
+            .
+          </p>
+        </section>
+      }
+    />
   );
 }

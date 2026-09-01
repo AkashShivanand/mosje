@@ -1,174 +1,223 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { AadhaarInputPlayground } from "./aadhaar-input-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont, Callout } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  Callout,
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+
+import { AadhaarInputPlayground } from "./aadhaar-input-playground";
 
 export const metadata: Metadata = {
-  title: "AadhaarInput - SAMAVESH Design System",
+  title: "Aadhaar Input — Design System",
   description:
-    "An input specifically designed for collecting and securely masking Indian Aadhaar numbers.",
+    "A twelve-digit Aadhaar field, grouped as you type, Verhoeff-checked, and masked to its last four digits by default.",
 };
 
+/*
+ * Read off `AadhaarInputProps` in
+ * packages/design-system/components/forms/aadhaar-input.tsx. The interface
+ * extends `InputHTMLAttributes<HTMLInputElement>` minus `value`, `onChange`,
+ * `type`, `maxLength` and `inputMode` — all five are owned by the component.
+ */
+const PROPS: PropDef[] = [
+  {
+    name: "value",
+    type: "string",
+    required: true,
+    description: "The raw twelve digits, no separators. Controlled.",
+  },
+  {
+    name: "onValueChange",
+    type: "(digits: string) => void",
+    required: true,
+    description:
+      "Called with RAW DIGITS only — never the formatted or masked string — so the separators can never reach your state or your API. This is not `onChange`, which the interface removes.",
+  },
+  {
+    name: "invalid",
+    type: "boolean",
+    default: "false",
+    description:
+      "Forces the error state. The field also sets `aria-invalid` on its own once twelve digits fail the Verhoeff check, so this is for a rejection that came from elsewhere.",
+  },
+  {
+    name: "mask",
+    type: "boolean",
+    default: "true",
+    description:
+      "Masks to the last four digits once the field is complete and not focused. Leave it on unless there is a specific, recorded reason: an Aadhaar number is sensitive personal data under the DPDP Act 2023.",
+  },
+  {
+    name: "className",
+    type: "string",
+    default: "undefined",
+    description: "Merged onto the input element.",
+  },
+  {
+    name: "...native",
+    type: "Omit<React.InputHTMLAttributes<HTMLInputElement>, \"value\" | \"onChange\" | \"type\" | \"maxLength\" | \"inputMode\">",
+    default: "—",
+    description:
+      "Every other native input attribute is forwarded, including `id`, `required`, `disabled`, `aria-describedby` and `ref`. `onFocus` and `onBlur` are chained after the component's own.",
+  },
+];
+
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.5 Identify Input Purpose",
+    level: "AA",
+    description:
+      "`autocomplete` is set to \"off\" deliberately. There is no standard token for an Aadhaar number, and a wrong guess would autofill a different identity number into it.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    description:
+      "A real `<input type=\"text\">` with `inputMode=\"numeric\"`, so a phone offers a numeric keypad without the leading-zero stripping and wheel-scrolling of a number input.",
+  },
+  {
+    criterion: "2.5.8 Target Size (Minimum)",
+    level: "AA",
+    description: "The field inherits the 44px minimum height of Input.",
+  },
+  {
+    criterion: "3.3.1 Error Identification",
+    level: "A",
+    description:
+      "The Verhoeff check runs on the client, so `aria-invalid` is set the moment twelve digits fail rather than at submission. Form Field carries the message with `role=\"alert\"`.",
+  },
+  {
+    criterion: "3.3.3 Error Suggestion",
+    level: "AA",
+    description:
+      "Verhoeff catches every single-digit error and every adjacent transposition — the two commonest ways a person mistypes a long number — so the message can say the number is wrong rather than that submission failed.",
+  },
+  {
+    criterion: "Data protection (DPDP Act 2023)",
+    level: "GIGW",
+    description:
+      "The number is masked to its last four digits by default wherever it is displayed, following UIDAI guidance.",
+  },
+];
+
 export default function AadhaarInputPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Aadhaar Input"
+      status="Stable"
+      summary="A twelve-digit Aadhaar field, grouped as you type, validated with the Verhoeff checksum UIDAI uses, and masked to its last four digits once complete and blurred. It hands your state raw digits, never the formatted or masked string."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<AadhaarInputPlayground />}
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A service journey requires the applicant's Aadhaar number.",
+          "A mistyped digit should be caught inline rather than at submission.",
+          "The number will be shown back on screen, where masking is a statutory expectation rather than a preference.",
+        ],
+        avoid: [
+          "The field holds a PAN — use PAN Input, which validates the holder-type character.",
+          "The field holds a one-time password — use OTP Input, which handles paste and SMS autofill.",
+          "The field holds any other long number. A plain Input is correct; do not borrow the Aadhaar grouping for something that is not an Aadhaar number.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          AadhaarInput
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          An input tailored for 12-digit Aadhaar numbers. It formats the number into groups of four as the user types, validates it via Verhoeff checksum, and automatically masks the first 8 digits on blur for data privacy.
-        </p>
-      </header>
+      related={[
+        {
+          label: "PAN Input",
+          href: "/design-system/components/forms/pan-input",
+          reason: "the other identity number a service journey asks for",
+        },
+        {
+          label: "OTP Input",
+          href: "/design-system/components/forms/otp-input",
+          reason: "the verification step that usually follows",
+        },
+        {
+          label: "Identity Inputs",
+          href: "/design-system/components/forms/identity-inputs",
+          reason: "the three identity controls documented together",
+        },
+        {
+          label: "Form Field",
+          href: "/design-system/components/forms/form-field",
+          reason: "the label, hint and error wiring this control expects",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-mask">
+          <h2 id="cdp-mask" className="cdp__h2">
+            Masking and Privacy
+          </h2>
+          <Callout title="Privacy and the DPDP Act 2023" type="warning">
+            An Aadhaar number is sensitive personal data, and UIDAI&apos;s guidance is to display only
+            the last four digits. Once the field is complete and blurred it renders{" "}
+            <code>XXXX XXXX 2346</code>. The full value stays in your state, so the form still works —
+            only the display is masked. Do not turn <code>mask</code> off without a recorded reason,
+            and use the same masking wherever the number is shown back: review steps, tables, print
+            views, exports. Never log it and never put it in a URL.
+          </Callout>
+          <p>
+            The caret is re-anchored to the same digit after each keystroke, so editing the middle of
+            the number does not throw the cursor to the end. That is the defect most hand-rolled
+            formatted inputs carry, and it is invisible until somebody corrects a typo.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { AadhaarInput, FormField } from "@mosje/design-system";
+import { isValidAadhaar } from "@mosje/design-system";
 
-      <Callout title="Privacy & DPDP Act 2023" type="warning">
-        Aadhaar numbers are sensitive personal data. UIDAI guidelines require masking the first 8 digits when displaying an Aadhaar number on screen. The `AadhaarInput` handles this automatically. Do not disable the `mask` prop without explicit authorization.
-      </Callout>
+const [aadhaar, setAadhaar] = React.useState("");
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Type exactly 12 digits. Notice how spaces are inserted automatically. When you click outside the field (blur), the first 8 digits are masked. The internal state always holds the raw 12 digits.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <AadhaarInputPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          Use this component whenever you need a user to provide their Aadhaar number. It prevents invalid characters, fixes the caret jumping issue common in formatted inputs, and ensures you always receive a clean 12-digit string to send to your backend.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Store the raw 12 digits in your application state. The component handles formatting and masking visually.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't use a standard number input for Aadhaar. Number inputs strip leading zeros and allow mouse-wheel scrolling to change the value.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`function IdentityForm() {
-  const [aadhaar, setAadhaar] = React.useState("");
+<FormField
+  label="Aadhaar Number"
+  required
+  hint="12 digits, as printed on your Aadhaar"
+  error={touched && !isValidAadhaar(aadhaar)
+    ? "That is not a valid Aadhaar number."
+    : undefined}
+>
+  {(control) => (
+    <AadhaarInput {...control} value={aadhaar} onValueChange={setAadhaar} />
+  )}
+</FormField>`}</CodeBlock>
+          <p>
+            Store the raw twelve digits. The component owns the formatting and the masking; a second
+            copy of either in your own state will drift from it.
+          </p>
+          <CodeBlock>{`import { maskAadhaar } from "@mosje/design-system";
 
-  return (
-    <FormField label="Aadhaar Number" required>
-      {(props) => (
-        <AadhaarInput 
-          {...props} 
-          value={aadhaar} 
-          onValueChange={setAadhaar} 
-        />
-      )}
-    </FormField>
-  );
-}`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "value", type: "string", required: true, description: "The raw 12 digits, no separators." },
-            { name: "onValueChange", type: "(digits: string) => void", required: true, description: "Called with raw digits only (never the formatted string)." },
-            { name: "invalid", type: "boolean", default: "false", description: "Render the error state." },
-            { name: "mask", type: "boolean", default: "true", description: "Mask to the last four digits when the field is complete and not focused." },
-            { name: "...rest", type: "InputHTMLAttributes", description: "All standard input attributes are supported." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode:</strong> Sets <code>inputMode=&quot;numeric&quot;</code> so mobile users are presented with a numeric keypad, while remaining a <code>type=&quot;text&quot;</code> input to avoid native number input quirks.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Internal Validation:</strong> When exactly 12 digits are entered, it runs the Verhoeff algorithm. If the checksum fails, it automatically sets <code>aria-invalid=&quot;true&quot;</code>.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+// Anywhere the number is displayed back — review steps, tables, print views.
+<dd>{maskAadhaar(application.aadhaar)}</dd>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            The field is <code>type=&quot;text&quot;</code> with{" "}
+            <code>inputMode=&quot;numeric&quot;</code>, not <code>type=&quot;number&quot;</code>. A
+            number input strips leading zeros, shows a spinner, and lets the mouse wheel silently
+            change the value — all three of which are wrong for an identity number.
+          </p>
+          <p>
+            Masking is a display state, not a value change. A screen-reader user who focuses the field
+            hears the unmasked number, because they are the one who entered it; the mask exists to
+            stop it being read over their shoulder.
+          </p>
+        </section>
+      }
+    />
   );
 }

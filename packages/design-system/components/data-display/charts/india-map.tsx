@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { sequentialColor, CHART_INK } from "./internal/palette";
 import { niceTicks } from "./internal/scales";
@@ -15,7 +15,7 @@ export interface IndiaMapDatum {
   value: number;
 }
 
-export interface IndiaMapProps {
+export interface IndiaMapProps extends ChartStateProps {
   data: IndiaMapDatum[];
   title: string;
   valueFormat?: ValueFormat;
@@ -40,7 +40,16 @@ function normalize(name: string): string {
  * sequential token ramp. Replaces SMILE's d3-geo + topojson map. Regions are
  * keyboard-navigable and announced; a screen-reader table carries the values.
  */
-export function IndiaMap({ data, title, valueFormat = formatIndian, highlightState, className }: IndiaMapProps) {
+export function IndiaMap({
+  data,
+  title,
+  valueFormat = formatIndian,
+  highlightState,
+  className,
+  state,
+  onRetry,
+  filterLabel,
+}: IndiaMapProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
 
   const valueByState = React.useMemo(() => {
@@ -48,6 +57,29 @@ export function IndiaMap({ data, title, valueFormat = formatIndian, highlightSta
     for (const d of data) m.set(normalize(d.state), d.value);
     return m;
   }, [data]);
+
+  /*
+   * WITH NO DATA THIS DREW A COMPLETE GREY INDIA and announced "across 0
+   * states". Every region resolved to `undefined`, took the empty tone, and the
+   * map looked finished — a citizen had no way to tell a country with no
+   * reported figures from a country where every figure was zero. The guard is
+   * placed AFTER the memo, per the rule: branch the render, not the derivation.
+   */
+  const resolved = state ?? (data.length === 0 ? "empty" : undefined);
+  if (resolved)
+    return (
+      <ChartFrame
+        marksAreFocusable
+        title={title}
+        viewBox={INDIA_STATES_VIEWBOX}
+        className={className}
+        state={resolved}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+      >
+        {null}
+      </ChartFrame>
+    );
 
   const max = Math.max(1, ...data.map((d) => d.value));
   const ticks = niceTicks(0, max, 5);
@@ -59,6 +91,7 @@ export function IndiaMap({ data, title, valueFormat = formatIndian, highlightSta
 
   return (
     <ChartFrame
+      marksAreFocusable
       title={title}
       summary={`State-wise ${title.toLowerCase()} across ${data.length} states; values ${valueFormat(0)}–${valueFormat(max)}`}
       viewBox={INDIA_STATES_VIEWBOX}

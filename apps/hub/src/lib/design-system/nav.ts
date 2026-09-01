@@ -81,6 +81,11 @@ export const NAV: NavGroup[] = [
         "label": "Accessibility",
         "href": "/design-system/foundations/accessibility",
         "badge": "Stable"
+      },
+      {
+        "label": "Illustration",
+        "href": "/design-system/foundations/illustration",
+        "badge": "New"
       }
     ]
   },

@@ -1,183 +1,281 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { OtpInputPlayground } from "./otp-input-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  Callout,
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+
+import { OtpInputPlayground } from "./otp-input-playground";
 
 export const metadata: Metadata = {
-  title: "OtpInput - SAMAVESH Design System",
+  title: "OTP Input — Design System",
   description:
-    "An accessible group of text inputs optimized for collecting One-Time Passwords (OTP).",
+    "Six separate boxes for a one-time password, with paste, SMS autofill, arrow-key movement and a numbered box for every digit.",
 };
 
+/*
+ * Read off `OtpInputProps` in packages/design-system/components/forms/otp-input.tsx.
+ * The interface is a CLOSED list — it extends nothing, so no native input
+ * attributes pass through. Two things the previous version of this page got
+ * wrong: the change handler is `onValueChange`, not `onChange`, and `label` is
+ * REQUIRED with no default.
+ */
+const PROPS: PropDef[] = [
+  {
+    name: "value",
+    type: "string",
+    required: true,
+    description: "The digits entered so far, as one string. Controlled.",
+  },
+  {
+    name: "onValueChange",
+    type: "(digits: string) => void",
+    required: true,
+    description:
+      "Called with the digits entered so far, never longer than `length`. This is not `onChange` — the component exposes no native change handler.",
+  },
+  {
+    name: "label",
+    type: "string",
+    required: true,
+    description:
+      "Accessible name for the whole group, for example \"One-time password\". There is no default: six unnamed boxes are unusable with a screen reader.",
+  },
+  {
+    name: "length",
+    type: "number",
+    default: "6",
+    description: "Number of boxes. UX4G 3.0 specifies six.",
+  },
+  {
+    name: "onComplete",
+    type: "(digits: string) => void",
+    default: "undefined",
+    description: "Fires once the last box is filled. Wire the verification call here rather than to a separate button.",
+  },
+  {
+    name: "invalid",
+    type: "boolean",
+    default: "false",
+    description: "Renders the error state across every box and sets `aria-invalid` on each.",
+  },
+  {
+    name: "aria-describedby",
+    type: "string",
+    default: "undefined",
+    description:
+      "Links the group to a hint or an error, exactly like any other control. Form Field supplies this through its render prop.",
+  },
+  {
+    name: "disabled",
+    type: "boolean",
+    default: "false",
+    description: "Disables every box.",
+  },
+  {
+    name: "autoFocus",
+    type: "boolean",
+    default: "false",
+    description: "Focuses the first box on mount. Correct on a page whose only purpose is the code; wrong inside a longer form.",
+  },
+  {
+    name: "id",
+    type: "string",
+    default: "auto",
+    description:
+      "Falls back to a generated `useId()`. It is applied to the FIRST box, so a Form Field label bound with `htmlFor` reaches it.",
+  },
+  {
+    name: "className",
+    type: "string",
+    default: "undefined",
+    description: "Merged onto the group wrapper, not the boxes.",
+  },
+];
+
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The boxes sit in a `role=\"group\"` named by `label`, and each box is numbered — \"Digit 3 of 6\" — so a non-sighted reader always knows where they are in the code.",
+  },
+  {
+    criterion: "1.3.5 Identify Input Purpose",
+    level: "AA",
+    description:
+      "The first box carries `autocomplete=\"one-time-code\"` so iOS and Android offer the code from the message. Only the first, because advertising it on all six makes the platform prompt repeatedly.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    description:
+      "Arrow keys move between boxes, Backspace on an empty box steps back and clears the previous one, and Delete clears the current one. Nothing strands the caret.",
+  },
+  {
+    criterion: "2.5.8 Target Size (Minimum)",
+    level: "AA",
+    description:
+      "Every box is at least 44px tall. Below 380px the boxes narrow rather than pushing the page sideways, which keeps the target on the axis that matters.",
+  },
+  {
+    criterion: "3.3.1 Error Identification",
+    level: "A",
+    description:
+      "`invalid` sets `aria-invalid` on every box, and `aria-describedby` links the message Form Field renders with `role=\"alert\"`.",
+  },
+  {
+    criterion: "3.3.7 Redundant Entry",
+    level: "A",
+    description:
+      "Pasting the code into any box fills all six, and an SMS autofill arriving as one multi-character value is spread across them rather than truncated — so the reader never types a code the device already has.",
+  },
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    description: "The group has a name, and each box has its own position-bearing name and value.",
+  },
+];
+
 export default function OtpInputPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="OTP Input"
+      status="Stable"
+      summary="Six separate boxes for a one-time password, as UX4G 3.0 specifies. Pasting the code into any box fills all six, SMS autofill is spread across the boxes rather than truncated, and Backspace on an empty box steps back instead of stranding the caret."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<OtpInputPlayground />}
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "The reader is entering a verification code sent by SMS or email.",
+          "The code is short, numeric and fixed in length, so the boxes tell the reader how much is expected.",
+          "Verification should begin the moment the last digit lands, without a separate button.",
+        ],
+        avoid: [
+          "The field holds a PIN code, an amount, or any other number the reader knows by heart — use Input with a numeric input mode.",
+          "The code is alphanumeric or variable in length. The boxes accept digits only.",
+          "The field holds an Aadhaar number or a PAN — those have their own controls.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          OtpInput
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A specialised input component for collecting numeric One-Time Passwords (OTP). It handles pasting, arrow-key navigation, and mobile autofill natively.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Aadhaar Input",
+          href: "/design-system/components/forms/aadhaar-input",
+          reason: "the identity field this step usually verifies",
+        },
+        {
+          label: "Identity Inputs",
+          href: "/design-system/components/forms/identity-inputs",
+          reason: "the three identity controls documented together",
+        },
+        {
+          label: "Form Field",
+          href: "/design-system/components/forms/form-field",
+          reason: "the label, hint and error wiring this group expects",
+        },
+        {
+          label: "Portal Login Shell",
+          href: "/design-system/components/auth/portal-login-shell",
+          reason: "the surface this control most often appears on",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-fiddly">
+          <h2 id="cdp-fiddly" className="cdp__h2">
+            The Parts That Are Usually Wrong
+          </h2>
+          <ul>
+            <li>
+              <strong>Paste works.</strong> Pasting <code>123456</code> into any box fills all six.
+              This is the single commonest way people enter a one-time password, and the thing
+              hand-rolled versions almost always break.
+            </li>
+            <li>
+              <strong>SMS autofill works.</strong>{" "}
+              <code>autocomplete=&quot;one-time-code&quot;</code> on the first box lets iOS and Android
+              offer the code from the message, and the multi-character value that arrives is spread
+              across the boxes rather than truncated.
+            </li>
+            <li>
+              <strong>Backspace on an empty box</strong> steps back and clears the previous one,
+              instead of leaving the caret with nothing to delete.
+            </li>
+          </ul>
+          <Callout type="warning" title="Accessible Authentication">
+            A one-time password is not a cognitive function test, so it does not engage WCAG 2.2 SC
+            3.3.8. Keep it that way: do not add a puzzle, an image challenge or a timed retype
+            alongside it. Where a second factor is needed, choose one the reader&apos;s device can
+            supply.
+          </Callout>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { OtpInput } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Try pasting a 6-digit number, typing normally, or using the left/right arrow keys to navigate between the boxes.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <OtpInputPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          Use the <code>OtpInput</code> exclusively when asking the user to enter a verification code sent via SMS or email. It provides a standard 4- or 6-digit box layout that users recognize instantly.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Wrap it in a FormField to provide a clear label and error message.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't use OtpInput for standard numeric fields like PIN codes or amounts. Use a standard Input with `type='number'` instead.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <p style={proseStyle}>
-          The <code>onComplete</code> callback fires automatically when the final box is filled, allowing you to trigger verification immediately without requiring an extra button click.
-        </p>
-        <Playground
-          code={`function VerificationFlow() {
-  const [code, setCode] = React.useState("");
+const [otp, setOtp] = React.useState("");
 
-  const handleVerify = (fullCode) => {
-    console.log("Verifying code:", fullCode);
-  };
-
-  return (
-    <FormField label="Enter Verification Code">
-      {(props) => (
-        <OtpInput 
-          {...props}
-          value={code}
-          onChange={setCode}
-          length={6}
-          onComplete={handleVerify}
-          autoFocus
-        />
-      )}
-    </FormField>
-  );
-}`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "value", type: "string", required: true, description: "Controlled value (up to 'length' characters long)." },
-            { name: "onChange", type: "(value: string) => void", required: true, description: "Change handler." },
-            { name: "length", type: "number", default: "6", description: "Number of digits/boxes." },
-            { name: "label", type: "string", default: '"One-time code"', description: "Accessible group label." },
-            { name: "onComplete", type: "(code: string) => void", description: "Called when all digits are filled." },
-            { name: "invalid", type: "boolean", default: "false", description: "Render the error state." },
-            { name: "autoFocus", type: "boolean", default: "false", description: "Focus the first box on mount." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Input Mode & Autofill:</strong> Sets <code>inputMode=&quot;numeric&quot;</code> to trigger the number pad on mobile devices. The first box sets <code>autoComplete=&quot;one-time-code&quot;</code> so the OS prompts the user when an SMS arrives.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Navigation:</strong> Fully supports navigating back and forth with Left/Right arrow keys and deleting characters seamlessly with Backspace.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Aria Labels:</strong> Each individual box is labelled dynamically (e.g. &quot;Digit 1 of 6&quot;) so screen reader users know exactly where they are.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+<OtpInput
+  label="One-time password"
+  value={otp}
+  onValueChange={setOtp}
+  onComplete={(code) => verify(code)}
+  autoFocus
+/>`}</CodeBlock>
+          <p>
+            Inside a Form Field, spread the render prop so the hint and the error reach the group.{" "}
+            <code>label</code> is still required — the Form Field label is visible text, and the group
+            needs its own accessible name.
+          </p>
+          <CodeBlock>{`<FormField
+  label="Enter the Code We Sent You"
+  hint="Six digits, sent to the number ending 2346"
+  error={failed ? "That code was not recognised. Request a new one." : undefined}
+>
+  {(control) => (
+    <OtpInput
+      {...control}
+      label="One-time password"
+      value={otp}
+      onValueChange={setOtp}
+      invalid={failed}
+    />
+  )}
+</FormField>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-keys">
+          <h2 id="cdp-keys" className="cdp__h2">
+            Keyboard
+          </h2>
+          <ul>
+            <li>
+              <strong>Left and Right</strong> — move between boxes.
+            </li>
+            <li>
+              <strong>Backspace</strong> — clear this box, or step back and clear the previous one
+              where this box is already empty.
+            </li>
+            <li>
+              <strong>Delete</strong> — clear this box without moving.
+            </li>
+          </ul>
+          <p>
+            Focusing a box selects its contents, so typing over a digit replaces it rather than being
+            rejected by the one-character limit.
+          </p>
+        </section>
+      }
+    />
   );
 }

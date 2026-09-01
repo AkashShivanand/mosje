@@ -1,178 +1,256 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { WizardPlayground } from "./wizard-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  Callout,
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+
+import { WizardPlayground } from "./wizard-playground";
 
 export const metadata: Metadata = {
-  title: "Wizard - SAMAVESH Design System",
+  title: "Wizard — Design System",
   description:
-    "A shared multi-step form shell with a Stepper, navigation controls, and accessibility wiring.",
+    "The shared multi-step form shell: a stepper, the current step's body, a focusable error summary, and the Back, Continue and Submit controls.",
 };
 
+/*
+ * Read off `WizardProps` in packages/design-system/components/forms/wizard.tsx.
+ * The interface is a CLOSED list — it extends nothing. `ReviewSection` and
+ * `ReviewItem` are exported from the same file for the final step.
+ */
+const PROPS: PropDef[] = [
+  {
+    name: "steps",
+    type: "StepperStep[]",
+    required: true,
+    description: "Step definitions — `{ label, description? }` — passed straight to the Stepper.",
+  },
+  {
+    name: "current",
+    type: "number",
+    required: true,
+    description: "Zero-based index of the active step. The parent owns it; the Wizard never changes it.",
+  },
+  {
+    name: "onBack",
+    type: "() => void",
+    required: true,
+    description: "Fired when the reader asks for the previous step. The Back button is disabled on the first step.",
+  },
+  {
+    name: "onNext",
+    type: "() => void",
+    required: true,
+    description: "Fired when the reader asks for the next step. Validate here and only advance when the step is valid.",
+  },
+  {
+    name: "onSubmit",
+    type: "() => void",
+    required: true,
+    description: "Fired from the final step's submit button, which replaces Continue there.",
+  },
+  {
+    name: "children",
+    type: "React.ReactNode",
+    required: true,
+    description: "The current step's body — typically one or more Form Sections or Form Cards.",
+  },
+  {
+    name: "submitLabel",
+    type: "string",
+    default: '"Submit"',
+    description: "Label for the final-step submit button.",
+  },
+  {
+    name: "nextLabel",
+    type: "string",
+    default: '"Continue"',
+    description: "Label for the advance button on every step but the last.",
+  },
+  {
+    name: "error",
+    type: "string",
+    default: "undefined",
+    description: "Error-summary message, rendered in a focusable Alert above the actions.",
+  },
+  {
+    name: "errorRef",
+    type: "React.Ref<HTMLDivElement>",
+    default: "undefined",
+    description:
+      "Ref to the error-summary container, so the parent can move focus to it when a step fails validation. Without this the summary appears and nobody is sent to it.",
+  },
+];
+
+const A11Y: A11yItem[] = [
+  {
+    criterion: "2.4.3 Focus Order",
+    level: "A",
+    description:
+      "On a step change focus moves to the step body, so a keyboard user lands on the new content rather than being stranded at the bottom of the page they just left.",
+  },
+  {
+    criterion: "3.2.2 On Input",
+    level: "A",
+    description:
+      "The step never advances on its own. Back, Continue and Submit are explicit controls, and the parent decides whether the move is allowed.",
+  },
+  {
+    criterion: "3.3.1 Error Identification",
+    level: "A",
+    description:
+      "The error summary is an Alert above the actions, and `errorRef` lets the parent send focus to it, so the failure is both announced and reachable.",
+  },
+  {
+    criterion: "4.1.3 Status Messages",
+    level: "AA",
+    description:
+      "A polite live region announces \"Step N of M\" with the step's label whenever `current` changes, so a screen-reader user hears the move.",
+  },
+  {
+    criterion: "2.4.8 Location",
+    level: "AAA",
+    description:
+      "The Stepper shows which step of how many the reader is on throughout, which is what makes a long application feel finite.",
+  },
+  {
+    criterion: "GIGW 3.0 — Forms",
+    level: "GIGW",
+    description:
+      "A long form is broken into named steps and closes with a read-only review, so nothing is submitted that the citizen has not seen in full.",
+  },
+];
+
 export default function WizardPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Wizard"
+      status="Stable"
+      summary="The shared multi-step form shell. It renders the Stepper, the current step's body, an optional focusable error summary, and the Back, Continue and Submit controls. The parent owns every field value, the step index and all validation."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<WizardPlayground />}
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "An application is long enough that presenting it as one page would be daunting — a scheme application, a registration, a grievance with supporting documents.",
+          "The steps are genuinely sequential, and a later step depends on an earlier one being complete.",
+          "The final step should be a read-only review before anything is submitted.",
+        ],
+        avoid: [
+          "The form is short enough to show at once — a wizard around three fields adds two clicks and removes the overview.",
+          "The steps are independent and the reader may complete them in any order — use Tabs, which does not imply a sequence.",
+          "Only the progress needs showing, not the navigation — use Stepper on its own.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          Wizard
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A robust multi-step form shell providing a Stepper, step body, navigation controls, and essential focus management. 
-        </p>
-      </header>
+      related={[
+        {
+          label: "Stepper",
+          href: "/design-system/components/feedback/stepper",
+          reason: "the progress indicator this shell renders",
+        },
+        {
+          label: "Form Section",
+          href: "/design-system/components/forms/form-section",
+          reason: "what a step's body is usually made of",
+        },
+        {
+          label: "Declaration Checkbox",
+          href: "/design-system/components/forms/declaration-checkbox",
+          reason: "the certification that closes the final step",
+        },
+        {
+          label: "Alert",
+          href: "/design-system/components/feedback/alert",
+          reason: "the component the error summary is rendered as",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-ownership">
+          <h2 id="cdp-ownership" className="cdp__h2">
+            The Parent Owns the State
+          </h2>
+          <Callout type="info" title="What This Component Does and Does Not Do">
+            Keep <code>current</code> and every field value in your page&apos;s state. Validate inside{" "}
+            <code>onNext</code> and <code>onSubmit</code>, and advance only when the step is valid. The
+            Wizard is presentational: it tells you when the reader wants to move, moves focus to the
+            step body, and announces the step. It never decides whether the move is allowed.
+          </Callout>
+          <p>
+            The last step should always be a read-only summary. <code>ReviewSection</code> is a titled
+            card laying out <code>ReviewItem</code> label-and-value pairs in a responsive grid, and an
+            empty value renders as an em dash — so a missing answer is visible before submission
+            rather than after it.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { FormSection, Wizard } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Navigate through the steps to see the focus management in action.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <WizardPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          The Wizard component orchestrates the UI for complex forms broken down into multiple steps. It leaves state management (validation, the current step index) up to you, focusing entirely on layout and accessibility.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Use the `error` prop to display a summary alert of validation failures when a user tries to proceed.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't hardcode your own navigation buttons at the bottom of the form. Use the built-in `onNext` and `onBack` handlers.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`function MultiStepForm() {
-  const [step, setStep] = React.useState(0);
-  const steps = [{ label: "Details" }, { label: "Documents" }, { label: "Review" }];
+const [step, setStep] = React.useState(0);
+const [error, setError] = React.useState<string>();
+const errorRef = React.useRef<HTMLDivElement>(null);
 
-  return (
-    <Wizard
-      steps={steps}
-      current={step}
-      onNext={() => setStep((s) => s + 1)}
-      onBack={() => setStep((s) => s - 1)}
-      onSubmit={() => console.log("Form submitted")}
-    >
-      <div className="step-content">
-        {step === 0 && <FormSection title="Details">...</FormSection>}
-        {step === 1 && <FormSection title="Uploads">...</FormSection>}
-        {step === 2 && <ReviewSection title="Review">...</ReviewSection>}
-      </div>
-    </Wizard>
-  );
-}`}
-        />
-      </section>
+<Wizard
+  steps={[
+    { label: "Personal", description: "Your details" },
+    { label: "Documents", description: "Supporting papers" },
+    { label: "Review", description: "Confirm and submit" },
+  ]}
+  current={step}
+  error={error}
+  errorRef={errorRef}
+  onBack={() => setStep((s) => s - 1)}
+  onNext={() => {
+    const problem = validate(step);
+    setError(problem);
+    if (problem) errorRef.current?.focus();
+    else setStep((s) => s + 1);
+  }}
+  onSubmit={submitApplication}
+>
+  {step === 0 && <FormSection title="Personal Details">…</FormSection>}
+</Wizard>`}</CodeBlock>
+          <p>The review step, built from the two helpers exported alongside the shell.</p>
+          <CodeBlock>{`import { ReviewItem, ReviewSection } from "@mosje/design-system";
 
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "steps", type: "StepperStep[]", required: true, description: "Step definitions (label + optional description) for the Stepper." },
-            { name: "current", type: "number", required: true, description: "0-based index of the active step." },
-            { name: "onBack", type: "() => void", required: true, description: "Called when 'Back' is clicked." },
-            { name: "onNext", type: "() => void", required: true, description: "Called when 'Continue' is clicked." },
-            { name: "onSubmit", type: "() => void", required: true, description: "Called when 'Submit' is clicked on the final step." },
-            { name: "error", type: "string", description: "Error summary message shown in an alert above the actions." },
-            { name: "errorRef", type: "Ref<HTMLDivElement>", description: "Ref to the error container for focus management." },
-            { name: "children", type: "ReactNode", required: true, description: "The current step body." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Focus Management:</strong> When moving between steps, the Wizard automatically moves keyboard focus to the main step body container. This ensures screen readers announce the new step content instead of getting stuck on the &apos;Continue&apos; button.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Regions:</strong> Uses <code>aria-live=&quot;polite&quot;</code> to announce step changes (e.g., &quot;Step 2 of 3: Documents&quot;) to screen readers as they occur.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+<ReviewSection title="Personal Details">
+  <ReviewItem label="Full Name" value={form.name} />
+  <ReviewItem label="Date of Birth" value={form.dob} />
+  <ReviewItem label="Address" value={form.address} wide />
+</ReviewSection>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            Always pass <code>errorRef</code> alongside <code>error</code> and move focus to it when a
+            step fails. Rendering the summary without sending anybody to it leaves a keyboard user
+            pressing Continue with no idea why nothing happened.
+          </p>
+          <p>
+            Focus moves to the step body on every change of <code>current</code>, and the body is
+            given a <code>tabIndex</code> of −1 so it can receive that focus without becoming a tab stop
+            of its own.
+          </p>
+          <p>
+            All three controls are <code>type=&quot;button&quot;</code>. A Wizard placed inside a{" "}
+            <code>&lt;form&gt;</code> therefore does not submit on Continue, which is what stops an
+            incomplete application reaching the department because somebody pressed Enter in a field.
+          </p>
+        </section>
+      }
+    />
   );
 }

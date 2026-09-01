@@ -152,7 +152,13 @@
     gap: var(--sa-stack-8);
     /* The row itself carries no fill; its two children do. */
     background: none !important;
-    animation: ds-skel-rise 480ms cubic-bezier(0.22, 0.61, 0.36, 1) both !important;
+    /* NOT `!important`. It was, and `@media (prefers-reduced-motion: reduce)`
+       below sets `animation: none` WITHOUT one — so the reduce block lost, and
+       readers with vestibular sensitivity kept the motion they had asked the
+       operating system to switch off. The `!important` was never needed: it
+       exists to beat `.ds-skel :where(span)`, whose `:where()` contributes zero
+       specificity, so this class selector already outranks it on source order. */
+    animation: ds-skel-rise 480ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
   }
 
   .ds-skel__row-label {
@@ -201,7 +207,9 @@
     flex-direction: column;
     gap: var(--sa-stack-8);
     background: none !important;
-    animation: ds-skel-rise 480ms cubic-bezier(0.22, 0.61, 0.36, 1) both !important;
+    /* See `.ds-skel__row` — the same `!important`, losing the same argument
+       with `prefers-reduced-motion`, for the same non-reason. */
+    animation: ds-skel-rise 480ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
   }
 
   .ds-skel__figure-value {

@@ -1,161 +1,189 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { LabelPlayground } from "./label-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+
+import { LabelPlayground } from "./label-playground";
 
 export const metadata: Metadata = {
-  title: "Label - SAMAVESH Design System",
+  title: "Label — Design System",
   description:
-    "A standalone accessible label for form controls when you cannot use the FormField wrapper.",
+    "A standalone label element for controls that are not wrapped in a Form Field, matching the Form Field label exactly.",
 };
 
+/*
+ * Read off `LabelProps` in packages/design-system/components/forms/label.tsx.
+ * The interface extends `LabelHTMLAttributes<HTMLLabelElement>` in full, so
+ * `htmlFor` is a native attribute passed through rather than a declared prop —
+ * optional to the type system, and required in practice. See the note below.
+ */
+const PROPS: PropDef[] = [
+  {
+    name: "children",
+    type: "React.ReactNode",
+    default: "undefined",
+    description: "The label text. This is the question the control is asking.",
+  },
+  {
+    name: "required",
+    type: "boolean",
+    default: "undefined",
+    description:
+      "Appends a required marker after the text. The marker is `aria-hidden`, so the requirement must also be carried by the control's own `required` attribute — the asterisk alone conveys nothing to a screen reader.",
+  },
+  {
+    name: "hint",
+    type: "React.ReactNode",
+    default: "undefined",
+    description:
+      "Secondary text rendered inline after the label in a lighter weight. It is inside the `<label>`, so it becomes part of the accessible name — keep it to a few words.",
+  },
+  {
+    name: "className",
+    type: "string",
+    default: "undefined",
+    description: "Merged onto the `<label>` element.",
+  },
+  {
+    name: "...native",
+    type: "React.LabelHTMLAttributes<HTMLLabelElement>",
+    default: "—",
+    description:
+      "Every native label attribute is forwarded, including `htmlFor` and `ref`. `htmlFor` is not declared separately by the interface, but a label with no `htmlFor` and no wrapped control names nothing.",
+  },
+];
+
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "A real `<label>` element. Given `htmlFor`, the association with the control is programmatic rather than positional.",
+  },
+  {
+    criterion: "2.5.3 Label in Name",
+    level: "A",
+    description:
+      "The visible text is the accessible name, so a voice-control user can say what they see. Anything placed in `hint` becomes part of that name.",
+  },
+  {
+    criterion: "2.5.8 Target Size (Minimum)",
+    level: "AA",
+    description:
+      "A bound label extends the control's hit area, which is what takes a 20px checkbox or radio past the 24×24 minimum.",
+  },
+  {
+    criterion: "1.4.1 Use of Colour",
+    level: "A",
+    description:
+      "The required marker is a glyph, not a colour change, so the requirement survives a monochrome or high-contrast rendering.",
+  },
+  {
+    criterion: "GIGW 3.0 — Forms",
+    level: "GIGW",
+    description:
+      "Every control carries a persistent visible label. This component exists so that stays true where Form Field's layout does not fit.",
+  },
+];
+
 export default function LabelPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Label"
+      status="Stable"
+      summary="A standalone label for controls that are not wrapped in a Form Field. It renders a real label element and matches the Form Field label exactly, so a hand-wired field and a Form Field are indistinguishable side by side."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<LabelPlayground />}
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A control sits in a layout Form Field's structure does not fit — a filter toolbar, an inline table row, a compact settings list.",
+          "A checkbox or radio row needs a group label above it, which is not a field label.",
+          "The `aria-describedby` wiring is being done by hand for a reason that is recorded.",
+        ],
+        avoid: [
+          "The control is an ordinary form field — use Form Field, which wires the label, the hint and the error and cannot forget one.",
+          "The text is a section heading rather than a control's name — use Form Section or Form Card, whose titles are headings.",
+          "Nothing is being labelled. A label with no bound control is decoration with a misleading role.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          Label
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A standalone <code>&lt;label&gt;</code> element. Used when hand-wiring form controls outside of the standard FormField component layout.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Form Field",
+          href: "/design-system/components/forms/form-field",
+          reason: "the wrapper that renders this label and wires it for you",
+        },
+        {
+          label: "Checkbox",
+          href: "/design-system/components/forms/checkbox",
+          reason: "carries its own label prop; this one labels the group",
+        },
+        {
+          label: "Form Section",
+          href: "/design-system/components/forms/form-section",
+          reason: "when the text is a section heading, not a field name",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-when">
+          <h2 id="cdp-when" className="cdp__h2">
+            Prefer Form Field
+          </h2>
+          <p>
+            Almost every field in the estate should use Form Field instead of this component. Form
+            Field generates the id, binds the label, links the hint and the error through{" "}
+            <code>aria-describedby</code>, and sets <code>aria-invalid</code> — four separate things a
+            hand-wired field has to get right every time.
+          </p>
+          <p>
+            The standalone label exists for the layouts Form Field&apos;s DOM structure does not suit:
+            a filter toolbar where the label sits beside the control, an inline row in a table, or a
+            group label above a set of checkboxes.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Input, Label } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Toggle the required marker and the inline hint. Notice how the visual styling matches exactly what you see in the FormField component.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <LabelPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          You should almost always use <code>FormField</code> instead of this component. Use the standalone Label only when building complex layouts where the FormField&apos;s internal DOM structure (label above input) isn&apos;t appropriate—like custom filter toolbars or inline form rows.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Always provide an 'htmlFor' prop that exactly matches the 'id' of the input you are labelling.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't use this if you can use FormField. Hand-wiring IDs and aria-describedby is prone to human error.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`<div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-16)" }}>
-  <Label htmlFor="custom-search" required hint="(Min 3 chars)">
-    Search Query
-  </Label>
-  <Input id="custom-search" />
-</div>`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "children", type: "ReactNode", required: true, description: "The primary label text." },
-            { name: "htmlFor", type: "string", required: true, description: "The ID of the input element this label is associated with." },
-            { name: "required", type: "boolean", default: "false", description: "Appends a visual red asterisk." },
-            { name: "hint", type: "ReactNode", description: "Secondary text rendered inline after the label." },
-            { name: "...rest", type: "LabelHTMLAttributes<HTMLLabelElement>", description: "All standard label attributes." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Required Marker:</strong> The red asterisk rendered by the <code>required</code> prop has <code>aria-hidden=&quot;true&quot;</code>, so screen readers don&apos;t read out &quot;star&quot;.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>htmlFor:</strong> Because this is just a thin wrapper around a native label, you are entirely responsible for correctly wiring the <code>htmlFor</code> attribute to the control.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+<Label htmlFor="district-filter" hint="(district only)">
+  Filter By District
+</Label>
+<Input id="district-filter" />`}</CodeBlock>
+          <p>
+            The <code>htmlFor</code> value must match the control&apos;s <code>id</code> exactly. This
+            is the failure Form Field exists to remove: a mistyped id produces a label that looks
+            correct, clicks nothing, and names nothing.
+          </p>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            The required marker is rendered <code>aria-hidden</code> because an asterisk read aloud is
+            noise. The requirement must therefore reach assistive technology some other way — through{" "}
+            <code>required</code> on the control, which is what Form Field sets.
+          </p>
+          <p>
+            The <code>hint</code> sits inside the <code>&lt;label&gt;</code>, so it is read as part of
+            the field&apos;s name rather than as a description. Where the guidance is a sentence, put
+            it in Form Field&apos;s <code>hint</code>, which is linked with{" "}
+            <code>aria-describedby</code> and read separately.
+          </p>
+        </section>
+      }
+    />
   );
 }

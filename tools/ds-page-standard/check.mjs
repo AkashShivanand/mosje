@@ -71,14 +71,58 @@ function collect(dir, out = []) {
   return out;
 }
 
+/**
+ * THE TEMPLATE ROUTE.
+ *
+ * The six markers above were written when every page hand-assembled the shape.
+ * `ComponentDocPage` now renders all six from data, which is the fix for the
+ * ninety-nine pages that each retyped them — but a page built on the template
+ * contains none of the six literals, so the original test would score it 0/6
+ * and fail the very change that repaired it.
+ *
+ * So a page also conforms by USING THE TEMPLATE PROPERLY. "Properly" is the
+ * load-bearing word: rendering `<ComponentDocPage />` with nothing in it would
+ * give the reader an empty page, so every prop that carries one of the six is
+ * required here too. The template guarantees the SHAPE; this guarantees the
+ * page put something in it.
+ *
+ * `figma` covers both a node and a declared absence, because a component with
+ * no Figma counterpart is a fact to state, not a link to fake.
+ */
+const TEMPLATE_USE = /<ComponentDocPage[\s/>]/;
+const TEMPLATE_PROPS = [
+  [/\bstatus=/, "a maturity badge (status=)"],
+  [/\bfigma=/, "a Figma node or a declared absence (figma=)"],
+  [/\bspecimen=/, "a running specimen (specimen=)"],
+  /*
+   * `propsFrom` counts too, and it is the PREFERRED half. The template's own
+   * docstring says a hand-written table is how `ChartCard` came to document a
+   * prop that does not exist, so the generated key is the correct way to
+   * document a component's API — and a gate that scored only `props=` would
+   * have marked every page that took the better path as missing its API table.
+   */
+  [/\bprops(From)?=/, "a props table (props= or propsFrom=)"],
+  [/\ba11y=/, "an accessibility checklist (a11y=)"],
+  [/\bsummary=/, "a one-line summary (summary=)"],
+];
+
+function scoreOne(src) {
+  if (TEMPLATE_USE.test(src)) {
+    const missing = TEMPLATE_PROPS.filter(([re]) => !re.test(src)).map(([, label]) => label);
+    return { score: TEMPLATE_PROPS.length - missing.length, missing };
+  }
+  const missing = REQUIRED.filter(([re]) => !re.test(src)).map(([, label]) => label);
+  return { score: REQUIRED.length - missing.length, missing };
+}
+
 export function scorePages() {
   return collect(PAGES)
     .map((file) => {
       const src = readFileSync(file, "utf8");
-      const missing = REQUIRED.filter(([re]) => !re.test(src)).map(([, label]) => label);
+      const { score, missing } = scoreOne(src);
       return {
         page: relative(PAGES, file).replace(/\/page\.tsx$/, ""),
-        score: REQUIRED.length - missing.length,
+        score,
         missing,
       };
     })

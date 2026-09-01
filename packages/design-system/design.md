@@ -1117,6 +1117,29 @@ graph TD
 | Use `<EmptyState>` with `variant="no-results"` for filtered tables, `variant="no-data"` for fresh portals. | Do not use red or warning colours — an empty state is not an error. |
 | Keep the message constructive: "Add your first application to get started." | Do not use passive voice: "No results were found." |
 
+### F2. Illustration — the drawn language
+
+`Illustration` renders a scene from the estate's own visual language. Import it,
+never draw one: `<Illustration name="no-results" />`. The full reasoning lives in
+`components/brand/illustration/language.ts` and is worth reading before adding a
+scene; the operative parts are below.
+
+| Rule | Why |
+| :--- | :--- |
+| One 64 × 48 geometry, three rendered tiers (`spot` 32×24, `scene` 192×144, `hero` 384×288). | The authored drawing does not change with size, so strokes, corners and gaps scale together and one definition is correct everywhere. |
+| Every scene stands on the same floor at y = 40. | The charts are all grounded, so the illustrations are; the family reads as one family. |
+| Four tokenised ink layers — `ground`, `ghost`, `ink`, `accent` — and **at most one accent per drawing**. | A raw hex in an illustration is the one asset on the page that keeps the old brand after a re-theme. Two accents means the drawing has not decided what it is about. |
+| Three stroke weights: hairline 2, ink 3, mass 4. Round caps and joins, always. | |
+| **Decorative by default.** Pass `alt` only where the drawing says something the surrounding text does not. | A drawing beside a heading that already reads "No records found" makes a screen reader announce it twice. |
+| **No scene depicts a person.** | The Department serves Scheduled Castes, Scheduled Tribes, senior citizens, persons with disabilities and transgender persons. Any depicted person has a gender, an age and an apparent community, and tells every citizen who is not that person that the page is not for them. Where a drawing needs a human presence it shows the evidence of one — a seat, a form, a place in a queue. |
+| The National Emblem is never illustration. | It is the estate's mark, it carries its own rules, and it does not appear inside a scene. |
+| A new scene is **assembled** from the primitives in `primitives.tsx`, never drawn. If it needs a shape that is not there, add the primitive first. | Design-system-first, applied to artwork: a one-off drawn inside one scene is a shape the next scene redraws slightly differently. |
+| The primitives are **not** exported from the barrel. | `Bars`, `Ring`, `Series`, `Sheet`, `Signal` are among the most generic nouns in the language; putting them in the public namespace would collide with the charts' own series vocabulary and with `SideSheet`. Scenes are added inside the module, where they are in scope. |
+
+Reach for `EmptyState` or `CardState` first — they place the drawing, the sentence
+and the action together, which is what a reader needs. `Illustration` on its own is
+for composing something those two do not cover.
+
 ### G. Toast Notifications
 
 | Do | Don't |

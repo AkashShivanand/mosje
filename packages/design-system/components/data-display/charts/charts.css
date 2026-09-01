@@ -529,6 +529,45 @@
     transition: width var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
   }
 
+  /* No figure, or one still arriving. The row keeps its exact height — a
+     progress bar that becomes a plate while it waits is a layout jump, not a
+     loading state — and the track carries a travelling sliver so it reads as
+     "unknown" rather than as a measured nought. */
+  .ds-progress__track--indeterminate {
+    background-image: linear-gradient(
+      90deg,
+      transparent 0%,
+      var(--sa-border-neutral-base) 50%,
+      transparent 100%
+    );
+    background-size: 40% 100%;
+    background-repeat: no-repeat;
+    animation: ds-progress-indeterminate 1.6s ease-in-out infinite;
+  }
+  @keyframes ds-progress-indeterminate {
+    0% { background-position: -60% 0; }
+    100% { background-position: 160% 0; }
+  }
+  /* The shape stays; only the movement goes. A static muted track still reads
+     as "there is a bar here and it has no figure". */
+  @media (prefers-reduced-motion: reduce) {
+    .ds-progress__track--indeterminate {
+      animation: none;
+      background-position: 30% 0;
+    }
+  }
+
+  /* ── Sparkline, with no trend to draw ─────────────────────────────────────
+     A flat baseline at the sparkline's own size, so the row does not develop a
+     hole where a trend belongs. */
+  .ds-sparkline__flat {
+    fill: none;
+    stroke: var(--sa-chart-grid);
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+  }
+
   /* ── Funnel ──────────────────────────────────────────────────────────────── */
   .ds-funnel {
     display: flex;
@@ -588,5 +627,86 @@
       transition: none !important;
       animation: none !important;
     }
+  }
+
+  /* ── Chart states ────────────────────────────────────────────────────────────
+     A chart that cannot draw still occupies its own proportions, so nothing on
+     the page moves when the figures arrive. See `ChartFrame`'s `state` prop.
+     ========================================================================== */
+  .ds-chart__canvas--state {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+  /* A chart with no viewBox has no proportions to borrow — `FunnelChart` draws in
+     the DOM, not in an SVG — so its state gets a floor instead. Without one the
+     skeleton resolves to zero height and the state reads as a missing element. */
+  .ds-chart__canvas--state-floor {
+    min-height: 180px;
+  }
+  .ds-chart__skeleton {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    padding: var(--sa-padding-16);
+  }
+  /* A skeleton in the SHAPE of the result — a row of bars on a baseline — rather
+     than a spinner in a void. */
+  .ds-chart__skeleton-bars {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border-bottom: 1px solid var(--sa-chart-grid);
+    background-image: repeating-linear-gradient(
+      to right,
+      var(--sa-chart-regionEmpty) 0 8%,
+      transparent 8% 14%
+    );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: 100% 62%;
+    animation: ds-chart-skel 1.4s ease-in-out infinite;
+  }
+  @keyframes ds-chart-skel {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 1; }
+  }
+  .ds-chart__retry {
+    border: 1px solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-base);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    font: inherit;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 600;
+    cursor: pointer;
+    /* 2.5.8 Target Size (Minimum) is 24; this clears it with room for a coarse pointer. */
+    min-height: 32px;
+  }
+  .ds-chart__retry:hover {
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .ds-chart__retry:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+  @media (pointer: coarse) {
+    .ds-chart__retry { min-height: 44px; }
+  }
+  /* `box-shadow` is not painted in forced-colors mode, so any focus ring built
+     from one disappears for exactly the readers that mode exists to serve. */
+  @media (forced-colors: active) {
+    .ds-chart__retry:focus-visible {
+      outline: 2px solid Highlight;
+      outline-offset: 2px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ds-chart__skeleton-bars { animation: none; }
   }
 }

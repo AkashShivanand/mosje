@@ -1,172 +1,195 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { PasswordStrengthMeterPlayground } from "./password-strength-meter-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  Callout,
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+
+import { PasswordStrengthMeterPlayground } from "./password-strength-meter-playground";
 
 export const metadata: Metadata = {
-  title: "PasswordStrengthMeter - SAMAVESH Design System",
+  title: "Password Strength Meter — Design System",
   description:
-    "An accessible password strength indicator designed for registration and password-reset flows.",
+    "Four segments and a word, shown under a password the reader is creating. Advisory, never a gate, and never beside a password being entered.",
 };
 
+/*
+ * Read off `PasswordStrengthMeterProps` in
+ * packages/design-system/components/forms/password-strength-meter.tsx. The
+ * interface is a CLOSED list — it extends nothing, so no native attributes pass
+ * through. `strengthFromScore` is exported alongside it.
+ */
+const PROPS: PropDef[] = [
+  {
+    name: "score",
+    type: "0 | 1 | 2 | 3 | 4 | null",
+    required: true,
+    description:
+      "A zxcvbn score, or `null` when the field is empty. Pass zxcvbn's own number — do NOT compute it from character classes, which fail a strong passphrase and pass `Passw0rd!`.",
+  },
+  {
+    name: "caption",
+    type: "string",
+    default: '"Password strength"',
+    description: "The label to the left of the strength word.",
+  },
+  {
+    name: "aria-describedby",
+    type: "string",
+    default: "undefined",
+    description: "Links the meter to further guidance, for a screen reader reading the strength word.",
+  },
+  {
+    name: "id",
+    type: "string",
+    default: "undefined",
+    description:
+      "Applied to the meter's root. Pass it and reference it from the password field's own `aria-describedby`, so the two are connected.",
+  },
+  {
+    name: "className",
+    type: "string",
+    default: "undefined",
+    description: "Merged onto the meter's root element.",
+  },
+];
+
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.4.1 Use of Colour",
+    level: "A",
+    description:
+      "The strength word carries the meaning, not the colour. A red bar and an amber bar are the same bar to a colour-blind reader, so the word is always rendered.",
+  },
+  {
+    criterion: "4.1.3 Status Messages",
+    level: "AA",
+    description:
+      "The strength word is a polite live region, so a change is announced without interrupting a screen-reader user mid-word.",
+  },
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The segments are `aria-hidden`, so the bar is not read segment by segment. Only the caption and the word reach assistive technology.",
+  },
+  {
+    criterion: "3.3.2 Labels or Instructions",
+    level: "A",
+    description:
+      "Passing `id` and referencing it from the password field's `aria-describedby` connects the meter to the field it describes, rather than leaving it as loose text below.",
+  },
+  {
+    criterion: "3.3.8 Accessible Authentication (Minimum)",
+    level: "AA",
+    description:
+      "The meter is advisory and blocks nothing, so it never becomes an obstacle to a reader using a password manager or a passphrase.",
+  },
+];
+
 export default function PasswordStrengthMeterPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Password Strength Meter"
+      status="Stable"
+      summary="Four segments and a word, shown under a password the reader is creating. The word carries the meaning rather than the colour, and changes are announced politely so a screen-reader user is not interrupted mid-word."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<PasswordStrengthMeterPlayground />}
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A reader is creating a password during registration.",
+          "A reader is setting a new password during a reset.",
+        ],
+        avoid: [
+          "The reader is signing in. On a sign-in screen the meter tells an attacker how close a guess is, and tells a legitimate reader something they cannot act on.",
+          "A policy minimum must be enforced — put it in the field's own error message, where it can say what to change. A colour bar cannot.",
+          "No zxcvbn score is available. Do not substitute a count of capitals and symbols; that measures the wrong thing.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          PasswordStrengthMeter
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A visual and accessible indicator that provides feedback to users as they create a password.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Password Input",
+          href: "/design-system/components/forms/password-input",
+          reason: "the field this meter sits under",
+        },
+        {
+          label: "Form Field",
+          href: "/design-system/components/forms/form-field",
+          reason: "where a policy minimum is stated and enforced",
+        },
+        {
+          label: "Progress",
+          href: "/design-system/components/data-display/progress",
+          reason: "for a bar that measures completion rather than quality",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-advisory">
+          <h2 id="cdp-advisory" className="cdp__h2">
+            Advisory, Not a Gate
+          </h2>
+          <Callout type="warning" title="Do Not Block Submission on a Score">
+            The meter encourages a stronger password; it does not decide whether one is acceptable. If
+            a policy minimum exists, enforce it in the field&apos;s error message, which can say what
+            to change. Blocking on &quot;Fair&quot; with only a coloured bar to explain why leaves the
+            reader guessing.
+          </Callout>
+          <p>
+            The zxcvbn score runs 0 to 4 and collapses to four named buckets, with 0 and 1 both
+            reading as Weak. <code>null</code> is the resting state before anything is typed, and
+            renders an em dash rather than a Weak reading of an empty field.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import zxcvbn from "zxcvbn";
+import { PasswordInput, PasswordStrengthMeter } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Type a password to see how the meter fills and updates its status word.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <PasswordStrengthMeterPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          This component expects a score between <code>0</code> and <code>4</code> from a library like <code>zxcvbn</code>. It should only be used when a user is <strong>creating</strong> a password (e.g. registration or reset), never when they are logging in.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Use this meter purely as advisory feedback to encourage stronger passwords.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't compute the score manually by checking for 'one capital, one symbol'. Use zxcvbn. Don't block form submission based on a 'Fair' score.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`import zxcvbn from "zxcvbn";
+const [password, setPassword] = React.useState("");
+const score = password ? zxcvbn(password).score : null;
 
-function RegistrationForm() {
-  const [password, setPassword] = React.useState("");
-  const result = password ? zxcvbn(password) : null;
-  const score = result ? result.score : null;
+<PasswordInput
+  value={password}
+  onChange={(event) => setPassword(event.target.value)}
+  autoComplete="new-password"
+  aria-describedby="pw-meter"
+/>
+<PasswordStrengthMeter id="pw-meter" score={score} />`}</CodeBlock>
+          <p>
+            <code>strengthFromScore</code> is exported alongside the component where the same bucket
+            is needed elsewhere — in a submit guard, or in a message that names the strength.
+          </p>
+          <CodeBlock>{`import { strengthFromScore } from "@mosje/design-system";
 
-  return (
-    <>
-      <PasswordInput
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        aria-describedby="pw-meter"
-      />
-      <PasswordStrengthMeter id="pw-meter" score={score} />
-    </>
-  );
-}`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "score", type: "0 | 1 | 2 | 3 | 4 | null", required: true, description: "A zxcvbn score. Pass null when the field is empty." },
-            { name: "caption", type: "string", default: '"Password strength"', description: "Label to the left of the strength word." },
-            { name: "id", type: "string", description: "ID used to link the meter to the input via aria-describedby." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Described By:</strong> Wire the meter&apos;s ID to the password input&apos;s <code>aria-describedby</code> attribute so screen readers know they are linked.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Region:</strong> The text label (e.g., &quot;Weak&quot;, &quot;Strong&quot;) has <code>aria-live=&quot;polite&quot;</code>. As the user types and the score changes, screen readers will announce the new strength politely without interrupting the user mid-keystroke.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Colour Independence:</strong> The component relies on the text word to convey meaning, not just the bar&apos;s colour, ensuring it is fully accessible to users with colour vision deficiencies.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+const strength = strengthFromScore(score); // "none" | "weak" | "fair" | "good" | "strong"`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            The bar itself is <code>aria-hidden</code>. A screen reader hears &quot;Password strength,
+            Good&quot;, not four unnamed segments — which is the whole reason the word is rendered
+            beside the bar rather than in a tooltip.
+          </p>
+          <p>
+            The live region is polite, so it waits for a pause in typing. Do not raise it to assertive:
+            announcing on every keystroke makes the field impossible to use with a screen reader.
+          </p>
+        </section>
+      }
+    />
   );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
@@ -14,7 +14,7 @@ export interface IndiaBubbleDatum {
   value: number;
 }
 
-export interface IndiaBubbleMapProps {
+export interface IndiaBubbleMapProps extends ChartStateProps {
   data: IndiaBubbleDatum[];
   title: string;
   valueFormat?: ValueFormat;
@@ -136,6 +136,9 @@ export function IndiaBubbleMap({
   highlightState,
   onSelectState,
   className,
+  state,
+  onRetry,
+  filterLabel,
 }: IndiaBubbleMapProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const hl = highlightState ? normalize(highlightState) : null;
@@ -155,6 +158,31 @@ export function IndiaBubbleMap({
       .sort((a, b) => b.r - a.r);
   }, [data, max, maxRadius]);
 
+  /*
+   * WITH NO CIRCLES THIS DREW A COMPLETE GREY INDIA and summarised it as
+   * "0 states, from Infinity to 1" — `Math.min()` over an empty array is
+   * `Infinity`. The map read as finished and the summary read as broken.
+   *
+   * `bubbles`, not `data`: a caller can pass rows whose states do not resolve to
+   * a centroid, or whose values are all zero, and get nothing drawn from data
+   * that is not empty. The guard follows what would actually be painted.
+   */
+  const resolved = state ?? (bubbles.length === 0 ? "empty" : undefined);
+  if (resolved)
+    return (
+      <ChartFrame
+        marksAreFocusable
+        title={title}
+        viewBox={INDIA_STATES_VIEWBOX}
+        className={className}
+        state={resolved}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+      >
+        {null}
+      </ChartFrame>
+    );
+
   const tooltip = (name: string, value: number) => (
     <>
       <div className="ds-chart__tooltip-title">{name}</div>
@@ -164,6 +192,7 @@ export function IndiaBubbleMap({
 
   return (
     <ChartFrame
+      marksAreFocusable
       title={title}
       summary={`${title} — ${bubbles.length} states, from ${valueFormat(
         Math.min(...bubbles.map((b) => b.value)),

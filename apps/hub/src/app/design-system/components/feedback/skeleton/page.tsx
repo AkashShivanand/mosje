@@ -1,195 +1,225 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { Skeleton } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+import { Skeleton, SkeletonText } from "@mosje/design-system";
 
 export const metadata: Metadata = {
-  title: "Skeleton",
-  description: "Animated placeholder shapes representing text, cards, and tables while asynchronous portal queries are loading.",
+  title: "Skeleton — Design System",
+  description:
+    "A placeholder in the shape of the result, shown while a request is in flight so the layout does not jump when the data lands.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
-
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function SkeletonDocPage(): React.JSX.Element {
-  return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Skeleton
-          </h1>
-          <StatusBadge status="Stable" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Animated placeholder shapes representing text, cards, and tables while asynchronous portal queries are loading."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
-
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Skeleton is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-8)", maxWidth: "var(--sa-container-sm)" }}><Skeleton height="24px" width="60%" /><Skeleton height="16px" width="100%" /><Skeleton height="16px" width="80%" /></div>
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Match skeleton geometry closely to the final loaded component layout.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not use high-contrast glaring shimmer animations; respect prefers-reduced-motion.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { Skeleton } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
+/*
+ * Read off `skeleton.tsx` in packages/design-system/components/feedback/. Three
+ * exports: `Skeleton`, `SkeletonText` and `SkeletonRow`.
+ *
+ * `SkeletonProps` extends `React.HTMLAttributes<HTMLDivElement>`, so every
+ * standard div attribute passes through; `style` is merged after width and
+ * height rather than replacing them.
+ *
+ * Corrected 2026-09-02: the previous table gave `height` a default of "16px"
+ * against a real "1rem", typed both dimensions as `string | number` against a
+ * real `string`, and carried neither `circle` nor the two composed exports.
+ */
+const PROPS: PropDef[] = [
   {
-    "name": "width",
-    "type": "string | number",
-    "default": "\"100%\"",
-    "description": "Placeholder width."
+    name: "width",
+    type: "string",
+    default: '"100%"',
+    description: "Any valid CSS length or percentage. Applied inline, so it accepts a calc() or a clamp() as readily as a px value.",
   },
   {
-    "name": "height",
-    "type": "string | number",
-    "default": "\"16px\"",
-    "description": "Placeholder height."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-8)", maxWidth: "var(--sa-container-sm)" }}><Skeleton height="24px" width="60%" /><Skeleton height="16px" width="100%" /><Skeleton height="16px" width="80%" /></div>`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
+    name: "height",
+    type: "string",
+    default: '"1rem"',
+    description:
+      "Any valid CSS length. A rem rather than a px default, so a placeholder line grows with the reader's own text size.",
+  },
   {
-    "criterion": "4.1.3 Status Messages",
-    "level": "AA",
-    "description": "Container carries aria-busy=\"true\" with hidden \"Loading content\" announcement."
-  }
-]} />
-                </section>
+    name: "circle",
+    type: "boolean",
+    default: "false",
+    description: "Draw it as a pill or a circle, for an avatar or a chip placeholder.",
+  },
+  {
+    name: "className",
+    type: "string",
+    default: "undefined",
+    description: "Merged onto the root element.",
+  },
+  {
+    name: "SkeletonText · lines",
+    type: "number",
+    default: "3",
+    description:
+      "A stack of placeholder lines approximating a paragraph. The last line is deliberately shorter, so the block reads as prose rather than as a solid slab.",
+  },
+  {
+    name: "SkeletonText · className",
+    type: "string",
+    default: "undefined",
+    description: "Merged onto the stack wrapper.",
+  },
+  {
+    name: "SkeletonRow · cols",
+    type: "number",
+    default: "5",
+    description:
+      "A placeholder table row. It emits real cells, so column widths stay identical between the loading and loaded states and the table does not reflow when the rows arrive.",
+  },
+];
 
-              </>
-            ),
-          },
-        ]}
-      />
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    description:
+      'Every skeleton carries aria-hidden="true". The shapes carry no information — announcing them would read a row of empty boxes to somebody who cannot see that they are boxes.',
+  },
+  {
+    criterion: "2.3.3 Animation from Interactions",
+    level: "AAA",
+    description: "The shimmer is switched off under prefers-reduced-motion.",
+  },
+  {
+    criterion: "1.3.2 Meaningful Sequence",
+    level: "A",
+    description:
+      "Because the placeholder occupies the same space as the result, nothing below it moves when the data lands — so a reader who has already started reading is not displaced.",
+  },
+  {
+    criterion: "4.1.3 Status Messages",
+    level: "AA",
+    description:
+      "This one is the consumer's, not the component's. The skeleton is silent by construction, so the region that owns the request must carry aria-busy and the announcement — see the note in the Accessibility tab.",
+  },
+];
 
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Skeleton" />
-    </article>
+export default function SkeletonPage(): React.JSX.Element {
+  return (
+    <ComponentDocPage
+      name="Skeleton"
+      status="Stable"
+      summary="A placeholder drawn in the shape of the result it is standing in for, shown while a request is in flight. Because it occupies the same space as the eventual content, the layout does not jump when the data lands."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={
+        <div className="cdp__specimen-stack">
+          <SkeletonText lines={3} />
+          <Skeleton height="2.5rem" width="9rem" />
+          <Skeleton circle height="3rem" width="3rem" />
+        </div>
+      }
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "The shape of the result is known before it arrives — a table of rows, a card, a paragraph, an avatar.",
+          "The region is large enough that a blank space would read as broken rather than as busy.",
+          "A page is loading several regions and each should show its own progress in place.",
+        ],
+        avoid: [
+          "The result has no predictable shape — use a Loader, which says a wait is happening without pretending to know what will fill it.",
+          "The wait is inside a control, where there is nowhere for a placeholder to go — use a Loader at its small size.",
+          "The request has already answered with nothing — use an Empty State; a skeleton that never resolves reads as a page that has hung.",
+          "How far along the work is can be stated — use Progress.",
+        ],
+      }}
+      related={[
+        {
+          label: "Loader",
+          href: "/design-system/components/feedback/loader",
+          reason: "when the shape of the result is unknown",
+        },
+        {
+          label: "Empty State",
+          href: "/design-system/components/feedback/empty-state",
+          reason: "once the request answers with nothing",
+        },
+        {
+          label: "Live Region",
+          href: "/design-system/components/utilities/live-region",
+          reason: "to announce the wait, which the skeleton itself cannot",
+        },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-shape">
+            <h2 id="cdp-shape" className="cdp__h2">
+              Match the Shape, Not the Content
+            </h2>
+            <p>
+              A skeleton earns its place by holding the space the result will take. Three lines of
+              placeholder above a table that turns out to be eight rows tall is a page that still
+              jumps — which is the defect the component exists to prevent.
+            </p>
+            <p>
+              <code>SkeletonText</code> and <code>SkeletonRow</code> exist so the two commonest
+              shapes need no measuring. <code>SkeletonRow</code> emits real{" "}
+              <code>&lt;td&gt;</code> cells, which is what keeps a data table&apos;s column widths
+              stable across the swap.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-restraint">
+            <h2 id="cdp-restraint" className="cdp__h2">
+              Keep the Shimmer Quiet
+            </h2>
+            <p>
+              The shimmer says the page is working. A high-contrast sweep across a full screen of
+              placeholders says it is flashing. The animation is low-contrast by design and stops
+              entirely under <code>prefers-reduced-motion</code>; do not override either.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Skeleton, SkeletonText, SkeletonRow } from "@mosje/design-system";
+
+<Skeleton height="1.5rem" width="60%" />
+<SkeletonText lines={3} />
+<Skeleton circle height="2.5rem" width="2.5rem" />`}</CodeBlock>
+          <p>
+            In a table, the placeholder rows are real rows, so the header and the column widths do
+            not move when the data arrives.
+          </p>
+          <CodeBlock>{`<tbody aria-busy={loading}>
+  {loading
+    ? Array.from({ length: 5 }, (_, i) => <SkeletonRow key={i} cols={6} />)
+    : rows.map((row) => <ApplicationRow key={row.id} {...row} />)}
+</tbody>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-announce">
+          <h2 id="cdp-announce" className="cdp__h2">
+            The Skeleton Is Silent — the Region Is Not
+          </h2>
+          <p>
+            Every skeleton is <code>aria-hidden</code>. That is correct: the shapes mean nothing, and
+            reading out a dozen empty boxes tells a screen-reader user less than saying nothing at
+            all.
+          </p>
+          <p>
+            The consequence is that the announcement is the consumer&apos;s job.{" "}
+            <strong>A region rendering skeletons must say so itself</strong> — put{" "}
+            <code>aria-busy</code> on the container that owns the request, and announce the outcome
+            through a live region when it resolves. A page that swaps skeletons for content with no
+            announcement changes silently for anyone not watching it.
+          </p>
+          <CodeBlock>{`<section aria-busy={loading} aria-live="polite">
+  {loading ? <SkeletonText lines={4} /> : <SchemeSummary data={data} />}
+</section>`}</CodeBlock>
+        </section>
+      }
+    />
   );
 }

@@ -1,220 +1,179 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { AreaChart } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { AreaChartSpecimen } from "./specimen";
 
 export const metadata: Metadata = {
-  title: "Area Chart",
-  description: "Time-series volumetric area visualization showing cumulative scheme funds, application trends, and demographic distributions.",
+  title: "Area Chart — Design System",
+  description:
+    "A filled trend over an ordered axis, for cumulative readings such as funds disbursed to date or enrolment reached.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    status: "verified",
+    description:
+      "Rendered through ChartFrame, which draws an SVG <title> and <desc> and a visually hidden table of every label and series value.",
+    evidence: "ChartFrame's `table` and `summary` props, passed by area-chart.tsx on every render.",
+  },
+  {
+    criterion: "1.4.1 Use of Color",
+    level: "A",
+    status: "partial",
+    description:
+      "Series are separated by fill colour and by legend order alone; there is no pattern or marker per series. Where two fills overlap, the screen-reader table is what disambiguates them.",
+    evidence: "area-chart.tsx applies a per-series fill from the categorical ramp and no pattern.",
+  },
+  {
+    criterion: "1.4.11 Non-text Contrast",
+    level: "AA",
+    status: "untested",
+    description:
+      "Fills are drawn at reduced opacity over the canvas so that overlaps stay readable. No contrast measurement of the resulting composite has been recorded.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    status: "partial",
+    description:
+      'The figures are reachable through the screen-reader table. The per-point hit areas set tabIndex={0} beneath an SVG carrying role="img", which prunes its descendants, so those stops receive focus with no accessible name.',
+    evidence: 'Open gap, recorded 2026-09-02: role="img" in chart-frame.tsx against the point hit areas in area-chart.tsx.',
+  },
+  {
+    criterion: "GIGW 3.0 — Data Presentation",
+    level: "GIGW",
+    status: "verified",
+    description: "Values format through formatIndian by default, so a figure reads 4,50,000 rather than 450,000.",
+    evidence: "`valueFormat` defaults to formatIndian in area-chart.tsx.",
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function AreaChartDocPage(): React.JSX.Element {
+export default function AreaChartPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Area Chart
-          </h1>
-          <StatusBadge status="Beta" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Time-series volumetric area visualization showing cumulative scheme funds, application trends, and demographic distributions."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+    <ComponentDocPage
+      name="Area Chart"
+      status="Beta"
+      summary="A line with the space beneath it filled, for a reading whose accumulated size is the point — funds disbursed to date, places filled against a sanctioned total."
+      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      specimen={<AreaChartSpecimen />}
+      propsFrom="AreaChartProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "The magnitude under the line is part of the reading — a cumulative disbursal, a running enrolment total.",
+          "One series, or two that do not overlap enough to obscure each other.",
+          "The axis is time or another ordered sequence.",
+        ],
+        avoid: [
+          "Only the direction matters, not the accumulated size — use a Line Chart, whose fill would add nothing but ink.",
+          "Three or more series overlap; the fills hide one another and the reader has to guess at what is behind. Use a Line Chart, or a stacked Bar Chart where the parts genuinely sum.",
+          "The categories have no order — a fill across unordered categories implies a continuity that is not there. Use a Bar Chart.",
+          "A count and a rate share the canvas — use a Combo Chart, which gives each its own axis.",
+        ],
+      }}
+      related={[
+        { label: "Line Chart", href: "/design-system/components/data-display/line-chart", reason: "when only the direction matters" },
+        { label: "Combo Chart", href: "/design-system/components/data-display/combo-chart", reason: "when two series need two scales" },
+        { label: "Bar Chart", href: "/design-system/components/data-display/bar-chart", reason: "for stacked parts of a whole" },
+        { label: "Chart Frame", href: "/design-system/components/data-display/chart-frame", reason: "the shell every chart renders through" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">
+              The States It Draws
+            </h2>
+            <p>
+              The specimen shows the four states that are not the populated one. Each calls for a
+              different action from the reader, and a chart that draws one blank panel for all four
+              tells them nothing.
+            </p>
+            <ul>
+              <li>
+                <strong>Loading</strong> — a skeleton at the chart&apos;s aspect ratio, carrying{" "}
+                <code>role=&quot;status&quot;</code>.
+              </li>
+              <li>
+                <strong>Empty</strong> — the feed answered with nothing. No retry is offered.
+              </li>
+              <li>
+                <strong>Error</strong> — the request failed; <code>onRetry</code> renders
+                &ldquo;Try again&rdquo;.
+              </li>
+              <li>
+                <strong>Filtered to nothing</strong> — <code>filterLabel</code> names the filter, so
+                the reader can undo what they applied.
+              </li>
+            </ul>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-limit">
+            <h2 id="cdp-limit" className="cdp__h2">
+              Overlap Is the Limit
+            </h2>
+            <p>
+              Two filled series already trade legibility for the fill; three do not survive it. Where a
+              third series is genuinely needed, either drop the fill and use a Line Chart, or make the
+              parts add up and use a stacked Bar Chart — which is an honest sum rather than three
+              translucent shapes over one another.
+            </p>
+            <p>
+              <code>yLabel</code> names the unit. An axis of bare numbers on a departmental page is a
+              figure with no unit, and this chart is most often carrying rupees.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { AreaChart } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Area Chart is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <AreaChart title="Disbursals by Month" labels={["Apr", "May", "Jun", "Jul"]} series={[{ name: "Disbursed", data: [120, 240, 380, 520] }]} />
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use AreaChart for cumulative metrics like yearly fund disbursals or total enrollment.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not plot more than 3 overlapping series without clear stroke distinctions.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { AreaChart } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "title",
-    "type": "string",
-    "required": true,
-    "description": "Accessible chart title."
-  },
-  {
-    "name": "labels",
-    "type": "string[]",
-    "required": true,
-    "description": "X-axis category labels."
-  },
-  {
-    "name": "series",
-    "type": "ChartSeries[]",
-    "required": true,
-    "description": "Array of data series."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<AreaChart title="Disbursals by Month" labels={["Apr", "May", "Jun", "Jul"]} series={[{ name: "Disbursed", data: [120, 240, 380, 520] }]} />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.1.1 Non-text Content",
-    "level": "AA",
-    "description": "Includes SVG `<title>`, `<desc>`, and hidden tabular accessible data table."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Tab</kbd></td>
-                          <td>{"Focuses chart data points to activate accessible tooltip."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Area Chart" />
-    </article>
+<AreaChart
+  title="Disbursals by Month"
+  yLabel="₹ crore"
+  labels={["Apr", "May", "Jun", "Jul", "Aug"]}
+  series={[{ name: "Disbursed", data: [120, 240, 380, 520, 610] }]}
+/>`}</CodeBlock>
+          <p>
+            Resolve the reading once and give the chart the answer, so a key above it and the chart
+            itself cannot disagree about what the feed said.
+          </p>
+          <CodeBlock>{`<AreaChart
+  title="Disbursals by Month"
+  labels={labels}
+  series={series}
+  state={error ? "error" : loading ? "loading" : undefined}
+  onRetry={refetch}
+  filterLabel="financial year"
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-sr">
+          <h2 id="cdp-sr" className="cdp__h2">
+            What a Screen Reader Gets
+          </h2>
+          <p>
+            One image with a name and a summary, followed by a visually hidden table whose columns are
+            the labels and whose rows are the series. The fill carries nothing that the table does not.
+          </p>
+          <p>
+            <strong>The open gap.</strong> Point hit areas are focusable but sit beneath{" "}
+            <code>role=&quot;img&quot;</code>, so they are pruned from the accessibility tree and
+            announce as nothing. Do not describe this chart as keyboard-navigable until that is fixed.
+          </p>
+        </section>
+      }
+    />
   );
 }

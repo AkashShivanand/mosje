@@ -46,7 +46,7 @@ export { useStickyRange } from "./foundations/sticky-range";
 export type { StickyRangeOptions, StickyState } from "./foundations/sticky-range";
 
 // ---- Components: Icon -------------------------------------------------------
-// Material Symbols Outlined — the official icon system for all MoSJE apps.
+// Material Symbols Rounded, weight 300 — the official icon system for all MoSJE apps.
 // Load the font once in your app root: import "@mosje/design-system/icons.css"
 export { Icon } from "./components/utilities/icon";
 export type { IconProps } from "./components/utilities/icon";
@@ -595,6 +595,29 @@ export {
   portalLogoSrc,
 } from "./components/brand/org-logo-registry";
 export type { OrgSlug } from "./components/brand/org-logo-registry";
+
+// ---- Brand: Illustration ----------------------------------------------------
+// The estate's own drawn language — one 64x48 geometry at three tiers, four
+// tokenised ink layers, and no depicted people. The reasoning is in
+// components/brand/illustration/language.ts and it is worth reading before
+// adding a scene.
+//
+// THE PRIMITIVES ARE DELIBERATELY NOT EXPORTED HERE. `Bars`, `Ground`, `Lens`,
+// `Ring`, `Seat`, `Series`, `Sheet`, `Shut` and `Signal` are how a SCENE is
+// assembled inside this module, not how a portal draws. Putting them in the
+// public barrel would drop nine of the most generic nouns in the language into
+// the estate's global namespace — `Series` beside the charts' own series
+// vocabulary, `Sheet` beside `SideSheet` — and this repository has already been
+// bitten by exactly that: `SiteHeader`, `SiteFooter` and `SidebarNav` each name
+// two different components today, so an import auto-complete resolves to the
+// wrong one silently. A new scene is added to `scenes.tsx`, which is where the
+// primitives are in scope.
+export { Illustration, illustrationAlt, SCENE_NAMES } from "./components/brand/illustration";
+export type {
+  IllustrationProps,
+  IllustrationTier,
+  SceneName,
+} from "./components/brand/illustration";
 export { PortalCard } from "./components/navigation/portal-card";
 export type { PortalCardProps, PortalCardVariant } from "./components/navigation/portal-card";
 export {

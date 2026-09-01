@@ -36,9 +36,9 @@
     "size is the failure mode this gate exists for."
   ],
   "totals": {
-    "size-off-ramp": 187,
-    "size": 381,
-    "leading": 187,
+    "size-off-ramp": 186,
+    "size": 376,
+    "leading": 127,
     "tracking": 20,
     "family": 19
   },
@@ -50,38 +50,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/actions/button/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 1,
-      "leading": 7,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/data-display/card/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 2,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/data-display/data-table/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 3,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/feedback/action-banner/action-banner-playground.tsx": {
       "size-off-ramp": 0,
       "size": 1,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/feedback/action-banner/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -92,24 +64,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/feedback/badge/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 2,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/feedback/empty-state/empty-state-playground.tsx": {
       "size-off-ramp": 0,
       "size": 3,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/feedback/empty-state/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -120,31 +78,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/feedback/modal/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 3,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/feedback/toast/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/feedback/toast/toast-playground.tsx": {
       "size-off-ramp": 0,
       "size": 2,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/feedback/tooltip/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -162,31 +99,10 @@
       "tracking": 0,
       "family": 1
     },
-    "apps/hub/src/app/design-system/components/forms/aadhaar-input/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/captcha-field/captcha-field-playground.tsx": {
       "size-off-ramp": 0,
       "size": 2,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/captcha-field/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/checkbox/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 3,
       "tracking": 0,
       "family": 0
     },
@@ -197,24 +113,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/forms/chip/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/declaration-checkbox/declaration-checkbox-playground.tsx": {
       "size-off-ramp": 0,
       "size": 1,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/declaration-checkbox/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -225,24 +127,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/forms/form-card/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/form-field/form-field-playground.tsx": {
       "size-off-ramp": 0,
       "size": 3,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/form-field/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -253,24 +141,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/forms/form-section/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/geo-photo-input/geo-photo-input-playground.tsx": {
       "size-off-ramp": 0,
       "size": 2,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/geo-photo-input/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -281,24 +155,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/forms/label/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/media-gallery-input/media-gallery-input-playground.tsx": {
       "size-off-ramp": 0,
       "size": 2,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/media-gallery-input/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -309,31 +169,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/forms/media-upload/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/otp-input/otp-input-playground.tsx": {
       "size-off-ramp": 1,
       "size": 4,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/otp-input/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/pan-input/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -344,24 +183,10 @@
       "tracking": 0,
       "family": 1
     },
-    "apps/hub/src/app/design-system/components/forms/password-input/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/password-input/password-input-playground.tsx": {
       "size-off-ramp": 0,
       "size": 2,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/password-strength-meter/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -372,31 +197,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/forms/radio/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 3,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/search/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/search/search-playground.tsx": {
       "size-off-ramp": 0,
       "size": 4,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/select/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -407,24 +211,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/forms/textarea/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/textarea/textarea-playground.tsx": {
       "size-off-ramp": 0,
       "size": 3,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/toggle/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
       "tracking": 0,
       "family": 0
     },
@@ -435,52 +225,10 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/forms/wizard/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/wizard/wizard-playground.tsx": {
       "size-off-ramp": 0,
       "size": 1,
       "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/layout/divider/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 2,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/navigation/tabs/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/section-templates/sidebar/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 3,
-      "leading": 1,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/section-templates/site-header/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 1,
-      "leading": 3,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/utilities/accessibility-bar/page.tsx": {
-      "size-off-ramp": 0,
-      "size": 0,
-      "leading": 2,
       "tracking": 0,
       "family": 0
     },
@@ -821,9 +569,9 @@
       "family": 0
     },
     "apps/hub/src/components/design-system/docs-kit/docs-kit.css": {
-      "size-off-ramp": 1,
+      "size-off-ramp": 0,
       "size": 3,
-      "leading": 3,
+      "leading": 0,
       "tracking": 0,
       "family": 0
     },
@@ -1187,7 +935,7 @@
     "packages/design-system/components/data-display/metric-card.css": {
       "size-off-ramp": 0,
       "size": 5,
-      "leading": 4,
+      "leading": 3,
       "tracking": 0,
       "family": 0
     },

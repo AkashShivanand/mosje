@@ -1,245 +1,234 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
+  Callout,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+
+import { PortalLoginShellSpecimen } from "./portal-login-shell-specimen";
 
 export const metadata: Metadata = {
-  title: "Portal Login Shell",
-  description: "The standardized authentication layout container shared across all 20 MoSJE portals. Enforces Gov.in branding, security disclaimers, dual-language toggle, and National Informatics Centre (NIC) authentication standards.",
+  title: "Portal Login Shell — Design System",
+  description:
+    "The full-page login layout every MoSJE portal signs in through — the utility bar, the Government of India masthead, the SAMAVESH hero, the tab strip and the footer. The form itself is the caller's.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+/*
+ * Read off `PortalLoginShellProps` in
+ * packages/design-system/components/auth/portal-login-shell.tsx.
+ *
+ * Corrected 2026-09-02: the previous table listed `title`, `subtitle`, `brandLogo` and
+ * `helpUrl`. None of the four exists on this component, and the four that carry the
+ * portal's brand assets were missing entirely.
+ */
+const PROPS: PropDef[] = [
+  {
+    name: "emblemSrc",
+    type: "string",
+    default: '"/brand/national-emblem.svg"',
+    description:
+      "The National Emblem, from the portal's own public directory. It is drawn by the shared BrandLockup, so the emblem, the line order and the BETA badge are estate policy rather than this shell's to retype.",
+  },
+  {
+    name: "digitalIndiaSrc",
+    type: "string",
+    default: '"/brand/digital-india.svg"',
+    description: "The Digital India logo, shown in the masthead's right cluster at 768px and above.",
+  },
+  {
+    name: "samaveshLogoSrc",
+    type: "string",
+    // org-logo-exempt(prose): the component's documented default, quoted. Documentation
+    // that names a path is not a consumer of it, and the SAMAVESH wordmark is not in the
+    // org-logo registry — that registry holds the 17 ORGANISATION marks.
+    default: '"/brand/samavesh-logo.svg"',
+    description: "The SAMAVESH circular mark. It appears three times — in the masthead, in the hero, and in the “Signing Into” strip.",
+  },
+  {
+    name: "signingInto",
+    type: "string",
+    required: true,
+    description:
+      "The portal or scheme being signed into, e.g. “Nasha Mukt Bharat Abhiyaan”. It names the strip at the foot of the hero, which is the reader's confirmation that they are at the right door.",
+  },
+  {
+    name: "changeHref",
+    type: "string",
+    default: '"/"',
+    description: "Where the “Change” control in that strip leads — the hub root, so a reader at the wrong portal can leave without using Back.",
+  },
+  {
+    name: "tabs",
+    type: "PortalLoginTab[]",
+    required: true,
+    description:
+      "The role pills above the form, each `{ label, href, active, onClick? }`. They are real links so middle-click and “copy link address” both land on the right tab. Pass an empty array to render no strip at all.",
+  },
+  {
+    name: "children",
+    type: "React.ReactNode",
+    required: true,
+    description:
+      "The form: heading, fields and submit control. It is placed inside the `#login-form` container the shell's skip link targets, so the caller does not wire the bypass.",
+  },
+  {
+    name: "extraContent",
+    type: "React.ReactNode",
+    default: "undefined",
+    description: "A block below the form area — a portal switcher grid, a registration prompt. It sits above the footer, inside the right panel.",
+  },
+  {
+    name: "onFooterLinkClick",
+    type: '(link: "privacy" | "contact" | "about") => void',
+    default: "undefined",
+    description:
+      "Called when a footer link is activated. The footer's three links are buttons, so the consuming app routes them; the shell is framework-agnostic and does no navigation of its own.",
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "2.4.1 Bypass Blocks",
+    level: "A",
+    description:
+      "The shell renders one AccessibilityBar, which carries the page's single skip link, targeting the `#login-form` container. It used to carry its own bar as well, so the page had two skip links to the same target; both are now one.",
+  },
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The hero column is `aria-hidden`, because it is decorative branding a screen-reader user would otherwise hear before reaching the form. The footer is a `<nav>` with its own accessible name.",
+  },
+  {
+    criterion: "2.4.3 Focus Order",
+    level: "A",
+    description:
+      "The form container carries `tabIndex={-1}` so the skip link can move focus into it. The hero, being aria-hidden and containing no controls, is skipped entirely.",
+  },
+  {
+    criterion: "1.4.3 Contrast (Minimum)",
+    level: "AA",
+    description: "White content on the hero's primaryScale-900 gradient and on the active tab's primaryScale-800 pill both clear AA.",
+  },
+  {
+    criterion: "1.4.10 Reflow",
+    level: "AA",
+    description: "The hero is hidden below the large breakpoint and the right panel becomes the whole page, so the layout reads as one column at 320px.",
+  },
+  {
+    criterion: "1.4.4 Resize Text",
+    level: "AA",
+    description:
+      "The bar drives `--sa-font-scale` on the document root, so a reader's text-size choice applies estate-wide and survives navigation. It used to scale this shell alone through an inline font-size, which is why resizing here did nothing on the page you landed on afterwards.",
+  },
+  {
+    criterion: "GIGW 3.0 — Mandatory features",
+    level: "GIGW",
+    description: "The Government of India link, the emblem lockup, the accessibility controls and the Privacy Policy · Contact Us · About Us footer are all present on every portal that uses the shell.",
+  },
+];
 
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function PortalLoginShellDocPage(): React.JSX.Element {
+export default function PortalLoginShellPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Portal Login Shell
-          </h1>
-          <StatusBadge status="Stable" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"The standardized authentication layout container shared across all 20 MoSJE portals. Enforces Gov.in branding, security disclaimers, dual-language toggle, and National Informatics Centre (NIC) authentication standards."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+    <ComponentDocPage
+      name="Portal Login Shell"
+      status="Stable"
+      summary="The full-page login layout every MoSJE portal signs in through. It owns the utility bar, the Government of India masthead, the SAMAVESH hero, the role tab strip and the footer; the form inside it is the caller's."
+      figma={{
+        absent: "Not yet published as a master in the Figma library. The bar it opens with is published as Accessibility Bar.",
+      }}
+      specimen={<PortalLoginShellSpecimen />}
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A portal needs a login page and should look like every other portal's login page.",
+          "The sign-in form is bespoke to the portal but the chrome around it must not be.",
+          "A reader arriving from the hub needs to be told, on the page, which portal they are signing into.",
+        ],
+        avoid: [
+          "The portal's roles and authentication modes can be described declaratively — use Portal Login Template, which builds the tabs, the form and the mode selector from one config object.",
+          "The page is an interior portal screen rather than the door — use App Shell, which carries the signed-in navigation.",
+          "You only need the top utility band — use Accessibility Bar on its own.",
+        ],
+      }}
+      related={[
+        { label: "Portal Login Template", href: "/design-system/components/auth/portal-login-template", reason: "the declarative layer above this shell; it renders the form for you" },
+        { label: "Accessibility Bar", href: "/design-system/components/utilities/accessibility-bar", reason: "the utility band the shell opens with" },
+        { label: "Brand Lockup", href: "/design-system/components/navigation/brand-lockup", reason: "the emblem and ministry lines in the masthead" },
+        { label: "App Shell", href: "/design-system/components/layout/app-shell", reason: "the layout for the screens behind the login" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-anatomy">
+            <h2 id="cdp-anatomy" className="cdp__h2">
+              What the Shell Owns, and What It Does Not
+            </h2>
+            <p>
+              The layout is four bands: the utility bar, the brand header, a two-column body — a
+              58% hero and a 42% panel — and the footer. Everything in that list is the
+              shell&rsquo;s. The only thing the caller supplies inside the frame is the form, plus
+              an optional block beneath it.
+            </p>
+            <p>
+              What changes per portal is small and declared: the three brand asset paths, the name
+              in the &ldquo;Signing Into&rdquo; strip, the tab labels, and the form. What does not
+              change is everything else, which is the point — a citizen who has signed into one
+              MoSJE portal should recognise the next one before they read a word of it.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-hero">
+            <h2 id="cdp-hero" className="cdp__h2">
+              The Hero Is Decorative, and Disappears
+            </h2>
+            <p>
+              The left column carries the SAMAVESH identity and nothing operable. It is hidden
+              below the large breakpoint, so a phone gets the form and the chrome and none of the
+              branding column &mdash; and it is <code>aria-hidden</code> at every width, so a
+              screen-reader user is not read a tagline before being given a field to type in.
+            </p>
+            <Callout type="info" title="One accessibility bar, not two">
+              The shell used to carry its own utility bar: two skip links to the same target, a
+              bespoke A−/A/A+ stepper wired to local state nothing else read, and ◑ ♿ 🌐 as literal
+              emoji rather than Material Symbols. It was a second accessibility bar living inside
+              the design system, free to drift from the real one &mdash; and it had. The shared
+              <code> AccessibilityBar</code> replaced it, and the duplicate skip link went with it.
+            </Callout>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { PortalLoginShell } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Portal Login Shell is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)", overflow: "hidden", background: "var(--sa-bg-neutral-subtler)" }}><div style={{ background: "var(--sa-bg-brand-primary-boldest)", color: "var(--sa-text-neutral-inverse)", padding: "var(--sa-padding-12) var(--sa-padding-20)", fontWeight: 700 }}>Government of India · PM-AJAY Portal</div><div style={{ padding: "var(--sa-padding-24)", background: "var(--sa-bg-neutral-base)" }}><p style={{ margin: 0, color: "var(--sa-text-neutral-base)" }}>Citizen / Officer Authentication Container</p></div></div>
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use PortalLoginShell as the top-level container for all portal login workflows.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not create custom login page shells that omit statutory security disclaimers.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { PortalLoginShell } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "title",
-    "type": "string",
-    "required": true,
-    "description": "The portal or scheme name being signed into (e.g. \"PM-AJAY Portal\")."
-  },
-  {
-    "name": "subtitle",
-    "type": "string",
-    "default": "undefined",
-    "description": "Supporting subtitle or department division name."
-  },
-  {
-    "name": "children",
-    "type": "React.ReactNode",
-    "required": true,
-    "description": "Login form controls and credential inputs."
-  },
-  {
-    "name": "brandLogo",
-    "type": "React.ReactNode",
-    "default": "Emblem",
-    "description": "National Emblem or scheme mark displayed in the masthead."
-  },
-  {
-    "name": "helpUrl",
-    "type": "string",
-    "default": "undefined",
-    "description": "Support or citizen grievance redressal portal link."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)", overflow: "hidden", background: "var(--sa-bg-neutral-subtler)" }}><div style={{ background: "var(--sa-bg-brand-primary-boldest)", color: "var(--sa-text-neutral-inverse)", padding: "var(--sa-padding-12) var(--sa-padding-20)", fontWeight: 700 }}>Government of India · PM-AJAY Portal</div><div style={{ padding: "var(--sa-padding-24)", background: "var(--sa-bg-neutral-base)" }}><p style={{ margin: 0, color: "var(--sa-text-neutral-base)" }}>Citizen / Officer Authentication Container</p></div></div>`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.3.1 Info and Relationships",
-    "level": "AA",
-    "description": "Login landmarks and role regions clearly identified for assistive technologies."
-  },
-  {
-    "criterion": "2.1.1 Keyboard Navigation",
-    "level": "AA",
-    "description": "All auth tabs, credentials, and SSO action buttons navigable without mouse."
-  },
-  {
-    "criterion": "3.3.1 Error Identification",
-    "level": "AA",
-    "description": "Validation errors announced via aria-live regions."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Tab</kbd></td>
-                          <td>{"Moves focus through credentials and submit controls."}</td>
-                        </tr>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Enter</kbd></td>
-                          <td>{"Submits current credential step or triggers selected login option."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Portal Login Shell" />
-    </article>
+<PortalLoginShell
+  // Each portal serves its own copy under /portals/<slug>/brand/.
+  emblemSrc={\`\${brand}/national-emblem.svg\`}
+  digitalIndiaSrc={\`\${brand}/digital-india.svg\`}
+  samaveshLogoSrc={\`\${brand}/samavesh-wordmark.svg\`}
+  signingInto="Nasha Mukt Bharat Abhiyaan"
+  tabs={[
+    { label: "Admin", href: "/portals/nmba/login?role=admin", active: true },
+    { label: "Patient Monitoring", href: "/portals/nmba/login?role=monitoring", active: false },
+  ]}
+  onFooterLinkClick={(link) => router.push(FOOTER_ROUTES[link])}
+>
+  {/* heading, fields, submit */}
+</PortalLoginShell>`}</CodeBlock>
+          <p>
+            The tabs are anchors with an optional <code>onClick</code>. Give them real hrefs even
+            where the click handler does the work &mdash; a role tab that cannot be copied as a
+            link is a page a colleague cannot be sent to.
+          </p>
+        </section>
+      }
+    />
   );
 }

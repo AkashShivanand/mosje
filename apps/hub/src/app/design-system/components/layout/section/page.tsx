@@ -1,201 +1,203 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
+  Callout,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
+  ComponentDocPage,
+  DoDont,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
 import { SectionTitle } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
-  title: "Section Title",
-  description: "Section header block with section label eyebrow, heading, descriptive lede, and count badge.",
+  title: "Section Title — Design System",
+  description:
+    "The standard heading row for a content section: eyebrow, heading, optional count pill, description, and right-aligned actions.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "Renders a real `<h2>`, `<h3>` or `<h4>` chosen by `as`, so the section appears in the document outline. The eyebrow is a `<div>` and deliberately not a heading — it would otherwise insert a phantom level above every section on the page.",
+  },
+  {
+    criterion: "2.4.6 Headings and Labels",
+    level: "AA",
+    description:
+      "The heading names the section's subject. The description sits outside the heading, so the accessible name stays the title rather than a paragraph.",
+  },
+  {
+    criterion: "2.4.10 Section Headings",
+    level: "AAA",
+    description:
+      "Using this component for every section is what gives a long page a complete heading structure a screen-reader user can navigate by.",
+  },
+  {
+    criterion: "1.3.1 — heading order",
+    level: "A",
+    description:
+      "The component cannot check that `as` is sequential; it renders the level it is given. A page that skips from `h1` to `h4` is a failure this component will not catch for you.",
+    status: "partial",
+    evidence: "Heading level is caller-supplied; no runtime or build check.",
+  },
+];
 
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function SectionDocPage(): React.JSX.Element {
+export default function SectionTitlePage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Section Title
-          </h1>
-          <StatusBadge status="Stable" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Section header block with section label eyebrow, heading, descriptive lede, and count badge."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+    <ComponentDocPage
+      name="Section Title"
+      status="Stable"
+      summary="The standard heading row for a content section: eyebrow, heading, optional count pill, description, and right-aligned actions. Use it instead of hand-rolling a heading with its own classes, so section headers stay identical estate-wide."
+      figma={{
+        absent:
+          "The section header is a composition of published text styles rather than a component master in the SAMAVESH library.",
+      }}
+      specimen={
+        <SectionTitle
+          eyebrow="Eligibility"
+          title="Who Can Apply"
+          count={4}
+          description="Statutory requirements for applicants under the scheme's income-generating component."
+        />
+      }
+      propsFrom="SectionTitleProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "The heading row of any content section inside a page — a list, a table, a card grid, a chart.",
+          "A section that carries a count the reader needs before they read the rows.",
+          "A section with its own actions, such as a filter or an export.",
+        ],
+        avoid: [
+          "The page's own title — use Page Header, which renders the `<h1>` and the meta line.",
+          "A form section — use Form Section or Form Card, which own the card chrome and the fieldset semantics.",
+          "A heading you want at a particular size — pick the level the outline needs and let the scale follow.",
+        ],
+      }}
+      related={[
+        {
+          label: "Page Header",
+          href: "/design-system/components/layout/page-header",
+          reason: "for the page's own title, not a section inside it",
+        },
+        {
+          label: "Form Section",
+          href: "/design-system/components/forms/form-section",
+          reason: "when the section is a group of fields",
+        },
+        {
+          label: "Band",
+          href: "/design-system/components/layout/band",
+          reason: "the full-bleed section a heading row opens",
+        },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-hand-rolled">
+            <h2 id="cdp-hand-rolled" className="cdp__h2">
+              Use It Rather Than Hand-Rolling One
+            </h2>
+            <p>
+              This is the estate&apos;s recurring layout defect and it has a name in the rules:
+              a section shipped with its own <code>h2</code> at 26.3px over a 16px lead, beside
+              six sibling sections using this component at 18.6px over 12px descriptions. Nothing
+              was wrong with the sizes; they simply were not the same as everything around them.
+            </p>
+            <Callout type="warning" title="Before styling any heading, look at its neighbours">
+              If the sections around yours render a design-system heading and yours does not,
+              that is the defect — not their size.
+            </Callout>
+          </section>
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Section Title is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <SectionTitle eyebrow="Eligibility" title="Who Can Apply" description="Detailed statutory requirements under section 4(a)." />
-                    </div>
-                  </div>
-                </section>
+          <section className="cdp__section" aria-labelledby="cdp-dodont">
+            <h2 id="cdp-dodont" className="cdp__h2">
+              Writing the Row
+            </h2>
+            <DoDont
+              cards={[
+                {
+                  type: "do",
+                  label:
+                    "An eyebrow that categorises, a Title Case heading, and one sentence of support.",
+                  preview: (
+                    <SectionTitle
+                      as={3}
+                      eyebrow="Grants-in-Aid"
+                      title="Sanctioned Projects"
+                      description="Projects sanctioned to States and Union Territories in the current financial year."
+                    />
+                  ),
+                },
+                {
+                  type: "dont",
+                  label:
+                    "A sentence-case heading with a paragraph under it. The description is a header, not the section's introduction.",
+                  preview: (
+                    <SectionTitle
+                      as={3}
+                      title="Sanctioned projects"
+                      description="This section lists the projects that have been sanctioned. It also explains how the sanction process works, which States are eligible, and what the reader should do if a project is missing from the list."
+                    />
+                  ),
+                },
+              ]}
+            />
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { SectionTitle } from "@mosje/design-system";
 
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use kickers to categorize complex multi-section forms and scheme specifications.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not skip heading levels (e.g. H1 directly to H3).",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { SectionTitle } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "title",
-    "type": "string",
-    "required": true,
-    "description": "Section heading text."
-  },
-  {
-    "name": "eyebrow",
-    "type": "string",
-    "default": "undefined",
-    "description": "Uppercase category kicker badge."
-  },
-  {
-    "name": "description",
-    "type": "string",
-    "default": "undefined",
-    "description": "Descriptive body paragraph."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<SectionTitle eyebrow="Eligibility" title="Who Can Apply" description="Detailed statutory requirements under section 4(a)." />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.3.1 Info and Relationships",
-    "level": "AA",
-    "description": "Proper heading level hierarchy."
-  }
-]} />
-                </section>
-
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Section Title" />
-    </article>
+<SectionTitle
+  eyebrow="Eligibility"
+  title="Who Can Apply"
+  description="Statutory requirements under section 4(a)."
+/>`}</CodeBlock>
+          <p>
+            Pair <code>headingId</code> with <code>aria-labelledby</code> so the region the
+            heading introduces is named by it. This is the only way a table or a list becomes a
+            named landmark.
+          </p>
+          <CodeBlock>{`<section aria-labelledby="applications-heading">
+  <SectionTitle
+    headingId="applications-heading"
+    title="Applications"
+    count={applications.length}
+  >
+    <Button variant="outlined" size="sm">Export</Button>
+  </SectionTitle>
+  <DataTable rows={applications} />
+</section>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-outline">
+          <h2 id="cdp-outline" className="cdp__h2">
+            Keeping the Outline Sequential
+          </h2>
+          <p>
+            <code>as</code> takes 2, 3 or 4 and renders exactly that. Choose it by where the
+            section sits in the page, not by how large the heading should look: a page whose
+            title is the <code>h1</code> opens its sections at <code>h2</code>, and a subsection
+            inside one of those is <code>h3</code>. Skipping a level leaves a screen-reader user
+            navigating by heading with a gap they cannot account for.
+          </p>
+          <p>
+            The eyebrow is deliberately not a heading. It reads as one visually, but marking it
+            up as an <code>h2</code> above an <code>h3</code> title would put two entries in the
+            outline for one section and make every category name a peer of every section
+            heading.
+          </p>
+        </section>
+      }
+    />
   );
 }

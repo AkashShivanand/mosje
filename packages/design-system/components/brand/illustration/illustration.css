@@ -1,0 +1,59 @@
+/* Declared first so this sheet cannot register `components` ahead of Tailwind's
+   `base` when it loads as its own CSS root. See .claude/rules/design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ==========================================================================
+     SAMAVESH Illustration — the four ink layers.
+     --------------------------------------------------------------------------
+     NOTHING in the TSX names a colour. Every stroke resolves here, through
+     `--sa-*`, so a drawing follows `data-brand` the way the rest of the estate
+     does. An illustration that keeps the old brand after a re-theme is the one
+     asset on the page still telling the reader the wrong thing.
+     ========================================================================== */
+  .sa-ill {
+    display: block;
+    /* The tiers set width/height as attributes; this keeps a drawing from
+       overflowing a narrower parent, which matters at `hero` on a phone. */
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* The floor and any structural rule. */
+  .sa-ill__ground {
+    stroke: var(--sa-border-neutral-base);
+  }
+
+  /* What is absent, inactive, or not yet. */
+  .sa-ill__ghost {
+    stroke: var(--sa-border-neutral-subtle);
+  }
+
+  /* What is present and true. */
+  .sa-ill__ink {
+    stroke: var(--sa-text-neutral-subtle);
+  }
+
+  /* The ONE element carrying the meaning. At most one per drawing. */
+  .sa-ill__accent {
+    stroke: var(--sa-bg-brand-primary-bolder);
+  }
+
+  /* --------------------------------------------------------------------------
+     Forced colours. `stroke` set from a custom property is not repainted by
+     Windows High Contrast, so a drawing would render in colours that no longer
+     relate to the reader's chosen palette. Map the four layers onto the system
+     keywords instead: the accent takes the highlight, everything else takes the
+     text colour, and the drawing stays readable.
+     -------------------------------------------------------------------------- */
+  @media (forced-colors: active) {
+    .sa-ill__ground,
+    .sa-ill__ghost,
+    .sa-ill__ink {
+      stroke: CanvasText;
+    }
+    .sa-ill__accent {
+      stroke: Highlight;
+    }
+  }
+}

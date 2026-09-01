@@ -1,173 +1,251 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { MediaGalleryInputPlayground } from "./media-gallery-input-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+
+import { MediaGalleryInputPlayground } from "./media-gallery-input-playground";
 
 export const metadata: Metadata = {
-  title: "MediaGalleryInput - SAMAVESH Design System",
+  title: "Media Gallery Input — Design System",
   description:
-    "A multi-file uploader supporting images and videos with inline previews.",
+    "A multi-file dropzone for images and video, with a thumbnail grid, captured video poster frames, and client-side type, size and capacity checks.",
 };
 
+/*
+ * Read off `MediaGalleryInputProps` in
+ * packages/design-system/components/forms/media-gallery-input.tsx. The interface
+ * is a CLOSED list — it extends nothing. The defaults below were checked against
+ * the implementation: maxItems is 12 and maxSizeMb is 25, not the 4 and 10 an
+ * earlier version of this page printed.
+ */
+const PROPS: PropDef[] = [
+  {
+    name: "value",
+    type: "GalleryMediaItem[]",
+    required: true,
+    description:
+      "The current items, controlled. Each is `{ url, type, name, poster? }` — a data URL for a newly added file, or a path for a seeded item.",
+  },
+  {
+    name: "onChange",
+    type: "(items: GalleryMediaItem[]) => void",
+    required: true,
+    description: "Called with the next array on every add and every removal.",
+  },
+  {
+    name: "accept",
+    type: "string",
+    default: '"image/*,video/*"',
+    description: "Accepted MIME types. Narrow it where a section takes photographs only.",
+  },
+  {
+    name: "maxItems",
+    type: "number",
+    default: "12",
+    description: "Maximum number of items. The add tile disappears once the gallery is full.",
+  },
+  {
+    name: "maxSizeMb",
+    type: "number",
+    default: "25",
+    description: "Maximum size per file. The limit is generous because video is allowed by default.",
+  },
+  {
+    name: "invalid",
+    type: "boolean",
+    default: "false",
+    description: "Sets `aria-invalid` on the dropzone and on the grid. Form Field sets this for you from its own `error` prop.",
+  },
+  {
+    name: "disabled",
+    type: "boolean",
+    default: "false",
+    description: "Disables adding and removing. Existing items stay visible.",
+  },
+  {
+    name: "id",
+    type: "string",
+    default: "undefined",
+    description: "Applied to the add tile, so a Form Field label bound with `htmlFor` reaches it.",
+  },
+  {
+    name: "required",
+    type: "boolean",
+    default: "undefined",
+    description:
+      "Accepted from Form Field's wiring and deliberately NOT forwarded, for the same reason as Media Upload: a required hidden file input blocks submission even once files have been chosen.",
+  },
+  {
+    name: "aria-describedby",
+    type: "string",
+    default: "undefined",
+    description: "Links the control to a hint or an error. Form Field supplies this through its render prop.",
+  },
+  {
+    name: "className",
+    type: "string",
+    default: "undefined",
+    description: "Merged onto the outer wrapper.",
+  },
+];
+
+const A11Y: A11yItem[] = [
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    description:
+      "Both the empty dropzone and the add tile are real buttons, and every item's remove control is a real button. Dragging is an addition, never the only route.",
+  },
+  {
+    criterion: "2.5.7 Dragging Movements",
+    level: "AA",
+    description: "Everything drag and drop achieves is also achieved by clicking and using the platform's own picker.",
+  },
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    description:
+      "Each image thumbnail carries the file name as its alt text, and each remove button names the item it removes — \"Remove site-photo-3.jpg\" — so a screen-reader user knows which one they are about to delete.",
+  },
+  {
+    criterion: "3.3.1 Error Identification",
+    level: "A",
+    description:
+      "A rejected file renders a message with `role=\"alert\"` naming the reason — wrong type, over the size limit, or the gallery already full.",
+  },
+  {
+    criterion: "2.5.8 Target Size (Minimum)",
+    level: "AA",
+    description: "The add tile is a large block target, and each item's remove control clears 24×24.",
+  },
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    description:
+      "The operable control carries the `id` Form Field generated, so the visible label names the add tile rather than the hidden file input.",
+  },
+];
+
 export default function MediaGalleryInputPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Media Gallery Input"
+      status="Stable"
+      summary="A multi-file dropzone for images and video. It reads each file locally, draws a thumbnail grid with a poster frame captured from each video, and enforces the type, size and capacity limits before anything reaches the network."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<MediaGalleryInputPlayground />}
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "The reader supplies several visual files — event photographs, inspection evidence, supporting images for a claim.",
+          "Video is a legitimate answer alongside photographs.",
+          "The reader should see what they have attached, and be able to remove one item without starting again.",
+        ],
+        avoid: [
+          "Exactly one file is expected — use Media Upload, which spends far less of the page on it.",
+          "Each photograph must carry a location — use Geo Photo Input, which reads the coordinates and compresses the image.",
+          "The files are documents rather than media. A grid of identical file glyphs is worse than a list; use Media Upload inside a Form Card.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          MediaGalleryInput
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A robust multi-file upload dropzone for images and videos, featuring client-side validation, inline grid previews, and video poster frame generation.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Media Upload",
+          href: "/design-system/components/forms/media-upload",
+          reason: "when exactly one file is expected",
+        },
+        {
+          label: "Geo Photo Input",
+          href: "/design-system/components/forms/geo-photo-input",
+          reason: "when each photograph must carry a location",
+        },
+        {
+          label: "Lightbox",
+          href: "/design-system/components/feedback/lightbox",
+          reason: "for viewing an attached image at full size",
+        },
+        {
+          label: "Form Field",
+          href: "/design-system/components/forms/form-field",
+          reason: "the label, hint and error wiring this control expects",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-states">
+          <h2 id="cdp-states" className="cdp__h2">
+            Empty, Filling, Full
+          </h2>
+          <p>
+            With no items the control is a single dropzone. Once anything is attached it becomes a
+            thumbnail grid with a trailing add tile, and each item carries its own remove control.
+            Once <code>maxItems</code> is reached the add tile is gone, so the capacity limit is shown
+            by the interface rather than only enforced by a message.
+          </p>
+          <p>
+            A video is drawn from a poster frame captured when it was added, with a play marker over
+            it. That is what stops a gallery of videos rendering as a row of identical grey tiles.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { FormField, MediaGalleryInput } from "@mosje/design-system";
+import type { GalleryMediaItem } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Upload multiple images or videos. Notice how the initial dropzone transforms into a thumbnail grid with a trailing &quot;Add more&quot; button once files are present.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <MediaGalleryInputPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          Use <code>MediaGalleryInput</code> when you need the user to provide multiple visual files, such as supporting documents, event photos, or inspection videos. It reads the files locally, generates previews, and enforces capacity limits without hitting the server.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Wrap it in a FormField so the dropzone gets properly labelled and wired to error messages.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't use this if you only need a single file (like a profile picture). Use MediaUpload instead to save screen real estate.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`function InspectionGallery() {
-  const [items, setItems] = React.useState<GalleryMediaItem[]>([]);
+const [items, setItems] = React.useState<GalleryMediaItem[]>([]);
 
-  return (
-    <FormField label="Inspection Evidence" hint="Upload up to 10 photos or short videos.">
-      {(props) => (
-        <MediaGalleryInput
-          {...props}
-          value={items}
-          onChange={setItems}
-          maxItems={10}
-          maxSizeMb={50} // Higher limit since videos are allowed
-        />
-      )}
-    </FormField>
-  );
-}`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "value", type: "GalleryMediaItem[]", required: true, description: "Array of selected media items (images and videos)." },
-            { name: "onChange", type: "(items: GalleryMediaItem[]) => void", required: true, description: "Called when items are added or removed." },
-            { name: "maxItems", type: "number", default: "4", description: "Maximum number of files allowed." },
-            { name: "maxSizeMb", type: "number", default: "10", description: "Max file size in megabytes per file." },
-            { name: "accept", type: "string", default: '"image/*,video/*"', description: "Accepted MIME types." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Dropzone:</strong> Both the empty full-width dropzone and the &quot;Add more&quot; tile are native buttons, fully operable via keyboard.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Clear Removal:</strong> Each item in the gallery grid has a dedicated remove button with a descriptive <code>aria-label</code> (e.g., &quot;Remove document.pdf&quot;).</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Error Feedback:</strong> Validation errors (wrong file type, exceeded capacity) are rendered in a <code>role=&quot;alert&quot;</code> container to immediately notify screen reader users.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+<FormField
+  label="Inspection Evidence"
+  hint="Up to 10 photographs or short videos, 50 MB each."
+>
+  {(control) => (
+    <MediaGalleryInput
+      {...control}
+      value={items}
+      onChange={setItems}
+      maxItems={10}
+      maxSizeMb={50}
+    />
+  )}
+</FormField>`}</CodeBlock>
+          <p>
+            State the same limits in the hint that you pass as props. The control enforces them either
+            way, but a reader who only discovers a limit by hitting it has been told nothing.
+          </p>
+          <CodeBlock>{`<MediaGalleryInput
+  accept="image/*"
+  maxItems={6}
+  value={photographs}
+  onChange={setPhotographs}
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            Every remove button names its own item, so a screen-reader user moving through the grid
+            hears &quot;Remove site-photo-3.jpg&quot; rather than six buttons all called
+            &quot;Remove&quot;. Keep the original file names for that reason; renaming them to
+            sequence numbers takes the distinction away.
+          </p>
+          <p>
+            <code>required</code> is accepted and dropped on purpose, exactly as in Media Upload.
+            Enforce the requirement in your own validation and report it through Form Field&apos;s{" "}
+            <code>error</code>.
+          </p>
+        </section>
+      }
+    />
   );
 }

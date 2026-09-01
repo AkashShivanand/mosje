@@ -63,7 +63,10 @@ const IcPlay = () => (
  * images and videos. Modelled on the UIkit lightbox pattern: grouped items,
  * prev/next slidenav, an item counter, a caption bar, and a thumbnail strip.
  *
- * - Keyboard: ← / → page, Esc closes, focus is trapped while open.
+ * - Keyboard: ← / → page, Esc closes, Tab cycles within the dialog, and focus
+ *   returns to whatever opened it. The trap and the restore were added 2026-09-02;
+ *   this line claimed both for months while neither was implemented, which with
+ *   `aria-modal="true"` is worse than claiming neither.
  * - Videos render with native controls; images are object-fit contained.
  * - Renders through a portal so the table's `overflow-hidden` never clips it.
  *
@@ -97,21 +100,90 @@ export function Lightbox({
     [count, onIndexChange],
   );
 
+  const rootRef = React.useRef<HTMLDivElement>(null);
+
   React.useEffect(() => {
     if (!open) return;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
+    /*
+     * FOCUS RESTORE. Remembered before focus moves into the dialog, because
+     * after that `document.activeElement` is the stage. Without this a reader
+     * who opens the viewer from the ninth thumbnail in a gallery is returned to
+     * the top of the document when they close it, and has to find their place
+     * again — which on a long page means they will not.
+     */
+    const opener = document.activeElement as HTMLElement | null;
     stageRef.current?.focus();
 
+    /*
+     * FOCUS TRAP. This component's own docstring claimed focus was trapped
+     * while open, and it was not: `aria-modal="true"` told assistive technology
+     * the rest of the page was inert while Tab walked straight out of the
+     * dialog into it. The two together are worse than neither, because the
+     * reader is told they cannot reach the page behind and then finds
+     * themselves in it with no way back.
+     */
+    const focusables = () =>
+      Array.from(
+        rootRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])',
+        ) ?? [],
+      ).filter((el) => el.offsetParent !== null || el === document.activeElement);
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-      else if (e.key === "ArrowRight") go(current + 1);
-      else if (e.key === "ArrowLeft") go(current - 1);
+      if (e.key === "Escape") {
+        onClose();
+        return;
+      }
+      if (e.key === "ArrowRight") {
+        go(current + 1);
+        return;
+      }
+      if (e.key === "ArrowLeft") {
+        go(current - 1);
+        return;
+      }
+      if (e.key !== "Tab") return;
+
+      const nodes = focusables();
+      if (nodes.length === 0) {
+        // Nothing to move to, so the only correct place for focus is the stage.
+        e.preventDefault();
+        stageRef.current?.focus();
+        return;
+      }
+      const first = nodes[0]!;
+      const last = nodes[nodes.length - 1]!;
+      const activeEl = document.activeElement;
+
+      // The stage is `tabIndex={-1}` and holds focus on open, so it is not in
+      // `nodes` — a forward Tab from it must land on the first control rather
+      // than escaping, which is what the naive first/last check would allow.
+      if (!rootRef.current?.contains(activeEl) || activeEl === stageRef.current) {
+        e.preventDefault();
+        (e.shiftKey ? last : first).focus();
+        return;
+      }
+      if (e.shiftKey && activeEl === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && activeEl === last) {
+        e.preventDefault();
+        first.focus();
+      }
     };
+
     document.addEventListener("keydown", onKey);
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      // Restore only if focus is still inside the dialog — if the consumer moved
+      // it somewhere deliberate on close, stealing it back is the worse bug.
+      if (!rootRef.current || rootRef.current.contains(document.activeElement)) {
+        opener?.focus?.();
+      }
     };
   }, [open, current, go, onClose]);
 
@@ -122,6 +194,7 @@ export function Lightbox({
 
   return createPortal(
     <div
+      ref={rootRef}
       className={cn("ds-lightbox", className)}
       role="dialog"
       aria-modal="true"

@@ -1,15 +1,20 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs, PropsTable,
-  DoDont,
   Callout,
+  CodeBlock,
+  ComponentDocPage,
+  DoDont,
+  MatrixTable,
   TokenTable,
-  A11yChecklist,
-  StatusBadge,
-} from "@/components/design-system/docs-kit/index";
-import { ButtonPlayground } from "./button-playground";
-import { Button, buttonClasses } from "@mosje/design-system";
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+import { Button } from "@mosje/design-system";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
+
+import { ButtonPlayground } from "./button-playground";
 
 export const metadata: Metadata = {
   title: "Button",
@@ -17,885 +22,136 @@ export const metadata: Metadata = {
     "A Button triggers an action within the system — submitting a form, confirming a dialog, or running a command. The most-used interactive atom in the SAMAVESH design system.",
 };
 
-/* ------------------------------------------------------------------ *
- * Shared layout primitives (inline styles, --sa-* tokens only)
- * ------------------------------------------------------------------ */
+/*
+ * Read off `ButtonProps` in packages/design-system/components/actions/button.tsx.
+ * The interface extends `React.ButtonHTMLAttributes<HTMLButtonElement>`, so every
+ * native button attribute — `onClick`, `type`, `form`, `data-*` — passes through and
+ * is not listed individually.
+ *
+ * Corrected 2026-09-02: `appearance` was documented as three words. The union has five;
+ * two of them are deprecated aliases for `tone="inverse"` and are marked as such here,
+ * because a reader who meets `appearance="inverse"` in existing code needs to find it.
+ */
+const PROPS: PropDef[] = [
+  {
+    name: "variant",
+    type: '"primary" | "success" | "danger" | "neutral"',
+    default: '"primary"',
+    description:
+      "The intent of the action. `neutral` is for an action carrying no semantic charge — a dismiss, a reset, a start-over. It exists because there was no way to say “quiet” without borrowing a signal colour, and a portal that fills its screen with red for housekeeping has no red left when an application actually fails.",
+  },
+  {
+    name: "appearance",
+    type: '"filled" | "outlined" | "text" | "inverse" | "inverseOutlined"',
+    default: '"filled"',
+    description:
+      "Visual weight. `outlined` is the secondary form and `text` the tertiary one. `inverse` and `inverseOutlined` are DEPRECATED — see the note below the table.",
+  },
+  {
+    name: "tone",
+    type: '"default" | "inverse"',
+    default: '"default"',
+    description:
+      "Which ground the button sits on. `inverse` is for a solid brand-colour surface — a navy header, the ticker bar, a hero band. It crosses `appearance`, which is the point: as two appearance words it could only have one look, so all four variants painted the same white-alpha border and `danger` silently lost its signal.",
+  },
+  {
+    name: "size",
+    type: '"sm" | "md" | "lg"',
+    default: '"md"',
+    description:
+      "Control size — a min-height of 32 / 40 / 48px. Every size clears the 24×24 WCAG 2.2 §2.5.8 Level AA minimum; only `lg` reaches the 44×44 that 2.5.5 (AAA) and UX4G ask for on touch.",
+  },
+  {
+    name: "loading",
+    type: "boolean",
+    default: "false",
+    description:
+      "Busy. It sets `aria-busy`, disables the control so a form cannot be submitted twice, and draws a spinner in the LEADING ICON'S place so the button does not change width mid-press. It does not swap the label — pass “Submitting…” yourself, because a control that loses its name mid-action is unusable with a screen reader.",
+  },
+  { name: "iconLeft", type: "React.ReactNode", default: "undefined", description: "A glyph before the label, marked decorative. Replaced by the spinner while loading." },
+  { name: "iconRight", type: "React.ReactNode", default: "undefined", description: "A glyph after the label, marked decorative." },
+  {
+    name: "href",
+    type: "string",
+    default: "undefined",
+    description:
+      "Renders an `<a>` with the button's classes, for a link that must look like a call to action. Reach for it only when the control genuinely changes location — see the warning under “Buttons Are Not Links”.",
+  },
+  {
+    name: "disabled",
+    type: "boolean",
+    default: "false",
+    description:
+      "The native disabled attribute, which removes the control from the tab order. With `href` the component drops the href instead and sets `aria-disabled` — an anchor without an href is not focusable and not activatable, so both paths carry the same semantics.",
+  },
+  { name: "children", type: "React.ReactNode", required: true, description: "The label — an imperative, verb-first phrase naming what happens." },
+  {
+    name: "...rest",
+    type: "React.ButtonHTMLAttributes<HTMLButtonElement>",
+    description: "Every native button attribute — onClick, type, form, name, data-*. With `href` set they are applied to the anchor instead.",
+  },
+];
 
+const A11Y: A11yItem[] = [
+  {
+    criterion: "2.4.6 Headings and Labels",
+    level: "AA",
+    description:
+      "The label names the action rather than the gesture. “Click here” and a bare “Submit” both fail readers who navigate a page by its control names.",
+  },
+  {
+    criterion: "2.5.8 Target Size (Minimum)",
+    level: "AA",
+    status: "verified",
+    evidence: "e2e/design-system/button.spec.ts",
+    description:
+      "All three sizes (32 / 40 / 48px) clear the 24×24 Level AA minimum. 44×44 is 2.5.5 Target Size (Enhanced), Level AAA, which only `lg` reaches; UX4G recommends it for touch.",
+  },
+  {
+    criterion: "1.4.4 Resize Text",
+    level: "AA",
+    status: "verified",
+    evidence: "e2e/design-system/button.spec.ts, pinned at the criterion's own 200% threshold",
+    description:
+      "Each size sets a min-height plus vertical padding, so the box grows with the text rather than clipping it. A fixed height clipped the label until 2026-08-27 — an `md` button held 40px while its content needed 41.",
+  },
+  {
+    criterion: "2.4.7 Focus Visible",
+    level: "AA",
+    description: "A 3px focus ring, drawn with `--sa-focus-ring` and never removed by the stylesheet.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    description: "It renders a real `<button>`, so Enter and Space activate it and Tab reaches it. Nothing is re-implemented.",
+  },
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    status: "verified",
+    evidence: "e2e/design-system/button.spec.ts",
+    description:
+      "A disabled `<button>` uses the native attribute. With `href` the component drops the href, sets `aria-disabled=\"true\"` and `role=\"link\"`, so the link path is genuinely inert. Until 2026-08-27 it emitted `<a disabled>`, which the browser ignores entirely — measured as focusable, clickable and fully opaque while looking disabled.",
+  },
+  {
+    criterion: "4.1.3 Status Messages",
+    level: "AA",
+    description:
+      "`loading` sets `aria-busy` on the control and draws a spinner. A busy button keeps full opacity with `cursor: progress` rather than the disabled wash, because “working” and “forbidden” must not look the same.",
+  },
+  {
+    criterion: "GIGW 3.0 — Keyboard operation",
+    level: "GIGW",
+    description: "Every interactive element is fully keyboard operable [GIGW 3.5].",
+  },
+];
 
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--sa-section-48)",
-};
-
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const h3Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-2-size)",
-  fontWeight: 600,
-  color: "var(--sa-text-neutral-base)",
-  marginTop: "var(--sa-stack-24)",
-  marginBottom: "var(--sa-stack-8)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-
-/* ------------------------------------------------------------------ *
- * State swatch (Section 5)
- * ------------------------------------------------------------------ */
-
-function StateRow({
-  state,
-  note,
-  children,
-}: {
-  state: string;
-  note: string;
-  children: React.ReactNode;
-}): React.JSX.Element {
-  return (
-    <div
-      style={{
-        display: "grid",
-        gridTemplateColumns: "120px 1fr 1.4fr",
-        gap: "var(--sa-stack-16)",
-        alignItems: "center",
-        padding: "var(--sa-padding-12) 0",
-        borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-      }}
-    >
-      <strong style={{ color: "var(--sa-text-neutral-base)", fontSize: "var(--sa-type-body-2-size)" }}>
-        {state}
-      </strong>
-      <div>{children}</div>
-      <span style={{ color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-body-2-size)" }}>
-        {note}
-      </span>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ *
- * Keyboard / behaviour table (Section 6)
- * ------------------------------------------------------------------ */
-
-function KeyTable({
-  rows,
-}: {
-  rows: Array<{ key: string; action: string }>;
-}): React.JSX.Element {
-  return (
-    <div style={{ overflowX: "auto" }}>
-      <table className="props-table">
-        <thead>
-          <tr>
-            <th scope="col">Key</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows.map((r) => (
-            <tr key={r.key}>
-              <td>
-                <kbd
-                  style={{
-                    fontFamily: "var(--sa-font-mono)",
-                    fontSize: "var(--sa-type-body-2-size)",
-                    background: "var(--sa-bg-neutral-subtler)",
-                    border: "1px solid var(--sa-border-neutral-subtle)",
-                    borderRadius: "var(--sa-shape-6)",
-                    padding: "var(--sa-padding-2) var(--sa-padding-8)",
-                    color: "var(--sa-text-neutral-base)",
-                  }}
-                >
-                  {r.key}
-                </kbd>
-              </td>
-              <td>{r.action}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ *
- * Page
- * ------------------------------------------------------------------ */
-
-export default function ButtonPage(): React.JSX.Element {
-  return (
-    <article
-      style={{
-        maxWidth: "1024px",
-        margin: "0 auto",
-        padding: "var(--sa-padding-32) var(--sa-padding-24) var(--sa-section-56)",
-      }}
-    >
-      {/* ---------------- Header ---------------- */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--sa-stack-12)",
-            flexWrap: "wrap",
-          }}
-        >
-          <h1
-            style={{
-              fontSize: "var(--sa-type-display-1-size)",
-              fontWeight: 800,
-              color: "var(--sa-text-neutral-base)",
-              margin: 0,
-            }}
-          >
-            Button
-          </h1>
-          <StatusBadge status="Stable" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          A Button triggers an action within the system — submitting a form,
-          confirming a dialog, or running a command. It is the most-used
-          interactive atom in SAMAVESH and the reference implementation for every
-          other component page.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.buttonDoc)} target="_blank" rel="noopener noreferrer">
-            Button — Documentation <span aria-hidden="true">↗</span>
-          </a>
-          <a className={buttonClasses("neutral", "text", "md")} href={figmaUrl(FIGMA_NODES.buttons)} target="_blank" rel="noopener noreferrer">
-            The master <span aria-hidden="true">↗</span>
-          </a>
-          <a className={buttonClasses("neutral", "text", "md")} href={figmaUrl(FIGMA_NODES.buttonRecord)} target="_blank" rel="noopener noreferrer">
-            Component record <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-        <Callout type="warning" title="One open defect remains, and it is listed here rather than hidden">
-          The 2026-08-25 audit found three defects shipping. All three are now closed:{" "}
-          <code>disabled</code> on a link-button is genuinely inert, and the size ladder is a{" "}
-          <code>min-height</code> that grows with the text instead of clipping it at 200%.
-          <code>tonal</code> has been <strong>retired</strong> — all four of its variants sat
-          between 1.21:1 and 1.52:1 against a white page where WCAG 1.4.11 asks for 3:1, and
-          darkening the border would simply have made it <code>outlined</code>. Its two
-          consumers are now <code>outlined</code>.
-          <br />
-          <br />
-          The audit also reported a fifth failure, &ldquo;neutral outlined, 2.15:1&rdquo;. That
-          one does not exist: it measured{" "}
-          <code>cmp/action/neutral/secondary/default/border</code>, a token this component does
-          not bind. The border it actually paints measures <strong>16.18:1</strong>. Evidence in{" "}
-          <code>docs/design-system/components/button-audit.md</code>; the boundaries are now
-          measured on every build by{" "}
-          <code>packages/tokens/test/action-nontext-contrast.test.mjs</code>.
-        </Callout>
-      </header>
-
-      {/* ============ 1. PURPOSE ============ */}
-      
-      <DocsTabs tabs={[
-        { id: "design", label: "Design", content: (<><section style={sectionStyle}>
-        <h2 id="anatomy" style={h2Style}>Anatomy</h2>
-        <p style={proseStyle}>
-          A button is intentionally simple: a labelled, focusable container with a
-          clearly visible focus state.
-        </p>
-        <div
-          style={{
-            display: "flex",
-            gap: "var(--sa-stack-32)",
-            alignItems: "center",
-            flexWrap: "wrap",
-            marginTop: "var(--sa-stack-24)",
-            padding: "var(--sa-padding-32)",
-            background: "var(--sa-bg-neutral-subtler)",
-            borderRadius: "var(--sa-shape-8)",
-            border: "1px solid var(--sa-border-neutral-subtle)",
-          }}
-        >
-          {/* Annotated specimen */}
-          <div style={{ position: "relative", padding: "var(--sa-stack-24)" }}>
-            <span
-              aria-hidden="true"
-              style={{
-                position: "absolute",
-                inset: "calc(-1 * var(--sa-stack-4))",
-                outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
-                outlineOffset: "var(--sa-focus-offset)",
-                borderRadius: "var(--sa-shape-8)",
-                opacity: 0.55,
-              }}
-            />
-            <Button variant="primary" appearance="filled" size="md">
-              Submit application
-            </Button>
-            <Marker n={1} top="-26px" left="40%" />
-            <Marker n={2} bottom="-26px" left="50%" />
-            <Marker n={3} top="-26px" right="-10px" />
-          </div>
-
-          <ol
-            style={{
-              margin: 0,
-              paddingLeft: "var(--sa-padding-20)",
-              color: "var(--sa-text-neutral-subtle)",
-              fontSize: "var(--sa-type-body-2-size)",
-              lineHeight: 1.9,
-            }}
-          >
-            <li>
-              <strong style={{ color: "var(--sa-text-neutral-base)" }}>Label text</strong> —
-              clear and verb-first (&ldquo;Submit application&rdquo;).
-            </li>
-            <li>
-              <strong style={{ color: "var(--sa-text-neutral-base)" }}>Container</strong> — a
-              real <code>&lt;button&gt;</code>, 32 / 40 / 48px tall by size.
-            </li>
-            <li>
-              <strong style={{ color: "var(--sa-text-neutral-base)" }}>Focus ring</strong> — a
-              3px ring drawn with <code>--sa-focus-ring</code>.
-            </li>
-          </ol>
-        </div>
-      </section>
-<section style={sectionStyle}>
-        <h2 id="variants" style={h2Style}>Variants</h2>
-        <p style={proseStyle}>
-          Variants encode intent and visual weight. Use weight to guide the eye to
-          the single most important action on a view.
-        </p>
-        <ul
-          style={{
-            ...proseStyle,
-            marginTop: "var(--sa-stack-12)",
-            paddingLeft: "var(--sa-padding-20)",
-            lineHeight: 1.9,
-          }}
-        >
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Primary</strong> — the
-            main call to action. One per view, maximum.
-          </li>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Secondary</strong> —
-            secondary actions that sit beside the primary CTA.
-          </li>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Ghost</strong> — tertiary,
-            low-emphasis actions such as table-row actions.
-          </li>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-base)" }}>Danger</strong> —
-            destructive actions; always pair with a confirmation step.
-          </li>
-        </ul>
-        <Callout type="info" title="How variants map to the component API">
-          The shared <code>Button</code> exposes a <code>variant</code> axis
-          (primary · success · danger) and an <code>appearance</code> axis (filled
-          · outlined · text) plus a <code>tone</code> axis (default · inverse). The intents above
-          map onto that API:{" "}
-          <strong>secondary</strong> = <code>appearance=&quot;outlined&quot;</code>,{" "}
-          <strong>ghost</strong> = <code>appearance=&quot;text&quot;</code>. The
-          playground below emits the exact code for a button on a white/light
-          surface — for a button placed directly on a solid brand-colour surface
-          (a navy header, hero band), use{" "}
-          <code>appearance=&quot;inverse&quot;</code> (emphasized) or{" "}
-          <code>tone=&quot;inverse&quot;</code> instead of overriding{" "}
-          <code>className</code>. It crosses <code>appearance</code>, so{" "}
-          <code>tone=&quot;inverse&quot; appearance=&quot;outlined&quot;</code> is the
-          secondary form — and unlike the old <code>inverseOutlined</code> it keeps the
-          variant&rsquo;s intent.
-        </Callout>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <ButtonPlayground />
-        </div>
-      </section>
-<section style={sectionStyle}>
-        <h2 id="responsive" style={h2Style}>Responsive</h2>
-        <ul
-          style={{
-            ...proseStyle,
-            paddingLeft: "var(--sa-padding-20)",
-            lineHeight: 1.9,
-          }}
-        >
-          <li>
-            Heights are <strong>minimums</strong> of <strong>32 / 40 / 48px</strong>, not
-            fixed heights — the box grows with the text rather than clipping it. All three clear the{" "}
-            <strong>24×24px</strong> WCAG 2.2 §2.5.8 Level AA minimum; only{" "}
-            <code>lg</code> reaches the <strong>44×44px</strong> UX4G recommends for
-            touch. On a touch surface, prefer <code>lg</code> or add spacing —
-            UX4G also asks for 8px between adjacent targets.
-          </li>
-          <li>
-            For full-width mobile buttons, wrap with{" "}
-            <code>style={`{{ width: "100%" }}`}</code> or place inside a
-            full-width container.
-          </li>
-          <li>
-            Size <code>sm</code> is <strong>32px</strong> and does <em>not</em> reach
-            44px. That is a deliberate density choice for dense admin tables, not an
-            oversight — but it means <code>sm</code> is a pointer-surface size. This
-            page claimed the opposite in three places until 2026-08-25.
-          </li>
-        </ul>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--sa-stack-16)",
-            flexWrap: "wrap",
-            marginTop: "var(--sa-stack-24)",
-            padding: "var(--sa-padding-24)",
-            background: "var(--sa-bg-neutral-subtler)",
-            borderRadius: "var(--sa-shape-12)",
-          }}
-        >
-          <Button variant="primary" appearance="filled" size="sm">
-            Small &mdash; 32px
-          </Button>
-          <Button variant="primary" appearance="filled" size="md">
-            Medium &mdash; 40px
-          </Button>
-          <Button variant="primary" appearance="filled" size="lg">
-            Large &mdash; 48px
-          </Button>
-        </div>
-        <CodeBlock>{`{/* Full-width on mobile, auto on larger screens */}
-<Button variant="primary" appearance="filled" style={{ width: "100%" }}>
-  Submit application
-</Button>`}</CodeBlock>
-      </section></>) },
-        { id: "develop", label: "Develop", content: (<><section style={sectionStyle}>
-        <h2 id="behavior" style={h2Style}>Behavior &amp; Keyboard</h2>
-        <p style={proseStyle}>
-          Because <code>Button</code> renders a native <code>&lt;button&gt;</code>,
-          all standard keyboard semantics work for free.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <KeyTable
-            rows={[
-              { key: "Enter", action: "Activates the button (fires onClick)." },
-              { key: "Space", action: "Activates the button (fires onClick)." },
-              { key: "Tab", action: "Moves focus to the next focusable element." },
-              {
-                key: "Shift + Tab",
-                action: "Moves focus to the previous focusable element.",
-              },
-            ]}
-          />
-        </div>
-        <Callout type="info" title="While loading">
-          Set <code>aria-busy=&quot;true&quot;</code> so assistive tech announces
-          the busy state. Keyboard interaction still works, but the handler should
-          guard against duplicate submissions.
-        </Callout>
-      </section>
-<section style={sectionStyle}>
-        <h2 id="code" style={h2Style}>Code</h2>
-
-        <h3 style={h3Style}>Installation</h3>
-        <CodeBlock>{`npm install @mosje/design-system
-
-// once, in your root layout or entry file:
-import "@mosje/design-system/tokens.css";`}</CodeBlock>
-
-        <h3 style={h3Style}>Import</h3>
-        <CodeBlock>{`import { Button } from "@mosje/design-system";`}</CodeBlock>
-
-        <h3 style={h3Style}>Props</h3>
-        <PropsTable
-          props={[
-            {
-              name: "variant",
-              type: '"primary" | "success" | "danger" | "neutral"',
-              default: '"primary"',
-              description: "Semantic colour role / intent of the action.",
-            },
-            {
-              name: "appearance",
-              type: '"filled" | "outlined" | "text"',
-              default: '"filled"',
-              description:
-                "Visual weight. outlined = secondary, text = ghost (tertiary). tonal was retired on 2026-08-27 (no perceivable edge — 1.21:1 to 1.52:1 against a 3:1 requirement). For a solid brand-colour surface use tone, not an appearance.",
-            },
-            {
-              name: "tone",
-              type: '"default" | "inverse"',
-              default: '"default"',
-              description:
-                "Which ground the button sits on. inverse is for a solid brand-colour surface — a navy header, the ticker bar. It CROSSES appearance, which is the point: as two appearance words (inverse/inverseOutlined) it could only have one look, so all four variants painted the same white-alpha border and danger silently lost its signal. Those two words still work as deprecated aliases.",
-            },
-            {
-              name: "loading",
-              type: "boolean",
-              default: "false",
-              description:
-                "Sets aria-busy, disables the control so a form cannot be submitted twice, and shows a spinner in the LEADING ICON’S place so the button does not change width mid-press. It does NOT swap the label — pass “Submitting…” yourself, because a control that loses its name mid-action is unusable with a screen reader. A busy button keeps full opacity with cursor: progress rather than the disabled wash: “working” and “forbidden” must not look the same.",
-            },
-            {
-              name: "size",
-              type: '"sm" | "md" | "lg"',
-              default: '"md"',
-              description:
-                "Control size — 32 / 40 / 48px tall. Every size clears the 24×24px Level AA minimum; only lg reaches the 44px Level AAA target.",
-            },
-            {
-              name: "iconLeft",
-              type: "React.ReactNode",
-              description: "Decorative icon rendered before the label.",
-            },
-            {
-              name: "iconRight",
-              type: "React.ReactNode",
-              description: "Decorative icon rendered after the label.",
-            },
-            {
-              name: "href",
-              type: "string",
-              description:
-                "When set, renders an <a> styled as a button for link CTAs.",
-            },
-            {
-              name: "disabled",
-              type: "boolean",
-              default: "false",
-              description:
-                "Native disabled attribute. Removes the button from the tab order.",
-            },
-            {
-              name: "children",
-              type: "React.ReactNode",
-              required: true,
-              description: "The button label — an imperative, verb-first phrase.",
-            },
-            {
-              name: "...rest",
-              type: "ButtonHTMLAttributes",
-              description:
-                "All native button props — onClick, type, aria-busy, form, etc.",
-            },
-          ]}
-        />
-
-        <h3 style={h3Style}>Usage</h3>
-        <CodeBlock>{`import { Button } from "@mosje/design-system";
-
-export function ApplicationForm() {
-  return (
-    <form onSubmit={handleSubmit}>
-      {/* …fields… */}
-      <div style={{ display: "flex", gap: "var(--sa-stack-12)" }}>
-        {/* Primary CTA — one per view */}
-        <Button variant="primary" appearance="filled" type="submit">
-          Submit application
-        </Button>
-
-        {/* Secondary action */}
-        <Button variant="primary" appearance="outlined" type="button">
-          Save draft
-        </Button>
-
-        {/* Tertiary / ghost action */}
-        <Button variant="primary" appearance="text" type="button">
-          Cancel
-        </Button>
-
-        {/* Destructive action — confirm before running */}
-        <Button variant="danger" appearance="filled" onClick={confirmDelete}>
-          Delete application
-        </Button>
-      </div>
-    </form>
-  );
-}`}</CodeBlock>
-
-        <h3 style={h3Style}>Tokens consumed</h3>
-        <TokenTable
-          tokens={[
-            {
-              token: "--sa-color-action-primary-default",
-              value: "#0373df",
-              description: "Fill colour for the primary variant.",
-              isColor: true,
-            },
-            {
-              token: "--sa-focus-ring",
-              value: "rgba(3,115,223,0.48)",
-              description: "3px focus ring colour.",
-              isColor: false,
-            },
-            {
-              token: "--sa-color-status-danger",
-              value: "#DC2626",
-              description: "Fill colour for the danger variant.",
-              isColor: true,
-            },
-            {
-              token: "--sa-shape-8",
-              value: "8px",
-              description: "Corner radius of the button container.",
-            },
-            {
-              token: "--sa-stack-12",
-              value: "12px",
-              description: "Horizontal padding inside the button.",
-            },
-          ]}
-        />
-      </section></>) },
-        { id: "accessibility", label: "Accessibility", content: (<><section style={sectionStyle}>
-        <h2 id="accessibility" style={h2Style}>Accessibility</h2>
-        <p style={proseStyle}>
-          Buttons are government-grade controls — they must satisfy{" "}
-          <strong>WCAG 2.2 AA</strong> and GIGW. Where an entry below records a gap,
-          it is a gap: this checklist is a statement of what is true, not of what
-          was intended.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <A11yChecklist
-            items={[
-              {
-                criterion: "Descriptive label text",
-                level: "AA",
-                description:
-                  "The label communicates the action, not just “Click here” or a bare “Submit”. (WCAG 2.4.6)",
-              },
-              {
-                criterion: "24×24px minimum target size",
-                level: "AA",
-                description:
-                  "All three sizes (32 / 40 / 48px) clear the 24×24px Level AA minimum. 44×44 is 2.5.5 Target Size (Enhanced), Level AAA, which only lg reaches — UX4G recommends it for touch. (WCAG 2.2 §2.5.8)",
-              },
-              {
-                criterion: "Text resizes to 200% without clipping",
-                level: "AA",
-                description:
-                  "Each size sets min-height plus vertical padding, so the box grows with the text. A fixed height clipped the label until 2026-08-27 — an md button held 40px while its content needed 41. Pinned at the criterion's own 200% threshold in e2e/design-system/button.spec.ts. (WCAG 1.4.4)",
-              },
-              {
-                criterion: "Visible focus indicator",
-                level: "AA",
-                description:
-                  "A 3px focus ring with AA-contrast against the background. (WCAG 2.4.11)",
-              },
-              {
-                criterion: "Communicates disabled state",
-                level: "AA",
-                description:
-                  "A disabled <button> uses the native disabled attribute, which removes it from the tab order. With href the component renders an <a> and DROPS the href, setting aria-disabled=\"true\" and role=\"link\" — an anchor without href is not focusable and not activatable, so the two paths carry the same semantics. Until 2026-08-27 it emitted <a disabled>, which the browser ignores entirely. (WCAG 4.1.2)",
-              },
-              {
-                criterion: "Loading state — NOT IMPLEMENTED",
-                level: "AA",
-                description:
-                  "NOT IMPLEMENTED. The component has no loading state and sets no aria-busy; a consumer must pass aria-busy itself. This checklist claimed otherwise until 2026-08-25.",
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={sectionStyle}>
-        <h2 id="evidence" style={h2Style}>Evidence</h2>
-        <ul
-          style={{
-            ...proseStyle,
-            paddingLeft: "var(--sa-padding-20)",
-            lineHeight: 1.9,
-          }}
-        >
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-base)" }}>GOV.UK Button research</strong>{" "}
-            — verb-first, action-naming labels measurably increase form completion
-            versus generic labels.
-          </li>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-base)" }}>WCAG 2.5.8 Target Size (Minimum)</strong>{" "}
-            — Level AA requires 24×24px, which every size clears. The 44×44px
-            figure belongs to 2.5.5 Target Size (Enhanced), Level AAA.
-          </li>
-          <li>
-            <strong style={{ color: "var(--sa-text-neutral-base)" }}>GOI GIGW 3.5</strong> — all
-            interactive elements must be fully keyboard operable.
-          </li>
-        </ul>
-      </section></>) },
-        { id: "meta", label: "Meta", content: (<><section style={sectionStyle}>
-        <h2 id="purpose" style={h2Style}>Purpose</h2>
-        <p style={proseStyle}>
-          A Button triggers an action within the system. Reach for it whenever a
-          user needs to <em>do</em> something — submit an application, save a
-          draft, confirm a choice, or run a command. A button always performs an
-          action on the current page or in the current flow.
-        </p>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          If the control takes the user to a different page or resource, it is a{" "}
-          <strong>link</strong>, not a button. Getting this distinction right is
-          the single most important accessibility decision for an interactive
-          element.
-        </p>
-      </section>
-<section style={sectionStyle}>
-        <h2 id="when-to-use" style={h2Style}>When to use / not</h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "var(--sa-stack-16)",
-          }}
-        >
-          <UseCard tone="do" title="Use a Button when…">
-            <li>Submitting or saving a form.</li>
-            <li>Triggering an action (export, print, calculate).</li>
-            <li>Confirming or cancelling in a dialog.</li>
-            <li>Opening a menu, modal, or drawer.</li>
-          </UseCard>
-          <UseCard tone="dont" title="Don't use a Button when…">
-            <li>
-              Navigating to another page — use a link (<code>&lt;a&gt;</code>).
-            </li>
-            <li>
-              Displaying a status or count — use a <strong>Badge</strong>.
-            </li>
-            <li>Toggling a single setting — use a switch or checkbox.</li>
-          </UseCard>
-        </div>
-        <Callout type="warning" title="Buttons are not links">
-          A button performs an action; a link changes location. If a screen reader
-          user activates your &ldquo;button&rdquo; and the page navigates away, the
-          control was wrong. When you need a link styled like a button, use{" "}
-          <code>buttonClasses()</code> on an <code>&lt;a&gt;</code> or{" "}
-          <code>next/link</code>.
-        </Callout>
-      </section>
-<section style={sectionStyle}>
-        <h2 id="states" style={h2Style}>States</h2>
-        <p style={proseStyle}>
-          Every interactive state is visually distinct and meets AA contrast.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <StateRow state="Default" note="Resting state — full colour, no overlay.">
-            <Button variant="primary" appearance="filled">
-              Submit application
-            </Button>
-          </StateRow>
-          <StateRow state="Hover" note="Subtle darkening; cursor becomes a pointer.">
-            <Button
-              variant="primary"
-              appearance="filled"
-              className="ds-btn--state-hover"
-            >
-              Submit application
-            </Button>
-          </StateRow>
-          <StateRow state="Focus" note="3px --sa-focus-ring, visible for keyboard users.">
-            <span
-              style={{
-                display: "inline-block",
-                outline: "3px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base))",
-                outlineOffset: "var(--sa-focus-offset)",
-                borderRadius: "var(--sa-shape-8)",
-              }}
-            >
-              <Button variant="primary" appearance="filled">
-                Submit application
-              </Button>
-            </span>
-          </StateRow>
-          <StateRow state="Active" note="Pressed — momentary deeper tone.">
-            <Button
-              variant="primary"
-              appearance="filled"
-              className="ds-btn--state-active"
-            >
-              Submit application
-            </Button>
-          </StateRow>
-          <StateRow state="Disabled" note="Reduced opacity; the native disabled attribute takes it out of the tab order. No aria-disabled is set — and none is needed on a <button>.">
-            <Button variant="primary" appearance="filled" disabled data-testid="btn-disabled">
-              Submit application
-            </Button>
-          </StateRow>
-          <StateRow state="Disabled link" note="A link-button carries the SAME disabled semantics as a button, which is the whole point: an <a> cannot use the native disabled attribute, so the component drops href entirely and sets aria-disabled. Without href an anchor is not focusable and not activatable, so no click-swallowing is needed and none is done.">
-            <Button
-              variant="primary"
-              appearance="filled"
-              href="/design-system/components/actions/button"
-              disabled
-              data-testid="btn-disabled-link"
-            >
-              Continue to eligibility
-            </Button>
-          </StateRow>
-          <StateRow state="Loading" note="loading sets aria-busy and disables the control, so a form cannot be submitted twice while the first submission is in flight. It deliberately does NOT swap the label — a control that loses its name mid-action is unusable with a screen reader, so pass “Submitting…” yourself.">
-            <Button variant="primary" appearance="filled" loading data-testid="btn-loading">
-              Submitting…
-            </Button>
-          </StateRow>
-          <StateRow state="Inverse tone" note="tone=&quot;inverse&quot; crosses appearance, so each variant keeps its own intent on a brand surface. Until 2026-08-27 the outlined form painted the same white-alpha border for all four — and at 2.25:1 on this background it was not a findable edge either. It paints in the portal login shell’s “Signing Into” bar, here, and in Storybook; the Ticker’s route-out strips its border in ticker.css and renders as a text link.">
-            <div
-              data-testid="inverse-strip"
-              style={{
-                display: "flex",
-                gap: "var(--sa-inline-8)",
-                padding: "var(--sa-padding-16)",
-                background: "var(--sa-color-primaryScale-600)",
-                borderRadius: "var(--sa-shape-8)",
-                flexWrap: "wrap",
-              }}
-            >
-              {(["primary", "success", "danger", "neutral"] as const).map((v) => (
-                <Button key={v} variant={v} tone="inverse" appearance="outlined" data-testid={`inv-${v}`}>
-                  {v}
-                </Button>
-              ))}
-            </div>
-          </StateRow>
-        </div>
-        <Callout type="tip" title="Loading is a busy disabled state">
-          A loading button should set <code>aria-busy=&quot;true&quot;</code> and
-          prevent re-submission. Keep the label meaningful
-          (&ldquo;Submitting…&rdquo;) rather than removing it.
-        </Callout>
-      </section>
-<section style={sectionStyle}>
-        <h2 id="content" style={h2Style}>Content &amp; Voice</h2>
-        <p style={proseStyle}>
-          Labels are written as imperative verbs that name the action. This is true
-          in every supported language.
-        </p>
-
-        <h3 style={h3Style}>English</h3>
-        <p style={proseStyle}>
-          Use imperative verbs — &ldquo;Submit&rdquo;, &ldquo;Save&rdquo;,
-          &ldquo;Cancel&rdquo;. Avoid vague labels like &ldquo;Click here&rdquo;,
-          &ldquo;OK&rdquo;, or a lone &ldquo;Yes&rdquo;.
-        </p>
-
-        <h3 style={h3Style}>हिन्दी</h3>
-        <p style={proseStyle}>
-          वही नियम — क्रिया से शुरू करें: &ldquo;जमा करें&rdquo; (केवल
-          &ldquo;हाँ&rdquo; नहीं), &ldquo;सहेजें&rdquo;, &ldquo;रद्द करें&rdquo;.
-        </p>
-
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label:
-                  "Name the action with a verb. The user knows exactly what happens.",
-                preview: (
-                  <Button variant="primary" appearance="filled">
-                    Submit application
-                  </Button>
-                ),
-              },
-              {
-                type: "dont",
-                label:
-                  "“Click here” describes the gesture, not the outcome — and fails screen-reader users who navigate by label.",
-                preview: (
-                  <Button variant="primary" appearance="filled">
-                    Click here
-                  </Button>
-                ),
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={sectionStyle}>
-        <h2 id="related" style={h2Style}>Related</h2>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "var(--sa-stack-16)",
-            marginTop: "var(--sa-stack-16)",
-          }}
-        >
-          <RelatedCard
-            href="/design-system/components/forms/form-field"
-            title="Form Field"
-            blurb="Buttons submit the forms that form fields build."
-          />
-          <RelatedCard
-            href="/design-system/components/feedback/badge"
-            title="Badge"
-            blurb="For status and counts — never use a button to display state."
-          />
-          <RelatedCard
-            href="/design-system/components/data-display/card"
-            title="Card"
-            blurb="Cards often end with one primary button as their action."
-          />
-        </div>
-      </section>
-<section style={sectionStyle}>
-        <h2 id="changelog" style={h2Style}>Changelog</h2>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "100px 1fr",
-              gap: "var(--sa-stack-16)",
-              padding: "var(--sa-padding-12) 0",
-              borderTop: "1px solid var(--sa-border-neutral-subtle)",
-            }}
-          >
-            <code
-              style={{
-                color: "var(--sa-text-brand-primary-base)",
-                fontWeight: 700,
-                fontSize: "var(--sa-type-body-2-size)",
-              }}
-            >
-              v0.5.0
-            </code>
-            <div>
-              <div style={{ color: "var(--sa-text-neutral-base)", fontWeight: 600 }}>
-                Initial release{" "}
-                <span style={{ marginLeft: "var(--sa-inline-8)" }}>
-                  <StatusBadge status="Stable" />
-                </span>
-              </div>
-              <p
-                style={{
-                  ...proseStyle,
-                  marginTop: "var(--sa-stack-4)",
-                  fontSize: "var(--sa-type-body-2-size)",
-                }}
-              >
-                Primary, secondary (outlined), ghost (text), and danger variants.
-                SM / MD / LG sizes. Icon slots and link mode.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section></>) }
-      ]} />
-</article>
-  );
-}
-
-/* ------------------------------------------------------------------ *
- * Local helper components
- * ------------------------------------------------------------------ */
-
+/*
+ * ds-exempt(demo-geometry): the anatomy overlay is a POSITIONED ANNOTATION over a
+ * running specimen. Its offsets are measured against that one button and mean nothing
+ * anywhere else, so there is no token they could bind to. Every colour and type value
+ * below is bound; only the placement is literal.
+ */
 function Marker({
   n,
   top,
@@ -919,12 +175,12 @@ function Marker({
         left,
         right,
         transform: left ? "translateX(-50%)" : undefined,
-        width: "20px",
-        height: "20px",
-        borderRadius: "50%",
+        width: "var(--sa-icon-size-20)",
+        height: "var(--sa-icon-size-20)",
+        borderRadius: "var(--sa-shape-full)",
         background: "var(--sa-bg-brand-primary-bolder)",
         color: "var(--sa-on-bg-brand-primary-bolder)",
-        fontSize: "11px",
+        fontSize: "var(--sa-type-label-3-size)",
         fontWeight: 700,
         display: "inline-flex",
         alignItems: "center",
@@ -936,116 +192,453 @@ function Marker({
   );
 }
 
-function UseCard({
-  tone,
-  title,
-  children,
-}: {
-  tone: "do" | "dont";
-  title: string;
-  children: React.ReactNode;
-}): React.JSX.Element {
-  const accent = tone === "do" ? "var(--sa-color-status-success)" : "var(--sa-color-status-danger)";
+export default function ButtonPage(): React.JSX.Element {
   return (
-    <div
-      style={{
-        border: "1px solid var(--sa-border-neutral-subtle)",
-        borderTop: `3px solid ${accent}`,
-        borderRadius: "var(--sa-shape-8)",
-        padding: "var(--sa-padding-20)",
-        background: "var(--sa-bg-neutral-base)",
+    <ComponentDocPage
+      name="Button"
+      status="Stable"
+      summary="A Button triggers an action within the system — submitting a form, confirming a dialog, running a command. It is the most-used interactive atom in SAMAVESH, and the reference implementation every other component page is measured against."
+      figma={{ node: "buttonDoc" }}
+      since="0.5.0"
+      specimen={<ButtonPlayground />}
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A form is submitted or a draft is saved.",
+          "An action runs on the current page — an export, a print, a recalculation.",
+          "A choice is confirmed or cancelled in a dialog.",
+          "A menu, a modal or a side sheet is opened.",
+        ],
+        avoid: [
+          "The control takes the reader to another page or resource — that is a link, and a screen-reader user who activates a “button” and finds the page has navigated was given the wrong control.",
+          "The thing shows a status or a count rather than doing something — use Badge.",
+          "A single setting is turned on or off — use Toggle, or Checkbox inside a form.",
+          "Several related actions sit together — wrap them in Button Group, which keeps the 8px between adjacent targets that WCAG 2.2 §2.5.8 and UX4G both ask for.",
+        ],
       }}
-    >
-      <h3
-        style={{
-          margin: 0,
-          marginBottom: "var(--sa-stack-12)",
-          fontSize: "var(--sa-type-headline-2-size)",
-          fontWeight: 600,
-          color: "var(--sa-text-neutral-base)",
-        }}
-      >
-        {title}
-      </h3>
-      <ul
-        style={{
-          margin: 0,
-          paddingLeft: "var(--sa-padding-20)",
-          color: "var(--sa-text-neutral-subtle)",
-          fontSize: "var(--sa-type-body-2-size)",
-          lineHeight: 1.8,
-        }}
-      >
-        {children}
-      </ul>
-    </div>
-  );
-}
+      related={[
+        { label: "Form Field", href: "/design-system/components/forms/form-field", reason: "buttons submit the forms that form fields build" },
+        { label: "Badge", href: "/design-system/components/feedback/badge", reason: "for a status or a count — never a button to display state" },
+        { label: "Card", href: "/design-system/components/data-display/card", reason: "cards often end with one primary button as their action" },
+        { label: "Icon", href: "/design-system/components/utilities/icon", reason: "the glyph iconLeft and iconRight take, already marked decorative" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-purpose">
+            <h2 id="cdp-purpose" className="cdp__h2">
+              Purpose
+            </h2>
+            <p>
+              A button triggers an action within the system. Reach for it whenever a reader needs
+              to <em>do</em> something &mdash; submit an application, save a draft, confirm a
+              choice, run a command. A button always acts on the current page or the current flow.
+            </p>
+            <p>
+              If the control takes the reader to a different page or resource, it is a{" "}
+              <strong>link</strong>, not a button. Getting this distinction right is the single
+              most consequential accessibility decision for an interactive element.
+            </p>
+            <Callout type="warning" title="Buttons are not links">
+              A button performs an action; a link changes location. If a screen-reader user
+              activates your &ldquo;button&rdquo; and the page navigates away, the control was
+              wrong. Where a link must look like a call to action, use <code>buttonClasses()</code>{" "}
+              on an <code>&lt;a&gt;</code> or a <code>next/link</code>, or pass <code>href</code> to
+              this component &mdash; which renders a real anchor rather than a button that
+              navigates.
+            </Callout>
+          </section>
 
-function RelatedCard({
-  href,
-  title,
-  blurb,
-}: {
-  href: string;
-  title: string;
-  blurb: string;
-}): React.JSX.Element {
-  return (
-    <a
-      href={href}
-      style={{
-        display: "block",
-        textDecoration: "none",
-        border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-8)",
-        padding: "var(--sa-padding-16)",
-        background: "var(--sa-bg-neutral-base)",
-      }}
-    >
-      <span
-        style={{
-          display: "block",
-          color: "var(--sa-text-brand-primary-base)",
-          fontWeight: 600,
-          fontSize: "var(--sa-type-body-1-size)",
-        }}
-      >
-        {title} →
-      </span>
-      <span
-        style={{
-          display: "block",
-          marginTop: "var(--sa-stack-4)",
-          color: "var(--sa-text-neutral-subtle)",
-          fontSize: "var(--sa-type-body-2-size)",
-          lineHeight: 1.6,
-        }}
-      >
-        {blurb}
-      </span>
-    </a>
-  );
-}
+          <section className="cdp__section" aria-labelledby="cdp-anatomy">
+            <h2 id="cdp-anatomy" className="cdp__h2">
+              Anatomy
+            </h2>
+            <p>
+              A button is intentionally simple: a labelled, focusable container with a clearly
+              visible focus state.
+            </p>
+            {/* ds-exempt(demo-geometry): a positioned annotation over a running specimen —
+                see the note on Marker above. */}
+            <div style={{ position: "relative", display: "inline-block", padding: "var(--sa-padding-32)" }}>
+              <Button variant="primary" appearance="filled" size="md">
+                Submit application
+              </Button>
+              <Marker n={1} top="4px" left="50%" />
+              <Marker n={2} bottom="4px" left="50%" />
+              <Marker n={3} top="4px" right="4px" />
+            </div>
+            <ol>
+              <li>
+                <strong>Label text</strong> &mdash; clear and verb-first (&ldquo;Submit
+                application&rdquo;).
+              </li>
+              <li>
+                <strong>Container</strong> &mdash; a real <code>&lt;button&gt;</code>, with a
+                min-height of 32 / 40 / 48px by size.
+              </li>
+              <li>
+                <strong>Focus ring</strong> &mdash; 3px, drawn with <code>--sa-focus-ring</code>{" "}
+                and never removed.
+              </li>
+            </ol>
+          </section>
 
-function CodeBlock({ children }: { children: string }): React.JSX.Element {
+          <section className="cdp__section" aria-labelledby="cdp-variants">
+            <h2 id="cdp-variants" className="cdp__h2">
+              Variants
+            </h2>
+            <p>
+              Variants encode intent and visual weight. Use weight to guide the eye to the single
+              most important action on a view.
+            </p>
+            <ul>
+              <li>
+                <strong>Primary</strong> &mdash; the main call to action. One per view, at most.
+              </li>
+              <li>
+                <strong>Secondary</strong> &mdash; the actions beside the primary one.
+              </li>
+              <li>
+                <strong>Ghost</strong> &mdash; tertiary, low-emphasis actions such as a table-row
+                control.
+              </li>
+              <li>
+                <strong>Danger</strong> &mdash; destructive actions; always paired with a
+                confirmation step.
+              </li>
+            </ul>
+            <Callout type="info" title="How those four intents map onto the component's API">
+              The component exposes a <code>variant</code> axis (primary · success · danger ·
+              neutral) and an <code>appearance</code> axis (filled · outlined · text), plus a{" "}
+              <code>tone</code> axis (default · inverse). So <strong>secondary</strong> is{" "}
+              <code>appearance=&quot;outlined&quot;</code> and <strong>ghost</strong> is{" "}
+              <code>appearance=&quot;text&quot;</code>. The playground above emits the exact code
+              for a button on a white or light surface. For a button placed on a solid
+              brand-colour surface &mdash; a navy header, a hero band &mdash; use{" "}
+              <code>tone=&quot;inverse&quot;</code> rather than overriding{" "}
+              <code>className</code>. It crosses <code>appearance</code>, so{" "}
+              <code>tone=&quot;inverse&quot; appearance=&quot;outlined&quot;</code> is the
+              secondary form and keeps the variant&rsquo;s own intent.
+            </Callout>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">
+              States
+            </h2>
+            <p>
+              Every interactive state is visually distinct and meets AA contrast. Hover, focus and
+              active are pointer and keyboard states, so they are shown here as the live control
+              rather than as a still: hover the button below, then Tab to it, then hold the mouse
+              down on it.
+            </p>
+            <p>
+              <Button variant="primary" appearance="filled">
+                Submit application
+              </Button>{" "}
+              <Button variant="primary" appearance="filled" disabled data-testid="btn-disabled">
+                Disabled
+              </Button>{" "}
+              <Button
+                variant="primary"
+                appearance="filled"
+                href="/design-system/components/actions/button"
+                disabled
+                data-testid="btn-disabled-link"
+              >
+                Disabled link
+              </Button>{" "}
+              <Button variant="primary" appearance="filled" loading data-testid="btn-loading">
+                Submitting…
+              </Button>
+            </p>
+            <MatrixTable
+              caption="What each state means, and what it must not be confused with"
+              columns={["State", "What it looks like", "Why it is that way"]}
+              rows={[
+                ["Default", "Full colour, no overlay.", "The resting state."],
+                ["Hover", "A subtle darkening; the cursor becomes a pointer.", "Declared before :active at equal specificity, or the pressed state is unreachable."],
+                ["Focus", "A 3px --sa-focus-ring, offset from the control.", "Never removed. It is the only signal a keyboard user has."],
+                ["Active", "A momentary deeper tone.", "Pressed. It is a pointer state and does not persist."],
+                [
+                  "Disabled",
+                  "Reduced opacity; not in the tab order.",
+                  "The native disabled attribute does the work. No aria-disabled is set on a <button>, and none is needed.",
+                ],
+                [
+                  "Disabled link",
+                  "The same treatment, and genuinely inert.",
+                  "An <a> cannot take the native attribute, so the component drops href and sets aria-disabled. Without href an anchor is not focusable and not activatable, so no click-swallowing is needed and none is done.",
+                ],
+                [
+                  "Loading",
+                  "Full opacity, a spinner in the leading icon's place, cursor: progress.",
+                  "Busy is not forbidden, and must not look like it. It implies disabled so a form cannot be submitted twice, but the label stays — a control that loses its name mid-action is unusable with a screen reader.",
+                ],
+              ]}
+            />
+            <Callout type="info" title="Inverse tone keeps each variant's intent">
+              <code>tone=&quot;inverse&quot;</code> crosses <code>appearance</code>, so all four
+              variants keep their own signal on a brand surface. Until 2026-08-27 the outlined form
+              painted the same white-alpha border for every variant &mdash; and at 2.25:1 it was
+              not a findable edge either. It paints in the portal login shell&rsquo;s
+              &ldquo;Signing Into&rdquo; strip and in Storybook; the Ticker&rsquo;s route-out strips
+              its border in <code>ticker.css</code> and renders as a text link.
+            </Callout>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-responsive">
+            <h2 id="cdp-responsive" className="cdp__h2">
+              Sizes and Touch
+            </h2>
+            <p>
+              <Button variant="primary" appearance="filled" size="sm">
+                Small &mdash; 32px
+              </Button>{" "}
+              <Button variant="primary" appearance="filled" size="md">
+                Medium &mdash; 40px
+              </Button>{" "}
+              <Button variant="primary" appearance="filled" size="lg">
+                Large &mdash; 48px
+              </Button>
+            </p>
+            <ul>
+              <li>
+                Heights are <strong>minimums</strong> of <strong>32 / 40 / 48px</strong>, not fixed
+                heights &mdash; the box grows with the text rather than clipping it. All three clear
+                the <strong>24×24</strong> WCAG 2.2 §2.5.8 Level AA minimum; only <code>lg</code>{" "}
+                reaches the <strong>44×44</strong> UX4G recommends for touch. On a touch surface,
+                prefer <code>lg</code> or add spacing &mdash; UX4G also asks for 8px between
+                adjacent targets, which is what Button Group provides.
+              </li>
+              <li>
+                Size <code>sm</code> is <strong>32px</strong> and does <em>not</em> reach 44px. That
+                is a deliberate density choice for dense admin tables, not an oversight &mdash; but
+                it does make <code>sm</code> a pointer-surface size.
+              </li>
+              <li>
+                For a full-width mobile button, place it in a full-width container rather than
+                giving the button a width of its own.
+              </li>
+            </ul>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-voice">
+            <h2 id="cdp-voice" className="cdp__h2">
+              Content and Voice
+            </h2>
+            <p>
+              Labels are imperative verbs naming the action. This holds in every supported
+              language: in English, &ldquo;Submit&rdquo;, &ldquo;Save&rdquo;,
+              &ldquo;Cancel&rdquo; &mdash; never &ldquo;Click here&rdquo;, &ldquo;OK&rdquo; or a
+              lone &ldquo;Yes&rdquo;. In Hindi the same rule applies:{" "}
+              <span lang="hi">&ldquo;जमा करें&rdquo;</span>,{" "}
+              <span lang="hi">&ldquo;सहेजें&rdquo;</span>,{" "}
+              <span lang="hi">&ldquo;रद्द करें&rdquo;</span>.
+            </p>
+            <DoDont
+              cards={[
+                {
+                  type: "do",
+                  label: "Name the action with a verb. The reader knows exactly what will happen.",
+                  preview: (
+                    <Button variant="primary" appearance="filled">
+                      Submit application
+                    </Button>
+                  ),
+                },
+                {
+                  type: "dont",
+                  label:
+                    "“Click here” describes the gesture, not the outcome — and it fails screen-reader users, who navigate a page by its control names.",
+                  preview: (
+                    <Button variant="primary" appearance="filled">
+                      Click here
+                    </Button>
+                  ),
+                },
+              ]}
+            />
+          </section>
+        </>
+      }
+      code={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-deprecated">
+            <h2 id="cdp-deprecated" className="cdp__h2">
+              Two Deprecated Appearances, and One That Is Gone
+            </h2>
+            <p>
+              <code>appearance=&quot;inverse&quot;</code> and{" "}
+              <code>appearance=&quot;inverseOutlined&quot;</code> are <strong>deprecated</strong>.
+              They are a tone, not a style, and modelling them as appearances is what made them
+              ignore <code>variant</code>. Use <code>tone=&quot;inverse&quot;</code> with{" "}
+              <code>appearance=&quot;filled&quot;</code> or <code>&quot;outlined&quot;</code>{" "}
+              instead. They keep working &mdash; the Ticker&rsquo;s documented route-out, the login
+              shell and two Code Connect templates all name them, and breaking those to rename a
+              prop would be a poor trade.
+            </p>
+            <p>
+              <code>tonal</code> is <strong>gone</strong>. Its fill and its border were the same
+              pale wash, so the control had no edge against the page &mdash; 1.21:1 to 1.52:1
+              against a 3:1 requirement &mdash; and it could not be darkened without becoming{" "}
+              <code>outlined</code>. It had two consumers in 494 buttons; both are now{" "}
+              <code>outlined</code>.
+            </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-install">
+            <h2 id="cdp-install" className="cdp__h2">
+              Installation and Import
+            </h2>
+            <CodeBlock>{`npm install @mosje/design-system
+
+// once, in your root layout or entry file:
+import "@mosje/design-system/tokens.css";`}</CodeBlock>
+            <CodeBlock>{`import { Button, buttonClasses } from "@mosje/design-system";`}</CodeBlock>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-example">
+            <h2 id="cdp-example" className="cdp__h2">
+              Example
+            </h2>
+            <CodeBlock>{`export function ApplicationForm() {
   return (
-    <pre
-      style={{
-        background: "var(--sa-bg-neutral-subtler)",
-        border: "1px solid var(--sa-border-neutral-subtle)",
-        borderRadius: "var(--sa-shape-8)",
-        padding: "var(--sa-padding-16)",
-        overflowX: "auto",
-        fontSize: "var(--sa-type-body-2-size)",
-        lineHeight: 1.6,
-        color: "var(--sa-text-neutral-base)",
-        marginTop: "var(--sa-stack-8)",
-      }}
-    >
-      <code style={{ fontFamily: "var(--sa-font-mono)" }}>
-        {children}
-      </code>
-    </pre>
+    <form onSubmit={handleSubmit}>
+      {/* …fields… */}
+      <ButtonGroup aria-label="Application actions">
+        {/* Primary call to action — one per view */}
+        <Button variant="primary" appearance="filled" type="submit" loading={submitting}>
+          Submit application
+        </Button>
+
+        {/* Secondary action */}
+        <Button variant="primary" appearance="outlined" type="button">
+          Save draft
+        </Button>
+
+        {/* Tertiary / ghost action */}
+        <Button variant="primary" appearance="text" type="button">
+          Cancel
+        </Button>
+
+        {/* Destructive action — confirm before it runs */}
+        <Button variant="danger" appearance="filled" onClick={confirmDelete}>
+          Delete application
+        </Button>
+      </ButtonGroup>
+    </form>
+  );
+}`}</CodeBlock>
+            <p>
+              Where an element that is not a button must carry the button&rsquo;s appearance, take
+              the classes rather than the component:
+            </p>
+            <CodeBlock>{`import Link from "next/link";
+import { buttonClasses } from "@mosje/design-system";
+
+<Link href="/schemes" className={buttonClasses("primary", "outlined", "md")}>
+  Browse schemes
+</Link>`}</CodeBlock>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-tokens">
+            <h2 id="cdp-tokens" className="cdp__h2">
+              Tokens Consumed
+            </h2>
+            <TokenTable
+              tokens={[
+                { token: "--sa-color-action-primary-default", value: "#0373df", description: "Fill for the primary variant.", isColor: true },
+                { token: "--sa-color-status-danger", value: "#DC2626", description: "Fill for the danger variant.", isColor: true },
+                { token: "--sa-focus-ring", value: "rgba(3,115,223,0.48)", description: "The 3px focus ring." },
+                { token: "--sa-shape-8", value: "8px", description: "Corner radius of the container." },
+                { token: "--sa-stack-12", value: "12px", description: "Horizontal padding inside the control." },
+              ]}
+            />
+            <p>
+              The non-text contrast of every action boundary is measured on each build by{" "}
+              <code>packages/tokens/test/action-nontext-contrast.test.mjs</code>, so a fill or a
+              border that stops clearing 3:1 fails the build rather than being found in an audit.
+            </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-figma">
+            <h2 id="cdp-figma" className="cdp__h2">
+              In Figma
+            </h2>
+            <ul>
+              <li>
+                <a href={figmaUrl(FIGMA_NODES.buttons)} target="_blank" rel="noopener noreferrer">
+                  The master
+                </a>{" "}
+                &mdash; the published component set, on Type × Sub-type axes.
+              </li>
+              <li>
+                <a href={figmaUrl(FIGMA_NODES.buttonRecord)} target="_blank" rel="noopener noreferrer">
+                  Component record
+                </a>{" "}
+                &mdash; the maintainer frame, carrying the open items and where each number came
+                from.
+              </li>
+            </ul>
+          </section>
+        </>
+      }
+      accessibility={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-keys">
+            <h2 id="cdp-keys" className="cdp__h2">
+              Keyboard
+            </h2>
+            <p>
+              Because the component renders a native <code>&lt;button&gt;</code>, all standard
+              keyboard semantics work without being re-implemented.
+            </p>
+            <MatrixTable
+              caption="Keyboard behaviour"
+              columns={["Key", "Action"]}
+              rows={[
+                ["Enter", "Activates the button and fires onClick."],
+                ["Space", "Activates the button and fires onClick."],
+                ["Tab", "Moves focus to the next focusable element."],
+                ["Shift + Tab", "Moves focus to the previous focusable element."],
+              ]}
+            />
+            <Callout type="info" title="While loading">
+              <code>loading</code> sets <code>aria-busy=&quot;true&quot;</code> and disables the
+              control, so the keyboard path is closed for as long as the submission is in flight.
+              Keep the label meaningful &mdash; &ldquo;Submitting&hellip;&rdquo; &mdash; rather than
+              removing it or replacing it with a bare spinner.
+            </Callout>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-evidence">
+            <h2 id="cdp-evidence" className="cdp__h2">
+              Evidence
+            </h2>
+            <ul>
+              <li>
+                <strong>GOV.UK button research</strong> &mdash; verb-first, action-naming labels
+                measurably increase form completion against generic ones.
+              </li>
+              <li>
+                <strong>WCAG 2.5.8 Target Size (Minimum)</strong> &mdash; Level AA requires 24×24,
+                which every size clears. The 44×44 figure belongs to 2.5.5 Target Size (Enhanced),
+                Level AAA.
+              </li>
+              <li>
+                <strong>GIGW 3.5</strong> &mdash; all interactive elements must be fully keyboard
+                operable.
+              </li>
+              <li>
+                <strong>e2e/design-system/button.spec.ts</strong> &mdash; pins the disabled-link
+                semantics and the 200% text-resize behaviour at the criterion&rsquo;s own
+                threshold.
+              </li>
+            </ul>
+          </section>
+        </>
+      }
+    />
   );
 }

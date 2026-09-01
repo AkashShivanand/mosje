@@ -1,207 +1,286 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
+  Callout,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  MatrixTable,
+  PropsTable,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+
+import { SiteFooterPortalSpecimen, SiteFooterWebsiteSpecimen } from "./site-footer-specimen";
 
 export const metadata: Metadata = {
-  title: "Site Footer",
-  description: "Comprehensive dual-band public website footer containing sitemap columns, social channels, grievance contacts, and statutory DBIM requirements.",
+  title: "Site Footer — Design System",
+  description:
+    "The statutory footer for the SAMAVESH estate, in two variants. Structural, not content-bound: every label, href, logo and sentence arrives as a prop.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
+/*
+ * Four data shapes the extractor cannot see, because it reads exported `*Props`
+ * interfaces and these are the objects those props carry.
+ */
+const FOOTER_SHAPES: PropDef[] = [
+  { name: "SiteFooterLink · label", type: "string", required: true, description: "The link's visible text." },
+  { name: "SiteFooterLink · href", type: "string", required: true, description: "Destination." },
+  {
+    name: "SiteFooterLink · external",
+    type: "boolean",
+    default: "false",
+    description:
+      "Opens in a new window, announced to assistive technology with a visually hidden note and marked rel=\"noreferrer\".",
+  },
+  { name: "SiteFooterColumn · heading", type: "string", required: true, description: "The column's visible heading. Name a grouping, not an action." },
+  {
+    name: "SiteFooterColumn · id",
+    type: "string",
+    required: true,
+    description:
+      "Stable DOM id, so the column's <nav> is labelled BY its visible heading. Four unlabelled navigations give a screen-reader user four identical landmark entries.",
+  },
+  { name: "SiteFooterColumn · links", type: "SiteFooterLink[]", required: true, description: "The column's links." },
+  {
+    name: "SiteFooterSocial · label",
+    type: "string",
+    required: true,
+    description: "Human name — “X (formerly Twitter)”. Never a CSS class name; this is the link's accessible name.",
+  },
+  { name: "SiteFooterSocial · href", type: "string", required: true, description: "Destination." },
+  {
+    name: "SiteFooterSocial · icon",
+    type: "BrandGlyphName",
+    required: true,
+    description:
+      "Which brand mark to draw, as a NAME rather than path data — so every rail in the estate draws the same optically normalised set, and a content file never carries a kilobyte of vendor artwork.",
+  },
+  { name: "SiteFooterCredit · src / alt / href", type: "string", required: true, description: "The hyperlinked logo, its alternative text, and where it points." },
+  { name: "SiteFooterCredit · width / height", type: "number", required: true, description: "Intrinsic size, so the row reserves its space before the image loads." },
+  { name: "SiteFooterCredit · prefix", type: "string", description: "Rendered before the logo — “Powered by”." },
+];
 
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "A `contentinfo` landmark named by a visually hidden `<h2>`. Every `<nav>` inside it is labelled — by its visible heading where it has one, by `aria-label` where the label would be an on-screen eyebrow.",
+    status: "verified",
+  },
+  {
+    criterion: "2.4.4 Link Purpose (In Context)",
+    level: "A",
+    description:
+      "Every external link is `rel=\"noreferrer\"` and carries a visually hidden “(opens in a new window)”, so the change of context is announced before it happens.",
+    status: "verified",
+  },
+  {
+    criterion: "2.4.7 Focus Visible",
+    level: "AA",
+    description: "One focus ring, defined once, applying to every control in the subtree.",
+    status: "verified",
+  },
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    description:
+      "Brand glyphs are `aria-hidden`; the accessible name sits on the link, and it is a human name — “X (formerly Twitter)” — never a CSS class name.",
+    status: "verified",
+  },
+  {
+    criterion: "1.4.3 Contrast (Minimum)",
+    level: "AA",
+    description:
+      "Colour comes entirely from the component's stylesheet, bound to the mode-aware brand ramp, so a caller cannot introduce a failing pair through `className`.",
+  },
+  {
+    criterion: "GIGW 3.0 / DBIM 5.6 — Mandatory footer elements",
+    level: "GIGW",
+    description:
+      "Website Policy, Sitemap, Related Links, Help, Feedback and Last Updated On, plus the lineage sentence and the hyperlinked logos. Three of the eight are required props, so the compiler catches their absence; the rest are the caller's to supply.",
+    status: "partial",
+    evidence: "lineage, policyLinks and copyright are type-required; the remainder are not.",
+  },
+];
 
-export default function SiteFooterDocPage(): React.JSX.Element {
+export default function SiteFooterPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Site Footer
-          </h1>
-          <StatusBadge status="Stable" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Comprehensive dual-band public website footer containing sitemap columns, social channels, grievance contacts, and statutory DBIM requirements."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+    <ComponentDocPage
+      name="Site Footer"
+      status="Stable"
+      summary="The statutory footer for the SAMAVESH estate, in two variants. It is structural rather than content-bound — every label, href, logo and sentence arrives as a prop — so the department's routes live in the app and this component serves any site or portal in the estate."
+      figma={{
+        absent:
+          "The footer is documented in the SAMAVESH library alongside the Navbar page, but is not yet registered as its own node in the estate's Figma index.",
+      }}
+      specimen={<SiteFooterPortalSpecimen />}
+      propsFrom="SiteFooterProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "The foot of every public website page, with `variant=\"website\"`.",
+          "A portal that must publish the statutory apparatus, with `variant=\"portal\"`.",
+          "Anywhere DBIM 5.6's required elements have to be on the page.",
+        ],
+        avoid: [
+          "An internal index surface that is not a public government page — the slim Footer is the right shape there.",
+          "A page that needs only a credit line and two policy links — again, Footer.",
+          "Building a second portal footer: the statutory half is identical by design, and a separate one is a second thing to keep DBIM-compliant.",
+        ],
+      }}
+      related={[
+        {
+          label: "Footer",
+          href: "/design-system/components/navigation/footer",
+          reason: "the slim app-shell footer, with no statutory apparatus",
+        },
+        {
+          label: "Site Layout",
+          href: "/design-system/components/layout/site-layout",
+          reason: "the website skeleton whose footer slot this fills",
+        },
+        {
+          label: "Visitor Counter",
+          href: "/design-system/components/data-display/visitor-counter",
+          reason: "what the estate puts in the colophon slot",
+        },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-zones">
+            <h2 id="cdp-zones" className="cdp__h2">
+              Three Zones, in Priority Order
+            </h2>
+            <p>
+              A government footer has three jobs, and the version this replaced mixed all three at
+              one weight.
+            </p>
+            <MatrixTable
+              caption="The footer's zones"
+              columns={["Zone", "Carries", "website", "portal"]}
+              rows={[
+                ["0 — Support strip", "Opt-in helpline or contact strip", "Optional", "Absent"],
+                ["1 — Working footer", "Identity, address, social, four link columns", "Yes", "Absent"],
+                ["2 — Statutory bar", "Lineage, credits, policies, colophon", "Yes", "Yes"],
+              ]}
+            />
+            <p>
+              <code>variant=&quot;portal&quot;</code> renders zone 2 alone. That is the whole
+              difference, and it is why this is a variant rather than a second component: the
+              statutory half is the half that must stay compliant, and it is now impossible for a
+              portal&apos;s to drift from the website&apos;s.
+            </p>
+          </section>
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Site Footer is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <div style={{ padding: "var(--sa-padding-24)", background: "var(--sa-bg-neutral-subtler)", border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)" }}><p style={{ margin: 0, fontWeight: 600 }}>SAMAVESH SiteFooter Specimen (Dual-band Website Footer)</p></div>
-                    </div>
-                  </div>
-                </section>
+          <section className="cdp__section" aria-labelledby="cdp-website">
+            <h2 id="cdp-website" className="cdp__h2">
+              The Website Variant
+            </h2>
+            <p>
+              The same statutory bar, with the working footer above it: identity and address,
+              social links, and four columns of wayfinding.
+            </p>
+            <SiteFooterWebsiteSpecimen />
+          </section>
 
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Include all mandatory DBIM statutory links (RTI, Copyright, Hyperlinking Policy).",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not link to external non-government websites without clear external link icons.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { SiteFooter } from "@mosje/design-system";`}</CodeBlock>
-                </section>
+          <section className="cdp__section" aria-labelledby="cdp-content">
+            <h2 id="cdp-content" className="cdp__h2">
+              Writing the Content
+            </h2>
+            <p>
+              Column headings name a grouping, not an action — &ldquo;Documents&rdquo;, not
+              &ldquo;Download our documents&rdquo;. Link labels are Title Case noun phrases. The
+              lineage sentence is the department&apos;s own published wording, quoted rather than
+              paraphrased; it is a statutory statement about who runs the site, and rewriting it to
+              suit a layout is not ours to do.
+            </p>
+            <Callout type="warning" title="Last updated is per page, not per site">
+              <code>lastUpdated</code> is DBIM&apos;s &ldquo;Last Updated On&rdquo; for the{" "}
+              <em>respective page</em>. A single date passed from a shared layout is correct on one
+              page and wrong on every other, which is worse than omitting it.
+            </Callout>
+          </section>
+        </>
+      }
+      code={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-shapes">
+            <h2 id="cdp-shapes" className="cdp__h2">
+              The Four Content Shapes
+            </h2>
+            <PropsTable props={FOOTER_SHAPES} />
+          </section>
 
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "columns",
-    "type": "SiteFooterColumn[]",
-    "default": "undefined",
-    "description": "Sitemap navigation columns."
-  }
-]} />
-                </section>
+          <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import Link from "next/link";
+import { SiteFooter } from "@mosje/design-system";
 
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<div style={{ padding: "var(--sa-padding-24)", background: "var(--sa-bg-neutral-subtler)", border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)" }}><p style={{ margin: 0, fontWeight: 600 }}>SAMAVESH SiteFooter Specimen (Dual-band Website Footer)</p></div>`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.3.1 Info and Relationships",
-    "level": "AA",
-    "description": "Semantic footer landmark with structured navigation lists."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Tab</kbd></td>
-                          <td>{"Navigates footer links sequentially."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Site Footer" />
-    </article>
+<SiteFooter
+  variant="website"
+  linkAs={Link}
+  emblem={<Image src={emblem} alt="" width={48} height={72} />}
+  organisation={[
+    "Government of India",
+    "Ministry of Social Justice & Empowerment",
+    "Department of Social Justice & Empowerment",
+  ]}
+  address="Shastri Bhawan, Dr. Rajendra Prasad Road, New Delhi 110001"
+  social={[{ label: "X (formerly Twitter)", href: "https://x.com/…", icon: "x" }]}
+  columns={FOOTER_COLUMNS}
+  lineage={LINEAGE}
+  credits={[{ src: negd, alt: "NeGD", href: "https://negd.gov.in/", width: 96, height: 32, prefix: "Powered by" }]}
+  policyLinks={POLICY_LINKS}
+  relatedLinks={RELATED_LINKS}
+  copyright="© 2026 Department of Social Justice & Empowerment. All rights reserved."
+  lastUpdated={page.lastUpdated}
+  colophonSlot={<VisitorCounter />}
+/>`}</CodeBlock>
+          <p>
+            A portal takes the same statutory props and nothing else. Passing{" "}
+            <code>columns</code> or <code>social</code> alongside{" "}
+            <code>variant=&quot;portal&quot;</code> is not an error; they are simply not rendered.
+          </p>
+          <CodeBlock>{`<SiteFooter
+  variant="portal"
+  organisation={ORGANISATION}
+  lineage={LINEAGE}
+  policyLinks={POLICY_LINKS}
+  copyright={COPYRIGHT}
+  lastUpdated={page.lastUpdated}
+/>`}</CodeBlock>
+          </section>
+        </>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-navs">
+          <h2 id="cdp-navs" className="cdp__h2">
+            Every Navigation Is Named
+          </h2>
+          <p>
+            A footer with four unlabelled <code>&lt;nav&gt;</code> elements gives a screen-reader
+            user four identical &ldquo;navigation&rdquo; entries and no way to choose between them.
+            Each column therefore carries a stable <code>id</code>, and the{" "}
+            <code>&lt;nav&gt;</code> is labelled by that visible heading — so the landmark list
+            reads &ldquo;Documents, navigation&rdquo;, not &ldquo;navigation&rdquo; four times over.
+          </p>
+          <p>
+            Where a group has no visible heading, the <code>&lt;nav&gt;</code> takes an{" "}
+            <code>aria-label</code> instead. Both are labels; only one of them is also on screen,
+            and a visible heading is preferred wherever there is one to point at.
+          </p>
+          <Callout type="info" title="External links say so">
+            Every external link carries <code>rel=&quot;noreferrer&quot;</code> and a visually
+            hidden &ldquo;(opens in a new window)&rdquo;. Both halves are needed: the note is
+            invisible to a sighted reader, and a glyph alone is invisible to a screen reader.
+          </Callout>
+        </section>
+      }
+    />
   );
 }

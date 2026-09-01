@@ -10,6 +10,16 @@ import { Icon, MetricCard } from "@mosje/design-system";
  * your unit. Format it, then pass it. `formatIndian` from the charts module
  * does the grouping if you need it.
  *
+ * `value` is OPTIONAL, and that is the point of `loading` and `state`. A KPI
+ * tile is the most-read element on a government dashboard and the one most
+ * likely to be fetched, so "still loading" and "could not be loaded" have to be
+ * expressible — without them the card could only ever show a finished number,
+ * and a failed request rendered as `aria-label="Total beneficiaries: —"`.
+ * `loading` draws the skeleton; `state` takes a `CardStateKind` and borrows
+ * `CardState`'s own wording, so a tile and the chart beside it describe one
+ * failed request with one sentence. Both suppress the trend indicator, because
+ * a change against a figure you do not have is not a change.
+ *
  * On the trend: `changeDirection` is the *arrow*, not the judgement. Down is not
  * automatically bad — a falling number of pending grievances is the goal. Say
  * what it means in `changeLabel` ("vs last month"), because the arrow alone

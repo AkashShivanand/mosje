@@ -1,10 +1,11 @@
 <!--
-  GITHUB ACTIONS IS BLOCKED ON BILLING, so the checks on this PR are not a
-  signal. They report `failure` after about three seconds without having run
-  anything. A red tick here means nothing; a green one would mean nothing
-  either. The block clears when the billing period resets.
+  CI IS THE GATE. Apps CI and Design System Quality both run on every PR and
+  both must be green before merge.
 
-  Until then the gate is YOU, and it runs before the merge button, not after.
+  This block previously said GitHub Actions was blocked on billing and that a
+  green tick meant nothing. That stopped being true; the note did not, so
+  reviewers were being told to disregard the only automated signal the estate
+  has — which is exactly how a ratchet silently stops ratcheting.
 -->
 
 ## What this changes

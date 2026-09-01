@@ -76,6 +76,41 @@ export const FIGMA_NODES = {
 
   // ── Misc ──
   cover: "214:68343",
+
+  // ── Component frames recovered from the Code Connect templates, 2026-09-02 ──
+  //
+  // Every `*.figma.ts` in packages/design-system carries the node it maps, in a
+  // `// url=<SAMAVESH>?node-id=…` header the CLI reads. Twenty-five of them did,
+  // and this registry held none — which is why 53 documentation pages called
+  // `figmaUrl()` with no argument and shipped a link labelled "Figma Component
+  // Spec" that landed on the file root, and why the census kept reporting the
+  // Figma link as the single most-missing element on a component page.
+  //
+  // These are not new lookups: each is the id the Code Connect mapping already
+  // publishes for that component, so a page linking here and a designer opening
+  // Dev Mode arrive at the same frame. Anything still absent below is genuinely
+  // absent from the library, and its page says so rather than linking to nothing.
+  accessibilityBar: "55065-33766",
+  accountMenu: "56046-4113",
+  accountMenuItem: "56040-4083",
+  authParts: "55439-749",
+  brandLockup: "4235-3652",
+  divider: "55061-700",
+  dropdownItem: "4299-1940",
+  iconButton: "3-3497",
+  megaMenu: "4268-914",
+  megaMenuItem: "4258-33604",
+  menuToggle: "55783-4565",
+  navDropdown: "4300-1950",
+  navItemLink: "2065-292757",
+  navSheet: "55327-3503",
+  portalLoginTemplate: "55397-1364",
+  sheetToggle: "55798-4566",
+  siteHeader: "4235-3169",
+  tab: "2316-353",
+  tabs: "55489-870",
+  tabsMore: "55514-848",
+  ticker: "56159-903",
 } as const;
 
 export type FigmaNode = keyof typeof FIGMA_NODES;

@@ -3,6 +3,9 @@
   "version": "0.6.0",
   "description": "Shared MoSJE UI components (atoms + form layer: Input/Textarea/Select/FormField/Label) plus the color-mode brand-axis (ColorModeProvider/Switcher), aligned to the UX4G Figma DS. Token-driven \u2014 consumes the generated --ds-/--sa- contract from @mosje/tokens (do not edit tokens.css here; edit packages/tokens/src/*.json).",
   "private": true,
+  "sideEffects": [
+    "**/*.css"
+  ],
   "type": "module",
   "exports": {
     ".": "./index.ts",

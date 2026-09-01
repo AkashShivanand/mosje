@@ -1,6 +1,6 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { CardState } from "../../dashboard/card-state";
+import { ChartStateFigure, type ChartStateProps } from "./internal/chart-frame";
 import { categoricalColor } from "./internal/palette";
 import { formatIndian, formatPercent } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
@@ -12,7 +12,7 @@ export interface FunnelStage {
   color?: string;
 }
 
-export interface FunnelChartProps {
+export interface FunnelChartProps extends ChartStateProps {
   stages: FunnelStage[];
   title: string;
   valueFormat?: ValueFormat;
@@ -24,8 +24,34 @@ export interface FunnelChartProps {
  * approval → release). Absorbs PM-AJAY `Funnel`. Each stage's bar width is its
  * share of the first stage; the trailing value shows the conversion %.
  */
-export function FunnelChart({ stages, title, valueFormat = formatIndian, className }: FunnelChartProps) {
-  if (stages.length === 0) return <CardState kind="empty" compact />;
+export function FunnelChart({
+  stages,
+  title,
+  valueFormat = formatIndian,
+  className,
+  state,
+  onRetry,
+  filterLabel,
+}: FunnelChartProps) {
+  /*
+   * HANDLED LOCALLY, IN THE SAME SHAPE. A funnel is a DOM list rather than an
+   * SVG, so it has no `ChartFrame` and no viewBox to take proportions from —
+   * but it renders the frame's own `ChartStateFigure`, so a funnel with nothing
+   * to show is the same object on the page as a bar chart with nothing to show.
+   * With no viewBox the figure falls back to a height floor instead of an
+   * aspect ratio; see `.ds-chart__canvas--state-floor`.
+   */
+  const resolved = state ?? (stages.length === 0 ? "empty" : undefined);
+  if (resolved)
+    return (
+      <ChartStateFigure
+        state={resolved}
+        title={title}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+        className={className}
+      />
+    );
   const top = stages[0]?.value || 1;
 
   return (

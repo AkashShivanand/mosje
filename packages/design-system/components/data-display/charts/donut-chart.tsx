@@ -1,17 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartState, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { categoricalColor } from "./internal/palette";
 import { ringPath, polarToCartesian } from "./internal/geometry";
 import { formatIndian, formatPercent } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
-import { CardState } from "../../dashboard/card-state";
 import type { ChartDatum } from "./types";
 
-interface DonutBase {
+interface DonutBase extends ChartStateProps {
   title: string;
   className?: string;
   valueFormat?: ValueFormat;
@@ -53,12 +52,31 @@ function isSegments(p: DonutChartProps): p is DonutSegments {
  * SMILE `GenderDonut`.
  */
 export function DonutChart(props: DonutChartProps) {
-  const { title, className, valueFormat = formatIndian } = props;
+  const { title, className, valueFormat = formatIndian, state, onRetry, filterLabel } = props;
   const { canvasRef, tip, show, hide } = useChartTooltip();
+
+  /**
+   * Both modes resolve their state through this, so a segmented donut and a
+   * progress ring cannot disagree about what "nothing to draw" looks like.
+   */
+  const stateFrame = (resolved: ChartState) => (
+    <ChartFrame
+      marksAreFocusable
+      title={title}
+      viewBox={`0 0 ${SIZE} ${SIZE}`}
+      className={className}
+      state={resolved}
+      onRetry={onRetry}
+      filterLabel={filterLabel}
+    >
+      {null}
+    </ChartFrame>
+  );
 
   if (isSegments(props)) {
     const total = props.data.reduce((s, d) => s + d.value, 0);
-    if (total === 0) return <CardState kind="empty" compact />;
+    const resolved = state ?? (total === 0 ? "empty" : undefined);
+    if (resolved) return stateFrame(resolved);
 
     let cursor = 0;
     const segs = props.data.map((d, i) => {
@@ -71,6 +89,7 @@ export function DonutChart(props: DonutChartProps) {
 
     return (
       <ChartFrame
+        marksAreFocusable
         title={title}
         summary={segs.map((s) => `${s.label} ${formatPercent(s.pct)}`).join(", ")}
         viewBox={`0 0 ${SIZE} ${SIZE}`}
@@ -136,12 +155,18 @@ export function DonutChart(props: DonutChartProps) {
 
   // Progress-ring mode
   const max = props.max ?? 100;
+  // A ring drawn from a NaN sweeps an invalid arc that browsers drop silently,
+  // leaving a card that looks finished and says nothing.
+  const ringResolved =
+    state ?? (!Number.isFinite(props.value) || !Number.isFinite(max) ? "empty" : undefined);
+  if (ringResolved) return stateFrame(ringResolved);
   const frac = max <= 0 ? 0 : Math.max(0, Math.min(1, props.value / max));
   const color = props.color ?? "var(--sa-chart-cat-1)";
   const sweep = frac * 360;
 
   return (
     <ChartFrame
+      marksAreFocusable
       title={title}
       summary={`${valueFormat(props.value)} of ${valueFormat(max)} (${formatPercent(frac * 100)})`}
       viewBox={`0 0 ${SIZE} ${SIZE}`}

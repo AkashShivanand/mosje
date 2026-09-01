@@ -1,214 +1,171 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { PieChart } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { PieChartSpecimen } from "./specimen";
 
 export const metadata: Metadata = {
-  title: "Pie Chart",
-  description: "Solid circular proportional chart representing parts of a whole across top-level statutory budget categories.",
+  title: "Pie Chart — Design System",
+  description:
+    "Shares of a single whole, drawn as slices with a legend beside them. For two to four parts that differ plainly in size.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
-
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function PieChartDocPage(): React.JSX.Element {
-  return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Pie Chart
-          </h1>
-          <StatusBadge status="Beta" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Solid circular proportional chart representing parts of a whole across top-level statutory budget categories."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
-
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Pie Chart is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <PieChart title="Fund Distribution" data={[{ label: "Direct Benefit", value: 60 }, { label: "Infrastructure", value: 40 }]} />
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Prefer DonutChart when center text summaries are beneficial.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not create pie charts with more than 6 categories.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { PieChart } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
+const A11Y: A11yItem[] = [
   {
-    "name": "title",
-    "type": "string",
-    "required": true,
-    "description": "Chart title for accessible labeling."
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    status: "verified",
+    description:
+      "Rendered through ChartFrame, which draws an SVG <title>, a <desc> listing every slice and its percentage, and a visually hidden table of the underlying values.",
+    evidence: "pie-chart.tsx composes `summary` from the slice percentages and passes `table` to ChartFrame.",
   },
   {
-    "name": "data",
-    "type": "ChartDatum[]",
-    "required": true,
-    "description": "Data array of slices."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<PieChart title="Fund Distribution" data={[{ label: "Direct Benefit", value: 60 }, { label: "Infrastructure", value: 40 }]} />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
+    criterion: "1.4.1 Use of Color",
+    level: "A",
+    status: "verified",
+    description:
+      "Each slice is named in the legend beside the chart and repeated with its share in the screen-reader table, so no slice is identified by colour alone.",
+    evidence: "pie-chart.tsx renders a Legend built from the same data as the slices.",
+  },
   {
-    "criterion": "1.1.1 Non-text Content",
-    "level": "AA",
-    "description": "Accessible SVG labels on all slices."
-  }
-]} />
-                </section>
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    status: "untested",
+    description:
+      "The slices are not focusable and there is no keyboard interaction to test — the reading is carried entirely by the summary and the screen-reader table. This page previously described tabbing between segments; nothing in the component does that.",
+    evidence: "pie-chart.tsx sets no tabIndex on any slice.",
+  },
+  {
+    criterion: "1.4.11 Non-text Contrast",
+    level: "AA",
+    status: "untested",
+    description:
+      "Adjacent slices are separated by their fills alone. No contrast measurement between neighbouring steps of the categorical ramp has been recorded across the brand packs.",
+  },
+];
 
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Tab</kbd></td>
-                          <td>{"Inspects pie segments."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
+export default function PieChartPage(): React.JSX.Element {
+  return (
+    <ComponentDocPage
+      name="Pie Chart"
+      status="Beta"
+      summary="Divides one whole into slices, with a legend naming each. It answers “roughly what share” for a small number of parts, and nothing more precise than that."
+      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      specimen={<PieChartSpecimen />}
+      propsFrom="PieChartProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "Two to four parts make up one whole and their sizes differ plainly.",
+          "The reading is a rough share — about two thirds, about a quarter — and no comparison between parts is being asked for.",
+          "The total itself does not need stating on the chart.",
+        ],
+        avoid: [
+          "The total is worth stating — use a Donut Chart, whose centre exists for exactly that.",
+          "Parts are close in size. A reader cannot rank two similar slices by eye; use a Bar Chart, where the difference is a length.",
+          "There are more than about five parts. This was previously documented as a limit of six; four is the point at which the legend starts doing the chart's work.",
+          "The shares change over time — use a stacked Bar Chart or an Area Chart.",
+          "One figure is being read against a target — use a Gauge, or a Progress bar in a list.",
+        ],
+      }}
+      related={[
+        { label: "Donut Chart", href: "/design-system/components/data-display/donut-chart", reason: "the same shares with the total in the middle" },
+        { label: "Bar Chart", href: "/design-system/components/data-display/bar-chart", reason: "when the parts must be compared precisely" },
+        { label: "Legend", href: "/design-system/components/data-display/legend", reason: "the key rendered beside the slices" },
+        { label: "Funnel Chart", href: "/design-system/components/data-display/funnel-chart", reason: "when the parts are stages of one flow" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">
+              The States It Draws
+            </h2>
+            <p>
+              The specimen shows the four states that are not the populated one. They matter here for
+              a reason particular to a pie: a total of zero produces no slices at all, which is
+              indistinguishable from a failed request unless the state says which it was.
+            </p>
+            <ul>
+              <li>
+                <strong>Loading</strong> — a skeleton at the chart&apos;s own proportions, carrying{" "}
+                <code>role=&quot;status&quot;</code>.
+              </li>
+              <li>
+                <strong>Empty</strong> — the feed answered and the total is genuinely nought. No retry.
+              </li>
+              <li>
+                <strong>Error</strong> — the request failed; <code>onRetry</code> renders
+                &ldquo;Try again&rdquo;.
+              </li>
+              <li>
+                <strong>Filtered to nothing</strong> — <code>filterLabel</code> names the filter the
+                reader applied.
+              </li>
+            </ul>
+            <p>
+              A zero total falls back to <code>&quot;empty&quot;</code> on its own. Pass{" "}
+              <code>state</code> wherever the caller knows better, which is any case where a feed was
+              asked and might not have answered.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-limits">
+            <h2 id="cdp-limits" className="cdp__h2">
+              What a Pie Cannot Do
+            </h2>
+            <p>
+              A reader compares angles far less accurately than lengths. That is the whole of the case
+              against this chart, and it is why the catalogue keeps it for two to four plainly
+              different parts and routes everything else to a bar. Where a departmental figure has to
+              be compared, quoted or ranked, it belongs in a bar chart or a table.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { PieChart } from "@mosje/design-system";
 
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Pie Chart" />
-    </article>
+<PieChart
+  title="Fund Distribution"
+  data={[
+    { label: "Direct Benefit", value: 60 },
+    { label: "Infrastructure", value: 40 },
+  ]}
+/>`}</CodeBlock>
+          <CodeBlock>{`<PieChart
+  title="Fund Distribution"
+  data={parts}
+  state={error ? "error" : loading ? "loading" : undefined}
+  onRetry={refetch}
+  filterLabel="component filter"
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-sr">
+          <h2 id="cdp-sr" className="cdp__h2">
+            What a Screen Reader Gets
+          </h2>
+          <p>
+            One image whose description is the reading itself — &ldquo;Direct Benefit 60.0%,
+            Infrastructure 40.0%&rdquo; — followed by a visually hidden table of the underlying values.
+            A pie is the one chart in the catalogue whose summary is close to a complete substitute for
+            the picture, which is a consequence of how little it can carry.
+          </p>
+          <p>
+            There is no keyboard interaction to document. The slices are not focusable, and nothing in
+            the component listens for a key.
+          </p>
+        </section>
+      }
+    />
   );
 }

@@ -1,169 +1,197 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { PanInputPlayground } from "./pan-input-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+
+import { PanInputPlayground } from "./pan-input-playground";
 
 export const metadata: Metadata = {
-  title: "PanInput - SAMAVESH Design System",
+  title: "PAN Input — Design System",
   description:
-    "An input specifically designed for collecting Indian Permanent Account Numbers (PAN).",
+    "A ten-character Permanent Account Number field that uppercases as you type and validates the holder-type character.",
 };
 
+/*
+ * Read off `PanInputProps` in packages/design-system/components/forms/pan-input.tsx.
+ * The interface extends `InputHTMLAttributes<HTMLInputElement>` minus `value`,
+ * `onChange`, `type` and `maxLength` — all four are owned by the component.
+ */
+const PROPS: PropDef[] = [
+  {
+    name: "value",
+    type: "string",
+    required: true,
+    description: "The normalised PAN — uppercase, alphanumeric, ten characters or fewer. Controlled.",
+  },
+  {
+    name: "onValueChange",
+    type: "(pan: string) => void",
+    required: true,
+    description:
+      "Called with the normalised value, already uppercased and stripped, so what reaches your state is storage-ready. This is not `onChange`, which the interface removes.",
+  },
+  {
+    name: "invalid",
+    type: "boolean",
+    default: "false",
+    description:
+      "Forces the error state. The field also sets `aria-invalid` on its own once ten characters fail the shape check, so this is for a rejection that came from elsewhere.",
+  },
+  {
+    name: "className",
+    type: "string",
+    default: "undefined",
+    description: "Merged onto the input element.",
+  },
+  {
+    name: "...native",
+    type: "Omit<React.InputHTMLAttributes<HTMLInputElement>, \"value\" | \"onChange\" | \"type\" | \"maxLength\">",
+    default: "—",
+    description:
+      "Every other native input attribute is forwarded, including `id`, `required`, `disabled`, `aria-describedby` and `ref`. The placeholder defaults to `ABCPE1234F` and can be overridden.",
+  },
+];
+
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.5 Identify Input Purpose",
+    level: "AA",
+    description:
+      "`autocomplete` is set to \"off\" deliberately. There is no standard token for a PAN, and a wrong guess would autofill a different identity number into it.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    description:
+      "A real `<input type=\"text\">`. Autocorrect, autocapitalisation and spellcheck are all turned off, because a PAN is not a word and each of them fights the reader.",
+  },
+  {
+    criterion: "2.5.8 Target Size (Minimum)",
+    level: "AA",
+    description: "The field inherits the 44px minimum height of Input.",
+  },
+  {
+    criterion: "3.3.1 Error Identification",
+    level: "A",
+    description:
+      "The shape check runs on the client, so `aria-invalid` is set the moment ten characters fail rather than at submission.",
+  },
+  {
+    criterion: "3.3.3 Error Suggestion",
+    level: "AA",
+    description:
+      "The example format is carried in the placeholder and should be repeated in the hint, so the correction is available to a reader who never sees the placeholder.",
+  },
+  {
+    criterion: "GIGW 3.0 — Forms",
+    level: "GIGW",
+    description:
+      "The reader is not told off for typing their own PAN in lower case; the field normalises rather than rejecting.",
+  },
+];
+
 export default function PanInputPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="PAN Input"
+      status="Stable"
+      summary="A ten-character Permanent Account Number field in the AAAAA9999A shape. It uppercases as you type, so nobody is told off for typing their own PAN in lower case, and it validates the fourth character against the holder-type codes."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<PanInputPlayground />}
+      props={PROPS}
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A service journey requires the applicant's Permanent Account Number — commonly for verification or a direct benefit transfer.",
+          "A malformed PAN should be caught inline rather than by the department's own systems later.",
+        ],
+        avoid: [
+          "The field holds an Aadhaar number — use Aadhaar Input, which carries the checksum and the masking.",
+          "The field holds a one-time password — use OTP Input.",
+          "You were about to write your own regular expression for a PAN. This component already checks the holder-type character, which a shape-only pattern does not.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          PanInput
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          An input tailored for Indian Permanent Account Numbers (PAN). It automatically uppercases input, blocks invalid characters, and verifies the strict <code>AAAAA9999A</code> format.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Aadhaar Input",
+          href: "/design-system/components/forms/aadhaar-input",
+          reason: "the other identity number a service journey asks for",
+        },
+        {
+          label: "Identity Inputs",
+          href: "/design-system/components/forms/identity-inputs",
+          reason: "the three identity controls documented together",
+        },
+        {
+          label: "Form Field",
+          href: "/design-system/components/forms/form-field",
+          reason: "the label, hint and error wiring this control expects",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-shape">
+          <h2 id="cdp-shape" className="cdp__h2">
+            The Fourth Character
+          </h2>
+          <p>
+            A PAN is ten characters in the <code>AAAAA9999A</code> shape, and its fourth character
+            names the holder type. A PAN whose fourth character is not one of{" "}
+            <code>PCHFATBLJGE</code> is malformed however well the rest of it matches, which is why a
+            shape-only pattern is not enough.
+          </p>
+          <p>
+            <code>panHolderType()</code> returns the decoded type. Showing it back — &quot;Individual&quot;,
+            &quot;Company&quot; — is a quiet confirmation to the reader that they typed the card they
+            meant to.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { FormField, PanInput, isValidPan } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Try typing in lowercase or entering special characters. The component automatically cleans the input. Once 10 characters are entered, it validates the structure (e.g. checking the 4th character).
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <PanInputPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          PAN collection is extremely common across MoSJE portals for verification and direct benefit transfers. This component handles all the UX edge cases—like autocorrect fighting the user, or users getting yelled at for typing lowercase letters—so you don&apos;t have to.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Rely on the `onValueChange` callback to provide you with a clean, fully uppercase string that is ready to be stored in your database.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't write your own Regex validations for PAN numbers. This component already checks the holder-type codes (the 4th character).",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`function BeneficiaryForm() {
-  const [pan, setPan] = React.useState("");
+const [pan, setPan] = React.useState("");
 
-  return (
-    <FormField label="Enter your PAN" required>
-      {(props) => (
-        <PanInput 
-          {...props} 
-          value={pan} 
-          onValueChange={setPan} 
-        />
-      )}
-    </FormField>
-  );
-}`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "value", type: "string", required: true, description: "The controlled value. Always rendered uppercase." },
-            { name: "onValueChange", type: "(pan: string) => void", required: true, description: "Called with the normalised, uppercase, stripped value." },
-            { name: "invalid", type: "boolean", default: "false", description: "Render the error state manually (e.g. if the PAN was rejected by an API)." },
-            { name: "...rest", type: "InputHTMLAttributes", description: "All standard input attributes are supported." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Auto-Correction:</strong> Disables <code>spellCheck</code>, <code>autoCorrect</code>, and <code>autoComplete</code> by default. A PAN is not a word, and the browser trying to &apos;fix&apos; it is a major frustration for users on mobile devices.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Internal Validation:</strong> The input sets <code>aria-invalid=&quot;true&quot;</code> automatically if the user types a full 10-character string that fails the PAN structural validation.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+<FormField
+  label="PAN"
+  required
+  hint="10 characters, as printed on your PAN card"
+  error={touched && !isValidPan(pan) ? "Enter a valid PAN, for example ABCPE1234F." : undefined}
+>
+  {(control) => <PanInput {...control} value={pan} onValueChange={setPan} />}
+</FormField>`}</CodeBlock>
+          <p>
+            Rely on <code>onValueChange</code> for the stored value: it is already uppercased and
+            stripped of anything that is not alphanumeric, so no normalisation is needed on the way to
+            the database.
+          </p>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            <code>autoCapitalize=&quot;characters&quot;</code> is set so a mobile keyboard offers
+            capitals from the first keystroke, and <code>autoCorrect</code> and{" "}
+            <code>spellCheck</code> are off so the platform does not try to turn a PAN into a word.
+          </p>
+          <p>
+            The placeholder <code>ABCPE1234F</code> is an example, not a label. Repeat the format in
+            the Form Field hint, which is linked with <code>aria-describedby</code> and survives the
+            reader starting to type.
+          </p>
+        </section>
+      }
+    />
   );
 }

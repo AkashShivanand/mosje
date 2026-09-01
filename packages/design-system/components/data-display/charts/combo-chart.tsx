@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
 import { Gridlines, XAxisLabels } from "./internal/axis";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
@@ -9,10 +9,9 @@ import { bandScale, linearScale, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
-import { CardState } from "../../dashboard/card-state";
 import type { ChartSeries } from "./types";
 
-export interface ComboChartProps {
+export interface ComboChartProps extends ChartStateProps {
   labels: string[];
   /** Bar series on the left axis (grouped). */
   bars: ChartSeries[];
@@ -44,11 +43,31 @@ export function ComboChart({
   width = 540,
   height = 300,
   className,
+  state,
+  onRetry,
+  filterLabel,
 }: ComboChartProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const [active, setActive] = React.useState<number | null>(null);
-  if (labels.length === 0 || (bars.length === 0 && lines.length === 0))
-    return <CardState kind="empty" compact />;
+  // One expression, resolved once. The caller's `state` outranks "the arrays
+  // are empty", which cannot tell an absent feed from a filtered selection.
+  const resolved =
+    state ?? (labels.length === 0 || (bars.length === 0 && lines.length === 0) ? "empty" : undefined);
+  if (resolved)
+    return (
+      <ChartFrame
+        marksAreFocusable
+        title={title}
+        viewBox={`0 0 ${width} ${height}`}
+        className={className}
+        caption={caption}
+        state={resolved}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+      >
+        {null}
+      </ChartFrame>
+    );
 
   const barColors = bars.map((s, i) => seriesColor(s.color, i));
   const lineColors = lines.map((s, i) => seriesColor(s.color, bars.length + i));
@@ -94,6 +113,7 @@ export function ComboChart({
 
   return (
     <ChartFrame
+      marksAreFocusable
       title={title}
       summary={`${bars.length} bar + ${lines.length} line series over ${n} categories`}
       viewBox={`0 0 ${width} ${height}`}

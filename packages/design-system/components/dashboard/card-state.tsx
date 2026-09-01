@@ -136,6 +136,27 @@ export function actionForState(kind: CardStateKind): "retry" | "clear" | null {
   return COPY[kind].action;
 }
 
+/**
+ * The system's own words for a state, for surfaces too small to draw the plate.
+ *
+ * A `MetricCard` is one line of figure: there is no room for an illustration,
+ * a headline and a body, but there IS room for the headline — and it must be
+ * the SAME headline, or the estate ends up with "This could not be loaded" on a
+ * chart and "Error" on the tile beside it, describing one failed request.
+ */
+export function cardStateCopy(kind: CardStateKind): { title: string; body: string; live: boolean } {
+  /*
+   * FALLS BACK RATHER THAN THROWING. TypeScript makes an unknown kind
+   * impossible at the call sites in this repo, but this function exists to be
+   * read at the exact moment something has already gone wrong — and a state
+   * layer that destructures `undefined` and takes the page down with it is a
+   * far worse failure than the one it was rendering. Caught by rendering a
+   * `MetricCard` with a kind that does not exist and watching it throw.
+   */
+  const { title, body, live } = COPY[kind] ?? COPY.empty;
+  return { title, body, live };
+}
+
 export function CardState({
   kind,
   title,

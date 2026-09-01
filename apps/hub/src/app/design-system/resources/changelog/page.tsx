@@ -9,8 +9,18 @@ export const metadata: Metadata = {
 };
 
 interface ChangeEntry {
-  kind: "Added" | "Changed" | "Fixed" | "Removed";
+  /**
+   * `Breaking` was missing until 2026-09-02, so across ninety-four releases
+   * nothing was ever marked as breaking — including the retirement of the
+   * `--ds-*` token contract, which is the most severe change a token system can
+   * make and which a consumer could only discover by their application
+   * silently losing its styles. A changelog that cannot say what broke is a
+   * list of news, not a release note.
+   */
+  kind: "Breaking" | "Added" | "Changed" | "Fixed" | "Removed";
   text: string;
+  /** Required in spirit on `Breaking`: where a consumer goes to migrate. */
+  migration?: string;
 }
 
 interface Release {
@@ -22,9 +32,27 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
+    version: "v0.95.0",
+    date: "2026-09-02",
+    current: true,
+    changes: [
+      { kind: "Added", text: "`ComponentDocPage` — one template carrying the whole documentation shape. Ninety-nine component pages each declared their own heading and prose styles, and with them 161 unbound line heights and 107 width literals across nine different measures. The measure is now one token-bound value in one stylesheet." },
+      { kind: "Added", text: "Props tables are generated from the TypeScript type checker (`npm run build:props`, gated by `npm run check:props`). Of twelve components audited against their implementations, one table matched: `ChartCard` documented a prop named `action` where the prop is `actions`, `AppShell` marked two optional props required, and `BarChart` documented two of eleven, hiding its entire multi-series form. A generated table cannot drift from the interface it describes." },
+      { kind: "Added", text: "An illustration system — a stated drawn language, nine primitives, fourteen scenes and three rendered tiers, every stroke bound to one of four ink layers so a drawing follows the brand it is rendered under. It depicts no people: the Department serves Scheduled Castes, senior citizens, persons with disabilities and transgender persons, and a depicted person tells every citizen who is not that person the page is not for them." },
+      { kind: "Added", text: "Every chart can now report loading, empty, error and filtered-to-nothing, resolved once in `ChartFrame` and forwarded by all fifteen. Six charts previously drew convincing-looking nothing — the three India maps rendered a complete grey map from an empty feed and announced \u201cacross 0 states\u201d." },
+      { kind: "Added", text: "Twenty-one component frames recovered into `FIGMA_NODES` from the Code Connect templates, which already published them. Fifty-three pages carried a link labelled \u201cFigma Component Spec\u201d that landed on the file root." },
+      { kind: "Fixed", text: "The documentation tab strip could not be operated with a keyboard. Roving `tabIndex` was implemented without arrow-key handling, so a reader could reach the selected tab and no key selected another — leaving the Code and Accessibility panels of every component page, including every props table and accessibility checklist, reachable only with a mouse. WCAG 2.1.1, on roughly ninety-five pages." },
+      { kind: "Fixed", text: "The accessibility checklist could not express a failure. Every row rendered a fixed tick against a named success criterion, on seventy-four pages, with no way to say a criterion had not been verified. Rows now carry a status that defaults to unverified, and a field naming the evidence." },
+      { kind: "Fixed", text: "`Lightbox` claimed in its own documentation that focus was trapped while open. It was not, and there was no focus restore either — so `aria-modal` told assistive technology the page behind was inert while Tab walked straight into it. Both are now implemented." },
+      { kind: "Fixed", text: "A checklist row for a GIGW criterion was labelled \u201cWCAG GIGW\u201d, attributing an Indian government standard to the W3C." },
+      { kind: "Fixed", text: "Eight advisories in shipped dependencies, one critical, reduced to one moderate. `npm audit` and `lint:css` now run in continuous integration; neither did before, so the estate-wide colour-token rule executed only when a person typed it." },
+      { kind: "Changed", text: "The categorical chart palette gained three measurements it never had: an OKLCH lightness band, a chroma floor, and separation in ordinary vision. The last is the one that mattered — the ramp was solved so far for colour-vision deficiency that two slots ended up 11.7 apart unsimulated, against a floor of 15. All three are ratcheted at today's figures; the palette itself is unchanged, because a replacement that satisfied the new checks failed three of the existing ones." },
+      { kind: "Changed", text: "The package declares `sideEffects`, and eleven stylesheets that carried no cascade-layer order statement now do — including the one defining `.sa-container`, the estate's content-width contract." },
+    ],
+  },
+  {
     version: "v0.94.0",
     date: "2026-09-01",
-    current: true,
     changes: [
       { kind: "Added", text: "`Breadcrumb` — THE SYSTEM EXPORTED NONE, so every surface that needed a trail drew its own. Two hand-rolled copies were live and they were not the same kind of thing: the website\u2019s is NAVIGATION (real links to ancestor pages) and PM-AJAY\u2019s map rail is DRILL STATE (buttons that pop a view that has no URL). One component now takes both — a crumb with `href` is a link, a crumb with `onSelect` is a button, and the last crumb is where you are and is never interactive" },
       { kind: "Fixed", text: "THE WEBSITE TRAIL CLAIMED TWO CURRENT PAGES ON 64 PAGES. A crumb rendered as plain text for two quite different reasons — it is the page you are on, or it is a mega-menu section with no route behind it (\u201cDepartment\u201d, \u201cDocuments\u201d, \u201cConnect\u201d, \u201cAssociated Organisations\u201d) — and the old markup stamped `aria-current=\u201cpage\u201d` on both. `aria-current` marks exactly one thing, and two is worse than none because the wrong one comes first. A crumb with neither an href nor a handler is now a labelled section: not a link, not current" },
@@ -1688,6 +1716,7 @@ const KIND_COLOR: Record<ChangeEntry["kind"], string> = {
   // Taking something away is worth its own badge: a reader scanning for "why did that control
   // disappear" should not have to read a paragraph filed under "Changed" to find out.
   Removed: "var(--sa-color-status-danger)",
+  Breaking: "var(--sa-color-status-danger)",
 };
 
 export default function ChangelogPage(): React.JSX.Element {

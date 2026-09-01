@@ -40,7 +40,22 @@ jobs:
       - run: npm run build -w @mosje/tokens
 
       - run: npm run lint
+
+      # `lint:css` is the estate-wide token rule — no raw hex, no raw px where a
+      # token exists. It lived only inside `npm run verify`, which CI never ran,
+      # so `design-system-architecture.md` §2 was factually wrong when it said
+      # "stylelint actively enforces this and will block commits". It blocked
+      # nothing, because it never executed.
+      - run: npm run lint:css
+
       - run: npm run check
+
+      # Twenty-two gates enforce radius tokens and icon pixel sizes; until this
+      # step none enforced that the software is not exploitable. Eight runtime
+      # advisories accumulated silently, one of them critical. High and above
+      # fails; moderate is reported and does not block.
+      - name: Audit production dependencies
+        run: npm audit --omit=dev --audit-level=high
 
       # The build is the gate that lint and typecheck cannot be: it is the only
       # step that proves every dependency actually resolves. The consolidation

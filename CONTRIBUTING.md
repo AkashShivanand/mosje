@@ -40,7 +40,7 @@ npm run build -w @mosje/tokens   # generate the token artifacts
    ```bash
    npm run typecheck -w @mosje/design-system
    npx stylelint --config .stylelintrc.tokens.json packages/design-system/components/<file>.css
-   npm --prefix apps/dosje run build   # estate still builds
+   npm run verify                      # exactly what Apps CI runs
    ```
 5. Update `CHANGELOG.md`. New components land as **Alpha** (see lifecycle).
 
