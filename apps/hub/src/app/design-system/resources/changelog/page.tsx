@@ -22,9 +22,16 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.91.0",
+    version: "v0.92.0",
     date: "2026-09-01",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "`Chip`'s NEUTRAL SELECTED STATE MEASURED 1.66:1 AND READ AS DISABLED. It filled with `bg/neutral/bold` and white ink — white on a light grey — so the selected pills looked quieter than the unselected ones beside them and the state hierarchy was inverted. A WCAG 1.4.3 failure, and the design failure is the one a reader hits first. Solid ink at 18.94:1 now: a selected state has to be the loudest thing in its own group, and being NEUTRAL rather than brand is what keeps it from competing with the chart keys. Quiet is a matter of hue, not of contrast" },
+    ],
+  },
+  {
+    version: "v0.91.0",
+    date: "2026-09-01",
     changes: [
       { kind: "Fixed", text: "THE INDIA MAPS FRAMED 39% OCEAN. `INDIA_STATES_VIEWBOX` was `0 0 800 560`, but every path in the file lives between x=161 and x=647 — India measures 486x550 and is very nearly square. Framed at 1.43:1 the map was width-bound in every consumer: a 646px column drew it 435px tall and left a 221px band of white inside PM-AJAY's panel. The window is the land plus a margin now, `153 -17 502 567`, and the same map draws about 1.6x larger in the same box. Nothing else moved — the projection, the paths and `INDIA_STATE_BOXES` share one coordinate space and a viewBox only chooses which part of it is shown. `IndiaMap` and `IndiaBubbleMap` follow automatically" },
       { kind: "Fixed", text: "`IndiaPointMap` HARDCODED 800 AND 560 IN TWO PLACES — the aspect it holds a zoomed state to, and the divisor that keeps marks optically constant. Both now read the national viewBox, so the unzoomed map is exactly 1 and a future reframing cannot leave a stale constant behind making every mark 1.6x too large" },

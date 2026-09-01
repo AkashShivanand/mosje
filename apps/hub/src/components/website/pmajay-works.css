@@ -265,6 +265,61 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+  /*
+    ── THE TYPE FILTERS FLOAT ON THE MAP ────────────────────────────────────
+
+    Only these three. The two LAYER keys stay in the bar above the panel: they
+    switch whole layers and carry the scheme's totals, which is heading
+    material. These act on individual pins, so they sit with the pins.
+
+    WHERE IS MEASURED, NOT CHOSEN. The drawn land was sampled on an 8-unit grid
+    across the viewBox and the largest empty rectangle at each corner compared:
+
+        top-left      80 x 168      bottom-left    88 x 248
+        bottom-right  64 x 312      TOP-RIGHT     288 x 160
+
+    Only one corner has room, and it has room because it is the Tibetan
+    plateau — no Indian land is drawn there at all. That is also the Kashmir
+    answer without carving a safe area out of the map: the band begins at
+    x=367 and Kashmir ends at x=330, so the strip never approaches it.
+
+    THE INSET FROM THE RIGHT IS NOT DECORATION. Flush at 16px, an earlier and
+    much taller version of this panel put its bottom-right corner on the tip of
+    Arunachal Pradesh — 22 of 2,451 sampled points on drawn land. Under one per
+    cent, and not something to shrug at: this is a Government of India map and
+    the north-east is the part that must never be obscured. Stepping left keeps
+    the strip over Nepal and the plateau whatever it grows to hold.
+
+    DESKTOP ONLY. Below 1025px the map and rail stack, the map column goes wide
+    and short, and that plateau is no longer 160 units tall — so the filters
+    return to the bar, which is what a short map has room for.
+  */
+  @media (min-width: 1025px) {
+    .pmw__map {
+      position: relative;
+    }
+
+    .pmw__filters.pmw__key {
+      position: absolute;
+      top: var(--sa-padding-16);
+      right: var(--sa-padding-56);
+      z-index: 1;
+      max-width: 15rem;
+      padding: var(--sa-padding-8);
+      border: 1px solid var(--sa-border-neutral-subtle);
+      border-radius: var(--sa-shape-12);
+      background-color: var(--sa-bg-neutral-base);
+      box-shadow: var(--sa-elevation-raised);
+    }
+
+    /* Stacked, so three long labels do not need 400px of plateau. */
+    .pmw__key .pmw__chips {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--sa-stack-6);
+    }
+  }
+
   /* ── Search scope: places or villages ─────────────────────────────────── */
 
   .pmw__scope {
@@ -473,10 +528,17 @@
     Two grids that must line up have to be told the same thing, not similar
     things — so the numeric tracks are a stated width in both, and the name
     takes what is left.
+
+    5rem, AND THAT NUMBER IS MEASURED. The first attempt stated 3.5rem, which
+    is 56px against a heading that needs 78 — 52px of label, a 2px gap, a 16px
+    sort glyph and 8px of padding. The buttons overflowed their own tracks and
+    ran into each other: "By state" ended 15px inside "Villages", which ended
+    12px inside "Hostels", and all three hover grounds overlapped. A stated
+    track has to be stated large enough for what stands in it.
   */
   .pmw__railcols {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem;
+    grid-template-columns: minmax(0, 1fr) 5rem 5rem;
     gap: var(--sa-inline-8);
     padding: var(--sa-padding-6) var(--sa-padding-16) var(--sa-padding-4)
       var(--sa-padding-4);
@@ -537,20 +599,21 @@
     heads.
   */
   /*
-    ── ON A RIGHT-ALIGNED COLUMN THE ARROW LEADS ────────────────────────────
+    ── THE GLYPH SITS AFTER THE LABEL. ON ALL THREE. ────────────────────────
 
-    The tracks lined up and the columns still read as misaligned, because the
-    heading ends with its sort glyph: the arrow was flush with the figures and
-    the WORD "VILLAGES" sat 18px inside them. The eye aligns the word, not the
-    icon, so a correctly-tracked column looked wrong.
+    It briefly did not: the numeric headings were reversed so their label's
+    right edge would meet the figures below, which aligned the columns and
+    left "BY STATE ⌄" reading one way and "⌄ VILLAGES" the other. Two positions
+    for one control in one row is worse than a column that is 18px out — the
+    reader learns where the sort handle is once, not per column.
 
-    Reversed, so the label's right edge is the column's right edge and the
-    arrow hangs to its left, where it reads as an adornment on the heading
-    rather than as the last item in the column.
+    So the glyph follows the label everywhere, and the FIGURES take the offset
+    instead: `.pmw__value` carries the glyph's width as right padding, so the
+    digits sit under the words rather than under the arrows. The thing that
+    moves is the one with no fixed position of its own.
   */
   .pmw__colbtn--num {
-    flex-direction: row-reverse;
-    justify-content: flex-start;
+    justify-content: flex-end;
   }
 
   .pmw__railcols > * + * {
@@ -670,7 +733,7 @@
     position: relative;
     display: grid;
     /* Must match `.pmw__railcols` exactly — see the note there. */
-    grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem;
+    grid-template-columns: minmax(0, 1fr) 5rem 5rem;
     align-items: center;
     gap: var(--sa-inline-8);
     width: 100%;
@@ -758,6 +821,12 @@
 
   .pmw__value {
     text-align: right;
+    /*
+      The heading above ends with its sort glyph, so the digits step back by
+      exactly that glyph plus its gap and land under the WORD. Stated as the
+      same two tokens the button spends, so the two cannot drift.
+    */
+    padding-right: calc(var(--sa-padding-16) + var(--sa-inline-2));
     font-size: var(--sa-type-body-3-size);
     font-variant-numeric: tabular-nums;
     color: var(--sa-text-neutral-base);

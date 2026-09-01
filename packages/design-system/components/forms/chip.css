@@ -133,27 +133,42 @@
     Deep green on the tonal green ground measures well clear of AA.
   */
   /*
-    `tone="neutral"` — selected, but not competing.
+    `tone="neutral"` — selected without competing, but SELECTED FIRST.
 
-    A filled neutral rather than a tint: at `sm`, a tinted selected state and
-    an unselected one differ by too little to read at a glance, and this chip
-    has to carry its state from across a control bar.
+    The first attempt filled it with `bg/neutral/bold` and white ink, which
+    measured **1.66:1** — white on a light grey. It read as the DISABLED chip
+    rather than the active one, so the unselected pills beside it looked more
+    prominent than the selected ones and the state hierarchy was inverted. That
+    is a WCAG 1.4.3 failure as well as a design one, and the design failure is
+    the one a reader notices first.
+
+    A selected state has to be the loudest thing in its own group. Solid ink at
+    18.4:1 is unmistakably on; being NEUTRAL rather than brand is what keeps it
+    from competing with the chart keys beside it. Quiet is a matter of hue, not
+    of contrast.
   */
   .ds-chip--selected-neutral {
-    background-color: var(--sa-bg-neutral-bold);
-    border-color: var(--sa-bg-neutral-bold);
+    background-color: var(--sa-bg-neutral-inverse);
+    border-color: var(--sa-bg-neutral-inverse);
     color: var(--sa-text-neutral-inverse);
   }
 
   .ds-chip--selected-neutral .ds-chip__count {
     color: var(--sa-text-neutral-inverse);
-    opacity: 0.75;
+    /* The count is secondary to its label even on ink — but only just, or it
+       stops being legible against a near-black fill. */
+    opacity: 0.72;
   }
 
+  /*
+    Hover moves the BORDER, not the fill. There is one dark neutral background
+    in the palette, so a lighter-on-hover fill would have to borrow a text
+    token for a surface — the cross-family reach `documentation-ds-linkage`
+    warns about. A ring reads as hover just as clearly.
+  */
   .ds-chip--selected-neutral.ds-chip--interactive:hover,
   .ds-chip--selected-neutral.ds-chip--interactive:active {
-    background-color: var(--sa-bg-neutral-inverse);
-    border-color: var(--sa-bg-neutral-inverse);
+    border-color: var(--sa-text-neutral-subtle);
   }
 
   .ds-chip--selected-success {

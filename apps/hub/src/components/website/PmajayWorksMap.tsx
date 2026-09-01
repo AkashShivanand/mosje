@@ -812,6 +812,31 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               }}
             />
 
+          </div>
+        </div>
+
+        <div className="pmw__panel">
+          <div className="pmw__map">
+            {/*
+              ── THE TYPE FILTERS SIT ON THE MARKS THEY FILTER ──────────────
+
+              They are the only control here that acts on individual pins, so
+              they belong beside the pins rather than in a bar above a panel
+              that is half list. The two LAYER keys stay in that bar: they
+              switch whole layers and carry the scheme's totals, which is
+              heading material, not map furniture.
+
+              WHERE, MEASURED RATHER THAN CHOSEN. The drawn land was sampled on
+              an 8-unit grid across the viewBox and the largest empty rectangle
+              at each corner compared: top-left 80x168, bottom-left 88x248,
+              bottom-right 64x312, and TOP-RIGHT 288x160. Only the top-right has
+              room, because it is the Tibetan plateau — no Indian land is drawn
+              there at all.
+
+              That is also the Kashmir answer, without carving a safe area out
+              of the map: the free band begins at x=367 and Kashmir ends at
+              x=330, so the strip never approaches it.
+            */}
           {/*
             A BADGE THAT CAN ONLY EVER SAY 0 IS NOT A FILTER, IT IS FURNITURE.
 
@@ -825,7 +850,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
             The Hostels KEY still says 0, which is the fact; three dead
             controls beneath it were the noise.
           */}
-          <div className="pmw__filters">
+          <div className="pmw__filters pmw__key">
             {showHostels && hostelKindCounts.some(({ n }) => n > 0) && (
               <fieldset className="pmw__chips">
                 <legend className="ds-sr-only">Hostel type</legend>
@@ -866,12 +891,8 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                 })}
               </fieldset>
             )}
-          </div>
-          </div>
-        </div>
+            </div>
 
-        <div className="pmw__panel">
-          <div className="pmw__map">
             <IndiaPointMap
               title={focus == null ? "PM-AJAY across India" : `PM-AJAY in ${focus}`}
               summary={`${formatIndian(shownVillages)} Adarsh Gram villages and ${formatIndian(
