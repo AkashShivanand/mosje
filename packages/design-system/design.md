@@ -12,6 +12,19 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-01 · System version: v0.41.0 (THE SYSTEM EXPORTED NO
+  BREADCRUMB, SO EVERY SURFACE THAT NEEDED ONE DREW ITS OWN. `Breadcrumb` is now the
+  one trail, and it takes the two jobs that kept being conflated: a PAGE trail whose
+  crumbs are links, and a DRILL trail whose crumbs are buttons popping client state
+  that has no URL. The website's hand-rolled version stamped `aria-current="page"` on
+  every non-linked crumb — on 64 pages a screen-reader user was told twice they were
+  on the current page, once about a mega-menu section they were not on — so a crumb
+  with neither `href` nor `onSelect` is now a labelled SECTION, and only the last
+  crumb is current. The current crumb ellipsises rather than overflowing, because
+  PM-AJAY's rail is 304px and "India › Andaman and Nicobar Islands" does not fit it,
+  and `wrap={false}` keeps a fixed-width rail on one line so its height does not
+  change as the reader drills.)
+
   Last reviewed: 2026-08-31 · System version: v0.40.0 (A BRUTAL AUDIT OF THE SAMAVESH
   PATTERN FOUND TWO LIVE ACCESSIBILITY FAILURES, ONE OF THEM SELF-INFLICTED. Escape
   left keyboard focus 1,380px off the top of the screen, because the exit animation
@@ -2443,6 +2456,18 @@ matching the Figma "Navbar Portal" account.
 **Rules**:
 - Groups are collapsible. Active item must be indicated with `active: true`. Never hardcode colours in sidebar item overrides.
 - `SidebarNavItem.icon` is a **Material Symbols name string** (`"dashboard"`, `"group"`), not a component. Nav configs therefore stay plain serialisable data and cross the RSC boundary without ceremony.
+
+#### Breadcrumb
+**Purpose**: Where this page, or this drilled-in view, sits in the hierarchy.  
+**Props**: `items`, `label`, `wrap`, `linkAs`, `className`  
+**Rules**:
+- **A crumb is one of four things**, and the component picks by what the item carries: `href` → a link to an ancestor page (the preferred shape); `onSelect` → a button that pops CLIENT STATE back to that level; **neither** → a section with no landing page of its own; and **the last item** → the page you are on, never interactive whatever it carries.
+- The third case is this estate's convention, not an oversight. "Department", "Documents", "Connect" and "Associated Organisations" are mega-menu categories with no route behind them and 64 website pages pass one as a middle crumb. **Label it, do not link it, and do not claim it is the current page** — the markup this replaced stamped `aria-current="page"` on every non-linked crumb, so those 64 pages announced two current pages and the wrong one came first.
+- **`aria-current="page"` goes on exactly ONE crumb: the last.** Separators are `chevron_right` glyphs and are `aria-hidden`, so the trail is read as a list of names, never punctuated with "chevron right".
+- **The current crumb ellipsises; it never overflows.** `wrap` (default `true`) decides only whether the crumbs BEFORE it may take a second line — pass `false` in a fixed-width rail, where a second line would change the panel's height each time the reader drills.
+- **`linkAs` takes `next/link`** so a site trail keeps soft navigation. It is safe from a server component because this file does not claim `"use client"` — the same reason `Pagination` does not, and for the same failure it would otherwise cause.
+- Crumbs clear 24px vertically (WCAG 2.2 AA §2.5.8). Link ink is 4.6:1 at rest and deepens to the `bolder` rung on hover, because the base rung over the hover wash measures 4.07:1 — under the floor.
+- An empty `items` renders `null`, so a page with no trail needs no guard at the call site.
 
 #### Pagination
 **Purpose**: Page navigation for a result set.  

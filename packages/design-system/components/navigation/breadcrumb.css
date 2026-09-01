@@ -1,0 +1,125 @@
+/* Declare the order before using it — see search.css for the full reasoning. A
+   cascade layer's position is fixed by where its NAME first appears, and each of
+   these stylesheets is a separate CSS root the bundler may inject before the
+   app's globals.css. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     Breadcrumb
+     One trail for two jobs: a page's place in the site (links) and a drill
+     view's place in its own state (buttons). They look alike because they mean
+     alike — only the last crumb is ever styled as "you are here".
+     ============================================================================ */
+
+  .ds-breadcrumb {
+    font-family: var(--sa-font-latin);
+    /* body-2 (14/20), not body-3. A trail is chrome, but it is also the only
+       thing on the page that says where you are — and the markup this replaced
+       set 13px by hand, so dropping to 12 would have been a regression dressed
+       as tokenisation. */
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    /* Load-bearing for the ellipsis: a flex item will not shrink below its
+       content unless every ancestor down to the truncating box allows it. */
+    min-width: 0;
+  }
+
+  .ds-breadcrumb__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  /* A fixed-width rail. A second line there would change the panel's height
+     every time the reader drills, so the current crumb ellipsises instead. */
+  .ds-breadcrumb--nowrap .ds-breadcrumb__list {
+    flex-wrap: nowrap;
+  }
+
+  .ds-breadcrumb__item {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    min-width: 0;
+  }
+
+  /* The ICON role, one rung lighter than any label here: a separator that
+     matches the words it separates competes with them. */
+  .ds-breadcrumb__sep {
+    flex: none;
+    color: var(--sa-icon-neutral-subtler);
+  }
+
+  .ds-breadcrumb__crumb {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    /* 24px is the WCAG 2.2 AA §2.5.8 floor. The padding sits inside it, so a
+       crumb is never a 16px-tall strip of text. */
+    min-height: var(--sa-target-min);
+    min-width: 0;
+    padding: var(--sa-padding-2) var(--sa-padding-6);
+    border-radius: var(--sa-shape-6);
+  }
+
+  .ds-breadcrumb__icon {
+    flex: none;
+  }
+
+  .ds-breadcrumb__text {
+    min-width: 0;
+  }
+
+  /* An ancestor you can go to. Brand ink, because a trail whose links look
+     exactly like its non-linked sections tells the reader nothing about which
+     of them is clickable. */
+  .ds-breadcrumb__link {
+    border: none;
+    background: transparent;
+    color: var(--sa-text-brand-primary-base);
+    font: inherit;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  /* Deeper on hover, not lighter: #0373df over the grey wash measures 4.07:1,
+     under the 4.5:1 floor. The `bolder` rung on the same wash is 5.58:1. */
+  .ds-breadcrumb__link:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-brand-primary-bolder);
+    text-decoration: underline;
+  }
+
+  .ds-breadcrumb__link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* A section with no landing page of its own. */
+  .ds-breadcrumb__label {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Where you are. Never a link, and the one crumb allowed to shrink — the
+     rail is 304px and "India › Andaman and Nicobar Islands" does not fit it. */
+  .ds-breadcrumb__current {
+    color: var(--sa-text-neutral-base);
+    font-weight: 600;
+  }
+
+  .ds-breadcrumb__current .ds-breadcrumb__text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

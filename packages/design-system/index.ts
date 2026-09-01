@@ -346,6 +346,9 @@ export type {
 } from "./components/navigation/content-nav";
 
 export { SidebarNav } from "./components/navigation/sidebar";
+// Breadcrumb — where a page, or a drilled-in view, sits in the hierarchy.
+export { Breadcrumb } from "./components/navigation/breadcrumb";
+export type { BreadcrumbProps, BreadcrumbItem } from "./components/navigation/breadcrumb";
 export { Pagination } from "./components/navigation/pagination";
 export type { PaginationProps } from "./components/navigation/pagination";
 export type {
