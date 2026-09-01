@@ -10,9 +10,6 @@ import { mergeData, provenanceOf } from "@/lib/data-mode/merge";
 import { ProvenanceChip } from "./ProvenanceChip";
 import "./pmajay-works.css";
 
-/** How many rail rows show before "Show all". */
-const RAIL_LIMIT = 8;
-
 /**
  * Hostel marks: teal, amber and grey.
  *
@@ -111,9 +108,22 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
   );
   const [focus, setFocus] = React.useState<string | null>(null);
   const [query, setQuery] = React.useState("");
-  const [expanded, setExpanded] = React.useState(false);
   const [hoverRow, setHoverRow] = React.useState<string | null>(null);
+  const listRef = React.useRef<HTMLOListElement | null>(null);
   const { mode, marks } = useDataMode();
+
+  /*
+   * A SCROLLED LIST MUST NOT HAND ITS POSITION TO THE NEXT ONE.
+   *
+   * The list scrolls in place, and React keeps the same node across a change of
+   * grain — so scrolling down to find Karnataka and clicking it opened
+   * Karnataka's districts already 400px down, with the largest ones cut off
+   * above the fold. Same for typing into the search: the matches would land
+   * below the visible window.
+   */
+  React.useEffect(() => {
+    if (listRef.current) listRef.current.scrollTop = 0;
+  }, [focus, query, showVillages, showHostels]);
 
   const mockScalars = React.useMemo(() => scalarsOf(data.mock), [data.mock]);
   const merged = React.useMemo(
@@ -220,21 +230,41 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
       }));
   }, [snapshot, focus, types]);
 
-  /** Sort and filter by whichever component the reader has left switched on. */
-  const primary = (r: RailRow) => (showVillages ? r.villages : 0) + (showHostels ? r.hostels : 0);
+  /**
+   * What the list is ordered by, and what its bar draws.
+   *
+   * ── THE BAR USED TO ADD VILLAGES TO HOSTELS ─────────────────────────────
+   *
+   * `villages + hostels` is a sum of two different units, and it showed:
+   * Sikkim (0 villages, 5 hostels), Mizoram (0, 3), Kerala (0, 2) and Delhi
+   * (1 village, 0 hostels) all drew the SAME bar, under a column headed
+   * "Villages". Four rows with nothing in common, drawn identically.
+   *
+   * The bar now draws exactly one measure — villages while that layer is on,
+   * hostels otherwise — and `barOf` is what it reads. `rankOf` may still
+   * combine the two, because ORDERING by "how much of this scheme is here"
+   * is a legitimate question where DRAWING one bar for it is not.
+   */
+  const barOf = (r: RailRow) => (showVillages ? r.villages : r.hostels);
+  const rankOf = (r: RailRow) => (showVillages ? r.villages : 0) + (showHostels ? r.hostels : 0);
 
   const visibleRows = React.useMemo(() => {
     const q = query.trim().toLowerCase();
     return railRows
-      .filter((r) => primary(r) > 0)
+      .filter((r) => rankOf(r) > 0)
       .filter((r) => !q || r.name.toLowerCase().includes(q) || r.sub.toLowerCase().includes(q))
-      .sort((a, b) => primary(b) - primary(a) || a.name.localeCompare(b.name));
-    // `primary` closes over the two toggles, which are in the dep list.
+      .sort((a, b) => rankOf(b) - rankOf(a) || a.name.localeCompare(b.name));
+    // `rankOf` closes over the two toggles, which are in the dep list.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [railRows, query, showVillages, showHostels]);
 
-  const shown = expanded ? visibleRows : visibleRows.slice(0, RAIL_LIMIT);
-  const top = visibleRows[0] ? primary(visibleRows[0]) : 1;
+  /*
+   * The bar's 100% is the largest value of THE MEASURE BEING DRAWN, not of the
+   * ranking. With villages on that is West Bengal's 5,792; with only hostels on
+   * it is Assam's 33. A bar scaled to a maximum it is not drawing is a bar that
+   * cannot be read.
+   */
+  const barMax = Math.max(1, ...visibleRows.map(barOf));
 
   /* ── Totals ────────────────────────────────────────────────────────────── */
 
@@ -279,12 +309,29 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
     <>
       <div className="pmw__head">
         <div className="pmw__headline">
+          {/*
+            THE REGISTER OF THIS PAGE, NOT OF A PRODUCT LAUNCH.
+
+            "Where PM-AJAY works" was a claim; every other band on this page is
+            a plain label — About the Scheme, Components, Documents & downloads,
+            Reports, Gallery, Contact — and a headline among labels reads as
+            marketing that wandered onto a departmental page. The lead was worse:
+            "drawn where the department records it standing" is a writer's
+            sentence, not a department's.
+
+            What replaces them names the thing and cites the source, which is
+            what a government section heading does. It is also SHORT: the first
+            attempt, "Coverage across States and Districts", was accurate and
+            wrapped to two lines beside one-word siblings, which made it the odd
+            heading out again in a different register. The lead does the
+            explaining; the heading is a label.
+          */}
           <h2 id="reach-heading" className="pmw__title">
-            Where PM-AJAY works
+            Scheme coverage
           </h2>
           <p className="pmw__lead">
-            Every village declared an Adarsh Gram and every hostel sanctioned under the
-            scheme, drawn where the department records it standing.
+            Villages declared as Adarsh Gram and hostels sanctioned under the scheme,
+            shown at the locations recorded in the PM-AJAY Management Information System.
           </p>
         </div>
         <ProvenanceChip kind={prov} />
@@ -440,7 +487,18 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
               */
               interactivePins={focus != null}
               focusRegion={focus}
-              highlightRegion={focus == null ? hoverRow : null}
+              /*
+                Searching filtered the list and left the map showing everything,
+                so a reader who typed "Bihar" saw one row and twenty-eight
+                states. When the query narrows to a single state the map now
+                outlines it — the smallest honest thing the map can do about a
+                filter that is not its own.
+              */
+              highlightRegion={
+                focus == null
+                  ? (query.trim() && visibleRows.length === 1 ? visibleRows[0]!.name : hoverRow)
+                  : null
+              }
               onSelectRegion={(region) => {
                 // Only states the scheme has actually reached are worth opening;
                 // zooming to an empty state is a dead end the reader has to undo.
@@ -448,7 +506,6 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                 if (!hit) return;
                 setFocus(region);
                 setQuery("");
-                setExpanded(false);
               }}
               /*
                 NO LEGEND PROP, AND NO CAPTION UNDER THE MAP. Both moved into the
@@ -486,7 +543,6 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                     className="pmw__crumb"
                     onClick={() => {
                       setFocus(null);
-                      setExpanded(false);
                     }}
                     aria-current={focus == null ? "true" : undefined}
                     disabled={focus == null}
@@ -514,16 +570,22 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                     className="pmw__searchinput"
                     placeholder={focus == null ? "Find a state…" : `Find a district in ${focus}…`}
                     value={query}
-                    onChange={(e) => {
-                      setQuery(e.target.value);
-                      setExpanded(true);
-                    }}
+                    onChange={(e) => setQuery(e.target.value)}
                   />
                 </label>
               </div>
+              {/*
+                "28 of 36" means 28 of the country's 36 States and UTs have
+                been reached. While a search is narrowing the list that reading
+                is false — three matching rows are not "3 of 36 reached" — so
+                the phrasing changes with the state it describes.
+              */}
               <span className="pmw__railcount">
-                {formatIndian(visibleRows.length)}
-                {focus == null ? " of 36" : ""}
+                {query.trim()
+                  ? `${formatIndian(visibleRows.length)} matching`
+                  : focus == null
+                    ? `${formatIndian(visibleRows.length)} of 36`
+                    : `${formatIndian(visibleRows.length)} districts`}
               </span>
             </div>
 
@@ -550,8 +612,8 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                   : "Both components are switched off, so there is nothing to list."}
               </p>
             ) : (
-              <ol className="pmw__list">
-                {shown.map((r) => {
+              <ol className="pmw__list" ref={listRef}>
+                {visibleRows.map((r) => {
                   const clickable = focus == null;
                   const Row = clickable ? "button" : "div";
                   return (
@@ -563,7 +625,6 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                               onClick: () => {
                                 setFocus(r.name);
                                 setQuery("");
-                                setExpanded(false);
                               },
                             }
                           : {})}
@@ -580,7 +641,20 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                           <span className="pmw__track" aria-hidden>
                             <span
                               className="pmw__fill"
-                              style={{ width: `${Math.max(2, (primary(r) / top) * 100)}%` }}
+                              style={{
+                                /*
+                                  A ZERO DRAWS NOTHING. The 2% floor exists so
+                                  Delhi's single village is still a visible
+                                  mark, but applied to zero it drew Sikkim a
+                                  bar for the 0 villages it has — the floor
+                                  inventing a quantity, in the row of a state
+                                  the scheme has reached only with hostels.
+                                */
+                                width:
+                                  barOf(r) === 0
+                                    ? 0
+                                    : `${Math.max(2, (barOf(r) / barMax) * 100)}%`,
+                              }}
                             />
                           </span>
                         </span>
@@ -596,6 +670,18 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
                             <span className="ds-sr-only"> hostels</span>
                           </span>
                         )}
+                        {/*
+                          A row that opens a state has to LOOK like one. These
+                          were buttons that rendered as list items, so the only
+                          hint was the cursor — which touch users never see.
+                          Absolutely positioned in the row's own right padding,
+                          so it costs the state name no width.
+                        */}
+                        {clickable && (
+                          <span className="pmw__go" aria-hidden>
+                            ›
+                          </span>
+                        )}
                       </Row>
                     </li>
                   );
@@ -603,13 +689,6 @@ export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
               </ol>
             )}
 
-            {visibleRows.length > RAIL_LIMIT && (
-              <button type="button" className="pmw__more" onClick={() => setExpanded((v) => !v)}>
-                {expanded
-                  ? "Show fewer"
-                  : `Show all ${formatIndian(visibleRows.length)} ${focus == null ? "states" : "districts"}`}
-              </button>
-            )}
           </div>
         </div>
       </div>

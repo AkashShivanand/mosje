@@ -1440,3 +1440,77 @@ it there would break a component used on 23 pages to improve one.
 
 The observation stands and is recorded here for whoever revisits the hero: the
 page's two most arresting figures are the ones a reader reaches last.
+
+---
+
+## §33 · Second design pass — copy register, and the list that doubled the page
+
+**2026-09-01.**
+
+### The copy was written for a product, not a department
+
+| | before | after |
+| --- | --- | --- |
+| heading | "Where PM-AJAY works" | **"Scheme coverage"** |
+| lead | "Every village declared an Adarsh Gram and every hostel sanctioned under the scheme, drawn where the department records it standing." | **"Villages declared as Adarsh Gram and hostels sanctioned under the scheme, shown at the locations recorded in the PM-AJAY Management Information System."** |
+
+Every other band on this page is a plain label — About the Scheme, Components,
+Documents & downloads, Reports, Gallery, Contact. A headline among labels reads
+as marketing that wandered onto a departmental page. The lead was worse: *"drawn
+where the department records it standing"* is a writer's cadence, not a
+department's.
+
+The replacement names the thing and cites the source system, which is what a
+government section heading does. It is also **short**: the first attempt,
+"Coverage across States and Districts", was accurate and wrapped to two lines
+beside one-word siblings — the odd heading out again, in a different register.
+The sidebar entry was changed with it.
+
+### "Show all 28 states" doubled the page
+
+Measured at 1280px:
+
+| | collapsed | expanded |
+| --- | --- | --- |
+| section height | 839px | **1659px** |
+| document height | 7,582px | 8,402px |
+| map region height | 492px | **1312px**, holding a 563px map |
+
+The two regions stretch together, so expanding the list did not just lengthen
+the page — it left **741px of empty white** where the map had been, all of it
+below the map, because the map was pinned to the top of its region.
+
+**The list scrolls now and the button is gone.** Every row is rendered, the
+overflow is the list's own, and the list *fills* the rail rather than taking a
+height in rem — so the last visible row is always a partial row, which is the
+oldest and clearest "there is more below" signal there is. The panel carries a
+`min-height` floor so neither region is starved by the other's natural size, and
+the map is centred, so what slack remains is a symmetric band above and below.
+
+**Section height is now 804px and does not change** — verified across search,
+drill-down into a State, returning to India, and toggling either layer.
+
+### Five defects the audit found on the way
+
+1. **The bar added villages to hostels.** `villages + hostels` is a sum of two
+   different units, and it drew Sikkim (0 villages, 5 hostels), Mizoram (0, 3),
+   Kerala (0, 2) and Delhi (1, 0) **identically**, under a column headed
+   "Villages". The bar now draws exactly one measure, scaled to that measure's
+   own maximum. Ordering may still combine the two — asking "how much of this
+   scheme is here" is legitimate where drawing one bar for it is not.
+2. **A zero drew a bar.** The 2% floor exists so Delhi's single village is a
+   visible mark; applied to zero it invented a quantity for states the scheme
+   has reached only with hostels.
+3. **"28 of 36" stayed on screen while a search narrowed the list**, so three
+   matching rows read as "3 of 36 reached". The phrasing now changes with the
+   state it describes.
+4. **Rows were buttons that rendered as list items** — the only affordance was
+   the cursor, which touch users never see. They carry a chevron, positioned in
+   the row's own padding so it costs the state names no width.
+5. **Searching filtered the list and left the map showing everything.** When the
+   query narrows to a single State the map now outlines it.
+
+And one that only appeared after the fixes: **the list keeps its scroll position
+across a change of grain**, so scrolling down to Karnataka and clicking it opened
+Karnataka's districts already 400px down. Reset on every change of focus, query
+or layer.
