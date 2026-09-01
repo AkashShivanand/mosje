@@ -36,6 +36,34 @@ export type { ComboChartProps } from "./combo-chart";
 // Geographic
 export { IndiaMap } from "./india-map";
 export type { IndiaMapProps, IndiaMapDatum } from "./india-map";
+export { IndiaBubbleMap } from "./india-bubble-map";
+export type { IndiaBubbleMapProps, IndiaBubbleDatum } from "./india-bubble-map";
+export { IndiaPointMap, INDIA_STATE_BOXES } from "./india-point-map";
+export type {
+  IndiaPointMapProps,
+  MapPin,
+  MapBubble,
+  PinKindStyle,
+  RegionBox,
+} from "./india-point-map";
+export {
+  projectIndia,
+  repairIndiaCoordinate,
+  binIndiaPoints,
+  normalizeRegionName,
+  hexCenter,
+  hexPath,
+  hexAt,
+  median,
+  INDIA_HEX_RADIUS,
+  INDIA_LAT_RANGE,
+  INDIA_LON_RANGE,
+} from "./geo/india-projection";
+export type {
+  HexBin,
+  RepairedCoordinate,
+  CoordinateVerdict,
+} from "./geo/india-projection";
 
 // Toolkit (for advanced/custom composition)
 export { Legend, useChartTooltip, ChartTooltip, formatIndian, formatCompact, formatPercent, categoricalColor, sequentialColor, divergingColor } from "./internal";

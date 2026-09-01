@@ -1,4 +1,10 @@
 import type { Descriptor, Reading } from "@/lib/data-mode/types";
+import { PMAJAY_REACH_SNAPSHOT } from "./pmajay-map-snapshot";
+import {
+  reducePmajayMapPoints,
+  type ReachSnapshot,
+  type RawMapPoints,
+} from "./pmajay-map-reduce";
 import {
   GIA_ALL_PHYSICAL_FALLBACK,
   GIA_YEARS_FALLBACK,
@@ -13,11 +19,14 @@ import {
  * is that a figure the department publishes is never replaced on this estate by
  * a dash, a zero or "not yet reported".
  *
- * Two feeds, four endpoints, one deliberate omission:
+ * Three feeds, five endpoints, one deliberate omission:
  *
  *   · Grants-in-Aid, approved projects by domain — per financial year
  *   · Grants-in-Aid, physical progress — per financial year, plus `all`
  *   · Hostels, summary — no parameters; it ignores `fin_year`
+ *   · Map points — every Adarsh Gram village and every hostel, with coordinates.
+ *     ~3.5 MB, so it is aggregated to state level here and the coordinates are
+ *     discarded; see `getPmajayReach` for why the page never sees them.
  *   · Gender distribution — NOT CONSUMED. Every figure it returns is 0, for
  *     every intervention, and `gender_overall` on the domain report agrees. A
  *     zeroed chart states that no women were reached, which is false rather
@@ -78,11 +87,15 @@ function prettyBreakdown(raw: string): string {
     .join(" — ");
 }
 
-async function getJson<T>(path: string): Promise<T | null> {
+async function getJson<T>(
+  path: string,
+  timeoutMs: number = TIMEOUT_MS,
+  base: string = BASE,
+): Promise<T | null> {
   try {
-    const res = await fetch(`${BASE}/${path}`, {
+    const res = await fetch(`${base}/${path}`, {
       next: { revalidate: REVALIDATE },
-      signal: AbortSignal.timeout(TIMEOUT_MS),
+      signal: AbortSignal.timeout(timeoutMs),
     });
     if (!res.ok) return null;
     const body = (await res.json()) as { data?: T };
@@ -381,3 +394,115 @@ export async function getGiaGender(totalApproved: number): Promise<GenderReading
     mock,
   };
 }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   REACH — where PM-AJAY has landed, on the ground
+   ══════════════════════════════════════════════════════════════════════════ */
+
+export type ReachKey =
+  | "villages"
+  | "villageStates"
+  | "villageDistricts"
+  | "hostels"
+  | "hostelStates"
+  | "hostelDistricts";
+
+export interface ReachData {
+  /** The reduced feed. `null` when it did not answer. */
+  live: ReachSnapshot | null;
+  reading: Reading<ReachKey>;
+  mock: ReachSnapshot;
+  reachable: boolean;
+}
+
+/**
+ * Where the scheme has reached, reduced to what a map can draw.
+ *
+ * THE COORDINATES DO LEAVE THIS FUNCTION NOW, AND THAT IS THE CHANGE. The first
+ * build of this section aggregated the feed to 24 per-state counts and threw the
+ * points away, on the reasoning that a state choropleth cannot use them. That
+ * reasoning was sound about the old chart and wrong about the data: PM-AJAY's
+ * villages are not a per-state quantity, they are a belt running across West
+ * Bengal, Bihar and northern Tamil Nadu, and a circle at a state's centroid
+ * cannot show it. What ships now is a binned density field plus district and
+ * state rows plus every hostel — about 85 KB out of 5.4 MB, and it carries the
+ * geography instead of erasing it. `pmajay-map-reduce.ts` holds the arithmetic.
+ *
+ * A LONGER TIMEOUT THAN ITS SIBLINGS, BUT NOT AN UNBOUNDED ONE. Six seconds is
+ * right for a summary object and short for a multi-megabyte body; 8 is the
+ * compromise, and the ceiling matters more than the floor here. It was 20, and
+ * `live-data-fallback.md` is explicit that a slow feed must degrade to the
+ * snapshot rather than to a slow page — with 20 it degraded to both, holding the
+ * server render for 12.5s before falling back anyway. `revalidate: 3600` means
+ * one request an hour pays this at all.
+ *
+ * ITS OWN BASE URL, because this endpoint alone is unwell. The production
+ * gateway currently answers `504` on it after ~29s while serving every other
+ * PM-AJAY report in milliseconds — the payload is simply too big for it — and
+ * the department's dev host returns the same body in about two seconds. The
+ * default stays PRODUCTION, because a citizen-facing page must not quietly read
+ * from a `-dev` host; `NEXT_PUBLIC_PMAJAY_MAP_API` points a demo or a staging
+ * build at one without a code change. Until prod is fixed, the map draws from
+ * the mirror and says so.
+ *
+ * TWO COMPONENTS, NOT THREE. Grants-in-Aid has no point data in this feed, so
+ * the map speaks for two of PM-AJAY's three components and the section says so.
+ * Drawing an empty third layer to make the set look complete would state that
+ * GIA has reached nowhere, which is false rather than merely absent.
+ */
+const MAP_BASE = process.env.NEXT_PUBLIC_PMAJAY_MAP_API ?? BASE;
+
+export async function getPmajayReach(): Promise<ReachData> {
+  const mock = PMAJAY_REACH_SNAPSHOT;
+  const raw = await getJson<RawMapPoints>("map-points", 8_000, MAP_BASE);
+  if (!raw || !Array.isArray(raw.vdp_villages) || !Array.isArray(raw.hostels)) {
+    return { live: null, reading: {}, mock, reachable: false };
+  }
+
+  const live = reducePmajayMapPoints(raw);
+
+  return {
+    live,
+    reading: {
+      villages: live.villageTotal,
+      villageStates: live.states.filter((s) => s.villages > 0).length,
+      villageDistricts: live.districts.filter((d) => d.villages > 0).length,
+      hostels: live.hostelTotal,
+      hostelStates: live.states.filter((s) => s.hostels > 0).length,
+      hostelDistricts: live.districts.filter((d) => d.hostels > 0).length,
+    },
+    mock,
+    reachable: true,
+  };
+}
+
+/**
+ * NO INVARIANTS, AND THAT IS A FINDING RATHER THAN AN OMISSION.
+ *
+ * Nothing here is a part of anything else. Villages and hostels are separate
+ * components counted in different units; a state count and a district count are
+ * cardinalities of one set at two grains, not the subset relation the merge can
+ * solve for. Declaring a `sum` between any pair would be a rule the data does
+ * not obey, and the merge would then "derive" a figure from it — which is worse
+ * than mocking one, because a derived figure is presented as trustworthy.
+ *
+ * The geography is not fields here either. The merge resolves scalars, and a
+ * lattice of a thousand cells has no fixed key set — so the bins, pins, district
+ * and state rows all follow the provenance of their own component's total. See
+ * `PmajayWorksMap`.
+ *
+ * Zeros are all `missing`: a scheme with 19,768 villages on the books has not
+ * reached zero states, so a zero in any of these is an unpopulated column.
+ */
+export const PMAJAY_REACH_DESCRIPTOR: Descriptor<ReachKey> = {
+  id: "pmajay-reach",
+  fields: {
+    villages: { label: "Adarsh Gram villages", zero: "missing" },
+    villageStates: { label: "States with villages", zero: "missing" },
+    villageDistricts: { label: "Districts with villages", zero: "missing" },
+    hostels: { label: "Hostels", zero: "missing" },
+    hostelStates: { label: "States with hostels", zero: "missing" },
+    hostelDistricts: { label: "Districts with hostels", zero: "missing" },
+  },
+  invariants: [],
+};

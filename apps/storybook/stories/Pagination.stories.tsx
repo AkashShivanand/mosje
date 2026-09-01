@@ -96,3 +96,63 @@ export const ClientState: Story = {
     );
   },
 };
+
+/**
+ * **`size="sm"` — a pager inside a card, not at the foot of a page.**
+ *
+ * `md` is sized for a page-level pager with the full width to sit in. Put the
+ * same control in a narrow panel and it wraps: PM-AJAY's coverage rail is
+ * 19rem, and `md` with word-labelled steps asked for 267px of it.
+ *
+ * `sm` is 32px — still past the 24x24 minimum target (WCAG 2.2 SC 2.5.8) — and
+ * drops the step labels to icons at EVERY width, not only below 480px. A card
+ * pager sits directly beside the list it pages, so a chevron has a visible
+ * referent that a pager at the foot of a long document does not. The words stay
+ * in the accessibility tree, so a screen reader still hears "Previous", never
+ * "chevron left".
+ */
+export const InsideACard: Story = {
+  render: function Render() {
+    const [page, setPage] = React.useState(2);
+    const states = [
+      "Andhra Pradesh",
+      "Bihar",
+      "Chhattisgarh",
+      "Gujarat",
+      "Haryana",
+      "Karnataka",
+      "Madhya Pradesh",
+    ];
+    return (
+      <div
+        style={{
+          width: 304,
+          display: "flex",
+          flexDirection: "column",
+          gap: "var(--sa-stack-12)",
+          padding: "var(--sa-padding-16)",
+          border: "1px solid var(--sa-border-neutral-subtle)",
+          borderRadius: "var(--sa-shape-12)",
+          background: "var(--sa-bg-neutral-base)",
+        }}
+      >
+        <p style={{ margin: 0, color: "var(--sa-text-neutral-subtle)" }}>
+          States and UTs reached &mdash; page {page} of 6
+        </p>
+        <ol style={{ margin: 0, padding: 0, listStyle: "none", display: "grid", gap: 6 }}>
+          {states.map((name) => (
+            <li key={name}>{name}</li>
+          ))}
+        </ol>
+        <Pagination
+          page={page}
+          totalPages={6}
+          onPageChange={setPage}
+          size="sm"
+          siblings={0}
+          label="States"
+        />
+      </div>
+    );
+  },
+};

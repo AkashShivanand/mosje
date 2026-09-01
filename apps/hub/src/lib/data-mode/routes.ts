@@ -7,9 +7,12 @@
  * a slug here in the same change that adds a dashboard, or the switch will be
  * missing on the one page that needs it.
  */
-const PMAJAY = "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay/components";
+const PMAJAY = "/website/organisation/pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay";
 
 export const DATA_MODE_ROUTES: string[] = [
+  // The scheme's own page, for the reach map — the only feed-backed figures on
+  // it. Everything else there is stated policy and does not move with the mode.
+  PMAJAY,
   `${PMAJAY}/development-of-sc-dominated-villages-into-adarsh-gram`,
   `${PMAJAY}/grants-in-aid-to-state-districts`,
   `${PMAJAY}/construction-repair-of-hostels`,

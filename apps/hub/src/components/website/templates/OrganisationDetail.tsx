@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   BrandGlyph,
+  DocumentLibrary,
+  type DocumentLibraryItem,
   FactStrip,
   Icon,
   IndiaMap,
@@ -72,6 +74,12 @@ export interface OrganisationDetailProps {
   relatedPages: SectionRecord[];
   /** Every ingested document; filtered here per `detail.circulars`/`resources`. */
   documents: FileRecord[];
+  /**
+   * A "where this organisation has reached" band, inserted directly after the
+   * components cards. Supplied by the route, because the feed behind it belongs
+   * to one organisation — see the comment at the insertion point.
+   */
+  reachSlot?: React.ReactNode;
   /** Appended as its own band, after everything the template renders. */
   children?: React.ReactNode;
 }
@@ -120,48 +128,23 @@ function matchDocuments(
  * Rendering them from two card definitions is how the two drift a card's padding
  * apart on one page.
  */
-interface FileCardItem {
-  key: string;
-  /** Small line above the title — a date, or a file type. */
-  meta: string;
-  title: string;
-  href: string;
-  actionLabel: string;
-}
+/*
+ * Chip order for the library band, most-wanted first. Guidelines lead because
+ * they are the document every other file on the shelf assumes you have read;
+ * manuals trail because you go looking for one already knowing it exists.
+ * Groups absent from a given organisation's items simply do not render.
+ */
+const LIBRARY_GROUP_ORDER = [
+  "Guidelines",
+  "Circulars",
+  "Formats",
+  "Presentations",
+  "Manuals & guides",
+  "Reports",
+];
 
-function FileGrid({ items }: { items: FileCardItem[] }) {
-  return (
-    <ul className="orgd__doclist">
-      {items.map((f) => (
-        <li key={f.key} className="orgd__doc">
-          <p className="orgd__doc-date">{f.meta}</p>
-          <h3 className="orgd__doc-title">{f.title}</h3>
-          <a
-            className="orgd__doc-action"
-            href={f.href}
-            target="_blank"
-            rel="noreferrer noopener"
-          >
-            {f.actionLabel}
-            <Icon name="open_in_new" size={16} />
-            {/* Say where it goes rather than letting a new tab open unannounced
-                (GIGW 5.2 on external links). */}
-            <span className="sr-only"> (opens on dosje.gov.in in a new tab)</span>
-          </a>
-        </li>
-      ))}
-    </ul>
-  );
-}
-
-const documentCards = (items: FileRecord[]): FileCardItem[] =>
-  items.map((d) => ({
-    key: d.slug,
-    meta: formatDate(d.date),
-    title: d.title,
-    href: d.fileUrl ?? d.sourceUrl,
-    actionLabel: "View document",
-  }));
+/** A destination that leaves this site, and therefore opens in a new tab. */
+const isHttp = (href: string) => /^https?:\/\//.test(href);
 
 /** What a download's card says it is, and what its button offers to do. */
 const DOWNLOAD_KIND: Record<OrgDownload["kind"], { meta: string; action: string }> = {
@@ -171,15 +154,6 @@ const DOWNLOAD_KIND: Record<OrgDownload["kind"], { meta: string; action: string 
   // only discovers after clicking.
   page: { meta: "Web page", action: "View page" },
 };
-
-const downloadCards = (items: OrgDownload[]): FileCardItem[] =>
-  items.map((f) => ({
-    key: f.href,
-    meta: DOWNLOAD_KIND[f.kind].meta,
-    title: f.label,
-    href: f.href,
-    actionLabel: DOWNLOAD_KIND[f.kind].action,
-  }));
 
 export function formatOrgHtml(rawHtml: string): string {
   let html = withAssetBasePath(trimRedundantOpening(rawHtml));
@@ -203,6 +177,7 @@ export function OrganisationDetail({
   detail,
   relatedPages,
   documents,
+  reachSlot,
   children,
 }: OrganisationDetailProps) {
   const circulars = matchDocuments(documents, detail?.circulars, 4);
@@ -544,6 +519,23 @@ export function OrganisationDetail({
     });
   }
 
+  /*
+   * IMMEDIATELY AFTER THE COMPONENTS, AND THAT IS THE WHOLE ARGUMENT FOR THE
+   * POSITION. The reader has just been told the scheme has three components and
+   * has seen a card for each. "Where has it actually landed" is the next
+   * question they have, and it is answered while the three names are still in
+   * their head. Further down — after the documents, say — the same map is a
+   * curiosity; here it is the evidence for the cards above it.
+   *
+   * A SLOT, NOT A BAND THIS TEMPLATE BUILDS. The map is one organisation's feed,
+   * fetched by the route that knows which organisation it is rendering. Baking
+   * PM-AJAY's endpoint into the template every one of 178 organisations renders
+   * would put a scheme-specific fetch on 177 pages that have no use for it.
+   */
+  if (reachSlot != null) {
+    bands.push({ id: "reach", body: reachSlot });
+  }
+
   if (detail?.resourcesBookshelf != null) {
     const rb = detail.resourcesBookshelf;
     bands.push({
@@ -584,61 +576,117 @@ export function OrganisationDetail({
     });
   }
 
-  if (detail?.downloads != null) {
-    const downloads = detail.downloads;
-    downloads.groups.forEach((g) => {
-      bands.push({
-        id: g.id,
-        body: (
-          <>
-            <SectionTitle as={2} title={g.heading} headingId={`${g.id}-heading`}>
-              <Link
-                href={g.viewAllHref ?? "/website/publications"}
-                className={buttonClasses("primary", "outlined", "sm")}
-              >
-                View all
-              </Link>
-            </SectionTitle>
-            <FileGrid items={downloadCards(g.items)} />
-          </>
-        ),
-      });
-    });
-  }
+  /*
+   * ONE library band where four grids used to be. The hand-listed downloads and
+   * the two document-ingest pulls (circulars, resources) are the same object to
+   * a reader — a file with a name and a date — so they are merged into one list
+   * and separated by a chip instead of by three headings and 1,200px of scroll.
+   *
+   * Each source declares its own chip: the downloads carry `group` in the
+   * content, and the two ingest pulls take the name of what they are. Nothing
+   * here guesses a category from a file extension.
+   */
+  const libraryItems: DocumentLibraryItem[] = [
+    ...circulars.map((d) => ({
+      id: `circular-${d.slug}`,
+      group: "Circulars",
+      meta: formatDate(d.date),
+      title: d.title,
+      href: d.fileUrl ?? d.sourceUrl,
+      actionLabel: "View document",
+      external: isHttp(d.fileUrl ?? d.sourceUrl),
+    })),
+    ...resources.map((d) => ({
+      id: `resource-${d.slug}`,
+      group: "Formats",
+      meta: formatDate(d.date),
+      title: d.title,
+      href: d.fileUrl ?? d.sourceUrl,
+      actionLabel: "View document",
+      external: isHttp(d.fileUrl ?? d.sourceUrl),
+    })),
+    ...(detail?.downloads?.groups ?? []).flatMap((g) =>
+      g.items.map((f) => ({
+        id: `download-${f.href}-${f.label}`,
+        group: f.group ?? "Formats",
+        meta: f.meta ?? DOWNLOAD_KIND[f.kind].meta,
+        title: f.label,
+        officialName: f.officialName,
+        href: f.href,
+        actionLabel: DOWNLOAD_KIND[f.kind].action,
+        external: isHttp(f.href),
+      })),
+    ),
+  ];
 
-  if (circulars.length > 0) {
+  if (libraryItems.length > 0) {
+    const lib = detail?.downloads;
     bands.push({
-      id: "circulars-notifications",
+      id: "documents-downloads",
       body: (
         <>
-          <SectionTitle as={2} title="Circulars & Notifications" headingId="circulars-heading">
-            <Link
-              href={detail!.circulars!.viewAllHref}
-              className={buttonClasses("primary", "outlined", "sm")}
-            >
-              View all
-            </Link>
-          </SectionTitle>
-          <FileGrid items={documentCards(circulars)} />
+          <SectionTitle
+            as={2}
+            title={lib?.heading ?? "Documents & Downloads"}
+            description={lib?.description}
+            headingId="documents-downloads-heading"
+          />
+          <DocumentLibrary
+            items={libraryItems}
+            groupOrder={LIBRARY_GROUP_ORDER}
+            viewAllSlot={
+              <Link
+                href={
+                  lib?.groups?.[0]?.viewAllHref ??
+                  detail?.circulars?.viewAllHref ??
+                  "/website/publications"
+                }
+                className={buttonClasses("primary", "outlined", "sm")}
+              >
+                View all documents
+              </Link>
+            }
+          />
         </>
       ),
     });
   }
 
-  if (resources.length > 0) {
+  if (detail?.reports != null && detail.reports.groups.length > 0) {
+    const rp = detail.reports;
     bands.push({
-      id: "resources",
+      id: "reports",
       body: (
         <>
-          <SectionTitle as={2} title="Resources" headingId="resources-heading">
-            <Link
-              href={detail!.resources!.viewAllHref}
-              className={buttonClasses("primary", "outlined", "sm")}
-            >
-              View all
-            </Link>
-          </SectionTitle>
-          <FileGrid items={documentCards(resources)} />
+          <SectionTitle
+            as={2}
+            title={rp.heading}
+            description={rp.description}
+            headingId="reports-heading"
+          />
+          {rp.groups.map((g) => (
+            <div key={g.heading} className="orgd__report-group">
+              <h3 className="orgd__report-group-title">{g.heading}</h3>
+              <div className="orgd__pills">
+                {g.items.map((p) => {
+                  const isExternal =
+                    p.external || p.href.startsWith("http://") || p.href.startsWith("https://");
+                  return (
+                    <Link
+                      key={p.href}
+                      href={p.href}
+                      className="orgd__pill"
+                      target={isExternal ? "_blank" : undefined}
+                      rel={isExternal ? "noreferrer" : undefined}
+                    >
+                      <span>{p.label}</span>
+                      <Icon name={isExternal ? "open_in_new" : "arrow_forward"} size={16} />
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </>
       ),
     });

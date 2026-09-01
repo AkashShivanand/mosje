@@ -199,6 +199,11 @@ export type { ToastVariant } from "./components/feedback/toast";
 export { Card, CardHeader, CardBody, CardFooter, CardTitle, CardSubtitle } from "./components/data-display/card";
 export { Avatar } from "./components/data-display/avatar";
 export { FactStrip } from "./components/data-display/fact-strip";
+export { DocumentLibrary } from "./components/data-display/document-library";
+export type {
+  DocumentLibraryProps,
+  DocumentLibraryItem,
+} from "./components/data-display/document-library";
 export type { FactStripProps, FactStripItem } from "./components/data-display/fact-strip";
 
 export { MetricCard } from "./components/data-display/metric-card";
@@ -230,6 +235,20 @@ export {
   Heatmap,
   ComboChart,
   IndiaMap,
+  IndiaBubbleMap,
+  IndiaPointMap,
+  INDIA_STATE_BOXES,
+  projectIndia,
+  repairIndiaCoordinate,
+  binIndiaPoints,
+  normalizeRegionName,
+  hexCenter,
+  hexPath,
+  hexAt,
+  median,
+  INDIA_HEX_RADIUS,
+  INDIA_LAT_RANGE,
+  INDIA_LON_RANGE,
   Legend,
   useChartTooltip,
   ChartTooltip,
@@ -261,6 +280,16 @@ export type {
   ComboChartProps,
   IndiaMapProps,
   IndiaMapDatum,
+  IndiaBubbleMapProps,
+  IndiaPointMapProps,
+  MapPin,
+  MapBubble,
+  PinKindStyle,
+  RegionBox,
+  HexBin,
+  RepairedCoordinate,
+  CoordinateVerdict,
+  IndiaBubbleDatum,
   LegendItem,
   ValueFormat,
 } from "./components/data-display/charts";
@@ -339,7 +368,7 @@ export type {
 
 export { SidebarNav } from "./components/navigation/sidebar";
 export { Pagination } from "./components/navigation/pagination";
-export type { PaginationProps } from "./components/navigation/pagination";
+export type { PaginationProps, PaginationSize } from "./components/navigation/pagination";
 export type {
   SidebarNavProps,
   SidebarNavGroup,
@@ -439,6 +468,8 @@ export type { GridProps, GridItemProps, GridSpan } from "./components/layout/gri
 export { Band } from "./components/layout/band";
 export type { BandProps, BandTone, BandSpacing } from "./components/layout/band";
 export { PageHeader } from "./components/layout/page-header";
+export { SitePageHeader } from "./components/layout/site-page-header";
+export type { SitePageHeaderProps } from "./components/layout/site-page-header";
 export type { PageHeaderProps } from "./components/layout/page-header";
 export { AppShell } from "./components/layout/app-shell";
 export type { AppShellProps } from "./components/layout/app-shell";

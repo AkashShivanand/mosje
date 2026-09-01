@@ -24,8 +24,8 @@
      MoSJE / UX4G — Chip atom
      Semantic CSS classes only; all colours reference design tokens (--sa-*).
      Base: .ds-chip
-     Modifiers: .ds-chip--interactive / --selected / --disabled
-     Sub-parts: .ds-chip__icon / __label / __dismiss
+     Modifiers: .ds-chip--sm|--md / --interactive / --selected / --disabled
+     Sub-parts: .ds-chip__icon / __label / __count / __dismiss
      Default (unselected): stroke-strong border, ink-strong label, ~32px, radius-md.
      Selected: primary-tonal bg + primary-dark text + primary border.
      ============================================================================ */
@@ -51,6 +51,37 @@
       border-color 0.15s ease,
       color 0.15s ease,
       box-shadow 0.15s ease;
+  }
+
+  /*
+    The trailing count. Muted so the label stays the thing you read, and
+    `tabular-nums` so a row of chips does not jitter as their figures change
+    width under a filter.
+  */
+  /*
+    `size="sm"` — a dense filter row. Still 26px, past the 24px minimum target
+    (WCAG 2.2 SC 2.5.8), and it drops the type one step rather than shrinking
+    the padding alone, so the pill stays in proportion to what is in it.
+  */
+  .ds-chip--sm {
+    min-height: 26px;
+    gap: var(--sa-stack-6);
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-chip__count {
+    flex: 0 0 auto;
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Selected, the count follows the chip's own ink rather than staying grey
+     against a tinted ground. */
+  .ds-chip--selected .ds-chip__count {
+    color: inherit;
+    opacity: 0.75;
   }
 
   .ds-chip__icon {
@@ -101,6 +132,30 @@
     selection pill there was a third colour family on a two-family panel.
     Deep green on the tonal green ground measures well clear of AA.
   */
+  /*
+    `tone="neutral"` — selected, but not competing.
+
+    A filled neutral rather than a tint: at `sm`, a tinted selected state and
+    an unselected one differ by too little to read at a glance, and this chip
+    has to carry its state from across a control bar.
+  */
+  .ds-chip--selected-neutral {
+    background-color: var(--sa-bg-neutral-bold);
+    border-color: var(--sa-bg-neutral-bold);
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .ds-chip--selected-neutral .ds-chip__count {
+    color: var(--sa-text-neutral-inverse);
+    opacity: 0.75;
+  }
+
+  .ds-chip--selected-neutral.ds-chip--interactive:hover,
+  .ds-chip--selected-neutral.ds-chip--interactive:active {
+    background-color: var(--sa-bg-neutral-inverse);
+    border-color: var(--sa-bg-neutral-inverse);
+  }
+
   .ds-chip--selected-success {
     background-color: var(--sa-color-status-successTonal);
     color: var(--sa-color-status-successStrong);

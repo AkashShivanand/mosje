@@ -18,12 +18,19 @@ import {
  * (`categoricalColor`, `sequentialColor`, `useChartTooltip`), so that it keeps
  * the same swatches, spacing and colour ramp as everything beside it.
  *
- * It is `aria-hidden` on purpose, and that is the thing to understand before
- * using it: the legend is **decoration for sighted users**. The real values
- * reach assistive tech through the screen-reader data table that `ChartFrame`
- * renders. If you compose a chart by hand and use this legend, you owe that
- * table too — otherwise the chart is silent to a screen reader and the legend
- * has quietly become the only key, hidden from the people who need it most.
+ * It is `aria-hidden` **while it is only a key**, and that is the thing to
+ * understand before using it: a decorative legend is decoration for sighted
+ * users, and the real values reach assistive tech through the screen-reader
+ * data table that `ChartFrame` renders. If you compose a chart by hand and use
+ * this legend, you owe that table too — otherwise the chart is silent to a
+ * screen reader and the legend has quietly become the only key, hidden from the
+ * people who need it most.
+ *
+ * **Pass `onToggle` and it stops being decoration.** Each entry becomes a
+ * control that changes what is on the chart, and a control may never be hidden
+ * from assistive technology — so the `aria-hidden` comes off, entries gain
+ * `role="button"` and `aria-pressed`, and Enter and Space work. Give the list
+ * an accessible name with `label` when you do. See `SeriesToggles` below.
  *
  * `ChartTooltip`, the floating bubble driven by `useChartTooltip`, is
  * documented here rather than in a story of its own. It positions itself inside
@@ -221,4 +228,107 @@ export const TooltipInACustomChart: Story = {
       </div>
     );
   },
+};
+
+
+/**
+ * **`onToggle` — the legend is the switch for what it keys.**
+ *
+ * Charts whose series can be switched on and off are ubiquitous, and until this
+ * existed every one of them hand-rolled a row of buttons beside a legend that
+ * could not do it. PM-AJAY's coverage map was the case that asked for it: two
+ * layers on one map, each with a count, each switchable.
+ *
+ * Passing the handler is what turns the list from decoration into controls, the
+ * same way `Chip`'s `onSelectedChange` and `Pagination`'s `onPageChange` do —
+ * the capability arrives with the handler rather than through a flag someone
+ * can forget to pair with it.
+ *
+ * **It also stops looking like text.** The first version of this was
+ * deliberately quiet — bare labels with a hover ground — so it would not
+ * compete with the chart it labels. That cost the feature: a reader who cannot
+ * see that a key is pressable does not press it, and "hover to discover it" is
+ * not an answer on a touchscreen. Each entry is a bordered pill now, at the
+ * same 26px as `Chip`'s `sm`, because a `Chip` is usually what sits beside it
+ * doing the same job.
+ *
+ * Set `item.on` to say which series are drawn. **Switch one off in this story**
+ * — three things change at once, and none of them is colour: the pill empties
+ * and its border goes dashed, the solid key goes hollow, and `aria-pressed`
+ * flips. Enter and Space work as well as a click.
+ */
+export const SeriesToggles: Story = {
+  render: function SeriesTogglesStory() {
+    const [on, setOn] = React.useState<Record<string, boolean>>({
+      villages: true,
+      hostels: true,
+    });
+    return (
+      <Legend
+        label="Scheme components drawn on the map"
+        onToggle={(id) => setOn((p) => ({ ...p, [id]: !p[id] }))}
+        items={[
+          {
+            id: "villages",
+            label: "Adarsh Gram villages",
+            value: formatIndian(19768),
+            color: sequentialColor(0.6),
+            on: on.villages,
+          },
+          {
+            id: "hostels",
+            label: "Hostels",
+            value: formatIndian(203),
+            color: categoricalColor(2),
+            on: on.hostels,
+          },
+        ]}
+      />
+    );
+  },
+};
+
+/**
+ * **`swatch` — a key that matches the mark it keys.**
+ *
+ * `solid` (the default) is one square, and is right for a categorical series.
+ *
+ * `ramp` draws the sequential scale itself, built from `colors`. Give it
+ * `scale` so a reader can tell what a shade is worth — a gradient with no
+ * numbers on it says only "more is darker", which they could already see.
+ *
+ * `dots` is for a series that is itself a **group** of marks drawn separately —
+ * PM-AJAY's hostels are one layer rendered in three colours by type, so one
+ * square would have keyed a colour the map does not use.
+ */
+export const SwatchKinds: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+      <Legend
+        items={[
+          {
+            label: "Adarsh Gram villages",
+            value: formatIndian(19768),
+            color: sequentialColor(0.6),
+            swatch: "ramp",
+            colors: [50, 100, 200, 300, 400, 500, 600, 700, 800, 900].map(
+              (step) => `var(--sa-chart-seq-${step})`,
+            ),
+            scale: ["1", "387"],
+          },
+          {
+            label: "Hostels",
+            value: formatIndian(203),
+            color: categoricalColor(1),
+            swatch: "dots",
+            colors: [categoricalColor(2), categoricalColor(1), "var(--sa-chart-axis)"],
+          },
+          { label: "Grant-in-Aid", value: "not mapped", color: divergingColor(0) },
+        ]}
+      />
+      <p style={{ margin: 0, fontSize: 12, opacity: 0.7 }}>
+        Ramp, dots and solid in one legend — each key drawn the way its series is.
+      </p>
+    </div>
+  ),
 };

@@ -98,13 +98,33 @@ export interface OrgContactBlock {
 }
 
 export interface OrgDownloadItem {
+  /**
+   * A TITLE, not a file name. "Presentation" is a file name: it told a reader
+   * nothing about what was inside, who it was for, or whether it was current.
+   * Where the department's own name is longer or more formal, keep it in
+   * `officialName` so nothing is lost.
+   */
   label: string;
   href: string;
   /**
    * What the reader is about to open. Taken from the destination, never
-   * guessed: `page` is a web page on dosje.gov.in, the rest are files.
+   * guessed: `page` is a web page, the rest are files.
    */
   kind: "pdf" | "pptx" | "page";
+  /**
+   * The filter chip this sits under in the library band. Declared, never
+   * inferred from the file type — "which shelf is this on" is an editorial
+   * judgement and a `.pdf` extension does not make it.
+   */
+  group?: string;
+  /**
+   * The small line above the title: a publication date, or who the file is for.
+   * It used to read "PDF", directly above a button reading "Download PDF" — the
+   * card spent its most valuable line restating its own button.
+   */
+  meta?: string;
+  /** The department's own name for the file, where `label` is a plainer one. */
+  officialName?: string;
 }
 
 export interface OrgDownloadGroup {
@@ -186,6 +206,18 @@ export interface OrganisationDetail {
     heading: string;
     description?: string;
     groups: OrgDownloadGroup[];
+  };
+  /**
+   * Report indexes the organisation publishes. Groups of LINKS, not files:
+   * each opens a live, query-driven report on dosje.gov.in. They are linked
+   * rather than mirrored for the same reason the downloads are — the figures
+   * behind them are generated on request from a database this estate does not
+   * hold, and a mirrored copy would be a snapshot presented as a live report.
+   */
+  reports?: {
+    heading: string;
+    description?: string;
+    groups: { heading: string; items: OrgLinkPill[] }[];
   };
   featuredLinks?: {
     heading?: string;
@@ -270,47 +302,88 @@ export interface OrganisationDetail {
 }
 
 const PM_AJAY = "pradhan-mantri-anusuchit-jaati-abhyuday-yojnapm-ajay";
+/** The scheme on the source site. The reports below are generated there, not here. */
+const PM_AJAY_SRC = `https://www.dosje.gov.in/organisation/${PM_AJAY}`;
 
 export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
   [PM_AJAY]: {
     logo: "/website/images/org-logos/pm-ajay.png",
+    // The scheme's own hero photograph, as the source site publishes it — a
+    // composite of the three components: a hostel block, Adarsh Gram village
+    // works, and skilling. Mirrored locally rather than hot-linked from the
+    // source CDN, like the gallery images beside it.
+    featuredImage: "/website/images/organisations/banner-pm-ajay.png",
     lead:
       "PM-AJAY is a flagship scheme of the Ministry of Social Justice & Empowerment dedicated to the socio-economic empowerment of Scheduled Castes. The scheme promotes livelihood opportunities, strengthens village infrastructure, and enhances access to education and residential facilities for sustainable and inclusive development.",
 
-    // Four facts, all stated on the source page: the headquarters line under the
-    // banner, the three named components, the implementing ministry, and the
-    // group the scheme is for. No year, no budget — the source gives neither.
+    // THREE facts, because three is what the source actually states. The strip
+    // stretches to whatever it is given; it does not need filling.
+    //
+    // Two were removed rather than replaced. "Implementing ministry — Social
+    // Justice & Empowerment" is the same answer on every page of this estate and
+    // is already in the masthead: a value constant across the estate is not a
+    // fact about the thing described. And "2021–22 — Scheme launched" was mine,
+    // not the department's: the About page says the three precursor schemes
+    // MERGED INTO PM-AJAY from 2021–22, which is not the same claim as a launch
+    // date, and turning one into the other is inventing a fact that reads as
+    // sourced.
     facts: [
       { icon: "location_on", value: "New Delhi", label: "Headquarters" },
       { icon: "widgets", value: "3", label: "Scheme components" },
-      { icon: "account_balance", value: "Social Justice & Empowerment", label: "Implementing ministry" },
       { icon: "groups", value: "Scheduled Castes", label: "Who it serves" },
     ],
 
     nav: [
+      // Grouped as NCSK's index is: what the body IS, what it DOES, what it
+      // PUBLISHES, and how to reach it. The source's own sidebar files the
+      // download lists under "OUR WORK & IMPACT", which leaves that group
+      // holding six entries that mix the scheme's programme with its filing
+      // cabinet. Splitting the filing cabinet out is the one place this index
+      // deliberately reads better than the source's.
       {
         label: "ABOUT US",
-        items: [{ label: "About the Scheme", href: "#about-the-scheme" }],
+        items: [
+          // NOT the /about-us sub-page. The About band's "Know more" already
+          // opens it, and NCSK — the pattern this index follows — keeps its own
+          // about-us out of the sidebar for that reason. Listing both would put
+          // "About the Scheme" and "About Us" side by side in one group, two
+          // labels a reader cannot tell apart pointing at the same subject.
+          { label: "About the Scheme", href: "#about-the-scheme" },
+        ],
       },
       {
         label: "OUR WORK & IMPACT",
         items: [
           { label: "Components", href: "#components" },
-          { label: "Circulars & Notifications", href: "#circulars-notifications" },
-          { label: "Resources", href: "#resources" },
-          // Sections, not files. The index is a table of contents: every entry
-          // here is a place on this page, a sub-page, or another site. The
-          // download lists these two headings used to inline are a section of
-          // the page now, and these link to it.
-          { label: "Downloads (PM-AJAY)", href: "#downloads-pm-ajay" },
-          { label: "Downloads (pmagy)", href: "#downloads-pmagy" },
+          // Directly under Components, because the band is directly under it on
+          // the page. An index whose order disagrees with the page's teaches the
+          // reader that it cannot be trusted to find things.
+          { label: "Scheme Coverage", href: "#reach" },
+          // No "Circulars & Notifications" entry: the circulars are a chip inside
+          // Documents & downloads now, and a second label pointing at that same
+          // band is the duplicate-destination fault this index already made once.
+          { label: "Illustrative List of Domain Under GIA", href: `/website/organisation/${PM_AJAY}/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme` },
+          { label: "Flow Chart", href: `/website/organisation/${PM_AJAY}/flow-chart` },
+        ],
+      },
+      {
+        label: "PUBLICATIONS & REPORTS",
+        items: [
+          // One entry, not four. This group used to list Resources, Downloads
+          // (PM-AJAY), Downloads (pmagy) and Reports — four labels for what a
+          // reader experiences as "the files". Three of them are one band now.
+          { label: "Documents & Downloads", href: "#documents-downloads" },
+          // No separate "Guidelines" entry: the guidelines are the first chip in
+          // Documents & downloads. They had their own sub-page for one pass — a
+          // bare table of the same two documents, pointing at the same two
+          // files — which is a second copy to keep in sync and a second place to
+          // look. Same call as `contact-us`.
+          { label: "Reports (PM-AGY)", href: "#reports" },
         ],
       },
       {
         label: "CONNECT & ENGAGE",
         items: [
-          { label: "Illustrative list of domain under GIA", href: `/website/organisation/${PM_AJAY}/reports/illustrative-list-of-projects-under-various-domains-for-development-of-scheduled-castes-families-under-the-scheme` },
-          { label: "Flow Chart", href: `/website/organisation/${PM_AJAY}/reports/flow-chart` },
           { label: "Find Courses", href: "https://nsdcindia.org/qp-nos-results", external: true },
           { label: "Gallery", href: "#gallery" },
           { label: "Contact", href: "#contact" },
@@ -339,33 +412,43 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       "</ol>",
     ].join(""),
 
-    aboutAction: { label: "Know more", href: `/website/organisation/${PM_AJAY}/pmajy/about-us` },
+    aboutAction: { label: "Know more", href: `/website/organisation/${PM_AJAY}/about-us` },
 
     components: {
       heading: "Components",
       description:
-        "PM-AJAY is delivered through three components. Each is administered separately, with its own guidelines and reporting.",
+        "The scheme has three components. Each is administered separately under its own guidelines and reporting.",
+      // TWO SENTENCES, AND NO MORE. The first is the department's own
+      // description of the component, verbatim from the About text. The second
+      // is the ONE stated rule a reader most often needs — the qualifying
+      // threshold, the funding floors, the seat reservation — taken from the
+      // component's own page, so none of it drifts the way a feed count would.
+      //
+      // Everything else that used to be here (the 70-out-of-100 Adarsh Gram
+      // score, the ODF condition, the lady-warden requirement) is a card
+      // becoming a page. It is on the component's own page, one click away,
+      // which is where a reader who wants that level of detail is going.
       items: [
         {
-          title: "Development of SC dominated villages into “Adarsh Gram”",
+          title: "Development of SC Dominated Villages into “Adarsh Gram”",
           description:
-            "Develops Scheduled Caste dominated villages into model villages, with a village development plan and gap-filling funds.",
+            "Develops Scheduled Caste dominated villages into model villages. A village qualifies with over 40% Scheduled Caste population and 500 or more residents.",
           icon: "holiday_village",
-          slug: `${PM_AJAY}/components/development-of-sc-dominated-villages-into-adarsh-gram`,
+          slug: `${PM_AJAY}/development-of-sc-dominated-villages-into-adarsh-gram`,
         },
         {
-          title: "Grants-in-aid to State/Districts",
+          title: "Grants-in-Aid to State/Districts",
           description:
-            "Livelihood, skilling and infrastructure projects for the economic betterment of Scheduled Castes.",
+            "Livelihood, skilling and infrastructure projects for the economic betterment of Scheduled Castes. At least 15% of funds are earmarked for Scheduled Caste women and 10% for skill development.",
           icon: "payments",
-          slug: `${PM_AJAY}/components/grants-in-aid-to-state-districts`,
+          slug: `${PM_AJAY}/grants-in-aid-to-state-districts`,
         },
         {
           title: "Construction/Repair of Hostels",
           description:
-            "Supports the construction and repair of hostels for Scheduled Caste students, to reduce dropout rates.",
+            "Supports the construction and repair of hostels for Scheduled Caste students, to reduce dropout rates. Institutions receiving support reserve 70% of seats for Scheduled Caste students.",
           icon: "apartment",
-          slug: `${PM_AJAY}/components/construction-repair-of-hostels`,
+          slug: `${PM_AJAY}/construction-repair-of-hostels`,
         },
       ],
     },
@@ -384,39 +467,188 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
       viewAllHref: "/website/forms-templates",
     },
 
-    // The source page offers these as two download lists. They are linked at
-    // dosje.gov.in rather than mirrored here: the nine files total 28MB, one of
-    // them a 22MB manual, and the document cards on this page already link out
-    // to the same host.
+    // ONE library, not four bands. This used to be two "Downloads" bands beside
+    // Circulars and Resources — four consecutive grids of the identical card,
+    // nineteen files, split by the department's filing categories rather than by
+    // anything a reader wants. They are one shelf now, filtered by chip.
     //
-    // "PMAGY Work Flow" sits between "Announcement in village" and "Work Flow
-    // for Interim VDP" on the source and is deliberately absent: its link is
-    // empty there — it opens a pop-up, so there is no destination to offer.
+    // The PM-AJAY / PMAGY split in particular was a split by SCHEME ERA: PMAGY is
+    // the predecessor programme folded into the Adarsh Gram component. The page
+    // never said so; it put up two headings and left the reader to guess. Era is
+    // now a chip, and the chip says what it means.
+    //
+    // Every file resolves to a sample document in this estate, per the standing
+    // rule that documents are served from here rather than hot-linked. The
+    // department's own name for each file is kept in `officialName`.
     downloads: {
-      heading: "Downloads",
+      heading: "Documents & Downloads",
       description:
-        "Formats, presentations and manuals published for the scheme. Each opens on dosje.gov.in.",
+        "Guidelines, formats, presentations and manuals published for the scheme and for PMAGY, which was merged into the Adarsh Gram component.",
       groups: [
         {
-          id: "downloads-pm-ajay",
-          heading: "PM-AJAY",
+          id: "documents-downloads",
+          heading: "Documents & Downloads",
+          viewAllHref: "/website/forms-templates",
           items: [
-            { label: "Utilization Certificate", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/UC-GFR-12-C.pdf", kind: "pdf" },
-            { label: "Implementation Status", href: "https://www.dosje.gov.in/documents/pm-ajay-releases-and-utilization-implementation-status/", kind: "page" },
-            { label: "Presentation about Scheme", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/PMAJAY-FINAL-PPT.pptx", kind: "pptx" },
-            { label: "Institute Registration Form", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/03/Format_for_institute_university_registration.pdf", kind: "pdf" },
+            // The scheme's own guidelines lead the shelf. They are the document a
+            // reader is most often after and the one every other file here
+            // assumes you have read, so they sit first and under their own chip
+            // rather than being filed among the formats.
+            {
+              label: "PM-AJAY operational guidelines",
+              officialName: "Guidelines of Pradhan Mantri Anusuchit Jaati Abhyuday Yojana (PM-AJAY)",
+              meta: "The scheme's governing document",
+              href: "/website/documents/sample/acts-rules-sample.pdf",
+              kind: "pdf",
+              group: "Guidelines",
+            },
+            {
+              label: "PM-AJAY guidelines — consolidated advisory",
+              officialName: "PM-AJAY Guidelines",
+              meta: "Advisory · read alongside the operational guidelines",
+              href: "/website/documents/sample/advisory-sop-sample.pdf",
+              kind: "pdf",
+              group: "Guidelines",
+            },
+            {
+              label: "Utilization certificate format (GFR 12-C)",
+              officialName: "Utilization Certificate",
+              meta: "For State and UT implementing agencies",
+              href: "/website/documents/sample/acts-rules-sample.pdf",
+              kind: "pdf",
+              group: "Formats",
+            },
+            {
+              label: "Institute registration form",
+              officialName: "Format for institute / university registration",
+              meta: "For institutions applying under the Hostels component",
+              href: "/website/documents/sample/acts-rules-sample.pdf",
+              kind: "pdf",
+              group: "Formats",
+            },
+            {
+              label: "PM-AJAY scheme overview",
+              officialName: "Presentation about Scheme",
+              meta: "Presentation · for orientation and training",
+              href: "/website/documents/sample/advisory-sop-sample.pdf",
+              kind: "pptx",
+              group: "Presentations",
+            },
+            {
+              label: "PMAGY scheme overview",
+              officialName: "Presentation",
+              meta: "Presentation · 24 October 2019",
+              href: "/website/documents/sample/advisory-sop-sample.pdf",
+              kind: "pdf",
+              group: "Presentations",
+            },
+            {
+              label: "PMAGY Central Sanctioning Committee briefing",
+              officialName: "Presentation, CSMC Meeting 12 Feb 2020",
+              meta: "Presentation · 12 February 2020",
+              href: "/website/documents/sample/advisory-sop-sample.pdf",
+              kind: "pdf",
+              group: "Presentations",
+            },
+            {
+              label: "Village announcement notice (Hindi)",
+              officialName: "Announcement in village (Hindi)",
+              meta: "For Gram Panchayats · read aloud at village level",
+              href: "/website/documents/sample/citizen-charter-sample.pdf",
+              kind: "pdf",
+              group: "Formats",
+            },
+            {
+              label: "Interim Village Development Plan — flow diagram",
+              officialName: "Work Flow for Interim VDP",
+              meta: "For district officers preparing a VDP",
+              href: "/website/documents/sample/advisory-sop-sample.pdf",
+              kind: "pdf",
+              group: "Manuals & guides",
+            },
+            {
+              label: "Village Development Plan — worked example",
+              officialName: "Sample VDP",
+              meta: "For district officers preparing a VDP",
+              href: "/website/documents/sample/annual-report-sample.pdf",
+              kind: "pdf",
+              group: "Manuals & guides",
+            },
+            {
+              label: "Adarsh Gram MIS — district user manual",
+              officialName: "District User Manual",
+              meta: "For district users of the Adarsh Gram MIS",
+              href: "/website/documents/sample/advisory-sop-sample.pdf",
+              kind: "pdf",
+              group: "Manuals & guides",
+            },
+            {
+              // The one entry here that is NOT a document. It is a live page the
+              // Department updates, so it keeps its real destination: pointing a
+              // "View page" card at a sample PDF would promise a page and hand
+              // over a download.
+              label: "Releases and utilisation — implementation status",
+              officialName: "Implementation Status",
+              meta: "Live page · updated by the Department",
+              href: "https://www.dosje.gov.in/documents/pm-ajay-releases-and-utilization-implementation-status/",
+              kind: "page",
+              group: "Reports",
+            },
+          ],
+        },
+      ],
+    },
+
+
+    // The "Reports PM-AGY" band the source page carries, in the source's own
+    // groups and its own labels. Every one is a live report generated on request
+    // at dosje.gov.in, so each is linked out rather than mirrored — for a
+    // stronger reason than the documents above: a mirrored copy of a live report
+    // is a snapshot wearing a live report's clothes.
+    //
+    // "PMAGY Work Flow" appears on the source between "Announcement in village"
+    // and "Work Flow for Interim VDP" and is deliberately absent everywhere here:
+    // its link is empty upstream — it opens a pop-up — so there is no destination
+    // to offer.
+    reports: {
+      heading: "Reports (PM-AGY)",
+      description:
+        "Village, Adarsh Gram, VDP and allocation reports published for the scheme. Each report is generated on request on the Department's portal.",
+      groups: [
+        {
+          heading: "Villages",
+          items: [
+            { label: "Covered Villages", href: `${PM_AJAY_SRC}/villages-covered-under-pmagy/`, external: true },
+            { label: "Covered Villages Mission Utkarsh", href: `${PM_AJAY_SRC}/villages-covered-under-mission-utkarsh/`, external: true },
+            { label: "Covered Villages (40% SC Population)", href: `${PM_AJAY_SRC}/covered-villages-40-sc-population/`, external: true },
+            { label: "All Villages Score", href: `${PM_AJAY_SRC}/all-villages-score-in-descending-order/`, external: true },
+            { label: "Villages between scores", href: `${PM_AJAY_SRC}/villages-between-scores/`, external: true },
+            { label: "Village At Glance", href: `${PM_AJAY_SRC}/village-summary-at-glance/`, external: true },
+            { label: "Phase one villages", href: `${PM_AJAY_SRC}/phase-one-villages/`, external: true },
+            { label: "Pilot phase villages", href: `${PM_AJAY_SRC}/pilot-phase-villages/`, external: true },
           ],
         },
         {
-          id: "downloads-pmagy",
-          heading: "PMAGY",
+          heading: "Adarsh Gram",
           items: [
-            { label: "Presentation, CSMC Meeting 12 Feb 2020", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/PMAGY-CSMC-Meeting-12022020.pdf", kind: "pdf" },
-            { label: "Presentation", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/PPT_PMAGY_24102019.pdf", kind: "pdf" },
-            { label: "Announcement in village (Hindi)", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/village_announcement.pdf", kind: "pdf" },
-            { label: "Work Flow for Interim VDP", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/Flow-Diagram-to-Generate-the-Interim-VDP.pdf", kind: "pdf" },
-            { label: "Sample VDP", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/SampleVDP.pdf", kind: "pdf" },
-            { label: "District User Manual", href: "https://durwo6bhtjtqt.cloudfront.net/wp-content/uploads/2026/08/User_Manual_of_AGY.pdf", kind: "pdf" },
+            { label: "Adarsh Gram Declaration Status", href: `${PM_AJAY_SRC}/adarsh-gram-report/`, external: true },
+          ],
+        },
+        {
+          heading: "VDP",
+          items: [
+            { label: "Selection Year Wise VDP", href: `${PM_AJAY_SRC}/number-of-villages-selected-and-vdp-generated/`, external: true },
+          ],
+        },
+        {
+          // These two are live reports exactly like the ten above. The source's
+          // sidebar files them under its Downloads heading, so we did too — which
+          // put the same kind of object in two bands and made an upstream filing
+          // slip structural. They belong here.
+          heading: "Allocation & approvals",
+          items: [
+            { label: "PACC Meeting List", href: `${PM_AJAY_SRC}/pacc-meeting-list/`, external: true },
+            { label: "Notional Allocation", href: `${PM_AJAY_SRC}/notional-allocation-report/`, external: true },
           ],
         },
       ],
@@ -1298,8 +1530,12 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
     facts: [
       { icon: "groups", value: "Transgender & Destitute", label: "Target beneficiaries" },
       { icon: "location_city", value: "30 Pilot Cities", label: "Begging eradication" },
+      // Three, not four. The fourth was "Implementing ministry — Social Justice &
+      // Empowerment", which every organisation on the estate answers identically
+      // and the masthead already states; its stand-in was a "2 sub-schemes" tile
+      // whose label ran to six words to say what the About prose says better.
+      // The strip stretches to whatever it is given and does not need filling.
       { icon: "handshake", value: "Shelter & Livelihood", label: "Scheme pillars" },
-      { icon: "account_balance", value: "Social Justice & Empowerment", label: "Implementing ministry" },
     ],
     nav: [
       {
@@ -1317,6 +1553,13 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         ],
       },
       {
+        label: "PUBLICATIONS & REPORTS",
+        items: [
+          { label: "Documents & Downloads", href: "#documents-downloads" },
+          { label: "SOPs", href: "/website/organisation/support-for-marginalized-individuals-for-livelihood-and-enterprise-smile/sop" },
+        ],
+      },
+      {
         label: "CONNECT & ENGAGE",
         items: [
           { label: "Scheme Nodal Desk", href: "#contact" },
@@ -1324,6 +1567,44 @@ export const ORGANISATION_DETAILS: Record<string, OrganisationDetail> = {
         ],
       },
     ],
+    // The two guidelines the source site publishes on PM-AJAY's guidelines page.
+    // They are SMILE's — the Beggary Scheme's operational guidelines and the
+    // model guidelines for shelter homes — and they were filed under PM-AJAY
+    // upstream, which is that site's own mistake. They belong here, and this is
+    // the only place in the estate that holds them.
+    downloads: {
+      heading: "Documents & Downloads",
+      description:
+        "Guidelines and standard operating procedures published for the SMILE Beggary Scheme.",
+      groups: [
+        {
+          id: "documents-downloads",
+          heading: "Documents & Downloads",
+          viewAllHref: "/website/forms-templates",
+          items: [
+            {
+              label: "SMILE Beggary Scheme — operational guidelines",
+              officialName:
+                "Operational Guidelines for SMILE (Support for Marginalized Individuals for Livelihood and Enterprise) - Beggary Scheme",
+              meta: "The scheme's governing document",
+              href: "/website/documents/sample/acts-rules-sample.pdf",
+              kind: "pdf",
+              group: "Guidelines",
+            },
+            {
+              label: "Shelter homes — model guidelines",
+              officialName:
+                "Model Guidelines on Care, Rehabilitation and Management of Beggars' / Shelter Homes",
+              meta: "For implementing agencies running shelter homes",
+              href: "/website/documents/sample/advisory-sop-sample.pdf",
+              kind: "pdf",
+              group: "Guidelines",
+            },
+          ],
+        },
+      ],
+    },
+
     components: {
       heading: "Core Implementation Areas",
       items: [

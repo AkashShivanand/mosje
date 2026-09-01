@@ -1,8 +1,8 @@
 /**
  * PM-AJAY — mirrored snapshot of the public report feeds.
  *
- * Real figures, taken from the endpoints named below on the date in
- * `PMAJAY_AS_ON`. NOT invented, not rounded, not extrapolated. It exists so a
+ * Real figures, taken from the endpoints named below on the date each carries —
+ * `GIA_AS_ON`, `HOSTEL_AS_ON`. NOT invented, not rounded, not extrapolated. It exists so a
  * page still shows the department every figure it publishes when the feed is
  * unreachable, per `.claude/rules/live-data-fallback.md`.
  *
@@ -22,7 +22,36 @@
  * which is a false statement, not a missing one.
  */
 
-export const PMAJAY_AS_ON = "28 August 2026";
+/*
+ * ONE DATE PER CAPTURE, because there is more than one capture.
+ *
+ * There used to be a single `PMAJAY_AS_ON` covering both datasets below, and it
+ * is shown to the reader — the Illustrative banner says "as on {date}". Two
+ * endpoints captured on different days cannot share one honest date: refreshing
+ * the hostel figures and bumping the shared date would have made the banner
+ * claim a freshness the GIA numbers never had, and leaving it would have made it
+ * claim staleness the hostel numbers no longer had. Either way the page states
+ * something untrue.
+ *
+ * That is exactly how the drift got in. The hostel snapshot sat at 2,30,977 /
+ * 1,25,485 under a date of 28 August while the feed answered 1,57,708 / 89,776,
+ * and nothing compared the two — the date asserted freshness, and only a date.
+ *
+ * Split the constant the day you capture one dataset without the other. Compare
+ * both against their feeds with `npm run check:feed-drift`.
+ */
+
+/** GIA — approved-by-domain and physical-progress, captured together. */
+export const GIA_AS_ON = "28 August 2026";
+
+/** Hostels — /reports/hostel/summary, re-captured after it was found stale. */
+export const HOSTEL_AS_ON = "31 August 2026";
+
+/**
+ * @deprecated Ambiguous — it cannot be right for both datasets at once. Use
+ * `GIA_AS_ON` or `HOSTEL_AS_ON`, whichever the surface is actually showing.
+ */
+export const PMAJAY_AS_ON = GIA_AS_ON;
 
 export interface GiaBreakdown {
   name: string;
@@ -681,8 +710,8 @@ export interface HostelCounts {
  */
 export const HOSTEL_FALLBACK: HostelCounts = {
   completed_hostels: 0,
-  beneficiaries_covered: 230977,
-  beneficiaries_occupied: 125485,
+  beneficiaries_covered: 157708,
+  beneficiaries_occupied: 89776,
 };
 
 /**
@@ -693,7 +722,7 @@ export const HOSTEL_FALLBACK: HostelCounts = {
  * exists to avoid making. So this figure is DERIVED and its derivation is
  * stated, rather than picked:
  *
- *   230,977 places covered ÷ 100 seats a hostel ≈ 2,310
+ *   157,708 places covered ÷ 100 seats a hostel ≈ 1,577
  *
  * 100 seats is an indicative institutional hostel; it is a modelling
  * assumption, not a published norm, which is why the figure never appears
@@ -702,5 +731,5 @@ export const HOSTEL_FALLBACK: HostelCounts = {
  */
 export const HOSTEL_FALLBACK_ILLUSTRATIVE: HostelCounts = {
   ...HOSTEL_FALLBACK,
-  completed_hostels: 2310,
+  completed_hostels: 1577,
 };

@@ -1,0 +1,908 @@
+/* ============================================================================
+   "Where PM-AJAY works" — the reach section on the PM-AJAY organisation page.
+
+   ONE INSTRUMENT, NOT A CARD MOSAIC. The section is a heading, a single white
+   panel holding the map and the ranked list as two regions divided by a
+   hairline, and a footnote. It was six stacked surfaces on a tint, in which the
+   map — the only reason the section exists — got 23% of the area and arrived
+   397px in.
+
+   The panel keeps its border and radius on purpose. The family this page
+   belongs to is contained white surfaces on a tinted band (the fact strip in
+   the hero is one, the component cards above are three), and the estate holds
+   every section to `.sa-container`. Going full-bleed here would read as a
+   different product. What was wrong was never the container; it was having four
+   of them.
+
+   Everything is token-bound; there are no raw colours and no raw spacing.
+   ============================================================================ */
+
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ── Heading ───────────────────────────────────────────────────────────── */
+
+  /*
+    The heading is `SectionTitle` — the same component every other band on this
+    page uses. Nothing here restyles it; the class exists only to space it from
+    the panel below, which is the one thing a section owns about its own header.
+  */
+  .pmw__head {
+    margin-bottom: var(--sa-stack-16);
+  }
+
+  /* ── The instrument ────────────────────────────────────────────────────── */
+
+  .pmw__instrument {
+    background-color: var(--sa-bg-neutral-base);
+    border: 1px solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    /* The regions are divided by their own hairlines, so the panel itself
+       carries no padding — that is what lets the map run to the inner edge. */
+    overflow: hidden;
+  }
+
+  /* ── Controls: the key IS the switch ───────────────────────────────────── */
+
+  .pmw__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    /*
+      The gap BETWEEN the keys and the filters has to beat the gap inside
+      either, or the row reads as one run and each key's swatch drifts toward
+      whichever label is nearer.
+    */
+    gap: var(--sa-inline-12) var(--sa-inline-24);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  /*
+    The gap BETWEEN keys has to beat the gap inside one, or the row reads as a
+    single run and each key's swatch drifts toward whichever label is nearer.
+    Inside a key the swatch sits 8px from its own words; between keys it is 16
+    plus each key's own padding.
+  */
+  .pmw__layers {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-16);
+  }
+
+  /*
+    ── ONE GROUP PER LAYER ──────────────────────────────────────────────────
+
+    The bar was five siblings at one gap — two keys and three chips — so the
+    chips read as peers of the keys rather than as the Hostels key's own
+    controls. They filter hostels and nothing else, and they disappear when the
+    hostels layer is switched off, which is the giveaway nobody could see.
+
+    Each layer is one group now, and the RULE between the groups is what says
+    so: a divider is a stronger statement than any amount of extra gap, and it
+    survives the row wrapping onto two lines, which a gap does not.
+  */
+  .pmw__group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    /* The chips belong to the key beside them, so they sit NEARER it than the
+       groups sit to each other — 8 inside, 16 plus a rule between. */
+    gap: var(--sa-inline-8);
+    min-width: 0;
+  }
+
+  .pmw__group + .pmw__group {
+    padding-left: var(--sa-padding-16);
+    border-left: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  /*
+    `0 1 auto`, not `1 1 auto`: stretched, the keys took the whole row and
+    pushed the filters onto a second one even where both would have fitted.
+  */
+  .pmw__layers {
+    flex: 0 1 auto;
+    margin: 0;
+  }
+
+  .pmw__filters {
+    display: flex;
+    align-items: center;
+  }
+
+  .pmw__chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--sa-inline-6);
+    margin: 0;
+    padding: 0 0 0 var(--sa-padding-4);
+    border: 0;
+  }
+
+  /*
+    The key dot inside the DS Chip's `leadingIcon` slot. The chip owns its own
+    pill, selection tint, border and focus ring; all this contributes is which
+    colour the mark on the map is.
+  */
+  .pmw__chipdot {
+    display: block;
+    width: var(--sa-stack-8);
+    height: var(--sa-stack-8);
+    border-radius: var(--sa-shape-full);
+  }
+
+  /* ── Where am I: breadcrumb + search ───────────────────────────────────── */
+
+  /* Lives in the rail head now — see the component's note there. */
+  /*
+    NO GAP. The crumbs' own padding already separates them, and the separator
+    glyph carries several pixels of its own side bearing on top of that — see
+    `.pmw__crumbsep`. A gap here was the third helping of the same space.
+  */
+  /*
+    ── THE TRAIL IS ONE LINE, AND IT IS THE LAST CRUMB THAT GIVES ───────────
+
+    "India > West Bengal > 24 Paraganas South" is wider than any rail this
+    layout will ever have. Left to itself the flex row wrapped "West Bengal"
+    onto two lines and then truncated the district anyway — a two-line
+    breadcrumb above a search field, with the level you are actually on the
+    part that got cut.
+
+    Nothing wraps now. The ancestor crumbs keep their names, because they are
+    short and they are the way back; the CURRENT crumb is the one with a
+    `min-width: 0` and an ellipsis, because the reader is looking at that level
+    and the heading above already names it.
+  */
+  .pmw__crumbs {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    font-size: var(--sa-type-body-3-size);
+    min-width: 0;
+  }
+
+  .pmw__crumb {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  /* The level you are on is the one that gives — see `.pmw__crumbs`. */
+  .pmw__crumb--here {
+    flex: 0 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pmw__crumb {
+    padding: var(--sa-padding-2) var(--sa-padding-4);
+    border-radius: var(--sa-shape-4);
+    color: var(--sa-text-brand-primary-base);
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .pmw__crumb:hover:not(:disabled) {
+    background-color: var(--sa-bg-brand-primary-base);
+  }
+
+  .pmw__crumb:disabled {
+    color: var(--sa-text-neutral-subtle);
+    font-weight: 400;
+    cursor: default;
+  }
+
+  .pmw__crumb--here {
+    color: var(--sa-text-neutral-base);
+    font-weight: 600;
+    padding: var(--sa-padding-2) var(--sa-padding-4);
+  }
+
+  /*
+    ds-exempt(optical): the chevron inks about 6px in the middle of its 16px
+    box, so the glyph's own side bearing adds ~5px of air on each side that no
+    spacing token can see. Measured before and after: "India" to "West Bengal"
+    was 30px of space around a 6px arrow — 6px of crumb padding, 4px of list
+    gap and 5px of bearing, twice over. Pulling 4px back on each side, with
+    the gap dropped and the padding at 4, leaves 5px a side, which is what the
+    breadcrumb looked like it should have had all along.
+  */
+  .pmw__crumbsep {
+    flex: none;
+    margin-inline: -4px;
+    color: var(--sa-icon-neutral-subtler);
+  }
+
+  /*
+    The DS `Search` at `sm` brings the field, the leading glyph, the clear
+    button and the focus ring. What is left here is the pill radius this rail
+    wants, so the field sits with the chips rather than against them — and the
+    full width, which is the whole reason the count moved up a line.
+  */
+  .pmw__search {
+    width: 100%;
+    margin-bottom: var(--sa-stack-8);
+    border-radius: var(--sa-shape-full);
+  }
+
+  /*
+    ── NOTHING TO DRAW ──────────────────────────────────────────────────────
+    Same card as the instrument it replaces, so the section keeps its shape on
+    the page and the reader does not read a collapsed layout as a broken one.
+  */
+  .pmw__instrument--empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sa-stack-8);
+    min-height: 18rem;
+    padding: var(--sa-padding-40) var(--sa-padding-24);
+    text-align: center;
+  }
+
+  .pmw__emptyicon {
+    color: var(--sa-icon-neutral-subtler);
+  }
+
+  .pmw__emptytitle {
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .pmw__emptybody {
+    max-width: 28rem;
+    margin: 0;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Search scope: places or villages ─────────────────────────────────── */
+
+  .pmw__scope {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-6);
+    margin-bottom: var(--sa-stack-8);
+  }
+
+  /* A village row has a place under it instead of a bar and two figures. */
+  .pmw__rowinner--village {
+    align-items: center;
+  }
+
+  /*
+    ── A ROW IS A FIXED TRACK, NOT A HEIGHT THAT EMERGES ────────────────────
+
+    A village or district row carries a place instead of a bar: two lines,
+    where a state row is one line and a 4px rule. Left to its content that was
+    53px against the state row's 41, and ten of them overran the list by 120px
+    — which is what the overlap was.
+
+    Two fixes were tried and both were the wrong shape. Truncating the place to
+    one line cuts "Chikkamagaluru, Karnataka" to "Chikkamagaluru…", losing the
+    state, which is the half a reader searching a village name does not already
+    know. Tightening the leading worked on paper and lost to `.pmw__rowinner`'s
+    own `padding` shorthand further down this file — same specificity, later in
+    source order, so the shorthand reset the padding-block every time.
+
+    The list is a GRID with a fixed track instead. Every row is 44px whatever
+    is in it, the panel is ten tracks tall, and no future row shape can make
+    the list overrun its box — which is the property the two arithmetic fixes
+    did not have. `align-content: start` keeps a short last page at the top
+    rather than stretching three rows over 440px.
+  */
+  .pmw__villageplace,
+  .pmw__rowplace {
+    display: block;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+    A village inside its own district is a LEAF — no chevron, nothing to press,
+    and no district-and-state line, because the breadcrumb overhead already
+    says both. One line, so it sits in the track like a state row does.
+  */
+  .pmw__rowinner--leaf {
+    cursor: default;
+  }
+
+  /* Two lines inside a 44px track need the snugger leading; one line does not. */
+  .pmw__rowinner--village .pmw__state,
+  .pmw__row:has(.pmw__rowplace) .pmw__state {
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  /* The retry inside the error sentence — a link in prose, not a button box. */
+  .pmw__retry {
+    padding: 0;
+    font: inherit;
+    color: var(--sa-text-brand-primary-base);
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .pmw__retry:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /*
+    ── THE MAP DOES NOT FILL ITS HALF, AND THE FIX IS NOT IN THIS FILE ──────
+
+    `IndiaPointMap`'s viewBox is 800x560 and the land inside it measures
+    486x550, from x=161 to x=647. So 314 of the 800 units — 39% of the width —
+    is empty ocean, and the drawn map is very nearly square (0.88) inside a
+    1.43 box. Width-bound in a 646px column, India renders 435px tall in a
+    656px panel, leaving a 221px band.
+
+    Cropping the ocean in CSS was tried and does not work from here: the SVG
+    sits inside `ChartFrame`'s auto-height wrapper, so `height: 100%` resolves
+    to `auto` and the element stays width-bound however it is styled.
+
+    THE REAL FIX IS THE VIEWBOX, in the design system — `INDIA_STATES_VIEWBOX`
+    tightened to the ink, with `IndiaPointMap`'s zoom `target` aspect and its
+    `zoom` divisor following it. That constant is shared with `IndiaMap` and
+    `IndiaBubbleMap`, so it is a change to three components and wants its own
+    pass with all three verified, not a late edit riding on this one.
+
+    Until then the band is symmetric — see `align-content: center` below — so
+    it reads as an inset rather than as a component that failed to lay out.
+  */
+
+  /* ── Panel: map | rail, divided by a hairline ──────────────────────────── */
+
+  .pmw__panel {
+    display: grid;
+    /*
+      The rail is a bounded column and the map takes the rest. The rail holds
+      real text, so it must not shrink with the map — an SVG scales, a list
+      reflows, and an early build let the rail's labels render at 5.9px.
+
+      Clamped rather than fixed: at a flat 22rem the rail took 42% of the panel
+      on a 1280px screen and the map was left 422px to draw a thousand cells in.
+    */
+    grid-template-columns: minmax(0, 1fr) clamp(22rem, 30%, 26rem);
+    align-items: stretch;
+    /*
+      A FLOOR, so neither region is starved by the other's natural size.
+
+      The rail has to hold its head, its search, its column labels, TEN rows and
+      the pager; the map's height is only ever its own width over 800:560. The
+      floor is what the rail needs, and it costs the map a symmetric band of
+      quiet above and below — composition, rather than the 741px of one-sided
+      slack this layout started with.
+
+      DERIVED, NOT GUESSED — AND THE MAP IS WHY IT IS NOT SIMPLY TALLER.
+
+      30rem was sized for seven state rows at 41px and silently under-sized for
+      seven VILLAGE rows at 57px, which is what let three rows paint over the
+      pager.
+
+      Ten of a 57px row needs 782px, and that was tried: the map does NOT grow
+      to meet it. Its SVG is width-bound at 800:560, so at 646px wide it is
+      435px tall whatever the box does, and a 782px panel left it floating in
+      349px of white — 175 above and below the map that is the reason the
+      section exists. Height the map cannot use is not composition, it is a
+      hole.
+
+      So the ROW shrank instead of the panel growing — see `.pmw__rowplace`,
+      where a two-line row is brought to 40px, within a pixel of a state row.
+
+        22 head + 8 · 40 search + 8 · 26 scope + 8 · 35 columns
+        · 10 x 44 tracks · 41 pager · 24 rail padding  =  652px
+
+      41rem. Both lists are ten 44px tracks, so the panel does not change
+      height when the reader switches between them, and the map keeps a
+      symmetric band that is an inset rather than a hole.
+    */
+    min-height: 41rem;
+  }
+
+  /*
+    CENTRED, NOT TOP-PINNED. The two regions stretch to the taller of them, and
+    the taller one is the list. The map used to sit at the top of whatever
+    height that produced, so every pixel of slack piled up underneath it — 741
+    of them once the list was expanded, a 563px map adrift in a 1312px column.
+  */
+  .pmw__map {
+    display: grid;
+    align-content: center;
+    padding: var(--sa-padding-12);
+    min-width: 0;
+  }
+
+  /* ── Rail ──────────────────────────────────────────────────────────────── */
+
+  .pmw__rail {
+    /* The hairline IS the division. Two bordered cards side by side read as a
+       dashboard; one panel with a rule reads as one instrument. */
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid var(--sa-border-neutral-subtle);
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    min-width: 0;
+  }
+
+  .pmw__railhead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    margin-bottom: var(--sa-stack-8);
+  }
+
+  .pmw__railcount {
+    flex: none;
+    font-size: var(--sa-type-body-3-size);
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+    Column headings, so the figures below can be bare. Every row used to carry
+    its own " villages" and " hostels" on two stacked lines — twenty-eight rows
+    repeating two words each — which squeezed the state name to 83px and
+    rendered "Uttar Pradesh" and "Andhra Pradesh" ellipsised.
+  */
+  /*
+    ── THE HEADINGS SIT OVER THEIR OWN FIGURES ──────────────────────────────
+
+    They did not. The header row carried `padding: 6px 0` and the rows beneath
+    it `padding: 6px 4px`, with `button.pmw__rowinner` adding 16px on the right
+    to clear its chevron — so "VILLAGES" and "HOSTELS" stood up to 16px wide of
+    the numbers they label, on a right-aligned column where that reads as a
+    misprint rather than as a gap.
+
+    Matching the padding was necessary and not sufficient: both grids were
+    `1fr auto auto`, and an `auto` track sizes to ITS OWN content, so
+    "VILLAGES" (8 characters) and "480" (3 digits) were never going to produce
+    the same column. They came out 36px apart.
+
+    Two grids that must line up have to be told the same thing, not similar
+    things — so the numeric tracks are a stated width in both, and the name
+    takes what is left.
+  */
+  .pmw__railcols {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem;
+    gap: var(--sa-inline-8);
+    padding: var(--sa-padding-6) var(--sa-padding-16) var(--sa-padding-4)
+      var(--sa-padding-4);
+    margin-bottom: var(--sa-stack-4);
+    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+    ── THE HEADINGS ARE BUTTONS ─────────────────────────────────────────────
+
+    Quiet at rest and unmistakably pressable on approach: they keep the
+    uppercase label they always had, and gain a sort glyph, a hover ground and
+    a 24px target. The glyph is `unfold_more` while the column is merely
+    AVAILABLE — a heading with no mark at all reads as plain text, which is
+    exactly what these were before.
+  */
+  .pmw__colbtn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-2);
+    /* 24px tall — the WCAG 2.2 SC 2.5.8 minimum, in a heading row that has
+       only 11px type to justify its height. */
+    min-height: 24px;
+    padding: var(--sa-padding-2) var(--sa-padding-4);
+    margin-inline: calc(var(--sa-padding-4) * -1);
+    border-radius: var(--sa-shape-4);
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+  }
+
+  .pmw__colbtn:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .pmw__colbtn:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* The active column is the only one in full ink, so which column the list
+     is ordered by reads before the arrow does. */
+  .pmw__colbtn.is-active {
+    color: var(--sa-text-neutral-base);
+  }
+
+  /*
+    The numeric headings sit at the right edge of their column, over the
+    figures they order — so the button's own padding is pulled back on the
+    right instead of the left, or the label would sit 4px off the digits it
+    heads.
+  */
+  /*
+    ── ON A RIGHT-ALIGNED COLUMN THE ARROW LEADS ────────────────────────────
+
+    The tracks lined up and the columns still read as misaligned, because the
+    heading ends with its sort glyph: the arrow was flush with the figures and
+    the WORD "VILLAGES" sat 18px inside them. The eye aligns the word, not the
+    icon, so a correctly-tracked column looked wrong.
+
+    Reversed, so the label's right edge is the column's right edge and the
+    arrow hangs to its left, where it reads as an adornment on the heading
+    rather than as the last item in the column.
+  */
+  .pmw__colbtn--num {
+    flex-direction: row-reverse;
+    justify-content: flex-start;
+  }
+
+  .pmw__railcols > * + * {
+    justify-self: end;
+  }
+
+  /* Faint while the column is merely available; full ink once it is the sort. */
+  .pmw__colsort {
+    opacity: 0.45;
+  }
+
+  .pmw__colbtn.is-active .pmw__colsort,
+  .pmw__colbtn:hover .pmw__colsort {
+    opacity: 1;
+  }
+
+  /*
+    THE LIST SCROLLS; THE SECTION DOES NOT GROW.
+
+    "Show all 28 states" used to expand the list in place, and because the two
+    regions stretch together it took the section from 839px to 1659px and the
+    whole page with it — while leaving 741px of empty white beside the list
+    where the map had been. Every row is rendered now and the overflow is the
+    list's own, so the panel is the same height whatever is in it and there is
+    no button whose only job was to double the page.
+
+    `max-height` in rem rather than a row count: it has to be a length the
+    panel can be measured against, and 21rem is eight rows, which is what the
+    collapsed list showed anyway.
+  */
+  .pmw__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    /*
+      THE BACKSTOP THAT WAS MISSING, AND IT COST 96 PIXELS OF OVERLAP.
+
+      The list is `flex: 1 1 0` in a fixed-height column, so its BOX shrinks to
+      fit — but `overflow: visible` let its CONTENT keep going, and a page of
+      two-line village rows (57px against a state row's 41px) needed 399px of a
+      303px box. The last three rows painted straight over the pager.
+
+      The panel below is sized for ten of the tallest row, so this should never
+      engage. It is here because "should never" is how the first one happened:
+      a row must not be able to escape its list, whatever a future row's height
+      turns out to be.
+    */
+    overflow: hidden;
+    /*
+      NO SCROLL. A page holds a fixed seven rows, so the list has a fixed height
+      and needs no overflow of its own — which is the point: a nested scroll
+      region inside a card is a trap on a phone, where a reader flicking the
+      page down lands in the list and moves the list instead.
+
+      `flex: 1` still, so a short last page leaves its space rather than pulling
+      the pager up and shortening the panel.
+    */
+    flex: 1 1 0;
+    min-height: 0;
+  }
+
+  /*
+    ── EVERY ROW IS ONE FIXED TRACK ─────────────────────────────────────────
+
+    Declared HERE, after the base rule, and that placement is the fix. The same
+    three declarations sat above it first and lost silently: `.pmw__list` and
+    `.pmw__row` are single-class selectors, so the later block won on source
+    order alone and the list stayed `display: flex` with content-sized rows. A
+    stylesheet that reads top-down is not the same as one that cascades
+    top-down, and this file is long enough that the difference matters.
+
+    A fixed track is what makes the overlap impossible rather than merely
+    fixed. A village row is two lines and a state row is one line plus a rule;
+    at content height that is 53px against 41px, and ten of the taller ones
+    overran the list by 120px and painted over the pager. Now the row is 44px
+    whatever is in it, the panel is ten tracks tall, and no future row shape
+    can escape.
+
+    `align-content: start` so a short last page sits at the top instead of
+    three rows stretching over 440px.
+  */
+  /*
+    ── TEN TRACKS, ALWAYS, SO THERE IS NO GAP UNDER THE LAST ROW ────────────
+
+    `grid-auto-rows: 44px` with `align-content: start` made every row 44px and
+    left whatever the panel had spare as a band of white between the last row
+    and the pager — 60px of it on a tall panel, which reads as a list that
+    stopped early.
+
+    A fixed count of flexible tracks instead: `minmax(44px, 1fr)`, repeated
+    `--pmw-rows` times, so the ten tracks divide the list exactly and a page
+    with three rows on it keeps those rows the same height as a full one. The
+    count comes from `PAGE_SIZE` in the component rather than being written
+    twice.
+  */
+  .pmw__list {
+    display: grid;
+    grid-template-rows: repeat(var(--pmw-rows, 10), minmax(44px, 1fr));
+  }
+
+  .pmw__row {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .pmw__row > .pmw__rowinner {
+    height: 100%;
+  }
+
+  .pmw__row {
+    display: block;
+  }
+
+  .pmw__rowinner {
+    position: relative;
+    display: grid;
+    /* Must match `.pmw__railcols` exactly — see the note there. */
+    grid-template-columns: minmax(0, 1fr) 3.5rem 3.5rem;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    width: 100%;
+    /* The 16px right is the chevron's reserve, and EVERY row carries it —
+       including the ones with no chevron, or a state whose districts do not
+       open would put its figures 12px right of the heading above them. */
+    padding: var(--sa-padding-6) var(--sa-padding-16) var(--sa-padding-6)
+      var(--sa-padding-4);
+    text-align: left;
+    border-radius: var(--sa-shape-6);
+    background: none;
+    border: 0;
+    color: inherit;
+    font: inherit;
+  }
+
+  button.pmw__rowinner {
+    cursor: pointer;
+  }
+
+  .pmw__rowinner:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  /*
+    A row that opens a state has to look like one. Absolutely positioned in the
+    row's own right padding so it costs the state name no width — the names are
+    already tight enough that "Uttar Pradesh" has been ellipsised once.
+  */
+  /*
+    `overflow-y: auto` makes the horizontal axis `auto` too, so the list clips
+    both ways — a chevron hung at `right: -2px` was sheared off at the edge and
+    read as a stray tick beside the numbers.
+  */
+  /*
+    Placement only. `Icon` sets its own font-size and optical-size axis from
+    `size`, so re-setting font-size here would draw the glyph for one size and
+    display it at another.
+  */
+  .pmw__go {
+    position: absolute;
+    right: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--sa-text-neutral-subtle);
+    opacity: 0.55;
+    transition: opacity 160ms ease-out;
+  }
+
+  .pmw__rowinner:hover .pmw__go,
+  .pmw__rowinner:focus-visible .pmw__go {
+    opacity: 1;
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .pmw__rowbody {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    min-width: 0;
+  }
+
+  .pmw__state {
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-base);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .pmw__track {
+    display: block;
+    height: var(--sa-stack-4);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-subtle);
+    overflow: hidden;
+  }
+
+  .pmw__fill {
+    display: block;
+    height: 100%;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-chart-seq-600);
+  }
+
+  .pmw__value {
+    text-align: right;
+    font-size: var(--sa-type-body-3-size);
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-base);
+    white-space: nowrap;
+  }
+
+  .pmw__value--alt {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Room for the chevron, on the rows that have one. */
+  /*
+    Pinned to the bottom of the rail by `margin-top: auto`, so it holds still
+    while the rows above it change — a control that moves between pages is a
+    control you have to re-find every time you use it.
+  */
+  /*
+    The rail's floor is 19rem because THIS has to fit on one line: the DS
+    pagination's numbers and its "Next" step need 267px, and at 18rem the rail
+    gave it 255 and it wrapped, so the control read as two stray rows rather
+    than one.
+  */
+  /*
+    The pager sits with the range it pages, at the foot of the rail. Centred
+    alone it read as a second footer under a section that already has one, and
+    left "how much list is there" unanswered.
+  */
+  .pmw__pagerow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    flex: none;
+    margin-top: auto;
+    padding-top: var(--sa-padding-8);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
+  }
+
+  .pmw__range {
+    flex: 0 0 auto;
+    font-size: var(--sa-type-body-3-size);
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .pmw__pager {
+    flex: 0 0 auto;
+    /* The DS pager centres itself; inside this row it is the right-hand end. */
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  .pmw__empty {
+    margin: var(--sa-stack-12) 0;
+    font-size: var(--sa-type-body-2-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Footnote ──────────────────────────────────────────────────────────── */
+
+  .pmw__foot {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-inline-16);
+    margin-top: var(--sa-stack-8);
+  }
+
+  /*
+    THE SENTENCE FLEXES, THE LINK DOES NOT.
+
+    Both children were `flex: 0 1 auto`, so the paragraph claimed its full
+    intrinsic width and the link wrapped under it with 400px of empty row to
+    its right. `min-width: 0` plus `flex: 1 1 auto` makes the sentence the one
+    that gives, which is also the correct reading order: the fact is content,
+    the download is an action on it.
+  */
+  .pmw__reach {
+    flex: 1 1 auto;
+    min-width: 0;
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .pmw__footlink {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    white-space: nowrap;
+    /* 18px of text is under the 24px minimum target (WCAG 2.2 SC 2.5.8); the
+       padding, not the type size, is what carries it there. */
+    padding-block: var(--sa-padding-4);
+    font-size: var(--sa-type-body-3-size);
+    font-weight: 600;
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .pmw__footlink:hover {
+    text-decoration: underline;
+  }
+
+  /* ── Responsive ────────────────────────────────────────────────────────── */
+
+  @media (max-width: 1024px) {
+    .pmw__panel {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .pmw__rail {
+      /* Stacked, the division runs across rather than down. */
+      border-left: 0;
+      border-top: 1px solid var(--sa-border-neutral-subtle);
+    }
+
+    /* Nothing stretches the map here, so it needs no centring slack. */
+    .pmw__map {
+      align-content: start;
+    }
+
+    /* Seven rows is seven rows here too; nothing to cap and nothing to scroll. */
+    .pmw__list {
+      flex: 0 1 auto;
+    }
+  }
+
+  @media (max-width: 720px) {
+    .pmw__head,
+    .pmw__foot {
+      flex-direction: column;
+      gap: var(--sa-stack-8);
+    }
+
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pmw__layer,
+    .pmw__chip {
+      transition: none;
+    }
+
+    .pmw__layer:active {
+      transform: none;
+    }
+  }
+}

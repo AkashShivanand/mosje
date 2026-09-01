@@ -17,55 +17,14 @@
      still reads in greyscale and to a colour-blind viewer. The dot is a
      redundant cue, not the signal. */
 
+  /*
+    The chip IS the DS `Badge` — status colour, tonal fill, leading dot, pill
+    radius and the label's type all come from there. What is left here is the
+    one thing a badge has no reason to know: this pill carries a `title`, so
+    the pointer says the text is worth hovering.
+  */
   .dm-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-6);
-    flex: 0 0 auto;
-    padding: var(--sa-padding-2) var(--sa-padding-8);
-    border-radius: var(--sa-shape-full);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    white-space: nowrap;
     cursor: help;
-  }
-
-  /* The dot takes the chip's own ink. Stated per variant rather than as
-     `currentcolor`, which the token gate reads as an unbound colour. */
-  .dm-chip__dot {
-    width: 6px;
-    height: 6px;
-    border-radius: var(--sa-shape-full);
-  }
-
-  .dm-chip--live {
-    background-color: var(--sa-bg-status-success-subtler);
-    color: var(--sa-text-status-success-base);
-  }
-
-  .dm-chip--live .dm-chip__dot {
-    background-color: var(--sa-text-status-success-base);
-  }
-
-  .dm-chip--mixed {
-    background-color: var(--sa-bg-status-warning-subtler);
-    color: var(--sa-text-status-warning-base);
-  }
-
-  .dm-chip--mixed .dm-chip__dot {
-    background-color: var(--sa-text-status-warning-base);
-  }
-
-  .dm-chip--mock {
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-neutral-bolder);
-  }
-
-  .dm-chip--mock .dm-chip__dot {
-    background-color: var(--sa-text-neutral-bolder);
   }
 
   /* Inline beside a label, on a line of its own weight. Sits after the words so

@@ -420,22 +420,29 @@ export const SCHEMES: readonly Scheme[] = [
       "the student's admission details",
     ),
   },
-  {
-    id: "entrepreneurial-schemes-of-nbcfdc",
-    name: "Entrepreneurial Schemes of NBCFDC",
-    who: ["obc"],
-    stage: ["working"],
-    need: ["money", "skills"],
-    benefit: "concessional finance for members of the backward classes to start or grow a business",
-    runBy: "National Backward Classes Finance and Development Corporation",
-    jurisdiction: "Corporation",
-    docs: DOCS_CASTE_BANK,
-    applyVia: {
-      label: "NBCFDC",
-      href: "https://nbcfdc.gov.in",
-      bring: "your caste and income certificates and your bank account details",
-    },
-  },
+  /*
+   * "Entrepreneurial Schemes of NBCFDC" WAS HERE, AND IS GONE ON PURPOSE.
+   *
+   * The department withdrew the page. `entrepreneurial-schemes-of-nbcfdc`,
+   * `educational-loans-provided-by-nbcfdc` and
+   * `schemes-undertaken-by-nbcfdc-for-promoting-social-empowerment` were all
+   * dropped from `schemes.json` by the re-ingest in 72adff05, and all three now
+   * return 404 at `dosje.gov.in/schemes-and-services/<slug>/` while their
+   * sibling `awareness-camp-nbcfdc` still returns 200 — so the catalogue is
+   * right and the scrape did not simply miss them.
+   *
+   * DO NOT RE-ADD IT FROM MEMORY. NBCFDC does still run concessional finance,
+   * and that is exactly the trap: this module reports what the department's own
+   * catalogue RECORDS, never what we believe a corporation offers. An entry
+   * whose page the department has taken down sends a citizen to a scheme it no
+   * longer publishes, and its id could only satisfy `every scheme id is a real
+   * entry in the site's own catalogue` by being faked. If the page comes back,
+   * the entry comes back with it.
+   *
+   * The OBC / in-work / needs-money path is not left empty:
+   * `assistance-for-skill-development-of-obcs-dnts-ebcs` is tagged `stage: any`
+   * and still matches it.
+   */
 
   /* -- De-notified, nomadic and semi-nomadic communities ------------------- */
   {

@@ -18,17 +18,22 @@
     "updated \u2014 so the backlog can only go down. Re-run --update-baseline in the",
     "same change that clears some.",
     "",
-    "RECORDED AGAINST THE COMMITTED TREE, not the working one. The first version of this",
-    "file was written from a dirty checkout that carried a separate in-flight change, so it",
-    "froze PageHero.tsx at counts that do not exist on main and the gate failed the moment",
-    "it ran anywhere else. A baseline is a claim about the branch; generate it from what the",
-    "branch actually contains."
+    "RECORDED AGAINST THE COMMITTED TREE, not the working one. An earlier version was",
+    "written from a dirty checkout and froze PageHero.tsx at counts that did not exist on",
+    "main, so the gate failed the moment it ran anywhere else. A baseline is a claim about",
+    "the branch; generate it from what the branch actually contains.",
+    "",
+    "Re-recorded after merging origin/main. Fifty-two commits landed while this branch was",
+    "open and brought their own typography with them \u2014 site-page-header.css, fact-strip.css,",
+    "two Storybook stories and a chart leading. Those are INHERITED debt, not new violations:",
+    "the ratchet's contract is that the change which brings a file in re-baselines it, in the",
+    "same commit, so the number can still only go down from here."
   ],
   "totals": {
-    "size-off-ramp": 193,
-    "size": 378,
-    "leading": 186,
-    "tracking": 17,
+    "size-off-ramp": 188,
+    "size": 381,
+    "leading": 189,
+    "tracking": 20,
     "family": 19
   },
   "files": {
@@ -998,13 +1003,6 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/components/website/layout/PageHero.tsx": {
-      "size-off-ramp": 5,
-      "size": 0,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/components/website/nmba/CentreMapCanvas.tsx": {
       "size-off-ramp": 0,
       "size": 3,
@@ -1176,8 +1174,15 @@
     "packages/design-system/components/data-display/charts/charts.css": {
       "size-off-ramp": 2,
       "size": 3,
-      "leading": 1,
+      "leading": 2,
       "tracking": 0,
+      "family": 0
+    },
+    "packages/design-system/components/data-display/fact-strip.css": {
+      "size-off-ramp": 0,
+      "size": 0,
+      "leading": 0,
+      "tracking": 1,
       "family": 0
     },
     "packages/design-system/components/data-display/metric-card.css": {
@@ -1271,6 +1276,13 @@
       "tracking": 0,
       "family": 0
     },
+    "packages/design-system/components/layout/site-page-header.css": {
+      "size-off-ramp": 0,
+      "size": 0,
+      "leading": 2,
+      "tracking": 2,
+      "family": 0
+    },
     "packages/design-system/components/navigation/app-switcher-panel.css": {
       "size-off-ramp": 2,
       "size": 1,
@@ -1362,6 +1374,13 @@
       "tracking": 0,
       "family": 0
     },
+    "apps/storybook/stories/Chip.stories.tsx": {
+      "size-off-ramp": 0,
+      "size": 2,
+      "leading": 0,
+      "tracking": 0,
+      "family": 0
+    },
     "apps/storybook/stories/DemoDock.stories.tsx": {
       "size-off-ramp": 1,
       "size": 0,
@@ -1372,6 +1391,13 @@
     "apps/storybook/stories/Divider.stories.tsx": {
       "size-off-ramp": 0,
       "size": 6,
+      "leading": 0,
+      "tracking": 0,
+      "family": 0
+    },
+    "apps/storybook/stories/Legend.stories.tsx": {
+      "size-off-ramp": 0,
+      "size": 1,
       "leading": 0,
       "tracking": 0,
       "family": 0

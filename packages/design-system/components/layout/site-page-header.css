@@ -1,0 +1,459 @@
+@layer theme, base, components, utilities;
+
+@layer components {
+  /*
+   * The band's gradient runs brighter at the leading edge to deeper at the
+   * trailing one, both stops from the brand ramp so `data-brand` rethemes it.
+   * Figma paints the trailing stop as a raw #3f83c6 with no variable behind it;
+   * see the component's doc comment for why that hex is not reproduced here.
+   */
+  .sa-siteheader__band {
+    display: flex;
+    justify-content: center;
+    background-image: linear-gradient(
+      to left,
+      var(--sa-color-primaryScale-600),
+      var(--sa-color-primaryScale-500)
+    );
+    isolation: isolate;
+    overflow: clip;
+  }
+
+  /* Reserves the space the overlay card sits in, so the card overlaps the band
+     rather than pushing the content below it down. */
+  .sa-siteheader__band--overlaid {
+    padding-block-end: var(--sa-padding-64);
+    margin-block-end: calc(-1 * var(--sa-padding-64));
+  }
+
+  /*
+   * The same reservation, for a card this component does NOT render.
+   *
+   * The estate's organisation template draws the "at a glance" card itself and
+   * pulls it up over the band with `FactStrip --overlap` (−64). The band knew
+   * nothing about that, so the card ate the air the content had beneath it — on
+   * a page with no call-to-action button the standfirst ended almost against the
+   * card's top edge.
+   *
+   * Reserving the same 64 the sibling takes back leaves the content its full
+   * breathing room and lets the card overlap into padding instead of into text.
+   * The number is the handoff's: `Org at a Glance` starts 64 above the bottom of
+   * the blue band. Change it here, in `.ds-fact-strip--overlap` and in
+   * `.orgd__facts::before` together, or the overlap stops being one measurement.
+   */
+  .sa-siteheader__band--reserved {
+    padding-block-end: var(--sa-stack-64);
+  }
+
+  /*
+   * `Container` owns the cap AND the side margin — see its own doc comment, which
+   * is explicit that giving it horizontal padding narrows the column below the
+   * grid. So this rule sets the vertical rhythm and the columns, and nothing
+   * horizontal.
+   */
+  .sa-siteheader__container {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--sa-stack-24);
+    align-items: center;
+    padding-block: var(--sa-padding-64);
+  }
+
+  .sa-siteheader--landing .sa-siteheader__container {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+
+  /*
+   * An inner header is two short lines. Sixty-four points of padding above and
+   * below them leaves a band mostly made of nothing, so it takes the smaller
+   * step — the handoff's own L2 is a shallow strip, not a hero.
+   */
+  .sa-siteheader--inner .sa-siteheader__container {
+    padding-block: var(--sa-padding-32);
+  }
+
+  .sa-siteheader__col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-20);
+    align-items: flex-start;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  /*
+   * The back link belongs to the title, not beside it: 8pt, as the handoff sets
+   * it, so the two read as one block rather than as two stacked items.
+   */
+  .sa-siteheader--inner .sa-siteheader__col {
+    gap: var(--sa-stack-8);
+  }
+
+  .sa-siteheader__eyebrow {
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-label-2-size);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+  }
+
+  .sa-siteheader__logo {
+    display: flex;
+    align-items: center;
+  }
+
+  .sa-siteheader__title {
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-headline-1-size);
+    font-weight: 600;
+    line-height: 1.2;
+    /* Long official names break mid-word rather than overflowing the band. */
+    overflow-wrap: anywhere;
+  }
+
+  /*
+   * The standfirst against its rule. The rule is a border, not a pseudo element,
+   * so it grows with the text it marks however many lines that runs to.
+   *
+   * COLOURED WITH THE *TEXT* INVERSE TOKEN, DELIBERATELY. `--sa-border-neutral-
+   * inverse` is named in the token source but is NOT emitted into the running
+   * cascade — it resolves to nothing, which made the whole `border` declaration
+   * invalid and dropped it to `none`. The rule simply did not draw. Flagged for
+   * the token owner; until it ships, this uses the inverse token that does
+   * resolve, which is the same white.
+   */
+  .sa-siteheader__lead {
+    border-inline-start: 4px solid var(--sa-text-neutral-inverse);
+    padding-inline-start: var(--sa-padding-24);
+    color: var(--sa-text-neutral-inverse);
+    font-size: var(--sa-type-body-1-size);
+    font-style: italic;
+    line-height: 1.5;
+    letter-spacing: 0.5px;
+  }
+
+  .sa-siteheader__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sa-inline-8);
+    margin-block-start: var(--sa-stack-12);
+  }
+
+  /*
+   * The halo is wider than its column — 340 of picture plus 72 of rings on each
+   * side — and that is deliberate: the frame lets the outermost ring run off the
+   * right edge. `overflow: visible` lets it, and the band's own `overflow: clip`
+   * stops it escaping the page.
+   */
+  .sa-siteheader__media {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    min-width: 0;
+    overflow: visible;
+  }
+
+  /*
+   * ── THE HALO ────────────────────────────────────────────────────────────────
+   *
+   * A portrait, ONE static ring holding its edge, and two rings travelling
+   * outward from that edge. The handoff draws three concentric rings; the
+   * innermost is the object's own outline and stays put, and the outer two are
+   * the ones that move.
+   *
+   * WHY ONLY THE INNERMOST IS STATIC. It is the darkest thing on the band and
+   * the only ring doing structural work: it separates a photograph from a blue
+   * gradient at the picture's lower edge, where the band is darkest. Animate it
+   * and the portrait's own boundary breathes, which reads as a rendering fault
+   * rather than as motion. Everything outside it is atmosphere, and atmosphere
+   * can move.
+   */
+  .sa-siteheader__halo {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+    width: 340px;
+    height: 340px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 10px color-mix(in srgb, var(--sa-color-primaryScale-900) 88%, transparent);
+    /* Never from scale(0) — nothing in the world appears out of nothing. */
+    animation: sa-halo-enter var(--sa-motion-emphasis-duration) var(--sa-motion-enter-easing) both;
+  }
+
+  /*
+   * ── THREE FILLED DISCS, NOT RINGS ───────────────────────────────────────────
+   *
+   * THIS IS THE CORRECTION THAT MATTERS. Every earlier version drew ANNULI —
+   * `box-shadow: 0 0 0 <n>px`, which paints a band and leaves its interior
+   * untouched. The component draws **filled circles**. The concentric bands a
+   * reader sees are not outlines at all: they are where translucent discs
+   * OVERLAP, and the edge of each band is simply where one more disc stops
+   * contributing.
+   *
+   * That difference is why rings could never look right no matter how they were
+   * timed. A ring leaves a gap behind it, so the flow needs enough of them to
+   * keep the gap covered, and the eye reads a procession of separate objects. A
+   * disc covers everything inside it, so three are sufficient and the field
+   * between the portrait and the outermost edge is never empty for an instant.
+   *
+   * ── THE KEYFRAMES ARE THE COMPONENT'S OWN STATES ────────────────────────────
+   *
+   * `Image Container with Halo Effect/lg` (99:1334) publishes State=1/2/3, and
+   * they are not three designs — they are three frames of one animation. Read by
+   * DISC IDENTITY rather than by z-order, the layer names track individual discs
+   * moving through the states:
+   *
+   *   disc 0:  416 op 1    →  480 op .48  →  528 op .48
+   *   disc 1:  480 op .48  →  528 op .48  →  568 op 0     (dead)
+   *   disc 2:  528 op .48  →  568 op .48  →  —
+   *   disc 3:  —           →  416 (born)  →  480 op .48
+   *
+   * So one disc's whole life is 416 → 480 → 528 → 568 while its opacity goes
+   * 1 → .48 → .48 → 0, a new one is born every step, and three are alive at any
+   * moment. Against the 416 image that is scale 1 → 1.154 → 1.269 → 1.365.
+   *
+   * ── WHY IT IS BORN OPAQUE, AND WHY THAT IS INVISIBLE ────────────────────────
+   *
+   * A disc starts at exactly the portrait's size, BEHIND the portrait, so its
+   * opaque first instant is completely occluded. Nothing pops into existence —
+   * the birth genuinely cannot be seen, which is what makes the loop seamless
+   * without needing a fade-in. What emerges past the portrait's edge a moment
+   * later is already on its way down from 1 to .48, and that brief extra density
+   * right at the rim is what keeps the picture's edge crisp.
+   *
+   * ── TIMING ──────────────────────────────────────────────────────────────────
+   *
+   * `linear`, deliberately, and it is NOT a contradiction of the ease-out the
+   * spacing implies. The published sizes step +64, +48, +40 — decelerating — and
+   * those samples are declared as keyframes here. Interpolating LINEARLY between
+   * them reproduces the design's own curve; adding `ease-out` on top would ease
+   * an already-eased set of samples twice.
+   *
+   * 6s per disc, so one is born every 2s — "after a few seconds another circle",
+   * as specified. Exact thirds, because uneven spacing is what makes a flow read
+   * as separate pulses.
+   *
+   * ── THE BUG THAT HID ALL OF THIS FOR THREE PASSES ───────────────────────────
+   *
+   * `.sa-siteheader__halo > *` sets `position: relative; z-index: 1` to lift the
+   * portrait above the halo. `.sa-siteheader__pulse` is a CHILD, so it matched
+   * too — and at equal specificity (0,1,0) the later rule wins. `getComputedStyle`
+   * on the shipped page returned `position: relative` and `z-index: 1`: an
+   * in-flow grid item taking its own row in a `place-items: center` grid, drawing
+   * around a ZERO-SIZED box, above the picture instead of behind it.
+   *
+   * The lift is scoped with `:not()` below so the two rules cannot tie. Not fixed
+   * by reordering the file — source order is not a contract, and the next
+   * reshuffle would reintroduce it silently.
+   */
+  .sa-siteheader__pulse,
+  .sa-siteheader__pulse::before,
+  .sa-siteheader__pulse::after {
+    content: "";
+    position: absolute;
+    /* Exactly the portrait's box, so a newborn disc is hidden behind it. */
+    inset: 0;
+    border-radius: 50%;
+    /*
+     * SOLID, with the translucency carried by `opacity` in the keyframes — as
+     * the component does it, where the fill is `#036` and the LAYER is set to
+     * 48%. Baking the alpha into the colour instead would multiply against the
+     * animated opacity and land at ~22%, less than half the published density.
+     *
+     * `primaryScale-800` rather than the literal #003366: it is the primary
+     * ramp's deep rung, which is what `--primary/source` means in that file, and
+     * it follows `data-brand` where a fixed navy could not.
+     */
+    background-color: var(--sa-color-primaryScale-800);
+    animation: sa-halo-flow 6s linear infinite;
+  }
+
+  /* Negative delays, not positive: the other two discs are already part-way out
+     on the first frame, so the band is never briefly bare on load. */
+  .sa-siteheader__pulse::before {
+    animation-delay: -2s;
+  }
+
+  .sa-siteheader__pulse::after {
+    animation-delay: -4s;
+  }
+
+  /*
+   * The portrait sits above every disc and does not move.
+   *
+   * `:not()` EXCLUDES THE PULSE DELIBERATELY — see the bug note above. Without
+   * it this rule ties with the pulse's own and silently wins on source order.
+   */
+  .sa-siteheader__halo > *:not(.sa-siteheader__pulse) {
+    position: relative;
+    z-index: 1;
+  }
+
+  @keyframes sa-halo-enter {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+  }
+
+  /*
+   * ── ONE DISC'S WHOLE LIFE ───────────────────────────────────────────────────
+   *
+   * The extent comes from the component: a disc's life runs 416 → 568 against a
+   * 416px image, so `scale(1)` → `scale(1.365)`.
+   *
+   * ── ONE SPEED, START TO FINISH — AND THE DESIGN'S OWN SAMPLES ARE NOT IT ────
+   *
+   * The published states step +64, +48, +40, which is a DECELERATING curve, and
+   * an earlier pass declared all three as keyframes so linear interpolation
+   * would reproduce it. That was faithful to the drawing and wrong for the
+   * motion: each wave lunged away from the portrait and then crawled, so the
+   * waves bunched up at the outside and the flow visibly changed pace.
+   *
+   * Water does not do that. A wave leaving a still surface travels at ONE speed,
+   * and every wave travels at the same one. So `scale` is now interpolated
+   * linearly across the whole cycle and nowhere else — and because radius is
+   * `170 × scale`, a scale linear in time IS a radius linear in time, which is
+   * constant radial velocity. The three states remain the source for how FAR a
+   * disc goes; they are no longer the source for how it gets there.
+   *
+   * ── THE LOOP IS A CROSSFADE, AND THAT IS WHAT MAKES IT SEAMLESS ─────────────
+   *
+   * A disc is born at opacity ZERO and dies at opacity ZERO, so the instant it
+   * wraps — `scale(1.365)` teleporting back to `scale(1)` — it is contributing
+   * nothing and the jump cannot be seen. That is necessary but not sufficient.
+   *
+   * The sufficient part: THE FADE-IN AND THE FADE-OUT ARE EXACT COMPLEMENTS,
+   * OFFSET BY THE STAGGER. Both run over 30% of the cycle — in at 3.33→33.33%,
+   * out at 70→100% — and the discs are two thirds of a cycle apart, so the disc
+   * fading in and the disc fading out are always in their fade at the same time,
+   * with slopes that cancel:
+   *
+   *     A(p) + C(p + ⅔) = 0.48 · x + 0.48 · (1 − x) = 0.48, for every p
+   *
+   * The dying disc hands its opacity to the newborn exactly. Total ink is
+   * constant, there is no frame where the field gains or loses density, and the
+   * loop has no seam rather than merely hiding one.
+   *
+   * ── WHY THAT MATTERS, MEASURED ──────────────────────────────────────────────
+   *
+   * A disc used to be born at 0.48 outright, on the reasoning that `scale(1)` is
+   * behind the portrait so nobody can see it arrive. That holds only while the
+   * portrait is OPAQUE — and on this estate it usually is not. `PageHero` draws
+   * a mark or the State Emblem as `object-contain` on a `bg-white/10` circle,
+   * which is 90% transparent, and all 23 root organisation pages take that path
+   * because none of them carries a featured photograph. Measured on Dr. Ambedkar
+   * Foundation: the innermost disc sits at edge 171.8 against a portrait radius
+   * of 170, at full opacity, plainly visible through the circle. Every two
+   * seconds a fresh disc appeared there instantly — a 13-point step in composite
+   * alpha, behind the emblem, on a government landing page.
+   *
+   * The crossfade removes it without needing the portrait to be opaque, which is
+   * the right place to fix it: the animation should not depend on what a
+   * consumer happens to render inside the halo.
+   *
+   * ── ALWAYS THERE ────────────────────────────────────────────────────────────
+   *
+   * Opacity holds FLAT at 0.48 from a third of the way out until 70%, so a disc
+   * is a steady presence for the middle of its life rather than an event with a
+   * peak. The composite never thins: at any instant the innermost disc sits
+   * between scale 1 and 1.122, so the field just outside the portrait is covered
+   * continuously, forever, by construction rather than by tuning.
+   */
+  @keyframes sa-halo-flow {
+    0% {
+      transform: scale(1);
+      opacity: 0;
+    }
+    /* Every `transform` below is exactly 1 + 0.365 × offset, so the speed is
+       constant across all five stops and none of them is a hinge. */
+    3.33% {
+      transform: scale(1.0122);
+      opacity: 0;
+    }
+    33.33% {
+      transform: scale(1.1217);
+      opacity: 0.48;
+    }
+    70% {
+      transform: scale(1.2555);
+      opacity: 0.48;
+    }
+    100% {
+      transform: scale(1.365);
+      opacity: 0;
+    }
+  }
+
+  /*
+   * Reduced motion means gentler, not none — and here it means exactly State=1,
+   * which is the drawing the component publishes at rest: a disc at 480 and one
+   * at 528, both at 48%, over the portrait and its dark rim. Removing the halo
+   * would change the layout for people who asked for less movement, which is a
+   * different request from the one they made.
+   *
+   * The THIRD disc is hidden rather than parked. At rest it would sit at scale 1
+   * — entirely behind the portrait, contributing nothing but a composited layer.
+   */
+  @media (prefers-reduced-motion: reduce) {
+    .sa-siteheader__halo,
+    .sa-siteheader__pulse,
+    .sa-siteheader__pulse::before,
+    .sa-siteheader__pulse::after {
+      animation: none;
+    }
+
+    /* State=1's disc "1": 480 against a 416 image. */
+    .sa-siteheader__pulse {
+      transform: scale(1.154);
+      opacity: 0.48;
+    }
+
+    /* State=1's disc "2": 528. */
+    .sa-siteheader__pulse::before {
+      transform: scale(1.269);
+      opacity: 0.48;
+    }
+
+    /* State=1's disc "0" sits at 416 — behind the portrait, so it draws nothing
+       and is simply not rendered. */
+    .sa-siteheader__pulse::after {
+      display: none;
+    }
+  }
+
+  .sa-siteheader__overlay {
+    position: relative;
+    z-index: 1;
+  }
+
+  /*
+   * Below the landing breakpoint the portrait is dropped rather than shrunk.
+   * At a phone's width it would be a decorative circle taking a third of the
+   * fold from the title and the call to action, which are the reasons the page
+   * exists.
+   */
+  @media (width < 64rem) {
+    .sa-siteheader--landing .sa-siteheader__container {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .sa-siteheader__media {
+      display: none;
+    }
+  }
+
+  @media (width < 48rem) {
+    .sa-siteheader__container {
+      padding-block: var(--sa-padding-32);
+    }
+
+    .sa-siteheader--inner .sa-siteheader__container {
+      padding-block: var(--sa-padding-24);
+    }
+
+    .sa-siteheader__band--overlaid {
+      padding-block-end: var(--sa-padding-64);
+    }
+  }
+}
