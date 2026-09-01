@@ -14,16 +14,22 @@
  * `@mosje/design-system` — the generated mirror of `tokens.css`, not a second
  * hand-maintained copy that can drift from it.
  *
- * The SAMAVESH roundel is a raster and is colocated under `_og/` rather than
- * read out of `public/`: `new URL(…, import.meta.url)` is traced into the
- * serverless bundle, and `public/` is not. It already carries the National
- * Emblem at its crown, which is why the emblem is not composited separately —
- * the 200 KB emblem SVG would be a heavy, risky rasterise for a mark that is
- * already in the picture.
+ * The SAMAVESH roundel is read out of `public/` at BUILD time, by the path the
+ * brand registry publishes — deliberately NOT a second copy colocated here. A
+ * colocated copy traces into the bundle more simply, but it is byte-identical to
+ * the mark in `public/`, and a duplicated mark nobody can find is the exact
+ * failure `check:org-logos` exists to stop: replaced in one place, stale in the
+ * other, on the one image the outside world sees. `force-static` below is what
+ * makes the build-time read sound.
+ *
+ * The roundel already carries the National Emblem at its crown, which is why the
+ * emblem is not composited separately: the 200 KB emblem SVG would be a heavy,
+ * risky rasterise for a mark that is already in the picture.
  */
 import { ImageResponse } from "next/og";
 import { readFile } from "node:fs/promises";
-import { colors } from "@mosje/design-system";
+import { join } from "node:path";
+import { colors, SAMAVESH_MARK } from "@mosje/design-system";
 import { OG_CARD_ALT, OG_CARD_SIZE } from "@/lib/seo/card";
 
 // Re-exported from the shared descriptor rather than typed here, so the alt
@@ -31,6 +37,18 @@ import { OG_CARD_ALT, OG_CARD_SIZE } from "@/lib/seo/card";
 export const alt = OG_CARD_ALT;
 export const size = OG_CARD_SIZE;
 export const contentType = "image/png";
+
+/**
+ * Prerendered, not rendered on demand — load-bearing, not a performance tweak.
+ *
+ * The roundel is read off disk from `public/`, which exists during the build but
+ * is not traced into a serverless function. Pinning the route static guarantees
+ * the read happens where the file is, so a later change that made an ancestor
+ * dynamic cannot quietly turn this into a runtime read that fails in production.
+ * A social card is the definition of static anyway: the same picture for every
+ * visitor.
+ */
+export const dynamic = "force-static";
 
 /* ds-exempt-start(raster-canvas): satori — the engine behind `next/og` — has no
    cascade and resolves no CSS custom properties, so `var(--sa-type-*)` renders
@@ -42,7 +60,9 @@ export const contentType = "image/png";
    The palette above IS bound — via the generated token mirror, which is the
    closest thing to a binding this renderer allows. */
 export default async function OpenGraphImage() {
-  const roundel = await readFile(new URL("./_og/samavesh-logo.png", import.meta.url));
+  // `SAMAVESH_MARK` is a public URL path ("/design-system/…"), so it is joined
+  // onto `public/` to reach the file the estate actually serves.
+  const roundel = await readFile(join(process.cwd(), "public", SAMAVESH_MARK));
   const roundelSrc = `data:image/png;base64,${roundel.toString("base64")}`;
 
   return new ImageResponse(
