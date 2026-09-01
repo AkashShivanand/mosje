@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans, Noto_Sans_Display } from "next/font/google";
 import { ColorModeProvider, UX4GAccessibilityWidget } from "@mosje/design-system";
 import { DataModeProvider } from "@/lib/data-mode/context";
+import { NotInEmbed } from "@/components/conditional-embed-chrome";
 import { colorModeInitScript } from "@mosje/design-system/color-mode";
 import { ConditionalChatbot } from "@/components/conditional-chatbot";
 import { ConditionalDemoDock } from "@/components/conditional-demo-dock";
@@ -137,12 +138,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
               rendering. See lib/data-mode/context.tsx. */}
           <DataModeProvider>
           {children}
-          <UX4GAccessibilityWidget />
-          {/* Ordered deliberately: the accessibility widget owns the
-              bottom-right corner when it is visible, and the chatbot measures
-              around it rather than the other way round. */}
-          <ConditionalChatbot enabledPaths={chatbotPaths} />
-          <ConditionalDemoDock apps={apps} enabled={demoToolsEnabled} />
+          {/*
+            NONE OF THIS INSIDE AN EMBED. `/embed/*` renders inside somebody
+            else's page, which has its own accessibility controls and its own
+            chrome — a second widget, a second chat launcher and a demo rail
+            arriving in the middle of their article are copies of things the
+            reader already has. See `NotInEmbed`, where the accessibility
+            decision in particular is written down.
+          */}
+          <NotInEmbed>
+            <UX4GAccessibilityWidget />
+            {/* Ordered deliberately: the accessibility widget owns the
+                bottom-right corner when it is visible, and the chatbot measures
+                around it rather than the other way round. */}
+            <ConditionalChatbot enabledPaths={chatbotPaths} />
+            <ConditionalDemoDock apps={apps} enabled={demoToolsEnabled} />
+          </NotInEmbed>
           </DataModeProvider>
         </ColorModeProvider>
       </body>

@@ -33,12 +33,39 @@ import type { VillageName } from "./pmajay-map-reduce";
 /** Packed `[name, state, district]`, as the generated asset stores them. */
 type PackedVillage = [string, string, string];
 
-interface VillagesAsset {
+export interface VillagesAsset {
   asOn: string;
   villages: PackedVillage[];
 }
 
-const ASSET = "/website/data/pmajay-villages.json";
+/*
+ * Module-scoped, so the second search on the page does not refetch and a
+ * remount does not either. A failed attempt is NOT cached — an error here is
+ * usually a dropped connection, and a reader who tries again deserves a real
+ * second attempt rather than the memory of the first failure.
+ */
+let cache: VillageName[] | null = null;
+let inflight: Promise<VillageName[]> | null = null;
+
+/**
+ * Where the index is fetched from.
+ *
+ * A default, not a constant, because there are two consumers with two roots.
+ * The hub serves it from its own public folder; the standalone bundle is
+ * dropped onto somebody else's server and must never reach back to a MoSJE
+ * origin, so it points this at a file sitting beside itself.
+ */
+let assetUrl = "/website/data/pmajay-villages.json";
+
+/**
+ * Point the index somewhere else. Call before the first search.
+ *
+ * Ignored once the index has loaded — re-pointing a cache mid-session would
+ * mean two answers to the same query depending on when it was asked.
+ */
+export function setVillageIndexSource(url: string): void {
+  if (!cache) assetUrl = url;
+}
 
 /**
  * Every state of the fetch, because every one of them reaches the screen.
@@ -55,31 +82,52 @@ export interface VillageIndex {
   retry: () => void;
 }
 
-/*
- * Module-scoped, so the second search on the page does not refetch and a
- * remount does not either. A failed attempt is NOT cached — an error here is
- * usually a dropped connection, and a reader who tries again deserves a real
- * second attempt rather than the memory of the first failure.
+/** Packed rows → the shape the UI reads. Shared by both entry points. */
+function unpack(body: VillagesAsset | null): VillageName[] {
+  const rows = Array.isArray(body?.villages) ? body.villages : [];
+  return rows
+    .filter(
+      (v): v is PackedVillage =>
+        Array.isArray(v) && typeof v[0] === "string" && typeof v[1] === "string",
+    )
+    .map(([name, state, district]) => ({ name, state, district: district ?? "" }));
+}
+
+/**
+ * Fill the index from data already on the page, instead of fetching it.
+ *
+ * ── WHY A SECOND ENTRY POINT EXISTS ────────────────────────────────────────
+ *
+ * The single-file embed is ONE block of markup pasted into a page builder, so
+ * there is no sibling file to fetch and no upload step to get one there. The
+ * index travels inside the paste and arrives before the first search.
+ *
+ * The tradeoff is stated where it is chosen, not hidden here: inlined, every
+ * reader downloads the index whether or not they search, which is exactly what
+ * `load()` exists to avoid. That is the price of one paste, and the two-file
+ * install remains the one to reach for when page weight matters.
+ *
+ * Ignored once the index is loaded — two answers to the same query depending on
+ * when it was asked is worse than a stale one.
  */
-let cache: VillageName[] | null = null;
-let inflight: Promise<VillageName[]> | null = null;
+export function primeVillageIndex(body: VillagesAsset | null): void {
+  if (cache) return;
+  const rows = unpack(body);
+  // An empty parse is a BROKEN paste, not an empty register, and caching it
+  // would turn a fixable error into a permanent "no matches" for the session.
+  if (rows.length) cache = rows;
+}
 
 function load(signal: AbortSignal): Promise<VillageName[]> {
   if (cache) return Promise.resolve(cache);
   if (inflight) return inflight;
-  inflight = fetch(ASSET, { signal })
+  inflight = fetch(assetUrl, { signal })
     .then((r) => {
       if (!r.ok) throw new Error(`${r.status}`);
       return r.json() as Promise<VillagesAsset>;
     })
     .then((body) => {
-      const rows = Array.isArray(body?.villages) ? body.villages : [];
-      cache = rows
-        .filter(
-          (v): v is PackedVillage =>
-            Array.isArray(v) && typeof v[0] === "string" && typeof v[1] === "string",
-        )
-        .map(([name, state, district]) => ({ name, state, district: district ?? "" }));
+      cache = unpack(body);
       return cache;
     })
     .finally(() => {

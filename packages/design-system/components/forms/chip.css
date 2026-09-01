@@ -161,14 +161,53 @@
   }
 
   /*
-    Hover moves the BORDER, not the fill. There is one dark neutral background
-    in the palette, so a lighter-on-hover fill would have to borrow a text
-    token for a surface — the cross-family reach `documentation-ds-linkage`
-    warns about. A ring reads as hover just as clearly.
+    Hover LIGHTENS THE FILL, the way `tone="success"` below already does.
+
+    It moved the border instead at first, on the reasoning that the palette has
+    only one dark neutral background and a lighter fill would have to borrow a
+    text token for a surface. The conclusion — "a ring reads as hover just as
+    clearly" — was wrong, and wrong in the way that is easy to write and hard
+    to notice: a 1px border change against a near-black fill is all but
+    invisible, so the loudest control in the group was the one with no
+    detectable hover.
+
+    `color-mix` is the way out and it was already in this file. Mixing the
+    neutral BACKGROUND token toward the neutral SURFACE token stays inside one
+    family, needs no new token, and produces a fill a reader can actually see
+    move.
   */
-  .ds-chip--selected-neutral.ds-chip--interactive:hover,
-  .ds-chip--selected-neutral.ds-chip--interactive:active {
-    border-color: var(--sa-text-neutral-subtle);
+  /*
+    ── THE TONE SELECTOR CARRIES `--selected` TOO, AND IT HAS TO ─────────────
+
+    A toned chip has BOTH classes: `ds-chip--selected ds-chip--selected-neutral`.
+    So `.ds-chip--selected.ds-chip--interactive:hover` further down this file
+    and `.ds-chip--selected-neutral.ds-chip--interactive:hover` are the same
+    specificity — (0,3,0) each — and the one written LATER wins. The brand rule
+    is later, so hovering a near-black chip turned it pale blue: the tone was
+    correct at rest and reverted to brand the moment a pointer touched it.
+
+    Naming `--selected` as well takes it to (0,4,0), which is true of the
+    element and immune to whatever order these blocks end up in. Moving the rule
+    would have fixed it today and broken the next time someone tidied the file.
+  */
+  .ds-chip--selected-neutral.ds-chip--selected.ds-chip--interactive:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--sa-bg-neutral-base) 14%,
+      var(--sa-bg-neutral-inverse)
+    );
+    border-color: color-mix(
+      in srgb,
+      var(--sa-bg-neutral-base) 14%,
+      var(--sa-bg-neutral-inverse)
+    );
+  }
+
+  /* Pressed goes the other way — back to the flat fill, so the chip reads as
+     going IN under the finger rather than continuing to rise. */
+  .ds-chip--selected-neutral.ds-chip--selected.ds-chip--interactive:active {
+    background-color: var(--sa-bg-neutral-inverse);
+    border-color: var(--sa-bg-neutral-inverse);
   }
 
   .ds-chip--selected-success {
@@ -177,8 +216,10 @@
     border-color: var(--sa-color-status-successStrong);
   }
 
-  .ds-chip--selected-success.ds-chip--interactive:hover,
-  .ds-chip--selected-success.ds-chip--interactive:active {
+  /* Same collision as `neutral` above, and the same fix — `success` is only
+     unbroken today because of where it happens to sit in this file. */
+  .ds-chip--selected-success.ds-chip--selected.ds-chip--interactive:hover,
+  .ds-chip--selected-success.ds-chip--selected.ds-chip--interactive:active {
     background-color: color-mix(
       in srgb,
       var(--sa-color-status-success) 22%,

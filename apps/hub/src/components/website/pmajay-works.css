@@ -48,12 +48,9 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    /*
-      The gap BETWEEN the keys and the filters has to beat the gap inside
-      either, or the row reads as one run and each key's swatch drifts toward
-      whichever label is nearer.
-    */
-    gap: var(--sa-inline-12) var(--sa-inline-24);
+    /* One gap, and it is the only thing separating the two keys now — see
+       `.pmw__group`, where the divider that used to double up on it went. */
+    gap: var(--sa-inline-12) var(--sa-inline-16);
     padding: var(--sa-padding-8) var(--sa-padding-16);
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
   }
@@ -72,30 +69,24 @@
   }
 
   /*
-    ── ONE GROUP PER LAYER ──────────────────────────────────────────────────
+    ── THE DIVIDER IS GONE, BECAUSE THERE ARE NO LONGER TWO GROUPS ──────────
 
-    The bar was five siblings at one gap — two keys and three chips — so the
-    chips read as peers of the keys rather than as the Hostels key's own
-    controls. They filter hostels and nothing else, and they disappear when the
-    hostels layer is switched off, which is the giveaway nobody could see.
+    It was drawn when the bar held a layer key AND that key's three type
+    filters, and it said "these two clusters are different things". The filters
+    sit on the map now, so the bar holds two keys and nothing else — and a rule
+    between two pills separates two pills, which is what the gap already does.
 
-    Each layer is one group now, and the RULE between the groups is what says
-    so: a divider is a stronger statement than any amount of extra gap, and it
-    survives the row wrapping onto two lines, which a gap does not.
+    It was also visibly wrong: 24px of row gap on one side of the line and 16px
+    of group padding on the other, so the divider sat off-centre between the
+    keys it was meant to be equidistant from. Two spacings for one relationship
+    is one too many; the survivor is the gap.
   */
   .pmw__group {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    /* The chips belong to the key beside them, so they sit NEARER it than the
-       groups sit to each other — 8 inside, 16 plus a rule between. */
     gap: var(--sa-inline-8);
     min-width: 0;
-  }
-
-  .pmw__group + .pmw__group {
-    padding-left: var(--sa-padding-16);
-    border-left: 1px solid var(--sa-border-neutral-subtle);
   }
 
   /*
@@ -107,9 +98,27 @@
     margin: 0;
   }
 
+  /*
+    ── THE BADGES SIT RIGHT, AT EVERY WIDTH ─────────────────────────────────
+
+    `justify-content: flex-end` used to live inside the desktop media query
+    alongside the floating treatment, so below 1025px — where the strip returns
+    to the normal flow at the head of the map — the badges fell back to the
+    LEFT. A control that changes corner at a breakpoint is a control the reader
+    has to find twice.
+
+    The alignment belongs to the badges, not to the floating, so it sits out
+    here with them.
+  */
   .pmw__filters {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .pmw__chips {
+    justify-content: flex-end;
   }
 
   .pmw__chips {
@@ -301,10 +310,6 @@
     return to the bar, which is what a short map has room for.
   */
   @media (min-width: 1025px) {
-    .pmw__map {
-      position: relative;
-    }
-
     /*
       NO CARD BEHIND THEM, AND THAT IS WHAT MAKES ONE ROW FIT.
 
@@ -315,14 +320,28 @@
       borders, so they already read as controls sitting ON something. A card
       around a card is the thing `refactoring-ui` calls out.
 
-      Anchored to the MAP COLUMN rather than to the artwork, which reclaims the
-      12px the SVG letterboxes on that side — 344px of clear space against 327
-      needed, so the row has 17px of slack rather than being 15px short.
+      ALIGNED TO THE MAP'S OWN PADDING, NOT JAMMED AGAINST ITS EDGE. It sat at
+      4px from the column, which left the last badge all but touching the
+      hairline that divides the map from the list, while every other edge in
+      this card stands 12px off. A strip clearing the divider by a third of
+      what its neighbours do reads as overflow rather than as placement.
+
+      12px puts its right edge exactly on the artwork's, so it lines up with
+      the map rather than with the column that carries it.
     */
     .pmw__filters.pmw__key {
       position: absolute;
       top: var(--sa-padding-12);
-      right: var(--sa-padding-4);
+      right: var(--sa-padding-12);
+      /*
+        `auto`, undoing the `width: 100%` the in-flow rule needs to push the
+        badges right on a phone. Absolutely positioned, that 100% makes the BOX
+        span the whole map from `right: 12px` leftward — the chips still draw
+        right-aligned, so it looks correct, but the wrapper covers the country
+        and swallows every pointer event over it. The visible strip was fine;
+        the invisible one was 598px wide.
+      */
+      width: auto;
       /* 1, and 1 is enough: the only thing it has to sit above is its own
          sibling SVG. This is inside the map, not on either floating rail, so
          it takes no part in the estate's z-index ladder — see
@@ -332,15 +351,109 @@
     }
 
     /*
-      One row, right-aligned. `wrap` is the fallback and not the plan: if a
-      longer label ever pushes past the band the row breaks upward from the
-      right, into empty sky, which is the one direction this strip can afford
-      to grow.
+      `wrap` is the fallback and not the plan: if a longer label ever pushes
+      past the band the row breaks downward from the right, over the plateau,
+      which stays clear for 160 units — the one direction this strip can
+      afford to grow.
     */
     .pmw__key .pmw__chips {
       flex-wrap: wrap;
-      justify-content: flex-end;
       gap: var(--sa-stack-4);
+    }
+  }
+
+  /*
+    ── THE DENSITY SCALE SITS UNDER THE MAP, RIGHT-ALIGNED, AT EVERY WIDTH ──
+
+    It floated bottom-LEFT for a while, which is where a printed map puts its
+    scale. Moving it to the bottom-RIGHT was asked for and measured first, and
+    the measurement refused it: at bar height that corner has 73px of clear
+    width against the 196px this needs, because the Andaman and Nicobar Islands
+    are drawn down the right side. A legend over the Andamans is the same
+    mistake as a legend over Arunachal — Indian territory obscured by our own
+    chrome on a Government of India map.
+
+    So it sits BELOW the artwork instead, right-aligned under the badges it
+    shares a card with, and it does so at every width rather than only on a
+    phone. That removes the breakpoint fork the floating version needed, and it
+    removes the unit mismatch behind it: the bar's width is CSS pixels while
+    the sea it used to float in is measured in viewBox units and shrinks with
+    the map, so the same bar fitted at 574px of map and covered the Konkan
+    coast at 285px.
+
+    Under the map it is the same size at every width, and it is over nothing.
+  */
+  .pmw__scalebar {
+    justify-content: flex-end;
+    margin: var(--sa-stack-4) 0 0;
+    padding: var(--sa-padding-6) 0 0;
+    background: none;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+  }
+
+  .pmw__scalebar .ds-chart__legend-label {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+    ── ON A PHONE THE KEYS ARE A LIST, NOT TWO ORPHAN PILLS ─────────────────
+
+    They are 215px and 137px wide, so at 375px they cannot share a line and
+    wrap — two pills of different widths, stacked, ragged on the right, with a
+    44px touch target each. That is 100px of chrome before the map starts, and
+    it reads as a layout that ran out of room rather than one that was
+    designed.
+
+    Full width and `space-between` instead: the label goes left, the figure
+    goes right, and two stacked keys read as a two-row key list with its
+    numbers in a column. Same height, same targets, no ragged edge — and the
+    figures line up, which is the thing a reader is comparing.
+  */
+  @media (max-width: 640px) {
+    .pmw__controls .pmw__group,
+    .pmw__controls .ds-chart__legend,
+    .pmw__controls .ds-chart__legend-item {
+      width: 100%;
+    }
+
+    .pmw__controls .ds-chart__legend-toggle {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    /*
+      The key and its label stay together on the left while the figure goes
+      right — `space-between` on three children would otherwise strand the
+      label in the middle, equidistant from both and belonging to neither.
+    */
+    .pmw__controls .ds-chart__legend-label {
+      margin-right: auto;
+    }
+  }
+
+  /*
+    ── STACKED, THE MAP HAS TO BE CAPPED ────────────────────────────────────
+
+    Below 1025px the map and the list stop sharing a row and the map takes the
+    full card width. India is very nearly square, so a width-bound map at that
+    size is enormous: at 768px the artwork drew 670x757, and with the ranked
+    list's 623px underneath it the section reached **1,719px**. At 1024 it was
+    1,646. Side by side at 1440 the same section is 945.
+
+    A 1,700px section is not a big map, it is a scroll trap — the reader passes
+    a screen and a half of one section before the next heading, and on a tablet
+    that is most of the page. Nothing on the map needs 757px of height to be
+    legible; the hexes are 5 viewBox units and resolve long before that.
+
+    So the artwork is capped in the stacked layout and the section comes back
+    to a length someone will actually scroll through. `max-height` on the SVG
+    rather than on the column, because `preserveAspectRatio` then narrows the
+    drawing to match and it stays centred instead of being squashed.
+  */
+  @media (max-width: 1024px) {
+    .pmw__map svg {
+      max-height: 30rem;
     }
   }
 
@@ -496,6 +609,20 @@
     of them once the list was expanded, a 563px map adrift in a 1312px column.
   */
   .pmw__map {
+    /*
+      THE POSITIONING CONTEXT FOR EVERYTHING THAT FLOATS ON THE MAP — the type
+      filter strip and the density scale bar, both `position: absolute`.
+
+      It belongs HERE, on the map's own rule, and not beside either of them.
+      It was written next to the scale bar once and lost when that block was
+      rewritten, and the failure is silent and total: an absolutely positioned
+      child with no positioned ancestor resolves against the page, so both the
+      badges and the scale bar left the card entirely — the badges landing
+      above the section heading and the bar below the footnote.
+
+      A rule that three things depend on lives with the thing that owns it.
+    */
+    position: relative;
     display: grid;
     align-content: center;
     padding: var(--sa-padding-12);
@@ -912,12 +1039,43 @@
 
   /* ── Footnote ──────────────────────────────────────────────────────────── */
 
+  /*
+    ── THE FOOTER IS PART OF THE CARD, NOT A PAIR OF ORPHANS UNDER IT ───────
+
+    It sat OUTSIDE `.pmw__instrument` with an 8px top margin, so the card ended
+    at the pager and the reach sentence and Download CSV were left standing on
+    the section's own grey ground with nothing holding them. They read as two
+    stray elements below a finished card rather than as its footer, and it is
+    the same class of defect as the badges that escaped the map: an element
+    whose meaning depends on the card, rendered outside it.
+
+    Inside, it mirrors `.pmw__controls` exactly — same 16px inline padding,
+    same hairline, one at the top of the card and one at the bottom. The card
+    now opens and closes on the same shape, and the link that downloads the
+    card's data lives in the card.
+  */
   .pmw__foot {
     display: flex;
-    align-items: baseline;
+    /*
+      CENTRE, NOT BASELINE — the sentence was sitting 8px below the strip's top
+      edge and 1px above its bottom.
+
+      `baseline` aligns the two children on their shared text baseline, which
+      sounds right and is not: the link is 26px tall because it carries 4px of
+      padding to reach the 24px minimum target (WCAG 2.2 SC 2.5.8), the
+      paragraph is 18px, and matching baselines pushes the SHORTER one down to
+      meet the taller one's. The strip then reads as bottom-weighted.
+
+      Both children set the same 12px/18px type and the link's padding is
+      symmetric, so centring lands their baselines on the same line anyway — it
+      gets the alignment `baseline` was asked for AND the vertical centring it
+      was quietly costing.
+    */
+    align-items: center;
     justify-content: space-between;
     gap: var(--sa-inline-16);
-    margin-top: var(--sa-stack-8);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
   }
 
   /*
@@ -983,6 +1141,10 @@
     .pmw__head,
     .pmw__foot {
       flex-direction: column;
+      /* Stacked, the cross axis is horizontal, and `center` would centre the
+         sentence and the link in the card rather than setting them against its
+         left edge like everything above them. */
+      align-items: flex-start;
       gap: var(--sa-stack-8);
     }
 

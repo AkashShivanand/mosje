@@ -206,23 +206,64 @@
     display: flex;
     align-items: center;
     gap: var(--sa-stack-8);
-    /* 26px, past the 24px minimum target (WCAG 2.2 SC 2.5.8) — and stated
-       rather than left to the content, so a key sits at exactly the height of
-       the `Chip`s beside it. Left to its content it came out 24px and the
-       control bar had two pill heights in one row. */
-    min-height: 26px;
-    padding: var(--sa-padding-2) var(--sa-padding-8);
-    border: 1px solid var(--sa-border-neutral-base);
+    /*
+      32px, NOT THE 24px MINIMUM.
+
+      It was 26 — past SC 2.5.8's floor and sized to match the `Chip`s that
+      used to sit beside it. Both reasons expired: those chips moved onto
+      PM-AJAY's map, and a floor is not a target. 26px of pill carrying an
+      11px key and a label reads as a caption that happens to respond, which is
+      exactly what a reader told us: they could not tell these were tappable.
+
+      32 is the smallest height at which a pill reads as a control rather than
+      as a label, and it costs one row of chrome nothing — the bar it lives in
+      is 43px tall either way.
+    */
+    min-height: 32px;
+    padding: var(--sa-padding-4) var(--sa-padding-12);
+    border: 1px solid var(--sa-border-brand-primary-base);
     border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-subtler);
+    /*
+      ON IS SELECTED, NOT MERELY FILLED.
+
+      It was `bg/neutral/subtler` — a light grey block. Stacked full-width on a
+      phone that is the anatomy of a settings ROW, and a reader told us as
+      much: the keys had stopped looking like controls. Grey is what a surface
+      is; it is not what a chosen thing is.
+
+      This is `Chip`'s own selected language, which is the point — an
+      interactive legend IS a chip, and it should not invent a third on-state
+      for the estate. PM-AJAY's map filters stay `tone="neutral"` precisely
+      because they sit ON the map and a brand tint there would compete with the
+      blue hexes underneath; these sit on a white card, where the tint is free.
+    */
+    background-color: var(--sa-bg-brand-primary-base);
     cursor: pointer;
     transition:
       background-color 160ms ease-out,
       border-color 160ms ease-out;
   }
 
+  /*
+    Hover moves the BORDER and the ground together. A border-only change is
+    legible on a desk and invisible to the half of readers who arrive with a
+    finger and never produce a hover state at all — for them the affordance has
+    to be in the resting pill, which is what the height above buys.
+  */
   .ds-chart__legend-toggle:hover {
-    border-color: var(--sa-border-neutral-bolder-default);
+    border-color: var(--sa-border-brand-primary-bolder);
+    background-color: var(--sa-bg-brand-primary-subtler);
+  }
+
+  /*
+    A COARSE POINTER GETS A FULL TOUCH TARGET. 32px is comfortable under a
+    mouse; UX4G asks for 44 under a thumb, and a chart key is exactly the kind
+    of small control that gets mis-tapped at anything less.
+  */
+  @media (pointer: coarse) {
+    .ds-chart__legend-toggle {
+      min-height: 44px;
+    }
   }
 
   .ds-chart__legend-toggle:active {
@@ -235,10 +276,18 @@
   }
 
   /* Off: the pill empties, the ink drops, and the key hollows out. */
+  /* Off empties the pill and dashes its edge, so the two states differ in
+     fill, in border STYLE and in ink — never in colour alone. */
   .ds-chart__legend-toggle.is-off {
     background-color: transparent;
+    border-color: var(--sa-border-neutral-base);
     border-style: dashed;
     color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-chart__legend-toggle.is-off:hover {
+    border-color: var(--sa-border-neutral-bolder-default);
+    background-color: var(--sa-bg-neutral-subtler);
   }
 
   .ds-chart__legend-toggle.is-off .ds-chart__legend-label,
