@@ -15,7 +15,7 @@
     "page, re-run --update-baseline in the same change."
   ],
   "totals": {
-    "offScale": 199,
+    "offScale": 197,
     "classSized": 4
   },
   "files": {
@@ -308,10 +308,6 @@
       "classSized": 0
     },
     "apps/hub/src/components/smile-admin/shell/scope-banner.tsx": {
-      "offScale": 2,
-      "classSized": 0
-    },
-    "apps/hub/src/components/website/layout/Breadcrumb.tsx": {
       "offScale": 2,
       "classSized": 0
     },

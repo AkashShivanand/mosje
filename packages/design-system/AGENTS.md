@@ -89,6 +89,10 @@ SAMAVESH is built against UX4G Design System 3.0 (MeitY/NeGD), the mandated stan
   below — the standalone `AppSwitcher` FAB it used to live inside no longer exists),
   `Tabs`/`TabPanel` (navigation — note `SidebarNavItem.icon` is a Material
   Symbols NAME STRING, not a component, so nav configs stay serialisable data);
+  `Breadcrumb` (navigation — ONE trail for both jobs: `href` crumbs link to
+  ancestor pages, `onSelect` crumbs pop client state that has no URL, a crumb
+  with neither is a section with no landing page, and ONLY the last crumb is
+  `aria-current="page"`; never hand-roll one);
   `PortalLoginShell` (auth); `LiveRegion`/`useLiveRegion` (announce async results that move
   no focus — mount one per page);
   `UX4GAccessibilityWidget` (a11y — **CANONICAL**: the official Government of

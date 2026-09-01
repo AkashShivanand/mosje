@@ -22,9 +22,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.93.0",
+    version: "v0.94.0",
     date: "2026-09-01",
     current: true,
+    changes: [
+      { kind: "Added", text: "`Breadcrumb` — THE SYSTEM EXPORTED NONE, so every surface that needed a trail drew its own. Two hand-rolled copies were live and they were not the same kind of thing: the website\u2019s is NAVIGATION (real links to ancestor pages) and PM-AJAY\u2019s map rail is DRILL STATE (buttons that pop a view that has no URL). One component now takes both — a crumb with `href` is a link, a crumb with `onSelect` is a button, and the last crumb is where you are and is never interactive" },
+      { kind: "Fixed", text: "THE WEBSITE TRAIL CLAIMED TWO CURRENT PAGES ON 64 PAGES. A crumb rendered as plain text for two quite different reasons — it is the page you are on, or it is a mega-menu section with no route behind it (\u201cDepartment\u201d, \u201cDocuments\u201d, \u201cConnect\u201d, \u201cAssociated Organisations\u201d) — and the old markup stamped `aria-current=\u201cpage\u201d` on both. `aria-current` marks exactly one thing, and two is worse than none because the wrong one comes first. A crumb with neither an href nor a handler is now a labelled section: not a link, not current" },
+      { kind: "Added", text: "A FOURTH CASE THE HAND-ROLLED VERSIONS BOTH LACKED: the current crumb ellipsises instead of overflowing. PM-AJAY\u2019s rail is 304px and \u201cIndia \u203a Andaman and Nicobar Islands\u201d is wider than it, and `wrap={false}` holds a fixed-width rail to one line so its height does not change every time the reader drills in" },
+      { kind: "Added", text: "`linkAs` TAKES `next/link`, so the website trail keeps soft navigation and prefetch rather than dropping to full page loads — the same escape hatch `SiteFooter` and `Ticker` already use. It is safe to pass from a server component because the file does not claim the client boundary, which is exactly why `Pagination` does not either" },
+      { kind: "Changed", text: "SEPARATORS ARE `chevron_right` GLYPHS, NOT A TYPED \u201c\u203a\u201d, and they are aria-hidden — so the trail is announced as a list of names rather than punctuated with \u201cchevron right\u201d seven times. Crumbs clear 24px vertically (WCAG 2.2 AA \u00a72.5.8); link ink is 4.6:1 at rest and deepens one rung on hover, because the base rung over the hover wash measures 4.07:1, under the floor" },
+    ],
+  },
+  {
+    version: "v0.93.0",
+    date: "2026-09-01",
     changes: [
       { kind: "Fixed", text: "`Chip`'s NEUTRAL SELECTED STATE MEASURED 1.66:1 AND READ AS DISABLED. It filled with `bg/neutral/bold` and white ink — white on a light grey — so the selected pills looked quieter than the unselected ones beside them and the state hierarchy was inverted. A WCAG 1.4.3 failure, and the design failure is the one a reader hits first. Solid ink at 18.94:1 now: a selected state has to be the loudest thing in its own group, and being NEUTRAL rather than brand is what keeps it from competing with the chart keys. Quiet is a matter of hue, not of contrast" },
     ],
