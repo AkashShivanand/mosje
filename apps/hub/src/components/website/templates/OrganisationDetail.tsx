@@ -74,6 +74,12 @@ export interface OrganisationDetailProps {
   relatedPages: SectionRecord[];
   /** Every ingested document; filtered here per `detail.circulars`/`resources`. */
   documents: FileRecord[];
+  /**
+   * A "where this organisation has reached" band, inserted directly after the
+   * components cards. Supplied by the route, because the feed behind it belongs
+   * to one organisation — see the comment at the insertion point.
+   */
+  reachSlot?: React.ReactNode;
   /** Appended as its own band, after everything the template renders. */
   children?: React.ReactNode;
 }
@@ -171,6 +177,7 @@ export function OrganisationDetail({
   detail,
   relatedPages,
   documents,
+  reachSlot,
   children,
 }: OrganisationDetailProps) {
   const circulars = matchDocuments(documents, detail?.circulars, 4);
@@ -510,6 +517,23 @@ export function OrganisationDetail({
         </>
       ),
     });
+  }
+
+  /*
+   * IMMEDIATELY AFTER THE COMPONENTS, AND THAT IS THE WHOLE ARGUMENT FOR THE
+   * POSITION. The reader has just been told the scheme has three components and
+   * has seen a card for each. "Where has it actually landed" is the next
+   * question they have, and it is answered while the three names are still in
+   * their head. Further down — after the documents, say — the same map is a
+   * curiosity; here it is the evidence for the cards above it.
+   *
+   * A SLOT, NOT A BAND THIS TEMPLATE BUILDS. The map is one organisation's feed,
+   * fetched by the route that knows which organisation it is rendering. Baking
+   * PM-AJAY's endpoint into the template every one of 178 organisations renders
+   * would put a scheme-specific fetch on 177 pages that have no use for it.
+   */
+  if (reachSlot != null) {
+    bands.push({ id: "reach", body: reachSlot });
   }
 
   if (detail?.resourcesBookshelf != null) {

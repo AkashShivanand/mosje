@@ -137,7 +137,20 @@ export function SitePageHeader({
               not already say, so a reader who never sees it loses nothing. */}
           {isLanding && media ? (
             <div className="sa-siteheader__media" aria-hidden="true">
-              <div className="sa-siteheader__halo">{media}</div>
+              <div className="sa-siteheader__halo">
+                {/*
+                 * THE PULSE IS ITS OWN ELEMENT BECAUSE THREE RINGS NEED THREE
+                 * BOXES, and an element has only two pseudo-elements. This span
+                 * carries one ring on itself and one on each of its own
+                 * `::before` / `::after`, staggered by a third of the period —
+                 * which is what "all three outer rings pulse in a loop" needs.
+                 * It is purely decorative: the whole media column is already
+                 * `aria-hidden`, and it is `position: absolute` so it adds
+                 * nothing to layout.
+                 */}
+                <span className="sa-siteheader__pulse" />
+                {media}
+              </div>
             </div>
           ) : null}
         </Container>

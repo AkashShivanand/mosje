@@ -7,8 +7,14 @@ import { OrganisationDetail } from "@/components/website/templates/OrganisationD
 import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
 import { GiaDashboard } from "@/components/website/GiaDashboard";
 import { HostelDashboard } from "@/components/website/HostelDashboard";
+import { PmajayWorksMap } from "@/components/website/PmajayWorksMap";
 import { getAdarshGramCounts } from "@/lib/website/adarsh-gram-api";
-import { getGiaData, getGiaGender, getHostelData } from "@/lib/website/pmajay-api";
+import {
+  getGiaData,
+  getGiaGender,
+  getHostelData,
+  getPmajayReach,
+} from "@/lib/website/pmajay-api";
 import "@/components/website/scheme-dashboard.css";
 import { getOrganisationDetail } from "@/content/website/organisation-details";
 import { trimRedundantOpening } from "@/lib/website/organisation-prose";
@@ -205,6 +211,27 @@ export default async function OrganisationDetailPage({
       )
     : null;
   const hostel = key === HOSTEL_SLUG ? await getHostelData() : null;
+
+  /*
+   * The reach map, on PM-AJAY's own page and nowhere else.
+   *
+   * Gated on the exact slug rather than on "has a detail record", because the
+   * feed behind it publishes PM-AJAY's villages and hostels — there is nothing
+   * in it for the other 177 organisations, and fetching 3.5 MB on their pages to
+   * discover that would be a cost paid 177 times for no result.
+   */
+  const reach = key === PMAJAY ? await getPmajayReach() : null;
+  /*
+   * Grants-in-Aid has no coordinates in the map feed, but it DOES have a live
+   * project total — and the map’s tab strip names all three components, so it
+   * needs that figure to show a real number beside a tab it cannot draw.
+   * Summed across financial years, falling back to the mirrored year where a
+   * year did not answer, exactly as the GIA dashboard does it.
+   */
+  const giaAll = key === PMAJAY ? await getGiaData() : null;
+  const giaProjectTotal = giaAll
+    ? giaAll.years.reduce((t, y) => t + (y.approvals.total ?? y.mock.totalApproved), 0)
+    : null;
 
   /*
    * The other two components, for the "Other PM-AJAY components" card.
@@ -435,6 +462,7 @@ export default async function OrganisationDetailPage({
         detail={detail}
         relatedPages={relatedPages}
         documents={getDocuments()}
+        reachSlot={reach && <PmajayWorksMap data={reach} giaTotal={giaProjectTotal} />}
       />
     </PageLayout>
   );

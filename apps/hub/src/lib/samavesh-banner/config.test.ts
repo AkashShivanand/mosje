@@ -15,9 +15,17 @@ import {
   type SamaveshBannerPlacement,
 } from "./config.ts";
 
-test("default placement is 'all' pages", () => {
-  assert.equal(DEFAULT_SAMAVESH_BANNER_PLACEMENT, "all");
-  assert.equal(samaveshBannerPlacement(null), "all");
+// The default was NARROWED from "all" to "homepage_only" deliberately (v0.78.0):
+// the band is an entry point, so it earns its 80px where a reader is deciding
+// where to go and costs 80px on every page where they have already decided. This
+// test asserted the old default and was left behind by that change — it is the
+// TEST that was stale, not the code, so it now pins the decision rather than
+// reverting it. Widening it again is a setting at /admin/portals, not a release,
+// which is why nothing here should be relaxed to accommodate a future change of
+// mind: an explicit stored value already wins, and the test below proves it.
+test("default placement is the HOMEPAGE ONLY, not every page", () => {
+  assert.equal(DEFAULT_SAMAVESH_BANNER_PLACEMENT, "homepage_only");
+  assert.equal(samaveshBannerPlacement(null), "homepage_only");
 });
 
 test("parses valid placement configurations", () => {

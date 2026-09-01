@@ -36,6 +36,8 @@ export type { ComboChartProps } from "./combo-chart";
 // Geographic
 export { IndiaMap } from "./india-map";
 export type { IndiaMapProps, IndiaMapDatum } from "./india-map";
+export { IndiaBubbleMap } from "./india-bubble-map";
+export type { IndiaBubbleMapProps, IndiaBubbleDatum } from "./india-bubble-map";
 
 // Toolkit (for advanced/custom composition)
 export { Legend, useChartTooltip, ChartTooltip, formatIndian, formatCompact, formatPercent, categoricalColor, sequentialColor, divergingColor } from "./internal";
