@@ -22,9 +22,16 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.89.0",
+    version: "v0.90.0",
     date: "2026-09-01",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "`Search` AT `size=\"sm\"` CHANGED THE BOX AND NOT THE TYPE, WHICH IS HALF A SIZE. It set a 40px shell and left the input at `body-1`, so a field sized for a card rail carried 16px text — out of proportion with the 12px and 14px beside it, and wide enough that a placeholder the field had room for clipped anyway. The type steps with the box now: `sm` takes `body-2`, `md` and `lg` are unchanged" },
+    ],
+  },
+  {
+    version: "v0.89.0",
+    date: "2026-09-01",
     changes: [
       { kind: "Fixed", text: "A LEGEND KEY WAS AS CLOSE TO ITS LABEL AS THE LABEL WAS TO ITS OWN TOTAL. An entry is three things in a row — key, label, value — and a `ramp` key is itself three more: a low end, the strip, a high end. At one uniform gap they read as one run, so PM-AJAY's villages key rendered `1 [▓▓▓] 387  Adarsh Gram villages  19,768` with nothing saying which number belonged to which. A reader taking \"1 to 387\" as a qualifier on \"Adarsh Gram villages\" was reading it exactly as the spacing told them to. Three graded steps now — 4 inside the key, 12 from key to label, 8 from label to value — because proximity is the only thing grouping any of it. Same defect as the dots that once floated between two labels" },
     ],

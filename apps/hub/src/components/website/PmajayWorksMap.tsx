@@ -7,6 +7,7 @@ import {
   Icon,
   IndiaPointMap,
   Legend,
+  EmptyState,
   Pagination,
   Search,
   SectionTitle,
@@ -213,6 +214,16 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
     () => new Set<HostelType>(["girls", "boys", "sanctioned"]),
   );
   const [focus, setFocus] = React.useState<string | null>(null);
+  /**
+   * The district the rail is open on, inside `focus`.
+   *
+   * KEPT BESIDE `focus` RATHER THAN FOLDED INTO IT. The map can only ever zoom
+   * to a state — `focusRegion` takes a state name, and there are no district
+   * outlines to frame — so the two levels genuinely do different jobs, and
+   * making `focus` a `{state, district}` object would have every one of its
+   * fourteen readers destructure a district none of them can use.
+   */
+  const [district, setDistrict] = React.useState<string | null>(null);
   const [query, setQuery] = React.useState("");
   const [sort, setSort] = React.useState<SortState>(null);
   /**
@@ -237,10 +248,16 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
    * PAGES, NOT A SCROLL REGION. The list scrolled inside the panel, which fixed
    * the page-length jump but bought a nested scroll — and a nested scroll on a
    * phone is a trap: a reader flicking the page downwards lands in the list and
-   * moves the list instead. Seven rows fit the panel at every width, so the
-   * same control works on a phone and on a desk.
+   * moves the list instead.
+   *
+   * TEN, AND THE PANEL IS SIZED FOR TEN OF THE TALLEST ROW. It was seven, and
+   * seven was sized for a state row — one line and a bar, 41px. A village row
+   * is two lines, 57px, so a full page of them needed 399px of a 303px list and
+   * the overflow painted straight over the pager. The list is `overflow:
+   * hidden` now so that can never happen again silently, and the panel's
+   * minimum is derived from ten rows rather than guessed.
    */
-  const PAGE_SIZE = 7;
+  const PAGE_SIZE = 10;
 
   /**
    * Any change of WHAT IS BEING LISTED starts at page one.
@@ -358,6 +375,16 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
     villages: number;
     hostels: number;
     sub: string;
+    /**
+     * The state this row opens, when it is not a state itself.
+     *
+     * A DISTRICT ROW CAN APPEAR IN THE INDIA-LEVEL LIST. "Bankura" used to
+     * match nothing from the national view, because districts were only listed
+     * once a state was already open — so a reader who knew their district but
+     * not that it was in West Bengal had no way in. The whole 547 are
+     * searchable now, and a district row says which state it belongs to.
+     */
+    opens?: string;
   }
 
   const railRows: RailRow[] = React.useMemo(() => {
@@ -367,13 +394,31 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
       ).length;
 
     if (focus == null) {
-      return snapshot.states.map((s: StateRow) => ({
+      const states: RailRow[] = snapshot.states.map((s: StateRow) => ({
         key: s.state,
         name: s.state,
         villages: s.villages,
         hostels: typed(s.state),
         sub: `${formatIndian(s.districts)} district${s.districts === 1 ? "" : "s"}`,
       }));
+      /*
+       * DISTRICTS JOIN THE NATIONAL LIST ONLY WHILE A SEARCH IS RUNNING.
+       *
+       * Unfiltered they would put 547 rows behind 28 and bury the states the
+       * list exists to rank. Searching is the only time a reader has named
+       * something, and it is the only time a district row answers them.
+       */
+      if (!query.trim()) return states;
+      return states.concat(
+        snapshot.districts.map((d) => ({
+          key: `${d.state}\u0000${d.district}`,
+          name: d.district,
+          villages: d.villages,
+          hostels: typed(d.state, d.district),
+          sub: d.state,
+          opens: d.state,
+        })),
+      );
     }
     return snapshot.districts
       .filter((d) => d.state === focus)
@@ -384,7 +429,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
         hostels: typed(d.state, d.district),
         sub: focus,
       }));
-  }, [snapshot, focus, types]);
+  }, [snapshot, focus, types, query]);
 
   /**
    * What the list is ordered by, and what its bar draws.
@@ -409,12 +454,24 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
    * means something, and a reader who clicks the field and changes their mind
    * downloads nothing at all.
    */
-  const wantsVillages = query.trim().length >= 2;
+  const wantsVillages = query.trim().length >= 2 || district != null;
   const villageIndex = useVillageIndex(wantsVillages);
-  const villageHits = React.useMemo(
-    () => (wantsVillages ? matchVillages(villageIndex.villages, query) : []),
-    [villageIndex.villages, query, wantsVillages],
-  );
+  /*
+   * Two different questions answered by one index.
+   *
+   * WITH A DISTRICT OPEN it lists that district's villages, unfiltered by the
+   * search — the reader navigated here, they did not search. WITHOUT one it
+   * matches the query across all 10,157. Sorted by name either way, because
+   * inside a district there is no other order a reader could predict.
+   */
+  const villageHits = React.useMemo(() => {
+    if (district != null && focus != null) {
+      return villageIndex.villages
+        .filter((v) => v.state === focus && v.district === district)
+        .sort((a, b) => a.name.localeCompare(b.name));
+    }
+    return wantsVillages ? matchVillages(villageIndex.villages, query) : [];
+  }, [villageIndex.villages, query, wantsVillages, district, focus]);
 
   const barOf = (r: RailRow) => (showVillages ? r.villages : r.hostels);
   const rankOf = (r: RailRow) => (showVillages ? r.villages : 0) + (showHostels ? r.hostels : 0);
@@ -509,7 +566,8 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
    */
   const autoScope: "places" | "villages" = placeMatches === 0 ? "villages" : "places";
   const activeScope = scope ?? autoScope;
-  const showVillageList = wantsVillages && activeScope === "villages";
+  // A district being open is not a search — the village list IS the level.
+  const showVillageList = district != null || (wantsVillages && activeScope === "villages");
   const listLength = showVillageList ? villageHits.length : visibleRows.length;
 
   const totalPages = Math.max(1, Math.ceil(listLength / PAGE_SIZE));
@@ -645,13 +703,25 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
         audit doc, not under a heading on a citizen's page.
       */}
       {!hasReading ? (
+        /*
+          THE DS `EmptyState`, NOT A THIRD HAND-ROLLED ONE. This was a div with
+          its own icon, title and body — three classes restating a component
+          the design system already exports, which is the exact audit finding
+          this section keeps producing.
+
+          AND THE COPY IS WHAT A LIVE SERVICE WOULD SAY. It read "Switch the
+          demo rail back to mirrored data", which names a control that exists
+          only in this prototype and would be nonsense on the department's own
+          site. A citizen reading an empty section wants two things: what
+          happened, and whether it is worth coming back. Nothing about feeds,
+          modes, endpoints or mirrors.
+        */
         <div className="pmw__instrument pmw__instrument--empty">
-          <Icon name="location_off" size={32} className="pmw__emptyicon" aria-hidden />
-          <p className="pmw__emptytitle">The live feed published no coverage figures.</p>
-          <p className="pmw__emptybody">
-            Switch the demo rail back to mirrored data to see the department&rsquo;s last
-            published position.
-          </p>
+          <EmptyState
+            icon={<Icon name="location_off" size={40} aria-hidden />}
+            title="Coverage figures are not available at the moment"
+            description={`The Management Information System has not returned the scheme's village and hostel figures. The position last published by the Department was as on ${PMAJAY_REACH_AS_ON}. Please try again shortly.`}
+          />
         </div>
       ) : (
       <div className="pmw__instrument">
@@ -677,16 +747,47 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
             this page, so the next chart that wants to switch its own series
             does not hand-roll a third version.
           */}
-          <Legend
-            className="pmw__layers"
-            label="Scheme components drawn on the map"
-            items={legendItems}
-            onToggle={(id) => {
-              if (id === "villages") setShowVillages((v) => !v);
-              else setShowHostels((v) => !v);
-              resetPaging();
-            }}
-          />
+          {/*
+            ── TWO GROUPS, NOT FIVE SIBLINGS ─────────────────────────────────
+
+            The bar held a two-entry legend and then three filter chips, all at
+            the same level with the same gap between them. So the three chips
+            read as a third, fourth and fifth PEER of the two layer keys, when
+            what they actually are is the Hostels key's own controls — they
+            filter hostels and nothing else, and they vanish when the hostels
+            layer is switched off, which is the giveaway nobody could see.
+
+            Each layer is now one group: its key, and whatever controls belong
+            to that key. A rule divides the two. The chips sit inside the
+            hostel group behind a caret, so the hierarchy is in the layout
+            rather than in a caption.
+
+            Two `Legend`s rather than one with two items, because the grouping
+            IS the structure here — one key per group, each labelled for what
+            it switches.
+          */}
+          <div className="pmw__group">
+            <Legend
+              className="pmw__layers"
+              label="Adarsh Gram villages layer"
+              items={[legendItems[0]!]}
+              onToggle={() => {
+                setShowVillages((v) => !v);
+                resetPaging();
+              }}
+            />
+          </div>
+
+          <div className="pmw__group pmw__group--hostels">
+            <Legend
+              className="pmw__layers"
+              label="Hostels layer"
+              items={[legendItems[1]!]}
+              onToggle={() => {
+                setShowHostels((v) => !v);
+                resetPaging();
+              }}
+            />
 
           <div className="pmw__filters">
             {showHostels && (
@@ -731,7 +832,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               </fieldset>
             )}
           </div>
-
+          </div>
         </div>
 
         <div className="pmw__panel">
@@ -777,6 +878,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                 const hit = snapshot.states.find((s) => s.state === region);
                 if (!hit) return;
                 setFocus(region);
+                setDistrict(null);
                 setQuery("");
                 resetPaging();
               }}
@@ -825,6 +927,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                     className="pmw__crumb"
                     onClick={() => {
                       setFocus(null);
+                      setDistrict(null);
                       resetPaging();
                     }}
                     aria-current={focus == null ? "true" : undefined}
@@ -835,8 +938,35 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                   {focus != null && (
                     <>
                       <Icon name="chevron_right" size={16} className="pmw__crumbsep" aria-hidden />
+                      {/*
+                        The state crumb becomes a LINK once a district is open,
+                        and stays plain text otherwise. A trail whose middle
+                        step is inert when it is the way back is a trail that
+                        only goes one way.
+                      */}
+                      {district == null ? (
+                        <span className="pmw__crumb pmw__crumb--here" aria-current="true">
+                          {focus}
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          className="pmw__crumb"
+                          onClick={() => {
+                            setDistrict(null);
+                            resetPaging();
+                          }}
+                        >
+                          {focus}
+                        </button>
+                      )}
+                    </>
+                  )}
+                  {district != null && (
+                    <>
+                      <Icon name="chevron_right" size={16} className="pmw__crumbsep" aria-hidden />
                       <span className="pmw__crumb pmw__crumb--here" aria-current="true">
-                        {focus}
+                        {district}
                       </span>
                     </>
                   )}
@@ -849,11 +979,13 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                 the phrasing changes with the state it describes.
               */}
               <span className="pmw__railcount">
-                {query.trim()
-                  ? `${formatIndian(listLength)} matching`
-                  : focus == null
-                    ? `${formatIndian(visibleRows.length)} of 36`
-                    : `${formatIndian(visibleRows.length)} districts`}
+                {district != null
+                  ? `${formatIndian(villageHits.length)} named`
+                  : query.trim()
+                    ? `${formatIndian(listLength)} matching`
+                    : focus == null
+                      ? `${formatIndian(visibleRows.length)} of 36`
+                      : `${formatIndian(visibleRows.length)} districts`}
               </span>
             </div>
 
@@ -868,11 +1000,37 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                   `sm` — 40px — because this field sits inside a card, not at
                   the head of a page.
                 */}
+                {/*
+                  THE PLACEHOLDER NAMES WHAT YOU MAY TYPE, NOT WHAT THE LIST
+                  HAPPENS TO BE SHOWING.
+
+                  It read "Find a state…", which described the list under it
+                  rather than the field's own reach — and the field had quietly
+                  grown to cover districts and 10,157 villages. A reader with a
+                  village name in mind had no way to know it would work, which
+                  is the only failure mode that matters for a search nobody can
+                  see the contents of.
+
+                  A noun list rather than a sentence: "State, district or
+                  village" is what you may type, reads at a glance, and fits the
+                  271px field, which "Search for a state, district or village"
+                  does not.
+                */}
                 <Search
                   size="sm"
                   className="pmw__search"
-                  aria-label={`Search ${focus == null ? "states" : `districts in ${focus}`}`}
-                  placeholder={focus == null ? "Find a state…" : `Find a district in ${focus}…`}
+                  aria-label={
+                    focus == null
+                      ? "Search by state, district or village"
+                      : `Search districts and villages in ${focus}`
+                  }
+                  placeholder={
+                    district != null
+                      ? `Village in ${district}`
+                      : focus == null
+                        ? "State, district or village"
+                        : `District or village in ${focus}`
+                  }
                   value={query}
                   onChange={(e) => {
                     setQuery(e.target.value);
@@ -912,7 +1070,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               when nothing is being searched, because a switch between two
               things when one of them is empty is a control that does nothing.
             */}
-            {wantsVillages && (
+            {wantsVillages && district == null && (
               <div className="pmw__scope" role="group" aria-label="Search results">
                 <Chip
                   size="sm"
@@ -922,9 +1080,15 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                     resetPaging();
                   }}
                   count={placeMatches}
-                  countLabel={focus == null ? "states" : "districts"}
+                  countLabel={focus == null ? "places" : "districts"}
                 >
-                  {focus == null ? "States" : "Districts"}
+                  {/*
+                    "Places", not "States". The national list now carries
+                    districts as well, so a chip reading "States 11" over a
+                    result set whose first row is "Bankura — West Bengal" is
+                    counting one thing and naming another.
+                  */}
+                  {focus == null ? "Places" : "Districts"}
                 </Chip>
                 <Chip
                   size="sm"
@@ -964,11 +1128,11 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
             {!showVillageList && visibleRows.length > 0 && (showVillages || showHostels) && (
               <div className="pmw__railcols">
                 <SortHeader
-                  label={focus == null ? "By state" : "By district"}
+                  label={focus == null ? (query.trim() ? "By place" : "By state") : "By district"}
                   sortKey="name"
                   sort={sort}
                   onSort={toggleSort}
-                  what={focus == null ? "state name" : "district name"}
+                  what={focus == null ? "name" : "district name"}
                 />
                 {showVillages && (
                   <SortHeader
@@ -1027,8 +1191,20 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                   not in it.
                 */
                 <p className="pmw__empty">
-                  {`No village named “${query.trim()}” is in the register.`}
-                  {snapshot.coverage.statesWithoutVillageNames.length > 0 && (
+                  {district != null
+                    ? /*
+                        A DISTRICT WITH VILLAGES BUT NO NAMES. Bankura holds 480
+                        Adarsh Gram villages and the register names none of
+                        them, so the count above and the empty list below are
+                        both true and look like a contradiction. Say the number,
+                        then say why the names are missing — anything less
+                        reads as "we lost them".
+                      */
+                      `The scheme covers ${formatIndian(
+                        railRows.find((r) => r.name === district)?.villages ?? 0,
+                      )} villages in ${district}. The Management Information System does not publish their names, so they cannot be listed individually.`
+                    : `No village named “${query.trim()}” is in the register.`}
+                  {district == null && snapshot.coverage.statesWithoutVillageNames.length > 0 && (
                     <>
                       {" "}
                       {`Village names are not published for ${listOf(
@@ -1043,24 +1219,39 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                 <ol className="pmw__list pmw__list--villages">
                   {villagePage.map((v) => (
                     <li key={`${v.state}/${v.district}/${v.name}`} className="pmw__row">
-                      <button
-                        type="button"
-                        className="pmw__rowinner pmw__rowinner--village"
-                        onClick={() => {
-                          // A village has no view of its own; the honest thing
-                          // it can do is take the reader to its state.
-                          setFocus(v.state);
-                          setQuery("");
-                          setScope(null);
-                          resetPaging();
-                        }}
-                      >
-                        <span className="pmw__rowbody">
-                          <span className="pmw__state">{v.name}</span>
-                          <span className="pmw__villageplace">{`${v.district}, ${v.state}`}</span>
-                        </span>
-                        <Icon name="chevron_right" size={16} className="pmw__go" aria-hidden />
-                      </button>
+                      {/*
+                        INSIDE A DISTRICT A VILLAGE IS THE LEAF, so the row is
+                        not a button and carries no chevron — there is nowhere
+                        further to go, and its district and state are the two
+                        things the breadcrumb above already says. From a search
+                        it is still the way into its state.
+                      */}
+                      {district != null ? (
+                        <div className="pmw__rowinner pmw__rowinner--village pmw__rowinner--leaf">
+                          <span className="pmw__rowbody">
+                            <span className="pmw__state">{v.name}</span>
+                          </span>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          className="pmw__rowinner pmw__rowinner--village"
+                          onClick={() => {
+                            // A village has no view of its own; the honest
+                            // thing it can do is take the reader to its state.
+                            setFocus(v.state);
+                            setQuery("");
+                            setScope(null);
+                            resetPaging();
+                          }}
+                        >
+                          <span className="pmw__rowbody">
+                            <span className="pmw__state">{v.name}</span>
+                            <span className="pmw__villageplace">{`${v.district}, ${v.state}`}</span>
+                          </span>
+                          <Icon name="chevron_right" size={16} className="pmw__go" aria-hidden />
+                        </button>
+                      )}
                     </li>
                   ))}
                 </ol>
@@ -1074,7 +1265,12 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
             ) : (
               <ol className="pmw__list">
                 {pageRows.map((r) => {
-                  const clickable = focus == null;
+                  // At India level a row opens a state; inside a state a row
+                  // opens a district. Both are the same gesture on the same
+                  // control, one level apart.
+                  const opens = r.opens ?? (focus == null ? r.name : null);
+                  const opensDistrict = focus != null ? r.name : null;
+                  const clickable = opens != null || opensDistrict != null;
                   const Row = clickable ? "button" : "div";
                   return (
                     <li key={r.key} className="pmw__row">
@@ -1083,8 +1279,10 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                           ? {
                               type: "button" as const,
                               onClick: () => {
-                                setFocus(r.name);
+                                if (opens != null) setFocus(opens);
+                                else setDistrict(opensDistrict);
                                 setQuery("");
+                                setScope(null);
                                 resetPaging();
                               },
                             }
@@ -1097,6 +1295,14 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                       >
                         <span className="pmw__rowbody">
                           <span className="pmw__state">{r.name}</span>
+                          {/*
+                            "Bankura" alone is not an answer — half the reason a
+                            reader searched a district is that they are not sure
+                            which state it is in.
+                          */}
+                          {r.opens != null && (
+                            <span className="pmw__rowplace">{r.sub}</span>
+                          )}
                           {/* Decorative: the figures beside it carry the same value,
                               so a screen reader would otherwise hear it twice. */}
                           <span className="pmw__track" aria-hidden>

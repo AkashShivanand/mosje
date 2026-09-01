@@ -72,10 +72,32 @@
   }
 
   /*
-    The keys are the DS `Legend` now — see `Legend`'s own `onToggle` and its
-    `ramp` / `dots` swatches, which were added for exactly this. All that is
-    left here is where the row sits.
+    ── ONE GROUP PER LAYER ──────────────────────────────────────────────────
+
+    The bar was five siblings at one gap — two keys and three chips — so the
+    chips read as peers of the keys rather than as the Hostels key's own
+    controls. They filter hostels and nothing else, and they disappear when the
+    hostels layer is switched off, which is the giveaway nobody could see.
+
+    Each layer is one group now, and the RULE between the groups is what says
+    so: a divider is a stronger statement than any amount of extra gap, and it
+    survives the row wrapping onto two lines, which a gap does not.
   */
+  .pmw__group {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    /* The chips belong to the key beside them, so they sit NEARER it than the
+       groups sit to each other — 8 inside, 16 plus a rule between. */
+    gap: var(--sa-inline-8);
+    min-width: 0;
+  }
+
+  .pmw__group + .pmw__group {
+    padding-left: var(--sa-padding-16);
+    border-left: 1px solid var(--sa-border-neutral-subtle);
+  }
+
   /*
     `0 1 auto`, not `1 1 auto`: stretched, the keys took the whole row and
     pushed the filters onto a second one even where both would have fitted.
@@ -235,11 +257,48 @@
     align-items: center;
   }
 
-  .pmw__villageplace {
+  /*
+    ── A ROW IS A FIXED TRACK, NOT A HEIGHT THAT EMERGES ────────────────────
+
+    A village or district row carries a place instead of a bar: two lines,
+    where a state row is one line and a 4px rule. Left to its content that was
+    53px against the state row's 41, and ten of them overran the list by 120px
+    — which is what the overlap was.
+
+    Two fixes were tried and both were the wrong shape. Truncating the place to
+    one line cuts "Chikkamagaluru, Karnataka" to "Chikkamagaluru…", losing the
+    state, which is the half a reader searching a village name does not already
+    know. Tightening the leading worked on paper and lost to `.pmw__rowinner`'s
+    own `padding` shorthand further down this file — same specificity, later in
+    source order, so the shorthand reset the padding-block every time.
+
+    The list is a GRID with a fixed track instead. Every row is 44px whatever
+    is in it, the panel is ten tracks tall, and no future row shape can make
+    the list overrun its box — which is the property the two arithmetic fixes
+    did not have. `align-content: start` keeps a short last page at the top
+    rather than stretching three rows over 440px.
+  */
+  .pmw__villageplace,
+  .pmw__rowplace {
     display: block;
-    margin-top: var(--sa-stack-2);
     font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+    A village inside its own district is a LEAF — no chevron, nothing to press,
+    and no district-and-state line, because the breadcrumb overhead already
+    says both. One line, so it sits in the track like a state row does.
+  */
+  .pmw__rowinner--leaf {
+    cursor: default;
+  }
+
+  /* Two lines inside a 44px track need the snugger leading; one line does not. */
+  .pmw__rowinner--village .pmw__state,
+  .pmw__row:has(.pmw__rowplace) .pmw__state {
+    line-height: var(--sa-type-body-3-lh);
   }
 
   /* The retry inside the error sentence — a link in prose, not a button box. */
@@ -256,6 +315,29 @@
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
+
+  /*
+    ── THE MAP DOES NOT FILL ITS HALF, AND THE FIX IS NOT IN THIS FILE ──────
+
+    `IndiaPointMap`'s viewBox is 800x560 and the land inside it measures
+    486x550, from x=161 to x=647. So 314 of the 800 units — 39% of the width —
+    is empty ocean, and the drawn map is very nearly square (0.88) inside a
+    1.43 box. Width-bound in a 646px column, India renders 435px tall in a
+    656px panel, leaving a 221px band.
+
+    Cropping the ocean in CSS was tried and does not work from here: the SVG
+    sits inside `ChartFrame`'s auto-height wrapper, so `height: 100%` resolves
+    to `auto` and the element stays width-bound however it is styled.
+
+    THE REAL FIX IS THE VIEWBOX, in the design system — `INDIA_STATES_VIEWBOX`
+    tightened to the ink, with `IndiaPointMap`'s zoom `target` aspect and its
+    `zoom` divisor following it. That constant is shared with `IndiaMap` and
+    `IndiaBubbleMap`, so it is a change to three components and wants its own
+    pass with all three verified, not a late edit riding on this one.
+
+    Until then the band is symmetric — see `align-content: center` below — so
+    it reads as an inset rather than as a component that failed to lay out.
+  */
 
   /* ── Panel: map | rail, divided by a hairline ──────────────────────────── */
 
@@ -274,13 +356,36 @@
     /*
       A FLOOR, so neither region is starved by the other's natural size.
 
-      The rail has to hold its head, its column labels, seven rows and the
-      pager; the map's height is only ever its own width over 800:560. The floor
-      is what the rail needs, and it costs the map a symmetric band of quiet
-      above and below — composition, rather than the 741px of one-sided slack
-      this layout started with.
+      The rail has to hold its head, its search, its column labels, TEN rows and
+      the pager; the map's height is only ever its own width over 800:560. The
+      floor is what the rail needs, and it costs the map a symmetric band of
+      quiet above and below — composition, rather than the 741px of one-sided
+      slack this layout started with.
+
+      DERIVED, NOT GUESSED — AND THE MAP IS WHY IT IS NOT SIMPLY TALLER.
+
+      30rem was sized for seven state rows at 41px and silently under-sized for
+      seven VILLAGE rows at 57px, which is what let three rows paint over the
+      pager.
+
+      Ten of a 57px row needs 782px, and that was tried: the map does NOT grow
+      to meet it. Its SVG is width-bound at 800:560, so at 646px wide it is
+      435px tall whatever the box does, and a 782px panel left it floating in
+      349px of white — 175 above and below the map that is the reason the
+      section exists. Height the map cannot use is not composition, it is a
+      hole.
+
+      So the ROW shrank instead of the panel growing — see `.pmw__rowplace`,
+      where a two-line row is brought to 40px, within a pixel of a state row.
+
+        22 head + 8 · 40 search + 8 · 26 scope + 8 · 35 columns
+        · 10 x 44 tracks · 41 pager · 24 rail padding  =  652px
+
+      41rem. Both lists are ten 44px tracks, so the panel does not change
+      height when the reader switches between them, and the map keeps a
+      symmetric band that is an inset rather than a hole.
     */
-    min-height: 30rem;
+    min-height: 41rem;
   }
 
   /*
@@ -430,6 +535,20 @@
     display: flex;
     flex-direction: column;
     /*
+      THE BACKSTOP THAT WAS MISSING, AND IT COST 96 PIXELS OF OVERLAP.
+
+      The list is `flex: 1 1 0` in a fixed-height column, so its BOX shrinks to
+      fit — but `overflow: visible` let its CONTENT keep going, and a page of
+      two-line village rows (57px against a state row's 41px) needed 399px of a
+      303px box. The last three rows painted straight over the pager.
+
+      The panel below is sized for ten of the tallest row, so this should never
+      engage. It is here because "should never" is how the first one happened:
+      a row must not be able to escape its list, whatever a future row's height
+      turns out to be.
+    */
+    overflow: hidden;
+    /*
       NO SCROLL. A page holds a fixed seven rows, so the list has a fixed height
       and needs no overflow of its own — which is the point: a nested scroll
       region inside a card is a trap on a phone, where a reader flicking the
@@ -440,6 +559,41 @@
     */
     flex: 1 1 0;
     min-height: 0;
+  }
+
+  /*
+    ── EVERY ROW IS ONE FIXED TRACK ─────────────────────────────────────────
+
+    Declared HERE, after the base rule, and that placement is the fix. The same
+    three declarations sat above it first and lost silently: `.pmw__list` and
+    `.pmw__row` are single-class selectors, so the later block won on source
+    order alone and the list stayed `display: flex` with content-sized rows. A
+    stylesheet that reads top-down is not the same as one that cascades
+    top-down, and this file is long enough that the difference matters.
+
+    A fixed track is what makes the overlap impossible rather than merely
+    fixed. A village row is two lines and a state row is one line plus a rule;
+    at content height that is 53px against 41px, and ten of the taller ones
+    overran the list by 120px and painted over the pager. Now the row is 44px
+    whatever is in it, the panel is ten tracks tall, and no future row shape
+    can escape.
+
+    `align-content: start` so a short last page sits at the top instead of
+    three rows stretching over 440px.
+  */
+  .pmw__list {
+    display: grid;
+    grid-auto-rows: 44px;
+    align-content: start;
+  }
+
+  .pmw__row {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .pmw__row > .pmw__rowinner {
+    height: 100%;
   }
 
   .pmw__row {
