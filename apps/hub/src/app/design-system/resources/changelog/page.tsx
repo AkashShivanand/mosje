@@ -38,6 +38,9 @@ const RELEASES: Release[] = [
       { kind: "Fixed", text: "`--json` WAS TRUNCATED WHENEVER IT WAS PIPED. `process.exit()` does not flush a large stdout write to a pipe, so a consumer reading the findings got a JSON document cut off mid-string. Found by piping it into a diff script, and the same defect had already bitten the new type gate first. Both now set `exitCode` and let the process end" },
       { kind: "Changed", text: "FIGMA PARITY IS NOW A MEASUREMENT, NOT A RECORD. The Type collection\u2019s checksum has only ever been compared against a manually recorded observation; all 115 variables were read LIVE and diffed against the built payload, and against the emitted `clamp()`s evaluated at 360 / 768 / 1280px on both surfaces. 438 of 438 name-by-mode pairs are identical \u2014 including the fluid TABLET midpoints, which are samples of a linear interpolation and can only match if the whole curve does (`headline-1` at Website \u00b7 Tablet: Figma 33.31999969, CSS 33.32). The 2026-08-11 finding that `ref/font/family/mono` held a reverted webfont is resolved" },
       { kind: "Fixed", text: "THE TEN `deprecated/type/*` DESCRIPTIONS IN FIGMA POINTED DESIGNERS AT TWO DEAD THINGS: `ref/font/role/*`, a Tier-1 path hidden from publishing since 2026-08-26 so it cannot be bound even by accident, and `var(--ds-type-*)`, a prefix the code no longer ships. Anyone following them copied a name that resolves to nothing. They now name the Tier-2 `type/<role>/<n>/*` path and `var(--sa-type-*)`, and the five `/leading` variables no longer claim to alias the RAW SIZE steps. Written fresh rather than round-tripped, so no entity was escaped twice, and read back to confirm" },
+    ],
+  },
+  {
     version: "v0.91.0",
     date: "2026-09-01",
     changes: [
