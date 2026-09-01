@@ -1605,3 +1605,60 @@ to villages.
 
 Fixed width removed; both keys now sit 8px from their own labels, and the gap
 *between* keys was raised to 16px so grouping beats proximity.
+
+---
+
+## §35 · What LokOS does, and what is worth taking from it
+
+**2026-09-01.** Reviewed `lokos.dord.gov.in/dashboard` — the Ministry of Rural
+Development's DAY-NRLM dashboard — as a reference for this section. It is the
+closest sibling in government: a national scheme, a choropleth, a per-State
+breakdown beside it, Indian-grouped numerals throughout.
+
+### Taken
+
+**The administrative-reach row.** LokOS carries two bands of figures: the
+measures counted (CLFs 34,383 · VOs 5,64,463 · SHGs 94,73,710 · Members
+10,26,10,883) and then, separately, the spread (States/UTs 34 · Districts 760 ·
+Blocks 7,243 · Panchayats 2,57,631 · Villages 5,97,835).
+
+That second band is the right idea and this section had lost it. The totals
+moved into the legend keys in §34 and the geographic spread went with them. It
+is back as one line beside the CSV link — *"Reaching 547 districts in 28 States
+and Union Territories."* It repeats nothing the keys carry, and it passes the
+poster test in `.claude/rules/ui-restraint-and-copy.md`: a department would
+print that sentence. It would not print a coordinate-repair count.
+
+### Considered and not taken
+
+**The cascading filter bar** — State → District → Block → Panchayat → Village,
+with Clear All, each level enabling the next. A genuinely strong pattern, and
+the right one for an officer working down the administrative hierarchy. Not
+adopted here for two reasons: this feed publishes two levels, not five, and this
+section already has four ways into a State (the map, a row, the breadcrumb, the
+search). A fifth control would be the junk the rule now forbids.
+
+**Bucketed legend breaks** — "0–3L / 3L–7L / 7L–10L / >10L" names what each
+shade is worth, where ours prints only the endpoints (`1 ▨▨▨ 387`) and leaves
+the middle to be guessed. Correct for a four-class choropleth. Ours is a
+continuous log ramp over a hex density field, so discretising it into four
+classes would throw away the resolution that field exists to show. Recorded as
+an open question rather than a decision.
+
+### Not taken, deliberately — with the measurements
+
+| what | measured | why not |
+| --- | --- | --- |
+| **Nested scroll for the State list** | 4,828px of content in a 720px window — a ratio of 6.7 | Exactly what §34 removed. On a phone a reader flicking the page down lands in the list and moves the list instead |
+| **List not linked to the map** | state rows compute `cursor: auto`, carry no `role`, no handler | Ours drills on click and cross-highlights on hover; that link is the point of putting a list beside a map |
+| **Colour used decoratively on values** | six hues on 13px numerals; **four fail WCAG AA on white** — `#f6af0f` at **1.90:1**, `#7cb920` at 2.38:1, `#f87118` at 2.85:1, `#6875e4` at 4.00:1 — and `#f6af0f` is used for *two different measures* (Villages and VOs), so it is not even a consistent key | The estate's rule is semantic colour only. A hue that means nothing costs legibility and buys nothing |
+| **A pastel tint per metric card** | `#f0dfeb` · `#fff2d8` · `#dce4ff` · `#e5f1d2` | Same reasoning: the colour encodes nothing |
+| **Map in an `<iframe>`** | 1 iframe; 0 map paths reachable from the host document | Cuts the map out of the page's own theming, interaction and accessibility tree |
+| **Heading outline** | the page's only `<h1>` is the accessibility widget's | A dashboard's own title should be its `h1` |
+
+### What we already do that LokOS confirms
+
+Indian digit grouping throughout, a per-State breakdown beside the map, a
+choropleth for the national view, and a visible "as on" date for the figures —
+LokOS prints *"Last Updated 20 Aug, 2026"* in its footer, and this estate
+carries the same idea in `ProvenanceChip` plus `PMAJAY_REACH_AS_ON`.

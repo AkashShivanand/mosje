@@ -745,6 +745,25 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
         where the people who can act on them will look.
       */}
       <div className="pmw__foot">
+        {/*
+          THE SCHEME'S SPREAD, WHICH THE KEYS DO NOT CARRY.
+
+          Borrowed from LokOS (lokos.dord.gov.in), whose dashboard puts a second
+          row of administrative reach — States, Districts, Blocks, Panchayats,
+          Villages — under its headline counts. The idea is right and this
+          section had lost it: the totals moved into the legend keys two passes
+          ago and the geographic spread went with them.
+
+          It says what the keys do not, so it repeats nothing, and it passes the
+          test in `ui-restraint-and-copy.md` — a department would print this
+          sentence on a poster about the scheme. "423 records have no usable
+          coordinates" would not, which is why that one is in the audit doc.
+        */}
+        <p className="pmw__reach">
+          {`Reaching ${formatIndian(snapshot.districtCount)} districts in ${formatIndian(
+            snapshot.states.length,
+          )} States and Union Territories.`}
+        </p>
         <a
           className="pmw__footlink"
           href={csvHref}

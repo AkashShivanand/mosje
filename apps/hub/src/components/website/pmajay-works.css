@@ -538,8 +538,16 @@
 
   .pmw__foot {
     display: flex;
-    justify-content: flex-end;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-inline-16);
     margin-top: var(--sa-stack-8);
+  }
+
+  .pmw__reach {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
   }
 
   .pmw__footlink {
