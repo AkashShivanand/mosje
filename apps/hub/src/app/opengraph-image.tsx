@@ -32,6 +32,15 @@ export const alt = OG_CARD_ALT;
 export const size = OG_CARD_SIZE;
 export const contentType = "image/png";
 
+/* ds-exempt-start(raster-canvas): satori — the engine behind `next/og` — has no
+   cascade and resolves no CSS custom properties, so `var(--sa-type-*)` renders
+   as nothing here and every value must be a literal. There is no viewport
+   either, which rules out the fluid `clamp()` the type scale is built from: the
+   canvas is a fixed 1200x630 raster, not a page. The sizes below are still taken
+   from the 21-role ramp (24 = headline/4, 64 = display/3, 28 = headline/3) so
+   the card reads as the estate's typography even though it cannot bind to it.
+   The palette above IS bound — via the generated token mirror, which is the
+   closest thing to a binding this renderer allows. */
 export default async function OpenGraphImage() {
   const roundel = await readFile(new URL("./_og/samavesh-logo.png", import.meta.url));
   const roundelSrc = `data:image/png;base64,${roundel.toString("base64")}`;
@@ -86,7 +95,7 @@ export default async function OpenGraphImage() {
             style={{
               display: "flex",
               marginTop: 12,
-              fontSize: 62,
+              fontSize: 64,
               fontWeight: 700,
               lineHeight: 1.1,
               color: colors.navy,
@@ -112,3 +121,4 @@ export default async function OpenGraphImage() {
     size,
   );
 }
+/* ds-exempt-end */

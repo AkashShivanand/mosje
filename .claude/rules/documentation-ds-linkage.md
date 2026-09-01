@@ -163,7 +163,19 @@ and a category the checker does not recognise is itself a failure.
 ```
 
 Categories: `specimen`, `code-sample`, `demo-geometry`, `third-party`, `layout-literal`,
-`optical` (a 1–2px nudge that aligns a glyph, where the 2px token would misalign it).
+`optical` (a 1–2px nudge that aligns a glyph, where the 2px token would misalign it),
+`portal-palette`, `raster-canvas`.
+
+`raster-canvas` names the one place in this estate where binding is not merely
+inconvenient but **impossible**: a `next/og` `ImageResponse`. satori has no cascade and
+resolves no custom properties, so `var(--sa-type-*)` renders as nothing; and it has no
+viewport, so the fluid `clamp()` the type scale is built from cannot resolve either. The
+canvas is a fixed raster, not a page. Two obligations survive the exemption, and a
+reviewer should check both: values still come **off the published ramp** (a 62px title is
+as wrong on a social card as on a page), and colours still come from the **generated token
+mirror** exported by `@mosje/design-system` rather than a second copy of the hexes — that
+mirror is read from `tokens.css`, so it is the closest thing to a binding the renderer
+allows. Reach for this category only for a rendered image; a component is never one.
 
 ### Scope is checked, not assumed
 
