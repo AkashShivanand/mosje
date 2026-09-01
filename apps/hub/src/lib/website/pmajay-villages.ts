@@ -38,7 +38,34 @@ interface VillagesAsset {
   villages: PackedVillage[];
 }
 
-const ASSET = "/website/data/pmajay-villages.json";
+/*
+ * Module-scoped, so the second search on the page does not refetch and a
+ * remount does not either. A failed attempt is NOT cached — an error here is
+ * usually a dropped connection, and a reader who tries again deserves a real
+ * second attempt rather than the memory of the first failure.
+ */
+let cache: VillageName[] | null = null;
+let inflight: Promise<VillageName[]> | null = null;
+
+/**
+ * Where the index is fetched from.
+ *
+ * A default, not a constant, because there are two consumers with two roots.
+ * The hub serves it from its own public folder; the standalone bundle is
+ * dropped onto somebody else's server and must never reach back to a MoSJE
+ * origin, so it points this at a file sitting beside itself.
+ */
+let assetUrl = "/website/data/pmajay-villages.json";
+
+/**
+ * Point the index somewhere else. Call before the first search.
+ *
+ * Ignored once the index has loaded — re-pointing a cache mid-session would
+ * mean two answers to the same query depending on when it was asked.
+ */
+export function setVillageIndexSource(url: string): void {
+  if (!cache) assetUrl = url;
+}
 
 /**
  * Every state of the fetch, because every one of them reaches the screen.
@@ -55,19 +82,10 @@ export interface VillageIndex {
   retry: () => void;
 }
 
-/*
- * Module-scoped, so the second search on the page does not refetch and a
- * remount does not either. A failed attempt is NOT cached — an error here is
- * usually a dropped connection, and a reader who tries again deserves a real
- * second attempt rather than the memory of the first failure.
- */
-let cache: VillageName[] | null = null;
-let inflight: Promise<VillageName[]> | null = null;
-
 function load(signal: AbortSignal): Promise<VillageName[]> {
   if (cache) return Promise.resolve(cache);
   if (inflight) return inflight;
-  inflight = fetch(ASSET, { signal })
+  inflight = fetch(assetUrl, { signal })
     .then((r) => {
       if (!r.ok) throw new Error(`${r.status}`);
       return r.json() as Promise<VillagesAsset>;

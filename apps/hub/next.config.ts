@@ -151,51 +151,6 @@ const nextConfig: NextConfig = {
     }));
   },
   async headers() {
-    /*
-     * ── WHO MAY FRAME THE EMBED ──────────────────────────────────────────────
-     *
-     * `X-Frame-Options: SAMEORIGIN` below blocks every other origin, which is
-     * right for the estate and wrong for `/embed/*`, whose entire purpose is
-     * being framed by the department's WordPress site.
-     *
-     * The header cannot express "same origin PLUS this one" — its ALLOW-FROM
-     * form takes a single origin and no current browser implements it. CSP
-     * `frame-ancestors` is the replacement, it takes a list, and where both are
-     * present `frame-ancestors` wins in every browser that supports it. So the
-     * embed routes send a `frame-ancestors` that names the hosts allowed, and
-     * do NOT send `X-Frame-Options` at all — leaving it would deny the frame in
-     * any browser that ignored the CSP.
-     *
-     * AN ALLOW-LIST, NEVER `*`. `frame-ancestors *` lets any site on the
-     * internet put a Government of India map inside their own page, under their
-     * own branding, with their own text around it. The default is the
-     * department's own domains; `EMBED_FRAME_ANCESTORS` widens it for a staging
-     * host without a code change, space-separated.
-     */
-    const frameAncestors =
-      process.env.EMBED_FRAME_ANCESTORS?.trim() ||
-      "'self' https://dosje.gov.in https://*.dosje.gov.in";
-
-    const embedHeaders = {
-      source: "/embed/:path*",
-      headers: [
-        { key: "Content-Security-Policy", value: `frame-ancestors ${frameAncestors};` },
-        { key: "X-Content-Type-Options", value: "nosniff" },
-        { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
-        {
-          key: "Permissions-Policy",
-          value: "camera=(), microphone=(), geolocation=()",
-        },
-        /*
-         * An embed is a fragment with no heading above it and no navigation —
-         * the canonical home of this content is the organisation page that
-         * frames it properly. `robots.ts` covers crawling; this covers the
-         * indexer that reached the URL some other way.
-         */
-        { key: "X-Robots-Tag", value: "noindex, nofollow" },
-      ],
-    };
-
     const securityHeaders = {
       source: "/(.*)",
       headers: [
@@ -218,12 +173,9 @@ const nextConfig: NextConfig = {
     // the browser cache hashed chunks forever, so CSS/JS edits never refetch and
     // appear "stale" (Next.js warns about exactly this). Apply it in prod only.
     if (process.env.NODE_ENV !== "production") {
-      // Embed rules FIRST: Next applies every matching entry in order, and the
-      // catch-all below would otherwise put `X-Frame-Options` back on them.
-      return [embedHeaders, securityHeaders];
+      return [securityHeaders];
     }
     return [
-      embedHeaders,
       securityHeaders,
       {
         source: "/_next/static/:path*",

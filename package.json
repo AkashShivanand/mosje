@@ -44,6 +44,7 @@
     "ensure:storybook": "node -e \"require('fs').existsSync('apps/hub/public/storybook/index.html')||(console.log('• building Storybook once into apps/hub/public/storybook…'),process.exit(1))\" || npm run build:storybook --prefix apps/hub",
     "predev:hub": "npm run ensure:storybook",
     "check:docs-data": "node scripts/check-docs-data.mjs",
+    "build:pmajay-standalone": "node tools/pmajay-standalone/build.mjs",
     "check:ds-linkage": "node tools/ds-linkage/check.mjs",
     "check:ds-linkage:all": "node tools/ds-linkage/check.mjs --all",
     "check:type-linkage": "node tools/type-linkage/check.mjs --gate",

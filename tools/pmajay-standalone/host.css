@@ -1,0 +1,72 @@
+/*
+ * What the shadow root has to state for itself.
+ *
+ * ── A SHADOW ROOT BLOCKS SELECTORS, NOT INHERITANCE ────────────────────────
+ *
+ * This is the half of "style isolation" that surprises people, and it bit this
+ * bundle: dropped into a theme with `body { font-family: Georgia; color: #7a0000 }`,
+ * the card rendered in a dark-red serif. No theme RULE had matched anything of
+ * ours — inherited properties simply cross the boundary, because that is what
+ * inheritance is for. A widget is supposed to pick up its host's font; a
+ * government chart with its own type contract is not.
+ *
+ * So every inherited property the design system assumes is stated on the host
+ * element rather than assumed from a document we do not own.
+ */
+:host {
+  /* Contain the layout, and give the element a sane display — a custom element
+     is `display: inline` until told otherwise, which collapses the whole card
+     to a text run. */
+  display: block;
+  font-family: var(--sa-font-latin);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-text-neutral-base);
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: normal;
+  text-align: left;
+  text-transform: none;
+  /* The estate's own reset assumes Tailwind Preflight, which is not here. */
+  -webkit-font-smoothing: antialiased;
+}
+
+/*
+ * `box-sizing` is NOT inherited, so it does not cross the boundary — it simply
+ * defaults to `content-box` inside a tree Preflight never reached. Every width
+ * and padding in the design system is authored against `border-box`, so this is
+ * not a preference; without it the panel is wider than its own container by the
+ * sum of its padding.
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Preflight also zeroes these, and the design system's spacing is authored
+   expecting that. A theme's margins cannot reach in here, but the UA's do. */
+h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd, ol, ul, fieldset, legend {
+  margin: 0;
+  padding: 0;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+}
+
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* The card paints its own ground; the host's shows through around it. */
+.pmajay-standalone {
+  background: transparent;
+}

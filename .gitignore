@@ -82,3 +82,8 @@ apps/hub/public/reports/eutthan-admin/figures/
 /*.cjs
 !/.lintstagedrc.mjs
 !/.stylelintrc.js
+
+# Standalone embed build output — reproducible with
+# `npm run build:pmajay-standalone`, and a 1 MB minified bundle in the history
+# is a diff nobody can review.
+dist/
