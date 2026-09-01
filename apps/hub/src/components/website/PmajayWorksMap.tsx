@@ -1500,8 +1500,6 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
             )}
           </div>
         </div>
-      </div>
-      )}
 
       {/*
         ONE LINK, NOT A PARAGRAPH OF DIAGNOSTICS.
@@ -1516,8 +1514,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
         The figures are not lost — they are in `docs/audit/pm-ajay-content-audit.md`,
         where the people who can act on them will look.
       */}
-      {hasReading && (
-      <div className="pmw__foot">
+        <div className="pmw__foot">
         {/*
           THE SCHEME'S SPREAD, WHICH THE KEYS DO NOT CARRY.
 
@@ -1558,6 +1555,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
           <Icon name="download" size={16} aria-hidden />
           Download CSV
         </a>
+        </div>
       </div>
       )}
     </>

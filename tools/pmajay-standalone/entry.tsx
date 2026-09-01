@@ -51,7 +51,7 @@ import "./host.css";
 
 import { PmajayWorksMap } from "@/components/website/PmajayWorksMap";
 import { PMAJAY_REACH_SNAPSHOT } from "@/lib/website/pmajay-map-snapshot";
-import { setVillageIndexSource } from "@/lib/website/pmajay-villages";
+import { primeVillageIndex, setVillageIndexSource } from "@/lib/website/pmajay-villages";
 import type { ReachData } from "@/lib/website/pmajay-api";
 import { DataModeProvider } from "@/lib/data-mode/context";
 
@@ -83,6 +83,9 @@ const DATA: ReachData = {
  */
 const SCRIPT_URL = (document.currentScript as HTMLScriptElement | null)?.src ?? "";
 
+/** Where the single-file build parks the village index. See `build.mjs`. */
+const VILLAGES_INLINE_ID = "pmajay-villages-inline";
+
 /** Injected by the build after the CSS is collected. See `build.mjs`. */
 declare const __PMAJAY_CSS__: string;
 
@@ -92,8 +95,31 @@ class PmajayCoverageMap extends HTMLElement {
   connectedCallback() {
     if (this.shadowRoot) return;
 
+    /*
+     * ── THREE WAYS THE VILLAGE INDEX ARRIVES, IN ORDER ────────────────────────
+     *
+     * 1. INLINE, from a `<script type="application/json">` in the same paste.
+     *    This is the single-file build, where there is no second file to fetch
+     *    because there was no second file to upload.
+     * 2. An explicit `villages-src`, for a host that keeps its media in one
+     *    place and its scripts in another.
+     * 3. A sibling of the script's own URL — the two-file install, and the
+     *    reason `document.currentScript` is captured at evaluation time.
+     *
+     * Inline wins because its presence is unambiguous: somebody put the data on
+     * the page. A fetch that would only duplicate it is not worth the request.
+     */
+    const inline = document.getElementById(VILLAGES_INLINE_ID);
     const src = this.getAttribute("villages-src");
-    if (src) setVillageIndexSource(src);
+    if (inline?.textContent) {
+      try {
+        primeVillageIndex(JSON.parse(inline.textContent));
+      } catch {
+        // A truncated paste is the likely cause, and it must not take the card
+        // down with it — the search falls back to its own error state, which is
+        // designed, while the map and the ranked list are unaffected.
+      }
+    } else if (src) setVillageIndexSource(src);
     else if (SCRIPT_URL) {
       setVillageIndexSource(new URL("pmajay-villages.json", SCRIPT_URL).href);
     }
@@ -148,7 +174,16 @@ class PmajayCoverageMap extends HTMLElement {
   }
 }
 
-const FONT_FACE = `@font-face{font-family:"Material Symbols Rounded";font-style:normal;font-weight:100 700;font-display:block;src:url("https://fonts.gstatic.com/s/materialsymbolsrounded/v358/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190FjzaqkNCeE.woff2") format("woff2")}`;
+/*
+ * ── THE ONE STYLE THIS EMBED PUTS IN THE HOST DOCUMENT, AND ITS ONLY ONE ───
+ *
+ * A font family, under a private name. `@font-face` cannot be declared inside a
+ * shadow root — the registry is per-document — so this is unavoidable, and the
+ * private name is what makes it harmless: it carries no selector, matches no
+ * element, and defines a family no other stylesheet on the page references. The
+ * build renames it in the shadow CSS to match. See `build.mjs`.
+ */
+const FONT_FACE = `@font-face{font-family:"PMAJAY Symbols";font-style:normal;font-weight:100 700;font-display:block;src:url("https://fonts.gstatic.com/s/materialsymbolsrounded/v358/sykg-zNym6YjUruM-QrEh7-nyTnjDwKNJ_190FjzaqkNCeE.woff2") format("woff2")}`;
 
 if (!customElements.get("pmajay-coverage-map")) {
   customElements.define("pmajay-coverage-map", PmajayCoverageMap);

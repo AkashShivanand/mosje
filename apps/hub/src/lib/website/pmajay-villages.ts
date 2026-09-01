@@ -33,7 +33,7 @@ import type { VillageName } from "./pmajay-map-reduce";
 /** Packed `[name, state, district]`, as the generated asset stores them. */
 type PackedVillage = [string, string, string];
 
-interface VillagesAsset {
+export interface VillagesAsset {
   asOn: string;
   villages: PackedVillage[];
 }
@@ -82,6 +82,42 @@ export interface VillageIndex {
   retry: () => void;
 }
 
+/** Packed rows → the shape the UI reads. Shared by both entry points. */
+function unpack(body: VillagesAsset | null): VillageName[] {
+  const rows = Array.isArray(body?.villages) ? body.villages : [];
+  return rows
+    .filter(
+      (v): v is PackedVillage =>
+        Array.isArray(v) && typeof v[0] === "string" && typeof v[1] === "string",
+    )
+    .map(([name, state, district]) => ({ name, state, district: district ?? "" }));
+}
+
+/**
+ * Fill the index from data already on the page, instead of fetching it.
+ *
+ * ── WHY A SECOND ENTRY POINT EXISTS ────────────────────────────────────────
+ *
+ * The single-file embed is ONE block of markup pasted into a page builder, so
+ * there is no sibling file to fetch and no upload step to get one there. The
+ * index travels inside the paste and arrives before the first search.
+ *
+ * The tradeoff is stated where it is chosen, not hidden here: inlined, every
+ * reader downloads the index whether or not they search, which is exactly what
+ * `load()` exists to avoid. That is the price of one paste, and the two-file
+ * install remains the one to reach for when page weight matters.
+ *
+ * Ignored once the index is loaded — two answers to the same query depending on
+ * when it was asked is worse than a stale one.
+ */
+export function primeVillageIndex(body: VillagesAsset | null): void {
+  if (cache) return;
+  const rows = unpack(body);
+  // An empty parse is a BROKEN paste, not an empty register, and caching it
+  // would turn a fixable error into a permanent "no matches" for the session.
+  if (rows.length) cache = rows;
+}
+
 function load(signal: AbortSignal): Promise<VillageName[]> {
   if (cache) return Promise.resolve(cache);
   if (inflight) return inflight;
@@ -91,13 +127,7 @@ function load(signal: AbortSignal): Promise<VillageName[]> {
       return r.json() as Promise<VillagesAsset>;
     })
     .then((body) => {
-      const rows = Array.isArray(body?.villages) ? body.villages : [];
-      cache = rows
-        .filter(
-          (v): v is PackedVillage =>
-            Array.isArray(v) && typeof v[0] === "string" && typeof v[1] === "string",
-        )
-        .map(([name, state, district]) => ({ name, state, district: district ?? "" }));
+      cache = unpack(body);
       return cache;
     })
     .finally(() => {

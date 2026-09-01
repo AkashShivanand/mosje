@@ -1039,12 +1039,43 @@
 
   /* ── Footnote ──────────────────────────────────────────────────────────── */
 
+  /*
+    ── THE FOOTER IS PART OF THE CARD, NOT A PAIR OF ORPHANS UNDER IT ───────
+
+    It sat OUTSIDE `.pmw__instrument` with an 8px top margin, so the card ended
+    at the pager and the reach sentence and Download CSV were left standing on
+    the section's own grey ground with nothing holding them. They read as two
+    stray elements below a finished card rather than as its footer, and it is
+    the same class of defect as the badges that escaped the map: an element
+    whose meaning depends on the card, rendered outside it.
+
+    Inside, it mirrors `.pmw__controls` exactly — same 16px inline padding,
+    same hairline, one at the top of the card and one at the bottom. The card
+    now opens and closes on the same shape, and the link that downloads the
+    card's data lives in the card.
+  */
   .pmw__foot {
     display: flex;
-    align-items: baseline;
+    /*
+      CENTRE, NOT BASELINE — the sentence was sitting 8px below the strip's top
+      edge and 1px above its bottom.
+
+      `baseline` aligns the two children on their shared text baseline, which
+      sounds right and is not: the link is 26px tall because it carries 4px of
+      padding to reach the 24px minimum target (WCAG 2.2 SC 2.5.8), the
+      paragraph is 18px, and matching baselines pushes the SHORTER one down to
+      meet the taller one's. The strip then reads as bottom-weighted.
+
+      Both children set the same 12px/18px type and the link's padding is
+      symmetric, so centring lands their baselines on the same line anyway — it
+      gets the alignment `baseline` was asked for AND the vertical centring it
+      was quietly costing.
+    */
+    align-items: center;
     justify-content: space-between;
     gap: var(--sa-inline-16);
-    margin-top: var(--sa-stack-8);
+    padding: var(--sa-padding-8) var(--sa-padding-16);
+    border-top: 1px solid var(--sa-border-neutral-subtle);
   }
 
   /*
@@ -1110,6 +1141,10 @@
     .pmw__head,
     .pmw__foot {
       flex-direction: column;
+      /* Stacked, the cross axis is horizontal, and `center` would centre the
+         sentence and the link in the card rather than setting them against its
+         left edge like everything above them. */
+      align-items: flex-start;
       gap: var(--sa-stack-8);
     }
 

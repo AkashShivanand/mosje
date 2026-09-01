@@ -1,72 +1,113 @@
 # Embedding the PM-AJAY coverage map in WordPress (Elementor)
 
 The Scheme Coverage section — the whole card, from the two layer keys at the top
-to Download CSV at the bottom — ships as **two files you upload to the
-department's own server**. Nothing is fetched from a MoSJE origin at runtime.
+to Download CSV at the bottom — is handed over as **files the department hosts
+itself**. Nothing is fetched from a MoSJE origin at runtime.
 
 ```bash
 npm run build:pmajay-standalone
-# → dist/pmajay-standalone/pmajay-coverage-map.js    211 KB gzipped
-# → dist/pmajay-standalone/pmajay-villages.json       81 KB gzipped
 ```
+
+| File | Size | What it is |
+|---|---|---|
+| `pmajay-coverage-map.html` | 1,491 KB raw · **295 KB gzipped** | **One paste.** Everything inline, no upload |
+| `pmajay-coverage-map.js` | 1,060 KB raw · **212 KB gzipped** | The card, as a file |
+| `pmajay-villages.json` | 426 KB raw · **81 KB gzipped** | The village index, fetched on demand |
+
+Two installs, both supported. Pick by whether the department can put files on
+its own server.
 
 ---
 
-## 1. Upload both files
+## Option A — one paste, no upload (default)
 
-Put them in the **same directory** on the WordPress server — the Media Library
-is fine. The script finds the JSON beside itself, so no path needs configuring.
+Open `dist/pmajay-standalone/pmajay-coverage-map.html`, copy the whole file, and
+paste it into an Elementor **HTML** widget. That is the entire integration: no
+upload, no file path, no plugin, no settings screen, no CSP change.
 
-If the host insists on separate locations, point at it explicitly:
+The file opens with a header written for whoever inherits it — what the three
+blocks are, which one is safe to delete, and exactly what the page inherits.
+**Do not strip that header.** It is the only documentation that travels with the
+paste, and the person who next opens it will not have this repository.
 
-```html
-<pmajay-coverage-map villages-src="https://example.gov.in/data/pmajay-villages.json"></pmajay-coverage-map>
-```
+## Option B — two files, when page weight matters
 
-## 2. Paste this into an Elementor **HTML** widget
+Upload `pmajay-coverage-map.js` and `pmajay-villages.json` to the **same
+directory** on the WordPress server (the Media Library is fine), then paste:
 
 ```html
 <pmajay-coverage-map></pmajay-coverage-map>
 <script src="/wp-content/uploads/pmajay/pmajay-coverage-map.js" defer></script>
 ```
 
-That is the whole integration. No iframe, no height script, no CSP change, no
-gate exemption — the card is part of the page and grows with its own content.
+The script finds the JSON beside itself, so no path needs configuring. If the
+host keeps media and scripts in different places, name it:
+
+```html
+<pmajay-coverage-map villages-src="https://example.gov.in/data/pmajay-villages.json"></pmajay-coverage-map>
+```
+
+### Which to use
+
+Option A costs **83 KB gzipped more on every page view**, and inline script is
+**not cached across pages** — a reader visiting three pages carrying the card
+downloads it three times, where a file is fetched once. It is also markup stored
+in the post, so the builder re-serialises the whole thing on every save and the
+editor gets slow to work in.
+
+Option B is the one to reach for if the card appears on several pages, or if
+page weight is being watched. Otherwise Option A's simplicity is worth the 83 KB
+— that is a judgement for whoever runs the site, which is why both are built.
 
 ---
 
-## What the two files are, and why two
+## What it does to the rest of the page
 
-| | |
-|---|---|
-| `pmajay-coverage-map.js` | React, the design system, the token contract, the India outlines and the mirrored snapshot — 211 KB gzipped |
-| `pmajay-villages.json` | 10,157 village names, **fetched only when someone types two characters** into the search — 81 KB gzipped |
-
-Bundled together they came to 278 KB gzipped, and 30% of every page load would
-have been an index most readers never touch. Split, a page where nobody searches
-a village never pays for it. It is the same rule the estate's own site uses.
-
-## How it stays out of the theme's way
-
-The card is a custom element with a **shadow root**, which is the only thing that
-gives both directions of isolation:
+**Nothing, with two named exceptions.** The card renders inside a **shadow
+root**, which is the only mechanism that isolates in both directions at once:
 
 - The theme's CSS cannot reach in and restyle a government chart.
-- The estate's token contract cannot leak out and restyle the theme.
+- The estate's 557 KB token contract cannot leak out and restyle the theme.
 
-Verified against a deliberately hostile theme (`body { font-family: Georgia;
-color: #7a0000 }`, `button { background: hotpink !important }`, `input { border:
-4px dashed purple }`): the card rendered in Noto Sans with its own palette, and
-the theme's button was still hotpink afterwards.
+The two things that do reach the host document, both deliberate:
 
-**Two things a shadow root does *not* do**, both handled in `host.css`:
+1. **One `@font-face`**, injected into `<head>`, for the icon glyphs. A font
+   registry is per-document — a face declared inside a shadow root is ignored —
+   so this one is unavoidable. It is named **`"PMAJAY Symbols"`**, deliberately
+   a name nothing else uses, so a host already loading Material Symbols or Font
+   Awesome cannot end up with two faces claiming one family. It carries no
+   selector and matches no element of the host's.
+2. **One custom element name**, `pmajay-coverage-map`.
+
+No global styles, no classes added to the host's markup, no existing element
+touched, no global event handlers.
+
+**Verified, not asserted.** Against a deliberately hostile theme — `body
+{ font-family: Georgia; color: #7a0000 }`, `button { background: hotpink
+!important }`, `input { border: 4px dashed purple !important }`, `* { box-sizing:
+content-box }`, and a Material Symbols face of the host's own — every host
+element measured identical before and after, and the card rendered in Noto Sans
+with its own palette and its own icons.
+
+### Two things a shadow root does *not* do
+
+Both are handled in `tools/pmajay-standalone/host.css`, and both were found by
+running the bundle rather than by reasoning about it:
 
 - **Inherited properties still cross the boundary.** Font, colour and
   letter-spacing come in from the host unless the element states its own. It
   does.
-- **`box-sizing` is not inherited, and defaults to `content-box`** inside a tree
-  the estate's reset never reached. Every width in the design system is authored
-  against `border-box`.
+- **The browser's own stylesheet still applies inside.** The design system is
+  authored against Tailwind Preflight, which nothing loads here, so the
+  user-agent defaults it exists to flatten came back — every breadcrumb and
+  pager control rendered with Chrome's `2px outset` bevel on a grey ground, and
+  every link came back underlined. That is the mirror image of the risk everyone
+  worries about with an embed: the host page was never in danger, the *card* was,
+  from styles the host does not control. `host.css` is Preflight's subset for
+  the elements this card uses, in the `base` layer so it cannot outrank the
+  card's own hairlines.
+
+---
 
 ## The data it shows
 
@@ -75,8 +116,8 @@ bundle has no live feed by construction — it takes the same code path the site
 takes when the department's API does not answer, so it draws the mirror and says
 so.
 
-**Re-run the build after refreshing the snapshot**, or the embedded card will
-keep showing the old figures while the site shows new ones.
+**Re-run the build and re-paste after the snapshot is refreshed**, or the
+embedded card will keep showing the old figures while the site shows new ones.
 
 ## The one external request
 
@@ -91,10 +132,13 @@ It needs `fonttools`, which was not available on the build machine.
 
 ## Checking it worked
 
-- The card renders with its heading, the map, the ranked list and Download CSV.
-- The page's own fonts and colours are unchanged around it.
-- DevTools → Network shows requests only for the two files above (plus the
-  Google font). **Any request to a `mosje` or `vercel.app` host means the wrong
-  build is deployed.**
-- Typing two characters into the search loads the village index and returns
-  matches.
+- The card renders with its two layer keys, the map, the ranked list, the pager
+  and Download CSV inside one bordered card.
+- The page's own fonts, colours and icons are unchanged around it.
+- Buttons inside the card have **no bevel** and links are **not underlined at
+  rest** — if either appears, `host.css` did not reach the build.
+- DevTools → Network shows requests only for the file(s) above (plus the Google
+  font). **Any request to a `mosje` or `vercel.app` host means the wrong build is
+  deployed.**
+- Typing two characters into the search returns matches — from the inline block
+  under Option A, from the fetched JSON under Option B.
