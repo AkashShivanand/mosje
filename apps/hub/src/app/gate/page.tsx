@@ -20,13 +20,32 @@ import type { Metadata } from "next";
 import { GATE_EMBLEM_SRC, safeNextPath } from "@/lib/site-gate";
 import { resolvePortals } from "@/lib/registry/resolve";
 import { EstateField } from "@/components/estate-field";
+import { socialCard } from "@/lib/seo/social";
+import { SITE_NAME } from "@/lib/seo/site";
 import { unlock } from "./actions";
 import { GateForm } from "./gate-form";
 import "./gate.css";
 
+/**
+ * The gate carries a social card even though it is `noindex`, and that is not a
+ * contradiction — the two answer different machines.
+ *
+ * `robots` speaks to search crawlers, which must not index a password wall.
+ * Open Graph speaks to link unfurlers in WhatsApp, Slack and Teams, which
+ * ignore robots directives. While the gate is switched on, EVERY estate url
+ * redirects here, so this page is the only one an unfurler ever sees — which
+ * makes it the single most important card on the deployment.
+ */
 export const metadata: Metadata = {
   title: "Access — MoSJE Digital Estate",
   robots: { index: false, follow: false },
+  ...socialCard({
+    title: "SAMAVESH — MoSJE Digital Estate",
+    description:
+      "A private preview of the unified digital estate for the Ministry of Social Justice & Empowerment. Access is by shared password.",
+    url: "/gate",
+    siteName: SITE_NAME,
+  }),
 };
 
 // Counted from the resolved registry rather than typed by hand, so the door

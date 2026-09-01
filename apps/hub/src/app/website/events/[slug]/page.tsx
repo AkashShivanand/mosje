@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContentPage } from "@/components/website/templates/ContentPage";
 import { Icon } from "@mosje/design-system";
+import { socialCard } from "@/lib/seo/social";
 
 interface EventDetail {
   title: string;
@@ -130,7 +131,12 @@ export async function generateMetadata({
   const { slug } = await params;
   const event = EVENTS[slug];
   if (!event) return { title: "Event — DoSJE" };
-  return { title: `${event.title} — DoSJE`, description: event.about[0] };
+  const title = `${event.title} — DoSJE`;
+  return {
+    title,
+    description: event.about[0],
+    ...socialCard({ title, description: event.about[0], url: `/website/events/${slug}` }),
+  };
 }
 
 export default async function EventDetailPage({

@@ -130,6 +130,16 @@ export function exemptionMap(src) {
         if (open) { if (s.includes("*/")) open = false; continue; }
         // Consecutive `//` lines are the same comment continued.
         if (s === "" || s.startsWith("//")) continue;
+        // So is a BLOCK comment. The walk skipped `//` and not `/* */`, so putting
+        // any block comment between the note and the line it excuses silently voided
+        // the exemption — and CSS has no `//`, which is exactly where these notes
+        // live. Found by adding a `stylelint-disable` beside one: two linters each
+        // need their own marker, and asking for them in a fixed order to keep a
+        // parser happy is a trap rather than a rule.
+        if (s.startsWith("/*")) {
+          if (!s.includes("*/")) open = true;
+          continue;
+        }
         // A structural opener (`preview: (`, `return (`, `{`) carries no value of its
         // own, so it is not the line the reason was written for — keep walking.
         if (/[([{]$/.test(s)) continue;

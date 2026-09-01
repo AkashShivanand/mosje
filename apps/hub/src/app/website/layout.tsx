@@ -3,16 +3,38 @@ import type { Metadata } from "next";
 import { TranslationProvider } from "@/components/i18n/translation-provider";
 import { resolveSamaveshBannerPlacement } from "@/lib/samavesh-banner/resolve";
 import { SamaveshBannerProvider } from "@/lib/samavesh-banner/context";
+import { OG_CARD_IMAGE } from "@/lib/seo/card";
 import "./website.css";
+
+const WEBSITE_DESCRIPTION =
+  "Department of Social Justice & Empowerment (DoSJE), Ministry of Social Justice & Empowerment, Government of India.";
 
 export const metadata: Metadata = {
   title: "Ministry of Social Justice and Empowerment",
-  description:
-    "Department of Social Justice & Empowerment (DoSJE), Ministry of Social Justice & Empowerment, Government of India.",
+  description: WEBSITE_DESCRIPTION,
   icons: {
     icon: "/website/seo/favicon.png",
     apple: "/website/seo/favicon.png",
   },
+  /**
+   * The website says the DEPARTMENT is the source, not "the digital estate".
+   * A shared link to a scheme page should read as coming from DoSJE — that is
+   * the name a citizen recognises, and the one that carries authority.
+   *
+   * This replaces the root block wholesale — Next does not merge `openGraph`
+   * key-by-key across layouts — which is why `type`, `locale` and the image are
+   * all restated rather than inherited. Drop `images` and the ~200 website
+   * pages beneath here unfurl with no picture at all.
+   */
+  openGraph: {
+    type: "website",
+    siteName: "Department of Social Justice & Empowerment",
+    locale: "en_IN",
+    title: "Ministry of Social Justice and Empowerment",
+    description: WEBSITE_DESCRIPTION,
+    images: [OG_CARD_IMAGE],
+  },
+  twitter: { card: "summary_large_image" },
 };
 
 /**

@@ -48,6 +48,12 @@ const config: StorybookConfig = {
   staticDirs: [
     { from: "../../hub/public/images", to: "/images" },
     { from: "../../hub/public/portals", to: "/portals" },
+    // The org marks and the SAMAVESH logo live under /design-system. The root was
+    // added to the hub and this line was not, so every story that draws a mark —
+    // OrgLogo, PortalCard, SamaveshBanner, PortalLoginShell — 404'd on it. Eighteen
+    // of them. Nobody saw it because the smoke step never ran: `quality` stops at
+    // its first failing step, and storybook parity had been failing before it.
+    { from: "../../hub/public/design-system", to: "/design-system" },
   ],
   framework: { name: pkgDir("@storybook/react-vite"), options: {} },
   core: { disableTelemetry: true },

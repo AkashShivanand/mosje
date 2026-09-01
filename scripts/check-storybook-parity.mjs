@@ -27,6 +27,7 @@
 
 import { readFileSync, existsSync, readdirSync, statSync } from "node:fs";
 import path from "node:path";
+import { blankComments } from "../tools/ds-linkage/regions.mjs";
 
 const DS_ROOT = process.env.DS_ROOT ?? "packages/design-system";
 const BARREL = process.env.DS_BARREL ?? path.join(DS_ROOT, "index.ts");
@@ -223,6 +224,14 @@ function topLevelMembers(body) {
 function interfaceMembers(src, name, seen = new Set()) {
   if (seen.has(name)) return [];
   seen.add(name);
+
+  // Blank the comments FIRST. `topLevelMembers` splits on `;`, and a doc comment
+  // that quotes CSS — `position: absolute; inset: 0` on Ticker — splits into a
+  // fragment the property regex then reads as a prop called `inset`. The gate spent
+  // its time demanding a story for a prop that does not exist, which is how a gate
+  // teaches people to ignore it. Offsets and newlines are preserved, so every brace
+  // walk below still lands where it did.
+  src = blankComments(src);
 
   const decl = new RegExp(
     `(?:export\\s+)?interface\\s+${name}\\b([^{]*)\\{`,

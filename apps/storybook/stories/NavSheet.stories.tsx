@@ -126,3 +126,106 @@ export const WithSearch: Story = {
     );
   },
 };
+
+const BASE = {
+  open: false,
+  onClose: () => {},
+  nav: NAV,
+  emblemSrc: EMBLEM,
+  brandLines: {
+    org: "Government of India",
+    ministry: "Ministry of Social Justice & Empowerment",
+    department: "Department of Social Justice & Empowerment",
+  },
+  homeHref: "#",
+};
+
+/**
+ * **The query belongs to the header, not to the sheet.** `searchValue` and
+ * `onSearchValueChange` make it a controlled field.
+ *
+ * The sheet used to hold its own state, and the consequence was invisible until
+ * someone did the obvious thing: type into the masthead's search on a phone, open
+ * the menu, and watch what you had typed disappear. Two fields, two states, one
+ * apparent search box.
+ *
+ * Type into the field below and close the sheet — the text is still there when it
+ * reopens, because this story owns it, exactly as `SiteHeader` does.
+ */
+export const ControlledSearchValue: Story = {
+  args: { ...BASE, search: { placeholder: "Search schemes and documents", onSearch: () => {} } },
+  render: function ControlledSearchValue(args) {
+    const [open, setOpen] = React.useState(false);
+    const [query, setQuery] = React.useState("scholarship");
+    return (
+      <div style={{ minHeight: 480, padding: 24 }}>
+        <SheetToggle open={open} onOpen={() => setOpen(true)} />
+        <p style={{ marginTop: 16, maxWidth: 420 }}>
+          The owner’s copy of the query: <strong>{query || "(empty)"}</strong>
+        </p>
+        <NavSheet
+          {...args}
+          open={open}
+          onClose={() => setOpen(false)}
+          searchValue={query}
+          onSearchValueChange={setQuery}
+        />
+      </div>
+    );
+  },
+};
+
+/**
+ * **The foot of the sheet is where the accessibility controls go, because
+ * `AccessibilityBar` sheds all three below `breakpoint/tablet`.** Text size,
+ * accessibility options and language exist on desktop and, until this section
+ * existed, simply vanished on a phone — the surface where they matter most.
+ *
+ * `accessibilityControls` renders the section and is on by default.
+ * `accessibility`, `accessibilityHref` and `onAccessibility` are the same three
+ * props `SiteHeader` takes, passed straight through: the href is the
+ * GIGW-required accessibility statement, and `onAccessibility` opens the UX4G
+ * widget instead if the surface has one. `language` is the selector, or `false`
+ * to omit it on a single-language surface.
+ */
+export const AccessibilitySection: Story = {
+  args: {
+    ...BASE,
+    accessibilityControls: true,
+    accessibility: true,
+    accessibilityHref: "#accessibility-statement",
+    onAccessibility: () => {},
+    language: { label: "English", onClick: () => {} },
+  },
+  render: function AccessibilitySection(args) {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <div style={{ minHeight: 520, padding: 24 }}>
+        <SheetToggle open={open} onOpen={() => setOpen(true)} />
+        <NavSheet {...args} open={open} onClose={() => setOpen(false)} />
+      </div>
+    );
+  },
+};
+
+/**
+ * **`accessibilityControls={false}` omits the section entirely** — for a surface
+ * that keeps its own accessibility affordances visible at every width, so the
+ * sheet would be repeating controls the reader can already see.
+ *
+ * Do not pass `false` merely to save space. These are statutory controls, and a
+ * phone is the width where they are hardest to reach; if nothing else on the
+ * surface offers them, the sheet is the last place they exist.
+ */
+export const WithoutAccessibilitySection: Story = {
+  args: { ...BASE, accessibilityControls: false },
+  render: function WithoutAccessibilitySection(args) {
+    const [open, setOpen] = React.useState(false);
+    return (
+      <div style={{ minHeight: 480, padding: 24 }}>
+        <SheetToggle open={open} onOpen={() => setOpen(true)} />
+        <NavSheet {...args} open={open} onClose={() => setOpen(false)} />
+      </div>
+    );
+  },
+};

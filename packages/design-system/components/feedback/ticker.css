@@ -448,6 +448,8 @@
      the alpha channel, so the hex here is the opaque end of an opacity ramp and
      never reaches a pixel — binding it to an ink token would imply the fade
      changes with the brand, which it cannot. */
+  /* stylelint-disable color-no-hex -- the stops below are the opaque end of an
+     opacity ramp in a mask, not paint; see the ds-exempt note above. */
   .sa-ticker--vertical .sa-ticker__viewport[data-scroll] {
     mask-image: linear-gradient(
       to bottom,
@@ -457,6 +459,7 @@
       transparent 100%
     );
   }
+  /* stylelint-enable color-no-hex */
   /* ds-exempt-end */
 
   /* The animated wrapper. It holds one list when still and two when scrolling,
