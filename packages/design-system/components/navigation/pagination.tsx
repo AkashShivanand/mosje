@@ -17,6 +17,8 @@ import { Icon } from "../utilities/icon";
 import { cn } from "../../utils/cn";
 import "./pagination.css";
 
+export type PaginationSize = "sm" | "md";
+
 export interface PaginationProps {
   /** 1-based current page. */
   page: number;
@@ -39,6 +41,22 @@ export interface PaginationProps {
   label?: string;
   /** How many numbered pages to show around the current one. @default 2 */
   siblings?: number;
+  /**
+   * Control size. @default "md"
+   *
+   * `sm` is for a pager INSIDE a card or a rail — a panel that paginates its
+   * own contents rather than the page. `md`'s 40px targets and word-labelled
+   * steps are sized for a page-level pager with the full width to sit in; in
+   * PM-AJAY's 19rem coverage rail the same control asked for 267px it did not
+   * have and wrapped onto two lines.
+   *
+   * `sm` is 32px, past the 24px minimum target (WCAG 2.2 SC 2.5.8), and drops
+   * the step labels to icons at every width — a card pager sits beside the
+   * list it pages, so "Previous" has a visible referent that a page-level
+   * pager stranded at the foot of a document does not. The words stay in the
+   * accessibility tree either way.
+   */
+  size?: PaginationSize;
   className?: string;
 }
 
@@ -89,6 +107,7 @@ export function Pagination({
   onPageChange,
   label = "Pagination",
   siblings = 2,
+  size = "md",
   className,
 }: PaginationProps): React.JSX.Element | null {
   if (totalPages < 2) return null;
@@ -98,11 +117,12 @@ export function Pagination({
 
   const step = (target: number, direction: "prev" | "next", text: string) => {
     const icon = direction === "prev" ? "chevron_left" : "chevron_right";
+    const iconSize = size === "sm" ? 16 : 20;
     const content = (
       <>
-        {direction === "prev" && <Icon name={icon} size={20} />}
+        {direction === "prev" && <Icon name={icon} size={iconSize} />}
         <span className="ds-pagination__step-text">{text}</span>
-        {direction === "next" && <Icon name={icon} size={20} />}
+        {direction === "next" && <Icon name={icon} size={iconSize} />}
       </>
     );
 
@@ -118,7 +138,7 @@ export function Pagination({
   };
 
   return (
-    <nav className={cn("ds-pagination", className)} aria-label={label}>
+    <nav className={cn("ds-pagination", `ds-pagination--${size}`, className)} aria-label={label}>
       {current > 1 && step(current - 1, "prev", "Previous")}
 
       <ul className="ds-pagination__list">

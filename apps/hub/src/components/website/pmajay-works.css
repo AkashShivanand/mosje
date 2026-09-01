@@ -168,21 +168,12 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .pmw__search {
-    display: block;
-  }
-
-  .pmw__search .ds-input-shell,
-  .pmw__search .pmw__searchinput {
-    width: 100%;
-  }
-
   /*
-    The DS `Input` brings its own field styling, focus ring and 44px minimum
-    target. All that is left here is the pill radius this rail wants, so the
-    field sits with the chips rather than against them.
+    The DS `Search` at `sm` brings the field, the leading glyph, the clear
+    button and the focus ring. All that is left here is the pill radius this
+    rail wants, so the field sits with the chips rather than against them.
   */
-  .pmw__searchinput {
+  .pmw__search {
     border-radius: var(--sa-shape-full);
   }
 

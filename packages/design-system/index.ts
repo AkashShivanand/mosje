@@ -368,7 +368,7 @@ export type {
 
 export { SidebarNav } from "./components/navigation/sidebar";
 export { Pagination } from "./components/navigation/pagination";
-export type { PaginationProps } from "./components/navigation/pagination";
+export type { PaginationProps, PaginationSize } from "./components/navigation/pagination";
 export type {
   SidebarNavProps,
   SidebarNavGroup,

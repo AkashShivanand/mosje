@@ -2514,13 +2514,14 @@ matching the Figma "Navbar Portal" account.
 
 #### Pagination
 **Purpose**: Page navigation for a result set.  
-**Props**: `page`, `totalPages`, `hrefFor`, `onPageChange`, `label`, `siblings`, `className`  
+**Props**: `page`, `totalPages`, `hrefFor`, `onPageChange`, `label`, `siblings`, `size`, `className`  
 **Rules**:
 - **Prefer the link form.** Pass `hrefFor` and the numbers render as real `<a>`s, so page 3 is shareable, bookmarkable, reachable with the back button, crawlable, and works before hydration. Use `onPageChange` only for client-side state that genuinely has no URL — and when it *could* have one, it should.
 - `DataTable` paginates its own state and does not use this. This is for anything whose result set comes out of the URL: search results, filtered listings, directories.
 - `totalPages < 2` renders `null`, so a single-page set needs no guard at the call site.
 - The current page carries `aria-current="page"` and is **not a link**. Previous/Next are **removed** at the ends, never disabled — a disabled control still in the tab order is worse than one that is not there.
 - Targets are 40px, clearing WCAG 2.2 AA §2.5.8 (24×24 minimum) with room for the 4px inter-target gap.
+- **`size="sm"` is for a pager INSIDE a card or a rail** — a panel paginating its own contents rather than the page. `md` is sized for a page-level pager with the full width to sit in; in PM-AJAY's 19rem coverage rail the same control asked for 267px it did not have and wrapped onto two lines. `sm` is 32px, still past the 24×24 minimum, and drops the step labels to icons at **every** width — a card pager sits directly beside the list it pages, so a chevron has a visible referent that a pager stranded at the foot of a document does not. The words stay in the accessibility tree either way, so a screen reader still hears "Previous".
 
 #### SectionTitle
 **Purpose**: The shared heading row for a content section — eyebrow, heading, count pill, description, right-aligned actions.  

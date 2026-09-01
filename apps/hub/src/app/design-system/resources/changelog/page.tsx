@@ -22,9 +22,18 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.87.0",
+    version: "v0.88.0",
     date: "2026-09-01",
     current: true,
+    changes: [
+      { kind: "Added", text: "`Pagination` GAINS `size`. `md` is sized for a page-level pager with the full width to sit in; put the same control in a card and it wraps — PM-AJAY's coverage rail is 19rem and `md` with word-labelled steps asked for 267px of it. `sm` is 32px, still past the 24×24 minimum target (SC 2.5.8), and drops the step labels to icons at EVERY width rather than only below 480px: a card pager sits directly beside the list it pages, so a chevron has a visible referent that a pager stranded at the foot of a document does not. The WORDS stay in the accessibility tree, so a screen reader still hears \"Previous\", never \"chevron left\"" },
+      { kind: "Fixed", text: "PM-AJAY'S COVERAGE RAIL WAS HAND-ROLLING A SEARCH FIELD OUT OF `Input` — a text input, a magnifier passed as `leftIcon`, and a pill radius of its own. `Search` has existed all along, with `sm` at 40px, and brings the three things the hand-rolled version quietly did without: a real `type=\"search\"`, a clear button once there is something to clear, and `dir=\"auto\"` so an English placeholder does not clip from its HEAD when the estate is running in Urdu. Nothing was added to the design system for this one — the component was simply not being used" },
+      { kind: "Changed", text: "`ProvenanceChip` IS A `Badge` NOW, NOT A PILL OF ITS OWN. A small status pill with a leading dot is precisely what `Badge` is, and the hand-rolled copy had drifted: uppercase at weight 700 with letter-spacing, the loudest typographic treatment available, on a component whose own docstring calls it a footnote. Status maps live → `success`, part-illustrative → `warning`, illustrative → `neutral` — illustrative is not an alarm, so it does not read as one. What is left in the app is what belongs to the app: the wording, the mapping, and the single gate that decides whether a mark is drawn at all" },
+    ],
+  },
+  {
+    version: "v0.87.0",
+    date: "2026-09-01",
     changes: [
       { kind: "Added", text: "`Chip` GAINS `count` — AND IT IS A PROP BECAUSE TWO CALLERS WERE ALREADY DOING IT BY HAND, DIFFERENTLY. `DocumentLibrary` wrote `{group} ({count})` into the chip's children; PM-AJAY's coverage map appended a muted `<span>`. One idea, two typographic answers, and one of them inside the design system. It now renders once — muted, `tabular-nums`, and OUTSIDE the label, so a screen reader hears \"Guidelines, 2 documents\" rather than \"Guidelines open bracket two close bracket\". `countLabel` names the unit; pass a string when the figure needs Indian grouping" },
       { kind: "Added", text: "`Chip` GAINS `size`, matching `Badge`, which has had one all along. `sm` is 26px against `md`'s 32 and drops the type one step rather than shrinking the padding alone, so the pill stays in proportion to what is in it. It exists for a DENSE FILTER ROW: PM-AJAY's map needed two legend keys plus three type filters in an 798px bar, they wanted 816px, and eighteen pixels are not worth a second row of chrome above a map. Still past the 24px minimum target (SC 2.5.8), and not a licence to fit more chips into a space that is simply too small" },

@@ -5,9 +5,9 @@ import {
   Chip,
   Icon,
   IndiaPointMap,
-  Input,
   Legend,
   Pagination,
+  Search,
   SectionTitle,
   formatIndian,
   type LegendItem,
@@ -588,28 +588,32 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                   )}
                 </nav>
 
-                <label className="pmw__search">
-                  <span className="ds-sr-only">
-                    Search {focus == null ? "states" : `districts in ${focus}`}
-                  </span>
-                  {/*
-                    The DS `Input`, not a styled `<input>` of my own. It brings
-                    the token contract, the focus ring and a 44px minimum target
-                    — which is why the rail head is a little taller than the
-                    hand-rolled field was.
-                  */}
-                  <Input
-                    type="search"
-                    className="pmw__searchinput"
-                    leftIcon={<Icon name="search" size={16} />}
-                    placeholder={focus == null ? "Find a state…" : `Find a district in ${focus}…`}
-                    value={query}
-                    onChange={(e) => {
-                      setQuery(e.target.value);
-                      resetPaging();
-                    }}
-                  />
-                </label>
+                {/*
+                  The DS `Search`, not an `Input` wearing a magnifier. Both
+                  render a field with a leading glyph, and the difference is
+                  everything that is easy to leave out by hand: a real
+                  `type="search"`, a clear button once there is something to
+                  clear, and `dir="auto"` so an English placeholder does not
+                  clip from its HEAD when the estate is running in Urdu.
+
+                  `sm` — 40px — because this field sits inside a card, not at
+                  the head of a page.
+                */}
+                <Search
+                  size="sm"
+                  className="pmw__search"
+                  aria-label={`Search ${focus == null ? "states" : `districts in ${focus}`}`}
+                  placeholder={focus == null ? "Find a state…" : `Find a district in ${focus}…`}
+                  value={query}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    resetPaging();
+                  }}
+                  onClear={() => {
+                    setQuery("");
+                    resetPaging();
+                  }}
+                />
               </div>
               {/*
                 "28 of 36" means 28 of the country's 36 States and UTs have
@@ -735,6 +739,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                 page={currentPage}
                 totalPages={totalPages}
                 onPageChange={setPage}
+                size="sm"
                 siblings={0}
                 label={focus == null ? "States" : "Districts"}
                 className="pmw__pager"
