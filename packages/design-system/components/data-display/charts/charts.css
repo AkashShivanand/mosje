@@ -178,42 +178,88 @@
   }
 
   /* ── An interactive legend: each entry switches its own series ──────────
-     Only present when `onToggle` is passed. Quiet at rest — a legend that
-     looked like a row of buttons would compete with the chart it labels — and
-     the only thing that changes when a series is off is that its key empties
-     and its ink drops. */
+
+     IT HAS TO LOOK LIKE A CONTROL. An earlier version was deliberately quiet
+     at rest — bare text, a hover background and nothing else — on the
+     reasoning that a row of buttons would compete with the chart it labels.
+     That reasoning was wrong in one direction and it cost the feature: a
+     reader who cannot see that a key is pressable does not press it, and an
+     affordance nobody finds is the same as an affordance that is not there.
+     Discovering it by hovering only works for a pointer, which is not how a
+     touchscreen reads a page.
+
+     So each entry is now a PILL WITH A HAIRLINE BORDER, in the same language
+     as `Chip` — which is what sits beside these keys in PM-AJAY's control bar
+     doing the same job. Consistency there matters more than quiet.
+
+     Three cues carry the state, never colour alone (WCAG 1.4.1):
+       · the pill fills when on and is empty when off,
+       · a SOLID key goes HOLLOW when off — the switched-off checkbox
+         convention, and the one cue that survives greyscale,
+       · `aria-pressed` reports it to a screen reader.
+     ---------------------------------------------------------------------- */
   .ds-chart__legend--interactive {
-    gap: var(--sa-stack-4);
+    gap: var(--sa-stack-6);
   }
 
   .ds-chart__legend-toggle {
     display: flex;
     align-items: center;
     gap: var(--sa-stack-8);
-    padding: var(--sa-padding-6) var(--sa-padding-8);
-    border-radius: var(--sa-shape-6);
+    /* 26px, past the 24px minimum target (WCAG 2.2 SC 2.5.8) — and stated
+       rather than left to the content, so a key sits at exactly the height of
+       the `Chip`s beside it. Left to its content it came out 24px and the
+       control bar had two pill heights in one row. */
+    min-height: 26px;
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    border: 1px solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-subtler);
     cursor: pointer;
-    transition: background-color 160ms ease-out;
+    transition:
+      background-color 160ms ease-out,
+      border-color 160ms ease-out;
   }
 
   .ds-chart__legend-toggle:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+    border-color: var(--sa-border-neutral-bolder-default);
   }
 
   .ds-chart__legend-toggle:active {
-    transform: scale(0.99);
+    transform: scale(0.97);
   }
 
-  /* Off is not carried by colour alone: the key fades AND `aria-pressed`
-     reports it. */
+  .ds-chart__legend-toggle:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* Off: the pill empties, the ink drops, and the key hollows out. */
   .ds-chart__legend-toggle.is-off {
+    background-color: transparent;
+    border-style: dashed;
     color: var(--sa-text-neutral-subtle);
   }
 
-  .ds-chart__legend-toggle.is-off .ds-chart__swatch,
+  .ds-chart__legend-toggle.is-off .ds-chart__legend-label,
+  .ds-chart__legend-toggle.is-off .ds-chart__legend-pct {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+    A solid key goes HOLLOW rather than merely faint — the switched-off
+    checkbox convention. The RING IS DRAWN BY THE COMPONENT, not here: the
+    key's colour arrives as an inline style, and a stylesheet cannot turn an
+    inline `background-color` into an inline `box-shadow` of the same value
+    without an `!important` fight it should not be having. See `Legend`'s
+    swatch branch.
+  */
+
+  /* A ramp and a row of dots cannot go hollow — there is no single shape to
+     empty — so those fade instead. */
   .ds-chart__legend-toggle.is-off .ds-chart__ramp,
   .ds-chart__legend-toggle.is-off .ds-chart__dots {
-    opacity: 0.3;
+    opacity: 0.35;
   }
 
   /* ── `swatch: "ramp"` — a sequential scale, with its ends named ─────────

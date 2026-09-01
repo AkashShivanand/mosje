@@ -30,8 +30,12 @@ export interface LegendItem {
   /** The two ends of a `ramp`, e.g. `["1", "387"]`. */
   scale?: [string, string];
   /**
-   * Whether this series is currently drawn. Only meaningful with `onToggle`;
-   * an entry that is off dims its key and reports `aria-pressed="false"`.
+   * Whether this series is currently drawn. Only meaningful with `onToggle`.
+   *
+   * An entry that is off says so three ways, so the state is never carried by
+   * colour alone (WCAG 1.4.1): its pill empties and its border goes dashed, a
+   * `solid` key goes HOLLOW (a `ramp` and `dots` fade, having no single shape
+   * to empty), and it reports `aria-pressed="false"`.
    * @default true
    */
   on?: boolean;
@@ -55,6 +59,11 @@ export interface LegendProps {
    * comes off, each entry becomes a `role="button"` with `aria-pressed`, and
    * Enter and Space work — an element given a button's role owes the reader
    * both keys, and gets neither for free.
+   *
+   * IT ALSO STOPS LOOKING LIKE TEXT. Each entry becomes a bordered pill in
+   * `Chip`'s language, because an affordance a reader cannot see is the same
+   * as one that is not there — and "hover to discover it" is not an answer on
+   * a touchscreen.
    *
    * Same shape as `Chip` (`interactive = onSelectedChange != null`) and
    * `Pagination` (`hrefFor` vs `onPageChange`): the capability arrives with the
@@ -115,7 +124,26 @@ export function Legend({
               ))}
             </span>
           ) : (
-            <span className="ds-chart__swatch" style={{ backgroundColor: it.color }} />
+            /*
+              A SOLID KEY GOES HOLLOW WHEN ITS SERIES IS OFF, rather than
+              merely faint. That is the switched-off checkbox convention, it
+              survives greyscale, and it keeps the key's identity — a reader
+              can still see WHICH series is the one that is off, which a
+              uniformly greyed key cannot say.
+
+              Drawn here rather than in the stylesheet because the colour
+              arrives as an inline style: turning an inline `background-color`
+              into a `box-shadow` of the same value from CSS needs an
+              `!important` fight over a value the stylesheet cannot see.
+            */
+            <span
+              className="ds-chart__swatch"
+              style={
+                on
+                  ? { backgroundColor: it.color }
+                  : { boxShadow: `inset 0 0 0 2px ${it.color}` }
+              }
+            />
           );
 
         const body = (

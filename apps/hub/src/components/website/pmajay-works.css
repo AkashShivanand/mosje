@@ -115,19 +115,14 @@
   /* ── Where am I: breadcrumb + search ───────────────────────────────────── */
 
   /* Lives in the rail head now — see the component's note there. */
-  .pmw__where {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--sa-stack-8);
-    min-width: 0;
-    flex: 1 1 auto;
-  }
-
+  /*
+    NO GAP. The crumbs' own padding already separates them, and the separator
+    glyph carries several pixels of its own side bearing on top of that — see
+    `.pmw__crumbsep`. A gap here was the third helping of the same space.
+  */
   .pmw__crumbs {
     display: flex;
     align-items: center;
-    gap: var(--sa-inline-4);
     font-size: var(--sa-type-body-3-size);
     min-width: 0;
   }
@@ -140,8 +135,8 @@
   }
 
   .pmw__crumb {
-    padding: var(--sa-padding-4) var(--sa-padding-6);
-    border-radius: var(--sa-shape-6);
+    padding: var(--sa-padding-2) var(--sa-padding-4);
+    border-radius: var(--sa-shape-4);
     color: var(--sa-text-brand-primary-base);
     font-weight: 600;
     cursor: pointer;
@@ -160,20 +155,33 @@
   .pmw__crumb--here {
     color: var(--sa-text-neutral-base);
     font-weight: 600;
-    padding: var(--sa-padding-4) var(--sa-padding-6);
+    padding: var(--sa-padding-2) var(--sa-padding-4);
   }
 
+  /*
+    ds-exempt(optical): the chevron inks about 6px in the middle of its 16px
+    box, so the glyph's own side bearing adds ~5px of air on each side that no
+    spacing token can see. Measured before and after: "India" to "West Bengal"
+    was 30px of space around a 6px arrow — 6px of crumb padding, 4px of list
+    gap and 5px of bearing, twice over. Pulling 4px back on each side, with
+    the gap dropped and the padding at 4, leaves 5px a side, which is what the
+    breadcrumb looked like it should have had all along.
+  */
   .pmw__crumbsep {
     flex: none;
-    color: var(--sa-text-neutral-subtle);
+    margin-inline: -4px;
+    color: var(--sa-icon-neutral-subtler);
   }
 
   /*
     The DS `Search` at `sm` brings the field, the leading glyph, the clear
-    button and the focus ring. All that is left here is the pill radius this
-    rail wants, so the field sits with the chips rather than against them.
+    button and the focus ring. What is left here is the pill radius this rail
+    wants, so the field sits with the chips rather than against them — and the
+    full width, which is the whole reason the count moved up a line.
   */
   .pmw__search {
+    width: 100%;
+    margin-bottom: var(--sa-stack-8);
     border-radius: var(--sa-shape-full);
   }
 
@@ -230,15 +238,14 @@
 
   .pmw__railhead {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: var(--sa-inline-8);
-    margin-bottom: var(--sa-stack-4);
+    margin-bottom: var(--sa-stack-8);
   }
 
   .pmw__railcount {
     flex: none;
-    padding-top: var(--sa-padding-4);
     font-size: var(--sa-type-body-3-size);
     font-variant-numeric: tabular-nums;
     color: var(--sa-text-neutral-subtle);
@@ -263,9 +270,71 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  .pmw__railcols > span + span {
-    text-align: right;
+  /*
+    ── THE HEADINGS ARE BUTTONS ─────────────────────────────────────────────
+
+    Quiet at rest and unmistakably pressable on approach: they keep the
+    uppercase label they always had, and gain a sort glyph, a hover ground and
+    a 24px target. The glyph is `unfold_more` while the column is merely
+    AVAILABLE — a heading with no mark at all reads as plain text, which is
+    exactly what these were before.
+  */
+  .pmw__colbtn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-2);
+    /* 24px tall — the WCAG 2.2 SC 2.5.8 minimum, in a heading row that has
+       only 11px type to justify its height. */
+    min-height: 24px;
+    padding: var(--sa-padding-2) var(--sa-padding-4);
+    margin-inline: calc(var(--sa-padding-4) * -1);
+    border-radius: var(--sa-shape-4);
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+  }
+
+  .pmw__colbtn:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-base);
+  }
+
+  .pmw__colbtn:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* The active column is the only one in full ink, so which column the list
+     is ordered by reads before the arrow does. */
+  .pmw__colbtn.is-active {
+    color: var(--sa-text-neutral-base);
+  }
+
+  /*
+    The numeric headings sit at the right edge of their column, over the
+    figures they order — so the button's own padding is pulled back on the
+    right instead of the left, or the label would sit 4px off the digits it
+    heads.
+  */
+  .pmw__colbtn--num {
+    justify-content: flex-end;
     min-width: 2.5rem;
+  }
+
+  .pmw__railcols > * + * {
+    justify-self: end;
+  }
+
+  /* Faint while the column is merely available; full ink once it is the sort. */
+  .pmw__colsort {
+    opacity: 0.45;
+  }
+
+  .pmw__colbtn.is-active .pmw__colsort,
+  .pmw__colbtn:hover .pmw__colsort {
+    opacity: 1;
   }
 
   /*

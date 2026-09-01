@@ -2251,8 +2251,18 @@ and renders it only when `exportable`.
   switched on and off are ubiquitous, and until this existed every one of them
   hand-rolled a row of buttons beside a legend that could not do it. The
   capability arrives with the handler, exactly as `Chip`'s `onSelectedChange`
-  and `Pagination`'s `onPageChange` do. An entry that is off dims its key AND
-  reports `aria-pressed="false"`, so state is never carried by colour alone.
+  and `Pagination`'s `onPageChange` do.
+- **An interactive legend LOOKS like a control, and that reverses an earlier
+  call.** It was deliberately quiet — bare text with a hover ground — so it
+  would not compete with the chart it labels. That cost the feature: a reader
+  who cannot see that a key is pressable does not press it, and "hover to
+  discover it" is not an answer on a touchscreen. Each entry is now a bordered
+  pill in `Chip`'s language, because a `Chip` is usually what sits beside it
+  doing the same job. State is carried three ways, never by colour alone (WCAG
+  1.4.1): the pill fills when on and empties with a dashed border when off, a
+  `solid` key goes **hollow** when off (the switched-off checkbox convention,
+  and the one cue that survives greyscale), and `aria-pressed` reports it. A
+  `ramp` and `dots` fade instead — there is no single shape to empty.
 - **`item.swatch` draws the key the way its series is drawn.** `solid` (default)
   is one square, right for a categorical series. `ramp` builds the sequential
   scale from `colors` — give it `scale` so a reader can tell what a shade is

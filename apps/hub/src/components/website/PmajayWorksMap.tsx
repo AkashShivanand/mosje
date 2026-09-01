@@ -3,6 +3,7 @@
 import * as React from "react";
 import {
   Chip,
+  cn,
   Icon,
   IndiaPointMap,
   Legend,
@@ -39,6 +40,91 @@ const HOSTEL_KINDS: { kind: HostelType; label: string; color: string }[] = [
   { kind: "boys", label: "Boys", color: "var(--sa-chart-cat-2)" },
   { kind: "unrecorded", label: "Not recorded", color: "var(--sa-chart-axis)" },
 ];
+
+/** Which column the rail is ordered by. */
+type SortKey = "name" | "villages" | "hostels";
+/** `null` is the default ranked order — see `toggleSort`. */
+type SortState = { key: SortKey; dir: "asc" | "desc" } | null;
+
+/**
+ * Which way each column sorts on its FIRST click — the way that column is
+ * usually wanted. A name is asked for A–Z; a count is asked for highest-first.
+ * Declared once so the comparator and the button's spoken name cannot drift.
+ */
+const FIRST_DIR: Record<SortKey, "asc" | "desc"> = {
+  name: "asc",
+  villages: "desc",
+  hostels: "desc",
+};
+
+/**
+ * One clickable column heading.
+ *
+ * Three states, and the third is the one usually left out: ascending,
+ * descending, and NOT SORTING BY THIS AT ALL — which is where the list starts
+ * and has to be reachable again. The glyph says which: an up or down arrow
+ * when this column is the sort, and a faint pair of arrows when it is merely
+ * available. A heading with no mark at all would look like plain text, which
+ * is what these were.
+ */
+function SortHeader({
+  label,
+  sortKey,
+  sort,
+  onSort,
+  what,
+  numeric = false,
+}: {
+  label: string;
+  sortKey: SortKey;
+  sort: SortState;
+  onSort: (key: SortKey) => void;
+  /** What the column holds, for the spoken name: "Sort by villages…". */
+  what: string;
+  /** Numeric columns are right-aligned and read "highest/lowest first". */
+  numeric?: boolean;
+}) {
+  const active = sort?.key === sortKey;
+  const dir = active ? sort.dir : null;
+  const first = FIRST_DIR[sortKey];
+  /*
+    A NUMBER'S "DESCENDING" AND A NAME'S ARE NOT THE SAME WORD. "Z to A" on a
+    column of village counts means nothing, and "highest first" on a column of
+    state names means less. One helper, so the two never drift apart — an
+    earlier draft of this button announced a name column sorted "A to Z" while
+    it was showing Z to A.
+  */
+  const word = (d: "asc" | "desc") =>
+    numeric ? (d === "desc" ? "highest first" : "lowest first") : d === "desc" ? "Z to A" : "A to Z";
+  // A button is named for what the NEXT click does — except while it is the
+  // active sort, where the reader also needs to hear the state it is in.
+  const next =
+    dir == null
+      ? word(first)
+      : dir === first
+        ? word(first === "asc" ? "desc" : "asc")
+        : "the default order";
+  return (
+    <button
+      type="button"
+      className={cn("pmw__colbtn", active && "is-active", numeric && "pmw__colbtn--num")}
+      onClick={() => onSort(sortKey)}
+      aria-label={
+        dir == null
+          ? `Sort by ${what}, ${next}`
+          : `Sorted by ${what}, ${word(dir)}. Change to ${next}`
+      }
+    >
+      <span>{label}</span>
+      <Icon
+        name={dir == null ? "unfold_more" : dir === "desc" ? "arrow_downward" : "arrow_upward"}
+        size={16}
+        className="pmw__colsort"
+        aria-hidden
+      />
+    </button>
+  );
+}
 
 const HOSTEL_LABEL: Record<HostelType, string> = {
   girls: "Girls' hostel",
@@ -120,6 +206,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
   );
   const [focus, setFocus] = React.useState<string | null>(null);
   const [query, setQuery] = React.useState("");
+  const [sort, setSort] = React.useState<SortState>(null);
   const [hoverRow, setHoverRow] = React.useState<string | null>(null);
   const [page, setPage] = React.useState(1);
   const { mode, marks } = useDataMode();
@@ -271,15 +358,62 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
   const barOf = (r: RailRow) => (showVillages ? r.villages : r.hostels);
   const rankOf = (r: RailRow) => (showVillages ? r.villages : 0) + (showHostels ? r.hostels : 0);
 
+  /*
+   * ── SORTING IS THE COLUMN HEADINGS, NOT A CONTROL BESIDE THEM ────────────
+   *
+   * The rail already names its three columns. A separate "Sort by" select
+   * would put a second, competing statement of the same three fields into a
+   * 304px column, and a reader would have to look in two places to learn one
+   * thing. Clicking a heading is what a column of figures already implies, and
+   * it costs no vertical space at all.
+   *
+   * `null` is the DEFAULT ranked order the list has always opened in, which
+   * answers "where is most of this scheme" — a genuinely different question
+   * from "which state has the most villages", because the ranking counts both
+   * components. So it stays reachable rather than being quietly collapsed into
+   * a villages sort that merely looks the same at the top of the list.
+   */
+  const toggleSort = (key: SortKey) => {
+    // The first click sorts the way the column is USUALLY wanted: a name A–Z,
+    // a count highest-first. Hard-coding "descending first" for every column
+    // opened the state list at Z, which nobody asks for.
+    const first = FIRST_DIR[key];
+    setSort((current) =>
+      current?.key !== key
+        ? { key, dir: first }
+        : current.dir === first
+          ? { key, dir: first === "asc" ? "desc" : "asc" }
+          : // A third click returns to the default rather than cycling forever
+            // between two — the ranked order is where the list starts and
+            // there has to be a way back to it.
+            null,
+    );
+    resetPaging();
+  };
+
   const visibleRows = React.useMemo(() => {
     const q = query.trim().toLowerCase();
-    return railRows
+    const rows = railRows
       .filter((r) => rankOf(r) > 0)
-      .filter((r) => !q || r.name.toLowerCase().includes(q) || r.sub.toLowerCase().includes(q))
-      .sort((a, b) => rankOf(b) - rankOf(a) || a.name.localeCompare(b.name));
+      .filter((r) => !q || r.name.toLowerCase().includes(q) || r.sub.toLowerCase().includes(q));
+
+    if (sort == null) {
+      return rows.sort((a, b) => rankOf(b) - rankOf(a) || a.name.localeCompare(b.name));
+    }
+
+    const sign = sort.dir === "asc" ? 1 : -1;
+    return rows.sort((a, b) => {
+      if (sort.key === "name") return sign * a.name.localeCompare(b.name);
+      const av = sort.key === "villages" ? a.villages : a.hostels;
+      const bv = sort.key === "villages" ? b.villages : b.hostels;
+      // The tie-break is ALWAYS ascending by name. Flipping it with the
+      // direction reshuffles the fifteen states that hold one hostel each
+      // every time the arrow is clicked, for no reason a reader could name.
+      return sign * (av - bv) || a.name.localeCompare(b.name);
+    });
     // `rankOf` closes over the two toggles, which are in the dep list.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [railRows, query, showVillages, showHostels]);
+  }, [railRows, query, showVillages, showHostels, sort]);
 
   /*
    * The bar's 100% is the largest value of THE MEASURE BEING DRAWN, not of the
@@ -563,8 +697,17 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               What is left in the control bar is only the key, which is what a
               map's own chrome should be.
             */}
+            {/*
+              THE COUNT SITS WITH THE BREADCRUMB, NOT WITH THE SEARCH.
+
+              All three used to share one row, which left the field 218px of a
+              304px rail — a search box narrower than the placeholder it holds,
+              beside two things that are both short. The breadcrumb and the
+              count are each a few words and belong on a line together; the
+              field is the one thing here that gets longer as you type, so it
+              takes the full width on its own line.
+            */}
             <div className="pmw__railhead">
-              <div className="pmw__where">
                 <nav className="pmw__crumbs" aria-label="Map area">
                   <button
                     type="button"
@@ -587,6 +730,21 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                     </>
                   )}
                 </nav>
+
+              {/*
+                "28 of 36" means 28 of the country's 36 States and UTs have
+                been reached. While a search is narrowing the list that reading
+                is false — three matching rows are not "3 of 36 reached" — so
+                the phrasing changes with the state it describes.
+              */}
+              <span className="pmw__railcount">
+                {query.trim()
+                  ? `${formatIndian(visibleRows.length)} matching`
+                  : focus == null
+                    ? `${formatIndian(visibleRows.length)} of 36`
+                    : `${formatIndian(visibleRows.length)} districts`}
+              </span>
+            </div>
 
                 {/*
                   The DS `Search`, not an `Input` wearing a magnifier. Both
@@ -614,21 +772,6 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                     resetPaging();
                   }}
                 />
-              </div>
-              {/*
-                "28 of 36" means 28 of the country's 36 States and UTs have
-                been reached. While a search is narrowing the list that reading
-                is false — three matching rows are not "3 of 36 reached" — so
-                the phrasing changes with the state it describes.
-              */}
-              <span className="pmw__railcount">
-                {query.trim()
-                  ? `${formatIndian(visibleRows.length)} matching`
-                  : focus == null
-                    ? `${formatIndian(visibleRows.length)} of 36`
-                    : `${formatIndian(visibleRows.length)} districts`}
-              </span>
-            </div>
 
             {/*
               COLUMN HEADINGS, so the figures can be bare.
@@ -638,11 +781,49 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
               "Andhra Pradesh" were rendering ellipsised on a government page.
               Naming the columns once buys the names their width back.
             */}
+            {/*
+              THE HEADINGS ARE THE SORT CONTROL.
+
+              They were `aria-hidden` decoration; they are buttons now, which
+              is what a column of figures has always implied. Each carries its
+              own spoken name — "Sort by villages, highest first" — because
+              "Villages" plus an arrow glyph is not a sentence, and the arrow
+              is `aria-hidden` for the same reason.
+
+              NOT `aria-sort`: this is a list of rows, not a `<table>`, and
+              claiming grid semantics for a flex column tells a screen-reader
+              user to expect a navigation model that is not here. The button
+              names carry the state instead.
+            */}
             {visibleRows.length > 0 && (showVillages || showHostels) && (
-              <div className="pmw__railcols" aria-hidden>
-                <span>{focus == null ? "By state" : "By district"}</span>
-                {showVillages && <span>Villages</span>}
-                {showHostels && <span>Hostels</span>}
+              <div className="pmw__railcols">
+                <SortHeader
+                  label={focus == null ? "By state" : "By district"}
+                  sortKey="name"
+                  sort={sort}
+                  onSort={toggleSort}
+                  what={focus == null ? "state name" : "district name"}
+                />
+                {showVillages && (
+                  <SortHeader
+                    label="Villages"
+                    sortKey="villages"
+                    sort={sort}
+                    onSort={toggleSort}
+                    what="villages"
+                    numeric
+                  />
+                )}
+                {showHostels && (
+                  <SortHeader
+                    label="Hostels"
+                    sortKey="hostels"
+                    sort={sort}
+                    onSort={toggleSort}
+                    what="hostels"
+                    numeric
+                  />
+                )}
               </div>
             )}
 

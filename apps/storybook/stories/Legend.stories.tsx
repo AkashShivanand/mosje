@@ -242,9 +242,20 @@ export const TooltipInACustomChart: Story = {
  * Passing the handler is what turns the list from decoration into controls, the
  * same way `Chip`'s `onSelectedChange` and `Pagination`'s `onPageChange` do —
  * the capability arrives with the handler rather than through a flag someone
- * can forget to pair with it. Set `item.on` to say which series are drawn; an
- * entry that is off dims its key **and** reports `aria-pressed="false"`, so the
- * state is never carried by colour alone.
+ * can forget to pair with it.
+ *
+ * **It also stops looking like text.** The first version of this was
+ * deliberately quiet — bare labels with a hover ground — so it would not
+ * compete with the chart it labels. That cost the feature: a reader who cannot
+ * see that a key is pressable does not press it, and "hover to discover it" is
+ * not an answer on a touchscreen. Each entry is a bordered pill now, at the
+ * same 26px as `Chip`'s `sm`, because a `Chip` is usually what sits beside it
+ * doing the same job.
+ *
+ * Set `item.on` to say which series are drawn. **Switch one off in this story**
+ * — three things change at once, and none of them is colour: the pill empties
+ * and its border goes dashed, the solid key goes hollow, and `aria-pressed`
+ * flips. Enter and Space work as well as a click.
  */
 export const SeriesToggles: Story = {
   render: function SeriesTogglesStory() {
