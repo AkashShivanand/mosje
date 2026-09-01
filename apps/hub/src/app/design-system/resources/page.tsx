@@ -161,7 +161,7 @@ export default function ResourcesPage(): React.JSX.Element {
                 >
                   {link.title}
                   {link.external ? (
-                    <span aria-hidden="true" style={{ marginLeft: 4 }}>
+                    <span aria-hidden="true" style={{ marginLeft: "var(--sa-inline-4)" }}>
                       ↗
                     </span>
                   ) : null}

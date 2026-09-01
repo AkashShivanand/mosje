@@ -27,7 +27,7 @@ function makeIcon(color: string, active: boolean) {
 function userIcon() {
   return L.divIcon({
     className: "",
-    html: `<div style="width:16px;height:16px;border-radius:50%;background:var(--sa-bg-brand-primary-bolder);border:3px solid white;box-shadow:0 0 0 4px rgba(3,115,223,.25)"></div>`,
+    html: `<div style="width:16px;height:16px;border-radius:50%;background:var(--sa-bg-brand-primary-bolder);border:3px solid white;box-shadow:0 0 0 4px color-mix(in srgb, var(--sa-color-action-primary-default) 25%, transparent)"></div>`,
     iconSize: [16, 16],
     iconAnchor: [8, 8],
   });
@@ -58,10 +58,10 @@ function ClusterLayer({
       const meta = CENTRE_TYPE_META[c.type];
       const m = L.marker([c.lat, c.lng], { icon: makeIcon(meta.color, selectedKey === centreKey(c)) });
       m.bindPopup(
-        `<div style="max-width:230px"><p style="font-weight:600;margin:0;color:#111">${esc(c.name)}</p>` +
-          `<p style="margin:2px 0 0;font-size:12px;font-weight:600;color:${meta.color}">${c.type} · ${esc(meta.label)}</p>` +
-          `<p style="margin:4px 0 0;font-size:12px;color:#555">${esc(c.address)}</p>` +
-          `<p style="margin:3px 0 0;font-size:12px;color:#555">${esc(c.district)}, ${esc(c.state)}</p></div>`,
+        `<div style="max-width:230px"><p style="font-weight:600;margin:0;color:var(--sa-text-neutral-bolder)">${esc(c.name)}</p>` +
+          `<p style="margin:var(--sa-stack-2) 0 0;font-size:12px;font-weight:600;color:${meta.color}">${c.type} · ${esc(meta.label)}</p>` +
+          `<p style="margin:var(--sa-stack-4) 0 0;font-size:12px;color:var(--sa-text-neutral-subtle)">${esc(c.address)}</p>` +
+          `<p style="margin:var(--sa-stack-2) 0 0;font-size:12px;color:var(--sa-text-neutral-subtle)">${esc(c.district)}, ${esc(c.state)}</p></div>`,
       );
       m.on("click", () => onSelect(c));
       group.addLayer(m);

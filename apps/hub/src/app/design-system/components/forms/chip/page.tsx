@@ -110,7 +110,7 @@ export default function ChipPage(): React.JSX.Element {
           code={`const [filters, setFilters] = React.useState(["Active", "Pending"]);
 
 return (
-  <div style={{ display: "flex", gap: 8 }}>
+  <div style={{ display: "flex", gap: "var(--sa-inline-8)" }}>
     {filters.map(f => (
       <Chip 
         key={f}

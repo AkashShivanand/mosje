@@ -37,7 +37,7 @@ export function AdminDashboard() {
         style={{
           display: "grid",
           gridTemplateColumns: "minmax(0,1fr) min-content",
-          gap: 24,
+          gap: "var(--sa-inline-24)",
           alignItems: "start",
         }}
       >
@@ -75,7 +75,7 @@ export function AdminDashboard() {
                       display: "block",
                       width: 14,
                       height: 14,
-                      borderRadius: 2,
+                      borderRadius: "var(--sa-shape-2)",
                       background: color,
                       flexShrink: 0,
                     }}

@@ -115,7 +115,7 @@ export default function EutthanPortal() {
           style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: 8,
+            gap: "var(--sa-inline-8)",
             textDecoration: "none",
             width: "fit-content",
           }}

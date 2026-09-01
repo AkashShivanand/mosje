@@ -127,7 +127,7 @@ export default function PatternsPage(): React.JSX.Element {
             <span style={{ color: "var(--sa-on-bg-brand-primary-bolder)", fontWeight: 700, fontSize: "var(--sa-type-body-1-size)" }}>
               PM-AJAY — Dashboard
             </span>
-            <div style={{ marginLeft: "auto", display: "flex", gap: 8 }}>
+            <div style={{ marginLeft: "auto", display: "flex", gap: "var(--sa-inline-8)" }}>
               <Avatar initials="AK" size={32} />
             </div>
           </div>
@@ -658,7 +658,7 @@ export default function PatternsPage(): React.JSX.Element {
               preview: (
                 <div style={{ fontSize: "var(--sa-type-body-2-size)" }}>
                   <Badge status="success">Approved</Badge>
-                  <span style={{ marginLeft: 8, color: "var(--sa-color-text-muted)" }}>+ text label</span>
+                  <span style={{ marginLeft: "var(--sa-inline-8)", color: "var(--sa-color-text-muted)" }}>+ text label</span>
                 </div>
               ),
               label: "Use Badge with both colour and text — colour + text satisfies WCAG 1.4.1.",

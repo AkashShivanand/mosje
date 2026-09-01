@@ -29,7 +29,7 @@ export function LoginPage({
             viewBox="0 0 72 72"
             fill="none"
             aria-hidden="true"
-            style={{ marginBottom: 24 }}
+            style={{ marginBottom: "var(--sa-stack-24)" }}
           >
             <circle
               cx="36"
@@ -75,7 +75,7 @@ export function LoginPage({
             </div>
           )}
 
-          <div className="field" style={{ marginTop: 24 }}>
+          <div className="field" style={{ marginTop: "var(--sa-stack-24)" }}>
             <label htmlFor="eu-username">Username / ID</label>
             <input
               id="eu-username"
@@ -91,7 +91,7 @@ export function LoginPage({
             />
           </div>
 
-          <div className="field" style={{ marginTop: 16 }}>
+          <div className="field" style={{ marginTop: "var(--sa-stack-16)" }}>
             <label htmlFor="eu-password">Password</label>
             <input
               id="eu-password"
@@ -110,7 +110,7 @@ export function LoginPage({
           <button
             type="submit"
             className="primary-button"
-            style={{ marginTop: 28, width: "100%" }}
+            style={{ marginTop: "var(--sa-stack-24)", width: "100%" }}
           >
             Log In
           </button>

@@ -11,7 +11,7 @@ export function PfmsLogsPage() {
     <div className="page-stack">
       <div className="table-title-row">
         <h2 className="page-title">{screen.title}</h2>
-        <div style={{ display: "flex", gap: 10 }}>
+        <div style={{ display: "flex", gap: "var(--sa-inline-8)" }}>
           <button type="button" className="secondary-button">
             <Icon name="refresh" size={14} /> Refresh
           </button>
@@ -30,13 +30,13 @@ export function PfmsLogsPage() {
           <input
             type="date"
             className="filter-button"
-            style={{ padding: "8px 12px" }}
+            style={{ padding: "var(--sa-padding-8) var(--sa-padding-12)" }}
             aria-label="From date"
           />
           <input
             type="date"
             className="filter-button"
-            style={{ padding: "8px 12px" }}
+            style={{ padding: "var(--sa-padding-8) var(--sa-padding-12)" }}
             aria-label="To date"
           />
         </div>
