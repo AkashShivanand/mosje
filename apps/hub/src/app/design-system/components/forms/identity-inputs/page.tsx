@@ -17,12 +17,19 @@ export const metadata: Metadata = {
 };
 
 /*
- * An OVERVIEW page covering three components, each of which also has a page of
- * its own. The props below are the three interfaces merged and prefixed by the
- * component that owns them, read off aadhaar-input.tsx, otp-input.tsx and
- * pan-input.tsx. Two corrections against the previous version of this page:
- * OtpInput's handler is `onValueChange`, not `onChange`, and its `label` is
- * required with no default.
+ * HAND-WRITTEN, AND IT HAS TO BE. `propsFrom` takes ONE generated key, and this
+ * is an OVERVIEW page covering three components — so the rows are prefixed by
+ * the component that owns them, which no single generated set can produce. The
+ * three interfaces themselves ARE generated, and each is rendered in full on
+ * that component's own page: forms/aadhaar-input, forms/otp-input,
+ * forms/pan-input.
+ *
+ * Verified 2026-09-02 against `AadhaarInputProps`, `OtpInputProps` and
+ * `PanInputProps` in props.generated.ts: every name, type, requiredness and
+ * default below matches. What is deliberately left out is OtpInput's
+ * `autoFocus`, `className`, `disabled`, `id` and `aria-describedby` — an
+ * overview names the props that distinguish the three controls, and the full
+ * API is one click away on each component's page.
  */
 const PROPS: PropDef[] = [
   {

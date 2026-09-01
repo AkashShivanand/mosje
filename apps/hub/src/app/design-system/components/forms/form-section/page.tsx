@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { FormSectionPlayground } from "./form-section-playground";
@@ -15,46 +14,6 @@ export const metadata: Metadata = {
   description:
     "A titled surface card wrapping a responsive one-, two- or three-column field grid. The shared form-layout primitive across the estate.",
 };
-
-/*
- * Read off `FormSectionProps` in packages/design-system/components/forms/form-section.tsx.
- * The interface declares exactly these five members; it extends nothing, so no
- * native section attributes pass through. The heading id is always generated.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "title",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The section heading, rendered as an `<h2>` and used as the section's accessible name through `aria-labelledby`.",
-  },
-  {
-    name: "children",
-    type: "React.ReactNode",
-    required: true,
-    description: "The Form Fields laid out across the grid.",
-  },
-  {
-    name: "description",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "Optional sub-heading below the title. One sentence; it is not a place for guidance a field needs.",
-  },
-  {
-    name: "columns",
-    type: "1 | 2 | 3",
-    default: "3",
-    description:
-      "Field-grid columns at desktop width. The grid collapses to a single column on smaller screens regardless of this value.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the `<section>` element.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -97,7 +56,7 @@ export default function FormSectionPage(): React.JSX.Element {
       summary="A titled surface card wrapping a responsive field grid. It is the shared form-layout primitive: one section per logical group of fields, so related inputs read as a unit and a long form never becomes one undifferentiated wall of controls."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<FormSectionPlayground />}
-      props={PROPS}
+      propsFrom="FormSectionProps"
       a11y={A11Y}
       whenToUse={{
         use: [

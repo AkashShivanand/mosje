@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { RadioPlayground } from "./radio-playground";
@@ -15,80 +14,6 @@ export const metadata: Metadata = {
   description:
     "A radio button for choosing exactly one option from a mutually exclusive set, in an inline variant and a full selectable card variant.",
 };
-
-/*
- * Read off `RadioProps` in packages/design-system/components/forms/radio.tsx.
- * The interface extends `InputHTMLAttributes<HTMLInputElement>` minus `type` and
- * `size`, so every other native attribute passes through. `name` and `value` are
- * declared required because a radio with neither belongs to no group.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "checked",
-    type: "boolean",
-    required: true,
-    description:
-      "Controlled checked state. The component holds no state of its own, so a radio that never changes is a missing `onChange` rather than a bug here.",
-  },
-  {
-    name: "name",
-    type: "string",
-    required: true,
-    description:
-      "The group name. Every option in one choice shares it — this is what makes the browser treat them as one group, and what gives arrow-key navigation for free.",
-  },
-  {
-    name: "value",
-    type: "string",
-    required: true,
-    description: "This option's value, submitted with the form when the option is selected.",
-  },
-  {
-    name: "onChange",
-    type: "React.ChangeEventHandler<HTMLInputElement>",
-    required: true,
-    description: "Receives the native change event. Read `event.target.value`.",
-  },
-  {
-    name: "label",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Text beside the circle, tied to the input by `htmlFor`/`id` so clicking it selects. Without it the circle is the only target, which fails WCAG 2.5.8.",
-  },
-  {
-    name: "variant",
-    type: '"default" | "card"',
-    default: '"default"',
-    description:
-      "`default` is an inline circle and label. `card` renders the whole option as a selectable card, which is what makes room for a description.",
-  },
-  {
-    name: "description",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Secondary text under the label. It renders in the `card` variant only — the inline variant has nowhere to put it.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description: "Standard native disabled. A disabled radio is not focusable and is not submitted.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "auto",
-    description: "Falls back to a generated `useId()`. Pass one only when another element must reference it.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the outer wrapper — the `<span>` in the default variant, the `<label>` in the card variant.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -136,7 +61,7 @@ export default function RadioPage(): React.JSX.Element {
       summary="A radio button for choosing exactly one option from a mutually exclusive set. It is a real native radio, so the browser handles grouping and arrow-key movement; the card variant turns each option into a full selectable block with room for a description."
       figma={{ node: "radio" }}
       specimen={<RadioPlayground />}
-      props={PROPS}
+      propsFrom="RadioProps"
       a11y={A11Y}
       whenToUse={{
         use: [

@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { LightboxSpecimen } from "./lightbox-specimen";
@@ -15,57 +14,6 @@ export const metadata: Metadata = {
   description:
     "A full-screen viewer for a gallery of images and video: prev and next, an item counter, a caption bar and a thumbnail strip.",
 };
-
-/*
- * Read off `LightboxProps` and `LightboxItem` in
- * packages/design-system/components/feedback/lightbox.tsx. `LightboxProps` is a
- * standalone interface — it does NOT extend HTMLAttributes.
- *
- * Corrected 2026-09-02: the previous table carried three props and omitted
- * `index`, `onIndexChange`, `className` and the shape of `LightboxItem`.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "open",
-    type: "boolean",
-    required: true,
-    description:
-      "Whether the viewer is mounted. It renders nothing when false, when `items` is empty, or when the active index resolves to no item.",
-  },
-  {
-    name: "items",
-    type: "LightboxItem[]",
-    required: true,
-    description:
-      "The ordered media. Each is `{ type: \"image\" | \"video\"; src: string; caption?: string; poster?: string; alt?: string }`. An empty list renders nothing rather than an empty black screen.",
-  },
-  {
-    name: "onClose",
-    type: "() => void",
-    required: true,
-    description: "Called on Escape, on the backdrop, and on the close control.",
-  },
-  {
-    name: "index",
-    type: "number",
-    default: "0",
-    description:
-      "The item to open on, zero-based. It is clamped into range and re-read every time the viewer is reopened, so a gallery always opens on the thumbnail that was pressed.",
-  },
-  {
-    name: "onIndexChange",
-    type: "(index: number) => void",
-    default: "undefined",
-    description:
-      "Notified whenever the active item changes. The viewer owns the index internally, so this reports rather than controls.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root element, which renders in a portal on document.body.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -108,7 +56,7 @@ export default function LightboxPage(): React.JSX.Element {
       summary="A full-screen viewer for a gallery of mixed images and video: previous and next, an item counter, a caption bar and a thumbnail strip. It renders through a portal, so no table's overflow can clip it."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<LightboxSpecimen />}
-      props={PROPS}
+      propsFrom="LightboxProps"
       a11y={A11Y}
       whenToUse={{
         use: [
@@ -248,21 +196,16 @@ const [index, setIndex] = React.useState(0);
           </section>
           <section className="cdp__section" aria-labelledby="cdp-open">
             <h2 id="cdp-open" className="cdp__h2">
-              Two Things a Consumer Must Handle
+              Focus and the Dialog&apos;s Name
             </h2>
             <p>
-              The viewer declares <code>aria-modal=&quot;true&quot;</code>, but{" "}
-              <strong>it does not trap Tab and it does not restore focus on close</strong>. A
-              keyboard user can tab out of the viewer into the page behind it, and on closing, focus
-              returns to the document rather than to the thumbnail that opened it.
+              The viewer declares <code>aria-modal=&quot;true&quot;</code> and holds Tab inside
+              itself while it is open, so the page behind is out of reach in fact as well as in the
+              announcement. On close it returns focus to the control that opened it — unless the
+              consumer has already moved focus somewhere deliberate, in which case it is left there.
             </p>
             <p>
-              Until that is fixed in the component, restore focus from the consumer — keep a ref to
-              the trigger and focus it in the <code>onClose</code> handler. This is recorded here
-              rather than left to be rediscovered, and is the reason the component is marked Beta.
-            </p>
-            <p>
-              The second is the dialog&apos;s name.{" "}
+              The one thing the consumer must handle is the dialog&apos;s name.{" "}
               <code>aria-labelledby</code> points at the caption, which is only rendered when the
               active item has one — so an uncaptioned gallery opens a dialog with no accessible
               name. Caption every item.

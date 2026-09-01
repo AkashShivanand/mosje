@@ -165,12 +165,17 @@ function staleAbsences() {
  * hand-typed array and is how this estate came to document a `ChartCard` prop
  * called `action` when the prop is `actions`. The shape check accepts either,
  * correctly — a hook's arguments cannot be extracted — but nothing stopped the
- * hand-written form from being the default forever. Fifty-eight of a hundred
- * pages still carry one.
+ * hand-written form from being the default forever. Fifty-seven of a hundred
+ * pages carried one on 2026-09-01; three do now, and each of the three is a
+ * case the extractor genuinely cannot reach — `data-display/axis` (inline
+ * parameter objects and bare formatter functions, no interface at all),
+ * `feedback/toast` (a provider taking an inline parameter object plus a hook)
+ * and `forms/identity-inputs` (an overview of three components, whose rows are
+ * prefixed by the component that owns them and so cannot come from one key).
  *
  * A count, ratcheted: it may fall and it may not rise.
  */
-const HANDWRITTEN_BASELINE = Number(process.env.DS_PAGES_HANDWRITTEN ?? 57);
+const HANDWRITTEN_BASELINE = Number(process.env.DS_PAGES_HANDWRITTEN ?? 3);
 
 function handWrittenTables() {
   return collect(PAGES).filter((f) => {

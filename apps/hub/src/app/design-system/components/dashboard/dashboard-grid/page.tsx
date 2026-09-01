@@ -6,7 +6,6 @@ import {
   ComponentDocPage,
   MatrixTable,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { ChartCard, DashboardGrid, KpiRow, Sparkline } from "@mosje/design-system";
 
@@ -15,33 +14,6 @@ export const metadata: Metadata = {
   description:
     "The 12-column grid a portal dashboard is laid out on. Children declare their own width with a span prop; every child is full width below 768px.",
 };
-
-/*
- * Read off `DashboardGridProps` in packages/design-system/components/dashboard/dashboard-grid.tsx.
- * The component is a forwardRef, so a ref lands on the grid element itself.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "children",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The cards. Each sets its own width through its `span` prop — or, for anything that is not a DS card, through the `--cmp-card-span` custom property.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the grid element.",
-  },
-  {
-    name: "ref",
-    type: "React.Ref<HTMLDivElement>",
-    default: "undefined",
-    description:
-      "Forwarded to the grid element. A section-scoped toolbar has to measure the grid's last row to know when to retire, and the grid is the only element that knows which card that is.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -93,7 +65,7 @@ export default function DashboardGridPage(): React.JSX.Element {
           </ChartCard>
         </DashboardGrid>
       }
-      props={PROPS}
+      propsFrom="DashboardGridProps"
       a11y={A11Y}
       whenToUse={{
         use: [

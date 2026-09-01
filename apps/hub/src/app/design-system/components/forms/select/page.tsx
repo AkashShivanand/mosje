@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { SelectPlayground } from "./select-playground";
@@ -16,61 +15,6 @@ export const metadata: Metadata = {
   description:
     "A native select element with a custom chevron, so the platform's own option list and keyboard behaviour are kept intact. Two appearances: the full form control and the compact dashboard filter.",
 };
-
-/*
- * Read off `SelectProps` in packages/design-system/components/forms/select.tsx.
- * The interface extends `SelectHTMLAttributes<HTMLSelectElement>` minus `size`,
- * so every native attribute passes through and is not listed individually.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "appearance",
-    type: '"field" | "filter"',
-    default: '"field"',
-    description:
-      "`field` is the full-height form control. `filter` is the compact 40px chip used in dashboard headers — the same native select, so keyboard and screen-reader behaviour are unchanged; only the skin differs.",
-  },
-  {
-    name: "invalid",
-    type: "boolean",
-    default: "false",
-    description:
-      "Renders the error state and sets `aria-invalid`. Form Field sets this for you from its own `error` prop.",
-  },
-  {
-    name: "options",
-    type: "SelectOption[]",
-    default: "undefined",
-    description:
-      "Convenience list of `{ label, value, disabled? }`. Omit it and pass `<option>` children instead where the options need markup of their own.",
-  },
-  {
-    name: "placeholder",
-    type: "string",
-    default: "undefined",
-    description:
-      "Rendered as a disabled first option and selected by default when the control is uncontrolled. It is not a label.",
-  },
-  {
-    name: "children",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "Native `<option>` elements. Ignored when `options` is supplied.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the `<select>` element, not the wrapper that draws the chevron.",
-  },
-  {
-    name: "...native",
-    type: "Omit<React.SelectHTMLAttributes<HTMLSelectElement>, \"size\">",
-    default: "—",
-    description:
-      "Every native select attribute is forwarded, including `value`, `defaultValue`, `onChange`, `name`, `required`, `disabled` and `ref`.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -124,7 +68,7 @@ export default function SelectPage(): React.JSX.Element {
       summary="A dropdown built on the native select element, with a custom chevron layered over it for visual consistency. Keeping the native control preserves the platform's own option list, its typeahead and its keyboard behaviour on every device."
       figma={{ node: "dropdown" }}
       specimen={<SelectPlayground />}
-      props={PROPS}
+      propsFrom="SelectProps"
       a11y={A11Y}
       whenToUse={{
         use: [

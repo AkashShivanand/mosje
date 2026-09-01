@@ -91,8 +91,16 @@
 .docs-nav__item:hover { background-color: var(--sa-border-neutral-subtle); }
 
 .docs-nav__item.is-active {
-  color: var(--sa-text-brand-primary-base);
-  background-color: var(--sa-bg-brand-primary-subtler);
+  /*
+   * 5.74:1. The pairing used to be `text-brand-primary-base` on
+   * `bg-brand-primary-subtler` and measured 3.28:1 — a WCAG 1.4.3 failure on the
+   * sidebar's active item, i.e. on every page of the design system, found by the
+   * axe suite the moment one existed. Both rungs moved: the ink one deeper, and
+   * the ground to `base`, which despite the name is the LIGHTER tint (this
+   * estate's colour page documents `base` as the palest rung).
+   */
+  color: var(--sa-text-brand-primary-bolder);
+  background-color: var(--sa-bg-brand-primary-base);
   border-left-color: var(--sa-color-action-primary-default);
   font-weight: 600;
 }
@@ -261,7 +269,7 @@
   transition: color 0.1s, border-color 0.1s;
 }
 .docs-toc__item:hover { color: var(--sa-text-neutral-base); }
-.docs-toc__item.is-active { color: var(--sa-text-brand-primary-base); border-left-color: var(--sa-color-action-primary-default); }
+.docs-toc__item.is-active { color: var(--sa-text-brand-primary-bolder); border-left-color: var(--sa-color-action-primary-default); }
 
 /* ── Page header ── */
 .docs-page-header {
@@ -302,7 +310,7 @@
   align-items: center;
   gap: var(--sa-stack-8);
   font-size: var(--sa-type-body-2-size);
-  color: var(--sa-text-brand-primary-base);
+  color: var(--sa-text-brand-primary-bolder);
   border: 1px solid var(--sa-border-neutral-base);
   border-radius: var(--sa-shape-6);
   padding: var(--sa-padding-4) var(--sa-padding-12);
@@ -528,8 +536,9 @@
 }
 
 .docs-nav__badge--alpha {
-  background: var(--sa-bg-brand-primary-subtler);
-  color: var(--sa-text-brand-primary-base);
+  /* Same pairing, same measurement, same reason as `.is-active` above. */
+  background: var(--sa-bg-brand-primary-base);
+  color: var(--sa-text-brand-primary-bolder);
 }
 
 .docs-nav__badge--new {
@@ -639,7 +648,7 @@
 .docs-mobile-toc-link:hover,
 .docs-mobile-toc-link.is-active {
   background: var(--sa-bg-brand-primary-subtler);
-  color: var(--sa-text-brand-primary-base);
+  color: var(--sa-text-brand-primary-bolder);
   font-weight: 600;
 }
 

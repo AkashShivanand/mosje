@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { WizardPlayground } from "./wizard-playground";
@@ -16,75 +15,6 @@ export const metadata: Metadata = {
   description:
     "The shared multi-step form shell: a stepper, the current step's body, a focusable error summary, and the Back, Continue and Submit controls.",
 };
-
-/*
- * Read off `WizardProps` in packages/design-system/components/forms/wizard.tsx.
- * The interface is a CLOSED list — it extends nothing. `ReviewSection` and
- * `ReviewItem` are exported from the same file for the final step.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "steps",
-    type: "StepperStep[]",
-    required: true,
-    description: "Step definitions — `{ label, description? }` — passed straight to the Stepper.",
-  },
-  {
-    name: "current",
-    type: "number",
-    required: true,
-    description: "Zero-based index of the active step. The parent owns it; the Wizard never changes it.",
-  },
-  {
-    name: "onBack",
-    type: "() => void",
-    required: true,
-    description: "Fired when the reader asks for the previous step. The Back button is disabled on the first step.",
-  },
-  {
-    name: "onNext",
-    type: "() => void",
-    required: true,
-    description: "Fired when the reader asks for the next step. Validate here and only advance when the step is valid.",
-  },
-  {
-    name: "onSubmit",
-    type: "() => void",
-    required: true,
-    description: "Fired from the final step's submit button, which replaces Continue there.",
-  },
-  {
-    name: "children",
-    type: "React.ReactNode",
-    required: true,
-    description: "The current step's body — typically one or more Form Sections or Form Cards.",
-  },
-  {
-    name: "submitLabel",
-    type: "string",
-    default: '"Submit"',
-    description: "Label for the final-step submit button.",
-  },
-  {
-    name: "nextLabel",
-    type: "string",
-    default: '"Continue"',
-    description: "Label for the advance button on every step but the last.",
-  },
-  {
-    name: "error",
-    type: "string",
-    default: "undefined",
-    description: "Error-summary message, rendered in a focusable Alert above the actions.",
-  },
-  {
-    name: "errorRef",
-    type: "React.Ref<HTMLDivElement>",
-    default: "undefined",
-    description:
-      "Ref to the error-summary container, so the parent can move focus to it when a step fails validation. Without this the summary appears and nobody is sent to it.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -133,7 +63,7 @@ export default function WizardPage(): React.JSX.Element {
       summary="The shared multi-step form shell. It renders the Stepper, the current step's body, an optional focusable error summary, and the Back, Continue and Submit controls. The parent owns every field value, the step index and all validation."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<WizardPlayground />}
-      props={PROPS}
+      propsFrom="WizardProps"
       a11y={A11Y}
       whenToUse={{
         use: [

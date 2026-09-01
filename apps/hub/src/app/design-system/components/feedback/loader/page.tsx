@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { LoaderPlayground } from "./loader-playground";
@@ -15,41 +14,6 @@ export const metadata: Metadata = {
   description:
     "A spinner for a wait whose result has no known shape, announced to assistive technology through a live region and a visually hidden label.",
 };
-
-/*
- * Read off `LoaderProps` in packages/design-system/components/feedback/loader.tsx.
- * The interface extends `React.HTMLAttributes<HTMLSpanElement>`, so every
- * standard span attribute passes through and is not listed individually.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "size",
-    type: '"sm" | "md" | "lg"',
-    default: '"md"',
-    description:
-      "Spinner diameter. `sm` inside a button or a table cell, `md` for a section, `lg` for a full panel.",
-  },
-  {
-    name: "variant",
-    type: '"primary" | "secondary"',
-    default: '"primary"',
-    description:
-      "Colour role. `secondary` is the quieter of the two, for a spinner sitting on a brand-coloured surface where the primary would disappear into it.",
-  },
-  {
-    name: "label",
-    type: "string",
-    default: '"Loading…"',
-    description:
-      "The accessible label, visually hidden and read out. Replace it whenever the page can say what is being fetched — “Looking through the village register…” is worth more than “Loading” on a slow connection.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root span.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -86,7 +50,7 @@ export default function LoaderPage(): React.JSX.Element {
       summary="A spinner for a wait whose result has no known shape — a submission being processed, an action inside a button. It announces itself through a polite live region and a visually hidden label."
       figma={{ node: "loader" }}
       specimen={<LoaderPlayground />}
-      props={PROPS}
+      propsFrom="LoaderProps"
       a11y={A11Y}
       whenToUse={{
         use: [

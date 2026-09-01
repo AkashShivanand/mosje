@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { GeoPhotoInputPlayground } from "./geo-photo-input-playground";
@@ -15,103 +14,6 @@ export const metadata: Metadata = {
   description:
     "An evidence-photograph control that reads coordinates from EXIF, falls back to the device's location, and compresses each photograph in the browser before it is stored.",
 };
-
-/*
- * Read off `GeoPhotoInputProps` in
- * packages/design-system/components/forms/geo-photo-input.tsx. The interface is
- * a CLOSED list — it extends nothing. `minItems` is surfaced in the hint text
- * only; it is not enforced by the component.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "value",
-    type: "GeoPhoto[]",
-    required: true,
-    description:
-      "The current photographs, controlled. Each carries a thumbnail, a view copy, the original name and size, the coordinates, the accuracy, how the location was obtained, and a capture timestamp.",
-  },
-  {
-    name: "onChange",
-    type: "(photos: GeoPhoto[]) => void",
-    required: true,
-    description: "Called with the next array on every add and every removal.",
-  },
-  {
-    name: "maxItems",
-    type: "number",
-    default: "4",
-    description: "Maximum photographs. The add tile disappears once the limit is reached.",
-  },
-  {
-    name: "minItems",
-    type: "number",
-    default: "1",
-    description:
-      "Surfaced in the hint text ONLY. The component does not enforce a minimum — validate it yourself and report it through Form Field's error.",
-  },
-  {
-    name: "maxSizeMb",
-    type: "number",
-    default: "10",
-    description: "Maximum size of each ORIGINAL file, checked before the derived copies are made.",
-  },
-  {
-    name: "viewMaxEdge",
-    type: "number",
-    default: "1600",
-    description: "Longest edge of the stored view copy, used in a lightbox.",
-  },
-  {
-    name: "thumbMaxEdge",
-    type: "number",
-    default: "320",
-    description: "Longest edge of the stored thumbnail, used in the grid, in tables and in counters.",
-  },
-  {
-    name: "quality",
-    type: "number",
-    default: "0.72",
-    description: "JPEG quality for both derived copies. Lower it only with a recorded reason; evidence has to stay legible.",
-  },
-  {
-    name: "invalid",
-    type: "boolean",
-    default: "false",
-    description: "Sets `aria-invalid` on the group. Form Field sets this for you from its own `error` prop.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description: "Disables adding and removing. Existing photographs stay visible.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "undefined",
-    description: "Applied to whichever add control is currently rendered — the empty dropzone, or the add tile in the grid.",
-  },
-  {
-    name: "required",
-    type: "boolean",
-    default: "undefined",
-    description:
-      "Accepted from Form Field's wiring and deliberately NOT forwarded to the DOM, for the same reason as Media Upload.",
-  },
-  {
-    name: "aria-describedby",
-    type: "string",
-    default: "undefined",
-    description:
-      "Links the control to a hint or an error. It is bound on the group rather than on a button, so the association survives the at-capacity state where no add control exists.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the group wrapper.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -165,7 +67,7 @@ export default function GeoPhotoInputPage(): React.JSX.Element {
       summary="An evidence-photograph control for field reporting. It reads coordinates from the photograph's EXIF data, falls back to the device's own location where there are none, and compresses each photograph in the browser into a thumbnail and a view copy before anything is stored."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<GeoPhotoInputPlayground />}
-      props={PROPS}
+      propsFrom="GeoPhotoInputProps"
       a11y={A11Y}
       whenToUse={{
         use: [

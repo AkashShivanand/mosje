@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { TooltipPlayground } from "./tooltip-playground";
@@ -15,68 +14,6 @@ export const metadata: Metadata = {
   description:
     "A hint bubble on hover and focus, meeting WCAG 1.4.13: dismissible with Escape, hoverable, and persistent until the reader leaves it.",
 };
-
-/*
- * Read off `TooltipProps` in
- * packages/design-system/components/feedback/tooltip.tsx. `TooltipProps` is a
- * standalone interface — it does not extend HTMLAttributes, so there is no rest
- * spread onto the bubble.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "content",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The hint. A few words: this is a supplement to something already on the page, not a place to put documentation.",
-  },
-  {
-    name: "children",
-    type: "React.ReactElement",
-    required: true,
-    description:
-      "The trigger. Exactly one element that can hold a ref and receive mouse and focus handlers — a button, a link, or a design-system component that forwards its ref. Plain text has no focus, so a tooltip on it opens only for a pointer.",
-  },
-  {
-    name: "side",
-    type: '"top" | "bottom" | "left" | "right"',
-    default: '"top"',
-    description:
-      "The preferred side. It flips to the opposite side when the preferred one would overflow the viewport, and is clamped on the cross axis so the bubble stays on screen.",
-  },
-  {
-    name: "sideOffset",
-    type: "number",
-    default: "6",
-    description: "Gap in pixels between the trigger and the bubble.",
-  },
-  {
-    name: "delay",
-    type: "number",
-    default: "200",
-    description:
-      "Delay before opening on hover, in milliseconds. Focus always opens immediately — a keyboard user has already committed to the control, so making them wait serves nothing.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description: "Suppress the tooltip without unmounting the trigger, so the control keeps its own state.",
-  },
-  {
-    name: "duplicatesTriggerName",
-    type: "boolean",
-    default: "false",
-    description:
-      "Set it when the bubble repeats the trigger's own accessible name — the truncated-label case. It drops aria-describedby and hides the bubble from assistive technology, so the label is not announced twice.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the bubble, which renders in a portal on document.body.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -113,7 +50,7 @@ export default function TooltipPage(): React.JSX.Element {
       summary="A hint bubble shown on hover and on focus. It renders through a portal so no ancestor's overflow can clip it, flips when it would leave the viewport, and meets WCAG 1.4.13 without configuration."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<TooltipPlayground />}
-      props={PROPS}
+      propsFrom="TooltipProps"
       a11y={A11Y}
       whenToUse={{
         use: [

@@ -115,6 +115,25 @@ code:not([class]) {
   padding: var(--sa-padding-2) var(--sa-padding-4);
   color: var(--sa-text-neutral-base);
 }
+
+/*
+ * …EXCEPT inside a terminal, where the shell is DARK.
+ *
+ * The rule above is right for inline code in prose — a pale chip on the page.
+ * A `<pre><code>` inside `.terminal-code` carries no class either, so it took
+ * that pale chip and painted it over the `#12141c` shell, leaving the syntax
+ * palette — which is authored for a dark ground — at 1.23:1 to 2.75:1. Sixteen
+ * spans on the design system's own landing page, in the snippet that tells a
+ * developer how to install it.
+ */
+.terminal-code code:not([class]) {
+  background-color: transparent;
+  /* And the ink. Resetting only the chip's background left the chip's near-black
+     text on the shell at 1.14:1 — the unhighlighted half of every line, which is
+     most of the characters in the snippet. */
+  color: var(--sa-code-text);
+  font-size: inherit;
+}
 }
 
 @layer components {
@@ -142,7 +161,10 @@ code:not([class]) {
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--sa-text-brand-primary-base);
+  /* 4.07:1 → 5.57:1. Gov-blue as TEXT, at 11px uppercase with 0.1em tracking —
+     the thinnest type on the page, at the lowest contrast on it. Same root
+     cause as the sidebar, the tabs and the outlined Button. */
+  color: var(--sa-text-brand-primary-bolder);
   margin-bottom: var(--sa-stack-12);
 }
 .home-kicker::before {

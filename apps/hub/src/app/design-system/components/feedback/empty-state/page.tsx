@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { EmptyStatePlayground } from "./empty-state-playground";
@@ -15,49 +14,6 @@ export const metadata: Metadata = {
   description:
     "The answer a reader gets when a list, table or dashboard has nothing to show: what is absent, why, and what they can do next.",
 };
-
-/*
- * Read off `EmptyStateProps` in
- * packages/design-system/components/feedback/empty-state.tsx. The interface
- * extends `Omit<React.HTMLAttributes<HTMLDivElement>, "title">`, so every
- * standard div attribute passes through and is not listed individually.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "title",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The reader's answer, in the department's register — “No applications submitted yet”, not “No data”.",
-  },
-  {
-    name: "description",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "One sentence of context, and only where the context changes what the reader should do. A reason that leads nowhere belongs in the audit record, not on the page.",
-  },
-  {
-    name: "action",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "The way out — start an application, clear the filters, go back. An empty state with no exit is a dead end.",
-  },
-  {
-    name: "icon",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "An illustration above the title. Decorative: it is wrapped in an aria-hidden container, so it must never be the only thing that says what is empty.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root element.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -94,7 +50,7 @@ export default function EmptyStatePage(): React.JSX.Element {
       summary="A centred placeholder for a list, table or dashboard that has nothing to show. It gives the reader the answer to the question they asked, the reason where the reason matters, and a way forward."
       figma={{ node: "emptyState" }}
       specimen={<EmptyStatePlayground />}
-      props={PROPS}
+      propsFrom="EmptyStateProps"
       a11y={A11Y}
       whenToUse={{
         use: [

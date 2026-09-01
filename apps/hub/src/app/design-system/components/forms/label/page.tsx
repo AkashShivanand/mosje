@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { LabelPlayground } from "./label-playground";
@@ -15,48 +14,6 @@ export const metadata: Metadata = {
   description:
     "A standalone label element for controls that are not wrapped in a Form Field, matching the Form Field label exactly.",
 };
-
-/*
- * Read off `LabelProps` in packages/design-system/components/forms/label.tsx.
- * The interface extends `LabelHTMLAttributes<HTMLLabelElement>` in full, so
- * `htmlFor` is a native attribute passed through rather than a declared prop —
- * optional to the type system, and required in practice. See the note below.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "children",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "The label text. This is the question the control is asking.",
-  },
-  {
-    name: "required",
-    type: "boolean",
-    default: "undefined",
-    description:
-      "Appends a required marker after the text. The marker is `aria-hidden`, so the requirement must also be carried by the control's own `required` attribute — the asterisk alone conveys nothing to a screen reader.",
-  },
-  {
-    name: "hint",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Secondary text rendered inline after the label in a lighter weight. It is inside the `<label>`, so it becomes part of the accessible name — keep it to a few words.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the `<label>` element.",
-  },
-  {
-    name: "...native",
-    type: "React.LabelHTMLAttributes<HTMLLabelElement>",
-    default: "—",
-    description:
-      "Every native label attribute is forwarded, including `htmlFor` and `ref`. `htmlFor` is not declared separately by the interface, but a label with no `htmlFor` and no wrapped control names nothing.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -99,7 +56,7 @@ export default function LabelPage(): React.JSX.Element {
       summary="A standalone label for controls that are not wrapped in a Form Field. It renders a real label element and matches the Form Field label exactly, so a hand-wired field and a Form Field are indistinguishable side by side."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<LabelPlayground />}
-      props={PROPS}
+      propsFrom="LabelProps"
       a11y={A11Y}
       whenToUse={{
         use: [

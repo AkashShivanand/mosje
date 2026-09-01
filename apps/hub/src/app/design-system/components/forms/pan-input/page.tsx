@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { PanInputPlayground } from "./pan-input-playground";
@@ -15,47 +14,6 @@ export const metadata: Metadata = {
   description:
     "A ten-character Permanent Account Number field that uppercases as you type and validates the holder-type character.",
 };
-
-/*
- * Read off `PanInputProps` in packages/design-system/components/forms/pan-input.tsx.
- * The interface extends `InputHTMLAttributes<HTMLInputElement>` minus `value`,
- * `onChange`, `type` and `maxLength` — all four are owned by the component.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "value",
-    type: "string",
-    required: true,
-    description: "The normalised PAN — uppercase, alphanumeric, ten characters or fewer. Controlled.",
-  },
-  {
-    name: "onValueChange",
-    type: "(pan: string) => void",
-    required: true,
-    description:
-      "Called with the normalised value, already uppercased and stripped, so what reaches your state is storage-ready. This is not `onChange`, which the interface removes.",
-  },
-  {
-    name: "invalid",
-    type: "boolean",
-    default: "false",
-    description:
-      "Forces the error state. The field also sets `aria-invalid` on its own once ten characters fail the shape check, so this is for a rejection that came from elsewhere.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the input element.",
-  },
-  {
-    name: "...native",
-    type: "Omit<React.InputHTMLAttributes<HTMLInputElement>, \"value\" | \"onChange\" | \"type\" | \"maxLength\">",
-    default: "—",
-    description:
-      "Every other native input attribute is forwarded, including `id`, `required`, `disabled`, `aria-describedby` and `ref`. The placeholder defaults to `ABCPE1234F` and can be overridden.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -103,7 +61,7 @@ export default function PanInputPage(): React.JSX.Element {
       summary="A ten-character Permanent Account Number field in the AAAAA9999A shape. It uppercases as you type, so nobody is told off for typing their own PAN in lower case, and it validates the fourth character against the holder-type codes."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<PanInputPlayground />}
-      props={PROPS}
+      propsFrom="PanInputProps"
       a11y={A11Y}
       whenToUse={{
         use: [

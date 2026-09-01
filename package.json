@@ -22,7 +22,7 @@
     "dev:storybook": "bash -c 'cd apps/storybook && exec env NODE_PATH=$(pwd)/node_modules ../../node_modules/.bin/storybook dev -p 6006'",
     "check:build": "npm --prefix apps/hub run build",
     "verify": "npm run lint && npm run lint:css && npm run check && npm run check:build",
-    "check": "npm run check:hub && npm run check:hub-tests && npm run check:search-index && npm run check:docs-search && npm run check:dangling-vars && npm run check:docs-links && npm run check:website-links && npm run check:org-anchors && npm run check:docs-routes && npm run check:figma-docs && npm run check:docs-data && npm run check:ds-linkage && npm run check:type-linkage && npm run check:icon-scale && npm run check:space-linkage && npm run check:radius-linkage && npm run check:code-connect && npm run check:chart-slots && npm run check:chrome && npm run check:org-logos && npm run check:ds-pages && npm run check:props && npm run check:docs-coverage && npm run check:components-css && npm run check:storybook && npm run check:storybook:parity && npm run check:changelog && npm run check:design-context",
+    "check": "npm run check:hub && npm run check:hub-tests && npm run check:search-index && npm run check:docs-search && npm run check:dangling-vars && npm run check:docs-links && npm run check:website-links && npm run check:org-anchors && npm run check:docs-routes && npm run check:figma-docs && npm run check:docs-data && npm run check:ds-linkage && npm run check:type-linkage && npm run check:icon-scale && npm run check:space-linkage && npm run check:radius-linkage && npm run check:code-connect && npm run check:chart-slots && npm run check:chrome && npm run check:org-logos && npm run check:ds-pages && npm run check:props && npm run check:docs-coverage && npm run check:shadow-ui && npm run check:components-css && npm run check:storybook && npm run check:storybook:parity && npm run check:changelog && npm run check:design-context && npm run check:a11y-evidence && npm run check:ds-lint",
     "check:docs-search": "node scripts/build-docs-search-index.mjs --check",
     "build:docs-search": "node scripts/build-docs-search-index.mjs",
     "check:changelog": "node scripts/check-changelog-freshness.mjs",
@@ -87,17 +87,30 @@
     "check:props": "node tools/props-extract/extract.mjs --check",
     "check:docs-coverage": "node tools/docs-coverage/check.mjs",
     "check:docs-coverage:baseline": "node tools/docs-coverage/check.mjs --baseline",
+    "check:shadow-ui": "node tools/shadow-ui/check.mjs",
+    "check:shadow-ui:baseline": "node tools/shadow-ui/check.mjs --baseline",
     "build:components-css": "node scripts/build-components-css.mjs",
-    "check:components-css": "node scripts/build-components-css.mjs --check"
+    "check:components-css": "node scripts/build-components-css.mjs --check",
+    "check:a11y-evidence": "node tools/a11y-evidence/check.mjs",
+    "check:a11y-evidence:baseline": "node tools/a11y-evidence/check.mjs --baseline",
+    "check:a11y-evidence:report": "node tools/a11y-evidence/check.mjs --report",
+    "test:a11y": "playwright test e2e/a11y",
+    "check:ds-lint": "node tools/ds-lint/check.mjs",
+    "check:ds-lint:baseline": "node tools/ds-lint/check.mjs --baseline"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@eslint/js": "^9.39.5",
     "@playwright/test": "^1.61.1",
     "concurrently": "^9.2.1",
+    "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-react-hooks": "^5.2.0",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.7",
     "stylelint": "^16.26.1",
     "stylelint-config-standard": "^36.0.0",
-    "stylelint-declaration-strict-value": "^1.11.1"
+    "stylelint-declaration-strict-value": "^1.11.1",
+    "typescript-eslint": "^8.69.0"
   },
   "dependencies": {
     "pdf-lib": "^1.17.1",

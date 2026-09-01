@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { CheckboxPlayground } from "./checkbox-playground";
@@ -15,60 +14,6 @@ export const metadata: Metadata = {
   description:
     "A checkbox selects one or more items from a set, or turns a single option on or off. Supports the mixed state a “select all” control needs.",
 };
-
-/*
- * Read off `CheckboxProps` in packages/design-system/components/forms/checkbox.tsx.
- * The interface extends `InputHTMLAttributes<HTMLInputElement>` minus `type` and
- * `size`, so every native input attribute — `name`, `required`, `aria-describedby`
- * — passes through and is not listed individually here.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "checked",
-    type: "boolean",
-    required: true,
-    description:
-      "Controlled checked state. The component holds no state of its own, so a checkbox that never changes is a missing onChange rather than a bug here.",
-  },
-  {
-    name: "onChange",
-    type: "React.ChangeEventHandler<HTMLInputElement>",
-    required: true,
-    description: "Receives the native change event. Read `event.target.checked`.",
-  },
-  {
-    name: "indeterminate",
-    type: "boolean",
-    default: "false",
-    description:
-      "The mixed state, for a parent whose children are partly selected. Sets `aria-checked=\"mixed\"`, which is the only way a screen reader is told a “select all” is partial — the dash alone is invisible to it.",
-  },
-  {
-    name: "label",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Text beside the box, tied to the input by `htmlFor`/`id` so clicking it toggles. Omitting it leaves the 20px box as the only target, which fails WCAG 2.5.8 — supply a label, or an `aria-label` through the passthrough.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description: "Standard native disabled. A disabled checkbox is not focusable and is not submitted.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "auto",
-    description: "Falls back to a generated `useId()`. Pass one only when another element must reference it.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the outer wrapper, not the input.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -115,7 +60,7 @@ export default function CheckboxPage(): React.JSX.Element {
       summary="A checkbox selects any number of items from a set, or turns a single option on or off. It also carries the mixed state that a “select all” control needs when only some of its children are selected."
       figma={{ node: "checkbox" }}
       specimen={<CheckboxPlayground />}
-      props={PROPS}
+      propsFrom="CheckboxProps"
       a11y={A11Y}
       whenToUse={{
         use: [

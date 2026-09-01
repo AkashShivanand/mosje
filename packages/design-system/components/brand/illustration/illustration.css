@@ -19,6 +19,27 @@
     height: auto;
   }
 
+  /*
+   * THE SMALLEST TIER DROPS TEXTURE.
+   *
+   * `spot` renders the 64x48 authored space into 32x24 — half scale — so a
+   * 2-unit hairline lands at 1 CSS px and three sheet rules 3 units apart become
+   * a smudge. §1 promises a drawing is correct at every size; that is only true
+   * if the drawing sheds detail it cannot carry. Structure stays; texture goes.
+   */
+  .sa-ill--spot .sa-ill__detail {
+    display: none;
+  }
+
+  /*
+   * And a dash pattern becomes a dot pattern at half scale, so a ghosted mark
+   * reads as noise rather than as "not yet". Solid at `spot`; the ghost ink
+   * layer still carries the meaning.
+   */
+  .sa-ill--spot [stroke-dasharray] {
+    stroke-dasharray: none;
+  }
+
   /* The floor and any structural rule. */
   .sa-ill__ground {
     stroke: var(--sa-border-neutral-base);

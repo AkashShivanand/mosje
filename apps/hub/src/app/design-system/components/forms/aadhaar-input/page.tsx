@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { AadhaarInputPlayground } from "./aadhaar-input-playground";
@@ -16,55 +15,6 @@ export const metadata: Metadata = {
   description:
     "A twelve-digit Aadhaar field, grouped as you type, Verhoeff-checked, and masked to its last four digits by default.",
 };
-
-/*
- * Read off `AadhaarInputProps` in
- * packages/design-system/components/forms/aadhaar-input.tsx. The interface
- * extends `InputHTMLAttributes<HTMLInputElement>` minus `value`, `onChange`,
- * `type`, `maxLength` and `inputMode` — all five are owned by the component.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "value",
-    type: "string",
-    required: true,
-    description: "The raw twelve digits, no separators. Controlled.",
-  },
-  {
-    name: "onValueChange",
-    type: "(digits: string) => void",
-    required: true,
-    description:
-      "Called with RAW DIGITS only — never the formatted or masked string — so the separators can never reach your state or your API. This is not `onChange`, which the interface removes.",
-  },
-  {
-    name: "invalid",
-    type: "boolean",
-    default: "false",
-    description:
-      "Forces the error state. The field also sets `aria-invalid` on its own once twelve digits fail the Verhoeff check, so this is for a rejection that came from elsewhere.",
-  },
-  {
-    name: "mask",
-    type: "boolean",
-    default: "true",
-    description:
-      "Masks to the last four digits once the field is complete and not focused. Leave it on unless there is a specific, recorded reason: an Aadhaar number is sensitive personal data under the DPDP Act 2023.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the input element.",
-  },
-  {
-    name: "...native",
-    type: "Omit<React.InputHTMLAttributes<HTMLInputElement>, \"value\" | \"onChange\" | \"type\" | \"maxLength\" | \"inputMode\">",
-    default: "—",
-    description:
-      "Every other native input attribute is forwarded, including `id`, `required`, `disabled`, `aria-describedby` and `ref`. `onFocus` and `onBlur` are chained after the component's own.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -112,7 +62,7 @@ export default function AadhaarInputPage(): React.JSX.Element {
       summary="A twelve-digit Aadhaar field, grouped as you type, validated with the Verhoeff checksum UIDAI uses, and masked to its last four digits once complete and blurred. It hands your state raw digits, never the formatted or masked string."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<AadhaarInputPlayground />}
-      props={PROPS}
+      propsFrom="AadhaarInputProps"
       a11y={A11Y}
       whenToUse={{
         use: [

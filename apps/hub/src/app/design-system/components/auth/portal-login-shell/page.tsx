@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { PortalLoginShellSpecimen } from "./portal-login-shell-specimen";
@@ -16,79 +15,6 @@ export const metadata: Metadata = {
   description:
     "The full-page login layout every MoSJE portal signs in through — the utility bar, the Government of India masthead, the SAMAVESH hero, the tab strip and the footer. The form itself is the caller's.",
 };
-
-/*
- * Read off `PortalLoginShellProps` in
- * packages/design-system/components/auth/portal-login-shell.tsx.
- *
- * Corrected 2026-09-02: the previous table listed `title`, `subtitle`, `brandLogo` and
- * `helpUrl`. None of the four exists on this component, and the four that carry the
- * portal's brand assets were missing entirely.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "emblemSrc",
-    type: "string",
-    default: '"/brand/national-emblem.svg"',
-    description:
-      "The National Emblem, from the portal's own public directory. It is drawn by the shared BrandLockup, so the emblem, the line order and the BETA badge are estate policy rather than this shell's to retype.",
-  },
-  {
-    name: "digitalIndiaSrc",
-    type: "string",
-    default: '"/brand/digital-india.svg"',
-    description: "The Digital India logo, shown in the masthead's right cluster at 768px and above.",
-  },
-  {
-    name: "samaveshLogoSrc",
-    type: "string",
-    // org-logo-exempt(prose): the component's documented default, quoted. Documentation
-    // that names a path is not a consumer of it, and the SAMAVESH wordmark is not in the
-    // org-logo registry — that registry holds the 17 ORGANISATION marks.
-    default: '"/brand/samavesh-logo.svg"',
-    description: "The SAMAVESH circular mark. It appears three times — in the masthead, in the hero, and in the “Signing Into” strip.",
-  },
-  {
-    name: "signingInto",
-    type: "string",
-    required: true,
-    description:
-      "The portal or scheme being signed into, e.g. “Nasha Mukt Bharat Abhiyaan”. It names the strip at the foot of the hero, which is the reader's confirmation that they are at the right door.",
-  },
-  {
-    name: "changeHref",
-    type: "string",
-    default: '"/"',
-    description: "Where the “Change” control in that strip leads — the hub root, so a reader at the wrong portal can leave without using Back.",
-  },
-  {
-    name: "tabs",
-    type: "PortalLoginTab[]",
-    required: true,
-    description:
-      "The role pills above the form, each `{ label, href, active, onClick? }`. They are real links so middle-click and “copy link address” both land on the right tab. Pass an empty array to render no strip at all.",
-  },
-  {
-    name: "children",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The form: heading, fields and submit control. It is placed inside the `#login-form` container the shell's skip link targets, so the caller does not wire the bypass.",
-  },
-  {
-    name: "extraContent",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "A block below the form area — a portal switcher grid, a registration prompt. It sits above the footer, inside the right panel.",
-  },
-  {
-    name: "onFooterLinkClick",
-    type: '(link: "privacy" | "contact" | "about") => void',
-    default: "undefined",
-    description:
-      "Called when a footer link is activated. The footer's three links are buttons, so the consuming app routes them; the shell is framework-agnostic and does no navigation of its own.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -142,7 +68,7 @@ export default function PortalLoginShellPage(): React.JSX.Element {
         absent: "Not yet published as a master in the Figma library. The bar it opens with is published as Accessibility Bar.",
       }}
       specimen={<PortalLoginShellSpecimen />}
-      props={PROPS}
+      propsFrom="PortalLoginShellProps"
       a11y={A11Y}
       whenToUse={{
         use: [

@@ -5,111 +5,21 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { SlaProgressIndicator } from "@mosje/design-system";
+
+/*
+ * NOTE FOR MAINTAINERS: this route and `feedback/sla-progress` both document the
+ * same component. `feedback/sla-progress` is the canonical page - states,
+ * thresholds, units and UX4G parity live there. This one is kept for the routes
+ * that already link to it and covers the variant choice.
+ */
 
 export const metadata: Metadata = {
   title: "SLA Progress Indicator — Variants — Design System",
   description:
     "The three shapes an SLA guarantee takes: a linear row, a circular dashboard tile, and a badge for a table cell.",
 };
-
-/*
- * Read off `SlaProgressIndicatorProps` in
- * packages/design-system/components/feedback/sla-progress-indicator.tsx.
- *
- * Corrected 2026-09-02: the previous table carried three props, described
- * `total` as "working days" when the component is unit-agnostic, and omitted
- * the eight props that carry every state the component can be in.
- *
- * NOTE FOR MAINTAINERS: this route and `feedback/sla-progress` both document the
- * same component. `feedback/sla-progress` is the canonical page — states,
- * thresholds, units and UX4G parity live there. This one is kept for the routes
- * that already link to it and covers the variant choice.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "label",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "What the guarantee is for. Shown in every variant and used as the accessible name, so it should name the case rather than the category.",
-  },
-  {
-    name: "total",
-    type: "number",
-    required: true,
-    description:
-      "The whole allowance, in any consistent unit — the component is unit-agnostic and does not assume days.",
-  },
-  {
-    name: "elapsed",
-    type: "number",
-    required: true,
-    description: "Time consumed so far, in the same unit. It may exceed `total`; that is a breach.",
-  },
-  {
-    name: "variant",
-    type: '"linear" | "circular" | "badge"',
-    default: '"linear"',
-    description: "Which of the three shapes. Pick by where it sits, not by preference.",
-  },
-  {
-    name: "unit",
-    type: "string",
-    default: '"day"',
-    description: 'Singular unit name, pluralised automatically — "working day", "hour".',
-  },
-  {
-    name: "paused",
-    type: "boolean",
-    default: "false",
-    description: "The clock is stopped. Renders neutral and hatched rather than escalating.",
-  },
-  {
-    name: "completed",
-    type: "boolean",
-    default: "false",
-    description: "Delivered; `elapsed` is how long it took. Resolves to met or missed.",
-  },
-  {
-    name: "thresholds",
-    type: "{ dueSoonAt?: number; atRiskAt?: number }",
-    default: "{ dueSoonAt: 0.75, atRiskAt: 0.9 }",
-    description: "Fractions of the allowance consumed at which the status escalates.",
-  },
-  {
-    name: "status",
-    type: "SlaStatus",
-    default: "derived",
-    description: "Force a status instead of deriving it. An escape hatch; prefer the derived value.",
-  },
-  {
-    name: "description",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "A secondary line on the linear variant only.",
-  },
-  {
-    name: "action",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "A trailing control on the linear variant only, such as a “View” link.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "auto",
-    description: "Falls back to a generated useId(); the label's id is derived from it.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root element.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -163,7 +73,7 @@ export default function SlaProgressIndicatorPage(): React.JSX.Element {
           </div>
         </div>
       }
-      props={PROPS}
+      propsFrom="SlaProgressIndicatorProps"
       a11y={A11Y}
       whenToUse={{
         use: [

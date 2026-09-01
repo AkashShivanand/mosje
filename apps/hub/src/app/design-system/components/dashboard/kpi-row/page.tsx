@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { KpiRow } from "@mosje/design-system";
 
@@ -14,34 +13,6 @@ export const metadata: Metadata = {
   description:
     "A responsive row of MetricCard tiles carrying the headline figures at the top of a dashboard — funds released, beneficiaries, applications pending.",
 };
-
-/*
- * Read off `KpiRowProps` in packages/design-system/components/dashboard/kpi-row.tsx.
- * The row is a layout only: every tile is a `MetricCard`, and each entry in `items`
- * is that component's own props, so a tile's API is documented on the Metric Card page.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "items",
-    type: "(MetricCardProps & { key?: React.Key })[]",
-    required: true,
-    description:
-      "The tiles. Each entry is forwarded to MetricCard unchanged — label and value are required, icon, changeValue, changeDirection and changeLabel are optional. Pass `key` only where two tiles share a label.",
-  },
-  {
-    name: "span",
-    type: "number",
-    default: "undefined",
-    description:
-      "Column span (1–12) when the row sits inside a DashboardGrid, applied at 768px and above. Below that every grid child is full width, so the value is ignored.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the row, not onto the tiles.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -90,7 +61,7 @@ export default function KpiRowPage(): React.JSX.Element {
           ]}
         />
       }
-      props={PROPS}
+      propsFrom="KpiRowProps"
       a11y={A11Y}
       whenToUse={{
         use: [

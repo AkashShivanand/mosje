@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { OrgLogo, ORG_LOGOS, type OrgSlug } from "@mosje/design-system";
 
@@ -17,53 +16,6 @@ export const metadata: Metadata = {
   description:
     "Organisation and scheme marks in the estate's standard tile — and the only place a mark's path is written.",
 };
-
-/*
- * Read off `OrgLogoProps` in packages/design-system/components/brand/org-logo.tsx.
- * The interface extends `React.HTMLAttributes<HTMLSpanElement>`, so every native span
- * attribute passes through and is not listed individually.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "path",
-    type: "string | null",
-    default: "undefined",
-    description:
-      "A portal route, resolved through the registry. The normal case, because a route is what the estate registry hands you.",
-  },
-  {
-    name: "org",
-    type: "OrgSlug | null",
-    default: "undefined",
-    description: "An organisation slug, when you have that rather than a route. Omit both for the State Emblem.",
-  },
-  {
-    name: "size",
-    type: '"sm" | "md" | "lg"',
-    default: '"md"',
-    description:
-      "Tile size — 32 / 48 / 56px. The three places the estate actually shows a mark: inline beside a label, on a card, and leading a directory row.",
-  },
-  {
-    name: "name",
-    type: "string",
-    default: "undefined",
-    description:
-      "Accessible name. OMIT IT — a mark beside the organisation's name in real text is decorative and takes an empty alt. Pass one only where the mark stands alone with no adjacent text.",
-  },
-  {
-    name: "src",
-    type: "string",
-    default: "undefined",
-    description:
-      "An explicit source, for a mark not yet in the registry. The escape hatch the registry exists to make unnecessary — every use is reported by npm run check:org-logos.",
-  },
-  {
-    name: "...rest",
-    type: "React.HTMLAttributes<HTMLSpanElement>",
-    description: "Every native span attribute lands on the tile, along with className.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -110,7 +62,7 @@ export default function OrgLogoPage(): React.JSX.Element {
           </p>
         </div>
       }
-      props={PROPS}
+      propsFrom="OrgLogoProps"
       a11y={A11Y}
       whenToUse={{
         use: [

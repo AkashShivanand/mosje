@@ -4,7 +4,7 @@
 
 import { useState, useMemo, useRef, useLayoutEffect, Fragment, type CSSProperties } from "react";
 import { Navbar } from "@/components/pm-ajay/shell/navbar";
-import { Sidebar, FilterBar, Footer, type Filters } from "./ui";
+import { Sidebar, DrillDownFilters, DashboardFooter, type Filters } from "./ui";
 import { VIEW_COMPONENTS, type LevelRow } from "./views";
 import {
   FY,
@@ -234,11 +234,11 @@ export function DashboardApp() {
                 </div>
               )}
             </div>
-            <FilterBar filters={filters} set={set} reset={reset} view={view} scope={scope} />
+            <DrillDownFilters filters={filters} set={set} reset={reset} view={view} scope={scope} />
             <main className="pm-page" id="pm-main" aria-label={meta.title}>
               <ViewComp kpis={kpis} sp={SPARK} scope={scope} filters={filters} onDrill={onDrill} />
             </main>
-            <Footer />
+            <DashboardFooter />
           </div>
         </div>
       </div>

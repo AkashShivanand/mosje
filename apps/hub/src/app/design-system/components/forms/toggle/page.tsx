@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { TogglePlayground } from "./toggle-playground";
@@ -15,66 +14,6 @@ export const metadata: Metadata = {
   description:
     "A switch for a setting that takes effect immediately. A real checkbox input carrying role=\"switch\", paired with a styled track and knob.",
 };
-
-/*
- * Read off `ToggleProps` in packages/design-system/components/forms/toggle.tsx.
- * The interface extends `InputHTMLAttributes<HTMLInputElement>` minus `type` and
- * `size`, so every other native attribute passes through and is not listed.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "checked",
-    type: "boolean",
-    required: true,
-    description:
-      "Controlled on/off state. The component holds no state of its own, so a switch that never moves is a missing `onChange` rather than a bug here.",
-  },
-  {
-    name: "onChange",
-    type: "React.ChangeEventHandler<HTMLInputElement>",
-    required: true,
-    description: "Receives the native change event. Read `event.target.checked`.",
-  },
-  {
-    name: "label",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Text beside the switch, tied to the input by `htmlFor`/`id` so clicking it toggles. Without it the track is the only target, and the switch has no accessible name unless one is passed through.",
-  },
-  {
-    name: "size",
-    type: '"default" | "small"',
-    default: '"default"',
-    description:
-      "`default` is the form and settings size. `small` is for a dense row — a toolbar, a table cell — and still clears the 24×24 minimum target.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description: "Standard native disabled. A disabled switch is not focusable and is not submitted.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "auto",
-    description: "Falls back to a generated `useId()`. Pass one only when another element must reference it.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the outer wrapper, not the input.",
-  },
-  {
-    name: "...native",
-    type: "Omit<React.InputHTMLAttributes<HTMLInputElement>, \"type\" | \"size\">",
-    default: "—",
-    description:
-      "Every other native input attribute is forwarded to the hidden input, including `name`, `aria-label`, `aria-describedby` and `ref`.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -122,7 +61,7 @@ export default function TogglePage(): React.JSX.Element {
       summary="A switch for a setting that takes effect immediately. Behind the styled track is a real checkbox input carrying the switch role, so it keeps native keyboard behaviour while announcing itself as on or off rather than as checked."
       figma={{ node: "toggle" }}
       specimen={<TogglePlayground />}
-      props={PROPS}
+      propsFrom="ToggleProps"
       a11y={A11Y}
       whenToUse={{
         use: [

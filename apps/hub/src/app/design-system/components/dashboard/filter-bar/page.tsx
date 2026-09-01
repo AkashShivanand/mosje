@@ -6,7 +6,6 @@ import {
   ComponentDocPage,
   PropsTable,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { FilterBarSpecimen } from "./filter-bar-specimen";
@@ -16,53 +15,6 @@ export const metadata: Metadata = {
   description:
     "The row of controls that sits above a dashboard and decides what the cards below it show. Layout only — every control inside it keeps its own state.",
 };
-
-/*
- * Read off `FilterBarProps` in packages/design-system/components/dashboard/filter-bar.tsx.
- * The same file exports `SegmentedControl`, documented separately below because it is
- * the one control the bar is almost always given.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "title",
-    type: "string",
-    default: "undefined",
-    description:
-      "A leading label for the bar, naming what is being filtered. Omit it where the section heading directly above already says so.",
-  },
-  {
-    name: "children",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The controls — Select, Search, SegmentedControl, a reset button. They are pushed to the trailing edge and wrap onto a second line rather than scrolling.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the bar.",
-  },
-];
-
-const SEGMENTED_PROPS: PropDef[] = [
-  {
-    name: "options",
-    type: "SegmentedOption<T>[]",
-    required: true,
-    description: "The choices, each `{ label, value }`. Two to four; beyond that use a Select.",
-  },
-  { name: "value", type: "T", required: true, description: "The selected value. The control is fully controlled and holds no state." },
-  { name: "onChange", type: "(value: T) => void", required: true, description: "Receives the new value, not an event." },
-  {
-    name: "ariaLabel",
-    type: "string",
-    required: true,
-    description:
-      "The group's accessible name, e.g. \"Period\". Required rather than optional because the control renders a radiogroup, and an unnamed radiogroup tells a screen-reader user only that they are in a group.",
-  },
-  { name: "className", type: "string", default: "undefined", description: "Merged onto the group." },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -109,7 +61,7 @@ export default function FilterBarPage(): React.JSX.Element {
         absent: "Not yet published in the Figma library. The controls it hosts — Select, Search — are published individually.",
       }}
       specimen={<FilterBarSpecimen />}
-      props={PROPS}
+      propsFrom="FilterBarProps"
       a11y={A11Y}
       whenToUse={{
         use: [
@@ -168,7 +120,7 @@ export default function FilterBarPage(): React.JSX.Element {
             <h2 id="cdp-segmented-props" className="cdp__h2">
               SegmentedControl Props
             </h2>
-            <PropsTable props={SEGMENTED_PROPS} />
+            <PropsTable from="SegmentedControlProps" />
           </section>
           <section className="cdp__section" aria-labelledby="cdp-example">
             <h2 id="cdp-example" className="cdp__h2">

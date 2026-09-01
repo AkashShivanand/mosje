@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { PasswordInputPlayground } from "./password-input-playground";
@@ -15,55 +14,6 @@ export const metadata: Metadata = {
   description:
     "A password field with a reveal toggle that is a real button, names the action rather than the state, and suppresses the browser's competing control.",
 };
-
-/*
- * Read off `PasswordInputProps` in
- * packages/design-system/components/forms/password-input.tsx. The interface
- * extends `InputProps` minus `type`, so every Input prop — `invalid`,
- * `leftIcon`, `rightIcon` — and every native input attribute passes through.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "showLabel",
-    type: "string",
-    default: '"Show password"',
-    description:
-      "Accessible name for the reveal button while the password is hidden. It states the action, not the state, so a screen-reader user hears what pressing it will do.",
-  },
-  {
-    name: "hideLabel",
-    type: "string",
-    default: '"Hide password"',
-    description: "Accessible name for the reveal button while the password is visible.",
-  },
-  {
-    name: "hideToggle",
-    type: "boolean",
-    default: "false",
-    description:
-      "Removes the reveal button entirely and renders a plain password field. Reach for it only where a recorded policy forbids revealing.",
-  },
-  {
-    name: "invalid",
-    type: "boolean",
-    default: "false",
-    description: "Inherited from Input. Renders the error state and sets `aria-invalid`.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description:
-      "Merged onto the wrapper that holds the field and the toggle — or onto the input itself when `hideToggle` is set, because there is then no wrapper.",
-  },
-  {
-    name: "...native",
-    type: "Omit<InputProps, \"type\">",
-    default: "—",
-    description:
-      "Every Input prop and every native input attribute is forwarded, including `value`, `onChange`, `name`, `required`, `autoComplete` and `ref`. `type` is owned by the component, which flips it between password and text.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -110,7 +60,7 @@ export default function PasswordInputPage(): React.JSX.Element {
       summary="A password field with a reveal toggle. Typing a password blind is the single biggest cause of failed sign-ins, and every login in the estate needs the same affordance — which is why this is a design-system control rather than a per-portal one-off."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<PasswordInputPlayground />}
-      props={PROPS}
+      propsFrom="PasswordInputProps"
       a11y={A11Y}
       whenToUse={{
         use: [

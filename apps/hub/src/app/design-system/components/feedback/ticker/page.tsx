@@ -6,7 +6,6 @@ import {
   ComponentDocPage,
   MatrixTable,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { TickerPlayground } from "./ticker-playground";
@@ -16,98 +15,6 @@ export const metadata: Metadata = {
   description:
     "Recent announcements in two shapes: the full-bleed bar under the masthead, and the stacked panel that scrolls them.",
 };
-
-/*
- * Read off `TickerProps` and `TickerItem` in
- * packages/design-system/components/feedback/ticker.tsx. The interface extends
- * `Omit<React.HTMLAttributes<HTMLElement>, "title">`, so standard section
- * attributes pass through.
- *
- * Corrected 2026-09-02: `labelAs` was missing, which is the prop that puts the
- * strip's name in the document outline — the single most useful thing on a
- * notice board for a screen-reader user navigating by heading.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "items",
-    type: "TickerItem[]",
-    required: true,
-    description:
-      "The notices. Each is `{ id?, title, description?, date?, dateTime?, href, linkLabel? }`. `date` is the display text and `dateTime` its ISO form; the component owns the separator between the kind and the date, so a notice without one does not trail a dangling middot. An empty list renders nothing at all.",
-  },
-  {
-    name: "label",
-    type: "string",
-    default: '"Latest Updates"',
-    description: "The plinth text and the section's accessible name.",
-  },
-  {
-    name: "labelAs",
-    type: '"h2" | "h3" | "h4" | "h5" | "h6" | "span"',
-    default: '"span"',
-    description:
-      "Render the strip's name as a heading, so it can be reached by heading navigation and not only by landmark. It defaults to a span because the right level depends on the page — a panel inside a section that already owns an h2 wants h3, a bar under the masthead wants h2 — and guessing would skip a level.",
-  },
-  {
-    name: "icon",
-    type: "React.ReactNode",
-    default: "<TickerMark>",
-    description:
-      "Override the mark. The default is the broadcasting megaphone, whose arcs pulse while the strip is moving and stop when it is paused — it is deliberately tied to the strip's state, so replace it only where a site genuinely has its own emblem for this.",
-  },
-  {
-    name: "action",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      'The way out — "View All Updates". A slot, because the route belongs to the consuming site. Style it with buttonClasses("primary", "inverseOutlined", "sm"); the strip is a solid brand surface, so a normal outlined button would draw its border in a blue nobody can see.',
-  },
-  {
-    name: "orientation",
-    type: '"horizontal" | "vertical"',
-    default: '"horizontal"',
-    description:
-      "Which of the two shapes: the 72px one-message bar, or the stacked panel that scrolls upward under a header.",
-  },
-  {
-    name: "height",
-    type: '"auto" | "fill"',
-    default: '"auto"',
-    description:
-      "Vertical only. `auto` stands at the header plus the `rows` window; `fill` takes the height of the row it shares, making `rows` a floor. `fill` needs a parent whose height does not come from the panel — give the rail position: relative and the panel's wrapper position: absolute with inset: 0.",
-  },
-  {
-    name: "rows",
-    type: "number",
-    default: "4",
-    description: "How many rows are visible at once, and therefore the panel's height. Vertical only.",
-  },
-  {
-    name: "interval",
-    type: "number",
-    default: "5000",
-    description:
-      "Horizontal: milliseconds each item holds before the next replaces it. Vertical: milliseconds of travel per row, so a longer list takes proportionally longer to loop and the scroll speed stays constant however many notices there are.",
-  },
-  {
-    name: "autoplay",
-    type: "boolean",
-    default: "true",
-    description: "Start moving on mount. It never starts under prefers-reduced-motion, whatever this is set to.",
-  },
-  {
-    name: "linkAs",
-    type: "React.ElementType",
-    default: '"a"',
-    description: "Router-aware link component for internal hrefs — pass next/link.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root element.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -162,7 +69,7 @@ export default function TickerPage(): React.JSX.Element {
       summary="Recent announcements, in two shapes. The bar is the full-bleed strip under the masthead, one message at a time. The panel stacks the same items as rows and scrolls them upward under a header. One component, one data model, one pause control."
       figma={{ node: "ticker" }}
       specimen={<TickerPlayground />}
-      props={PROPS}
+      propsFrom="TickerProps"
       a11y={A11Y}
       whenToUse={{
         use: [
@@ -247,8 +154,9 @@ export default function TickerPage(): React.JSX.Element {
               columns={["Width", "Auto-advance", "Pause", "Prev / Next", "View All", "Name"]}
               rows={[
                 ["1024px and up", "Yes, every 5s", "Yes", "Yes", "Button, same row", "Shown"],
-                ["Below 1024px", "Yes, every 5s", "Yes", "Dropped", "Link, in the header", "Shown"],
-                ["Reduced motion", "Never starts", "Yes", "Yes", "As above", "Shown"],
+                ["640px to 1023px", "Yes, every 5s", "Yes", "Yes, in the header", "Link, in the header", "Shown"],
+                ["Below 640px", "Yes, every 5s", "Yes", "Dropped", "Link, in the header", "Shown"],
+                ["Reduced motion", "Never starts", "Yes", "As above", "As above", "Shown"],
               ]}
             />
             <MatrixTable

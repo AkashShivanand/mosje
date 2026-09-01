@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { BadgePlayground } from "./badge-playground";
@@ -15,65 +14,6 @@ export const metadata: Metadata = {
   description:
     "A small pill that annotates something with a status, a count or a category. It carries colour meaning and is never interactive.",
 };
-
-/*
- * Read off `BadgeProps` in packages/design-system/components/feedback/badge.tsx.
- * The interface extends `React.HTMLAttributes<HTMLSpanElement>`, so every
- * standard span attribute — including `aria-label` — passes through and is not
- * listed individually.
- *
- * Corrected 2026-09-02: the previous table listed five statuses and omitted
- * `info`, and carried none of `emphasis`, `dot` or `pulse`.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "children",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The label. This is the meaning — a badge whose text does not say the state is unreadable to anyone who cannot see its colour.",
-  },
-  {
-    name: "status",
-    type: '"primary" | "info" | "success" | "danger" | "warning" | "neutral"',
-    default: '"neutral"',
-    description:
-      "The semantic colour role, driving the background and the text. Six roles, not five: `info` is its own role and is not a synonym for `primary`.",
-  },
-  {
-    name: "size",
-    type: '"sm" | "lg"',
-    default: '"sm"',
-    description: "`sm` for an inline annotation or a table cell; `lg` for a standalone status beside a heading.",
-  },
-  {
-    name: "emphasis",
-    type: '"subtle" | "solid"',
-    default: '"subtle"',
-    description:
-      "Fill strength. `subtle` is a tonal wash of the status colour; `solid` fills with the source colour. Use `solid` sparingly — a row of solid badges in a table reads as a row of buttons.",
-  },
-  {
-    name: "dot",
-    type: "boolean",
-    default: "false",
-    description:
-      "Show a leading status dot. The dot is decorative and hidden from assistive technology; it reinforces the label and never replaces it.",
-  },
-  {
-    name: "pulse",
-    type: "boolean",
-    default: "false",
-    description:
-      "Animate the leading dot. Implies `dot`. Reserve it for a state that is genuinely live, such as a case currently under scrutiny.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root span.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -104,7 +44,7 @@ const A11Y: A11yItem[] = [
     criterion: "2.2.2 Pause, Stop, Hide",
     level: "A",
     description:
-      "`pulse` animates a 4px dot. Keep it to a state that is genuinely live and to one badge in a view; a table of pulsing dots is movement a reader cannot switch off.",
+      "`pulse` animates the leading status dot. Keep it to a state that is genuinely live and to one badge in a view; a table of pulsing dots is movement a reader cannot switch off.",
   },
 ];
 
@@ -116,7 +56,7 @@ export default function BadgePage(): React.JSX.Element {
       summary="A compact pill that annotates something with a status, a count or a category. It carries colour meaning through a tonal background and readable text, and it is never a button or a link."
       figma={{ node: "badges" }}
       specimen={<BadgePlayground />}
-      props={PROPS}
+      propsFrom="BadgeProps"
       a11y={A11Y}
       whenToUse={{
         use: [

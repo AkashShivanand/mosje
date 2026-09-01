@@ -4,8 +4,8 @@ import * as React from "react";
 import {
   CodeBlock,
   ComponentDocPage,
+  PropsTable,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { Skeleton, SkeletonText } from "@mosje/design-system";
 
@@ -14,66 +14,6 @@ export const metadata: Metadata = {
   description:
     "A placeholder in the shape of the result, shown while a request is in flight so the layout does not jump when the data lands.",
 };
-
-/*
- * Read off `skeleton.tsx` in packages/design-system/components/feedback/. Three
- * exports: `Skeleton`, `SkeletonText` and `SkeletonRow`.
- *
- * `SkeletonProps` extends `React.HTMLAttributes<HTMLDivElement>`, so every
- * standard div attribute passes through; `style` is merged after width and
- * height rather than replacing them.
- *
- * Corrected 2026-09-02: the previous table gave `height` a default of "16px"
- * against a real "1rem", typed both dimensions as `string | number` against a
- * real `string`, and carried neither `circle` nor the two composed exports.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "width",
-    type: "string",
-    default: '"100%"',
-    description: "Any valid CSS length or percentage. Applied inline, so it accepts a calc() or a clamp() as readily as a px value.",
-  },
-  {
-    name: "height",
-    type: "string",
-    default: '"1rem"',
-    description:
-      "Any valid CSS length. A rem rather than a px default, so a placeholder line grows with the reader's own text size.",
-  },
-  {
-    name: "circle",
-    type: "boolean",
-    default: "false",
-    description: "Draw it as a pill or a circle, for an avatar or a chip placeholder.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root element.",
-  },
-  {
-    name: "SkeletonText · lines",
-    type: "number",
-    default: "3",
-    description:
-      "A stack of placeholder lines approximating a paragraph. The last line is deliberately shorter, so the block reads as prose rather than as a solid slab.",
-  },
-  {
-    name: "SkeletonText · className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the stack wrapper.",
-  },
-  {
-    name: "SkeletonRow · cols",
-    type: "number",
-    default: "5",
-    description:
-      "A placeholder table row. It emits real cells, so column widths stay identical between the loading and loaded states and the table does not reflow when the rows arrive.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -115,7 +55,7 @@ export default function SkeletonPage(): React.JSX.Element {
           <Skeleton circle height="3rem" width="3rem" />
         </div>
       }
-      props={PROPS}
+      propsFrom="SkeletonProps"
       a11y={A11Y}
       whenToUse={{
         use: [
@@ -178,6 +118,19 @@ export default function SkeletonPage(): React.JSX.Element {
         </>
       }
       code={
+        <>
+        <section className="cdp__section" aria-labelledby="cdp-text-props">
+          <h2 id="cdp-text-props" className="cdp__h2">
+            SkeletonText Props
+          </h2>
+          <PropsTable from="SkeletonTextProps" />
+        </section>
+        <section className="cdp__section" aria-labelledby="cdp-row-props">
+          <h2 id="cdp-row-props" className="cdp__h2">
+            SkeletonRow Props
+          </h2>
+          <PropsTable from="SkeletonRowProps" />
+        </section>
         <section className="cdp__section" aria-labelledby="cdp-example">
           <h2 id="cdp-example" className="cdp__h2">
             Example
@@ -197,6 +150,7 @@ export default function SkeletonPage(): React.JSX.Element {
     : rows.map((row) => <ApplicationRow key={row.id} {...row} />)}
 </tbody>`}</CodeBlock>
         </section>
+        </>
       }
       accessibility={
         <section className="cdp__section" aria-labelledby="cdp-announce">

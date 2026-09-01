@@ -64,3 +64,18 @@ jobs:
       # hoisted node_modules — a state `npm ci` would never reproduce. A build
       # here fails loudly on that instead of shipping it.
       - run: npm --prefix apps/hub run build
+
+      # ── Accessibility ────────────────────────────────────────────────────
+      # Until 2026-09-02 the estate had ELEVEN Playwright specs and no workflow
+      # that ran any of them, and a repository-wide grep for axe-core, pa11y,
+      # jest-axe and lighthouse returned nothing — while radius tokens carried
+      # six contract tests and a per-page ratchet. `CLAUDE.md` calls
+      # accessibility non-negotiable; this is the first thing that enforces it.
+      #
+      # Serious and critical fail. Moderate and minor are reported. Deviations
+      # that are recorded decisions are declared by selector in the spec, with
+      # the evidence, so an allowance is readable rather than a silent exclusion.
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Accessibility (axe)
+        run: npx playwright test e2e/a11y --reporter=line

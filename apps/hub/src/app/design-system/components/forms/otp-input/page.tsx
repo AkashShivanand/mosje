@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { OtpInputPlayground } from "./otp-input-playground";
@@ -16,86 +15,6 @@ export const metadata: Metadata = {
   description:
     "Six separate boxes for a one-time password, with paste, SMS autofill, arrow-key movement and a numbered box for every digit.",
 };
-
-/*
- * Read off `OtpInputProps` in packages/design-system/components/forms/otp-input.tsx.
- * The interface is a CLOSED list — it extends nothing, so no native input
- * attributes pass through. Two things the previous version of this page got
- * wrong: the change handler is `onValueChange`, not `onChange`, and `label` is
- * REQUIRED with no default.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "value",
-    type: "string",
-    required: true,
-    description: "The digits entered so far, as one string. Controlled.",
-  },
-  {
-    name: "onValueChange",
-    type: "(digits: string) => void",
-    required: true,
-    description:
-      "Called with the digits entered so far, never longer than `length`. This is not `onChange` — the component exposes no native change handler.",
-  },
-  {
-    name: "label",
-    type: "string",
-    required: true,
-    description:
-      "Accessible name for the whole group, for example \"One-time password\". There is no default: six unnamed boxes are unusable with a screen reader.",
-  },
-  {
-    name: "length",
-    type: "number",
-    default: "6",
-    description: "Number of boxes. UX4G 3.0 specifies six.",
-  },
-  {
-    name: "onComplete",
-    type: "(digits: string) => void",
-    default: "undefined",
-    description: "Fires once the last box is filled. Wire the verification call here rather than to a separate button.",
-  },
-  {
-    name: "invalid",
-    type: "boolean",
-    default: "false",
-    description: "Renders the error state across every box and sets `aria-invalid` on each.",
-  },
-  {
-    name: "aria-describedby",
-    type: "string",
-    default: "undefined",
-    description:
-      "Links the group to a hint or an error, exactly like any other control. Form Field supplies this through its render prop.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description: "Disables every box.",
-  },
-  {
-    name: "autoFocus",
-    type: "boolean",
-    default: "false",
-    description: "Focuses the first box on mount. Correct on a page whose only purpose is the code; wrong inside a longer form.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "auto",
-    description:
-      "Falls back to a generated `useId()`. It is applied to the FIRST box, so a Form Field label bound with `htmlFor` reaches it.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the group wrapper, not the boxes.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -149,7 +68,7 @@ export default function OtpInputPage(): React.JSX.Element {
       summary="Six separate boxes for a one-time password, as UX4G 3.0 specifies. Pasting the code into any box fills all six, SMS autofill is spread across the boxes rather than truncated, and Backspace on an empty box steps back instead of stranding the caret."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<OtpInputPlayground />}
-      props={PROPS}
+      propsFrom="OtpInputProps"
       a11y={A11Y}
       whenToUse={{
         use: [

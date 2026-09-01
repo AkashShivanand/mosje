@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { TextareaPlayground } from "./textarea-playground";
@@ -15,41 +14,6 @@ export const metadata: Metadata = {
   description:
     "A native, vertically resizable multi-line text field for long-form answers such as grievance descriptions, remarks and addresses.",
 };
-
-/*
- * Read off `TextareaProps` in packages/design-system/components/forms/textarea.tsx.
- * The interface extends `TextareaHTMLAttributes<HTMLTextAreaElement>` in full —
- * nothing is omitted — so every native attribute passes through.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "invalid",
-    type: "boolean",
-    default: "false",
-    description:
-      "Renders the error state and sets `aria-invalid` on the textarea. Form Field sets this for you from its own `error` prop.",
-  },
-  {
-    name: "rows",
-    type: "number",
-    default: "4",
-    description:
-      "Initial visible lines. It is the starting height only — the field stays vertically resizable by the reader.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the textarea element.",
-  },
-  {
-    name: "...native",
-    type: "React.TextareaHTMLAttributes<HTMLTextAreaElement>",
-    default: "—",
-    description:
-      "Every native textarea attribute is forwarded, including `value`, `onChange`, `name`, `maxLength`, `required`, `placeholder`, `disabled` and `ref`.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -97,7 +61,7 @@ export default function TextareaPage(): React.JSX.Element {
       summary="A native, vertically resizable multi-line text field for long-form answers — a grievance description, a set of remarks, an address. It shares the error state and the token styling of Input, and is sized in rows rather than pixels."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<TextareaPlayground />}
-      props={PROPS}
+      propsFrom="TextareaProps"
       a11y={A11Y}
       whenToUse={{
         use: [

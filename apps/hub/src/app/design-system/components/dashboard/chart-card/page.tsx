@@ -6,7 +6,6 @@ import {
   ComponentDocPage,
   MatrixTable,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { ChartCard, DashboardGrid, Sparkline } from "@mosje/design-system";
 
@@ -15,123 +14,6 @@ export const metadata: Metadata = {
   description:
     "The titled container a dashboard chart sits in. It owns the header, the grid span, the download control and every state the chart can be in — loading, empty, filtered to nothing, failed.",
 };
-
-/*
- * Read off `ChartCardProps` in packages/design-system/components/dashboard/chart-card.tsx.
- * The interface extends the native `<section>` attributes minus `title` and `children`,
- * so `id`, `data-*` and `aria-*` pass through and are not listed individually.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "title",
-    type: "string",
-    required: true,
-    description:
-      "The card's heading, rendered as an h3. Title Case, and it names what the figures are — not what the chart is.",
-  },
-  {
-    name: "subtitle",
-    type: "string",
-    default: "undefined",
-    description: "The reporting period and the selection the figures cover, e.g. \"FY 2025-26 · All States\".",
-  },
-  {
-    name: "actions",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Header controls — a period toggle, a menu. Rendered before the download control, and hidden along with it while the card is loading or in a state.",
-  },
-  {
-    name: "exportable",
-    type: "boolean",
-    default: "false",
-    description:
-      "Add the download control (PNG · SVG · CSV) to the header. It serialises the chart rendered inside this card; nothing needs wiring. It appears only once the card has settled on real content.",
-  },
-  { name: "exportName", type: "string", default: "title", description: "Filename stem and heading for the download menu." },
-  {
-    name: "exportFormats",
-    type: "ChartExportFormat[]",
-    default: "all available",
-    description: "Restrict which of PNG, SVG and CSV the download control offers.",
-  },
-  {
-    name: "span",
-    type: "number",
-    default: "undefined",
-    description: "Column span (1–12) inside a DashboardGrid, applied at 768px and above. Full width below that.",
-  },
-  {
-    name: "loading",
-    type: "boolean",
-    default: "false",
-    description:
-      "Draw the skeleton instead of the body, with a visually hidden `role=\"status\"` saying what is being loaded. It wins over `state`.",
-  },
-  {
-    name: "state",
-    type: "CardStateKind",
-    default: "undefined",
-    description:
-      "Why the card has nothing to draw: empty · no-results · not-published · error · restricted · offline. Six reasons rather than two, because each wants a different next action and only some of those actions are the reader's to take.",
-  },
-  {
-    name: "empty",
-    type: "boolean",
-    default: "false",
-    description: "Deprecated — use state=\"empty\". Kept for call sites that predate `state`; `state` wins where both are given.",
-  },
-  { name: "emptyTitle", type: "string", default: "the state's own", description: "Overrides the headline for the empty-side states." },
-  {
-    name: "emptyLabel",
-    type: "string",
-    default: "the state's own",
-    description: "One line saying WHY there is nothing — not that there is nothing, which the reader can already see.",
-  },
-  {
-    name: "error",
-    type: "boolean",
-    default: "false",
-    description: "Deprecated — use state=\"error\".",
-  },
-  { name: "errorTitle", type: "string", default: "the state's own", description: "Overrides the headline for the error state." },
-  { name: "errorLabel", type: "string", default: "the state's own", description: "One sentence saying the request failed. Never a status code or an endpoint." },
-  {
-    name: "onRetry",
-    type: "() => void",
-    default: "undefined",
-    description:
-      "The one action that would resolve the state in front of the reader. Omit it where nothing the reader can do would help — the state decides whether an action is drawn at all.",
-  },
-  {
-    name: "retryLabel",
-    type: "string",
-    default: "what the state can do",
-    description: "\"Try again\" where retrying could work, \"Clear filters\" where widening the selection is the only thing that would.",
-  },
-  {
-    name: "skeleton",
-    type: "CardSkeletonShape",
-    default: '"bars"',
-    description:
-      "The silhouette the loading placeholder draws: bars · line · donut · rows · region · figures. A donut card must not shimmer as a bar chart — a specific, wrong promise is worse than a plain grey block.",
-  },
-  {
-    name: "footer",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "A closing line under the body — usually the card's reading of its own figures. Removed while the card is loading or in a state, so it cannot contradict the body above it.",
-  },
-  { name: "children", type: "React.ReactNode", default: "undefined", description: "The chart, table or list the card contains." },
-  { name: "className", type: "string", default: "undefined", description: "Merged onto the card element." },
-  {
-    name: "...rest",
-    type: "React.ComponentPropsWithoutRef<\"section\">",
-    description: "Every other section attribute lands on the card — an id for a deep link, a data-sa-reveal for scroll entry.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -208,7 +90,7 @@ export default function ChartCardPage(): React.JSX.Element {
           </ChartCard>
         </DashboardGrid>
       }
-      props={PROPS}
+      propsFrom="ChartCardProps"
       a11y={A11Y}
       whenToUse={{
         use: [

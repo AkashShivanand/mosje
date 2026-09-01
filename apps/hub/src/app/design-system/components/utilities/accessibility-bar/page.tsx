@@ -8,7 +8,6 @@ import {
   DoDont,
   TokenTable,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import {
@@ -33,83 +32,6 @@ const USAGE = `import { AccessibilityBar } from "@mosje/design-system";
   language={{ label: "English", onClick: openLanguageMenu }}
   onFontScaleChange={(scale) => persist(scale)}
 />`;
-
-/*
- * Read off `AccessibilityBarProps` in
- * packages/design-system/components/utilities/accessibility-bar.tsx.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "govLink",
-    type: "{ href?: string; label?: string; flagSrc?: string }",
-    default: "Government of India → india.gov.in",
-    description:
-      "The top-left link. Pass `flagSrc` to show the flag chip — every real consumer does, and specimens that omitted it documented a bar the estate never ships.",
-  },
-  {
-    name: "skipTo",
-    type: "string",
-    default: '"#main-content"',
-    description: "The skip link's target. It must be an id that exists on the page, or a keyboard user lands nowhere.",
-  },
-  { name: "showSkip", type: "boolean", default: "true", description: "Show the skip link. It is the page's WCAG 2.4.1 bypass mechanism; hide it only where another one is provided." },
-  {
-    name: "skipLabel",
-    type: "string",
-    default: '"Skip to Main Content"',
-    description:
-      "The skip link's visible text, mirroring Figma's `Skip label` property. A prop rather than a fixed string because the estate is bilingual — a Hindi surface needs \"मुख्य सामग्री पर जाएँ\", and a hardcoded literal makes that impossible without forking the component.",
-  },
-  { name: "fontSize", type: "boolean", default: "true", description: "Show the A−/A/A+ text-size control." },
-  { name: "accessibility", type: "boolean", default: "true", description: "Show the accessibility entry, which opens the UX4G widget." },
-  {
-    name: "accessibilityHref",
-    type: "string",
-    default: '"/accessibility-statement"',
-    description:
-      "The GIGW-required accessibility-statement page, used only where the UX4G widget is not on the page. With the widget mounted — the estate default — the control opens the widget instead of navigating.",
-  },
-  {
-    name: "onAccessibility",
-    type: "() => void",
-    default: "undefined",
-    description: "Overrides the accessibility control's action, making it a button. Set this or `accessibilityHref`, not both.",
-  },
-  {
-    name: "language",
-    type: "{ label?: string; onClick?: () => void } | false",
-    default: '{ label: "English" }',
-    description: "The language selector. Pass `false` to hide it.",
-  },
-  {
-    name: "layout",
-    type: '"narrow" | "wide" | "page" | "fluid"',
-    default: '"wide"',
-    description:
-      "The inner content container's width: 720 · a flat 1200 · the estate's three-step ladder (1200 · 1320 from 1440 · 1440 from 1920) · full-bleed. Use `page` whenever the bar sits above page content — `wide` never steps, so a bar on `wide` above rows on `page` is 60px narrower at 1440 and 120px at 1920.",
-  },
-  {
-    name: "maxWidth",
-    type: "number",
-    default: "undefined",
-    description:
-      "An explicit container max-width in px, overriding the `layout` preset. SiteHeader passes its own so the bar's container aligns with the brand and nav rows beneath it. Prefer `layout` for standalone use.",
-  },
-  {
-    name: "device",
-    type: '"auto" | "mobile" | "tablet" | "desktop" | "desktop-xl"',
-    default: '"auto"',
-    description:
-      "Figma's Device axis. `auto` resolves the same breakpoints in CSS, so one instance adapts; pin a device only to reproduce a single variant for a specimen or a fixed-width render.",
-  },
-  {
-    name: "onFontScaleChange",
-    type: "(scale: number) => void",
-    default: "undefined",
-    description: "Notified whenever the reader changes the font scale (0.9 – 1.2). Persist it to keep the choice across sessions; the bar already keeps it across pages.",
-  },
-  { name: "className", type: "string", default: "undefined", description: "Merged onto the bar." },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -169,7 +91,7 @@ export default function AccessibilityBarPage(): React.JSX.Element {
       summary="The thin band above the masthead on every government property — the Government of India link on the left, and on the right the controls that open every page: skip to content, text size, accessibility and language. It is the accessibility surface itself, so every control is keyboard-operable and announced."
       figma={{ node: "accessibility" }}
       specimen={<AccessibilityBarPreview />}
-      props={PROPS}
+      propsFrom="AccessibilityBarProps"
       a11y={A11Y}
       whenToUse={{
         use: [

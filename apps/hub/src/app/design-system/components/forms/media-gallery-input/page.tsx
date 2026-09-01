@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { MediaGalleryInputPlayground } from "./media-gallery-input-playground";
@@ -15,84 +14,6 @@ export const metadata: Metadata = {
   description:
     "A multi-file dropzone for images and video, with a thumbnail grid, captured video poster frames, and client-side type, size and capacity checks.",
 };
-
-/*
- * Read off `MediaGalleryInputProps` in
- * packages/design-system/components/forms/media-gallery-input.tsx. The interface
- * is a CLOSED list — it extends nothing. The defaults below were checked against
- * the implementation: maxItems is 12 and maxSizeMb is 25, not the 4 and 10 an
- * earlier version of this page printed.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "value",
-    type: "GalleryMediaItem[]",
-    required: true,
-    description:
-      "The current items, controlled. Each is `{ url, type, name, poster? }` — a data URL for a newly added file, or a path for a seeded item.",
-  },
-  {
-    name: "onChange",
-    type: "(items: GalleryMediaItem[]) => void",
-    required: true,
-    description: "Called with the next array on every add and every removal.",
-  },
-  {
-    name: "accept",
-    type: "string",
-    default: '"image/*,video/*"',
-    description: "Accepted MIME types. Narrow it where a section takes photographs only.",
-  },
-  {
-    name: "maxItems",
-    type: "number",
-    default: "12",
-    description: "Maximum number of items. The add tile disappears once the gallery is full.",
-  },
-  {
-    name: "maxSizeMb",
-    type: "number",
-    default: "25",
-    description: "Maximum size per file. The limit is generous because video is allowed by default.",
-  },
-  {
-    name: "invalid",
-    type: "boolean",
-    default: "false",
-    description: "Sets `aria-invalid` on the dropzone and on the grid. Form Field sets this for you from its own `error` prop.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description: "Disables adding and removing. Existing items stay visible.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "undefined",
-    description: "Applied to the add tile, so a Form Field label bound with `htmlFor` reaches it.",
-  },
-  {
-    name: "required",
-    type: "boolean",
-    default: "undefined",
-    description:
-      "Accepted from Form Field's wiring and deliberately NOT forwarded, for the same reason as Media Upload: a required hidden file input blocks submission even once files have been chosen.",
-  },
-  {
-    name: "aria-describedby",
-    type: "string",
-    default: "undefined",
-    description: "Links the control to a hint or an error. Form Field supplies this through its render prop.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the outer wrapper.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -139,7 +60,7 @@ export default function MediaGalleryInputPage(): React.JSX.Element {
       summary="A multi-file dropzone for images and video. It reads each file locally, draws a thumbnail grid with a poster frame captured from each video, and enforces the type, size and capacity limits before anything reaches the network."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<MediaGalleryInputPlayground />}
-      props={PROPS}
+      propsFrom="MediaGalleryInputProps"
       a11y={A11Y}
       whenToUse={{
         use: [

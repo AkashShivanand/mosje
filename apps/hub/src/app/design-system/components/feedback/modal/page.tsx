@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { ModalPlayground } from "./modal-playground";
@@ -15,67 +14,6 @@ export const metadata: Metadata = {
   description:
     "The shared accessible dialog: a backdrop, a focus trap, Escape to close and focus returned to the control that opened it.",
 };
-
-/*
- * Read off `ModalProps` in packages/design-system/components/feedback/modal.tsx.
- * `ModalProps` is a standalone interface — it does NOT extend HTMLAttributes, so
- * there is no rest spread and no arbitrary div attribute passthrough.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "open",
-    type: "boolean",
-    required: true,
-    description:
-      "Whether the dialog is mounted. It renders nothing at all when false, so there is no hidden panel left in the page.",
-  },
-  {
-    name: "onClose",
-    type: "() => void",
-    required: true,
-    description:
-      "Called on Escape, on a backdrop press, and on the close button. The component holds no open state of its own.",
-  },
-  {
-    name: "title",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The dialog heading. It renders as an h2 with a generated id, and the panel's aria-labelledby points at it — so the dialog is named by construction and cannot ship unnamed.",
-  },
-  {
-    name: "children",
-    type: "React.ReactNode",
-    required: true,
-    description: "The body. It scrolls within the panel when it is longer than the viewport allows.",
-  },
-  {
-    name: "footer",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "The action row. Omit it for a dialog the reader only reads.",
-  },
-  {
-    name: "size",
-    type: '"sm" | "md" | "lg"',
-    default: '"md"',
-    description:
-      "Maximum width: sm is 24rem, md is 28rem, lg is 40rem. The height always follows the content.",
-  },
-  {
-    name: "hideClose",
-    type: "boolean",
-    default: "false",
-    description:
-      "Hide the close (×) control. Escape and the backdrop still close the dialog, so this removes one of three exits, not the only one.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the panel, not the backdrop.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -118,7 +56,7 @@ export default function ModalPage(): React.JSX.Element {
       summary="The estate's shared dialog. It bakes in what every portal was otherwise re-implementing: a backdrop, a focus trap, Escape to close, a background scroll lock, and focus returned to whatever opened it."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<ModalPlayground />}
-      props={PROPS}
+      propsFrom="ModalProps"
       a11y={A11Y}
       whenToUse={{
         use: [

@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { UX4GAccessibilityWidget } from "@mosje/design-system";
 
@@ -15,28 +14,6 @@ export const metadata: Metadata = {
   description:
     "The official Government of India (MeitY / UX4G) accessibility widget — contrast, text sizing, spacing, link highlighting, dark mode, reading guides and disability profiles. The single accessibility mechanism for the estate.",
 };
-
-/*
- * Read off `UX4GAccessibilityWidgetProps` in
- * packages/design-system/components/utilities/ux4g-accessibility-widget.tsx.
- * The component renders nothing and returns `null`; it injects the official script.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "src",
-    type: "string",
-    default: "the pinned v3.28 CDN build",
-    description:
-      "Override the widget script URL, to pin a version or to self-host. The script resolves its own stylesheet relative to its `src`, so a self-hosted copy must keep the JavaScript and the CSS side by side.",
-  },
-  {
-    name: "analytics",
-    type: "boolean",
-    default: "false",
-    description:
-      "Allow the widget to send its usage telemetry to UX4G's audit360 endpoint. Off by default: the payload carries the full URL of every page view, and on an authenticated portal a URL can contain application and beneficiary identifiers. Turn it on only for a public, non-authenticated property, and confirm it against the estate's privacy position first.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -92,7 +69,7 @@ export default function UX4GAccessibilityWidgetPage(): React.JSX.Element {
           </p>
         </div>
       }
-      props={PROPS}
+      propsFrom="UX4GAccessibilityWidgetProps"
       a11y={A11Y}
       whenToUse={{
         use: [

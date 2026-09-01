@@ -203,6 +203,55 @@ export const SCENES = {
     ),
   },
 
+  /* ── Outcomes. A process that can only be drawn succeeding is half drawn. ── */
+
+  rejected: {
+    alt: "A form with a cross beside it.",
+    draw: () => (
+      <>
+        <Ground />
+        <Sheet lines={3} />
+        {/* The mark is ink, not accent: a refusal is a fact, not an alarm, and
+            the state's own words carry the severity. */}
+        <Signal kind="stopped" cx={48} cy={18} layer="ink" />
+      </>
+    ),
+  },
+
+  disbursed: {
+    alt: "A full ring beside a form, marking a payment released.",
+    draw: () => (
+      <>
+        <Ground />
+        <Sheet x={12} w={18} h={30} y={10} lines={2} />
+        <Ring cx={44} cy={24} r={10} layer="ghost" filled={1} />
+      </>
+    ),
+  },
+
+  "window-closed": {
+    alt: "A chart axis with the plot area shut off.",
+    draw: () => (
+      <>
+        <Ground />
+        <Bars heights={[14, 20]} layer="ghost" x={12} />
+        <Shut x={36} y={16} layer="ink" />
+      </>
+    ),
+  },
+
+  "verification-failed": {
+    alt: "A form under a magnifier, with a cross.",
+    draw: () => (
+      <>
+        <Ground />
+        <Sheet x={14} w={18} lines={3} />
+        <Lens cx={44} cy={20} r={8} layer="ghost" />
+        <Signal kind="stopped" cx={44} cy={20} />
+      </>
+    ),
+  },
+
   "in-progress": {
     alt: "A ring filled about two-thirds of the way round.",
     draw: () => (

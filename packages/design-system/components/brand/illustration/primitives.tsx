@@ -192,11 +192,17 @@ export function Sheet({
           {...capsule}
         />
       ) : null}
+      {/*
+        FINE DETAIL — dropped at `spot`. At 32x24 the whole drawing is half
+        scale, so these three rules land 3 units apart at 1px each and the sheet
+        reads as a grey smudge. `sa-ill__detail` is how a primitive says "I am
+        texture, not structure"; illustration.css hides it at the smallest tier.
+      */}
       {Array.from({ length: lines }, (_, i) => (
         <path
           key={i}
           d={`M${x + 4} ${y + 8 + i * 6}h${w - 8}`}
-          className={cls("ghost")}
+          className={`${cls("ghost")} sa-ill__detail`}
           strokeWidth={STROKE.hairline}
           {...capsule}
         />

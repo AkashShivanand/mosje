@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { Stepper } from "@mosje/design-system";
 
@@ -14,45 +13,6 @@ export const metadata: Metadata = {
   description:
     "Horizontal progress through a multi-step form: which stages are complete, which one the applicant is on, and how many remain.",
 };
-
-/*
- * Read off `StepperProps` and `StepperStep` in
- * packages/design-system/components/feedback/stepper.tsx. The interface extends
- * `React.HTMLAttributes<HTMLOListElement>`, so every standard list attribute
- * passes through and is not listed individually.
- *
- * Corrected 2026-09-02: the previous table carried only `steps` and `current`,
- * and omitted `ariaLabel` and the shape of `StepperStep`.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "steps",
-    type: "StepperStep[]",
-    required: true,
-    description:
-      "The ordered stages. Each is `{ label: string; description?: string }` — the label is shown under the marker, the description beneath it on wider viewports.",
-  },
-  {
-    name: "current",
-    type: "number",
-    required: true,
-    description:
-      "Zero-based index of the active stage. Everything before it renders as completed, everything after it as upcoming.",
-  },
-  {
-    name: "ariaLabel",
-    type: "string",
-    default: '"Progress"',
-    description:
-      "Accessible name for the list. Name the process where a page carries more than one — “Application progress” rather than “Progress”.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root ordered list.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -100,7 +60,7 @@ export default function StepperPage(): React.JSX.Element {
           ]}
         />
       }
-      props={PROPS}
+      propsFrom="StepperProps"
       a11y={A11Y}
       whenToUse={{
         use: [

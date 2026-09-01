@@ -66,8 +66,30 @@ function storybookRewrites() {
   ];
 }
 
+/**
+ * `standalone` is for SELF-HOSTING, and it breaks the build on Vercel.
+ *
+ * It makes Next write a file-tracing manifest and copy a ~648 MB self-contained
+ * server into `.next/standalone`. Vercel builds its own output and does not need
+ * either — and its `onBuildComplete` hook then reads
+ * `.next/next-server.js.nft.json`, which on a build this size is not there:
+ *
+ *     ✓ Compiled successfully
+ *     ✓ Generating static pages using 1 worker (832/832)
+ *       Running onBuildComplete from Vercel
+ *     > Build error occurred
+ *     Error: ENOENT ... '/vercel/path0/apps/hub/.next/next-server.js.nft.json'
+ *
+ * The build compiled and rendered every page; only the tracing step failed, and
+ * it reproduced on two independent deployments. Locally the same config succeeds,
+ * because the local machine is not the constrained builder.
+ *
+ * So it is set only OFF Vercel. Self-hosting and container builds keep the
+ * standalone output; the platform that builds its own is not asked to produce
+ * half a gigabyte it will discard.
+ */
 const nextConfig: NextConfig = {
-  output: "standalone",
+  ...(process.env.VERCEL ? {} : { output: "standalone" as const }),
   staticPageGenerationTimeout: 180,
   images: {
     remotePatterns: [

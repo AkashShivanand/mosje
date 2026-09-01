@@ -19,59 +19,6 @@ export const metadata: Metadata = {
     "The estate's cross-zone switcher: one floating console, mounted once, carrying app switching, brand-palette preview and demo sign-in credentials.",
 };
 
-/*
- * SUBJECT CORRECTED 2026-09-02. This page documented “Zone Switcher”, rendered
- * `<AccessibilityBar />` as its specimen, and its code example imported
- * `AccessibilityBar` — a component that has its own page under utilities. The
- * subject it names is `DemoDock`: `zone-switcher.tsx` in the package exports an
- * `AppSwitcher` FAB that the barrel records as superseded by `DemoDock` and no
- * longer exports at all, so documenting that would be documenting dead code.
- */
-
-/*
- * Hand-written, and it has to be: `tools/props-extract` walks
- * packages/design-system/components, and DemoDock lives in
- * packages/design-system/demo — deliberately separate from the core library,
- * because it is review tooling rather than something a portal ships. Read off
- * `DemoDockProps` and `DemoDockTab` in demo/demo-dock.tsx.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "pathname",
-    type: "string | null",
-    required: true,
-    description:
-      "Current hub-origin path. It drives the active app in the Apps tab and which demo accounts the Sign in tab shows — and whether that tab exists at all.",
-  },
-  {
-    name: "apps",
-    type: "AppEntry[]",
-    default: "DEFAULT_APPS",
-    description:
-      "Override the estate registry, passed through to the Apps tab. Leave it unset: DEFAULT_APPS is the single source of truth in code, and the runtime overrides stored at /admin/portals are merged on top of it.",
-  },
-  {
-    name: "extraTabs",
-    type: "DemoDockTab[]",
-    default: "undefined",
-    description:
-      "Route-specific tabs, shown ahead of Apps and Colour, because they are the reason a reviewer opens the dock on the route that supplies them. They get no door on the rail — the three doors are fixed, for the same reason Sign in has none.",
-  },
-  {
-    name: "label",
-    type: "string",
-    default: '"Demo tools"',
-    description:
-      "The rail's accessible label and the panel's header title. It is a tooltip on hover and focus rather than a wordmark: a vertical “DEMO” on every screen of a government portal draws attention to scaffolding.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the dock's root element.",
-  },
-];
-
 const TAB_SHAPE: PropDef[] = [
   {
     name: "id",
@@ -141,7 +88,7 @@ export default function ZoneSwitcherPage(): React.JSX.Element {
           "Demonstration tooling has no published master in the SAMAVESH library, and deliberately so — it is not part of what a portal ships to a citizen.",
       }}
       specimen={<ZoneSwitcherSpecimen />}
-      props={PROPS}
+      propsFrom="DemoDockProps"
       a11y={A11Y}
       whenToUse={{
         use: [
@@ -204,7 +151,7 @@ export default function ZoneSwitcherPage(): React.JSX.Element {
               The Rail and the Panel
             </h2>
             <MatrixTable
-              caption="Three doors, four tabs"
+              caption="Three doors on the rail, and the tabs they open"
               columns={["Rail door", "Opens the panel on", "Present"]}
               rows={[
                 ["Flask (the lead)", "The panel's first tab", "Always"],

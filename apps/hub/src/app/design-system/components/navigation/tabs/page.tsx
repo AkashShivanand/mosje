@@ -21,8 +21,10 @@ export const metadata: Metadata = {
     "Accessible tabbed navigation for non-linear sections, implementing the WAI-ARIA Tabs pattern with a roving tabindex and Arrow, Home and End keyboard support.",
 };
 
-/* Read off `TabsProps` in packages/design-system/components/navigation/tabs.tsx. */
-
+/*
+ * `TabsProps` itself is generated. The two tables below are not: `TabPanel` is a
+ * companion component with no exported interface, and `TabDef` is a sub-object.
+ */
 const PANEL_PROPS: PropDef[] = [
   {
     name: "idBase",

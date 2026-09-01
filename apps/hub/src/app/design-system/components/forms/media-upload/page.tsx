@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { MediaUploadPlayground } from "./media-upload-playground";
@@ -15,104 +14,6 @@ export const metadata: Metadata = {
   description:
     "A single-file dropzone with a click target, drag and drop, an inline preview, and client-side type and size checks.",
 };
-
-/*
- * Read off `MediaUploadProps` in
- * packages/design-system/components/forms/media-upload.tsx. The interface is a
- * CLOSED list — it extends nothing. `required` is accepted from FormField's
- * wiring and deliberately NOT forwarded, because a required hidden file input
- * blocks submission even when a file has been chosen.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "onChange",
-    type: "(dataUrl: string, fileName: string) => void",
-    required: true,
-    description:
-      "Called with the file read as a data URL and its original name, once the type and size checks pass. No network request is made.",
-  },
-  {
-    name: "onClear",
-    type: "() => void",
-    required: true,
-    description: "Called when the reader removes the current file. Clear both the value and the file name.",
-  },
-  {
-    name: "value",
-    type: "string",
-    default: "undefined",
-    description: "The current data URL or image source. Its presence is what switches the control from dropzone to preview.",
-  },
-  {
-    name: "fileName",
-    type: "string",
-    default: "undefined",
-    description: 'Shown in the preview. Falls back to "Selected file" when empty.',
-  },
-  {
-    name: "accept",
-    type: "string",
-    default: '"image/*"',
-    description:
-      "Accepted MIME types or extensions. Whether it contains `image` also decides whether a thumbnail or a file glyph is drawn.",
-  },
-  {
-    name: "maxSizeMb",
-    type: "number",
-    default: "5",
-    description: "Maximum file size. A larger file is rejected inline with a message naming the limit.",
-  },
-  {
-    name: "invalid",
-    type: "boolean",
-    default: "false",
-    description: "Sets `aria-invalid` on the dropzone. Form Field sets this for you from its own `error` prop.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description: "Disables the picker, the drop target and both preview actions.",
-  },
-  {
-    name: "promptLabel",
-    type: "string",
-    default: '"Click or drag an image to upload"',
-    description: "The prompt in the empty dropzone.",
-  },
-  {
-    name: "hintLabel",
-    type: "string",
-    default: "derived",
-    description:
-      'Sub-hint under the prompt. Defaults to a type and size summary — "JPG or PNG · up to 5 MB" for images.',
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "undefined",
-    description: "Applied to the operable button, so a Form Field label bound with `htmlFor` reaches it.",
-  },
-  {
-    name: "required",
-    type: "boolean",
-    default: "undefined",
-    description:
-      "Accepted from Form Field's wiring and deliberately NOT forwarded. A `required` hidden file input blocks submission even once a file has been chosen.",
-  },
-  {
-    name: "aria-describedby",
-    type: "string",
-    default: "undefined",
-    description: "Links the control to a hint or an error. Form Field supplies this through its render prop.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the outer wrapper.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -160,7 +61,7 @@ export default function MediaUploadPage(): React.JSX.Element {
       summary="A single-file dropzone with a click target, drag and drop, an inline preview and client-side type and size checks. It reads the file locally and hands you a data URL, so nothing reaches the network until the form is submitted."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<MediaUploadPlayground />}
-      props={PROPS}
+      propsFrom="MediaUploadProps"
       a11y={A11Y}
       whenToUse={{
         use: [

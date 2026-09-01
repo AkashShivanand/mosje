@@ -19,8 +19,6 @@ export const metadata: Metadata = {
     "The estate's thin rule — a 1px hairline between sections, or between controls in a row. Six variants: Orientation × Tone.",
 };
 
-/* Read off `DividerProps` in packages/design-system/components/layout/divider.tsx. */
-
 const A11Y: A11yItem[] = [
   {
     criterion: "Decorative by default — aria-hidden, no role",

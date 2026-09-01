@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { SideSheetSpecimen } from "./side-sheet-specimen";
@@ -15,71 +14,6 @@ export const metadata: Metadata = {
   description:
     "An edge-anchored panel for long forms and record inspection, keeping the list behind it visible while the task is carried out.",
 };
-
-/*
- * Read off `SideSheetProps` in
- * packages/design-system/components/feedback/side-sheet.tsx. `SideSheetProps` is
- * a standalone interface — it does NOT extend HTMLAttributes, so there is no
- * rest spread.
- *
- * Corrected 2026-09-02: the previous table carried four props and omitted
- * `footer`, `size`, `side` and `className`.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "open",
-    type: "boolean",
-    required: true,
-    description: "Whether the panel is mounted. It renders nothing at all when false.",
-  },
-  {
-    name: "onClose",
-    type: "() => void",
-    required: true,
-    description:
-      "Called on Escape, on a backdrop press, and on the close button. Pass a stable reference — see the note in the Code tab.",
-  },
-  {
-    name: "title",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The panel heading. It renders as an h2 with a generated id, and aria-labelledby points at it, so the dialog is named by construction.",
-  },
-  {
-    name: "children",
-    type: "React.ReactNode",
-    required: true,
-    description: "The body, which scrolls independently of the page behind it.",
-  },
-  {
-    name: "footer",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "A sticky action row at the foot of the panel. It stays in place while the body scrolls, so “Save” is reachable from anywhere in a long form.",
-  },
-  {
-    name: "size",
-    type: '"sm" | "md" | "lg"',
-    default: '"md"',
-    description:
-      "Panel width: sm is 400px, md is 480px, lg is 560px. Each is capped at the viewport width, so the panel becomes full-screen on a phone rather than overflowing it.",
-  },
-  {
-    name: "side",
-    type: '"left" | "right"',
-    default: '"right"',
-    description:
-      "Which edge the panel is anchored to. Use `left` for a navigation drawer — that is the convention readers already hold, and navigation is the one case where breaking it costs more than it gains.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the panel, not the backdrop.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -122,7 +56,7 @@ export default function SideSheetPage(): React.JSX.Element {
       summary="An edge-anchored panel for tasks that need room and context at once — a long form, a record being inspected, a set of filters. The list behind it stays visible, which is the whole reason to choose it over a dialog."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<SideSheetSpecimen />}
-      props={PROPS}
+      propsFrom="SideSheetProps"
       a11y={A11Y}
       whenToUse={{
         use: [

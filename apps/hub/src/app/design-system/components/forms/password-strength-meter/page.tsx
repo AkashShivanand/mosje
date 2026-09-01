@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { PasswordStrengthMeterPlayground } from "./password-strength-meter-playground";
@@ -16,47 +15,6 @@ export const metadata: Metadata = {
   description:
     "Four segments and a word, shown under a password the reader is creating. Advisory, never a gate, and never beside a password being entered.",
 };
-
-/*
- * Read off `PasswordStrengthMeterProps` in
- * packages/design-system/components/forms/password-strength-meter.tsx. The
- * interface is a CLOSED list — it extends nothing, so no native attributes pass
- * through. `strengthFromScore` is exported alongside it.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "score",
-    type: "0 | 1 | 2 | 3 | 4 | null",
-    required: true,
-    description:
-      "A zxcvbn score, or `null` when the field is empty. Pass zxcvbn's own number — do NOT compute it from character classes, which fail a strong passphrase and pass `Passw0rd!`.",
-  },
-  {
-    name: "caption",
-    type: "string",
-    default: '"Password strength"',
-    description: "The label to the left of the strength word.",
-  },
-  {
-    name: "aria-describedby",
-    type: "string",
-    default: "undefined",
-    description: "Links the meter to further guidance, for a screen reader reading the strength word.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "undefined",
-    description:
-      "Applied to the meter's root. Pass it and reference it from the password field's own `aria-describedby`, so the two are connected.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the meter's root element.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -99,7 +57,7 @@ export default function PasswordStrengthMeterPage(): React.JSX.Element {
       summary="Four segments and a word, shown under a password the reader is creating. The word carries the meaning rather than the colour, and changes are announced politely so a screen-reader user is not interrupted mid-word."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<PasswordStrengthMeterPlayground />}
-      props={PROPS}
+      propsFrom="PasswordStrengthMeterProps"
       a11y={A11Y}
       whenToUse={{
         use: [

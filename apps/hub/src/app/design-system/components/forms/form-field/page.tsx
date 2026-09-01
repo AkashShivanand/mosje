@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { FormFieldPlayground } from "./form-field-playground";
@@ -16,62 +15,6 @@ export const metadata: Metadata = {
   description:
     "The molecule that ties a control to its label, hint and error message, and wires every accessibility attribute through a render prop.",
 };
-
-/*
- * Read off `FormFieldProps` in packages/design-system/components/forms/form-field.tsx.
- * `children` is a render prop, not a node — it receives FormFieldControlProps
- * `{ id, invalid, required?, "aria-describedby"? }` and returns the control.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "label",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The visible field label, associated with the control through `htmlFor`/`id`. There is no way to render this field without one, which is the point.",
-  },
-  {
-    name: "children",
-    type: "(control: FormFieldControlProps) => React.ReactNode",
-    required: true,
-    description:
-      "Render prop receiving `{ id, invalid, required, \"aria-describedby\" }`. Spread it onto Input, Textarea, Select or any control that accepts native attributes.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "auto",
-    description:
-      "Control id. Falls back to a generated `useId()`. Pass one only when another element must reference it.",
-  },
-  {
-    name: "hint",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Helper text. It renders BELOW the control, so inputs stay aligned across a grid row, and is linked through `aria-describedby`.",
-  },
-  {
-    name: "error",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Error message. Its presence sets `invalid` on the control, links the message through `aria-describedby`, and gives the message `role=\"alert\"`.",
-  },
-  {
-    name: "required",
-    type: "boolean",
-    default: "false",
-    description:
-      "Adds the visible marker to the label and passes `required` through to the control, so the requirement is programmatic and not only visual.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the wrapping `<div>`.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -126,7 +69,7 @@ export default function FormFieldPage(): React.JSX.Element {
       summary="The molecule that ties a control to its label, its optional hint and its optional error message, and wires every accessibility attribute for you. Almost every input, select and textarea in the estate is wrapped in one."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<FormFieldPlayground />}
-      props={PROPS}
+      propsFrom="FormFieldProps"
       a11y={A11Y}
       whenToUse={{
         use: [

@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { DeclarationCheckboxPlayground } from "./declaration-checkbox-playground";
@@ -15,74 +14,6 @@ export const metadata: Metadata = {
   description:
     "The statutory certification block that closes a government form: a bordered panel carrying the declaration text with a single required checkbox bound to it.",
 };
-
-/*
- * Read off `DeclarationCheckboxProps` in
- * packages/design-system/components/forms/declaration-checkbox.tsx.
- * The interface declares exactly these nine members and extends nothing, so no
- * native attributes pass through. `onChange` receives a boolean, NOT an event —
- * unlike Checkbox, which this component wraps.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "checked",
-    type: "boolean",
-    required: true,
-    description: "Controlled checked state. The component holds no state of its own.",
-  },
-  {
-    name: "onChange",
-    type: "(checked: boolean) => void",
-    required: true,
-    description:
-      "Called with the next checked state as a boolean. Note this differs from Checkbox, which hands you the native event.",
-  },
-  {
-    name: "children",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The certification statement. Use a `<ul>` where the declaration covers several points, so each is separately readable.",
-  },
-  {
-    name: "title",
-    type: "React.ReactNode",
-    default: '"Declaration"',
-    description: "Panel heading, rendered as an `<h3>` and used as the section's accessible name.",
-  },
-  {
-    name: "lead",
-    type: "React.ReactNode",
-    default: '"I certify that:"',
-    description: "The leading line above the statement. Pass a falsy value to omit it.",
-  },
-  {
-    name: "error",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Message shown when submission was attempted unchecked. Its presence also marks the panel invalid and sets `aria-invalid` on the control.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description: "Disables the checkbox. The statement stays readable.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "auto",
-    description:
-      "Control id, falling back to a generated `useId()`. The statement and error ids are derived from it.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the `<section>` element.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -131,7 +62,7 @@ export default function DeclarationCheckboxPage(): React.JSX.Element {
       summary="The statutory certification block that closes a government form: a bordered panel carrying the declaration text with a single required checkbox. It is its own component because the wording is legal text the citizen is attesting to, and it must read as a deliberate act rather than one more field."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<DeclarationCheckboxPlayground />}
-      props={PROPS}
+      propsFrom="DeclarationCheckboxProps"
       a11y={A11Y}
       whenToUse={{
         use: [

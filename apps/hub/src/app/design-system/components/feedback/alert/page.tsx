@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { AlertPlayground } from "./alert-playground";
@@ -15,66 +14,6 @@ export const metadata: Metadata = {
   description:
     "A standing message about the state of the page or the task: a status colour, an icon, a title and a sentence. It stays until the condition changes or the reader dismisses it.",
 };
-
-/*
- * Read off `AlertProps` in packages/design-system/components/feedback/alert.tsx.
- * The interface extends `Omit<React.HTMLAttributes<HTMLDivElement>, "title">`,
- * so every standard div attribute passes through and is not listed here.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "status",
-    type: '"info" | "success" | "warning" | "error"',
-    default: '"info"',
-    description:
-      "The semantic role, which drives the tint, the left border and the icon. It maps to the token families info→primary, success→success, warning→warning, error→danger.",
-  },
-  {
-    name: "title",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "The bold first line. Omit it for a single-sentence alert; the body then carries the whole message.",
-  },
-  {
-    name: "children",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "The body. This is where the meaning lives — the status colour repeats it, it never replaces it.",
-  },
-  {
-    name: "dismissible",
-    type: "boolean",
-    default: "false",
-    description:
-      "Render the close button. Only for a message the reader may legitimately put away; a blocking error should stay until the condition it reports is fixed.",
-  },
-  {
-    name: "onDismiss",
-    type: "() => void",
-    default: "undefined",
-    description:
-      "Called when the close button is activated. The component holds no state of its own, so an alert that will not go away is a missing handler rather than a defect here.",
-  },
-  {
-    name: "action",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "An inline control under the body — the one thing the reader can do about the condition.",
-  },
-  {
-    name: "timestamp",
-    type: "string",
-    default: "undefined",
-    description:
-      "A short time shown at the top right, already formatted. Formatting stays with the consumer: locale and time zone are the site's policy.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root element.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -117,7 +56,7 @@ export default function AlertPage(): React.JSX.Element {
       summary="A standing message about the state of the page or the task, placed where the reader will meet it: a status colour, an icon, an optional title, and a sentence. It stays until the condition changes or the reader puts it away."
       figma={{ node: "alerts" }}
       specimen={<AlertPlayground />}
-      props={PROPS}
+      propsFrom="AlertProps"
       a11y={A11Y}
       whenToUse={{
         use: [

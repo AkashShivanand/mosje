@@ -82,9 +82,26 @@ export function VisitorCounter({
   return (
     <div
       className={cn("ds-visits", className)}
-      aria-label={count === null ? label : `${label}: ${count.toLocaleString("en-IN")}`}
+      /*
+       * `aria-label` ON A PLAIN `<div>` IS IGNORED, AND IT IS A VIOLATION.
+       *
+       * A `div` has no role, and ARIA forbids a name on a roleless generic
+       * element — so this component hid both spans behind `aria-hidden` and hung
+       * the whole reading on a label assistive technology may discard. The count
+       * was, in the worst case, announced to nobody. axe reports it as
+       * `aria-prohibited-attr`, and axe had never been run against this estate.
+       *
+       * `role="status"` is the right role rather than a convenience: the number
+       * updates on a timer, and a status region is how a live figure is
+       * announced without stealing focus. The reading is now real text in a
+       * visually-hidden span — one utterance rather than two fragments.
+       */
+      role="status"
       {...rest}
     >
+      <span className="ds-visits__sr">
+        {count === null ? label : `${label}: ${count.toLocaleString("en-IN")}`}
+      </span>
       <span className="ds-visits__label" aria-hidden="true">
         {label}
       </span>

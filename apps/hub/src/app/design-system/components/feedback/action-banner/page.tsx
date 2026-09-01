@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { ActionBannerPlayground } from "./action-banner-playground";
@@ -15,55 +14,6 @@ export const metadata: Metadata = {
   description:
     "A call to action at the end of a section: a title, an optional sentence, and one control. Two variants share one content model.",
 };
-
-/*
- * Read off `ActionBannerProps` in
- * packages/design-system/components/feedback/action-banner.tsx. The interface
- * extends `Omit<React.HTMLAttributes<HTMLDivElement>, "title">`, so every
- * standard div attribute passes through and is not listed individually.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "title",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The headline, rendered as a real heading so the call to action appears in the document outline.",
-  },
-  {
-    name: "action",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The control. A slot, so it holds whatever it is given — but one control only. A banner with two equal buttons has no call to action; it has a decision.",
-  },
-  {
-    name: "description",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "One supporting sentence under the title. Omit it where the title already says everything.",
-  },
-  {
-    name: "variant",
-    type: '"banner" | "card"',
-    default: '"banner"',
-    description:
-      "`banner` is the full-width strip that ends a section, text left and action right. `card` is the same content in a column for a grid of two or three, stretched to equal height with the action pinned to the bottom so a row of cards lines its buttons up.",
-  },
-  {
-    name: "as",
-    type: '"h2" | "h3" | "h4"',
-    default: '"h3"',
-    description:
-      "Heading level for the title. The default suits a banner inside a section that already carries an `h2`; raise or lower it so the page's outline does not skip a level.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root element.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -100,7 +50,7 @@ export default function ActionBannerPage(): React.JSX.Element {
       summary="A call to action: a title, an optional sentence, and one control. The banner variant is the full-width strip that ends a page section; the card variant is the same content in a column, for a grid of two or three parallel offers."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<ActionBannerPlayground />}
-      props={PROPS}
+      propsFrom="ActionBannerProps"
       a11y={A11Y}
       whenToUse={{
         use: [

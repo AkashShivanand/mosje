@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { SearchPlayground } from "./search-playground";
@@ -15,80 +14,6 @@ export const metadata: Metadata = {
   description:
     "A search field with a leading icon, an optional clear control, an optional submit handler and an optional autocomplete listbox, in three sizes.",
 };
-
-/*
- * Read off `SearchProps` in packages/design-system/components/forms/search.tsx.
- * The interface extends `InputHTMLAttributes<HTMLInputElement>` minus `type`,
- * `size`, `onChange` and `onSubmit`, all four of which it redeclares. Combobox
- * semantics attach only when `suggestions` is not undefined.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "value",
-    type: "string",
-    required: true,
-    description: "Controlled value. The component holds no text of its own.",
-  },
-  {
-    name: "onChange",
-    type: "React.ChangeEventHandler<HTMLInputElement>",
-    required: true,
-    description: "Receives the native change event, not the string. Read `event.target.value`.",
-  },
-  {
-    name: "size",
-    type: '"sm" | "md" | "lg"',
-    default: '"md"',
-    description:
-      "`sm` is about 40px for a table toolbar or a side panel, `md` about 44px for page content, `lg` about 56px for a masthead or a hero.",
-  },
-  {
-    name: "onClear",
-    type: "() => void",
-    default: "undefined",
-    description:
-      "Supplying it renders a clear button while the value is non-empty. The button is a real `<button>` named \"Clear search\".",
-  },
-  {
-    name: "onSubmit",
-    type: "(value: string) => void",
-    default: "undefined",
-    description:
-      "Called on Enter, or on a click of the leading icon — which becomes a real button named \"Search\" when this is supplied. This is what lets the masthead reuse this component rather than shipping a header-only search.",
-  },
-  {
-    name: "suggestions",
-    type: "SearchSuggestion[]",
-    default: "undefined",
-    description:
-      "Autocomplete rows for the current value. Presentational only: this component neither fetches nor debounces. Passing `undefined` rather than `[]` means the field has no autocomplete and attaches no combobox semantics at all.",
-  },
-  {
-    name: "onSuggestionSelect",
-    type: "(suggestion: SearchSuggestion) => void",
-    default: "undefined",
-    description: "A suggestion was chosen, by click or by Enter on the highlighted row.",
-  },
-  {
-    name: "suggestionsLabel",
-    type: "string",
-    default: '"Search suggestions"',
-    description: "Accessible name for the suggestion listbox.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the outer wrapper, not the input.",
-  },
-  {
-    name: "...native",
-    type: "Omit<React.InputHTMLAttributes<HTMLInputElement>, \"type\" | \"size\" | \"onChange\" | \"onSubmit\">",
-    default: "—",
-    description:
-      "Every other native input attribute is forwarded, including `placeholder`, `disabled`, `aria-label`, `id` and `ref`. The component chains your `onKeyDown`, `onFocus` and `onBlur` after its own rather than replacing them.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -141,7 +66,7 @@ export default function SearchPage(): React.JSX.Element {
       summary="A search field with a leading icon, an optional clear control and an optional submit handler. Passing a suggestion list turns it into a combobox with a listbox, arrow-key navigation and a live count; passing none leaves it a plain field with no combobox semantics at all."
       figma={{ node: "search" }}
       specimen={<SearchPlayground />}
-      props={PROPS}
+      propsFrom="SearchProps"
       a11y={A11Y}
       whenToUse={{
         use: [

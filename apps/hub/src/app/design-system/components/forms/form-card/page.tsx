@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { FormCardPlayground } from "./form-card-playground";
@@ -16,60 +15,6 @@ export const metadata: Metadata = {
   description:
     "The sibling of Form Section: the same card chrome and section title, with an arbitrary body instead of a field grid.",
 };
-
-/*
- * Read off `FormCardProps` in packages/design-system/components/forms/form-card.tsx.
- * The interface declares exactly these seven members and extends nothing, so no
- * native section attributes pass through.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "title",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "The section heading, rendered as an `<h2>` styled identically to Form Section's title and used as the section's accessible name.",
-  },
-  {
-    name: "children",
-    type: "React.ReactNode",
-    required: true,
-    description: "The card body — any layout at all. This is the whole difference from Form Section.",
-  },
-  {
-    name: "description",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "Optional sub-heading below the title.",
-  },
-  {
-    name: "required",
-    type: "boolean",
-    default: "undefined",
-    description:
-      "Appends the required marker to the title. The marker is `aria-hidden`, so the requirement must also be carried by the controls inside.",
-  },
-  {
-    name: "headingId",
-    type: "string",
-    default: "auto",
-    description:
-      "Explicit heading id, falling back to a generated `useId()`. Pass one when a child needs `aria-labelledby` — a data table labelled by the section heading, for instance.",
-  },
-  {
-    name: "actions",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Right-aligned controls in the header row, such as an Add button for a repeatable list. Keep it to one or two.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the `<section>` element.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -112,7 +57,7 @@ export default function FormCardPage(): React.JSX.Element {
       summary="The sibling of Form Section: the same card chrome and the same section title, with an arbitrary body instead of a field grid. It exists so a section whose content is not a grid still carries an identical header."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<FormCardPlayground />}
-      props={PROPS}
+      propsFrom="FormCardProps"
       a11y={A11Y}
       whenToUse={{
         use: [
@@ -176,7 +121,7 @@ export default function FormCardPage(): React.JSX.Element {
 <FormCard
   title="Uploaded Documents"
   description="Every document must be legible and under 5 MB."
-  actions={<Button appearance="ghost" size="sm">Add Document</Button>}
+  actions={<Button appearance="text" size="sm">Add Document</Button>}
 >
   <table className="ds-table">
     <tbody>

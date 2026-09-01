@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { SlaProgressIndicator, slaFractionForRemaining } from "@mosje/design-system";
 
@@ -14,100 +13,6 @@ export const metadata: Metadata = {
   description:
     "Tracks time remaining against a Right to Service Act guarantee. Three variants, seven states, and always a concrete number — never a vague “Processing…”.",
 };
-
-/*
- * Read off `SlaProgressIndicatorProps` in
- * packages/design-system/components/feedback/sla-progress-indicator.tsx, with
- * `SlaStatus` and `SlaThresholds` from packages/design-system/utils/sla.ts.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "label",
-    type: "React.ReactNode",
-    required: true,
-    description:
-      "What the guarantee is for. Always shown or read out, and used as the indicator's accessible name — so it names the case, not the category.",
-  },
-  {
-    name: "total",
-    type: "number",
-    required: true,
-    description: "The whole allowance, in any consistent unit. Must be greater than zero.",
-  },
-  {
-    name: "elapsed",
-    type: "number",
-    required: true,
-    description: "Time consumed so far, in the same unit. It may exceed `total` — that is a breach, and it is rendered as one.",
-  },
-  {
-    name: "unit",
-    type: "string",
-    default: '"day"',
-    description:
-      'Singular unit name, pluralised automatically. Right to Service Acts are usually written in working days; count them however the Act requires and pass "working day".',
-  },
-  {
-    name: "variant",
-    type: '"linear" | "circular" | "badge"',
-    default: '"linear"',
-    description:
-      "`linear` for a case row or a queue, `circular` for a dashboard tile, `badge` for a table cell where a bar would not fit.",
-  },
-  {
-    name: "paused",
-    type: "boolean",
-    default: "false",
-    description:
-      "The clock is stopped, typically awaiting the applicant. It renders neutral and hatched rather than escalating.",
-  },
-  {
-    name: "completed",
-    type: "boolean",
-    default: "false",
-    description:
-      "The service has been delivered and `elapsed` is how long it took. The indicator freezes and resolves to met or missed.",
-  },
-  {
-    name: "thresholds",
-    type: "{ dueSoonAt?: number; atRiskAt?: number }",
-    default: "{ dueSoonAt: 0.75, atRiskAt: 0.9 }",
-    description:
-      "Fractions of the allowance consumed at which the status escalates. Fractions rather than absolute time, because “five days left” means something different against seven days than against ninety.",
-  },
-  {
-    name: "status",
-    type: "SlaStatus",
-    default: "derived",
-    description:
-      "Force a status instead of deriving it. An escape hatch — overriding it to make a queue look healthier makes the indicator lie about a statutory promise.",
-  },
-  {
-    name: "description",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "A secondary line on the linear variant — why it is paused, or which officer holds it.",
-  },
-  {
-    name: "action",
-    type: "React.ReactNode",
-    default: "undefined",
-    description: "A trailing control on the linear variant, such as a “View” link.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "auto",
-    description:
-      "Falls back to a generated useId(). The label's id is derived from it, so pass one only when another element must reference the indicator.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root element.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -164,7 +69,7 @@ export default function SlaProgressPage(): React.JSX.Element {
           />
         </div>
       }
-      props={PROPS}
+      propsFrom="SlaProgressIndicatorProps"
       a11y={A11Y}
       whenToUse={{
         use: [

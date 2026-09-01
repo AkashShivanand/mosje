@@ -1,7 +1,7 @@
 "use client";
 
 /* PM-AJAY Dashboard — the six dashboard views.
-   Tables use the shared sortable DataTable; rows drill State → District. */
+   Tables use the local sortable SortableTable; rows drill State → District. */
 
 import type { ReactNode } from "react";
 import {
@@ -10,7 +10,7 @@ import {
   Panel,
   Status,
   BarCell,
-  DataTable,
+  SortableTable,
   type Column,
   type Filters,
 } from "./ui";
@@ -276,7 +276,7 @@ function Executive({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <div>
         <SectionHead title={scope ? `Utilisation — ${scope.name}` : "State-wise Utilisation"} meta={tableMeta(scope)} />
         <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
-          <DataTable<LevelRow>
+          <SortableTable<LevelRow>
             caption="Utilisation by region"
             rows={rows}
             getKey={(r) => r.name}
@@ -352,7 +352,7 @@ function Financial({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <div>
         <SectionHead title={scope ? `Fund Utilization — ${scope.name}` : "State-wise Fund Utilization"} meta={tableMeta(scope)} />
         <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
-          <DataTable<LevelRow>
+          <SortableTable<LevelRow>
             caption="Fund utilisation by region"
             rows={rows}
             getKey={(r) => r.name}
@@ -451,7 +451,7 @@ function GIA({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <div>
         <SectionHead title={scope ? `GIA — ${scope.name}` : "State-wise GIA Performance"} meta={tableMeta(scope)} />
         <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
-          <DataTable<LevelRow>
+          <SortableTable<LevelRow>
             caption="GIA performance by region"
             rows={rows}
             getKey={(r) => r.name}
@@ -514,7 +514,7 @@ function Hostel({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <div>
         <SectionHead title={scope ? `Hostels — ${scope.name}` : "State-wise Hostel Delivery"} meta={tableMeta(scope)} />
         <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
-          <DataTable<LevelRow>
+          <SortableTable<LevelRow>
             caption="Hostel delivery by region"
             rows={rows}
             getKey={(r) => r.name}
@@ -589,7 +589,7 @@ function Adarsh({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <div>
         <SectionHead title={scope ? `Adarsh Gram — ${scope.name}` : "State-wise Adarsh Gram Progress"} meta={tableMeta(scope)} />
         <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
-          <DataTable<LevelRow>
+          <SortableTable<LevelRow>
             caption="Adarsh Gram progress by region"
             rows={rows}
             getKey={(r) => r.name}
@@ -675,7 +675,7 @@ function Governance({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <div>
         <SectionHead title={scope ? `UC Compliance — ${scope.name}` : "State-wise UC Compliance"} meta={tableMeta(scope)} />
         <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
-          <DataTable<LevelRow>
+          <SortableTable<LevelRow>
             caption="UC compliance by region"
             rows={rows}
             getKey={(r) => r.name}

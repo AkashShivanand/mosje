@@ -9,7 +9,6 @@ import {
   MatrixTable,
   TokenTable,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { Button } from "@mosje/design-system";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
@@ -21,76 +20,6 @@ export const metadata: Metadata = {
   description:
     "A Button triggers an action within the system — submitting a form, confirming a dialog, or running a command. The most-used interactive atom in the SAMAVESH design system.",
 };
-
-/*
- * Read off `ButtonProps` in packages/design-system/components/actions/button.tsx.
- * The interface extends `React.ButtonHTMLAttributes<HTMLButtonElement>`, so every
- * native button attribute — `onClick`, `type`, `form`, `data-*` — passes through and
- * is not listed individually.
- *
- * Corrected 2026-09-02: `appearance` was documented as three words. The union has five;
- * two of them are deprecated aliases for `tone="inverse"` and are marked as such here,
- * because a reader who meets `appearance="inverse"` in existing code needs to find it.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "variant",
-    type: '"primary" | "success" | "danger" | "neutral"',
-    default: '"primary"',
-    description:
-      "The intent of the action. `neutral` is for an action carrying no semantic charge — a dismiss, a reset, a start-over. It exists because there was no way to say “quiet” without borrowing a signal colour, and a portal that fills its screen with red for housekeeping has no red left when an application actually fails.",
-  },
-  {
-    name: "appearance",
-    type: '"filled" | "outlined" | "text" | "inverse" | "inverseOutlined"',
-    default: '"filled"',
-    description:
-      "Visual weight. `outlined` is the secondary form and `text` the tertiary one. `inverse` and `inverseOutlined` are DEPRECATED — see the note below the table.",
-  },
-  {
-    name: "tone",
-    type: '"default" | "inverse"',
-    default: '"default"',
-    description:
-      "Which ground the button sits on. `inverse` is for a solid brand-colour surface — a navy header, the ticker bar, a hero band. It crosses `appearance`, which is the point: as two appearance words it could only have one look, so all four variants painted the same white-alpha border and `danger` silently lost its signal.",
-  },
-  {
-    name: "size",
-    type: '"sm" | "md" | "lg"',
-    default: '"md"',
-    description:
-      "Control size — a min-height of 32 / 40 / 48px. Every size clears the 24×24 WCAG 2.2 §2.5.8 Level AA minimum; only `lg` reaches the 44×44 that 2.5.5 (AAA) and UX4G ask for on touch.",
-  },
-  {
-    name: "loading",
-    type: "boolean",
-    default: "false",
-    description:
-      "Busy. It sets `aria-busy`, disables the control so a form cannot be submitted twice, and draws a spinner in the LEADING ICON'S place so the button does not change width mid-press. It does not swap the label — pass “Submitting…” yourself, because a control that loses its name mid-action is unusable with a screen reader.",
-  },
-  { name: "iconLeft", type: "React.ReactNode", default: "undefined", description: "A glyph before the label, marked decorative. Replaced by the spinner while loading." },
-  { name: "iconRight", type: "React.ReactNode", default: "undefined", description: "A glyph after the label, marked decorative." },
-  {
-    name: "href",
-    type: "string",
-    default: "undefined",
-    description:
-      "Renders an `<a>` with the button's classes, for a link that must look like a call to action. Reach for it only when the control genuinely changes location — see the warning under “Buttons Are Not Links”.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description:
-      "The native disabled attribute, which removes the control from the tab order. With `href` the component drops the href instead and sets `aria-disabled` — an anchor without an href is not focusable and not activatable, so both paths carry the same semantics.",
-  },
-  { name: "children", type: "React.ReactNode", required: true, description: "The label — an imperative, verb-first phrase naming what happens." },
-  {
-    name: "...rest",
-    type: "React.ButtonHTMLAttributes<HTMLButtonElement>",
-    description: "Every native button attribute — onClick, type, form, name, data-*. With `href` set they are applied to the anchor instead.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -201,7 +130,7 @@ export default function ButtonPage(): React.JSX.Element {
       figma={{ node: "buttonDoc" }}
       since="0.5.0"
       specimen={<ButtonPlayground />}
-      props={PROPS}
+      propsFrom="ButtonProps"
       a11y={A11Y}
       whenToUse={{
         use: [

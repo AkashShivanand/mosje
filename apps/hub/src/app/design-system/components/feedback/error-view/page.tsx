@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { ErrorViewPlayground } from "./error-view-playground";
@@ -15,89 +14,6 @@ export const metadata: Metadata = {
   description:
     "The full-page state for 404, 500, 403 and maintenance: what happened, a way back, a search, and the destinations most citizens were looking for.",
 };
-
-/*
- * Read off `ErrorViewProps` and `WayfindingLink` in
- * packages/design-system/components/feedback/error-view.tsx. `ErrorViewProps` is
- * a standalone interface — it does NOT extend HTMLAttributes.
- *
- * Corrected 2026-09-02: the previous table omitted `icon` and `className`, and
- * did not say that `wayfindingLinks` already has a default.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "kind",
-    type: '"404" | "500" | "403" | "maintenance"',
-    default: '"404"',
-    description:
-      "The preset, which supplies the badge, the title, the body copy, the icon and the default primary action. Everything it supplies can be overridden one field at a time.",
-  },
-  {
-    name: "badge",
-    type: "string",
-    default: "the preset's badge",
-    description: 'The short status line above the title — "404 · Page Not Found".',
-  },
-  {
-    name: "title",
-    type: "string",
-    default: "the preset's title",
-    description: "The heading, rendered as the page's h1.",
-  },
-  {
-    name: "description",
-    type: "string",
-    default: "the preset's description",
-    description: "One paragraph saying what happened, in the department's register.",
-  },
-  {
-    name: "icon",
-    type: "string",
-    default: "the preset's icon",
-    description: "A Material Symbols name for the hero mark, drawn at 32px inside the halo.",
-  },
-  {
-    name: "searchUrl",
-    type: "string | null",
-    default: '"/website/search?q="',
-    description:
-      "The destination template for the embedded search. The query is appended URL-encoded. Pass null to remove the search entirely — do that on a portal that has no search to send the reader to.",
-  },
-  {
-    name: "primaryAction",
-    type: "{ label: string; href?: string; onClick?: () => void; icon?: string }",
-    default: "derived from `kind`",
-    description:
-      'The recovery control. Without one, a 500 offers "Try Again" as a button and the other kinds offer "Return to Homepage" as a link.',
-  },
-  {
-    name: "secondaryAction",
-    type: "{ label: string; href?: string; onClick?: () => void; icon?: string }",
-    default: '"Go Back"',
-    description:
-      "The quieter control. The default steps back through history, falling back to the website home when there is no history to step through.",
-  },
-  {
-    name: "wayfindingLinks",
-    type: "WayfindingLink[]",
-    default: "four MoSJE destinations",
-    description:
-      "The destination cards. Each is `{ title, description, href, icon, external? }`. An empty array removes the whole block; a link starting `http` opens in a new tab and gets the external mark.",
-  },
-  {
-    name: "errorDetails",
-    type: "string",
-    default: "undefined",
-    description:
-      "Technical diagnostics, rendered inside a collapsed disclosure. Pass it in development and in internal tooling only — a citizen cannot act on a stack trace, and it belongs in the audit record.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root section.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -134,7 +50,7 @@ export default function ErrorViewPage(): React.JSX.Element {
       summary="The full-page state for a request that could not be served — not found, server error, access restricted, or scheduled maintenance. It says what happened, offers a way back, and never leaves the citizen at a dead end."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<ErrorViewPlayground />}
-      props={PROPS}
+      propsFrom="ErrorViewProps"
       a11y={A11Y}
       whenToUse={{
         use: [

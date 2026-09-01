@@ -16,28 +16,6 @@ export const metadata: Metadata = {
     "A visually hidden ARIA live region for announcing a change that moves no focus — “Filter applied, 12 results”, “3 records exported”, “Saved”.",
 };
 
-/*
- * Read off `LiveRegionProps` in packages/design-system/components/utilities/live-region.tsx.
- * The companion hook `useLiveRegion()` is documented below the table, because a region with
- * no way to write to it is inert and the two are never used apart.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "politeness",
-    type: '"polite" | "assertive"',
-    default: '"polite"',
-    description:
-      "How urgently the announcement interrupts. `polite` waits for a pause in what the reader is already hearing; `assertive` cuts in. Prefer polite — assertive is for a genuine error or a time-critical alert, and a page that interrupts routinely is a page a screen-reader user turns off.",
-  },
-  {
-    name: "ref",
-    type: "React.Ref<HTMLDivElement>",
-    default: "undefined",
-    description:
-      "Forwarded to the region. Pass the `ref` from `useLiveRegion()` — the hook writes the message through it rather than through state, so an announcement never re-renders the page that owns it.",
-  },
-];
-
 const HOOK_PROPS: PropDef[] = [
   {
     name: "useLiveRegion().ref",
@@ -89,7 +67,8 @@ export default function LiveRegionPage(): React.JSX.Element {
         absent: "Not published in the Figma library, and it never will be: the component draws nothing. Its specification is its behaviour.",
       }}
       specimen={<LiveRegionSpecimen />}
-      props={[...PROPS, ...HOOK_PROPS]}
+      propsFrom="LiveRegionProps"
+      props={HOOK_PROPS}
       a11y={A11Y}
       whenToUse={{
         use: [

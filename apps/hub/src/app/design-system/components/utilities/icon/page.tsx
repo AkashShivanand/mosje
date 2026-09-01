@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { Icon } from "@mosje/design-system";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
@@ -16,68 +15,6 @@ export const metadata: Metadata = {
   description:
     "A Material Symbols Rounded glyph — the estate's only icon system. Decorative by default, announced only when it is given a label.",
 };
-
-/*
- * Read off `IconProps` in packages/design-system/components/utilities/icon.tsx.
- * `size` is typed `number` rather than a union, because the glyph's optical-size axis
- * tracks it continuously; the scale below is the set of values the estate uses.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "name",
-    type: "string",
-    required: true,
-    description:
-      "The Material Symbols ligature, in snake_case — \"home\", \"arrow_forward\", \"account_circle\". The full catalogue is at fonts.google.com/icons. A name the font does not carry renders as the literal word, which is how a typo is spotted.",
-  },
-  {
-    name: "size",
-    type: "number",
-    default: "24",
-    description:
-      "Pixel size. It sets the font size and the `opsz` variation axis together, so the glyph is redrawn for the size rather than scaled to it. The estate's scale is 16 · 20 · 24 · 32 · 40 · 48 · 64.",
-  },
-  {
-    name: "fill",
-    type: "boolean",
-    default: "false",
-    description: "The `FILL` axis. False is the stroke variant, which is the SAMAVESH default; true is the solid one.",
-  },
-  {
-    name: "weight",
-    type: "100 | 200 | 300 | 400 | 500 | 600 | 700",
-    default: "300",
-    description:
-      "The `wght` axis. 300 is the MoSJE standard and is correct for interface chrome; 400 is for a standalone decorative glyph that needs to hold its own beside heavier type.",
-  },
-  {
-    name: "aria-label",
-    type: "string",
-    default: "undefined",
-    description:
-      "Give it only when the glyph itself carries the meaning and no adjacent text says the same thing. Setting it makes the icon `role=\"img\"` and it is announced. On an icon-only button, the label belongs on the button, not here.",
-  },
-  {
-    name: "aria-hidden",
-    type: 'boolean | "true" | "false"',
-    default: "true unless aria-label is set",
-    description:
-      "Rarely needed. The component decides: labelled icons are exposed, unlabelled ones are hidden. Pass `false` explicitly only for the rare glyph that must be in the accessibility tree without a label of its own.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Appended to `material-symbols-rounded`; the font class is never replaced.",
-  },
-  {
-    name: "style",
-    type: "React.CSSProperties",
-    default: "undefined",
-    description:
-      "Merged after the glyph's own rules, for placement — display, margin, opacity. Never re-set the font size here; pass `size`, or the optical-size axis stops tracking and the glyph is drawn for the wrong size.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -130,7 +67,7 @@ export default function IconPage(): React.JSX.Element {
           </p>
         </div>
       }
-      props={PROPS}
+      propsFrom="IconProps"
       a11y={A11Y}
       whenToUse={{
         use: [
@@ -197,7 +134,7 @@ export default function IconPage(): React.JSX.Element {
 // Default — 24px, weight 300, stroke, and already hidden from assistive tech.
 <Icon name="home" />
 
-// Filled, at the next size up.
+// Filled, at the size below the default.
 <Icon name="notifications" size={20} fill />
 
 // Icon-only control: the LABEL BELONGS ON THE BUTTON, not on the glyph.

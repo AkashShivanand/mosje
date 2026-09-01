@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { ChatbotMascot } from "@mosje/design-system";
 
@@ -14,52 +13,6 @@ export const metadata: Metadata = {
   description:
     "The Samajik Sahayak assistant mark: a brand-coloured disc carrying the mascot, and an optional white ring carrying the bilingual wordmark.",
 };
-
-/*
- * Read off `ChatbotMascotProps` in
- * packages/design-system/components/feedback/chatbot-mascot.tsx. The interface
- * extends `Omit<React.HTMLAttributes<HTMLSpanElement>, "children">`, so every
- * standard span attribute — including `aria-label` and `style` — passes through.
- *
- * Corrected 2026-09-02: the previous table omitted `className` and `aria-label`,
- * and did not say that passing an accessible name changes the element's role.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "size",
-    type: "number",
-    default: "84",
-    description:
-      "Rendered diameter in pixels. Every inner measurement is a percentage of it, so the mark scales cleanly — the two sizes the design uses are the 84px launcher and the 37px avatar beside a message.",
-  },
-  {
-    name: "ring",
-    type: "boolean",
-    default: "false",
-    description:
-      "Show the circular bilingual wordmark on a white ring around the disc. True for the launcher; false for the small avatar, where the wordmark is unreadable and only muddies the mark.",
-  },
-  {
-    name: "spin",
-    type: "boolean",
-    default: "false",
-    description:
-      "Turn the wordmark's slow idle rotation on. Ignored when `ring` is false, and inert under prefers-reduced-motion.",
-  },
-  {
-    name: "aria-label",
-    type: "string",
-    default: "undefined",
-    description:
-      'Passing one changes the element from decorative to meaningful: the mark drops aria-hidden and takes role="img". Leave it off wherever the mark sits inside a control or beside a message that is already named.',
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the root span.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -101,7 +54,7 @@ export default function ChatbotMascotPage(): React.JSX.Element {
           <ChatbotMascot size={37} />
         </div>
       }
-      props={PROPS}
+      propsFrom="ChatbotMascotProps"
       a11y={A11Y}
       whenToUse={{
         use: [

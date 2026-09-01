@@ -19,71 +19,6 @@ export const metadata: Metadata = {
     "A whole portal login page built from one config object — the role tabs, the authentication mode selector, the credential form and the deep-linked URL.",
 };
 
-/*
- * Read off `PortalLoginTemplateProps` in
- * packages/design-system/components/auth/portal-login-template.tsx.
- *
- * Corrected 2026-09-02. The previous table listed `roles` and `ssoProviders`; neither
- * exists — roles live inside `config`, and there is no SSO provider list. It also marked
- * `onSubmit` required, which it is not, and omitted `config`, `loading`, `error` and
- * `onFooterLinkClick` entirely.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "config",
-    type: "PortalLoginConfig",
-    required: true,
-    description:
-      "The whole declaration: the portal's name and brand assets, its role tabs, each role's authentication modes, the help links, and any extra fields or content. Everything the page shows comes from here.",
-  },
-  {
-    name: "onSubmit",
-    type: "(payload: LoginSubmitPayload) => void | Promise<void>",
-    default: "undefined",
-    description:
-      "Called on submit with the active role id, the active authentication mode and the entered credentials. Omitting it makes the form inert, which is correct for a specimen and never for a real login page.",
-  },
-  {
-    name: "loading",
-    type: "boolean",
-    default: "false",
-    description: "Submission is in flight. Pass the same value your submit handler sets, so the control cannot be pressed twice.",
-  },
-  {
-    name: "error",
-    type: "string | null",
-    default: "null",
-    description:
-      "A failure message, rendered above the fields in a `role=\"alert\"` banner so it is announced when it appears. One sentence a citizen can act on — never a status code.",
-  },
-  {
-    name: "onFooterLinkClick",
-    type: '(link: "privacy" | "contact" | "about") => void',
-    default: "undefined",
-    description: "Passed straight through to the shell. The footer's links are buttons, so the consuming app routes them.",
-  },
-  {
-    name: "roleId",
-    type: "string",
-    default: "undefined",
-    description:
-      "Force the active role, overriding both the URL and `config.defaultRoleId`. For a caller that already knows who is arriving — a route only officers reach. It is applied in an effect rather than as initial state, so a role resolved asynchronously from a session still lands on the right tab.",
-  },
-  {
-    name: "onRoleChange",
-    type: "(roleId: string) => void",
-    default: "undefined",
-    description: "Called with the role id whenever the active tab changes.",
-  },
-  {
-    name: "deepLinkRole",
-    type: "boolean",
-    default: "true",
-    description:
-      "Select the role from the URL on mount and keep the URL in step as tabs change. `?role=<id>` is read first, then the legacy `#role-<id>` so links shared before the query existed still work.",
-  },
-];
-
 const HELPER_PROPS: PropDef[] = [
   {
     name: "portalLoginUrl(path, roleId?)",
@@ -154,7 +89,8 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
       summary="A whole portal login page built from one configuration object. It declares the role tabs, each role's authentication modes and the credential fields, and renders them inside Portal Login Shell — so a portal describes who signs in rather than building a login page."
       figma={{ node: "portalLoginTemplate" }}
       specimen={<PortalLoginTemplateSpecimen />}
-      props={[...PROPS, ...HELPER_PROPS]}
+      propsFrom="PortalLoginTemplateProps"
+      props={HELPER_PROPS}
       a11y={A11Y}
       whenToUse={{
         use: [

@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 
 import { CaptchaFieldPlayground } from "./captcha-field-playground";
@@ -16,78 +15,6 @@ export const metadata: Metadata = {
   description:
     "The legacy security-check field: a challenge, a refresh control and an answer. Retained for one existing portal, and an accessibility risk on any new one.",
 };
-
-/*
- * Read off `CaptchaFieldProps` in
- * packages/design-system/components/forms/captcha-field.tsx. The interface is a
- * CLOSED list — it extends nothing, so no native attributes pass through, and
- * `challenge` is a discriminated union rather than two separate props.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "challenge",
-    type: '{ type: "image"; src: string; alt?: string } | { type: "text"; characters: string }',
-    required: true,
-    description:
-      "The challenge the server issued: an image URL, or the characters for a text fallback. The text variant is rendered with `role=\"img\"` so it is announced as a picture of characters, not as readable text.",
-  },
-  {
-    name: "value",
-    type: "string",
-    required: true,
-    description: "The reader's answer. Controlled.",
-  },
-  {
-    name: "onValueChange",
-    type: "(next: string) => void",
-    required: true,
-    description: "Called with the typed string. This is not `onChange` — the component exposes no native change handler.",
-  },
-  {
-    name: "onRefresh",
-    type: "() => void",
-    required: true,
-    description:
-      "Asks the server for a new challenge. It MUST also clear `value` — the component does not do it for you, and a stale answer against a fresh challenge always fails.",
-  },
-  {
-    name: "error",
-    type: "string",
-    default: "undefined",
-    description:
-      "Message shown under the field. Its presence also renders the error state on the input and links the message through `aria-describedby`.",
-  },
-  {
-    name: "label",
-    type: "string",
-    default: '"Security check"',
-    description: "Accessible name for the answer input, applied as `aria-label`. There is no visible label.",
-  },
-  {
-    name: "placeholder",
-    type: "string",
-    default: '"Enter the characters"',
-    description: "Placeholder inside the answer input.",
-  },
-  {
-    name: "disabled",
-    type: "boolean",
-    default: "false",
-    description: "Disables the answer input and the refresh button.",
-  },
-  {
-    name: "id",
-    type: "string",
-    default: "auto",
-    description: "Answer-input id, falling back to a generated `useId()`. The error id is derived from it.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description: "Merged onto the outer wrapper.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -123,7 +50,7 @@ export default function CaptchaFieldPage(): React.JSX.Element {
       summary="The security-check field: a challenge, a refresh control and an answer. It is retained for one existing portal. On a new portal a visual challenge with no alternative is a WCAG 2.2 AA conformance failure, not a hardening measure."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<CaptchaFieldPlayground />}
-      props={PROPS}
+      propsFrom="CaptchaFieldProps"
       a11y={A11Y}
       whenToUse={{
         use: [

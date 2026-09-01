@@ -20,7 +20,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Aadhaar Input — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/aadhaar-input",
-    "keywords": "aadhaar input — design system forms & inputs masking and privacy example notes value onValueChange invalid mask className ...native tokens wcag accessibility",
+    "keywords": "aadhaar input — design system forms & inputs masking and privacy example notes  tokens wcag accessibility",
     "description": "A twelve-digit Aadhaar field, grouped as you type, Verhoeff-checked, and masked to its last four digits by default.",
     "type": "component",
     "iconName": "edit_note"
@@ -39,7 +39,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Accessibility Bar — Design System",
     "section": "Utilities",
     "href": "/design-system/components/utilities/accessibility-bar",
-    "keywords": "accessibility bar — design system utilities tone is not a prop text size do and don&rsquo;t usage interaction states layout (content width) token map what happens on a phone govLink skipTo showSkip skipLabel fontSize accessibility accessibilityHref onAccessibility language layout maxWidth device onFontScaleChange className tokens wcag accessibility",
+    "keywords": "accessibility bar — design system utilities tone is not a prop text size do and don&rsquo;t usage interaction states layout (content width) token map what happens on a phone  tokens wcag accessibility",
     "description": "The government top utility bar (UX4G / GIGW) — the Government of India link and the accessibility controls that open every page: skip to content, text size, accessibility, language.",
     "type": "component",
     "iconName": "build"
@@ -66,7 +66,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Action Banner — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/action-banner",
-    "keywords": "action banner — design system feedback & status two variants, one content model example fitting the page outline title action description variant as className tokens wcag accessibility",
+    "keywords": "action banner — design system feedback & status two variants, one content model example fitting the page outline  tokens wcag accessibility",
     "description": "A call to action at the end of a section: a title, an optional sentence, and one control. Two variants share one content model.",
     "type": "component",
     "iconName": "notifications"
@@ -84,7 +84,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Alert — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/alert",
-    "keywords": "alert — design system feedback & status the four statuses anatomy example how it is announced status title children dismissible onDismiss action timestamp className tokens wcag accessibility",
+    "keywords": "alert — design system feedback & status the four statuses anatomy example how it is announced  tokens wcag accessibility",
     "description": "A standing message about the state of the page or the task: a status colour, an icon, a title and a sentence. It stays until the condition changes or the reader dismisses it.",
     "type": "component",
     "iconName": "notifications"
@@ -147,7 +147,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Badge — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/badge",
-    "keywords": "badge — design system feedback & status six roles, two sizes, two fills writing the label example naming a badge that has little text children status size emphasis dot pulse className tokens wcag accessibility",
+    "keywords": "badge — design system feedback & status six roles, two sizes, two fills writing the label example naming a badge that has little text  tokens wcag accessibility",
     "description": "A small pill that annotates something with a status, a count or a category. It carries colour meaning and is never interactive.",
     "type": "component",
     "iconName": "notifications"
@@ -183,7 +183,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Button",
     "section": "Actions",
     "href": "/design-system/components/actions/button",
-    "keywords": "button actions purpose anatomy variants states sizes and touch content and voice two deprecated appearances, and one that is gone installation and import example tokens consumed in figma keyboard evidence variant appearance tone size loading iconLeft iconRight href disabled children ...rest tokens wcag accessibility",
+    "keywords": "button actions purpose anatomy variants states sizes and touch content and voice two deprecated appearances, and one that is gone installation and import example tokens consumed in figma keyboard evidence  tokens wcag accessibility",
     "description": "A Button triggers an action within the system — submitting a form, confirming a dialog, or running a command. The most-used interactive atom in the SAMAVESH design system.",
     "type": "component",
     "iconName": "widgets"
@@ -192,7 +192,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Captcha Field — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/captcha-field",
-    "keywords": "captcha field — design system forms & inputs read this before adding one example notes challenge value onValueChange onRefresh error label placeholder disabled id className tokens wcag accessibility",
+    "keywords": "captcha field — design system forms & inputs read this before adding one example notes  tokens wcag accessibility",
     "description": "The legacy security-check field: a challenge, a refresh control and an answer. Retained for one existing portal, and an accessibility risk on any new one.",
     "type": "component",
     "iconName": "edit_note"
@@ -219,7 +219,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Chart Card — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/chart-card",
-    "keywords": "chart card — design system auth & dashboard six reasons a card has nothing to draw the skeleton promises the shape a card that cannot show its data must not talk about its data example what a screen reader hears title subtitle actions exportable exportName exportFormats span loading state empty emptyTitle emptyLabel error errorTitle errorLabel tokens wcag accessibility",
+    "keywords": "chart card — design system auth & dashboard six reasons a card has nothing to draw the skeleton promises the shape a card that cannot show its data must not talk about its data example what a screen reader hears  tokens wcag accessibility",
     "description": "The titled container a dashboard chart sits in. It owns the header, the grid span, the download control and every state the chart can be in — loading, empty, filtered to nothing, failed.",
     "type": "component",
     "iconName": "bar_chart"
@@ -237,7 +237,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Chatbot — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/chatbot",
-    "keywords": "chatbot — design system feedback & status in the figma library anatomy states placement and layering motion prototype writing the script example a dialog, but deliberately not a modal one the log is a live region open defaultOpen onOpenChange title subtitle greeting quickReplies onQuickReply messages typing composer composerPlaceholder onSubmit note endChatLabel tokens wcag accessibility",
+    "keywords": "chatbot — design system feedback & status in the figma library anatomy states placement and layering motion prototype writing the script example a dialog, but deliberately not a modal one the log is a live region  tokens wcag accessibility",
     "description": "Samajik Sahayak, the estate",
     "type": "component",
     "iconName": "notifications"
@@ -246,7 +246,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Chatbot Mascot — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/chatbot-mascot",
-    "keywords": "chatbot mascot — design system feedback & status why it is two nodes two sizes, one with the ring the disc follows the brand motion example decorative unless you name it size ring spin aria-label className tokens wcag accessibility",
+    "keywords": "chatbot mascot — design system feedback & status why it is two nodes two sizes, one with the ring the disc follows the brand motion example decorative unless you name it  tokens wcag accessibility",
     "description": "The Samajik Sahayak assistant mark: a brand-coloured disc carrying the mascot, and an optional white ring carrying the bilingual wordmark.",
     "type": "component",
     "iconName": "notifications"
@@ -255,7 +255,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Checkbox — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/checkbox",
-    "keywords": "checkbox — design system forms & inputs example keyboard checked onChange indeterminate label disabled id className tokens wcag accessibility",
+    "keywords": "checkbox — design system forms & inputs example keyboard  tokens wcag accessibility",
     "description": "A checkbox selects one or more items from a set, or turns a single option on or off. Supports the mixed state a “select all” control needs.",
     "type": "component",
     "iconName": "edit_note"
@@ -264,7 +264,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Chip — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/chip",
-    "keywords": "chip — design system forms & inputs tone and size example keyboard children selected onSelectedChange size tone leadingIcon count countLabel onDismiss dismissLabel trailingDropdown disabled className tokens wcag accessibility",
+    "keywords": "chip — design system forms & inputs tone and size example keyboard  tokens wcag accessibility",
     "description": "A compact pill used as a filter toggle, a removable tag, a dropdown trigger or a static category, with an optional count.",
     "type": "component",
     "iconName": "edit_note"
@@ -319,7 +319,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Dashboard Grid — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/dashboard-grid",
-    "keywords": "dashboard grid — design system auth & dashboard spans, and the one breakpoint close every row example children className ref tokens wcag accessibility",
+    "keywords": "dashboard grid — design system auth & dashboard spans, and the one breakpoint close every row example  tokens wcag accessibility",
     "description": "The 12-column grid a portal dashboard is laid out on. Children declare their own width with a span prop; every child is full width below 768px.",
     "type": "component",
     "iconName": "lock"
@@ -346,7 +346,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Declaration Checkbox — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/declaration-checkbox",
-    "keywords": "declaration checkbox — design system forms & inputs why it is not a checkbox example notes checked onChange children title lead error disabled id className tokens wcag accessibility",
+    "keywords": "declaration checkbox — design system forms & inputs why it is not a checkbox example notes  tokens wcag accessibility",
     "description": "The statutory certification block that closes a government form: a bordered panel carrying the declaration text with a single required checkbox bound to it.",
     "type": "component",
     "iconName": "edit_note"
@@ -402,7 +402,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Empty State — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/empty-state",
-    "keywords": "empty state — design system feedback & status empty is not the same as filtered to nothing writing the copy example replacing a region, not announcing an event title description action icon className tokens wcag accessibility",
+    "keywords": "empty state — design system feedback & status empty is not the same as filtered to nothing writing the copy example replacing a region, not announcing an event  tokens wcag accessibility",
     "description": "The answer a reader gets when a list, table or dashboard has nothing to show: what is absent, why, and what they can do next.",
     "type": "component",
     "iconName": "notifications"
@@ -411,7 +411,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Error View — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/error-view",
-    "keywords": "error view — design system feedback & status three ways back, in order the four presets diagnostics are not for citizens example it owns the page&apos;s h1 the search and the controls kind badge title description icon searchUrl primaryAction secondaryAction wayfindingLinks errorDetails className tokens wcag accessibility",
+    "keywords": "error view — design system feedback & status three ways back, in order the four presets diagnostics are not for citizens example it owns the page&apos;s h1 the search and the controls  tokens wcag accessibility",
     "description": "The full-page state for 404, 500, 403 and maintenance: what happened, a way back, a search, and the destinations most citizens were looking for.",
     "type": "component",
     "iconName": "notifications"
@@ -420,7 +420,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Filter Bar — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/filter-bar",
-    "keywords": "filter bar — design system auth & dashboard active filters stay visible segmented control segmentedcontrol props example title children className options value onChange ariaLabel className tokens wcag accessibility",
+    "keywords": "filter bar — design system auth & dashboard active filters stay visible segmented control segmentedcontrol props example  tokens wcag accessibility",
     "description": "The row of controls that sits above a dashboard and decides what the cards below it show. Layout only — every control inside it keeps its own state.",
     "type": "component",
     "iconName": "lock"
@@ -438,7 +438,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Form Card — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/form-card",
-    "keywords": "form card — design system forms & inputs why it exists example notes title children description required headingId actions className tokens wcag accessibility",
+    "keywords": "form card — design system forms & inputs why it exists example notes  tokens wcag accessibility",
     "description": "The sibling of Form Section: the same card chrome and section title, with an arbitrary body instead of a field grid.",
     "type": "component",
     "iconName": "edit_note"
@@ -447,7 +447,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Form Field — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/form-field",
-    "keywords": "form field — design system forms & inputs the render prop, in plain english example notes label children id hint error required className tokens wcag accessibility",
+    "keywords": "form field — design system forms & inputs the render prop, in plain english example notes  tokens wcag accessibility",
     "description": "The molecule that ties a control to its label, hint and error message, and wires every accessibility attribute through a render prop.",
     "type": "component",
     "iconName": "edit_note"
@@ -456,7 +456,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Form Section — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/form-section",
-    "keywords": "form section — design system forms & inputs choosing the column count example notes title children description columns className tokens wcag accessibility",
+    "keywords": "form section — design system forms & inputs choosing the column count example notes  tokens wcag accessibility",
     "description": "A titled surface card wrapping a responsive one-, two- or three-column field grid. The shared form-layout primitive across the estate.",
     "type": "component",
     "iconName": "edit_note"
@@ -483,7 +483,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Geo Photo Input — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/geo-photo-input",
-    "keywords": "geo photo input — design system forms & inputs where the location comes from example notes value onChange maxItems minItems maxSizeMb viewMaxEdge thumbMaxEdge quality invalid disabled id required aria-describedby className tokens wcag accessibility",
+    "keywords": "geo photo input — design system forms & inputs where the location comes from example notes  tokens wcag accessibility",
     "description": "An evidence-photograph control that reads coordinates from EXIF, falls back to the device",
     "type": "component",
     "iconName": "edit_note"
@@ -520,7 +520,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Icon — Design System",
     "section": "Utilities",
     "href": "/design-system/components/utilities/icon",
-    "keywords": "icon — design system utilities one font, four axes load the font once example labelled or hidden — there is no third option name size fill weight aria-label aria-hidden className style tokens wcag accessibility",
+    "keywords": "icon — design system utilities one font, four axes load the font once example labelled or hidden — there is no third option  tokens wcag accessibility",
     "description": "A Material Symbols Rounded glyph — the estate",
     "type": "component",
     "iconName": "build"
@@ -567,7 +567,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Input — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/input",
-    "keywords": "input — design system forms & inputs adornments example notes invalid leftIcon rightIcon type className ...native tokens wcag accessibility",
+    "keywords": "input — design system forms & inputs adornments example notes  tokens wcag accessibility",
     "description": "A single-line text field built on the native input element and styled on the token contract. Pair it with FormField so the label, hint and error wiring come for free.",
     "type": "component",
     "iconName": "edit_note"
@@ -576,7 +576,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "KPI Row — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/kpi-row",
-    "keywords": "kpi row — design system auth & dashboard composition example items span className tokens wcag accessibility",
+    "keywords": "kpi row — design system auth & dashboard composition example  tokens wcag accessibility",
     "description": "A responsive row of MetricCard tiles carrying the headline figures at the top of a dashboard — funds released, beneficiaries, applications pending.",
     "type": "component",
     "iconName": "lock"
@@ -585,7 +585,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Label — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/label",
-    "keywords": "label — design system forms & inputs prefer form field example notes children required hint className ...native tokens wcag accessibility",
+    "keywords": "label — design system forms & inputs prefer form field example notes  tokens wcag accessibility",
     "description": "A standalone label element for controls that are not wrapped in a Form Field, matching the Form Field label exactly.",
     "type": "component",
     "iconName": "edit_note"
@@ -613,7 +613,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Lightbox — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/lightbox",
-    "keywords": "lightbox — design system feedback & status anatomy give every item a caption example keyboard two things a consumer must handle open items onClose index onIndexChange className tokens wcag accessibility",
+    "keywords": "lightbox — design system feedback & status anatomy give every item a caption example keyboard focus and the dialog&apos;s name  tokens wcag accessibility",
     "description": "A full-screen viewer for a gallery of images and video: prev and next, an item counter, a caption bar and a thumbnail strip.",
     "type": "component",
     "iconName": "notifications"
@@ -631,7 +631,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Live Region — Design System",
     "section": "Utilities",
     "href": "/design-system/components/utilities/live-region",
-    "keywords": "live region — design system utilities there is nothing to design example why the message is not state polite, almost always politeness ref useLiveRegion().ref useLiveRegion().announce tokens wcag accessibility",
+    "keywords": "live region — design system utilities there is nothing to design example why the message is not state polite, almost always useLiveRegion().ref useLiveRegion().announce tokens wcag accessibility",
     "description": "A visually hidden ARIA live region for announcing a change that moves no focus — “Filter applied, 12 results”, “3 records exported”, “Saved”.",
     "type": "component",
     "iconName": "build"
@@ -640,7 +640,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Loader — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/loader",
-    "keywords": "loader — design system feedback & status choosing a size example the label is the whole announcement size variant label className tokens wcag accessibility",
+    "keywords": "loader — design system feedback & status choosing a size example the label is the whole announcement  tokens wcag accessibility",
     "description": "A spinner for a wait whose result has no known shape, announced to assistive technology through a live region and a visually hidden label.",
     "type": "component",
     "iconName": "notifications"
@@ -649,7 +649,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Media Gallery Input — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/media-gallery-input",
-    "keywords": "media gallery input — design system forms & inputs empty, filling, full example notes value onChange accept maxItems maxSizeMb invalid disabled id required aria-describedby className tokens wcag accessibility",
+    "keywords": "media gallery input — design system forms & inputs empty, filling, full example notes  tokens wcag accessibility",
     "description": "A multi-file dropzone for images and video, with a thumbnail grid, captured video poster frames, and client-side type, size and capacity checks.",
     "type": "component",
     "iconName": "edit_note"
@@ -658,7 +658,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Media Upload — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/media-upload",
-    "keywords": "media upload — design system forms & inputs the two states example notes onChange onClear value fileName accept maxSizeMb invalid disabled promptLabel hintLabel id required aria-describedby className tokens wcag accessibility",
+    "keywords": "media upload — design system forms & inputs the two states example notes  tokens wcag accessibility",
     "description": "A single-file dropzone with a click target, drag and drop, an inline preview, and client-side type and size checks.",
     "type": "component",
     "iconName": "edit_note"
@@ -676,7 +676,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Modal — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/modal",
-    "keywords": "modal — design system feedback & status anatomy sizes use it sparingly example keyboard focus trap, escape and focus restore background scroll open onClose title children footer size hideClose className tokens wcag accessibility",
+    "keywords": "modal — design system feedback & status anatomy sizes use it sparingly example keyboard focus trap, escape and focus restore background scroll  tokens wcag accessibility",
     "description": "The shared accessible dialog: a backdrop, a focus trap, Escape to close and focus returned to the control that opened it.",
     "type": "component",
     "iconName": "notifications"
@@ -713,7 +713,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Org Logo — Design System",
     "section": "Brand",
     "href": "/design-system/components/brand/org-logo",
-    "keywords": "org logo — design system brand every mark the estate ships why one component owns every path figma parity, and what is still missing example path org size name src ...rest tokens wcag accessibility",
+    "keywords": "org logo — design system brand every mark the estate ships why one component owns every path figma parity, and what is still missing example  tokens wcag accessibility",
     "description": "Organisation and scheme marks in the estate",
     "type": "component",
     "iconName": "widgets"
@@ -722,7 +722,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "OTP Input — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/otp-input",
-    "keywords": "otp input — design system forms & inputs the parts that are usually wrong example keyboard value onValueChange label length onComplete invalid aria-describedby disabled autoFocus id className tokens wcag accessibility",
+    "keywords": "otp input — design system forms & inputs the parts that are usually wrong example keyboard  tokens wcag accessibility",
     "description": "Six separate boxes for a one-time password, with paste, SMS autofill, arrow-key movement and a numbered box for every digit.",
     "type": "component",
     "iconName": "edit_note"
@@ -750,7 +750,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "PAN Input — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/pan-input",
-    "keywords": "pan input — design system forms & inputs the fourth character example notes value onValueChange invalid className ...native tokens wcag accessibility",
+    "keywords": "pan input — design system forms & inputs the fourth character example notes  tokens wcag accessibility",
     "description": "A ten-character Permanent Account Number field that uppercases as you type and validates the holder-type character.",
     "type": "component",
     "iconName": "edit_note"
@@ -759,7 +759,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Password Input — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/password-input",
-    "keywords": "password input — design system forms & inputs the details that matter example keyboard showLabel hideLabel hideToggle invalid className ...native tokens wcag accessibility",
+    "keywords": "password input — design system forms & inputs the details that matter example keyboard  tokens wcag accessibility",
     "description": "A password field with a reveal toggle that is a real button, names the action rather than the state, and suppresses the browser",
     "type": "component",
     "iconName": "edit_note"
@@ -768,7 +768,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Password Strength Meter — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/password-strength-meter",
-    "keywords": "password strength meter — design system forms & inputs advisory, not a gate example notes score caption aria-describedby id className tokens wcag accessibility",
+    "keywords": "password strength meter — design system forms & inputs advisory, not a gate example notes  tokens wcag accessibility",
     "description": "Four segments and a word, shown under a password the reader is creating. Advisory, never a gate, and never beside a password being entered.",
     "type": "component",
     "iconName": "edit_note"
@@ -796,7 +796,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Portal Login Shell — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/portal-login-shell",
-    "keywords": "portal login shell — design system auth & dashboard what the shell owns, and what it does not the hero is decorative, and disappears example emblemSrc digitalIndiaSrc samaveshLogoSrc signingInto changeHref tabs children extraContent onFooterLinkClick tokens wcag accessibility",
+    "keywords": "portal login shell — design system auth & dashboard what the shell owns, and what it does not the hero is decorative, and disappears example  tokens wcag accessibility",
     "description": "The full-page login layout every MoSJE portal signs in through — the utility bar, the Government of India masthead, the SAMAVESH hero, the tab strip and the footer. The form itself is the caller",
     "type": "component",
     "iconName": "lock"
@@ -805,7 +805,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Portal Login Template — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/portal-login-template",
-    "keywords": "portal login template — design system auth & dashboard three audiences, whatever they are called two form modes, and one handoff how the mode selector presents itself example linking straight to a role tab portalloginconfig keyboard config onSubmit loading error onFooterLinkClick roleId onRoleChange deepLinkRole portalLoginUrl(path, roleId?) roleFromUrl(href) ROLE_PARAM portalId portalName portalTagline portalDescription tokens wcag accessibility",
+    "keywords": "portal login template — design system auth & dashboard three audiences, whatever they are called two form modes, and one handoff how the mode selector presents itself example linking straight to a role tab portalloginconfig keyboard portalLoginUrl(path, roleId?) roleFromUrl(href) ROLE_PARAM portalId portalName portalTagline portalDescription changeHref roles defaultRoleId brandAssets extraFields extraContent links tokens wcag accessibility",
     "description": "A whole portal login page built from one config object — the role tabs, the authentication mode selector, the credential form and the deep-linked URL.",
     "type": "component",
     "iconName": "lock"
@@ -832,7 +832,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Radio — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/radio",
-    "keywords": "radio — design system forms & inputs radio cards example keyboard checked name value onChange label variant description disabled id className tokens wcag accessibility",
+    "keywords": "radio — design system forms & inputs radio cards example keyboard  tokens wcag accessibility",
     "description": "A radio button for choosing exactly one option from a mutually exclusive set, in an inline variant and a full selectable card variant.",
     "type": "component",
     "iconName": "edit_note"
@@ -859,7 +859,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "SAMAVESH Banner — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/samavesh-banner",
-    "keywords": "samavesh banner — design system navigation interactive specimen implementation & guidelines overview & principles usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance band tones, and why the default fails contrast on purpose component props Senior Citizens Welfare Nasha Mukt Bharat Abhiyaan National Commission for Scheduled Castes National SC Finance & Development Corporation defaultOpen isOpen onToggle portals tone sticky drawerTitle viewAllHref emptyLabel viewAllPrompt viewAllLabel tokens wcag accessibility",
+    "keywords": "samavesh banner — design system navigation interactive specimen implementation & guidelines overview & principles usage guidelines installation & import props reference code example wcag 2.2 aa & gigw 3.0 compliance band tones, and why the default fails contrast on purpose component props Senior Citizens Welfare Nasha Mukt Bharat Abhiyaan National Commission for Scheduled Castes National SC Finance & Development Corporation tokens wcag accessibility",
     "description": "Top identity banner and portal discovery drawer implementing Figma node 7116:33784 & 7298:29968.",
     "type": "component",
     "badge": "New",
@@ -878,7 +878,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Search — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/search",
-    "keywords": "search — design system forms & inputs sizes and modes example keyboard value onChange size onClear onSubmit suggestions onSuggestionSelect suggestionsLabel className ...native tokens wcag accessibility",
+    "keywords": "search — design system forms & inputs sizes and modes example keyboard  tokens wcag accessibility",
     "description": "A search field with a leading icon, an optional clear control, an optional submit handler and an optional autocomplete listbox, in three sizes.",
     "type": "component",
     "iconName": "edit_note"
@@ -896,7 +896,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Select — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/select",
-    "keywords": "select — design system forms & inputs native by design example keyboard appearance invalid options placeholder children className ...native tokens wcag accessibility",
+    "keywords": "select — design system forms & inputs native by design example keyboard  tokens wcag accessibility",
     "description": "A native select element with a custom chevron, so the platform",
     "type": "component",
     "iconName": "edit_note"
@@ -915,7 +915,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Side Sheet — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/side-sheet",
-    "keywords": "side sheet — design system feedback & status side sheet or modal anatomy example keyboard focus trap and focus restore open onClose title children footer size side className tokens wcag accessibility",
+    "keywords": "side sheet — design system feedback & status side sheet or modal anatomy example keyboard focus trap and focus restore  tokens wcag accessibility",
     "description": "An edge-anchored panel for long forms and record inspection, keeping the list behind it visible while the task is carried out.",
     "type": "component",
     "iconName": "notifications"
@@ -951,7 +951,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Skeleton — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/skeleton",
-    "keywords": "skeleton — design system feedback & status match the shape, not the content keep the shimmer quiet example the skeleton is silent — the region is not width height circle className SkeletonText · lines SkeletonText · className SkeletonRow · cols tokens wcag accessibility",
+    "keywords": "skeleton — design system feedback & status match the shape, not the content keep the shimmer quiet skeletontext props skeletonrow props example the skeleton is silent — the region is not  tokens wcag accessibility",
     "description": "A placeholder in the shape of the result, shown while a request is in flight so the layout does not jump when the data lands.",
     "type": "component",
     "iconName": "notifications"
@@ -960,7 +960,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "SLA Progress Indicator — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/sla-progress",
-    "keywords": "sla progress indicator — design system feedback & status seven states, derived from one fraction a paused clock renders neutral, not escalating three variants, chosen by where they sit thresholds are fractions units ux4g parity example what a screen reader hears label the case, not the category label total elapsed unit variant paused completed thresholds status description action id className tokens wcag accessibility",
+    "keywords": "sla progress indicator — design system feedback & status seven states, derived from one fraction a paused clock renders neutral, not escalating three variants, chosen by where they sit thresholds are fractions units ux4g parity example what a screen reader hears label the case, not the category  tokens wcag accessibility",
     "description": "Tracks time remaining against a Right to Service Act guarantee. Three variants, seven states, and always a concrete number — never a vague “Processing…”.",
     "type": "component",
     "iconName": "notifications"
@@ -969,7 +969,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "SLA Progress Indicator — Variants — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/sla-progress-indicator",
-    "keywords": "sla progress indicator — variants — design system feedback & status picking a variant example the variants are equal to assistive technology label total elapsed variant unit paused completed thresholds status description action id className tokens wcag accessibility",
+    "keywords": "sla progress indicator — variants — design system feedback & status picking a variant example the variants are equal to assistive technology  tokens wcag accessibility",
     "description": "The three shapes an SLA guarantee takes: a linear row, a circular dashboard tile, and a badge for a table cell.",
     "type": "component",
     "iconName": "notifications"
@@ -997,7 +997,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Stepper — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/stepper",
-    "keywords": "stepper — design system feedback & status three states, derived writing the labels example keyboard what a screen reader hears steps current ariaLabel className tokens wcag accessibility",
+    "keywords": "stepper — design system feedback & status three states, derived writing the labels example keyboard what a screen reader hears  tokens wcag accessibility",
     "description": "Horizontal progress through a multi-step form: which stages are complete, which one the applicant is on, and how many remain.",
     "type": "component",
     "iconName": "notifications"
@@ -1024,7 +1024,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Textarea — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/textarea",
-    "keywords": "textarea — design system forms & inputs height example keyboard invalid rows className ...native tokens wcag accessibility",
+    "keywords": "textarea — design system forms & inputs height example keyboard  tokens wcag accessibility",
     "description": "A native, vertically resizable multi-line text field for long-form answers such as grievance descriptions, remarks and addresses.",
     "type": "component",
     "iconName": "edit_note"
@@ -1033,7 +1033,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Ticker — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/ticker",
-    "keywords": "ticker — design system feedback & status two shapes, one data model behaviour by width states motion divergences from the figma frame example motion, pause and the live region put the name in the outline focus and tab order items label labelAs icon action orientation height rows interval autoplay linkAs className tokens wcag accessibility",
+    "keywords": "ticker — design system feedback & status two shapes, one data model behaviour by width states motion divergences from the figma frame example motion, pause and the live region put the name in the outline focus and tab order  tokens wcag accessibility",
     "description": "Recent announcements in two shapes: the full-bleed bar under the masthead, and the stacked panel that scrolls them.",
     "type": "component",
     "iconName": "notifications"
@@ -1051,7 +1051,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Toggle — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/toggle",
-    "keywords": "toggle — design system forms & inputs sizes example keyboard checked onChange label size disabled id className ...native tokens wcag accessibility",
+    "keywords": "toggle — design system forms & inputs sizes example keyboard  tokens wcag accessibility",
     "description": "A switch for a setting that takes effect immediately. A real checkbox input carrying role=\\",
     "type": "component",
     "iconName": "edit_note"
@@ -1060,7 +1060,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Tooltip — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/tooltip",
-    "keywords": "tooltip — design system feedback & status placement a tooltip is never the only copy example wcag 1.4.13, part by part described, not named content children side sideOffset delay disabled duplicatesTriggerName className tokens wcag accessibility",
+    "keywords": "tooltip — design system feedback & status placement a tooltip is never the only copy example wcag 1.4.13, part by part described, not named  tokens wcag accessibility",
     "description": "A hint bubble on hover and focus, meeting WCAG 1.4.13: dismissible with Escape, hoverable, and persistent until the reader leaves it.",
     "type": "component",
     "iconName": "notifications"
@@ -1079,7 +1079,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "UX4G Accessibility Widget — Design System",
     "section": "Utilities",
     "href": "/design-system/components/utilities/ux4g-accessibility-widget",
-    "keywords": "ux4g accessibility widget — design system utilities what is ours and what is not mounted once, near the end of the root layout example two things the component does that the script cannot src analytics tokens wcag accessibility",
+    "keywords": "ux4g accessibility widget — design system utilities what is ours and what is not mounted once, near the end of the root layout example two things the component does that the script cannot  tokens wcag accessibility",
     "description": "The official Government of India (MeitY / UX4G) accessibility widget — contrast, text sizing, spacing, link highlighting, dark mode, reading guides and disability profiles. The single accessibility mechanism for the estate.",
     "type": "component",
     "iconName": "build"
@@ -1115,7 +1115,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Wizard — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/wizard",
-    "keywords": "wizard — design system forms & inputs the parent owns the state example notes steps current onBack onNext onSubmit children submitLabel nextLabel error errorRef tokens wcag accessibility",
+    "keywords": "wizard — design system forms & inputs the parent owns the state example notes  tokens wcag accessibility",
     "description": "The shared multi-step form shell: a stepper, the current step",
     "type": "component",
     "iconName": "edit_note"
@@ -1124,7 +1124,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Zone Switcher — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/zone-switcher",
-    "keywords": "zone switcher — design system navigation mounted once, by the hub the rail and the panel why the right wall demodocktab how the hub wires it two independent holds, and how to test them pathname apps extraTabs label className id label content tokens wcag accessibility",
+    "keywords": "zone switcher — design system navigation mounted once, by the hub the rail and the panel why the right wall demodocktab how the hub wires it two independent holds, and how to test them id label content tokens wcag accessibility",
     "description": "The estate",
     "type": "component",
     "iconName": "navigation"

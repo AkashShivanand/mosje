@@ -5,7 +5,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 
@@ -17,155 +16,12 @@ export const metadata: Metadata = {
     "Samajik Sahayak, the estate's shared help assistant: a corner launcher that opens a scripted, non-modal chat panel.",
 };
 
-/*
- * Read off `ChatbotProps` in packages/design-system/components/feedback/chatbot.tsx.
- * The interface extends `Omit<React.HTMLAttributes<HTMLDivElement>, "onSelect" | "onSubmit">`,
- * so standard div attributes pass through and are not listed individually.
- *
- * Corrected 2026-09-02: `restartNotice` was missing entirely, and `endChatLabel`
- * was documented as clearing the transcript. It does not — "Start over" appends
- * a labelled rule and greets again, and destroys nothing above it.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "open",
-    type: "boolean",
-    default: "undefined",
-    description: "Controlled open state. Omit it to let the widget own its own.",
-  },
-  {
-    name: "defaultOpen",
-    type: "boolean",
-    default: "false",
-    description: "Initial open state when uncontrolled.",
-  },
-  {
-    name: "onOpenChange",
-    type: "(open: boolean) => void",
-    default: "undefined",
-    description: "Called when the widget opens or closes.",
-  },
-  {
-    name: "title",
-    type: "string",
-    default: '"Samajik Sahayak"',
-    description:
-      "Panel header. The assistant's own name — the seal on the launcher has it written round the ring, so the title says the same thing rather than an invitation like “Chat with us”.",
-  },
-  {
-    name: "subtitle",
-    type: "string",
-    default: '"सामाजिक सहायक"',
-    description: 'The Devanagari name under the title. Pass "" to suppress it.',
-  },
-  {
-    name: "greeting",
-    type: "string",
-    default: "undefined",
-    description: "The bot's opening line, typed out on first open.",
-  },
-  {
-    name: "quickReplies",
-    type: "readonly ChatbotQuickReply[]",
-    default: "undefined",
-    description:
-      "Suggestions offered under the greeting. Each is `{ id, label }`, and each is a sentence the citizen is about to say.",
-  },
-  {
-    name: "onQuickReply",
-    type: "(reply: ChatbotQuickReply) => ChatbotReply | Promise<ChatbotReply | void> | void",
-    default: "undefined",
-    description:
-      "Return a `ChatbotReply` and the widget shows the citizen's message, types for a beat, then renders the answer. Return nothing and only the citizen's message is appended.",
-  },
-  {
-    name: "messages",
-    type: "readonly ChatbotMessage[]",
-    default: "undefined",
-    description:
-      "A controlled transcript. Provide it and the widget renders exactly this, running no scripted sequence of its own. Each message is `{ id, from, text }` where `from` is \"bot\", \"user\" or \"system\".",
-  },
-  {
-    name: "typing",
-    type: "boolean",
-    default: "undefined",
-    description: "Show the typing indicator. Only meaningful alongside `messages`.",
-  },
-  {
-    name: "composer",
-    type: "boolean",
-    default: "true",
-    description:
-      "Show the free-text composer. On by default to match the affordance a citizen arriving from the department's own site already expects.",
-  },
-  {
-    name: "composerPlaceholder",
-    type: "string",
-    default: '"Type something…"',
-    description: "Placeholder for the composer input.",
-  },
-  {
-    name: "onSubmit",
-    type: "(text: string) => ChatbotReply | Promise<ChatbotReply | void> | void",
-    default: "undefined",
-    description:
-      "Handle a typed question. Without a handler, an unrecognised question gets an honest “I can't answer that, but here is what I can do” rather than silence.",
-  },
-  {
-    name: "note",
-    type: "string",
-    default: "undefined",
-    description:
-      "The honest statement of what this assistant is not, shown under the composer. Never remove it — it is what stops the widget implying it can read an application.",
-  },
-  {
-    name: "endChatLabel",
-    type: "string",
-    default: '"Start over"',
-    description:
-      "Label for the footer reset. The control begins a fresh conversation and destroys nothing: the turns above stay where they are, under a labelled rule. It does not close the panel either — that is the header's job.",
-  },
-  {
-    name: "restartNotice",
-    type: "string",
-    default: '"New conversation"',
-    description:
-      "Text on the rule that marks where a fresh start begins. A prop rather than a constant because this estate serves Hindi as well as English, and a hardcoded English string inside the design system is a translation defect waiting to be found by a citizen.",
-  },
-  {
-    name: "onEndChat",
-    type: "() => void",
-    default: "undefined",
-    description:
-      "Called when “Start over” is pressed. A controlled consumer owns the transcript, so it owns the append too: carry the turns already shown, add the rule, and greet again. It must not clear.",
-  },
-  {
-    name: "launcherLabel",
-    type: "string",
-    default: '"Samajik Sahayak, chat assistant"',
-    description: "Accessible name of the launcher button.",
-  },
-  {
-    name: "typingDelayMs",
-    type: "number",
-    default: "900",
-    description: "How long the typing indicator runs before a bot message lands.",
-  },
-  {
-    name: "placement",
-    type: '"fixed" | "inline"',
-    default: '"fixed"',
-    description:
-      "`fixed` pins the widget to the corner rail, which is its home. `inline` drops the positioning so a documentation page or a story can place it — as this page does.",
-  },
-];
-
 const A11Y: A11yItem[] = [
   {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     description:
-      "The 84px launcher, the 32px header controls and the 32px Start over button all clear the 24px minimum. So does the composer input, which did not: it was 20px inside a 42px pill, so half of what looked like a text field focused nothing. It now stretches to the pill's inner height, pinned in e2e/chatbot/composer-target.spec.ts.",
+      "The 84px launcher and the three 32px header controls — Start over, expand and minimise — all clear the 24px minimum. So does the composer input, which did not: it was 20px inside a 42px pill, so half of what looked like a text field focused nothing. It now stretches to the pill's inner height, pinned in e2e/chatbot/composer-target.spec.ts.",
     status: "verified",
     evidence: "e2e/chatbot/composer-target.spec.ts",
   },
@@ -191,7 +47,7 @@ const A11Y: A11yItem[] = [
     criterion: "1.4.3 Contrast (Minimum)",
     level: "AA",
     description:
-      "Start over paints `text/neutral/base` at 16.18:1 — darker and heavier than the 12px note beside it, so the one control in the footer is not the same colour as the disclaimer.",
+      "The panel's text, its header controls and the footer note all resolve through the neutral and brand token families, so ink and ground move together across brand modes rather than one being fixed against the other.",
   },
   {
     criterion: "2.3.3 Animation from Interactions",
@@ -215,7 +71,7 @@ export default function ChatbotPage(): React.JSX.Element {
           <ChatbotPlayground />
         </div>
       }
-      props={PROPS}
+      propsFrom="ChatbotProps"
       a11y={A11Y}
       whenToUse={{
         use: [
@@ -275,9 +131,9 @@ export default function ChatbotPage(): React.JSX.Element {
             </p>
             <ul>
               <li>
-                <strong>Header</strong> — the mascot at 40px, the bilingual title block, then expand
-                and minimise as 32px targets. All four marks are Material Symbols Rounded glyphs;
-                none is a hand-drawn path.
+                <strong>Header</strong> — the mascot at 40px, the bilingual title block, then Start
+                over, expand and minimise as 32px targets. All three control glyphs are Material
+                Symbols Rounded; none is a hand-drawn path.
               </li>
               <li>
                 <strong>Log</strong> — bot turns carry an avatar, citizen turns do not. Bubbles cap
@@ -286,12 +142,11 @@ export default function ChatbotPage(): React.JSX.Element {
                 are about to say, and pressing it puts those words in their own bubble.
               </li>
               <li>
-                <strong>Footer</strong> — a pill composer, the honest note, and{" "}
-                <strong>Start over</strong> sharing the note&apos;s row, hard right. It is the design
-                system&apos;s Button at <code>variant=&quot;neutral&quot;</code>{" "}
-                <code>appearance=&quot;text&quot;</code>. Hand-rolled, it drifted into the
-                estate&apos;s rejection red for an action that is housekeeping, and became the
-                loudest thing in a footer whose only filled control is disabled at rest.
+                <strong>Footer</strong> — a pill composer and the honest note, and nothing else.
+                Start over sits in the header with the other two panel controls: hand-rolled in the
+                footer it drifted into the estate&apos;s rejection red for an action that is
+                housekeeping, and became the loudest thing in a footer whose only filled control is
+                disabled at rest.
               </li>
             </ul>
           </section>
@@ -301,7 +156,7 @@ export default function ChatbotPage(): React.JSX.Element {
             </h2>
             <p>
               Figma draws four states because a static file cannot show motion. They are listed in
-              the order the component actually runs them, and only the first is a prop.
+              the order the component actually runs them.
             </p>
             <ul>
               <li>
@@ -328,10 +183,11 @@ export default function ChatbotPage(): React.JSX.Element {
               of.
             </p>
             <p>
-              <strong>Typing and Transcript are not props.</strong> They are states the widget walks
-              through on its own. Adding props to pin it into one would invent an API for something
-              the component deliberately owns, and would let a consumer freeze it in a state it is
-              meant to pass through.
+              <strong>Left alone, the widget walks these on its own.</strong> It opens, types and
+              greets without being told to, and <code>typing</code> is ignored while it does &mdash;
+              the prop is read only where a consumer has passed <code>messages</code> and taken the
+              transcript over. A controlled consumer therefore owns the typing beat as well as the
+              turns.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-placement">

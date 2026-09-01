@@ -6,7 +6,6 @@ import {
   CodeBlock,
   ComponentDocPage,
   type A11yItem,
-  type PropDef,
 } from "@/components/design-system/docs-kit";
 import { Playground } from "@/components/design-system/playground";
 
@@ -15,56 +14,6 @@ export const metadata: Metadata = {
   description:
     "A single-line text field built on the native input element and styled on the token contract. Pair it with FormField so the label, hint and error wiring come for free.",
 };
-
-/*
- * Read off `InputProps` in packages/design-system/components/forms/input.tsx.
- * The interface extends `InputHTMLAttributes<HTMLInputElement>` minus `size`,
- * so every native attribute — `value`, `onChange`, `name`, `required`,
- * `maxLength`, `autoComplete` — passes through and is not listed individually.
- */
-const PROPS: PropDef[] = [
-  {
-    name: "invalid",
-    type: "boolean",
-    default: "false",
-    description:
-      "Renders the error state and sets `aria-invalid` on the input. FormField sets this for you from its own `error` prop.",
-  },
-  {
-    name: "leftIcon",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Decorative icon inside the field, before the text. It is `aria-hidden`, so it is never the field's accessible name — the field still needs a real label.",
-  },
-  {
-    name: "rightIcon",
-    type: "React.ReactNode",
-    default: "undefined",
-    description:
-      "Trailing slot inside the field. Unlike `leftIcon` this is NOT hidden from assistive technology, because it is commonly an interactive control. Give that control its own accessible name. For a password reveal, use Password Input instead.",
-  },
-  {
-    name: "type",
-    type: "string",
-    default: '"text"',
-    description: "Native input type — text, email, tel, number, date, search, and the rest.",
-  },
-  {
-    name: "className",
-    type: "string",
-    default: "undefined",
-    description:
-      "Merged onto the input itself. With an icon present the input is wrapped in a positioned shell; the class still lands on the input, not the shell.",
-  },
-  {
-    name: "...native",
-    type: "Omit<React.InputHTMLAttributes<HTMLInputElement>, \"size\">",
-    default: "—",
-    description:
-      "Every native input attribute is forwarded to the underlying element, including `ref`. `size` is removed because it collides with the estate's own size vocabulary.",
-  },
-];
 
 const A11Y: A11yItem[] = [
   {
@@ -116,10 +65,10 @@ export default function InputPage(): React.JSX.Element {
     <ComponentDocPage
       name="Input"
       status="Stable"
-      summary="A single-line text field built on the native input element and styled on the token contract. It accepts every native input attribute and adds one prop for the error state. In practice it is rarely used alone — wrap it in a Form Field so the label, hint and error wiring come with it."
+      summary="A single-line text field built on the native input element and styled on the token contract. It accepts every native input attribute and adds three props of its own — the error state and the two icon slots. In practice it is rarely used alone — wrap it in a Form Field so the label, hint and error wiring come with it."
       figma={{ node: "inputs" }}
       specimen={<Playground code={EXAMPLE} />}
-      props={PROPS}
+      propsFrom="InputProps"
       a11y={A11Y}
       whenToUse={{
         use: [
