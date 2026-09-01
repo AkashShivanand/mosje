@@ -107,9 +107,27 @@
     margin: 0;
   }
 
+  /*
+    ── THE BADGES SIT RIGHT, AT EVERY WIDTH ─────────────────────────────────
+
+    `justify-content: flex-end` used to live inside the desktop media query
+    alongside the floating treatment, so below 1025px — where the strip returns
+    to the normal flow at the head of the map — the badges fell back to the
+    LEFT. A control that changes corner at a breakpoint is a control the reader
+    has to find twice.
+
+    The alignment belongs to the badges, not to the floating, so it sits out
+    here with them.
+  */
   .pmw__filters {
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    width: 100%;
+  }
+
+  .pmw__chips {
+    justify-content: flex-end;
   }
 
   .pmw__chips {
@@ -315,14 +333,19 @@
       borders, so they already read as controls sitting ON something. A card
       around a card is the thing `refactoring-ui` calls out.
 
-      Anchored to the MAP COLUMN rather than to the artwork, which reclaims the
-      12px the SVG letterboxes on that side — 344px of clear space against 327
-      needed, so the row has 17px of slack rather than being 15px short.
+      ALIGNED TO THE MAP'S OWN PADDING, NOT JAMMED AGAINST ITS EDGE. It sat at
+      4px from the column, which left the last badge all but touching the
+      hairline that divides the map from the list, while every other edge in
+      this card stands 12px off. A strip clearing the divider by a third of
+      what its neighbours do reads as overflow rather than as placement.
+
+      12px puts its right edge exactly on the artwork's, so it lines up with
+      the map rather than with the column that carries it.
     */
     .pmw__filters.pmw__key {
       position: absolute;
       top: var(--sa-padding-12);
-      right: var(--sa-padding-4);
+      right: var(--sa-padding-12);
       /* 1, and 1 is enough: the only thing it has to sit above is its own
          sibling SVG. This is inside the map, not on either floating rail, so
          it takes no part in the estate's z-index ladder — see
@@ -332,14 +355,13 @@
     }
 
     /*
-      One row, right-aligned. `wrap` is the fallback and not the plan: if a
-      longer label ever pushes past the band the row breaks upward from the
-      right, into empty sky, which is the one direction this strip can afford
-      to grow.
+      `wrap` is the fallback and not the plan: if a longer label ever pushes
+      past the band the row breaks downward from the right, over the plateau,
+      which stays clear for 160 units — the one direction this strip can
+      afford to grow.
     */
     .pmw__key .pmw__chips {
       flex-wrap: wrap;
-      justify-content: flex-end;
       gap: var(--sa-stack-4);
     }
   }
