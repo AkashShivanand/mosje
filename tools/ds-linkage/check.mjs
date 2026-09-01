@@ -20,71 +20,21 @@
  *
  * Run: node tools/ds-linkage/check.mjs [--json] [--all]
  */
-import { readFileSync, readdirSync, statSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { join, relative } from "node:path";
 
+import {
+  CONFIG,
+  walk,
+  styleObjectRegions,
+  cssTemplateRegions,
+  arbitraryClassRegions,
+  lineAt,
+  exemptionMap,
+  blankComments,
+} from "./regions.mjs";
+
 const ROOT = new URL("../..", import.meta.url).pathname.replace(/\/$/, "");
-const CONFIG = JSON.parse(readFileSync(join(ROOT, "tools/ds-linkage/config.json"), "utf8"));
-
-const VALID_CATEGORIES = new Set(CONFIG.exemptionCategories);
-
-/* ── file discovery ─────────────────────────────────────────────────────── */
-
-function walk(dir, out = []) {
-  for (const entry of readdirSync(dir)) {
-    if (CONFIG.skipDirs.includes(entry)) continue;
-    const p = join(dir, entry);
-    const st = statSync(p);
-    if (st.isDirectory()) walk(p, out);
-    else if (/\.(tsx|ts|css)$/.test(entry) && !/\.(test|spec)\./.test(entry)) out.push(p);
-  }
-  return out;
-}
-
-/* ── region extraction ──────────────────────────────────────────────────── */
-
-/** Pull out `style={{ … }}` bodies with balanced braces. Returns [start,end) offsets. */
-function styleObjectRegions(src) {
-  const regions = [];
-  const re = /style=\{\{/g;
-  let m;
-  while ((m = re.exec(src))) {
-    let depth = 2; // we already consumed `{{`
-    let i = m.index + m[0].length;
-    while (i < src.length && depth > 0) {
-      const c = src[i];
-      if (c === "{") depth++;
-      else if (c === "}") depth--;
-      i++;
-    }
-    regions.push([m.index, i]);
-  }
-  return regions;
-}
-
-/** Template literals that look like CSS (contain `prop: value;`). */
-function cssTemplateRegions(src) {
-  const regions = [];
-  for (let i = 0; i < src.length; i++) {
-    if (src[i] !== "`") continue;
-    let j = i + 1;
-    while (j < src.length && !(src[j] === "`" && src[j - 1] !== "\\")) j++;
-    const body = src.slice(i + 1, j);
-    // CSS-ish: at least two `prop: value;` declarations
-    if ((body.match(/[a-z-]+\s*:\s*[^;{}]+;/g) || []).length >= 2) regions.push([i, j + 1]);
-    i = j;
-  }
-  return regions;
-}
-
-/** Tailwind arbitrary values: className="… p-[13px] text-[#fff] …" */
-function arbitraryClassRegions(src) {
-  const regions = [];
-  const re = /className=(?:"[^"]*"|\{`[^`]*`\}|\{"[^"]*"\})/g;
-  let m;
-  while ((m = re.exec(src))) regions.push([m.index, m.index + m[0].length]);
-  return regions;
-}
 
 /* ── violation detection ────────────────────────────────────────────────── */
 
@@ -104,71 +54,6 @@ const BARE_NUMERIC = /\b(fontSize|width|height|minWidth|maxWidth|minHeight|maxHe
 const GATED_PROPERTY =
   /^(padding|margin|gap|rowGap|columnGap|row-gap|column-gap|borderRadius|border-radius|paddingTop|paddingRight|paddingBottom|paddingLeft|padding-top|padding-right|padding-bottom|padding-left|marginTop|marginRight|marginBottom|marginLeft|margin-top|margin-right|margin-bottom|margin-left|padding-inline|padding-block|margin-inline|margin-block)$/;
 
-function lineAt(src, offset) {
-  return src.slice(0, offset).split("\n").length;
-}
-
-/** Declared exemptions: same line, the line above, or an open block. */
-function exemptionMap(src) {
-  const lines = src.split("\n");
-  const perLine = new Map();
-  let block = null;
-  const bad = [];
-
-  lines.forEach((text, idx) => {
-    const ln = idx + 1;
-
-    const start = text.match(/ds-exempt-start\(([a-z-]+)\)\s*:?\s*(.*?)(?:\*\/|$)/);
-    if (start) {
-      const cat = start[1];
-      const reason = start[2].replace(/\*\/\s*$/, "").trim();
-      if (!VALID_CATEGORIES.has(cat)) bad.push({ line: ln, msg: `unknown exemption category "${cat}"` });
-      else if (reason.length < CONFIG.minReasonChars) bad.push({ line: ln, msg: `exemption reason too short (needs ${CONFIG.minReasonChars}+ chars saying WHY)` });
-      block = { cat, reason };
-    }
-    if (/ds-exempt-end/.test(text)) block = null;
-
-    if (block) perLine.set(ln, block);
-
-    const inline = text.match(/ds-exempt\(([a-z-]+)\)\s*:?\s*(.*?)(?:\*\/|$)/);
-    if (inline) {
-      const cat = inline[1];
-      const reason = inline[2].replace(/\*\/\s*$/, "").trim();
-      if (!VALID_CATEGORIES.has(cat)) bad.push({ line: ln, msg: `unknown exemption category "${cat}"` });
-      else if (reason.length < CONFIG.minReasonChars) bad.push({ line: ln, msg: `exemption reason too short (needs ${CONFIG.minReasonChars}+ chars saying WHY)` });
-      // Applies to this line and to the next line that actually CONTAINS CODE. The
-      // comment carrying the reason is usually several lines long and sits above the
-      // declaration it excuses, so "the next line" is nearly always still the comment.
-      perLine.set(ln, { cat, reason });
-      // The reason is usually a multi-line block comment, so walk to wherever that
-      // comment ENDS and exempt the first line of real code after it. Keying off "does
-      // this line look like a comment" fails on continuation lines, which look like prose.
-      let open = /\/\*/.test(text) && !/\*\//.test(text.slice(text.indexOf("/*") + 2));
-      for (let k = idx + 1; k < lines.length; k++) {
-        const s = (lines[k] ?? "").trim();
-        perLine.set(k + 1, { cat, reason });
-        if (open) { if (s.includes("*/")) open = false; continue; }
-        // Consecutive `//` lines are the same comment continued.
-        if (s === "" || s.startsWith("//")) continue;
-        // A structural opener (`preview: (`, `return (`, `{`) carries no value of its
-        // own, so it is not the line the reason was written for — keep walking.
-        if (/[([{]$/.test(s)) continue;
-        break;
-      }
-    }
-  });
-
-  return { perLine, bad };
-}
-
-/** Blank out comment bodies, keeping offsets and newlines so line numbers stay true.
- *  A value discussed in a comment is prose, not styling — and `ds-exempt` markers are
- *  read from the ORIGINAL source, so blanking here cannot swallow them. */
-function blankComments(src) {
-  return src
-    .replace(/\/\*[\s\S]*?\*\//g, (c) => c.replace(/[^\n]/g, " "))
-    .replace(/(^|[^:])\/\/[^\n]*/g, (c, p) => p + " ".repeat(c.length - p.length));
-}
 
 function checkFile(path) {
   const raw = readFileSync(path, "utf8");
@@ -217,8 +102,16 @@ function checkFile(path) {
         // media-query breakpoint or a blur radius is geometry the token scales do not
         // model, so it is reported as ADVISORY rather than failing the build. Inventing a
         // one-use token for each would inflate the palette, which the rule warns against.
+        // A BARE NUMERIC match starts at the property NAME (`height` in `height: 44`), so a
+        // lookback from m.index lands on the PREVIOUS declaration and attributes the value to
+        // it. That made `gap: 8, height: 44` report `height` as a gated `gap`, and would just
+        // as happily report a real `padding` as an advisory `color`. The property is m[1] —
+        // read it, do not re-derive it.
         const decl = body.slice(Math.max(0, m.index - 60), m.index);
-        const prop = (decl.match(/([a-zA-Z-]+)\s*:\s*[^;:{}]*$/) || [])[1] || "";
+        const prop =
+          kind === "bare-numeric-px"
+            ? m[1]
+            : (decl.match(/([a-zA-Z-]+)\s*:\s*[^;:{}]*$/) || [])[1] || "";
         const gatedProp = GATED_PROPERTY.test(prop);
         const severity = kind.startsWith("raw-colour") || gatedProp ? "gated" : "advisory";
 
@@ -268,10 +161,13 @@ for (const s of scope) {
 }
 
 if (asJson) {
+  // NOT process.exit(): it does not flush a large stdout write to a PIPE, so a consumer
+  // reading this JSON gets a document cut off mid-string. Set the code and fall through.
   console.log(JSON.stringify({ total: all.length, findings: all }, null, 2));
-  process.exit(all.some((f) => f.severity === "gated") ? 1 : 0);
+  process.exitCode = all.some((f) => f.severity === "gated") ? 1 : 0;
 }
 
+else {
 const gated = all.filter((f) => f.severity === "gated");
 const advisory = all.filter((f) => f.severity !== "gated");
 
@@ -313,4 +209,5 @@ if (advisory.length) {
   if (rest > 0) console.log(`     …and ${rest} more file${rest === 1 ? "" : "s"}`);
 }
 
-process.exit(gated.length ? 1 : 0);
+process.exitCode = gated.length ? 1 : 0;
+}

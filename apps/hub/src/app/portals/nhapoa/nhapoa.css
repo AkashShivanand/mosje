@@ -4,6 +4,12 @@
    where NHAPOA differs from the hub-wide default are listed — see globals.css.
    NHAPOA takes the hub-wide defaults for ink-hint (#64748b), await-fg (#92400e),
    saffron-600 (#b8500f), navy, brandwash, approve, reject, line and the shadows. */
+/* ds-exempt-start(portal-palette): NHAPOA renders its own palette, transcribed from its
+   own design source rather than from SAMAVESH. CLAUDE.md sanctions a per-portal palette
+   ("palettes genuinely conflict") and binding these to the nearest --sa-* token would
+   RECOLOUR the portal rather than link it — a redesign, not a linkage fix. Registered as
+   a divergence in docs/guidelines/README.md. Covers the DEFINITIONS only: every rule in
+   this file resolves through one of these names, never through a repeated literal. */
 [data-portal="nhapoa"] {
   /* DS-token names NHAPOA redefines (hub keeps its own value outside this scope). */
   --portal-ink: #0f172a;
@@ -18,7 +24,18 @@
   /* borderRadius.extend — stock Tailwind is 0.75rem / 1rem. */
   --radius-xl: 0.85rem;
   --radius-2xl: 1.1rem;
+  --nha-scroll-thumb: #cbd5e1;                  /* scrollbar thumb on a scrolling rail */
+  --nha-scrim-top: rgba(7, 26, 61, 0.92);       /* top stop of the hero scrim */
+  --nha-scrim-bottom: rgba(10, 36, 82, 0.92);   /* bottom stop of the hero scrim */
 }
+/* ds-exempt-end */
+
+/* ds-exempt-start(portal-palette): NHAPOA renders its own palette, transcribed from its
+   own design source rather than from SAMAVESH. CLAUDE.md sanctions a per-portal palette
+   ("palettes genuinely conflict") and binding these to the nearest --sa-* token would
+   RECOLOUR the portal rather than link it — a redesign, not a linkage fix. Registered as
+   a divergence in docs/guidelines/README.md. Covers the DEFINITIONS only: every rule in
+   this file resolves through one of these names, never through a repeated literal. */
 
 :root {
   --font-scale: 1;
@@ -32,11 +49,19 @@
   --border: #e2e8f0;
   --foreground: #0f172a;
 }
+/* ds-exempt-end */
+
 
 /* GIGW accessibility — font scaling hooks */
 [data-fontscale="small"] { --font-scale: 0.92; }
 [data-fontscale="default"] { --font-scale: 1; }
 [data-fontscale="large"] { --font-scale: 1.12; }
+/* ds-exempt-start(portal-palette): NHAPOA renders its own palette, transcribed from its
+   own design source rather than from SAMAVESH. CLAUDE.md sanctions a per-portal palette
+   ("palettes genuinely conflict") and binding these to the nearest --sa-* token would
+   RECOLOUR the portal rather than link it — a redesign, not a linkage fix. Registered as
+   a divergence in docs/guidelines/README.md. Covers the DEFINITIONS only: every rule in
+   this file resolves through one of these names, never through a repeated literal. */
 
 [data-highcontrast="true"] {
   --surface: #000000;
@@ -44,6 +69,8 @@
   --foreground: #ffffff;
   --border: #ffffff;
 }
+/* ds-exempt-end */
+
 
 html {
   font-size: calc(16px * var(--font-scale));
@@ -65,17 +92,17 @@ body {
   scrollbar-color: var(--sa-border-neutral-base) transparent;
 }
 .nha-scroll::-webkit-scrollbar { width: 8px; height: 8px; }
-.nha-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+.nha-scroll::-webkit-scrollbar-thumb { background: var(--nha-scroll-thumb); border-radius: var(--sa-shape-40); }
 .nha-scroll::-webkit-scrollbar-track { background: transparent; }
 
 /* SAMAVESH login left-panel hero gradient overlay */
 .nha-login-panel {
   background:
-    linear-gradient(180deg, rgba(7, 26, 61, 0.92) 0%, rgba(10, 36, 82, 0.92) 100%),
+    linear-gradient(180deg, var(--nha-scrim-top) 0%, var(--nha-scrim-bottom) 100%),
     var(--nha-navy-deep);
 }
 
 /* citizen-portal hero band — NHAPOA uses the government navy gradient */
 .nha-hero {
-  background: linear-gradient(120deg, #1c4486 0%, #13366b 55%, #0a2452 100%);
+  background: linear-gradient(120deg, var(--color-herofrom) 0%, var(--nha-navy) 55%, var(--color-heroto) 100%);
 }

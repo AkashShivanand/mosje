@@ -15,7 +15,7 @@ export function FinancialSummaryPage() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 10,
+            gap: "var(--sa-inline-8)",
             flexWrap: "wrap",
           }}
         >

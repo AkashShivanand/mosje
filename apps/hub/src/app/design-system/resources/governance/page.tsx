@@ -92,7 +92,7 @@ export default function GovernancePage(): React.JSX.Element {
                 background: "var(--sa-bg-neutral-base)",
               }}
             >
-              <div style={{ paddingTop: 2 }}>
+              <div style={{ paddingTop: "var(--sa-padding-2)" }}>
                 <StatusBadge status={item.stage} />
               </div>
               <div>

@@ -268,6 +268,141 @@ five off-scale icons from one page while another page added five, and report cle
 When you redesign a page, map `10 · 12 · 14 · 15 → 16`, `18 · 22 → 20`, and take
 `28` and `56` case by case. Full findings: `docs/design-system/icon-audit.md`.
 
+## Typography linkage — a ratchet, and the family that had NO gate (enforced in CI)
+
+**Typography had no gate of any kind until 2026-09-01.** Colour had stylelint plus six
+contract tests, spacing and radius each had a census and a per-page ratchet, icons had a
+per-file one. Font size — 21 roles, 73 custom properties, the most visible thing on a
+government page — had nothing. `check:ds-linkage` said so out loud every time it passed:
+*"every fill, stroke, padding, gap and radius resolves through the design system."* Font
+size is not in that sentence, and it was not in the checker's property table.
+
+The audit that found this measured the cost:
+
+| | |
+|---|---|
+| Literal font sizes across the estate | **562** |
+| …of them OFF the 15-step ramp | **224** — 9, 10, 12.5, 13, 15, 17, 18, 19, 21, 26, 30, 34, 36, 38, 42, 44, 50, 62px |
+| `13px` alone | **71** occurrences |
+| Raw `letter-spacing` against 10 tracking tokens | **100** |
+| Files affected | **75** |
+
+Three specific defects it also surfaced:
+
+- **`document-library.css` shipped `var(--sa-type-body-4-size)`** — a token that has never
+  existed; the body ramp is 1–3. CSS drops an undefined `var()` in silence, so that text
+  rendered at whatever it inherited and nothing said a word. Same file, `--sa-shape-md`,
+  same story. `check:dangling-vars` catches that class; nothing caught the *literal*
+  people reach for instead.
+- **A second, complete, hand-maintained type scale in `apps/hub/src/app/globals.css`** —
+  the `@theme` block labelled "smile-admin type scale", 19 hardcoded `--text-*` sizes,
+  leadings and trackings, several of which (44px, 26px, `-0.02em`) the ramp cannot
+  express at all.
+- **The adoption split maps exactly onto the `ds-linkage` scope list.** The design-system
+  package and the docs are largely bound; the portals and the website marketing
+  components are not — and only `e-anudaan` of the eight portals was in scope. A gate
+  reporting a clean estate was measuring the wrong estate.
+
+### The gate
+
+`tools/type-linkage/check.mjs`, wired as `npm run check:type-linkage` in `npm run check`
+and in **Design System Quality**. It shares its source-scanning machinery with
+`ds-linkage` via `tools/ds-linkage/regions.mjs` — one parser, one exemption vocabulary,
+one definition of "this line is styling". The two gates ask different questions of the
+same regions; a hand-maintained second copy of that parser is the failure this estate has
+recorded five times over.
+
+It checks four properties in CSS, Tailwind arbitrary values and React style objects:
+`size`, `leading` (**including unitless ratios**, which no px-grep can see), `tracking`
+and `family`. A `size` is classified further — `size-off-ramp` is the worse half, because
+it needs a DESIGN decision rather than a binding.
+
+**Two deliberate non-findings**, and both matter:
+
+- **`font-size` on a Material Symbols glyph is ICON sizing**, and `check:icon-scale`
+  already owns it with its own seven-step scale and its own baseline. Two gates claiming
+  one declaration means one of them is always wrong. Anything whose selector or line
+  names an icon is handed over and counted separately, so the hand-off stays visible
+  rather than looking like an omission. 96 declarations currently sit there.
+- **`font-weight` has no token by design** (CLAUDE.md — "write the number, as button.css
+  does"), so a weight literal is correct.
+
+### Why a ratchet and not a sweep
+
+Snapping 71 sites from 13px to 12 or 14 moves text on live government pages — the
+website's organisation pages, pm-ajay, eutthan-admin — and every one needs a visual audit
+first. A ratchet costs nothing today, refuses to let the number grow, and **fails when a
+count SHRINKS without the baseline being lowered in the same change**, so the backlog can
+only go down.
+
+The baseline is **per file**, in `tools/type-linkage/baseline.json`. One global count
+would let a redesign clean five sites off one page while another page added five, and
+report success for a net change of nothing.
+
+All four failure modes were exercised by deliberately breaking them — new file, grown
+count, shrunk count, and a declared `ds-exempt(specimen)` — per the rule that a check
+nobody has watched fail cannot be trusted.
+
+### `ds-linkage` went estate-wide, and the estate was cleared to ZERO
+
+Only `e-anudaan` of the eight portals had ever been in scope, and the website was in
+nothing at all — so a gate reporting a clean estate was measuring the wrong estate. All
+23 scopes are now `gated: true`, and all **867** findings they exposed are cleared.
+
+| surface | was | now |
+|---|---|---|
+| pm-ajay (routes + components) | 489 | **0** |
+| eutthan-admin (routes + components) | 224 | **0** |
+| smile-admin · scw · nhapoa · tg · nmba | 128 | **0** |
+| website (routes + components) | 43 | **0** |
+| design-system docs | 12 (found only after the fix below) | **0** |
+
+**What the sweep actually did**, and the shape is worth copying:
+
+1. **Lengths were bound by property and layout AXIS** — `padding*` → `padding`, a vertical
+   gap or margin → `stack`, a horizontal one → `inline`, `border-radius` → `shape`, with a
+   bare `gap` taking its axis from its own rule's `flex-direction`. Exact rungs bind with
+   no pixel movement; the ladder steps by 4 above 8, so `10 · 14 · 18 · 22 · 28` are exact
+   ties and were resolved **DOWN**, floored at the smallest non-zero rung. Down tightens,
+   which is recoverable by eye; up inflates every one of them by 2px and, on a dense admin
+   dashboard with fixed-width rails, that is the direction that causes wrapping. The floor
+   is what stops a 1px inset rounding to nothing — 0 is the *absence* of a value.
+2. **Colours were routed through each portal's OWN palette first.** 60 loose literals in
+   `pm-ajay.css` alone became 32 role-named entries (`--pm-row-hover`, `--pm-track`,
+   `--pm-on-navy-88`), so a rule now names what the colour is *for*. Not one rendered
+   colour changed: a literal was only ever replaced by a variable already holding it.
+3. **Only then was the palette DEFINITION block declared**, with the new
+   `portal-palette` exemption category. See the divergence register.
+4. **Two colours were genuinely bindable and were bound**: `--primary-500` and `--pm-navy`
+   both resolve to `#003366`, which is `--sa-color-brand-navy` — defined once, no mode
+   variation, so binding it cannot leak a theme into a portal that has no brand modes.
+   `#0373DF` across the website's `bg-[#0373DF]` classes is gov-blue, already exposed to
+   Tailwind as `--color-primary`; those are now `bg-primary` and retheme with the estate.
+
+**Two precision bugs in the gate itself surfaced during the sweep, and both were fixed:**
+
+- **`prop` was mis-attributed for every bare numeric.** A `BARE_NUMERIC` match starts at
+  the property NAME, so the 60-character lookback landed on the *previous* declaration:
+  `gap: 8, height: 44` reported `height` as a gated `gap`, and would just as happily have
+  reported a real `padding` as an advisory `color`. Reading `m[1]` instead surfaced **96
+  genuine findings** the gate had been mis-classifying — including 12 in the
+  design-system docs, a scope that had been reporting clean for weeks.
+- **`--json` was truncated when piped.** `process.exit()` does not flush a large stdout
+  write to a pipe, so any consumer got a JSON document cut mid-string. Set `exitCode` and
+  let the process end.
+
+Both are the same lesson the space census recorded: *a gate that cannot fail — or that
+fails on the wrong thing — is worse than no gate.*
+
+### What is NOT enforced, and why
+
+**No stylelint rule was added for `font-size` / `line-height` / `letter-spacing`.** It
+would have needed ~40 `stylelint-disable` comments in the design-system package alone,
+and a gate everyone learns to silence is not a gate — the same reasoning
+`ds-linkage`'s config note gives for its advisory split. The ratchet supersedes it and
+covers three forms stylelint cannot see: Tailwind arbitrary values, React style objects,
+and bare numerics like `fontSize: 13`.
+
 ## Changelog freshness (enforced in CI)
 
 The changelog at `apps/hub/src/app/design-system/resources/changelog/page.tsx`

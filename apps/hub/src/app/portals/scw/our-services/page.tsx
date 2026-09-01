@@ -32,7 +32,7 @@ export default function OurServicesPage() {
             className="relative min-h-[480px] bg-slate-100"
             style={{
               backgroundImage:
-                "radial-gradient(circle at 30% 35%, rgba(37,99,235,0.10) 0, transparent 40%), radial-gradient(circle at 70% 65%, rgba(22,163,74,0.10) 0, transparent 40%), linear-gradient(0deg, rgba(15,23,42,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(15,23,42,0.05) 1px, transparent 1px)",
+                "radial-gradient(circle at 30% 35%, var(--scw-wash-blue) 0, transparent 40%), radial-gradient(circle at 70% 65%, var(--scw-wash-green) 0, transparent 40%), linear-gradient(0deg, var(--scw-wash-ink) 1px, transparent 1px), linear-gradient(90deg, var(--scw-wash-ink) 1px, transparent 1px)",
               backgroundSize: "100% 100%, 100% 100%, 40px 40px, 40px 40px",
             }}
           >

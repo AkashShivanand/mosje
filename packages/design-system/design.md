@@ -12,6 +12,25 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-01 · System version: v0.41.0 (TYPOGRAPHY WAS THE LAST TOKEN
+  FAMILY WITH NO GATE, AND IT COST 562 LITERAL FONT SIZES — 224 of them off the 15-step
+  ramp, 13px alone 71 times, plus 100 raw letter-spacings against 10 tracking tokens, a
+  second hand-maintained type scale in globals.css, and a component shipping
+  `var(--sa-type-body-4-size)`, a token that has never existed and that CSS drops in
+  silence. `npm run check:type-linkage` is a per-file ratchet over size, leading
+  (including UNITLESS ratios, which no px-grep can see), tracking and family; new debt
+  fails the build and debt that shrinks without a re-baseline fails too, so the backlog
+  only goes down. It shares one parser with ds-linkage via tools/ds-linkage/regions.mjs
+  rather than growing a second copy. Alongside: ds-linkage went from 6 scopes to all 23
+  and the estate was cleared 867 → 0, on 693 token bindings and 76 role-named palette
+  entries, with each portal's own palette declared under a new `portal-palette`
+  exemption and registered as divergence 9. Two precision bugs in ds-linkage itself were
+  fixed — it mis-attributed the property of every bare numeric, which had been hiding 96
+  real findings including 12 in these docs, and its --json truncated when piped. And
+  Figma parity became a MEASUREMENT: all 115 Type variables were read live and diffed
+  against the emitted clamps at 360/768/1280px on both surfaces, 438 of 438 name-by-mode
+  pairs identical.)
+
   Last reviewed: 2026-08-31 · System version: v0.40.0 (A BRUTAL AUDIT OF THE SAMAVESH
   PATTERN FOUND TWO LIVE ACCESSIBILITY FAILURES, ONE OF THEM SELF-INFLICTED. Escape
   left keyboard focus 1,380px off the top of the screen, because the exit animation
@@ -746,6 +765,7 @@ already been removed.*
 - **`--ds-font-mono` is for CODE AND TECHNICAL STRINGS ONLY** — token names, CSS snippets, file paths in these docs. It is a **system stack** (`ui-monospace` → SF Mono / Cascadia / Roboto Mono), deliberately not a webfont: mono appears only on documentation pages, and a download on every page to style sample code is a poor trade for a low-bandwidth government audience. The Figma variable is hidden from publishing, because "whatever mono the device has" has no single Figma family.
 - **Line Length**: Body text and prose containers max-width `65ch`–`75ch` (`max-w-prose`). Never wider.
 - **Fluid type**: Every role is `clamp(min, fluid, max)` — `min` at a 360px viewport, `max` at 1280px. No type media queries. Two surfaces (`data-surface`) supply different min/max: **Website** (expressive) vs **Portal** (dense).
+- **NEVER TYPE A FONT SIZE, LEADING, TRACKING OR FAMILY.** `npm run check:type-linkage` is a per-file ratchet and any NEW literal fails the build — in a stylesheet, in a Tailwind arbitrary value (`text-[13px]`), or as a bare numeric in a style object (`fontSize: 13`, which React turns into px and no grep for "px" can find). Bind the size AND its paired leading in the same rule: a `--ds-type-<role>-size` without its `-lh` is half a binding, and it is the half that only shows up between breakpoints — `line-height: 1.2` on `headline-1` renders 48px at desktop, which is exactly right, and 39.98px at tablet where the token says 39.10. A size the 21-role scale cannot express is a DESIGN question, not a binding one: the answer is `body-2` at 14 or `body-3` at 12, never a 22nd size invented for one card, and nothing may render below 11px (`label-3`). A deliberate specimen declares itself: `/* ds-exempt(specimen): why */`.
 - **Text Wrapping**: Use `text-wrap: balance` on `h1`–`h3`; `text-wrap: pretty` on paragraphs to eliminate orphans.
 
 ### E. Type Scale Reference
@@ -757,7 +777,10 @@ plus friendly aliases `--ds-text-<role>` / `--ds-leading-<role>`. Letter-spacing
 tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surface** — the table shows desktop
 (`max`) size; both surfaces scale fluidly to their 360px `min`. Full min/max tables live in
 `packages/tokens/src/primitive.json` (`font.role.*` + `font.tracking.*`) and
-`docs/specs/samavesh-typography-unification-spec.md`. Names match the SAMAVESH Figma library 1:1.
+`docs/specs/samavesh-typography-unification-spec.md`. Names match the SAMAVESH Figma library 1:1, and so do the VALUES: all 115 Type variables were read
+live from the library on 2026-09-01 and diffed against the emitted `clamp()`s evaluated at 360 / 768 /
+1280px on both surfaces — **438 of 438** name-by-mode pairs identical, including the fluid tablet
+midpoints, which are samples of a linear interpolation and can only agree if the whole curve does.
 
 | Role (sample) | Canonical token | Website max | Portal max | Weight | When to use |
 |------|---------------|:-----------:|:----------:|--------|-------------|

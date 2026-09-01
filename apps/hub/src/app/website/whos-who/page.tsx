@@ -110,12 +110,12 @@ export default function WhosWhoPage() {
                 <h2 className="text-xl sm:text-2xl font-bold text-neutral-900 tracking-tight">
                   {group.title}
                 </h2>
-                <div className="mt-1.5 h-1 w-12 bg-[#0373DF] rounded-full" />
+                <div className="mt-1.5 h-1 w-12 bg-primary rounded-full" />
               </div>
 
               <Link
                 href={group.viewAllHref}
-                className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#0373DF] hover:text-[#0256a7] transition-colors self-start sm:self-auto px-3 py-1.5 rounded-lg border border-[#0373DF]/30 bg-blue-50/50 hover:bg-blue-50"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary-dark transition-colors self-start sm:self-auto px-3 py-1.5 rounded-lg border border-primary/30 bg-blue-50/50 hover:bg-blue-50"
               >
                 View All
                 <Icon name="chevron_right" size={16} />
@@ -130,7 +130,7 @@ export default function WhosWhoPage() {
                 >
                   <div className="flex items-start gap-4">
                     {official.photo ? (
-                      <div className="relative h-16 w-16 rounded-full overflow-hidden border-2 border-[#0373DF]/20 shadow-sm shrink-0 bg-neutral-100">
+                      <div className="relative h-16 w-16 rounded-full overflow-hidden border-2 border-primary/20 shadow-sm shrink-0 bg-neutral-100">
                         <Image
                           src={official.photo}
                           alt={official.name}
@@ -140,7 +140,7 @@ export default function WhosWhoPage() {
                         />
                       </div>
                     ) : (
-                      <div className="h-14 w-14 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-[#0373DF] font-bold text-sm shrink-0">
+                      <div className="h-14 w-14 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-primary font-bold text-sm shrink-0">
                         {official.name
                           .replace(/^(Shri|Smt|Dr\.|Mr\.|Ms\.)\s+/i, "")
                           .slice(0, 2)
@@ -151,7 +151,7 @@ export default function WhosWhoPage() {
                       <h3 className="text-base font-bold text-neutral-900 leading-snug">
                         {official.name}
                       </h3>
-                      <p className="mt-0.5 text-xs font-semibold text-[#0373DF]">
+                      <p className="mt-0.5 text-xs font-semibold text-primary">
                         {official.designation}
                       </p>
                     </div>
@@ -175,7 +175,7 @@ export default function WhosWhoPage() {
                         <Icon name="mail" size={16} className="text-neutral-400 shrink-0" />
                         <a
                           href={`mailto:${official.email}`}
-                          className="text-[#0373DF] hover:underline truncate"
+                          className="text-primary hover:underline truncate"
                         >
                           {official.email}
                         </a>
@@ -208,7 +208,7 @@ export default function WhosWhoPage() {
               <li key={entry.href}>
                 <Link
                   href={entry.href}
-                  className="flex h-full items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#0373DF]"
+                  className="flex h-full items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
                 >
                   <span className="min-w-0">
                     <span className="block text-sm font-semibold text-neutral-900">
