@@ -334,4 +334,34 @@ export const RenamedStrip: Story = {
  */
 export const Empty: Story = {
   args: { items: [] },
+  render: (args) => (
+    <div>
+      <p style={{ margin: "0 0 12px", maxWidth: 520 }}>
+        The strip is below this line, with an empty <code>items</code> list. Nothing
+        renders — no plinth, no empty blue band.
+      </p>
+      <Ticker {...args} />
+    </div>
+  ),
+};
+
+/**
+ * **In the heading outline, not just the landmark.** The strip is a labelled
+ * section, so a screen-reader user can already reach it by landmark navigation
+ * and hears "Latest Updates". Heading navigation — pressing H, one of the
+ * commonest ways people move through a page — skips it entirely, because the
+ * plinth text is a `span`.
+ *
+ * `labelAs` promotes it. It stays `"span"` by default because the right LEVEL is
+ * the page's decision, not the component's: the website's panel sits inside a
+ * section that already owns an `h2` and wants `h3`, while a bar directly under
+ * the masthead wants `h2`. Guessing would skip a level, which is worse than not
+ * being a heading at all.
+ */
+export const NamedInTheOutline: Story = {
+  args: {
+    label: "Latest Updates",
+    labelAs: "h3",
+    items: ITEMS,
+  },
 };
