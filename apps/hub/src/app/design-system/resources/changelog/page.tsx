@@ -22,9 +22,16 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.92.0",
+    version: "v0.93.0",
     date: "2026-09-01",
     current: true,
+    changes: [
+      { kind: "Fixed", text: "`Chip`'s NEUTRAL SELECTED STATE MEASURED 1.66:1 AND READ AS DISABLED. It filled with `bg/neutral/bold` and white ink — white on a light grey — so the selected pills looked quieter than the unselected ones beside them and the state hierarchy was inverted. A WCAG 1.4.3 failure, and the design failure is the one a reader hits first. Solid ink at 18.94:1 now: a selected state has to be the loudest thing in its own group, and being NEUTRAL rather than brand is what keeps it from competing with the chart keys. Quiet is a matter of hue, not of contrast" },
+    ],
+  },
+  {
+    version: "v0.92.0",
+    date: "2026-09-01",
     changes: [
       { kind: "Added", text: "TYPOGRAPHY FINALLY HAS A GATE, AND IT WAS THE LAST FAMILY WITHOUT ONE. Colour has stylelint plus six contract tests; spacing, radius and icons each have a per-file ratchet. Font size \u2014 21 roles, 73 custom properties, the most visible thing on a government page \u2014 had nothing, and `check:ds-linkage` said so out loud every time it passed: \u201cevery fill, stroke, padding, gap and radius resolves through the design system\u201d. Font size is not in that sentence, and was not in its property table" },
       { kind: "Added", text: "`check:type-linkage` COVERS SIZE, LEADING, TRACKING AND FAMILY \u2014 including UNITLESS leading ratios, which no px-grep can ever see \u2014 across CSS, Tailwind arbitrary values and React style objects. It reads the ramp from `primitive.json` so it cannot hold a stale copy, and it classifies an off-ramp SIZE separately from an unbound one, because a size the 21-role scale cannot express needs a DESIGN decision rather than a binding. A ratchet, per file: new debt fails, and debt that SHRINKS without the baseline being lowered fails too, so the backlog can only go down. All four failure modes were exercised by deliberately breaking them" },
