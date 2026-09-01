@@ -174,7 +174,8 @@
     "third-party",
     "layout-literal",
     "optical",
-    "portal-palette"
+    "portal-palette",
+    "raster-canvas"
   ],
   "minReasonChars": 12,
   "allowedLengths": [

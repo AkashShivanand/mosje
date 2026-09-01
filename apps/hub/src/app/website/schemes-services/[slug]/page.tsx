@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Icon, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import { getSchemes, getScheme, withAssetBasePath, getContentSyncedDate } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
 
 export function generateStaticParams() {
   return getSchemes().map((s) => ({ slug: s.slug }));
@@ -17,7 +18,12 @@ export async function generateMetadata({
   const scheme = getScheme(slug);
   if (!scheme) return { title: "Scheme — DoSJE" };
   const firstText = scheme.sections.find((s) => s.html)?.html.replace(/<[^>]+>/g, "").slice(0, 160);
-  return { title: `${scheme.title} — DoSJE`, description: firstText };
+  const title = `${scheme.title} — DoSJE`;
+  return {
+    title,
+    description: firstText,
+    ...socialCard({ title, description: firstText, url: `/website/schemes-services/${slug}` }),
+  };
 }
 
 export default async function SchemeDetailPage({

@@ -8,6 +8,7 @@ import { ConditionalDemoDock } from "@/components/conditional-demo-dock";
 import { resolveChatbotPaths } from "@/lib/chatbot/resolve";
 import { resolveDemoToolsEnabled } from "@/lib/demo-tools/resolve";
 import { resolveRegistry } from "@/lib/registry/resolve";
+import { SITE_NAME, siteOrigin } from "@/lib/seo/site";
 import "./globals.css";
 // Material Symbols Rounded — the SAMAVESH icon system. Loaded ONCE here because
 // the hub is now the single app hosting every natively-mounted portal.
@@ -57,10 +58,48 @@ const notoSansDisplay = Noto_Sans_Display({
   display: "swap",
 });
 
+/**
+ * `metadataBase` is the load-bearing line here, and it was missing.
+ *
+ * Open Graph and Twitter cards are fetched by a machine that has no page
+ * context, so every url in them must be absolute. Without a base Next resolves
+ * relative image paths against `http://localhost:3000` — a host no unfurler can
+ * reach — and warns at build time. Setting it once at the root fixes it for
+ * every route in the estate, including `opengraph-image.tsx` beside this file.
+ *
+ * The `openGraph`/`twitter` blocks below are DEFAULTS. A nested layout or page
+ * that exports its own replaces the whole block rather than merging into it, so
+ * a section that overrides one restates the fields it still wants — see
+ * `website/layout.tsx`.
+ *
+ * Deliberately absent: `alternates.canonical` and `openGraph.url`. Both would be
+ * inherited verbatim by every page below, so a single root value would have ~200
+ * pages all claiming to be the homepage. They belong on individual routes.
+ *
+ * Deliberately absent: a `title.template`. Titles across the estate already end
+ * in their own suffix ("Schemes & Services | DoSJE"), so a template would
+ * produce "Schemes & Services | DoSJE · MoSJE" on every page.
+ */
 export const metadata: Metadata = {
+  metadataBase: new URL(siteOrigin()),
   title: "MoSJE Digital Estate",
   description:
     "Ministry of Social Justice and Empowerment — unified digital estate gateway.",
+  applicationName: "SAMAVESH",
+  openGraph: {
+    type: "website",
+    siteName: SITE_NAME,
+    locale: "en_IN",
+    title: "MoSJE Digital Estate",
+    description:
+      "Ministry of Social Justice and Empowerment — unified digital estate gateway.",
+  },
+  twitter: {
+    // The estate's card is a 1200×630 landscape image, so the large summary is
+    // the correct variant; the default `summary` would letterbox it into a
+    // thumbnail.
+    card: "summary_large_image",
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

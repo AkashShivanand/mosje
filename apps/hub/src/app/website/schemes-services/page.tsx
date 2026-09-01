@@ -1,11 +1,34 @@
 import type { Metadata } from "next";
 import { SchemesCatalog, type SchemeItem } from "@/components/website/templates/SchemesCatalog";
 import { getSchemes, getContentSyncedDate } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
 
+const DESCRIPTION =
+  "Flagship welfare schemes and scholarships offered by the Department of Social Justice & Empowerment for SC, OBC, EBC and DNT communities.";
+
+/**
+ * The title and description are WRITTEN OUT AS LITERALS here, not hoisted, and
+ * must stay that way.
+ *
+ * `scripts/build-search-index.mjs` reads both straight out of this object with a
+ * regex — deliberately, so the site-search result and the page's own `<title>`
+ * cannot disagree. A constant is invisible to it: hoisting the title made this
+ * page unindexable, and hoisting the description silently indexed it with an
+ * EMPTY summary, which is the worse of the two because nothing failed. The gate
+ * caught both.
+ *
+ * The duplication below is therefore the point, not an oversight. The constant
+ * is kept only for the social block, which no regex reads.
+ */
 export const metadata: Metadata = {
   title: "Schemes & Services | DoSJE",
   description:
     "Flagship welfare schemes and scholarships offered by the Department of Social Justice & Empowerment for SC, OBC, EBC and DNT communities.",
+  ...socialCard({
+    title: "Schemes & Services | DoSJE",
+    description: DESCRIPTION,
+    url: "/website/schemes-services",
+  }),
 };
 
 export default function SchemesPage() {

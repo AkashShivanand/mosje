@@ -1,0 +1,144 @@
+/**
+ * The estate's social card — the picture that appears when ANY url on this
+ * deployment is pasted into WhatsApp, Slack, Teams, X or LinkedIn.
+ *
+ * It sits at the root of the app directory deliberately: Next's metadata file
+ * convention makes a card at a segment the default for every route beneath it,
+ * so this one image covers the website, the portals, the reports and the gate
+ * without 200 pages each declaring one. The design system keeps its own
+ * `opengraph-image.png` beside its layout and therefore overrides this.
+ *
+ * Drawn rather than committed as a PNG so the palette follows the token
+ * contract. `satori` (what `next/og` renders with) resolves no CSS custom
+ * properties, so the colours arrive as the build-time literals exported by
+ * `@mosje/design-system` — the generated mirror of `tokens.css`, not a second
+ * hand-maintained copy that can drift from it.
+ *
+ * The SAMAVESH roundel is read out of `public/` at BUILD time, by the path the
+ * brand registry publishes — deliberately NOT a second copy colocated here. A
+ * colocated copy traces into the bundle more simply, but it is byte-identical to
+ * the mark in `public/`, and a duplicated mark nobody can find is the exact
+ * failure `check:org-logos` exists to stop: replaced in one place, stale in the
+ * other, on the one image the outside world sees. `force-static` below is what
+ * makes the build-time read sound.
+ *
+ * The roundel already carries the National Emblem at its crown, which is why the
+ * emblem is not composited separately: the 200 KB emblem SVG would be a heavy,
+ * risky rasterise for a mark that is already in the picture.
+ */
+import { ImageResponse } from "next/og";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { colors, SAMAVESH_MARK } from "@mosje/design-system";
+import { OG_CARD_ALT, OG_CARD_SIZE } from "@/lib/seo/card";
+
+// Re-exported from the shared descriptor rather than typed here, so the alt
+// text an unfurler reads and the alt text `socialCard()` writes cannot drift.
+export const alt = OG_CARD_ALT;
+export const size = OG_CARD_SIZE;
+export const contentType = "image/png";
+
+/**
+ * Prerendered, not rendered on demand — load-bearing, not a performance tweak.
+ *
+ * The roundel is read off disk from `public/`, which exists during the build but
+ * is not traced into a serverless function. Pinning the route static guarantees
+ * the read happens where the file is, so a later change that made an ancestor
+ * dynamic cannot quietly turn this into a runtime read that fails in production.
+ * A social card is the definition of static anyway: the same picture for every
+ * visitor.
+ */
+export const dynamic = "force-static";
+
+/* ds-exempt-start(raster-canvas): satori — the engine behind `next/og` — has no
+   cascade and resolves no CSS custom properties, so `var(--sa-type-*)` renders
+   as nothing here and every value must be a literal. There is no viewport
+   either, which rules out the fluid `clamp()` the type scale is built from: the
+   canvas is a fixed 1200x630 raster, not a page. The sizes below are still taken
+   from the 21-role ramp (24 = headline/4, 64 = display/3, 28 = headline/3) so
+   the card reads as the estate's typography even though it cannot bind to it.
+   The palette above IS bound — via the generated token mirror, which is the
+   closest thing to a binding this renderer allows. */
+export default async function OpenGraphImage() {
+  // `SAMAVESH_MARK` is a public URL path ("/design-system/…"), so it is joined
+  // onto `public/` to reach the file the estate actually serves.
+  const roundel = await readFile(join(process.cwd(), "public", SAMAVESH_MARK));
+  const roundelSrc = `data:image/png;base64,${roundel.toString("base64")}`;
+
+  return new ImageResponse(
+    (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "column",
+          backgroundColor: colors.surface,
+          // Noto Sans is what `next/og` renders with by default, which happens
+          // to be the estate's own face — so no font file is shipped here.
+          fontFamily: "Noto Sans",
+        }}
+      >
+        {/* The one band of colour. A single primary rule, not a tricolour
+            stripe — that motif is off-limits in UI chrome (CLAUDE.md). */}
+        <div style={{ display: "flex", height: 12, backgroundColor: colors.primary }} />
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            flex: 1,
+            padding: "0 80px",
+          }}
+        >
+          {/* A plain <img>, not next/image: satori has no optimiser and no
+              layout pass — inside an ImageResponse there is nothing for
+              next/image to do. */}
+          <img src={roundelSrc} alt="" width={132} height={132} />
+
+          <div
+            style={{
+              display: "flex",
+              marginTop: 36,
+              fontSize: 24,
+              fontWeight: 600,
+              letterSpacing: 3,
+              textTransform: "uppercase",
+              color: colors.inkMuted,
+            }}
+          >
+            Government of India
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              marginTop: 12,
+              fontSize: 64,
+              fontWeight: 700,
+              lineHeight: 1.1,
+              color: colors.navy,
+            }}
+          >
+            Ministry of Social Justice &amp; Empowerment
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              marginTop: 22,
+              fontSize: 28,
+              lineHeight: 1.4,
+              color: colors.inkMuted,
+            }}
+          >
+            One unified website and 20 workflow portals across 33+ organisations.
+          </div>
+        </div>
+      </div>
+    ),
+    size,
+  );
+}
+/* ds-exempt-end */
