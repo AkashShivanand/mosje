@@ -323,6 +323,11 @@
       position: absolute;
       top: var(--sa-padding-12);
       right: var(--sa-padding-4);
+      /* 1, and 1 is enough: the only thing it has to sit above is its own
+         sibling SVG. This is inside the map, not on either floating rail, so
+         it takes no part in the estate's z-index ladder — see
+         `.claude/rules/floating-element-placement.md`, which governs elements
+         fixed to the viewport, not ones absolutely placed inside a card. */
       z-index: 1;
     }
 

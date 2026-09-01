@@ -143,9 +143,9 @@
     the one a reader notices first.
 
     A selected state has to be the loudest thing in its own group. Solid ink at
-    18.4:1 is unmistakably on; being NEUTRAL rather than brand is what keeps it
-    from competing with the chart keys beside it. Quiet is a matter of hue, not
-    of contrast.
+    18.94:1 is unmistakably on; being NEUTRAL rather than brand is what keeps
+    it from competing with the chart keys beside it. Quiet is a matter of hue,
+    not of contrast.
   */
   .ds-chip--selected-neutral {
     background-color: var(--sa-bg-neutral-inverse);

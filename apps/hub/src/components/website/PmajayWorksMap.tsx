@@ -801,7 +801,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
             />
           </div>
 
-          <div className="pmw__group pmw__group--hostels">
+          <div className="pmw__group">
             <Legend
               className="pmw__layers"
               label="Hostels layer"
