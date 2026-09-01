@@ -84,7 +84,7 @@ export function AestheticWatermark() {
 export function AestheticEdgeVine() {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-gray-200 bg-white py-6 pl-16 pr-6 shadow-sm sm:py-8 sm:pr-8">
-      <div className="absolute inset-y-0 left-0 w-14 border-r" style={{ background: "rgba(47,109,95,.06)", borderColor: "rgba(47,109,95,.18)" }} />
+      <div className="absolute inset-y-0 left-0 w-14 border-r" style={{ background: "var(--nmba-green-wash)", borderColor: "var(--nmba-green-rule)" }} />
       <LeafVine animate className="pointer-events-none absolute left-1 top-5 h-[calc(100%-2.5rem)] w-auto" style={{ color: LEAF_GREEN, opacity: 0.55 }} />
       <TwinCardsInner tone="light" />
     </div>

@@ -189,7 +189,7 @@ export default function AboutPage() {
               <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
                 Overview
               </h2>
-              <div className="mt-2 h-1 w-16 bg-[#0373DF] rounded-full" />
+              <div className="mt-2 h-1 w-16 bg-primary rounded-full" />
             </div>
 
             <p className="text-base text-neutral-700 leading-relaxed">
@@ -204,7 +204,7 @@ export default function AboutPage() {
                   key={group}
                   className="flex items-center gap-2.5 p-2.5 rounded-lg bg-neutral-50 border border-neutral-200 text-sm font-medium text-neutral-800"
                 >
-                  <span className="h-2 w-2 rounded-full bg-[#0373DF]" />
+                  <span className="h-2 w-2 rounded-full bg-primary" />
                   {group}
                 </div>
               ))}
@@ -245,7 +245,7 @@ export default function AboutPage() {
             <p className="mt-1 text-sm text-neutral-500">
               Evolution of the Department over time.
             </p>
-            <div className="mt-2 h-1 w-16 bg-[#0373DF] rounded-full" />
+            <div className="mt-2 h-1 w-16 bg-primary rounded-full" />
           </div>
 
           <VerticalTimeline>
@@ -307,7 +307,7 @@ export default function AboutPage() {
             <p className="mt-1 text-sm text-neutral-500">
               Political leadership and senior administrative bureaus of the Department.
             </p>
-            <div className="mt-2 h-1 w-16 bg-[#0373DF] rounded-full" />
+            <div className="mt-2 h-1 w-16 bg-primary rounded-full" />
           </div>
 
           {/* Political Leadership Cards */}
@@ -339,7 +339,7 @@ export default function AboutPage() {
             <Accordion>
               {BUREAUS.map((bureau) => (
                 <AccordionItem key={bureau.title} title={bureau.title}>
-                  <ul className="space-y-3 pl-4 list-disc text-sm text-neutral-700 marker:text-[#0373DF]">
+                  <ul className="space-y-3 pl-4 list-disc text-sm text-neutral-700 marker:text-primary">
                     {bureau.items.map((item, i) => (
                       <li key={i} className="pl-2 leading-relaxed">
                         {item}

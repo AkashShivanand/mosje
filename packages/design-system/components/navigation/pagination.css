@@ -9,6 +9,7 @@
      Pagination
      Visual language matches the table's own pager (outlined current page, not a
      filled block) so a listing and a table on the same screen do not disagree.
+     Modifiers: .ds-pagination--sm|--md
      ============================================================================ */
 
   .ds-pagination {
@@ -111,6 +112,48 @@
   }
 
   .ds-pagination__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  /* ── size="sm" — a pager INSIDE a card or a rail ─────────────────────────
+
+     32px, past the 24px minimum target (WCAG 2.2 SC 2.5.8). The step labels
+     drop to icons at every width rather than only below 480px: a card pager
+     sits directly beside the list it pages, so a chevron has a visible
+     referent that a page-level pager at the foot of a document does not. The
+     WORDS stay in the accessibility tree, so a screen reader still hears
+     "Previous", never "chevron left".
+     -------------------------------------------------------------------------- */
+  .ds-pagination--sm {
+    gap: var(--sa-inline-4);
+  }
+
+  .ds-pagination--sm .ds-pagination__step,
+  .ds-pagination--sm .ds-pagination__page {
+    height: 32px;
+    min-width: 32px;
+    padding: 0 var(--sa-padding-6);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-pagination--sm .ds-pagination__step {
+    padding: 0;
+  }
+
+  .ds-pagination--sm .ds-pagination__step svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .ds-pagination--sm .ds-pagination__step-text {
     position: absolute;
     width: 1px;
     height: 1px;

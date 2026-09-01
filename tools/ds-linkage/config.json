@@ -1,16 +1,28 @@
 {
   "note": [
     "Scopes are checked in the order listed. `gated: true` means the scope runs in",
-    "by `--all` but does not fail the build yet — used while a surface is being",
+    "by `--all` but does not fail the build yet \u2014 used while a surface is being",
     "All scopes are now gated. `gated: false` remains supported for bringing a NEW",
     "surface up to the rule without blocking the gate on day one.",
     "",
+    "2026-09-01: the seven remaining portals, the website and reports were brought in",
+    "and, on the owner's explicit call, gated IMMEDIATELY rather than staged through",
+    "`gated: false`. 867 findings became blocking on the same day they became visible.",
+    "That is deliberate: the typography audit showed the raw-value tail sits almost",
+    "entirely in surfaces this config never looked at \u2014 pm-ajay.css alone holds 480 of",
+    "the 867 \u2014 so a gate reporting a clean estate was measuring the wrong estate, and",
+    "a report-only scope is a finding nobody is obliged to clear. The build is RED",
+    "until each surface is bound. Order of work, by concentration: pm-ajay 489,",
+    "eutthan-admin 170, smile-admin 52, scw 30, eutthan components 25, nhapoa 24,",
+    "website routes 22, website components 21, tg 12, pm-ajay components 11, nmba 11.",
+    "",
+    "`gated: false` remains supported for the NEXT new surface. It was not used here.",
     "borderWidthLiterals: the rule's property table covers fills, strokes, padding,",
-    "gaps and radii — it does not cover stroke WIDTH. A hairline is a constant, and",
+    "gaps and radii \u2014 it does not cover stroke WIDTH. A hairline is a constant, and",
     "the only token for it is `--sa-ref-border-width-sm`, a REF token that product",
-    "code is not supposed to consume directly. So `1px solid var(--sa-border-…)` is",
+    "code is not supposed to consume directly. So `1px solid var(--sa-border-\u2026)` is",
     "accepted: the COLOUR, which is what drifts, is bound. This is a recorded",
-    "decision, not an oversight — see docs/guidelines/README.md.",
+    "decision, not an oversight \u2014 see docs/guidelines/README.md.",
     "",
     "allowedLengths: `0px` is not a value, it is the absence of one.",
     "",
@@ -20,7 +32,16 @@
     "A scope path that does not exist is a HARD ERROR, not a silent skip. The first",
     "version of this config pointed at packages/design-system/src, which has never",
     "existed, and the checker reported a clean scope because the walk threw and was",
-    "swallowed. A gate that cannot fail is worse than no gate."
+    "swallowed. A gate that cannot fail is worse than no gate.",
+    "",
+    "portal-palette: a portal's OWN palette definitions, where the portal renders a",
+    "different published design system from SAMAVESH. CLAUDE.md sanctions these",
+    "(\"palettes genuinely conflict\"); pm-ajay carries the MoSJE UX4G Portal DS ramp, of",
+    "whose 58 entries exactly two resolve to a --sa-* value. Binding the other 56 to the",
+    "nearest token would RECOLOUR the portal, which is a redesign, not a linkage fix. The",
+    "category covers the DEFINITION block only \u2014 every rule in the file must still resolve",
+    "through one of those names, and 60 scattered literals were lifted into the palette to",
+    "make that true. Every use of it needs a row in docs/guidelines/README.md."
   ],
   "scopes": [
     {
@@ -34,23 +55,108 @@
       "gated": true
     },
     {
-      "name": "design-system package — components",
+      "name": "design-system package \u2014 components",
       "path": "packages/design-system/components",
       "gated": true
     },
     {
-      "name": "design-system package — foundations",
+      "name": "design-system package \u2014 foundations",
       "path": "packages/design-system/foundations",
       "gated": true
     },
     {
-      "name": "e-anudaan portal — routes (apps/hub/src/app/portals/e-anudaan)",
+      "name": "e-anudaan portal \u2014 routes (apps/hub/src/app/portals/e-anudaan)",
       "path": "apps/hub/src/app/portals/e-anudaan",
       "gated": true
     },
     {
-      "name": "e-anudaan portal — components (apps/hub/src/components/e-anudaan)",
+      "name": "e-anudaan portal \u2014 components (apps/hub/src/components/e-anudaan)",
       "path": "apps/hub/src/components/e-anudaan",
+      "gated": true
+    },
+    {
+      "name": "eutthan-admin portal \u2014 routes (apps/hub/src/app/portals/eutthan-admin)",
+      "path": "apps/hub/src/app/portals/eutthan-admin",
+      "gated": true
+    },
+    {
+      "name": "nhapoa portal \u2014 routes (apps/hub/src/app/portals/nhapoa)",
+      "path": "apps/hub/src/app/portals/nhapoa",
+      "gated": true
+    },
+    {
+      "name": "nmba portal \u2014 routes (apps/hub/src/app/portals/nmba)",
+      "path": "apps/hub/src/app/portals/nmba",
+      "gated": true
+    },
+    {
+      "name": "pm-ajay portal \u2014 routes (apps/hub/src/app/portals/pm-ajay)",
+      "path": "apps/hub/src/app/portals/pm-ajay",
+      "gated": true
+    },
+    {
+      "name": "scw portal \u2014 routes (apps/hub/src/app/portals/scw)",
+      "path": "apps/hub/src/app/portals/scw",
+      "gated": true
+    },
+    {
+      "name": "smile-admin portal \u2014 routes (apps/hub/src/app/portals/smile-admin)",
+      "path": "apps/hub/src/app/portals/smile-admin",
+      "gated": true
+    },
+    {
+      "name": "tg portal \u2014 routes (apps/hub/src/app/portals/tg)",
+      "path": "apps/hub/src/app/portals/tg",
+      "gated": true
+    },
+    {
+      "name": "eutthan \u2014 components (apps/hub/src/components/eutthan)",
+      "path": "apps/hub/src/components/eutthan",
+      "gated": true
+    },
+    {
+      "name": "nhapoa \u2014 components (apps/hub/src/components/nhapoa)",
+      "path": "apps/hub/src/components/nhapoa",
+      "gated": true
+    },
+    {
+      "name": "nmba \u2014 components (apps/hub/src/components/nmba)",
+      "path": "apps/hub/src/components/nmba",
+      "gated": true
+    },
+    {
+      "name": "pm-ajay \u2014 components (apps/hub/src/components/pm-ajay)",
+      "path": "apps/hub/src/components/pm-ajay",
+      "gated": true
+    },
+    {
+      "name": "scw \u2014 components (apps/hub/src/components/scw)",
+      "path": "apps/hub/src/components/scw",
+      "gated": true
+    },
+    {
+      "name": "smile-admin \u2014 components (apps/hub/src/components/smile-admin)",
+      "path": "apps/hub/src/components/smile-admin",
+      "gated": true
+    },
+    {
+      "name": "tg \u2014 components (apps/hub/src/components/tg)",
+      "path": "apps/hub/src/components/tg",
+      "gated": true
+    },
+    {
+      "name": "website \u2014 components (apps/hub/src/components/website)",
+      "path": "apps/hub/src/components/website",
+      "gated": true
+    },
+    {
+      "name": "website \u2014 routes (apps/hub/src/app/website)",
+      "path": "apps/hub/src/app/website",
+      "gated": true
+    },
+    {
+      "name": "reports \u2014 routes (apps/hub/src/app/reports)",
+      "path": "apps/hub/src/app/reports",
       "gated": true
     }
   ],
@@ -67,7 +173,9 @@
     "demo-geometry",
     "third-party",
     "layout-literal",
-    "optical"
+    "optical",
+    "portal-palette",
+    "raster-canvas"
   ],
   "minReasonChars": 12,
   "allowedLengths": [

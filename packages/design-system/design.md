@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-01 · System version: v0.41.0 (THE SYSTEM EXPORTED NO
+  Last reviewed: 2026-09-01 · System version: v0.42.0 (THE SYSTEM EXPORTED NO
   BREADCRUMB, SO EVERY SURFACE THAT NEEDED ONE DREW ITS OWN. `Breadcrumb` is now the
   one trail, and it takes the two jobs that kept being conflated: a PAGE trail whose
   crumbs are links, and a DRILL trail whose crumbs are buttons popping client state
@@ -24,6 +24,25 @@
   PM-AJAY's rail is 304px and "India › Andaman and Nicobar Islands" does not fit it,
   and `wrap={false}` keeps a fixed-width rail on one line so its height does not
   change as the reader drills.)
+
+  Last reviewed: 2026-09-01 · System version: v0.41.0 (TYPOGRAPHY WAS THE LAST TOKEN
+  FAMILY WITH NO GATE, AND IT COST 562 LITERAL FONT SIZES — 224 of them off the 15-step
+  ramp, 13px alone 71 times, plus 100 raw letter-spacings against 10 tracking tokens, a
+  second hand-maintained type scale in globals.css, and a component shipping
+  `var(--sa-type-body-4-size)`, a token that has never existed and that CSS drops in
+  silence. `npm run check:type-linkage` is a per-file ratchet over size, leading
+  (including UNITLESS ratios, which no px-grep can see), tracking and family; new debt
+  fails the build and debt that shrinks without a re-baseline fails too, so the backlog
+  only goes down. It shares one parser with ds-linkage via tools/ds-linkage/regions.mjs
+  rather than growing a second copy. Alongside: ds-linkage went from 6 scopes to all 23
+  and the estate was cleared 867 → 0, on 693 token bindings and 76 role-named palette
+  entries, with each portal's own palette declared under a new `portal-palette`
+  exemption and registered as divergence 9. Two precision bugs in ds-linkage itself were
+  fixed — it mis-attributed the property of every bare numeric, which had been hiding 96
+  real findings including 12 in these docs, and its --json truncated when piped. And
+  Figma parity became a MEASUREMENT: all 115 Type variables were read live and diffed
+  against the emitted clamps at 360/768/1280px on both surfaces, 438 of 438 name-by-mode
+  pairs identical.)
 
   Last reviewed: 2026-08-31 · System version: v0.40.0 (A BRUTAL AUDIT OF THE SAMAVESH
   PATTERN FOUND TWO LIVE ACCESSIBILITY FAILURES, ONE OF THEM SELF-INFLICTED. Escape
@@ -759,6 +778,7 @@ already been removed.*
 - **`--ds-font-mono` is for CODE AND TECHNICAL STRINGS ONLY** — token names, CSS snippets, file paths in these docs. It is a **system stack** (`ui-monospace` → SF Mono / Cascadia / Roboto Mono), deliberately not a webfont: mono appears only on documentation pages, and a download on every page to style sample code is a poor trade for a low-bandwidth government audience. The Figma variable is hidden from publishing, because "whatever mono the device has" has no single Figma family.
 - **Line Length**: Body text and prose containers max-width `65ch`–`75ch` (`max-w-prose`). Never wider.
 - **Fluid type**: Every role is `clamp(min, fluid, max)` — `min` at a 360px viewport, `max` at 1280px. No type media queries. Two surfaces (`data-surface`) supply different min/max: **Website** (expressive) vs **Portal** (dense).
+- **NEVER TYPE A FONT SIZE, LEADING, TRACKING OR FAMILY.** `npm run check:type-linkage` is a per-file ratchet and any NEW literal fails the build — in a stylesheet, in a Tailwind arbitrary value (`text-[13px]`), or as a bare numeric in a style object (`fontSize: 13`, which React turns into px and no grep for "px" can find). Bind the size AND its paired leading in the same rule: a `--ds-type-<role>-size` without its `-lh` is half a binding, and it is the half that only shows up between breakpoints — `line-height: 1.2` on `headline-1` renders 48px at desktop, which is exactly right, and 39.98px at tablet where the token says 39.10. A size the 21-role scale cannot express is a DESIGN question, not a binding one: the answer is `body-2` at 14 or `body-3` at 12, never a 22nd size invented for one card, and nothing may render below 11px (`label-3`). A deliberate specimen declares itself: `/* ds-exempt(specimen): why */`.
 - **Text Wrapping**: Use `text-wrap: balance` on `h1`–`h3`; `text-wrap: pretty` on paragraphs to eliminate orphans.
 
 ### E. Type Scale Reference
@@ -770,7 +790,10 @@ plus friendly aliases `--ds-text-<role>` / `--ds-leading-<role>`. Letter-spacing
 tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surface** — the table shows desktop
 (`max`) size; both surfaces scale fluidly to their 360px `min`. Full min/max tables live in
 `packages/tokens/src/primitive.json` (`font.role.*` + `font.tracking.*`) and
-`docs/specs/samavesh-typography-unification-spec.md`. Names match the SAMAVESH Figma library 1:1.
+`docs/specs/samavesh-typography-unification-spec.md`. Names match the SAMAVESH Figma library 1:1, and so do the VALUES: all 115 Type variables were read
+live from the library on 2026-09-01 and diffed against the emitted `clamp()`s evaluated at 360 / 768 /
+1280px on both surfaces — **438 of 438** name-by-mode pairs identical, including the fluid tablet
+midpoints, which are samples of a linear interpolation and can only agree if the whole curve does.
 
 | Role (sample) | Canonical token | Website max | Portal max | Weight | When to use |
 |------|---------------|:-----------:|:----------:|--------|-------------|
@@ -1712,8 +1735,14 @@ Docs: `/design-system/components/sla-progress`.
 **Rule**: Always wrap in `<FormField>` with a descriptive label. `Toggle` is for immediate-effect settings (e.g. notifications on/off), not for form submission.
 
 #### Chip
-**Purpose**: Compact filter badge. Used for multi-select filter groups.  
-**Rule**: Use `<Chip>` for tag-style multi-selects, not for navigation or status display.
+**Purpose**: Compact filter badge. Used for multi-select filter groups.
+**Key props**: `selected` + `onSelectedChange`, `onDismiss`, `leadingIcon`, `count`, `countLabel`, `size`, `tone`, `trailingDropdown`
+**Rules**:
+- Use `<Chip>` for tag-style multi-selects, not for navigation or status display.
+- **`count` is a prop, not something you write into the label.** Two callers were already doing it by hand and disagreeing — `DocumentLibrary` wrote `{group} ({count})` into the children, PM-AJAY's coverage map appended a muted `<span>`. It renders muted, `tabular-nums`, and OUTSIDE the label, so a screen reader hears "Guidelines, 2 documents" rather than "Guidelines open bracket two close bracket". Name the unit with `countLabel`. Pass a **string** when the figure needs Indian grouping (`formatIndian(n)`).
+- **`size="sm"` is for a dense filter row** — chips sharing a line with other controls, where `md`'s 32px pushes the row onto a second line. It stays past the 24px minimum target (WCAG 2.2 SC 2.5.8). It is not a licence to fit more chips into a space that is simply too small.
+- **`tone="neutral"` is for a filter that sits beside something louder.** Three brand-blue pills next to a chart's own legend outshout the two keys they belong to, and the eye reads the filter before the thing being filtered. It is a filled neutral rather than a tint, because at `sm` a tinted selected state and an unselected one differ by too little to read across a control bar.
+- A `leadingIcon` may carry a **colour key** rather than a glyph, for chips that filter classes of mark on a chart or map. Keep the key **filled in both states**: the chip's own selected treatment carries the state, and a key that changes with selection stops matching the thing it keys.
 
 #### MediaUpload
 **Purpose**: Image/file upload with drag-and-drop, preview, replace/remove, and client-side type + size validation. Reads to a data-URL (no network).  
@@ -2018,6 +2047,16 @@ The mascot floats **3px over 4.5s**, because the artwork is a legless robot draw
 - Renders as a `<dl>`; the value is moved above the label with `order`, so the DOM keeps `<dt>` first and the pair is read "Headquarters: New Delhi".
 - `overlap` pulls the card up over the band above it. Use it only directly under a hero — elsewhere it bites into whatever precedes it.
 
+#### SitePageHeader
+**Purpose**: The blue band every **website** page opens with, in the two levels the Figma handoff defines — **L1** an organisation or scheme's own front page, **L2** any page beneath one.
+**Key props**: `level`, `eyebrow`, `title`, `lead`, `media`, `overlay`, `reservesOverlap`, `breadcrumb`
+**Rules**:
+- **Not `PageHeader`.** That one is the portal title row — a heading, a meta line and some buttons on the page's own background, used by 80 admin pages. This is a full-bleed banner with a brand gradient, a portrait and an overlapping fact card. They share a word in English and nothing else.
+- **The gradient is built from the brand ramp, never from the handoff's second hex.** The design paints the band `#0373df → #3f83c6`; only the first is a Figma variable and the second is an unbound raw fill (flagged for the library owner). Reproducing it would freeze the band to the blue brand, and this estate is white-label — `data-brand="navy"` and the DBIM palette must retheme it, so the second stop is the ramp's own next shade.
+- `overlay` is the slot the "at a glance" card sits in — normally a `FactStrip` with `overlap`. It straddles the band's lower edge by 64px: the header reserves the space, the page decides what goes in it.
+- **`reservesOverlap` is for a page with no overlay that sits beside pages that have one.** It pads the band by the same 64px so the blue does not change height as a reader moves between an organisation's front page and its inner pages. It is ignored when `overlay` is present — reserving the space twice leaves a gutter of empty blue.
+- **The halo behind `media` is three filled discs on one 6s loop, not three rings.** Each is born at the portrait's exact radius, so it is opaque where nobody can see it and emerges already fading; each dies at zero. That is what makes the loop seamless without a fade-in, and it is why the keyframes are `linear` — the deceleration is in the published samples, and easing an already-eased set of values twice makes the motion lurch then stall. Under `prefers-reduced-motion` two discs park at the component's own resting drawing and the third is not rendered.
+
 #### Avatar
 **Purpose**: Circular user or entity representation.  
 **Rule**: Always provide `alt` text. For decorative-only avatars, `alt=""`.
@@ -2133,6 +2172,7 @@ optional `valueFormat` (defaults to `en-IN` grouping).
 | `ComboChart` | Bars (left axis) + lines (right axis) | `labels`, `bars`, `lines`, `leftLabel`, `rightLabel` |
 | `IndiaMap` | State choropleth (pre-baked geo paths) | `data: { state, value }[]`, `title`, `highlightState` |
 | `IndiaBubbleMap` | State bubble map, **area** ∝ value (same geo paths) | `data: { state, value }[]`, `title`, `maxRadius`, `highlightState`, `onSelectState` |
+| `IndiaPointMap` | Real coordinates: hex **density** + proportional **bubbles** + categorical **pins**, with state zoom | `bins`, `pins`, `pinKinds`, `bubbles`, `bubbleVariant`, `focusRegion`, `highlightRegion`, `onSelectRegion`, `table` |
 
 **Composition primitives** (dashboard layout): `ChartCard` (titled widget
 container with actions slot + loading/empty states + grid `span`), `DashboardGrid`
@@ -2205,9 +2245,71 @@ and renders it only when `exportable`.
   squares the difference the eye receives and is the usual defect in bubble maps.
   Both share the generated geometry; the bubble map derives each state's centroid
   from the largest closed ring of its path, so archipelagos land on land.
+- **`IndiaPointMap` when the data is a list of PLACES, not a per-state figure.**
+  The other two maps take a value already aggregated to a region and draw it at
+  that region's centre; both therefore discard coordinates. That is right for a
+  quantity that belongs to the whole territory and wrong for a list of points.
+  PM-AJAY's 19,768 Adarsh Gram villages are a belt across West Bengal, Bihar and
+  north Tamil Nadu — 44% of them in the first two states — and no per-state mark
+  can show it. Three marks, for three different questions: `bins` for a density
+  too thick to tell apart (overplotting, not resolution, is what would ruin the
+  answer), `bubbles` for named units at a zoomed grain, `pins` for records few
+  enough to be individuals. Combining them is normal — draw villages as density
+  and hostels as pins rather than forcing one mark on both.
+  - **Bin on the server.** `binIndiaPoints()` runs where the coordinates are, so
+    a page ships ~1,000 cells instead of 19,768 latitudes — ~85 KB out of 5.4 MB
+    for PM-AJAY. It must use the same `hexRadius` the map renders, and it bins in
+    PROJECTED space: bin in lon/lat and the cells shrink towards the Himalaya,
+    painting a density gradient that is purely an artefact of the projection.
+  - **`repairIndiaCoordinate()` before you plot anything.** Government point
+    feeds transpose latitude and longitude — 155 of PM-AJAY's 19,971 records do.
+    The swap is unambiguous here only because India's latitude band (6–37.6) and
+    longitude band (68–97.5) do not overlap; for a country that straddles the
+    equator it would be a guess. It never snaps a bad coordinate towards land: a
+    point invented at a district's centre is indistinguishable, to a reader, from
+    a village that is really there. Count the records it rejects and SAY SO on
+    the page.
+  - **The ramp is `log1p`, not linear**, because cell counts run 1 → ~390 with a
+    long tail and a linear ramp leaves 95% of the map on the palest step. Print
+    the real counts in your legend; the component will not guess what a shade is
+    worth.
+  - **A hex is deliberately not keyboard-reachable.** A density cell is not an
+    entity and has no identity to land on; tabbing through a thousand would be
+    hostile. Pass `table` so the named rows reach a screen reader — that is what
+    a keyboard user actually wants. Bubbles and pins ARE focusable and announced.
+  - **`bubbleVariant="outlined"` whenever a density field is already underneath.**
+    Two filled layers encoding the same quantity double the ink and the reader
+    adds them up by eye.
 - Charts are CSS-var driven (no Tailwind), so they work in every app including
   pm-ajay (no Tailwind) and the v3/v4 portals.
-- **`Legend` is `aria-hidden` on purpose, and that is not a bug to fix.** The real
+- **`Legend` can be the SWITCH for what it keys.** Pass `onToggle` and each
+  entry becomes a control — `role="button"`, `aria-pressed`, Enter and Space —
+  and set `item.on` to say which series are drawn. Charts whose series can be
+  switched on and off are ubiquitous, and until this existed every one of them
+  hand-rolled a row of buttons beside a legend that could not do it. The
+  capability arrives with the handler, exactly as `Chip`'s `onSelectedChange`
+  and `Pagination`'s `onPageChange` do.
+- **An interactive legend LOOKS like a control, and that reverses an earlier
+  call.** It was deliberately quiet — bare text with a hover ground — so it
+  would not compete with the chart it labels. That cost the feature: a reader
+  who cannot see that a key is pressable does not press it, and "hover to
+  discover it" is not an answer on a touchscreen. Each entry is now a bordered
+  pill in `Chip`'s language, because a `Chip` is usually what sits beside it
+  doing the same job. State is carried three ways, never by colour alone (WCAG
+  1.4.1): the pill fills when on and empties with a dashed border when off, a
+  `solid` key goes **hollow** when off (the switched-off checkbox convention,
+  and the one cue that survives greyscale), and `aria-pressed` reports it. A
+  `ramp` and `dots` fade instead — there is no single shape to empty.
+- **`item.swatch` draws the key the way its series is drawn.** `solid` (default)
+  is one square, right for a categorical series. `ramp` builds the sequential
+  scale from `colors` — give it `scale` so a reader can tell what a shade is
+  worth, because a gradient with no numbers says only "more is darker", which
+  they could already see. `dots` is for a series that is itself a GROUP of
+  marks drawn separately; PM-AJAY's hostels are one layer rendered in three
+  colours by type, and one square would have keyed a colour the map never uses.
+- **`Legend` is `aria-hidden` WHILE IT IS ONLY A KEY, and that is not a bug to
+  fix.** Passing `onToggle` removes it, because a control may never be hidden
+  from assistive technology. Without it, the real
   values live in `ChartFrame`'s screen-reader data table; the legend is the sighted
   reader's colour key and would otherwise read out a second, redundant list of
   labels with no numbers. The consequence is the rule above restated with teeth:
@@ -2471,13 +2573,14 @@ matching the Figma "Navbar Portal" account.
 
 #### Pagination
 **Purpose**: Page navigation for a result set.  
-**Props**: `page`, `totalPages`, `hrefFor`, `onPageChange`, `label`, `siblings`, `className`  
+**Props**: `page`, `totalPages`, `hrefFor`, `onPageChange`, `label`, `siblings`, `size`, `className`  
 **Rules**:
 - **Prefer the link form.** Pass `hrefFor` and the numbers render as real `<a>`s, so page 3 is shareable, bookmarkable, reachable with the back button, crawlable, and works before hydration. Use `onPageChange` only for client-side state that genuinely has no URL — and when it *could* have one, it should.
 - `DataTable` paginates its own state and does not use this. This is for anything whose result set comes out of the URL: search results, filtered listings, directories.
 - `totalPages < 2` renders `null`, so a single-page set needs no guard at the call site.
 - The current page carries `aria-current="page"` and is **not a link**. Previous/Next are **removed** at the ends, never disabled — a disabled control still in the tab order is worse than one that is not there.
 - Targets are 40px, clearing WCAG 2.2 AA §2.5.8 (24×24 minimum) with room for the 4px inter-target gap.
+- **`size="sm"` is for a pager INSIDE a card or a rail** — a panel paginating its own contents rather than the page. `md` is sized for a page-level pager with the full width to sit in; in PM-AJAY's 19rem coverage rail the same control asked for 267px it did not have and wrapped onto two lines. `sm` is 32px, still past the 24×24 minimum, and drops the step labels to icons at **every** width — a card pager sits directly beside the list it pages, so a chevron has a visible referent that a pager stranded at the foot of a document does not. The words stay in the accessibility tree either way, so a screen reader still hears "Previous".
 
 #### SectionTitle
 **Purpose**: The shared heading row for a content section — eyebrow, heading, count pill, description, right-aligned actions.  

@@ -25,6 +25,7 @@ import {
   withAssetBasePath,
   getContentSyncedDate,
 } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
 
 
 /*
@@ -183,7 +184,21 @@ export async function generateMetadata({
   const org = getOrganisation(key);
   if (!org) return { title: "Organisation — DoSJE" };
   const firstText = org.sections.find((s) => s.html)?.html.replace(/<[^>]+>/g, "").slice(0, 160);
-  return { title: `${org.title} — DoSJE`, description: firstText };
+  const title = `${org.title} — DoSJE`;
+  // The organisation's own banner where it has one. This is the one family of
+  // pages where a page-specific picture beats the estate card: a link to NCSK
+  // should show NCSK, not the ministry lockup.
+  const banner = getOrganisationDetail(key)?.featuredImage;
+  return {
+    title,
+    description: firstText,
+    ...socialCard({
+      title,
+      description: firstText,
+      url: `/website/organisation/${key}`,
+      images: banner ? [banner] : undefined,
+    }),
+  };
 }
 
 export default async function OrganisationDetailPage({
@@ -221,17 +236,6 @@ export default async function OrganisationDetailPage({
    * discover that would be a cost paid 177 times for no result.
    */
   const reach = key === PMAJAY ? await getPmajayReach() : null;
-  /*
-   * Grants-in-Aid has no coordinates in the map feed, but it DOES have a live
-   * project total — and the map’s tab strip names all three components, so it
-   * needs that figure to show a real number beside a tab it cannot draw.
-   * Summed across financial years, falling back to the mirrored year where a
-   * year did not answer, exactly as the GIA dashboard does it.
-   */
-  const giaAll = key === PMAJAY ? await getGiaData() : null;
-  const giaProjectTotal = giaAll
-    ? giaAll.years.reduce((t, y) => t + (y.approvals.total ?? y.mock.totalApproved), 0)
-    : null;
 
   /*
    * The other two components, for the "Other PM-AJAY components" card.
@@ -462,7 +466,7 @@ export default async function OrganisationDetailPage({
         detail={detail}
         relatedPages={relatedPages}
         documents={getDocuments()}
-        reachSlot={reach && <PmajayWorksMap data={reach} giaTotal={giaProjectTotal} />}
+        reachSlot={reach && <PmajayWorksMap data={reach} />}
       />
     </PageLayout>
   );

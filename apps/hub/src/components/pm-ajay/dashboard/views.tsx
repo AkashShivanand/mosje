@@ -123,7 +123,7 @@ function nameCol(scope: StateRow | null, drillable: boolean): Column<LevelRow> {
       <span className="nm">
         {r.name}
         {drillable && (
-          <span className="material-symbols-rounded drillic" aria-hidden="true" style={{ marginLeft: 6 }}>
+          <span className="material-symbols-rounded drillic" aria-hidden="true" style={{ marginLeft: "var(--sa-inline-6)" }}>
             chevron_right
           </span>
         )}
@@ -150,12 +150,12 @@ function AlertRow({
   const bg = tone === "red" ? "var(--sa-color-status-dangerTonal)" : "var(--sa-color-status-warningTonal)",
     fg = tone === "red" ? "var(--sa-color-status-danger)" : "var(--sa-color-status-warning)";
   return (
-    <div style={{ display: "flex", alignItems: "flex-start", gap: 12, padding: 13, border: "1px solid var(--pm-line)", borderRadius: 10 }}>
+    <div style={{ display: "flex", alignItems: "flex-start", gap: "var(--sa-inline-12)", padding: "var(--sa-padding-12)", border: "1px solid var(--pm-line)", borderRadius: "var(--sa-shape-8)" }}>
       <div
         style={{
           width: 32,
           height: 32,
-          borderRadius: 8,
+          borderRadius: "var(--sa-shape-8)",
           background: bg,
           color: fg,
           display: "flex",
@@ -170,7 +170,7 @@ function AlertRow({
       </div>
       <div style={{ minWidth: 0 }}>
         <div style={{ font: "600 14px/1.3 var(--font-sans)", color: "var(--pm-ink)" }}>{title}</div>
-        <div style={{ font: "400 13px/1.4 var(--font-sans)", color: "var(--pm-muted)", marginTop: 2 }}>{desc}</div>
+        <div style={{ font: "400 13px/1.4 var(--font-sans)", color: "var(--pm-muted)", marginTop: "var(--sa-stack-2)" }}>{desc}</div>
       </div>
       <span style={{ marginLeft: "auto", font: "500 12px/1 var(--font-sans)", color: "var(--pm-muted)", whiteSpace: "nowrap" }}>
         {when}
@@ -209,12 +209,12 @@ function Executive({ kpis, sp, scope, filters, onDrill }: ViewProps) {
   return (
     <>
       <KpiGrid kpis={hero} sp={sp} cls="cols4" />
-      <div style={{ marginTop: -8 }}>
+      <div style={{ marginTop: "calc(var(--sa-stack-8) * -1)" }}>
         <KpiGrid kpis={rest} sp={sp} cls="cols3" />
       </div>
       <div>
         <SectionHead title="Fund Flow & Utilisation" meta="Figures in ₹ Crore · FY 2025-26" />
-        <div className="pm-grid main" style={{ marginTop: 18 }}>
+        <div className="pm-grid main" style={{ marginTop: "var(--sa-stack-16)" }}>
           <Panel title="Allocation → Utilization" sub="Conversion across the national fund pipeline">
             <Funnel
               stages={[
@@ -224,7 +224,7 @@ function Executive({ kpis, sp, scope, filters, onDrill }: ViewProps) {
                 { label: "Utilization", pct: 57, value: INR(5306), color: C.green },
               ]}
             />
-            <div style={{ display: "flex", gap: 24, marginTop: 18, paddingTop: 16, borderTop: "1px solid var(--pm-line)" }}>
+            <div style={{ display: "flex", gap: "var(--sa-inline-24)", marginTop: "var(--sa-stack-16)", paddingTop: "var(--sa-padding-16)", borderTop: "1px solid var(--pm-line)" }}>
               <div className="pm-bigstat">
                 <span className="v">88%</span>
                 <span className="l">Sanction / Allocation</span>
@@ -240,7 +240,7 @@ function Executive({ kpis, sp, scope, filters, onDrill }: ViewProps) {
             </div>
           </Panel>
           <Panel title="Overall Utilization" sub="Utilized vs released · target 85%">
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--sa-stack-12)" }}>
               <Donut pct={79} size={168} color={C.green} center="79.0%" sub="Utilized" target={85} label="Overall utilization" />
               <div style={{ width: "100%" }} className="pm-rows">
                 <Row lab="Utilized" val={INR(5306) + " Cr"} />
@@ -266,7 +266,7 @@ function Executive({ kpis, sp, scope, filters, onDrill }: ViewProps) {
           />
         </Panel>
         <Panel title="Requires Attention" sub="Governance & utilisation flags">
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-8)" }}>
             <AlertRow tone="red" icon="priority_high" title="9 States below 50% utilization" desc="Bihar, Jharkhand, Chhattisgarh & 6 more" when="Action" />
             <AlertRow tone="amber" icon="description" title="412 UCs pending over 90 days" desc="₹612 Cr next installment blocked" when="14 d" />
             <AlertRow tone="amber" icon="schedule" title="86 projects overdue" desc="Hostel & GIA · avg 47-day slip" when="Review" />
@@ -275,7 +275,7 @@ function Executive({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       </div>
       <div>
         <SectionHead title={scope ? `Utilisation — ${scope.name}` : "State-wise Utilisation"} meta={tableMeta(scope)} />
-        <Panel style={{ marginTop: 18 }}>
+        <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
           <DataTable<LevelRow>
             caption="Utilisation by region"
             rows={rows}
@@ -320,7 +320,7 @@ function Financial({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <KpiGrid kpis={kpis} sp={sp} />
       <div>
         <SectionHead title="Fund Flow Over Time" meta="Monthly, ₹ Crore" />
-        <div className="pm-grid main" style={{ marginTop: 18 }}>
+        <div className="pm-grid main" style={{ marginTop: "var(--sa-stack-16)" }}>
           <Panel title="Funds Released vs Utilized" sub="FY 2025-26, by month (₹ Crore)">
             <VBars
               labels={MONTHS}
@@ -331,12 +331,12 @@ function Financial({ kpis, sp, scope, filters, onDrill }: ViewProps) {
               ]}
               height={210}
             />
-            <div style={{ marginTop: 12 }}>
+            <div style={{ marginTop: "var(--sa-stack-12)" }}>
               <Legend items={[{ label: "Released", color: "var(--pm-accent)" }, { label: "Utilized", color: C.green }]} />
             </div>
           </Panel>
           <Panel title="Overall Utilization" sub="Target 85%">
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--sa-stack-16)" }}>
               <Donut pct={79} size={160} color={C.green} center="79.0%" sub="Utilized" target={85} label="Overall utilization" />
               <div style={{ width: "100%" }} className="pm-rows">
                 <Row lab="PFMS success rate" val="97.3%" />
@@ -351,7 +351,7 @@ function Financial({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       </div>
       <div>
         <SectionHead title={scope ? `Fund Utilization — ${scope.name}` : "State-wise Fund Utilization"} meta={tableMeta(scope)} />
-        <Panel style={{ marginTop: 18 }}>
+        <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
           <DataTable<LevelRow>
             caption="Fund utilisation by region"
             rows={rows}
@@ -379,7 +379,7 @@ function Financial({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       </div>
       <div className="pm-grid c2">
         <Panel title="Low Utilization Alerts" sub="States below 70% — installments at risk">
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-8)" }}>
             {[...STATES]
               .filter((s) => s.util < 70)
               .sort((a, b) => a.util - b.util)
@@ -421,7 +421,7 @@ function GIA({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <KpiGrid kpis={kpis} sp={sp} />
       <div>
         <SectionHead title="Approvals & Project Mix" meta="FY 2025-26" />
-        <div className="pm-grid main" style={{ marginTop: 18 }}>
+        <div className="pm-grid main" style={{ marginTop: "var(--sa-stack-16)" }}>
           <Panel title="Proposal & Fund Pipeline" sub="From submission to utilisation">
             <Funnel
               stages={[
@@ -441,7 +441,7 @@ function GIA({ kpis, sp, scope, filters, onDrill }: ViewProps) {
                 { label: "Infrastructure", value: 612, color: C.blue2, display: "612" },
               ]}
             />
-            <div style={{ marginTop: 16, paddingTop: 14, borderTop: "1px solid var(--pm-line)" }} className="pm-rows">
+            <div style={{ marginTop: "var(--sa-stack-16)", paddingTop: "var(--sa-padding-12)", borderTop: "1px solid var(--pm-line)" }} className="pm-rows">
               <Row lab="Physical progress achievement" val="73.4%" />
               <Row lab="Approval rate" val="74.7%" />
             </div>
@@ -450,7 +450,7 @@ function GIA({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       </div>
       <div>
         <SectionHead title={scope ? `GIA — ${scope.name}` : "State-wise GIA Performance"} meta={tableMeta(scope)} />
-        <Panel style={{ marginTop: 18 }}>
+        <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
           <DataTable<LevelRow>
             caption="GIA performance by region"
             rows={rows}
@@ -489,16 +489,16 @@ function Hostel({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <KpiGrid kpis={kpis} sp={sp} />
       <div>
         <SectionHead title="Construction & Occupancy" meta="FY 2025-26" />
-        <div className="pm-grid main" style={{ marginTop: 18 }}>
+        <div className="pm-grid main" style={{ marginTop: "var(--sa-stack-16)" }}>
           <Panel title="Hostel Construction Status" sub="Approved hostels by stage">
             <VBars labels={["Approved", "Completed", "Under Constr."]} unit="hostels" series={[{ name: "Hostels", color: "var(--pm-accent)", data: [842, 514, 328] }]} height={200} />
-            <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--pm-line)" }} className="pm-rows">
+            <div style={{ marginTop: "var(--sa-stack-12)", paddingTop: "var(--sa-padding-12)", borderTop: "1px solid var(--pm-line)" }} className="pm-rows">
               <Row lab="Completion rate" val="61.0% of approved" />
               <Row lab="Funds utilized" val={INR(1894) + " Cr of " + INR(2640) + " Cr"} />
             </div>
           </Panel>
           <Panel title="Seat Occupancy" sub="Seats filled vs created · target 80%">
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--sa-stack-16)" }}>
               <Donut pct={76} size={160} color="var(--pm-accent)" center="76.0%" sub="Occupied" target={80} label="Seat occupancy" />
               <div style={{ width: "100%" }} className="pm-rows">
                 <Row lab="Seats created" val="1,48,200" />
@@ -513,7 +513,7 @@ function Hostel({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       </div>
       <div>
         <SectionHead title={scope ? `Hostels — ${scope.name}` : "State-wise Hostel Delivery"} meta={tableMeta(scope)} />
-        <Panel style={{ marginTop: 18 }}>
+        <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
           <DataTable<LevelRow>
             caption="Hostel delivery by region"
             rows={rows}
@@ -560,7 +560,7 @@ function Adarsh({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <KpiGrid kpis={kpis} sp={sp} />
       <div>
         <SectionHead title="Village Development Pipeline" meta="PMAGY · FY 2025-26" />
-        <div className="pm-grid main" style={{ marginTop: 18 }}>
+        <div className="pm-grid main" style={{ marginTop: "var(--sa-stack-16)" }}>
           <Panel title="Selected → Declared" sub="Adarsh Gram readiness pipeline">
             <Funnel
               stages={[
@@ -573,7 +573,7 @@ function Adarsh({ kpis, sp, scope, filters, onDrill }: ViewProps) {
             />
           </Panel>
           <Panel title="Works & Score" sub="Completion · target 80%">
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--sa-stack-16)" }}>
               <Donut pct={70} size={150} color={C.green} center="70.0%" sub="Works done" target={80} label="Works completion" />
               <div style={{ width: "100%" }} className="pm-rows">
                 <Row lab="Works identified" val="1,46,210" />
@@ -588,7 +588,7 @@ function Adarsh({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       </div>
       <div>
         <SectionHead title={scope ? `Adarsh Gram — ${scope.name}` : "State-wise Adarsh Gram Progress"} meta={tableMeta(scope)} />
-        <Panel style={{ marginTop: 18 }}>
+        <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
           <DataTable<LevelRow>
             caption="Adarsh Gram progress by region"
             rows={rows}
@@ -630,16 +630,16 @@ function Governance({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       <KpiGrid kpis={kpis} sp={sp} />
       <div>
         <SectionHead title="Compliance & Processing" meta="FY 2025-26" />
-        <div className="pm-grid main" style={{ marginTop: 18 }}>
+        <div className="pm-grid main" style={{ marginTop: "var(--sa-stack-16)" }}>
           <Panel title="Processing Times" sub="Average days at each stage">
             <VBars labels={["Proposal", "Sanction", "Fund Release", "Overall"]} unit="days" series={[{ name: "Days", color: "var(--pm-accent)", data: [38, 54, 28, 120] }]} height={200} />
-            <div style={{ marginTop: 14, paddingTop: 14, borderTop: "1px solid var(--pm-line)" }} className="pm-rows">
+            <div style={{ marginTop: "var(--sa-stack-12)", paddingTop: "var(--sa-padding-12)", borderTop: "1px solid var(--pm-line)" }} className="pm-rows">
               <Row lab="Proposals pending appraisal" val="426" />
               <Row lab="Overdue projects" val="86" />
             </div>
           </Panel>
           <Panel title="UC Compliance" sub="Accepted / submitted · target 90%">
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "var(--sa-stack-16)" }}>
               <Donut pct={86} size={160} color={C.green} center="86.4%" sub="Accepted" target={90} label="UC compliance" />
               <div style={{ width: "100%" }} className="pm-rows">
                 <Row lab="UCs submitted" val="13,012" />
@@ -654,7 +654,7 @@ function Governance({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       </div>
       <div className="pm-grid c2">
         <Panel title="Requires Attention" sub="Open governance items">
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-8)" }}>
             <AlertRow tone="red" icon="block" title="₹612 Cr installments blocked" desc="412 UCs pending beyond 90 days" when="Action" />
             <AlertRow tone="amber" icon="event_busy" title="86 projects overdue" desc="Average 47-day slippage" when="Review" />
             <AlertRow tone="amber" icon="gavel" title="214 audit observations open" desc="Pending closure across schemes" when="Track" />
@@ -674,7 +674,7 @@ function Governance({ kpis, sp, scope, filters, onDrill }: ViewProps) {
       </div>
       <div>
         <SectionHead title={scope ? `UC Compliance — ${scope.name}` : "State-wise UC Compliance"} meta={tableMeta(scope)} />
-        <Panel style={{ marginTop: 18 }}>
+        <Panel style={{ marginTop: "var(--sa-stack-16)" }}>
           <DataTable<LevelRow>
             caption="UC compliance by region"
             rows={rows}

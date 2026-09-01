@@ -1,0 +1,148 @@
+/*
+ * What the shadow root has to state for itself.
+ *
+ * ── A SHADOW ROOT BLOCKS SELECTORS, NOT INHERITANCE ────────────────────────
+ *
+ * This is the half of "style isolation" that surprises people, and it bit this
+ * bundle: dropped into a theme with `body { font-family: Georgia; color: #7a0000 }`,
+ * the card rendered in a dark-red serif. No theme RULE had matched anything of
+ * ours — inherited properties simply cross the boundary, because that is what
+ * inheritance is for. A widget is supposed to pick up its host's font; a
+ * government chart with its own type contract is not.
+ *
+ * ── AND IT DOES NOT BLOCK THE BROWSER'S OWN STYLESHEET EITHER ──────────────
+ *
+ * The second surprise, and the more expensive one. The design system is
+ * authored against Tailwind Preflight, which the hub loads through
+ * `globals.css`. Nothing loads it here, so the USER-AGENT defaults that
+ * Preflight exists to flatten came back — inside the shadow root, where no
+ * theme could be blamed for them. Every breadcrumb and pager control rendered
+ * with Chrome's `2px outset` bevel on a grey ground, and every link came back
+ * underlined.
+ *
+ * That is the mirror image of the risk everyone worries about with an embed.
+ * The host page was never in danger; the CARD was, from styles the host does
+ * not control and cannot switch off. So this file is Preflight's subset for the
+ * elements this card actually uses, and it is not optional.
+ */
+
+/*
+ * ── THE LAYER ORDER, WHICH IS THE WHOLE REASON THIS RESET IS SAFE ──────────
+ *
+ * Every design-system stylesheet opens with this statement and puts its rules
+ * in `components`. Declared here too — first declaration wins, so repeating it
+ * is harmless — and this file's rules go in `base`, exactly where Preflight
+ * sits in the hub.
+ *
+ * Without the layer, `*, ::before, ::after { border: 0 solid }` below would be
+ * UNLAYERED, and unlayered styles beat every layered one: the reset intended to
+ * remove the browser's button bevel would instead erase every border the design
+ * system draws, including the hairlines that divide this card into regions.
+ */
+@layer theme, base, components, utilities;
+
+@layer base {
+  :host {
+    /* Contain the layout, and give the element a sane display — a custom
+       element is `display: inline` until told otherwise, which collapses the
+       whole card to a text run. */
+    display: block;
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: normal;
+    text-align: left;
+    text-transform: none;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * `box-sizing` is NOT inherited, so it does not cross the boundary — it
+   * simply defaults to `content-box` inside a tree Preflight never reached.
+   * Every width and padding in the design system is authored against
+   * `border-box`, so this is not a preference; without it the panel is wider
+   * than its own container by the sum of its padding.
+   *
+   * `border: 0 solid` is Preflight's, verbatim and for its reason: the design
+   * system writes `border-width` and `border-color` on their own and expects a
+   * style to already be set. A zero width draws nothing, so this removes the
+   * UA's bevels without removing anything of ours.
+   */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border: 0 solid;
+  }
+
+  /* The UA's margins reach in here even though a theme's cannot. */
+  h1, h2, h3, h4, h5, h6, p, figure, blockquote, dl, dd, ol, ul, fieldset, legend, hr {
+    margin: 0;
+    padding: 0;
+  }
+
+  ol, ul {
+    list-style: none;
+  }
+
+  /*
+   * THE BEVEL AND THE GREY GROUND, which is what actually shipped wrong.
+   * A UA button is `background: ButtonFace` with an `outset` border, and the
+   * design system paints its own ground over nothing.
+   */
+  button,
+  [type="button"],
+  [type="submit"],
+  [type="reset"] {
+    appearance: button;
+    background-color: transparent;
+    background-image: none;
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: default;
+  }
+
+  /*
+   * A link inside this card is styled by the component that draws it — the
+   * breadcrumb is not underlined, and Download CSV underlines only on hover.
+   * The UA's default underline overrode both.
+   */
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+  button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+    margin: 0;
+  }
+
+  /* A placeholder is dimmed by the component, not by the browser guessing. */
+  input::placeholder,
+  textarea::placeholder {
+    opacity: 1;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  table {
+    border-collapse: collapse;
+    border-color: inherit;
+    text-indent: 0;
+  }
+
+  img, svg {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* The card paints its own ground; the host's shows through around it. */
+  .pmajay-standalone {
+    background: transparent;
+  }
+}

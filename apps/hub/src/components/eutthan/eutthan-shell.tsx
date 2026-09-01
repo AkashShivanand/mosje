@@ -83,7 +83,7 @@ export function Sidebar({ navItems, path }: { navItems: NavItem[]; path: string 
                 {open ? <Icon name="keyboard_arrow_down" size={14} /> : <Icon name="keyboard_arrow_right" size={14} />}
               </button>
               {open && (
-                <div style={{ paddingLeft: 16 }}>
+                <div style={{ paddingLeft: "var(--sa-padding-16)" }}>
                   {item.children.map((child) => (
                     <Link
                       key={child.href}

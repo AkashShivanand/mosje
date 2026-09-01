@@ -17,7 +17,7 @@ export function Statement10APage() {
           {screen.subtitle && (
             <p
               style={{
-                margin: "4px 0 0",
+                margin: "var(--sa-stack-4) 0 0",
                 color: "var(--text-muted)",
                 fontSize: 14,
               }}
@@ -36,19 +36,19 @@ export function Statement10APage() {
         </div>
       </div>
 
-      <div className="panel" style={{ padding: "16px 24px" }}>
+      <div className="panel" style={{ padding: "var(--sa-padding-16) var(--sa-padding-24)" }}>
         <div
           style={{
             display: "flex",
             alignItems: "flex-end",
-            gap: 12,
+            gap: "var(--sa-inline-12)",
             flexWrap: "wrap",
           }}
         >
           <div
             role="group"
             aria-labelledby="s10a-fy-label"
-            style={{ display: "flex", flexDirection: "column", gap: 6 }}
+            style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-6)" }}
           >
             <span
               id="s10a-fy-label"
@@ -67,7 +67,7 @@ export function Statement10APage() {
           <div
             role="group"
             aria-labelledby="s10a-ministry-label"
-            style={{ display: "flex", flexDirection: "column", gap: 6 }}
+            style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-6)" }}
           >
             <span
               id="s10a-ministry-label"
@@ -121,12 +121,12 @@ export function Statement10APage() {
         <div
           className="panel"
           style={{
-            padding: 48,
+            padding: "var(--sa-padding-48)",
             textAlign: "center",
             color: "var(--text-muted)",
           }}
         >
-          <Icon name="view_list" size={40} style={{ opacity: 0.35, display: "block", margin: "0 auto 16px", }} />
+          <Icon name="view_list" size={40} style={{ opacity: 0.35, display: "block", margin: "0 auto var(--sa-stack-16)", }} />
           <p style={{ margin: 0 }}>
             Select a Financial Year and click <strong>View</strong> to load
             data.

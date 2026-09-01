@@ -30,7 +30,7 @@ export function TablePage({ path }: { path: string }) {
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: 8,
+              gap: "var(--sa-inline-8)",
               textDecoration: "none",
             }}
           >
@@ -67,7 +67,7 @@ export function TablePage({ path }: { path: string }) {
                     style={{
                       textAlign: "center",
                       color: "var(--text-muted)",
-                      padding: 48,
+                      padding: "var(--sa-padding-48)",
                     }}
                   >
                     No records found.

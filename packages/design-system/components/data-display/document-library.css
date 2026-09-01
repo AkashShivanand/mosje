@@ -12,6 +12,7 @@
     margin-block-end: var(--sa-stack-16);
     color: var(--sa-text-neutral-base);
     font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
   }
 
   .ds-doclib__grid {
@@ -36,6 +37,7 @@
   .ds-doclib__meta {
     color: var(--sa-text-neutral-base);
     font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
   }
 
   /*
@@ -54,6 +56,7 @@
     overflow: hidden;
     color: var(--sa-text-neutral-bolder);
     font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
     font-weight: 600;
   }
 
@@ -65,6 +68,7 @@
     overflow: hidden;
     color: var(--sa-text-neutral-base);
     font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
   }
 
   /* `margin-block-start: auto` pushes the action to the card's foot, so every
@@ -77,6 +81,7 @@
     padding-block-start: var(--sa-padding-8);
     color: var(--sa-text-brand-primary-base);
     font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     font-weight: 600;
     text-decoration: none;
   }

@@ -58,6 +58,24 @@
     overflow: visible;
   }
 
+  /*
+    A CHART THAT ZOOMS MUST CLIP ITSELF.
+
+    `.ds-chart__svg` is `overflow: visible` so a mark sitting on the very edge
+    of the plot — a focus ring, the last bar's stroke — is not sheared off by
+    one pixel. That is right for a chart whose viewBox always frames its own
+    data, which is every chart here except the maps.
+
+    `IndiaPointMap` narrows its viewBox to zoom to a state, and the rest of
+    India keeps drawing at full size outside it. Unclipped, a zoom to Tamil Nadu
+    painted a pale grey landmass across the section's own heading and cards.
+    Clipping is therefore a property of the CHART, not of the page that holds
+    it — a consumer cannot be expected to know which charts overflow.
+  */
+  .ds-chart__svg--clip {
+    overflow: hidden;
+  }
+
   .ds-chart__caption {
     margin-top: var(--sa-stack-8);
     font-size: var(--sa-type-body-3-size);
@@ -158,13 +176,220 @@
     align-items: center;
     gap: var(--sa-stack-8);
   }
+
+  /* ── An interactive legend: each entry switches its own series ──────────
+
+     IT HAS TO LOOK LIKE A CONTROL. An earlier version was deliberately quiet
+     at rest — bare text, a hover background and nothing else — on the
+     reasoning that a row of buttons would compete with the chart it labels.
+     That reasoning was wrong in one direction and it cost the feature: a
+     reader who cannot see that a key is pressable does not press it, and an
+     affordance nobody finds is the same as an affordance that is not there.
+     Discovering it by hovering only works for a pointer, which is not how a
+     touchscreen reads a page.
+
+     So each entry is now a PILL WITH A HAIRLINE BORDER, in the same language
+     as `Chip` — which is what sits beside these keys in PM-AJAY's control bar
+     doing the same job. Consistency there matters more than quiet.
+
+     Three cues carry the state, never colour alone (WCAG 1.4.1):
+       · the pill fills when on and is empty when off,
+       · a SOLID key goes HOLLOW when off — the switched-off checkbox
+         convention, and the one cue that survives greyscale,
+       · `aria-pressed` reports it to a screen reader.
+     ---------------------------------------------------------------------- */
+  .ds-chart__legend--interactive {
+    gap: var(--sa-stack-6);
+  }
+
+  .ds-chart__legend-toggle {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    /*
+      32px, NOT THE 24px MINIMUM.
+
+      It was 26 — past SC 2.5.8's floor and sized to match the `Chip`s that
+      used to sit beside it. Both reasons expired: those chips moved onto
+      PM-AJAY's map, and a floor is not a target. 26px of pill carrying an
+      11px key and a label reads as a caption that happens to respond, which is
+      exactly what a reader told us: they could not tell these were tappable.
+
+      32 is the smallest height at which a pill reads as a control rather than
+      as a label, and it costs one row of chrome nothing — the bar it lives in
+      is 43px tall either way.
+    */
+    min-height: 32px;
+    padding: var(--sa-padding-4) var(--sa-padding-12);
+    border: 1px solid var(--sa-border-brand-primary-base);
+    border-radius: var(--sa-shape-full);
+    /*
+      ON IS SELECTED, NOT MERELY FILLED.
+
+      It was `bg/neutral/subtler` — a light grey block. Stacked full-width on a
+      phone that is the anatomy of a settings ROW, and a reader told us as
+      much: the keys had stopped looking like controls. Grey is what a surface
+      is; it is not what a chosen thing is.
+
+      This is `Chip`'s own selected language, which is the point — an
+      interactive legend IS a chip, and it should not invent a third on-state
+      for the estate. PM-AJAY's map filters stay `tone="neutral"` precisely
+      because they sit ON the map and a brand tint there would compete with the
+      blue hexes underneath; these sit on a white card, where the tint is free.
+    */
+    background-color: var(--sa-bg-brand-primary-base);
+    cursor: pointer;
+    transition:
+      background-color 160ms ease-out,
+      border-color 160ms ease-out;
+  }
+
+  /*
+    Hover moves the BORDER and the ground together. A border-only change is
+    legible on a desk and invisible to the half of readers who arrive with a
+    finger and never produce a hover state at all — for them the affordance has
+    to be in the resting pill, which is what the height above buys.
+  */
+  .ds-chart__legend-toggle:hover {
+    border-color: var(--sa-border-brand-primary-bolder);
+    background-color: var(--sa-bg-brand-primary-subtler);
+  }
+
+  /*
+    A COARSE POINTER GETS A FULL TOUCH TARGET. 32px is comfortable under a
+    mouse; UX4G asks for 44 under a thumb, and a chart key is exactly the kind
+    of small control that gets mis-tapped at anything less.
+  */
+  @media (pointer: coarse) {
+    .ds-chart__legend-toggle {
+      min-height: 44px;
+    }
+  }
+
+  .ds-chart__legend-toggle:active {
+    transform: scale(0.97);
+  }
+
+  .ds-chart__legend-toggle:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* Off: the pill empties, the ink drops, and the key hollows out. */
+  /* Off empties the pill and dashes its edge, so the two states differ in
+     fill, in border STYLE and in ink — never in colour alone. */
+  .ds-chart__legend-toggle.is-off {
+    background-color: transparent;
+    border-color: var(--sa-border-neutral-base);
+    border-style: dashed;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-chart__legend-toggle.is-off:hover {
+    border-color: var(--sa-border-neutral-bolder-default);
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-chart__legend-toggle.is-off .ds-chart__legend-label,
+  .ds-chart__legend-toggle.is-off .ds-chart__legend-pct {
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /*
+    A solid key goes HOLLOW rather than merely faint — the switched-off
+    checkbox convention. The RING IS DRAWN BY THE COMPONENT, not here: the
+    key's colour arrives as an inline style, and a stylesheet cannot turn an
+    inline `background-color` into an inline `box-shadow` of the same value
+    without an `!important` fight it should not be having. See `Legend`'s
+    swatch branch.
+  */
+
+  /* A ramp and a row of dots cannot go hollow — there is no single shape to
+     empty — so those fade instead. */
+  .ds-chart__legend-toggle.is-off .ds-chart__ramp,
+  .ds-chart__legend-toggle.is-off .ds-chart__dots {
+    opacity: 0.35;
+  }
+
+  /* ── `swatch: "ramp"` — a sequential scale, with its ends named ─────────
+     Endpoints beside the strip rather than a caption below it: a key that
+     needs a second line stops being a key. */
+  .ds-chart__scale {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-4);
+    font-variant-numeric: tabular-nums;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-chart__scale-end {
+    line-height: 1;
+  }
+
+  .ds-chart__ramp {
+    display: flex;
+    width: 3.5rem;
+    height: var(--sa-stack-8);
+    border-radius: var(--sa-shape-2);
+    overflow: hidden;
+  }
+
+  .ds-chart__ramp-step {
+    flex: 1;
+  }
+
+  /* ── `swatch: "dots"` — a series that is itself a group of marks ────────
+     No fixed width. Matching the ramp's width would leave dead space inside
+     the key and push it away from the label it belongs to. */
+  .ds-chart__dots {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-stack-2);
+  }
+
+  .ds-chart__dot {
+    width: var(--sa-stack-8);
+    height: var(--sa-stack-8);
+    border-radius: var(--sa-shape-full);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-chart__legend-toggle {
+      transition: none;
+    }
+
+    .ds-chart__legend-toggle:active {
+      transform: none;
+    }
+  }
   .ds-chart__swatch {
     width: 12px;
     height: 12px;
     border-radius: var(--sa-shape-4);
     flex-shrink: 0;
   }
+  /*
+    ── THE KEY MUST BE CLOSER TO ITSELF THAN TO ITS LABEL ───────────────────
+
+    An entry is three things in a row — key, label, value — and a `ramp` key is
+    itself three things: a low end, the strip, a high end. At one uniform gap
+    they all read as one run, so PM-AJAY's villages key rendered
+
+        1 [▓▓▓▓] 387  Adarsh Gram villages  19,768
+
+    with "387" exactly as close to the label as the label is to its own total.
+    Nothing said which number belonged to which, and a reader taking "1 to 387"
+    as a qualifier on "Adarsh Gram villages" is reading it the way the spacing
+    told them to. It is the same defect as the dots that once floated between
+    two labels — proximity is the only thing grouping any of this, so it has to
+    be graded rather than flat.
+
+    Three steps, each visibly larger than the last: 4 inside the key, 12 from
+    the key to its label, 8 from the label to its value. The value stays nearer
+    its label than the key is, because the value belongs to the label.
+  */
   .ds-chart__legend-label {
+    margin-left: var(--sa-inline-4);
     color: var(--sa-text-neutral-base);
   }
   .ds-chart__legend-pct {

@@ -33,9 +33,9 @@ export function HeroCarousel() {
           <div className="h-full w-full bg-white grid grid-cols-1 md:grid-cols-12 items-center">
             {/* Left Content */}
             <div className="md:col-span-6 px-8 py-10 md:px-16 lg:px-24 flex flex-col justify-center">
-              <h2 className="text-[38px] sm:text-[50px] lg:text-[62px] font-black leading-[1.05] tracking-tight text-[#881337]">
+              <h2 className="text-[38px] sm:text-[50px] lg:text-[62px] font-black leading-[1.05] tracking-tight text-[var(--nmba-red-deep)]">
                 Mann<br />
-                <span className="text-[#991b1b]">Ki Baat</span>
+                <span className="text-[var(--nmba-red)]">Ki Baat</span>
               </h2>
               <p className="mt-2 text-[18px] sm:text-[22px] font-bold text-gray-800 tracking-tight">
                 on 26<sup className="text-xs">th</sup> Oct 2025
@@ -51,7 +51,7 @@ export function HeroCarousel() {
                   href="https://pmindia.gov.in"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg bg-[#dc2626] px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-[#b91c1c]"
+                  className="inline-flex items-center gap-2 rounded-lg bg-[var(--nmba-red-cta)] px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-[var(--nmba-red-cta-hover)]"
                 >
                   <Icon name="play_arrow" size={20} />
                   WATCH LIVE

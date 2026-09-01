@@ -1,0 +1,42 @@
+/* Declare the order before using it — a cascade layer's position is fixed by
+   where its NAME first appears, and this file may be injected before the app's
+   globals.css. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /*
+    ── AN EMBED IS A FRAGMENT, SO IT BRINGS NO PAGE FURNITURE ────────────────
+
+    The section normally sits on a tinted band inside a `.sa-container`, between
+    a masthead and a footer. Framed inside somebody else's page it has none of
+    that, and should not invent it: the host supplies the ground it sits on and
+    the width it is allowed.
+
+    So the background is TRANSPARENT rather than the estate's `surface-muted`.
+    A WordPress page with a cream section behind the iframe would otherwise get
+    a grey rectangle sitting on it, and the one thing an embed must not do is
+    announce that it is an embed.
+  */
+  .pmw-embed {
+    display: block;
+    /* No horizontal padding: the host decides the gutter, and doubling it is
+       what makes an embed look inset rather than placed. Vertical only, so the
+       card does not touch the frame's edges when the host gives it none. */
+    padding: var(--sa-padding-4) 0;
+    background: transparent;
+  }
+
+  /*
+    The section's own heading block carries the estate's page rhythm — margin
+    above it that assumes a band before it. There is no band here.
+  */
+  .pmw-embed .ds-section-title {
+    margin-top: 0;
+  }
+}
+
+/* The host paints its own ground; ours must not cover it. */
+:root:has(.pmw-embed),
+body:has(.pmw-embed) {
+  background: transparent;
+}

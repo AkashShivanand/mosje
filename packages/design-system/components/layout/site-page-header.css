@@ -92,6 +92,7 @@
   .sa-siteheader__eyebrow {
     color: var(--sa-text-neutral-inverse);
     font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     font-weight: 500;
     letter-spacing: 0.5px;
   }
@@ -105,7 +106,14 @@
     color: var(--sa-text-neutral-inverse);
     font-size: var(--sa-type-headline-1-size);
     font-weight: 600;
-    line-height: 1.2;
+    /*
+     * The PAIRED leading, not a ratio. `line-height: 1.2` looked correct and was
+     * wrong everywhere except one width: headline-1 is 40/48 at desktop, so
+     * 40 x 1.2 lands on 48 exactly — and at 768px the token says 39.10 while the
+     * ratio renders 39.98. A size bound without its leading is half a binding,
+     * and this is the half that only shows up BETWEEN the breakpoints.
+     */
+    line-height: var(--sa-type-headline-1-lh);
     /* Long official names break mid-word rather than overflowing the band. */
     overflow-wrap: anywhere;
   }
@@ -127,7 +135,13 @@
     color: var(--sa-text-neutral-inverse);
     font-size: var(--sa-type-body-1-size);
     font-style: italic;
-    line-height: 1.5;
+    /*
+     * Also the paired leading. `1.5` is exact on the WEBSITE, where body-1 is a
+     * flat 16/24 — and off on the portal, where the role clamps 14/20 up to
+     * 16/24: at 360px the ratio renders 21 against the token's 20. A ratio that
+     * happens to match one surface is not a binding, it is a coincidence.
+     */
+    line-height: var(--sa-type-body-1-lh);
     letter-spacing: 0.5px;
   }
 

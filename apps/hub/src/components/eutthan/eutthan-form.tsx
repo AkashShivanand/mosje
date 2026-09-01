@@ -18,11 +18,11 @@ export function FormPage({ path }: { path: string }) {
           style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: 8,
-            background: "rgba(0,51,102,0.08)",
-            padding: "8px 14px",
-            borderRadius: 8,
-            marginBottom: 12,
+            gap: "var(--sa-inline-8)",
+            background: "var(--primary-tonal)",
+            padding: "var(--sa-padding-8) var(--sa-padding-12)",
+            borderRadius: "var(--sa-shape-8)",
+            marginBottom: "var(--sa-stack-12)",
           }}
         >
           <Icon name="arrow_back" size={15} /> Back
@@ -36,18 +36,18 @@ export function FormPage({ path }: { path: string }) {
 
   return (
     <div className="page-stack">
-      <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-inline-12)" }}>
         <Link
           href={portalLink(backPath)}
           className="text-action"
           style={{
             display: "inline-flex",
             alignItems: "center",
-            gap: 6,
-            background: "rgba(0,51,102,0.08)",
+            gap: "var(--sa-inline-6)",
+            background: "var(--primary-tonal)",
             minHeight: 36,
-            padding: "6px 14px",
-            borderRadius: 8,
+            padding: "var(--sa-padding-6) var(--sa-padding-12)",
+            borderRadius: "var(--sa-shape-8)",
           }}
         >
           <Icon name="arrow_back" size={15} /> Back
@@ -72,8 +72,8 @@ export function FormPage({ path }: { path: string }) {
                   style={{
                     minHeight: 42,
                     border: "1px solid var(--stroke-200)",
-                    borderRadius: 8,
-                    padding: "10px 12px",
+                    borderRadius: "var(--sa-shape-8)",
+                    padding: "var(--sa-padding-8) var(--sa-padding-12)",
                     color: "var(--text)",
                     background: "white",
                     font: "inherit",

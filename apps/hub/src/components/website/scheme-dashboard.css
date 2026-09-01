@@ -744,7 +744,7 @@
   .sd-aside__link-arrow {
     display: inline-flex;
     flex: 0 0 auto;
-    margin-top: 1px;
+    margin-top: var(--sa-stack-2);
     color: var(--sa-icon-brand-primary-base);
     transition: transform 0.15s ease;
   }
@@ -864,7 +864,7 @@
   .sd-dash__head[data-stick="pinned"] {
     padding-block: var(--sa-padding-8);
     border-bottom-color: var(--sa-border-neutral-subtle);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 4%);
+    box-shadow: 0 1px 2px var(--shadow-ambient-04);
   }
 
   .sd-dash__title {

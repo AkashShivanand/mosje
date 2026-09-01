@@ -1,9 +1,10 @@
 import type { Descriptor, Reading } from "@/lib/data-mode/types";
+import { PMAJAY_REACH_SNAPSHOT } from "./pmajay-map-snapshot";
 import {
-  PMAJAY_REACH_SNAPSHOT,
-  type ReachDataset,
+  reducePmajayMapPoints,
   type ReachSnapshot,
-} from "./pmajay-map-snapshot";
+  type RawMapPoints,
+} from "./pmajay-map-reduce";
 import {
   GIA_ALL_PHYSICAL_FALLBACK,
   GIA_YEARS_FALLBACK,
@@ -395,7 +396,7 @@ export async function getGiaGender(totalApproved: number): Promise<GenderReading
 }
 
 /* ══════════════════════════════════════════════════════════════════════════
-   REACH — where PM-AJAY has landed, by state
+   REACH — where PM-AJAY has landed, on the ground
    ══════════════════════════════════════════════════════════════════════════ */
 
 export type ReachKey =
@@ -407,67 +408,25 @@ export type ReachKey =
   | "hostelDistricts";
 
 export interface ReachData {
-  /** Per-state rows as the feed reported them. `null` when it did not answer. */
+  /** The reduced feed. `null` when it did not answer. */
   live: ReachSnapshot | null;
   reading: Reading<ReachKey>;
   mock: ReachSnapshot;
   reachable: boolean;
 }
 
-interface RawMapPoints {
-  vdp_villages: { state_name?: string; district_code?: number | string }[];
-  hostels: { state_name?: string; district_id?: number | string }[];
-}
-
 /**
- * "JAMMU AND KASHMIR" → "Jammu and Kashmir".
+ * Where the scheme has reached, reduced to what a map can draw.
  *
- * Kept identical to `scripts/build-pmajay-map-snapshot.mjs`, deliberately and by
- * hand: that script runs in bare Node with no bundler and cannot import from
- * here, and a shared package for eleven lines would buy a build step to save a
- * duplication. If one changes, change both — a live row spelled differently from
- * its mirrored twin sorts into a different place in the same list.
- */
-const REACH_JOINERS = new Set(["and", "of", "the"]);
-
-function titleCaseState(raw: string): string {
-  return raw
-    .toLowerCase()
-    .split(/\s+/)
-    .map((w, i) => (i > 0 && REACH_JOINERS.has(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)))
-    .join(" ");
-}
-
-function aggregateReach<T extends Record<string, unknown>>(
-  points: T[],
-  stateKey: keyof T,
-  districtKey: keyof T,
-): ReachDataset {
-  const byState = new Map<string, number>();
-  const districts = new Set<string>();
-  for (const p of points) {
-    const state = titleCaseState(String(p[stateKey] ?? "").trim());
-    if (!state) continue;
-    byState.set(state, (byState.get(state) ?? 0) + 1);
-    districts.add(`${String(p[stateKey])}:${String(p[districtKey])}`);
-  }
-  const rows = [...byState]
-    .map(([state, value]) => ({ state, value }))
-    // Descending by count, then alphabetical — `component-authoring.md` §10.
-    .sort((a, b) => b.value - a.value || a.state.localeCompare(b.state));
-  return { rows, total: points.length, states: rows.length, districts: districts.size };
-}
-
-/**
- * Where the scheme has reached, aggregated to states.
- *
- * THE COORDINATES NEVER LEAVE THIS FUNCTION, AND THAT IS THE DESIGN. The feed
- * publishes a point per village and per hostel — 19,767 and 202 of them, about
- * 3.5 MB. The page draws a state choropleth beside a ranked list, so all it can
- * use is two lists of about two dozen rows. Aggregating here means the render
- * ships ~2 KB rather than ~3.5 MB of latitudes it would immediately discard, and
- * the hourly `revalidate` means the large fetch happens once an hour rather than
- * once a view.
+ * THE COORDINATES DO LEAVE THIS FUNCTION NOW, AND THAT IS THE CHANGE. The first
+ * build of this section aggregated the feed to 24 per-state counts and threw the
+ * points away, on the reasoning that a state choropleth cannot use them. That
+ * reasoning was sound about the old chart and wrong about the data: PM-AJAY's
+ * villages are not a per-state quantity, they are a belt running across West
+ * Bengal, Bihar and northern Tamil Nadu, and a circle at a state's centroid
+ * cannot show it. What ships now is a binned density field plus district and
+ * state rows plus every hostel — about 85 KB out of 5.4 MB, and it carries the
+ * geography instead of erasing it. `pmajay-map-reduce.ts` holds the arithmetic.
  *
  * A LONGER TIMEOUT THAN ITS SIBLINGS, BUT NOT AN UNBOUNDED ONE. Six seconds is
  * right for a summary object and short for a multi-megabyte body; 8 is the
@@ -480,14 +439,14 @@ function aggregateReach<T extends Record<string, unknown>>(
  * ITS OWN BASE URL, because this endpoint alone is unwell. The production
  * gateway currently answers `504` on it after ~29s while serving every other
  * PM-AJAY report in milliseconds — the payload is simply too big for it — and
- * the department's dev host returns the same 3.5 MB in 2.2s. The default stays
- * PRODUCTION, because a citizen-facing page must not quietly read from a `-dev`
- * host; `NEXT_PUBLIC_PMAJAY_MAP_API` points a demo or a staging build at one
- * without a code change. Until prod is fixed, the map draws from the mirror and
- * says so.
+ * the department's dev host returns the same body in about two seconds. The
+ * default stays PRODUCTION, because a citizen-facing page must not quietly read
+ * from a `-dev` host; `NEXT_PUBLIC_PMAJAY_MAP_API` points a demo or a staging
+ * build at one without a code change. Until prod is fixed, the map draws from
+ * the mirror and says so.
  *
- * TWO DATASETS, NOT THREE. Grants-in-Aid has no point data in this feed, so the
- * map speaks for two of PM-AJAY's three components and the section says so.
+ * TWO COMPONENTS, NOT THREE. Grants-in-Aid has no point data in this feed, so
+ * the map speaks for two of PM-AJAY's three components and the section says so.
  * Drawing an empty third layer to make the set look complete would state that
  * GIA has reached nowhere, which is false rather than merely absent.
  */
@@ -500,18 +459,17 @@ export async function getPmajayReach(): Promise<ReachData> {
     return { live: null, reading: {}, mock, reachable: false };
   }
 
-  const villages = aggregateReach(raw.vdp_villages, "state_name", "district_code");
-  const hostels = aggregateReach(raw.hostels, "state_name", "district_id");
+  const live = reducePmajayMapPoints(raw);
 
   return {
-    live: { villages, hostels },
+    live,
     reading: {
-      villages: villages.total,
-      villageStates: villages.states,
-      villageDistricts: villages.districts,
-      hostels: hostels.total,
-      hostelStates: hostels.states,
-      hostelDistricts: hostels.districts,
+      villages: live.villageTotal,
+      villageStates: live.states.filter((s) => s.villages > 0).length,
+      villageDistricts: live.districts.filter((d) => d.villages > 0).length,
+      hostels: live.hostelTotal,
+      hostelStates: live.states.filter((s) => s.hostels > 0).length,
+      hostelDistricts: live.districts.filter((d) => d.hostels > 0).length,
     },
     mock,
     reachable: true,
@@ -528,11 +486,12 @@ export async function getPmajayReach(): Promise<ReachData> {
  * not obey, and the merge would then "derive" a figure from it — which is worse
  * than mocking one, because a derived figure is presented as trustworthy.
  *
- * The per-state ROWS are not fields here either. The merge resolves scalars, and
- * a list whose length the feed decides has no fixed key set — so the rows follow
- * the provenance of their own dataset's total. See `PmajayReachMap`.
+ * The geography is not fields here either. The merge resolves scalars, and a
+ * lattice of a thousand cells has no fixed key set — so the bins, pins, district
+ * and state rows all follow the provenance of their own component's total. See
+ * `PmajayWorksMap`.
  *
- * Zeros are all `missing`: a scheme with 19,767 villages on the books has not
+ * Zeros are all `missing`: a scheme with 19,768 villages on the books has not
  * reached zero states, so a zero in any of these is an unpopulated column.
  */
 export const PMAJAY_REACH_DESCRIPTOR: Descriptor<ReachKey> = {

@@ -123,6 +123,30 @@ const PM_AJAY_SESSION_COOKIE = "pmajay_session"; // set by the client auth-conte
  */
 const GATE_PUBLIC_ASSETS = [GATE_EMBLEM_SRC];
 
+/**
+ * Social card images pass the wall. Without this the gate has no picture.
+ *
+ * While the gate is on, EVERY estate url redirects here, so /gate is the only
+ * page an unfurler in WhatsApp, Slack or Teams ever reads — and its `og:image`
+ * points at `/opengraph-image`. That url was itself behind the wall, so the
+ * unfurler fetched it, got a 307 to an HTML page, and rendered the card with no
+ * image. The tags were correct and the picture was missing, which is the hardest
+ * kind of wrong to notice: it cannot reproduce locally, because `SITE_PASSWORD`
+ * is unset in development and the wall is off.
+ *
+ * What this exposes is a rendered PNG of the ministry lockup and the estate's
+ * one-line description — the same words already on the gate page, which is
+ * public by necessity. No route, no data and no page content is reachable
+ * through it, and it grants nothing towards unlocking.
+ *
+ * Matched on the FINAL segment only, so it admits exactly Next's metadata image
+ * routes (`/opengraph-image`, `/design-system/opengraph-image.png`) and cannot
+ * be widened by a prefix someone appends it to. A path that matches but has no
+ * route 404s, exactly as it would from outside — so this reveals nothing about
+ * what else exists.
+ */
+const SOCIAL_CARD_IMAGE = /\/(opengraph|twitter)-image(-[a-z0-9]+)?(\.[a-z0-9]+)?$/i;
+
 async function gateRedirect(req: NextRequest): Promise<NextResponse | null> {
   const expected = await resolveGateToken();
   // No configured token ⇒ gate disabled. This is the local-dev path, and it is
@@ -135,6 +159,7 @@ async function gateRedirect(req: NextRequest): Promise<NextResponse | null> {
   // gate password is lost or a bad value is written. It has its own password.
   if (pathname === "/admin" || pathname.startsWith("/admin/")) return null;
   if (GATE_PUBLIC_ASSETS.includes(pathname)) return null;
+  if (SOCIAL_CARD_IMAGE.test(pathname)) return null;
 
   const presented = req.cookies.get(GATE_COOKIE)?.value;
   if (presented && safeEqual(presented, expected)) return null;

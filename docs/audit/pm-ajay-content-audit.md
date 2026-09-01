@@ -1282,3 +1282,460 @@ the property that was missing.
 `PageHero`'s circle opaque would have worked for today's markup and broken again
 the next time a consumer renders something translucent in the halo. An animation
 should not depend on what is drawn on top of it.
+
+---
+
+## §31 · The reach map, rebuilt on the coordinates the feed actually publishes
+
+**2026-09-01.** The department's `map-points` endpoint carries 19,768 Adarsh Gram
+village points and 203 hostel points, each with a latitude, a longitude, a state
+and a district; the hostels also carry a type. Two builds of this section used
+**one field of that** — the state name — and threw the rest away on the server.
+
+| what the feed carries | used before | used now |
+| --- | --- | --- |
+| village coordinates (19,768) | discarded | hex density field |
+| hostel coordinates (203) | discarded | individual pins |
+| hostel type (Girls / Boys / Sanctioned) | discarded | filter + mark colour |
+| district name (547 distinct) | counted only | drill-down rail + rings |
+| state name | the whole chart | rail + zoom |
+
+### What the old chart was hiding
+
+Aggregating to 24 per-state circles does not merely lose detail — it changes what
+the page asserts. PM-AJAY read as a scheme spread evenly across two dozen states.
+It is a scheme **concentrated in a belt**: West Bengal (5,792) and Bihar (2,853)
+alone hold **44%** of every Adarsh Gram village, with a second concentration
+across northern Tamil Nadu. No mark placed at a state's centroid can show that,
+and the coordinates were published precisely so that it could be.
+
+### Three data-quality defects found in the feed, and what each is
+
+| defect | count | evidence | treatment |
+| --- | --- | --- | --- |
+| latitude and longitude **transposed** | 155 | an Assam hostel at `lat 90.71, lon 26.47` — the Pacific | swapped back and drawn; India's lat band (6–37.6) and lon band (68–97.5) do not overlap, so at most one reading can be inside the country and **zero rows are ambiguous** |
+| **no usable coordinate** — absent, `0,0`, or outside every range | 423 | 111 villages at exactly `0,0`; one at `35.805, −79.074`, which is North Carolina | counted, not drawn |
+| **plausible but wrong** — passes every range check, lands in the sea | 70 | 33 aggregation cells adrift off Gujarat and Kerala | counted, not drawn |
+
+The third class is the one no bounds test can see, and it is why
+`isOnIndianLand` exists. Its 6-unit (~25 km) tolerance is **required, not
+generous**: the outlines are simplified TopoJSON, and a strict point-in-polygon
+condemned 58 genuine Konkan and Sundarbans cells as bad data. The tolerance sits
+where the measured distribution has its gap — 58 cells lie within 6 units of
+land, and the next one out is at 9.
+
+**All 493 unplaceable records are still COUNTED**, and the page says so in a line
+beside the figures, not in a log. A map that omits 493 places while printing
+"19,768 villages" underneath is telling the reader it drew them all.
+
+### A field that looked like two, and would have published a falsehood
+
+`hostel_type` and `is_legacy` are **the same partition**. All 137 `Sanctioned
+Hostel` rows have `is_legacy: true`; all 66 `Girls`/`Boys` rows have
+`is_legacy: false`. They are one fact wearing two names — older records never
+captured whose hostel it is.
+
+Offering both as independent filters would have let a reader select *Girls* and
+*legacy*, get zero, and conclude PM-AJAY built no girls' hostels in its earlier
+years. That is **false**, not merely unknown. The map offers one dimension whose
+third value is named "Type not recorded".
+
+### Deliberately not shipped
+
+`project_id` encodes what looks like a sanction financial year — `ST28-**2324**-001349`
+— and it parses for 188 of 203 rows (`2324` ×118, `2425` ×36, `2526` ×31,
+`2627` ×2, plus one anomalous `2022`); 15 do not parse at all. A year inferred
+from a substring of an identifier, validated against nothing the department
+publishes, is exactly the sort of figure that reaches a deck as a departmental
+one. **Reported here rather than built**: if the ministry publishes the sanction
+year as a field, the filter is a small change.
+
+### Still open
+
+- The production gateway answers **504** on `map-points` after ~29s while
+  serving every other PM-AJAY report in milliseconds. The page draws from the
+  committed mirror and says so; the fix is the ministry raising the limit.
+- The feed publishes **no coordinates for Grants-in-Aid**, a third of the
+  scheme. Its real project total is on the page with the reason it is not on the
+  map.
+- 21 village codes appear on more than one row with different coordinates.
+  Counted as published; not deduplicated, because which row is right is the
+  department's call.
+
+---
+
+## §32 · Design audit of the reach section — placement and style
+
+**2026-09-01.** Audited as a design director, at 1280px, against the page it sits
+in rather than on its own.
+
+### What the audit found
+
+**The page introduced the three components twice, 200px apart.** The
+"Components" band directly above already presents Adarsh Gram, Grants-in-aid and
+Hostels as three cards with icons, descriptions and "Read more" links. The reach
+section then opened with three cards for the same three components, in a
+different order and a different card style. A reader who scans hits the triad
+twice and has to work out whether they are the same thing.
+
+**The map got 23% of its own section.** Measured:
+
+| | before | after |
+| --- | --- | --- |
+| section height | 1045px | **839px** |
+| map canvas | 534 × 374 | **542 × 379** |
+| map share of the section | 23.0% | **29.4%** |
+| height before the map appears | 397px (38%) | **230px (27%)** |
+| control chrome | 169px (cards 113 + toolbar 56) | **58px** |
+| bordered, rounded containers in the section | 5 | **1** |
+| truncated state names at 1280px | 2 | **0** |
+
+**Other defects, all fixed:** "Uttar Pradesh" and "Andhra Pradesh" rendered
+ellipsised in the rail; three lines of instructions sat under the map; the
+totals were printed three times in one section; provenance was said twice; and
+the coverage line — the one sentence that was not a repetition — was the least
+prominent text on screen.
+
+### The three calls, and why
+
+**1. Strip the section rather than merge it into "Components".** Merging was the
+tempting move. It is wrong here: that band is the department's own account of
+its scheme, with links to real pages; this map is an interpretation layer on top
+of it. On a government estate the department's structure stays intact and our
+layer stays visibly ours. Merging would also have cost a sidebar anchor that
+`check:org-anchors` gates and citizens use for wayfinding.
+
+The duplication dies a better way. **The three cards became legend entries.** A
+line reading `1 ▨▨▨ 387  Adarsh Gram villages  19,768` cannot be mistaken for a
+second telling of the components — it reads as a key, which is what it is, it
+happens to be clickable, which is what a legend on an interactive map should be,
+and it costs one line instead of a 113px card.
+
+Grant-in-Aid, which has no coordinates, stopped being a greyed-out card. A card
+for a layer that can never be switched on is odd; a sentence in the footnote
+saying the department publishes no locations for its 8,772 projects is exact.
+
+**2. The breadcrumb and the search moved into the list.** They were in the map's
+control bar, where they pushed it to two rows and left the second holding
+"India  [Find a state…]" alone against the right edge. They were also in the
+wrong place: the search filters *that list*, and the breadcrumb names the grain
+*that list* is at. Moving them made the map's control bar one row of key, which
+is what a map's own chrome should be.
+
+**3. One panel, not a card mosaic — but still a panel.** The map and the ranked
+list are two regions of one instrument, so they are two regions of one white
+panel divided by a hairline. The panel keeps its border and radius: the family
+this page belongs to is contained white surfaces on a tinted band, and the
+estate holds every section to `.sa-container`. Full-bleed would have read as a
+different product. What was wrong was never the container; it was having five.
+
+### Considered and rejected: promoting the numbers to the hero
+
+The hero's "at a glance" card carries **New Delhi · 3 · Scheduled Castes** while
+19,768 villages and 203 hostels sit at 40% scroll depth. Moving them up was
+proposed and then dropped: `FactStrip`'s own contract in `design.md` says it
+holds "facts that never trend" and is explicitly **not** `MetricCard`, the
+component that exists for moving measurements. 19,768 moves every month. Putting
+it there would break a component used on 23 pages to improve one.
+
+The observation stands and is recorded here for whoever revisits the hero: the
+page's two most arresting figures are the ones a reader reaches last.
+
+---
+
+## §33 · Second design pass — copy register, and the list that doubled the page
+
+**2026-09-01.**
+
+### The copy was written for a product, not a department
+
+| | before | after |
+| --- | --- | --- |
+| heading | "Where PM-AJAY works" | **"Scheme coverage"** |
+| lead | "Every village declared an Adarsh Gram and every hostel sanctioned under the scheme, drawn where the department records it standing." | **"Villages declared as Adarsh Gram and hostels sanctioned under the scheme, shown at the locations recorded in the PM-AJAY Management Information System."** |
+
+Every other band on this page is a plain label — About the Scheme, Components,
+Documents & downloads, Reports, Gallery, Contact. A headline among labels reads
+as marketing that wandered onto a departmental page. The lead was worse: *"drawn
+where the department records it standing"* is a writer's cadence, not a
+department's.
+
+The replacement names the thing and cites the source system, which is what a
+government section heading does. It is also **short**: the first attempt,
+"Coverage across States and Districts", was accurate and wrapped to two lines
+beside one-word siblings — the odd heading out again, in a different register.
+The sidebar entry was changed with it.
+
+### "Show all 28 states" doubled the page
+
+Measured at 1280px:
+
+| | collapsed | expanded |
+| --- | --- | --- |
+| section height | 839px | **1659px** |
+| document height | 7,582px | 8,402px |
+| map region height | 492px | **1312px**, holding a 563px map |
+
+The two regions stretch together, so expanding the list did not just lengthen
+the page — it left **741px of empty white** where the map had been, all of it
+below the map, because the map was pinned to the top of its region.
+
+**The list scrolls now and the button is gone.** Every row is rendered, the
+overflow is the list's own, and the list *fills* the rail rather than taking a
+height in rem — so the last visible row is always a partial row, which is the
+oldest and clearest "there is more below" signal there is. The panel carries a
+`min-height` floor so neither region is starved by the other's natural size, and
+the map is centred, so what slack remains is a symmetric band above and below.
+
+**Section height is now 804px and does not change** — verified across search,
+drill-down into a State, returning to India, and toggling either layer.
+
+### Five defects the audit found on the way
+
+1. **The bar added villages to hostels.** `villages + hostels` is a sum of two
+   different units, and it drew Sikkim (0 villages, 5 hostels), Mizoram (0, 3),
+   Kerala (0, 2) and Delhi (1, 0) **identically**, under a column headed
+   "Villages". The bar now draws exactly one measure, scaled to that measure's
+   own maximum. Ordering may still combine the two — asking "how much of this
+   scheme is here" is legitimate where drawing one bar for it is not.
+2. **A zero drew a bar.** The 2% floor exists so Delhi's single village is a
+   visible mark; applied to zero it invented a quantity for states the scheme
+   has reached only with hostels.
+3. **"28 of 36" stayed on screen while a search narrowed the list**, so three
+   matching rows read as "3 of 36 reached". The phrasing now changes with the
+   state it describes.
+4. **Rows were buttons that rendered as list items** — the only affordance was
+   the cursor, which touch users never see. They carry a chevron, positioned in
+   the row's own padding so it costs the state names no width.
+5. **Searching filtered the list and left the map showing everything.** When the
+   query narrows to a single State the map now outlines it.
+
+And one that only appeared after the fixes: **the list keeps its scroll position
+across a change of grain**, so scrolling down to Karnataka and clicking it opened
+Karnataka's districts already 400px down. Reset on every change of focus, query
+or layer.
+
+---
+
+## §34 · Third design pass — DS compliance, copy register, and pagination
+
+**2026-09-01.**
+
+### The section was not using the design system's heading
+
+| | before | after |
+| --- | --- | --- |
+| heading component | hand-rolled `.pmw__title` | **DS `SectionTitle`** |
+| heading size/weight | 26.3px / 700 | **20px / 600** — identical to all six siblings |
+| description size | 16px | **12px** |
+| provenance chip | its own flex row | `SectionTitle`'s actions slot |
+
+Six of the seven bands on this page render `SectionTitle`. Mine did not, and
+`SectionTitle`'s own docstring says to use it *"instead of hand-rolling a
+`<div className='flex justify-between'>` with its own heading classes, so
+section headers stay identical estate-wide."* That is exactly what had been
+done. All seven headings now measure 20px/600 with 12px descriptions.
+
+### The caption was API documentation
+
+What sat under the map recited the feed's data quality: how many records were
+drawn, how many carried no coordinates, how many were published outside India,
+how many had latitude and longitude reversed. Every number was true and none of
+it was a caption. **Removed.** The figures live in §31 and §33 of this document,
+where the people who can act on them will look.
+
+Grant-in-Aid's "not on this map" sentence went with it, and the `giaTotal` prop
+and its live fetch were removed from the page as dead weight. The section's
+description names exactly what is drawn, so it is complete on its own terms and
+the Components band above introduces all three components.
+
+**This is now a standing rule:** `.claude/rules/ui-restraint-and-copy.md`.
+
+### Copy moved into a government register
+
+| | before | after |
+| --- | --- | --- |
+| Components | "PM-AJAY is delivered through three components. Each is administered separately, with its own guidelines and reporting." | "The scheme has three components. Each is administered separately under its own guidelines and reporting." |
+| Documents | "…PMAGY, the programme **folded into** its Adarsh Gram component." | "…PMAGY, **which was merged into** the Adarsh Gram component." |
+| Reports | "Each is generated on request and **opens on dosje.gov.in**." | "Each report is generated on request **on the Department's portal**." |
+
+**Component cards were cut to two sentences each** — the department's own
+description, then the one stated rule a reader most often needs. The Adarsh Gram
+70-out-of-100 score, the ODF condition and the lady-warden requirement were a
+card becoming a page; they are on each component's own page, one click away.
+
+### Title Case, including where it diverges from the source
+
+Applied on instruction to **every** title on the page. Four now differ in
+capitalisation from what `dosje.gov.in` publishes, recorded here as required:
+
+| ours | source |
+| --- | --- |
+| Development of SC **D**ominated **V**illages into "Adarsh Gram" | …dominated villages… |
+| Grants-in-**A**id to State/Districts | Grants-in-aid… |
+| Documents & **D**ownloads | Documents & downloads |
+| Illustrative **L**ist of **D**omain **U**nder GIA | Illustrative list of domain under GIA |
+
+Wording is unchanged; only capitalisation differs.
+
+### Pagination replaced the scroll region
+
+The list scrolled inside the panel, which held the page height still but bought
+a **nested scroll** — a trap on a phone, where a reader flicking the page
+downwards lands in the list and moves the list instead.
+
+Seven rows per page, the DS `Pagination` component, `siblings={0}` so the
+control never wraps in a 304px rail. The rail's floor is **19rem** because the
+pagination's numbers plus its "Next" step need 267px and at 18rem it had 255 and
+wrapped to two rows.
+
+- Desktop section height: **741px**, constant.
+- Mobile: **no nested scroll at all** — `overflow: visible`, seven rows, pager on
+  one line, no horizontal overflow, no target under 24px.
+- Any change to what is listed — focus, search, either layer, a hostel type —
+  returns to page one, from the handlers rather than an effect.
+
+### The legend's dots were 28px of ink in a 56px box
+
+`.pmw__dots` carried `width: 3.5rem`, copied from the ramp beside it so the two
+keys would line up. The three dots only ink 28px, so the key sat **36px** from
+the word "Hostels" while the ramp sat **8px** from its own label — and only 16px
+from the villages key on the other side, which is why the dots read as belonging
+to villages.
+
+Fixed width removed; both keys now sit 8px from their own labels, and the gap
+*between* keys was raised to 16px so grouping beats proximity.
+
+---
+
+## §35 · What LokOS does, and what is worth taking from it
+
+**2026-09-01.** Reviewed `lokos.dord.gov.in/dashboard` — the Ministry of Rural
+Development's DAY-NRLM dashboard — as a reference for this section. It is the
+closest sibling in government: a national scheme, a choropleth, a per-State
+breakdown beside it, Indian-grouped numerals throughout.
+
+### Taken
+
+**The administrative-reach row.** LokOS carries two bands of figures: the
+measures counted (CLFs 34,383 · VOs 5,64,463 · SHGs 94,73,710 · Members
+10,26,10,883) and then, separately, the spread (States/UTs 34 · Districts 760 ·
+Blocks 7,243 · Panchayats 2,57,631 · Villages 5,97,835).
+
+That second band is the right idea and this section had lost it. The totals
+moved into the legend keys in §34 and the geographic spread went with them. It
+is back as one line beside the CSV link — *"Reaching 547 districts in 28 States
+and Union Territories."* It repeats nothing the keys carry, and it passes the
+poster test in `.claude/rules/ui-restraint-and-copy.md`: a department would
+print that sentence. It would not print a coordinate-repair count.
+
+### Considered and not taken
+
+**The cascading filter bar** — State → District → Block → Panchayat → Village,
+with Clear All, each level enabling the next. A genuinely strong pattern, and
+the right one for an officer working down the administrative hierarchy. Not
+adopted here for two reasons: this feed publishes two levels, not five, and this
+section already has four ways into a State (the map, a row, the breadcrumb, the
+search). A fifth control would be the junk the rule now forbids.
+
+**Bucketed legend breaks** — "0–3L / 3L–7L / 7L–10L / >10L" names what each
+shade is worth, where ours prints only the endpoints (`1 ▨▨▨ 387`) and leaves
+the middle to be guessed. Correct for a four-class choropleth. Ours is a
+continuous log ramp over a hex density field, so discretising it into four
+classes would throw away the resolution that field exists to show. Recorded as
+an open question rather than a decision.
+
+### Not taken, deliberately — with the measurements
+
+| what | measured | why not |
+| --- | --- | --- |
+| **Nested scroll for the State list** | 4,828px of content in a 720px window — a ratio of 6.7 | Exactly what §34 removed. On a phone a reader flicking the page down lands in the list and moves the list instead |
+| **List not linked to the map** | state rows compute `cursor: auto`, carry no `role`, no handler | Ours drills on click and cross-highlights on hover; that link is the point of putting a list beside a map |
+| **Colour used decoratively on values** | six hues on 13px numerals; **four fail WCAG AA on white** — `#f6af0f` at **1.90:1**, `#7cb920` at 2.38:1, `#f87118` at 2.85:1, `#6875e4` at 4.00:1 — and `#f6af0f` is used for *two different measures* (Villages and VOs), so it is not even a consistent key | The estate's rule is semantic colour only. A hue that means nothing costs legibility and buys nothing |
+| **A pastel tint per metric card** | `#f0dfeb` · `#fff2d8` · `#dce4ff` · `#e5f1d2` | Same reasoning: the colour encodes nothing |
+| **Map in an `<iframe>`** | 1 iframe; 0 map paths reachable from the host document | Cuts the map out of the page's own theming, interaction and accessibility tree |
+| **Heading outline** | the page's only `<h1>` is the accessibility widget's | A dashboard's own title should be its `h1` |
+
+### What we already do that LokOS confirms
+
+Indian digit grouping throughout, a per-State breakdown beside the map, a
+choropleth for the national view, and a visible "as on" date for the figures —
+LokOS prints *"Last Updated 20 Aug, 2026"* in its footer, and this estate
+carries the same idea in `ProvenanceChip` plus `PMAJAY_REACH_AS_ON`.
+
+## §36 — Design-director pass: the hostel feed, and the two figures that disagreed
+
+Six items raised on 2026-09-01, after the sort and search pass.
+
+### What the hostel feed does and does not carry
+
+All 203 rows audited against the saved `map-points` body.
+
+| Gap | Detail |
+|---|---|
+| **No hostel name** | Nine fields per row and none of them names the building. A village row carries `village_name`; a hostel carries only `project_id` (`ST28-2324-001349`). A pin can be placed but not labelled. |
+| **No capacity, sanction year, status or cost** | The facts a hostel scheme is judged on. None published. |
+| **Type unknown for 137 of 203 (67.5%)** | `Sanctioned Hostel`, correlating exactly with `is_legacy: true`. |
+| **26 rows transposed** | Latitude and longitude the wrong way round. Repaired on read. |
+| **3 rows unusable** | Nagaland/Mokokchung `(99.31, 26.19)`; Uttar Pradesh/Aligarh `(19.1, 22.5)`; Uttar Pradesh/Gonda `(9.0, 8.0)` — the last is in the Gulf of Guinea. The two UP rows are whole-degree placeholders. |
+| **25 rows share 11 coordinates** | Four Bageshwar hostels on one point; five Nagaland districts duplicated. These read as district centres entered as a stand-in. |
+| **15 of 36 States/UTs have no hostel** | Seven of them have Adarsh Gram villages. Whether that is the footprint or a reporting gap is not answerable from this feed. |
+
+### "Not recorded" was our word, not the department's — corrected
+
+`hostel_type` publishes three values: `Girls` (34), `Boys` (32), `Sanctioned Hostel`
+(137). The map relabelled the third "Not recorded", which is an *inference* printed
+over what the department published. A citizen cannot check it against anything and an
+officer comparing the page with the MIS finds a category that exists in neither. All
+three values are now the feed's own.
+
+The `is_legacy` correlation still earns its keep — it is why the map offers ONE
+dimension rather than two, since type and era are one fact wearing two names.
+
+### The two figures that disagreed — root cause
+
+In live-only mode against a feed that had not answered, the key read
+`Adarsh Gram villages 0 · Hostels 0` above a map drawing 19,768 villages and a list of
+28 states.
+
+`mergeData` resolved every total to 0 and marked it live, correctly — its own comment
+says a live miss stays 0 "so the card can show a real empty state". The map then read
+
+```ts
+const snapshot = prov === "mock" || data.live == null ? data.mock : data.live;
+```
+
+and fell back to the mirror anyway. Two views of one request, resolving it two ways.
+Fixed by resolving once and branching the render on the result; the section now shows a
+real empty state. Generalised into `.claude/rules/data-state-completeness.md`.
+
+### Village names — 48.6% are missing, and not at random
+
+`village_name` is published for 10,157 of 19,768 records.
+
+| | |
+|---|---|
+| States naming ~every village | 22 (Tamil Nadu, Rajasthan, Odisha, Madhya Pradesh, Jharkhand, Punjab, Telangana, Uttarakhand, Himachal Pradesh, Gujarat, Tripura all at 100%) |
+| **States naming NONE** | **West Bengal (0 of 5,792), Bihar (0 of 2,853), Delhi (0 of 1)** |
+| Uttar Pradesh | 1,143 of 2,083 — 54.9%, the only partial state |
+
+West Bengal and Bihar are 44% of the whole programme. That shape decided the
+interaction: a browsable "villages in this district" level would open on a page of
+blanks for the two largest states, reading as "your village is not covered" when the
+truth is "the MIS has not published its name". A **search** answers the citizen's
+question for the 22 states that can answer it, and its empty state names the three that
+cannot.
+
+**Weight:** baked into the page bundle the index took PM-AJAY's mirrored data from
+21 KB gzipped to 106 KB. It is written to `public/website/data/pmajay-villages.json`
+and fetched on the second character typed, so the page pays nothing until the feature
+is used.
+
+### Still open
+
+- **No hostel name, capacity or sanction year** — needs the department to publish them.
+- **3 unusable and 25 duplicated hostel coordinates** — data-entry defects at source.
+- **The place search cannot find a district from the India view.** "Bankura" matches no
+  state, and districts are only listed once a state is open. The snapshot carries all
+  547; searching them across states would complete the lookup, and would mean relabelling
+  the scope chip from "States" to "Places".

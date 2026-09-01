@@ -199,7 +199,7 @@ export function Donut({
               color: C.muted,
               textTransform: "uppercase",
               letterSpacing: ".06em",
-              marginTop: 5,
+              marginTop: "var(--sa-stack-4)",
             }}
           >
             {sub}
@@ -239,11 +239,11 @@ export function HBars({
           data.map((d) => `${d.label} ${d.display != null ? d.display : d.value}`).join(", ")
       }
     >
-      <div aria-hidden="true" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      <div aria-hidden="true" style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-8)" }}>
         {data.map((d, i) => (
           <div
             key={i}
-            style={{ display: "grid", gridTemplateColumns: "150px 1fr 64px", alignItems: "center", gap: 12 }}
+            style={{ display: "grid", gridTemplateColumns: "150px 1fr 64px", alignItems: "center", gap: "var(--sa-inline-12)" }}
           >
             <div
               style={{
@@ -256,13 +256,13 @@ export function HBars({
             >
               {d.label}
             </div>
-            <div style={{ height: 9, background: C.grid, borderRadius: 999, overflow: "hidden" }}>
+            <div style={{ height: 9, background: C.grid, borderRadius: "var(--sa-shape-full)", overflow: "hidden" }}>
               <div
                 style={{
                   width: (d.value / mx) * 100 + "%",
                   height: "100%",
                   background: d.color || color,
-                  borderRadius: 999,
+                  borderRadius: "var(--sa-shape-full)",
                   transition: "width .6s ease",
                 }}
               />
@@ -308,7 +308,7 @@ export function VBars({
       labels.map((l, i) => `${l} — ` + series.map((s) => `${s.name} ${s.data[i]}`).join(", ")).join("; ");
   return (
     <div role="img" aria-label={cap}>
-      <div aria-hidden="true" style={{ display: "flex", gap: 12 }}>
+      <div aria-hidden="true" style={{ display: "flex", gap: "var(--sa-inline-12)" }}>
         <div
           style={{
             display: "flex",
@@ -318,7 +318,7 @@ export function VBars({
             font: "400 11px/1 var(--font-sans)",
             color: C.muted,
             textAlign: "right",
-            paddingBottom: 20,
+            paddingBottom: "var(--sa-padding-20)",
             minWidth: 26,
           }}
         >
@@ -347,8 +347,8 @@ export function VBars({
               display: "flex",
               alignItems: "flex-end",
               justifyContent: "space-around",
-              gap: 4,
-              paddingBottom: 20,
+              gap: "var(--sa-inline-4)",
+              paddingBottom: "var(--sa-padding-20)",
             }}
           >
             {labels.map((lab, i) => (
@@ -365,7 +365,7 @@ export function VBars({
                 }}
               >
                 <div
-                  style={{ display: "flex", gap: 4, alignItems: "flex-end", height: "100%", width: "100%", justifyContent: "center" }}
+                  style={{ display: "flex", gap: "var(--sa-inline-4)", alignItems: "flex-end", height: "100%", width: "100%", justifyContent: "center" }}
                 >
                   {series.map((s, j) => (
                     <div
@@ -375,7 +375,7 @@ export function VBars({
                         width: single ? 22 : 11,
                         height: Math.max(2, ((s.data[i] ?? 0) / max) * (height - 20)) + "px",
                         background: s.color,
-                        borderRadius: "3px 3px 0 0",
+                        borderRadius: "var(--sa-shape-2) var(--sa-shape-2) 0 0",
                         transition: "height .6s ease",
                       }}
                     >
@@ -386,7 +386,7 @@ export function VBars({
                             bottom: "100%",
                             left: "50%",
                             transform: "translateX(-50%)",
-                            marginBottom: 3,
+                            marginBottom: "var(--sa-stack-2)",
                             font: "600 10px/1 var(--font-sans)",
                             color: C.muted,
                             whiteSpace: "nowrap",
@@ -509,21 +509,21 @@ export function Funnel({ stages, caption }: { stages: Stage[]; caption?: string 
   const cap = caption || "Pipeline: " + stages.map((s) => `${s.label} ${s.value} (${s.pct}%)`).join(", ");
   return (
     <div role="img" aria-label={cap}>
-      <div aria-hidden="true" style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <div aria-hidden="true" style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-12)" }}>
         {stages.map((s, i) => (
-          <div key={i} style={{ display: "grid", gridTemplateColumns: "150px 1fr 96px", alignItems: "center", gap: 14 }}>
+          <div key={i} style={{ display: "grid", gridTemplateColumns: "150px 1fr 96px", alignItems: "center", gap: "var(--sa-inline-12)" }}>
             <div style={{ font: "500 13px/1.2 var(--font-sans)", color: C.ink }}>{s.label}</div>
-            <div style={{ height: 30, background: C.grid, borderRadius: 7, overflow: "hidden" }}>
+            <div style={{ height: 30, background: C.grid, borderRadius: "var(--sa-shape-6)", overflow: "hidden" }}>
               <div
                 style={{
                   width: (s.pct / max) * 100 + "%",
                   height: "100%",
                   background: s.color,
-                  borderRadius: 7,
+                  borderRadius: "var(--sa-shape-6)",
                   display: "flex",
                   alignItems: "center",
-                  paddingLeft: 12,
-                  color: "#fff",
+                  paddingLeft: "var(--sa-padding-12)",
+                  color: "var(--neutral-0)",
                   font: "600 12px/1 var(--font-sans)",
                   transition: "width .6s ease",
                 }}
@@ -542,13 +542,13 @@ export function Funnel({ stages, caption }: { stages: Stage[]; caption?: string 
 
 export function Legend({ items }: { items: { label: string; color: string }[] }) {
   return (
-    <div style={{ display: "flex", gap: 16, flexWrap: "wrap" } as CSSProperties} aria-hidden="true">
+    <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap" } as CSSProperties} aria-hidden="true">
       {items.map((it, i) => (
         <div
           key={i}
-          style={{ display: "inline-flex", alignItems: "center", gap: 6, font: "400 12px/1 var(--font-sans)", color: C.muted }}
+          style={{ display: "inline-flex", alignItems: "center", gap: "var(--sa-inline-6)", font: "400 12px/1 var(--font-sans)", color: C.muted }}
         >
-          <span style={{ width: 10, height: 10, borderRadius: 3, background: it.color, flex: "none" }} />
+          <span style={{ width: 10, height: 10, borderRadius: "var(--sa-shape-2)", background: it.color, flex: "none" }} />
           {it.label}
         </div>
       ))}

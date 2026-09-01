@@ -24,8 +24,8 @@
      MoSJE / UX4G — Chip atom
      Semantic CSS classes only; all colours reference design tokens (--sa-*).
      Base: .ds-chip
-     Modifiers: .ds-chip--interactive / --selected / --disabled
-     Sub-parts: .ds-chip__icon / __label / __dismiss
+     Modifiers: .ds-chip--sm|--md / --interactive / --selected / --disabled
+     Sub-parts: .ds-chip__icon / __label / __count / __dismiss
      Default (unselected): stroke-strong border, ink-strong label, ~32px, radius-md.
      Selected: primary-tonal bg + primary-dark text + primary border.
      ============================================================================ */
@@ -51,6 +51,37 @@
       border-color 0.15s ease,
       color 0.15s ease,
       box-shadow 0.15s ease;
+  }
+
+  /*
+    The trailing count. Muted so the label stays the thing you read, and
+    `tabular-nums` so a row of chips does not jitter as their figures change
+    width under a filter.
+  */
+  /*
+    `size="sm"` — a dense filter row. Still 26px, past the 24px minimum target
+    (WCAG 2.2 SC 2.5.8), and it drops the type one step rather than shrinking
+    the padding alone, so the pill stays in proportion to what is in it.
+  */
+  .ds-chip--sm {
+    min-height: 26px;
+    gap: var(--sa-stack-6);
+    padding: var(--sa-padding-2) var(--sa-padding-8);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-chip__count {
+    flex: 0 0 auto;
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Selected, the count follows the chip's own ink rather than staying grey
+     against a tinted ground. */
+  .ds-chip--selected .ds-chip__count {
+    color: inherit;
+    opacity: 0.75;
   }
 
   .ds-chip__icon {
@@ -101,14 +132,94 @@
     selection pill there was a third colour family on a two-family panel.
     Deep green on the tonal green ground measures well clear of AA.
   */
+  /*
+    `tone="neutral"` — selected without competing, but SELECTED FIRST.
+
+    The first attempt filled it with `bg/neutral/bold` and white ink, which
+    measured **1.66:1** — white on a light grey. It read as the DISABLED chip
+    rather than the active one, so the unselected pills beside it looked more
+    prominent than the selected ones and the state hierarchy was inverted. That
+    is a WCAG 1.4.3 failure as well as a design one, and the design failure is
+    the one a reader notices first.
+
+    A selected state has to be the loudest thing in its own group. Solid ink at
+    18.94:1 is unmistakably on; being NEUTRAL rather than brand is what keeps
+    it from competing with the chart keys beside it. Quiet is a matter of hue,
+    not of contrast.
+  */
+  .ds-chip--selected-neutral {
+    background-color: var(--sa-bg-neutral-inverse);
+    border-color: var(--sa-bg-neutral-inverse);
+    color: var(--sa-text-neutral-inverse);
+  }
+
+  .ds-chip--selected-neutral .ds-chip__count {
+    color: var(--sa-text-neutral-inverse);
+    /* The count is secondary to its label even on ink — but only just, or it
+       stops being legible against a near-black fill. */
+    opacity: 0.72;
+  }
+
+  /*
+    Hover LIGHTENS THE FILL, the way `tone="success"` below already does.
+
+    It moved the border instead at first, on the reasoning that the palette has
+    only one dark neutral background and a lighter fill would have to borrow a
+    text token for a surface. The conclusion — "a ring reads as hover just as
+    clearly" — was wrong, and wrong in the way that is easy to write and hard
+    to notice: a 1px border change against a near-black fill is all but
+    invisible, so the loudest control in the group was the one with no
+    detectable hover.
+
+    `color-mix` is the way out and it was already in this file. Mixing the
+    neutral BACKGROUND token toward the neutral SURFACE token stays inside one
+    family, needs no new token, and produces a fill a reader can actually see
+    move.
+  */
+  /*
+    ── THE TONE SELECTOR CARRIES `--selected` TOO, AND IT HAS TO ─────────────
+
+    A toned chip has BOTH classes: `ds-chip--selected ds-chip--selected-neutral`.
+    So `.ds-chip--selected.ds-chip--interactive:hover` further down this file
+    and `.ds-chip--selected-neutral.ds-chip--interactive:hover` are the same
+    specificity — (0,3,0) each — and the one written LATER wins. The brand rule
+    is later, so hovering a near-black chip turned it pale blue: the tone was
+    correct at rest and reverted to brand the moment a pointer touched it.
+
+    Naming `--selected` as well takes it to (0,4,0), which is true of the
+    element and immune to whatever order these blocks end up in. Moving the rule
+    would have fixed it today and broken the next time someone tidied the file.
+  */
+  .ds-chip--selected-neutral.ds-chip--selected.ds-chip--interactive:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--sa-bg-neutral-base) 14%,
+      var(--sa-bg-neutral-inverse)
+    );
+    border-color: color-mix(
+      in srgb,
+      var(--sa-bg-neutral-base) 14%,
+      var(--sa-bg-neutral-inverse)
+    );
+  }
+
+  /* Pressed goes the other way — back to the flat fill, so the chip reads as
+     going IN under the finger rather than continuing to rise. */
+  .ds-chip--selected-neutral.ds-chip--selected.ds-chip--interactive:active {
+    background-color: var(--sa-bg-neutral-inverse);
+    border-color: var(--sa-bg-neutral-inverse);
+  }
+
   .ds-chip--selected-success {
     background-color: var(--sa-color-status-successTonal);
     color: var(--sa-color-status-successStrong);
     border-color: var(--sa-color-status-successStrong);
   }
 
-  .ds-chip--selected-success.ds-chip--interactive:hover,
-  .ds-chip--selected-success.ds-chip--interactive:active {
+  /* Same collision as `neutral` above, and the same fix — `success` is only
+     unbroken today because of where it happens to sit in this file. */
+  .ds-chip--selected-success.ds-chip--selected.ds-chip--interactive:hover,
+  .ds-chip--selected-success.ds-chip--selected.ds-chip--interactive:active {
     background-color: color-mix(
       in srgb,
       var(--sa-color-status-success) 22%,

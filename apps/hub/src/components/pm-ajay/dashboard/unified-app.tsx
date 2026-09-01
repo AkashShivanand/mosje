@@ -625,9 +625,9 @@ export function UnifiedDashboard() {
                         { name: "Released", color: "var(--pm-accent)", data: trendR },
                         { name: "Utilized", color: C.green, data: trendU },
                       ]} />
-                      <div style={{ display: "flex", gap: 18, marginTop: 10 }}>
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, font: "400 12px/1 var(--font-sans)", color: "var(--pm-muted)" }}><span style={{ width: 10, height: 10, borderRadius: 3, background: "var(--pm-accent)" }} />Released</span>
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, font: "400 12px/1 var(--font-sans)", color: "var(--pm-muted)" }}><span style={{ width: 10, height: 10, borderRadius: 3, background: C.green }} />Utilized</span>
+                      <div style={{ display: "flex", gap: "var(--sa-inline-16)", marginTop: "var(--sa-stack-8)" }}>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "var(--sa-inline-6)", font: "400 12px/1 var(--font-sans)", color: "var(--pm-muted)" }}><span style={{ width: 10, height: 10, borderRadius: "var(--sa-shape-2)", background: "var(--pm-accent)" }} />Released</span>
+                        <span style={{ display: "inline-flex", alignItems: "center", gap: "var(--sa-inline-6)", font: "400 12px/1 var(--font-sans)", color: "var(--pm-muted)" }}><span style={{ width: 10, height: 10, borderRadius: "var(--sa-shape-2)", background: C.green }} />Utilized</span>
                       </div>
                     </div>
                   </div>

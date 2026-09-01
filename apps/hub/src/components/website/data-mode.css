@@ -17,55 +17,14 @@
      still reads in greyscale and to a colour-blind viewer. The dot is a
      redundant cue, not the signal. */
 
+  /*
+    The chip IS the DS `Badge` — status colour, tonal fill, leading dot, pill
+    radius and the label's type all come from there. What is left here is the
+    one thing a badge has no reason to know: this pill carries a `title`, so
+    the pointer says the text is worth hovering.
+  */
   .dm-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-6);
-    flex: 0 0 auto;
-    padding: var(--sa-padding-2) var(--sa-padding-8);
-    border-radius: var(--sa-shape-full);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    white-space: nowrap;
     cursor: help;
-  }
-
-  /* The dot takes the chip's own ink. Stated per variant rather than as
-     `currentcolor`, which the token gate reads as an unbound colour. */
-  .dm-chip__dot {
-    width: 6px;
-    height: 6px;
-    border-radius: var(--sa-shape-full);
-  }
-
-  .dm-chip--live {
-    background-color: var(--sa-bg-status-success-subtler);
-    color: var(--sa-text-status-success-base);
-  }
-
-  .dm-chip--live .dm-chip__dot {
-    background-color: var(--sa-text-status-success-base);
-  }
-
-  .dm-chip--mixed {
-    background-color: var(--sa-bg-status-warning-subtler);
-    color: var(--sa-text-status-warning-base);
-  }
-
-  .dm-chip--mixed .dm-chip__dot {
-    background-color: var(--sa-text-status-warning-base);
-  }
-
-  .dm-chip--mock {
-    background-color: var(--sa-bg-neutral-subtler);
-    color: var(--sa-text-neutral-bolder);
-  }
-
-  .dm-chip--mock .dm-chip__dot {
-    background-color: var(--sa-text-neutral-bolder);
   }
 
   /* Inline beside a label, on a line of its own weight. Sits after the words so
@@ -94,7 +53,7 @@
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-16);
-    padding: 16px 14px;
+    padding: var(--sa-padding-16) var(--sa-padding-12);
     font-family: var(--sa-font-latin);
   }
 
@@ -238,7 +197,7 @@
     flex: 0 0 auto;
     width: 34px;
     height: 20px;
-    margin-top: 1px;
+    margin-top: var(--sa-stack-2);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-subtle);
     transition: background-color 0.18s ease;
@@ -252,7 +211,7 @@
     height: 16px;
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-base);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 22%);
+    box-shadow: 0 1px 2px var(--shadow-ambient-22);
     /* Slight overshoot: the knob is thrown, and a thrown thing settles. The
        only place on this panel that bounces, because it is the only control
        that physically travels. */
@@ -357,7 +316,7 @@
      which is what stops the two rows reading as one list. */
   .dm-panel__seg {
     display: inline-flex;
-    padding: 3px;
+    padding: var(--sa-padding-2);
     border-radius: var(--sa-shape-8);
     background-color: var(--sa-bg-neutral-subtle);
   }
@@ -387,7 +346,7 @@
   .dm-panel__seg-btn.is-on {
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-bolder);
-    box-shadow: 0 1px 2px rgb(0 0 0 / 12%);
+    box-shadow: 0 1px 2px var(--shadow-ambient-12);
   }
 
   .dm-panel__seg-btn:focus-visible {

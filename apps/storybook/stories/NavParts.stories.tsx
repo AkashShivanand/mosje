@@ -156,3 +156,37 @@ export const Item: Story = {
     );
   },
 };
+
+/**
+ * **`overview` is the parent entry's own page, and without it that page is
+ * unreachable.** A top-level nav entry that opens a menu stops being a link:
+ * clicking "Department" opens the list instead of going to `/department`. If the
+ * department's own landing page is not in the list, the menu has quietly hidden
+ * the page it is named after.
+ *
+ * It renders as a closing row, after the children, on both shapes — a
+ * single-column `NavDropdown` and the `MegaMenu` grid. Last rather than first
+ * because it is the fallback a reader reaches for when nothing more specific in
+ * the list matched, not the thing they were most likely looking for.
+ *
+ * Give it a label that says it is the whole thing — "Department overview", not
+ * "Department", which would sit in its own menu reading as a duplicate.
+ */
+export const WithOverviewRow: Story = {
+  render: () => (
+    <div style={{ position: "relative", height: 460 }}>
+      <NavDropdown
+        label="Department"
+        items={LINKS}
+        overview={{ label: "Department overview", href: "#department" }}
+      />
+      <div style={{ marginTop: 260 }}>
+        <MegaMenu
+          label="Associated Organisations"
+          columns={COLUMNS}
+          overview={{ label: "All organisations", href: "#organisations" }}
+        />
+      </div>
+    </div>
+  ),
+};

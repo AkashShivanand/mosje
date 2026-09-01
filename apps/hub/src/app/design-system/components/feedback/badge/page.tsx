@@ -85,7 +85,7 @@ export default function BadgePage(): React.JSX.Element {
           <code>primary</code> role; <code>default</code> uses <code>neutral</code>.
         </p>
         <Playground
-          code={`<div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+          code={`<div style={{ display: "flex", gap: "var(--sa-inline-8)", flexWrap: "wrap", alignItems: "center" }}>
   <Badge status="neutral">Default</Badge>
   <Badge status="success">Success</Badge>
   <Badge status="warning">Warning</Badge>
@@ -101,7 +101,7 @@ export default function BadgePage(): React.JSX.Element {
           cells; <code>lg</code> reads better as a standalone status next to a heading.
         </p>
         <Playground
-          code={`<div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+          code={`<div style={{ display: "flex", gap: "var(--sa-inline-12)", alignItems: "center" }}>
   <Badge status="success" size="sm">Small</Badge>
   <Badge status="success" size="lg">Large</Badge>
 </div>`}
@@ -115,7 +115,7 @@ export default function BadgePage(): React.JSX.Element {
               type: "do",
               label: "Use status badges to surface system states such as Approved, Pending, or Rejected.",
               preview: (
-                <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                <div style={{ display: "flex", gap: "var(--sa-inline-8)", flexWrap: "wrap", alignItems: "center" }}>
                   <span style={{ display: "inline-flex", alignItems: "center", padding: "var(--sa-padding-2) var(--sa-stack-12)", borderRadius: "var(--sa-shape-full)", background: "var(--sa-color-status-successTonal)", color: "var(--sa-color-status-success)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Approved</span>
                   <span style={{ display: "inline-flex", alignItems: "center", padding: "var(--sa-padding-2) var(--sa-stack-12)", borderRadius: "var(--sa-shape-full)", background: "var(--sa-color-status-warningTonal)", color: "var(--sa-color-text-default)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Pending</span>
                   <span style={{ display: "inline-flex", alignItems: "center", padding: "var(--sa-padding-2) var(--sa-stack-12)", borderRadius: "var(--sa-shape-full)", background: "var(--sa-color-status-dangerTonal)", color: "var(--sa-color-status-danger)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Rejected</span>
@@ -126,7 +126,7 @@ export default function BadgePage(): React.JSX.Element {
               type: "dont",
               label: "Don't use a badge as an action. It isn't a button or a link — use Button or Chip for anything clickable.",
               preview: (
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 4, padding: "var(--sa-padding-2) var(--sa-padding-12)", borderRadius: "var(--sa-shape-full)", background: "var(--sa-color-action-primary-tonal)", color: "var(--sa-bg-brand-primary-bolder)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600, cursor: "pointer", border: "2px solid var(--sa-color-status-danger)" }}>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: "var(--sa-inline-4)", padding: "var(--sa-padding-2) var(--sa-padding-12)", borderRadius: "var(--sa-shape-full)", background: "var(--sa-color-action-primary-tonal)", color: "var(--sa-bg-brand-primary-bolder)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600, cursor: "pointer", border: "2px solid var(--sa-color-status-danger)" }}>
                   Click me →
                 </span>
               ),

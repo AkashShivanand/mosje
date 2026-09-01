@@ -150,6 +150,14 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   keyboard nav, visible focus, AA contrast. Run the `accessibility-auditor` agent before
   shipping a page.
 - **Real content, real assets** — no lorem/placeholder in production pages.
+- **Nothing on the screen the screen does not need, and copy in a government
+  register.** The interface shows the citizen's information; it never narrates
+  its own construction. Feed diagnostics, absence notes and instructions for
+  reading a chart belong in `docs/audit/*.md`, the PR body or the chat — not
+  under a map. Copy is plain, formal and factual, prefers the department's own
+  words, and **all titles are Title Case** unless stated otherwise. Section
+  headings are the DS `SectionTitle`, never hand-rolled.
+  → `.claude/rules/ui-restraint-and-copy.md`
 - **Live first, snapshot second, never an empty state.** Any figure sourced from an API
   renders live where the API answers and from a committed mirrored snapshot where it does
   not — the page says which. A metric neither source publishes is left OFF the design, not
@@ -161,6 +169,11 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   Every card carries a provenance chip in every mode, because the real risk is an
   illustrative number reaching a deck as a departmental one.
   → `.claude/rules/prototype-data-modes.md`
+- **Every state a data-driven surface can be in is designed** — loading, empty, error,
+  filtered-to-nothing, too-much — for every chart, map, table, list and counter. And
+  **one request gets one answer**: a key and a map reading the same feed must resolve it
+  with the same expression, or the page shows two contradictory figures and the reader
+  cannot tell which is true. That shipped once. → `.claude/rules/data-state-completeness.md`
 - `next/image` for images; **`<Icon>`** from `@mosje/design-system` for icons — **Material
   Symbols Rounded**, weight 300, size 24, stroke variant. Load once per app:
   `import "@mosje/design-system/icons.css"`. Brand/social logos are inline SVGs.
