@@ -334,6 +334,15 @@ export const RenamedStrip: Story = {
  */
 export const Empty: Story = {
   args: { items: [] },
+  render: (args) => (
+    <div>
+      <p style={{ margin: "0 0 12px", maxWidth: 520 }}>
+        The strip is below this line, with an empty <code>items</code> list. Nothing
+        renders — no plinth, no empty blue band.
+      </p>
+      <Ticker {...args} />
+    </div>
+  ),
 };
 
 /**
