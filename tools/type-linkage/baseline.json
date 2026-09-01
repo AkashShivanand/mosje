@@ -27,12 +27,18 @@
     "open and brought their own typography with them \u2014 site-page-header.css, fact-strip.css,",
     "two Storybook stories and a chart leading. Those are INHERITED debt, not new violations:",
     "the ratchet's contract is that the change which brings a file in re-baselines it, in the",
-    "same commit, so the number can still only go down from here."
+    "same commit, so the number can still only go down from here.",
+    "",
+    "First clearing (2026-09-01): site-page-header.css went 2 leadings to 0. Both were",
+    "RATIOS, not literals a sweep would obviously catch \u2014 `1.2` on the title and `1.5` on",
+    "the standfirst. Each was exact at precisely one viewport and one surface and wrong at",
+    "every other, which is why they read as correct for so long. A ratio beside a bound",
+    "size is the failure mode this gate exists for."
   ],
   "totals": {
     "size-off-ramp": 188,
     "size": 381,
-    "leading": 189,
+    "leading": 187,
     "tracking": 20,
     "family": 19
   },
@@ -1279,7 +1285,7 @@
     "packages/design-system/components/layout/site-page-header.css": {
       "size-off-ramp": 0,
       "size": 0,
-      "leading": 2,
+      "leading": 0,
       "tracking": 2,
       "family": 0
     },
