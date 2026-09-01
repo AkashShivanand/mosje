@@ -40,9 +40,16 @@ export const metadata: Metadata = {
   title: "Access — MoSJE Digital Estate",
   robots: { index: false, follow: false },
   ...socialCard({
+    /**
+     * KEEP THIS UNDER ~125 CHARACTERS. It was 127 and clipped mid-sentence on
+     * mobile, which matters more here than anywhere else in the estate: while
+     * the wall is up every url redirects to /gate, so this is the description
+     * on EVERY link anyone shares. 117 leaves headroom, because platforms
+     * truncate at different widths and some are tighter than 125.
+     */
     title: "SAMAVESH — MoSJE Digital Estate",
     description:
-      "A private preview of the unified digital estate for the Ministry of Social Justice & Empowerment. Access is by shared password.",
+      "A private preview of the Ministry of Social Justice & Empowerment's unified digital estate, behind a shared password.",
     url: "/gate",
     siteName: SITE_NAME,
   }),
