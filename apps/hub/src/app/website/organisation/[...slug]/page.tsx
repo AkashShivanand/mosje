@@ -19,6 +19,7 @@ import {
   withAssetBasePath,
   getContentSyncedDate,
 } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
 
 
 /*
@@ -160,7 +161,21 @@ export async function generateMetadata({
   const org = getOrganisation(key);
   if (!org) return { title: "Organisation — DoSJE" };
   const firstText = org.sections.find((s) => s.html)?.html.replace(/<[^>]+>/g, "").slice(0, 160);
-  return { title: `${org.title} — DoSJE`, description: firstText };
+  const title = `${org.title} — DoSJE`;
+  // The organisation's own banner where it has one. This is the one family of
+  // pages where a page-specific picture beats the estate card: a link to NCSK
+  // should show NCSK, not the ministry lockup.
+  const banner = getOrganisationDetail(key)?.featuredImage;
+  return {
+    title,
+    description: firstText,
+    ...socialCard({
+      title,
+      description: firstText,
+      url: `/website/organisation/${key}`,
+      images: banner ? [banner] : undefined,
+    }),
+  };
 }
 
 export default async function OrganisationDetailPage({

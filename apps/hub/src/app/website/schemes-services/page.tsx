@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
 import { SchemesCatalog, type SchemeItem } from "@/components/website/templates/SchemesCatalog";
 import { getSchemes, getContentSyncedDate } from "@/lib/website/content";
+import { socialCard } from "@/lib/seo/social";
+
+const SCHEMES_TITLE = "Schemes & Services | DoSJE";
+const SCHEMES_DESCRIPTION =
+  "Flagship welfare schemes and scholarships offered by the Department of Social Justice & Empowerment for SC, OBC, EBC and DNT communities.";
 
 export const metadata: Metadata = {
-  title: "Schemes & Services | DoSJE",
-  description:
-    "Flagship welfare schemes and scholarships offered by the Department of Social Justice & Empowerment for SC, OBC, EBC and DNT communities.",
+  title: SCHEMES_TITLE,
+  description: SCHEMES_DESCRIPTION,
+  ...socialCard({
+    title: SCHEMES_TITLE,
+    description: SCHEMES_DESCRIPTION,
+    url: "/website/schemes-services",
+  }),
 };
 
 export default function SchemesPage() {
