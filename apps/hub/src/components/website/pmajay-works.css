@@ -333,6 +333,15 @@
       position: absolute;
       top: var(--sa-padding-12);
       right: var(--sa-padding-12);
+      /*
+        `auto`, undoing the `width: 100%` the in-flow rule needs to push the
+        badges right on a phone. Absolutely positioned, that 100% makes the BOX
+        span the whole map from `right: 12px` leftward — the chips still draw
+        right-aligned, so it looks correct, but the wrapper covers the country
+        and swallows every pointer event over it. The visible strip was fine;
+        the invisible one was 598px wide.
+      */
+      width: auto;
       /* 1, and 1 is enough: the only thing it has to sit above is its own
          sibling SVG. This is inside the map, not on either floating rail, so
          it takes no part in the estate's z-index ladder — see
@@ -354,23 +363,25 @@
   }
 
   /*
-    ── THE DENSITY SCALE: IN FLOW ON A PHONE, ON THE MAP ON A DESK ──────────
+    ── THE DENSITY SCALE SITS UNDER THE MAP, RIGHT-ALIGNED, AT EVERY WIDTH ──
 
-    Bottom-left is where a printed map has put its scale for a century and
-    where every mapping library still puts one, so that is where it goes when
-    there is room for it.
+    It floated bottom-LEFT for a while, which is where a printed map puts its
+    scale. Moving it to the bottom-RIGHT was asked for and measured first, and
+    the measurement refused it: at bar height that corner has 73px of clear
+    width against the 196px this needs, because the Andaman and Nicobar Islands
+    are drawn down the right side. A legend over the Andamans is the same
+    mistake as a legend over Arunachal — Indian territory obscured by our own
+    chrome on a Government of India map.
 
-    THERE IS NOT ALWAYS ROOM, and the reason is a unit mismatch worth stating.
-    The bar's width is CSS pixels — a 56px ramp, its two figures and a caption,
-    about 196px — while the clear sea it sits in is measured in viewBox units
-    and shrinks with the artwork. At 574px of map that corner offers 167px and
-    the bar fits with room to spare; at 285px it offers 83px, and the bar
-    covered the Konkan coast: 172 sampled points on drawn land.
+    So it sits BELOW the artwork instead, right-aligned under the badges it
+    shares a card with, and it does so at every width rather than only on a
+    phone. That removes the breakpoint fork the floating version needed, and it
+    removes the unit mismatch behind it: the bar's width is CSS pixels while
+    the sea it used to float in is measured in viewBox units and shrinks with
+    the map, so the same bar fitted at 574px of map and covered the Konkan
+    coast at 285px.
 
-    So below 1025px it does not float at all. It sits under the map, in flow,
-    right-aligned to line up with the badges above it — which is how most maps
-    on a phone carry their legend anyway. There is no room to float one, and
-    pretending otherwise puts the key on top of the thing it explains.
+    Under the map it is the same size at every width, and it is over nothing.
   */
   .pmw__scalebar {
     justify-content: flex-end;
@@ -385,21 +396,39 @@
     color: var(--sa-text-neutral-subtle);
   }
 
-  @media (min-width: 1025px) {
-    .pmw__scalebar {
-      position: absolute;
-      left: var(--sa-padding-12);
-      bottom: var(--sa-padding-12);
-      /* Same 1 as the filter strip: above its sibling SVG, and no part of the
-         estate's z-index ladder — see `.pmw__filters.pmw__key`. */
-      z-index: 1;
-      justify-content: flex-start;
-      margin: 0;
-      padding: var(--sa-padding-6) var(--sa-padding-8);
-      border-radius: var(--sa-shape-6);
-      /* A ground, because a 10-stop ramp over pale hexes is unreadable at its
-         light end — the first three stops and the sea are the same value. */
-      background-color: var(--sa-bg-neutral-base);
+  /*
+    ── ON A PHONE THE KEYS ARE A LIST, NOT TWO ORPHAN PILLS ─────────────────
+
+    They are 215px and 137px wide, so at 375px they cannot share a line and
+    wrap — two pills of different widths, stacked, ragged on the right, with a
+    44px touch target each. That is 100px of chrome before the map starts, and
+    it reads as a layout that ran out of room rather than one that was
+    designed.
+
+    Full width and `space-between` instead: the label goes left, the figure
+    goes right, and two stacked keys read as a two-row key list with its
+    numbers in a column. Same height, same targets, no ragged edge — and the
+    figures line up, which is the thing a reader is comparing.
+  */
+  @media (max-width: 640px) {
+    .pmw__controls .pmw__group,
+    .pmw__controls .ds-chart__legend,
+    .pmw__controls .ds-chart__legend-item {
+      width: 100%;
+    }
+
+    .pmw__controls .ds-chart__legend-toggle {
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    /*
+      The key and its label stay together on the left while the figure goes
+      right — `space-between` on three children would otherwise strand the
+      label in the middle, equidistant from both and belonging to neither.
+    */
+    .pmw__controls .ds-chart__legend-label {
+      margin-right: auto;
     }
   }
 
@@ -555,6 +584,20 @@
     of them once the list was expanded, a 563px map adrift in a 1312px column.
   */
   .pmw__map {
+    /*
+      THE POSITIONING CONTEXT FOR EVERYTHING THAT FLOATS ON THE MAP — the type
+      filter strip and the density scale bar, both `position: absolute`.
+
+      It belongs HERE, on the map's own rule, and not beside either of them.
+      It was written next to the scale bar once and lost when that block was
+      rewritten, and the failure is silent and total: an absolutely positioned
+      child with no positioned ancestor resolves against the page, so both the
+      badges and the scale bar left the card entirely — the badges landing
+      above the section heading and the bar below the footnote.
+
+      A rule that three things depend on lives with the thing that owns it.
+    */
+    position: relative;
     display: grid;
     align-content: center;
     padding: var(--sa-padding-12);

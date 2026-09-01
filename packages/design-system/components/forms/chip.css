@@ -161,14 +161,39 @@
   }
 
   /*
-    Hover moves the BORDER, not the fill. There is one dark neutral background
-    in the palette, so a lighter-on-hover fill would have to borrow a text
-    token for a surface — the cross-family reach `documentation-ds-linkage`
-    warns about. A ring reads as hover just as clearly.
+    Hover LIGHTENS THE FILL, the way `tone="success"` below already does.
+
+    It moved the border instead at first, on the reasoning that the palette has
+    only one dark neutral background and a lighter fill would have to borrow a
+    text token for a surface. The conclusion — "a ring reads as hover just as
+    clearly" — was wrong, and wrong in the way that is easy to write and hard
+    to notice: a 1px border change against a near-black fill is all but
+    invisible, so the loudest control in the group was the one with no
+    detectable hover.
+
+    `color-mix` is the way out and it was already in this file. Mixing the
+    neutral BACKGROUND token toward the neutral SURFACE token stays inside one
+    family, needs no new token, and produces a fill a reader can actually see
+    move.
   */
-  .ds-chip--selected-neutral.ds-chip--interactive:hover,
+  .ds-chip--selected-neutral.ds-chip--interactive:hover {
+    background-color: color-mix(
+      in srgb,
+      var(--sa-bg-neutral-base) 14%,
+      var(--sa-bg-neutral-inverse)
+    );
+    border-color: color-mix(
+      in srgb,
+      var(--sa-bg-neutral-base) 14%,
+      var(--sa-bg-neutral-inverse)
+    );
+  }
+
+  /* Pressed goes the other way — back to the flat fill, so the chip reads as
+     going IN under the finger rather than continuing to rise. */
   .ds-chip--selected-neutral.ds-chip--interactive:active {
-    border-color: var(--sa-text-neutral-subtle);
+    background-color: var(--sa-bg-neutral-inverse);
+    border-color: var(--sa-bg-neutral-inverse);
   }
 
   .ds-chip--selected-success {
