@@ -123,6 +123,9 @@
        `transparent` means "cut it" — so binding it to a colour token would
        claim a design decision the value does not make, and would break the
        moment that token's value changed. */
+    /* stylelint-disable-next-line color-no-hex -- alpha, not paint; the
+       demo-geometry exemption above explains why. (Written without the literal
+       marker, which the linkage parser would read as a second declaration.) */
     mask: radial-gradient(circle, transparent 54%, #000000 56%);
     animation:
       ds-skel-shimmer 1.4s ease infinite,
