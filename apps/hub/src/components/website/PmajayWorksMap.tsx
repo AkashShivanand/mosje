@@ -2,7 +2,10 @@
 
 import * as React from "react";
 import {
+  Chip,
+  Icon,
   IndiaPointMap,
+  Input,
   Pagination,
   SectionTitle,
   formatIndian,
@@ -461,21 +464,32 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                     (h) => h.type === k.kind && (focus == null || h.state === focus),
                   ).length;
                   return (
-                    <button
+                    /*
+                      THE DS CHIP, NOT A PILL OF MY OWN. This was a hand-rolled
+                      `<button className="pmw__chip">` beside a `Chip` component
+                      that already does exactly this — controlled selection,
+                      `role="button"`, `aria-pressed`, Enter and Space.
+
+                      The dot stays FILLED in both states now. It used to hollow
+                      out when the chip was off, on the reasoning that selection
+                      must not be carried by colour alone — but the chip's own
+                      selected treatment (tint, border, `aria-pressed`) carries
+                      that, and the dot is the KEY, not the state. A key that
+                      changes with selection is a key that stops matching the
+                      map.
+                    */
+                    <Chip
                       key={k.kind}
-                      type="button"
-                      className={`pmw__chip${on ? " pmw__chip--on" : ""}`}
-                      aria-pressed={on}
-                      onClick={() => toggleType(k.kind)}
+                      selected={on}
+                      onSelectedChange={() => toggleType(k.kind)}
+                      leadingIcon={
+                        <span className="pmw__chipdot" style={{ backgroundColor: k.color }} />
+                      }
+                      className="pmw__chip"
                     >
-                      <span
-                        className="pmw__chipdot"
-                        style={{ backgroundColor: k.color }}
-                        aria-hidden
-                      />
                       {k.label}
                       <span className="pmw__chipcount">{formatIndian(n)}</span>
-                    </button>
+                    </Chip>
                   );
                 })}
               </fieldset>
@@ -575,9 +589,7 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                   </button>
                   {focus != null && (
                     <>
-                      <span className="pmw__crumbsep" aria-hidden>
-                        ›
-                      </span>
+                      <Icon name="chevron_right" size={16} className="pmw__crumbsep" aria-hidden />
                       <span className="pmw__crumb pmw__crumb--here" aria-current="true">
                         {focus}
                       </span>
@@ -589,9 +601,16 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                   <span className="ds-sr-only">
                     Search {focus == null ? "states" : `districts in ${focus}`}
                   </span>
-                  <input
+                  {/*
+                    The DS `Input`, not a styled `<input>` of my own. It brings
+                    the token contract, the focus ring and a 44px minimum target
+                    — which is why the rail head is a little taller than the
+                    hand-rolled field was.
+                  */}
+                  <Input
                     type="search"
                     className="pmw__searchinput"
+                    leftIcon={<Icon name="search" size={16} />}
                     placeholder={focus == null ? "Find a state…" : `Find a district in ${focus}…`}
                     value={query}
                     onChange={(e) => {
@@ -704,11 +723,14 @@ export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
                           hint was the cursor — which touch users never see.
                           Absolutely positioned in the row's own right padding,
                           so it costs the state name no width.
+
+                          A Material Symbol, not a typed "›". The estate's icons
+                          come from `<Icon>` so they share one family, one weight
+                          and one optical-size axis; a punctuation character
+                          borrows whatever the body font happens to draw.
                         */}
                         {clickable && (
-                          <span className="pmw__go" aria-hidden>
-                            ›
-                          </span>
+                          <Icon name="chevron_right" size={16} className="pmw__go" aria-hidden />
                         )}
                       </Row>
                     </li>

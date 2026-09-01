@@ -172,37 +172,23 @@
     border: 0;
   }
 
-  .pmw__chip {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--sa-inline-6);
-    /* 24px minimum target (WCAG 2.2 SC 2.5.8) comes from the padding + text. */
-    padding: var(--sa-padding-4) var(--sa-padding-8);
-    font-size: var(--sa-type-body-3-size);
-    color: var(--sa-text-neutral-subtle);
-    background: none;
-    border: 1px solid var(--sa-border-neutral-subtle);
-    border-radius: var(--sa-shape-full);
-    cursor: pointer;
-    transition: border-color 160ms ease-out;
-  }
-
-  .pmw__chip--on {
-    color: var(--sa-text-neutral-base);
-    border-color: var(--sa-border-neutral-bolder-default);
-  }
-
-  /* Off is not signalled by colour alone — the dot empties out. */
-  .pmw__chip:not(.pmw__chip--on) .pmw__chipdot {
-    background-color: transparent !important;
-    box-shadow: inset 0 0 0 1px var(--sa-border-neutral-bolder-default);
-  }
-
+  /*
+    The key dot inside the DS Chip's `leadingIcon` slot. The chip owns its own
+    pill, selection tint, border and focus ring; all this contributes is which
+    colour the mark on the map is.
+  */
   .pmw__chipdot {
+    display: block;
     width: var(--sa-stack-8);
     height: var(--sa-stack-8);
     border-radius: var(--sa-shape-full);
-    flex: none;
+  }
+
+  /* The chip's label and its count share a line. */
+  .pmw__chip .ds-chip__label {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-6);
   }
 
   .pmw__chipcount {
@@ -262,6 +248,7 @@
   }
 
   .pmw__crumbsep {
+    flex: none;
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -269,18 +256,18 @@
     display: block;
   }
 
-  .pmw__searchinput {
+  .pmw__search .ds-input-shell,
+  .pmw__search .pmw__searchinput {
     width: 100%;
-    padding: var(--sa-padding-6) var(--sa-padding-12);
-    font-size: var(--sa-type-body-3-size);
-    color: var(--sa-text-neutral-base);
-    background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-bolder-default);
-    border-radius: var(--sa-shape-full);
   }
 
-  .pmw__searchinput::placeholder {
-    color: var(--sa-text-neutral-subtle);
+  /*
+    The DS `Input` brings its own field styling, focus ring and 44px minimum
+    target. All that is left here is the pill radius this rail wants, so the
+    field sits with the chips rather than against them.
+  */
+  .pmw__searchinput {
+    border-radius: var(--sa-shape-full);
   }
 
   /* ── Panel: map | rail, divided by a hairline ──────────────────────────── */
@@ -445,13 +432,16 @@
     both ways — a chevron hung at `right: -2px` was sheared off at the edge and
     read as a stray tick beside the numbers.
   */
+  /*
+    Placement only. `Icon` sets its own font-size and optical-size axis from
+    `size`, so re-setting font-size here would draw the glyph for one size and
+    display it at another.
+  */
   .pmw__go {
     position: absolute;
     right: 2px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: var(--sa-type-body-2-size);
-    line-height: 1;
     color: var(--sa-text-neutral-subtle);
     opacity: 0.55;
     transition: opacity 160ms ease-out;
