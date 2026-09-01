@@ -57,10 +57,7 @@ export default function DividerPage(): React.JSX.Element {
       name="Divider"
       status="Stable"
       summary="The estate's thin rule — a 1px hairline between sections, or between controls in a row. It is the code counterpart of the SAMAVESH Figma master, whose Orientation and Tone axes make six variants."
-      figma={{
-        absent:
-          "Published as the Divider master (55061:700, Orientation × Tone) in the SAMAVESH library, but not yet registered in the estate's Figma node index.",
-      }}
+      figma={{ node: "divider" }}
       specimen={<DividerSpecimen />}
       propsFrom="DividerProps"
       a11y={A11Y}

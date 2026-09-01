@@ -48,9 +48,20 @@
      -------------------------------------------------------------------------- */
   @media (forced-colors: active) {
     .sa-ill__ground,
-    .sa-ill__ghost,
     .sa-ill__ink {
       stroke: CanvasText;
+    }
+    /*
+     * `ghost` must NOT collapse into `ink`. §3 defines ghost as "what is absent,
+     * inactive, or not yet" and ink as "what is present and true", and that
+     * distinction is the entire message of the empty, not-published and
+     * places-sanctioned scenes. Mapping both to CanvasText made the drawing that
+     * says "nothing has been reported" identical to the one that says "here are
+     * your figures" — for exactly the readers forced-colors exists to serve.
+     * `GrayText` is the system colour for de-emphasised content.
+     */
+    .sa-ill__ghost {
+      stroke: GrayText;
     }
     .sa-ill__accent {
       stroke: Highlight;

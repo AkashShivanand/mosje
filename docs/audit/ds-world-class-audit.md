@@ -330,5 +330,115 @@ yet.
 - **Without JavaScript the Suspense fallback has no tab handler**, so only the Design panel is reachable and the props table and accessibility checklist are JS-gated. The fix is to render all three panels as headings in the fallback and enhance on hydration.
 - **The docs kit has no forced-colors support**, so the active tab indicator — drawn with `background` and `color` — disappears in Windows High Contrast.
 - **`--cdp-measure` is a page-kit local, not a token.** One value, correctly, and bound to nothing in `--sa-*`.
-- **Three unbound `line-height` literals survive in `docs-kit.css`** — six literals moved into the shared stylesheet rather than dying with the inline objects.
 - **`ComponentDocPage` has no documentation page of its own**, and the illustration foundations page hand-rolls the header the template exists to render — it scores 0/6 and the gate cannot see it, because the gate only walks `components/`. Dogfooding is the cheapest credibility a design system has and this is where it is missing.
+
+---
+
+## 9. The Vercel preview on PR #247 failed — diagnosis
+
+Both GitHub Actions gates pass: **hub lint + typecheck + build (5m10s)** and
+**quality (4m54s)**. `npm run verify` passes locally, including a full production
+build. The Vercel preview deployment failed, and the evidence says it is not this
+change:
+
+```
+✓ Compiled successfully in 50s
+✓ Generating static pages using 1 worker (832/832) in 36.3s
+> Build error occurred
+Error: ENOENT: no such file or directory, open
+  '/vercel/path0/apps/hub/.next/next-server.js.nft.json'
+```
+
+The build **compiled and rendered all 832 static pages**. It failed afterwards, at
+Next's file-tracing step, on a manifest that step is supposed to write. Nothing in
+this branch touches `next.config.ts`, the output mode, or tracing, and the route
+count is unchanged apart from one new foundations page.
+
+Every deployment before it completed in ~5m; this one stopped at 3m — consistent
+with the build process being killed after static generation rather than with a
+compile error. Vercel reported `Generating static pages using 1 worker`, which is
+what it does under memory pressure.
+
+**Next step is a redeploy of the same commit**, which distinguishes an
+infrastructure flake from a deterministic failure in one run. If it fails again,
+the first thing to try is splitting `props.generated.ts` (233 KB, imported by 100
+pages) into one module per interface — which the re-audit recommends anyway on
+bundle grounds, and which would cut the per-route module graph sharply.
+
+---
+
+# PART III — THE SECOND RE-AUDIT, and the Definition of Done
+
+Four further lenses — design system manager, CTO, business analyst, product manager
+— were run over the finished work. They found two defects that made headline
+numbers in this document WRONG, and one that made the estate's showcase page the
+least accurate API in the catalogue.
+
+## Fixed in response
+
+| Finding | Status |
+|---|---|
+| **`check:docs-coverage` matched slugs by two-way substring, so FOURTEEN components passed with no page** — `icon-button` "documented" by the route `button`, `section-title` by `section`, `sidebar-nav` by `sidebar`. `SectionTitle` is the component the gate's own docstring names as its reason for existing, and the gate reported it covered. | ✅ Exact route or an explicit `DOCUMENTED_BY` entry. The true figure is **90/129, 39 undocumented** — not 104/129. The baseline GREW 25 → 39, which is the gate getting stricter, and is stated here rather than buried. |
+| **Eight pages declared "not yet registered in the estate's Figma node index" for nodes registered in the same commit** — sending a reader away from a link that existed. | ✅ All eight now link. Two more registered (`tabsMore`, `portalSidebar`). Real links **10 → 30**. |
+| **Nothing stopped that recurring.** | ✅ `check:ds-pages` now fails a page declaring an absence for a key present in `FIGMA_NODES`. Failure mode exercised. |
+| **`CONTRIBUTING.md` walked a contributor into three failing gates** — a 13-section template that no longer exists, "add its CSS to `components.css`" (now generated, and `check:components-css` fails a hand edit), and `--ds-*`, which resolves to nothing. | ✅ Rewritten around `ComponentDocPage`, `propsFrom`, the two regeneration commands and the `Breaking` changelog kind. |
+| **`navigation/portal-card` — held back as "the estate's best page" — had the most drifted table in the catalogue.** It documented `logoSrc`, `planned` and `note`, none of which exist, and omitted seven that do, four of them demonstrated by its own specimen a few lines above. | ✅ `propsFrom="PortalCardProps"`. |
+| **`design.md` republished the two illustration rules `language.ts` had just corrected** — "every scene stands on the floor" and "round caps always". `CLAUDE.md` sends every agent to read `design.md` first. | ✅ Both synced. |
+| **The illustration's forced-colors block mapped `ground`, `ghost` AND `ink` to `CanvasText`**, collapsing the one distinction the empty and not-published scenes depend on — for exactly the readers that mode serves. | ✅ `ghost` → `GrayText`. |
+| **The PR template still said Vercel was "the only automated check still running"** — the sentence the removed billing claim had produced. | ✅ |
+
+## The Definition of Done, honestly scored
+
+`docs/plans/ds-world-class-master-prompt.md` §5 listed ten conditions. **Five are
+met, five are not**, and the five were not previously written down here — which the
+brief's own rule ("a finding that is not in the audit document did not happen")
+makes a defect in this record rather than only in the work.
+
+| Condition | Verdict |
+|---|---|
+| `check:ds-pages` reports 100/100, baseline empty | ✅ |
+| `npm run verify` passes clean | ✅ |
+| Every chart renders loading, empty, error and filtered-to-nothing, seen in a browser | ✅ |
+| Every chart has a table equivalent | ✅ 11 of 15 pass one; `ChartFrame` supports it for all |
+| Every finding fixed or recorded with a reason | ✅ this document |
+| **A docs-literal gate reporting zero unbound values on `design-system/**`** | ❌ **Never built.** `check:type-linkage` covers typography estate-wide and is ratcheted, not zeroed. |
+| **Every documented component links to Figma or declares its absence** | ◑ 30 link, 68 declare, **2 do neither** — `portal-card` and `samavesh-banner`, the two pages exempted from the migration |
+| **Every chart passes keyboard traversal** | ❌ Marks are now NAMED (`role="group"`), which was the defect. Arrow-key roving across marks is not built, and the pages say so. |
+| **The illustration system is used by at least the empty states that previously had none** | ❌ Nothing in the estate consumes it. `CardState`'s `StateArt` still draws its own six scenes to the same grid. |
+| **`accessibility-auditor` returns no P0/P1 on the design-system routes** | ❌ Not run. |
+| **The eight lenses re-audit and return no P0/P1** | ◑ All eight ran (four in Part II, four here). They returned P0s; the ones above are fixed, the ones below are not. |
+
+## Carried forward, not fixed
+
+- **58 of 100 pages still hand-write their props table.** The generator shipped;
+  adoption did not follow. `check:ds-pages` accepts `props=` for full marks. A
+  ratchet on the hand-written count, baselined at 58, is the fix.
+- **338 of 526 accessibility rows say "Not yet verified"** with no ratchet and no
+  dated plan. An unevidenced over-claim became a blanket under-claim, and on a
+  Government of India property that is its own problem. Needs `check:a11y-evidence`
+  plus the axe-in-e2e job §6 already recommends.
+- **`npm audit --audit-level=high` blocks every merge on a mutable remote database**,
+  with no allowlist and no `continue-on-error`, and it sits before the build step.
+  An advisory published overnight red-lines the trunk.
+- **The jspdf 2→4 migration was never exercised.** Its one consumer,
+  `apps/hub/src/lib/nmba/committee/export.ts`, was not opened; its only contact with
+  the changed surface is a cast through `unknown`, so `tsc` covers none of it, and
+  the function is browser-only so the build never runs it.
+- **`props.generated.ts` is 240 KB of committed generated TypeScript** in the
+  linted, typechecked, merge-conflicting tree, with no `.gitattributes` note saying
+  the resolution is always "regenerate".
+- **`tools/props-extract/extract.mjs` discards the package's own tsconfig** and
+  builds its own compiler options — so it is a different type checker from the one
+  the build runs, and has no tests of its own.
+- **`inheritsNative` prints "so `name`, `required`, `aria-describedby`… are
+  available"** on ~48 interfaces, including ones extending `HTMLAttributes<HTMLDivElement>`
+  where `name` and `required` are not valid attributes.
+- **The illustration scene set has no `rejected`, `disbursed`, `window-closed` or
+  `verification-failed`** — four of the commonest outcomes in this estate's
+  workflows, and the language forbids drawing one ad hoc.
+- **Four scenes are illegible at the `spot` tier** and the page documents that tier
+  as safe.
+- **`since` is on 2 of 100 pages**; 69 pages say `Stable` with no version.
+- **Nothing consumes any of it.** The five shadow UI kits (~45 re-implemented
+  components across four live portals) are untouched, and `FeedbackBar` still
+  transmits nothing, so there is no instrument that would show adoption either way.

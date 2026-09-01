@@ -38,15 +38,6 @@ const proseStyle: React.CSSProperties = {
   maxWidth: "68ch",
 };
 
-const PROPS = [
-  { name: "code", type: "string", default: "—", description: "Short code in the accent slot — “SCW”, “PM-AJAY”. Not a sentence." },
-  { name: "name", type: "string", default: "—", description: "Full portal name, under the code." },
-  { name: "href", type: "string", default: "undefined", description: "Destination. Omit for a portal that is not built — see `planned`." },
-  { name: "logoSrc", type: "string", default: "National Emblem", description: "Org mark. The fallback is correct rather than a placeholder: these are Government of India properties." },
-  { name: "planned", type: "boolean", default: "false", description: "Not built yet. Renders a non-interactive `<div>` carrying `note` instead of a link." },
-  { name: "note", type: "string", default: '"In development"', description: "Text on a planned card." },
-  { name: "external", type: "boolean", default: "false", description: "Opens in a new tab, and brings its own warning: an open_in_new glyph beside the name plus a visually-hidden \u201c(opens in a new tab)\u201d. Both are required \u2014 the glyph is aria-hidden so a screen reader never sees it, and a label is invisible to a sighted reader [WCAG G201]." },
-];
 
 export default function PortalCardPage() {
   return (
@@ -250,7 +241,15 @@ export default function PortalCardPage() {
 
       <section style={sectionStyle} aria-labelledby="props-heading">
         <h2 id="props-heading" style={h2Style}>Component Props</h2>
-        <PropsTable props={PROPS} />
+        {/*
+          GENERATED, not typed. This page was held back from the template migration
+          as "the estate's best", and its hand-written table had drifted furthest of
+          any in the catalogue: it documented `logoSrc`, `planned` and `note` — none
+          of which the component has — and omitted seven that it does, including
+          `variant`, `selected`, `org`, `description` and `category`, four of which
+          its own specimen demonstrates on screen a few lines above.
+        */}
+        <PropsTable from="PortalCardProps" />
       </section>
 
       <div style={{ marginTop: "var(--sa-section-48)" }}>

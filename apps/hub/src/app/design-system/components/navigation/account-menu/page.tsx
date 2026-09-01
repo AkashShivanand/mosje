@@ -127,10 +127,7 @@ export default function AccountMenuPage(): React.JSX.Element {
       name="Account Menu"
       status="Stable"
       summary="The signed-in account control in the portal masthead. With items it is a menu button carrying profile and sign-out actions; without them it is a static identity block, and the caret is the only thing that separates the two on screen."
-      figma={{
-        absent:
-          "Published as part of the Navbar Portal appbar in the SAMAVESH library, but not yet registered as its own node in the estate's Figma index.",
-      }}
+      figma={{ node: "accountMenu" }}
       specimen={<AccountMenuSpecimen />}
       propsFrom="AccountMenuProps"
       a11y={A11Y}

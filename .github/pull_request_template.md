@@ -15,7 +15,7 @@
 ## Verified
 
 - [ ] `npm run verify` passes locally — lint + lint:css + check + build, exactly what Apps CI runs
-- [ ] Vercel's preview build is green (the only automated check still running — a red Vercel is never noise)
+- [ ] Apps CI and Design System Quality are green, and Vercel's preview build deployed
 
 <!--
   If a step genuinely cannot be run — a Next build inside a git worktree, say,

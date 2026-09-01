@@ -31,7 +31,7 @@ import { readFileSync, writeFileSync, readdirSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { exportedComponents } from "../../scripts/lib/ds-exports.mjs";
+import { exportedComponents, DOCUMENTED_BY } from "../../scripts/lib/ds-exports.mjs";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, "..", "..");
@@ -61,19 +61,24 @@ const have = routes();
 const components = exportedComponents({ includeNonRenderable: true });
 
 /*
- * A page's directory is matched against the component's slug. Several pages
- * legitimately document a family from one route (`identity-inputs` covers the
- * Aadhaar and PAN inputs), so a component also counts as documented when its
- * slug appears INSIDE a route name — matching the `DOCUMENTED_BY` convention
- * `ds-exports.mjs` already uses for the Storybook gates rather than inventing a
- * second vocabulary for the same idea.
+ * EXACT ROUTE, OR AN EXPLICIT PARENT. Nothing fuzzy.
+ *
+ * The first version matched a component's slug against a route by two-way
+ * substring, on the reasoning that a family page covers its members. What it
+ * actually did was pass FOURTEEN components with no page of their own —
+ * `icon-button` "documented" by the route `button`, `section-title` by
+ * `section`, `sidebar-nav` by `sidebar`, `grid-item` by `grid`.
+ *
+ * `SectionTitle` is the component this gate's own docstring names as the reason
+ * it exists — `ui-restraint-and-copy.md` §3 mandates it for every section
+ * heading in the estate, and ninety-nine pages hand-rolled a heading instead
+ * because nobody could find it. The gate built to stop that reported it covered.
+ *
+ * So: an exact route, or a name listed in `DOCUMENTED_BY` — the map
+ * `ds-exports.mjs` already keeps for exactly this, rather than a second
+ * vocabulary that guesses.
  */
-const documented = (name) => {
-  const s = slug(name);
-  if (have.has(s)) return true;
-  for (const r of have) if (r.includes(s) || s.includes(r)) return true;
-  return false;
-};
+const documented = (name) => have.has(slug(name)) || name in DOCUMENTED_BY;
 
 const missing = [...components].filter((c) => !documented(c)).sort();
 const base = existsSync(BASELINE) ? JSON.parse(readFileSync(BASELINE, "utf8")) : [];

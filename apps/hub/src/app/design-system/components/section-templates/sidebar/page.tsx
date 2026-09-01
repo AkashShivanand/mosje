@@ -154,10 +154,7 @@ export default function SidebarPage(): React.JSX.Element {
       name="Sidebar Nav"
       status="Beta"
       summary="The portal app-shell left navigation. It renders a two-level hierarchy — top-level entries with optional expandable groups, their children linked by a curved connector — in either an expanded or an icon-only collapsed mode."
-      figma={{
-        absent:
-          "Published as the Portal Sidebar in the SAMAVESH library (node 4208:740), but not yet registered in the estate's Figma node index — so this page cannot deep-link it the way the standard requires.",
-      }}
+      figma={{ node: "portalSidebar" }}
       specimen={<SidebarSpecimen />}
       propsFrom="SidebarNavProps"
       a11y={A11Y}

@@ -175,10 +175,7 @@ export default function SiteHeaderPage(): React.JSX.Element {
       name="Navbar (Header)"
       status="Beta"
       summary="The masthead of every SAMAVESH property is one component. Three tiers — accessibility bar, brand row, navigation row — with three variants chosen by a single prop, and a scroll condense that keeps the National Emblem on the same left edge throughout."
-      figma={{
-        absent:
-          "Published as Navbar Website (2210:11837) and Navbar Portal / Appbar (4235:3170) in the SAMAVESH library, but neither is registered in the estate's Figma node index — so this page cannot deep-link the frame the way the standard requires.",
-      }}
+      figma={{ node: "siteHeader" }}
       specimen={<SiteHeaderPreview />}
       propsFrom="SiteHeaderProps"
       a11y={A11Y}

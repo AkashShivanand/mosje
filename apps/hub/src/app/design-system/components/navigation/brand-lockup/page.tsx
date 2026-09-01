@@ -100,10 +100,7 @@ export default function BrandLockupPage(): React.JSX.Element {
       name="Brand Lockup"
       status="Stable"
       summary="The National Emblem and the government text stack, rendered as one home link. It is server-safe and framework-agnostic — a plain anchor and image — so it works inside any basePath-ed zone in the estate."
-      figma={{
-        absent:
-          "Published inside the Navbar masters in the SAMAVESH library (measured against 4235:3652), but not yet registered as its own node in the estate's Figma index.",
-      }}
+      figma={{ node: "brandLockup" }}
       specimen={<BrandLockup emblemSrc={EMBLEM} lines={BRAND_LINES} href="#" beta />}
       propsFrom="BrandLockupProps"
       a11y={A11Y}

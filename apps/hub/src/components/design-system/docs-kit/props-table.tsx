@@ -103,9 +103,16 @@ export function PropsTable({
       </table>
       {generated?.inheritsNative ? (
         <p className="props-table__native">
-          Every native attribute of the underlying element passes through, so
-          <code> name</code>, <code>required</code>, <code>aria-describedby</code> and the rest are
-          available without being listed here.
+          {/*
+            NO EXAMPLES. This sentence used to name `name`, `required` and
+            `aria-describedby` — and forty-eight interfaces carry this flag,
+            including ones extending `HTMLAttributes<HTMLDivElement>`, where
+            `name` and `required` are not valid attributes at all. A generated
+            table that invents a prop is the defect the generator exists to end,
+            and naming examples reproduced it at scale.
+          */}
+          Every native attribute of the underlying element passes through, so it is available
+          without being listed here.
         </p>
       ) : null}
     </div>

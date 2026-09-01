@@ -116,10 +116,7 @@ export default function NavSheetPage(): React.JSX.Element {
       name="Nav Sheet"
       status="Stable"
       summary="The mobile navigation overlay: a 344px sheet with its own brand lockup, the masthead's search, divider-separated rows for the primary navigation, and the accessibility controls the bar sheds on a phone."
-      figma={{
-        absent:
-          "Published as Navbar/NavSheet in the SAMAVESH library, with Default, Expanded and Mega states, but not yet registered in the estate's Figma node index.",
-      }}
+      figma={{ node: "navSheet" }}
       specimen={<NavSheetSpecimen />}
       propsFrom="NavSheetProps"
       a11y={A11Y}

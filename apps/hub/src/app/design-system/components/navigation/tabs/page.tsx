@@ -142,10 +142,7 @@ export default function TabsPage(): React.JSX.Element {
       name="Tabs"
       status="Beta"
       summary="Accessible tabbed navigation for non-linear sections a reader revisits in any order — a clinical record, a settings panel, a multi-facet detail view. It implements the WAI-ARIA Tabs pattern with automatic activation, a roving tabindex, and a polite live-region announcement."
-      figma={{
-        absent:
-          "Published as the Tab and Tabs / More masters in the SAMAVESH library, and mapped through Code Connect, but not yet registered in the estate's Figma node index.",
-      }}
+      figma={{ node: "tabs" }}
       specimen={<TabsDemo />}
       propsFrom="TabsProps"
       a11y={A11Y}

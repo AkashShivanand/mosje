@@ -160,10 +160,7 @@ export default function TickerPage(): React.JSX.Element {
       name="Ticker"
       status="Stable"
       summary="Recent announcements, in two shapes. The bar is the full-bleed strip under the masthead, one message at a time. The panel stacks the same items as rows and scrolls them upward under a header. One component, one data model, one pause control."
-      figma={{
-        absent:
-          "Published in the SAMAVESH library, but no node is registered in the docs node index yet, so this page cannot link straight to the frame.",
-      }}
+      figma={{ node: "ticker" }}
       specimen={<TickerPlayground />}
       props={PROPS}
       a11y={A11Y}

@@ -152,9 +152,7 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
       name="Portal Login Template"
       status="Stable"
       summary="A whole portal login page built from one configuration object. It declares the role tabs, each role's authentication modes and the credential fields, and renders them inside Portal Login Shell — so a portal describes who signs in rather than building a login page."
-      figma={{
-        absent: "Not yet published as a master in the Figma library. The role and mode axes are recorded in packages/design-system/components/auth/FIGMA-SPEC.md.",
-      }}
+      figma={{ node: "portalLoginTemplate" }}
       specimen={<PortalLoginTemplateSpecimen />}
       props={[...PROPS, ...HELPER_PROPS]}
       a11y={A11Y}

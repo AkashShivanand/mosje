@@ -68,10 +68,7 @@ export default function TabsOverflowPage(): React.JSX.Element {
       name="Tabs Overflow"
       status="Beta"
       summary="The Tabs / More trigger and its menu. It is internal to Tabs — never placed by a consumer — and appears only when a horizontal row genuinely cannot show every tab."
-      figma={{
-        absent:
-          "Published as the Tabs / More master in the SAMAVESH library and mapped through Code Connect, but not yet registered in the estate's Figma node index.",
-      }}
+      figma={{ node: "tabsMore" }}
       specimen={<TabsOverflowSpecimen />}
       propsFrom="TabsOverflowProps"
       a11y={A11Y}

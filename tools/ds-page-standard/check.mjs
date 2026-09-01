@@ -129,6 +129,56 @@ export function scorePages() {
     .sort((a, b) => a.score - b.score || a.page.localeCompare(b.page));
 }
 
+/*
+ * A DECLARED ABSENCE MUST BE TRUE.
+ *
+ * `figma={{ absent: "…" }}` is how a page states honestly that a component has
+ * no Figma counterpart, and the gate accepts it for the same reason the standard
+ * does: a missing link and an unbuilt component are different facts. But the
+ * shape check cannot tell an honest absence from a stale one, and eight pages
+ * shipped saying "not yet registered in the estate's Figma node index" in the
+ * SAME COMMIT that registered them — sending the reader away from a link that
+ * existed.
+ *
+ * So an absence is checked against the registry. If the route's key is in
+ * FIGMA_NODES, the page must link it.
+ */
+function staleAbsences() {
+  const figmaSrc = readFileSync(join(ROOT, "apps/hub/src/lib/design-system/figma.ts"), "utf8");
+  const keys = new Set([...figmaSrc.matchAll(/^ {2}(\w+):\s*"/gm)].map((m) => m[1]));
+  const stale = [];
+  for (const file of collect(PAGES)) {
+    const src = readFileSync(file, "utf8");
+    if (!/figma=\{\{\s*absent:/.test(src)) continue;
+    const route = relative(PAGES, file).replace(/\/page\.tsx$/, "");
+    const leaf = route.split("/").pop() ?? "";
+    const camel = leaf.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    if (keys.has(camel)) stale.push(`${route}: declares no Figma component, but FIGMA_NODES.${camel} exists. Link it.`);
+  }
+  return stale;
+}
+
+/*
+ * HAND-WRITTEN PROPS TABLES MAY ONLY FALL.
+ *
+ * `propsFrom` reads the API out of the TypeScript type checker; `props` is a
+ * hand-typed array and is how this estate came to document a `ChartCard` prop
+ * called `action` when the prop is `actions`. The shape check accepts either,
+ * correctly — a hook's arguments cannot be extracted — but nothing stopped the
+ * hand-written form from being the default forever. Fifty-eight of a hundred
+ * pages still carry one.
+ *
+ * A count, ratcheted: it may fall and it may not rise.
+ */
+const HANDWRITTEN_BASELINE = Number(process.env.DS_PAGES_HANDWRITTEN ?? 57);
+
+function handWrittenTables() {
+  return collect(PAGES).filter((f) => {
+    const src = readFileSync(f, "utf8");
+    return /\bprops=\{/.test(src) && !/\bpropsFrom=/.test(src);
+  }).length;
+}
+
 const rows = scorePages();
 const max = REQUIRED.length;
 const conformant = rows.filter((r) => r.score === max);
@@ -152,7 +202,21 @@ if (mode === "--report") {
 }
 
 const base = existsSync(BASELINE) ? JSON.parse(readFileSync(BASELINE, "utf8")) : {};
-const problems = [];
+const problems = [...staleAbsences()];
+
+const handWritten = handWrittenTables();
+if (handWritten > HANDWRITTEN_BASELINE) {
+  problems.push(
+    `${handWritten} page(s) hand-write their props table, up from ${HANDWRITTEN_BASELINE}. ` +
+      `Use propsFrom="<Name>Props" — the generated table cannot drift from the interface.`,
+  );
+} else if (handWritten < HANDWRITTEN_BASELINE) {
+  problems.push(
+    `${handWritten} page(s) hand-write their props table, down from ${HANDWRITTEN_BASELINE}. ` +
+      `Lower HANDWRITTEN_BASELINE in tools/ds-page-standard/check.mjs in this change, so the ` +
+      `gain cannot be given back.`,
+  );
+}
 
 for (const r of rows) {
   const frozen = base[r.page];

@@ -111,6 +111,10 @@ export const FIGMA_NODES = {
   tabs: "55489-870",
   tabsMore: "55514-848",
   ticker: "56159-903",
+  // Named on the Sidebar page itself, which said the node existed and that this
+  // estate had not registered it — an absence statement that told the reader
+  // where to go and then refused to take them.
+  portalSidebar: "4208-740",
 } as const;
 
 export type FigmaNode = keyof typeof FIGMA_NODES;

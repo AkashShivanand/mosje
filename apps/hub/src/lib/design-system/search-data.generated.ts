@@ -786,7 +786,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Portal Card — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/portal-card",
-    "keywords": "portal card — design system navigation interactive specimen implementation &amp; guidelines when to use it, and when not code example accessibility component props code name href logoSrc planned note external tokens wcag accessibility",
+    "keywords": "portal card — design system navigation interactive specimen implementation &amp; guidelines when to use it, and when not code example accessibility component props  tokens wcag accessibility",
     "description": "One portal in a grid of them — org mark, short code, full name, and a note when the portal is not built yet.",
     "type": "component",
     "badge": "New",

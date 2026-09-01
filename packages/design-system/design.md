@@ -1127,9 +1127,9 @@ scene; the operative parts are below.
 | Rule | Why |
 | :--- | :--- |
 | One 64 × 48 geometry, three rendered tiers (`spot` 32×24, `scene` 192×144, `hero` 384×288). | The authored drawing does not change with size, so strokes, corners and gaps scale together and one definition is correct everywhere. |
-| Every scene stands on the same floor at y = 40. | The charts are all grounded, so the illustrations are; the family reads as one family. |
+| Every scene is drawn against the same floor at y = 40. **An object that stands MEETS it** — bars, seats, sheets, with a butt cap. **A mark that is not an object does not** — a ring is a proportion, a lens an instrument. | The charts are all grounded, so the illustrations are; the family reads as one family. Stating it as "every scene stands on the floor" was false of nine of the fourteen and made the line look decorative. |
 | Four tokenised ink layers — `ground`, `ghost`, `ink`, `accent` — and **at most one accent per drawing**. | A raw hex in an illustration is the one asset on the page that keeps the old brand after a re-theme. Two accents means the drawing has not decided what it is about. |
-| Three stroke weights: hairline 2, ink 3, mass 4. Round caps and joins, always. | |
+| Three stroke weights: hairline 2, ink 3, mass 4. Round joins always; round caps EXCEPT where a mark meets the floor. | A round cap adds half the stroke past the endpoint, so a grounded mark drawn with one hangs two units below the line it stands on. |
 | **Decorative by default.** Pass `alt` only where the drawing says something the surrounding text does not. | A drawing beside a heading that already reads "No records found" makes a screen reader announce it twice. |
 | **No scene depicts a person.** | The Department serves Scheduled Castes, Scheduled Tribes, senior citizens, persons with disabilities and transgender persons. Any depicted person has a gender, an age and an apparent community, and tells every citizen who is not that person that the page is not for them. Where a drawing needs a human presence it shows the evidence of one — a seat, a form, a place in a queue. |
 | The National Emblem is never illustration. | It is the estate's mark, it carries its own rules, and it does not appear inside a scene. |
