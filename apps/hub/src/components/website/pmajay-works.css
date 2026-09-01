@@ -432,6 +432,31 @@
     }
   }
 
+  /*
+    ── STACKED, THE MAP HAS TO BE CAPPED ────────────────────────────────────
+
+    Below 1025px the map and the list stop sharing a row and the map takes the
+    full card width. India is very nearly square, so a width-bound map at that
+    size is enormous: at 768px the artwork drew 670x757, and with the ranked
+    list's 623px underneath it the section reached **1,719px**. At 1024 it was
+    1,646. Side by side at 1440 the same section is 945.
+
+    A 1,700px section is not a big map, it is a scroll trap — the reader passes
+    a screen and a half of one section before the next heading, and on a tablet
+    that is most of the page. Nothing on the map needs 757px of height to be
+    legible; the hexes are 5 viewBox units and resolve long before that.
+
+    So the artwork is capped in the stacked layout and the section comes back
+    to a length someone will actually scroll through. `max-height` on the SVG
+    rather than on the column, because `preserveAspectRatio` then narrows the
+    drawing to match and it stays centred instead of being squashed.
+  */
+  @media (max-width: 1024px) {
+    .pmw__map svg {
+      max-height: 30rem;
+    }
+  }
+
   /* ── Search scope: places or villages ─────────────────────────────────── */
 
   .pmw__scope {

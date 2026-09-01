@@ -221,9 +221,23 @@
     */
     min-height: 32px;
     padding: var(--sa-padding-4) var(--sa-padding-12);
-    border: 1px solid var(--sa-border-neutral-base);
+    border: 1px solid var(--sa-border-brand-primary-base);
     border-radius: var(--sa-shape-full);
-    background-color: var(--sa-bg-neutral-subtler);
+    /*
+      ON IS SELECTED, NOT MERELY FILLED.
+
+      It was `bg/neutral/subtler` — a light grey block. Stacked full-width on a
+      phone that is the anatomy of a settings ROW, and a reader told us as
+      much: the keys had stopped looking like controls. Grey is what a surface
+      is; it is not what a chosen thing is.
+
+      This is `Chip`'s own selected language, which is the point — an
+      interactive legend IS a chip, and it should not invent a third on-state
+      for the estate. PM-AJAY's map filters stay `tone="neutral"` precisely
+      because they sit ON the map and a brand tint there would compete with the
+      blue hexes underneath; these sit on a white card, where the tint is free.
+    */
+    background-color: var(--sa-bg-brand-primary-base);
     cursor: pointer;
     transition:
       background-color 160ms ease-out,
@@ -237,8 +251,8 @@
     to be in the resting pill, which is what the height above buys.
   */
   .ds-chart__legend-toggle:hover {
-    border-color: var(--sa-border-neutral-bolder-default);
-    background-color: var(--sa-bg-neutral-subtle);
+    border-color: var(--sa-border-brand-primary-bolder);
+    background-color: var(--sa-bg-brand-primary-subtler);
   }
 
   /*
@@ -262,10 +276,18 @@
   }
 
   /* Off: the pill empties, the ink drops, and the key hollows out. */
+  /* Off empties the pill and dashes its edge, so the two states differ in
+     fill, in border STYLE and in ink — never in colour alone. */
   .ds-chart__legend-toggle.is-off {
     background-color: transparent;
+    border-color: var(--sa-border-neutral-base);
     border-style: dashed;
     color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-chart__legend-toggle.is-off:hover {
+    border-color: var(--sa-border-neutral-bolder-default);
+    background-color: var(--sa-bg-neutral-subtler);
   }
 
   .ds-chart__legend-toggle.is-off .ds-chart__legend-label,
