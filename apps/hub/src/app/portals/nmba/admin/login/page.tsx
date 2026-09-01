@@ -131,7 +131,7 @@ export default function AdminLoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 invalid={!!error}
-                style={{ paddingRight: "2.5rem" }}
+                style={{ paddingRight: "var(--sa-padding-40)" }}
               />
               <button
                 type="button"
@@ -154,7 +154,7 @@ export default function AdminLoginPage() {
             type="submit"
             disabled={loading}
             iconLeft={loading ? undefined : <Icon name="login" size={16} />}
-            style={{ marginTop: "4px" }}
+            style={{ marginTop: "var(--sa-stack-4)" }}
           >
             {loading ? "Signing in…" : "Sign In"}
           </Button>

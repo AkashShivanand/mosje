@@ -43,7 +43,7 @@ const FACILITY_LABELS: Record<FacilityType, string> = {
 function makeIcon(color: string) {
   return L.divIcon({
     className: "",
-    html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2px solid var(--sa-chart-regionStroke);box-shadow:0 1px 3px rgba(0,0,0,.4)"></div>`,
+    html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2px solid var(--sa-chart-regionStroke);box-shadow:0 1px 3px color-mix(in srgb, var(--sa-text-neutral-bolder) 40%, transparent)"></div>`,
     iconSize: [14, 14],
     iconAnchor: [7, 7],
   });

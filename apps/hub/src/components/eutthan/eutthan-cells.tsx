@@ -58,7 +58,7 @@ export function CellContent({
             background: "var(--primary-tonal)",
             display: "inline-flex",
             alignItems: "center",
-            gap: 5,
+            gap: "var(--sa-inline-4)",
           }}
           aria-label="Edit role"
         >
@@ -67,7 +67,7 @@ export function CellContent({
         <button
           type="button"
           className="text-action danger-action"
-          style={{ display: "inline-flex", alignItems: "center", gap: 5 }}
+          style={{ display: "inline-flex", alignItems: "center", gap: "var(--sa-inline-4)" }}
           aria-label="Delete role"
         >
           <Icon name="delete" size={14} /> Delete
@@ -98,7 +98,7 @@ export function CellContent({
           background: "var(--primary-tonal)",
           display: "inline-flex",
           alignItems: "center",
-          gap: 6,
+          gap: "var(--sa-inline-6)",
         }}
         aria-label={rowLabel ? `View details for ${rowLabel}` : "View details"}
       >
@@ -116,11 +116,11 @@ export function CellContent({
           style={{
             background: "var(--primary-tonal)",
             minHeight: 36,
-            padding: "6px 12px",
-            borderRadius: 8,
+            padding: "var(--sa-padding-6) var(--sa-padding-12)",
+            borderRadius: "var(--sa-shape-8)",
             display: "inline-flex",
             alignItems: "center",
-            gap: 6,
+            gap: "var(--sa-inline-6)",
           }}
           aria-label="Edit this entry"
         >
@@ -129,7 +129,7 @@ export function CellContent({
         <button
           type="button"
           className="text-action danger-action"
-          style={{ display: "inline-flex", alignItems: "center", gap: 6 }}
+          style={{ display: "inline-flex", alignItems: "center", gap: "var(--sa-inline-6)" }}
           aria-label="Delete this entry"
         >
           <Icon name="delete" size={14} /> Delete
@@ -147,11 +147,11 @@ export function CellContent({
           style={{
             background: "var(--primary-tonal)",
             minHeight: 36,
-            padding: "6px 12px",
-            borderRadius: 8,
+            padding: "var(--sa-padding-6) var(--sa-padding-12)",
+            borderRadius: "var(--sa-shape-8)",
             display: "inline-flex",
             alignItems: "center",
-            gap: 6,
+            gap: "var(--sa-inline-6)",
           }}
           aria-label="Edit this entry"
         >

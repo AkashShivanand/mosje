@@ -32,19 +32,19 @@ export default function ForgotPasswordPage() {
             </p>
           </div>
 
-          <div style={{ padding: "28px 28px 20px", display: "flex", flexDirection: "column", gap: 16 }}>
-            <div style={{ background: "var(--sa-bg-status-info-subtler)", border: "1px solid var(--sa-color-infoScale-200)", borderRadius: 8, padding: "14px 16px", fontSize: 13, color: "var(--sa-bg-status-info-bolder)", lineHeight: 1.6 }}>
+          <div style={{ padding: "var(--sa-padding-24) var(--sa-padding-24) var(--sa-padding-20)", display: "flex", flexDirection: "column", gap: "var(--sa-stack-16)" }}>
+            <div style={{ background: "var(--sa-bg-status-info-subtler)", border: "1px solid var(--sa-color-infoScale-200)", borderRadius: "var(--sa-shape-8)", padding: "var(--sa-padding-12) var(--sa-padding-16)", fontSize: 13, color: "var(--sa-bg-status-info-bolder)", lineHeight: 1.6 }}>
               <strong>NIC Helpdesk:</strong> 1800-111-555 (toll-free, 9am–6pm IST)<br />
               <strong>Email:</strong> helpdesk@nic.in
             </div>
 
             <p style={{ fontSize: 13, color: "var(--sa-color-text-muted)", lineHeight: 1.6, margin: 0 }}>
-              For prototype / demo, all test accounts use the password <code style={{ background: "var(--sa-bg-neutral-subtler)", padding: "2px 6px", borderRadius: 4, fontFamily: "monospace" }}>Password@123</code>.
+              For prototype / demo, all test accounts use the password <code style={{ background: "var(--sa-bg-neutral-subtler)", padding: "var(--sa-padding-2) var(--sa-padding-6)", borderRadius: "var(--sa-shape-4)", fontFamily: "monospace" }}>Password@123</code>.
             </p>
 
             <Link
               href={`${BASE}/login`}
-              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, height: 44, background: "var(--sa-color-brand-navy)", color: "var(--sa-color-text-onPrimary)", borderRadius: 8, fontWeight: 600, fontSize: 14, textDecoration: "none" }}
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "var(--sa-inline-8)", height: 44, background: "var(--sa-color-brand-navy)", color: "var(--sa-color-text-onPrimary)", borderRadius: "var(--sa-shape-8)", fontWeight: 600, fontSize: 14, textDecoration: "none" }}
             >
               <span className="material-symbols-rounded" style={{ fontSize: 18 }}>arrow_back</span>
               Back to Sign-In

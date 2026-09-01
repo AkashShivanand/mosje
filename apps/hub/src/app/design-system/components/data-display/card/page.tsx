@@ -87,7 +87,7 @@ export default function CardPage(): React.JSX.Element {
           <code>variant=&quot;elevated&quot;</code> when a card should lift off the page.
         </p>
         <Playground
-          code={`<div style={{ display: "flex", gap: 16, flexWrap: "wrap" }}>
+          code={`<div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap" }}>
   <Card style={{ maxWidth: 220, background: "var(--sa-bg-neutral-base)" }}>
     <CardBody>
       <CardTitle>Default</CardTitle>
@@ -126,7 +126,7 @@ export default function CardPage(): React.JSX.Element {
               label: "Keep one primary action per card so the next step is unambiguous.",
               preview: (
                 <div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)", padding: "var(--sa-stack-16)", background: "var(--sa-bg-neutral-base)", width: 220 }}>
-                  <div style={{ fontWeight: 600, marginBottom: 4, color: "var(--sa-color-text-default)" }}>NSFDC Loan</div>
+                  <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-4)", color: "var(--sa-color-text-default)" }}>NSFDC Loan</div>
                   <div style={{ fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-muted)", marginBottom: "var(--sa-stack-16)" }}>Term loan for self-employment.</div>
                   <span style={{ display: "inline-block", padding: "var(--sa-padding-8) var(--sa-padding-16)", borderRadius: "var(--sa-shape-6)", background: "var(--sa-bg-brand-primary-bolder)", color: "var(--sa-on-bg-brand-primary-bolder)", fontSize: "var(--sa-type-body-3-size)", fontWeight: 600 }}>Apply</span>
                 </div>
@@ -138,7 +138,7 @@ export default function CardPage(): React.JSX.Element {
               preview: (
                 <div style={{ border: "2px solid var(--sa-border-status-error-base)", borderRadius: "var(--sa-shape-8)", padding: "var(--sa-stack-16)", background: "var(--sa-bg-neutral-base)", width: 220, cursor: "pointer" }}>
                   <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-12)", color: "var(--sa-color-text-default)" }}>Clickable card</div>
-                  <div style={{ display: "flex", gap: 8 }}>
+                  <div style={{ display: "flex", gap: "var(--sa-inline-8)" }}>
                     <span style={{ padding: "var(--sa-padding-8) var(--sa-padding-12)", borderRadius: "var(--sa-shape-6)", background: "var(--sa-bg-brand-primary-bolder)", color: "var(--sa-on-bg-brand-primary-bolder)", fontSize: "var(--sa-type-body-3-size)" }}>Edit</span>
                     <span style={{ padding: "var(--sa-padding-8) var(--sa-padding-12)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-base)", color: "var(--sa-color-text-default)", fontSize: "var(--sa-type-body-3-size)" }}>Delete</span>
                   </div>

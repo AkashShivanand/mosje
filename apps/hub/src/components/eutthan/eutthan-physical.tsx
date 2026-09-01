@@ -17,7 +17,7 @@ export function PhysicalProgressPage() {
           style={{
             display: "flex",
             alignItems: "center",
-            gap: 10,
+            gap: "var(--sa-inline-8)",
             flexWrap: "wrap",
           }}
         >
@@ -33,7 +33,7 @@ export function PhysicalProgressPage() {
             style={{
               display: "inline-flex",
               alignItems: "center",
-              gap: 8,
+              gap: "var(--sa-inline-8)",
               textDecoration: "none",
             }}
           >
@@ -69,7 +69,7 @@ export function PhysicalProgressPage() {
                   style={{
                     textAlign: "center",
                     color: "var(--text-muted)",
-                    padding: 48,
+                    padding: "var(--sa-padding-48)",
                   }}
                 >
                   No records found.

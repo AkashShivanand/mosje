@@ -17,6 +17,7 @@ on:
       - "scripts/smoke-storybook.mjs"
       - ".stylelintrc.tokens.json"
       - "tools/ds-linkage/**"
+      - "tools/type-linkage/**"
       - ".github/workflows/ds-quality.yml"
   pull_request:
     paths:
@@ -33,6 +34,7 @@ on:
       - "scripts/smoke-storybook.mjs"
       - ".stylelintrc.tokens.json"
       - "tools/ds-linkage/**"
+      - "tools/type-linkage/**"
       - ".github/workflows/ds-quality.yml"
 
 # A pull request that is pushed again supersedes its own in-flight run. Without this
@@ -145,6 +147,26 @@ jobs:
       # advisory, so the gate stays honest rather than becoming a wall of exemptions.
       - name: DS linkage — documentation must be BUILT from the design system
         run: npm run check:ds-linkage
+
+      # Typography was the family with NO gate at all. Colour has stylelint plus six
+      # contract tests; spacing, radius and icons each have this same ratchet. Font size —
+      # 21 roles, 73 custom properties, the most visible thing on a government page — had
+      # nothing, and the gate above says so out loud every time it passes: "every fill,
+      # stroke, padding, gap and radius resolves through the design system". Font size is
+      # not in that sentence, and was not in its property table.
+      #
+      # The audit of 2026-09-01 measured the cost: 562 literal font sizes, 224 of them off
+      # the 15-step ramp (13px alone 71 times), 100 raw letter-spacings against 10 tracking
+      # tokens, a second hand-maintained type scale in globals.css, and a component
+      # shipping var(--sa-type-body-4-size) — a token that has never existed, which CSS
+      # drops in silence.
+      #
+      # A RATCHET for the same reason the icon one is: snapping 13px moves text on live
+      # government pages and each site needs a visual audit first. It costs nothing today,
+      # refuses to let the number grow, and fails when a count drops without the baseline
+      # being lowered in the same change.
+      - name: Type linkage — ratchet, no NEW unbound typography
+        run: npm run check:type-linkage
 
       # A RATCHET, not a sweep. 213 of 762 icon call sites sit off the seven-step size
       # scale, 126 of them at size={14} — chosen to sit against 14px body text, not by
