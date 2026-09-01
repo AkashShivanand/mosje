@@ -45,9 +45,22 @@
       box-shadow 0.15s ease;
   }
 
+  /*
+    A SIZE THAT CHANGES THE BOX AND NOT THE TYPE IS HALF A SIZE.
+
+    `sm` set a 40px shell and left the input at body-1, so a field sized for a
+    card rail carried 16px text — out of proportion with everything beside it,
+    and wide enough that "District or village in West Bengal" clipped inside a
+    271px field that had room for the words. The type steps with the box.
+  */
   .ds-search--sm {
     --_h: 40px;
     padding: 0 var(--sa-padding-12);
+  }
+
+  .ds-search--sm .ds-search__input {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
   }
 
   .ds-search--md {

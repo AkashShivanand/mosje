@@ -142,3 +142,122 @@ export const Tones: Story = {
     </div>
   ),
 };
+
+
+/**
+ * **`count` and `size` — the dense filter row.**
+ *
+ * A filter chip almost always wants to say how many things it selects, and two
+ * callers were already doing it by hand and disagreeing: `DocumentLibrary`
+ * wrote `{group} ({count})` into the children, PM-AJAY's coverage map appended
+ * a muted `<span>`. Same idea, two typographic answers, one of them inside the
+ * design system. `count` gives it one rendering — muted, tabular-figured, and
+ * OUTSIDE the label, so a screen reader hears "Guidelines, 2 documents" rather
+ * than "Guidelines open bracket two close bracket". Say what a unit is with
+ * `countLabel`.
+ *
+ * Pass a **string** when the figure needs the estate's Indian grouping
+ * (`formatIndian(n)`), a number otherwise.
+ *
+ * `size="sm"` is for a row of chips sharing a line with other controls, where
+ * `md`'s 32px pushes it onto a second line. It stays past the 24px minimum
+ * target (WCAG 2.2 SC 2.5.8). It is not a licence to fit more chips into a
+ * space that is simply too small.
+ */
+export const CountsAndDensity: Story = {
+  render: () => {
+    const groups = [
+      { label: "All", n: 19 },
+      { label: "Guidelines", n: 2 },
+      { label: "Circulars", n: 4 },
+      { label: "Formats", n: 6 },
+    ];
+    return (
+      <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+        <div>
+          <p style={{ margin: "0 0 8px", fontSize: 12, opacity: 0.7 }}>
+            size=&quot;md&quot; (default) — a filter row with room to breathe
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {groups.map((g, i) => (
+              <Chip
+                key={g.label}
+                selected={i === 0}
+                onSelectedChange={() => {}}
+                count={g.n}
+                countLabel="documents"
+              >
+                {g.label}
+              </Chip>
+            ))}
+          </div>
+        </div>
+        <div>
+          <p style={{ margin: "0 0 8px", fontSize: 12, opacity: 0.7 }}>
+            size=&quot;sm&quot; — the same row sharing a line with a legend and a search field
+          </p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {groups.map((g, i) => (
+              <Chip
+                key={g.label}
+                size="sm"
+                selected={i === 0}
+                onSelectedChange={() => {}}
+                count={g.n}
+                countLabel="documents"
+              >
+                {g.label}
+              </Chip>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * A `leadingIcon` carrying a **colour key** rather than a glyph — the shape
+ * PM-AJAY's coverage map uses, where each chip filters a class of mark on a map
+ * and the dot is that mark's colour.
+ *
+ * The dot stays filled whether the chip is on or off: the chip's own selected
+ * treatment carries the state, and the dot is the KEY. A key that changes with
+ * selection is a key that stops matching the thing it keys.
+ */
+export const ColourKeyChips: Story = {
+  render: () => {
+    const kinds = [
+      { label: "Girls", n: 34, color: "var(--sa-chart-cat-3)" },
+      { label: "Boys", n: 32, color: "var(--sa-chart-cat-2)" },
+      { label: "Not recorded", n: 137, color: "var(--sa-chart-axis)" },
+    ];
+    return (
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+        {kinds.map((k) => (
+          <Chip
+            key={k.label}
+            size="sm"
+            selected
+            onSelectedChange={() => {}}
+            count={k.n}
+            countLabel="hostels"
+            leadingIcon={
+              <span
+                style={{
+                  display: "block",
+                  width: 8,
+                  height: 8,
+                  borderRadius: "50%",
+                  backgroundColor: k.color,
+                }}
+              />
+            }
+          >
+            {k.label}
+          </Chip>
+        ))}
+      </div>
+    );
+  },
+};

@@ -24,7 +24,13 @@ const meta = {
           "the ramp's own next shade.\n\n" +
           "**`overlay`** is the slot the “at a glance” card sits in. It overlaps the band's " +
           "lower edge by 64px; the header reserves the space, the page decides what goes " +
-          "in it — normally a `FactStrip`, which the system already has.",
+          "in it — normally a `FactStrip`, which the system already has.\n\n" +
+          "**`reservesOverlap` is for the page that has no overlay but sits beside pages " +
+          "that do.** It pads the band by the same 64px an overlay would occupy, so a " +
+          "reader moving between an organisation's front page and one of its inner pages " +
+          "does not see the blue band change height under them. It is ignored whenever " +
+          "`overlay` is present — the real card already reserves its own space, and " +
+          "reserving it twice leaves a 64px gutter of empty blue.",
       },
     },
   },

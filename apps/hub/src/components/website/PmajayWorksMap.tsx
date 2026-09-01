@@ -1,287 +1,1556 @@
 "use client";
 
 import * as React from "react";
-import { IndiaBubbleMap, formatIndian } from "@mosje/design-system";
 import {
-  PMAJAY_REACH_DESCRIPTOR,
-  type ReachData,
-  type ReachKey,
-} from "@/lib/website/pmajay-api";
-import { PMAJAY_REACH_AS_ON, type ReachDataset } from "@/lib/website/pmajay-map-snapshot";
+  Chip,
+  cn,
+  Icon,
+  IndiaPointMap,
+  Legend,
+  EmptyState,
+  Pagination,
+  Search,
+  SectionTitle,
+  formatIndian,
+  type LegendItem,
+  type MapPin,
+  type MapBubble,
+} from "@mosje/design-system";
+import { PMAJAY_REACH_DESCRIPTOR, type ReachData, type ReachKey } from "@/lib/website/pmajay-api";
+import type { HostelType, ReachSnapshot, StateRow } from "@/lib/website/pmajay-map-reduce";
+import { PMAJAY_REACH_AS_ON } from "@/lib/website/pmajay-map-snapshot";
+import { useVillageIndex, matchVillages } from "@/lib/website/pmajay-villages";
 import { useDataMode } from "@/lib/data-mode/context";
 import { mergeData, provenanceOf } from "@/lib/data-mode/merge";
 import { ProvenanceChip } from "./ProvenanceChip";
 import "./pmajay-works.css";
 
-type Layer = "villages" | "hostels";
+/**
+ * Hostel marks: teal, amber and grey.
+ *
+ * DELIBERATELY NOT PINK-AND-BLUE. A girls'/boys' split is the one place a
+ * designer reaches for that pair without thinking, and on a government page it
+ * states something about children that the department did not.
+ *
+ * Colour is a REDUNDANT encoding here, never the only one (WCAG 1.4.1): each
+ * type has its own filter chip that isolates it, every pin's tooltip and
+ * accessible name says its type in words, and the rail counts them separately.
+ * A reader who cannot separate teal from amber loses nothing.
+ */
+const HOSTEL_KINDS: { kind: HostelType; label: string; color: string }[] = [
+  { kind: "girls", label: "Girls", color: "var(--sa-chart-cat-3)" },
+  { kind: "boys", label: "Boys", color: "var(--sa-chart-cat-2)" },
+  /*
+    "Sanctioned Hostel" is the feed's own third value, not our word for an
+    absence. This chip used to read "Not recorded", which was an INFERENCE
+    printed over what the department published — see `HostelType`. A citizen
+    cannot check "Not recorded" against anything, and an officer comparing this
+    page with the MIS finds a category that exists in neither.
+  */
+  { kind: "sanctioned", label: "Sanctioned Hostel", color: "var(--sa-chart-axis)" },
+];
 
-/** How many states the rail shows before "Show all". */
-const RAIL_LIMIT = 8;
+/** Which column the rail is ordered by. */
+type SortKey = "name" | "villages" | "hostels";
+/** `null` is the default ranked order — see `toggleSort`. */
+type SortState = { key: SortKey; dir: "asc" | "desc" } | null;
 
-interface LayerSpec {
-  value: Layer;
+/**
+ * Which way each column sorts on its FIRST click — the way that column is
+ * usually wanted. A name is asked for A–Z; a count is asked for highest-first.
+ * Declared once so the comparator and the button's spoken name cannot drift.
+ */
+const FIRST_DIR: Record<SortKey, "asc" | "desc"> = {
+  name: "asc",
+  villages: "desc",
+  hostels: "desc",
+};
+
+/**
+ * One clickable column heading.
+ *
+ * Three states, and the third is the one usually left out: ascending,
+ * descending, and NOT SORTING BY THIS AT ALL — which is where the list starts
+ * and has to be reachable again. The glyph says which: an up or down arrow
+ * when this column is the sort, and a faint pair of arrows when it is merely
+ * available. A heading with no mark at all would look like plain text, which
+ * is what these were.
+ */
+function SortHeader({
+  label,
+  sortKey,
+  sort,
+  onSort,
+  what,
+  numeric = false,
+}: {
   label: string;
-  lead: string;
-  noun: string;
-  totalKey: ReachKey;
-  stateKey: ReachKey;
-  districtKey: ReachKey;
+  sortKey: SortKey;
+  sort: SortState;
+  onSort: (key: SortKey) => void;
+  /** What the column holds, for the spoken name: "Sort by villages…". */
+  what: string;
+  /** Numeric columns are right-aligned and read "highest/lowest first". */
+  numeric?: boolean;
+}) {
+  const active = sort?.key === sortKey;
+  const dir = active ? sort.dir : null;
+  const first = FIRST_DIR[sortKey];
+  /*
+    A NUMBER'S "DESCENDING" AND A NAME'S ARE NOT THE SAME WORD. "Z to A" on a
+    column of village counts means nothing, and "highest first" on a column of
+    state names means less. One helper, so the two never drift apart — an
+    earlier draft of this button announced a name column sorted "A to Z" while
+    it was showing Z to A.
+  */
+  const word = (d: "asc" | "desc") =>
+    numeric ? (d === "desc" ? "highest first" : "lowest first") : d === "desc" ? "Z to A" : "A to Z";
+  // A button is named for what the NEXT click does — except while it is the
+  // active sort, where the reader also needs to hear the state it is in.
+  const next =
+    dir == null
+      ? word(first)
+      : dir === first
+        ? word(first === "asc" ? "desc" : "asc")
+        : "the default order";
+  return (
+    <button
+      type="button"
+      className={cn("pmw__colbtn", active && "is-active", numeric && "pmw__colbtn--num")}
+      onClick={() => onSort(sortKey)}
+      aria-label={
+        dir == null
+          ? `Sort by ${what}, ${next}`
+          : `Sorted by ${what}, ${word(dir)}. Change to ${next}`
+      }
+    >
+      <span>{label}</span>
+      <Icon
+        name={dir == null ? "unfold_more" : dir === "desc" ? "arrow_downward" : "arrow_upward"}
+        size={16}
+        className="pmw__colsort"
+        aria-hidden
+      />
+    </button>
+  );
 }
 
-/*
- * The two components this feed carries locations for.
- *
- * The leads are the department's own descriptions of each component, trimmed to
- * one sentence — not written here. A map's standfirst is the one place a reader
- * decides what the circles MEAN, so it has to be the scheme's language.
- */
-const LAYERS: LayerSpec[] = [
-  {
-    value: "villages",
-    label: "Adarsh Gram",
-    lead: "Villages with a substantial Scheduled Caste population, developed to a defined standard and then formally declared.",
-    noun: "villages",
-    totalKey: "villages",
-    stateKey: "villageStates",
-    districtKey: "villageDistricts",
-  },
-  {
-    value: "hostels",
-    label: "Hostels",
-    lead: "Hostels built or repaired so Scheduled Caste students can stay on through secondary and higher education.",
-    noun: "hostels",
-    totalKey: "hostels",
-    stateKey: "hostelStates",
-    districtKey: "hostelDistricts",
-  },
-];
+const HOSTEL_LABEL: Record<HostelType, string> = {
+  girls: "Girls' hostel",
+  boys: "Boys' hostel",
+  sanctioned: "Sanctioned Hostel",
+};
 
 export interface PmajayWorksMapProps {
   data: ReachData;
-  /** Live Grants-in-Aid project total, for the third tab. `null` when unread. */
-  giaTotal: number | null;
 }
 
 /**
- * "Where PM-AJAY works" — the scheme's reach, on a map of India.
+ * "Where PM-AJAY works" — the scheme on the ground, at three grains.
  *
- * Built to the standalone design mockup agreed in the Bharat-map session:
- * layer tabs carrying their own counts, a proportional-circle map, and a ranked
- * state rail beside it.
+ * ── WHAT CHANGED, AND WHY IT HAD TO ─────────────────────────────────────────
  *
- * ── CIRCLES, NOT SHADING, AND THAT IS THE WHOLE POINT OF THE REDESIGN ────────
+ * The first two builds of this section drew one circle per state: first shaded
+ * (`IndiaMap`), then proportional (`IndiaBubbleMap`). Both took a feed of 19,971
+ * COORDINATES and reduced it to 24 numbers before drawing anything, so the only
+ * thing the department published coordinates FOR — where the work actually is —
+ * was thrown away on the server. The visible consequence was that PM-AJAY looked
+ * like a scheme distributed across states, when it is a scheme concentrated in a
+ * belt: West Bengal and Bihar alone hold 44% of every Adarsh Gram village.
  *
- * The first build of this section used `IndiaMap`, which shades each state. For
- * a COUNT that is a systematic lie: the ink a state receives is its land area,
- * so Rajasthan's 1,493 villages and Delhi's 1 were separated far less than
- * Rajasthan and Delhi were. A circle carries its own area — `r ∝ √v`, so a 4×
- * count draws 4× the ink and not 16× — and geography stops competing with the
- * data. `IndiaBubbleMap` in the design system holds that reasoning in full.
+ * ── THE SECTION IS ONE INSTRUMENT, NOT SIX SURFACES ────────────────────────
  *
- * ── THE RAIL IS NOT A CHART ──────────────────────────────────────────────────
+ * It was a heading block, a row of three component cards, a filter bar, a
+ * bordered map card, a bordered list card and a footnote — six surfaces, in
+ * which the map got 23% of the area and arrived 397px in. Worse, those three
+ * cards restated the three components that the "Components" section directly
+ * above already introduces, in a different order and a different card style,
+ * 200px apart.
  *
- * It was a horizontal `BarChart`, which had to be stacked below the map because
- * a scaled SVG shrinks rather than reflows — at this page's width its labels
- * rendered at 5.9px. Rows of real text reflow, so the rail sits BESIDE the map
- * where the mockup puts it, and reads at full size at every width.
+ * Now: a key that is also the switch, then one panel holding the map and the
+ * ranked list as two regions divided by a hairline, then one footnote. The
+ * counts survive in the key, the switches survive in the key, and the
+ * duplication is gone because a legend entry cannot be mistaken for a second
+ * telling of the components.
  *
- * ── THREE TABS, TWO MAPS ─────────────────────────────────────────────────────
+ * ── TWO COMPONENTS, TWO MARKS, BECAUSE THEY ARE NOT THE SAME KIND OF THING ──
  *
- * Grants-in-Aid is on the tab strip because it is a third of the scheme and its
- * total is live — but it is not selectable, because this feed publishes no
- * coordinates for it. The alternative was to leave it off the strip entirely,
- * which tells a reader PM-AJAY has two components, or to draw it as an empty
- * map, which tells them it has reached nowhere. A named, disabled tab carrying
- * its real figure says the true thing: the projects exist, their locations are
- * not published.
+ * 19,348 villages are a DENSITY — too many to tell apart, and the question a
+ * reader has is "where is it thickest". They are a hex field.
+ *
+ * 200 hostels are INDIVIDUALS — few enough to count, and each one is a building
+ * a reader might be looking for. They are pins, coloured by type.
+ *
+ * Drawing both with one mark would flatter neither: the villages would become an
+ * unreadable smear of 19,000 dots, or the hostels would vanish into a shade.
+ *
+ * ── THE THIRD COMPONENT IS NOT HERE, AND THE HEADING SAYS SO ────────────────
+ *
+ * Grants-in-Aid is a third of PM-AJAY and this feed publishes no coordinates
+ * for it. It had a greyed-out card, then a sentence in a footnote; both were a
+ * section explaining its own absences to a reader who had not asked.
+ *
+ * The description under the heading names exactly what is drawn — villages
+ * declared as Adarsh Gram, hostels sanctioned — so the section is complete on
+ * its own terms, and the Components band directly above introduces all three.
+ *
+ * ── THE COVERAGE LINE IS NOT A FOOTNOTE ─────────────────────────────────────
+ *
+ * 493 of 19,971 records cannot be placed. 423 carry no usable coordinate at all
+ * — absent, zeroed, or outside the country's ranges. The other 70 are the
+ * subtler class: coordinates that pass every range check and put a village in
+ * the Arabian Sea, caught by `isOnIndianLand` rather than by a bounds test. A
+ * further 152 were published with latitude and longitude the wrong way round
+ * and are drawn repaired.
+ *
+ * All of them are COUNTED — the totals are the department's own — and the page
+ * says how many are drawn, because a map that silently omits 493 places while
+ * printing "19,768 villages" underneath is telling the reader it drew them all.
  */
-export function PmajayWorksMap({ data, giaTotal }: PmajayWorksMapProps) {
-  const [layer, setLayer] = React.useState<Layer>("villages");
-  const [expanded, setExpanded] = React.useState(false);
-  const [hovered, setHovered] = React.useState<string | null>(null);
+export function PmajayWorksMap({ data }: PmajayWorksMapProps) {
+  const [showVillages, setShowVillages] = React.useState(true);
+  const [showHostels, setShowHostels] = React.useState(true);
+  const [types, setTypes] = React.useState<Set<HostelType>>(
+    () => new Set<HostelType>(["girls", "boys", "sanctioned"]),
+  );
+  const [focus, setFocus] = React.useState<string | null>(null);
+  /**
+   * The district the rail is open on, inside `focus`.
+   *
+   * KEPT BESIDE `focus` RATHER THAN FOLDED INTO IT. The map can only ever zoom
+   * to a state — `focusRegion` takes a state name, and there are no district
+   * outlines to frame — so the two levels genuinely do different jobs, and
+   * making `focus` a `{state, district}` object would have every one of its
+   * fourteen readers destructure a district none of them can use.
+   */
+  const [district, setDistrict] = React.useState<string | null>(null);
+  const [query, setQuery] = React.useState("");
+  const [sort, setSort] = React.useState<SortState>(null);
+  /**
+   * Which list the search is showing — or `null`, meaning "whichever has the
+   * answer".
+   *
+   * NULL IS THE DEFAULT AND IT IS LOAD-BEARING. Searching "kall" matches no
+   * state and 23 villages; pinned to `places` the rail said "Nothing matches
+   * kall" while the answer sat behind a chip the reader had no reason to press.
+   * A stored default cannot know that, so the default is stored as *unset* and
+   * resolved below against what actually matched. An explicit press pins it,
+   * and a changed query releases it again.
+   */
+  const [scope, setScope] = React.useState<"places" | "villages" | null>(null);
+  const [hoverRow, setHoverRow] = React.useState<string | null>(null);
+  const [page, setPage] = React.useState(1);
   const { mode, marks } = useDataMode();
 
-  const mockScalars = React.useMemo(
-    () => ({
-      villages: data.mock.villages.total,
-      villageStates: data.mock.villages.states,
-      villageDistricts: data.mock.villages.districts,
-      hostels: data.mock.hostels.total,
-      hostelStates: data.mock.hostels.states,
-      hostelDistricts: data.mock.hostels.districts,
-    }),
-    [data.mock],
-  );
+  /**
+   * How many rows a page of the list holds.
+   *
+   * PAGES, NOT A SCROLL REGION. The list scrolled inside the panel, which fixed
+   * the page-length jump but bought a nested scroll — and a nested scroll on a
+   * phone is a trap: a reader flicking the page downwards lands in the list and
+   * moves the list instead.
+   *
+   * TEN, AND THE PANEL IS SIZED FOR TEN OF THE TALLEST ROW. It was seven, and
+   * seven was sized for a state row — one line and a bar, 41px. A village row
+   * is two lines, 57px, so a full page of them needed 399px of a 303px list and
+   * the overflow painted straight over the pager. The list is `overflow:
+   * hidden` now so that can never happen again silently, and the panel's
+   * minimum is derived from ten rows rather than guessed.
+   */
+  const PAGE_SIZE = 10;
 
+  /**
+   * Any change of WHAT IS BEING LISTED starts at page one.
+   *
+   * Landing on page 4 of Karnataka's districts because that is where you were
+   * in the list of states is the paging equivalent of inheriting a scroll
+   * position — the defect this list had before it was paged.
+   *
+   * Called from the handlers rather than an effect: an effect that syncs state
+   * to state renders twice for every one of these, and there is nothing
+   * asynchronous here to justify it.
+   */
+  const resetPaging = () => setPage(1);
+
+  const mockScalars = React.useMemo(() => scalarsOf(data.mock), [data.mock]);
   const merged = React.useMemo(
     () => mergeData(PMAJAY_REACH_DESCRIPTOR, data.reading, mockScalars, mode),
     [data.reading, mockScalars, mode],
   );
 
-  const spec = LAYERS.find((l) => l.value === layer)!;
-  const prov = provenanceOf(merged, [spec.totalKey, spec.stateKey, spec.districtKey]);
+  const prov = provenanceOf(merged, [
+    "villages",
+    "villageStates",
+    "villageDistricts",
+    "hostels",
+    "hostelStates",
+    "hostelDistricts",
+  ]);
 
   /*
-   * The rows follow the total's provenance, not the feed's availability. In
-   * `mock` mode the feed may well have answered — the reader asked for the
-   * mirror, and a live map under mirrored totals would contradict the chip.
+   * ── THE MAP AND THE TOTALS ARE ONE READING, NOT TWO ─────────────────────
+   *
+   * This line used to end `: data.mock`, and that produced the section's worst
+   * defect. Asked for LIVE ONLY against a feed that had not answered, the merge
+   * correctly resolved every total to 0 and marked it live — and then this line
+   * fell back to the mirror anyway, so the keys read "Adarsh Gram villages 0 ·
+   * Hostels 0" above a map drawing 19,768 villages and a list of 28 states.
+   * Two contradictory answers to the same question, on a government page, with
+   * no way for a reader to tell which was true.
+   *
+   * `mergeData`'s own comment says a live-mode miss stays 0 "so the card can
+   * show a real empty state". The card never showed one, because the map had
+   * quietly opted out of the same decision.
+   *
+   * So the geography is resolved from the SAME decision as the figures:
+   *   · mirrored totals  → the mirror, or a live map would contradict the chip
+   *   · a live reading   → that reading
+   *   · live-only, none  → NOTHING, and the section says so
+   *   · otherwise        → the mirror, which is the documented fallback
    */
-  const dataset: ReachDataset =
-    prov === "mock" || data.live == null ? data.mock[layer] : data.live[layer];
+  const reading: ReachSnapshot | null =
+    prov === "mock" ? data.mock : (data.live ?? (mode === "live" ? null : data.mock));
 
-  const rows = dataset.rows;
-  const shown = expanded ? rows : rows.slice(0, RAIL_LIMIT);
-  const top = rows[0]?.value ?? 1;
+  /*
+   * Hooks cannot be called conditionally, so the derivations below run against
+   * an EMPTY reading rather than behind an early return. Everything downstream
+   * then resolves to nothing on its own — no bins, no pins, no rows — and the
+   * render branches once, on `hasReading`, to say why.
+   */
+  const hasReading = reading != null;
+  const snapshot: ReachSnapshot = reading ?? EMPTY_REACH;
 
-  const total = merged.values[spec.totalKey];
-  const states = merged.values[spec.stateKey];
-  const districts = merged.values[spec.districtKey];
+  /* ── Filtering ─────────────────────────────────────────────────────────── */
 
-  /** Counts on the tab strip come from the merge, so they move with the mode. */
-  const tabCount = (l: LayerSpec) => merged.values[l.totalKey];
+  const hostels = React.useMemo(
+    () =>
+      snapshot.hostels.filter(
+        (h) => types.has(h.type) && (focus == null || h.state === focus),
+      ),
+    [snapshot.hostels, types, focus],
+  );
+
+  const bins = React.useMemo(
+    () => (focus == null ? snapshot.bins : snapshot.bins.filter((b) => b.group === focus)),
+    [snapshot.bins, focus],
+  );
+
+  const pins: MapPin[] = React.useMemo(
+    () =>
+      showHostels
+        ? hostels
+            .filter((h) => h.placed)
+            .map((h) => ({
+              id: h.id,
+              lon: h.lon,
+              lat: h.lat,
+              kind: h.type,
+              label: `${h.district}, ${h.state}`,
+              detail: HOSTEL_LABEL[h.type],
+            }))
+        : [],
+    [hostels, showHostels],
+  );
+
+  /** District rings, only when zoomed — see `bubbleVariant="outlined"`. */
+  const districtRings: MapBubble[] = React.useMemo(() => {
+    if (focus == null || !showVillages) return [];
+    return snapshot.districts
+      .filter((d) => d.state === focus && d.villages > 0 && (d.lat !== 0 || d.lon !== 0))
+      .map((d) => ({
+        id: `${d.state}/${d.district}`,
+        lon: d.lon,
+        lat: d.lat,
+        value: d.villages,
+        label: d.district,
+        detail: "villages",
+      }));
+  }, [snapshot.districts, focus, showVillages]);
+
+  /* ── The rail ──────────────────────────────────────────────────────────── */
+
+  interface RailRow {
+    key: string;
+    name: string;
+    villages: number;
+    hostels: number;
+    sub: string;
+    /**
+     * The state this row opens, when it is not a state itself.
+     *
+     * A DISTRICT ROW CAN APPEAR IN THE INDIA-LEVEL LIST. "Bankura" used to
+     * match nothing from the national view, because districts were only listed
+     * once a state was already open — so a reader who knew their district but
+     * not that it was in West Bengal had no way in. The whole 547 are
+     * searchable now, and a district row says which state it belongs to.
+     */
+    opens?: string;
+  }
+
+  const railRows: RailRow[] = React.useMemo(() => {
+    const typed = (state: string, district?: string) =>
+      snapshot.hostels.filter(
+        (h) => h.state === state && (district == null || h.district === district) && types.has(h.type),
+      ).length;
+
+    if (focus == null) {
+      const states: RailRow[] = snapshot.states.map((s: StateRow) => ({
+        key: s.state,
+        name: s.state,
+        villages: s.villages,
+        hostels: typed(s.state),
+        sub: `${formatIndian(s.districts)} district${s.districts === 1 ? "" : "s"}`,
+      }));
+      /*
+       * DISTRICTS JOIN THE NATIONAL LIST ONLY WHILE A SEARCH IS RUNNING.
+       *
+       * Unfiltered they would put 547 rows behind 28 and bury the states the
+       * list exists to rank. Searching is the only time a reader has named
+       * something, and it is the only time a district row answers them.
+       */
+      if (!query.trim()) return states;
+      return states.concat(
+        snapshot.districts.map((d) => ({
+          key: `${d.state}\u0000${d.district}`,
+          name: d.district,
+          villages: d.villages,
+          hostels: typed(d.state, d.district),
+          sub: d.state,
+          opens: d.state,
+        })),
+      );
+    }
+    return snapshot.districts
+      .filter((d) => d.state === focus)
+      .map((d) => ({
+        key: `${d.state}/${d.district}`,
+        name: d.district,
+        villages: d.villages,
+        hostels: typed(d.state, d.district),
+        sub: focus,
+      }));
+  }, [snapshot, focus, types, query]);
+
+  /**
+   * What the list is ordered by, and what its bar draws.
+   *
+   * ── THE BAR USED TO ADD VILLAGES TO HOSTELS ─────────────────────────────
+   *
+   * `villages + hostels` is a sum of two different units, and it showed:
+   * Sikkim (0 villages, 5 hostels), Mizoram (0, 3), Kerala (0, 2) and Delhi
+   * (1 village, 0 hostels) all drew the SAME bar, under a column headed
+   * "Villages". Four rows with nothing in common, drawn identically.
+   *
+   * The bar now draws exactly one measure — villages while that layer is on,
+   * hostels otherwise — and `barOf` is what it reads. `rankOf` may still
+   * combine the two, because ORDERING by "how much of this scheme is here"
+   * is a legitimate question where DRAWING one bar for it is not.
+   */
+  /*
+   * ── THE VILLAGE INDEX LOADS ON THE SECOND CHARACTER, NOT ON MOUNT ────────
+   *
+   * 83 KB gzipped, for a lookup most readers never run. One character is not a
+   * search — "a" matches two thousand villages — so two is where a query first
+   * means something, and a reader who clicks the field and changes their mind
+   * downloads nothing at all.
+   */
+  const wantsVillages = query.trim().length >= 2 || district != null;
+  const villageIndex = useVillageIndex(wantsVillages);
+  /*
+   * Two different questions answered by one index.
+   *
+   * WITH A DISTRICT OPEN it lists that district's villages, unfiltered by the
+   * search — the reader navigated here, they did not search. WITHOUT one it
+   * matches the query across all 10,157. Sorted by name either way, because
+   * inside a district there is no other order a reader could predict.
+   */
+  const villageHits = React.useMemo(() => {
+    if (district != null && focus != null) {
+      return villageIndex.villages
+        .filter((v) => v.state === focus && v.district === district)
+        .sort((a, b) => a.name.localeCompare(b.name));
+    }
+    return wantsVillages ? matchVillages(villageIndex.villages, query) : [];
+  }, [villageIndex.villages, query, wantsVillages, district, focus]);
+
+  const barOf = (r: RailRow) => (showVillages ? r.villages : r.hostels);
+  const rankOf = (r: RailRow) => (showVillages ? r.villages : 0) + (showHostels ? r.hostels : 0);
+
+  /*
+   * ── SORTING IS THE COLUMN HEADINGS, NOT A CONTROL BESIDE THEM ────────────
+   *
+   * The rail already names its three columns. A separate "Sort by" select
+   * would put a second, competing statement of the same three fields into a
+   * 304px column, and a reader would have to look in two places to learn one
+   * thing. Clicking a heading is what a column of figures already implies, and
+   * it costs no vertical space at all.
+   *
+   * `null` is the DEFAULT ranked order the list has always opened in, which
+   * answers "where is most of this scheme" — a genuinely different question
+   * from "which state has the most villages", because the ranking counts both
+   * components. So it stays reachable rather than being quietly collapsed into
+   * a villages sort that merely looks the same at the top of the list.
+   */
+  const toggleSort = (key: SortKey) => {
+    // The first click sorts the way the column is USUALLY wanted: a name A–Z,
+    // a count highest-first. Hard-coding "descending first" for every column
+    // opened the state list at Z, which nobody asks for.
+    const first = FIRST_DIR[key];
+    setSort((current) =>
+      current?.key !== key
+        ? { key, dir: first }
+        : current.dir === first
+          ? { key, dir: first === "asc" ? "desc" : "asc" }
+          : // A third click returns to the default rather than cycling forever
+            // between two — the ranked order is where the list starts and
+            // there has to be a way back to it.
+            null,
+    );
+    resetPaging();
+  };
+
+  const visibleRows = React.useMemo(() => {
+    const q = query.trim().toLowerCase();
+    const rows = railRows
+      .filter((r) => rankOf(r) > 0)
+      .filter((r) => !q || r.name.toLowerCase().includes(q) || r.sub.toLowerCase().includes(q));
+
+    if (sort == null) {
+      return rows.sort((a, b) => rankOf(b) - rankOf(a) || a.name.localeCompare(b.name));
+    }
+
+    const sign = sort.dir === "asc" ? 1 : -1;
+    return rows.sort((a, b) => {
+      if (sort.key === "name") return sign * a.name.localeCompare(b.name);
+      const av = sort.key === "villages" ? a.villages : a.hostels;
+      const bv = sort.key === "villages" ? b.villages : b.hostels;
+      // The tie-break is ALWAYS ascending by name. Flipping it with the
+      // direction reshuffles the fifteen states that hold one hostel each
+      // every time the arrow is clicked, for no reason a reader could name.
+      return sign * (av - bv) || a.name.localeCompare(b.name);
+    });
+    // `rankOf` closes over the two toggles, which are in the dep list.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [railRows, query, showVillages, showHostels, sort]);
+
+  /*
+   * The bar's 100% is the largest value of THE MEASURE BEING DRAWN, not of the
+   * ranking. With villages on that is West Bengal's 5,792; with only hostels on
+   * it is Assam's 33. A bar scaled to a maximum it is not drawing is a bar that
+   * cannot be read.
+   */
+  const barMax = Math.max(1, ...visibleRows.map(barOf));
+
+  /*
+   * ── ONE PAGER, TWO LISTS ────────────────────────────────────────────────
+   *
+   * The scope switch decides which list the rail is showing, and the paging
+   * follows it rather than each list carrying its own — two pagers in a 304px
+   * column, only one ever usable, is worse than one that moves.
+   *
+   * `showVillageList` is deliberately not just `scope === "villages"`: the
+   * switch is only rendered while a query is running, so a stale `villages`
+   * scope left behind by a cleared search must not strand the reader on an
+   * empty village list with no visible way back.
+   */
+  const placeMatches = visibleRows.length;
+  /*
+   * NO PLACE MATCHED, SO THEY WERE NOT LOOKING FOR A PLACE.
+   *
+   * Not `placeMatches === 0 && villageHits.length > 0` — that reads well until
+   * the search finds nothing anywhere, and then it lands the reader on "Nothing
+   * matches Bankura" instead of on the village list's answer, which is the one
+   * that explains that West Bengal publishes no village names at all. A reader
+   * typing a village name into a list of states needs that sentence most
+   * precisely when the search failed.
+   */
+  const autoScope: "places" | "villages" = placeMatches === 0 ? "villages" : "places";
+  const activeScope = scope ?? autoScope;
+  /** True while the open state publishes no village names at all. */
+  const namelessState =
+    focus != null && snapshot.coverage.statesWithoutVillageNames.includes(focus);
+
+  // A district being open is not a search — the village list IS the level.
+  const showVillageList = district != null || (wantsVillages && activeScope === "villages");
+  const listLength = showVillageList ? villageHits.length : visibleRows.length;
+
+  const totalPages = Math.max(1, Math.ceil(listLength / PAGE_SIZE));
+  // A filter can shrink the set under the page you are on.
+  const currentPage = Math.min(page, totalPages);
+  const pageRows = visibleRows.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+  const villagePage = villageHits.slice((currentPage - 1) * PAGE_SIZE, currentPage * PAGE_SIZE);
+
+  /* ── Totals ────────────────────────────────────────────────────────────── */
+
+  /*
+    The KEY carries the scheme's total, always. The map's accessible SUMMARY
+    carries what is on screen after the filters and the zoom. They are
+    different numbers on purpose: a legend that changed its figure every time
+    you switched a chip would stop being a statement about the scheme.
+  */
+  const villageTotal = merged.values.villages;
+  const hostelTotal = merged.values.hostels;
+
+  const shownVillages = focus == null ? villageTotal : railRows.reduce((t, r) => t + r.villages, 0);
+  const shownHostels = hostels.length;
+
+  const maxBin = bins.length ? Math.max(...bins.map((b) => b.count)) : 0;
+
+  /*
+   * The two keys, as data. Villages draw a sequential ramp with its ends named
+   * — a shade means nothing without them — and hostels draw the three marks the
+   * map actually uses, so the key and the map cannot drift apart.
+   */
+  const legendItems: LegendItem[] = [
+    {
+      id: "villages",
+      label: "Adarsh Gram villages",
+      value: formatIndian(villageTotal),
+      color: "var(--sa-chart-seq-500)",
+      swatch: "ramp",
+      colors: SEQ_STEPS.map((step) => `var(--sa-chart-seq-${step})`),
+      scale: ["1", maxBin > 0 ? formatIndian(maxBin) : "—"],
+      on: showVillages,
+    },
+    {
+      id: "hostels",
+      label: "Hostels",
+      value: formatIndian(hostelTotal),
+      color: HOSTEL_KINDS[0]!.color,
+      swatch: "dots",
+      colors: HOSTEL_KINDS.map((k) => k.color),
+      on: showHostels,
+    },
+  ];
+
+  /**
+   * How many hostels of each type are in view.
+   *
+   * Lifted out of the render because it is asked twice now — once to decide
+   * whether the filter group exists at all, and once per chip — and a filter
+   * that scans 203 pins three times to draw itself was already doing more work
+   * than the answer is worth.
+   */
+  const hostelKindCounts = React.useMemo(
+    () =>
+      HOSTEL_KINDS.map((kind) => ({
+        kind,
+        n: snapshot.hostels.filter(
+          (h) => h.type === kind.kind && (focus == null || h.state === focus),
+        ).length,
+      })),
+    [snapshot.hostels, focus],
+  );
 
   const csvHref = React.useMemo(() => {
-    const body = ["State,Count", ...rows.map((r) => `${JSON.stringify(r.state)},${r.value}`)].join(
-      "\n",
-    );
+    const head = focus == null ? "State,Districts reached" : "District,State";
+    const body = [
+      `${head},Adarsh Gram villages,Hostels`,
+      ...visibleRows.map(
+        (r) => `${JSON.stringify(r.name)},${JSON.stringify(r.sub)},${r.villages},${r.hostels}`,
+      ),
+    ].join("\n");
     return `data:text/csv;charset=utf-8,${encodeURIComponent(body)}`;
-  }, [rows]);
+  }, [visibleRows, focus]);
+
+  const toggleType = (t: HostelType) => {
+    resetPaging();
+    setTypes((prev) => {
+      const next = new Set(prev);
+      // Never let the last one out: an empty set draws an empty map that looks
+      // like "no hostels anywhere" rather than "you filtered them all away".
+      if (next.has(t) && next.size > 1) next.delete(t);
+      else next.add(t);
+      return next;
+    });
+  };
 
   return (
     <>
-      <div className="pmw__head">
-        <div className="pmw__headline">
-          <h2 id="reach-heading" className="pmw__title">
-            Where PM-AJAY works
-          </h2>
-          <p className="pmw__lead">{spec.lead}</p>
-        </div>
-        <ProvenanceChip kind={prov} />
-      </div>
-
       {/*
-        A TAB STRIP, NOT A RADIOGROUP. These switch the panel below rather than
-        record a choice, which is the tabs pattern — and `SegmentedControl`
-        renders an ARIA radiogroup, so using it here would have announced a form
-        control that submits nothing. The counts sit inside the tab because the
-        mockup puts them there and they are the reason a reader picks one.
+        THE DESIGN SYSTEM'S SECTION HEADING, NOT A HAND-ROLLED ONE.
+
+        This was a `.pmw__head` of my own: an h2 at 26.3px/700 over a 16px lead,
+        while all six sibling bands on this page render `SectionTitle` at
+        18.6px/600 over a 12px description. `SectionTitle`'s own docstring says
+        to use it "instead of hand-rolling a `<div className='flex
+        justify-between'>` with its own heading classes, so section headers stay
+        identical estate-wide" — which is exactly what had been done here.
+
+        The provenance chip goes in the component's `children`, which is its
+        right-aligned actions slot; it does not need a row of its own.
       */}
-      <div className="pmw__tabs" role="tablist" aria-label="Scheme component">
-        {LAYERS.map((l) => (
-          <button
-            key={l.value}
-            type="button"
-            role="tab"
-            id={`pmw-tab-${l.value}`}
-            aria-selected={layer === l.value}
-            aria-controls="pmw-panel"
-            className={`pmw__tab${layer === l.value ? " pmw__tab--on" : ""}`}
-            onClick={() => {
-              setLayer(l.value);
-              setExpanded(false);
-            }}
-          >
-            <span className="pmw__dot" aria-hidden />
-            {l.label}
-            <span className="pmw__tab-count">{formatIndian(tabCount(l))}</span>
-          </button>
-        ))}
-        <button
-          type="button"
-          role="tab"
-          aria-selected={false}
-          disabled
-          className="pmw__tab pmw__tab--off"
-          title="The department publishes project counts for Grants-in-Aid, but no locations, so it cannot be drawn on a map."
-        >
-          <span className="pmw__dot" aria-hidden />
-          Grant-in-Aid
-          <span className="pmw__tab-count">
-            {giaTotal == null ? "—" : formatIndian(giaTotal)}
-          </span>
-        </button>
-      </div>
+      <SectionTitle
+        as={2}
+        headingId="reach-heading"
+        title="Scheme Coverage"
+        description="Villages declared as Adarsh Gram and hostels sanctioned under the scheme, at the locations recorded in the PM-AJAY Management Information System."
+        className="pmw__head"
+      >
+        <ProvenanceChip kind={prov} />
+      </SectionTitle>
 
       {marks && prov === "mock" && (
         <p className="dm-banner">
-          <b>Illustrative figures.</b>&nbsp;The live map feed is not answering, so
-          this is the last published distribution, mirrored on {PMAJAY_REACH_AS_ON}.
-          Nothing here is a current departmental figure.
+          <b>Illustrative figures.</b>&nbsp;The live map feed is not answering, so this is
+          the last published distribution, mirrored on {PMAJAY_REACH_AS_ON}. Nothing here
+          is a current departmental figure.
         </p>
       )}
 
-      <div className="pmw__panel" id="pmw-panel" role="tabpanel" aria-labelledby={`pmw-tab-${layer}`}>
-        <div className="pmw__mapcard">
-          <IndiaBubbleMap
-            data={rows}
-            title={`${spec.label} by state`}
-            highlightState={hovered ?? undefined}
+      {/*
+        ONE PANEL, NOT THREE CARDS ON A TINT.
+
+        The section used to be six stacked surfaces — a heading block, a row of
+        three component cards, a filter bar, a bordered map card, a bordered
+        list card, and a footnote. The map, which is the only reason the section
+        exists, was the fifth thing a reader reached and got 23% of the section's
+        area. Everything else was a container.
+
+        The map and the ranked list are two regions of ONE instrument, so they
+        are two regions of one panel divided by a hairline, not two cards
+        floating side by side. The panel keeps a border because the family this
+        page belongs to is contained white surfaces on a tinted band — the fact
+        strip above it is one — and going full-bleed here would break the
+        container rhythm the estate holds every other section to.
+      */}
+      {/*
+        NOTHING TO DRAW, AND THE SECTION SAYS SO RATHER THAN DRAWING THE MIRROR.
+
+        Reached only in live-only mode against a feed that published nothing.
+        Every other mode has a mirror to fall back on, which is the estate's
+        documented behaviour; live-only is the reader deliberately asking to see
+        the feed and nothing else, so the honest answer is that it is empty.
+
+        One sentence, no diagnostics: which endpoint timed out belongs in the
+        audit doc, not under a heading on a citizen's page.
+      */}
+      {!hasReading ? (
+        /*
+          THE DS `EmptyState`, NOT A THIRD HAND-ROLLED ONE. This was a div with
+          its own icon, title and body — three classes restating a component
+          the design system already exports, which is the exact audit finding
+          this section keeps producing.
+
+          AND THE COPY IS WHAT A LIVE SERVICE WOULD SAY. It read "Switch the
+          demo rail back to mirrored data", which names a control that exists
+          only in this prototype and would be nonsense on the department's own
+          site. A citizen reading an empty section wants two things: what
+          happened, and whether it is worth coming back. Nothing about feeds,
+          modes, endpoints or mirrors.
+        */
+        <div className="pmw__instrument pmw__instrument--empty">
+          <EmptyState
+            icon={<Icon name="location_off" size={40} aria-hidden />}
+            title="Coverage figures are not available at the moment"
+            description={`The Management Information System has not returned the scheme's village and hostel figures. The position last published by the Department was as on ${PMAJAY_REACH_AS_ON}. Please try again shortly.`}
           />
-          {/* The space after the expression is explicit. JSX drops whitespace
-              that sits between an expression and a line break, and this line
-              rendered "villageson the department's books" without it. */}
-          <p className="pmw__mapnote">
-            {`One circle per state, area scaled to ${spec.noun} on the department’s books.`}
-          </p>
+        </div>
+      ) : (
+      <div className="pmw__instrument">
+        <div className="pmw__controls">
+          {/*
+            THE LEGEND IS THE LAYER SWITCH, AND IT CARRIES THE COUNT.
+
+            These were three cards, and the section directly above this one —
+            "Components" — already introduces the same three components with
+            icons, descriptions and Read more links. Two card rows for one set
+            of three things, 200px apart, in different orders, is a reader
+            stopping to work out whether they are the same thing.
+
+            A legend entry cannot be mistaken for that. It reads as a key,
+            which is what it is; it happens to be clickable, which is what a
+            legend on an interactive map should be; and it costs one line
+            instead of a 113px card.
+
+            IT IS THE DS `Legend` NOW. It was a pair of hand-rolled buttons,
+            because the DS legend was `aria-hidden` decoration whose swatch
+            could only be a solid colour — it could not toggle and it could not
+            draw a ramp. Both are now properties of the component rather than of
+            this page, so the next chart that wants to switch its own series
+            does not hand-roll a third version.
+          */}
+          {/*
+            ── TWO GROUPS, NOT FIVE SIBLINGS ─────────────────────────────────
+
+            The bar held a two-entry legend and then three filter chips, all at
+            the same level with the same gap between them. So the three chips
+            read as a third, fourth and fifth PEER of the two layer keys, when
+            what they actually are is the Hostels key's own controls — they
+            filter hostels and nothing else, and they vanish when the hostels
+            layer is switched off, which is the giveaway nobody could see.
+
+            Each layer is now one group: its key, and whatever controls belong
+            to that key. A rule divides the two. The chips sit inside the
+            hostel group behind a caret, so the hierarchy is in the layout
+            rather than in a caption.
+
+            Two `Legend`s rather than one with two items, because the grouping
+            IS the structure here — one key per group, each labelled for what
+            it switches.
+          */}
+          <div className="pmw__group">
+            <Legend
+              className="pmw__layers"
+              label="Adarsh Gram villages layer"
+              items={[legendItems[0]!]}
+              onToggle={() => {
+                setShowVillages((v) => !v);
+                resetPaging();
+              }}
+            />
+          </div>
+
+          <div className="pmw__group pmw__group--hostels">
+            <Legend
+              className="pmw__layers"
+              label="Hostels layer"
+              items={[legendItems[1]!]}
+              onToggle={() => {
+                setShowHostels((v) => !v);
+                resetPaging();
+              }}
+            />
+
+          {/*
+            A BADGE THAT CAN ONLY EVER SAY 0 IS NOT A FILTER, IT IS FURNITURE.
+
+            West Bengal has 5,792 Adarsh Gram villages and no hostels at all,
+            so opening it rendered "Girls 0 · Boys 0 · Sanctioned Hostel 0" —
+            three controls that do nothing, next to a Hostels key already
+            reading 0. The filter is only a filter where there is something to
+            filter, so each chip appears only when its own type is present, and
+            the group disappears with the last of them.
+
+            The Hostels KEY still says 0, which is the fact; three dead
+            controls beneath it were the noise.
+          */}
+          <div className="pmw__filters">
+            {showHostels && hostelKindCounts.some(({ n }) => n > 0) && (
+              <fieldset className="pmw__chips">
+                <legend className="ds-sr-only">Hostel type</legend>
+                {hostelKindCounts.map(({ kind: k, n }) => {
+                  if (n === 0) return null;
+                  const on = types.has(k.kind);
+                  return (
+                    /*
+                      THE DS CHIP, NOT A PILL OF MY OWN. This was a hand-rolled
+                      `<button className="pmw__chip">` beside a `Chip` component
+                      that already does exactly this — controlled selection,
+                      `role="button"`, `aria-pressed`, Enter and Space.
+
+                      The dot stays FILLED in both states now. It used to hollow
+                      out when the chip was off, on the reasoning that selection
+                      must not be carried by colour alone — but the chip's own
+                      selected treatment (tint, border, `aria-pressed`) carries
+                      that, and the dot is the KEY, not the state. A key that
+                      changes with selection is a key that stops matching the
+                      map.
+                    */
+                    <Chip
+                      key={k.kind}
+                      tone="neutral"
+                      selected={on}
+                      onSelectedChange={() => toggleType(k.kind)}
+                      leadingIcon={
+                        <span className="pmw__chipdot" style={{ backgroundColor: k.color }} />
+                      }
+                      size="sm"
+                      count={formatIndian(n)}
+                      countLabel="hostels"
+                      className="pmw__chip"
+                    >
+                      {k.label}
+                    </Chip>
+                  );
+                })}
+              </fieldset>
+            )}
+          </div>
+          </div>
         </div>
 
-        <div className="pmw__rail">
-          <div className="pmw__railhead">
-            <span className="pmw__raileyebrow">By state</span>
-            <span className="pmw__railcount">
-              {formatIndian(states)} of 36
-            </span>
+        <div className="pmw__panel">
+          <div className="pmw__map">
+            <IndiaPointMap
+              title={focus == null ? "PM-AJAY across India" : `PM-AJAY in ${focus}`}
+              summary={`${formatIndian(shownVillages)} Adarsh Gram villages and ${formatIndian(
+                shownHostels,
+              )} hostels${focus == null ? " across India" : ` in ${focus}`}.`}
+              bins={showVillages ? bins : undefined}
+              binNoun="villages"
+              bubbles={districtRings}
+              bubbleVariant="outlined"
+              maxBubbleRadius={26}
+              highlightBubbleId={focus != null ? hoverRow : null}
+              pins={pins}
+              pinKinds={HOSTEL_KINDS}
+              /*
+                Individually reachable only once the map is framed on a state.
+                Across India there are 195 of them, and 195 tab stops between the
+                heading and the ranked list is a barrier, not access — the list is
+                how a keyboard reader gets to a state in the first place. Inside
+                one state there are at most a few dozen, each a building someone
+                might be looking for.
+              */
+              interactivePins={focus != null}
+              focusRegion={focus}
+              /*
+                Searching filtered the list and left the map showing everything,
+                so a reader who typed "Bihar" saw one row and twenty-eight
+                states. When the query narrows to a single state the map now
+                outlines it — the smallest honest thing the map can do about a
+                filter that is not its own.
+              */
+              highlightRegion={
+                focus == null
+                  ? (query.trim() && visibleRows.length === 1 ? visibleRows[0]!.name : hoverRow)
+                  : null
+              }
+              onSelectRegion={(region) => {
+                // Only states the scheme has actually reached are worth opening;
+                // zooming to an empty state is a dead end the reader has to undo.
+                const hit = snapshot.states.find((s) => s.state === region);
+                if (!hit) return;
+                setFocus(region);
+                setDistrict(null);
+                setQuery("");
+                resetPaging();
+              }}
+              /*
+                NO LEGEND PROP, AND NO CAPTION UNDER THE MAP. Both moved into the
+                controls above, where the key is also the control. What sat here
+                was three lines of 12px instructions — "Each cell shades by…
+                Each dot is… Select a state on the map or in the list to…" — and
+                a map that needs instructions has a legend problem, not an
+                instructions problem.
+              */
+              table={{
+                columns: [focus == null ? "State" : "District", "Adarsh Gram villages", "Hostels"],
+                rows: visibleRows.map((r) => [r.name, r.villages, r.hostels]),
+              }}
+            />
           </div>
-          <ol className="pmw__list">
-            {shown.map((r, i) => (
-              <li
-                key={r.state}
-                className="pmw__row"
-                onPointerEnter={() => setHovered(r.state)}
-                onPointerLeave={() => setHovered(null)}
+
+          <div className="pmw__rail">
+            {/*
+              THE BREADCRUMB AND THE SEARCH BELONG TO THE LIST, NOT THE MAP.
+
+              They sat in the map's control bar, where they pushed it to two
+              rows and left the second one holding "India  [Find a state…]"
+              alone against the right edge, reading as an orphan rather than a
+              group. They are also simply in the wrong place: the search filters
+              THIS list, and the breadcrumb names the grain THIS list is at.
+
+              What is left in the control bar is only the key, which is what a
+              map's own chrome should be.
+            */}
+            {/*
+              THE COUNT SITS WITH THE BREADCRUMB, NOT WITH THE SEARCH.
+
+              All three used to share one row, which left the field 218px of a
+              304px rail — a search box narrower than the placeholder it holds,
+              beside two things that are both short. The breadcrumb and the
+              count are each a few words and belong on a line together; the
+              field is the one thing here that gets longer as you type, so it
+              takes the full width on its own line.
+            */}
+            <div className="pmw__railhead">
+                <nav className="pmw__crumbs" aria-label="Map area">
+                  <button
+                    type="button"
+                    className="pmw__crumb"
+                    onClick={() => {
+                      setFocus(null);
+                      setDistrict(null);
+                      resetPaging();
+                    }}
+                    aria-current={focus == null ? "true" : undefined}
+                    disabled={focus == null}
+                  >
+                    India
+                  </button>
+                  {focus != null && (
+                    <>
+                      <Icon name="chevron_right" size={16} className="pmw__crumbsep" aria-hidden />
+                      {/*
+                        The state crumb becomes a LINK once a district is open,
+                        and stays plain text otherwise. A trail whose middle
+                        step is inert when it is the way back is a trail that
+                        only goes one way.
+                      */}
+                      {district == null ? (
+                        <span className="pmw__crumb pmw__crumb--here" aria-current="true">
+                          {focus}
+                        </span>
+                      ) : (
+                        <button
+                          type="button"
+                          className="pmw__crumb"
+                          onClick={() => {
+                            setDistrict(null);
+                            resetPaging();
+                          }}
+                        >
+                          {focus}
+                        </button>
+                      )}
+                    </>
+                  )}
+                  {district != null && (
+                    <>
+                      <Icon name="chevron_right" size={16} className="pmw__crumbsep" aria-hidden />
+                      <span className="pmw__crumb pmw__crumb--here" aria-current="true">
+                        {district}
+                      </span>
+                    </>
+                  )}
+                </nav>
+
+              {/*
+                "28 of 36" means 28 of the country's 36 States and UTs have
+                been reached. While a search is narrowing the list that reading
+                is false — three matching rows are not "3 of 36 reached" — so
+                the phrasing changes with the state it describes.
+              */}
+              <span className="pmw__railcount">
+                {district != null
+                  ? `${formatIndian(villageHits.length)} named`
+                  : query.trim()
+                    ? `${formatIndian(listLength)} matching`
+                    : focus == null
+                      ? `${formatIndian(visibleRows.length)} of 36`
+                      : `${formatIndian(visibleRows.length)} districts`}
+              </span>
+            </div>
+
+                {/*
+                  The DS `Search`, not an `Input` wearing a magnifier. Both
+                  render a field with a leading glyph, and the difference is
+                  everything that is easy to leave out by hand: a real
+                  `type="search"`, a clear button once there is something to
+                  clear, and `dir="auto"` so an English placeholder does not
+                  clip from its HEAD when the estate is running in Urdu.
+
+                  `sm` — 40px — because this field sits inside a card, not at
+                  the head of a page.
+                */}
+                {/*
+                  THE PLACEHOLDER NAMES WHAT YOU MAY TYPE, NOT WHAT THE LIST
+                  HAPPENS TO BE SHOWING.
+
+                  It read "Find a state…", which described the list under it
+                  rather than the field's own reach — and the field had quietly
+                  grown to cover districts and 10,157 villages. A reader with a
+                  village name in mind had no way to know it would work, which
+                  is the only failure mode that matters for a search nobody can
+                  see the contents of.
+
+                  A noun list rather than a sentence: "State, district or
+                  village" is what you may type, reads at a glance, and fits the
+                  271px field, which "Search for a state, district or village"
+                  does not.
+                */}
+                <Search
+                  size="sm"
+                  className="pmw__search"
+                  aria-label={
+                    focus == null
+                      ? "Search by state, district or village"
+                      : `Search districts and villages in ${focus}`
+                  }
+                  placeholder={
+                    district != null
+                      ? `Village in ${district}`
+                      : focus == null
+                        ? "State, district or village"
+                        : `District or village in ${focus}`
+                  }
+                  value={query}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                    // Release the pin: the next query's answer may be in the
+                    // other list, and a scope chosen for the last one must not
+                    // hide it.
+                    setScope(null);
+                    resetPaging();
+                  }}
+                  onClear={() => {
+                    setQuery("");
+                    setScope(null);
+                    resetPaging();
+                  }}
+                />
+
+            {/*
+              COLUMN HEADINGS, so the figures can be bare.
+              Every row used to carry its own " villages" and " hostels" on two
+              stacked lines. Twenty-eight rows repeating two words each, and the
+              state name squeezed into 83px as a result — "Uttar Pradesh" and
+              "Andhra Pradesh" were rendering ellipsised on a government page.
+              Naming the columns once buys the names their width back.
+            */}
+            {/*
+              THE SCOPE SWITCH ONLY EXISTS WHILE A SEARCH IS RUNNING.
+
+              A search box over a list of states answers "which state" — it
+              cannot answer the question a citizen actually arrives with, which
+              is *is my village in this scheme*. The index that answers it is
+              10,157 names, so it is a second list, not more rows in this one:
+              a village has no district count and no hostel count, and forcing
+              it into those columns would print a dash in both.
+
+              Two chips, with their counts, so the reader can see there ARE
+              village matches before deciding to look at them. Hidden entirely
+              when nothing is being searched, because a switch between two
+              things when one of them is empty is a control that does nothing.
+            */}
+            {wantsVillages && district == null && (
+              <div className="pmw__scope" role="group" aria-label="Search results">
+                <Chip
+                  size="sm"
+                  selected={activeScope === "places"}
+                  onSelectedChange={() => {
+                    setScope("places");
+                    resetPaging();
+                  }}
+                  count={placeMatches}
+                  countLabel={focus == null ? "places" : "districts"}
+                >
+                  {/*
+                    "Places", not "States". The national list now carries
+                    districts as well, so a chip reading "States 11" over a
+                    result set whose first row is "Bankura — West Bengal" is
+                    counting one thing and naming another.
+                  */}
+                  {focus == null ? "Places" : "Districts"}
+                </Chip>
+                <Chip
+                  size="sm"
+                  selected={activeScope === "villages"}
+                  onSelectedChange={() => {
+                    setScope("villages");
+                    resetPaging();
+                  }}
+                  count={
+                    villageIndex.status === "ready"
+                      ? villageHits.length
+                      : villageIndex.status === "loading"
+                        ? "\u2026"
+                        : undefined
+                  }
+                  countLabel="villages"
+                >
+                  Villages
+                </Chip>
+              </div>
+            )}
+
+            {/*
+              THE HEADINGS ARE THE SORT CONTROL.
+
+              They were `aria-hidden` decoration; they are buttons now, which
+              is what a column of figures has always implied. Each carries its
+              own spoken name — "Sort by villages, highest first" — because
+              "Villages" plus an arrow glyph is not a sentence, and the arrow
+              is `aria-hidden` for the same reason.
+
+              NOT `aria-sort`: this is a list of rows, not a `<table>`, and
+              claiming grid semantics for a flex column tells a screen-reader
+              user to expect a navigation model that is not here. The button
+              names carry the state instead.
+            */}
+            {!showVillageList && visibleRows.length > 0 && (showVillages || showHostels) && (
+              <div className="pmw__railcols">
+                <SortHeader
+                  label={focus == null ? (query.trim() ? "By place" : "By state") : "By district"}
+                  sortKey="name"
+                  sort={sort}
+                  onSort={toggleSort}
+                  what={focus == null ? "name" : "district name"}
+                />
+                {showVillages && (
+                  <SortHeader
+                    label="Villages"
+                    sortKey="villages"
+                    sort={sort}
+                    onSort={toggleSort}
+                    what="villages"
+                    numeric
+                  />
+                )}
+                {showHostels && (
+                  <SortHeader
+                    label="Hostels"
+                    sortKey="hostels"
+                    sort={sort}
+                    onSort={toggleSort}
+                    what="hostels"
+                    numeric
+                  />
+                )}
+              </div>
+            )}
+
+            {showVillageList ? (
+              /*
+                FOUR STATES, AND EVERY ONE OF THEM REACHES THE SCREEN.
+
+                `idle` never does here — the list is only rendered once the
+                query has asked for the index — but `loading`, `error` and
+                `ready`-with-nothing all do, and each says a different thing.
+                An 83 KB fetch on a rural connection is a real wait, and a
+                blank panel during it reads as "no villages".
+              */
+              villageIndex.status === "loading" ? (
+                <p className="pmw__empty" role="status">
+                  Looking through the village register…
+                </p>
+              ) : villageIndex.status === "error" ? (
+                <p className="pmw__empty" role="status">
+                  The village register could not be loaded.{" "}
+                  <button type="button" className="pmw__retry" onClick={villageIndex.retry}>
+                    Try again
+                  </button>
+                </p>
+              ) : villageHits.length === 0 ? (
+                /*
+                  ONE SENTENCE, AND ONLY WHERE SILENCE WOULD MISLEAD.
+
+                  A reader searching for a village in West Bengal finds nothing,
+                  and the true reason is not that the village is outside the
+                  scheme — West Bengal holds 5,792 Adarsh Gram villages, more
+                  than any other state — but that the register names none of
+                  them. Left unsaid, an empty result tells 44% of the
+                  programme's villages that they are not in it.
+
+                  It used to be three lines. The district level that carried the
+                  longer version is no longer reachable in those states at all,
+                  so what is left is the clause, not the paragraph.
+                */
+                <p className="pmw__empty">
+                  {`No village named “${query.trim()}” is in the register.`}
+                  {snapshot.coverage.statesWithoutVillageNames.length > 0 &&
+                    ` Names are not published for ${listOf(
+                      snapshot.coverage.statesWithoutVillageNames,
+                    )}.`}
+                </p>
+              ) : (
+                <ol
+                  className="pmw__list pmw__list--villages"
+                  style={{ "--pmw-rows": PAGE_SIZE } as React.CSSProperties}
+                >
+                  {villagePage.map((v) => (
+                    <li key={`${v.state}/${v.district}/${v.name}`} className="pmw__row">
+                      {/*
+                        INSIDE A DISTRICT A VILLAGE IS THE LEAF, so the row is
+                        not a button and carries no chevron — there is nowhere
+                        further to go, and its district and state are the two
+                        things the breadcrumb above already says. From a search
+                        it is still the way into its state.
+                      */}
+                      {district != null ? (
+                        <div className="pmw__rowinner pmw__rowinner--village pmw__rowinner--leaf">
+                          <span className="pmw__rowbody">
+                            <span className="pmw__state">{v.name}</span>
+                          </span>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          className="pmw__rowinner pmw__rowinner--village"
+                          onClick={() => {
+                            // A village has no view of its own; the honest
+                            // thing it can do is take the reader to its state.
+                            setFocus(v.state);
+                            setQuery("");
+                            setScope(null);
+                            resetPaging();
+                          }}
+                        >
+                          <span className="pmw__rowbody">
+                            <span className="pmw__state">{v.name}</span>
+                            <span className="pmw__villageplace">{`${v.district}, ${v.state}`}</span>
+                          </span>
+                          <Icon name="chevron_right" size={16} className="pmw__go" aria-hidden />
+                        </button>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              )
+            ) : visibleRows.length === 0 ? (
+              <p className="pmw__empty">
+                {query
+                  ? `Nothing matches “${query}”.`
+                  : "Both components are switched off, so there is nothing to list."}
+              </p>
+            ) : (
+              <ol
+                className="pmw__list"
+                /* The grid's track count. Written once, here, so the stylesheet
+                   cannot disagree with `PAGE_SIZE` about how many rows a page
+                   holds. */
+                style={{ "--pmw-rows": PAGE_SIZE } as React.CSSProperties}
               >
-                <span className="pmw__rank">{i + 1}</span>
-                <span className="pmw__rowbody">
-                  <span className="pmw__state">{r.state}</span>
-                  {/* Decorative: the figure beside it carries the same value, so
-                      a screen reader would otherwise hear it twice. */}
-                  <span className="pmw__track" aria-hidden>
-                    <span
-                      className="pmw__fill"
-                      style={{ width: `${Math.max(2, (r.value / top) * 100)}%` }}
-                    />
-                  </span>
+                {pageRows.map((r) => {
+                  // At India level a row opens a state; inside a state a row
+                  // opens a district. Both are the same gesture on the same
+                  // control, one level apart.
+                  const opens = r.opens ?? (focus == null ? r.name : null);
+                  /*
+                    A DISTRICT ONLY OPENS WHERE THERE ARE NAMES TO OPEN.
+                    Drilling into a West Bengal district reached a level whose
+                    entire content was a sentence explaining why it was empty —
+                    a click that is only ever answered with an apology should
+                    not be offered. The state's row still lists the district and
+                    its counts; there is simply nothing underneath it.
+                  */
+                  const opensDistrict =
+                    focus != null && !namelessState ? r.name : null;
+                  const clickable = opens != null || opensDistrict != null;
+                  const Row = clickable ? "button" : "div";
+                  return (
+                    <li key={r.key} className="pmw__row">
+                      <Row
+                        {...(clickable
+                          ? {
+                              type: "button" as const,
+                              onClick: () => {
+                                if (opens != null) setFocus(opens);
+                                else setDistrict(opensDistrict);
+                                setQuery("");
+                                setScope(null);
+                                resetPaging();
+                              },
+                            }
+                          : {})}
+                        className="pmw__rowinner"
+                        onPointerEnter={() => setHoverRow(r.key)}
+                        onPointerLeave={() => setHoverRow(null)}
+                        onFocus={() => setHoverRow(r.key)}
+                        onBlur={() => setHoverRow(null)}
+                      >
+                        <span className="pmw__rowbody">
+                          <span className="pmw__state">{r.name}</span>
+                          {/*
+                            "Bankura" alone is not an answer — half the reason a
+                            reader searched a district is that they are not sure
+                            which state it is in.
+                          */}
+                          {r.opens != null && (
+                            <span className="pmw__rowplace">{r.sub}</span>
+                          )}
+                          {/* Decorative: the figures beside it carry the same value,
+                              so a screen reader would otherwise hear it twice. */}
+                          <span className="pmw__track" aria-hidden>
+                            <span
+                              className="pmw__fill"
+                              style={{
+                                /*
+                                  A ZERO DRAWS NOTHING. The 2% floor exists so
+                                  Delhi's single village is still a visible
+                                  mark, but applied to zero it drew Sikkim a
+                                  bar for the 0 villages it has — the floor
+                                  inventing a quantity, in the row of a state
+                                  the scheme has reached only with hostels.
+                                */
+                                width:
+                                  barOf(r) === 0
+                                    ? 0
+                                    : `${Math.max(2, (barOf(r) / barMax) * 100)}%`,
+                              }}
+                            />
+                          </span>
+                        </span>
+                        {showVillages && (
+                          <span className="pmw__value">
+                            {formatIndian(r.villages)}
+                            <span className="ds-sr-only"> villages</span>
+                          </span>
+                        )}
+                        {showHostels && (
+                          <span className="pmw__value pmw__value--alt">
+                            {formatIndian(r.hostels)}
+                            <span className="ds-sr-only"> hostels</span>
+                          </span>
+                        )}
+                        {/*
+                          A row that opens a state has to LOOK like one. These
+                          were buttons that rendered as list items, so the only
+                          hint was the cursor — which touch users never see.
+                          Absolutely positioned in the row's own right padding,
+                          so it costs the state name no width.
+
+                          A Material Symbol, not a typed "›". The estate's icons
+                          come from `<Icon>` so they share one family, one weight
+                          and one optical-size axis; a punctuation character
+                          borrows whatever the body font happens to draw.
+                        */}
+                        {clickable && (
+                          <Icon name="chevron_right" size={16} className="pmw__go" aria-hidden />
+                        )}
+                      </Row>
+                    </li>
+                  );
+                })}
+              </ol>
+            )}
+
+            {/*
+              THE PAGER SITS WITH THE COUNT IT PAGES, NOT ALONE UNDER THE LIST.
+
+              Centred in its own strip it read as a second footer — the rail
+              already has one below the panel — and left the range unstated, so
+              "1 2 3 4" was the only clue how much list there was. A row that
+              says WHICH rows you are looking at, with the control to change
+              them at the other end, answers both in the space one of them used
+              to take.
+
+              The range is not a duplicate of the head count: "28 of 36" up
+              there is how much of the country the scheme has reached, this is
+              where you are inside that list.
+            */}
+            {listLength > 0 && (
+              <div className="pmw__pagerow">
+                <span className="pmw__range">
+                  {`${formatIndian((currentPage - 1) * PAGE_SIZE + 1)}\u2013${formatIndian(
+                    Math.min(currentPage * PAGE_SIZE, listLength),
+                  )} of ${formatIndian(listLength)}`}
                 </span>
-                <span className="pmw__value">{formatIndian(r.value)}</span>
-              </li>
-            ))}
-          </ol>
-          {rows.length > RAIL_LIMIT && (
-            <button
-              type="button"
-              className="pmw__more"
-              onClick={() => setExpanded((v) => !v)}
-            >
-              {expanded ? "Show fewer states" : `Show all ${formatIndian(rows.length)} states`}
-            </button>
-          )}
+                {totalPages > 1 && (
+                  <Pagination
+                    page={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={setPage}
+                    size="sm"
+                    siblings={0}
+                    label={showVillageList ? "Villages" : focus == null ? "States" : "Districts"}
+                    className="pmw__pager"
+                  />
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
+      )}
 
+      {/*
+        ONE LINK, NOT A PARAGRAPH OF DIAGNOSTICS.
+
+        What stood here recited the feed's data quality — how many records were
+        drawn, how many carried no coordinates, how many were published outside
+        India, how many had latitude and longitude reversed. Every number was
+        true and none of it belonged on a citizen's page: it read as the
+        documentation of an API rather than a caption, and a caption that needs
+        four clauses is telling you the thing above it has not been made clear.
+
+        The figures are not lost — they are in `docs/audit/pm-ajay-content-audit.md`,
+        where the people who can act on them will look.
+      */}
+      {hasReading && (
       <div className="pmw__foot">
-        <p className="pmw__footfact">
-          {formatIndian(total)} {spec.noun} across {formatIndian(states)} states and{" "}
-          {formatIndian(districts)} districts
-          {prov === "mock" ? " · illustrative" : ""}
+        {/*
+          THE SCHEME'S SPREAD, WHICH THE KEYS DO NOT CARRY.
+
+          Borrowed from LokOS (lokos.dord.gov.in), whose dashboard puts a second
+          row of administrative reach — States, Districts, Blocks, Panchayats,
+          Villages — under its headline counts. The idea is right and this
+          section had lost it: the totals moved into the legend keys two passes
+          ago and the geographic spread went with them.
+
+          It says what the keys do not, so it repeats nothing, and it passes the
+          test in `ui-restraint-and-copy.md` — a department would print this
+          sentence on a poster about the scheme. "423 records have no usable
+          coordinates" would not, which is why that one is in the audit doc.
+        */}
+        <p className="pmw__reach">
+          {`Reaching ${formatIndian(snapshot.districtCount)} districts in ${formatIndian(
+            snapshot.states.length,
+          )} States and Union Territories.`}
         </p>
+        {/*
+          IT WAS DROPPING TO ITS OWN LINE WITH THE ROW HALF EMPTY.
+
+          `.pmw__foot` is a `space-between` row and the two children fit twice
+          over — but the sentence beside it is a `<p>` at `flex: 0 1 auto`, so
+          the moment the row was measured the paragraph claimed its full
+          intrinsic width and pushed the link past the edge. The link was then
+          the thing that wrapped, under a line with 400px of space to its right.
+
+          The fix is to let the SENTENCE be the flexible one and pin the link,
+          which is also the right reading order: the fact is the content, the
+          download is an action on it.
+        */}
         <a
           className="pmw__footlink"
           href={csvHref}
-          download={`pm-ajay-${layer}-by-state.csv`}
+          download={`pm-ajay-${focus == null ? "by-state" : `${focus.toLowerCase().replace(/\s+/g, "-")}-by-district`}.csv`}
         >
+          <Icon name="download" size={16} aria-hidden />
           Download CSV
         </a>
       </div>
+      )}
     </>
   );
+}
+
+/**
+ * A reading with nothing in it.
+ *
+ * Not a fallback and never rendered as data: it exists so the derivations can
+ * run unconditionally while the section shows its "the feed published nothing"
+ * state. Every count is a real zero.
+ */
+const EMPTY_REACH: ReachSnapshot = {
+  bins: [],
+  hostels: [],
+  districts: [],
+  states: [],
+  coverage: {
+    villagesTotal: 0,
+    villagesPlaced: 0,
+    villagesRepaired: 0,
+    villagesUnplaceable: 0,
+    villagesOffshore: 0,
+    hostelsTotal: 0,
+    hostelsPlaced: 0,
+    hostelsRepaired: 0,
+    hostelsUnplaceable: 0,
+    hostelsOffshore: 0,
+    villagesNamed: 0,
+    statesWithoutVillageNames: [],
+  },
+  districtCount: 0,
+  villageTotal: 0,
+  hostelTotal: 0,
+};
+
+/**
+ * `["West Bengal", "Bihar", "Delhi"]` → `"West Bengal, Bihar and Delhi"`.
+ *
+ * The list goes into a sentence a citizen reads, so it is punctuated as a
+ * sentence and not as a CSV. No Oxford comma: the estate's copy follows Indian
+ * government usage, which does not use one.
+ */
+function listOf(names: string[]): string {
+  if (names.length <= 1) return names[0] ?? "";
+  return `${names.slice(0, -1).join(", ")} and ${names[names.length - 1]}`;
+}
+
+/** The ten rungs of the sequential ramp, for the legend strip. */
+const SEQ_STEPS = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900] as const;
+
+/** Scalars the data-mode merge resolves, pulled off a snapshot. */
+function scalarsOf(s: ReachSnapshot): Record<ReachKey, number> {
+  return {
+    villages: s.villageTotal,
+    villageStates: s.states.filter((x) => x.villages > 0).length,
+    villageDistricts: s.districts.filter((x) => x.villages > 0).length,
+    hostels: s.hostelTotal,
+    hostelStates: s.states.filter((x) => x.hostels > 0).length,
+    hostelDistricts: s.districts.filter((x) => x.hostels > 0).length,
+  };
 }

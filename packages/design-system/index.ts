@@ -236,6 +236,19 @@ export {
   ComboChart,
   IndiaMap,
   IndiaBubbleMap,
+  IndiaPointMap,
+  INDIA_STATE_BOXES,
+  projectIndia,
+  repairIndiaCoordinate,
+  binIndiaPoints,
+  normalizeRegionName,
+  hexCenter,
+  hexPath,
+  hexAt,
+  median,
+  INDIA_HEX_RADIUS,
+  INDIA_LAT_RANGE,
+  INDIA_LON_RANGE,
   Legend,
   useChartTooltip,
   ChartTooltip,
@@ -268,6 +281,14 @@ export type {
   IndiaMapProps,
   IndiaMapDatum,
   IndiaBubbleMapProps,
+  IndiaPointMapProps,
+  MapPin,
+  MapBubble,
+  PinKindStyle,
+  RegionBox,
+  HexBin,
+  RepairedCoordinate,
+  CoordinateVerdict,
   IndiaBubbleDatum,
   LegendItem,
   ValueFormat,
@@ -347,7 +368,7 @@ export type {
 
 export { SidebarNav } from "./components/navigation/sidebar";
 export { Pagination } from "./components/navigation/pagination";
-export type { PaginationProps } from "./components/navigation/pagination";
+export type { PaginationProps, PaginationSize } from "./components/navigation/pagination";
 export type {
   SidebarNavProps,
   SidebarNavGroup,

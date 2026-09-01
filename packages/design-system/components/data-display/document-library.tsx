@@ -118,8 +118,10 @@ export function DocumentLibrary({
                 key={g}
                 selected={current === g}
                 onSelectedChange={() => setActive(g)}
+                count={count}
+                countLabel="documents"
               >
-                {g} ({count})
+                {g}
               </Chip>
             );
           })}
