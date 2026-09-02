@@ -624,9 +624,9 @@ data = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
   and add `import manifest as MAN` beside the existing `import config as C`.
 
 - [ ] **Step 3: Verify extraction still works end to end on a real project**
-  Run: `cd tools/design-audit && python3 engine/run.py --project scw --phase capture --role citizen`
+  Run: `cd tools/design-audit && python3 engine/run.py --project scw --phase capture --role public`
   Expected: `ok <SLUG>: N rows pageH=…` lines, no `extract failed`, and
-  `python3 -c "import json;d=json.load(open('projects/scw/captures/live/CITIZEN-HOME.json'));print(len(d['rows']), len(d['fields']))"`
+  `python3 -c "import json;d=json.load(open('projects/scw/captures/live/PUBLIC-HOME.json'));print(len(d['rows']), len(d['fields']))"`
   prints two numbers with no `KeyError`.
 
 - [ ] **Step 4: Confirm the untouched functions are untouched**
@@ -1550,11 +1550,18 @@ class FlowReplay(unittest.TestCase):
 
     def test_unchanged_entry_screen_means_skip(self):
         b = {"screens": [{"slug": "S1", "reachedBy": "flow:apply"}]}
-        self.assertFalse(D.should_replay(self.FLOW, b, {"APPLY-STEP-1": "reuse"}))
+        self.assertFalse(D.should_replay(self.FLOW, b, {"CITIZEN-APPLY-STEP-1": "reuse"}))
 
     def test_changed_entry_screen_means_replay(self):
         b = {"screens": [{"slug": "S1", "reachedBy": "flow:apply"}]}
-        self.assertTrue(D.should_replay(self.FLOW, b, {"APPLY-STEP-1": "recapture"}))
+        self.assertTrue(D.should_replay(self.FLOW, b, {"CITIZEN-APPLY-STEP-1": "recapture"}))
+
+    def test_entry_not_among_nav_screens_replays(self):
+        """A flow entry no nav links to yields no decision. Replay rather than skip — a skipped
+        flow silently serves stale wizard captures, which is the failure this whole design exists
+        to prevent."""
+        b = {"screens": [{"slug": "S1", "reachedBy": "flow:apply"}]}
+        self.assertTrue(D.should_replay(self.FLOW, b, {"SOMETHING-ELSE": "reuse"}))
 ```
 
 - [ ] **Step 2: Run tests and verify they fail**
@@ -1582,7 +1589,7 @@ def should_replay(flow, prev_bundle, decisions):
     entry_slug = slugify(flow.get("role") or "citizen", flow.get("entry") or "")
     verdict = (decisions or {}).get(entry_slug)
     if verdict is None:
-        return False
+        return True
     return verdict != "reuse"
 ```
 
@@ -1621,7 +1628,12 @@ def should_replay(flow, prev_bundle, decisions):
                     DRV.run_flow(pg, flow, man, cfg, paths, bdl, env)
 ```
 
-  and add `import drive as DRV` beside the other engine imports.
+  and import drive **inside `run()`**, not at module scope:
+
+```python
+    import drive as DRV   # local import: drive.py imports from capture, so a module-scope
+                          # import here would be circular and fail at load time
+```
 
 - [ ] **Step 6: Seed a manifest from an existing capture**
   In `engine/bootstrap.py`, add:
@@ -1826,7 +1838,7 @@ git commit -m "docs(design-audit): the shared capture bundle and the freshness g
 
 ## Definition of done
 
-- `python3 -m unittest engine.test_capture_bundle -v` passes — 44 tests.
+- `python3 -m unittest engine.test_capture_bundle -v` passes — 45 tests.
 - A second run against an unchanged portal launches no browser (`reuse-all`) or reuses every
   screen (`verify`), and is materially faster than the first.
 - Tampering with one captured PNG makes `out/freshness.md` FAIL and name that slug.
