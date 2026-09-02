@@ -636,3 +636,70 @@ the same as a selector quietly dropped from a scan.
   conflicting version numbers (R11) are unresolved.
 - **Twelve of twenty portals still have no captured requirements**, which is why
   every component gap in §3 is an inference from the eight that exist.
+
+---
+
+## 10. The chart palette, measured for the first time
+
+The estate ships **12 categorical chart slots** and had never checked whether
+any two of them are actually distinguishable. Colour is the only thing telling
+one series from another, and whether two colours separate is *computable* — so
+the finding is not an opinion.
+
+`tools/chart-palette/check.mjs` implements the five checks in the repo (OKLab
+ΔE×100, Machado–Oliveira–Fernandes CVD simulation at full severity, WCAG
+contrast). Its arithmetic was verified against an independent reference
+validator before it was trusted: ΔE 11.7 and 1.5 reproduce exactly, 8.1 against
+a reported 8.2.
+
+### What it found
+
+| Pair | ΔE | Vision | What it means |
+|---|---|---|---|
+| `cat-4` ↔ `cat-10` | **1.5** | deuteranopia | the same colour to roughly one man in twelve |
+| `cat-6` ↔ `cat-12` | **4.4** | protanopia | |
+| `cat-9` ↔ `cat-10` | **3.0** | tritanopia | |
+| `cat-8` ↔ `cat-9` | **11.7** | **normal** | below the floor of 15 — *nobody* separates these reliably |
+
+Also: four slots sit outside the lightness band `[0.45, 0.75]` and four below
+the chroma floor `0.10`, where a categorical hue starts reading as grey — and
+grey already means "no data" on every chart in this estate. Contrast on the
+chart surface passes on all twelve.
+
+**The safe cap is 4.** Only the first four slots clear every floor under
+all-pairs. Adjacent-pair testing is the kinder measure and the wrong one here:
+a *filtered* chart draws whatever survived the filter, so slots 4 and 10 can
+appear side by side with nothing between them.
+
+### The second defect, which is worse and was found on the way
+
+`categoricalColor` **cycled**: `index % 12`, so a thirteenth series was handed
+`--sa-chart-cat-1` — pixel-identical to the first — and nothing was said. A
+chart could draw two different things in one colour and look correct.
+
+Fixed so the wrap is audible rather than silent: the colour is still returned
+(a citizen's page must not go blank because a feed grew a column) and
+development gets one de-duplicated warning naming the two series and the three
+real remedies. Verified: warns once for three calls at index 12, never for an
+in-range index.
+
+### Why a ratchet and not a new palette
+
+Re-deriving twelve slots that satisfy these five checks **and** the estate's own
+six token contract tests was attempted earlier in this work and reverted — the
+candidates that cleared the colour maths failed `on-pair-contrast.test.mjs`, and
+two of them landed above the "above target" threshold. Shipping a palette that
+passes one gate by breaking another is not progress.
+
+So the measurement is frozen per-check and may only improve. A separation that
+FALLS fails as a regression; one that IMPROVES also fails, asking to be
+re-baselined in the same change. Both directions were exercised by deliberately
+editing two tokens and watching the gate fail each way, then restoring them.
+
+`CHART_CATEGORICAL_SAFE_CAP = 4` is exported from the package, and the gate
+fails if the constant and the measured cap ever disagree.
+
+**What is still owed:** the cap is documented and exported but not yet enforced
+at the call site — no chart currently refuses a fifth series or folds it into
+"Other". That is a component-behaviour change across seventeen charts and is
+listed here rather than half-done.

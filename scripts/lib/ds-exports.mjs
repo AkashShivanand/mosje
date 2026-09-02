@@ -27,6 +27,11 @@ export const NOT_COMPONENTS = new Set([
   // The illustration set's own index — a string array naming every scene, used
   // by the specimen sheet and by anything that needs to enumerate them.
   "SCENE_NAMES",
+  // How many categorical chart slots are actually distinguishable — a measured
+  // number, not a component. `check:chart-palette` computes it from the token
+  // file and fails if this constant and the measurement disagree, so the
+  // documentation that matters is the gate, not a page.
+  "CHART_CATEGORICAL_SAFE_CAP",
   // Constants
   "COLOR_MODES", "COLOR_MODE_ATTR", "COLOR_MODE_COOKIE", "DEFAULT_COLOR_MODE",
   "DEFAULT_APPS", "PORTAL_CATEGORIES", "PAN_HOLDER_TYPES", "PORTAL_LABELS",

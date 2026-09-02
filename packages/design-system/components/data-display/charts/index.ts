@@ -5,6 +5,7 @@
 
 // Shared types
 export type { ChartDatum, ChartSeries, ChartMultiSeries, ChartTable } from "./types";
+export { CHART_CATEGORICAL_SAFE_CAP } from "./types";
 
 // Core charts
 export { PieChart } from "./pie-chart";

@@ -271,6 +271,7 @@ export {
   formatIndian,
   formatCompact,
   formatPercent,
+  CHART_CATEGORICAL_SAFE_CAP,
 } from "./components/data-display/charts";
 export type {
   ChartDatum,

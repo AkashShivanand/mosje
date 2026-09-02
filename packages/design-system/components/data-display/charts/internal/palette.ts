@@ -5,8 +5,43 @@
 
 export const CHART_CATEGORICAL_COUNT = 12;
 
-/** Categorical series colour for a 0-based series index (wraps at 12). */
+/**
+ * Categorical series colour for a 0-based series index.
+ *
+ * IT STILL WRAPS, AND THE WRAP IS NOW AUDIBLE. A thirteenth series used to be
+ * handed `--sa-chart-cat-1` — the identical colour to the first — with nothing
+ * said, so a chart could draw two different things in one colour and read as
+ * correct. Wrapping is not the right answer to running out of hues (the right
+ * answer is to fold the tail into "Other", facet into small multiples, or add a
+ * second encoding), but throwing on a dashboard is worse than a duplicated
+ * colour: a citizen's page must not go blank because a feed grew a column.
+ *
+ * So the colour is still returned, and development is told. `categoricalColor`
+ * is called once per series per render, so the warning is de-duplicated by
+ * index — without that, an animating chart writes a line per frame.
+ *
+ * See `CHART_CATEGORICAL_SAFE_CAP` in `../types.ts`: only the first FOUR slots
+ * are separable under all-pairs, so this ceiling is the second of two limits and
+ * not the one most charts meet first.
+ */
+const warnedIndices = new Set<number>();
+
 export function categoricalColor(index: number): string {
+  if (index >= CHART_CATEGORICAL_COUNT || index < 0) {
+    // `process` is not typed in this package (no @types/node, deliberately —
+    // it ships to browsers), so the environment is read off globalThis.
+    const env = (globalThis as { process?: { env?: { NODE_ENV?: string } } }).process?.env?.NODE_ENV;
+    if (env !== "production" && !warnedIndices.has(index)) {
+      warnedIndices.add(index);
+      console.warn(
+        `[SAMAVESH charts] series ${index} reuses the colour of series ` +
+          `${((index % CHART_CATEGORICAL_COUNT) + CHART_CATEGORICAL_COUNT) % CHART_CATEGORICAL_COUNT} — ` +
+          `the categorical ramp has ${CHART_CATEGORICAL_COUNT} slots. Two series are now drawn in one ` +
+          `colour. Fold the tail into "Other", facet into small multiples, or carry identity with ` +
+          `direct labels instead of colour alone.`,
+      );
+    }
+  }
   const i = ((index % CHART_CATEGORICAL_COUNT) + CHART_CATEGORICAL_COUNT) % CHART_CATEGORICAL_COUNT;
   return `var(--sa-chart-cat-${i + 1})`;
 }
