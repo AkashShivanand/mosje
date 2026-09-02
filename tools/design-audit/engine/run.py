@@ -19,7 +19,7 @@ The deterministic phases below need no MCP and run standalone."""
 import argparse, sys, os, subprocess
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 ENGINE = os.path.dirname(os.path.abspath(__file__))
-import capture as CAP, analyze as AN, report as REP
+import capture as CAP, analyze as AN, report as REP, figures as FIG
 
 def preflight(need_browser):
     """Self-install deps so the user never runs setup commands. Idempotent + fast when already present."""
@@ -40,7 +40,7 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--project", required=True)
     ap.add_argument("--phase", default="analyze+report",
-                    choices=["capture", "analyze", "report", "analyze+report", "all", "bundle"])
+                    choices=["capture", "analyze", "report", "analyze+report", "all", "bundle", "figures"])
     ap.add_argument("--role", default=None, help="capture only this role (merged into the "
                     "existing manifest — other roles' entries are preserved)")
     ap.add_argument("--allow-empty", action="store_true",
@@ -57,6 +57,10 @@ def main():
         print("== PHASE: capture =="); CAP.run(a.project, a.role, a.allow_empty, a.force, a.verify)
     if ph == "bundle":
         print("== PHASE: bundle =="); CAP.refresh(a.project, a.force, a.verify)
+    if ph == "figures":
+        hub = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(ENGINE))),
+                           "apps", "hub", "public", "reports", a.project, "figures")
+        print("== PHASE: figures =="); FIG.derive(a.project, hub)
     if ph in ("analyze", "analyze+report", "all"):
         print("== PHASE: analyze =="); AN.run(a.project)
     if ph in ("report", "analyze+report", "all"):

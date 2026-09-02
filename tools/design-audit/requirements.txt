@@ -2,3 +2,4 @@
 playwright>=1.40
 # then: python3 -m playwright install chromium
 PyYAML>=6.0
+Pillow>=10.0
