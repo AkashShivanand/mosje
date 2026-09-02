@@ -83,5 +83,27 @@ export const LinkedToFields: Story = {
   },
 };
 
-/** Empty renders nothing at all — not an empty box, not a heading. */
-export const NoErrors: Story = { args: { errors: [] } };
+/**
+ * Empty renders nothing at all — not an empty box, not a heading, not a
+ * zero-height wrapper.
+ *
+ * The dashed rules below belong to the STORY, not to the component: they are
+ * drawn so the absence is visible. A canvas that is genuinely blank is
+ * indistinguishable from a story that crashed, which is exactly what
+ * `check:storybook:smoke` exists to catch — and it caught this story in CI.
+ */
+export const NoErrors: Story = {
+  args: { errors: [] },
+  render: function NoErrorsStory(args) {
+    return (
+      <div>
+        <p style={{ margin: "0 0 8px", font: "600 13px/1.4 'Noto Sans', sans-serif" }}>
+          The summary sits between these rules and renders nothing:
+        </p>
+        <div style={{ borderBlock: "1px dashed #94a3b8", padding: "8px 0" }}>
+          <ErrorSummary {...args} />
+        </div>
+      </div>
+    );
+  },
+};
