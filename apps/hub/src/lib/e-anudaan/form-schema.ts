@@ -18,6 +18,11 @@
  * internal and the stepper indicators are display-only.
  */
 
+// The SUBPATH, not the barrel: importing from the package root pulls in every
+// component and its CSS, which `node --test` cannot resolve — it broke two
+// e-anudaan test files that had nothing to do with this change.
+import { isValidPan } from "@mosje/design-system/india-id";
+
 import { CITY_CATEGORIES, INDIAN_STATES, cityCategoryFor } from "./geography.ts";
 
 export type SchemeCode = "SHRESHTA_M2" | "AVYAY" | "SMILE" | "NAPDDR";
@@ -69,7 +74,7 @@ export interface FieldDef {
   /** Value derived from other fields; the control renders read-only. */
   auto?: AutoRule;
   /** Extra validation beyond "required". */
-  rule?: "afterRegistration" | "afterPeriodFrom" | "nameAndPhone" | "lettersOnly" | "pin" | "ifsc";
+  rule?: "afterRegistration" | "afterPeriodFrom" | "nameAndPhone" | "lettersOnly" | "pin" | "ifsc" | "pan";
   /** Span the full width of the two-column grid. */
   wide?: boolean;
 }
@@ -1017,36 +1022,138 @@ export const SMILE_WIZARD: WizardDef = {
 };
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   NAPDDR — the generic short form, 3 steps
+   NAPDDR — Full 10 steps matching live UAT portal
    ══════════════════════════════════════════════════════════════════════════════ */
 
 const NAPDDR_STEPS: readonly StepDef[] = [
   {
-    title: "Project Details",
-    nextLabel: "Next",
+    title: "Application Type",
     sections: [
       {
-        title: "Project Details",
-        lead: "Enter the project information for your grant application.",
+        title: "Application Type & Scheme Category",
+        lead: "Select the grant category and application type under NAPDDR.",
         fields: [
-          { name: "fld_financial_year", label: "Financial Year", kind: "select", required: true, options: ["2026-27", "2025-26", "2024-25", "2023-24"] },
+          { name: "fld_application_type", label: "Application Type", kind: "select", required: true, options: ["New Project", "Renewal / Continuing Project", "Expansion of Existing Project"] },
+          { name: "fld_scheme_category", label: "NAPDDR Intervention Category", kind: "select", required: true, options: ["Integrated Rehabilitation Centre for Addicts (IRCA)", "Community based Peer Led Intervention (CPLI)", "Outreach and Drop In Centre (ODIC)", "District De-addiction Centre (DDAC)", "State Level Coordinating Agency (SLCA)"] },
+          { name: "fld_financial_year", label: "Financial Year for Grant", kind: "select", required: true, options: ["2026-27", "2025-26", "2024-25"] },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Organisation Details",
+    sections: [
+      {
+        title: "Organisation Identity & Registration",
+        lead: "Identity of the applicant organisation. Pre-filled from NGO-Darpan.",
+        fields: [
+          { name: "fld_ngo_name", label: "Name of NGO / VO", kind: "text", required: true, readOnly: true, help: "Sourced from NGO-Darpan / your login." },
+          { name: "fld_darpan_id", label: "NGO-Darpan Unique ID", kind: "text", required: true, readOnly: true },
+          { name: "fld_statute_act", label: "Statute / Act of Registration", kind: "text", required: true },
+          { name: "fld_registration_number", label: "Registration Number", kind: "text", required: true },
+          { name: "fld_registration_date", label: "Date of Registration", kind: "date", required: true },
+          { name: "fld_registration_expiry", label: "Date of Expiry", kind: "date", required: true, rule: "afterRegistration" },
+          { name: "fld_reg_office_address", label: "Registered Office Address", kind: "textarea", required: true, wide: true },
+          { name: "fld_reg_office_city", label: "City", kind: "text", required: true },
+          { name: "fld_reg_office_district", label: "District", kind: "text", required: true },
+          { name: "fld_reg_office_state", label: "State", kind: "text", required: true },
+          { name: "fld_contact_mobile", label: "Mobile Number", kind: "tel", required: true },
+          { name: "fld_contact_email", label: "Email Address", kind: "email", required: true },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Project Details",
+    sections: [
+      {
+        title: "Project Overview & Target Population",
+        lead: "Specifics of the proposed drug demand reduction project.",
+        fields: [
           { name: "fld_project_title", label: "Project Name / Title", kind: "text", required: true, wide: true },
-          { name: "fld_project_location", label: "Project Location Address", kind: "text", required: true, wide: true },
+          { name: "fld_target_group", label: "Primary Target Group", kind: "select", required: true, options: ["Vulnerable Youth & Students", "High-Risk Substance Users", "Injecting Drug Users (IDUs)", "Prison Inmates / Under-trials", "General Community / Families"] },
+          { name: "fld_sanctioned_strength", label: "Sanctioned Bed Capacity / Annual Target Inmates", kind: "number", required: true },
+          { name: "fld_project_objectives", label: "Project Objectives & Scope of Work", kind: "textarea", required: true, wide: true },
         ],
       },
+    ],
+  },
+  {
+    title: "Location & Infrastructure",
+    sections: [
       {
-        title: "Grant Details",
-        lead: "Provide financial details and previous year grant information.",
+        title: "Centre Infrastructure & Compliance",
+        lead: "Physical setup, building ownership, safety compliance and surveillance.",
         fields: [
-          { name: "fld_sanctioned_strength", label: "Sanctioned Strength", kind: "number", required: true },
-          { name: "fld_grant_total", label: "Grant Amount Requested (₹)", kind: "number", required: true },
+          { name: "fld_project_location_address", label: "Centre / Facility Full Address", kind: "textarea", required: true, wide: true },
+          { name: "fld_building_ownership", label: "Building Ownership Status", kind: "select", required: true, options: ["Rented Premises", "Owned by Organisation", "Government / Municipal Leased"] },
+          { name: "fld_covered_area_sqft", label: "Total Covered Area (sq. ft.)", kind: "number", required: true },
+          { name: "fld_cctv_installed", label: "CCTV Surveillance Installed & Operational", kind: "select", required: true, options: ["Yes — 24/7 recording operational", "No — in installation phase"] },
+          { name: "fld_fire_safety_cert", label: "Fire Safety Certificate Valid", kind: "select", required: true, options: ["Yes", "No", "Exempted / Applied"] },
+          { name: "fld_nearest_police_station", label: "Jurisdictional Police Station", kind: "text", required: true },
         ],
       },
+    ],
+  },
+  {
+    title: "Key Functionaries & Staff",
+    sections: [
       {
-        title: "Previous Year Information",
+        title: "Centre Professional Staff Roster",
+        lead: "Core clinical, counseling and administrative personnel.",
         fields: [
-          { name: "fld_prev_grant_received", label: "Previous FY Grant Received (₹)", kind: "number" },
-          { name: "fld_prev_amount_utilised", label: "Amount Utilised (₹)", kind: "number" },
+          { name: "fld_project_director", label: "Project Director / In-charge Name & Qualification", kind: "text", required: true, wide: true },
+          { name: "fld_medical_officer", label: "Visiting Medical Officer / Doctor Name & Reg. No.", kind: "text", required: true, wide: true },
+          { name: "fld_counselors_count", label: "Number of Full-Time Qualified Counselors", kind: "number", required: true },
+          { name: "fld_social_workers_count", label: "Number of Field / Social Workers", kind: "number", required: true },
+          { name: "fld_staff_reservation_compliance", label: "Reservation Policy Compliance in Staff Recruitment", kind: "select", required: true, options: ["Complied with SC/ST/OBC norms", "Under compliance", "Not applicable (< 5 staff)"] },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Capability & Prior Work",
+    sections: [
+      {
+        title: "Track Record & Organisational Experience",
+        lead: "Experience in substance abuse treatment, counseling and community rehabilitation.",
+        fields: [
+          { name: "fld_years_in_deaddiction", label: "Years of Experience in Drug Demand Reduction / Health", kind: "number", required: true },
+          { name: "fld_past_beneficiaries_served", label: "Total Individuals Rehabilitated / Served in Last 3 Years", kind: "number", required: true },
+          { name: "fld_awards_recognitions", label: "State / National Recognitions or Empanelments", kind: "text", wide: true },
+          { name: "fld_annual_turnover_last_fy", label: "Annual Expenditure / Turnover in Last FY (₹ Lakhs)", kind: "number", required: true },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Beneficiaries & Grant",
+    sections: [
+      {
+        title: "Beneficiaries Count & Cost Estimates",
+        lead: "Annual beneficiary targets and itemized budget estimates.",
+        fields: [
+          { name: "fld_target_beneficiaries", label: "Projected Annual Inpatient / Outpatient Beneficiaries", kind: "number", required: true },
+          { name: "fld_honorarium_cost", label: "Estimated Staff Honorarium Cost (₹)", kind: "number", required: true },
+          { name: "fld_rent_admin_cost", label: "Estimated Rent & Administrative Expenses (₹)", kind: "number", required: true },
+          { name: "fld_medical_diet_cost", label: "Estimated Medical, Food & Counseling Expenses (₹)", kind: "number", required: true },
+          { name: "fld_grant_total", label: "Total Grant-in-Aid Requested (₹)", kind: "number", required: true },
+          { name: "fld_bank_account_choice", label: "Designated PFMS / EAT Linked Bank Account", kind: "select", required: true, options: ["State Bank of India · A/C 987654321098 · SBIN0001234", "Punjab National Bank · A/C 456789012345 · PUNB0123456"] },
+        ],
+      },
+    ],
+  },
+  {
+    title: "Verification & Signatory",
+    sections: [
+      {
+        title: "Authorised Signatory Verification",
+        lead: "Details of the person authorised to execute bonds and agreements with the Ministry.",
+        fields: [
+          { name: "fld_signatory_name", label: "Name of Authorised Signatory", kind: "text", required: true },
+          { name: "fld_signatory_designation", label: "Designation (President / Secretary / General Secretary)", kind: "text", required: true },
+          { name: "fld_signatory_mobile", label: "Mobile Number", kind: "tel", required: true },
+          { name: "fld_signatory_pan", label: "Individual PAN of Authorised Signatory", kind: "text", required: true, rule: "pan" },
         ],
       },
     ],
@@ -1172,6 +1279,15 @@ export function validateStep(step: StepDef, values: Record<string, string>): Rec
         break;
       case "ifsc":
         if (!IFSC_RE.test(v.toUpperCase())) errors[f.name] = "Enter a valid 11-character IFSC code — e.g. SBIN0001234.";
+        break;
+      case "pan":
+        // The design system's validator, not a local regex: it checks the shape
+        // AND the fourth character against the real holder types, so "ABCXE1234F"
+        // is rejected where a shape-only pattern would pass it. A fifth regex in
+        // this file would have been a second, weaker copy of that rule.
+        if (!isValidPan(v)) {
+          errors[f.name] = "Enter a valid PAN — ten characters, e.g. ABCPE1234F.";
+        }
         break;
       default:
         break;

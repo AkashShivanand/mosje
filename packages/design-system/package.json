@@ -18,7 +18,8 @@
     "./color-mode": "./foundations/color-mode.ts",
     "./cn": "./utils/cn.ts",
     "./registry": "./components/navigation/registry-overrides.ts",
-    "./app-registry": "./components/navigation/app-switcher-utils.ts"
+    "./app-registry": "./components/navigation/app-switcher-utils.ts",
+    "./india-id": "./utils/india-id.ts"
   },
   "files": [
     "index.ts",
