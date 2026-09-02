@@ -279,7 +279,6 @@ export function Ticker({
    * there.
    */
   const canScroll = canMove && !reducedMotion;
-  const moving = canScroll && isPlaying;
 
   React.useEffect(() => {
     if (typeof window === "undefined" || !window.matchMedia) return;

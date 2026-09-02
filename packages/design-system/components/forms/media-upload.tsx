@@ -116,7 +116,6 @@ export const MediaUpload = React.forwardRef<HTMLButtonElement, MediaUploadProps>
         {value ? (
           <div className="ds-media-upload__preview">
             {isImage ? (
-              // eslint-disable-next-line @next/next/no-img-element
               <img src={value} alt="Selected file preview" className="ds-media-upload__thumb" />
             ) : (
               <span className="ds-media-upload__thumb ds-media-upload__thumb--file" aria-hidden="true">

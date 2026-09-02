@@ -334,7 +334,6 @@ export function GeoPhotoInput({
               const located = photo.lat !== null && photo.lng !== null;
               return (
                 <li key={photo.id} className="ds-geophoto__item">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={photo.thumbDataUrl} alt={photo.originalName} className="ds-geophoto__thumb" />
                   <span
                     className={cn(

@@ -139,7 +139,6 @@ export function AccessibilityBar({
       <div className="sa-abar__in" style={maxWidth ? { maxWidth } : undefined}>
         <a className="sa-abar__gov" href={govLink.href} target="_blank" rel="noreferrer">
           {govLink.flagSrc && (
-            // eslint-disable-next-line @next/next/no-img-element
             <img className="sa-abar__flag" src={govLink.flagSrc} alt="" />
           )}
           {/* The label and its launch glyph are ONE unit, mirroring the master's `Link`

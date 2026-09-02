@@ -236,7 +236,6 @@ export function Lightbox({
             playsInline
           />
         ) : (
-          // eslint-disable-next-line @next/next/no-img-element
           <img
             key={active.src}
             className="ds-lightbox__media"
@@ -276,7 +275,6 @@ export function Lightbox({
                 className={cn("ds-lightbox__thumb", i === current && "is-active")}
                 onClick={() => go(i)}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={item.poster ?? item.src} alt="" className="ds-lightbox__thumb-img" />
                 {item.type === "video" && (
                   <span className="ds-lightbox__thumb-badge" aria-hidden="true">

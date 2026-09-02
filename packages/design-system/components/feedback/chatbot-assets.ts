@@ -1,4 +1,3 @@
-/* eslint-disable */
 // =============================================================================
 // SAMAVESH — Chatbot brand assets (Samajik Sahayak / सामाजिक सहायक)
 //

@@ -225,7 +225,6 @@ export function MediaGalleryInput({
               return (
                 <figure key={`${item.name}-${i}`} className="ds-gallery__item">
                   {showPoster ? (
-                    // eslint-disable-next-line @next/next/no-img-element
                     <img
                       src={item.type === "video" ? item.poster : item.url}
                       alt={item.name}

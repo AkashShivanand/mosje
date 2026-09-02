@@ -44,7 +44,7 @@ export interface AppSwitcherProps {
  */
 export function AppSwitcher({
   apps = DEFAULT_APPS,
-  devMode = false,
+  devMode: _devMode = false,
   label = "Apps",
   className,
 }: AppSwitcherProps): React.JSX.Element {

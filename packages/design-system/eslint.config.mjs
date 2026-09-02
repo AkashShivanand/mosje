@@ -22,6 +22,15 @@ export default tseslint.config(
   { ignores: ["**/*.figma.ts", "dist/**", "node_modules/**", "tokens.ts"] },
   js.configs.recommended,
   ...tseslint.configs.recommended,
+    {
+    // Build-time generators are Node scripts, not browser code. Without this the
+    // shared browser globals block below leaves `process` and `console` undefined
+    // in them — which is a config gap, not a defect in the script.
+    files: ["**/*.mjs"],
+    languageOptions: {
+      globals: { process: "readonly", console: "readonly", URL: "readonly", Buffer: "readonly" },
+    },
+  },
   {
     files: ["**/*.{ts,tsx}"],
     plugins: {

@@ -12,7 +12,6 @@ import {
   DEFAULT_APPS,
   portalLabel,
   portalCategoriesIn,
-  type AppEntry,
   type PortalCategory,
 } from "./app-switcher-utils";
 import "./samavesh-banner.css";
@@ -563,7 +562,6 @@ export function SamaveshBanner({
                   SAMAVESH in real text, so any alt here is read straight after it
                   — "SAMAVESH Emblem SAMAVESH". A decorative image next to the text
                   it depicts takes an empty alt (WCAG H67). */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={logoSrc} alt="" width={52} height={52} loading="eager" />
             </div>
             <div className="ds-samavesh-banner__text-group">
