@@ -876,8 +876,25 @@ any output**. (Two of those hexes appear in `tokens.css`; both are the
 decisions, carried in the source, doing nothing, with nothing reporting it —
 the same silent-drop class as the Figma exporter's `return null`.
 
-Either emit them behind a theme axis, or delete them and say the estate is
-light-only. Carrying them is the one option that misleads.
+**CORRECTED AND CLOSED 2026-09-02.** "Emit or delete" was too binary, and it
+was written on an incomplete count. The dark values are not twelve orphans on
+the chart ramp — they are **65 tokens across seven families** (chart 38, color
+18, border 3, bg 2, text 2, focus 1, overlay 1). That is a staged dark theme
+somebody authored deliberately, and deleting it would throw the work away.
+
+The real defect was that it was **silent**: an audit found it by accident, and
+nothing in the repository distinguished "staged" from "65 dead values nobody
+noticed". `packages/tokens/test/dark-theme-staging.test.mjs` now settles it —
+the count is frozen at 65 so it cannot drift, the absence of a `[data-theme]`
+block is asserted rather than assumed, and both failure modes were exercised.
+
+It also **records that the chart dark ramp is not fit to ship**, which nothing
+had ever measured: worst normal-vision pair **ΔE 5.2** (`#5fa0ef` against
+`#7aaff8` — two near-identical blues), worst deuteranopia **1.4**, and only
+**four** mutually distinguishable slots against the light ramp's six. Its order
+is inherited from the light ramp rather than derived from its own separation,
+so its leading slots are not its best. If a dark theme is ever switched on,
+that test fails and forces the ramp to be fixed first.
 
 ## B. Components a world-class system has and this one does not
 
