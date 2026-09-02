@@ -89,6 +89,24 @@ export interface PortalRoleTab {
    * nowhere to go is worse than no CTA.
    */
   digilocker?: boolean;
+  /**
+   * Show the security captcha for THIS role. Falls back to `config.captcha`, and
+   * to `false` when neither is set.
+   *
+   * **Per role, because that is how the handoff uses it.** SMILE-Transgender
+   * asks a Garima Greh organisation for a captcha and asks the same portal's
+   * citizen for none — a portal-wide boolean can express neither of those
+   * without imposing it on the other. An organisation signing in on behalf of a
+   * shelter home is a different risk from a citizen checking their own
+   * application, and the register is entitled to treat them differently.
+   *
+   * **The default stays `false`, and that default is load-bearing.** A captcha
+   * is a cognitive function test, and WCAG 2.2 3.3.8 Accessible Authentication
+   * (AA) forbids one without an alternative. Switching it on for a role commits
+   * the portal to offering that alternative to that role — say which, in the
+   * same change.
+   */
+  captcha?: boolean;
   /** Supported authentication modes for this specific role */
   authModes?: PortalAuthMode[];
   /** Custom-labeled authentication method options for this role */
@@ -116,11 +134,15 @@ export interface PortalBrandAssets {
   /**
    * DigiLocker's own mark, for the handoff card's logo slot.
    *
-   * **Deliberately has no default.** DigiLocker is a partner, its mark is theirs,
-   * and the estate holds no copy of it — so the slot stays empty rather than
-   * being filled with a padlock glyph standing in for a brand. Supply the
-   * official asset and the card draws it; leave it unset and the card renders
-   * its wording and arrow alone, which is complete and honest.
+   * **Deliberately has no default, even though the estate now holds a copy.**
+   * The mark is at `/design-system/digilocker-mark.png` for the documentation
+   * surfaces, but every portal mounts under its own `basePath`, so a default
+   * would resolve to the wrong path on most of them. Pass the path the portal
+   * actually serves.
+   *
+   * Leave it unset and the card renders its wording and arrow alone, which is
+   * complete and honest — the mark is a partner's, not ours to substitute a
+   * padlock glyph for.
    */
   digilockerLogoSrc?: string;
 }
@@ -164,11 +186,15 @@ export interface PortalLoginConfig {
   /** Default active role ID — defaults to the first role in `roles` */
   defaultRoleId?: string;
   /**
-   * Show the security captcha on the password and PIN forms. **Defaults to
-   * `false`, and that default is load-bearing:** a captcha is a cognitive
-   * function test, and WCAG 2.2 3.3.8 Accessible Authentication (AA) forbids one
-   * without an alternative. Switch it on only for a portal that offers that
-   * alternative. Mirrors `Show captcha` on the Figma `Auth / AuthFormCard`.
+   * The portal's default for the security captcha on the password and PIN
+   * forms. **A role's own `captcha` wins over this**, so set it here only for
+   * the answer that is right for every role the portal has.
+   *
+   * **Defaults to `false`, and that default is load-bearing:** a captcha is a
+   * cognitive function test, and WCAG 2.2 3.3.8 Accessible Authentication (AA)
+   * forbids one without an alternative. Switch it on only where that
+   * alternative exists. Mirrors `Show captcha` on the Figma
+   * `Auth / AuthFormCard`.
    */
   captcha?: boolean;
   /** Brand asset path overrides */

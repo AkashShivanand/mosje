@@ -786,14 +786,14 @@
     },
     {
       "node": "55403:1848",
-      "where": "PortalLoginTemplate — Documentation › 07 Accessibility › WCAG 2.2",
-      "figma": "Focus is never obscured by the sticky masthead (2.4.11), and every control clears the 24 × 24 minimum (2.5.8). The captcha is off by default: a security code is a cognitive function test, and 3.3.8 Accessible Authentication forbids one without an alternative, so a portal switches it on only where it offers that alternative and says which in the same change.",
+      "where": "PortalLoginTemplate — Documentation › 08 Accessibility › WCAG 2.2",
+      "figma": "Focus is never obscured by the sticky masthead (2.4.11), and every control clears the 24 × 24 minimum (2.5.8). The captcha is off unless a role asks for it — it resolves role.captcha, then config.captcha, then off: a security code is a cognitive function test, and 3.3.8 Accessible Authentication forbids one without an alternative, so a role switches it on only where it offers that alternative and says which in the same change.",
       "expect": [
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-template.tsx",
-          "pattern": "const captchaBlock = config\\.captcha \\?",
-          "hint": "The captcha renders only when a portal opts in. Flipping this to a default-on would put a cognitive function test on every login in the estate."
+          "pattern": "const showCaptcha = activeRole\\?\\.captcha \\?\\? config\\.captcha \\?\\? false;",
+          "hint": "The captcha renders only where a ROLE opts in, with the portal as a fallback. `??` and not `||`, so a role's explicit false opts OUT of a portal-wide default rather than being read as unset. Flipping the final term to true would put a cognitive function test on every login in the estate."
         },
         {
           "kind": "source",

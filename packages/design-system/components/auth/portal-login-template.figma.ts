@@ -57,11 +57,14 @@
 // `links.digilockerHref` or nothing renders. The "or sign in with credentials"
 // divider belongs to the card: no card, no divider.
 //
-// CAPTCHA IS OFF BY DEFAULT AND MUST STAY OFF. `config.captcha` mirrors
-// `Show captcha` on the form card, and both default to false: a captcha is a
-// cognitive function test, and WCAG 2.2 3.3.8 Accessible Authentication (AA)
-// forbids one without an alternative. Switch it on only for a portal that offers
-// that alternative, and say which in the same change.
+// CAPTCHA IS PER ROLE, AND OFF UNLESS A ROLE ASKS. It resolves `role.captcha` ??
+// `config.captcha` ?? false, and mirrors `Show captcha` on the form card. The
+// handoff asks a Garima Greh organisation for one and asks the same portal's
+// citizen for none, so it belongs to the tab; `??` and not `||`, so a role can
+// set `captcha: false` to opt OUT of a portal-wide default. The default stays
+// false because a captcha is a cognitive function test, and WCAG 2.2 3.3.8
+// Accessible Authentication (AA) forbids one without an alternative. Switch it
+// on only where that alternative exists, and say which in the same change.
 //
 // EVERYTHING ELSE A PORTAL VARIES IS A PROPERTY ON A NESTED PART, NOT A VARIANT.
 // Role tabs, the DigiLocker toggle, the credential-method tabs, the role select,
@@ -93,8 +96,8 @@ export default {
     portalId: "portal-slug",
     // The SCHEME name, never the acronym — "Senior Citizens Welfare", not "SCW".
     portalName: "Senior Citizens Welfare",
-    // Off unless the portal offers a non-cognitive alternative (WCAG 2.2 3.3.8).
-    captcha: false,
+    // The DigiLocker card renders only when a role asks for it AND this is set.
+    links: { digilockerHref: "https://digilocker.gov.in/" },
     roles: [
       {
         id: "citizen",
@@ -102,6 +105,12 @@ export default {
         audience: "citizen",
         authModes: ["${authMode}", "otp"],
         defaultMode: "${authMode}",
+        // Per ROLE. The handoff carries the card on Citizen and on neither
+        // Admin nor Garima Greh, so it is not an audience rule.
+        digilocker: true,
+        // Per role too. Off unless this role has a non-cognitive alternative
+        // (WCAG 2.2 3.3.8).
+        captcha: false,
       },
       {
         id: "officer",

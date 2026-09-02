@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon } from "../utilities/icon";
+import { AuthDivider, SSOButton } from "./auth-parts";
 import { PortalLoginShell, PortalLoginTab } from "./portal-login-shell";
 import { portalLoginUrl, roleFromUrl } from "./portal-login-url";
 import {
@@ -153,12 +153,22 @@ export function PortalLoginTemplate({
     setCaptchaInput("");
   }, []);
 
-  // Shared by the password and PIN forms. OFF unless the portal opts in: a
-  // captcha is a cognitive function test, and WCAG 2.2 3.3.8 Accessible
-  // Authentication (AA) forbids one without an alternative. Mirrors the
-  // `Show captcha` boolean on the Figma `Auth / AuthFormCard`, which defaults
-  // to false for the same reason.
-  const captchaBlock = config.captcha ? (
+  // Resolved PER ROLE, portal default second, off last. The handoff asks a
+  // Garima Greh organisation for a captcha and asks the same portal's citizen
+  // for none, so the answer belongs to the tab rather than to the portal.
+  //
+  // `??`, never `||`: an explicit `captcha: false` on a role must be able to
+  // switch it OFF for that role on a portal whose default is on, and `||` would
+  // read that false as "unset" and fall straight through to the portal.
+  //
+  // OFF when neither says otherwise: a captcha is a cognitive function test, and
+  // WCAG 2.2 3.3.8 Accessible Authentication (AA) forbids one without an
+  // alternative. Mirrors the `Show captcha` boolean on the Figma
+  // `Auth / AuthFormCard`, which defaults to false for the same reason.
+  const showCaptcha = activeRole?.captcha ?? config.captcha ?? false;
+
+  // Shared by the password and PIN forms.
+  const captchaBlock = showCaptcha ? (
     <div className="rounded-md border border-[var(--sa-border-neutral-subtle)] bg-[var(--sa-bg-neutral-subtler)] p-2.5">
       <label
         htmlFor="login-captcha"
@@ -330,50 +340,18 @@ export function PortalLoginTemplate({
             takes nothing from the form with it. That is also why the credential
             form below is untouched by its presence — a citizen who ignores the
             card still has a complete way to sign in. */}
+        {/* DS Audit: SSOButton ✅ existing · AuthDivider ✅ existing — both were
+            already in the barrel and both were hand-rolled here instead. The
+            divider's hand-rolled label was byte-identical to `AuthDivider`'s
+            own default, which is how a duplicate goes unnoticed: it looks
+            right, so nobody checks whether it is a second copy. */}
         {showDigiLocker && (
           <div className="space-y-4 pt-1">
-            <a
+            <SSOButton
               href={config.links!.digilockerHref}
-              className="flex items-center gap-3 rounded-lg border border-[var(--sa-border-neutral-subtle)] p-3 transition hover:border-[var(--sa-color-primaryScale-800)] hover:bg-[var(--sa-bg-neutral-subtler)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sa-focus-ring)]"
-            >
-              {config.brandAssets?.digilockerLogoSrc && (
-                <img
-                  src={config.brandAssets.digilockerLogoSrc}
-                  alt=""
-                  className="h-10 w-11 shrink-0 object-contain"
-                />
-              )}
-              <span className="min-w-0 flex-1">
-                <span className="block text-sm font-semibold text-[var(--sa-text-neutral-base)]">
-                  Continue with DigiLocker
-                </span>
-                <span className="block text-xs text-[var(--sa-text-neutral-subtle)]">
-                  Secured Government Login
-                </span>
-              </span>
-              <Icon
-                name="arrow_forward"
-                size={24}
-                className="shrink-0 text-[var(--sa-text-neutral-subtle)]"
-              />
-            </a>
-
-            {/* The divider belongs to the card, not to the form. Admin and
-                Garima Greh have no card and no divider — a form with nothing
-                above it needs no "or". */}
-            <div className="flex items-center gap-3">
-              <span
-                aria-hidden="true"
-                className="h-px flex-1 bg-[var(--sa-border-neutral-subtle)]"
-              />
-              <span className="text-xs text-[var(--sa-text-neutral-subtle)]">
-                or sign in with credentials
-              </span>
-              <span
-                aria-hidden="true"
-                className="h-px flex-1 bg-[var(--sa-border-neutral-subtle)]"
-              />
-            </div>
+              markSrc={config.brandAssets?.digilockerLogoSrc}
+            />
+            <AuthDivider />
           </div>
         )}
 

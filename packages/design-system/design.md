@@ -12,6 +12,25 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-02 · System version: v0.44.0 (TWO LOGIN SWITCHES BELONGED TO
+  THE ROLE AND WERE WRITTEN AS THE PORTAL'S. The DigiLocker card was first modelled as a
+  fourth `PortalAuthMode`, then as an audience rule ("everyone who is not an officer");
+  the Handoff supports neither. It carries the card on SMILE-Transgender's Citizen frames
+  and on neither Admin nor Garima Greh, so it is `PortalRoleTab.digilocker`, and it draws
+  only when `links.digilockerHref` is also set — a handoff CTA with nowhere to go is worse
+  than no CTA. The "or sign in with credentials" divider belongs to the card: no card, no
+  divider. The captcha moved the same way, to `role.captcha ?? config.captcha ?? false` —
+  the same portal asks a Garima Greh organisation for a security code and asks its citizen
+  for none, which a portal-wide boolean cannot express. `??` and not `||`, so a role
+  setting `captcha: false` opts OUT of a portal-wide default instead of being read as
+  unset. The default stays off: WCAG 2.2 3.3.8 Accessible Authentication (AA) forbids a
+  cognitive function test without an alternative. `SSOButton` renders an `<a>` when given
+  an `href`, because a handoff to a government identity provider is a navigation and not a
+  form control, and takes the provider's mark via `markSrc`; the template stopped
+  hand-rolling the card and the divider and now imports both. The DigiLocker mark ships at
+  `/design-system/digilocker-mark.png`, and `brandAssets.digilockerLogoSrc` still has no
+  default, because every portal mounts under its own `basePath`.)
+
   Last reviewed: 2026-09-02 · System version: v0.43.0 (THE LOGIN MASTER'S VARIANT AXIS
   CONFLATED TWO UNLIKE THINGS. `Device × Step` put `Credentials` and `OTP` — ways of
   proving identity — on the same axis as `Reset` and `Success`, which are stages of
@@ -2716,7 +2735,7 @@ matching the Figma "Navbar Portal" account.
 > **`pin` was added on 2026-09-02, and it is not a reinstatement of those two.** NOS is PIN-only and both its auth screens in the Handoff (`2436:15957`) are `Sign In Pin`, so the credential form has three modes. The Figma master was re-cut in place the same day — `Device × Step` (8 variants) became **`Device × Auth Method`** (Password · OTP · PIN, 6 variants) — because the old axis put `Credentials` and `OTP`, which are ways of proving identity, beside `Reset` and `Success`, which are stages of recovery. Recovery moved to `Auth / CredentialRecovery`; the component nodes were moved rather than re-created, so their keys and every instance link survived.  
 **Props**: `config` (`PortalLoginConfig`), `onSubmit`, `loading`, `error`, `onFooterLinkClick`  
 **Rules**:
-- **The captcha is OFF unless the portal asks for it.** `config.captcha` adds the security-code field to the password and PIN forms and defaults to `false`. A captcha is a cognitive function test, and **WCAG 2.2 3.3.8 Accessible Authentication (AA)** forbids one without an alternative — switch it on only for a portal that offers that alternative, and say which in the same change. `Show captcha` on the Figma `Auth / AuthFormCard` defaults to `false` for the same reason.
+- **The captcha is per ROLE, and OFF unless a role asks for it.** It resolves `role.captcha` ?? `config.captcha` ?? `false`, drawing the security-code field on the password and PIN forms. It belongs to the tab because that is how the Handoff uses it — SMILE-Transgender asks a Garima Greh organisation for a captcha and asks the same portal's citizen for none, and a portal-wide boolean can express neither without imposing it on the other. The fallback is `??` and not `||` so that a role setting `captcha: false` opts OUT of a portal-wide default rather than being read as unset. The default stays `false`: a captcha is a cognitive function test, and **WCAG 2.2 3.3.8 Accessible Authentication (AA)** forbids one without an alternative — switch it on only where that alternative exists, and say which in the same change. `Show captcha` on the Figma `Auth / AuthFormCard` defaults to `false` for the same reason.
 - **A PIN never leaves the component as `credentials.password`.** The PIN form reuses the password field's internal state, but the payload carries it as `credentials.pin`, so a consumer cannot mistake one secret for the other.
 - **Reach for this when the portal's login is one of the shapes the Handoff already describes** — which is most of them, and the reason it exists is that those shapes kept being re-typed per portal.
 - **Use `PortalLoginShell` directly when the form is genuinely bespoke** (an extra consent step, a non-standard identity provider). Forcing a one-off through a config object produces a worse page than composing it.
@@ -2748,6 +2767,8 @@ Seven small components mirroring the `Auth / *` sets in the SAMAVESH Figma libra
 **`SSOButton`** — the DigiLocker handoff.
 - **Offer it per ROLE, not per audience.** It was keyed off `PortalRoleTab.audience` until 2026-09-02, on the reading that officers hold no DigiLocker account. The Handoff (`10767:71293`) disproves it: SMILE-Transgender carries the card on Citizen and on neither Admin nor Garima Greh, so an audience rule would have put it on the organisation tab. Set `PortalRoleTab.digilocker` on the roles the portal has actually agreed it for, and never key it off the tab's label.
 - It sits **above** the credentials divider: an alternative to the form, not a field in it.
+- **Give it an `href` and it renders an `<a>`.** A handoff to an external identity provider is a navigation, not a form control. Left unset it stays a `<button>`, for a caller running the redirect itself in `onClick`.
+- **The provider's mark comes from the caller.** `markSrc` takes it as an image path, `mark` as a node; without either the card draws a Material Symbols glyph, which is complete and honest. `PortalBrandAssets.digilockerLogoSrc` has no default even though the estate holds a copy of the mark at `/design-system/digilocker-mark.png`, because every portal mounts under its own `basePath` and a default would resolve to the wrong path on most of them.
 - The subtitle is a trust signal, not decoration. Do not drop it.
 
 **`AccountPrompt`** — the registration route at the foot of a sign-in form.

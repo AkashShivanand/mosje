@@ -17,13 +17,19 @@ import type { PortalLoginConfig } from "@mosje/design-system";
  * carrying the role, the mode and the credentials. A PIN arrives as
  * `credentials.pin`, never as `credentials.password`.
  *
- * ### The captcha is OFF unless the portal asks for it
+ * ### The captcha is OFF unless a role asks for it
  *
- * `config.captcha` adds the security-code field to the password and PIN forms,
- * and it defaults to `false` deliberately. A captcha is a cognitive function
- * test, and WCAG 2.2 3.3.8 Accessible Authentication (AA) forbids one without an
- * alternative. Switch it on only for a portal that offers that alternative, and
- * say which in the same change. The Figma master mirrors this: `Show captcha` on
+ * The security-code field on the password and PIN forms is resolved **per role
+ * first**: `role.captcha`, then `config.captcha`, then off. The handoff asks a
+ * Garima Greh organisation for a captcha and asks the same portal's citizen for
+ * none, so the answer belongs to the tab rather than to the portal — and because
+ * the fallback is `??` and not `||`, a role can set `captcha: false` to opt out
+ * of a portal-wide default rather than being overruled by it.
+ *
+ * It defaults to `false` deliberately. A captcha is a cognitive function test,
+ * and WCAG 2.2 3.3.8 Accessible Authentication (AA) forbids one without an
+ * alternative. Switch it on only where that alternative exists, and say which in
+ * the same change. The Figma master mirrors this: `Show captcha` on
  * `Auth / AuthFormCard` is `false` by default for the same reason.
  *
  * ### Landing on a specific role tab
@@ -213,13 +219,21 @@ export const AllAuthModes: Story = {
  * and the divider go, matching the handoff, where SMILE-Transgender carries the
  * card on Citizen and on neither Admin nor Garima Greh.
  *
- * The logo slot is empty because the estate holds no copy of DigiLocker's mark —
- * pass `brandAssets.digilockerLogoSrc` to fill it.
+ * **The mark comes from the caller, always.** `brandAssets.digilockerLogoSrc`
+ * has no default even though the estate now holds a copy of the mark, because
+ * every portal mounts under its own `basePath` and a default would resolve to
+ * the wrong path on most of them. Left unset, the card renders its wording and
+ * arrow alone — which is complete and honest, since the mark is a partner's and
+ * not ours to substitute a padlock glyph for.
+ *
+ * The card is an `<a>` whenever it has an `href`, because a handoff to a
+ * government identity provider is a navigation and not a form control.
  */
 export const DigiLockerHandoff: Story = {
   args: {
     config: {
       ...eAnudaan,
+      brandAssets: { ...brandAssets, digilockerLogoSrc: asset("DigiLocker", 43, 40) },
       links: { ...eAnudaan.links, digilockerHref: "https://digilocker.gov.in/" },
       roles: [
         {
@@ -251,9 +265,11 @@ export const DigiLockerHandoff: Story = {
  * digits only, is masked with a Show/Hide toggle, and recovers through
  * "Forgot PIN?" rather than the password link.
  *
- * `captcha: true` is set here to show the field, and it is the exception rather
- * than the pattern: leave it off unless the portal offers a non-cognitive way
- * through (WCAG 2.2 3.3.8).
+ * `captcha: true` is set here at PORTAL level, which is right for NOS because it
+ * has one role. A portal with several should set it on the roles that need it —
+ * see `CaptchaPerRole`. Either way it is the exception rather than the pattern:
+ * leave it off unless the portal offers a non-cognitive way through
+ * (WCAG 2.2 3.3.8).
  */
 export const PinLogin: Story = {
   args: {
@@ -279,6 +295,61 @@ export const PinLogin: Story = {
         registerHref: "/portals/nos/register",
         helpFaqHref: "/portals/nos/help",
       },
+    },
+  },
+};
+
+/**
+ * **The captcha follows the role, not the portal.**
+ *
+ * Three roles on one portal, and the security-code field appears on exactly one
+ * of them. The Implementing Agency signs in on behalf of a shelter home, which
+ * is a different risk from a citizen checking their own application, and the
+ * register is entitled to treat them differently — so the field is on that tab
+ * and on neither of the others.
+ *
+ * The third role shows the other half of the rule: `config.captcha` is `true`
+ * here, and the Officer tab sets `captcha: false` to opt OUT of it. That works
+ * because the fallback is `??` — with `||` an explicit `false` would read as
+ * "unset" and the portal default would overrule it, which is the bug this story
+ * exists to keep fixed.
+ *
+ * Switching a captcha on for a role commits the portal to offering that role a
+ * non-cognitive alternative (WCAG 2.2 3.3.8 Accessible Authentication, AA). Name
+ * it in the same change.
+ */
+export const CaptchaPerRole: Story = {
+  args: {
+    config: {
+      ...eAnudaan,
+      portalName: "Captcha per role (specimen)",
+      captcha: true,
+      roles: [
+        {
+          id: "citizen",
+          audience: "citizen",
+          label: "Citizen",
+          description: "No captcha — the role opts out of the portal default.",
+          authModes: ["password"],
+          captcha: false,
+        },
+        {
+          id: "organisation",
+          audience: "organisation",
+          label: "Implementing Agency",
+          description: "Captcha on — an agency signing in for a shelter home.",
+          authModes: ["password"],
+          captcha: true,
+        },
+        {
+          id: "officer",
+          audience: "officer",
+          label: "Officer",
+          description: "No captcha — the role opts out of the portal default.",
+          authModes: ["password"],
+          captcha: false,
+        },
+      ],
     },
   },
 };

@@ -161,6 +161,10 @@
     background-color: var(--sa-bg-neutral-base);
     cursor: pointer;
     text-align: left;
+    /* The card is an <a> whenever it carries an href, and a handoff card drawn
+       with a browser-default underline through its two lines of copy is not the
+       card in the handoff. The title and subtitle carry the affordance. */
+    text-decoration: none;
     font-family: var(--sa-font-latin);
   }
 
@@ -197,6 +201,17 @@
 
   .ds-auth-sso__mark,
   .ds-auth-sso__arrow { flex: none; color: var(--sa-icon-brand-primary-base); }
+
+  /* A partner's mark is artwork, not a glyph: it is sized on the icon scale but
+     keeps its own aspect, because squashing DigiLocker's mark to a square is a
+     misuse of somebody else's brand. 40 tall draws 43 wide from the shipped
+     asset, which is the handoff's own logo slot. */
+  .ds-auth-sso__markimg {
+    display: block;
+    height: var(--sa-icon-size-40);
+    width: auto;
+    object-fit: contain;
+  }
 
   /* ---- account prompt ------------------------------------------------------- */
 

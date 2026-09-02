@@ -197,39 +197,85 @@ export interface SSOButtonProps extends Omit<React.ButtonHTMLAttributes<HTMLButt
   title?: string;
   /** The trust signal. Do not drop it to save height. @default "Secured Government Login" */
   subtitle?: string;
-  /** The provider's mark. Falls back to a Material Symbols glyph when absent. */
+  /**
+   * Where the handoff goes. **Set it and this renders an `<a>`**, which is what
+   * a handoff to an external identity provider actually is — a navigation, not
+   * a form control. Left unset it stays a `<button>` for a caller that runs the
+   * redirect itself in `onClick`.
+   */
+  href?: string;
+  /** The provider's mark as an image path. Wins over `mark`. */
+  markSrc?: string;
+  /** The provider's mark as a node. Falls back to a Material Symbols glyph. */
   mark?: React.ReactNode;
 }
 
 /**
  * Federated sign-in entry point. Today that means DigiLocker.
  *
- * **Hide this whenever the Officer / Admin role tab is active.** Officers do not
- * hold DigiLocker accounts, so offering it is a dead end — this is the single
- * rule most often missed when a portal login is built. Wire the condition to the
- * active tab, not to the portal.
+ * **Offer it per ROLE, not per audience.** The handoff (`10767:71293`) carries
+ * this card on SMILE-Transgender's Citizen frames and on neither the Admin nor
+ * the Garima Greh ones — so it is narrower than "not an officer", and an
+ * audience-keyed rule wrongly puts it on the organisation tab. In
+ * `PortalLoginTemplate` that is `PortalRoleTab.digilocker`, and nothing renders
+ * unless `links.digilockerHref` is set too: a CTA with nowhere to go is worse
+ * than no CTA.
  *
  * It belongs *above* the credentials divider: it is an alternative to the form,
- * not a field inside it. Pressing it navigates away to a government identity
- * provider, so do not open it in a new tab without saying so.
+ * not a field inside it. The `AuthDivider` under it belongs to this card — no
+ * card, no divider, because a form with nothing above it needs no "or".
+ *
+ * Pressing it leaves for a government identity provider, so do not open it in a
+ * new tab without saying so.
  */
 export function SSOButton({
   title = "Continue with DigiLocker",
   subtitle = "Secured Government Login",
+  href,
+  markSrc,
   mark,
   className,
   ...rest
 }: SSOButtonProps): React.JSX.Element {
-  return (
-    <button type="button" className={cn("ds-auth-sso", className)} {...rest}>
+  const inner = (
+    <>
       <span className="ds-auth-sso__mark" aria-hidden="true">
-        {mark ?? <Icon name="folder_shared" size={32} aria-hidden />}
+        {markSrc ? (
+          // eslint-disable-next-line @next/next/no-img-element -- the DS package
+          // has no next/image dependency; the mark is a fixed-size decorative
+          // raster already sized by the stylesheet.
+          <img src={markSrc} alt="" className="ds-auth-sso__markimg" />
+        ) : (
+          (mark ?? <Icon name="folder_shared" size={32} aria-hidden />)
+        )}
       </span>
       <span className="ds-auth-sso__copy">
         <span className="ds-auth-sso__title">{title}</span>
         <span className="ds-auth-sso__subtitle">{subtitle}</span>
       </span>
       <Icon name="arrow_forward" size={24} className="ds-auth-sso__arrow" aria-hidden />
+    </>
+  );
+
+  if (href) {
+    // `disabled` has no meaning on an anchor — a disabled link is just a link.
+    // Everything else a caller passes (id, aria-*, data-*, onClick) is valid on
+    // both elements, so it forwards unchanged.
+    const { disabled: _disabled, ...anchorRest } = rest;
+    return (
+      <a
+        href={href}
+        className={cn("ds-auth-sso", className)}
+        {...(anchorRest as React.AnchorHTMLAttributes<HTMLAnchorElement>)}
+      >
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <button type="button" className={cn("ds-auth-sso", className)} {...rest}>
+      {inner}
     </button>
   );
 }
