@@ -14,10 +14,13 @@ survive a bad write, the set does not."""
 import json, os, struct, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
+import manifest as MAN
 from playwright.sync_api import sync_playwright
 
 EXTRACT_JS = r"""
-() => {
+(arg) => {
+  const volatileSel = (arg && arg.volatileSelectors) || [];
+  const isVolatile = el => volatileSel.some(s => { try { return el.matches(s) || el.closest(s); } catch (e) { return false; } });
   const px = v => Math.round(parseFloat(v)||0);
   const rows = [];
   const els = document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,a,label,p,span,th,td,input,textarea,select,li,[role=button],[role=tab]');
@@ -44,10 +47,32 @@ EXTRACT_JS = r"""
       borderStyle: cs.borderStyle, borderColor: cs.borderColor,
       dsComponent: el.getAttribute('data-ds-component') || null,
       dsState: el.getAttribute('data-ds-state') || null,
+      volatile: isVolatile(el),
+    });
+  }
+  // Field inventory — the machine-readable replacement for the prose in INVENTORY.md.
+  const labelFor = el => {
+    if (el.getAttribute('aria-label')) return el.getAttribute('aria-label');
+    if (el.id) { const l = document.querySelector(`label[for="${CSS.escape(el.id)}"]`); if (l) return l.innerText.trim(); }
+    const wrap = el.closest('label');
+    return wrap ? wrap.innerText.trim() : null;
+  };
+  const fields = [];
+  for (const el of document.querySelectorAll('input,select,textarea')) {
+    if (el.type === 'hidden') continue;
+    fields.push({
+      name: el.name || el.id || null,
+      label: labelFor(el),
+      type: el.tagName === 'SELECT' ? 'select' : (el.type || el.tagName.toLowerCase()),
+      required: el.required || el.getAttribute('aria-required') === 'true',
+      options: el.tagName === 'SELECT' ? [...el.options].map(o => o.text.trim()).slice(0, 200) : null,
+      helper: el.placeholder || el.getAttribute('aria-describedby') || null,
+      validationMessage: null,
+      conditionalOn: null,
     });
   }
   return { pageW: document.documentElement.scrollWidth,
-           pageH: document.documentElement.scrollHeight, rows };
+           pageH: document.documentElement.scrollHeight, rows, fields };
 }
 """
 
@@ -286,12 +311,14 @@ def capture_role(pg, role, cfg, paths):
     base = role["base"]; width = cfg.get("capture", {}).get("width", 1440)
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
     routes = discover_routes(pg, cfg)
+    man = paths.get("_manifest")  # injected by run(); None when the project has no manifest
     land = pg.url.replace(base, "").split("?")[0]
     if land and land not in routes:
         routes.insert(0, land)
     captured = []
     for path in routes:
         slug = slugify(role["name"], path)
+        vol_selectors = MAN.volatile_selectors(man, slug) if man else []
         # Reset the viewport: settle_height grows it per page, and a tall window left over
         # from the previous route changes how the next one lays out.
         try: pg.set_viewport_size({"width": width, "height": 1000})
@@ -310,7 +337,7 @@ def capture_role(pg, role, cfg, paths):
             shoot(pg, png, settled, dpr, width)
         except Exception: pass
         try:
-            data = pg.evaluate(EXTRACT_JS)
+            data = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
             data["role"] = role["name"]; data["route"] = path; data["slug"] = slug
             data["figmaImg"] = None; data["url"] = base + path
             json.dump(data, open(os.path.join(paths["captures_live"], f"{slug}.json"), "w"), indent=2)
