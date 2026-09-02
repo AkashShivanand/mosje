@@ -758,7 +758,21 @@ Reordering to put those six first raises `CHART_CATEGORICAL_SAFE_CAP` from
 **4 to 6** — a 50% gain in usable series — invents no colour, and leaves slots
 1–4 untouched, so every chart with four or fewer series is pixel-identical.
 
-### It was built, verified, and then REVERTED — and why
+### DONE 2026-09-02 — the reorder shipped
+
+Superseded. The section below records why it was reverted on the first attempt;
+it has since been completed properly. The four changed values were pushed to
+the Figma library through the authenticated MCP (no shell token needed), read
+back and confirmed byte-for-byte, and only then was `$valueChecksums`
+re-recorded. All **161** token tests pass, `npm run verify` is green, and
+`CHART_CATEGORICAL_SAFE_CAP` is **6**.
+
+All twelve variable descriptions were corrected in the same pass: every one of
+them claimed "the twelve values are chosen for mutual distinguishability",
+which the measurement disproves. Slots 1–6 now say so; 7–12 say they are not
+distinguishable and name the three remedies.
+
+### The first attempt, and why it was reverted
 
 The reorder was made, tokens rebuilt, the ramp screenshotted and audited (slots
 1–6 read as clearly distinct; 7–12 visibly reuse territory — 7/10 both olive,

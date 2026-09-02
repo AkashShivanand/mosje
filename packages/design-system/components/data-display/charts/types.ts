@@ -36,15 +36,13 @@ export interface ChartTable {
  *   cat-8 ↔ cat-9    ΔE 11.7 with NORMAL colour vision — below the floor of
  *                    15, so nobody separates them reliably
  *
- * IT COULD BE SIX, AND THAT CHANGE IS PREPARED BUT NOT MADE. An exhaustive
- * maximum-clique over all 4,095 subsets of the twelve finds SIX mutually
- * distinguishable slots — 1, 2, 3, 4, 6 and 8. Reordering the ramp to put
- * those first raises this cap to six, invents no colour, and leaves slots 1–4
- * unmoved so charts of four or fewer series are pixel-identical. It was built
- * and verified, then reverted: `figma-value-parity` correctly refuses a value
- * change that has not been pushed to Figma and read back, and that needs a
- * token no agent session may handle. The full procedure is in
- * `docs/audit/ds-world-class-audit.md`.
+ * IT IS SIX BECAUSE THE RAMP WAS REORDERED. An exhaustive maximum-clique over
+ * all 4,095 subsets of the twelve found six mutually distinguishable slots —
+ * the old 1, 2, 3, 4, 6 and 8 — and they now lead. No colour was invented, and
+ * slots 1–4 did not move, so any chart of four or fewer series is
+ * pixel-identical to before. The four values that did change were pushed to
+ * the Figma library and read back before `$valueChecksums` was re-recorded,
+ * which is what `figma-value-parity` exists to insist on.
  *
  * SIX IS ALSO THE CEILING, and that is a property of vision rather than of
  * this palette. `tools/chart-palette/search.mjs` searches the whole admissible
@@ -64,4 +62,4 @@ export interface ChartTable {
  * The gate fails if this constant and the measured cap disagree, so the number
  * cannot drift away from the ramp it describes.
  */
-export const CHART_CATEGORICAL_SAFE_CAP = 4;
+export const CHART_CATEGORICAL_SAFE_CAP = 6;
