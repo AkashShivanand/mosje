@@ -53,7 +53,7 @@ export default function HelplinePage() {
             >
               14446
             </a>
-            <p className="mt-2 text-sm text-white/80">
+            <p className="mt-2 text-sm text-white">
               Free · Confidential · Available 24 hours, 7 days a week
             </p>
           </div>

@@ -47,13 +47,17 @@ export default function NmbaHome() {
           <h1 className="text-xl font-bold leading-snug sm:text-2xl">
             Nasha Mukt Bharat Abhiyaan
           </h1>
-          <p className="mt-1 text-sm text-white/80">
+          <p className="mt-1 text-sm text-white">
             Join 98 Lakh+ citizens committed to a drug-free society.
           </p>
         </div>
         <a
           href={`${BASE}/epledge`}
-          className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-white/40 bg-white/10 px-4 py-2 text-sm font-semibold text-white hover:bg-white/20"
+          // NO WHITE TINT BEHIND THE LABEL. `bg-white/10` lightens the #008236 hero to
+            // #1a8e4a, where white text measures 4.19:1 and fails AA — and
+            // `hover:bg-white/20` made it worse still. The border carries the button
+            // shape; hover DARKENS instead, which raises contrast rather than lowering it.
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-black/10"
         >
           Take the Pledge
           <Icon name="arrow_forward" size={16} />

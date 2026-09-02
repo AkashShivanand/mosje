@@ -19,8 +19,9 @@
   /* colors.danger.DEFAULT — the hub's is the DS status red (--sa-color-status-danger). */
   --portal-danger: #dc2626;
 
-  /* CONFLICT — nhapoa/tg darkened theirs to #b8500f; NMBA kept var(--color-saffron-600). */
-  --color-saffron-600: #d35912;
+  /* CONFLICT RESOLVED 2026-09-02 — NMBA no longer overrides this. #d35912 puts
+     white text at 4.03:1 on the helpline button and fails WCAG 1.4.3; the
+     shared #b8500f is 5.01:1. Same change scw took. */
 
   /* borderRadius.extend — stock Tailwind is 0.75rem / 1rem. */
   --radius-xl: 0.85rem;

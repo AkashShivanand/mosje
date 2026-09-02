@@ -157,7 +157,10 @@
      --pm-icon-cool is deliberately NOT in this list: it colours icons, where
      WCAG 1.4.11 asks 3:1, and it measures 3.65:1. Darkening it too would be
      correcting something that already passes. */
-  --pm-faint-cool: #627893;      /* was #8FA0B4 — 2.67:1, now 4.54:1 */
+  /* MEASURED ON THE SURFACE IT IS DRAWN ON, not on white. #627893 was chosen
+     for 4.54:1 against white, but the login stat labels sit on #f7fafc where
+     it is 4.33:1 — below AA. #586d86 is 5.08 there and 5.32 on white. */
+  --pm-faint-cool: #586d86;
   --pm-placeholder: #687888;     /* was #AAB4BE — 2.10:1, now 4.53:1 */
 
   /* The focus glow behind --pm-ring, and the brand yellow, which is SAMAVESH's
