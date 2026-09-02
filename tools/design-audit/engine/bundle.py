@@ -53,7 +53,7 @@ def geometry_hash(rows, page_h):
     return _digest(rows, GEOMETRY_KEYS, extra={"pageH": page_h})
 
 
-import datetime, os
+import datetime, os, sys
 
 BUNDLE_VERSION = 1
 
@@ -142,3 +142,55 @@ def build_fingerprint(base_url, timeout=10):
             return extract_fingerprint(resp.read(400_000).decode("utf-8", "replace"))
     except Exception:
         return None
+
+
+def decide_screen(prev, structure, geometry):
+    """reuse | reshoot | recapture.
+
+    `reshoot` means the design is unchanged but the layout moved — the findings carry forward,
+    the screenshot does not, because pins are geometry-bound.
+    """
+    if not prev:
+        return "recapture"
+    if prev.get("structureHash") != structure:
+        return "recapture"
+    if prev.get("geometryHash") != geometry:
+        return "reshoot"
+    return "reuse"
+
+
+def resolve_freshness(b, man, cfg, force=False, verify=False, now=None, _probe=None):
+    """Tier 0. Returns {"mode": full|verify|reuse-all, "reason": …}.
+
+    Never returns reuse-all on a doubt: an unreachable host, an unreadable fingerprint or an
+    absent one all fall through to `verify`, which re-checks every screen cheaply.
+    """
+    if force:
+        return {"mode": "full", "reason": "--force"}
+    if b is None:
+        return {"mode": "full", "reason": "no existing bundle"}
+    if not b.get("capturedAt"):
+        return {"mode": "full", "reason": "bundle has no capturedAt"}
+    now = now or datetime.datetime.now().astimezone()
+    age = (now - datetime.datetime.fromisoformat(b["capturedAt"])).total_seconds()
+    ceiling = 14 * 86400
+    if man is not None:
+        try:
+            import manifest as _M
+        except ImportError:
+            from engine import manifest as _M
+        ceiling = _M.staleness_seconds(man)
+    if age > ceiling:
+        return {"mode": "full", "reason": f"bundle is stale ({int(age // 86400)}d > {ceiling // 86400}d)"}
+    probe = _probe or build_fingerprint
+    bases = sorted({r.get("base") for r in cfg.get("live", {}).get("roles", []) if r.get("base")})
+    recorded = {h.get("base"): h.get("buildFingerprint") for h in (b.get("hosts") or {}).values()}
+    for base in bases:
+        live = probe(base)
+        if not live:
+            return {"mode": "verify", "reason": f"could not read a build fingerprint for {base}"}
+        if recorded.get(base) != live:
+            return {"mode": "verify", "reason": f"build moved on {base}: {recorded.get(base)} -> {live}"}
+    if verify:
+        return {"mode": "verify", "reason": "--verify requested"}
+    return {"mode": "reuse-all", "reason": "build fingerprint unchanged and bundle is fresh"}

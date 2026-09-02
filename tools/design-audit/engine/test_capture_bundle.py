@@ -3,7 +3,7 @@
 Run:  cd tools/design-audit && python3 -m unittest engine.test_capture_bundle -v
       (stdlib only — no pytest, no new deps)
 """
-import os, sys, tempfile, unittest
+import datetime, os, sys, tempfile, unittest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from engine import manifest as M
 
@@ -125,6 +125,67 @@ class BundleIO(unittest.TestCase):
         B.upsert_screen(b, dict(first, structureHash="s2"))
         self.assertEqual([s["slug"] for s in b["screens"]], ["A", "B"])
         self.assertEqual(B.find_screen(b, "A")["structureHash"], "s2")
+
+
+def _bundle(age_days=0, fp="main.aaaaaaaa.js"):
+    when = datetime.datetime.now().astimezone() - datetime.timedelta(days=age_days)
+    return {"version": 1, "project": "p", "environment": "uat",
+            "capturedAt": when.isoformat(timespec="seconds"),
+            "hosts": {"admin": {"base": "https://x.test", "buildFingerprint": fp}},
+            "screens": [], "records": {}}
+
+
+class Freshness(unittest.TestCase):
+    CFG = {"live": {"roles": [{"name": "a", "base": "https://x.test"}]}}
+    MAN = {"version": 1, "environment": "uat", "stalenessCeiling": "14d"}
+
+    def test_no_bundle_means_full(self):
+        self.assertEqual(B.resolve_freshness(None, self.MAN, self.CFG)["mode"], "full")
+
+    def test_force_means_full_even_when_fresh(self):
+        r = B.resolve_freshness(_bundle(), self.MAN, self.CFG, force=True)
+        self.assertEqual(r["mode"], "full")
+
+    def test_past_the_staleness_ceiling_means_full(self):
+        r = B.resolve_freshness(_bundle(age_days=30), self.MAN, self.CFG)
+        self.assertEqual(r["mode"], "full")
+        self.assertIn("stale", r["reason"])
+
+    def test_verify_flag_forces_the_per_screen_tier(self):
+        r = B.resolve_freshness(_bundle(), self.MAN, self.CFG, verify=True,
+                                _probe=lambda url: "main.aaaaaaaa.js")
+        self.assertEqual(r["mode"], "verify")
+
+    def test_matching_fingerprint_reuses_everything(self):
+        r = B.resolve_freshness(_bundle(), self.MAN, self.CFG,
+                                _probe=lambda url: "main.aaaaaaaa.js")
+        self.assertEqual(r["mode"], "reuse-all")
+
+    def test_moved_fingerprint_drops_to_verify_not_full(self):
+        r = B.resolve_freshness(_bundle(), self.MAN, self.CFG,
+                                _probe=lambda url: "main.zzzzzzzz.js")
+        self.assertEqual(r["mode"], "verify")
+
+    def test_unreachable_host_drops_to_verify(self):
+        r = B.resolve_freshness(_bundle(), self.MAN, self.CFG, _probe=lambda url: None)
+        self.assertEqual(r["mode"], "verify")
+
+
+class ScreenDecision(unittest.TestCase):
+    def test_unknown_screen_is_recaptured(self):
+        self.assertEqual(B.decide_screen(None, "s", "g"), "recapture")
+
+    def test_structure_change_is_a_full_recapture(self):
+        prev = {"structureHash": "s1", "geometryHash": "g1"}
+        self.assertEqual(B.decide_screen(prev, "s2", "g2"), "recapture")
+
+    def test_geometry_only_change_is_a_reshoot(self):
+        prev = {"structureHash": "s1", "geometryHash": "g1"}
+        self.assertEqual(B.decide_screen(prev, "s1", "g2"), "reshoot")
+
+    def test_both_unchanged_is_reuse(self):
+        prev = {"structureHash": "s1", "geometryHash": "g1"}
+        self.assertEqual(B.decide_screen(prev, "s1", "g1"), "reuse")
 
 
 class Fingerprint(unittest.TestCase):
