@@ -1,7 +1,12 @@
 # per-project runtime artifacts — never commit secrets or heavy captures
 projects/*/secrets.json
 projects/*/captures/
-projects/*/out/
+# `projects/*/out/` as a DIRECTORY exclusion cannot be undone by a negation — git will not
+# descend into an excluded directory, so `!projects/*/out/audit-master.json` below would
+# silently do nothing. Exclude the CONTENTS instead, then name the two files back in.
+projects/*/out/*
+!projects/*/out/capture-bundle.json
+!projects/*/out/audit-master.json
 projects/*/inputs/*.png
 node_modules/
 __pycache__/

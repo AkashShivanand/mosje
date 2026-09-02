@@ -1,0 +1,465 @@
+{
+  "portal": "NHAPOA \u2014 National Helpline Against Atrocities (DEV)",
+  "idPrefix": "NHA",
+  "generated": "auto",
+  "status": "MACHINE-DRAFT",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=5093-18512",
+  "method": "Machine pass (project-agnostic engine). Baseline=derived. DS-adoption 57.4%. Coverage gate=FAIL. \ud83e\udd16 machine checks only; human sign-off (\ud83d\udc64) required before CERTIFIED.",
+  "coverage": {
+    "figma_frames": 35,
+    "captured": 59,
+    "mapped": 33,
+    "unmapped": 2,
+    "design_only": 0,
+    "extra_build_only": 27,
+    "mismap": 1
+  },
+  "coverage_gate": "FAIL",
+  "ds_adoption_pct": 57.4,
+  "deferred": [],
+  "screens": [
+    {
+      "slug": "GLOBAL-DSCONF",
+      "name": "Global \u2014 Design-System Conformance (machine-verified every element)",
+      "figmaImg": null,
+      "liveImg": "captures/live/CITIZEN-HOME.png",
+      "figmaUrl": null,
+      "liveUrl": null,
+      "note": "DS-adoption: 57.4% of 5773 elements use design-system tokens. Baseline mode: derived. The full deviation table is in out/conformance.json. These are \ud83e\udd16 machine checks \u2014 verify severity with a human before certifying.",
+      "findings": [
+        {
+          "num": 1,
+          "id": "NHA-DSCONF-001",
+          "element": "Off-token color: #6b7280",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "1008 element(s) across 59 screen(s) render color=#6b7280, which is not a design-system token (first seen near \"Single Access Mechanism for Al\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CITIZEN-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 92,
+            "y": 12.5
+          }
+        },
+        {
+          "num": 2,
+          "id": "NHA-DSCONF-002",
+          "element": "Off-token color: #0f172a",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "359 element(s) across 54 screen(s) render color=#0f172a, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/DISTRICT-OFFICER-DISTRICT-OFFICER-DASHBOARD.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 3,
+            "y": 11.0
+          }
+        },
+        {
+          "num": 3,
+          "id": "NHA-DSCONF-003",
+          "element": "Off-token radius: 33554400",
+          "section": "ds-conformance",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Every element should use a radius token from the design system.",
+          "live": "241 element(s) across 59 screen(s) render radius=33554400, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw radius value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CITIZEN-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 100,
+            "y": 62.5
+          }
+        },
+        {
+          "num": 4,
+          "id": "NHA-DSCONF-004",
+          "element": "Off-token radius: 6",
+          "section": "ds-conformance",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Every element should use a radius token from the design system.",
+          "live": "221 element(s) across 56 screen(s) render radius=6, which is not a design-system token (first seen near \"Use my current location\").",
+          "fix": "Replace the raw radius value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CITIZEN-REGISTER-RESCUE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 90,
+            "y": 69.9
+          }
+        },
+        {
+          "num": 5,
+          "id": "NHA-DSCONF-005",
+          "element": "Off-token color: #0022700",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "152 element(s) across 13 screen(s) render color=#0022700, which is not a design-system token (first seen near \"Good afternoon, ba. Here's you\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/DISTRICT-OFFICER-DISTRICT-OFFICER-DASHBOARD.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 60,
+            "y": 27.1
+          }
+        },
+        {
+          "num": 6,
+          "id": "NHA-DSCONF-006",
+          "element": "Off-token color: #000000",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "151 element(s) across 59 screen(s) render color=#000000, which is not a design-system token (first seen near \"BETA\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CITIZEN-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 11,
+            "y": 7.9
+          }
+        },
+        {
+          "num": 7,
+          "id": "NHA-DSCONF-007",
+          "element": "Off-token fontSize: 8",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "118 element(s) across 59 screen(s) render fontSize=8, which is not a design-system token (first seen near \"Power To Empower\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CITIZEN-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 76,
+            "y": 13.0
+          }
+        },
+        {
+          "num": 8,
+          "id": "NHA-DSCONF-008",
+          "element": "Off-token color: #111827",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "99 element(s) across 28 screen(s) render color=#111827, which is not a design-system token (first seen near \"My Cases\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/DISTRICT-OFFICER-DISTRICT-OFFICER-CASES.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 56,
+            "y": 22.4
+          }
+        },
+        {
+          "num": 9,
+          "id": "NHA-DSCONF-009",
+          "element": "Off-token fontSize: 10",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "95 element(s) across 59 screen(s) render fontSize=10, which is not a design-system token (first seen near \"BETA\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CITIZEN-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 11,
+            "y": 7.9
+          }
+        },
+        {
+          "num": 10,
+          "id": "NHA-DSCONF-010",
+          "element": "Off-token radius: 5",
+          "section": "ds-conformance",
+          "axis": "Components & States",
+          "severity": "Major",
+          "figma": "Every element should use a radius token from the design system.",
+          "live": "69 element(s) across 55 screen(s) render radius=5, which is not a design-system token (first seen near \"Street, landmark, locality\").",
+          "fix": "Replace the raw radius value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CITIZEN-REGISTER-RESCUE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 60,
+            "y": 88.8
+          }
+        },
+        {
+          "num": 11,
+          "id": "NHA-DSCONF-011",
+          "element": "Off-token color: #065f46",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "66 element(s) across 7 screen(s) render color=#065f46, which is not a design-system token (first seen near \"28 days\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/DISTRICT-OFFICER-DISTRICT-OFFICER-CASES.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 75,
+            "y": 64.2
+          }
+        },
+        {
+          "num": 12,
+          "id": "NHA-DSCONF-012",
+          "element": "Off-token color: #001be00",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "66 element(s) across 3 screen(s) render color=#001be00, which is not a design-system token (first seen near \"Permission / Module\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/SYSTEM-ADMIN-ADMIN-ROLES.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            800
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 30,
+            "y": 22.3
+          }
+        }
+      ]
+    }
+  ]
+}

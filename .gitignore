@@ -12,7 +12,13 @@ node_modules/
 
 # Build outputs & caches (apps now live under apps/ and are tracked)
 **/.next/
-**/out/
+# `**/out/` as a DIRECTORY exclusion cannot be undone by a negation anywhere in the repo —
+# git will not descend into an excluded directory, so tools/design-audit/.gitignore's
+# negations of capture-bundle.json/audit-master.json would silently do nothing. Exclude the
+# CONTENTS instead; behaviour for every other `out/` dir (Next.js builds, etc.) is unchanged.
+**/out/*
+!tools/design-audit/projects/*/out/capture-bundle.json
+!tools/design-audit/projects/*/out/audit-master.json
 **/storybook-static/
 # Storybook is built into the hub's static output at deploy time (see the hub's
 # prebuild script) — generated, never committed.
