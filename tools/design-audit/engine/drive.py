@@ -25,10 +25,18 @@ SAFE_ENVIRONMENTS = ("dev", "uat")
 
 
 def is_submit_allowed(environment, flow):
-    """(allowed, reason). Both gates must open."""
-    if not flow.get("allowSubmit"):
-        return False, f"flow {flow.get('id')!r} does not set allowSubmit"
-    if environment not in SAFE_ENVIRONMENTS:
+    """(allowed, reason). Both gates must open.
+
+    `allowSubmit` must be the boolean `True` — not truthy. YAML makes it trivial to write
+    `allowSubmit: "false"`, a non-empty string that a bare `if not flow.get(...)` would treat
+    as opening the gate. Anything other than the literal `True` blocks, and the reason names
+    what was actually found so a flow author sees exactly why.
+    """
+    val = flow.get("allowSubmit")
+    if val is not True:
+        return False, f"flow {flow.get('id')!r} allowSubmit is {val!r}, not True"
+    env = str(environment or "").strip().lower()
+    if env not in SAFE_ENVIRONMENTS:
         return False, (f"environment is {environment!r} — submission on prod needs a human; "
                        f"re-run with the flow disabled or confirm interactively")
     return True, "dev/uat and the flow opted in"
@@ -105,6 +113,14 @@ def _click(pg, label, waitms):
     return True
 
 
+def _destructive_and_blocked(label, allowed):
+    """The ONE test any step must pass before it may click a button. A label matching
+    DESTRUCTIVE (submit/save/confirm/delete/…) is refused whenever `allowed` is False —
+    regardless of which kind of step asked for it. `click` and `captureValidation` both
+    route through this; neither may click a destructive control on its own authority."""
+    return bool(DESTRUCTIVE.search(label)) and not allowed
+
+
 def run_flow(pg, flow, man, cfg, paths, bdl, environment):
     """Walk one flow, capturing each declared state. Returns the slugs captured."""
     role = flow.get("role") or "citizen"
@@ -123,7 +139,7 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
             _fill(pg, resolve_fixture(man, step))
         elif "click" in step:
             label = step["click"]
-            if DESTRUCTIVE.search(label) and not allowed:
+            if _destructive_and_blocked(label, allowed):
                 print(f"    ! stopping before {label!r} — {why}", flush=True)
                 break
             _click(pg, label, step.get("waitMs", 2500))
@@ -133,9 +149,17 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
                            {"flow": fid, "step": step_no, "of": total})
             done.append(step["capture"])
         elif "captureValidation" in step:
-            # Submit the step empty to reveal inline errors, shoot, then reload to reset.
-            _click(pg, step.get("submitLabel") or "Next", 1200) or \
-                _click(pg, "Save", 1200) or _click(pg, "Submit", 1200)
+            # Submit the step empty to reveal inline errors, shoot, then reload to reset. The
+            # automatic attempt may ONLY use a non-destructive label — the flow's explicit
+            # submitLabel if given, else "Next". No fallback chain to "Save"/"Submit": both
+            # match DESTRUCTIVE, and trying them unconditionally regardless of the gate was
+            # the exact bug this branch used to have (both click branches now share one test).
+            label = step.get("submitLabel") or "Next"
+            if _destructive_and_blocked(label, allowed):
+                print(f"    ! validation state {step['captureValidation']!r} skipped — "
+                      f"{label!r} needs allowSubmit — {why}", flush=True)
+                continue
+            _click(pg, label, 1200)
             _capture_state(pg, step["captureValidation"], role, cfg, paths, bdl, man, fid, None)
             done.append(step["captureValidation"])
             pg.reload(wait_until="networkidle"); pg.wait_for_timeout(1500)

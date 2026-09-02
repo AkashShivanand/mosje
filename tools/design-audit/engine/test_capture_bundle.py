@@ -3,7 +3,7 @@
 Run:  cd tools/design-audit && python3 -m unittest engine.test_capture_bundle -v
       (stdlib only — no pytest, no new deps)
 """
-import datetime, os, sys, tempfile, unittest
+import datetime, os, sys, tempfile, unittest, unittest.mock
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from engine import manifest as M
 
@@ -314,6 +314,21 @@ class SubmitGating(unittest.TestCase):
         self.assertFalse(ok)
         self.assertIn("allowSubmit", why)
 
+    def test_string_false_does_not_open_the_gate(self):
+        """YAML's `allowSubmit: "false"` is a non-empty string — truthy in Python. A bare
+        `if not flow.get("allowSubmit")` would treat that as opt-in; it must not."""
+        ok, why = D.is_submit_allowed("uat", {"id": "f", "allowSubmit": "false", "steps": []})
+        self.assertFalse(ok)
+        self.assertIn("allowSubmit", why)
+        self.assertIn("false", why)
+
+    def test_environment_matching_is_case_insensitive(self):
+        ok, _ = D.is_submit_allowed("UAT", self.FLOW)
+        self.assertTrue(ok)
+        ok, why = D.is_submit_allowed("PROD", self.FLOW)
+        self.assertFalse(ok)
+        self.assertIn("PROD", why)
+
 
 class Fixtures(unittest.TestCase):
     MAN = {"fixtures": {"ngo": {"orgName": "Example Welfare Society"}}}
@@ -354,6 +369,98 @@ class FlowReplay(unittest.TestCase):
         to prevent."""
         b = {"screens": [{"slug": "S1", "reachedBy": "flow:apply"}]}
         self.assertTrue(D.should_replay(self.FLOW, b, {"SOMETHING-ELSE": "reuse"}))
+
+
+class _FakeLocator:
+    """What `pg.get_by_role(...).first` returns. `.click()` either records the attempt or
+    raises, mimicking Playwright's own behaviour when the control isn't on the page."""
+    def __init__(self, page, name, exists):
+        self.page, self.name, self.exists = page, name, exists
+
+    @property
+    def first(self):
+        return self
+
+    def click(self):
+        if not self.exists:
+            raise Exception(f"no element matching {self.name!r}")
+        self.page.calls.append(("click", self.name))
+
+
+class FakePage:
+    """Records every click Playwright would have been asked to attempt. No network, no
+    browser — just enough surface for run_flow to walk a flow against it."""
+    def __init__(self, button_exists=True):
+        self.calls = []
+        self.url = "http://fake.invalid/screen"
+        self._button_exists = button_exists
+
+    def goto(self, *a, **k):
+        self.calls.append(("goto", a))
+
+    def wait_for_timeout(self, *a, **k):
+        pass
+
+    def reload(self, **k):
+        self.calls.append(("reload",))
+
+    def inner_text(self, *a, **k):
+        return ""
+
+    def get_by_role(self, kind, name=None, exact=False):
+        self.calls.append(("get_by_role", name))
+        return _FakeLocator(self, name, self._button_exists)
+
+    def click(self, selector):
+        # _click's CSS fallback, tried only if get_by_role's locator raised.
+        self.calls.append(("click_css", selector))
+        raise Exception("no fallback button either — fine, the test only checks attempts")
+
+
+class FlowSafety(unittest.TestCase):
+    """Finding 1's regression tests: a label matching DESTRUCTIVE must never be clicked while
+    is_submit_allowed() is False, no matter which kind of step asked for it. Test (b) is the
+    proof — it fails against the pre-fix `captureValidation` branch, which clicked "Save"/
+    "Submit" unconditionally as an automatic fallback chain, gate or no gate."""
+
+    CFG = {"live": {"roles": [{"name": "citizen", "base": "http://fake.invalid"}]}, "capture": {}}
+
+    def _run(self, flow, environment, button_exists=True):
+        pg = FakePage(button_exists=button_exists)
+        captured = []
+        with unittest.mock.patch.object(D, "_capture_state",
+                                        lambda *a, **k: captured.append(a[1])):
+            D.run_flow(pg, flow, {}, self.CFG, {"captures_live": "/dev/null"}, {}, environment)
+        return pg, captured
+
+    def test_a_click_step_matching_destructive_is_never_attempted_on_prod(self):
+        flow = {"id": "f", "role": "citizen", "steps": [{"click": "Submit"}]}
+        pg, _ = self._run(flow, "prod")
+        self.assertEqual(pg.calls, [], "no click of any kind should have been attempted")
+
+    def test_b_capture_validation_never_clicks_destructive_label_on_prod(self):
+        """The CRITICAL regression: an explicit destructive submitLabel inside
+        captureValidation must be gated exactly like the `click` branch is. Against the
+        pre-fix code (which clicked step.get('submitLabel') unconditionally, then fell back
+        to "Save" and "Submit" if that failed) this assertion fails."""
+        flow = {"id": "f", "role": "citizen",
+                "steps": [{"captureValidation": "STATE", "submitLabel": "Submit"}]}
+        pg, captured = self._run(flow, "prod", button_exists=False)
+        clicked_labels = [c[1] for c in pg.calls if c[0] in ("get_by_role", "click", "click_css")]
+        self.assertEqual(clicked_labels, [], f"a destructive click was attempted: {clicked_labels}")
+        self.assertEqual(captured, [], "the validation state must not be captured when skipped")
+
+    def test_c_capture_validation_clicks_when_both_gates_open(self):
+        flow = {"id": "f", "role": "citizen", "allowSubmit": True,
+                "steps": [{"captureValidation": "STATE", "submitLabel": "Submit"}]}
+        pg, captured = self._run(flow, "uat", button_exists=True)
+        self.assertIn(("click", "Submit"), pg.calls)
+        self.assertEqual(captured, ["STATE"])
+
+    def test_d_string_false_allow_submit_blocks_on_uat(self):
+        ok, why = D.is_submit_allowed("uat", {"id": "f", "allowSubmit": "false"})
+        self.assertFalse(ok)
+        self.assertIn("allowSubmit", why)
 
 
 if __name__ == "__main__":
