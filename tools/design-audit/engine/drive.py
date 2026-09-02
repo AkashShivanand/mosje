@@ -139,4 +139,40 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
             _capture_state(pg, step["captureValidation"], role, cfg, paths, bdl, man, fid, None)
             done.append(step["captureValidation"])
             pg.reload(wait_until="networkidle"); pg.wait_for_timeout(1500)
+    if allowed and flow.get("reuseRecord") is None:
+        # Harvest whatever identifier the success screen shows, so the next run edits/views that
+        # record instead of filing a fresh application on dev every time.
+        try:
+            txt = pg.inner_text("body")
+            hit = re.search(r"\b([A-Z]{2,}[-/][A-Z0-9\-/]{4,})\b", txt)
+            if hit:
+                bdl.setdefault("records", {})[fid] = {"id": hit.group(1), "createdAt": B.now_iso()}
+                print(f"    · recorded {fid} -> {hit.group(1)} (re-used on the next run)", flush=True)
+        except Exception:
+            pass
     return done
+
+
+def should_replay(flow, prev_bundle, decisions):
+    """Tier 2. Replay a flow only when its entry screen moved, or nothing is known about it.
+
+    Driving a flow is the expensive tier — it fills forms and clicks through a wizard. Skipping
+    it when the entry screen is byte-identical is the whole point of the bundle. But a flow
+    entry that no nav link reaches has no decision recorded for it at all (the nav-based decide
+    step never visited it) — in that case this returns True (replay), because a skipped flow
+    would silently serve stale wizard captures forever, which is the failure this whole design
+    exists to prevent.
+    """
+    if flow.get("alwaysReplay"):
+        return True
+    if not prev_bundle:
+        return True
+    captured = [s for s in prev_bundle.get("screens", [])
+                if s.get("reachedBy") == f"flow:{flow['id']}"]
+    if not captured:
+        return True
+    entry_slug = slugify(flow.get("role") or "citizen", flow.get("entry") or "")
+    verdict = (decisions or {}).get(entry_slug)
+    if verdict is None:
+        return True
+    return verdict != "reuse"

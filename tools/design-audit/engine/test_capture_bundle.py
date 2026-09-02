@@ -330,5 +330,31 @@ class Fixtures(unittest.TestCase):
         self.assertEqual(D.resolve_fixture(self.MAN, {"fill": {"fixture": "nope"}}), {})
 
 
+class FlowReplay(unittest.TestCase):
+    FLOW = {"id": "apply", "entry": "/apply/step-1", "steps": [{"capture": "S1"}]}
+
+    def test_no_previous_bundle_means_replay(self):
+        self.assertTrue(D.should_replay(self.FLOW, None, {}))
+
+    def test_always_replay_wins(self):
+        b = {"screens": [{"slug": "S1", "reachedBy": "flow:apply"}]}
+        self.assertTrue(D.should_replay(dict(self.FLOW, alwaysReplay=True), b, {}))
+
+    def test_unchanged_entry_screen_means_skip(self):
+        b = {"screens": [{"slug": "S1", "reachedBy": "flow:apply"}]}
+        self.assertFalse(D.should_replay(self.FLOW, b, {"CITIZEN-APPLY-STEP-1": "reuse"}))
+
+    def test_changed_entry_screen_means_replay(self):
+        b = {"screens": [{"slug": "S1", "reachedBy": "flow:apply"}]}
+        self.assertTrue(D.should_replay(self.FLOW, b, {"CITIZEN-APPLY-STEP-1": "recapture"}))
+
+    def test_entry_not_among_nav_screens_replays(self):
+        """A flow entry no nav links to yields no decision. Replay rather than skip — a skipped
+        flow silently serves stale wizard captures, which is the failure this whole design exists
+        to prevent."""
+        b = {"screens": [{"slug": "S1", "reachedBy": "flow:apply"}]}
+        self.assertTrue(D.should_replay(self.FLOW, b, {"SOMETHING-ELSE": "reuse"}))
+
+
 if __name__ == "__main__":
     unittest.main()

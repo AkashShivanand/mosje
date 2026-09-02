@@ -1,9 +1,9 @@
 {
   "version": 1,
   "project": "scw",
-  "environment": "prod",
-  "engineSha": "b7ded609",
-  "capturedAt": "2026-09-03T02:16:22+05:30",
+  "environment": "uat",
+  "engineSha": "e4bbc99b",
+  "capturedAt": "2026-09-03T02:43:45+05:30",
   "hosts": {
     "public": {
       "base": "https://scw-user-uat.mosje.in",
@@ -18,7 +18,7 @@
       "url": "https://scw-user-uat.mosje.in/",
       "reachedBy": "nav",
       "png": "captures/live/PUBLIC-HOME.png",
-      "pngSha256": "98c527a243e68291483d4a6cdeb965deb2509d741214e689ab861656971a72bb",
+      "pngSha256": "bd34f50598c830efaced6745fa2ce2fad3010e9744f1a56714ac24b73ad9c878",
       "pngH": 1172,
       "pageH": 1172,
       "truncated": false,
@@ -70,7 +70,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-03T01:52:06+05:30",
+      "capturedAt": "2026-09-03T02:43:56+05:30",
       "designUnchanged": false
     },
     {
@@ -80,7 +80,7 @@
       "url": "https://scw-user-uat.mosje.in/epledge",
       "reachedBy": "nav",
       "png": "captures/live/PUBLIC-EPLEDGE.png",
-      "pngSha256": "37c1742da07400dfdb9522c87150e0557a259ed89d33f90dc66988bc57bf256e",
+      "pngSha256": "91d07ed34094fb9eacb95fb5b048c53b41d7096c1ef6d276f1f3ba99ced7e016",
       "pngH": 1271,
       "pageH": 1271,
       "truncated": false,
@@ -132,7 +132,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-03T01:52:13+05:30",
+      "capturedAt": "2026-09-03T02:44:04+05:30",
       "designUnchanged": false
     },
     {
@@ -339,7 +339,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-03T01:52:20+05:30",
+      "capturedAt": "2026-09-03T02:44:10+05:30",
       "designUnchanged": false
     },
     {
@@ -427,7 +427,7 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-03T01:52:55+05:30",
+      "capturedAt": "2026-09-03T02:44:59+05:30",
       "designUnchanged": false
     },
     {
@@ -437,13 +437,13 @@
       "url": "https://scw-user-uat.mosje.in/sage-registration",
       "reachedBy": "nav",
       "png": "captures/live/PUBLIC-SAGE-REGISTRATION.png",
-      "pngSha256": "f44092032e80393ce0a0efa042884ac7ebcde2620d65313b9bc7788e690db839",
-      "pngH": 1000,
-      "pageH": 1000,
+      "pngSha256": "dca33637085d25913f7cc020d3c0f3fa3f96e4f80e57c58b1f9791d054986e39",
+      "pngH": 6000,
+      "pageH": 6000,
       "truncated": false,
       "rows": "captures/live/PUBLIC-SAGE-REGISTRATION.json",
       "structureHash": "f9e4cb1e0cf53f39342206d2b63fae55ada5b2dba34b87b194f01174b7b030d3",
-      "geometryHash": "0ab0c2c284de2aa1abbc721a5c791211cac5c84274df07ed98158844415f9a1a",
+      "geometryHash": "d6d61ecb7cde58081c5edf41899c2bdacce19b6ae569ab3634f2aea317101e75",
       "maskedRows": 0,
       "totalRows": 72,
       "fields": [
@@ -499,8 +499,8 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-03T02:17:15+05:30",
-      "designUnchanged": true
+      "capturedAt": "2026-09-03T02:46:03+05:30",
+      "designUnchanged": false
     },
     {
       "slug": "PUBLIC-ABOUT-US",
@@ -509,13 +509,13 @@
       "url": "https://scw-user-uat.mosje.in/about-us",
       "reachedBy": "nav",
       "png": "captures/live/PUBLIC-ABOUT-US.png",
-      "pngSha256": "3becff6e431a9230386d41bf536a1cb07153dd554e2a04f3e5b132c54a824873",
-      "pngH": 1000,
-      "pageH": 1000,
+      "pngSha256": "709b602ce38a5e661057ab000a88d79b79f2576d84250e9c5cd24decf69a1d57",
+      "pngH": 6000,
+      "pageH": 6000,
       "truncated": false,
       "rows": "captures/live/PUBLIC-ABOUT-US.json",
       "structureHash": "4db35423afcdd72c9ff698beb46d5e450d69fbf2e2584aad62e34d2f567887e6",
-      "geometryHash": "59c517199a74170890dbde634eb720c350ac75c7be34d4ca8b7cfed8ef03f819",
+      "geometryHash": "0d2cb0b5047020342cc7e3ce62eaa72ef8923ab5411722fd25ef36185501a163",
       "maskedRows": 0,
       "totalRows": 62,
       "fields": [
@@ -561,8 +561,8 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-03T02:17:20+05:30",
-      "designUnchanged": true
+      "capturedAt": "2026-09-03T02:46:08+05:30",
+      "designUnchanged": false
     },
     {
       "slug": "PUBLIC-TERMS-CONDITIONS",
@@ -571,13 +571,13 @@
       "url": "https://scw-user-uat.mosje.in/terms-conditions",
       "reachedBy": "nav",
       "png": "captures/live/PUBLIC-TERMS-CONDITIONS.png",
-      "pngSha256": "5680f0fa2ed660bebea1bce8800a97b3914f42021fc80c1f09e44da6aeb64c61",
-      "pngH": 1000,
-      "pageH": 1000,
+      "pngSha256": "437582c0db1b086bc992be815890b0cce736c751e6b5b09e9ac06f64f3af8565",
+      "pngH": 6000,
+      "pageH": 6000,
       "truncated": false,
       "rows": "captures/live/PUBLIC-TERMS-CONDITIONS.json",
       "structureHash": "0b673e081e663475ab0aa6b59407549d46702530878c5cdbcd4a0e80b287475d",
-      "geometryHash": "2465751951721d106321b5a4b4cf2fed0cdd3acb68f3e23d5a7be279dad50a4f",
+      "geometryHash": "43f77d47f5047cc0502342a11f2bcc024820cae6582381e45ac73d067199aec0",
       "maskedRows": 0,
       "totalRows": 62,
       "fields": [
@@ -623,8 +623,158 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-03T02:17:25+05:30",
-      "designUnchanged": true
+      "capturedAt": "2026-09-03T02:46:14+05:30",
+      "designUnchanged": false
+    },
+    {
+      "slug": "PUBLIC-SAGE-REGISTRATION-INITIAL",
+      "role": "public",
+      "route": "https://scw-user-uat.mosje.in/sage-registration",
+      "url": "https://scw-user-uat.mosje.in/sage-registration",
+      "reachedBy": "flow:sage-registration-walkthrough",
+      "png": "captures/live/PUBLIC-SAGE-REGISTRATION-INITIAL.png",
+      "pngSha256": "8f5de77a2ec7d41c807224b493be3506a18c2f8c6915940a1699e29293b4c7bc",
+      "pngH": null,
+      "pageH": 6000,
+      "truncated": false,
+      "rows": "captures/live/PUBLIC-SAGE-REGISTRATION-INITIAL.json",
+      "structureHash": "f9e4cb1e0cf53f39342206d2b63fae55ada5b2dba34b87b194f01174b7b030d3",
+      "geometryHash": "d6d61ecb7cde58081c5edf41899c2bdacce19b6ae569ab3634f2aea317101e75",
+      "maskedRows": 0,
+      "totalRows": 72,
+      "fields": [
+        {
+          "name": null,
+          "label": "I confirm that my organization meets the SAGE eligibility criteria mentioned above.",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "sage-registration-walkthrough",
+        "step": 1,
+        "of": 2
+      },
+      "capturedAt": "2026-09-03T02:46:19+05:30"
+    },
+    {
+      "slug": "PUBLIC-SAGE-REGISTRATION-FEEDBACK",
+      "role": "public",
+      "route": "https://scw-user-uat.mosje.in/sage-registration",
+      "url": "https://scw-user-uat.mosje.in/sage-registration",
+      "reachedBy": "flow:sage-registration-walkthrough",
+      "png": "captures/live/PUBLIC-SAGE-REGISTRATION-FEEDBACK.png",
+      "pngSha256": "8f5de77a2ec7d41c807224b493be3506a18c2f8c6915940a1699e29293b4c7bc",
+      "pngH": null,
+      "pageH": 6000,
+      "truncated": false,
+      "rows": "captures/live/PUBLIC-SAGE-REGISTRATION-FEEDBACK.json",
+      "structureHash": "f9e4cb1e0cf53f39342206d2b63fae55ada5b2dba34b87b194f01174b7b030d3",
+      "geometryHash": "d6d61ecb7cde58081c5edf41899c2bdacce19b6ae569ab3634f2aea317101e75",
+      "maskedRows": 0,
+      "totalRows": 72,
+      "fields": [
+        {
+          "name": null,
+          "label": "I confirm that my organization meets the SAGE eligibility criteria mentioned above.",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "sage-registration-walkthrough",
+        "step": 2,
+        "of": 2
+      },
+      "capturedAt": "2026-09-03T02:46:52+05:30"
     }
   ],
   "records": {}
