@@ -1,3 +1,7 @@
+/* Declared first so this sheet cannot register `components` ahead of Tailwind's
+   `base` when it loads as its own CSS root. See .claude/rules/design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
 /*
  * SAMAVESH Design System — DemoAccountsPanel
  * ─────────────────────────────────────────────────────────────────────────────

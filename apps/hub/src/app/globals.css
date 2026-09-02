@@ -219,10 +219,15 @@
   --color-saffron-600: #b8500f;
 
   /* Neutral surfaces.
-     CONFLICT on `ink-hint`: nmba/nhapoa/tg darkened #94a3b8 → slate-500 for AA;
-     scw kept the failing #94a3b8 and overrides it back. Preserved deliberately —
-     this port is behaviour-preserving, not an accessibility fix. */
-  --color-ink-hint: #64748b;
+     `ink-hint` IS SLATE-600, NOT SLATE-500, AND THE EXTRA STEP IS LOAD-BEARING.
+     slate-500 #64748b measures 4.76:1 on white but only **4.44:1** on
+     `#f5f7fb` and **4.48:1** on `#fff7eb` — two grounds these portals actually
+     paint — so it cleared AA only on the one surface anybody checked it
+     against. Bind to the step that matches the SURFACE, not the swatch name.
+     slate-600 is 7.58 / 7.07 / 7.13 across all three.
+     The scw conflict this note used to record is resolved: scw no longer
+     overrides it. */
+  --color-ink-hint: #475569;
   --color-line:     #e2e8f0;
 
   /* ── smile-admin-only names ─────────────────────────────────────────── */

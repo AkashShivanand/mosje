@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { createPortal } from "react-dom";
+import { navDisabledAria, navTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import { AccessibilityControls } from "../../utilities/accessibility-controls";
@@ -339,10 +340,13 @@ export function NavSheet({
                           </ul>
                         ) : (
                           <ul className="ds-navsheet__sub">
-                            {col.links?.map((c) => (
+                            {col.links?.map((c) => {
+                              const Tag = navTag(c.disabled);
+                              return (
                               <li key={c.label}>
-                                <a
+                                <Tag
                                   href={c.disabled ? undefined : c.href}
+                                  {...navDisabledAria(c.disabled)}
                                   className={cn("ds-navsheet__sublink", c.disabled && "is-disabled")}
                                   aria-disabled={c.disabled || undefined}
                                   target={c.external && !c.disabled ? "_blank" : undefined}
@@ -350,9 +354,10 @@ export function NavSheet({
                                   onClick={c.disabled ? undefined : onClose}
                                 >
                                   {c.label}
-                                </a>
+                                </Tag>
                               </li>
-                            ))}
+                              );
+                            })}
                           </ul>
                         )}
                       </div>
@@ -362,10 +367,13 @@ export function NavSheet({
 
                 {hasSub && isOpen && sub!.children && (
                   <ul id={subId} className="ds-navsheet__sub">
-                    {sub!.children.map((c) => (
+                    {sub!.children.map((c) => {
+                      const Tag = navTag(c.disabled);
+                      return (
                       <li key={c.label}>
-                        <a
+                        <Tag
                           href={c.disabled ? undefined : c.href}
+                          {...navDisabledAria(c.disabled)}
                           className={cn("ds-navsheet__sublink", c.disabled && "is-disabled")}
                           aria-disabled={c.disabled || undefined}
                           target={c.external && !c.disabled ? "_blank" : undefined}
@@ -373,9 +381,10 @@ export function NavSheet({
                           onClick={c.disabled ? undefined : onClose}
                         >
                           {c.label}
-                        </a>
+                        </Tag>
                       </li>
-                    ))}
+                      );
+                    })}
                   </ul>
                 )}
               </li>

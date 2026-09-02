@@ -84,7 +84,6 @@ export const OrgLogo = React.forwardRef<HTMLSpanElement, OrgLogoProps>(
         className={cn("ds-org-logo", `ds-org-logo--${size}`, className)}
         {...rest}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={resolved} alt={name ?? ""} loading="lazy" decoding="async" />
       </span>
     );

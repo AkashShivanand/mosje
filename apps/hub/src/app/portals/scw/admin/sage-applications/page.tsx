@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
   DataTable,
-  FilterSelect,
+  PeriodFilter,
   Pagination,
   PageHeader,
   SearchInput,
@@ -23,7 +23,7 @@ export default function SageApplicationsPage() {
     <div>
       <PageHeader
         title="SAGE Applications"
-        action={<FilterSelect options={PERIODS} defaultLabel="All" className="w-44" />}
+        action={<PeriodFilter options={PERIODS} defaultLabel="All" className="w-44" />}
       />
 
       <div className="mb-4">

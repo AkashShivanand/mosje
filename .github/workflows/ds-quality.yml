@@ -65,7 +65,7 @@ jobs:
           cache: npm
 
       - name: Install (workspace)
-        run: npm install
+        run: npm ci
 
       - name: Build tokens
         run: npm run build -w @mosje/tokens
@@ -273,7 +273,7 @@ jobs:
           node-version: 22
           cache: npm
       - name: Install (workspace)
-        run: npm install
+        run: npm ci
       - name: Publish Code Connect
         env:
           FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}

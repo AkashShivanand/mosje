@@ -36,6 +36,15 @@ module.exports = {
           "ButtonText",
           "Highlight",
           "HighlightText",
+          /*
+           * The system colour for de-emphasised content, and the only correct
+           * value for a "this is absent / not yet" mark in forced-colors mode.
+           * Without it the illustration language's `ghost` layer had to collapse
+           * into `ink` — making the drawing that says "nothing has been reported"
+           * identical to the one that says "here are your figures", for exactly
+           * the readers that mode exists to serve.
+           */
+          "GrayText",
         ],
         message:
           "SAMAVESH Design System: Hardcoded colors are blocked. You must use a semantic token (var(--sa-*)).",

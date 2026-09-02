@@ -1,169 +1,160 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { FormCardPlayground } from "./form-card-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  Callout,
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { FormCardPlayground } from "./form-card-playground";
 
 export const metadata: Metadata = {
-  title: "FormCard - SAMAVESH Design System",
+  title: "Form Card — Design System",
   description:
-    "A titled surface card that accepts arbitrary children, ensuring consistent header styling across complex layouts.",
+    "The sibling of Form Section: the same card chrome and section title, with an arbitrary body instead of a field grid.",
 };
 
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "A real `<section>` labelled by its own `<h2>` through `aria-labelledby`, so the group is a named region.",
+  },
+  {
+    criterion: "1.4.1 Use of Colour",
+    level: "A",
+    description:
+      "The required marker is a glyph rather than a colour change, so it survives a monochrome rendering.",
+  },
+  {
+    criterion: "2.4.6 Headings and Labels",
+    level: "AA",
+    description:
+      "The title is a real heading at the same level and appearance as every Form Section on the estate, so a form's structure is consistent whatever a given card contains.",
+  },
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    description:
+      "`headingId` lets a child inside the body take the heading as its own accessible name, which is how a data table in a card is named without repeating the title.",
+  },
+  {
+    criterion: "GIGW 3.0 — Forms",
+    level: "GIGW",
+    description:
+      "Related content is grouped under a heading, and the required marker is paired with a programmatic requirement rather than standing alone.",
+  },
+];
+
 export default function FormCardPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Form Card"
+      status="Stable"
+      summary="The sibling of Form Section: the same card chrome and the same section title, with an arbitrary body instead of a field grid. It exists so a section whose content is not a grid still carries an identical header."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<FormCardPlayground />}
+      propsFrom="FormCardProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A form section holds a data table, a repeatable card list, or mixed content rather than a grid of fields.",
+          "The header needs a right-aligned action — an Add button for a list the reader extends.",
+          "A child inside the body must be labelled by the section heading, which `headingId` makes possible.",
+        ],
+        avoid: [
+          "The body is a plain grid of fields — use Form Section, which lays the grid out for you.",
+          "The card is not part of a form at all — use Card, which carries no form heading conventions.",
+          "The heading belongs to the page rather than a section — use Page Header.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          FormCard
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A titled surface card with a custom body. It provides the same section-title styling and chrome as <code>FormSection</code>, but allows for arbitrary children instead of a rigid field grid.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Form Section",
+          href: "/design-system/components/forms/form-section",
+          reason: "when the body is a plain field grid",
+        },
+        {
+          label: "Card",
+          href: "/design-system/components/data-display/card",
+          reason: "for a surface outside a form",
+        },
+        {
+          label: "Data Table",
+          href: "/design-system/components/data-display/data-table",
+          reason: "the commonest body this card holds",
+        },
+        {
+          label: "Wizard",
+          href: "/design-system/components/forms/wizard",
+          reason: "the multi-step shell these cards sit inside",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-hand-rolled">
+          <h2 id="cdp-hand-rolled" className="cdp__h2">
+            Why It Exists
+          </h2>
+          <Callout type="warning" title="Do Not Hand-Roll a Section Card">
+            Never build a bare <code>&lt;section&gt;</code> with its own heading classes for a
+            custom-layout group. The heading drifts from Form Section — a different size, a different
+            colour, a different weight — and the two sit next to each other on the same form. Form
+            Card keeps them in lockstep by sharing the stylesheet.
+          </Callout>
+          <p>
+            Form Card and Form Section share <code>form-section.css</code> and render the same header
+            markup. Changing one header changes both, which is the property that makes the pair worth
+            having rather than one component with a layout switch.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Button, FormCard } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Configure the FormCard&apos;s header layout, including descriptions and right-aligned actions.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <FormCardPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          Use <code>FormCard</code> for sections of a form or dashboard where the layout isn&apos;t a simple 1-, 2-, or 3-column grid of inputs. This includes data tables, repeating field groups, or mixed content sections. By using this component, every section header across the application stays visually identical.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Use FormCard when you need to render a custom layout or a data table within a form section.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't use FormCard if you just need a standard grid of form fields. Use FormSection instead.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`<FormCard 
-  title="Uploaded Documents" 
-  description="Ensure all documents are clearly legible."
-  actions={<Button variant="ghost" size="sm">Add Document</Button>}
+<FormCard
+  title="Uploaded Documents"
+  description="Every document must be legible and under 5 MB."
+  actions={<Button appearance="text" size="sm">Add Document</Button>}
 >
   <table className="ds-table">
-    {/* Complex custom content goes here */}
     <tbody>
-      <tr><td>Aadhaar Card.pdf</td></tr>
+      <tr><td>Aadhaar card.pdf</td></tr>
     </tbody>
   </table>
-</FormCard>`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "title", type: "ReactNode", required: true, description: "Section heading." },
-            { name: "description", type: "ReactNode", description: "Optional sub-heading below the title." },
-            { name: "required", type: "boolean", default: "false", description: "Appends the accessible required marker (*) to the title." },
-            { name: "headingId", type: "string", description: "Explicit heading id. Auto-generated if omitted." },
-            { name: "actions", type: "ReactNode", description: "Optional right-aligned controls in the header row." },
-            { name: "children", type: "ReactNode", required: true, description: "The content of the card." },
-            { name: "className", type: "string", description: "Additional classes merged onto the section element." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Section:</strong> The component wraps its content in a native <code>&lt;section&gt;</code> element, defining a clear landmark for screen readers.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>aria-labelledby:</strong> The section is automatically labelled by its title (<code>&lt;h2&gt;</code>), establishing a strong accessible name for the region. You can pass a custom <code>headingId</code> if needed.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+</FormCard>`}</CodeBlock>
+          <p>
+            Where the body is a table, pass <code>headingId</code> and let the table take it as its
+            accessible name, so the heading is not written out twice.
+          </p>
+          <CodeBlock>{`<FormCard title="Sanctioned Hostels" headingId="hostels-heading">
+  <table aria-labelledby="hostels-heading">…</table>
+</FormCard>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            The heading is an <code>&lt;h2&gt;</code>, matching Form Section. Anything inside the body
+            that needs its own heading starts at <code>&lt;h3&gt;</code>, so the level is never
+            skipped.
+          </p>
+          <p>
+            <code>actions</code> sits in the header row and is reached by keyboard before the body. An
+            action that operates on a specific row belongs in that row, not here — a header action
+            that acts on something further down the card cannot be understood from its own label.
+          </p>
+        </section>
+      }
+    />
   );
 }

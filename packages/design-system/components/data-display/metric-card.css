@@ -39,6 +39,17 @@
   }
 
   .ds-metric-card {
+    /*
+     * The figure's line box, named once and declared on the BLOCK so it
+     * inherits to whatever inside the card needs it. Every state of this tile
+     * matches it, so a card that has failed is exactly as tall as the card
+     * beside it that succeeded — which is the whole reason the number is not
+     * simply replaced by a shorter sentence.
+     *
+     * Local prefix, not `--ds-`: that namespace is a deprecated GLOBAL alias
+     * and a component-local variable must not sit inside it.
+     */
+    --metric-card-value-line: 32px;
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-4);
@@ -72,7 +83,7 @@
     margin-top: var(--sa-padding-4);
     font-family: var(--sa-font-latin);
     font-size: 24px;
-    line-height: 32px;
+    line-height: var(--metric-card-value-line);
     font-weight: 700;
     color: var(--sa-text-neutral-bolder);
     letter-spacing: -0.01em;
@@ -88,6 +99,57 @@
     border-radius: var(--sa-shape-8);
     background-color: var(--sa-color-primaryScale-50);
     color: var(--sa-text-brand-primary-base);
+  }
+
+  /* ── No figure ────────────────────────────────────────────────────────────
+     Both of these hold the value row's exact box, so a tile that is waiting or
+     has failed is the same height as the tile beside it that succeeded. */
+
+  /* The state's headline, set as a sentence rather than as a figure. 24px/700 on
+     "This could not be loaded" reads as a number and wraps badly in a tile. */
+  .ds-metric-card__value--state {
+    font-size: var(--sa-type-body-2-size);
+    /*
+     * The leading is the SENTENCE's own, bound to its size — a size without its
+     * paired leading is half a binding. Matching the figure's height is a
+     * separate job and it is done with `min-height` below, because it is a
+     * layout contract, not a typographic one. Writing the figure's 32px here as
+     * a line-height conflated the two and left an unbound literal on a rule
+     * whose size was correctly bound.
+     */
+    line-height: var(--sa-type-body-2-lh);
+    min-height: var(--metric-card-value-line);
+    font-weight: 600;
+    letter-spacing: normal;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-metric-card__value--loading {
+    width: 62%;
+    height: 20px;
+    margin-top: var(--sa-padding-8);
+    margin-bottom: var(--sa-padding-4);
+    border-radius: var(--sa-shape-4);
+    background: linear-gradient(
+      90deg,
+      var(--sa-bg-neutral-subtler) 25%,
+      var(--sa-border-neutral-subtle) 37%,
+      var(--sa-bg-neutral-subtler) 63%
+    );
+    background-size: 400% 100%;
+    animation: ds-metric-card-shimmer 1.4s ease infinite;
+  }
+
+  @keyframes ds-metric-card-shimmer {
+    0% { background-position: 100% 0; }
+    100% { background-position: 0 0; }
+  }
+
+  /* The shape stays; only the movement goes. */
+  @media (prefers-reduced-motion: reduce) {
+    .ds-metric-card__value--loading {
+      animation: none;
+    }
   }
 
   /* ── Size variants ── */

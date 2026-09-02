@@ -1,20 +1,39 @@
 import * as React from "react";
 import { cn } from "../../../utils/cn";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
 import { categoricalColor } from "./internal/palette";
 import { arcPath } from "./internal/geometry";
 import { formatPercent } from "./internal/format";
-import { CardState } from "../../dashboard/card-state";
 import type { ChartDatum } from "./types";
+
+export interface PieChartProps extends ChartStateProps {
+  data: ChartDatum[];
+  title: string;
+}
 
 /**
  * MoSJE / SAMAVESH PieChart — dependency-free SVG pie with a side legend and a
  * screen-reader data table. **Backward-compatible API** (`{ data, title }`).
  */
-export function PieChart({ data, title }: { data: ChartDatum[]; title: string }) {
+export function PieChart({ data, title, state, onRetry, filterLabel, tableView }: PieChartProps) {
   const total = data.reduce((sum, d) => sum + d.value, 0);
-  if (total === 0) return <CardState kind="empty" compact />;
+  // One expression. `state` wins where the caller gave one — a zero total says
+  // nothing about whether the feed was asked, failed, or was filtered away.
+  const resolved = state ?? (total === 0 ? "empty" : undefined);
+  if (resolved)
+    return (
+      <ChartFrame
+        title={title}
+        viewBox="0 0 200 200"
+        className="ds-chart--pie"
+        state={resolved}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+      >
+        {null}
+      </ChartFrame>
+    );
 
   let cursor = 0;
   const slices = data.map((d, i) => {
@@ -43,6 +62,7 @@ export function PieChart({ data, title }: { data: ChartDatum[]; title: string })
         columns: ["Category", "Count", "Share"],
         rows: slices.map((s) => [s.label, s.value, formatPercent(s.pct)]),
       }}
+      tableView={tableView}
     >
       {slices.map((s) => (
         <path

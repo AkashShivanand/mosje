@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
   DataTable,
-  FilterSelect,
+  PeriodFilter,
   Pagination,
   PageHeader,
   SearchInput,
@@ -27,8 +27,8 @@ export default function VolunteersPage() {
 
       <div className="mb-4 flex flex-col gap-3 sm:flex-row">
         <SearchInput placeholder="Search volunteers..." className="flex-1" />
-        <FilterSelect options={PERIODS} defaultLabel="All" className="w-full sm:w-44" />
-        <FilterSelect
+        <PeriodFilter options={PERIODS} defaultLabel="All" className="w-full sm:w-44" />
+        <PeriodFilter
           options={INDIAN_STATES}
           defaultLabel="All States"
           className="w-full sm:w-52"

@@ -174,7 +174,11 @@ export function downloadCsv(table: HTMLTableElement, filename: string): void {
   const csv = tableToCsv(table);
   // BOM so Excel opens Indian-digit and non-ASCII text as UTF-8.
   triggerDownload(
-    new Blob([`﻿${csv}`], { type: "text/csv;charset=utf-8" }),
+    // The leading U+FEFF is a BOM and it is REQUIRED: without it Excel opens a
+    // UTF-8 CSV as the local ANSI codepage and mangles every Devanagari name in
+    // the export. Written as an ESCAPE rather than a literal BOM so it shows up
+    // in a diff and does not read as stray whitespace.
+    new Blob([`\uFEFF${csv}`], { type: "text/csv;charset=utf-8" }),
     filename,
   );
 }

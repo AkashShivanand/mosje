@@ -1,226 +1,212 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
 import { SideSheetSpecimen } from "./side-sheet-specimen";
-import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
-  title: "Side Sheet",
-  description: "Slide-out right-rail panel for deep application inspection, multi-filter panels, and officer audit histories without losing page context.",
+  title: "Side Sheet — Design System",
+  description:
+    "An edge-anchored panel for long forms and record inspection, keeping the list behind it visible while the task is carried out.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    description:
+      'The panel carries role="dialog" with aria-modal="true", and aria-labelledby points at the generated id of the title, so it is always announced by name.',
+  },
+  {
+    criterion: "2.1.2 No Keyboard Trap",
+    level: "A",
+    description:
+      "Tab and Shift+Tab cycle within the panel while it is open, and Escape leaves it. The confinement is deliberate and always has a key that releases it.",
+  },
+  {
+    criterion: "2.4.3 Focus Order",
+    level: "A",
+    description:
+      "On open, focus moves to the first focusable control in the panel. On close, the element that was active when it opened is refocused, so the reader returns to the row they were on.",
+  },
+  {
+    criterion: "1.3.2 Meaningful Sequence",
+    level: "A",
+    description:
+      "Background scrolling is locked while the panel is open and the previous value is restored on close, so the list behind stays where the reader left it.",
+  },
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    description:
+      'The backdrop is aria-hidden="true" and the close control carries aria-label="Close panel", so the only thing announced is the dialog and its name.',
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function SideSheetDocPage(): React.JSX.Element {
+export default function SideSheetPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Side Sheet
-          </h1>
-          <StatusBadge status="Stable" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Slide-out right-rail panel for deep application inspection, multi-filter panels, and officer audit histories without losing page context."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+    <ComponentDocPage
+      name="Side Sheet"
+      status="Stable"
+      summary="An edge-anchored panel for tasks that need room and context at once — a long form, a record being inspected, a set of filters. The list behind it stays visible, which is the whole reason to choose it over a dialog."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<SideSheetSpecimen />}
+      propsFrom="SideSheetProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A form has six or more fields, or a textarea the writer needs room for.",
+          "The reader benefits from seeing the list or table behind the panel — inspecting one application while the queue stays in view.",
+          "A file-upload and preview flow, where the panel holds both the control and the result.",
+          "A navigation drawer, anchored to the left edge, on a narrow viewport.",
+        ],
+        avoid: [
+          "The decision is short and irreversible — use a Modal, which is centred and reads as a stop.",
+          "The content is a photograph, a certificate or a video — use a Lightbox.",
+          "Nothing has to be decided at all — use a Toast for the report, or an Alert for a standing condition.",
+          "Another sheet or dialog is already open. These do not stack; the second hides the first with no way back.",
+        ],
+      }}
+      related={[
+        {
+          label: "Modal",
+          href: "/design-system/components/feedback/modal",
+          reason: "for short confirmations that should stop the reader",
+        },
+        {
+          label: "Nav Sheet",
+          href: "/design-system/components/navigation/nav-sheet",
+          reason: "for the mobile navigation drawer specifically",
+        },
+        {
+          label: "Lightbox",
+          href: "/design-system/components/feedback/lightbox",
+          reason: "for viewing media rather than working on a record",
+        },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-vs-modal">
+            <h2 id="cdp-vs-modal" className="cdp__h2">
+              Side Sheet or Modal
+            </h2>
+            <p>
+              Both are modal dialogs with the same trap, the same Escape and the same focus restore.
+              The difference is what they do to the page behind, and therefore what they are for.
+            </p>
+            <p>
+              A <strong>Modal</strong> is centred over a scrim and asks a question the reader must
+              answer before continuing. A <strong>Side Sheet</strong> is anchored to an edge and
+              leaves the list readable, so a reader can check one row against the panel without
+              closing it. Choose by whether the context behind matters, not by how much content
+              there is.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-anatomy">
+            <h2 id="cdp-anatomy" className="cdp__h2">
+              Anatomy
+            </h2>
+            <ol>
+              <li>
+                <strong>Backdrop</strong> — the scrim. Pressing it closes the panel.
+              </li>
+              <li>
+                <strong>Header</strong> — the title and the close control, fixed at the top.
+              </li>
+              <li>
+                <strong>Body</strong> — the content, scrolling independently of the page.
+              </li>
+              <li>
+                <strong>Footer</strong> — optional and sticky, so the actions stay reachable from
+                anywhere in a long form.
+              </li>
+            </ol>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { SideSheet, Button } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Side Sheet is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <SideSheetSpecimen />
-                    </div>
-                  </div>
-                </section>
+const [open, setOpen] = React.useState(false);
+const close = React.useCallback(() => setOpen(false), []);
 
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use SideSheet for auxiliary tasks that benefit from seeing the underlying list.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not use SideSheet for critical confirmation dialogs; use Modal instead.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { SideSheet } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "open",
-    "type": "boolean",
-    "required": true,
-    "description": "Open state of the side sheet."
-  },
-  {
-    "name": "title",
-    "type": "string",
-    "required": true,
-    "description": "Header title."
-  },
-  {
-    "name": "onClose",
-    "type": "() => void",
-    "required": true,
-    "description": "Callback when closed."
-  },
-  {
-    "name": "children",
-    "type": "React.ReactNode",
-    "required": true,
-    "description": "Panel body contents."
+<SideSheet
+  open={open}
+  onClose={close}
+  title="Application Details"
+  size="lg"
+  footer={
+    <>
+      <Button variant="neutral" onClick={close}>Cancel</Button>
+      <Button variant="primary" onClick={save}>Save Changes</Button>
+    </>
   }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<SideSheet open={true} title="Application Details" onClose={() => console.log("close")}><div style={{ padding: "var(--sa-padding-20)" }}><p style={{ margin: 0 }}>Beneficiary application deep inspection panel.</p></div></SideSheet>`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "2.4.3 Focus Order",
-    "level": "AA",
-    "description": "Focus moves to side sheet title on open and traps Tab navigation."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Escape</kbd></td>
-                          <td>{"Closes the side sheet."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Side Sheet" />
-    </article>
+>
+  <ApplicationForm id={selected} />
+</SideSheet>`}</CodeBlock>
+          <p>
+            <strong>Pass a stable <code>onClose</code>.</strong> Unlike Modal, which reads its
+            handler through a ref, this component&apos;s focus-trap effect depends on{" "}
+            <code>onClose</code> directly — so an inline arrow, which is a new function on every
+            parent render, tears the effect down and re-runs it each time the parent re-renders. In
+            a panel containing a controlled input that means once per keystroke. Wrap it in{" "}
+            <code>useCallback</code>, or hoist it out of the render.
+          </p>
+        </section>
+      }
+      accessibility={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-keys">
+            <h2 id="cdp-keys" className="cdp__h2">
+              Keyboard
+            </h2>
+            <ul>
+              <li>
+                <strong>Escape</strong> — closes the panel from anywhere inside it, whatever has
+                focus.
+              </li>
+              <li>
+                <strong>Tab</strong> — moves through the panel&apos;s controls, wrapping from the
+                last back to the first rather than escaping to the list behind.
+              </li>
+              <li>
+                <strong>Shift + Tab</strong> — the same in reverse.
+              </li>
+            </ul>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-focus">
+            <h2 id="cdp-focus" className="cdp__h2">
+              Focus Trap and Focus Restore
+            </h2>
+            <p>
+              The panel collects its focusable descendants on every Tab rather than once on open, so
+              the trap stays correct in a form whose fields appear and disappear. Focus lands on the
+              first of them when the panel opens — the close control, in the default layout.
+            </p>
+            <p>
+              The element that had focus at the moment of opening is captured and refocused when the
+              panel unmounts. In the case this component is built for — a queue of applications,
+              opened one at a time — that returns the reader to the row they were on rather than to
+              the top of the table.
+            </p>
+            <p>
+              The panel is modal: <code>aria-modal=&quot;true&quot;</code> and a hidden backdrop mean
+              assistive technology treats the list behind as unavailable while it is open. That is
+              deliberate even though the list stays <em>visible</em> — visible context is a reading
+              aid, not an invitation to interact with two things at once.
+            </p>
+          </section>
+        </>
+      }
+    />
   );
 }

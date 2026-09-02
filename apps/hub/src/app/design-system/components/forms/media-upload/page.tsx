@@ -1,182 +1,179 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { MediaUploadPlayground } from "./media-upload-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { MediaUploadPlayground } from "./media-upload-playground";
 
 export const metadata: Metadata = {
-  title: "MediaUpload - SAMAVESH Design System",
+  title: "Media Upload — Design System",
   description:
-    "An accessible file dropzone supporting image previews and client-side validation.",
+    "A single-file dropzone with a click target, drag and drop, an inline preview, and client-side type and size checks.",
 };
 
+const A11Y: A11yItem[] = [
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    description:
+      "The dropzone is a real `<button>`, so it is reachable by Tab and opens the file picker on Enter or Space. Dragging is an addition, never the only route.",
+  },
+  {
+    criterion: "2.5.7 Dragging Movements",
+    level: "AA",
+    description:
+      "Everything drag and drop achieves is also achieved by clicking the same target and using the platform's own picker.",
+  },
+  {
+    criterion: "2.5.8 Target Size (Minimum)",
+    level: "AA",
+    description: "The dropzone is a large block target, and the Replace and Remove actions are text buttons well past 24×24.",
+  },
+  {
+    criterion: "3.3.1 Error Identification",
+    level: "A",
+    description:
+      "A rejected file renders a message naming the reason — the wrong type, or the size limit — rather than silently doing nothing.",
+  },
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    description:
+      "The preview thumbnail carries alt text, and the file glyph used for non-image types is `aria-hidden` beside the file name that names it.",
+  },
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    description:
+      "The operable control carries the `id` Form Field generated, so the visible label names the button rather than the hidden file input.",
+  },
+];
+
 export default function MediaUploadPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Media Upload"
+      status="Stable"
+      summary="A single-file dropzone with a click target, drag and drop, an inline preview and client-side type and size checks. It reads the file locally and hands you a data URL, so nothing reaches the network until the form is submitted."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<MediaUploadPlayground />}
+      propsFrom="MediaUploadProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "The reader supplies exactly one file — a photograph, a signature, a scanned identity document.",
+          "The file should be previewed before submission, so an upside-down scan is caught by the reader rather than by an officer.",
+          "The type and size limits should be enforced before anything is sent.",
+        ],
+        avoid: [
+          "The reader supplies several files — use Media Gallery Input, which shows them as a grid.",
+          "The photograph must carry a location — use Geo Photo Input, which reads the coordinates and compresses the image.",
+          "The file is large or numerous enough that holding it in memory as a data URL is unreasonable. This control is for form attachments, not for bulk transfer.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          MediaUpload
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A robust file upload component with drag-and-drop support, inline image previews, and automatic client-side size and type validation.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Media Gallery Input",
+          href: "/design-system/components/forms/media-gallery-input",
+          reason: "when several files are expected",
+        },
+        {
+          label: "Geo Photo Input",
+          href: "/design-system/components/forms/geo-photo-input",
+          reason: "when the photograph must carry a location",
+        },
+        {
+          label: "Form Field",
+          href: "/design-system/components/forms/form-field",
+          reason: "the label, hint and error wiring this control expects",
+        },
+        {
+          label: "Form Card",
+          href: "/design-system/components/forms/form-card",
+          reason: "the section a list of attached documents belongs in",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-states">
+          <h2 id="cdp-states" className="cdp__h2">
+            The Two States
+          </h2>
+          <p>
+            With no <code>value</code> the control is a dropzone carrying the prompt and a hint naming
+            the accepted types and the size limit. With a <code>value</code> it becomes a preview: the
+            thumbnail or a file glyph, the file name, and two actions — Replace, which reopens the
+            picker, and Remove, which clears it.
+          </p>
+          <p>
+            The hint is derived by default, so the limit shown always matches the limit enforced.
+            Override <code>hintLabel</code> only where the department&apos;s own wording differs, and
+            keep the figure in step with <code>maxSizeMb</code>.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { FormField, MediaUpload } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Try dragging and dropping an image onto the dropzone, or clicking it to open the file picker. Once uploaded, you can view the thumbnail preview and remove or replace the file.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <MediaUploadPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          Use <code>MediaUpload</code> when you need users to provide a single file, particularly images (like a passport photo, ID scan, or signature). It handles reading the file locally using <code>FileReader</code>, returning a base64 data-URL to your application without needing an immediate network request.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Wrap it in a FormField so the dropzone gets properly labelled and wired to any error messages.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't use this for multi-file uploads or entire galleries. Use MediaGalleryInput (coming soon) instead.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`function AvatarUploader() {
-  const [photo, setPhoto] = React.useState();
-  const [name, setName] = React.useState();
+const [photo, setPhoto] = React.useState<string>();
+const [name, setName] = React.useState<string>();
 
-  return (
-    <FormField label="Upload Photograph">
-      {(props) => (
-        <MediaUpload 
-          {...props}
-          value={photo}
-          fileName={name}
-          onChange={(dataUrl, fileName) => {
-            setPhoto(dataUrl);
-            setName(fileName);
-          }}
-          onClear={() => {
-            setPhoto(undefined);
-            setName(undefined);
-          }}
-        />
-      )}
-    </FormField>
-  );
-}`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "value", type: "string", description: "Current value — a data-URL or image src. Triggers the preview state." },
-            { name: "fileName", type: "string", description: "File name shown in the preview chip." },
-            { name: "onChange", type: "(dataUrl: string, fileName: string) => void", required: true, description: "Called with the read data-URL and file name." },
-            { name: "onClear", type: "() => void", required: true, description: "Called when the user removes the file." },
-            { name: "accept", type: "string", default: '"image/*"', description: "Accepted MIME types/extensions." },
-            { name: "maxSizeMb", type: "number", default: "5", description: "Max file size in megabytes." },
-            { name: "promptLabel", type: "string", default: '"Click or drag an image..."', description: "Prompt shown in the empty drop zone." },
-            { name: "hintLabel", type: "string", description: "Sub-hint under the prompt. Defaults to a type/size summary." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Keyboard Operable:</strong> The entire dropzone area is a <code>&lt;button&gt;</code>, making it fully operable via the keyboard (Space/Enter). The hidden native file input is bypassed via a ref click.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Error Feedback:</strong> Built-in size and type validation errors are rendered in a <code>role=&quot;alert&quot;</code> container, immediately notifying screen reader users if their file was rejected.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+<FormField label="Upload Photograph" hint="A recent passport-size photograph.">
+  {(control) => (
+    <MediaUpload
+      {...control}
+      value={photo}
+      fileName={name}
+      onChange={(dataUrl, fileName) => {
+        setPhoto(dataUrl);
+        setName(fileName);
+      }}
+      onClear={() => {
+        setPhoto(undefined);
+        setName(undefined);
+      }}
+    />
+  )}
+</FormField>`}</CodeBlock>
+          <p>
+            For a document rather than an image, set <code>accept</code>. The control then draws a file
+            glyph instead of a thumbnail, and its default hint changes with it.
+          </p>
+          <CodeBlock>{`<MediaUpload
+  accept="application/pdf"
+  maxSizeMb={10}
+  value={document}
+  fileName={documentName}
+  onChange={onDocument}
+  onClear={onClearDocument}
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            The visible control is a button, not the file input. The hidden input carries no label and
+            no id, which is why the <code>id</code> Form Field generates is applied to the button — a
+            label bound to the hidden input would name something the reader cannot reach.
+          </p>
+          <p>
+            <code>required</code> is accepted and dropped on purpose. A required file input inside a
+            form blocks submission even once a file has been chosen, because the input&apos;s own
+            value is never set by this component. Enforce the requirement in your own validation and
+            report it through Form Field&apos;s <code>error</code>.
+          </p>
+        </section>
+      }
+    />
   );
 }

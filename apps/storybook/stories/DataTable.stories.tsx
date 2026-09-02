@@ -14,6 +14,20 @@ import {
  * point of the component is that they no longer do. Never fork it per portal —
  * add the prop here instead.
  *
+ * **Sorting.** Mark a column `sortable` and its header becomes a button, the
+ * cell gains `aria-sort`, and a live region announces the change — the table had
+ * none of those, so a register could be ordered and a screen-reader user was
+ * never told by what. Where the cell's display comes from `render`, give the
+ * column a `sortValue`: without it a formatted figure sorts as text and
+ * "₹1,20,000" lands before "₹9,000".
+ *
+ * `sort` / `onSortChange` are the CONTROLLED form, for a page that sorts on the
+ * server or keeps the order in its URL; `defaultSort` seeds the uncontrolled
+ * one. Uncontrolled sorts the whole set and then pages it — sorting the visible
+ * page instead reorders ten rows inside a register of four thousand and reads
+ * as correct. A third press on the same header CLEARS the sort, because a reader
+ * has to be able to get back to the order the department published.
+ *
  * The prop worth understanding is **`total` vs `data.length`**. `total` is how
  * many records exist; `data` is what you handed it. Pass the whole set and they
  * match. Pass one page from a server and `total` is the server's count — that

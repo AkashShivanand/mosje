@@ -15508,7 +15508,7 @@
               "value": "#0373df"
             }
           },
-          "description": "Use as series 1 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 1 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-1)"
           },
@@ -15528,7 +15528,7 @@
               "value": "#a25a00"
             }
           },
-          "description": "Use as series 2 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 2 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-2)"
           },
@@ -15548,7 +15548,7 @@
               "value": "#007668"
             }
           },
-          "description": "Use as series 3 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 3 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-3)"
           },
@@ -15568,7 +15568,7 @@
               "value": "#930121"
             }
           },
-          "description": "Use as series 4 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 4 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-4)"
           },
@@ -15585,10 +15585,10 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#719348"
+              "value": "#b671a6"
             }
           },
-          "description": "Use as series 5 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 5 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-5)"
           },
@@ -15605,10 +15605,10 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#b671a6"
+              "value": "#323ca8"
             }
           },
-          "description": "Use as series 6 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 6 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-6)"
           },
@@ -15625,10 +15625,10 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#7261a8"
+              "value": "#719348"
             }
           },
-          "description": "Use as series 7 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 7 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-7)"
           },
@@ -15645,10 +15645,10 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#323ca8"
+              "value": "#7261a8"
             }
           },
-          "description": "Use as series 8 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 8 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-8)"
           },
@@ -15668,7 +15668,7 @@
               "value": "#5a406e"
             }
           },
-          "description": "Use as series 9 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 9 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-9)"
           },
@@ -15688,7 +15688,7 @@
               "value": "#594d00"
             }
           },
-          "description": "Use as series 10 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 10 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-10)"
           },
@@ -15708,7 +15708,7 @@
               "value": "#c02865"
             }
           },
-          "description": "Use as series 11 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 11 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-11)"
           },
@@ -15728,7 +15728,7 @@
               "value": "#4c90ac"
             }
           },
-          "description": "Use as series 12 in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.",
+          "description": "Use as series 12 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
           "codeSyntax": {
             "WEB": "var(--sa-chart-cat-12)"
           },

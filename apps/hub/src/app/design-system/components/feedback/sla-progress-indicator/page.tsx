@@ -1,201 +1,188 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
 import { SlaProgressIndicator } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+
+/*
+ * NOTE FOR MAINTAINERS: this route and `feedback/sla-progress` both document the
+ * same component. `feedback/sla-progress` is the canonical page - states,
+ * thresholds, units and UX4G parity live there. This one is kept for the routes
+ * that already link to it and covers the variant choice.
+ */
 
 export const metadata: Metadata = {
-  title: "Sla Progress Indicator",
-  description: "Statutory grievance and application SLA tracker showing consumed days versus statutory time limits with tone changes (On Track, Warning, Breached).",
+  title: "SLA Progress Indicator — Variants — Design System",
+  description:
+    "The three shapes an SLA guarantee takes: a linear row, a circular dashboard tile, and a badge for a table cell.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    description:
+      'All three variants carry role="progressbar" with aria-valuenow, aria-valuemin, aria-valuemax and aria-labelledby pointing at the label — the badge included, which is why it is a progressbar rather than a coloured pill.',
+  },
+  {
+    criterion: "1.4.1 Use of Colour",
+    level: "A",
+    description:
+      "Every variant prints the summary as text beside the shape, so the state survives without hue. The badge's dot and the ring's fill reinforce that text; they never carry it alone.",
+  },
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "aria-valuetext carries the whole sentence rather than a percentage, so the circular variant's large number and the badge's short summary reach a screen reader as the same fact.",
+  },
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    description:
+      'The ring SVG, the badge dot and the divider are aria-hidden and focusable="false", so the shape is never announced separately from the value it draws.',
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function SlaProgressIndicatorDocPage(): React.JSX.Element {
+export default function SlaProgressIndicatorPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Sla Progress Indicator
-          </h1>
-          <StatusBadge status="Beta" />
+    <ComponentDocPage
+      name="SLA Progress Indicator — Variants"
+      status="Stable"
+      summary="The three shapes a service guarantee takes on screen: a linear row for a case or a queue, a circular tile for a dashboard, and a badge for a table cell. All three are the same component and the same arithmetic."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={
+        <div className="cdp__specimen-stack">
+          <SlaProgressIndicator
+            label="Application Review — NH/2026/0041"
+            total={30}
+            elapsed={18}
+            description="Held by the District Social Welfare Officer"
+          />
+          <div className="cdp__specimen-row">
+            <SlaProgressIndicator label="Income Certificate" total={21} elapsed={13} variant="circular" />
+            <SlaProgressIndicator label="Grievance #4471" total={30} elapsed={34} variant="circular" />
+          </div>
+          <div className="cdp__specimen-row">
+            <SlaProgressIndicator label="NH/2026/0042" total={30} elapsed={26} variant="badge" />
+            <SlaProgressIndicator label="NH/2026/0044" total={30} elapsed={11} variant="badge" completed />
+          </div>
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Statutory grievance and application SLA tracker showing consumed days versus statutory time limits with tone changes (On Track, Warning, Breached)."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+      }
+      propsFrom="SlaProgressIndicatorProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A case row or a queue needs the guarantee spelled out — use the linear variant, which has room for a description and an action.",
+          "A dashboard tile reports one guarantee and the headline is the number of units left — use the circular variant.",
+          "A table column must carry the standing of every row — use the badge variant, which fits a cell.",
+        ],
+        avoid: [
+          "The measure is a proportion of work completed rather than a statutory promise — use Progress.",
+          "The cell only needs a category such as Approved or Pending — use a Badge, which carries no arithmetic.",
+          "Two variants would appear for the same case in one view. Pick the one the surface calls for; showing both says the same thing twice.",
+        ],
+      }}
+      related={[
+        {
+          label: "SLA Progress Indicator",
+          href: "/design-system/components/feedback/sla-progress",
+          reason: "the canonical page — states, thresholds, units and UX4G parity",
+        },
+        {
+          label: "Progress",
+          href: "/design-system/components/data-display/progress",
+          reason: "for a proportion of work rather than a guarantee",
+        },
+        {
+          label: "Badge",
+          href: "/design-system/components/feedback/badge",
+          reason: "when the cell needs a category and no time",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-pick">
+          <h2 id="cdp-pick" className="cdp__h2">
+            Picking a Variant
+          </h2>
+          <ul>
+            <li>
+              <strong>Linear</strong> — the default. A label and the summary on one line, a bar
+              beneath, then an optional description and action. It is the only variant with room to
+              say why a clock is paused or who is holding the case.
+            </li>
+            <li>
+              <strong>Circular</strong> — a ring with the units remaining in the middle, the label
+              beneath and the summary under that. Built for a tile where the number is the headline;
+              a paused clock shows a pause mark instead of a number.
+            </li>
+            <li>
+              <strong>Badge</strong> — a dot, the label, a divider and the summary, on one line. It
+              is the only shape that fits a table cell, and it drops the description and the action
+              because a cell has room for neither.
+            </li>
+          </ul>
+          <p>
+            All three derive their state from the same fraction, so a queue rendered as badges and a
+            dashboard rendered as rings cannot disagree about the same case.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { SlaProgressIndicator } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Sla Progress Indicator is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <SlaProgressIndicator label="Application Review SLA" total={30} elapsed={18} />
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Highlight citizen grievance SLA status prominently in nodal officer dashboards.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not omit numerical days remaining alongside the visual indicator.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { SlaProgressIndicator } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "label",
-    "type": "React.ReactNode",
-    "required": true,
-    "description": "What the guarantee is for (e.g. \"Income certificate\")."
-  },
-  {
-    "name": "total",
-    "type": "number",
-    "required": true,
-    "description": "Total time allowed in working days."
-  },
-  {
-    "name": "elapsed",
-    "type": "number",
-    "required": true,
-    "description": "Time consumed so far."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<SlaProgressIndicator label="Application Review SLA" total={30} elapsed={18} />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.4.1 Use of Color",
-    "level": "AA",
-    "description": "Status text explicitly states \"On Track\", \"Nearing Deadline\", or \"Overdue\"."
-  }
-]} />
-                </section>
-
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Sla Progress Indicator" />
-    </article>
+<SlaProgressIndicator
+  label="Application Review — NH/2026/0041"
+  total={30}
+  elapsed={18}
+  description="Held by the District Social Welfare Officer"
+  action={<Link href="/cases/NH-2026-0041">View</Link>}
+/>`}</CodeBlock>
+          <p>
+            In a table, the badge variant goes in the cell and the label is the case number, so the
+            accessible name distinguishes every row.
+          </p>
+          <CodeBlock>{`<td>
+  <SlaProgressIndicator
+    variant="badge"
+    label={row.reference}
+    total={row.allowedDays}
+    elapsed={row.elapsedDays}
+  />
+</td>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-variant-a11y">
+          <h2 id="cdp-variant-a11y" className="cdp__h2">
+            The Variants Are Equal to Assistive Technology
+          </h2>
+          <p>
+            The three shapes differ visually and not semantically. Each puts the same set of ARIA
+            attributes on the element that draws the value — the ring wrapper, the badge span, the
+            track — so a screen-reader user hears the same name and the same value sentence whichever
+            one a page chose.
+          </p>
+          <p>
+            That is why the badge is a progressbar and not a styled pill. A table column of badges is
+            navigable by value, and a reader is told “eighteen of thirty days used” rather than being
+            handed a colour.
+          </p>
+          <p>
+            The circular variant&apos;s large number is <code>aria-hidden</code>, because it is a
+            fragment of the sentence <code>aria-valuetext</code> already carries in full. Announcing
+            both would read the number twice with no unit the second time.
+          </p>
+        </section>
+      }
+    />
   );
 }

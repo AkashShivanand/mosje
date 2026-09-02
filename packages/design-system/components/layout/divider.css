@@ -41,10 +41,19 @@
   }
   .sa-divider--vertical {
     width: var(--sa-cmp-divider-width);
-    height: 100%;
-    /* In an auto-layout row a vertical rule should match its tallest sibling, which is
-       what `align-self: stretch` does in flex — `height: 100%` alone resolves against a
-       parent with no explicit height and collapses to nothing. */
+    /*
+     * `align-self: stretch` is the whole mechanism, and `height` must stay OUT
+     * of it. In a flex row a definite cross size WINS over stretch — so the
+     * `height: 100%` that used to sit here disabled the very rule beneath it,
+     * then resolved against an auto-height parent and collapsed to zero. The
+     * comment already said `height: 100%` collapses; the declaration was still
+     * there, and the divider's own documentation page hid it by hard-coding a
+     * 40px height on the specimen row.
+     *
+     * Outside flex and grid, `align-self` does nothing and the consumer sets a
+     * height — which was equally true before, because the collapsed 100% never
+     * worked there either.
+     */
     align-self: stretch;
   }
 

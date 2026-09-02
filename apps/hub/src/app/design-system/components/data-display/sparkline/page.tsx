@@ -1,189 +1,173 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { Sparkline } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { SparklineSpecimen } from "./specimen";
 
 export const metadata: Metadata = {
-  title: "Sparkline",
-  description: "Miniature inline trend curve embedded within table rows and metric cards without axis chrome.",
+  title: "Sparkline — Design System",
+  description:
+    "A small, axis-free line showing the shape of a recent trend, sized to sit inside a table row, a card corner or a metric.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    status: "verified",
+    description:
+      'Where `label` is given, the sparkline is an image named by that label and by a spoken summary of the trend. Where it is omitted the sparkline is decorative and carries aria-hidden — which is correct only when the same reading is already stated in words beside it.',
+    evidence: 'sparkline.tsx lines 89–91 and 120–122: role="img" plus aria-label when labelled, aria-hidden when not.',
+  },
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    status: "verified",
+    description:
+      "Fewer than two points renders a stated absence rather than a blank hidden SVG, so a sparkline the caller asked to be announced is never silently removed from the accessibility tree.",
+    evidence: "sparkline.tsx line 46 onward documents and implements the short-series path.",
+  },
+  {
+    criterion: "1.4.1 Use of Color",
+    level: "A",
+    status: "partial",
+    description:
+      "A sparkline carries no axis, no ticks and no values — the shape is the whole visual reading. It is only accessible in context: the figure it accompanies must be stated in text, and this component cannot enforce that.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    status: "untested",
+    description:
+      "There is no keyboard interaction to test: a sparkline has no focusable marks and listens for no key.",
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function SparklineDocPage(): React.JSX.Element {
+export default function SparklinePage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Sparkline
-          </h1>
-          <StatusBadge status="Beta" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Miniature inline trend curve embedded within table rows and metric cards without axis chrome."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+    <ComponentDocPage
+      name="Sparkline"
+      status="Beta"
+      summary="A small line with no axes, showing the shape of a recent trend beside the figure it belongs to. It is read for direction and volatility, never for a value."
+      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      specimen={<SparklineSpecimen />}
+      propsFrom="SparklineProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A figure is already stated in text and the recent trend behind it adds something — a metric card, a table row, a list of schemes.",
+          "The reading wanted is direction and volatility: rising, flat, erratic.",
+          "Space is genuinely tight. A sparkline exists because a full chart would not fit and a number alone would not say enough.",
+        ],
+        avoid: [
+          "A value has to be read off it. There are no axes and no ticks; use a Line Chart.",
+          "It is the main chart on the surface — then it is not a sparkline, and a Line Chart with labelled axes is what the reader needs.",
+          "There is no accompanying figure in text. The shape on its own is not a reading, and hiding it from assistive technology then hides everything.",
+          "The categories are not ordered — a line between unordered categories implies a sequence that is not there.",
+        ],
+      }}
+      related={[
+        { label: "Line Chart", href: "/design-system/components/data-display/line-chart", reason: "the same shape with axes that can be read" },
+        { label: "Metric Card", href: "/design-system/components/data-display/metric-card", reason: "the figure a sparkline usually sits beside" },
+        { label: "Progress", href: "/design-system/components/data-display/progress", reason: "for a level rather than a trend, at the same height" },
+        { label: "Data Table", href: "/design-system/components/data-display/data-table", reason: "the rows a sparkline is most often embedded in" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">
+              The States It Draws
+            </h2>
+            <p>
+              A sparkline is small enough that a blank one is easy to miss entirely, which is exactly
+              why it needs these four. The specimen shows each.
+            </p>
+            <ul>
+              <li>
+                <strong>Loading</strong> — a skeleton at the sparkline&apos;s own proportions, carrying{" "}
+                <code>role=&quot;status&quot;</code>, so a table row does not change height when the
+                figures land.
+              </li>
+              <li>
+                <strong>Empty</strong> — the series is genuinely empty. No retry.
+              </li>
+              <li>
+                <strong>Error</strong> — the request failed; <code>onRetry</code> renders
+                &ldquo;Try again&rdquo;.
+              </li>
+              <li>
+                <strong>Filtered to nothing</strong> — <code>filterLabel</code> names the filter the
+                reader applied.
+              </li>
+            </ul>
+            <p>
+              <code>data</code> accepts <code>null</code> and <code>undefined</code> as well as an
+              array, because &ldquo;the figure has not arrived&rdquo; is a real state and not an
+              empty list. A series of fewer than two points renders a stated absence rather than a
+              blank line.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-label">
+            <h2 id="cdp-label" className="cdp__h2">
+              Labelled or Decorative — Decide Deliberately
+            </h2>
+            <p>
+              With <code>label</code>, the sparkline is announced as an image with a spoken summary of
+              its trend. Without it, the sparkline is hidden from assistive technology as decoration.
+            </p>
+            <p>
+              Both are correct in the right place: a sparkline beside a metric that already says
+              &ldquo;14,25,890, up 12.4% on last year&rdquo; is decoration, and announcing it again is
+              noise. A sparkline that is the only statement of a trend must be labelled. What is never
+              correct is leaving the decision to chance, which is what happened before this component
+              applied <code>aria-hidden</code> conditionally.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Sparkline } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Sparkline is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <Sparkline data={[10, 15, 8, 22, 18, 30]} />
-                    </div>
-                  </div>
-                </section>
+// Decorative — the figure beside it already carries the reading.
+<Sparkline data={[10, 15, 8, 22, 18, 30]} />
 
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Embed sparklines in summary tables to show historical micro-trends.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not rely on sparklines for precise data readout.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { Sparkline } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "data",
-    "type": "number[]",
-    "required": true,
-    "description": "Array of numeric values."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<Sparkline data={[10, 15, 8, 22, 18, 30]} />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.1.1 Non-text Content",
-    "level": "AA",
-    "description": "Includes aria-label summarizing the general trend direction."
-  }
-]} />
-                </section>
-
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Sparkline" />
-    </article>
+// Announced — this is the only statement of the trend.
+<Sparkline data={monthly} label="Applications, last eight months" fill />`}</CodeBlock>
+          <CodeBlock>{`<Sparkline
+  data={reading?.monthly}
+  label="Applications, last eight months"
+  state={error ? "error" : loading ? "loading" : undefined}
+  onRetry={refetch}
+  filterLabel="date range"
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-sr">
+          <h2 id="cdp-sr" className="cdp__h2">
+            What a Screen Reader Gets
+          </h2>
+          <p>
+            A labelled sparkline is one image whose accessible name is the label and whose description
+            summarises the direction of the series. There is no data table: a sparkline is deliberately
+            not a source of values, and publishing one would contradict what the mark is for.
+          </p>
+          <p>
+            An unlabelled sparkline is hidden entirely. That is the right treatment for decoration and
+            the wrong treatment for a reading, so the label is the decision this component asks the
+            author to make.
+          </p>
+        </section>
+      }
+    />
   );
 }

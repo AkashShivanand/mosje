@@ -1,162 +1,175 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { EmptyStatePlayground } from "./empty-state-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { EmptyStatePlayground } from "./empty-state-playground";
 
 export const metadata: Metadata = {
-  title: "Empty State - SAMAVESH Design System",
+  title: "Empty State — Design System",
   description:
-    "A centered placeholder for empty collections or zero-result views.",
+    "The answer a reader gets when a list, table or dashboard has nothing to show: what is absent, why, and what they can do next.",
 };
 
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    description:
+      'The icon container carries aria-hidden="true", so a screen reader goes straight to the title and description rather than announcing a decorative shape.',
+  },
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The title and description are ordinary paragraphs in reading order, not a heading that would insert a level into the page outline for a state that is temporary.",
+  },
+  {
+    criterion: "3.3.1 Error Identification",
+    level: "A",
+    description:
+      "Where the emptiness is caused by the reader's own filter, the copy names the filter and how to clear it — which is a different sentence from “nothing has been published”.",
+  },
+  {
+    criterion: "2.4.4 Link Purpose (In Context)",
+    level: "A",
+    description:
+      "The action slot holds a real control carrying its own accessible name, so “Start a new application” is announced as what it does rather than as “button”.",
+  },
+];
+
 export default function EmptyStatePage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Empty State"
+      status="Stable"
+      summary="A centred placeholder for a list, table or dashboard that has nothing to show. It gives the reader the answer to the question they asked, the reason where the reason matters, and a way forward."
+      figma={{ node: "emptyState" }}
+      specimen={<EmptyStatePlayground />}
+      propsFrom="EmptyStateProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A collection is genuinely empty — nothing has been submitted, published or recorded yet.",
+          "A search or a filter matched nothing, and the reader needs to be told which filter did it.",
+          "A region has loaded successfully and has no rows; a blank panel would read as broken.",
+        ],
+        avoid: [
+          "The request has not answered yet — use a Skeleton in the shape of the result, so the layout does not jump when data lands.",
+          "The request failed — use an Error View, which says it failed and offers the retry.",
+          "The region has content and one condition to report about it — use an Alert above the content.",
+          "The region is an invitation rather than an absence — use an Action Banner.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          Empty State
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A centered placeholder used when a collection is empty or a search returns no results. It helps users understand why they are seeing a blank space and what they can do next.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Skeleton",
+          href: "/design-system/components/feedback/skeleton",
+          reason: "for the wait before the answer arrives",
+        },
+        {
+          label: "Error View",
+          href: "/design-system/components/feedback/error-view",
+          reason: "when the request failed rather than returned nothing",
+        },
+        {
+          label: "Alert",
+          href: "/design-system/components/feedback/alert",
+          reason: "when there is content and one condition to report",
+        },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-four">
+            <h2 id="cdp-four" className="cdp__h2">
+              Empty Is Not the Same as Filtered to Nothing
+            </h2>
+            <p>
+              A surface that reads from somewhere else has seven states, and four of them render
+              identically if nobody writes them: loading, empty, error and filtered-to-nothing.
+              Empty State covers two of the four, and the wording has to tell them apart.
+            </p>
+            <ul>
+              <li>
+                <strong>Nothing published.</strong> “No tenders have been published for this
+                division.” The reader can do nothing about it, so the action is a route elsewhere,
+                or there is no action.
+              </li>
+              <li>
+                <strong>Filtered to nothing.</strong> “No applications match the district and date
+                you selected.” The reader caused this and can undo it, so the action clears the
+                filter.
+              </li>
+            </ul>
+            <p>
+              Rendering one of those for the other is a page telling the reader something untrue
+              about the department&apos;s records.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-copy">
+            <h2 id="cdp-copy" className="cdp__h2">
+              Writing the Copy
+            </h2>
+            <p>
+              The title answers the question the reader asked. The description earns its place only
+              where the reason changes what they should do next — “Village names are not published
+              for three states, so a village there cannot be found by name” stops a reader
+              concluding their village is outside the scheme. A count of unusable records does not
+              earn its place; that belongs in the audit record.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { EmptyState, Icon, Button } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Toggle the optional components (icon, description, action) to see how the Empty State adapts.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <EmptyStatePlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          Use an Empty State when a data table, list, or dashboard has no items to display. This usually happens in three scenarios:
-          first use (onboarding), cleared data, or zero search results.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Always provide a clear path forward (e.g., 'Create your first item' or 'Clear filters').",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't use generic or dead-end copy like 'No data'. Explain why it's empty.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`<EmptyState 
-  icon={<FolderIcon />}
-  title="No applications yet"
-  description="You haven't submitted any applications. Click below to start a new one."
-  action={<Button variant="primary">Start Application</Button>}
-/>`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "title", type: "ReactNode", required: true, description: "The main headline explaining the empty state." },
-            { name: "icon", type: "ReactNode", description: "Optional illustration or icon displayed above the title." },
-            { name: "description", type: "ReactNode", description: "Supporting text providing more context or instruction." },
-            { name: "action", type: "ReactNode", description: "Optional call-to-action, usually a Button component." },
-            { name: "className", type: "string", description: "Additional classes merged onto the root element." },
-            { name: "...rest", type: "HTMLAttributes<HTMLDivElement>", description: "All standard div props are forwarded, except 'title' which is overridden." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Decorative Icons:</strong> The icon container automatically sets <code>aria-hidden=&quot;true&quot;</code>, ensuring screen readers skip over the visual illustration and go straight to the title and description.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+<EmptyState
+  icon={<Icon name="folder_open" size={40} />}
+  title="No Applications Submitted Yet"
+  description="Applications you submit will be listed here, with their current status."
+  action={<Button variant="primary">Start an Application</Button>}
+/>`}</CodeBlock>
+          <p>
+            The filtered case is the same component with different words, and the action undoes what
+            the reader did rather than offering something new.
+          </p>
+          <CodeBlock>{`<EmptyState
+  title="No Applications Match These Filters"
+  description="No application in this district was submitted in the selected period."
+  action={<Button variant="neutral" onClick={clearFilters}>Clear Filters</Button>}
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-swap">
+          <h2 id="cdp-swap" className="cdp__h2">
+            Replacing a Region, Not Announcing an Event
+          </h2>
+          <p>
+            An empty state is content, not a notification. It carries no live region and no{" "}
+            <code>role=&quot;status&quot;</code>: it is what the region contains, so a screen reader
+            meets it by reading the page rather than by being interrupted.
+          </p>
+          <p>
+            Where the region swaps from a loading skeleton to an empty state after a fetch, the
+            wrapper that owns the request is the right place for <code>aria-busy</code> and the
+            announcement — see Live Region. The empty state itself stays quiet.
+          </p>
+          <p>
+            The icon is hidden from assistive technology by construction, so the title has to name
+            what is empty. A folder glyph over the word “Nothing here” tells a screen-reader user
+            nothing at all.
+          </p>
+        </section>
+      }
+    />
   );
 }

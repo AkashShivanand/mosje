@@ -71,18 +71,117 @@ function collect(dir, out = []) {
   return out;
 }
 
+/**
+ * THE TEMPLATE ROUTE.
+ *
+ * The six markers above were written when every page hand-assembled the shape.
+ * `ComponentDocPage` now renders all six from data, which is the fix for the
+ * ninety-nine pages that each retyped them — but a page built on the template
+ * contains none of the six literals, so the original test would score it 0/6
+ * and fail the very change that repaired it.
+ *
+ * So a page also conforms by USING THE TEMPLATE PROPERLY. "Properly" is the
+ * load-bearing word: rendering `<ComponentDocPage />` with nothing in it would
+ * give the reader an empty page, so every prop that carries one of the six is
+ * required here too. The template guarantees the SHAPE; this guarantees the
+ * page put something in it.
+ *
+ * `figma` covers both a node and a declared absence, because a component with
+ * no Figma counterpart is a fact to state, not a link to fake.
+ */
+const TEMPLATE_USE = /<ComponentDocPage[\s/>]/;
+const TEMPLATE_PROPS = [
+  [/\bstatus=/, "a maturity badge (status=)"],
+  [/\bfigma=/, "a Figma node or a declared absence (figma=)"],
+  [/\bspecimen=/, "a running specimen (specimen=)"],
+  /*
+   * `propsFrom` counts too, and it is the PREFERRED half. The template's own
+   * docstring says a hand-written table is how `ChartCard` came to document a
+   * prop that does not exist, so the generated key is the correct way to
+   * document a component's API — and a gate that scored only `props=` would
+   * have marked every page that took the better path as missing its API table.
+   */
+  [/\bprops(From)?=/, "a props table (props= or propsFrom=)"],
+  [/\ba11y=/, "an accessibility checklist (a11y=)"],
+  [/\bsummary=/, "a one-line summary (summary=)"],
+];
+
+function scoreOne(src) {
+  if (TEMPLATE_USE.test(src)) {
+    const missing = TEMPLATE_PROPS.filter(([re]) => !re.test(src)).map(([, label]) => label);
+    return { score: TEMPLATE_PROPS.length - missing.length, missing };
+  }
+  const missing = REQUIRED.filter(([re]) => !re.test(src)).map(([, label]) => label);
+  return { score: REQUIRED.length - missing.length, missing };
+}
+
 export function scorePages() {
   return collect(PAGES)
     .map((file) => {
       const src = readFileSync(file, "utf8");
-      const missing = REQUIRED.filter(([re]) => !re.test(src)).map(([, label]) => label);
+      const { score, missing } = scoreOne(src);
       return {
         page: relative(PAGES, file).replace(/\/page\.tsx$/, ""),
-        score: REQUIRED.length - missing.length,
+        score,
         missing,
       };
     })
     .sort((a, b) => a.score - b.score || a.page.localeCompare(b.page));
+}
+
+/*
+ * A DECLARED ABSENCE MUST BE TRUE.
+ *
+ * `figma={{ absent: "…" }}` is how a page states honestly that a component has
+ * no Figma counterpart, and the gate accepts it for the same reason the standard
+ * does: a missing link and an unbuilt component are different facts. But the
+ * shape check cannot tell an honest absence from a stale one, and eight pages
+ * shipped saying "not yet registered in the estate's Figma node index" in the
+ * SAME COMMIT that registered them — sending the reader away from a link that
+ * existed.
+ *
+ * So an absence is checked against the registry. If the route's key is in
+ * FIGMA_NODES, the page must link it.
+ */
+function staleAbsences() {
+  const figmaSrc = readFileSync(join(ROOT, "apps/hub/src/lib/design-system/figma.ts"), "utf8");
+  const keys = new Set([...figmaSrc.matchAll(/^ {2}(\w+):\s*"/gm)].map((m) => m[1]));
+  const stale = [];
+  for (const file of collect(PAGES)) {
+    const src = readFileSync(file, "utf8");
+    if (!/figma=\{\{\s*absent:/.test(src)) continue;
+    const route = relative(PAGES, file).replace(/\/page\.tsx$/, "");
+    const leaf = route.split("/").pop() ?? "";
+    const camel = leaf.replace(/-([a-z])/g, (_, c) => c.toUpperCase());
+    if (keys.has(camel)) stale.push(`${route}: declares no Figma component, but FIGMA_NODES.${camel} exists. Link it.`);
+  }
+  return stale;
+}
+
+/*
+ * HAND-WRITTEN PROPS TABLES MAY ONLY FALL.
+ *
+ * `propsFrom` reads the API out of the TypeScript type checker; `props` is a
+ * hand-typed array and is how this estate came to document a `ChartCard` prop
+ * called `action` when the prop is `actions`. The shape check accepts either,
+ * correctly — a hook's arguments cannot be extracted — but nothing stopped the
+ * hand-written form from being the default forever. Fifty-seven of a hundred
+ * pages carried one on 2026-09-01; three do now, and each of the three is a
+ * case the extractor genuinely cannot reach — `data-display/axis` (inline
+ * parameter objects and bare formatter functions, no interface at all),
+ * `feedback/toast` (a provider taking an inline parameter object plus a hook)
+ * and `forms/identity-inputs` (an overview of three components, whose rows are
+ * prefixed by the component that owns them and so cannot come from one key).
+ *
+ * A count, ratcheted: it may fall and it may not rise.
+ */
+const HANDWRITTEN_BASELINE = Number(process.env.DS_PAGES_HANDWRITTEN ?? 3);
+
+function handWrittenTables() {
+  return collect(PAGES).filter((f) => {
+    const src = readFileSync(f, "utf8");
+    return /\bprops=\{/.test(src) && !/\bpropsFrom=/.test(src);
+  }).length;
 }
 
 const rows = scorePages();
@@ -108,7 +207,21 @@ if (mode === "--report") {
 }
 
 const base = existsSync(BASELINE) ? JSON.parse(readFileSync(BASELINE, "utf8")) : {};
-const problems = [];
+const problems = [...staleAbsences()];
+
+const handWritten = handWrittenTables();
+if (handWritten > HANDWRITTEN_BASELINE) {
+  problems.push(
+    `${handWritten} page(s) hand-write their props table, up from ${HANDWRITTEN_BASELINE}. ` +
+      `Use propsFrom="<Name>Props" — the generated table cannot drift from the interface.`,
+  );
+} else if (handWritten < HANDWRITTEN_BASELINE) {
+  problems.push(
+    `${handWritten} page(s) hand-write their props table, down from ${HANDWRITTEN_BASELINE}. ` +
+      `Lower HANDWRITTEN_BASELINE in tools/ds-page-standard/check.mjs in this change, so the ` +
+      `gain cannot be given back.`,
+  );
+}
 
 for (const r of rows) {
   const frozen = base[r.page];

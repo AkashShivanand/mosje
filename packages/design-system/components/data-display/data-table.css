@@ -241,3 +241,76 @@
     outline-offset: var(--sa-focus-offset);
   }
 }
+
+@layer components {
+  /* ── Sorting ────────────────────────────────────────────────────────────────
+     The header is a BUTTON inside the cell, not a click handler on the cell — a
+     `<th onClick>` is unreachable by keyboard and carries no role, which is how
+     a sortable table ends up sortable only by mouse.
+     ========================================================================= */
+  .ds-table__th--sortable {
+    padding: 0;
+  }
+
+  .ds-table__sort {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    width: 100%;
+    /* Inherits the cell's own padding so a sortable header sits on exactly the
+       same grid as a plain one. */
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: inherit;
+    cursor: pointer;
+    /* 2.5.8 Target Size (Minimum) — the cell padding already clears 24, and this
+       makes it true regardless of how short the header text is. */
+    min-height: 40px;
+  }
+
+  .ds-table__sort:hover {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-table__sort:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
+  }
+
+  /* `box-shadow` is not painted in forced-colors mode; an outline is. */
+  @media (forced-colors: active) {
+    .ds-table__sort:focus-visible {
+      outline: 2px solid Highlight;
+    }
+  }
+
+  /* The direction mark is decorative — `aria-sort` on the cell carries the
+     meaning, so this is never the only signal (WCAG 1.4.1). */
+  .ds-table__sort-mark {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-table__th--sortable[aria-sort="ascending"] .ds-table__sort-mark,
+  .ds-table__th--sortable[aria-sort="descending"] .ds-table__sort-mark {
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  /* Announced, never seen. See the component: a live region has to be in the DOM
+     before its text changes, so it is mounted unconditionally. */
+  .ds-table__live {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}

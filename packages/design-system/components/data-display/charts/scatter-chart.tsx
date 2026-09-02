@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { CardState } from "../../dashboard/card-state";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
 import { Gridlines } from "./internal/axis";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
@@ -21,7 +20,7 @@ export interface ScatterSeries {
   points: ScatterPoint[];
   color?: string;
 }
-export interface ScatterChartProps {
+export interface ScatterChartProps extends ChartStateProps {
   series: ScatterSeries[];
   title: string;
   xLabel?: string;
@@ -42,10 +41,29 @@ export function ScatterChart({
   width = 480,
   height = 300,
   className,
+  state,
+  onRetry,
+  filterLabel,
+  tableView,
 }: ScatterChartProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const all = series.flatMap((s) => s.points);
-  if (all.length === 0) return <CardState kind="empty" compact />;
+  // One expression, resolved before the scales are built.
+  const resolved = state ?? (all.length === 0 ? "empty" : undefined);
+  if (resolved)
+    return (
+      <ChartFrame
+        marksAreFocusable
+        title={title}
+        viewBox={`0 0 ${width} ${height}`}
+        className={className}
+        state={resolved}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+      >
+        {null}
+      </ChartFrame>
+    );
 
   const colors = series.map((s, i) => seriesColor(s.color, i));
   const xs = all.map((p) => p.x);
@@ -66,6 +84,7 @@ export function ScatterChart({
 
   return (
     <ChartFrame
+      marksAreFocusable
       title={title}
       summary={`${all.length} points across ${series.length} series`}
       viewBox={`0 0 ${width} ${height}`}
@@ -77,6 +96,7 @@ export function ScatterChart({
         columns: ["Series", xLabel ?? "X", yLabel ?? "Y", "Label"],
         rows: series.flatMap((s) => s.points.map((p) => [s.name, p.x, p.y, p.label ?? ""])),
       }}
+      tableView={tableView}
     >
       <Gridlines ticks={yTicks.map((v) => ({ pos: y(v), value: v }))} x0={padL} x1={width - padR} format={valueFormat} />
       {xTicks.map((v) => (

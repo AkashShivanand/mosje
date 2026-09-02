@@ -58,7 +58,9 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
             </Link>
             <a
               href="tel:14446"
-              className="flex items-center gap-2 rounded-lg bg-saffron px-3 py-1.5 text-sm font-semibold text-white hover:bg-saffron-600"
+              // saffron-600, not the bare `saffron` (#ec6a1f): white on that is 3.15:1 and
+              // fails WCAG 1.4.3 for this 14px label. saffron-600 #b8500f is 5.01:1.
+              className="flex items-center gap-2 rounded-lg bg-saffron-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-saffron-dark"
               aria-label="Call National De-addiction Helpline 14446"
             >
               <Icon name="call" size={16} />

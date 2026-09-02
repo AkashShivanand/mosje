@@ -1,9 +1,9 @@
 import * as React from "react";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
 
-export interface GaugeProps {
+export interface GaugeProps extends ChartStateProps {
   value: number;
   max?: number;
   min?: number;
@@ -37,7 +37,41 @@ export function Gauge({
   color = "var(--sa-chart-cat-1)",
   valueFormat = formatIndian,
   className,
+  state,
+  onRetry,
+  filterLabel,
+  tableView,
 }: GaugeProps) {
+  /*
+   * THIS HAD NO GUARD AT ALL, and the failure was silent rather than ugly: a
+   * non-finite `value` puts `NaN` into `pointOnArc`, which makes `d="M NaN NaN
+   * A …"` — an invalid path every browser drops without a word — so the gauge
+   * rendered as an empty track that looked like a real zero, and `NaN` was
+   * written into the screen-reader table where nothing at all was drawn.
+   *
+   * `Number.isFinite` rather than a null check: `undefined`, `null` coerced,
+   * `NaN` and `Infinity` all produce the same invalid arc, and only one of them
+   * is caught by asking whether the value is missing.
+   */
+  const resolved =
+    state ??
+    (!Number.isFinite(value) || !Number.isFinite(max) || !Number.isFinite(min)
+      ? "empty"
+      : undefined);
+  if (resolved)
+    return (
+      <ChartFrame
+        title={title}
+        viewBox={`0 0 ${W} ${H}`}
+        className={className}
+        state={resolved}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+      >
+        {null}
+      </ChartFrame>
+    );
+
   const span = max - min || 1;
   const frac = Math.max(0, Math.min(1, (value - min) / span));
   // 180° (left) → 360°/0° (right), sweeping the top half.
@@ -55,6 +89,7 @@ export function Gauge({
       viewBox={`0 0 ${W} ${H}`}
       className={className}
       table={{ columns: ["Metric", "Value", "Max"], rows: [[title, value, max]] }}
+      tableView={tableView}
     >
       <path
         d={`M ${sx} ${sy} A ${R} ${R} 0 0 1 ${tx} ${ty}`}

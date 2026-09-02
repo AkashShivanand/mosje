@@ -225,7 +225,17 @@ function groupGuidance(path) {
     return `Use for the focus ring’s ${rest[0]}. The ring’s colour was tokenised long before its geometry, so this was hardcoded — WCAG 2.4.7 governs all three.`;
   if (head === "focus") return "Use for the focus indicator. WCAG 2.4.7 makes this non-optional — never suppress it, and never substitute a colour with less contrast.";
   if (head === "chart") {
-    if (rest[0] === "cat") return `Use as series ${rest[1]} in a categorical chart. The twelve values are chosen for mutual distinguishability, so take them in order rather than picking favourites.`;
+    if (rest[0] === "cat") {
+      // ONLY THE FIRST SIX ARE MUTUALLY DISTINGUISHABLE, and this text used to
+      // claim all twelve were. `npm run check:chart-palette` measures the ramp;
+      // `tools/chart-palette/search.mjs` proves six is the ceiling at this
+      // estate's saturation, for any palette, because a dichromat's gamut is
+      // effectively two-dimensional.
+      const n = Number(rest[1]);
+      return n <= 6
+        ? `Use as series ${rest[1]} in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.`
+        : `Use as series ${rest[1]} in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into "Other".`;
+    }
     if (rest[0] === "seq") return `Use as step ${rest[1]} of a sequential (single-hue) scale, for data that runs low to high.`;
     if (rest[0] === "div") return "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.";
     if (rest[0] === "trend") return `Use for a ${rest[1]} trend indicator. Pair it with an arrow or a sign — colour alone fails WCAG 1.4.1.`;

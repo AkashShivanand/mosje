@@ -1,226 +1,194 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { Heatmap } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { HeatmapSpecimen } from "./specimen";
 
 export const metadata: Metadata = {
-  title: "Heatmap",
-  description: "Matrix grid visualization using color intensity to illustrate scheme activity and application volumes across calendar months and states.",
+  title: "Heatmap — Design System",
+  description:
+    "A matrix of two categorical axes whose cells are shaded by value, for spotting where a figure concentrates across states and periods.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    status: "verified",
+    description:
+      "Rendered through ChartFrame, which draws an SVG <title>, a <desc> naming the matrix size and its range, and a visually hidden table carrying every cell as a figure.",
+    evidence: "heatmap.tsx lines 76 and 81: `summary` and `table` passed to ChartFrame.",
+  },
+  {
+    criterion: "1.4.1 Use of Color",
+    level: "A",
+    status: "partial",
+    description:
+      "Shade is the whole visual encoding here — that is what a heatmap is — so the reading for a colour-blind or low-vision reader rests entirely on the screen-reader table and the tooltip. Always render a Legend beside it naming what the darkest and lightest ends mean.",
+    evidence: "heatmap.tsx encodes value as fill only; no per-cell text is printed.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    status: "partial",
+    description:
+      'Every cell value is reachable through the screen-reader table. The cells set tabIndex={0} beneath an SVG carrying role="img", which prunes its descendants, so those stops receive focus with no accessible name. This page previously claimed arrow-key navigation between cells; nothing in the component implements it.',
+    evidence: 'Open gap, recorded 2026-09-02: role="img" in chart-frame.tsx against tabIndex={0} at heatmap.tsx line 109.',
+  },
+  {
+    criterion: "1.4.11 Non-text Contrast",
+    level: "AA",
+    status: "untested",
+    description:
+      "Adjacent steps of the sequential ramp are close by construction. No measurement of the smallest perceptible step, nor of the lightest cell against the canvas, has been recorded.",
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function HeatmapDocPage(): React.JSX.Element {
+export default function HeatmapPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Heatmap
-          </h1>
-          <StatusBadge status="Beta" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Matrix grid visualization using color intensity to illustrate scheme activity and application volumes across calendar months and states."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+    <ComponentDocPage
+      name="Heatmap"
+      status="Beta"
+      summary="Crosses two categorical axes and shades each cell by its value, so concentration and absence are visible before any figure is read. It is the catalogue's chart for “where is this happening”."
+      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      specimen={<HeatmapSpecimen />}
+      propsFrom="HeatmapProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "Two categorical axes cross — state against month, scheme component against district — and the cell is one figure.",
+          "The reading is where a figure concentrates, not what any single cell equals.",
+          "The matrix is small enough that every row and column can carry a readable label.",
+        ],
+        avoid: [
+          "One axis is a single category — that is a Bar Chart, and a one-row heatmap encodes in shade what a bar encodes in length far more accurately.",
+          "The exact cell values matter — use a Data Table. Shade cannot be read to a figure.",
+          "Both axes are measured quantities rather than categories — use a Scatter Chart.",
+          "The categories are states and geography is part of the reading — use the India Map.",
+          "A rainbow ramp is being reached for. Use the sequential scale, or diverging where the reading is distance from a midpoint; a rainbow implies an order the values do not have.",
+        ],
+      }}
+      related={[
+        { label: "India Map", href: "/design-system/components/data-display/india-map", reason: "when the rows are states and geography matters" },
+        { label: "Data Table", href: "/design-system/components/data-display/data-table", reason: "when the exact cell values are the point" },
+        { label: "Legend", href: "/design-system/components/data-display/legend", reason: "the key that names the ends of the ramp" },
+        { label: "Scatter Chart", href: "/design-system/components/data-display/scatter-chart", reason: "when both axes are measured" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">
+              The States It Draws
+            </h2>
+            <p>
+              The specimen shows the four states that are not the populated one. A heatmap makes the
+              case for them plainly: a grid of pale cells and no grid at all are visually similar, and
+              a reader cannot tell &ldquo;every figure is low&rdquo; from &ldquo;the feed said
+              nothing&rdquo; without being told.
+            </p>
+            <ul>
+              <li>
+                <strong>Loading</strong> — a skeleton at the matrix&apos;s own proportions, carrying{" "}
+                <code>role=&quot;status&quot;</code>.
+              </li>
+              <li>
+                <strong>Empty</strong> — the feed answered with no matrix. No retry.
+              </li>
+              <li>
+                <strong>Error</strong> — the request failed; <code>onRetry</code> renders
+                &ldquo;Try again&rdquo;.
+              </li>
+              <li>
+                <strong>Filtered to nothing</strong> — <code>filterLabel</code> names the filter, so
+                the control reads &ldquo;Clear month range&rdquo;.
+              </li>
+            </ul>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-ramp">
+            <h2 id="cdp-ramp" className="cdp__h2">
+              Sequential or Diverging, Never Rainbow
+            </h2>
+            <p>
+              <code>scale=&quot;sequential&quot;</code> is the default: one hue, light to dark, for a
+              figure that runs from low to high. <code>scale=&quot;diverging&quot;</code> is for a
+              reading whose meaning is distance from a midpoint in either direction — above or below a
+              target, growth or decline.
+            </p>
+            <p>
+              A rainbow ramp reads as ordered when it is not, and a reader ranks the colours in
+              whatever order they happen to know them in. Both scales here come from the token ramps
+              and re-theme with the brand pack.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-legend">
+            <h2 id="cdp-legend" className="cdp__h2">
+              Always Publish the Key
+            </h2>
+            <p>
+              A shaded cell is meaningless without the ends of the ramp being named. Render a Legend
+              beside the map saying what the darkest and lightest cells stand for, in the unit the
+              figures are in. Without it the chart shows a pattern and withholds the reading.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Heatmap } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Heatmap is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <Heatmap title="State Scheme Activity Matrix" xLabels={["Jan", "Feb", "Mar"]} yLabels={["UP", "MH"]} matrix={[[10, 20, 30], [40, 50, 60]]} />
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Provide a clear legend explaining color density buckets.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not use rainbow color maps; use a single sequential monochromatic token ramp.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { Heatmap } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "title",
-    "type": "string",
-    "required": true,
-    "description": "Accessible chart title."
-  },
-  {
-    "name": "xLabels",
-    "type": "string[]",
-    "required": true,
-    "description": "Column labels."
-  },
-  {
-    "name": "yLabels",
-    "type": "string[]",
-    "required": true,
-    "description": "Row labels."
-  },
-  {
-    "name": "matrix",
-    "type": "number[][]",
-    "required": true,
-    "description": "Row-major numeric matrix."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<Heatmap title="State Scheme Activity Matrix" xLabels={["Jan", "Feb", "Mar"]} yLabels={["UP", "MH"]} matrix={[[10, 20, 30], [40, 50, 60]]} />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.4.1 Use of Color",
-    "level": "AA",
-    "description": "Cells include numerical text values inside tooltips alongside color ramps."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Arrow keys</kbd></td>
-                          <td>{"Navigates between heatmap matrix cells."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Heatmap" />
-    </article>
+<Heatmap
+  title="Inspections by State and Month"
+  xLabels={["Jan", "Feb", "Mar", "Apr"]}
+  yLabels={["Uttar Pradesh", "Maharashtra", "Bihar"]}
+  matrix={[
+    [10, 24, 31, 28],
+    [40, 38, 52, 61],
+    [12, 9, 18, 22],
+  ]}
+/>`}</CodeBlock>
+          <p>
+            <code>matrix</code> is row-major: one array per <code>yLabels</code> entry, each with one
+            number per <code>xLabels</code> entry. A ragged matrix draws a ragged grid rather than
+            throwing, so validate the shape where the figures are assembled.
+          </p>
+          <CodeBlock>{`<Heatmap
+  title="Inspections by State and Month"
+  xLabels={months}
+  yLabels={states}
+  matrix={matrix}
+  scale="diverging"
+  state={error ? "error" : loading ? "loading" : undefined}
+  onRetry={refetch}
+  filterLabel="month range"
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-sr">
+          <h2 id="cdp-sr" className="cdp__h2">
+            What a Screen Reader Gets
+          </h2>
+          <p>
+            One image with a name and a summary stating the matrix size and its range, then a visually
+            hidden table whose columns are the x labels and whose rows are the y labels. That table is
+            the only complete reading of a heatmap for anyone who cannot compare shades, which is why
+            it is not optional here in a way it almost is elsewhere.
+          </p>
+          <p>
+            <strong>The open gap.</strong> Cells are focusable but sit beneath{" "}
+            <code>role=&quot;img&quot;</code> and are pruned from the accessibility tree. There is no
+            arrow-key navigation between cells, and this page has stopped saying there is.
+          </p>
+        </section>
+      }
+    />
   );
 }

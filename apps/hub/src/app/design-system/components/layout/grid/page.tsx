@@ -1,195 +1,206 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
+  Callout,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { Grid, GridItem } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  MatrixTable,
+  PropsTable,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+import { Card, Grid, GridItem } from "@mosje/design-system";
 
 export const metadata: Metadata = {
-  title: "Grid",
-  description: "12-column responsive layout grid system with predefined responsive spans and gutters.",
+  title: "Grid — Design System",
+  description:
+    "The twelve-column layout grid, as a component. Twelve tracks at every breakpoint; a child spans more of them on a small screen.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function GridDocPage(): React.JSX.Element {
-  return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Grid
-          </h1>
-          <StatusBadge status="Stable" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"12-column responsive layout grid system with predefined responsive spans and gutters."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
-
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Grid is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <Grid columns={12}><GridItem span={{ lg: 8, base: 12 }}><div style={{ padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-base)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Main Column (8 / 12)</div></GridItem><GridItem span={{ lg: 4, base: 12 }}><div style={{ padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-base)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Sidebar (4 / 12)</div></GridItem></Grid>
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use 8+4 column splits for article pages with right rails.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not use arbitrary CSS margins to simulate grid gutters.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { Grid } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
+const A11Y: A11yItem[] = [
   {
-    "name": "columns",
-    "type": "number",
-    "default": "12",
-    "description": "Grid track count."
+    criterion: "1.3.2 Meaningful Sequence",
+    level: "A",
+    description:
+      "The grid never reorders its children; the DOM order is the reading order at every width. Do not reach for `order` or `grid-row` to move a cell visually — that separates the reading order from the visual one, which is precisely what this criterion forbids.",
   },
   {
-    "name": "children",
-    "type": "React.ReactNode",
-    "required": true,
-    "description": "GridItem child elements."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<Grid columns={12}><GridItem span={{ lg: 8, base: 12 }}><div style={{ padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-base)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Main Column (8 / 12)</div></GridItem><GridItem span={{ lg: 4, base: 12 }}><div style={{ padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-base)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Sidebar (4 / 12)</div></GridItem></Grid>`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
+    criterion: "1.4.10 Reflow",
+    level: "AA",
+    description:
+      "Spans are clamped to 1…columns by the grid, so an over-wide span wraps to the next row rather than overflowing and forcing a horizontal scrollbar.",
+  },
   {
-    "criterion": "1.3.2 Meaningful Sequence",
-    "level": "AA",
-    "description": "Logical reading order preserved across responsive column stacks."
-  }
-]} />
-                </section>
+    criterion: "1.4.4 Resize Text",
+    level: "AA",
+    description:
+      "Tracks are fractional, not fixed, so raising the browser font size grows the content inside a cell instead of clipping it against a pixel width.",
+  },
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The grid is presentational: it adds no roles and no landmarks. Where the cells are a list of like things, wrap them in a real `<ul>`/`<li>` rather than relying on the visual arrangement to say so.",
+  },
+];
 
-              </>
-            ),
-          },
-        ]}
-      />
+export default function GridPage(): React.JSX.Element {
+  return (
+    <ComponentDocPage
+      name="Grid"
+      status="Stable"
+      summary="The twelve-column layout grid, as a component. Twelve tracks at every breakpoint: a child spans more of them on a small screen rather than the track count changing."
+      figma={{
+        absent:
+          "The grid is published as the Layout Grid foundation page in the SAMAVESH library, not as a component master.",
+      }}
+      specimen={
+        <Grid columns={12}>
+          <GridItem span={{ base: 12, lg: 8 }}>
+            <Card>Main column — 8 of 12 from the desktop anchor, full width below it.</Card>
+          </GridItem>
+          <GridItem span={{ base: 12, lg: 4 }}>
+            <Card>Rail — 4 of 12.</Card>
+          </GridItem>
+        </Grid>
+      }
+      propsFrom="GridProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A page-level column layout — an article with a rail, a dashboard split, a two-column form.",
+          "A layout whose proportions must change at a breakpoint rather than simply wrapping.",
+          "Anywhere the estate's twelve-column rhythm has to be honoured across several sections.",
+        ],
+        avoid: [
+          "A row of equal cards that simply wraps — a flex row is simpler and needs no column arithmetic.",
+          "Positioning two elements beside each other inside a card — that is flexbox.",
+          "A data table — use Data Table, which carries the row and column semantics a grid does not.",
+        ],
+      }}
+      related={[
+        {
+          label: "Container",
+          href: "/design-system/components/layout/container",
+          reason: "the column the grid is laid out inside",
+        },
+        {
+          label: "Band",
+          href: "/design-system/components/layout/band",
+          reason: "the full-bleed section a grid usually sits in",
+        },
+        {
+          label: "Dashboard Grid",
+          href: "/design-system/components/dashboard/dashboard-grid",
+          reason: "for a dashboard's card matrix, which carries its own span rules",
+        },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-twelve">
+            <h2 id="cdp-twelve" className="cdp__h2">
+              Twelve Tracks at Every Width
+            </h2>
+            <p>
+              The track count never changes. A child spans more of the twelve on a small screen —
+              which is UX4G&apos;s model, and Bootstrap&apos;s — so there is no four-column
+              mobile grid here, and a span written for one breakpoint stays arithmetically valid
+              at the others.
+            </p>
+            <MatrixTable
+              caption="How a span resolves across the breakpoints"
+              columns={["span", "Below tablet", "Tablet", "Desktop"]}
+              rows={[
+                ["{ base: 12, lg: 4 }", "12 of 12", "12 of 12", "4 of 12"],
+                ["{ base: 12, md: 6, lg: 4 }", "12 of 12", "6 of 12", "4 of 12"],
+                ["{ base: 6 }", "6 of 12", "6 of 12", "6 of 12"],
+                ["omitted", "12 of 12", "12 of 12", "12 of 12"],
+              ]}
+            />
+          </section>
 
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Grid" />
-    </article>
+          <section className="cdp__section" aria-labelledby="cdp-gutters">
+            <h2 id="cdp-gutters" className="cdp__h2">
+              Gutters Are the Grid&apos;s, Not the Cell&apos;s
+            </h2>
+            <p>
+              The gutter is set by the grid and the row gap defaults to match it, which is what
+              keeps a wrapped card grid square. Simulating a gutter with a margin on the cell
+              double-counts it at every wrap and leaves the last column short by one gutter
+              against the container edge.
+            </p>
+            <Callout type="info" title="Row gap is the one that legitimately differs">
+              A grid of cards with long titles often wants more air between rows than between
+              columns, because the vertical gap has to separate two blocks of text rather than
+              two card edges. That is what <code>rowGap</code> is for — pass a token reference,
+              never a number.
+            </Callout>
+          </section>
+        </>
+      }
+      code={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-griditem">
+            <h2 id="cdp-griditem" className="cdp__h2">
+              GridItem
+            </h2>
+            <p>
+              One cell of a Grid, and only meaningful as its direct child. <code>span</code> takes
+              a <code>GridSpan</code> — <code>&#123; base?, md?, lg? &#125;</code> — where an
+              omitted step inherits the one below it.
+            </p>
+            <PropsTable from="GridItemProps" />
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Grid, GridItem } from "@mosje/design-system";
+
+// An article with a rail: one column below desktop, eight and four above it.
+<Grid>
+  <GridItem span={{ base: 12, lg: 8 }}>
+    <SchemeArticle />
+  </GridItem>
+  <GridItem span={{ base: 12, lg: 4 }}>
+    <RelatedLinks />
+  </GridItem>
+</Grid>`}</CodeBlock>
+          <p>
+            A three-up card row that becomes two-up on a tablet and one-up on a phone is three
+            spans and no media query.
+          </p>
+          <CodeBlock>{`<Grid rowGap="var(--sa-stack-24)">
+  {schemes.map((scheme) => (
+    <GridItem key={scheme.id} span={{ base: 12, md: 6, lg: 4 }}>
+      <SchemeCard scheme={scheme} />
+    </GridItem>
+  ))}
+</Grid>`}</CodeBlock>
+          </section>
+        </>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-order">
+          <h2 id="cdp-order" className="cdp__h2">
+            Reading Order
+          </h2>
+          <p>
+            The grid places cells in DOM order at every width, so the order a sighted reader sees
+            is the order a screen reader announces and the order the Tab key follows. Keep it
+            that way: CSS <code>order</code>, an explicit <code>grid-row</code>, or a{" "}
+            <code>direction</code> flip will move a cell visually while leaving it where it was
+            in the accessibility tree, and the two orders then disagree.
+          </p>
+          <p>
+            Where the desired visual order genuinely differs from the reading order — a rail that
+            should appear above the article on a phone — change the DOM order and let both follow
+            it, rather than moving the cell with CSS.
+          </p>
+        </section>
+      }
+    />
   );
 }

@@ -1,231 +1,238 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { ChartCard } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  MatrixTable,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+import { ChartCard, DashboardGrid, Sparkline } from "@mosje/design-system";
 
 export const metadata: Metadata = {
-  title: "Chart Card",
-  description: "Structured container for data visualizations, metrics, and tabular summaries in analytical dashboards with built-in export actions and error states.",
+  title: "Chart Card — Design System",
+  description:
+    "The titled container a dashboard chart sits in. It owns the header, the grid span, the download control and every state the chart can be in — loading, empty, filtered to nothing, failed.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The card is a `<section>` with a real `<h3>` heading, so the chart inside it is announced under a named heading rather than as a loose graphic.",
+  },
+  {
+    criterion: "4.1.3 Status Messages",
+    level: "AA",
+    description:
+      "The loading state carries a visually hidden `role=\"status\"` naming the card, so a screen-reader user is told the wait is deliberate. The states that a reader must notice are announced by CardState; the quiet ones are not.",
+  },
+  {
+    criterion: "2.4.6 Headings and Labels",
+    level: "AA",
+    description:
+      "The title says what the figures are and the subtitle says which period and selection, so a card read out of context still identifies its own data.",
+  },
+  {
+    criterion: "2.3.3 Animation from Interactions",
+    level: "AAA",
+    description:
+      "The body crossfades when it moves between loading, a state and its content. The stylesheet drops the transition under prefers-reduced-motion.",
+  },
+  {
+    criterion: "GIGW 3.0 — Data presentation",
+    level: "GIGW",
+    description:
+      "Where a figure cannot be drawn, the card says which of the six reasons applies rather than rendering a blank panel that reads as \"broken\".",
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
+/* A real chart, not a grey box: the card is documented by what it does to its
+   content, so the content has to be content. Sparkline carries no heading of its
+   own, so the card's `<h3>` stays the only heading in the specimen. */
+const TREND = [412, 486, 455, 601, 640, 588, 712, 743];
 
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function ChartCardDocPage(): React.JSX.Element {
+export default function ChartCardPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Chart Card
-          </h1>
-          <StatusBadge status="Beta" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Structured container for data visualizations, metrics, and tabular summaries in analytical dashboards with built-in export actions and error states."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
+    <ComponentDocPage
+      name="Chart Card"
+      status="Beta"
+      summary="The titled container a dashboard chart sits in. It owns the header, the grid span, the download control and every state the chart can be in, so a portal composes a dashboard rather than rebuilding one."
+      figma={{
+        absent:
+          "Not yet published in the Figma library. The card's states are specified in .claude/rules/data-state-completeness.md until a master exists.",
+      }}
+      specimen={
+        <DashboardGrid>
+          <ChartCard
+            span={6}
+            title="Releases by Quarter"
+            subtitle="FY 2025-26 · All States"
+            footer="Q4 is the largest quarter at 743 releases."
           >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+            <Sparkline data={TREND} height={72} fill label="Releases by quarter, rising from 412 to 743" />
+          </ChartCard>
+          <ChartCard span={6} title="Beneficiaries by Category" subtitle="FY 2025-26 · All States" loading skeleton="donut">
+            <Sparkline data={TREND} height={72} />
+          </ChartCard>
+          <ChartCard
+            span={6}
+            title="District Coverage"
+            subtitle="Bihar · FY 2025-26"
+            state="no-results"
+            emptyLabel="No district in Bihar matches the selected category."
+          >
+            <Sparkline data={TREND} height={72} />
+          </ChartCard>
+          <ChartCard span={6} title="Hostels Sanctioned" subtitle="FY 2025-26 · All States" state="not-published">
+            <Sparkline data={TREND} height={72} />
+          </ChartCard>
+        </DashboardGrid>
+      }
+      propsFrom="ChartCardProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A chart, map or ranked list is placed on a dashboard and needs a heading, a period and a grid span.",
+          "The figures come from a feed, so the surface has to render a loading, empty, filtered-to-nothing and failed state as well as a populated one.",
+          "A reader is expected to be able to download the figures behind the picture.",
+        ],
+        avoid: [
+          "The content is a single number — use Metric Card, or a KPI Row for several.",
+          "The content is a page section rather than a dashboard widget — use Section, which carries the page's own heading rhythm.",
+          "The container is only there to draw a border — use Card, which makes no promises about states or spans.",
+        ],
+      }}
+      related={[
+        {
+          label: "Dashboard Grid",
+          href: "/design-system/components/dashboard/dashboard-grid",
+          reason: "the 12-column grid the span prop is measured against",
+        },
+        { label: "KPI Row", href: "/design-system/components/dashboard/kpi-row", reason: "for the headline figures above the charts" },
+        { label: "Filter Bar", href: "/design-system/components/dashboard/filter-bar", reason: "the row of controls that drives what the cards show" },
+        { label: "Empty State", href: "/design-system/components/feedback/empty-state", reason: "for a whole page with nothing to show, rather than one card" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">
+              Six Reasons a Card Has Nothing to Draw
+            </h2>
+            <p>
+              &ldquo;Empty&rdquo; and &ldquo;error&rdquo; fit all of these and help with none of
+              them. Each wants a different next action, and only some of those actions are the
+              reader&rsquo;s to take &mdash; so the state decides whether an action is drawn at all,
+              and <code>onRetry</code> is ignored for the kinds that cannot use one. A
+              &ldquo;Try again&rdquo; button under &ldquo;not published yet&rdquo; is a control that
+              cannot possibly work, and a control that never changes anything teaches people to stop
+              pressing controls.
+            </p>
+            <MatrixTable
+              caption="CardStateKind — what each one means and what it offers"
+              columns={["state", "What it means", "Action offered"]}
+              rows={[
+                ["empty", "The selection is valid and genuinely holds nothing.", "None"],
+                ["no-results", "A filter matched nothing. The reader caused this and can undo it.", "Clear filters"],
+                ["not-published", "The source does not publish this figure yet. Not a failure, and not the reader's to fix.", "None"],
+                ["error", "The request failed. Local to this card; the rest of the page is unaffected.", "Try again"],
+                ["restricted", "The figures exist but this viewer may not see them.", "None"],
+                ["offline", "The device is offline. Nothing is wrong with the service.", "Try again"],
+              ]}
+            />
+            <p>
+              <strong>&ldquo;Filtered to nothing&rdquo; is not &ldquo;empty&rdquo;.</strong>{" "}
+              <em>No district in Bihar matches the selected category</em> and <em>the feed published
+              nothing</em> are different sentences with different remedies, and a card that renders
+              one for both is lying about one of them.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-skeleton">
+            <h2 id="cdp-skeleton" className="cdp__h2">
+              The Skeleton Promises the Shape
+            </h2>
+            <p>
+              A skeleton earns its place by sharing the silhouette of what is coming. Set{" "}
+              <code>skeleton</code> to match the chart inside: <code>bars</code> for bar and column
+              charts, <code>line</code> for line, area and combo, <code>donut</code> for donut, pie
+              and gauge, <code>rows</code> for ranked lists and funnels, <code>region</code> for
+              maps, <code>figures</code> for reference grids. The bar heights are fixed rather than
+              random, because a skeleton that reshuffles reads as data arriving and being withdrawn.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-footer">
+            <h2 id="cdp-footer" className="cdp__h2">
+              A Card That Cannot Show Its Data Must Not Talk About Its Data
+            </h2>
+            <p>
+              The footer carries the card&rsquo;s reading of its own figures. Left up while the body
+              says the figures did not arrive, the card contradicts itself and the sentence is
+              indistinguishable from a live finding &mdash; so the footer is removed in every
+              loading and state case. The download control goes for the same reason: there is
+              nothing to serialise, and offering the download implies there is.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { ChartCard } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Chart Card is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <ChartCard title="Disbursals by Quarter" subtitle="FY 2025-26"><div style={{ height: 120, display: "flex", alignItems: "center", justifyContent: "center", background: "var(--sa-bg-neutral-subtler)" }}><span style={{ color: "var(--sa-text-neutral-subtle)" }}>Chart Visualization Area</span></div></ChartCard>
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Provide explicit timeframes in the subtitle (e.g. \"FY 2025-26 · All States\").",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not display bare charts without a title or data context.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { ChartCard } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "title",
-    "type": "string",
-    "required": true,
-    "description": "Title describing the chart metric."
-  },
-  {
-    "name": "subtitle",
-    "type": "string",
-    "default": "undefined",
-    "description": "Timeframe or geographic filter description."
-  },
-  {
-    "name": "action",
-    "type": "React.ReactNode",
-    "default": "undefined",
-    "description": "Action controls (Export CSV, Date Picker, or More Menu)."
-  },
-  {
-    "name": "children",
-    "type": "React.ReactNode",
-    "required": true,
-    "description": "The visualization component (BarChart, DonutChart, DataTable)."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<ChartCard title="Disbursals by Quarter" subtitle="FY 2025-26"><div style={{ height: 120, display: "flex", alignItems: "center", justifyContent: "center", background: "var(--sa-bg-neutral-subtler)" }}><span style={{ color: "var(--sa-text-neutral-subtle)" }}>Chart Visualization Area</span></div></ChartCard>`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.1.1 Non-text Content",
-    "level": "AA",
-    "description": "Provides text alternative for charts through card title and accessible summaries."
-  },
-  {
-    "criterion": "1.4.11 Non-text Contrast",
-    "level": "AA",
-    "description": "Card border and internal dividers maintain 3:1 contrast against surface."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Tab</kbd></td>
-                          <td>{"Focuses card action buttons and chart controls."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Chart Card" />
-    </article>
+<ChartCard
+  span={6}
+  title="Releases by Quarter"
+  subtitle="FY 2025-26 · All States"
+  exportable
+  skeleton="bars"
+  loading={query.isLoading}
+  state={query.error ? "error" : rows.length === 0 ? "no-results" : undefined}
+  emptyLabel="No district in Bihar matches the selected category."
+  onRetry={query.refetch}
+  footer={summary}
+>
+  <BarChart data={rows} />
+</ChartCard>`}</CodeBlock>
+          <p>
+            <strong>One request, one answer.</strong> The card&rsquo;s title, its body and its footer
+            are three views of a single reading, so resolve that reading once and pass the result to
+            all three. Deriving them separately is how a key came to print{" "}
+            <code>0</code> above a map drawing 19,768 villages.
+          </p>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-sr">
+          <h2 id="cdp-sr" className="cdp__h2">
+            What a Screen Reader Hears
+          </h2>
+          <ul>
+            <li>
+              <strong>Loading</strong> &mdash; &ldquo;Loading Releases by Quarter&rdquo;, from a
+              visually hidden <code>role=&quot;status&quot;</code>. The wait is announced as
+              deliberate rather than left as silence.
+            </li>
+            <li>
+              <strong>A state</strong> &mdash; the headline and the one-line reason, read under the
+              card&rsquo;s own heading. States a reader must notice are announced; the quiet ones
+              are not, so a dashboard of six cards does not interrupt six times.
+            </li>
+            <li>
+              <strong>Populated</strong> &mdash; the heading, then whatever the chart itself exposes.
+              The card makes no claim about the chart&rsquo;s accessible content; that is the
+              chart&rsquo;s own page.
+            </li>
+          </ul>
+          <p>
+            The card never prints a status code, an endpoint or a stack trace. A feed being down is
+            an expected state with a defined rendering, not an exception &mdash; the diagnostics
+            belong in <code>docs/audit/*.md</code>.
+          </p>
+        </section>
+      }
+    />
   );
 }

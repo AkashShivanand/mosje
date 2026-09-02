@@ -1,176 +1,169 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { TogglePlayground } from "./toggle-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { TogglePlayground } from "./toggle-playground";
 
 export const metadata: Metadata = {
-  title: "Toggle - SAMAVESH Design System",
+  title: "Toggle — Design System",
   description:
-    "An accessible switch component for toggling a setting on or off.",
+    "A switch for a setting that takes effect immediately. A real checkbox input carrying role=\"switch\", paired with a styled track and knob.",
 };
 
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The label is associated through `htmlFor`/`id`, so the accessible name is programmatic rather than positional.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    description:
+      "A real `<input type=\"checkbox\">` sits behind the track, so Tab reaches it and Space toggles it. No key handling is re-implemented.",
+  },
+  {
+    criterion: "2.4.7 Focus Visible",
+    level: "AA",
+    description: "The hidden input's focus is drawn on the track through `:focus-visible`.",
+  },
+  {
+    criterion: "2.5.8 Target Size (Minimum)",
+    level: "AA",
+    description:
+      "The label is part of the target, and both sizes clear 24×24 on the track alone. A switch rendered with no label does not meet this comfortably on its own.",
+  },
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    description:
+      "`role=\"switch\"` with `aria-checked` announces the control as on or off rather than as checked, which is what distinguishes it from a checkbox to a screen-reader user.",
+  },
+  {
+    criterion: "1.4.1 Use of Colour",
+    level: "A",
+    description:
+      "The knob's position carries the state as well as the track colour, so on and off are distinguishable without colour.",
+  },
+];
+
 export default function TogglePage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Toggle"
+      status="Stable"
+      summary="A switch for a setting that takes effect immediately. Behind the styled track is a real checkbox input carrying the switch role, so it keeps native keyboard behaviour while announcing itself as on or off rather than as checked."
+      figma={{ node: "toggle" }}
+      specimen={<TogglePlayground />}
+      propsFrom="ToggleProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A setting takes effect the moment it is changed — a notification preference, a display option, a visibility switch.",
+          "The two states are plainly on and off, and both are reversible.",
+          "The control sits in a settings list or an administrative panel rather than in a form the reader submits.",
+        ],
+        avoid: [
+          "The change takes effect only on submit — use Checkbox, which reads as a form field.",
+          "The reader is agreeing to terms, a consent or a statutory declaration — use Checkbox, or Declaration Checkbox where the wording is legal text.",
+          "There are more than two states, or the states are not opposites — use a Radio group.",
+          "Turning it off destroys something. A switch invites an idle tap; use a Button with a confirmation instead.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          Toggle
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A switch control that allows users to toggle a single setting on or off. Under the hood, it&apos;s a fully accessible checkbox with <code>role=&quot;switch&quot;</code>.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Checkbox",
+          href: "/design-system/components/forms/checkbox",
+          reason: "when the change takes effect on submit",
+        },
+        {
+          label: "Radio",
+          href: "/design-system/components/forms/radio",
+          reason: "when there are more than two states",
+        },
+        {
+          label: "Declaration Checkbox",
+          href: "/design-system/components/forms/declaration-checkbox",
+          reason: "for a statutory agreement, which is never a switch",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-sizes">
+          <h2 id="cdp-sizes" className="cdp__h2">
+            Sizes
+          </h2>
+          <ul>
+            <li>
+              <strong>Default</strong> — the settings and form size, and the right choice unless the
+              row is genuinely too tight for it.
+            </li>
+            <li>
+              <strong>Small</strong> — for a dense layout such as a toolbar or a table cell. It is a
+              density decision, not a way to fit more switches into a space that is already too small.
+            </li>
+          </ul>
+          <p>
+            The label is what makes either size comfortable to hit. A bare track with the name carried
+            only by <code>aria-label</code> is legal but hard to use, and it gives a sighted reader
+            nothing to read.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Toggle } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Interact with the Toggle and adjust its size.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <TogglePlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          Use Toggles for binary settings that take effect immediately (or when a settings form is saved). They are a more modern, prominent alternative to a standard checkbox.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Use Toggles for settings like 'Enable notifications' or 'Dark mode'.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't use Toggles for acknowledging terms and conditions. Use a standard Checkbox instead.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="sizes" style={h2Style}>2. Sizes</h2>
-        <p style={proseStyle}>
-          The Toggle component comes in two sizes:
-        </p>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)" }}>
-          <li><strong>Default:</strong> Standard size, ideal for primary forms and settings pages.</li>
-          <li><strong>Small:</strong> Compact size, suitable for dense layouts, toolbars, or data tables.</li>
-        </ul>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>3. Code Example</h2>
-        <Playground
-          code={`function NotificationsSettings() {
-  const [enabled, setEnabled] = React.useState(true);
+const [enabled, setEnabled] = React.useState(true);
 
-  return (
-    <Toggle 
-      checked={enabled} 
-      onChange={(e) => setEnabled(e.target.checked)} 
-      label="Receive SMS alerts" 
+<Toggle
+  label="Receive SMS Alerts"
+  checked={enabled}
+  onChange={(event) => setEnabled(event.target.checked)}
+/>`}</CodeBlock>
+          <p>
+            Where the switch needs an explanation, link it rather than putting it in the label — the
+            label becomes the accessible name, and a sentence read as a name is hard to follow.
+          </p>
+          <CodeBlock>{`<Toggle
+  label="Publish This Scheme"
+  checked={published}
+  onChange={onPublish}
+  aria-describedby="publish-note"
+/>
+<p id="publish-note">Once published, the scheme is visible to every citizen.</p>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-keys">
+          <h2 id="cdp-keys" className="cdp__h2">
+            Keyboard
+          </h2>
+          <ul>
+            <li>
+              <strong>Tab</strong> — move to the switch. It is a single tab stop.
+            </li>
+            <li>
+              <strong>Space</strong> — toggle. Enter does not toggle a switch, and must not be made to:
+              inside a form, Enter submits.
+            </li>
+          </ul>
+          <p>
+            <code>role=&quot;switch&quot;</code> is the reason this is not simply a differently styled
+            checkbox. A screen reader announces &quot;on&quot; or &quot;off&quot; rather than
+            &quot;checked&quot;, which matches what the control actually does — and is why it should
+            not be used for anything the reader is agreeing to.
+          </p>
+        </section>
+      }
     />
-  );
-}`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>5. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "checked", type: "boolean", required: true, description: "Controlled on/off state." },
-            { name: "onChange", type: "ChangeEventHandler", required: true, description: "Called when the toggle is clicked." },
-            { name: "label", type: "ReactNode", description: "Optional text label rendered beside the switch." },
-            { name: "size", type: '"default" | "small"', default: '"default"', description: "Control size." },
-            { name: "...rest", type: "InputHTMLAttributes", description: "All standard input attributes are supported." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>4. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Role:</strong> The visually hidden input uses <code>type=&quot;checkbox&quot;</code> and <code>role=&quot;switch&quot;</code> so screen readers announce it as a toggle switch.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Associated Label:</strong> When the <code>label</code> prop is provided, the component automatically generates an <code>id</code> and correctly wires up the <code>&lt;label htmlFor=&quot;...&quot;&gt;</code>.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
   );
 }

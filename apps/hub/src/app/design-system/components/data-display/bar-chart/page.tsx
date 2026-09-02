@@ -1,214 +1,224 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { BarChart } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { BarChartSpecimen } from "./specimen";
 
 export const metadata: Metadata = {
-  title: "Bar Chart",
-  description: "Vertical column and horizontal bar visualization for comparing categorical metrics across states, districts, and scheme categories.",
+  title: "Bar Chart — Design System",
+  description:
+    "Vertical columns or horizontal bars comparing a figure across states, districts and scheme categories, in one series or several.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
-
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function BarChartDocPage(): React.JSX.Element {
-  return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Bar Chart
-          </h1>
-          <StatusBadge status="Beta" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Vertical column and horizontal bar visualization for comparing categorical metrics across states, districts, and scheme categories."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
-
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Bar Chart is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <BarChart title="State Beneficiary Totals" data={[{ label: "Uttar Pradesh", value: 450 }, { label: "Maharashtra", value: 380 }, { label: "Bihar", value: 290 }]} />
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use horizontal bars when state or scheme category names are long.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not use non-tokenized arbitrary colors for individual bars.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { BarChart } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
+const A11Y: A11yItem[] = [
   {
-    "name": "title",
-    "type": "string",
-    "required": true,
-    "description": "Accessible chart title."
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    status: "verified",
+    description:
+      "The chart renders through ChartFrame, which draws an SVG <title> and <desc> and a visually hidden table carrying every label and value the bars carry. A reader who cannot see the bars gets the figures, not a description of them.",
+    evidence: "ChartFrame's `table` and `summary` props, passed by bar-chart.tsx on every render.",
   },
   {
-    "name": "data",
-    "type": "ChartDatum[]",
-    "required": true,
-    "description": "Categorical data array with labels and numeric values."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<BarChart title="State Beneficiary Totals" data={[{ label: "Uttar Pradesh", value: 450 }, { label: "Maharashtra", value: 380 }, { label: "Bihar", value: 290 }]} />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
+    criterion: "1.4.1 Use of Color",
+    level: "A",
+    status: "verified",
+    description:
+      "Every bar is labelled on the category axis, and `showValues` prints the figure on the bar. Colour separates series; it never carries the reading on its own.",
+    evidence: "XAxisLabels is rendered unconditionally; the SR table repeats every value.",
+  },
   {
-    "criterion": "1.1.1 Non-text Content",
-    "level": "AA",
-    "description": "SVG bars include ARIA labels and hover tooltips for screen readers."
-  }
-]} />
-                </section>
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    status: "partial",
+    description:
+      'Every figure is reachable without a pointer, because the screen-reader table holds all of them. The bars themselves are not: each sets tabIndex={0}, but the SVG above them carries role="img", which prunes its descendants from the accessibility tree — so those stops receive focus with no accessible name. Treat the table as the keyboard path.',
+    evidence:
+      'Open gap, recorded 2026-09-02: role="img" in chart-frame.tsx against tabIndex={0} at bar-chart.tsx lines 199 and 291.',
+  },
+  {
+    criterion: "1.4.11 Non-text Contrast",
+    level: "AA",
+    status: "untested",
+    description:
+      "The categorical ramp is drawn from --sa-chart-cat-* so it re-themes with the brand, but no measurement of adjacent bar colours against the canvas has been recorded across all three brand packs.",
+  },
+  {
+    criterion: "GIGW 3.0 — Data Presentation",
+    level: "GIGW",
+    status: "verified",
+    description:
+      "Values format through formatIndian by default, so a figure reads 4,50,000 rather than 450,000 on a Government of India page.",
+    evidence: "`valueFormat` defaults to formatIndian in bar-chart.tsx.",
+  },
+];
 
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>ArrowLeft / ArrowRight</kbd></td>
-                          <td>{"Navigates between bars to inspect values."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
+export default function BarChartPage(): React.JSX.Element {
+  return (
+    <ComponentDocPage
+      name="Bar Chart"
+      status="Beta"
+      summary="Compares one figure across a set of named categories — states, districts, scheme components — as vertical columns or horizontal bars. It takes a single series or several, grouped or stacked."
+      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      specimen={<BarChartSpecimen />}
+      propsFrom="BarChartProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A figure is compared across named categories that have no natural order — states, districts, scheme components.",
+          "The category names are long enough to overlap on a horizontal axis; set orientation=\"horizontal\" and they read as a list.",
+          "Two or three series are compared category by category (variant=\"grouped\"), or their parts add to a whole (variant=\"stacked\").",
+        ],
+        avoid: [
+          "The axis is time and the reader is looking for a trend — use a Line Chart, or an Area Chart where the running total is the point.",
+          "The figures are parts of one whole and there are five or fewer — use a Donut Chart, which states the total in the middle.",
+          "There is one figure against one target — use a Gauge, or a Progress bar in a list.",
+          "The comparison is between two measured quantities rather than across categories — use a Scatter Chart.",
+          "There are more categories than the surface can label. A bar chart with forty unreadable ticks is a table.",
+        ],
+      }}
+      related={[
+        { label: "Line Chart", href: "/design-system/components/data-display/line-chart", reason: "when the axis is time" },
+        { label: "Combo Chart", href: "/design-system/components/data-display/combo-chart", reason: "when bars and a rate share one canvas" },
+        { label: "Heatmap", href: "/design-system/components/data-display/heatmap", reason: "when two categorical axes cross" },
+        { label: "Chart Frame", href: "/design-system/components/data-display/chart-frame", reason: "the shell every chart renders through" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">
+              The States It Draws
+            </h2>
+            <p>
+              Four of the five states a chart can be in are not the populated one, and the specimen
+              above shows all four. They are not decoration: a blank panel reads as &ldquo;none&rdquo;,
+              as &ldquo;broken&rdquo; and as &ldquo;your filter matched nothing&rdquo; identically, and
+              a reader cannot act on any of the three.
+            </p>
+            <ul>
+              <li>
+                <strong>Loading</strong> — a skeleton at the chart&apos;s own aspect ratio, carrying{" "}
+                <code>role=&quot;status&quot;</code>, so the layout does not move when the figures land.
+              </li>
+              <li>
+                <strong>Empty</strong> — the feed answered and had nothing. No retry is offered,
+                because pressing one would do nothing.
+              </li>
+              <li>
+                <strong>Error</strong> — the request failed. <code>onRetry</code> puts a
+                &ldquo;Try again&rdquo; control on the card. No status code and no endpoint reaches
+                the page.
+              </li>
+              <li>
+                <strong>Filtered to nothing</strong> — the reader excluded everything themselves.{" "}
+                <code>filterLabel</code> names the filter so the control reads &ldquo;Clear state
+                filter&rdquo; rather than &ldquo;Clear filters&rdquo;.
+              </li>
+            </ul>
+            <p>
+              Passing no <code>state</code> at all still resolves: empty arrays fall back to{" "}
+              <code>&quot;empty&quot;</code>. Give the prop wherever the caller knows more than the
+              array does — which is every case where a feed was asked.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-orient">
+            <h2 id="cdp-orient" className="cdp__h2">
+              Orientation, Grouping and Stacking
+            </h2>
+            <ul>
+              <li>
+                <strong>Vertical</strong> is the default and suits short category names and up to
+                about a dozen bars.
+              </li>
+              <li>
+                <strong>Horizontal</strong> is the right choice for state and scheme names, which do
+                not fit under a vertical axis without rotation.
+              </li>
+              <li>
+                <strong>Grouped</strong> puts series side by side, for comparing them category by
+                category.
+              </li>
+              <li>
+                <strong>Stacked</strong> adds them, and is only honest when the parts genuinely sum
+                to the whole the reader is being shown.
+              </li>
+            </ul>
+            <p>
+              Bar colours come from the categorical ramp. Do not pass a raw hex to{" "}
+              <code>color</code>: the ramp re-themes with the brand pack and a literal does not.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { BarChart } from "@mosje/design-system";
 
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Bar Chart" />
-    </article>
+<BarChart
+  title="State Beneficiary Totals"
+  orientation="horizontal"
+  data={[
+    { label: "Uttar Pradesh", value: 450 },
+    { label: "Maharashtra", value: 380 },
+    { label: "Bihar", value: 290 },
+  ]}
+/>`}</CodeBlock>
+          <p>
+            <strong>The props are a union, and the table above marks which arm each belongs to.</strong>{" "}
+            Pass <code>data</code> for a single series — one bar per{" "}
+            <code>{"{ label, value, color? }"}</code> — or <code>labels</code> and{" "}
+            <code>series</code> for several, each series&apos; <code>data</code> aligned to{" "}
+            <code>labels</code> by index. Never both: the single-series form wins, and the other half
+            is silently ignored.
+          </p>
+          <p>
+            Several series share one category axis. The reading and its states are resolved once, by
+            the caller, and handed to the chart — the same expression a heading or a key on the same
+            page must read, or the two will disagree on screen.
+          </p>
+          <CodeBlock>{`<BarChart
+  title="Target Against Release"
+  variant="grouped"
+  labels={["Q1", "Q2", "Q3", "Q4"]}
+  series={[
+    { name: "Target", data: [100, 150, 200, 250] },
+    { name: "Released", data: [95, 142, 198, 240] },
+  ]}
+  state={reading == null ? "error" : undefined}
+  onRetry={refetch}
+  filterLabel="state filter"
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-sr">
+          <h2 id="cdp-sr" className="cdp__h2">
+            What a Screen Reader Gets
+          </h2>
+          <p>
+            The SVG is one image with a name and a short summary, and the figures follow it as a
+            visually hidden table with the same columns the axis carries. That table is the
+            accessible source of truth, not a supplement to it.
+          </p>
+          <p>
+            <strong>The open gap.</strong> Each bar sets <code>tabIndex</code> so a pointer
+            user&apos;s tooltip can also be reached by keyboard, but the SVG above it carries{" "}
+            <code>role=&quot;img&quot;</code>, which removes its descendants from the accessibility
+            tree. The result is a focus stop that a screen reader announces as nothing. Until that is
+            resolved, do not describe this chart as keyboard-navigable, and do not add arrow-key
+            handling on top of it — no chart in this catalogue implements arrow keys, and a page
+            claiming otherwise sends a reader looking for a behaviour that is not there.
+          </p>
+        </section>
+      }
+    />
   );
 }

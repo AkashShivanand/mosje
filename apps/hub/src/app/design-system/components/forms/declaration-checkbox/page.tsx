@@ -1,167 +1,158 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { DeclarationCheckboxPlayground } from "./declaration-checkbox-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { DeclarationCheckboxPlayground } from "./declaration-checkbox-playground";
 
 export const metadata: Metadata = {
-  title: "DeclarationCheckbox - SAMAVESH Design System",
+  title: "Declaration Checkbox — Design System",
   description:
-    "A statutory certification block that closes a government form.",
+    "The statutory certification block that closes a government form: a bordered panel carrying the declaration text with a single required checkbox bound to it.",
 };
 
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The whole statement is bound to the checkbox through `aria-describedby`, so a screen-reader user hears the text they are attesting to when they reach the control — not only if they happen to read upward.",
+  },
+  {
+    criterion: "2.4.1 Bypass Blocks",
+    level: "A",
+    description:
+      "The panel is a `<section>` labelled by its own heading, so it is a named region a screen reader can jump to at the end of a long form.",
+  },
+  {
+    criterion: "3.3.1 Error Identification",
+    level: "A",
+    description:
+      "An `error` sets `aria-invalid` on the control and renders the message with `role=\"alert\"`, so an unchecked declaration is announced rather than only outlined.",
+  },
+  {
+    criterion: "3.3.2 Labels or Instructions",
+    level: "A",
+    description:
+      "The lead line states what the checkbox commits the reader to before the statement itself, in the department's own register.",
+  },
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    description:
+      "The control is a real checkbox with a visible confirming label of its own, so its name is not the entire legal statement.",
+  },
+  {
+    criterion: "GIGW 3.0 — Forms",
+    level: "GIGW",
+    description:
+      "The declaration a citizen certifies is presented as a distinct, deliberate act with its own heading, not as one more field in a grid.",
+  },
+];
+
 export default function DeclarationCheckboxPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Declaration Checkbox"
+      status="Stable"
+      summary="The statutory certification block that closes a government form: a bordered panel carrying the declaration text with a single required checkbox. It is its own component because the wording is legal text the citizen is attesting to, and it must read as a deliberate act rather than one more field."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<DeclarationCheckboxPlayground />}
+      propsFrom="DeclarationCheckboxProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A form closes with a certification the citizen is legally attesting to.",
+          "The statement runs to several points, each of which must be separately readable.",
+          "An unchecked declaration must block submission and say so in a message a screen reader announces.",
+        ],
+        avoid: [
+          "The agreement is one short line inside a form — use Checkbox with the line as its label.",
+          "The setting takes effect immediately and is reversible — use Toggle, which is never right for a declaration.",
+          "The text is guidance rather than something being certified — put it in the field's hint, or in a Callout.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          DeclarationCheckbox
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A specialised panel carrying statutory declaration text with a single required checkbox. Used to legally close government forms before submission.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Checkbox",
+          href: "/design-system/components/forms/checkbox",
+          reason: "the control this panel wraps, for a one-line agreement",
+        },
+        {
+          label: "Wizard",
+          href: "/design-system/components/forms/wizard",
+          reason: "the multi-step shell whose final step this closes",
+        },
+        {
+          label: "Alert",
+          href: "/design-system/components/feedback/alert",
+          reason: "for the form-level error summary above the actions",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-why">
+          <h2 id="cdp-why" className="cdp__h2">
+            Why It Is Not a Checkbox
+          </h2>
+          <p>
+            A plain Checkbox takes its label as its accessible name. Making a paragraph of legal text
+            the name of a control produces something a screen reader reads as one long unbroken
+            string, and something a sighted reader skims past because it looks like a field.
+          </p>
+          <p>
+            This component separates the two: the statement is described by{" "}
+            <code>aria-describedby</code>, and the control keeps a short confirming label of its own.
+            The panel, the heading and the border are what make the act look deliberate.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { DeclarationCheckbox } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Toggle the error state to see how the panel styles itself when a user tries to submit the form without checking the box.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <DeclarationCheckboxPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          This component exists because the wording is legal text that the user is attesting to. It needs to read as a distinct, deliberate act rather than just another field in a grid.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Use a `<ul>` list when the declaration covers several points, so each is separately readable and digestible.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't use a standard Checkbox for final form declarations. The standard Checkbox does not properly bind a large block of legal text to the control for screen readers.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`<DeclarationCheckbox 
-  checked={isAgreed} 
-  onChange={setIsAgreed}
+<DeclarationCheckbox
+  checked={agreed}
+  onChange={setAgreed}
   title="Final Declaration"
   lead="By checking this box, I certify that:"
+  error={submitted && !agreed ? "You must agree to the declaration before submitting." : undefined}
 >
-  <ul style={{ margin: 0, paddingLeft: "var(--sa-padding-24)" }}>
+  <ul>
     <li>I am a citizen of India.</li>
-    <li>I have not availed this scheme's benefits in the past.</li>
+    <li>I have not availed the benefits of this scheme previously.</li>
+    <li>The particulars given above are true to the best of my knowledge.</li>
   </ul>
-</DeclarationCheckbox>`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "checked", type: "boolean", required: true, description: "Controlled checked state." },
-            { name: "onChange", type: "(checked: boolean) => void", required: true, description: "Called when the checkbox is toggled." },
-            { name: "children", type: "ReactNode", required: true, description: "The certification statement (e.g., a list of points)." },
-            { name: "title", type: "ReactNode", default: '"Declaration"', description: "Panel heading." },
-            { name: "lead", type: "ReactNode", default: '"I certify that:"', description: "Leading line above the statement." },
-            { name: "error", type: "ReactNode", description: "Error message shown when submission was attempted unchecked." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Bound Statement:</strong> The entire declaration text block is bound to the checkbox via <code>aria-describedby</code>, ensuring screen readers announce the legal text the user is agreeing to when they focus the control.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Landmark:</strong> The component is wrapped in a <code>&lt;section&gt;</code> and labelled by its title (e.g. &quot;Declaration&quot;), making it easy to navigate to.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+</DeclarationCheckbox>`}</CodeBlock>
+          <p>
+            <code>onChange</code> receives a boolean, not an event. Passing{" "}
+            <code>(event) =&gt; setAgreed(event.target.checked)</code> here is a type error, and it is
+            the commonest mistake when moving from Checkbox to this component.
+          </p>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            Use a <code>&lt;ul&gt;</code> where the declaration covers several points. A screen reader
+            then announces the count and reads each point as an item, so a citizen can work through
+            them one at a time instead of hearing a single paragraph.
+          </p>
+          <p>
+            The heading is an <code>&lt;h3&gt;</code>, which sits correctly under a Form Section&apos;s{" "}
+            <code>&lt;h2&gt;</code>. Do not place this panel above the page&apos;s first heading.
+          </p>
+        </section>
+      }
+    />
   );
 }

@@ -1,170 +1,171 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { FormFieldPlayground } from "./form-field-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  Callout,
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { FormFieldPlayground } from "./form-field-playground";
 
 export const metadata: Metadata = {
-  title: "FormField - SAMAVESH Design System",
+  title: "Form Field — Design System",
   description:
-    "A structural molecule that wires a label, hint text, and error message to a form control.",
+    "The molecule that ties a control to its label, hint and error message, and wires every accessibility attribute through a render prop.",
 };
 
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The label's `htmlFor` matches the control's `id`, so clicking the label focuses the field and assistive technology reads the right name.",
+  },
+  {
+    criterion: "1.4.1 Use of Colour",
+    level: "A",
+    description:
+      "The required state is carried by the marker and the `required` attribute, and the error state by `role=\"alert\"` text — neither depends on the red border.",
+  },
+  {
+    criterion: "3.3.1 Error Identification",
+    level: "A",
+    description:
+      "An `error` sets `aria-invalid` on the control and renders the message in a `role=\"alert\"` region, so it is announced the moment it appears.",
+  },
+  {
+    criterion: "3.3.2 Labels or Instructions",
+    level: "A",
+    description:
+      "The hint is linked through `aria-describedby` and read with the field, so the instruction reaches a screen-reader user in the same breath as the question.",
+  },
+  {
+    criterion: "3.3.3 Error Suggestion",
+    level: "AA",
+    description:
+      "The message is the caller's text, and this component gives it a place where a suggested correction is read out rather than only shown.",
+  },
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    description:
+      "The wiring is passed to the control rather than reimplemented around it, so the control keeps its own native role and value.",
+  },
+  {
+    criterion: "GIGW 3.0 — Forms",
+    level: "GIGW",
+    description:
+      "Every field carries a persistent visible label, a linked instruction where one is needed, and an announced error.",
+  },
+];
+
 export default function FormFieldPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Form Field"
+      status="Stable"
+      summary="The molecule that ties a control to its label, its optional hint and its optional error message, and wires every accessibility attribute for you. Almost every input, select and textarea in the estate is wrapped in one."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<FormFieldPlayground />}
+      propsFrom="FormFieldProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "Any control a reader fills in as part of a form the department will act on.",
+          "A control that needs an instruction, a validation message, or both.",
+          "A control inside a Form Section grid, where the label and hint positions must match every sibling.",
+        ],
+        avoid: [
+          "The layout genuinely cannot take a label above the control — use Label and wire `htmlFor` by hand, and record why.",
+          "The control is a Declaration Checkbox, which carries its own panel, statement and error.",
+          "The text is a section heading rather than a field name — use Form Section or Form Card.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          FormField
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          A wrapper component that guarantees accessibility for inputs. It automatically wires a label, optional hint, and optional error message to its child control.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Input",
+          href: "/design-system/components/forms/input",
+          reason: "the control this wrapper is used with most often",
+        },
+        {
+          label: "Label",
+          href: "/design-system/components/forms/label",
+          reason: "when the layout cannot take this wrapper's structure",
+        },
+        {
+          label: "Form Section",
+          href: "/design-system/components/forms/form-section",
+          reason: "the titled grid these fields are laid out in",
+        },
+        {
+          label: "Alert",
+          href: "/design-system/components/feedback/alert",
+          reason: "for an error summary covering the whole form",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-renderprop">
+          <h2 id="cdp-renderprop" className="cdp__h2">
+            The Render Prop, in Plain English
+          </h2>
+          <Callout type="info" title="Why a Function and Not a Child">
+            Form Field takes a function as its child. That function receives the <code>id</code>, the{" "}
+            <code>invalid</code> state, the <code>required</code> flag and the{" "}
+            <code>aria-describedby</code> wiring, and you spread them onto your control. The label is
+            therefore always connected to the input, error messages are always announced, and there is
+            no version of the component where somebody forgot an attribute.
+          </Callout>
+          <p>
+            The hint sits below the control rather than under the label. That is a layout decision
+            with a reason: in a two- or three-column Form Section grid, hints of different lengths
+            above the controls push the inputs out of alignment across the row.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { FormField, Input } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Toggle the hints, errors, and required states to see how FormField updates the layout and accessibility attributes.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <FormFieldPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          You should wrap almost every input, select, and textarea in a <code>FormField</code>. It prevents common accessibility bugs by handling the <code>htmlFor</code>, <code>id</code>, and <code>aria-describedby</code> attributes internally via a render prop.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Pass the props from the render function directly onto your input control.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't hardcode IDs or manually wire up labels when using FormField. It does this automatically.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <p style={proseStyle}>
-          The <code>FormField</code> component expects a function as its child, commonly known as a &quot;render prop&quot;. This function provides the necessary accessibility properties that must be spread onto the actual input element.
-        </p>
-        <Playground
-          code={`<FormField 
-  label="First Name" 
-  required 
-  error={hasError ? "First name is required" : undefined}
+<FormField label="First Name" required hint="As shown on your Aadhaar card">
+  {(control) => <Input {...control} placeholder="e.g. Ramesh" />}
+</FormField>`}</CodeBlock>
+          <p>
+            Passing an <code>error</code> is the whole of the error state — there is no second
+            attribute to remember.
+          </p>
+          <CodeBlock>{`<FormField
+  label="Email Address"
+  error={touched && !valid ? "Enter a valid email address." : undefined}
 >
-  {(props) => (
-    <Input {...props} placeholder="e.g. John" />
-  )}
-</FormField>`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "label", type: "ReactNode", required: true, description: "The visible field label." },
-            { name: "children", type: "(props: FormFieldControlProps) => ReactNode", required: true, description: "Render prop receiving the wiring for the control." },
-            { name: "hint", type: "ReactNode", description: "Helper text rendered below the label." },
-            { name: "error", type: "ReactNode", description: "Error message. When set, renders the error state." },
-            { name: "required", type: "boolean", default: "false", description: "Marks the field as required (adds a * marker)." },
-            { name: "id", type: "string", description: "Optional explicit ID. Auto-generated if omitted." },
-            { name: "className", type: "string", description: "Additional classes merged onto the wrapper div." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Automatic Linking:</strong> Generates a unique <code>id</code> for the input and links the <code>&lt;label&gt;</code> to it via <code>htmlFor</code>.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Described By:</strong> Links the hint and error messages to the input using <code>aria-describedby</code>, so screen readers announce them when the input receives focus.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Live Errors:</strong> The error message container has <code>role=&quot;alert&quot;</code>. When an error appears, it is immediately announced by assistive technologies.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+  {(control) => <Input {...control} type="email" />}
+</FormField>`}</CodeBlock>
+          <p>
+            The wiring object is typed as <code>FormFieldControlProps</code>, so a control that does
+            not accept native attributes will fail to compile rather than silently drop the id.
+          </p>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            When both a hint and an error are present, <code>aria-describedby</code> lists the hint
+            first and the error second, so the reader hears the instruction before the correction.
+          </p>
+          <p>
+            The error message carries <code>role=&quot;alert&quot;</code>, which announces on
+            appearance. Render it only once the reader has attempted the field or the form — an alert
+            that fires on every keystroke is worse than no alert.
+          </p>
+        </section>
+      }
+    />
   );
 }

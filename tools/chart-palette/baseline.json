@@ -1,0 +1,64 @@
+{
+  "slotCount": 12,
+  "surface": "#ffffff",
+  "outOfBand": [
+    "--sa-chart-cat-4",
+    "--sa-chart-cat-6",
+    "--sa-chart-cat-9",
+    "--sa-chart-cat-10"
+  ],
+  "belowChroma": [
+    "--sa-chart-cat-3",
+    "--sa-chart-cat-9",
+    "--sa-chart-cat-10",
+    "--sa-chart-cat-12"
+  ],
+  "belowContrast": [],
+  "pairs": {
+    "adjacent": {
+      "normal": {
+        "a": "--sa-chart-cat-8",
+        "b": "--sa-chart-cat-9",
+        "deltaE": 12.63
+      },
+      "protan": {
+        "a": "--sa-chart-cat-2",
+        "b": "--sa-chart-cat-3",
+        "deltaE": 10.15
+      },
+      "deutan": {
+        "a": "--sa-chart-cat-3",
+        "b": "--sa-chart-cat-4",
+        "deltaE": 10.74
+      },
+      "tritan": {
+        "a": "--sa-chart-cat-9",
+        "b": "--sa-chart-cat-10",
+        "deltaE": 3.03
+      }
+    },
+    "all": {
+      "normal": {
+        "a": "--sa-chart-cat-6",
+        "b": "--sa-chart-cat-9",
+        "deltaE": 11.72
+      },
+      "protan": {
+        "a": "--sa-chart-cat-5",
+        "b": "--sa-chart-cat-12",
+        "deltaE": 4.35
+      },
+      "deutan": {
+        "a": "--sa-chart-cat-4",
+        "b": "--sa-chart-cat-10",
+        "deltaE": 1.52
+      },
+      "tritan": {
+        "a": "--sa-chart-cat-9",
+        "b": "--sa-chart-cat-10",
+        "deltaE": 3.03
+      }
+    }
+  },
+  "safeCap": 6
+}

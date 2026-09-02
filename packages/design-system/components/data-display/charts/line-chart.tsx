@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
 import { Gridlines, XAxisLabels } from "./internal/axis";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
@@ -9,10 +9,9 @@ import { linearScale, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor, CHART_INK } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
-import { CardState } from "../../dashboard/card-state";
 import type { ChartMultiSeries } from "./types";
 
-export interface LineChartProps extends ChartMultiSeries {
+export interface LineChartProps extends ChartMultiSeries, ChartStateProps {
   title: string;
   caption?: React.ReactNode;
   /** Fill the area under every series (per-series `fill` overrides this). */
@@ -42,12 +41,32 @@ export function LineChart({
   height = 280,
   className,
   showDots,
+  state,
+  onRetry,
+  filterLabel,
+  tableView,
 }: LineChartProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const [active, setActive] = React.useState<number | null>(null);
 
-  if (labels.length === 0 || series.length === 0)
-    return <CardState kind="empty" compact />;
+  // One expression, resolved once; the caller's `state` wins over the shape of
+  // the arrays, because only the caller knows WHY they are empty.
+  const resolved = state ?? (labels.length === 0 || series.length === 0 ? "empty" : undefined);
+  if (resolved)
+    return (
+      <ChartFrame
+        marksAreFocusable
+        title={title}
+        viewBox={`0 0 ${width} ${height}`}
+        className={className}
+        caption={caption}
+        state={resolved}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+      >
+        {null}
+      </ChartFrame>
+    );
 
   const colors = series.map((s, i) => seriesColor(s.color, i));
   const rawMax = Math.max(1, ...series.flatMap((s) => s.data));
@@ -86,6 +105,7 @@ export function LineChart({
 
   return (
     <ChartFrame
+      marksAreFocusable
       title={title}
       summary={series.map((s) => `${s.name}: ${valueFormat(s.data[s.data.length - 1] ?? 0)} latest`).join(", ")}
       viewBox={`0 0 ${width} ${height}`}
@@ -98,6 +118,7 @@ export function LineChart({
         columns: ["Point", ...series.map((s) => s.name)],
         rows: labels.map((l, li) => [l, ...series.map((s) => s.data[li] ?? 0)]),
       }}
+      tableView={tableView}
     >
       <Gridlines ticks={ticks.map((v) => ({ pos: y(v), value: v }))} x0={padL} x1={width - padR} format={valueFormat} />
       {yLabel && (

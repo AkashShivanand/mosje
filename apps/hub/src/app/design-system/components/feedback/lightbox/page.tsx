@@ -1,229 +1,218 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
 import { LightboxSpecimen } from "./lightbox-specimen";
-import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
-  title: "Lightbox",
-  description: "Full-screen media overlay modal for inspecting scheme beneficiary certificates, event photo galleries, and geo-tagged inspection images.",
+  title: "Lightbox — Design System",
+  description:
+    "A full-screen viewer for a gallery of images and video: prev and next, an item counter, a caption bar and a thumbnail strip.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    description:
+      "Escape closes the viewer and the left and right arrows page through the gallery, so the whole component is operable without a pointer. The stage is focused on open, which is what makes those keys land.",
+  },
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    description:
+      "Each image takes its alt text from `alt`, falling back to `caption`. Every control — close, previous, next, and each thumbnail — carries an explicit aria-label, and the decorative thumbnail images carry an empty alt.",
+  },
+  {
+    criterion: "4.1.3 Status Messages",
+    level: "AA",
+    description:
+      'The item counter is a polite live region, so paging through a gallery announces "3 / 8" without focus moving.',
+  },
+  {
+    criterion: "1.3.2 Meaningful Sequence",
+    level: "A",
+    description:
+      "Background scrolling is locked while the viewer is open and the previous value is restored on close, so the page behind stays where the reader left it.",
+  },
+  {
+    criterion: "1.4.2 Audio Control",
+    level: "A",
+    description:
+      "Videos render with native controls, so a clip that autoplays on opening can be paused, muted and scrubbed with the browser's own interface.",
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function LightboxDocPage(): React.JSX.Element {
+export default function LightboxPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Lightbox
-          </h1>
-          <StatusBadge status="Beta" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Full-screen media overlay modal for inspecting scheme beneficiary certificates, event photo galleries, and geo-tagged inspection images."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+    <ComponentDocPage
+      name="Lightbox"
+      status="Beta"
+      summary="A full-screen viewer for a gallery of mixed images and video: previous and next, an item counter, a caption bar and a thumbnail strip. It renders through a portal, so no table's overflow can clip it."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<LightboxSpecimen />}
+      propsFrom="LightboxProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A thumbnail opens the full image — an inspection photograph, a scanned certificate, an event gallery.",
+          "Several media items belong together and the reader should be able to page between them without returning to the list.",
+          "The item is a video that needs the screen, with the page behind it held still.",
+        ],
+        avoid: [
+          "The content is a form, a record or anything the reader edits — use a Side Sheet, or a Modal for a short decision.",
+          "There is exactly one small image that is already legible in place. A full-screen viewer for it is a step the reader did not need.",
+          "The document is a PDF the reader will want to keep — link to the file, so the browser's own viewer and the download are available.",
+        ],
+      }}
+      related={[
+        {
+          label: "Modal",
+          href: "/design-system/components/feedback/modal",
+          reason: "for a decision rather than a viewing",
+        },
+        {
+          label: "Media Gallery Input",
+          href: "/design-system/components/forms/media-gallery-input",
+          reason: "the control that collects the media a lightbox later shows",
+        },
+        {
+          label: "Side Sheet",
+          href: "/design-system/components/feedback/side-sheet",
+          reason: "when the media sits beside a record being worked on",
+        },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-anatomy">
+            <h2 id="cdp-anatomy" className="cdp__h2">
+              Anatomy
+            </h2>
+            <ol>
+              <li>
+                <strong>Backdrop</strong> — the full-screen scrim. Pressing it closes the viewer.
+              </li>
+              <li>
+                <strong>Bar</strong> — the item counter and the close control, top right.
+              </li>
+              <li>
+                <strong>Stage</strong> — the image, contained rather than cropped, or the video with
+                native controls.
+              </li>
+              <li>
+                <strong>Slidenav</strong> — previous and next, shown only when there is more than
+                one item.
+              </li>
+              <li>
+                <strong>Footer</strong> — the caption, then the thumbnail strip.
+              </li>
+            </ol>
+            <p>
+              Everything that depends on there being several items — the counter, the slidenav, the
+              thumbnails — is absent for a single item. A viewer showing one photograph does not
+              draw controls that lead nowhere.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-captions">
+            <h2 id="cdp-captions" className="cdp__h2">
+              Give Every Item a Caption
+            </h2>
+            <p>
+              The caption is what names the item on screen, and it is also the fallback for the
+              image&apos;s alt text and the dialog&apos;s own accessible name. An item with no
+              caption and no <code>alt</code> is announced as “Item 3”, and the dialog is left
+              without a name at all.
+            </p>
+            <p>
+              Caption a departmental photograph as the department would — what it shows and where —
+              rather than describing the file.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <p>
+            The viewer is an overlay, so a consumer holds the open state and the starting index and
+            passes both in.
+          </p>
+          <CodeBlock>{`import { Lightbox } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Lightbox is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <LightboxSpecimen />
-                    </div>
-                  </div>
-                </section>
+const [open, setOpen] = React.useState(false);
+const [index, setIndex] = React.useState(0);
 
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Support keyboard Escape dismissal and high-contrast zoom actions.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not open lightboxes without an explicit close button.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { Lightbox } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "items",
-    "type": "LightboxItem[]",
-    "required": true,
-    "description": "Array of images or documents with src and caption."
-  },
-  {
-    "name": "open",
-    "type": "boolean",
-    "required": true,
-    "description": "Whether the lightbox is open."
-  },
-  {
-    "name": "onClose",
-    "type": "() => void",
-    "required": true,
-    "description": "Callback triggered on close button or Escape key."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<Lightbox open={true} items={[{ type: "image", src: "/design-system/samavesh-logo.svg", caption: "Beneficiary Camp 2026" }]} onClose={() => console.log("close")} />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "2.1.2 No Keyboard Trap",
-    "level": "AA",
-    "description": "Focus trapped inside modal while open and restored to opener on Escape."
-  },
-  {
-    "criterion": "1.1.1 Non-text Content",
-    "level": "AA",
-    "description": "Full descriptive image captions provided."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Escape</kbd></td>
-                          <td>{"Closes the lightbox and restores focus to triggering thumbnail."}</td>
-                        </tr>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>ArrowLeft / ArrowRight</kbd></td>
-                          <td>{"Navigates between gallery images."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Lightbox" />
-    </article>
+<Lightbox
+  open={open}
+  index={index}
+  onIndexChange={setIndex}
+  onClose={() => setOpen(false)}
+  items={[
+    { type: "image", src: "/inspection/1.jpg", caption: "Hostel kitchen, Nagpur — inspected 12 Aug 2026" },
+    { type: "video", src: "/inspection/walkthrough.mp4", poster: "/inspection/1.jpg", caption: "Site walkthrough" },
+  ]}
+/>`}</CodeBlock>
+          <p>
+            <code>index</code> is re-read every time <code>open</code> becomes true, so opening from
+            the sixth thumbnail lands on the sixth item without the consumer resetting anything
+            between openings.
+          </p>
+        </section>
+      }
+      accessibility={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-keys">
+            <h2 id="cdp-keys" className="cdp__h2">
+              Keyboard
+            </h2>
+            <ul>
+              <li>
+                <strong>Escape</strong> — closes the viewer.
+              </li>
+              <li>
+                <strong>Right arrow</strong> — the next item, wrapping from the last to the first.
+              </li>
+              <li>
+                <strong>Left arrow</strong> — the previous item, wrapping from the first to the
+                last.
+              </li>
+              <li>
+                <strong>Tab</strong> — moves through the close control, the slidenav and the
+                thumbnails.
+              </li>
+            </ul>
+            <p>
+              The stage receives focus when the viewer opens, which is what puts the arrow keys and
+              Escape in reach immediately. It is a programmatic target only — it takes no tab stop
+              of its own.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-open">
+            <h2 id="cdp-open" className="cdp__h2">
+              Focus and the Dialog&apos;s Name
+            </h2>
+            <p>
+              The viewer declares <code>aria-modal=&quot;true&quot;</code> and holds Tab inside
+              itself while it is open, so the page behind is out of reach in fact as well as in the
+              announcement. On close it returns focus to the control that opened it — unless the
+              consumer has already moved focus somewhere deliberate, in which case it is left there.
+            </p>
+            <p>
+              The one thing the consumer must handle is the dialog&apos;s name.{" "}
+              <code>aria-labelledby</code> points at the caption, which is only rendered when the
+              active item has one — so an uncaptioned gallery opens a dialog with no accessible
+              name. Caption every item.
+            </p>
+          </section>
+        </>
+      }
+    />
   );
 }

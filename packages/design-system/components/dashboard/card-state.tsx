@@ -1,4 +1,6 @@
 import * as React from "react";
+
+import { Illustration } from "../brand/illustration";
 import { cn } from "../../utils/cn";
 import "./card-state.css";
 
@@ -136,6 +138,27 @@ export function actionForState(kind: CardStateKind): "retry" | "clear" | null {
   return COPY[kind].action;
 }
 
+/**
+ * The system's own words for a state, for surfaces too small to draw the plate.
+ *
+ * A `MetricCard` is one line of figure: there is no room for an illustration,
+ * a headline and a body, but there IS room for the headline — and it must be
+ * the SAME headline, or the estate ends up with "This could not be loaded" on a
+ * chart and "Error" on the tile beside it, describing one failed request.
+ */
+export function cardStateCopy(kind: CardStateKind): { title: string; body: string; live: boolean } {
+  /*
+   * FALLS BACK RATHER THAN THROWING. TypeScript makes an unknown kind
+   * impossible at the call sites in this repo, but this function exists to be
+   * read at the exact moment something has already gone wrong — and a state
+   * layer that destructures `undefined` and takes the page down with it is a
+   * far worse failure than the one it was rendering. Caught by rendering a
+   * `MetricCard` with a kind that does not exist and watching it throw.
+   */
+  const { title, body, live } = COPY[kind] ?? COPY.empty;
+  return { title, body, live };
+}
+
 export function CardState({
   kind,
   title,
@@ -158,7 +181,7 @@ export function CardState({
     >
       <span className="ds-card-state__plate" aria-hidden="true">
         <span className="ds-card-state__plate-ring" />
-        <StateArt kind={kind} />
+        <Illustration name={kind} tier="spot" className="ds-card-state__art" />
       </span>
       <p className="ds-card-state__title">{title ?? copy.title}</p>
       <p className="ds-card-state__body">{description ?? copy.body}</p>
@@ -167,127 +190,4 @@ export function CardState({
       ) : null}
     </div>
   );
-}
-
-/**
- * The illustration set.
- *
- * Inline SVG rather than the `Icon` component on purpose: these render at the
- * exact moment something has already gone wrong, and a state that draws as a
- * tofu box because an icon font has not loaded is worse than the state it is
- * describing. They are also not icons — each is a small scene built from the
- * chart vocabulary, which no icon set contains.
- *
- * Two tones in every one: a `--ghost` layer carrying the chart that would have
- * been there, and a `--ink` layer carrying what happened to it. That split is
- * what makes six drawings read as one family.
- */
-function StateArt({ kind }: { kind: CardStateKind }) {
-  const common = {
-    viewBox: "0 0 64 48",
-    width: 64,
-    height: 48,
-    fill: "none",
-    strokeLinecap: "round" as const,
-    strokeLinejoin: "round" as const,
-  };
-
-  // The axis every drawing stands on, so the family shares a floor.
-  const Axis = () => (
-    <path d="M8 40h48" className="ds-state-art__axis" strokeWidth="2" />
-  );
-
-  switch (kind) {
-    case "empty":
-      // The chart's own footprint, with the bars taken out.
-      return (
-        <svg {...common} className="ds-state-art">
-          <Axis />
-          {[14, 26, 38, 50].map((x) => (
-            <path
-              key={x}
-              d={`M${x} 40v-2`}
-              className="ds-state-art__ghost"
-              strokeWidth="2"
-              strokeDasharray="2 3"
-            />
-          ))}
-        </svg>
-      );
-
-    case "no-results":
-      // Bars that exist, and a lens finding none of them.
-      return (
-        <svg {...common} className="ds-state-art">
-          <Axis />
-          <path d="M12 40V28M22 40v-8M32 40V22" className="ds-state-art__ghost" strokeWidth="4" />
-          <circle cx="44" cy="22" r="9" className="ds-state-art__ink" strokeWidth="3" />
-          <path d="M50.5 28.5 56 34" className="ds-state-art__ink" strokeWidth="3" />
-        </svg>
-      );
-
-    case "not-published":
-      // The shape is known; the figures have not been released into it.
-      return (
-        <svg {...common} className="ds-state-art">
-          <Axis />
-          <path
-            d="M14 40V24M26 40V14M38 40V20M50 40V10"
-            className="ds-state-art__ghost"
-            strokeWidth="4"
-            strokeDasharray="3 4"
-          />
-        </svg>
-      );
-
-    case "error":
-      // The series arrives, then breaks. The gap is the whole message.
-      return (
-        <svg {...common} className="ds-state-art">
-          <Axis />
-          <path d="M10 32l8-9 6 6" className="ds-state-art__ink" strokeWidth="3" />
-          <path d="M40 26l6-7 8 5" className="ds-state-art__ink" strokeWidth="3" />
-          <path d="M28 14v10M28 30v2" className="ds-state-art__ink" strokeWidth="3" />
-        </svg>
-      );
-
-    case "restricted":
-      // The chart is there, behind something shut.
-      return (
-        <svg {...common} className="ds-state-art">
-          <Axis />
-          <path d="M12 40V26M20 40v-9" className="ds-state-art__ghost" strokeWidth="4" />
-          <rect
-            x="30"
-            y="24"
-            width="22"
-            height="15"
-            rx="3"
-            className="ds-state-art__ink"
-            strokeWidth="3"
-          />
-          <path d="M35 24v-4a6 6 0 0 1 12 0v4" className="ds-state-art__ink" strokeWidth="3" />
-        </svg>
-      );
-
-    case "offline":
-      // The link to the source, severed. Nothing wrong with the chart itself.
-      return (
-        <svg {...common} className="ds-state-art">
-          <Axis />
-          <path d="M12 40V30M20 40v-6" className="ds-state-art__ghost" strokeWidth="4" />
-          <path
-            d="M34 30a6 6 0 0 1 0-8l3-3a6 6 0 0 1 8 8l-1 1"
-            className="ds-state-art__ink"
-            strokeWidth="3"
-          />
-          <path
-            d="M46 22a6 6 0 0 1 0 8l-3 3a6 6 0 0 1-8-8"
-            className="ds-state-art__ink"
-            strokeWidth="3"
-          />
-          <path d="M28 14 54 38" className="ds-state-art__cut" strokeWidth="3" />
-        </svg>
-      );
-  }
 }

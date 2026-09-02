@@ -1,225 +1,230 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
+  Callout,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  MatrixTable,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { AppShellSpecimen } from "./app-shell-specimen";
 
 export const metadata: Metadata = {
-  title: "App Shell",
-  description: "Foundational application skeleton for authenticated MoSJE portals, organizing the SiteHeader, ContentNav sidebar, main work area, and slim footer.",
+  title: "App Shell — Design System",
+  description:
+    "The portal page skeleton: chrome, sidebar, content. Chrome rows are auto and the body row is 1fr, so nothing subtracts a chrome height from the viewport.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The shell renders exactly one `<main>`. The sidebar sits in a plain wrapper on purpose: `SidebarNav` renders its own `<aside>` landmark, and nesting a second one duplicates it for screen readers.",
+  },
+  {
+    criterion: "2.4.1 Bypass Blocks",
+    level: "A",
+    description:
+      "`<main>` carries `id` (default `main`) and `tabIndex={-1}`, so a skip link can move real focus into it rather than only scrolling the page. The skip link itself is supplied by `SiteHeader`.",
+  },
+  {
+    criterion: "4.1.3 Status Messages",
+    level: "AA",
+    description:
+      "`pending` renders the skeleton `aria-hidden` and announces a visually hidden “Loading” instead, so a screen-reader user is told the wait is deliberate rather than hearing a stack of empty boxes.",
+  },
+  {
+    criterion: "2.1.2 No Keyboard Trap",
+    level: "A",
+    description:
+      "The mobile drawer is a `SideSheet`, which traps focus while it is open, closes on Escape, and returns focus to the control that opened it.",
+  },
+  {
+    criterion: "2.4.11 Focus Not Obscured (Minimum)",
+    level: "AA",
+    description:
+      "The portal masthead is sticky, so a focused control must never end up underneath it. Chrome rows are `auto` and the body row is `1fr`, and the header publishes its pinned height as `--sa-header-pinned` for anything that needs to offset against it.",
+    status: "partial",
+    evidence: "Re-check whenever the masthead's height changes.",
+  },
+  {
+    criterion: "3.2.3 Consistent Navigation",
+    level: "AA",
+    description:
+      "Every signed-in page in a portal uses the same shell, so the masthead, the navigation and the main region are in the same relative order throughout.",
+  },
+];
 
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function AppShellDocPage(): React.JSX.Element {
+export default function AppShellPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            App Shell
-          </h1>
-          <StatusBadge status="Stable" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Foundational application skeleton for authenticated MoSJE portals, organizing the SiteHeader, ContentNav sidebar, main work area, and slim footer."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+    <ComponentDocPage
+      name="App Shell"
+      status="Stable"
+      summary="The portal page skeleton: chrome, sidebar, content. It is presentational only — no store, no router, no redirect — so an authentication guard stays a thin wrapper around it."
+      figma={{
+        absent:
+          "The shell is a page-composition rule rather than a published master; its parts — the Navbar and the Sidebar — are published separately in the SAMAVESH library.",
+      }}
+      specimen={<AppShellSpecimen />}
+      propsFrom="AppShellProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "Every signed-in portal page — a dashboard, a list, a record, a form.",
+          "A portal page that has no sidebar: omit `sidebar` and the body runs full width.",
+          "The loading frame while an app hydrates, through `pending`, rather than returning null.",
+        ],
+        avoid: [
+          "A portal login screen — use Portal Login Shell, which has no sidebar and no session.",
+          "A public website page — use Site Layout, whose body is a stack of Bands.",
+          "Holding authentication state: keep the guard outside the shell and pass `pending` while it resolves.",
+        ],
+      }}
+      related={[
+        {
+          label: "Site Layout",
+          href: "/design-system/components/layout/site-layout",
+          reason: "the public website equivalent",
+        },
+        {
+          label: "Sidebar Nav",
+          href: "/design-system/components/section-templates/sidebar",
+          reason: "what goes in the sidebar slot",
+        },
+        {
+          label: "Portal Login Shell",
+          href: "/design-system/components/auth/portal-login-shell",
+          reason: "the signed-out screen that precedes it",
+        },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-anatomy">
+            <h2 id="cdp-anatomy" className="cdp__h2">
+              Anatomy
+            </h2>
+            <MatrixTable
+              caption="The shell's rows, top to bottom"
+              columns={["Row", "Height", "Holds"]}
+              rows={[
+                ["Header", "auto", "The portal masthead, sticky"],
+                ["Body", "1fr", "The sidebar column and the single `<main>`"],
+                ["Footer", "auto", "The slim portal footer, when one is passed"],
+              ]}
+            />
+          </section>
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"App Shell is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)", overflow: "hidden", background: "var(--sa-bg-neutral-subtler)" }}><div style={{ padding: "var(--sa-padding-12) var(--sa-padding-16)", background: "var(--sa-bg-brand-primary-boldest)", color: "var(--sa-text-neutral-inverse)" }}>Header</div><div style={{ display: "flex", minHeight: 120 }}><div style={{ width: 140, background: "var(--sa-bg-neutral-base)", borderRight: "1px solid var(--sa-border-neutral-subtle)", padding: "var(--sa-padding-12)" }}>Sidebar</div><div style={{ flex: 1, padding: "var(--sa-padding-16)" }}>Main Work Area</div></div></div>
-                    </div>
-                  </div>
-                </section>
+          <section className="cdp__section" aria-labelledby="cdp-calc">
+            <h2 id="cdp-calc" className="cdp__h2">
+              Never Subtract a Chrome Height from the Viewport
+            </h2>
+            <p>
+              Chrome rows are <code>auto</code> and the body row is <code>1fr</code>, so nothing
+              in the shell needs to know how tall the header is. That matters because the brand
+              row hugs its content: a two-line lockup, a BETA badge or an account block all move
+              it. Any <code>calc(100vh - &lt;constant&gt;)</code> is therefore wrong by
+              construction rather than merely off by a few pixels.
+            </p>
+            <Callout type="warning" title="If you genuinely need the pinned height, read it">
+              The masthead measures itself and publishes{" "}
+              <code>--sa-header-pinned</code>. Read that variable; do not hardcode a number that
+              was correct on one portal on one day.
+            </Callout>
+          </section>
 
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use AppShell across all internal and administrative scheme portals.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not omit skip-to-content links before the AppShell header.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { AppShell } from "@mosje/design-system";`}</CodeBlock>
-                </section>
+          <section className="cdp__section" aria-labelledby="cdp-drawer">
+            <h2 id="cdp-drawer" className="cdp__h2">
+              The Sidebar Becomes a Drawer, Not a Narrow Column
+            </h2>
+            <p>
+              Below the tablet anchor the same navigation is offered as a drawer. Narrowing the
+              column instead would leave the labels unreadable, and an icon-only rail on a phone
+              gives a citizen nothing to recognise. Pass <code>sidebarOpen</code> and{" "}
+              <code>onSidebarOpenChange</code>, and wire the masthead&apos;s toggle to the same
+              state so one control drives one drawer.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`"use client";
+import { AppShell, Footer, SidebarNav, SiteHeader } from "@mosje/design-system";
 
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "header",
-    "type": "React.ReactNode",
-    "required": true,
-    "description": "Portal masthead component."
-  },
-  {
-    "name": "sidebar",
-    "type": "React.ReactNode",
-    "required": true,
-    "description": "Left navigation sidebar."
-  },
-  {
-    "name": "footer",
-    "type": "React.ReactNode",
-    "required": true,
-    "description": "Bottom statutory footer."
-  },
-  {
-    "name": "children",
-    "type": "React.ReactNode",
-    "required": true,
-    "description": "Main page route content."
+const [navOpen, setNavOpen] = React.useState(false);
+const [collapsed, setCollapsed] = React.useState(false);
+
+<AppShell
+  header={
+    <SiteHeader
+      variant="portal"
+      homeHref="/portals/pm-ajay"
+      emblemSrc={emblem}
+      brandLines={BRAND}
+      onToggleNav={() => setNavOpen((open) => !open)}
+      navExpanded={navOpen}
+      navControlsId="portal-sidebar"
+      account={{ name: "Asha Ramesh", role: "State Nodal Officer" }}
+    />
   }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<div style={{ border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)", overflow: "hidden", background: "var(--sa-bg-neutral-subtler)" }}><div style={{ padding: "var(--sa-padding-12) var(--sa-padding-16)", background: "var(--sa-bg-brand-primary-boldest)", color: "var(--sa-text-neutral-inverse)" }}>Header</div><div style={{ display: "flex", minHeight: 120 }}><div style={{ width: 140, background: "var(--sa-bg-neutral-base)", borderRight: "1px solid var(--sa-border-neutral-subtle)", padding: "var(--sa-padding-12)" }}>Sidebar</div><div style={{ flex: 1, padding: "var(--sa-padding-16)" }}>Main Work Area</div></div></div>`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.3.1 Info and Relationships",
-    "level": "AA",
-    "description": "Uses semantic `<header>`, `<nav>`, `<main>`, and `<footer>` landmarks."
+  sidebar={
+    <SidebarNav
+      id="portal-sidebar"
+      groups={NAV_GROUPS}
+      pathname={usePathname()}
+      collapsed={collapsed}
+      onCollapsedChange={setCollapsed}
+    />
   }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Tab</kbd></td>
-                          <td>{"Navigates through landmarks sequentially."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="App Shell" />
-    </article>
+  sidebarOpen={navOpen}
+  onSidebarOpenChange={setNavOpen}
+  footer={<Footer />}
+>
+  <PageHeader title="Applications" />
+  <ApplicationsTable />
+</AppShell>`}</CodeBlock>
+          <p>
+            While the session is resolving, keep the shell mounted and pass{" "}
+            <code>pending</code>. Returning <code>null</code> from the guard flashes a blank page
+            and then reflows the whole layout when the data lands.
+          </p>
+          <CodeBlock>{`<AppShell header={header} sidebar={sidebar} pending={!session}>
+  {children}
+</AppShell>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-landmarks">
+          <h2 id="cdp-landmarks" className="cdp__h2">
+            Landmarks and the Skip Link
+          </h2>
+          <p>
+            The shell owns the page&apos;s only <code>&lt;main&gt;</code>. Do not render a second
+            one inside <code>children</code>, and do not wrap the sidebar in an{" "}
+            <code>&lt;aside&gt;</code> of your own — <code>SidebarNav</code> renders that
+            landmark itself, and a duplicate leaves a screen-reader user with two complementary
+            regions holding one navigation.
+          </p>
+          <p>
+            <code>mainId</code> and the masthead&apos;s <code>skipTo</code> must agree. The
+            default is <code>main</code> here and <code>#main-content</code> there, so a portal
+            that leaves both at their defaults has a skip link pointing at nothing — pass{" "}
+            <code>skipTo=&quot;#main&quot;</code> to the header, or set{" "}
+            <code>mainId=&quot;main-content&quot;</code> here.
+          </p>
+          <Callout type="warning" title="Check this on every new portal">
+            A skip link that resolves to no element is invisible in review and only fails for the
+            keyboard user it exists to serve.
+          </Callout>
+        </section>
+      }
+    />
   );
 }

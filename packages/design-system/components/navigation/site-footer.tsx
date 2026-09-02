@@ -313,7 +313,6 @@ export const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(functio
                     rel="noreferrer"
                     className="ds-sitefooter__credit-link"
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={c.src} alt={c.alt} width={c.width} height={c.height} />
                     <NewWindow />
                   </a>

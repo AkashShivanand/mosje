@@ -1,3 +1,7 @@
+/* Declared first so this sheet cannot register `components` ahead of Tailwind's
+   `base` when it loads as its own CSS root. See .claude/rules/design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
 /* ============================================================================
    SAMAVESH Docs Kit — shared component styles
    ============================================================================ */
@@ -26,10 +30,10 @@
   padding: var(--sa-padding-16);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
   vertical-align: top;
-  line-height: 1.6;
+  line-height: var(--sa-type-body-2-lh);
 }
 .props-table tr:last-child td { border-bottom: none; }
-.props-table__name { font-weight: 600; color: var(--sa-text-brand-primary-base); font-family: var(--sa-font-mono); font-size: 0.9em; }
+.props-table__name { font-weight: 600; color: var(--sa-text-brand-primary-bolder); font-family: var(--sa-font-mono); font-size: 0.9em; }
 .props-table__type { font-family: var(--sa-font-mono); font-size: 0.85em; color: var(--sa-text-neutral-subtle); background: var(--sa-bg-neutral-subtler); padding: var(--sa-padding-2) var(--sa-padding-4); border-radius: var(--sa-shape-4); border: 1px solid var(--sa-border-neutral-subtle); }
 .props-table__required { display: inline-block; margin-left: var(--sa-stack-8); font-size: 0.75em; padding: var(--sa-padding-2) var(--sa-padding-4); border-radius: var(--sa-shape-4); background: color-mix(in oklab, var(--sa-color-status-danger) 10%, transparent); color: var(--sa-text-status-error-base); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
 
@@ -66,13 +70,13 @@
   border: 1px solid;
   margin: var(--sa-section-32) 0;
   font-size: var(--sa-type-body-2-size);
-  line-height: 1.6;
+  line-height: var(--sa-type-body-2-lh);
 }
 /* ds-exempt(optical): 1px drops the glyph onto the first line's baseline. */
 .callout__icon { flex-shrink: 0; font-size: var(--sa-icon-size-20); margin-top: 1px; }
 .callout__title { font-weight: 600; margin-bottom: var(--sa-stack-4); color: inherit; }
 .callout--info    { background: color-mix(in oklab, var(--sa-bg-brand-primary-subtler) 40%, transparent); border-color: color-mix(in oklab, var(--sa-border-brand-primary-base) 20%, transparent); color: var(--sa-text-neutral-bolder); }
-.callout--info .callout__icon { color: var(--sa-text-brand-primary-base); }
+.callout--info .callout__icon { color: var(--sa-text-brand-primary-bolder); }
 .callout--warning { background: color-mix(in oklab, var(--sa-color-status-warning) 10%, transparent); border-color: color-mix(in oklab, var(--sa-color-status-warning) 30%, transparent); color: var(--sa-text-neutral-bolder); }
 .callout--warning .callout__icon { color: var(--sa-text-status-warning-base); }
 .callout--tip     { background: color-mix(in oklab, var(--sa-color-status-success) 10%, transparent); border-color: color-mix(in oklab, var(--sa-color-status-success) 20%, transparent); color: var(--sa-text-neutral-bolder); }
@@ -95,7 +99,7 @@
   color: var(--sa-text-neutral-subtle);
 }
 .token-table td { padding: var(--sa-padding-12); border-bottom: 1px solid var(--sa-border-neutral-subtle); vertical-align: middle; }
-.token-table__name { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-3-size); color: var(--sa-text-brand-primary-base); }
+.token-table__name { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-3-size); color: var(--sa-text-brand-primary-bolder); }
 .token-table__preview { width: var(--sa-icon-size-24); height: var(--sa-icon-size-24); border-radius: var(--sa-shape-4); border: 1px solid var(--sa-border-neutral-subtle); }
 .token-table__value { font-family: var(--sa-font-mono); font-size: var(--sa-type-label-3-size); color: var(--sa-text-neutral-subtle); }
 
@@ -128,7 +132,7 @@
 }
 .status-badge--Stable     { background: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
 .status-badge--Beta       { background: var(--sa-bg-status-warning-base); color: var(--sa-text-neutral-base); }
-.status-badge--Alpha      { background: var(--sa-bg-brand-primary-subtler); color: var(--sa-text-brand-primary-base); }
+.status-badge--Alpha      { background: var(--sa-bg-brand-primary-base); color: var(--sa-text-brand-primary-bolder); }
 .status-badge--Proposed   { background: var(--sa-bg-neutral-subtler); color: var(--sa-text-neutral-subtle); }
 .status-badge--Deprecated { background: var(--sa-bg-status-error-base); color: var(--sa-text-status-error-base); }
 
@@ -189,7 +193,10 @@
 
 .terminal-code__title {
   font-size: var(--sa-type-label-3-size);
-  color: var(--sa-code-chromeText);
+  /* `chromeText` is white at 45% on the shell — under the 4.5 floor at 11px.
+     `chromeTextStrong` (70%) exists for the chrome text that has to be read
+     rather than sensed, which is what a terminal's filename is. */
+  color: var(--sa-code-chromeTextStrong);
   margin-left: var(--sa-inline-12);
   font-weight: 500;
 }
@@ -222,9 +229,9 @@
 
 .terminal-code__body {
   padding: var(--sa-padding-20);
-  font-size: 13px;
+  font-size: var(--sa-type-body-3-size);
   color: var(--sa-code-text);
-  line-height: 1.7;
+  line-height: var(--sa-type-body-3-lh);
   overflow-x: auto;
 }
 
@@ -276,7 +283,7 @@
   color: var(--sa-text-neutral-base);
 }
 .docs-tabs-trigger.active {
-  color: var(--sa-text-brand-primary-base);
+  color: var(--sa-text-brand-primary-bolder);
 }
 .docs-tabs-trigger.active::after {
   content: "";
@@ -335,7 +342,7 @@
   font-size: var(--sa-type-label-3-size);
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  color: var(--sa-text-brand-primary-base);
+  color: var(--sa-text-brand-primary-bolder);
   background: var(--sa-bg-neutral-subtler);
 }
 
@@ -349,3 +356,529 @@
 .matrix-table tbody tr:last-child :is(th, td) {
   border-bottom: none;
 }
+
+/* ============================================================================
+   Component Doc Page — the one shape, rendered once
+   ----------------------------------------------------------------------------
+   Every rule here replaces a `style={{ }}` object that used to be retyped on
+   each of a hundred pages. The measure is declared ONCE, below, instead of the
+   nine different `maxWidth` px literals the pages carried between them; the
+   line heights are the type scale's own, not the six loose numbers (1.1, 1.5,
+   1.6, 1.7, 1.8, 1.9) that were scattered across the same pages.
+
+   `ch` is used for the measure deliberately. A measure is a count of characters,
+   so it is bound to the type that renders it — unlike a px literal, it follows
+   the type scale when the type scale moves. That is the property the linkage
+   rule is protecting; a px number is not.
+   ========================================================================== */
+
+.cdp {
+  --cdp-measure: 72ch;
+}
+
+/* ── Header ── */
+.cdp__titlerow {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-stack-12);
+  flex-wrap: wrap;
+}
+.cdp__title {
+  font-size: var(--sa-type-display-1-size);
+  line-height: var(--sa-type-display-1-lh);
+  font-weight: 800;
+  color: var(--sa-text-neutral-bolder);
+  margin: 0;
+}
+.cdp__summary {
+  max-width: var(--cdp-measure);
+  margin-top: var(--sa-stack-12);
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+.cdp__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-16);
+  flex-wrap: wrap;
+  margin-top: var(--sa-stack-16);
+}
+.cdp__figma {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sa-inline-8);
+  padding: var(--sa-padding-8) var(--sa-padding-16);
+  border: 1px solid var(--sa-border-neutral-base);
+  border-radius: var(--sa-shape-8);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  font-weight: 600;
+  color: var(--sa-text-neutral-base);
+  text-decoration: none;
+  background: var(--sa-bg-neutral-base);
+}
+.cdp__figma:hover {
+  border-color: var(--sa-border-neutral-bolder-default);
+  background: var(--sa-bg-neutral-subtler);
+}
+/* An absent Figma component is stated, never implied by a missing row. */
+.cdp__figma-absent,
+.cdp__since {
+  margin: 0;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+/* ── Sections ── */
+.cdp__section {
+  margin-top: var(--sa-section-48);
+  scroll-margin-top: var(--docs-anchor-offset);
+}
+.cdp__h2 {
+  font-size: var(--sa-type-headline-2-size);
+  line-height: var(--sa-type-headline-2-lh);
+  font-weight: 700;
+  color: var(--sa-text-neutral-bolder);
+  margin: 0 0 var(--sa-stack-16);
+  padding-bottom: var(--sa-padding-8);
+  border-bottom: 1px solid var(--sa-border-neutral-subtle);
+}
+.cdp__tabbody > .cdp__section:first-child {
+  margin-top: var(--sa-section-32);
+}
+
+/* ── Specimen ── */
+.cdp__specimen {
+  padding: var(--sa-padding-32);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-12);
+  background: var(--sa-bg-neutral-subtler);
+}
+/* A specimen showing several instances needs them separated, and the separation
+   is a token — not a `style={{ gap: 16 }}` retyped on every page that has more
+   than one thing to show. Two shapes cover every case so far: a column, and a
+   wrapping row for instances that read side by side. */
+.cdp__specimen-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-16);
+  align-items: flex-start;
+}
+.cdp__specimen-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sa-inline-16);
+  align-items: flex-start;
+}
+
+/* ── When to use / when not ── */
+.cdp__usagegrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--sa-inline-16);
+}
+.cdp__tabbody .cdp__usagegrid {
+  margin-top: var(--sa-stack-8);
+}
+.cdp-usage {
+  padding: var(--sa-padding-20);
+  border-radius: var(--sa-shape-12);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  background: var(--sa-bg-neutral-base);
+}
+.cdp-usage--use {
+  border-color: var(--sa-border-status-success-base);
+  background: var(--sa-bg-status-success-subtler);
+}
+.cdp-usage--avoid {
+  border-color: var(--sa-border-status-error-base);
+  background: var(--sa-bg-status-error-subtler);
+}
+.cdp-usage__title {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-8);
+  margin: 0 0 var(--sa-stack-12);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  font-weight: 700;
+  color: var(--sa-text-neutral-bolder);
+}
+.cdp-usage--use .cdp-usage__glyph {
+  color: var(--sa-text-status-success-base);
+}
+.cdp-usage--avoid .cdp-usage__glyph {
+  color: var(--sa-text-status-error-base);
+}
+.cdp-usage__list {
+  margin: 0;
+  padding-left: var(--sa-padding-20);
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  color: var(--sa-text-neutral-base);
+}
+.cdp-usage__list li + li {
+  margin-top: var(--sa-stack-8);
+}
+
+/* ── Related ── */
+.cdp__related {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sa-inline-12);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cdp__related li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-4);
+  padding: var(--sa-padding-16);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-8);
+  background: var(--sa-bg-neutral-base);
+}
+.cdp__related-link {
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
+  font-weight: 600;
+  color: var(--sa-text-link-brand-default);
+}
+.cdp__related-reason {
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+/* ── Prose inside any tab body honours the single measure ── */
+.cdp__tabbody p,
+.cdp__tabbody ul,
+.cdp__tabbody ol {
+  max-width: var(--cdp-measure);
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+.cdp__tabbody p + p {
+  margin-top: var(--sa-stack-16);
+}
+
+/* ── Screen-reader-only ──────────────────────────────────────────────────────
+   `.ds-sr-only` is declared in nine component stylesheets across the package
+   and in NONE of the documentation surfaces, so a docs component reaching for
+   it rendered its hidden text visibly. Declared here for the docs kit; the
+   package's own copy lives in `foundations/sr-only.css`.
+   ========================================================================== */
+.ds-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Accessibility checklist ─────────────────────────────────────────────────
+   Three marks, not one. A claim that has not been verified must be able to say
+   so — see the docstring on `a11y-checklist.tsx`.
+   ========================================================================== */
+.a11y-checklist__item--verified .a11y-checklist__icon {
+  color: var(--sa-text-status-success-base);
+}
+.a11y-checklist__item--partial .a11y-checklist__icon {
+  color: var(--sa-text-status-warning-base);
+}
+.a11y-checklist__item--untested .a11y-checklist__icon {
+  color: var(--sa-text-neutral-subtle);
+}
+.a11y-checklist__level {
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  font-weight: 700;
+  padding: var(--sa-padding-2) var(--sa-padding-4);
+  border-radius: var(--sa-shape-4);
+  background: var(--sa-color-action-primary-tonal);
+  color: var(--sa-bg-brand-primary-bolder);
+  white-space: nowrap;
+}
+.a11y-checklist__evidence {
+  margin-top: var(--sa-padding-2);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+/* ── Props table: generated rows ─────────────────────────────────────────── */
+.props-table__scroll {
+  overflow-x: auto;
+}
+.props-table__none {
+  color: var(--sa-text-neutral-subtle);
+}
+.props-table__row--deprecated .props-table__name {
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+.props-table__deprecated {
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  font-weight: 700;
+  color: var(--sa-text-status-warning-base);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.props-table__deprecated-note {
+  display: block;
+  margin-top: var(--sa-padding-2);
+  color: var(--sa-text-status-warning-base);
+}
+/* Said once, under the table, instead of two hundred inherited DOM rows. */
+.props-table__native {
+  margin-top: var(--sa-stack-12);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+/* ── Specimen scaffolding ──────────────────────────────────────────────────
+   A specimen frequently needs a row or a stack around the thing being shown —
+   two labels with a vertical rule between them, three variants side by side.
+   Before these existed every page wrote its own `style={{ display: "flex" }}`,
+   which is how the documentation surface accumulated 161 unbound lineHeight
+   numbers and 107 maxWidth literals. Bound here, once. */
+.cdp-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-12);
+  flex-wrap: wrap;
+}
+.cdp-row--tight {
+  gap: var(--sa-inline-8);
+}
+/* A row that hosts a VERTICAL Divider needs a resolvable height. The rule is
+   `height: 100%` plus `align-self: stretch`, and a percentage against an
+   auto-height parent collapses to nothing — which is the component's real
+   constraint, not a documentation workaround. 40px is the toolbar row height
+   the estate's own control rows use. */
+.cdp-row--rule {
+  height: var(--sa-padding-40);
+}
+.cdp-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-12);
+}
+/* A specimen that has to sit on a ground the component is designed for — an
+   inverse rule, a mark on a brand surface. The ink comes with the ground, so a
+   consumer never hand-picks a foreground to match it. */
+.cdp-ground {
+  padding: var(--sa-padding-20);
+  border-radius: var(--sa-shape-8);
+  background: var(--sa-bg-neutral-subtler);
+  color: var(--sa-text-neutral-base);
+}
+.cdp-ground--brand {
+  background: var(--sa-bg-brand-primary-bolder);
+  color: var(--sa-on-bg-brand-primary-bolder);
+}
+.cdp-ground__label {
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
+  font-weight: 600;
+  margin-bottom: var(--sa-stack-8);
+}
+.cdp-ground__label + .cdp-ground__label {
+  margin-top: var(--sa-stack-24);
+}
+
+/* ── Illustration foundations page ───────────────────────────────────────── */
+.ill-tiers {
+  display: grid;
+  gap: var(--sa-stack-24);
+  margin-top: var(--sa-stack-16);
+}
+.ill-tiers__row {
+  display: flex;
+  align-items: center;
+  gap: var(--sa-inline-24);
+  flex-wrap: wrap;
+  padding: var(--sa-padding-20);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-12);
+  background: var(--sa-bg-neutral-subtler);
+}
+.ill-tiers__art {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 200px;
+}
+.ill-tiers__name {
+  margin: 0;
+  font-size: var(--sa-type-title-1-size);
+  line-height: var(--sa-type-title-1-lh);
+  font-weight: 700;
+  color: var(--sa-text-neutral-bolder);
+}
+.ill-tiers__size {
+  margin: var(--sa-stack-4) 0;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+.ill-sheet {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(240px, 100%), 1fr));
+  gap: var(--sa-inline-16);
+  list-style: none;
+  margin: var(--sa-stack-16) 0 0;
+  padding: 0;
+}
+.ill-sheet__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--sa-stack-8);
+  padding: var(--sa-padding-20);
+  border: 1px solid var(--sa-border-neutral-subtle);
+  border-radius: var(--sa-shape-12);
+  background: var(--sa-bg-neutral-base);
+}
+.ill-sheet__name {
+  margin: 0;
+  font-family: var(--sa-font-mono);
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-bolder);
+}
+.ill-sheet__alt {
+  margin: 0;
+  font-size: var(--sa-type-body-3-size);
+  line-height: var(--sa-type-body-3-lh);
+  color: var(--sa-text-neutral-subtle);
+}
+
+/* ── The states a data-driven surface can be in ──────────────────────────────
+   `.claude/rules/data-state-completeness.md` names loading, empty, error and
+   filtered-to-nothing as "the four that get skipped", and an audit on
+   2026-09-02 found all four skipped on every chart page in the estate. They are
+   documented side by side, at the chart's own proportions, because the point a
+   reader has to take from them is that they are FOUR different answers and not
+   one blank panel. */
+.cdp-states {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--sa-stack-16);
+  width: 100%;
+}
+.cdp-states__cell {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sa-stack-8);
+  min-width: 0;
+}
+.cdp-states__label {
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
+  font-weight: 600;
+  color: var(--sa-text-neutral-subtle);
+}
+
+/* ── Documentation page skeleton ─────────────────────────────────────────────
+   The shape of the result, not a spinner. See app/design-system/loading.tsx.
+   ========================================================================== */
+.cdp-skel {
+  background: var(--sa-bg-neutral-subtler);
+  border-radius: var(--sa-shape-8);
+  animation: cdp-skel-pulse 1.4s ease-in-out infinite;
+}
+.cdp-skel--title {
+  height: var(--sa-type-display-1-size);
+  width: 40%;
+  min-width: 200px;
+}
+.cdp-skel--line {
+  height: var(--sa-type-body-1-size);
+  max-width: var(--cdp-measure);
+  margin-top: var(--sa-stack-12);
+}
+.cdp-skel--short {
+  width: 60%;
+}
+.cdp-skel--heading {
+  height: var(--sa-type-headline-2-size);
+  width: 30%;
+  min-width: 160px;
+}
+.cdp-skel--specimen {
+  height: 180px;
+  margin-top: var(--sa-stack-16);
+  border: 1px solid var(--sa-border-neutral-subtle);
+}
+@keyframes cdp-skel-pulse {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cdp-skel { animation: none; }
+}
+
+/* Which arm of a union props type accepts a prop — `data` on BarSingle,
+   `labels` + `series` on BarMulti. Without it a union reads as one flat API. */
+.props-table__only {
+  font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
+  font-weight: 700;
+  color: var(--sa-text-status-info-base);
+  white-space: nowrap;
+}
+
+
+/* ── Docs tabs: forced colours and reduced motion ─────────────────────────────
+   The active tab was signalled only by `background` on an ::after rule and by
+   `color` — both of which Windows High Contrast repaints, leaving NO indication
+   of which tab is open on a page whose Accessibility panel is one of the three.
+   And the panel's enter animation translates, with no reduced-motion path, in a
+   file whose sibling stylesheets all carry one.
+   ========================================================================== */
+@media (forced-colors: active) {
+  .docs-tabs-trigger.active::after {
+    forced-color-adjust: none;
+    background: Highlight;
+  }
+  .docs-tabs-trigger.active {
+    /* A second, redundant cue, because ::after can be suppressed. */
+    border-bottom: 2px solid Highlight;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .docs-tabs-panel {
+    /* Opacity alone is the reduced path; the translate is what the preference
+       is actually about. */
+    animation: none;
+  }
+}
+
+/* ── Brand ink on a light ground ─────────────────────────────────────────────
+   `--sa-text-brand-primary-base` is gov-blue #0373DF. Measured as TEXT it is
+   4.07:1 on `bg-neutral-subtler` and 3.28:1 on `bg-brand-primary-subtler` —
+   below the 4.5:1 body-text floor in both cases, and it was used that way in ten
+   places across the docs chrome, including the active sidebar item and the
+   active tab on every page in the design system. `bolder` measures 5.57 and
+   5.74 on the same two grounds. The axe suite found all ten the day it existed.
+   ========================================================================== */
+
+/* ── Secondary ink ───────────────────────────────────────────────────────────
+   `--sa-text-neutral-subtler` measures 4.65:1 on white and 4.07:1 on
+   `bg-neutral-subtler` — it passes on one ground and fails on the other, and
+   several of these rules sit on the tinted one. 4.65 is also a hair over the
+   4.5 floor, which is not a margin worth defending. `subtle` measures 10.92 and
+   9.56 on the same two grounds and is still visibly secondary.
+   ========================================================================== */

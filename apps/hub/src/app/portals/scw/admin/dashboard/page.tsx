@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card, FilterSelect, StatusPill } from "@/components/scw/ui";
+import { Card, PeriodFilter, StatusPill } from "@/components/scw/ui";
 import {
   DASHBOARD_STATS,
   SAGE_APPLICATIONS,
@@ -35,7 +35,7 @@ export default function AdminDashboard() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold text-ink">Dashboard</h1>
-        <FilterSelect options={PERIODS} defaultLabel="All" className="w-44" />
+        <PeriodFilter options={PERIODS} defaultLabel="All" className="w-44" />
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-3">

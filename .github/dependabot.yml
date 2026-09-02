@@ -1,0 +1,28 @@
+# Dependency updates. Added 2026-09-02 after `npm audit --omit=dev` reported eight
+# runtime advisories — one critical — that had accumulated with nothing watching.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    groups:
+      # One PR per family rather than per package: a repo with 22 gates cannot
+      # absorb twenty separate dependency PRs a week, and an unreviewed queue is
+      # the same as no scanner.
+      types:
+        patterns: ["@types/*"]
+      next:
+        patterns: ["next", "@next/*", "eslint-config-next"]
+      react:
+        patterns: ["react", "react-dom", "@types/react", "@types/react-dom"]
+      tooling:
+        patterns: ["eslint*", "stylelint*", "typescript", "vitest", "@vitest/*"]
+
+  # Workflow actions are pinned by float tag and never updated otherwise — and
+  # they are the half of the supply chain that runs with repository credentials.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"

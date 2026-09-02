@@ -83,107 +83,6 @@ const SPECIMEN_PORTALS = [
   },
 ];
 
-const PROPS = [
-  {
-    name: "defaultOpen",
-    type: "boolean",
-    default: "false",
-    description: "Initial expanded state for uncontrolled usage.",
-  },
-  {
-    name: "isOpen",
-    type: "boolean",
-    default: "undefined",
-    description: "Controlled open/closed state of the portal exploration drawer.",
-  },
-  {
-    name: "onToggle",
-    type: "(open: boolean) => void",
-    default: "undefined",
-    description: "Callback invoked when the explore drawer is expanded or collapsed.",
-  },
-  {
-    name: "portals",
-    type: "SamaveshBannerPortalItem[]",
-    default: "DEFAULT_SAMAVESH_PORTALS",
-    description:
-      "Portal cards shown in the drawer. Leave each item's `status` unset: it is resolved from the estate registry, so a portal that is not built yet renders as a labelled card instead of a link.",
-  },
-  {
-    name: "tone",
-    type: '"light" | "dark" | "tint"',
-    default: '"light"',
-    description:
-      "Band colouring. `light` is white on India Saffron and matches the Figma reference \u2014 it FAILS WCAG 2 at 2.91:1, deliberately and on record. `dark` is near-black on the same saffron (6.50:1). `tint` is near-black on pale saffron (17.29:1) and is the only tone that clears both WCAG 2 and APCA for body text. See the Variants section.",
-  },
-  {
-    name: "sticky",
-    type: "boolean",
-    default: "true",
-    description:
-      "Pin the band directly under the masthead and keep it there. It reads the header\u2019s live `--sa-header-stuck` offset, so it stays flush in both of the masthead\u2019s states, and condenses with it \u2014 the subline and rule drop and the band goes 80\u219252px (86\u219252 on a phone). Pass `false` for an inline specimen: pinned, an example detaches from the prose explaining it, and stacked tone specimens would cover each other. Every specimen on this page passes it.",
-  },
-  {
-    name: "drawerTitle",
-    type: "string",
-    default: '"Choose a portal to visit"',
-    description: "Heading text displayed inside the open drawer.",
-  },
-  {
-    name: "viewAllHref",
-    type: "string",
-    default: '"/portals"',
-    description:
-      "URL for the footer link. The drawer lists LIVE portals for quick access; /portals is the full directory, including those still in development.",
-  },
-  {
-    name: "emptyLabel",
-    type: "string",
-    default: '"No portals are available right now."',
-    description:
-      "Shown when there is nothing to list. It CAN happen \u2014 the list is derived from the estate registry, so a registry with nothing marked live leaves it empty. A heading above an empty list reads as a broken page; saying so reads as an answer.",
-  },
-  {
-    name: "viewAllPrompt",
-    type: "string",
-    default: '"Are you an officer or administrator?"',
-    description:
-      "The question above the footer link. A SIGNPOST, not a claim about the list \u2014 both surfaces show the same live portals, so copy promising more on /portals is false. What is true is who the second route is for: a citizen has arrived where they are going, an officer needs the directory to reach the portal they sign in to. Pass an empty string to render the link alone.",
-  },
-  {
-    name: "viewAllLabel",
-    type: "string",
-    default: '"Find your portal"',
-    description:
-      "Label for the footer link. It says what is DIFFERENT about the destination rather than \u201cview all\u201d \u2014 a link that reads as more of the same, below a list that is already complete, is a link nobody has a reason to follow.",
-  },
-  {
-    name: "allLabel",
-    type: "string",
-    default: '"All"',
-    description:
-      "Label on the \u201cno category filter\u201d chip. The chip row renders only when the portals on show span more than one category, so on the live site it is currently unused \u2014 every portal built today is a scheme portal.",
-  },
-  {
-    name: "title",
-    type: "string",
-    default: '"SAMAVESH"',
-    description: "Main bold title in the header bar.",
-  },
-  {
-    name: "subline",
-    type: "string",
-    default: '"Single Access Mechanism for All Verticals of Empowerment & Social Harmony"',
-    description: "Descriptive tagline shown beside the title.",
-  },
-  {
-    name: "exploreLabel",
-    type: "string",
-    default: '"Explore"',
-    description: "Text on the toggle button.",
-  },
-];
-
 export default function SamaveshBannerDocPage(): React.JSX.Element {
   return (
     <article
@@ -218,7 +117,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
         </div>
         <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
           {
-            "Top identity banner and interactive portal exploration drawer for the MoSJE estate, connecting citizens directly to ministry portals including SCW, SMILE, NOS, and NMBA."
+            "Top identity banner and interactive portal exploration drawer for the MoSJE estate, connecting citizens directly to ministry portals including SCW, SMILE, PM-AJAY and NMBA."
           }
         </p>
         <div
@@ -296,7 +195,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
                     <p style={proseStyle}>
                       The SAMAVESH banner acts as the unified gateway across the
                       digital estate. It provides immediate branding recognition with
-                      the India Saffron ground and national emblem logo, paired with
+                      the India Saffron ground and the SAMAVESH mark, paired with
                       an accessible expandable accordion drawer for instant navigation
                       to core public-facing services.
                     </p>
@@ -342,7 +241,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
 
                   <section style={sectionStyle}>
                     <h2 id="props" style={h2Style}>Props Reference</h2>
-                    <PropsTable props={PROPS} />
+                    <PropsTable from="SamaveshBannerProps" />
                   </section>
 
                   <section style={sectionStyle}>
@@ -532,7 +431,7 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
         <h2 id="props-heading" style={h2Style}>
           Component Props
         </h2>
-        <PropsTable props={PROPS} />
+        <PropsTable from="SamaveshBannerProps" />
       </section>
 
       {/* ── Feedback Bar ── */}

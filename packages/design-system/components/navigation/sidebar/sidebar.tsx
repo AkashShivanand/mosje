@@ -183,7 +183,7 @@ function MainItem({
         />
       </button>
       {open && (
-        <ul id={groupId} role="list" className="ds-sidebar__subnav">
+        <ul id={groupId} className="ds-sidebar__subnav">
           {item.children!.map((child, i) => (
             <ChildItem
               key={child.href}
@@ -252,7 +252,7 @@ export function SidebarNav({
                 {group.label}
               </div>
             )}
-            <ul role="list" className="ds-sidebar__group-items">
+            <ul className="ds-sidebar__group-items">
               {group.items.map((item) => (
                 <li key={item.href}>
                   <MainItem

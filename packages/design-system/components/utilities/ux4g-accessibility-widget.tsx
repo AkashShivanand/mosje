@@ -221,6 +221,68 @@ function relabelMacShortcut(): void {
   apply();
 }
 
+/**
+ * Give the panel's four section toggles an accessible name.
+ *
+ * THE ACCESSIBILITY WIDGET WAS NOT OPERABLE BY A SCREEN READER. Its four
+ * collapse toggles — Accessibility Profile, Color Adjustment, Content
+ * Adjustment, Orientation Adjustment — contain a chevron `<span>` and nothing
+ * else, so each is a button with no text, no `aria-label` and no `title`. axe
+ * reports four CRITICAL `button-name` violations on every page of the estate,
+ * and a screen-reader user reaches four buttons announced as "button".
+ *
+ * The name is not invented. Each toggle's own section heading is its previous
+ * sibling, visible on screen, so this points `aria-labelledby` at that element
+ * and the announced name is exactly what a sighted user reads.
+ *
+ * WHY THIS IS ALLOWED. `.claude/rules/accessibility-entry-point.md` forbids
+ * SUPPRESSING any part of the vendor's panel and forbids restyling it. This
+ * does neither: it adds an accessible name where there was none. Nothing is
+ * hidden, no behaviour changes, no pixel moves. `relabelMacShortcut` already
+ * establishes the pattern in this file, including writing an `aria-label` onto
+ * a vendor node.
+ *
+ * NOT FIXED HERE: `#dark-btn` is a `<button>` wrapping a focusable `<input>`,
+ * which axe reports as `nested-interactive`. Repairing that means changing
+ * which element is focusable in a vendor control, and getting it wrong makes
+ * the theme switch unreachable rather than merely mislabelled. It is recorded
+ * in the audit instead.
+ */
+const SECTION_TOGGLE_IDS = [
+  "profileDropdown",
+  "colorAdjustmentDropdown",
+  "contentDropdown",
+  "orientationDropdown",
+] as const;
+
+function nameSectionToggles(): void {
+  let attempts = 0;
+  const apply = (): void => {
+    const found = SECTION_TOGGLE_IDS.map((id) => document.getElementById(id)).filter(Boolean);
+    if (found.length === 0) {
+      // The panel's markup is injected with the rest of the widget; the retry
+      // window matches relabelMacShortcut's, for the same reason.
+      if (attempts++ < 20) window.setTimeout(apply, 100);
+      return;
+    }
+    for (const el of found) {
+      if (el!.getAttribute("aria-label") || el!.getAttribute("aria-labelledby")) continue;
+      const heading = el!.previousElementSibling;
+      const text = heading?.textContent?.replace(/\s+/g, " ").trim();
+      if (!text) continue;
+      // Prefer labelledby so the name tracks the vendor's own text if it is
+      // ever translated; fall back to a copied label only if the heading has
+      // no id to point at and cannot be given one safely.
+      if (!heading!.id) heading!.id = `sa-ux4g-${el!.id}-label`;
+      el!.setAttribute("aria-labelledby", heading!.id);
+      // The chevron is decoration; without this it can be announced as an
+      // extra unnamed node inside the button.
+      el!.querySelector(".ux4g-accessibility-icon-chevron")?.setAttribute("aria-hidden", "true");
+    }
+  };
+  apply();
+}
+
 export interface UX4GAccessibilityWidgetProps {
   /** Override the widget script URL (e.g. to pin a version or self-host). */
   src?: string;
@@ -257,6 +319,7 @@ export function UX4GAccessibilityWidget({
       // so those handlers actually attach. Safe to dispatch more than once.
       document.dispatchEvent(new Event("DOMContentLoaded", { bubbles: true, cancelable: true }));
       if (isMacPlatform()) relabelMacShortcut();
+      nameSectionToggles();
     });
     document.body.appendChild(script);
     // Intentionally not removed on unmount — the widget is a page-level,
@@ -272,6 +335,13 @@ export function UX4GAccessibilityWidget({
   // can be missed: a remount past the early return (this effect), and a CDN
   // slow enough to outlast the retry window (the load handler). It only ever
   // writes the same text, so running twice is harmless.
+  // Naming the panel's section toggles is NOT mac-gated — it is a WCAG repair
+  // that every platform needs — so it runs before the mac-only early return.
+  React.useEffect(() => {
+    if (typeof document === "undefined") return;
+    nameSectionToggles();
+  }, []);
+
   React.useEffect(() => {
     if (typeof document === "undefined" || !isMacPlatform()) return;
     relabelMacShortcut();

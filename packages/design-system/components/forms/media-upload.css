@@ -83,7 +83,11 @@
     background-color: var(--sa-bg-brand-primary-subtler);
   }
 
-  .ds-media-upload__dropzone[aria-invalid="true"] {
+  /* A CLASS, not [aria-invalid]. `aria-invalid` is only defined for controls that
+     hold a value, so it does not belong on a button dropzone — and while the
+     attribute was the styling hook, removing the invalid ARIA would silently have
+     removed the visible error state with it. */
+  .ds-media-upload__dropzone.is-invalid {
     border-color: var(--sa-border-status-error-base);
   }
 

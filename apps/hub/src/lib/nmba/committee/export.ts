@@ -3,8 +3,8 @@
 // as the Treatment-Centre export. PDF uses jsPDF + autotable, loaded lazily so
 // it never runs on the server.
 
-import type { CommitteeRecord } from "./types";
-import { tierLabel } from "./session";
+import type { CommitteeRecord } from "./types.ts";
+import { tierLabel } from "./session.ts";
 
 // jsPDF autoTable needs a raw numeric RGB triplet (it can't read CSS vars).
 // Kept traceable to the brand token: primary #0373DF.
@@ -99,8 +99,19 @@ export function exportXls(records: CommitteeRecord[], scopeLabel: string): void 
   triggerDownload(blob, `napddr-committee-report-${slug(scopeLabel)}.xls`);
 }
 
-/** Download a consolidated .PDF of committee notifications + meeting minutes. */
-export async function exportPdf(records: CommitteeRecord[], scopeLabel: string): Promise<void> {
+/**
+ * The jsPDF document, built but NOT saved.
+ *
+ * Split out from `exportPdf` so the document can be asserted on. `exportPdf`
+ * ends in `doc.save()`, which is a browser download and cannot be exercised in a
+ * test — so when this file's dependency went across TWO majors (jspdf 2 → 4,
+ * jspdf-autotable 3 → 5) nothing checked it. `tsc` could not help either: the
+ * one contact with the changed surface was a cast through `unknown`.
+ */
+export async function buildCommitteePdf(
+  records: CommitteeRecord[],
+  scopeLabel: string,
+): Promise<import("jspdf").jsPDF> {
   const { jsPDF } = await import("jspdf");
   const autoTable = (await import("jspdf-autotable")).default;
 
@@ -117,8 +128,17 @@ export async function exportPdf(records: CommitteeRecord[], scopeLabel: string):
     margin: { left: 40, right: 40 },
   });
 
-  const afterFirst = (doc as unknown as { lastAutoTable?: { finalY: number } }).lastAutoTable;
-  const startY = afterFirst ? afterFirst.finalY + 30 : 60;
+  /*
+   * `autoTable` returns void in v5 and the plugin's `lastAutoTable` is set at
+   * runtime without a type augmentation, so this reach is unavoidable — but it
+   * is DECLARED in `jspdf-autotable.d.ts` rather than cast through `unknown`,
+   * which means the compiler checks the shape and the assumption is written
+   * down where the next upgrade will see it. `export.test.ts` asserts it is
+   * still populated, because a silent `undefined` here does not throw: it
+   * quietly stacks the minutes table on top of the committee table.
+   */
+  const afterFirst = doc.lastAutoTable;
+  const startY = afterFirst?.finalY != null ? afterFirst.finalY + 30 : 60;
   doc.setFontSize(12);
   doc.text("Meeting Minutes", 40, startY - 10);
   autoTable(doc, {
@@ -130,6 +150,12 @@ export async function exportPdf(records: CommitteeRecord[], scopeLabel: string):
     margin: { left: 40, right: 40 },
   });
 
+  return doc;
+}
+
+/** Download a consolidated .PDF of committee notifications + meeting minutes. */
+export async function exportPdf(records: CommitteeRecord[], scopeLabel: string): Promise<void> {
+  const doc = await buildCommitteePdf(records, scopeLabel);
   doc.save(`napddr-committee-report-${slug(scopeLabel)}.pdf`);
 }
 

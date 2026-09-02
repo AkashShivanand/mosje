@@ -109,7 +109,18 @@
   .ds-btn--primary {
     --_fill: var(--sa-bg-brand-primary-bolder);
     --_on: var(--sa-on-bg-brand-primary-bolder);
-    --_color: var(--sa-text-brand-primary-base);
+    /*
+     * 4.19:1 → 5.74:1. `--_color` is, by this block's own comment, "the ink the
+     * outlined and text appearances paint with, MEASURED AGAINST THE PAGE" — and
+     * it was `text/brand/primary/base`, gov-blue #0373DF, which measures 4.19:1
+     * on white. Below the 4.5 body-text floor, on the estate's most-used
+     * component, on every outlined and text button in every portal.
+     *
+     * The fill was moved to `bolder` on 2026-08-12 for exactly this reason and
+     * the split was made so the ink could move independently. It then did not.
+     * Found by the axe suite the day one existed.
+     */
+    --_color: var(--sa-text-brand-primary-bolder);
     /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
        intent survives the trip. A flat white-alpha border used to be identical for all
        four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it

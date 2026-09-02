@@ -152,6 +152,10 @@ export function OtpInput({
           maxLength={1}
           value={digits[i] ?? ""}
           disabled={disabled}
+          /* eslint-disable-next-line jsx-a11y/no-autofocus -- opt-in, and correct
+             here: the caller renders this immediately after the citizen asked for
+             a code, so the one thing they are about to do is type it. The prop
+             defaults off, so a screen that should not steal focus simply omits it. */
           autoFocus={autoFocus && i === 0}
           aria-label={`Digit ${i + 1} of ${length}`}
           aria-invalid={invalid || undefined}

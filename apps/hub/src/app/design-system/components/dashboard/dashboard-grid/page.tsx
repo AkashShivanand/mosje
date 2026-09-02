@@ -1,214 +1,150 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { DashboardGrid } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  MatrixTable,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+import { ChartCard, DashboardGrid, KpiRow, Sparkline } from "@mosje/design-system";
 
 export const metadata: Metadata = {
-  title: "Dashboard Grid",
-  description: "Responsive CSS grid container designed for high-density administrative dashboards and KPI monitoring screens.",
+  title: "Dashboard Grid — Design System",
+  description:
+    "The 12-column grid a portal dashboard is laid out on. Children declare their own width with a span prop; every child is full width below 768px.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
-
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function DashboardGridDocPage(): React.JSX.Element {
-  return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Dashboard Grid
-          </h1>
-          <StatusBadge status="Beta" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Responsive CSS grid container designed for high-density administrative dashboards and KPI monitoring screens."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
-
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Dashboard Grid is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <DashboardGrid><div style={{ padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-base)", border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)" }}>Widget 1</div><div style={{ padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-base)", border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)" }}>Widget 2</div></DashboardGrid>
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use DashboardGrid as the top-level container for portal dashboard layouts.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not nest deep multi-level grids without defining explicit mobile breakpoints.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { DashboardGrid } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
+const A11Y: A11yItem[] = [
   {
-    "name": "dense",
-    "type": "boolean",
-    "default": "false",
-    "description": "Dense grid packing algorithm."
+    criterion: "1.3.2 Meaningful Sequence",
+    level: "A",
+    description:
+      "Cards are placed in source order — the grid sets spans, never explicit column or row starts, so the reading order and the visual order cannot diverge.",
   },
   {
-    "name": "children",
-    "type": "React.ReactNode",
-    "required": true,
-    "description": "Grid items (MetricCard, ChartCard, FilterBar)."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<DashboardGrid><div style={{ padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-base)", border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)" }}>Widget 1</div><div style={{ padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-base)", border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)" }}>Widget 2</div></DashboardGrid>`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
+    criterion: "1.4.10 Reflow",
+    level: "AA",
+    description:
+      "Below 768px every child spans all 12 columns, so a dashboard reads as one column at 320px with no horizontal scrolling.",
+  },
   {
-    "criterion": "1.3.2 Meaningful Sequence",
-    "level": "AA",
-    "description": "DOM order matches visual layout flow across responsive breakpoints."
-  }
-]} />
-                </section>
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "The grid adds no role and no landmark. It is a layout, and announcing it would put a container between the reader and the cards, each of which is already a titled section.",
+  },
+];
 
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Tab</kbd></td>
-                          <td>{"Traverses child dashboard cards in reading order."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
+const TREND = [412, 486, 455, 601, 640, 588, 712, 743];
 
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Dashboard Grid" />
-    </article>
+export default function DashboardGridPage(): React.JSX.Element {
+  return (
+    <ComponentDocPage
+      name="Dashboard Grid"
+      status="Beta"
+      summary="The 12-column grid a portal dashboard is laid out on. Children declare their own width with a span prop, and every child is full width below 768px, so a dashboard reflows to one column without a second layout being written."
+      figma={{
+        absent: "Not yet published in the Figma library. The layout grid the estate uses is documented on the Spacing foundation page.",
+      }}
+      specimen={
+        <DashboardGrid>
+          <KpiRow
+            span={12}
+            items={[
+              { label: "Funds Released", value: "₹ 1,240 Cr" },
+              { label: "Beneficiaries", value: "4,21,509" },
+              { label: "States Reporting", value: "28" },
+            ]}
+          />
+          <ChartCard span={8} title="Releases by Quarter" subtitle="FY 2025-26 · All States">
+            <Sparkline data={TREND} height={72} fill label="Releases by quarter, rising from 412 to 743" />
+          </ChartCard>
+          <ChartCard span={4} title="Category Split" subtitle="FY 2025-26">
+            <Sparkline data={[220, 190, 260, 240]} height={72} label="Category split across four categories" />
+          </ChartCard>
+        </DashboardGrid>
+      }
+      propsFrom="DashboardGridProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A portal dashboard places several cards of different widths on one page.",
+          "The cards must reflow to a single column on a phone without a second layout being written.",
+          "A card's width is a property of the card rather than of the page, so it can be moved without its span being recalculated.",
+        ],
+        avoid: [
+          "The page is a document rather than a dashboard — use Section and Container, which carry the estate's reading measure.",
+          "The content is a table of like rows — use Data Table; a grid of cards is not a way to show a list.",
+          "You need arbitrary placement, row starts or dense packing — the grid deliberately offers none of these, because they let the visual order diverge from the reading order.",
+        ],
+      }}
+      related={[
+        { label: "Chart Card", href: "/design-system/components/dashboard/chart-card", reason: "the card the grid is usually filled with; it takes the span prop" },
+        { label: "KPI Row", href: "/design-system/components/dashboard/kpi-row", reason: "the headline figures, usually span 12 at the top" },
+        { label: "Grid", href: "/design-system/components/layout/grid", reason: "for page layout outside a dashboard" },
+        { label: "Container", href: "/design-system/components/layout/container", reason: "the content width the grid sits inside" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-spans">
+            <h2 id="cdp-spans" className="cdp__h2">
+              Spans, and the One Breakpoint
+            </h2>
+            <p>
+              The grid is twelve equal columns with a <code>--sa-stack-24</code> gutter. A child
+              spans all twelve unless it says otherwise, and what it says applies only from{" "}
+              <strong>768px</strong> upward.
+            </p>
+            <MatrixTable
+              caption="What a span does at each width"
+              columns={["Width", "What every child spans", "What span={4} means"]}
+              rows={[
+                ["Below 768px", "All 12 columns", "Ignored — the card is full width"],
+                ["768px and above", "12 columns unless a span is set", "One third of the row"],
+              ]}
+            />
+            <p>
+              One breakpoint rather than three is deliberate. A dashboard that re-flows twice
+              between a phone and a desktop has two intermediate layouts nobody designed, and
+              cards sized in twelfths already narrow smoothly between them.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-rows">
+            <h2 id="cdp-rows" className="cdp__h2">
+              Close Every Row
+            </h2>
+            <p>
+              Spans in a row should add to twelve. A row that adds to ten leaves a sixth of the
+              page blank, which reads as a card that failed to load rather than as a layout
+              choice. This matters most on a dashboard offering live and illustrative data modes:
+              a card that appears in two modes and not the third must not leave half a row of
+              white in the third.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { ChartCard, DashboardGrid, KpiRow } from "@mosje/design-system";
+
+<DashboardGrid>
+  <KpiRow span={12} items={kpis} />
+  <ChartCard span={8} title="Releases by Quarter">…</ChartCard>
+  <ChartCard span={4} title="Category Split">…</ChartCard>
+</DashboardGrid>`}</CodeBlock>
+          <p>
+            Anything that is not a DS card takes its span from the same custom property the cards
+            set, so a bespoke widget sits in the grid without the grid learning about it.
+          </p>
+          <CodeBlock>{`<DashboardGrid>
+  <section style={{ ["--cmp-card-span" as string]: "6" }}>…</section>
+</DashboardGrid>`}</CodeBlock>
+        </section>
+      }
+    />
   );
 }

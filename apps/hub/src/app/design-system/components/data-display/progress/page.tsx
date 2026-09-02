@@ -1,195 +1,173 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { Progress } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { ProgressSpecimen } from "./specimen";
 
 export const metadata: Metadata = {
-  title: "Progress",
-  description: "Linear progress bar indicating form wizard completion percentage, file upload progress, and statutory quota allocations.",
+  title: "Progress — Design System",
+  description:
+    "A labelled horizontal bar for one figure against a maximum, at row height, with a real indeterminate state for a figure that has not arrived.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
-
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function ProgressDocPage(): React.JSX.Element {
-  return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Progress
-          </h1>
-          <StatusBadge status="Stable" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Linear progress bar indicating form wizard completion percentage, file upload progress, and statutory quota allocations."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
-
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Progress is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <Progress value={65} label="Application Form Progress" />
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Provide explicit percentage text alongside the visual bar.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not use animated indeterminate progress when exact percentage is known.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { Progress } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
+const A11Y: A11yItem[] = [
   {
-    "name": "value",
-    "type": "number",
-    "required": true,
-    "description": "Progress percentage (0 to 100)."
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    status: "verified",
+    description:
+      'The track carries role="progressbar", is named by `label`, and reports aria-valuemin and aria-valuemax on every render. aria-valuenow is set only where a figure is known — its absence is precisely how ARIA spells "in progress, amount unknown".',
+    evidence: "progress.tsx lines 99–106.",
   },
   {
-    "name": "label",
-    "type": "string",
-    "required": true,
-    "description": "Descriptive label shown beside or above bar."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<Progress value={65} label="Application Form Progress" />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
+    criterion: "1.4.1 Use of Color",
+    level: "A",
+    status: "verified",
+    description:
+      "The percentage is printed beside the label when `showValue` is on, and an unknown figure reads “—” to a sighted reader with a spoken equivalent for a screen reader. The fill never carries the reading alone.",
+    evidence: "progress.tsx lines 88–89.",
+  },
   {
-    "criterion": "4.1.2 Name, Role, Value",
-    "level": "AA",
-    "description": "Renders role=\"progressbar\" with aria-valuenow and aria-valuemax."
-  }
-]} />
-                </section>
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    status: "verified",
+    description:
+      "A missing figure and a figure of nought are different renderings. A bar with no value stays indeterminate rather than drawing a confident empty track that reads, to a screen reader, as a measured nought.",
+    evidence: "progress.tsx lines 14–20 document the change and the condition that implements it.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    status: "untested",
+    description:
+      "Progress is not an input and has no keyboard interaction to test — it reports, and nothing on it is operable.",
+  },
+];
 
-              </>
-            ),
-          },
-        ]}
-      />
+export default function ProgressPage(): React.JSX.Element {
+  return (
+    <ComponentDocPage
+      name="Progress"
+      status="Stable"
+      summary="A labelled horizontal bar for one figure against a maximum. It keeps its row height in every state, which is what makes it the right mark inside a list where a gauge or a donut would not fit."
+      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      specimen={<ProgressSpecimen />}
+      propsFrom="ProgressProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "One figure is read against a maximum and several such figures are stacked, so their labels and bars should align.",
+          "The bar sits inside a list, a table or a form where the row height must not change as figures arrive.",
+          "A step count or a completion is being reported to the person waiting on it.",
+        ],
+        avoid: [
+          "The figure is the headline of a card on its own — use a Gauge, which is drawn to be the focus.",
+          "The whole divides into named parts — use a Donut Chart or a stacked Bar Chart; a single bar cannot show a division.",
+          "The reading is a trend rather than a level — use a Sparkline or a Line Chart.",
+          "The figure has no maximum. A progress bar with an invented ceiling is a made-up reading; use a Metric Card.",
+        ],
+      }}
+      related={[
+        { label: "Gauge", href: "/design-system/components/data-display/gauge", reason: "the same reading as a card headline" },
+        { label: "Donut Chart", href: "/design-system/components/data-display/donut-chart", reason: "its progress mode, drawn as a ring" },
+        { label: "Metric Card", href: "/design-system/components/data-display/metric-card", reason: "a figure with no ceiling" },
+        { label: "Sparkline", href: "/design-system/components/data-display/sparkline", reason: "when the trend matters more than the level" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">
+              The States It Draws, and Why They Split
+            </h2>
+            <p>
+              Progress handles its states differently from the SVG charts, deliberately. It is a label
+              and a track sized to a row in a list, and replacing that row with a plate the moment the
+              figures are in flight is a layout jump, not a loading state. So it splits two ways:
+            </p>
+            <ul>
+              <li>
+                <strong>Loading, and a missing figure, stay in the row.</strong> The bar renders
+                indeterminate, the value reads &ldquo;—&rdquo;, and{" "}
+                <code>aria-valuenow</code> is omitted. The row keeps its exact height.
+              </li>
+              <li>
+                <strong>Empty, error, filtered-to-nothing and the rest need words</strong>, so they
+                render the same state figure every other chart in the catalogue uses. Nothing here is
+                hand-rolled, and a progress bar with nothing to show is the same object on the page as
+                a bar chart with nothing to show.
+              </li>
+            </ul>
+            <p>
+              The specimen shows a known figure, a figure against a real maximum, an unpublished figure,
+              and then the four state renderings.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-zero">
+            <h2 id="cdp-zero" className="cdp__h2">
+              Nought Is Not Missing
+            </h2>
+            <p>
+              <code>value</code> is optional, and that is the whole point of this component&apos;s
+              current API. It used to be required, so a caller with nothing to show had one honest
+              option — pass nought — and the bar then drew a confident empty track reading{" "}
+              <code>0%</code>, with <code>aria-valuenow=&quot;0&quot;</code> telling a screen reader
+              the same thing.
+            </p>
+            <p>
+              &ldquo;The department reports nought per cent&rdquo; and &ldquo;no figure has been
+              published&rdquo; are different sentences, and one of them was being said for both. Omit{" "}
+              <code>value</code> where the figure is unknown; pass nought only where nought is the
+              reading.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Progress } from "@mosje/design-system";
 
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Progress" />
-    </article>
+<Progress value={65} label="Application Form Progress" />
+
+// A count against a real maximum.
+<Progress value={1240} max={1800} label="Hostel Places Occupied" />
+
+// No figure published. Do NOT pass 0 here.
+<Progress label="Places Occupied" />`}</CodeBlock>
+          <CodeBlock>{`<Progress
+  value={reading?.rate}
+  label="Grievances Resolved Within SLA"
+  state={error ? "error" : loading ? "loading" : undefined}
+  onRetry={refetch}
+  filterLabel="state filter"
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-sr">
+          <h2 id="cdp-sr" className="cdp__h2">
+            What a Screen Reader Gets
+          </h2>
+          <p>
+            A real <code>progressbar</code>, named by its label, with its minimum and maximum always
+            reported and its current value reported only when one is known. This is the one mark in the
+            data-display group whose value is exposed as a value rather than as a picture with a
+            caption — which is why it is the right choice on any surface read primarily through
+            assistive technology.
+          </p>
+          <p>
+            Nothing here is focusable, and nothing needs to be: a progress bar reports and is not
+            operated.
+          </p>
+        </section>
+      }
+    />
   );
 }

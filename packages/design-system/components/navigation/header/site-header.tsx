@@ -754,7 +754,6 @@ export function SiteHeader({
           href={homeHref}
           aria-label={`${brandLines.department} — home`}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img className="ds-hdr-cond__emblem" src={emblemSrc} alt={emblemAlt ?? ""} />
         </a>
 
@@ -867,12 +866,10 @@ export function SiteHeader({
                     target="_blank"
                     rel="noreferrer"
                   >
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
                     <span className="ds-hdr-sr"> (opens in a new window)</span>
                   </a>
                 ) : (
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img key={m.src} className="ds-hdr-cobrand" src={m.src} alt={m.alt} style={{ height: m.height ?? 40 }} />
                 ),
               )}

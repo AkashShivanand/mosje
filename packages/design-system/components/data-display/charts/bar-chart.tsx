@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { Legend } from "./internal/legend";
 import { Gridlines, XAxisLabels } from "./internal/axis";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
@@ -9,10 +9,9 @@ import { bandScale, linearScale, niceTicks } from "./internal/scales";
 import { seriesColor, categoricalColor, CHART_INK } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
-import { CardState } from "../../dashboard/card-state";
 import type { ChartDatum, ChartSeries } from "./types";
 
-interface BarBase {
+interface BarBase extends ChartStateProps {
   title: string;
   caption?: React.ReactNode;
   orientation?: "vertical" | "horizontal";
@@ -23,6 +22,18 @@ interface BarBase {
   width?: number;
   height?: number;
   showValues?: boolean;
+  /**
+   * Pin the value axis instead of letting the chart fit its own data.
+   *
+   * Required for `SmallMultiples`: panels are only comparable when they share
+   * one ceiling, and a chart that fits its own data draws a state with 40
+   * beneficiaries the same as one with 40,000. Pass the `sharedMax` that
+   * component hands you.
+   *
+   * Ignored when it is below the data's own maximum — silently clipping bars
+   * would be worse than overriding the caller.
+   */
+  max?: number;
   className?: string;
 }
 interface BarSingle extends BarBase {
@@ -53,6 +64,12 @@ export function BarChart(props: BarChartProps) {
     valueFormat = formatIndian,
     showValues,
     className,
+    state,
+    onRetry,
+    filterLabel,
+    tableView,
+    textured,
+    max,
   } = props;
   const { canvasRef, tip, show, hide } = useChartTooltip();
 
@@ -64,8 +81,32 @@ export function BarChart(props: BarChartProps) {
     : props.series;
   const singleColors = single ? props.data.map((d, i) => d.color ?? categoricalColor(i)) : null;
 
-  if (labels.length === 0 || series.length === 0)
-    return <CardState kind="empty" compact />;
+  const width = props.width ?? 480;
+  const height = props.height ?? 280;
+
+  /*
+   * ONE EXPRESSION, resolved before anything downstream reads it. The caller's
+   * `state` wins where it is given — only the caller knows whether the feed was
+   * asked and answered nothing, failed, or was filtered away by the reader — and
+   * "the arrays are empty" falls back to `"empty"`, which is what this chart
+   * already did.
+   */
+  const resolved = state ?? (labels.length === 0 || series.length === 0 ? "empty" : undefined);
+  if (resolved)
+    return (
+      <ChartFrame
+        marksAreFocusable
+        title={title}
+        viewBox={`0 0 ${width} ${height}`}
+        className={className}
+        caption={caption}
+        state={resolved}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+      >
+        {null}
+      </ChartFrame>
+    );
 
   const stacked = !single && variant === "stacked" && series.length > 1;
   const seriesColors = series.map((s, i) => seriesColor(s.color, i));
@@ -77,7 +118,10 @@ export function BarChart(props: BarChartProps) {
       ? series.reduce((sum, s) => sum + (s.data[li] ?? 0), 0)
       : Math.max(0, ...series.map((s) => s.data[li] ?? 0)),
   );
-  const rawMax = Math.max(1, ...perLabelMax);
+  // `max` pins the axis for small multiples; it can only ever RAISE the
+  // ceiling, because honouring a max below the data would clip bars off the
+  // top and misreport the very figures the chart exists to show.
+  const rawMax = Math.max(1, ...perLabelMax, max ?? 0);
   const ticks = niceTicks(0, rawMax);
   const vMax = ticks[ticks.length - 1] ?? rawMax;
 
@@ -92,9 +136,6 @@ export function BarChart(props: BarChartProps) {
       </div>
     </>
   );
-
-  const width = props.width ?? 480;
-  const height = props.height ?? 280;
 
   const legend =
     !single && series.length > 1 ? (
@@ -118,6 +159,7 @@ export function BarChart(props: BarChartProps) {
 
     return (
       <ChartFrame
+        marksAreFocusable
         title={title}
         summary={labels.map((l, li) => `${l}: ${valueFormat(perLabelMax[li] ?? 0)}`).join(", ")}
         viewBox={`0 0 ${width} ${height}`}
@@ -127,6 +169,8 @@ export function BarChart(props: BarChartProps) {
         legend={legend}
         caption={caption}
         table={table}
+        tableView={tableView}
+        textured={textured}
       >
         <Gridlines
           ticks={ticks.map((v) => ({ pos: y(v), value: v }))}
@@ -210,6 +254,7 @@ export function BarChart(props: BarChartProps) {
 
   return (
     <ChartFrame
+      marksAreFocusable
       title={title}
       summary={labels.map((l, li) => `${l}: ${valueFormat(perLabelMax[li] ?? 0)}`).join(", ")}
       viewBox={`0 0 ${width} ${height}`}
@@ -219,6 +264,8 @@ export function BarChart(props: BarChartProps) {
       legend={legend}
       caption={caption}
       table={table}
+      tableView={tableView}
+        textured={textured}
     >
       {ticks.map((v) => (
         <line

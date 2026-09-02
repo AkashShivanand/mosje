@@ -1,0 +1,47 @@
+/**
+ * Org Logo documentation page.
+ *
+ * Three layouts the docs kit does not carry: the catalogue of every mark, the
+ * size ladder, and the caption under a mark. Every value resolves through a
+ * `--sa-*` token except the grid's minimum track, which is advisory geometry —
+ * `.claude/rules/documentation-ds-linkage.md`, "What is gated".
+ *
+ * They live beside the page rather than in `docs-kit.css` because nothing else
+ * documents a seventeen-item mark registry, and a shared kit that grows a class
+ * for one page stops being shared.
+ */
+
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* Every mark the estate ships, in registry order. */
+  .orglogo-catalogue {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(7.5rem, 1fr));
+    gap: var(--sa-inline-20);
+    list-style: none;
+    margin: var(--sa-stack-24) 0 0;
+    padding: 0;
+  }
+
+  .orglogo-catalogue > li {
+    display: grid;
+    gap: var(--sa-stack-8);
+    justify-items: center;
+  }
+
+  .orglogo-catalogue code {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The three sizes and the fallback, on one line. */
+  .orglogo-sizes {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-24);
+    flex-wrap: wrap;
+    margin-bottom: var(--sa-stack-16);
+  }
+}

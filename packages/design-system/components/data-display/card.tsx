@@ -39,8 +39,7 @@ export const Card = React.forwardRef<HTMLDivElement, CardProps>(function Card(
   );
 });
 
-export interface CardSectionProps
-  extends React.HTMLAttributes<HTMLDivElement> {}
+export type CardSectionProps = React.HTMLAttributes<HTMLDivElement>;
 
 /** Top section of a card — typically holds a title/subtitle or header icon. */
 export const CardHeader = React.forwardRef<HTMLDivElement, CardSectionProps>(
@@ -75,8 +74,7 @@ export const CardFooter = React.forwardRef<HTMLDivElement, CardSectionProps>(
   },
 );
 
-export interface CardTitleProps
-  extends React.HTMLAttributes<HTMLHeadingElement> {}
+export type CardTitleProps = React.HTMLAttributes<HTMLHeadingElement>;
 
 /** Card title — Headline-5 (20/24/600). */
 export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
@@ -89,8 +87,7 @@ export const CardTitle = React.forwardRef<HTMLHeadingElement, CardTitleProps>(
   },
 );
 
-export interface CardSubtitleProps
-  extends React.HTMLAttributes<HTMLParagraphElement> {}
+export type CardSubtitleProps = React.HTMLAttributes<HTMLParagraphElement>;
 
 /** Card subtitle — Body-2, muted ink. */
 export const CardSubtitle = React.forwardRef<

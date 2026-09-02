@@ -257,6 +257,21 @@
     pointer-events: auto;
   }
 
+  /* ANY INTERACTIVE CHILD OF THIS SLOT IS A REAL TARGET.
+     The slot is where a password-reveal toggle, a clear button or a search
+     submit lands, and every consumer that put a bare <button> here inherited
+     its icon's size — smile-admin's reveal toggle measured 16x24, a third under
+     the 24x24 WCAG 2.2 AA floor (2.5.8). Enforcing it on the SLOT fixes every
+     consumer at once and stops the next one reintroducing it. The slot is
+     centred and absolutely positioned, so growing the hit area moves nothing. */
+  .ds-input-shell__icon--right :is(button, a, [role="button"]) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--sa-inline-24);
+    min-block-size: var(--sa-stack-24);
+  }
+
   .ds-input-shell__icon--left {
     left: 12px;
   }

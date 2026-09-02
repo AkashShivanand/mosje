@@ -40,12 +40,38 @@ const FACILITY_LABELS: Record<FacilityType, string> = {
   ATF: "Addiction Treatment Facility (ATF)",
 };
 
-function makeIcon(color: string) {
+/** `divIcon` takes an HTML STRING, so anything interpolated into it must be escaped. */
+function escapeHtml(value: string): string {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+/**
+ * THE MARKER CARRIES ITS OWN NAME AND ITS OWN TARGET SIZE.
+ *
+ * Leaflet renders every marker as a `role="button"` div. Passing `aria-label`
+ * to react-leaflet's `<Marker>` does NOT reach that div — react-leaflet forwards
+ * unknown props into Leaflet's options object, not onto the DOM — so axe
+ * reported ten buttons with no accessible name, and a screen reader read ten
+ * unnamed buttons. The name has to live inside the icon's own markup.
+ *
+ * The hit area is 24x24 for WCAG 2.5.8 while the visible dot stays 14px: the
+ * outer box is transparent and centres the dot, so nothing changes visually and
+ * the target stops being a third of the required size.
+ */
+function makeIcon(color: string, label: string) {
   return L.divIcon({
     className: "",
-    html: `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2px solid var(--sa-chart-regionStroke);box-shadow:0 1px 3px color-mix(in srgb, var(--sa-text-neutral-bolder) 40%, transparent)"></div>`,
-    iconSize: [14, 14],
-    iconAnchor: [7, 7],
+    html:
+      `<div style="width:24px;height:24px;display:flex;align-items:center;justify-content:center;position:relative">` +
+      `<div style="width:14px;height:14px;border-radius:50%;background:${color};border:2px solid var(--sa-chart-regionStroke);box-shadow:0 1px 3px color-mix(in srgb, var(--sa-text-neutral-bolder) 40%, transparent)"></div>` +
+      `<span style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0">${escapeHtml(label)}</span>` +
+      `</div>`,
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
   });
 }
 
@@ -75,8 +101,7 @@ export function FacilityMap({ facilities, className, mini = false, legendCollaps
           <Marker
             key={i}
             position={[f.lat, f.lng]}
-            icon={makeIcon(FACILITY_COLORS[f.type])}
-            aria-label={`${f.name} — ${FACILITY_LABELS[f.type]}`}
+            icon={makeIcon(FACILITY_COLORS[f.type], `${f.name} — ${FACILITY_LABELS[f.type]}`)}
           >
             <Popup>
               <div className="max-w-[220px]">

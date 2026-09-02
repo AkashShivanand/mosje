@@ -82,7 +82,6 @@ export const ChatbotMascot = React.forwardRef<HTMLSpanElement, ChatbotMascotProp
           </svg>
         )}
         <span className="ds-chatbot-mascot__disc" />
-        {/* eslint-disable-next-line @next/next/no-img-element -- inline data URI; there is nothing for next/image to optimise and the DS must not depend on next. */}
         <img className="ds-chatbot-mascot__figure" src={CHATBOT_MASCOT_SRC} alt="" />
       </span>
     );

@@ -1,6 +1,6 @@
 import * as React from "react";
 
-type Status = "Proposed" | "Alpha" | "Beta" | "Stable" | "Deprecated" | "New";
+export type Status = "Proposed" | "Alpha" | "Beta" | "Stable" | "Deprecated" | "New";
 const DOTS: Record<Status, string> = {
   Proposed: "○", Alpha: "◑", Beta: "◕", Stable: "●", Deprecated: "✕", New: "★",
 };

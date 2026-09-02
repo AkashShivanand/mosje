@@ -46,7 +46,7 @@ export { useStickyRange } from "./foundations/sticky-range";
 export type { StickyRangeOptions, StickyState } from "./foundations/sticky-range";
 
 // ---- Components: Icon -------------------------------------------------------
-// Material Symbols Outlined — the official icon system for all MoSJE apps.
+// Material Symbols Rounded, weight 300 — the official icon system for all MoSJE apps.
 // Load the font once in your app root: import "@mosje/design-system/icons.css"
 export { Icon } from "./components/utilities/icon";
 export type { IconProps } from "./components/utilities/icon";
@@ -104,6 +104,10 @@ export { PasswordStrengthMeter, strengthFromScore } from "./components/forms/pas
 export type { PasswordStrengthMeterProps, PasswordStrength } from "./components/forms/password-strength-meter";
 export { CaptchaField } from "./components/forms/captcha-field";
 export type { CaptchaFieldProps } from "./components/forms/captcha-field";
+export { RadioGroup, CheckboxGroup } from "./components/forms/control-group";
+export type { RadioGroupProps, CheckboxGroupProps, ControlGroupOption } from "./components/forms/control-group";
+export { ErrorSummary } from "./components/forms/error-summary";
+export type { ErrorSummaryProps, ErrorSummaryItem } from "./components/forms/error-summary";
 export { FormField } from "./components/forms/form-field";
 export type { FormFieldProps, FormFieldControlProps } from "./components/forms/form-field";
 export { Label } from "./components/forms/label";
@@ -208,8 +212,25 @@ export type { FactStripProps, FactStripItem } from "./components/data-display/fa
 
 export { MetricCard } from "./components/data-display/metric-card";
 export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
+// ---- Forms: FilterSelect ----------------------------------------------------
+// The compact dashboard filter, as a real listbox. `Select` remains the answer
+// for a FORM field — it is a native `<select>`, which every assistive technology
+// and every mobile keyboard already knows. This is for a dashboard filter row,
+// where four portals hand-rolled a button-plus-listbox because a native select
+// cannot carry a hint beside an option or be styled at all on iOS.
+export { DatePicker } from "./components/forms/date-picker";
+export type { DatePickerProps } from "./components/forms/date-picker";
+export { Combobox } from "./components/forms/combobox";
+export type { ComboboxProps, ComboboxOption } from "./components/forms/combobox";
+export { FilterSelect } from "./components/forms/filter-select";
+export type { FilterSelectProps, FilterSelectOption } from "./components/forms/filter-select";
+
 export { DataTable } from "./components/data-display/data-table";
-export type { DataTableProps, DataTableColumn } from "./components/data-display/data-table";
+export type {
+  DataTableProps,
+  DataTableColumn,
+  DataTableSort,
+} from "./components/data-display/data-table";
 // VisitorCounter — the footer's "Total Visits" figure. MOCK DATA by design:
 // derived from a seeded baseline, not measured. See the component's own note.
 export { VisitorCounter } from "./components/data-display/visitor-counter";
@@ -258,6 +279,11 @@ export {
   formatIndian,
   formatCompact,
   formatPercent,
+  CHART_CATEGORICAL_SAFE_CAP,
+  BulletChart,
+  SmallMultiples,
+  texturedColor,
+  CHART_TEXTURE_COUNT,
 } from "./components/data-display/charts";
 export type {
   ChartDatum,
@@ -292,6 +318,9 @@ export type {
   IndiaBubbleDatum,
   LegendItem,
   ValueFormat,
+  BulletChartProps,
+  BulletRow,
+  SmallMultiplesProps,
 } from "./components/data-display/charts";
 
 // ---- Components: Dashboard composition ---------------------------------------
@@ -595,6 +624,29 @@ export {
   portalLogoSrc,
 } from "./components/brand/org-logo-registry";
 export type { OrgSlug } from "./components/brand/org-logo-registry";
+
+// ---- Brand: Illustration ----------------------------------------------------
+// The estate's own drawn language — one 64x48 geometry at three tiers, four
+// tokenised ink layers, and no depicted people. The reasoning is in
+// components/brand/illustration/language.ts and it is worth reading before
+// adding a scene.
+//
+// THE PRIMITIVES ARE DELIBERATELY NOT EXPORTED HERE. `Bars`, `Ground`, `Lens`,
+// `Ring`, `Seat`, `Series`, `Sheet`, `Shut` and `Signal` are how a SCENE is
+// assembled inside this module, not how a portal draws. Putting them in the
+// public barrel would drop nine of the most generic nouns in the language into
+// the estate's global namespace — `Series` beside the charts' own series
+// vocabulary, `Sheet` beside `SideSheet` — and this repository has already been
+// bitten by exactly that: `SiteHeader`, `SiteFooter` and `SidebarNav` each name
+// two different components today, so an import auto-complete resolves to the
+// wrong one silently. A new scene is added to `scenes.tsx`, which is where the
+// primitives are in scope.
+export { Illustration, illustrationAlt, SCENE_NAMES } from "./components/brand/illustration";
+export type {
+  IllustrationProps,
+  IllustrationTier,
+  SceneName,
+} from "./components/brand/illustration";
 export { PortalCard } from "./components/navigation/portal-card";
 export type { PortalCardProps, PortalCardVariant } from "./components/navigation/portal-card";
 export {

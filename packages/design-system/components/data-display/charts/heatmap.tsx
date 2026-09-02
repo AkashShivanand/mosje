@@ -1,14 +1,13 @@
 "use client";
 
 import * as React from "react";
-import { CardState } from "../../dashboard/card-state";
-import { ChartFrame } from "./internal/chart-frame";
+import { ChartFrame, type ChartStateProps } from "./internal/chart-frame";
 import { ChartTooltip, useChartTooltip } from "./internal/tooltip";
 import { sequentialColor, divergingColor } from "./internal/palette";
 import { formatIndian } from "./internal/format";
 import type { ValueFormat } from "./internal/format";
 
-export interface HeatmapProps {
+export interface HeatmapProps extends ChartStateProps {
   xLabels: string[];
   yLabels: string[];
   /** Row-major values: matrix[y][x]. */
@@ -33,10 +32,33 @@ export function Heatmap({
   valueFormat = formatIndian,
   scale = "sequential",
   className,
+  state,
+  onRetry,
+  filterLabel,
+  tableView,
 }: HeatmapProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const flat = matrix.flat();
-  if (flat.length === 0) return <CardState kind="empty" compact />;
+  // One expression, resolved before the colour ramp or the axes read anything.
+  const resolved = state ?? (flat.length === 0 ? "empty" : undefined);
+  if (resolved)
+    return (
+      <ChartFrame
+        marksAreFocusable
+        title={title}
+        /* The matrix the caller ASKED for, so the state occupies the space the
+           cells will — not a square guess that shifts when the figures land. */
+        viewBox={`0 0 ${GUT_L + Math.max(1, xLabels.length) * CELL} ${
+          GUT_T + Math.max(1, yLabels.length) * CELL
+        }`}
+        className={className}
+        state={resolved}
+        onRetry={onRetry}
+        filterLabel={filterLabel}
+      >
+        {null}
+      </ChartFrame>
+    );
 
   const min = Math.min(...flat);
   const max = Math.max(...flat);
@@ -52,6 +74,7 @@ export function Heatmap({
 
   return (
     <ChartFrame
+      marksAreFocusable
       title={title}
       summary={`${yLabels.length}×${xLabels.length} matrix, values ${valueFormat(min)}–${valueFormat(max)}`}
       viewBox={`0 0 ${width} ${height}`}
@@ -62,6 +85,7 @@ export function Heatmap({
         columns: ["Row", ...xLabels],
         rows: yLabels.map((yl, yi) => [yl, ...xLabels.map((_, xi) => matrix[yi]?.[xi] ?? 0)]),
       }}
+      tableView={tableView}
     >
       {xLabels.map((xl, xi) => (
         <text key={xl} x={GUT_L + xi * CELL + CELL / 2} y={GUT_T - 8} textAnchor="middle" className="ds-chart__axis">

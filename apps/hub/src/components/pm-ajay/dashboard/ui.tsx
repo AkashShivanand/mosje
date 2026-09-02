@@ -1,6 +1,74 @@
 "use client";
 
-/* PM-AJAY Dashboard — shared UI components. */
+/*
+ * PM-AJAY Dashboard — shared UI components.
+ *
+ * ── WHY THIS FILE STILL EXISTS, EXPORT BY EXPORT ────────────────────────────
+ *
+ * This kit was one of five found re-implementing components the design system
+ * already ships (`check:shadow-ui`, tools/shadow-ui/check.mjs). It was the
+ * worst of them on paper — eleven exports, not one design-system import — so it
+ * was migrated first, as the reference for the other four.
+ *
+ * The migration found less to take than the count suggested, and the reason is
+ * structural rather than an oversight: **PM-AJAY renders a DIFFERENT published
+ * Figma library.** `pm-ajay.css` states it at the top — the MoSJE UX4G Portal
+ * DS palette, of whose 58 entries exactly two resolve to a `--sa-*` value. Every
+ * design-system component carries its own `.ds-*` stylesheet bound to `--sa-*`,
+ * so a component is only safely adoptable here when its DOM SHAPE matches the
+ * one `.pm-*` already styles. Where it does, `pm-ajay.css` is unlayered and the
+ * design system's is inside `@layer components`, so the portal's skin wins and
+ * the swap is provably pixel-identical. Where it does not, the design system
+ * would bring layout of its own — `.ds-card` alone adds `display: flex`,
+ * `flex-direction: column` and `overflow: hidden`, none of which `.pm-panel`
+ * sets — and the swap silently reflows a live citizen-facing page.
+ *
+ *   export         design-system    verdict
+ *   ─────────────  ───────────────  ──────────────────────────────────────────
+ *   Status         Badge            ADOPTED. Both render one <span> with the
+ *                                   children inline; `.pm-status` overrides
+ *                                   every property `.ds-badge` sets.
+ *   DrillDownSelect   Select           No. The design system's Select is a native
+ *                                   <select>; this is a button + listbox filter
+ *                                   chip. Different DOM, different keyboard
+ *                                   model. RENAMED off the colliding name.
+ *   SortableTable  DataTable        No. The design system's table paginates and
+ *                                   does not sort; this sorts and does not
+ *                                   paginate. Neither can express the other.
+ *                                   RENAMED off the colliding name.
+ *   DashboardFooter Footer          No. The design system's Footer wraps its
+ *                                   children in `.ds-footer__in`, and every
+ *                                   `.pm-footer` rule is a direct-child flex
+ *                                   rule. RENAMED off the colliding name.
+ *   DrillDownFilters FilterBar      No. The design system's FilterBar nests its
+ *                                   controls in `.ds-filter-bar__controls`;
+ *                                   `.pm-filters` is one flat flex row.
+ *                                   RENAMED off the colliding name.
+ *   KpiCard        MetricCard       No. MetricCard has no sparkline slot, and
+ *                                   this puts the sparkline in the label row.
+ *   Panel          Card             No. `.ds-card` adds flex-column layout and
+ *                                   `overflow: hidden`; `.ds-card__header` adds
+ *                                   16px of padding `.pm-panel-head` has not.
+ *   SectionHead    SectionTitle     No. SectionTitle is a stacked text block;
+ *                                   this is heading / rule / meta on one line.
+ *   BarCell        Progress         No. Progress owns its own label row; this is
+ *                                   a bare track plus a right-aligned figure
+ *                                   sized to a table cell.
+ *   Sidebar        SidebarNav       No. This carries an account footer, a
+ *                                   sign-out control and per-item badge counts.
+ *   pillClass      —                Not a component. A pure helper.
+ *
+ * FOUR NAMES WERE THE ACTIVE HAZARD, and renaming them is what this change
+ * bought. `DrillDownSelect`, `SortableTable`, `Footer` and `DrillDownFilters` are all barrel
+ * exports, so an import of any of them inside this portal resolved to whichever
+ * module the editor offered first — with no error, and the wrong component
+ * rendering. Renaming changes no markup, no class and no pixel; it only makes
+ * the two things nameable apart.
+ *
+ * The two gaps worth closing in the DESIGN SYSTEM rather than here: it has no
+ * sortable table, and no listbox-style filter select. Those are the two
+ * components this dashboard most needed and could not get.
+ */
 
 import {
   useState,
@@ -12,6 +80,7 @@ import {
   type ReactNode,
 } from "react";
 import Link from "next/link";
+import { Badge, type BadgeStatus } from "@mosje/design-system";
 import { Sparkline } from "./charts";
 import { useAuth } from "@/store/pm-ajay/auth-context";
 import {
@@ -128,7 +197,17 @@ export function Panel({
 }
 
 /* ---- Accessible listbox dropdown ---- */
-export function Select({
+/*
+ * RENAMED off `FilterSelect`, which the design system now exports as a real
+ * listbox with the full keyboard model. This one is not a worse version of it —
+ * it is the same pattern wearing `.pm-*`, and pm-ajay renders the UX4G Portal DS
+ * rather than SAMAVESH, so swapping the DOM would move pixels on a live
+ * citizen-facing dashboard. The NAME was the hazard: an import of `FilterSelect`
+ * inside this portal could resolve to either component, silently.
+ *
+ * The visual migration is now unblocked and is a separate, verifiable change.
+ */
+export function DrillDownSelect({
   k,
   value,
   options,
@@ -246,7 +325,7 @@ export interface Filters {
 
 /* ---- Filter bar (scheme hidden on scheme views; contextual district) ---- */
 const CROSS: ViewId[] = ["executive", "financial", "governance"];
-export function FilterBar({
+export function DrillDownFilters({
   filters,
   set,
   reset,
@@ -272,11 +351,11 @@ export function FilterBar({
   return (
     <div className="pm-filters" role="region" aria-label="Drill-down filters">
       <span className="fl">Drill-down</span>
-      <Select k="FY" value={filters.fy} options={FY} onChange={(v) => set("fy", v)} />
-      <Select k="State / UT" value={filters.state} options={stateOpts} onChange={(v) => set("state", v)} />
-      {scope && <Select k="District" value={filters.district} options={distOpts} onChange={(v) => set("district", v)} />}
-      {showScheme && <Select k="Scheme" value={filters.scheme} options={SCHEMES} onChange={(v) => set("scheme", v)} />}
-      <Select k="Period" value={filters.period} options={PERIODS} onChange={(v) => set("period", v)} />
+      <DrillDownSelect k="FY" value={filters.fy} options={FY} onChange={(v) => set("fy", v)} />
+      <DrillDownSelect k="State / UT" value={filters.state} options={stateOpts} onChange={(v) => set("state", v)} />
+      {scope && <DrillDownSelect k="District" value={filters.district} options={distOpts} onChange={(v) => set("district", v)} />}
+      {showScheme && <DrillDownSelect k="Scheme" value={filters.scheme} options={SCHEMES} onChange={(v) => set("scheme", v)} />}
+      <DrillDownSelect k="Period" value={filters.period} options={PERIODS} onChange={(v) => set("period", v)} />
       {filters.period !== "Annual" && (
         <span className="pm-estimate">
           <span className="material-symbols-rounded" aria-hidden="true">
@@ -369,7 +448,7 @@ export function Sidebar({ view, setView }: { view: ViewId; setView: (v: ViewId) 
   );
 }
 
-export function Footer() {
+export function DashboardFooter() {
   return (
     <footer className="pm-footer">
       <span>
@@ -385,24 +464,59 @@ export function Footer() {
   );
 }
 
+/**
+ * The dashboard's status pill, now the design system's `Badge` wearing the
+ * portal's skin.
+ *
+ * THE ONE EXPORT IN THIS FILE THAT COULD BE ADOPTED WITHOUT MOVING A PIXEL, and
+ * it is worth writing down why, because it is the test the other ten failed.
+ * `Badge` renders exactly one `<span>` with the caller's children inline — the
+ * same element this component rendered by hand — so the portal's `.pm-status`
+ * rules still meet the node they were written for. `pm-ajay.css` is unlayered
+ * and `badge.css` sits inside `@layer components`, so every property the two
+ * disagree on (background, colour, font, padding, radius, gap) resolves to the
+ * portal's.
+ *
+ * MEASURED IN THE BROWSER, not reasoned about: against a control span carrying
+ * only `pm-status green`, the migrated pill differs on exactly ONE computed
+ * property — `min-height`, 18px against 0 — and its border box is identical to
+ * two decimal places, 70.21 x 18.67. The floor does not bind because the pill's
+ * own content already stands at 18.67px, and text zoom can only push that up.
+ * The other two properties the design system contributes are inert for the same
+ * kind of reason: `justify-content: center` on a shrink-to-fit pill has no free
+ * space to distribute, and the `--_bg`/`--_fg` pair is outranked by the
+ * portal's `background` and `color` shorthands.
+ *
+ * `tone` stays the portal's vocabulary rather than becoming `BadgeStatus`,
+ * because the four names are what `.pm-status.green` and its siblings key on.
+ */
+const BADGE_STATUS = {
+  green: "success",
+  amber: "warning",
+  red: "danger",
+  blue: "info",
+} as const satisfies Record<PmTone, BadgeStatus>;
+
+type PmTone = "green" | "amber" | "red" | "blue";
+
 export function Status({
   tone,
   icon,
   children,
 }: {
-  tone: "green" | "amber" | "red" | "blue";
+  tone: PmTone;
   icon?: string;
   children: ReactNode;
 }) {
   return (
-    <span className={"pm-status " + tone}>
+    <Badge status={BADGE_STATUS[tone]} className={"pm-status " + tone}>
       {icon && (
         <span className="material-symbols-rounded" aria-hidden="true">
           {icon}
         </span>
       )}
       {children}
-    </span>
+    </Badge>
   );
 }
 
@@ -435,7 +549,7 @@ interface SortState {
 }
 
 /* ---- Sortable, accessible data table ---- */
-export function DataTable<T extends { __label?: string }>({
+export function SortableTable<T extends { __label?: string }>({
   caption,
   columns,
   rows,

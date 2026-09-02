@@ -7,7 +7,7 @@
 import { useState, useMemo, useRef, useLayoutEffect, type CSSProperties } from "react";
 import Link from "next/link";
 import { Navbar } from "@/components/pm-ajay/shell/navbar";
-import { FilterBar, Status, Footer, pillClass, type Filters } from "./ui";
+import { DrillDownFilters, Status, DashboardFooter, pillClass, type Filters } from "./ui";
 
 // basePath is applied automatically by Next.js to <Link>/<Image>/router —
 // keep in-app paths basePath-relative (empty prefix) so it is not doubled.
@@ -438,7 +438,7 @@ export function UnifiedDashboard() {
                 </p>
               </div>
               <div className="ud-toolbar-r">
-                <FilterBar filters={filters} set={set} reset={reset} view="executive" scope={scope} />
+                <DrillDownFilters filters={filters} set={set} reset={reset} view="executive" scope={scope} />
                 <span className={"ud-fresh" + (fresh ? "" : " stale")} title={`Sources: PFMS · GIA-MIS · Hostel-MIS · AGMIS · UC Portal — synced ${AS_OF}`}>
                   <span className="dot" aria-hidden="true" />
                   <span className="material-symbols-rounded" aria-hidden="true">{fresh ? "cloud_done" : "cloud_off"}</span>
@@ -635,7 +635,7 @@ export function UnifiedDashboard() {
               </>
             )}
           </div>
-          <Footer />
+          <DashboardFooter />
         </div>
       </div>
     </div>

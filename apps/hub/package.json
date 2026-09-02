@@ -18,14 +18,14 @@
     "test:ingest": "node --test \"scripts/ingest/**/*.test.mjs\"",
     "test": "node --test \"src/**/*.test.ts\"",
     "build:storybook": "cd ../storybook && npx --no-install storybook build --output-dir ../hub/public/storybook --quiet",
-    "prebuild": "npm run build:storybook || echo '::warning:: Storybook build failed \u2014 /storybook will show the unavailable page'"
+    "prebuild": "npm run build:storybook || echo '::warning:: Storybook build failed — /storybook will show the unavailable page'"
   },
   "dependencies": {
     "@mosje/design-system": "file:../../packages/design-system",
     "clsx": "^2.1.1",
     "fuse.js": "^7.0.0",
-    "jspdf": "^2.5.2",
-    "jspdf-autotable": "^3.8.4",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.8",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "next": "^16.2.9",

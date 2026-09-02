@@ -1,220 +1,189 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
 import { Avatar } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
-  title: "Avatar",
-  description: "Circular graphical representation of a citizen profile, department officer, or beneficiary with fallback initials.",
+  title: "Avatar — Design System",
+  description:
+    "A person's photograph, initials or a fallback glyph at one of four sizes, for account menus, officer lists and comment rows.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    status: "partial",
+    description:
+      'A photograph renders as an <img> and takes its accessible name from `alt`, which defaults to the empty string — an avatar with a src and no alt is announced as nothing. A fallback avatar carries role="img" with `alt` or the initials as its name. Always pass `alt`; the component cannot supply a name it was not given.',
+    evidence: "avatar.tsx lines 46 and 89–90: alt defaults to \"\"; role=\"img\" and aria-label apply only on the fallback path.",
+  },
+  {
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    status: "verified",
+    description:
+      "The initials and the glyph are aria-hidden, so a screen reader hears the person's name rather than two letters spelled out.",
+    evidence: "avatar.tsx lines 66, 72 and 78.",
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    status: "verified",
+    description:
+      "An avatar is not interactive and takes no tab stop of its own. Where the whole thing should be pressable, wrap it in a real button or link — that control is the focusable element, not this.",
+    evidence: "avatar.tsx renders a <span> with no tabIndex and no handlers.",
+  },
+  {
+    criterion: "1.4.3 Contrast (Minimum)",
+    level: "AA",
+    status: "untested",
+    description:
+      "Fallback initials are drawn in the ink token over the surface token. No measurement has been recorded at the 24px size, where the text is smallest.",
+  },
+];
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function AvatarDocPage(): React.JSX.Element {
+export default function AvatarPage(): React.JSX.Element {
   return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Avatar
-          </h1>
-          <StatusBadge status="Stable" />
+    <ComponentDocPage
+      name="Avatar"
+      status="Stable"
+      summary="Shows who someone is at a glance — their photograph if there is one, their initials if not, and a neutral glyph if neither. It comes at four fixed sizes and two shapes."
+      figma={{ node: "avatars" }}
+      specimen={
+        <div className="cdp-stack">
+          <div className="cdp__specimen-row">
+            <Avatar size={24} initials="AS" alt="Akash Shivanand" />
+            <Avatar size={32} initials="AS" alt="Akash Shivanand" />
+            <Avatar size={40} initials="AS" alt="Akash Shivanand" />
+            <Avatar size={48} initials="AS" alt="Akash Shivanand" />
+          </div>
+          <div className="cdp__specimen-row">
+            <Avatar size={48} shape="rounded" initials="RS" alt="R. Sharma" />
+            <Avatar size={48} alt="Officer with no photograph on file" />
+          </div>
         </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Circular graphical representation of a citizen profile, department officer, or beneficiary with fallback initials."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
+      }
+      propsFrom="AvatarProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A row, a menu or a comment identifies a person and their name is already written beside it.",
+          "An account menu needs a compact, recognisable target for the signed-in user.",
+          "A list of officers or approvers reads faster with a face or a set of initials against each name.",
+        ],
+        avoid: [
+          "The mark stands for an organisation rather than a person — use Org Logo, which holds the departmental crests at their published resolution.",
+          "The avatar is the only identification. A circle of initials is not a name; put the name beside it.",
+          "A photograph is being shown for its own sake rather than as an identifier — use a Profile Card, which is built to carry a portrait and a designation.",
+          "The image needs to be larger than 48px. The scale stops there deliberately; beyond it a portrait is content, not an identifier.",
+        ],
+      }}
+      related={[
+        { label: "Profile Card", href: "/design-system/components/data-display/profile-card", reason: "when the portrait and the designation are the content" },
+        { label: "Account Menu", href: "/design-system/components/navigation/account-menu", reason: "the avatar's most common home" },
+        { label: "Org Logo", href: "/design-system/components/brand/org-logo", reason: "when the mark stands for an organisation" },
+        { label: "Badge", href: "/design-system/components/feedback/badge", reason: "for a status beside the person rather than the person" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-fallback">
+            <h2 id="cdp-fallback" className="cdp__h2">
+              The Fallback Order
+            </h2>
+            <p>
+              The avatar renders, in priority: the image at <code>src</code>, then{" "}
+              <code>initials</code>, then a supplied <code>icon</code>, then the default user glyph. So
+              a list where only some people have a photograph still reads as one list rather than as a
+              row of holes.
+            </p>
+            <p>
+              The order is fixed and the component never renders empty. What it cannot supply is the
+              name — see the accessibility tab, which is where the one real trap on this component
+              lives.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-size">
+            <h2 id="cdp-size" className="cdp__h2">
+              Four Sizes, Two Shapes
+            </h2>
+            <ul>
+              <li>
+                <strong>24</strong> — inside a dense table row, beside 14px text.
+              </li>
+              <li>
+                <strong>32</strong> — a list row or a comment.
+              </li>
+              <li>
+                <strong>40</strong> — the default, and the account menu&apos;s size.
+              </li>
+              <li>
+                <strong>48</strong> — a header or a card where the person is the subject.
+              </li>
+            </ul>
+            <p>
+              <code>shape</code> is <code>circular</code> by default. Use <code>rounded</code> only
+              where the avatar sits in a run of square-cornered thumbnails and a circle would be the
+              odd one out.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Avatar } from "@mosje/design-system";
 
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Avatar is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <div style={{ display: "flex", gap: "var(--sa-stack-12)" }}><Avatar initials="AS" size={32} /><Avatar initials="PS" size={40} /></div>
-                    </div>
-                  </div>
-                </section>
+// A photograph. alt is the accessible name — never leave it out.
+<Avatar src="/officers/r-sharma.jpg" alt="Dr. R. Sharma" size={40} />
 
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Provide high-contrast background colors for generated initial avatars.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not omit the name prop; avatars must never render empty unlabeled circles.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { Avatar } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
-  {
-    "name": "initials",
-    "type": "string",
-    "default": "undefined",
-    "description": "Initials fallback (e.g. \"AS\")."
-  },
-  {
-    "name": "src",
-    "type": "string",
-    "default": "undefined",
-    "description": "Profile photo URL."
-  },
-  {
-    "name": "size",
-    "type": "24 | 32 | 40 | 48",
-    "default": "40",
-    "description": "Avatar dimension in pixels."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<div style={{ display: "flex", gap: "var(--sa-stack-12)" }}><Avatar initials="AS" size={32} /><Avatar initials="PS" size={40} /></div>`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
-  {
-    "criterion": "1.1.1 Non-text Content",
-    "level": "AA",
-    "description": "Always renders aria-label with the full user name."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Tab</kbd></td>
-                          <td>{"Focusable only when wrapped in an interactive link or button."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
-
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Avatar" />
-    </article>
+// No photograph on file. Initials, still named.
+<Avatar initials="RS" alt="Dr. R. Sharma" size={40} />`}</CodeBlock>
+          <p>
+            Making the whole avatar pressable is the wrapper&apos;s job. The avatar itself is a{" "}
+            <code>span</code> with no handlers, so an <code>onClick</code> put on it would produce a
+            control a keyboard cannot reach.
+          </p>
+          <CodeBlock>{`<button type="button" className="…" aria-label="Open account menu">
+  <Avatar src={user.photo} alt="" size={40} />
+</button>`}</CodeBlock>
+          <p>
+            Note the empty <code>alt</code> there: the button already carries the name, and repeating it
+            on the image would announce the same person twice.
+          </p>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-name">
+          <h2 id="cdp-name" className="cdp__h2">
+            The Name Is Not Automatic
+          </h2>
+          <p>
+            <code>alt</code> defaults to the empty string, which is the correct default for a
+            decorative image and the wrong one for an identifier. An avatar given a{" "}
+            <code>src</code> and no <code>alt</code> is announced as nothing at all — the single most
+            likely defect on this component, and one nothing in the type system prevents.
+          </p>
+          <p>
+            The fallback path is more forgiving: it carries <code>role=&quot;img&quot;</code> and falls
+            back to the initials for its name, so an unnamed initials avatar at least announces
+            &ldquo;AS&rdquo;. Two letters are still not a person, so pass <code>alt</code> there too.
+          </p>
+          <p>
+            The two exceptions are worth stating plainly. Pass <code>alt=&quot;&quot;</code>{" "}
+            deliberately where the person&apos;s name is already the accessible name of the control
+            around the avatar, or is written immediately beside it — announcing it twice is noise, not
+            access.
+          </p>
+        </section>
+      }
+    />
   );
 }

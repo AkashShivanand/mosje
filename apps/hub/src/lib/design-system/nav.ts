@@ -81,6 +81,11 @@ export const NAV: NavGroup[] = [
         "label": "Accessibility",
         "href": "/design-system/foundations/accessibility",
         "badge": "Stable"
+      },
+      {
+        "label": "Illustration",
+        "href": "/design-system/foundations/illustration",
+        "badge": "New"
       }
     ]
   },
@@ -206,6 +211,11 @@ export const NAV: NavGroup[] = [
         "label": "Select",
         "href": "/design-system/components/forms/select",
         "badge": "Stable"
+      },
+      {
+        "label": "Filter Select",
+        "href": "/design-system/components/forms/filter-select",
+        "badge": "New"
       },
       {
         "label": "Textarea",

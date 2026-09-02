@@ -70,13 +70,20 @@
     border: 1px solid var(--sa-border-neutral-subtle);
   }
 
-  .ds-card-state__plate > .ds-state-art {
+  /*
+   * The drawing is the shared `Illustration`, rendered at its `spot` tier and
+   * sized here because the plate is what owns this composition. Six drawings
+   * were hand-copied into this file to the SAME 64x48 grid with the same floor,
+   * under a parallel class family — two illustration systems on one geometry.
+   * There is one now.
+   */
+  .ds-card-state__plate > .ds-card-state__art {
     position: relative;
     width: 64px;
     height: 48px;
   }
 
-  .ds-card-state--compact .ds-card-state__plate > .ds-state-art {
+  .ds-card-state--compact .ds-card-state__plate > .ds-card-state__art {
     width: 48px;
     height: 36px;
   }
@@ -89,22 +96,10 @@
 
   /* The axis is the floor, not the subject, so it sits below both ink layers
      rather than competing with them. */
-  .ds-state-art__axis {
-    stroke: var(--sa-border-neutral-subtle);
-  }
-
-  .ds-state-art__ghost {
-    stroke: var(--sa-border-neutral-base);
-  }
-
-  .ds-state-art__ink {
-    stroke: var(--sa-icon-neutral-subtle);
-  }
-
-  .ds-state-art__cut {
-    stroke: var(--sa-text-status-warning-base);
-  }
-
+  
+  
+  
+  
   /* ── Tone ─────────────────────────────────────────────────────────────────
 
      Three, not six. A tone per state would make the set a traffic light and
@@ -121,7 +116,7 @@
     border-color: var(--sa-border-brand-primary-base);
   }
 
-  .ds-card-state--info .ds-state-art__ink {
+  .ds-card-state--info .sa-ill__accent {
     stroke: var(--sa-color-action-primary-default);
   }
 
@@ -133,7 +128,7 @@
     border-color: var(--sa-border-status-warning-base);
   }
 
-  .ds-card-state--warning .ds-state-art__ink {
+  .ds-card-state--warning .sa-ill__accent {
     stroke: var(--sa-text-status-warning-base);
   }
 
@@ -177,9 +172,6 @@
     /* The drawing arrives after its plate, so the plate reads as the container
        and the drawing as its contents. 90ms is enough to be sequential and not
        enough to be a wait. */
-    .ds-state-art {
-      animation: ds-state-draw 420ms cubic-bezier(0.22, 0.61, 0.36, 1) 90ms both;
-    }
 
     .ds-card-state__title {
       animation: ds-state-rise 380ms cubic-bezier(0.22, 0.61, 0.36, 1) 130ms both;

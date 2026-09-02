@@ -1,0 +1,57 @@
+/* Declare the order before using it — see design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-smallmult__scale-note {
+    margin: 0 0 var(--sa-stack-8);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-smallmult__empty {
+    margin: 0;
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-smallmult__grid {
+    display: grid;
+    gap: var(--sa-stack-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    /* ONE COLUMN FIRST. A grid of twenty-eight panels at four across is
+       unreadable on a phone, and `auto-fit` would silently drop to one column
+       at a width where the panels are still legible two-up. */
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .ds-smallmult__grid.is-cols-2,
+    .ds-smallmult__grid.is-cols-3,
+    .ds-smallmult__grid.is-cols-4,
+    .ds-smallmult__grid.is-cols-6 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .ds-smallmult__grid.is-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .ds-smallmult__grid.is-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .ds-smallmult__grid.is-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  }
+
+  .ds-smallmult__panel {
+    min-inline-size: 0; /* let a panel shrink inside the grid track */
+  }
+
+  .ds-smallmult__panel-title {
+    margin: 0 0 var(--sa-stack-4);
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
+  }
+}

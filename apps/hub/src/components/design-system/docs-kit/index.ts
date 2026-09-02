@@ -11,3 +11,5 @@ export * from './terminal-code';
 export * from './syntax';
 export * from "./docs-tabs";
 export * from "./feedback-bar";
+export * from "./chart-states";
+export * from "./component-doc-page";

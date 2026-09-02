@@ -12,6 +12,19 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-02 · System version: v0.43.0 (THE LOGIN MASTER'S VARIANT AXIS
+  CONFLATED TWO UNLIKE THINGS. `Device × Step` put `Credentials` and `OTP` — ways of
+  proving identity — on the same axis as `Reset` and `Success`, which are stages of
+  credential recovery, so recovery read as a login mode. The master is now
+  `Device × Auth Method` (Password · OTP · PIN, six variants), recovery moved to
+  `Auth / CredentialRecovery` with its component keys preserved, and `PortalAuthMode`
+  gained `"pin"` — NOS is PIN-only and both its handoff screens are `Sign In Pin`, so
+  the form has three modes, not two. The captcha stopped rendering unconditionally: it
+  is a cognitive function test, WCAG 2.2 3.3.8 Accessible Authentication (AA) forbids
+  one without an alternative, and `config.captcha` therefore defaults to OFF in code
+  exactly as `Show captcha` does on the Figma card. A PIN now leaves the component as
+  `credentials.pin` and never as `credentials.password`.)
+
   Last reviewed: 2026-09-01 · System version: v0.42.0 (THE SYSTEM EXPORTED NO
   BREADCRUMB, SO EVERY SURFACE THAT NEEDED ONE DREW ITS OWN. `Breadcrumb` is now the
   one trail, and it takes the two jobs that kept being conflated: a PAGE trail whose
@@ -1098,6 +1111,11 @@ graph TD
 | Show red error states (`var(--sa-border-status-error-base)` + `var(--sa-text-status-error-base)`) only after validation runs or input blur. | Do not render inline inputs without surrounding margin-bottom/padding constraints. |
 | Use `<FormSection>` to group related fields under a sub-heading within a form. | Do not render a single `<form>` with 20+ fields — break it into `<FormSection>` groups or use `<Wizard>`. |
 | Use `<Search>` (not `<Input>`) for search affordances — it includes the correct icon and clear button. | Do not use `type="search"` on a plain `<Input>` and style it manually. |
+| Use `<Select>` for a FORM field — it is a native `<select>`, which every assistive technology and every mobile keyboard already knows. | Do not reach for `<FilterSelect>` in a form because it looks better. A native control is worth more than a hint column on a field a citizen submits. |
+| Wrap any set of radios or checkboxes answering ONE question in `<RadioGroup>` / `<CheckboxGroup>`. They supply the `<fieldset>`/`<legend>` that gives the QUESTION an accessible name — without it a screen reader announces the options and never the question. `legend` is required; hide it with `sa-sr-only` if a heading already asks it. | Do not hand-roll a fieldset around bare `<Radio>`s, and do not omit the legend because the layout looks fine. Do not add `tabIndex` to the options — the browser's roving tabindex already makes the group one tab stop, and re-implementing it produces four. |
+| Put an `<ErrorSummary>` at the top of any form a citizen cannot see all of at once, listing every failure in FIELD ORDER and linking each to its control. It takes focus when it appears, and each entry focuses the control rather than merely scrolling to it. | Do not ship it INSTEAD of the per-field errors — WCAG 3.3.1 wants the failure identified at the field as well as summarised, and `FormField` already does that half. Do not sort the list by severity; a summary ordered differently from the form sends the reader up and down the page. |
+| Use `<FilterSelect>` in a DASHBOARD FILTER ROW, where the control is a query rather than an answer — it carries a hint beside each option (a count, a code), holds the 40px filter height on every platform, and can be styled on iOS, none of which a native select can do. | Do not hand-roll a button-plus-listbox per portal. Four did — `pm-ajay`, `nhapoa`, `tg`, `scw` — and every accessibility fix shipped here for three months reached none of them. `check:shadow-ui` counts them. |
+| Let `<FilterSelect>` keep focus on the LISTBOX and name the active option with `aria-activedescendant`. | Do not move DOM focus onto each option. It works with a mouse and makes the list unreadable — a screen reader then announces a focus change where the reader expects a selection. |
 
 ### E. Data Tables
 
@@ -1109,6 +1127,9 @@ graph TD
 | Right-align numeric columns and align the header text to match. | Do not mix left- and right-aligned text in the same column. |
 | Always add a sort indicator icon when a column is sortable. | Do not rely on row order alone to communicate data ranking. |
 
+| Mark a column `sortable` and give it a `sortValue` when its cell comes from `render`. | Do not sort a rendered column by its display string — "₹1,20,000" sorts before "₹9,000", which is the classic register defect. |
+| Let `DataTable` sort the whole set and then page it. | Do not sort the visible page. Reordering ten rows inside a register of four thousand reads as correct and is not. |
+
 ### F. Empty States
 
 | Do | Don't |
@@ -1116,6 +1137,29 @@ graph TD
 | Always show: icon + heading + 1-sentence explanation + a primary CTA to unblock the user. | Do not show only "No data found" with no action path. |
 | Use `<EmptyState>` with `variant="no-results"` for filtered tables, `variant="no-data"` for fresh portals. | Do not use red or warning colours — an empty state is not an error. |
 | Keep the message constructive: "Add your first application to get started." | Do not use passive voice: "No results were found." |
+
+### F2. Illustration — the drawn language
+
+`Illustration` renders a scene from the estate's own visual language. Import it,
+never draw one: `<Illustration name="no-results" />`. The full reasoning lives in
+`components/brand/illustration/language.ts` and is worth reading before adding a
+scene; the operative parts are below.
+
+| Rule | Why |
+| :--- | :--- |
+| One 64 × 48 geometry, three rendered tiers (`spot` 32×24, `scene` 192×144, `hero` 384×288). | The authored drawing does not change with size, so strokes, corners and gaps scale together and one definition is correct everywhere. |
+| Every scene is drawn against the same floor at y = 40. **An object that stands MEETS it** — bars, seats, sheets, with a butt cap. **A mark that is not an object does not** — a ring is a proportion, a lens an instrument. | The charts are all grounded, so the illustrations are; the family reads as one family. Stating it as "every scene stands on the floor" was false of nine of the fourteen and made the line look decorative. |
+| Four tokenised ink layers — `ground`, `ghost`, `ink`, `accent` — and **at most one accent per drawing**. | A raw hex in an illustration is the one asset on the page that keeps the old brand after a re-theme. Two accents means the drawing has not decided what it is about. |
+| Three stroke weights: hairline 2, ink 3, mass 4. Round joins always; round caps EXCEPT where a mark meets the floor. | A round cap adds half the stroke past the endpoint, so a grounded mark drawn with one hangs two units below the line it stands on. |
+| **Decorative by default.** Pass `alt` only where the drawing says something the surrounding text does not. | A drawing beside a heading that already reads "No records found" makes a screen reader announce it twice. |
+| **No scene depicts a person.** | The Department serves Scheduled Castes, Scheduled Tribes, senior citizens, persons with disabilities and transgender persons. Any depicted person has a gender, an age and an apparent community, and tells every citizen who is not that person that the page is not for them. Where a drawing needs a human presence it shows the evidence of one — a seat, a form, a place in a queue. |
+| The National Emblem is never illustration. | It is the estate's mark, it carries its own rules, and it does not appear inside a scene. |
+| A new scene is **assembled** from the primitives in `primitives.tsx`, never drawn. If it needs a shape that is not there, add the primitive first. | Design-system-first, applied to artwork: a one-off drawn inside one scene is a shape the next scene redraws slightly differently. |
+| The primitives are **not** exported from the barrel. | `Bars`, `Ring`, `Series`, `Sheet`, `Signal` are among the most generic nouns in the language; putting them in the public namespace would collide with the charts' own series vocabulary and with `SideSheet`. Scenes are added inside the module, where they are in scope. |
+
+Reach for `EmptyState` or `CardState` first — they place the drawing, the sentence
+and the action together, which is what a reader needs. `Illustration` on its own is
+for composing something those two do not cover.
 
 ### G. Toast Notifications
 
@@ -1327,8 +1371,60 @@ status/brand tokens above:
 
 **Alpha / transparent overlays (8/16/24/32/40/48%, Figma `<Family> Transparent/*`).** Consumed via `--sa-color-transparent-<family>-<step>` (canonical `--sa-*` name; no `--sa-*` alias). `primary` and `neutral` are brand-aware; `secondary`, `accent`, `success`, `danger`, `warning`, `white` are brand-invariant. Example: `--sa-color-transparent-neutral-8`, `--sa-color-transparent-white-24`. **A translucent fill has no contrast of its own** — its measured ratio depends on what sits behind it, so never use one as the surface behind text you need to guarantee.
 
+**Dates are TYPED, not paged to: use `<DatePicker>`.** The text input in
+`dd/mm/yyyy` is the primary control and the calendar is the second way in — a date
+of birth is roughly four hundred and eighty months in the past, and a calendar-first
+picker asks a pensioner to page there. **Never use `<input type="date">`**: its
+rendering, keyboard model and date ORDER belong to the browser and the OS, so one
+government form shows `mm/dd/yyyy` to one citizen and `dd/mm/yyyy` to the next. A
+form that cannot state its own date order will collect wrong dates, and here a wrong
+date of birth is an eligibility decision. `value` is always ISO `yyyy-mm-dd`.
+
+**A list longer than a reader will scroll: use `<Combobox>`.** Seven hundred
+districts, every scheme, a beneficiary by name — roughly twenty options and up. Below
+that a `Select` is better: no typing, and every assistive technology already knows it.
+It is NOT `FilterSelect`, which is a button opening a listbox for a dashboard filter;
+this is a real text input whose focus never leaves, so a screen reader announces it as
+editable and reads the remaining match count after each keystroke. It refuses
+unmatched text on blur — a box reading "Bankuraa" over a form value of "" is how a
+district goes missing between the screen and the database.
+
+**Reporting a figure against its target: use `<BulletChart>`.** Sanctioned against
+released, released against utilised, places created against places filled — this is
+the shape of almost every number the department publishes, and drawn as two bars it
+reads as two comparable quantities instead of a measure and the bar it must clear.
+The measure is the bar, the target is a tick across it. `ranges` are the department's
+own thresholds and render in NEUTRAL bands: status colour is reserved for status, and
+deciding that 60% is "amber" is a policy judgement belonging to the scheme.
+
+**Past six series, stop using colour: use `<SmallMultiples>`.** The categorical ramp
+has exactly six mutually distinguishable slots (`CHART_CATEGORICAL_SAFE_CAP`) and six
+is the proven ceiling for any palette at this saturation. Twenty-eight states cannot
+be coloured; as twenty-eight panels they need no colour at all, because position
+carries identity. Every panel MUST share one scale — `valuesOf` is required and
+`renderItem` receives `sharedMax` for that reason, and `BarChart` takes `max` to
+accept it. Panels that each fit their own data look rigorous and are incomparable,
+which is worse than no chart.
+
+**Where colour cannot be relied on, add texture.** `textured` on a chart emits the
+hatch `<defs>`; `texturedColor(i)` points a series at them through the `color`
+override every chart already has. It is the encoding that survives colour-vision
+deficiency, print and forced-colors, and it keeps the hue as well as the geometry, so
+no reader loses anything. There are exactly six textures because there are six safe
+colour slots — a seventh would imply a seventh series is fine, and it is not.
+
 **Data-visualisation (charts):** brand-aware, used by the chart layer (§7). All twelve categorical series clear WCAG 1.4.11's 3:1 against the page; the worst is `--sa-chart-cat-2` at 3.79:1.
-- `--sa-chart-cat-1` … `--sa-chart-cat-12` — categorical series (mutually distinguishable)
+- `--sa-chart-cat-1` … `--sa-chart-cat-12` — categorical series. **They are NOT all
+  mutually distinguishable, and this line used to claim they were.**
+  `npm run check:chart-palette` measures the ramp and finds, under all-pairs:
+  `cat-4`↔`cat-10` at OKLab **ΔE 1.5 under deuteranopia** (the same colour to
+  roughly one man in twelve), `cat-6`↔`cat-12` at 4.4 under protanopia, and
+  `cat-8`↔`cat-9` at **11.7 with normal colour vision** — below the floor of 15.
+  **Only the first FOUR slots clear every floor**, which is
+  `CHART_CATEGORICAL_SAFE_CAP`. Beyond four, identity must also be carried by
+  something that is not colour: direct labels, small multiples, or folding the
+  tail into "Other". `categoricalColor` still wraps at 12 but now warns in
+  development instead of silently handing series 13 the colour of series 1.
 - `--sa-chart-seq-50` … `--sa-chart-seq-900` — sequential single-hue ramp (choropleth, heatmap)
 - `--sa-chart-div-neg-strong/neg/neg-soft/mid/pos-soft/pos/pos-strong` — diverging (signed data)
 - `--sa-chart-trend-up/down/flat` — KPI trend
@@ -2611,11 +2707,15 @@ matching the Figma "Navbar Portal" account.
 **Slots**: `children` is the form. `extraContent` sits **below** the form inside the card and is for page-level content, not credentials — the portal switcher grid, a demo-data notice. A field placed in `extraContent` lands after the submit button, which is the wrong tab order.
 
 #### PortalLoginTemplate
-**Purpose**: A login page described by a **config object** instead of assembled by hand. Renders role tabs, the login-method selector and the right fields for each `PortalAuthMode` — `password`, `otp`, `digilocker` — and returns one `LoginSubmitPayload` (role + mode + credentials) from `onSubmit`.
+**Purpose**: A login page described by a **config object** instead of assembled by hand. Renders role tabs, the login-method selector and the right fields for each `PortalAuthMode` — `password`, `otp`, `pin`, `digilocker` — and returns one `LoginSubmitPayload` (role + mode + credentials) from `onSubmit`.
 
-> **`darpan` and `aadhaar` were removed on 2026-08-17.** A full read of the Handoff — 69 auth screens across 10 pages — found no DARPAN and no Aadhaar screen in any portal. Both were invented from a written brief before the design file was available, and the matching Figma variant axis was retired the same day (`PortalLoginTemplate` went from `Device × Auth Method (5)` = 10 variants to `Device × Step` = 8). `digilocker` stays, but it is a **handoff above the credentials divider**, not a mode of the form; the form itself has exactly two.  
+> **`darpan` and `aadhaar` were removed on 2026-08-17.** A full read of the Handoff — 69 auth screens across 10 pages — found no DARPAN and no Aadhaar screen in any portal. Both were invented from a written brief before the design file was available. `digilocker` stays, but it is a **handoff above the credentials divider**, not a mode of the form.
+
+> **`pin` was added on 2026-09-02, and it is not a reinstatement of those two.** NOS is PIN-only and both its auth screens in the Handoff (`2436:15957`) are `Sign In Pin`, so the credential form has three modes. The Figma master was re-cut in place the same day — `Device × Step` (8 variants) became **`Device × Auth Method`** (Password · OTP · PIN, 6 variants) — because the old axis put `Credentials` and `OTP`, which are ways of proving identity, beside `Reset` and `Success`, which are stages of recovery. Recovery moved to `Auth / CredentialRecovery`; the component nodes were moved rather than re-created, so their keys and every instance link survived.  
 **Props**: `config` (`PortalLoginConfig`), `onSubmit`, `loading`, `error`, `onFooterLinkClick`  
 **Rules**:
+- **The captcha is OFF unless the portal asks for it.** `config.captcha` adds the security-code field to the password and PIN forms and defaults to `false`. A captcha is a cognitive function test, and **WCAG 2.2 3.3.8 Accessible Authentication (AA)** forbids one without an alternative — switch it on only for a portal that offers that alternative, and say which in the same change. `Show captcha` on the Figma `Auth / AuthFormCard` defaults to `false` for the same reason.
+- **A PIN never leaves the component as `credentials.password`.** The PIN form reuses the password field's internal state, but the payload carries it as `credentials.pin`, so a consumer cannot mistake one secret for the other.
 - **Reach for this when the portal's login is one of the shapes the Handoff already describes** — which is most of them, and the reason it exists is that those shapes kept being re-typed per portal.
 - **Use `PortalLoginShell` directly when the form is genuinely bespoke** (an extra consent step, a non-standard identity provider). Forcing a one-off through a config object produces a worse page than composing it.
 - A single role hides the role tabs — a one-audience portal must not render a one-tab strip.

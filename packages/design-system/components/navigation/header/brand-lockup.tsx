@@ -55,7 +55,6 @@ export function BrandLockup({
       className={cn("ds-hdr-lockup", compact && "is-compact", inverse && "is-inverse", className)}
       aria-label={`${lines.department} — Home`}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img className="ds-hdr-lockup__emblem" src={emblemSrc} alt={emblemAlt} />
       <span
         className={cn(

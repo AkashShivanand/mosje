@@ -109,7 +109,10 @@
   /* Text */
   --foreground: #0f172a;
   --foreground-muted: #475569;
-  --foreground-hint: #94a3b8;
+  /* slate-500, not slate-400. #94a3b8 measures 2.56:1 on white and fails WCAG
+     1.4.3 outright; #64748b is 4.76 on white and 4.55 on the #f8fafc panels
+     this portal uses. Matches what nmba/nhapoa/tg already use. */
+  --foreground-hint: #64748b;
 
   /* Brand */
   --primary: #003366;

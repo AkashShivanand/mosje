@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { navDisabledAria, navTag } from "./nav-link-tag";
 import { cn } from "../../../utils/cn";
 import { Icon } from "../../utilities/icon";
 import type { NavColumn, NavItem, NavLink, NavMegaItem } from "./types";
@@ -129,9 +130,11 @@ export interface DropdownItemProps {
 
 /** DropdownItem — one row inside a simple nav dropdown (Figma `Navbar/DropdownItem`). */
 export function DropdownItem({ item, onSelect, className }: DropdownItemProps): React.JSX.Element {
+  const Tag = navTag(item.disabled);
   return (
-    <a
+    <Tag
       href={item.disabled ? undefined : item.href}
+      {...navDisabledAria(item.disabled)}
       className={cn(
         "ds-hdr-nav__drop-link",
         item.active && "is-active",
@@ -145,7 +148,7 @@ export function DropdownItem({ item, onSelect, className }: DropdownItemProps): 
     >
       {item.label}
       {item.external && !item.disabled && <NewTabHint />}
-    </a>
+    </Tag>
   );
 }
 
@@ -212,9 +215,11 @@ export interface MegaMenuItemProps {
 
 /** MegaMenuItem — emblem + abbreviation + full name (Figma `Navbar/MegaMenuItem`). */
 export function MegaMenuItem({ item, onSelect, className }: MegaMenuItemProps): React.JSX.Element {
+  const Tag = navTag(item.disabled);
   return (
-    <a
+    <Tag
       href={item.disabled ? undefined : item.href}
+      {...navDisabledAria(item.disabled)}
       className={cn(
         "ds-hdr-mega-item",
         item.active && "is-active",
@@ -228,7 +233,6 @@ export function MegaMenuItem({ item, onSelect, className }: MegaMenuItemProps): 
     >
       <span className={cn("ds-hdr-mega-item__logo", !item.iconSrc && "is-fallback")}>
         {item.iconSrc ? (
-          // eslint-disable-next-line @next/next/no-img-element
           <img src={item.iconSrc} alt="" loading="lazy" />
         ) : (
           /* Not a monogram: the abbreviation is already the row's title, and
@@ -242,7 +246,7 @@ export function MegaMenuItem({ item, onSelect, className }: MegaMenuItemProps): 
         <span className="ds-hdr-mega-item__name">{item.name}</span>
       </span>
       <IcMegaChevron />
-    </a>
+    </Tag>
   );
 }
 
@@ -317,6 +321,7 @@ export function NavItemLink({ item, open = false, onOpenChange, className }: Nav
   const timer = React.useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const liRef = React.useRef<HTMLLIElement>(null);
   const linkRef = React.useRef<HTMLAnchorElement>(null);
+  const Tag = navTag(item.disabled);
   const clear = () => {
     if (timer.current !== undefined) clearTimeout(timer.current);
     timer.current = undefined;
@@ -419,6 +424,12 @@ export function NavItemLink({ item, open = false, onOpenChange, className }: Nav
   };
 
   return (
+    /* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions --
+       the <li> is the HOVER REGION for a menu whose trigger is the link inside it,
+       and it must be: moving the handlers onto the link closes the menu the moment
+       the pointer travels from the trigger toward the panel. The keyboard path is
+       not missing — `onKeyDown` below opens and closes the same menu with the
+       arrow keys, on the focusable link. */
     <li
       ref={liRef}
       className={cn("ds-hdr-nav__item", className)}
@@ -431,9 +442,10 @@ export function NavItemLink({ item, open = false, onOpenChange, className }: Nav
       onMouseLeave={() => hasMenu && schedule(false, CLOSE_MS)}
       onKeyDown={onKeyDown}
     >
-      <a
+      <Tag
         ref={linkRef}
         href={item.disabled ? undefined : item.href}
+        {...navDisabledAria(item.disabled)}
         className={cn(
           "ds-hdr-nav__link",
           item.active && "is-active",
@@ -461,7 +473,7 @@ export function NavItemLink({ item, open = false, onOpenChange, className }: Nav
         {item.label}
         {hasMenu && <IcCaret />}
         {item.external && !item.disabled && <NewTabHint />}
-      </a>
+      </Tag>
 
       {hasChildren && open && (
         <NavDropdown id={dropId} label={item.label} items={item.children!} overview={overview} onSelect={close} />

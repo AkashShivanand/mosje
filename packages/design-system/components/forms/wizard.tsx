@@ -80,13 +80,11 @@ export function Wizard({
         {`Step ${current + 1} of ${steps.length}: ${steps[current]?.label ?? ""}`}
       </div>
 
-      {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
       <div ref={bodyRef} tabIndex={-1} className="ds-wizard__body">
         {children}
       </div>
 
       {error && (
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
         <div ref={errorRef} tabIndex={-1}>
           <Alert status="error">{error}</Alert>
         </div>

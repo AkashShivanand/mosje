@@ -1,169 +1,159 @@
-import * as React from "react";
 import type { Metadata } from "next";
-import { FormSectionPlayground } from "./form-section-playground";
-import { Playground } from "@/components/design-system/playground";
-import { PropsTable, DoDont } from "@/components/design-system/docs-kit";
-import { DocsTabs } from "@/components/design-system/docs-kit";
+import * as React from "react";
 
+import {
+  CodeBlock,
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { FormSectionPlayground } from "./form-section-playground";
 
 export const metadata: Metadata = {
-  title: "FormSection - SAMAVESH Design System",
+  title: "Form Section — Design System",
   description:
-    "A titled card wrapping a responsive field grid.",
+    "A titled surface card wrapping a responsive one-, two- or three-column field grid. The shared form-layout primitive across the estate.",
 };
 
+const A11Y: A11yItem[] = [
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "A real `<section>` labelled by its own `<h2>` through `aria-labelledby`, so the group is a landmark a screen reader can jump between.",
+  },
+  {
+    criterion: "1.4.10 Reflow",
+    level: "AA",
+    description:
+      "The grid collapses to one column on narrow viewports, so a form reflows to 320px without horizontal scrolling.",
+  },
+  {
+    criterion: "2.4.6 Headings and Labels",
+    level: "AA",
+    description:
+      "The title is a real heading, so the form's structure is navigable by heading rather than by tabbing through every field.",
+  },
+  {
+    criterion: "3.2.3 Consistent Navigation",
+    level: "AA",
+    description:
+      "Every section header on the estate is this component, so the same grouping cue appears in the same place on every form.",
+  },
+  {
+    criterion: "GIGW 3.0 — Forms",
+    level: "GIGW",
+    description:
+      "Related fields are grouped under a heading rather than presented as one undifferentiated list of controls.",
+  },
+];
+
 export default function FormSectionPage(): React.JSX.Element {
-    const h2Style: React.CSSProperties = {
-    fontSize: "var(--sa-type-headline-2-size)",
-    fontWeight: 600,
-    margin: "0 0 var(--sa-stack-24) 0",
-    color: "var(--sa-text-neutral-bolder)",
-  };
-  const proseStyle: React.CSSProperties = {
-    color: "var(--sa-text-neutral-base)",
-    fontSize: "var(--sa-type-body-1-size)",
-    lineHeight: 1.6,
-  };
-  const leadStyle: React.CSSProperties = {
-    ...proseStyle,
-    fontSize: "var(--sa-type-headline-3-size)",
-    color: "var(--sa-text-neutral-subtle)",
-    marginBottom: "var(--sa-stack-24)",
-  };
-
   return (
-    <article
-      className="ds-prose"
-      style={{
-        maxWidth: "800px",
-        padding: "var(--sa-padding-40) var(--sa-padding-24)",
+    <ComponentDocPage
+      name="Form Section"
+      status="Stable"
+      summary="A titled surface card wrapping a responsive field grid. It is the shared form-layout primitive: one section per logical group of fields, so related inputs read as a unit and a long form never becomes one undifferentiated wall of controls."
+      figma={{ absent: "Not yet published in the Figma library." }}
+      specimen={<FormSectionPlayground />}
+      propsFrom="FormSectionProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "A group of related fields needs a heading — Personal Details, Address, Bank Account.",
+          "The group's layout is a simple grid of one, two or three equal columns.",
+          "A wizard step's body, which is normally one or more of these sections.",
+        ],
+        avoid: [
+          "The body is not a field grid — a repeatable card list, a data table, mixed content. Use Form Card, which has the same header and an arbitrary body.",
+          "There is only one field and no group to name — a lone Form Field needs no card around it.",
+          "The heading belongs to a page rather than a group — use Page Header.",
+        ],
       }}
-    >
-      {/* ============ HEADER ============ */}
-      <header style={{ marginBottom: "var(--sa-stack-40)" }}>
-        <h1
-          style={{
-            fontSize: "var(--sa-type-headline-1-size)",
-            margin: "0 0 var(--sa-stack-16) 0",
-          }}
-        >
-          FormSection
-        </h1>
-        <p className="ds-lead" style={leadStyle}>
-          The shared form-layout primitive: a surface card with a left-aligned section title over a responsive field grid.
-        </p>
-      </header>
+      related={[
+        {
+          label: "Form Card",
+          href: "/design-system/components/forms/form-card",
+          reason: "the same header with an arbitrary body",
+        },
+        {
+          label: "Form Field",
+          href: "/design-system/components/forms/form-field",
+          reason: "what the grid is filled with",
+        },
+        {
+          label: "Wizard",
+          href: "/design-system/components/forms/wizard",
+          reason: "the multi-step shell these sections sit inside",
+        },
+        {
+          label: "Page Header",
+          href: "/design-system/components/layout/page-header",
+          reason: "when the heading belongs to the page, not a group",
+        },
+      ]}
+      design={
+        <section className="cdp__section" aria-labelledby="cdp-columns">
+          <h2 id="cdp-columns" className="cdp__h2">
+            Choosing the Column Count
+          </h2>
+          <p>
+            Three columns suit short, uniform answers — a date, a code, a district. Two columns suit
+            names and addresses, where a longer measure stops the text wrapping mid-answer. One column
+            suits a section whose fields are mostly prose.
+          </p>
+          <p>
+            The count is a desktop maximum, not a fixed layout: the grid collapses to a single column
+            on narrow screens, so a three-column section is not a decision about phones.
+          </p>
+        </section>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { FormField, FormSection, Input, Select } from "@mosje/design-system";
 
-      {/* ============ PLAYGROUND ============ */}
-      
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="playground" style={h2Style}>Playground</h2>
-        <p style={proseStyle}>
-          Adjust the column count to see how the internal grid adapts. Note that on smaller screens, it will automatically collapse to a single column.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-24)" }}>
-          <FormSectionPlayground />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="usage" style={h2Style}>1. Usage</h2>
-        <p style={proseStyle}>
-          Use <code>FormSection</code> to group related form fields logically (e.g., &quot;Personal Details&quot;, &quot;Address&quot;, &quot;Banking Information&quot;). This is the standard way to build forms across the SAMAVESH estate, ensuring a consistent rhythm and responsive behaviour.
-        </p>
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "var(--sa-inline-24)",
-            marginTop: "var(--sa-stack-24)",
-          }}
-        >
-          <DoDont
-            cards={[
-              {
-                type: "do",
-                label: "Group conceptually related fields together under a clear, descriptive title.",
-                preview: null,
-              },
-              {
-                type: "dont",
-                label: "Don't use FormSection for complex, non-grid layouts like data tables. Use FormCard instead.",
-                preview: null,
-              },
-            ]}
-          />
-        </div>
-      </section>
-<section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="code-example" style={h2Style}>2. Code Example</h2>
-        <Playground
-          code={`<FormSection title="Address Details" columns={2}>
+<FormSection
+  title="Address Details"
+  description="The address at which the applicant currently resides."
+  columns={2}
+>
   <FormField label="Street Address">
-    {(props) => <Input {...props} />}
+    {(control) => <Input {...control} />}
   </FormField>
   <FormField label="City">
-    {(props) => <Input {...props} />}
+    {(control) => <Input {...control} />}
   </FormField>
   <FormField label="State">
-    {(props) => <Select {...props} options={[{ label: "Delhi", value: "DL" }]} />}
+    {(control) => (
+      <Select {...control} options={[{ label: "Delhi", value: "DL" }]} />
+    )}
   </FormField>
   <FormField label="PIN Code">
-    {(props) => <Input {...props} />}
+    {(control) => <Input {...control} inputMode="numeric" maxLength={6} />}
   </FormField>
-</FormSection>`}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "develop",
-            label: "Develop",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="api" style={h2Style}>4. API Reference</h2>
-        <PropsTable
-          props={[
-            { name: "title", type: "ReactNode", required: true, description: "Section heading." },
-            { name: "description", type: "ReactNode", description: "Optional sub-heading below the title." },
-            { name: "columns", type: "1 | 2 | 3", default: "3", description: "The number of columns in the responsive field grid." },
-            { name: "children", type: "ReactNode", required: true, description: "The form fields to render within the grid." },
-            { name: "className", type: "string", description: "Additional classes merged onto the section element." },
-          ]}
-        />
-      </section>
-
-              </div>
-            )
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <div className="ds-prose">
-                <section style={{ marginBottom: "var(--sa-section-48)" }}>
-        <h2 id="accessibility" style={h2Style}>3. Accessibility (A11y)</h2>
-        <ul style={{ ...proseStyle, paddingLeft: "var(--sa-padding-20)", marginTop: "var(--sa-stack-16)", lineHeight: 1.8 }}>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>Semantic Section:</strong> Uses the native <code>&lt;section&gt;</code> element, creating a structural landmark for assistive tech.</li>
-          <li><strong style={{ color: "var(--sa-text-neutral-bolder)" }}>aria-labelledby:</strong> Automatically links the section to its internal <code>&lt;h2&gt;</code> title, so screen readers can easily identify the grouping.</li>
-        </ul>
-      </section>
-
-              </div>
-            )
-          }
-        ]}
-      />
-
-    </article>
+</FormSection>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-a11y-notes">
+          <h2 id="cdp-a11y-notes" className="cdp__h2">
+            Notes
+          </h2>
+          <p>
+            The heading is an <code>&lt;h2&gt;</code>. A form built from these sections therefore
+            expects a single <code>&lt;h1&gt;</code> on the page above it, and no hand-rolled heading
+            between the two — a skipped level is what makes a form unnavigable by heading.
+          </p>
+          <p>
+            The section is labelled by its own title, so it is announced as a named region. Where a
+            child needs to reference that heading directly — a data table, for instance — use Form
+            Card, which exposes <code>headingId</code>. This component generates its id internally.
+          </p>
+        </section>
+      }
+    />
   );
 }

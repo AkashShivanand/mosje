@@ -1,218 +1,249 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
+  Callout,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
+  ComponentDocPage,
+  MatrixTable,
+  PropsTable,
+  type A11yItem,
+  type PropDef,
+} from "@/components/design-system/docs-kit";
+
 import { AppSwitcherPanelSpecimen } from "./app-switcher-panel-specimen";
-import { figmaUrl } from "@/lib/design-system/figma";
 
 export const metadata: Metadata = {
-  title: "App Switcher Panel",
-  description: "Cross-portal directory modal allowing officers and beneficiaries to discover and jump across all 20 MoSJE portals seamlessly.",
+  title: "App Switcher Panel — Design System",
+  description:
+    "The searchable content of the SAMAVESH app switcher: a current-app indicator, a search box, and the grouped list of estate destinations.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
 
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function AppSwitcherPanelDocPage(): React.JSX.Element {
-  return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            App Switcher Panel
-          </h1>
-          <StatusBadge status="Stable" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Cross-portal directory modal allowing officers and beneficiaries to discover and jump across all 20 MoSJE portals seamlessly."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
-
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"App Switcher Panel is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <AppSwitcherPanelSpecimen />
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Group portals by functional category (Scholarships, Disability, Social Defense, Corporations).",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not display hidden un-deployed prototype portals to public users.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { AppSwitcherPanel } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
+/*
+ * `AppEntry` is the estate registry's row shape. It is a data type rather than a
+ * props interface, so the extractor cannot see it — and it is what a caller
+ * overriding `apps` has to write.
+ */
+const APP_ENTRY_SHAPE: PropDef[] = [
+  { name: "path", type: "string", required: true, description: "Hub-origin path. Code-only — it cannot be overridden from /admin/portals." },
+  { name: "group", type: "string", required: true, description: "Top-level grouping — Website, Portals, Resources. Code-only." },
+  { name: "category", type: "string", description: "Functional bucket inside the group. Live entries come before planned ones within each." },
+  { name: "desc", type: "string", description: "One line describing what the destination is for." },
+  { name: "org", type: "string", description: "Organisation key, resolved through the OrgLogo registry for the row's mark." },
   {
-    "name": "pathname",
-    "type": "string | null",
-    "required": true,
-    "description": "Current active route."
+    name: "status",
+    type: '"live" | "planned"',
+    required: true,
+    description:
+      "Code carries these two only. A built portal left as planned is a finished service nobody can find. “hidden” exists at runtime alone, set at /admin/portals, and the hub's proxy blocks a hidden path for everyone but a signed-in administrator.",
+  },
+  { name: "newTab", type: "boolean", description: "Opens in a new tab. Code-only." },
+];
+
+const A11Y: A11yItem[] = [
+  {
+    criterion: "2.4.3 Focus Order",
+    level: "A",
+    description:
+      "Focus moves into the search input on mount, so a reader who opened the panel to find something is already where they need to be.",
+    status: "verified",
   },
   {
-    "name": "onNavigate",
-    "type": "() => void",
-    "default": "undefined",
-    "description": "Navigation callback."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<AppSwitcherPanel pathname="/portals/pm-ajay" onNavigate={() => console.log("nav")} />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    description:
+      "Every destination is a real anchor, reachable by Tab in reading order. The `/` shortcut returns focus to the search box while the panel is mounted.",
+    status: "verified",
+  },
   {
-    "criterion": "2.4.3 Focus Order",
-    "level": "AA",
-    "description": "Search input focused on open, with Arrow key grid navigation."
-  }
-]} />
-                </section>
+    criterion: "2.1.4 Character Key Shortcuts",
+    level: "A",
+    description:
+      "`/` is a single-character shortcut. It is scoped to the panel's own lifetime and is ignored while the search box already has focus, so it cannot capture a typed slash — but it is not user-remappable, which is what this criterion asks for where the shortcut is global.",
+    status: "partial",
+    evidence: "Scoped to the mounted panel; no remapping offered.",
+  },
+  {
+    criterion: "2.4.4 Link Purpose (In Context)",
+    level: "A",
+    description:
+      "Each row's accessible name carries the organisation's short code and its full name, so a link is not announced as a bare abbreviation.",
+  },
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    description:
+      "Destinations are grouped under sticky group labels, and the sticky offset is measured from the header's real rendered height rather than assumed — a group label that sticks a few pixels too high hides under the header instead of sitting below it.",
+  },
+  {
+    criterion: "4.1.3 Status Messages",
+    level: "AA",
+    description:
+      "A search that matches nothing needs to say so, and to distinguish “nothing matched” from “nothing loaded”. Verify against the current build before claiming it.",
+    status: "untested",
+  },
+];
 
-                <section style={sectionStyle}>
-                  <h2 id="keyboard" style={h2Style}>Keyboard Navigation</h2>
-                  <div style={{ overflowX: "auto" }}>
-                    <table className="props-table">
-                      <thead>
-                        <tr>
-                          <th scope="col">Key</th>
-                          <th scope="col">Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Arrow keys</kbd></td>
-                          <td>{"Moves focus across portal app icons in the grid."}</td>
-                        </tr>
-                        <tr>
-                          <td><kbd style={{ fontFamily: "var(--sa-font-mono)", padding: "var(--sa-padding-2) var(--sa-padding-6)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-4)", border: "1px solid var(--sa-border-neutral-subtle)" }}>Escape</kbd></td>
-                          <td>{"Closes the app switcher panel."}</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </section>
-              </>
-            ),
-          },
-        ]}
-      />
+export default function AppSwitcherPanelPage(): React.JSX.Element {
+  return (
+    <ComponentDocPage
+      name="App Switcher Panel"
+      status="Stable"
+      summary="The searchable content of the SAMAVESH app switcher: the current-app indicator, the search box, and the grouped list of estate destinations. It is pure content — a shell owns the floating chrome and the open state."
+      figma={{
+        absent:
+          "The cross-zone switcher is demo and wayfinding tooling; it has no published master in the SAMAVESH library.",
+      }}
+      specimen={<AppSwitcherPanelSpecimen />}
+      propsFrom="AppSwitcherPanelProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "Inside a shell that needs the estate's destination list — the demo dock's Apps tab is the estate's only one.",
+          "Anywhere a reader must move between zones rather than within one.",
+        ],
+        avoid: [
+          "Navigation inside a portal — that is Sidebar Nav.",
+          "A public wayfinding surface — the portals directory at /portals is the citizen-facing equivalent, and it renders portal cards.",
+          "Adding a second floating switcher: the demo dock is mounted once, by the hub's root layout, and no portal adds its own.",
+        ],
+      }}
+      related={[
+        {
+          label: "Portal Card",
+          href: "/design-system/components/navigation/portal-card",
+          reason: "the citizen-facing way to present the same destinations",
+        },
+        {
+          label: "Sidebar Nav",
+          href: "/design-system/components/section-templates/sidebar",
+          reason: "navigation within a portal rather than between them",
+        },
+        {
+          label: "Search",
+          href: "/design-system/components/forms/search",
+          reason: "the field pattern the panel's own search follows",
+        },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-content-only">
+            <h2 id="cdp-content-only" className="cdp__h2">
+              Content, Not Chrome
+            </h2>
+            <p>
+              The panel has no fixed positioning, no open or close state, and no colour-mode
+              handling. A shell supplies all three. On this estate that shell is the demo dock,
+              which is mounted exactly once by the hub&apos;s root layout and reads the path
+              itself — a portal adds no switcher of its own.
+            </p>
+            <Callout type="info" title="Where a floating shell may sit">
+              There are two rails and a new widget does not invent a third: the bottom-right
+              corner, which stacks the citizen&apos;s own controls upward by permanence, and the
+              right wall, which carries navigators and tooling. Anything fixed declares itself with{" "}
+              <code>data-sa-corner-occupant</code> or <code>data-sa-wall-occupant</code> so the
+              rails measure around it.
+            </Callout>
+          </section>
 
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="App Switcher Panel" />
-    </article>
+          <section className="cdp__section" aria-labelledby="cdp-registry">
+            <h2 id="cdp-registry" className="cdp__h2">
+              The Registry Is the Source, and It Has Two Layers
+            </h2>
+            <MatrixTable
+              caption="Where an entry's fields come from"
+              columns={["Layer", "Lives in", "Can change"]}
+              rows={[
+                ["Code", "DEFAULT_APPS in app-switcher-utils.ts", "path, group, newTab, and every field's default"],
+                ["Runtime", "The portal_registry row, edited at /admin/portals", "A sparse patch — status, label, order"],
+              ]}
+            />
+            <p>
+              A path absent from the stored patch renders exactly as code defines it, so a new
+              portal appears with its code status and needs no administrator visit. Editing a
+              field at <code>/admin</code> pins it to the patch, and a later code change to the
+              same field then stops taking effect — so permanent corrections belong in{" "}
+              <code>DEFAULT_APPS</code>, and <code>/admin</code> is for demo curation.
+            </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-groups">
+            <h2 id="cdp-groups" className="cdp__h2">
+              Grouping and Order
+            </h2>
+            <p>
+              Entries are grouped by functional category and both the panel and the portals
+              directory preserve registry order without sorting. Within each category, live
+              entries come before planned ones — a built portal left marked planned is a finished
+              service nobody can find.
+            </p>
+            <p>
+              A hidden entry is a runtime state, not a code value: the hub&apos;s proxy rewrites a
+              hidden path to the unavailable page for everyone except a signed-in administrator,
+              so hiding a portal here also blocks its login page.
+            </p>
+          </section>
+        </>
+      }
+      code={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-entry">
+            <h2 id="cdp-entry" className="cdp__h2">
+              AppEntry
+            </h2>
+            <PropsTable props={APP_ENTRY_SHAPE} />
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { AppSwitcherPanel } from "@mosje/design-system";
+
+<AppSwitcherPanel
+  pathname={usePathname()}
+  onNavigate={closePanel}
+/>`}</CodeBlock>
+          <p>
+            Where the surrounding shell already names the current app, suppress the
+            panel&apos;s own indicator rather than showing it twice.
+          </p>
+          <CodeBlock>{`<AppSwitcherPanel
+  pathname={pathname}
+  showCurrentApp={false}
+  onNavigate={() => setOpen(false)}
+/>`}</CodeBlock>
+          <p>
+            <code>onNavigate</code> is a function, so a page that exports <code>metadata</code>{" "}
+            cannot render this directly — put the instance in a client component, as this
+            page&apos;s specimen does.
+          </p>
+          </section>
+        </>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-keys">
+          <h2 id="cdp-keys" className="cdp__h2">
+            Keyboard
+          </h2>
+          <MatrixTable
+            caption="Keys the panel handles"
+            columns={["Key", "Action"]}
+            rows={[
+              ["Tab / Shift+Tab", "Move through the search box and the destination list in reading order"],
+              ["/", "Return focus to the search box, while the panel is mounted and the box is not already focused"],
+              ["Enter", "Follow the focused destination"],
+              ["Escape", "Handled by the shell that owns the panel, not by the panel itself"],
+            ]}
+          />
+          <p>
+            Escape is deliberately not this component&apos;s business. The panel has no open state
+            to close, and a component that dismissed a dialog it does not own would fight the
+            shell for the same key.
+          </p>
+        </section>
+      }
+    />
   );
 }

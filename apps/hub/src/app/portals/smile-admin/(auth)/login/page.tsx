@@ -144,7 +144,10 @@ export default function LoginPage() {
             </Label>
             <Link
               href="/portals/smile-admin/forget-password"
-              className="text-label-3 font-semibold text-info-600 hover:underline"
+              // inline-flex + a 24px minimum makes this a real target: WCAG 2.2 AA
+              // 2.5.8 wants 24x24, and a block-level standalone link at 95x16 is not
+              // covered by the inline exception (it is not inside a sentence).
+              className="inline-flex min-h-[24px] items-center text-label-3 font-semibold text-info-600 hover:underline"
             >
               Forgot password?
             </Link>

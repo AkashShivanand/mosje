@@ -50,7 +50,7 @@ export interface AppEntry {
 /** Derive 2-letter icon abbreviation from an AppEntry. */
 export function deriveAbbr(entry: AppEntry): string {
   if (entry.abbr) return entry.abbr;
-  const words = entry.name.split(/[\s\-]+/).filter(Boolean);
+  const words = entry.name.split(/[\s-]+/).filter(Boolean);
   if (words.length >= 2) {
     const first = words[0]?.[0];
     const second = words[1]?.[0];

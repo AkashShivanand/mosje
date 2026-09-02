@@ -226,6 +226,10 @@ export function AccountMenu({
           <div
             id={menuId}
             role="menu"
+            /* A `menu` is a composite widget, so it takes focus itself and then
+               manages its items — hence a programmatic-only tab stop. Without it
+               the role claims a keyboard model the element cannot support. */
+            tabIndex={-1}
             aria-label={`${account.name}, account`}
             className="ds-hdr-acct__menu-list"
             onKeyDown={onMenuKeyDown}

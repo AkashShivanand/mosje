@@ -1430,26 +1430,26 @@ export const CHART = {
     {
       "n": 5,
       "token": "chart/cat/5",
-      "value": "#719348",
-      "onPage": 3.52
-    },
-    {
-      "n": 6,
-      "token": "chart/cat/6",
       "value": "#b671a6",
       "onPage": 3.56
     },
     {
+      "n": 6,
+      "token": "chart/cat/6",
+      "value": "#323ca8",
+      "onPage": 8.95
+    },
+    {
       "n": 7,
       "token": "chart/cat/7",
-      "value": "#7261a8",
-      "onPage": 5.26
+      "value": "#719348",
+      "onPage": 3.52
     },
     {
       "n": 8,
       "token": "chart/cat/8",
-      "value": "#323ca8",
-      "onPage": 8.95
+      "value": "#7261a8",
+      "onPage": 5.26
     },
     {
       "n": 9,

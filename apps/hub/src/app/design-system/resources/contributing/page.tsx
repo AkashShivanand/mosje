@@ -21,7 +21,7 @@ const CHECKLIST: { label: string; detail: string }[] = [
   {
     label: "Accessibility auditor passes",
     detail:
-      "Run the accessibility-auditor agent. Keyboard nav, focus, contrast, and ARIA all clear WCAG 2.1 AA / GIGW.",
+      "Run the accessibility-auditor agent. Keyboard nav, focus, contrast, and ARIA all clear WCAG 2.2 AA / GIGW.",
   },
   {
     label: "Storybook story updated",

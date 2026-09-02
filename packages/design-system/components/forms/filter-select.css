@@ -1,0 +1,172 @@
+/* Declared first so this sheet cannot register `components` ahead of Tailwind's
+   `base` when it loads as its own CSS root. See .claude/rules/design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ==========================================================================
+     FilterSelect — the compact dashboard filter, as a real listbox.
+     See the component for the keyboard model and why it exists beside `Select`.
+     ========================================================================== */
+  .ds-filter-select {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    min-width: 0;
+  }
+
+  .ds-filter-select__label {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-filter-select__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    width: 100%;
+    /* 40px, the dashboard filter height — and comfortably past the 24×24 floor
+       of WCAG 2.2 AA 2.5.8. */
+    min-height: 40px;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    /*
+     * 3.06:1 against the page. `border-neutral-base` measures 1.66 and is right
+     * for a decorative rule — but this is the BOUNDARY OF A CONTROL, which WCAG
+     * 1.4.11 puts at 3:1, and the axe suite's own component page is where that
+     * was caught.
+     */
+    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+    color: var(--sa-text-neutral-base);
+    font: inherit;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .ds-filter-select__trigger:hover:not(:disabled) {
+    border-color: var(--sa-border-neutral-bolder-default);
+  }
+
+  .ds-filter-select__trigger:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-filter-select__trigger:disabled {
+    cursor: not-allowed;
+    background: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-filter-select__value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ds-filter-select__caret {
+    flex-shrink: 0;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── The popup ─────────────────────────────────────────────────────────── */
+  .ds-filter-select__list {
+    position: absolute;
+    /* Below the trigger, which sits under the label — so the popup is offset by
+       the label's own line box rather than by a guessed number. */
+    top: calc(100% + var(--sa-stack-4));
+    left: 0;
+    z-index: 20;
+    width: 100%;
+    min-width: max-content;
+    /* Paged by scrolling rather than by height: a district list is forty long,
+       and a popup that grows to forty rows covers the dashboard it filters. */
+    max-height: 280px;
+    overflow-y: auto;
+    padding: var(--sa-padding-4);
+    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-modal);
+  }
+
+  .ds-filter-select__list:focus-visible {
+    /* The listbox holds focus while the ACTIVE OPTION moves — see the component.
+       Its own ring would sit around the whole popup and read as noise, so the
+       active row carries the indication instead. */
+    outline: none;
+  }
+
+  .ds-filter-select__option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-12);
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-6);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+    cursor: pointer;
+    min-height: 36px;
+  }
+
+  /* The ACTIVE option — where the keyboard is. Not the same thing as selected,
+     and a listbox that renders them identically is one a keyboard reader
+     cannot follow. */
+  .ds-filter-select__option.is-active {
+    /*
+     * A RULE, NOT JUST A GROUND.
+     *
+     * Every tint in the estate measures 1.1–1.4 against the popup — pale by
+     * construction — so a background cannot carry a 1.4.11 indicator on its own.
+     * The active row is the ONE thing a keyboard reader is following, so it gets
+     * a boundary at 4.6:1 as well as the tint and the ink. Measured on this
+     * component's own page by the axe suite.
+     */
+    background: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
+    box-shadow: inset 3px 0 0 0 var(--sa-border-brand-primary-base);
+  }
+
+  /* The SELECTED option — what the filter is set to. Weight, not colour alone
+     (WCAG 1.4.1); `aria-selected` carries it for assistive technology. */
+  .ds-filter-select__option.is-selected {
+    font-weight: 700;
+  }
+
+  .ds-filter-select__option.is-disabled {
+    color: var(--sa-text-neutral-subtle);
+    cursor: not-allowed;
+  }
+
+  .ds-filter-select__option-hint {
+    flex-shrink: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-filter-select__option.is-active .ds-filter-select__option-hint {
+    color: inherit;
+  }
+
+  /* `background` is not painted in forced-colors mode, so the active row would
+     lose its only visual cue — the one thing a keyboard reader is following. */
+  @media (forced-colors: active) {
+    .ds-filter-select__option.is-active {
+      forced-color-adjust: none;
+      background: Highlight;
+      color: HighlightText;
+    }
+    .ds-filter-select__trigger:focus-visible {
+      outline: 2px solid Highlight;
+    }
+  }
+}

@@ -1,195 +1,177 @@
 import type { Metadata } from "next";
+import * as React from "react";
+
 import {
-  DocsTabs,
-  PropsTable,
-  DoDont,
-  A11yChecklist,
-  StatusBadge,
   CodeBlock,
-  FeedbackBar,
-} from "@/components/design-system/docs-kit/index";
-import { Gauge } from "@mosje/design-system";
-import { figmaUrl } from "@/lib/design-system/figma";
+  ComponentDocPage,
+  type A11yItem,
+} from "@/components/design-system/docs-kit";
+
+import { GaugeSpecimen } from "./specimen";
 
 export const metadata: Metadata = {
-  title: "Gauge",
-  description: "Semi-circular radial dial indicating SLA completion rates, fund utilization thresholds, and performance targets.",
+  title: "Gauge — Design System",
+  description:
+    "One figure read against a scale, drawn as an arc with the value in the middle — a compliance rate, an occupancy against a sanctioned total.",
 };
 
-/* ── Layout primitives ── */
-const sectionStyle: React.CSSProperties = {
-  marginTop: "var(--sa-section-48)",
-  scrollMarginTop: "var(--docs-anchor-offset)",
-};
-
-const h2Style: React.CSSProperties = {
-  fontSize: "var(--sa-type-headline-1-size)",
-  lineHeight: "var(--sa-type-headline-1-lh)",
-  fontWeight: 700,
-  color: "var(--sa-text-neutral-base)",
-  marginBottom: "var(--sa-stack-16)",
-  paddingBottom: "var(--sa-padding-8)",
-  borderBottom: "1px solid var(--sa-border-neutral-subtle)",
-};
-
-const proseStyle: React.CSSProperties = {
-  color: "var(--sa-text-neutral-subtle)",
-  fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
-};
-
-export default function GaugeDocPage(): React.JSX.Element {
-  return (
-    <article className="docs-article" style={{ maxWidth: "1024px", margin: "0 auto", paddingBottom: "var(--sa-section-56)" }}>
-      {/* ── Header ── */}
-      <header style={{ marginBottom: "var(--sa-stack-32)" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
-            Gauge
-          </h1>
-          <StatusBadge status="Beta" />
-        </div>
-        <p style={{ ...proseStyle, marginTop: "var(--sa-stack-12)" }}>
-          {"Semi-circular radial dial indicating SLA completion rates, fund utilization thresholds, and performance targets."}
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)", display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>
-          <a
-            className="docs-page-header__link"
-            href={figmaUrl()}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Figma Component Spec <span aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </header>
-
-      {/* ── Tabbed Content ── */}
-      <DocsTabs
-        tabs={[
-          {
-            id: "design",
-            label: "Design",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="overview" style={h2Style}>Overview & Purpose</h2>
-                  <p style={proseStyle}>
-                    {"Gauge is designed to enforce consistent interaction, visual hierarchy, and government compliance across all MoSJE digital properties."}
-                  </p>
-                  
-                  <div
-                    style={{
-                      marginTop: "var(--sa-stack-24)",
-                      padding: "var(--sa-padding-32)",
-                      background: "var(--sa-bg-neutral-subtler)",
-                      borderRadius: "var(--sa-shape-8)",
-                      border: "1px solid var(--sa-border-neutral-subtle)",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "var(--sa-stack-16)",
-                    }}
-                  >
-                    <div style={{ fontSize: "var(--sa-type-label-3-size)", fontWeight: 700, color: "var(--sa-text-neutral-subtle)", textTransform: "uppercase" }}>
-                      Live Component Specimen
-                    </div>
-                    <div style={{ background: "var(--sa-bg-neutral-base)", padding: "var(--sa-padding-20)", borderRadius: "var(--sa-shape-6)", border: "1px solid var(--sa-border-neutral-subtle)" }}>
-                      <Gauge value={84} title="SLA Compliance Rate" />
-                    </div>
-                  </div>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="guidelines" style={h2Style}>Usage Guidelines</h2>
-                  <DoDont
-                    cards={[
-                      {
-                        type: "do",
-                        label: "Use Gauge for single critical threshold metrics (e.g. 84% Grievances Resolved).",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-base)" }}>
-                            Recommended Practice
-                          </div>
-                        ),
-                      },
-                      {
-                        type: "dont",
-                        label: "Do not use multiple gauges side-by-side when a horizontal progress bar is clearer.",
-                        preview: (
-                          <div style={{ padding: "var(--sa-padding-16)", textAlign: "center", fontSize: "var(--sa-type-body-2-size)", color: "var(--sa-text-neutral-subtle)" }}>
-                            Anti-pattern
-                          </div>
-                        ),
-                      },
-                    ]}
-                  />
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "code",
-            label: "Code",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="installation" style={h2Style}>Installation & Import</h2>
-                  <CodeBlock>{`import { Gauge } from "@mosje/design-system";`}</CodeBlock>
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="props" style={h2Style}>Props Reference</h2>
-                  <PropsTable props={[
+const A11Y: A11yItem[] = [
   {
-    "name": "value",
-    "type": "number",
-    "required": true,
-    "description": "Current metric value (0 to 100)."
+    criterion: "1.1.1 Non-text Content",
+    level: "A",
+    status: "verified",
+    description:
+      "Rendered through ChartFrame, which draws an SVG <title>, a <desc> reading “<value> of <max>”, and a visually hidden table carrying the metric, its value and its maximum.",
+    evidence: "gauge.tsx lines 87 and 90: `summary` and `table` passed to ChartFrame on every render.",
   },
   {
-    "name": "title",
-    "type": "string",
-    "default": "undefined",
-    "description": "Accessible title."
-  }
-]} />
-                </section>
-
-                <section style={sectionStyle}>
-                  <h2 id="example" style={h2Style}>Code Example</h2>
-                  <CodeBlock>{`<Gauge value={84} title="SLA Compliance Rate" />`}</CodeBlock>
-                </section>
-              </>
-            ),
-          },
-          {
-            id: "accessibility",
-            label: "Accessibility",
-            content: (
-              <>
-                <section style={sectionStyle}>
-                  <h2 id="wcag" style={h2Style}>WCAG 2.2 AA & GIGW 3.0 Compliance</h2>
-                  <p style={proseStyle}>
-                    This component satisfies all mandatory Government of India Guidelines for Web Portals (GIGW 3.0) and WCAG 2.2 Level AA requirements.
-                  </p>
-                  <A11yChecklist items={[
+    criterion: "1.4.1 Use of Color",
+    level: "A",
+    status: "verified",
+    description:
+      "The value is printed in the middle of the arc and repeated in the screen-reader table. The arc's colour is decoration over a figure that is already stated in words.",
+    evidence: "gauge.tsx renders the formatted value and unit as text inside the ring.",
+  },
   {
-    "criterion": "4.1.2 Name, Role, Value",
-    "level": "AA",
-    "description": "Uses role=\"meter\" with aria-valuenow, aria-valuemin, and aria-valuemax."
-  }
-]} />
-                </section>
+    criterion: "4.1.2 Name, Role, Value",
+    level: "A",
+    status: "partial",
+    description:
+      'The figure and its maximum reach assistive technology through the SVG description and the hidden table, but the arc is exposed as role="img" and not as a meter: there is no aria-valuenow, aria-valuemin or aria-valuemax. This page previously claimed role="meter" with all three; the component has never carried them.',
+    evidence: 'gauge.tsx sets no role or aria-value* of its own; the only role is the role="img" ChartFrame puts on the SVG.',
+  },
+  {
+    criterion: "2.1.1 Keyboard",
+    level: "A",
+    status: "untested",
+    description:
+      "There is no keyboard interaction to test — the gauge has no focusable marks and listens for no key.",
+  },
+];
 
-              </>
-            ),
-          },
-        ]}
-      />
+export default function GaugePage(): React.JSX.Element {
+  return (
+    <ComponentDocPage
+      name="Gauge"
+      status="Beta"
+      summary="Draws one figure against a scale as an arc, with the value printed in the middle. It is for the single number a dashboard is judged on — a compliance rate, an occupancy, a utilisation."
+      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      specimen={<GaugeSpecimen />}
+      propsFrom="GaugeProps"
+      a11y={A11Y}
+      whenToUse={{
+        use: [
+          "One figure is the headline of a card, and where it sits between a floor and a ceiling is the reading.",
+          "The scale is meaningful — a percentage, an occupancy against a sanctioned total — rather than an open-ended count.",
+          "There is exactly one such figure on the card. A gauge is a headline, and a page cannot have four headlines.",
+        ],
+        avoid: [
+          "Several figures are compared side by side. Four gauges in a row is four headlines; use a Bar Chart, or a row of Progress bars where the labels align.",
+          "The figure sits in a table row or a dense list — use a Progress bar, which keeps the row height.",
+          "The figure has no ceiling. A gauge needs a maximum to be read against; a count with no scale belongs in a Metric Card.",
+          "The whole divides into parts — use a Donut Chart, which shows the division as well as the total.",
+          "The reading is the change over time — use a Line Chart or a Sparkline.",
+        ],
+      }}
+      related={[
+        { label: "Progress", href: "/design-system/components/data-display/progress", reason: "the same reading at row height" },
+        { label: "Donut Chart", href: "/design-system/components/data-display/donut-chart", reason: "its progress mode, or a division into parts" },
+        { label: "Metric Card", href: "/design-system/components/data-display/metric-card", reason: "a headline figure with no ceiling" },
+        { label: "Sparkline", href: "/design-system/components/data-display/sparkline", reason: "when the change matters more than the level" },
+      ]}
+      design={
+        <>
+          <section className="cdp__section" aria-labelledby="cdp-states">
+            <h2 id="cdp-states" className="cdp__h2">
+              The States It Draws
+            </h2>
+            <p>
+              A gauge is the figure a stakeholder screenshots, which makes its non-populated states the
+              ones that matter most: an arc drawn at nought and an arc that could not be drawn at all
+              look the same, and only one of them is a departmental reading.
+            </p>
+            <ul>
+              <li>
+                <strong>Loading</strong> — a skeleton at the gauge&apos;s own proportions, carrying{" "}
+                <code>role=&quot;status&quot;</code>.
+              </li>
+              <li>
+                <strong>Empty</strong> — the feed answered with nothing. No retry.
+              </li>
+              <li>
+                <strong>Error</strong> — the request failed; <code>onRetry</code> renders
+                &ldquo;Try again&rdquo;.
+              </li>
+              <li>
+                <strong>Filtered to nothing</strong> — <code>filterLabel</code> names the filter the
+                reader applied.
+              </li>
+            </ul>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-scale">
+            <h2 id="cdp-scale" className="cdp__h2">
+              The Scale and the Unit
+            </h2>
+            <ul>
+              <li>
+                <strong><code>min</code> and <code>max</code> define what the arc is read against.</strong>{" "}
+                They default to a nought-to-hundred percentage, which is right for a rate and wrong for
+                a count.
+              </li>
+              <li>
+                <strong>Set <code>unit</code>.</strong> An unlabelled 84 in the middle of an arc is the
+                single easiest figure on a dashboard to quote out of context.
+              </li>
+              <li>
+                <strong><code>color</code> takes a token, not a hex.</strong> A literal does not
+                re-theme with the brand pack, and a gauge is usually the most prominent colour on its
+                card.
+              </li>
+            </ul>
+          </section>
+        </>
+      }
+      code={
+        <section className="cdp__section" aria-labelledby="cdp-example">
+          <h2 id="cdp-example" className="cdp__h2">
+            Example
+          </h2>
+          <CodeBlock>{`import { Gauge } from "@mosje/design-system";
 
-      {/* ── Feedback & Continuous Improvement ── */}
-      <FeedbackBar componentName="Gauge" />
-    </article>
+<Gauge title="Grievances Resolved Within SLA" value={84} unit="%" />
+
+// A count against a sanctioned total — set the scale explicitly.
+<Gauge title="Hostels Occupied" value={1240} max={1800} unit=" of 1,800" />`}</CodeBlock>
+          <CodeBlock>{`<Gauge
+  title="Grievances Resolved Within SLA"
+  value={rate}
+  unit="%"
+  state={error ? "error" : loading ? "loading" : undefined}
+  onRetry={refetch}
+  filterLabel="state filter"
+/>`}</CodeBlock>
+        </section>
+      }
+      accessibility={
+        <section className="cdp__section" aria-labelledby="cdp-sr">
+          <h2 id="cdp-sr" className="cdp__h2">
+            What a Screen Reader Gets
+          </h2>
+          <p>
+            One image named by its title, described as &ldquo;<em>value</em> of <em>max</em>&rdquo;, and
+            followed by a visually hidden table with one row: the metric, its value and its maximum.
+          </p>
+          <p>
+            <strong>It is not a meter.</strong> ARIA&apos;s <code>meter</code> role, with{" "}
+            <code>aria-valuenow</code>, <code>aria-valuemin</code> and <code>aria-valuemax</code>, would
+            expose the reading as a value on a scale rather than as a picture with a caption. This
+            component does not do that, and a previous version of this page said it did. Where the
+            distinction matters — an officer&apos;s dashboard read primarily through assistive
+            technology — reach for Progress, which is a real{" "}
+            <code>progressbar</code> with its value exposed.
+          </p>
+        </section>
+      }
+    />
   );
 }

@@ -93,9 +93,37 @@ export function Modal({
         first?.focus();
       }
     };
+    /*
+      CLOSE-ON-OUTSIDE LIVES HERE, NOT ON THE BACKDROP.
+      It used to be `onMouseDown={onClose}` on the backdrop div, which had two
+      problems. The small one is that a non-interactive element holding a mouse
+      handler is a real accessibility smell — it advertises itself to assistive
+      technology as operable while offering no keyboard path.
+
+      The larger one is a bug: `mousedown` fires wherever the press LANDS, so
+      selecting text inside the dialog and releasing past its edge closed the
+      modal mid-drag and threw the selection away. Requiring the press to both
+      start AND end outside the panel fixes that, and it is only expressible
+      from a document listener.
+
+      Escape and the close button remain the keyboard ways out.
+    */
+    let pressedOutside = false;
+    const onDown = (e: MouseEvent) => {
+      pressedOutside = !!panel && !panel.contains(e.target as Node);
+    };
+    const onUp = (e: MouseEvent) => {
+      if (pressedOutside && panel && !panel.contains(e.target as Node)) onCloseRef.current();
+      pressedOutside = false;
+    };
+
     document.addEventListener("keydown", onKey);
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("mouseup", onUp);
     return () => {
       document.removeEventListener("keydown", onKey);
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("mouseup", onUp);
       document.body.style.overflow = prevOverflow;
       opener?.focus?.();
     };
@@ -103,15 +131,15 @@ export function Modal({
 
   if (!open) return null;
 
+  // The backdrop is `presentation` and holds no handler — see the effect above.
   return (
-    <div className="ds-modal__backdrop" onMouseDown={onClose}>
+    <div className="ds-modal__backdrop" role="presentation">
       <div
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         className={cn("ds-modal", `ds-modal--${size}`, className)}
-        onMouseDown={(e) => e.stopPropagation()}
       >
         <div className="ds-modal__header">
           <h2 id={titleId} className="ds-modal__title">{title}</h2>

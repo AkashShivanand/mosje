@@ -577,6 +577,222 @@
           "hint": "e-Anudaan and e-Utthaan must NOT be in PORTAL_ORG_LOGOS — they resolve through the fallback to the State Emblem, which is what the library's Emblem variant now draws for them."
         }
       ]
+    },
+    {
+      "node": "55399:1367",
+      "where": "PortalLoginTemplate — Documentation › hero › axes",
+      "figma": "Device (2) × Auth Method (3) — Password, OTP and PIN.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
+          "pattern": "Password: \"password\",[\\s\\S]{0,60}PIN: \"pin\"",
+          "hint": "The Figma Auth Method axis maps 1:1 onto these three. A fourth value in the enum means the master needs a fourth variant, or the enum is wrong."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/types.ts",
+          "pattern": "\\| \"darpan\"",
+          "absent": true,
+          "hint": "NGO DARPAN and Aadhaar were removed from PortalAuthMode on 2026-08-17 — a full read of the handoff found no such screen in any portal. Reinstating either breaks the count this claim pins."
+        },
+        { "kind": "text", "value": "Password, OTP and PIN" }
+      ]
+    },
+    {
+      "node": "55400:1552",
+      "where": "PortalLoginTemplate — Documentation › 02 Properties › Device",
+      "figma": "variant → no code prop. Desktop is 1440 × 960 and Mobile 375 × 1138, where 1138 is the scroll height rather than a viewport. The React component is responsive in CSS, so the axis exists only to pin a breakpoint on the canvas.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/types.ts",
+          "pattern": "device\\?:",
+          "absent": true,
+          "hint": "Device is DELIBERATELY not a prop. Adding one would give a designer two ways to say the same thing and let them disagree."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
+          "pattern": "DELIBERATELY OMITTED",
+          "hint": "The Code Connect template must keep saying why Device has no prop, or an agent reading Dev Mode will invent one."
+        },
+        { "kind": "text", "value": "no code prop" }
+      ]
+    },
+    {
+      "node": "55400:1556",
+      "where": "PortalLoginTemplate — Documentation › 02 Properties › Auth Method",
+      "figma": "enum → the active role's defaultMode: password | otp | pin. Changes the form card only. DigiLocker is not a value here — it is an identity handoff above the credentials divider, switched by Show DigiLocker on Auth / AuthFormCard.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/types.ts",
+          "pattern": "defaultMode\\?: PortalAuthMode",
+          "hint": "The variant pins a method on the canvas; the live value is the component's own state, seeded from the active role's defaultMode."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
+          "pattern": "DIGILOCKER IS NOT AN AUTH METHOD",
+          "hint": "Giving DigiLocker a variant is the mistake this line exists to prevent — it is a consent handoff, not a credential form."
+        },
+        { "kind": "text", "value": "defaultMode" }
+      ]
+    },
+    {
+      "node": "55401:1489",
+      "where": "PortalLoginTemplate — Documentation › 03 Variants › lead",
+      "figma": "Six variants ship: two devices by three authentication methods. The role and the selector style ride on nested instances, so the three specimens below are all reachable without adding a single variant.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
+          "pattern": "Device × Auth Method` = 6",
+          "hint": "The set was re-cut in place from Device × Step = 8 to Device × Auth Method = 6. If that arithmetic changes, this section's three specimens and its title change with it."
+        },
+        { "kind": "text", "value": "Six variants ship" }
+      ]
+    },
+    {
+      "node": "55402:1854",
+      "where": "PortalLoginTemplate — Documentation › 05 Tokens › card",
+      "figma": "shape/12 · padding/24 · stack/16",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-shape-12",
+          "hint": "Both ladders are value-named, so the rung IS the pixel value. A rung that stops resolving to its own name is the defect space-linkage.test.mjs exists to catch."
+        },
+        { "kind": "token", "token": "--sa-padding-24" },
+        { "kind": "token", "token": "--sa-stack-16" },
+        {
+          "kind": "text",
+          "value": "shape/lg",
+          "absent": true,
+          "hint": "shape/lg, padding/xl and stack/m are DEAD names from before the value-naming migration. This node carried all three until 2026-09-02."
+        }
+      ]
+    },
+    {
+      "node": "55402:1870",
+      "where": "PortalLoginTemplate — Documentation › 06 Behaviour › PIN entry",
+      "figma": "The PIN field takes digits only, renders masked, and carries a Show control. Recovery is Forgot PIN rather than the password link, because a portal that signs in on a PIN has no password to reset.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.tsx",
+          "pattern": "inputMode=\"numeric\"",
+          "hint": "Digits only — the field also strips non-digits on change, so a pasted value cannot smuggle letters in."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.tsx",
+          "pattern": "Forgot PIN\\?",
+          "hint": "A PIN portal has no password to reset, so the recovery link must not be the password one."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.tsx",
+          "pattern": "Show PIN",
+          "hint": "The masked field needs its own reveal control, labelled for a PIN rather than a password."
+        },
+        { "kind": "text", "value": "Forgot PIN" }
+      ]
+    },
+    {
+      "node": "55402:1879",
+      "where": "PortalLoginTemplate — Documentation › 06 Behaviour › DigiLocker handoff",
+      "figma": "DigiLocker is an identity handoff, not a form mode, so it has no variant. The button sits above the credentials divider and is switched by Show DigiLocker on the form card. Hide it for officers by the role's audience, never by the tab's label — SCW calls that tab Admin and NMBA calls it Patient Monitoring.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/types.ts",
+          "pattern": "audience === \"officer\"",
+          "hint": "The taxonomy the rule keys off. A label test breaks on SCW (Admin) and NMBA (Patient Monitoring), which is why audience exists at all."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
+          "pattern": "never off the tab's label",
+          "hint": "Written in the Code Connect template because it is the instruction an agent reading Dev Mode needs and cannot infer from geometry."
+        },
+        { "kind": "text", "value": "identity handoff" }
+      ]
+    },
+    {
+      "node": "55402:1898",
+      "where": "PortalLoginTemplate — Documentation › 06 Behaviour › footnote",
+      "figma": "Put the portal's roles, authModes, authSelectorType and defaultMode in a login-config.ts beside the page.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/types.ts",
+          "pattern": "authModes\\?: PortalAuthMode\\[\\]",
+          "hint": "The page named a prop `authModeOptions` that is a different, optional field. A reader copying the wrong name gets a config that silently offers no methods."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/types.ts",
+          "pattern": "authSelectorType\\?:"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/types.ts",
+          "pattern": "defaultMode\\?:"
+        },
+        { "kind": "text", "value": "authModes" }
+      ]
+    },
+    {
+      "node": "55403:1848",
+      "where": "PortalLoginTemplate — Documentation › 07 Accessibility › WCAG 2.2",
+      "figma": "Focus is never obscured by the sticky masthead (2.4.11), and every control clears the 24 × 24 minimum (2.5.8). The captcha is off by default: a security code is a cognitive function test, and 3.3.8 Accessible Authentication forbids one without an alternative, so a portal switches it on only where it offers that alternative and says which in the same change.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.tsx",
+          "pattern": "const captchaBlock = config\\.captcha \\?",
+          "hint": "The captcha renders only when a portal opts in. Flipping this to a default-on would put a cognitive function test on every login in the estate."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/types.ts",
+          "pattern": "3\\.3\\.8",
+          "hint": "The reason for the default must stay beside the prop, or the next person removes the default as an inconvenience."
+        },
+        { "kind": "text", "value": "3.3.8" },
+        {
+          "kind": "text",
+          "value": "44 × 44",
+          "absent": true,
+          "hint": "44 × 44 is 2.5.5 Target Size (Enhanced), Level AAA, which this estate does not claim. The AA minimum is 24 × 24 — see standards-precedence.md."
+        }
+      ]
+    },
+    {
+      "node": "55403:1880",
+      "where": "PortalLoginTemplate — Documentation › 08 Code Connect",
+      "figma": "Maps Device and Auth Method onto the React props and carries the rules a snippet cannot show. Published from the repo root with npm run figma:connect; npm run check:code-connect gates drift.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "package.json",
+          "pattern": "\"figma:connect\"",
+          "hint": "The include glob in figma.config.json is root-relative, so running this from a workspace silently publishes nothing. The page must keep saying 'from the repo root'."
+        },
+        {
+          "kind": "source",
+          "file": "package.json",
+          "pattern": "\"check:code-connect\""
+        },
+        {
+          "kind": "text",
+          "value": "Not yet publishable",
+          "absent": true,
+          "hint": "The page claimed Code Connect needed a Developer seat this estate did not have. @figma/code-connect v2 is installed and the templates resolve; only publishing needs the token."
+        }
+      ]
     }
   ],
   "tokenTables": [

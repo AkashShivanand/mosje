@@ -134,9 +134,14 @@
   }
 
 
+  /* BOLDER, NOT BASE. `text/brand/primary/base` is gov-blue #0373DF, and on the
+     pale `primaryScale/50` ground this row uses it measures 4.19:1 — below the
+     4.5:1 that 14px normal-weight text needs. Found by running axe against a
+     live portal rather than against the documentation, which never renders an
+     ACTIVE row. `bolder` is 5.74:1 on the same ground. */
   .ds-sidebar__main-row.is-active {
     background: var(--sa-color-primaryScale-50);
-    color: var(--sa-text-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
   }
 
   /* Icon */
@@ -267,9 +272,10 @@
   }
 
 
+  /* Same ground, same measurement, same fix as the main row above. */
   .ds-sidebar__child-label.is-active {
     background: var(--sa-color-primaryScale-50);
-    color: var(--sa-text-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
     opacity: 1;
   }
 

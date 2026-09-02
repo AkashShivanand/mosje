@@ -174,7 +174,58 @@ const RATCHETS = {
    * and is ratcheted so it cannot quietly get lower still.
    */
   cvdWorstDeltaEFullRamp: 1.5,
+
+  /*
+   * ── THREE PROPERTIES THIS GATE DID NOT MEASURE ──────────────────────────
+   *
+   * Found 2026-09-02 by running the ramp through the industry six-check
+   * procedure. The estate's CVD gate above is rigorous and correct — it is
+   * strictly BETTER than the standard on the dimension it covers, because it
+   * checks all pairs across nine slots rather than adjacent pairs across eight.
+   * But it measures one dimension, and a palette solved hard against one
+   * constraint drifts on the others. All three of these are real today.
+   *
+   * The deepest one is `normalWorstDeltaEInSafeRange`. The ramp was solved so
+   * far for colour-blind separation that cat-8 (#323ca8) and cat-9 (#5a406e)
+   * ended up 11.7 apart in UNSIMULATED vision, against a floor of 15 — two
+   * series a full-colour-vision reader struggles to tell apart, produced by
+   * optimising for readers who cannot see colour. Nobody measured the ordinary
+   * case, so nobody saw it.
+   *
+   * These are ratcheted, not fixed, deliberately. A replacement palette was
+   * derived and validated against the standard's six checks and then REJECTED
+   * by the three tests above: it painted two slots green (which on this estate
+   * means "above target", so an arbitrary series on a caste-category breakdown
+   * reads as a good result), left five slots under 3:1 on a secondary chart
+   * ground, and regressed CVD separation to 5.7. That failure is the useful
+   * result: the next solve must satisfy all six of this file's constraints AT
+   * ONCE, and the constraints are now all written down. See
+   * docs/audit/ds-world-class-audit.md §F11.
+   */
+
+  /** OKLCH L, 0-100. Outside 43-77 a mark is too dark or too pale to sit on either ground. */
+  slotsOutsideLightnessBand: 4,
+
+  /** OKLCH C. Below 0.10 a hue reads as grey, so the series loses its identity. */
+  slotsBelowChromaFloor: 4,
+
+  /*
+   * NAMED AS DEBT, NOT AS CONFORMANCE. These three tests are ratchets over a
+   * deficit that is real today: four slots outside the band, four below the
+   * chroma floor, and a worst ordinary-vision pair at 11.7 against a floor of
+   * 15. An earlier draft named them "every categorical slot sits inside the
+   * lightness band" and so on — three green ticks beside three untrue
+   * sentences, which is exactly the defect the A11yChecklist rebuild was for.
+   * A test name is read far more often than its baseline.
+   */
+  /** Worst UNSIMULATED separation in the safe range. Floor is 15; this is the gap. */
+  normalWorstDeltaEInSafeRange: 11.7,
 };
+
+/** OKLCH lightness band a categorical mark must sit inside, on a light ground. */
+const LIGHTNESS_BAND = [43, 77];
+/** OKLCH chroma below which a hue reads as grey rather than as an identity. */
+const CHROMA_FLOOR = 0.1;
 
 /** Ratchet direction: bigger is better for dE, smaller is better for a count. */
 function assertRatchet(name, measured, baseline, betterIsHigher) {
@@ -414,5 +465,79 @@ test("no ledger entry outlives the defect it records", () => {
     `${stale.length} ledger entries no longer match a real failure. The defect was fixed and ` +
       `the entry was not deleted, so this gate is now silencing a rule nothing is breaking:\n  ` +
       stale.join("\n  "),
+  );
+});
+
+test("the lightness-band deficit does not grow", () => {
+  /*
+   * A mark outside the band is either too dark to read against the dark ground
+   * or too pale against the light one. It is not a contrast failure — the
+   * contrast test above passes — it is a legibility one: the mark is there, and
+   * the eye has to work to place it among its neighbours.
+   */
+  const outside = CATEGORICAL.filter((c) => {
+    const { L } = hexToOklch(c.hex);
+    return L < LIGHTNESS_BAND[0] || L > LIGHTNESS_BAND[1];
+  });
+
+  assertRatchet(
+    `categorical slots outside the OKLCH lightness band ${LIGHTNESS_BAND.join("-")} ` +
+      `(${outside.map((c) => c.name).join(", ") || "none"})`,
+    outside.length,
+    RATCHETS.slotsOutsideLightnessBand,
+    false,
+  );
+});
+
+test("the chroma-floor deficit does not grow", () => {
+  /*
+   * Chroma is what makes a series identifiable at a glance across a legend and
+   * a plot. Below the floor the mark still has a hue, but a reader scanning a
+   * twelve-series chart cannot use it — the slot has stopped carrying identity
+   * and is doing the job of a gridline.
+   */
+  const flat = CATEGORICAL.filter((c) => hexToOklch(c.hex).C < CHROMA_FLOOR);
+
+  assertRatchet(
+    `categorical slots below the OKLCH chroma floor of ${CHROMA_FLOOR} ` +
+      `(${flat.map((c) => c.name).join(", ") || "none"})`,
+    flat.length,
+    RATCHETS.slotsBelowChromaFloor,
+    false,
+  );
+});
+
+test("the ordinary-vision separation gap does not widen", () => {
+  /*
+   * The complement of the CVD test, and the one that was missing.
+   *
+   * Optimising a ramp for dichromacy pushes hues toward the blue-yellow axis,
+   * where protan and deutan separation survives. Do it hard enough and two
+   * slots that a dichromat can tell apart become nearly the same colour to
+   * everyone else. That is what happened here: cat-8 and cat-9 are 11.7 apart
+   * unsimulated, against a floor of 15.
+   *
+   * So both directions are now measured. A palette has to clear the floor for
+   * readers who see colour AND for readers who do not; clearing one at the
+   * expense of the other is not an accessible palette, it is a traded defect.
+   */
+  let worst = Infinity;
+  let who = "";
+  for (let i = 0; i < CATEGORICAL_SAFE_COUNT; i++) {
+    for (let j = i + 1; j < CATEGORICAL_SAFE_COUNT; j++) {
+      const d = deltaE(CATEGORICAL[i].hex, CATEGORICAL[j].hex);
+      if (d < worst) {
+        worst = d;
+        who = `cat-${i + 1}/cat-${j + 1}`;
+      }
+    }
+  }
+
+  assertRatchet(
+    `worst UNSIMULATED separation within the first ${CATEGORICAL_SAFE_COUNT} slots (${who}); ` +
+      `the industry floor is 15`,
+    Math.round(worst * 10) / 10,
+    RATCHETS.normalWorstDeltaEInSafeRange,
+    true,
   );
 });

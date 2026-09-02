@@ -9,11 +9,21 @@ import type { PortalLoginConfig } from "@mosje/design-system";
  *
  * Where `PortalLoginShell` gives you the page furniture and leaves the form to
  * the app, this goes one step further: you hand it `config` and it renders the
- * role tabs, the login-method selector and the correct fields for each of the
- * three `PortalAuthMode`s — `password`, `otp` and `digilocker`. (`darpan` and
+ * role tabs, the login-method selector and the correct fields for each
+ * `PortalAuthMode` — `password`, `otp`, `pin` and `digilocker`. (`darpan` and
  * `aadhaar` were removed on 2026-08-17: a full read of the handoff found no such
  * screen in any portal.) Submitting calls `onSubmit` with a `LoginSubmitPayload`
- * carrying the role, the mode and the credentials.
+ * carrying the role, the mode and the credentials. A PIN arrives as
+ * `credentials.pin`, never as `credentials.password`.
+ *
+ * ### The captcha is OFF unless the portal asks for it
+ *
+ * `config.captcha` adds the security-code field to the password and PIN forms,
+ * and it defaults to `false` deliberately. A captcha is a cognitive function
+ * test, and WCAG 2.2 3.3.8 Accessible Authentication (AA) forbids one without an
+ * alternative. Switch it on only for a portal that offers that alternative, and
+ * say which in the same change. The Figma master mirrors this: `Show captcha` on
+ * `Auth / AuthFormCard` is `false` by default for the same reason.
  *
  * ### Landing on a specific role tab
  *
@@ -163,7 +173,7 @@ export const Submitting: Story = {
 };
 
 /**
- * **Every login method in one place.** A single role exposing all three
+ * **Every login method in one place.** A single role exposing all four
  * `PortalAuthMode`s — not a realistic portal, but the fastest way to review the
  * field sets side by side. Note DigiLocker is an identity handoff, not a form mode: it
  * collect a consent action, not a password.
@@ -177,12 +187,53 @@ export const AllAuthModes: Story = {
         {
           id: "all",
           label: "Every method",
-          description: "A specimen role carrying all three modes for review.",
-          authModes: ["password", "otp", "digilocker"],
+          description: "A specimen role carrying all four modes for review.",
+          authModes: ["password", "otp", "pin", "digilocker"],
           authSelectorType: "dropdown",
           defaultMode: "password",
         },
       ],
+    },
+  },
+};
+
+/**
+ * **A PIN portal, with the captcha switched on.**
+ *
+ * The National Overseas Scholarship signs in on a registered identifier and a
+ * six-digit numeric PIN — both its screens in the handoff are `Sign In Pin`, so
+ * `pin` is a real mode rather than a variation of `password`. The field takes
+ * digits only, is masked with a Show/Hide toggle, and recovers through
+ * "Forgot PIN?" rather than the password link.
+ *
+ * `captcha: true` is set here to show the field, and it is the exception rather
+ * than the pattern: leave it off unless the portal offers a non-cognitive way
+ * through (WCAG 2.2 3.3.8).
+ */
+export const PinLogin: Story = {
+  args: {
+    config: {
+      ...eAnudaan,
+      portalId: "nos",
+      portalName: "National Overseas Scholarship",
+      portalDescription:
+        "Scholarship for Scheduled Caste, Denotified Nomadic and Semi-Nomadic Tribe, Landless Agricultural Labourer and Traditional Artisan candidates studying abroad.",
+      captcha: true,
+      roles: [
+        {
+          id: "applicant",
+          label: "Applicant",
+          audience: "citizen",
+          description: "Candidates registered for the scholarship.",
+          authModes: ["pin"],
+          defaultMode: "pin",
+        },
+      ],
+      links: {
+        forgotPasswordHref: "/portals/nos/forgot-pin",
+        registerHref: "/portals/nos/register",
+        helpFaqHref: "/portals/nos/help",
+      },
     },
   },
 };
@@ -224,5 +275,20 @@ export const DeepLinkedRole: Story = {
   args: {
     roleId: eAnudaan.roles[eAnudaan.roles.length - 1]?.id,
     onRoleChange: (id: string) => console.info("role ->", id),
+  },
+};
+
+/**
+ * **Embedded in a page that already has an `<h1>`.**
+ *
+ * The form heading is the page's `<h1>` by default, which is what a real login
+ * page needs and what GIGW 3.0's one-h1-per-page rule assumes. Wherever the
+ * template sits INSIDE another page — the documentation page for it, a modal in
+ * an authenticated shell — `headingLevel` demotes it so the host page keeps a
+ * single first-level heading and its outline stays readable.
+ */
+export const EmbeddedHeadingLevel: Story = {
+  args: {
+    headingLevel: 2,
   },
 };

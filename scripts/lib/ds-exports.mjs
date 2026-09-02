@@ -24,6 +24,19 @@ export const BARREL = process.env.DS_BARREL ?? "packages/design-system/index.ts"
  * being forgotten.
  */
 export const NOT_COMPONENTS = new Set([
+  // The illustration set's own index — a string array naming every scene, used
+  // by the specimen sheet and by anything that needs to enumerate them.
+  "SCENE_NAMES",
+  // How many categorical chart slots are actually distinguishable — a measured
+  // number, not a component. `check:chart-palette` computes it from the token
+  // file and fails if this constant and the measurement disagree, so the
+  // documentation that matters is the gate, not a page.
+  "CHART_CATEGORICAL_SAFE_CAP",
+  // The texture encoding: `texturedColor(i)` resolves a series to one of the
+  // hatch patterns a chart emits when it sets `textured`, and the count is how
+  // many exist. A resolver and a number, not components — they are shown in
+  // BulletChart.stories.tsx and documented on the Bullet Chart page.
+  "texturedColor", "CHART_TEXTURE_COUNT",
   // Constants
   "COLOR_MODES", "COLOR_MODE_ATTR", "COLOR_MODE_COOKIE", "DEFAULT_COLOR_MODE",
   "DEFAULT_APPS", "PORTAL_CATEGORIES", "PAN_HOLDER_TYPES", "PORTAL_LABELS",
@@ -106,6 +119,24 @@ export const NOT_RENDERABLE_IN_STORYBOOK = new Set([
  * can see the claim is real.
  */
 export const DOCUMENTED_BY = {
+  // DOCUMENTED ON A FOUNDATION PAGE RATHER THAN A COMPONENT ROUTE. The gate
+  // only scans `components/`, so these three read as undocumented while their
+  // real documentation sits one directory across. Verified by counting actual
+  // references on each page, not by assuming: Illustration 20, the UX4G widget
+  // 6, ToastProvider 8.
+  Illustration: "Illustration (foundation)",
+  UX4GAccessibilityWidget: "Accessibility (foundation)",
+  ToastProvider: "Toast",
+  // THE MASTHEAD'S PARTS. `SiteHeader` is the component a consumer composes;
+  // these are the pieces it composes FROM, and none is used on its own. Its page
+  // names all seven and spends a section on the distinction that actually trips
+  // people up — MenuToggle drives a persistent sidebar and reports
+  // `aria-expanded`, SheetToggle opens an overlay and has one glyph and no
+  // second state. Splitting that across seven routes would put the comparison
+  // on none of them.
+  MenuToggle: "SiteHeader", SheetToggle: "SiteHeader", NavItemLink: "SiteHeader",
+  NavDropdown: "SiteHeader", DropdownItem: "SiteHeader", MegaMenu: "SiteHeader",
+  MegaMenuItem: "SiteHeader",
   CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
   CardTitle: "Card", CardSubtitle: "Card",
   TabPanel: "Tabs",
@@ -113,6 +144,10 @@ export const DOCUMENTED_BY = {
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
   ChartTooltip: "Legend",
   AccordionItem: "Accordion", VerticalTimelineItem: "VerticalTimeline",
+  // The GROUPED form of each selection control. A reader asking "how do I
+  // group radios" goes to the Radio page, not to a separate route — the
+  // fieldset/legend wrapper belongs beside the control it wraps.
+  RadioGroup: "Radio", CheckboxGroup: "Checkbox",
   // ChartExport is the download control ChartCard renders in its header when
   // `exportable`; it cannot stand alone (it reads the sibling chart's <svg> and
   // <table> from the DOM), so it is shown and documented through ChartCard.

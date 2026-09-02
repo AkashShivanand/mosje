@@ -57,6 +57,54 @@ tested `src.includes("FeedbackBar")`, which the import line satisfies — so a p
 that imported the component and never rendered it scored as conformant. Caught by
 deleting a rendered `<FeedbackBar />` and watching the gate stay green.
 
+## 2a. The page is RENDERED from a template, and the API is GENERATED
+
+Superseded 2026-09-02. §2 above describes six elements a page must carry, and it
+was right about the elements and wrong about how they arrive. Requiring each page
+to assemble them by hand produced exactly what hand-assembly always produces:
+**three of a hundred pages carried the shape**, ninety-nine declared their own
+`const h2Style`, and with those came 161 unbound `lineHeight` numbers and 107
+`maxWidth` px literals across NINE different prose measures — on the surface
+`documentation-ds-linkage.md` calls the strictest in the estate.
+
+**A page is now `<ComponentDocPage />`** (`docs-kit/component-doc-page.tsx`). It
+renders the whole shape from data, so the six elements arrive by construction
+rather than by memory, and the measure is one token-bound value in one stylesheet
+instead of nine numbers in a hundred files. `check:ds-pages` recognises the
+template — but only when the page supplies every prop that carries one of the six,
+so an empty shell still fails.
+
+**The props table is GENERATED, never written.** `tools/props-extract/extract.mjs`
+reads the TypeScript type checker and emits `props.generated.ts`; a page passes
+`propsFrom="ButtonProps"`. Hand-written tables are what put a prop called `action`
+on the ChartCard page when the prop is `actions`, marked two optional `AppShell`
+props required, documented two of `BarChart`'s eleven, and published `Modal` sizes
+of 400/600/800px against a CSS of 24rem/28rem/40rem. Of twelve tables audited
+against their implementations, **one** was correct. `npm run check:props` fails
+when the generated output is stale, so an interface can no longer move without the
+documentation following.
+
+Use the hand-written `props` array only for what the extractor cannot see — a
+hook's arguments, a callback's shape, a sub-object like `DataTableColumn` — and
+pass both.
+
+**The accessibility checklist defaults to UNVERIFIED.** `A11yChecklist` rows carry
+`status: "verified" | "partial" | "untested"`, defaulting to `untested`, plus an
+`evidence` field. The previous version rendered a fixed green tick against named
+WCAG criteria on 74 pages with no way to say a criterion had not been checked —
+a compliance assertion with nothing behind it, on a Government of India property.
+**A tick is earned by naming the evidence.** Do not mark a row `verified` because
+the component looks right.
+
+**A component with no page now fails a gate.** `check:docs-coverage` asserts the
+direction `check:docs-routes` never did — it verified every PAGE had a route and
+printed "one per component", which is a statement about the pages, not about the
+components. Thirty-eight exports had no page, including `Breadcrumb` (the newest
+release's headline), `Pagination`, and `SectionTitle`, which
+`ui-restraint-and-copy.md` §3 mandates for every section heading in the estate.
+Ninety-nine pages hand-rolled a heading instead, which is what an undiscoverable
+component produces.
+
 ## 3. Organisation marks — the resolution rule
 
 **A mark ships at 3× the largest surface that renders it, capped by its own source,
