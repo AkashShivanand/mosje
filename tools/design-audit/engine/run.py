@@ -40,16 +40,23 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--project", required=True)
     ap.add_argument("--phase", default="analyze+report",
-                    choices=["capture", "analyze", "report", "analyze+report", "all"])
+                    choices=["capture", "analyze", "report", "analyze+report", "all", "bundle"])
     ap.add_argument("--role", default=None, help="capture only this role (merged into the "
                     "existing manifest — other roles' entries are preserved)")
     ap.add_argument("--allow-empty", action="store_true",
                     help="permit a full capture that captured nothing to overwrite a non-empty manifest")
+    ap.add_argument("--force", action="store_true",
+                    help="ignore any existing capture-bundle.json and re-capture everything")
+    ap.add_argument("--verify", action="store_true",
+                    help="always run the per-screen freshness check, even when the build "
+                         "fingerprint is unchanged (the default for a QC run)")
     a = ap.parse_args()
     ph = a.phase
-    preflight(need_browser=ph in ("capture", "all"))
+    preflight(need_browser=ph in ("capture", "all", "bundle"))
     if ph in ("capture", "all"):
-        print("== PHASE: capture =="); CAP.run(a.project, a.role, a.allow_empty)
+        print("== PHASE: capture =="); CAP.run(a.project, a.role, a.allow_empty, a.force, a.verify)
+    if ph == "bundle":
+        print("== PHASE: bundle =="); CAP.refresh(a.project, a.force, a.verify)
     if ph in ("analyze", "analyze+report", "all"):
         print("== PHASE: analyze =="); AN.run(a.project)
     if ph in ("report", "analyze+report", "all"):

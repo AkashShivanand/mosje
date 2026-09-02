@@ -326,7 +326,9 @@ def _engine_sha():
     except Exception:
         return None
 
-def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None):
+def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", decisions=None):
+    if decisions is None:
+        decisions = {}
     base = role["base"]; width = cfg.get("capture", {}).get("width", 1440)
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
     routes = discover_routes(pg, cfg)
@@ -349,7 +351,6 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None):
         print(f"  carried forward {len(carried)} route(s) seen in a previous run", flush=True)
     captured = []
     failed = []
-    decision = "recapture"  # Task 9 replaces this; until then every screen is a fresh capture.
     for path in routes:
         slug = slugify(role["name"], path)
         vol_selectors = MAN.volatile_selectors(man, slug) if man else []
@@ -375,10 +376,40 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None):
                     failed.append(slug)
                     continue
         pg.wait_for_timeout(waitms)
-        # Settle FIRST so the screenshot and the extraction describe the same layout.
-        settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
+        prev = B.find_screen(prev_bundle, slug) if prev_bundle else None
         png = os.path.join(paths["captures_live"], f"{slug}.png")
         dpr = cfg.get("capture", {}).get("dpr", 2)
+
+        decision = "recapture"
+        if mode == "verify" and prev:
+            # Cheap probe: extract only, no settle and no screenshot — decides whether a
+            # full re-capture is needed, so a `verify` run stays fast when nothing moved.
+            try:
+                probe = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
+                kept, _ = B.mask_rows(probe["rows"], MAN.volatile_patterns(man, slug) if man else [])
+                decision = B.decide_screen(prev, B.structure_hash(kept),
+                                           B.geometry_hash(kept, probe["pageH"]))
+            except Exception:
+                decision = "recapture"
+
+        if decision == "reuse" and prev and os.path.exists(png):
+            decisions[slug] = "reuse"
+            B.upsert_screen(bdl, prev)
+            captured.append({"slug": slug, "role": role["name"], "route": path,
+                             "url": base + path, "png": prev["png"], "rows": prev["totalRows"],
+                             "pageH": prev["pageH"], "pngH": prev["pngH"],
+                             "truncated": prev["truncated"]})
+            print(f"  = {slug}: reused (design and layout unchanged)", flush=True)
+            continue
+        if decision == "reuse":
+            # The probe said reuse but the PNG the bundle points to has vanished — recapture
+            # for real rather than record "reused" for a screenshot that no longer exists.
+            print(f"  ! {slug}: probe says reuse but {png} is missing — recapturing", flush=True)
+            decision = "recapture"
+        decisions[slug] = decision
+
+        # Settle FIRST so the screenshot and the extraction describe the same layout.
+        settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
         try:
             shoot(pg, png, settled, dpr, width)
         except Exception: pass
@@ -449,7 +480,7 @@ def merge_manifest(existing, fresh):
     merged += [row for row in fresh if row.get("slug") not in seen]
     return merged
 
-def run(project, only_role=None, allow_empty=False):
+def run(project, only_role=None, allow_empty=False, force=False, verify=False):
     cfg, paths = C.load(project)
     man = MAN.load(paths["project"])
     if man:
@@ -474,14 +505,28 @@ def run(project, only_role=None, allow_empty=False):
     # carry-forward/shrink-guard below — no bundle write happens in between, so one load
     # correctly represents "the previous run" for both uses.
     prev_bundle = B.load_bundle(paths)
-    auth = cfg["live"]["auth"]
     mpath = os.path.join(paths["captures"], "_captured.json")
     try:
         existing = json.load(open(mpath)) if os.path.exists(mpath) else []
     except Exception as e:
         print(f"!! could not read existing manifest ({str(e)[:80]}) — treating it as empty", flush=True)
         existing = []
+    # Tier 0: consult the previous bundle before launching a browser at all. `reuse-all`
+    # short-circuits the whole run; `full`/`verify` fall through and capture_role decides
+    # per screen (mode == "verify" probes cheaply, mode == "full" always recaptures).
+    res = B.resolve_freshness(prev_bundle, man, cfg, force=force, verify=verify)
+    print(f"freshness: {res['mode']} — {res['reason']}", flush=True)
+    if res["mode"] == "reuse-all":
+        drift = B.verify_integrity(prev_bundle, paths["project"])
+        ok = B.write_freshness(paths, prev_bundle, res, {}, drift)
+        print(("freshness gate: PASS — reusing the existing bundle, no browser launched"
+               if ok else f"freshness gate: FAIL — {len(drift)} capture(s) drifted, see out/freshness.md"),
+              flush=True)
+        return existing
+    mode = res["mode"]
+    auth = cfg["live"]["auth"]
     manifest = []
+    decisions = {}  # slug -> "recapture"|"reshoot"|"reuse", tallied into freshness.md
     visited_roles = set()  # roles capture_role actually ran for — everyone else's bundle
                             # screens (SKIP/ABORTED/not-in---role) must be carried forward, not lost.
     with sync_playwright() as p:
@@ -508,8 +553,13 @@ def run(project, only_role=None, allow_empty=False):
                 else:
                     pg.goto(role["base"] + "/", wait_until="domcontentloaded", timeout=60000); pg.wait_for_timeout(3000)
                     print(f"[{role['name']}] public -> {pg.url}", flush=True)
-                manifest += capture_role(pg, role, cfg, paths, bdl, man, prev_bundle)
+                manifest += capture_role(pg, role, cfg, paths, bdl, man, prev_bundle, mode, decisions)
                 visited_roles.add(role["name"])
+                # Record this host's build fingerprint so a FUTURE run's Tier 0 check
+                # (resolve_freshness) has something to compare against — without this the
+                # bundle's `hosts` map stays empty forever and reuse-all can never trigger.
+                fp = B.build_fingerprint(role["base"])
+                bdl.setdefault("hosts", {})[role["name"]] = {"base": role["base"], "buildFingerprint": fp}
                 ctx.close()
             except Exception as e:
                 print(f"[{role['name']}] ROLE ABORTED: {str(e)[:120]}", flush=True)
@@ -549,6 +599,7 @@ def run(project, only_role=None, allow_empty=False):
             if s.get("role") not in visited_roles and not B.find_screen(bdl, s["slug"]):
                 B.upsert_screen(bdl, s)
         bdl["records"] = {**prev.get("records", {}), **bdl.get("records", {})}
+        bdl["hosts"] = {**prev.get("hosts", {}), **bdl.get("hosts", {})}
         prev_n, new_n = len(prev.get("screens", [])), len(bdl.get("screens", []))
         if new_n < prev_n:
             dropped = sorted({s.get("slug") or "?" for s in prev.get("screens", [])} -
@@ -556,6 +607,9 @@ def run(project, only_role=None, allow_empty=False):
             print(f"!! bundle SHRANK {prev_n} -> {new_n}: {len(dropped)} slug(s) no longer "
                   f"present (aborted/skipped roles?): {dropped[:8]}{' …' if len(dropped) > 8 else ''}",
                   flush=True)
+    drift = B.verify_integrity(bdl, paths["project"])
+    if not B.write_freshness(paths, bdl, res, decisions, drift):
+        print(f"freshness gate: FAIL — {len(drift)} capture(s) drifted, see out/freshness.md", flush=True)
     B.write_bundle(paths, bdl)
     print(f"BUNDLE {len(bdl['screens'])} screen states -> out/capture-bundle.json", flush=True)
     return out
@@ -566,7 +620,17 @@ if __name__ == "__main__":
     ap.add_argument("--project", required=True); ap.add_argument("--role", default=None)
     ap.add_argument("--allow-empty", action="store_true",
                     help="permit a full run that captured nothing to overwrite a non-empty manifest")
-    a = ap.parse_args(); run(a.project, a.role, a.allow_empty)
+    ap.add_argument("--force", action="store_true",
+                    help="ignore any existing capture-bundle.json and re-capture everything")
+    ap.add_argument("--verify", action="store_true",
+                    help="always run the per-screen freshness check, even when the build "
+                         "fingerprint is unchanged")
+    a = ap.parse_args(); run(a.project, a.role, a.allow_empty, a.force, a.verify)
+
+
+def refresh(project, force=False, verify=True):
+    """Re-check freshness without a full capture. `--phase bundle` — what a QC run calls first."""
+    return run(project, only_role=None, allow_empty=False, force=force, verify=verify)
 
 
 def audit_capture_integrity(paths, verbose=True):
