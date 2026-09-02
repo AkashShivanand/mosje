@@ -3,7 +3,7 @@
   "surface": "#ffffff",
   "outOfBand": [
     "--sa-chart-cat-4",
-    "--sa-chart-cat-8",
+    "--sa-chart-cat-6",
     "--sa-chart-cat-9",
     "--sa-chart-cat-10"
   ],
@@ -19,12 +19,12 @@
       "normal": {
         "a": "--sa-chart-cat-8",
         "b": "--sa-chart-cat-9",
-        "deltaE": 11.72
+        "deltaE": 12.63
       },
       "protan": {
-        "a": "--sa-chart-cat-6",
-        "b": "--sa-chart-cat-7",
-        "deltaE": 8.13
+        "a": "--sa-chart-cat-2",
+        "b": "--sa-chart-cat-3",
+        "deltaE": 10.15
       },
       "deutan": {
         "a": "--sa-chart-cat-3",
@@ -39,12 +39,12 @@
     },
     "all": {
       "normal": {
-        "a": "--sa-chart-cat-8",
+        "a": "--sa-chart-cat-6",
         "b": "--sa-chart-cat-9",
         "deltaE": 11.72
       },
       "protan": {
-        "a": "--sa-chart-cat-6",
+        "a": "--sa-chart-cat-5",
         "b": "--sa-chart-cat-12",
         "deltaE": 4.35
       },
@@ -60,5 +60,5 @@
       }
     }
   },
-  "safeCap": 4
+  "safeCap": 6
 }
