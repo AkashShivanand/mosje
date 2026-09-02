@@ -121,6 +121,10 @@ export const DOCUMENTED_BY = {
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
   ChartTooltip: "Legend",
   AccordionItem: "Accordion", VerticalTimelineItem: "VerticalTimeline",
+  // The GROUPED form of each selection control. A reader asking "how do I
+  // group radios" goes to the Radio page, not to a separate route — the
+  // fieldset/legend wrapper belongs beside the control it wraps.
+  RadioGroup: "Radio", CheckboxGroup: "Checkbox",
   // ChartExport is the download control ChartCard renders in its header when
   // `exportable`; it cannot stand alone (it reads the sibling chart's <svg> and
   // <table> from the DOM), so it is shown and documented through ChartCard.

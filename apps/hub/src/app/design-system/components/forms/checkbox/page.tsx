@@ -84,6 +84,33 @@ export default function CheckboxPage(): React.JSX.Element {
         },
       ]}
       code={
+        <>
+        <section className="cdp__section" aria-labelledby="cdp-group">
+          <h2 id="cdp-group" className="cdp__h2">
+            Grouping — Use <code>CheckboxGroup</code>
+          </h2>
+          <p>
+            A lone <code>Checkbox</code> is right for a single declaration. The moment there are
+            several answering one question, the question itself needs an accessible name, and only{" "}
+            <code>&lt;fieldset&gt;</code> + <code>&lt;legend&gt;</code> provides it.{" "}
+            <code>CheckboxGroup</code> holds an array value, never mutates it, and emits the
+            selection in <strong>option order rather than click order</strong> — a set that
+            reorders itself as the citizen clicks is unreadable on review.
+          </p>
+          <CodeBlock>{`import { CheckboxGroup } from "@mosje/design-system";
+
+<CheckboxGroup
+  legend="Assistance Applied For"
+  hint="Select every scheme the applicant is claiming under."
+  options={[
+    { value: "hostel",      label: "Hostel Accommodation" },
+    { value: "scholarship", label: "Post-Matric Scholarship" },
+    { value: "device",      label: "Assistive Device" },
+  ]}
+  value={claims}
+  onChange={setClaims}
+/>`}</CodeBlock>
+        </section>
         <section className="cdp__section" aria-labelledby="cdp-example">
           <h2 id="cdp-example" className="cdp__h2">
             Example
@@ -112,6 +139,7 @@ const some = items.some((i) => i.selected);
   onChange={(event) => selectAll(event.target.checked)}
 />`}</CodeBlock>
         </section>
+        </>
       }
       accessibility={
         <section className="cdp__section" aria-labelledby="cdp-keys">

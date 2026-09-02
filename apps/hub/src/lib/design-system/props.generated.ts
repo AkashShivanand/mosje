@@ -1829,6 +1829,80 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "CheckboxGroupProps": {
+    "source": "packages/design-system/components/forms/control-group.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "legend",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The group's own question, rendered as a `<legend>`. This is the whole reason the component exists — see the note below. It is required, and it is not decorative."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string[]) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "options",
+        "type": "ControlGroupOption[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Error message; sets the group's invalid state and is announced."
+      },
+      {
+        "name": "hint",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Helper text, linked through `aria-describedby`."
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "orientation",
+        "type": "\"vertical\" | \"horizontal\"",
+        "required": false,
+        "default": "\"vertical\"",
+        "description": ""
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "\"default\" | \"card\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "`card` renders each option as a selectable card."
+      }
+    ]
+  },
   "CheckboxProps": {
     "source": "packages/design-system/components/forms/checkbox.tsx",
     "inheritsNative": true,
@@ -5426,6 +5500,86 @@ export const GENERATED_PROPS = {
         "type": "number",
         "required": false,
         "description": "The figure, 0–`max`. **Optional**: a bar with no figure is a real state, and it is not zero. This used to be required, so a caller with nothing to show had one honest option — pass `0` — and the bar then rendered a confident empty track reading `0%`, with `aria-valuenow={0}` telling a screen reader the same thing. \"The department reports nought per cent\" and \"no figure has been published\" are different sentences, and one of them was being said for both."
+      }
+    ]
+  },
+  "RadioGroupProps": {
+    "source": "packages/design-system/components/forms/control-group.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "legend",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": "The group's own question, rendered as a `<legend>`. This is the whole reason the component exists — see the note below. It is required, and it is not decorative."
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": true,
+        "description": "Binds the options into one group. Required by the native control."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "options",
+        "type": "ControlGroupOption[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Error message; sets the group's invalid state and is announced."
+      },
+      {
+        "name": "hint",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Helper text, linked through `aria-describedby`."
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "orientation",
+        "type": "\"vertical\" | \"horizontal\"",
+        "required": false,
+        "default": "\"vertical\"",
+        "description": ""
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "\"default\" | \"card\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": "`card` renders each option as a selectable card."
       }
     ]
   },

@@ -7,6 +7,7 @@ import {
   type A11yItem,
 } from "@/components/design-system/docs-kit";
 
+import { RadioGroupSpecimen } from "./group-specimen";
 import { RadioPlayground } from "./radio-playground";
 
 export const metadata: Metadata = {
@@ -117,6 +118,44 @@ export default function RadioPage(): React.JSX.Element {
         </section>
       }
       code={
+        <>
+        <section className="cdp__section" aria-labelledby="cdp-group">
+          <h2 id="cdp-group" className="cdp__h2">
+            Grouping — Use <code>RadioGroup</code>
+          </h2>
+          <p>
+            A bare set of radios has no accessible name for the QUESTION it asks. A screen
+            reader announces “Scheduled Caste, radio button, 1 of 4” and never says “Category of
+            the Applicant” — the one piece of information that makes the four options mean
+            anything. <code>RadioGroup</code> supplies the <code>&lt;fieldset&gt;</code> and{" "}
+            <code>&lt;legend&gt;</code> that WCAG 1.3.1 and 3.3.2 ask for, and wires{" "}
+            <code>hint</code> and <code>error</code> through <code>aria-describedby</code>.
+          </p>
+          <RadioGroupSpecimen />
+          <CodeBlock>{`import { RadioGroup } from "@mosje/design-system";
+
+<RadioGroup
+  legend="Category of the Applicant"
+  name="category"
+  required
+  hint="As recorded on the caste certificate issued by the competent authority."
+  error={submitted && !category ? "Select the applicant's category" : undefined}
+  options={[
+    { value: "sc",  label: "Scheduled Caste" },
+    { value: "st",  label: "Scheduled Tribe" },
+    { value: "obc", label: "Other Backward Class" },
+    { value: "gen", label: "General" },
+  ]}
+  value={category}
+  onChange={setCategory}
+/>`}</CodeBlock>
+          <p>
+            <code>legend</code> is required, not optional. Where a nearby heading already asks the
+            question, pass the legend anyway and hide it with <code>sa-sr-only</code> — a
+            visually-hidden legend is still a legend. Omitting it is the defect the component
+            exists to prevent.
+          </p>
+        </section>
         <section className="cdp__section" aria-labelledby="cdp-example">
           <h2 id="cdp-example" className="cdp__h2">
             Example
@@ -151,6 +190,7 @@ export default function RadioPage(): React.JSX.Element {
   ))}
 </fieldset>`}</CodeBlock>
         </section>
+        </>
       }
       accessibility={
         <section className="cdp__section" aria-labelledby="cdp-keys">

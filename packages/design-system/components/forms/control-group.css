@@ -1,0 +1,61 @@
+/* Declare the order before using it — see design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* A fieldset carries a default border, margin and padding in every browser,
+     and the estate's own spacing is what should decide those. Reset, then
+     rebuild from tokens. */
+  .ds-control-group {
+    min-inline-size: 0; /* fieldsets refuse to shrink below content without this */
+    margin: 0;
+    padding: 0;
+    border: 0;
+  }
+
+  .ds-control-group__legend {
+    /* A legend is not positioned like a normal child — `float: none` plus a
+       zero padding keeps it on the flow line the label above it would occupy. */
+    padding: 0;
+    margin-block-end: var(--sa-stack-8);
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-title-3-size);
+    line-height: var(--sa-type-title-3-lh);
+    font-weight: 600;
+  }
+
+  .ds-control-group__required {
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-control-group__hint {
+    margin: 0 0 var(--sa-stack-8);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-control-group__options {
+    display: flex;
+    gap: var(--sa-stack-8);
+  }
+
+  .ds-control-group__options.is-vertical {
+    flex-direction: column;
+  }
+
+  /* WRAPS, deliberately. A horizontal group that cannot wrap forces a
+     horizontal scroll on a phone, and the estate's rule is that the page body
+     never scrolls sideways. */
+  .ds-control-group__options.is-horizontal {
+    flex-flow: row wrap;
+    column-gap: var(--sa-inline-16);
+  }
+
+  .ds-control-group__error {
+    margin: var(--sa-stack-8) 0 0;
+    color: var(--sa-text-status-error-bolder);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 600;
+  }
+}

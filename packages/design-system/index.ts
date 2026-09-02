@@ -104,6 +104,8 @@ export { PasswordStrengthMeter, strengthFromScore } from "./components/forms/pas
 export type { PasswordStrengthMeterProps, PasswordStrength } from "./components/forms/password-strength-meter";
 export { CaptchaField } from "./components/forms/captcha-field";
 export type { CaptchaFieldProps } from "./components/forms/captcha-field";
+export { RadioGroup, CheckboxGroup } from "./components/forms/control-group";
+export type { RadioGroupProps, CheckboxGroupProps, ControlGroupOption } from "./components/forms/control-group";
 export { ErrorSummary } from "./components/forms/error-summary";
 export type { ErrorSummaryProps, ErrorSummaryItem } from "./components/forms/error-summary";
 export { FormField } from "./components/forms/form-field";

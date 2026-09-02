@@ -16,6 +16,7 @@
 @import "./components/actions/icon-button.css";
 @import "./components/forms/auth-fields.css";
 @import "./components/forms/chip.css";
+@import "./components/forms/control-group.css";
 @import "./components/forms/controls.css";
 @import "./components/forms/declaration-checkbox.css";
 @import "./components/forms/error-summary.css";
