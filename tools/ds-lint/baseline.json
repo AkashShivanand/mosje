@@ -1,14 +1,5 @@
 {
   "components/auth/portal-login-template.tsx": 1,
-  "components/feedback/lightbox.tsx": 2,
-  "components/feedback/modal.tsx": 2,
-  "components/forms/geo-photo-input.tsx": 1,
-  "components/forms/media-gallery-input.tsx": 1,
-  "components/forms/media-upload.tsx": 1,
-  "components/forms/otp-input.tsx": 1,
-  "components/navigation/app-switcher-panel.tsx": 2,
-  "components/navigation/header/account-menu.tsx": 1,
-  "components/navigation/header/nav-parts.tsx": 1,
   "components/navigation/zone-switcher.tsx": 1,
   "demo/demo-dock.tsx": 1
 }

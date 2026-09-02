@@ -18,6 +18,16 @@ export interface LightboxItem {
   poster?: string;
   /** Alt text for images (defaults to the caption). */
   alt?: string;
+  /**
+   * A WebVTT captions track for a video. **Required by WCAG 1.2.2** for any
+   * video carrying speech.
+   *
+   * The component cannot author captions, so it cannot make a caller compliant —
+   * what it can do is stop the omission being invisible. When this is absent the
+   * `<track>` is not rendered and, in development, the component says so once per
+   * source rather than failing silently.
+   */
+  captions?: { src: string; srcLang: string; label: string };
 }
 
 export interface LightboxProps {
@@ -104,6 +114,7 @@ export function Lightbox({
 
   React.useEffect(() => {
     if (!open) return;
+    const root = rootRef.current;
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
@@ -181,7 +192,12 @@ export function Lightbox({
       document.body.style.overflow = prevOverflow;
       // Restore only if focus is still inside the dialog — if the consumer moved
       // it somewhere deliberate on close, stealing it back is the worse bug.
-      if (!rootRef.current || rootRef.current.contains(document.activeElement)) {
+      //
+      // `root` is captured when the effect RUNS, not read at cleanup time. By
+      // cleanup the ref may already point at a different node (or null), which
+      // would make this test ask about the wrong element — the exact hazard
+      // react-hooks warns about for refs in cleanups.
+      if (!root || root.contains(document.activeElement)) {
         opener?.focus?.();
       }
     };
@@ -226,6 +242,14 @@ export function Lightbox({
 
       <div className="ds-lightbox__stage" ref={stageRef} tabIndex={-1}>
         {active.type === "video" ? (
+          /* eslint-disable-next-line jsx-a11y/media-has-caption -- the track IS
+             rendered, from `item.captions`, but the rule only accepts an
+             unconditional <track> and cannot see a conditional one. A component
+             cannot author captions for a caller's video; what it can do is
+             provide the slot and say so, which `LightboxItem.captions` does.
+             Video carrying speech without captions remains a WCAG 1.2.2 failure
+             — it is the CONTENT's failure, and it belongs in the content audit
+             rather than being silently absorbed here. */
           <video
             key={active.src}
             className="ds-lightbox__media"
@@ -234,7 +258,21 @@ export function Lightbox({
             controls
             autoPlay
             playsInline
-          />
+          >
+            {/* WCAG 1.2.2 — captions for prerecorded video. Rendered only when the
+                caller supplies a track; see `LightboxItem.captions`. The component
+                cannot author captions, so it cannot make a caller compliant — it can
+                only stop the omission being invisible. */}
+            {active.captions ? (
+              <track
+                kind="captions"
+                src={active.captions.src}
+                srcLang={active.captions.srcLang}
+                label={active.captions.label}
+                default
+              />
+            ) : null}
+          </video>
         ) : (
           <img
             key={active.src}

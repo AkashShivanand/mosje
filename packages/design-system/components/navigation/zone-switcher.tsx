@@ -114,6 +114,13 @@ export function AppSwitcher({
   return (
     <div ref={rootRef} className={cn("ds-appsw", className)}>
       {open && (
+        // KNOWN, BASELINED LINT FINDING — not a defect. jsx-a11y flags the keydown
+        // handler below because it classes `dialog` as a non-interactive role. This
+        // element is a correct dialog: it has the role, an accessible name,
+        // `aria-modal`, and a programmatic tab stop so focus can be moved into it.
+        // What the rule would have us ship instead is a popup that does not answer
+        // Escape, which is worse. `check:ds-lint` holds it at a fixed count rather
+        // than silencing it, so it stays visible.
         <div
           ref={panelRef}
           className="ds-appsw__panel"
@@ -121,6 +128,11 @@ export function AppSwitcher({
           role="dialog"
           aria-label="App switcher"
           aria-modal="false"
+          /* A dialog takes focus itself before it manages what is inside it, so
+             it needs a programmatic-only tab stop. Without one the keydown
+             handler below is a keyboard model attached to something the
+             keyboard cannot reach. */
+          tabIndex={-1}
           onKeyDown={onPanelKeyDown}
         >
           <AppSwitcherPanel

@@ -151,6 +151,14 @@
      current-app row + search, DemoDock's embedded panel shows search only)
      and written to `--cmp-appsw-sticky-offset` on the panel root; the px
      fallback covers the first paint before that effect runs. ── */
+  /* The rows are a real <ul> now (see the panel component). Reset the list
+     chrome; the item styling is unchanged. */
+  .ds-appsw__group {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
   .ds-appsw__group-label {
     position: sticky;
     top: var(--cmp-appsw-sticky-offset, 56px);

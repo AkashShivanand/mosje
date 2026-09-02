@@ -286,14 +286,18 @@ export function GeoPhotoInput({
   return (
     <div
       ref={rootRef}
-      className={cn("ds-geophoto", className)}
+      className={cn("ds-geophoto", invalid && "is-invalid", className)}
       // The dropzone below only exists while the gallery is empty. Binding the
       // group here keeps FormField's label, hint and error associated with the
       // control once photos are attached, and covers the at-capacity case where
       // no button is rendered at all.
       role="group"
+      /* NO `aria-invalid` HERE. It is only defined for form controls that hold a
+         value; on a `button` dropzone, a `group`, or a bare div it is ignored by
+         assistive technology and reported as unsupported. The error itself already
+         reaches the reader through `aria-describedby`, which is what actually gets
+         announced, and the visual state comes from the `invalid` class. */
       aria-describedby={describedBy}
-      aria-invalid={invalid || undefined}
     >
       <input
         ref={inputRef}

@@ -153,10 +153,9 @@ export const MediaUpload = React.forwardRef<HTMLButtonElement, MediaUploadProps>
             ref={ref}
             id={id}
             type="button"
-            className={cn("ds-media-upload__dropzone", dragOver && "is-dragover")}
+            className={cn("ds-media-upload__dropzone", dragOver && "is-dragover", invalid && "is-invalid")}
             onClick={openPicker}
             disabled={disabled}
-            aria-invalid={invalid || undefined}
             aria-describedby={describedBy}
             onDragOver={(e) => {
               e.preventDefault();

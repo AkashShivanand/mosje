@@ -80,7 +80,8 @@
     background-color: var(--sa-bg-brand-primary-subtler);
   }
 
-  .ds-gallery__dropzone[aria-invalid="true"] {
+  /* A class rather than [aria-invalid] — see media-upload.css. */
+  .ds-gallery__dropzone.is-invalid {
     border-color: var(--sa-border-status-error-base);
   }
 

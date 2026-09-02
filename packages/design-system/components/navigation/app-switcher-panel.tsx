@@ -206,8 +206,15 @@ export function AppSwitcherPanel({
               query.trim().length > 0 &&
               items.some((a) => a.status === "planned");
             return (
-              <div key={group} role="list" aria-label={group}>
-                <div className="ds-appsw__group-label">{group}</div>
+              /* REAL LIST SEMANTICS. This was a div with role="list" whose first
+                 child was the group label — not a listitem, which breaks the list
+                 for a screen reader before any row is reached — and whose rows
+                 were <a role="listitem">, an interactive element wearing a
+                 non-interactive role. A <ul> of <li>, with the link INSIDE the
+                 item, says the same thing correctly and needs no roles at all. */
+              <div key={group}>
+                <div className="ds-appsw__group-label" id={`ds-appsw-g-${group}`}>{group}</div>
+                <ul className="ds-appsw__group" aria-labelledby={`ds-appsw-g-${group}`}>
                 {items.map((a) => {
                   const abbr = deriveAbbr(a);
                   const normPath =
@@ -217,11 +224,14 @@ export function AppSwitcherPanel({
 
                   if (isPlanned) {
                     return (
-                      <div
+                      /* NO `aria-disabled`. A planned row is not a control that has
+                         been switched off — it is a list item with no link in it, so
+                         there is nothing to disable and the attribute is not defined
+                         for `listitem`. Its status is carried by the "soon" badge and
+                         the note under the group, which is what actually gets read. */
+                      <li
                         key={a.path}
-                        role="listitem"
                         className="ds-appsw__item ds-appsw__item--planned"
-                        aria-disabled="true"
                         aria-label={`${a.name} — coming soon`}
                       >
                         <span
@@ -243,14 +253,13 @@ export function AppSwitcherPanel({
                         <span className="ds-appsw__badge ds-appsw__badge--soon">
                           soon
                         </span>
-                      </div>
+                      </li>
                     );
                   }
 
                   return (
+                    <li key={a.path}>
                     <a
-                      key={a.path}
-                      role="listitem"
                       href={a.path}
                       {...(a.newTab
                         ? { target: "_blank", rel: "noopener noreferrer" }
@@ -301,8 +310,10 @@ export function AppSwitcherPanel({
                         </span>
                       )}
                     </a>
+                    </li>
                   );
                 })}
+                </ul>
                 {hasPlannedResults && (
                   <div className="ds-appsw__planned-note">
                     This portal is in development

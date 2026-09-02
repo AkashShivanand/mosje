@@ -199,10 +199,9 @@ export function MediaGalleryInput({
         <button
           id={id}
           type="button"
-          className={cn("ds-gallery__dropzone", dragOver && "is-dragover")}
+          className={cn("ds-gallery__dropzone", dragOver && "is-dragover", invalid && "is-invalid")}
           onClick={openPicker}
           disabled={disabled || busy}
-          aria-invalid={invalid || undefined}
           aria-describedby={describedBy}
           {...dnd}
         >
@@ -219,7 +218,7 @@ export function MediaGalleryInput({
       ) : (
         /* ---- Filled: thumbnail grid + add tile ---- */
         <>
-          <div className="ds-gallery__grid" aria-invalid={invalid || undefined}>
+          <div className="ds-gallery__grid">
             {value.map((item, i) => {
               const showPoster = item.type === "image" || !!item.poster;
               return (

@@ -424,6 +424,12 @@ export function NavItemLink({ item, open = false, onOpenChange, className }: Nav
   };
 
   return (
+    /* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions --
+       the <li> is the HOVER REGION for a menu whose trigger is the link inside it,
+       and it must be: moving the handlers onto the link closes the menu the moment
+       the pointer travels from the trigger toward the panel. The keyboard path is
+       not missing — `onKeyDown` below opens and closes the same menu with the
+       arrow keys, on the focusable link. */
     <li
       ref={liRef}
       className={cn("ds-hdr-nav__item", className)}

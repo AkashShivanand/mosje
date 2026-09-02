@@ -25,6 +25,16 @@
      Thumbnail grid with per-photo location chips. Token-driven; dark-mode safe.
      ============================================================================ */
 
+  /* THE `invalid` PROP NOW SHOWS. It used to set `aria-invalid` on a
+     role="group" wrapper — an attribute assistive technology ignores there —
+     and no stylesheet ever matched it, so a caller passing `invalid` got
+     nothing at all: no announcement and no colour. The error text still reaches
+     the reader through `aria-describedby`; this is the visible half. */
+  .ds-geophoto.is-invalid .ds-geophoto__dropzone,
+  .ds-geophoto.is-invalid .ds-geophoto__frame {
+    border-color: var(--sa-border-status-error-base);
+  }
+
   .ds-geophoto {
     display: flex;
     flex-direction: column;
