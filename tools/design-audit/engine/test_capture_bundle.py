@@ -170,6 +170,26 @@ class Freshness(unittest.TestCase):
         r = B.resolve_freshness(_bundle(), self.MAN, self.CFG, _probe=lambda url: None)
         self.assertEqual(r["mode"], "verify")
 
+    def test_empty_bases_drops_to_verify_not_reuse(self):
+        cfg = {"live": {"roles": []}}
+        r = B.resolve_freshness(_bundle(), self.MAN, cfg, _probe=lambda url: "main.aaaaaaaa.js")
+        self.assertEqual(r["mode"], "verify")
+        self.assertIn("no host bases", r["reason"])
+
+    def test_malformed_capturedAt_returns_full(self):
+        b = _bundle()
+        b["capturedAt"] = "not-a-date"
+        r = B.resolve_freshness(b, self.MAN, self.CFG)
+        self.assertEqual(r["mode"], "full")
+        self.assertIn("unreadable", r["reason"])
+
+    def test_timezone_naive_capturedAt_returns_full(self):
+        b = _bundle()
+        b["capturedAt"] = "2026-09-02T10:00:00"
+        r = B.resolve_freshness(b, self.MAN, self.CFG)
+        self.assertEqual(r["mode"], "full")
+        self.assertIn("unreadable", r["reason"])
+
 
 class ScreenDecision(unittest.TestCase):
     def test_unknown_screen_is_recaptured(self):
@@ -204,6 +224,15 @@ class Fingerprint(unittest.TestCase):
         html = ('<script src="/static/js/main.aaaaaaaa.js"></script>'
                 '<script src="/static/js/2.bbbbbbbb.chunk.js"></script>')
         self.assertEqual(B.extract_fingerprint(html), "main.aaaaaaaa.js")
+
+    def test_prefers_own_origin_bundle_over_hashed_cdn(self):
+        html = ('<script src="https://cdn.example.com/vendor.12345678.js"></script>'
+                '<script src="/static/js/main.aaaaaaaa.js"></script>')
+        self.assertEqual(B.extract_fingerprint(html), "main.aaaaaaaa.js")
+
+    def test_hashed_name_in_body_text_is_not_fingerprint(self):
+        html = '<div>The app bundle is main.12345678.js</div><script src="/app.js"></script>'
+        self.assertIsNone(B.extract_fingerprint(html))
 
 
 class Integrity(unittest.TestCase):

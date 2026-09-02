@@ -53,7 +53,7 @@ def geometry_hash(rows, page_h):
     return _digest(rows, GEOMETRY_KEYS, extra={"pageH": page_h})
 
 
-import datetime, os, sys
+import datetime, os
 
 BUNDLE_VERSION = 1
 
@@ -125,12 +125,39 @@ def sha256_file(path):
 # A hashed asset name: at least 8 hex chars between separators. Matches CRA's
 # `main.<hash>.js` and Next's `<name>-<hash>.js`. An unhashed `/js/app.js` is not a
 # fingerprint — it would never change and would make tier 0 always say "unchanged".
-_HASHED = re.compile(r"/([A-Za-z0-9_\-]+[.\-][0-9a-f]{8,}(?:\.chunk)?\.js)")
+# Match only within src="..." or src='...' attributes to avoid false matches in body text.
+_SRC_ATTR = re.compile(r'src=["\']([^"\']+)["\']')
+_HASHED = re.compile(r"([A-Za-z0-9_\-]+[.\-][0-9a-f]{8,}(?:\.chunk)?\.js)$")
 
 
 def extract_fingerprint(html):
-    hit = _HASHED.search(html or "")
-    return hit.group(1) if hit else None
+    """Extract the build fingerprint from HTML src attributes.
+
+    Prefers own-origin bundle paths (containing /static/ or /_next/) when present,
+    falling back to the first hashed filename otherwise. Returns None if no qualified
+    asset is found.
+    """
+    if not html:
+        return None
+
+    # Extract all src attribute values
+    srcs = _SRC_ATTR.findall(html or "")
+    if not srcs:
+        return None
+
+    # Prefer own-origin bundles (CRA or Next.js)
+    for src in srcs:
+        if _HASHED.search(src) and ("/static/" in src or "/_next/" in src):
+            match = _HASHED.search(src)
+            return match.group(1) if match else None
+
+    # Fall back to the first hashed asset
+    for src in srcs:
+        match = _HASHED.search(src)
+        if match:
+            return match.group(1)
+
+    return None
 
 
 def build_fingerprint(base_url, timeout=10):
@@ -172,7 +199,10 @@ def resolve_freshness(b, man, cfg, force=False, verify=False, now=None, _probe=N
     if not b.get("capturedAt"):
         return {"mode": "full", "reason": "bundle has no capturedAt"}
     now = now or datetime.datetime.now().astimezone()
-    age = (now - datetime.datetime.fromisoformat(b["capturedAt"])).total_seconds()
+    try:
+        age = (now - datetime.datetime.fromisoformat(b["capturedAt"])).total_seconds()
+    except (ValueError, TypeError):
+        return {"mode": "full", "reason": "bundle capturedAt is unreadable"}
     ceiling = 14 * 86400
     if man is not None:
         try:
@@ -182,8 +212,12 @@ def resolve_freshness(b, man, cfg, force=False, verify=False, now=None, _probe=N
         ceiling = _M.staleness_seconds(man)
     if age > ceiling:
         return {"mode": "full", "reason": f"bundle is stale ({int(age // 86400)}d > {ceiling // 86400}d)"}
+    if verify:
+        return {"mode": "verify", "reason": "--verify requested"}
     probe = _probe or build_fingerprint
     bases = sorted({r.get("base") for r in cfg.get("live", {}).get("roles", []) if r.get("base")})
+    if not bases:
+        return {"mode": "verify", "reason": "no host bases in config — nothing could be verified"}
     recorded = {h.get("base"): h.get("buildFingerprint") for h in (b.get("hosts") or {}).values()}
     for base in bases:
         live = probe(base)
@@ -191,8 +225,6 @@ def resolve_freshness(b, man, cfg, force=False, verify=False, now=None, _probe=N
             return {"mode": "verify", "reason": f"could not read a build fingerprint for {base}"}
         if recorded.get(base) != live:
             return {"mode": "verify", "reason": f"build moved on {base}: {recorded.get(base)} -> {live}"}
-    if verify:
-        return {"mode": "verify", "reason": "--verify requested"}
     return {"mode": "reuse-all", "reason": "build fingerprint unchanged and bundle is fresh"}
 
 
