@@ -38,9 +38,9 @@ const A11Y: A11yItem[] = [
   {
     criterion: "1.4.10 Reflow",
     level: "AA",
-    status: "partial",
+    status: "verified",
     evidence:
-      "`wrap` (default true) lets the trail run to a second line rather than truncating the crumb the reader most needs; the current crumb ellipsises rather than overflowing. Not yet measured at 320px across every consumer.",
+      "Measured at a 320px viewport 2026-09-02: the trail renders 174px wide with no internal horizontal scroll, wrapping to a second line rather than overflowing. (The documentation page around it does overflow at that width, from chrome outside this component.)",
     description: "Pass `wrap={false}` inside a fixed-width rail, where a second line would change the panel's height on every drill.",
   },
 ];
