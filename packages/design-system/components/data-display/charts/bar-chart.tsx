@@ -55,6 +55,7 @@ export function BarChart(props: BarChartProps) {
     state,
     onRetry,
     filterLabel,
+    tableView,
   } = props;
   const { canvasRef, tip, show, hide } = useChartTooltip();
 
@@ -151,6 +152,7 @@ export function BarChart(props: BarChartProps) {
         legend={legend}
         caption={caption}
         table={table}
+        tableView={tableView}
       >
         <Gridlines
           ticks={ticks.map((v) => ({ pos: y(v), value: v }))}
@@ -244,6 +246,7 @@ export function BarChart(props: BarChartProps) {
       legend={legend}
       caption={caption}
       table={table}
+      tableView={tableView}
     >
       {ticks.map((v) => (
         <line

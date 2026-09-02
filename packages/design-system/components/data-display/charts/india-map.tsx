@@ -49,6 +49,7 @@ export function IndiaMap({
   state,
   onRetry,
   filterLabel,
+  tableView,
 }: IndiaMapProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
 
@@ -118,6 +119,7 @@ export function IndiaMap({
         columns: ["State", title],
         rows: data.map((d) => [d.state, d.value]),
       }}
+      tableView={tableView}
     >
       {INDIA_STATES_PATHS.map((region) => {
         const v = valueByState.get(normalize(region.name));

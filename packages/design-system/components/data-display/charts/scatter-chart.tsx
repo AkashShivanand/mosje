@@ -44,6 +44,7 @@ export function ScatterChart({
   state,
   onRetry,
   filterLabel,
+  tableView,
 }: ScatterChartProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const all = series.flatMap((s) => s.points);
@@ -95,6 +96,7 @@ export function ScatterChart({
         columns: ["Series", xLabel ?? "X", yLabel ?? "Y", "Label"],
         rows: series.flatMap((s) => s.points.map((p) => [s.name, p.x, p.y, p.label ?? ""])),
       }}
+      tableView={tableView}
     >
       <Gridlines ticks={yTicks.map((v) => ({ pos: y(v), value: v }))} x0={padL} x1={width - padR} format={valueFormat} />
       {xTicks.map((v) => (

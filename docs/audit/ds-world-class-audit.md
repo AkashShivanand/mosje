@@ -703,3 +703,32 @@ fails if the constant and the measured cap ever disagree.
 at the call site — no chart currently refuses a fifth series or folds it into
 "Other". That is a component-behaviour change across seventeen charts and is
 listed here rather than half-done.
+
+### The table view, and the false claim in `design.md`
+
+The chart's data table existed but was **screen-reader-only**, which serves one
+of the three groups that need it. `ChartFrame` now takes `tableView`
+(`"toggle"` by default) and renders a *visible* "View as Table" control on the
+eleven data-bearing charts. Sparkline, Progress and Funnel pass no table and are
+untouched.
+
+Two details that a naive version of this gets wrong, both verified in a browser:
+
+- **Exactly one table reaches the accessibility tree.** When the visible table
+  is open it *is* the accessible one and the screen-reader copy is not
+  rendered; when closed, the copy stands in. Rendering both reads the whole
+  dataset out twice. Measured on a two-chart page: opening one gives 1 visible
+  + 1 screen-reader table, not 2 + 2.
+- **The caption is not painted.** On a single-series chart the title, the series
+  name and the value column's header are the same string, so a visible caption
+  printed it directly above itself. It is `ds-sr-only`, so the table keeps its
+  accessible name without saying it twice.
+
+The prop is on `ChartStateProps` — the base every chart already extends —
+because a prop declared only on the internal frame is a prop no consumer can
+reach. That was the state it shipped in for about an hour before this was
+caught; the escape hatch was documented and unreachable.
+
+**`design.md` was wrong, and agents read it as truth.** It described the twelve
+categorical slots as "mutually distinguishable". They are not, and the line has
+been replaced with the measured figures and the safe cap.

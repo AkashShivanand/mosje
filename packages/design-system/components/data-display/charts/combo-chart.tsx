@@ -46,6 +46,7 @@ export function ComboChart({
   state,
   onRetry,
   filterLabel,
+  tableView,
 }: ComboChartProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const [active, setActive] = React.useState<number | null>(null);
@@ -133,6 +134,7 @@ export function ComboChart({
         columns: ["Category", ...bars.map((s) => s.name), ...lines.map((s) => s.name)],
         rows: labels.map((l, li) => [l, ...bars.map((s) => s.data[li] ?? 0), ...lines.map((s) => s.data[li] ?? 0)]),
       }}
+      tableView={tableView}
     >
       <Gridlines ticks={leftTicks.map((v) => ({ pos: yL(v), value: v }))} x0={padL} x1={width - padR} format={valueFormat} />
       {rightTicks.map((v) => (

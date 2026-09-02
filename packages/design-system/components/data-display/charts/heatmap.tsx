@@ -35,6 +35,7 @@ export function Heatmap({
   state,
   onRetry,
   filterLabel,
+  tableView,
 }: HeatmapProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const flat = matrix.flat();
@@ -84,6 +85,7 @@ export function Heatmap({
         columns: ["Row", ...xLabels],
         rows: yLabels.map((yl, yi) => [yl, ...xLabels.map((_, xi) => matrix[yi]?.[xi] ?? 0)]),
       }}
+      tableView={tableView}
     >
       {xLabels.map((xl, xi) => (
         <text key={xl} x={GUT_L + xi * CELL + CELL / 2} y={GUT_T - 8} textAnchor="middle" className="ds-chart__axis">

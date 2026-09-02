@@ -1357,7 +1357,17 @@ status/brand tokens above:
 **Alpha / transparent overlays (8/16/24/32/40/48%, Figma `<Family> Transparent/*`).** Consumed via `--sa-color-transparent-<family>-<step>` (canonical `--sa-*` name; no `--sa-*` alias). `primary` and `neutral` are brand-aware; `secondary`, `accent`, `success`, `danger`, `warning`, `white` are brand-invariant. Example: `--sa-color-transparent-neutral-8`, `--sa-color-transparent-white-24`. **A translucent fill has no contrast of its own** — its measured ratio depends on what sits behind it, so never use one as the surface behind text you need to guarantee.
 
 **Data-visualisation (charts):** brand-aware, used by the chart layer (§7). All twelve categorical series clear WCAG 1.4.11's 3:1 against the page; the worst is `--sa-chart-cat-2` at 3.79:1.
-- `--sa-chart-cat-1` … `--sa-chart-cat-12` — categorical series (mutually distinguishable)
+- `--sa-chart-cat-1` … `--sa-chart-cat-12` — categorical series. **They are NOT all
+  mutually distinguishable, and this line used to claim they were.**
+  `npm run check:chart-palette` measures the ramp and finds, under all-pairs:
+  `cat-4`↔`cat-10` at OKLab **ΔE 1.5 under deuteranopia** (the same colour to
+  roughly one man in twelve), `cat-6`↔`cat-12` at 4.4 under protanopia, and
+  `cat-8`↔`cat-9` at **11.7 with normal colour vision** — below the floor of 15.
+  **Only the first FOUR slots clear every floor**, which is
+  `CHART_CATEGORICAL_SAFE_CAP`. Beyond four, identity must also be carried by
+  something that is not colour: direct labels, small multiples, or folding the
+  tail into "Other". `categoricalColor` still wraps at 12 but now warns in
+  development instead of silently handing series 13 the colour of series 1.
 - `--sa-chart-seq-50` … `--sa-chart-seq-900` — sequential single-hue ramp (choropleth, heatmap)
 - `--sa-chart-div-neg-strong/neg/neg-soft/mid/pos-soft/pos/pos-strong` — diverging (signed data)
 - `--sa-chart-trend-up/down/flat` — KPI trend

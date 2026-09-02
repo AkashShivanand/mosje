@@ -44,6 +44,7 @@ export function LineChart({
   state,
   onRetry,
   filterLabel,
+  tableView,
 }: LineChartProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const [active, setActive] = React.useState<number | null>(null);
@@ -117,6 +118,7 @@ export function LineChart({
         columns: ["Point", ...series.map((s) => s.name)],
         rows: labels.map((l, li) => [l, ...series.map((s) => s.data[li] ?? 0)]),
       }}
+      tableView={tableView}
     >
       <Gridlines ticks={ticks.map((v) => ({ pos: y(v), value: v }))} x0={padL} x1={width - padR} format={valueFormat} />
       {yLabel && (

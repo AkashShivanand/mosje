@@ -710,3 +710,75 @@
     .ds-chart__skeleton-bars { animation: none; }
   }
 }
+
+@layer components {
+  /* ── The way out of the picture — see ChartFrame's `tableView` ──────────
+     A chart's numbers must be reachable without reading the chart: by a
+     colour-blind reader whose two series measure ΔE 1.5 apart, on paper, and on
+     a connection that never painted the SVG. */
+  .ds-chart__tabletoggle {
+    align-self: flex-start;
+    margin-block-start: var(--sa-stack-8);
+    /* 24px is the WCAG 2.2 AA floor for a target (2.5.8); the padding takes the
+       real box past it without making a text button look like a control.
+       There is no `target/*` family, and this is a BLOCK-axis length, so it
+       binds the block-axis 24 rung — exact value, right axis, per the estate's
+       bind-by-property-and-axis rule. */
+    min-block-size: var(--sa-stack-24);
+    padding: var(--sa-padding-4) var(--sa-padding-8);
+    border: 0;
+    border-radius: var(--sa-shape-4);
+    background: transparent;
+    color: var(--sa-text-brand-primary-bolder);
+    font-size: var(--sa-type-body-3-size);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+
+  .ds-chart__tabletoggle:hover {
+    background: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-chart__tabletoggle:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  /* A WIDE table scrolls in its own box rather than widening the page — the
+     estate's rule is that the page body never scrolls horizontally. */
+  .ds-chart__tablewrap {
+    margin-block-start: var(--sa-stack-8);
+    overflow-x: auto;
+  }
+
+  .ds-chart__table {
+    inline-size: 100%;
+    border-collapse: collapse;
+    font-size: var(--sa-type-body-3-size);
+  }
+
+  .ds-chart__table caption {
+    padding-block-end: var(--sa-padding-4);
+    color: var(--sa-text-neutral-subtle);
+    text-align: start;
+  }
+
+  .ds-chart__table th,
+  .ds-chart__table td {
+    padding: var(--sa-padding-4) var(--sa-padding-8);
+    border-block-end: 1px solid var(--sa-border-neutral-subtle);
+    text-align: start;
+    white-space: nowrap;
+  }
+
+  .ds-chart__table th {
+    color: var(--sa-text-neutral-bolder);
+    font-weight: 600;
+  }
+
+  .ds-chart__table td {
+    color: var(--sa-text-neutral-base);
+  }
+}

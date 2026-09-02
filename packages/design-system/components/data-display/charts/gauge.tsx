@@ -40,6 +40,7 @@ export function Gauge({
   state,
   onRetry,
   filterLabel,
+  tableView,
 }: GaugeProps) {
   /*
    * THIS HAD NO GUARD AT ALL, and the failure was silent rather than ugly: a
@@ -88,6 +89,7 @@ export function Gauge({
       viewBox={`0 0 ${W} ${H}`}
       className={className}
       table={{ columns: ["Metric", "Value", "Max"], rows: [[title, value, max]] }}
+      tableView={tableView}
     >
       <path
         d={`M ${sx} ${sy} A ${R} ${R} 0 0 1 ${tx} ${ty}`}

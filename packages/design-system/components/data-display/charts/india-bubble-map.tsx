@@ -139,6 +139,7 @@ export function IndiaBubbleMap({
   state,
   onRetry,
   filterLabel,
+  tableView,
 }: IndiaBubbleMapProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const hl = highlightState ? normalize(highlightState) : null;
@@ -205,6 +206,7 @@ export function IndiaBubbleMap({
         columns: ["State", title],
         rows: [...data].sort((a, b) => b.value - a.value).map((d) => [d.state, d.value]),
       }}
+      tableView={tableView}
     >
       {/* The land, drawn once and flat. It is the frame of reference, not the
           data — giving it any tone of its own competes with the circles. */}

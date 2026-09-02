@@ -239,6 +239,7 @@ export function IndiaPointMap({
   state,
   onRetry,
   filterLabel,
+  tableView,
 }: IndiaPointMapProps) {
   const { canvasRef, tip, show, hide } = useChartTooltip();
   const svgRef = React.useRef<SVGSVGElement | null>(null);
@@ -438,6 +439,7 @@ export function IndiaPointMap({
       overlay={<ChartTooltip tip={tip} />}
       legend={legend}
       table={table}
+      tableView={tableView}
     >
       {/* The land. Flat and quiet — a frame of reference, not the data. */}
       {INDIA_STATES_PATHS.map((region) => {

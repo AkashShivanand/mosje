@@ -52,7 +52,7 @@ function isSegments(p: DonutChartProps): p is DonutSegments {
  * SMILE `GenderDonut`.
  */
 export function DonutChart(props: DonutChartProps) {
-  const { title, className, valueFormat = formatIndian, state, onRetry, filterLabel } = props;
+  const { title, className, valueFormat = formatIndian, state, onRetry, filterLabel, tableView } = props;
   const { canvasRef, tip, show, hide } = useChartTooltip();
 
   /**
@@ -106,6 +106,7 @@ export function DonutChart(props: DonutChartProps) {
           columns: ["Category", "Count", "Share"],
           rows: segs.map((s) => [s.label, s.value, formatPercent(s.pct)]),
         }}
+        tableView={tableView}
       >
         {segs.map((s) => (
           <path
@@ -172,6 +173,7 @@ export function DonutChart(props: DonutChartProps) {
       viewBox={`0 0 ${SIZE} ${SIZE}`}
       className={className}
       table={{ columns: ["Metric", "Value", "Max"], rows: [[title, props.value, max]] }}
+      tableView={tableView}
     >
       <path d={ringPath(C, C, R0, R1, 0, 359.999)} fill="var(--sa-chart-grid)" />
       {sweep > 0 && <path d={ringPath(C, C, R0, R1, 0, sweep)} fill={color} className="ds-chart__mark" />}

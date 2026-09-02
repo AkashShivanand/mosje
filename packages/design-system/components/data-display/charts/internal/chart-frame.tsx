@@ -42,6 +42,15 @@ export interface ChartStateProps {
   onRetry?: () => void;
   /** Named on `"no-results"` so the reader can undo the filter they applied. */
   filterLabel?: string;
+  /**
+   * Whether the chart's data table is also reachable by a SIGHTED reader.
+   * Default `"toggle"`. See `ChartFrameProps["tableView"]` for why.
+   *
+   * This sits on the shared base — which is otherwise about states — because
+   * every chart already extends it, and a prop declared on the frame alone is
+   * a prop no consumer can reach.
+   */
+  tableView?: "toggle" | "sr-only";
 }
 
 export interface ChartFrameProps extends ChartStateProps {
@@ -205,6 +214,7 @@ export function ChartFrame({
   caption,
   viewBox,
   table,
+  tableView = "toggle",
   legend,
   overlay,
   canvasRef,
@@ -219,6 +229,11 @@ export function ChartFrame({
 }: ChartFrameProps) {
   const titleId = React.useId();
   const descId = React.useId();
+  const tableId = React.useId();
+  // Closed by default: the chart is the primary reading and the table is the
+  // way out of it. Both hooks sit above the `state` early-return, because a
+  // chart that is loading today is a chart with a table tomorrow.
+  const [tableOpen, setTableOpen] = React.useState(false);
   const labelledBy = summary ? `${titleId} ${descId}` : titleId;
   const aspect = aspectFromViewBox(viewBox);
 
@@ -255,7 +270,61 @@ export function ChartFrame({
       </div>
       {legend}
       {caption && <figcaption className="ds-chart__caption">{caption}</figcaption>}
-      {table && (
+      {table && tableView === "toggle" && (
+        <>
+          <button
+            type="button"
+            className="ds-chart__tabletoggle"
+            aria-expanded={tableOpen}
+            aria-controls={tableId}
+            onClick={() => setTableOpen((v) => !v)}
+          >
+            {tableOpen ? "Hide Table" : "View as Table"}
+          </button>
+          {/*
+            EXACTLY ONE TABLE REACHES THE ACCESSIBILITY TREE. When the visible
+            one is open it IS the accessible one; when it is closed the
+            screen-reader copy stands in. Rendering both would read the whole
+            dataset out twice, which is the defect a naive "add a visible table"
+            ships with.
+          */}
+          {tableOpen ? (
+            <div className="ds-chart__tablewrap" id={tableId}>
+              <table className="ds-chart__table">
+                {/*
+                  THE CAPTION IS THE TABLE'S ACCESSIBLE NAME, AND IT IS NOT
+                  PAINTED. On a single-series chart the title, the series name
+                  and the value column's header are all the same string, so a
+                  visible caption prints it immediately above itself — "nothing
+                  said twice". Sighted readers have the chart directly above and
+                  the toggle they just pressed; a screen reader still gets the
+                  name. Deleting it instead would leave the table unnamed.
+                */}
+                <caption className="ds-sr-only">{title}</caption>
+                <thead>
+                  <tr>
+                    {table.columns.map((c) => (
+                      <th key={c} scope="col">
+                        {c}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {table.rows.map((row, ri) => (
+                    <tr key={ri}>
+                      {row.map((cell, ci) => (
+                        <td key={ci}>{cell}</td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ) : null}
+        </>
+      )}
+      {table && (tableView === "sr-only" || !tableOpen) && (
         <table className="ds-sr-only">
           <caption>{title}</caption>
           <thead>

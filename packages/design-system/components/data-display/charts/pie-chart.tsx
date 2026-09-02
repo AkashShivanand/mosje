@@ -16,7 +16,7 @@ export interface PieChartProps extends ChartStateProps {
  * MoSJE / SAMAVESH PieChart — dependency-free SVG pie with a side legend and a
  * screen-reader data table. **Backward-compatible API** (`{ data, title }`).
  */
-export function PieChart({ data, title, state, onRetry, filterLabel }: PieChartProps) {
+export function PieChart({ data, title, state, onRetry, filterLabel, tableView }: PieChartProps) {
   const total = data.reduce((sum, d) => sum + d.value, 0);
   // One expression. `state` wins where the caller gave one — a zero total says
   // nothing about whether the feed was asked, failed, or was filtered away.
@@ -62,6 +62,7 @@ export function PieChart({ data, title, state, onRetry, filterLabel }: PieChartP
         columns: ["Category", "Count", "Share"],
         rows: slices.map((s) => [s.label, s.value, formatPercent(s.pct)]),
       }}
+      tableView={tableView}
     >
       {slices.map((s) => (
         <path
