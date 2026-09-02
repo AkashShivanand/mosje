@@ -206,5 +206,47 @@ class Fingerprint(unittest.TestCase):
         self.assertEqual(B.extract_fingerprint(html), "main.aaaaaaaa.js")
 
 
+class Integrity(unittest.TestCase):
+    def test_drifted_png_is_reported(self):
+        d = tempfile.mkdtemp()
+        os.makedirs(os.path.join(d, "captures", "live"), exist_ok=True)
+        p = os.path.join(d, "captures", "live", "A.png")
+        with open(p, "wb") as fh:
+            fh.write(b"original")
+        good = B.sha256_file(p)
+        b = {"screens": [{"slug": "A", "png": "captures/live/A.png", "pngSha256": good}]}
+        self.assertEqual(B.verify_integrity(b, d), [])
+        with open(p, "wb") as fh:
+            fh.write(b"tampered")
+        self.assertEqual(B.verify_integrity(b, d), ["A"])
+
+    def test_missing_png_is_reported(self):
+        d = tempfile.mkdtemp()
+        b = {"screens": [{"slug": "GONE", "png": "captures/live/GONE.png", "pngSha256": "x"}]}
+        self.assertEqual(B.verify_integrity(b, d), ["GONE"])
+
+
+class FreshnessGate(unittest.TestCase):
+    def _paths(self):
+        d = tempfile.mkdtemp()
+        out = os.path.join(d, "out")
+        os.makedirs(out, exist_ok=True)
+        return {"project": d, "out": out}
+
+    def test_gate_fails_on_drift_and_says_so(self):
+        p = self._paths()
+        ok = B.write_freshness(p, _bundle(), {"mode": "reuse-all", "reason": "r"}, {}, ["A"])
+        self.assertFalse(ok)
+        body = open(os.path.join(p["out"], "freshness.md")).read()
+        self.assertIn("FAIL", body)
+        self.assertIn("A", body)
+
+    def test_gate_passes_with_no_drift(self):
+        p = self._paths()
+        ok = B.write_freshness(p, _bundle(), {"mode": "reuse-all", "reason": "r"}, {}, [])
+        self.assertTrue(ok)
+        self.assertIn("PASS", open(os.path.join(p["out"], "freshness.md")).read())
+
+
 if __name__ == "__main__":
     unittest.main()

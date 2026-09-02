@@ -194,3 +194,43 @@ def resolve_freshness(b, man, cfg, force=False, verify=False, now=None, _probe=N
     if verify:
         return {"mode": "verify", "reason": "--verify requested"}
     return {"mode": "reuse-all", "reason": "build fingerprint unchanged and bundle is fresh"}
+
+
+def verify_integrity(b, project_dir):
+    """A reused screenshot must still be the file the bundle hashed.
+
+    Same corruption class `capture.audit_capture_integrity()` already catches — a stale or
+    overwritten PNG that still renders, so every gate passes and the audit silently describes a
+    screen that no longer exists. Mechanised here so reuse can never inherit it.
+    """
+    bad = []
+    for s in b.get("screens", []):
+        p = os.path.join(project_dir, s.get("png") or "")
+        if not s.get("png") or not os.path.exists(p) or sha256_file(p) != s.get("pngSha256"):
+            bad.append(s.get("slug"))
+    return bad
+
+
+def write_freshness(paths, b, resolution, decisions, drift):
+    ok = not drift
+    tally = {}
+    for v in (decisions or {}).values():
+        tally[v] = tally.get(v, 0) + 1
+    lines = [
+        "# Freshness gate", "",
+        f"**Result:** {'PASS' if ok else 'FAIL'}", "",
+        f"- Bundle captured: `{b.get('capturedAt')}`",
+        f"- Environment: `{b.get('environment')}`",
+        f"- Engine: `{b.get('engineSha')}`",
+        f"- Decision: **{resolution.get('mode')}** — {resolution.get('reason')}", "",
+    ]
+    if tally:
+        lines += ["| Decision | Screens |", "|---|---|"]
+        lines += [f"| {k} | {v} |" for k, v in sorted(tally.items())] + [""]
+    if drift:
+        lines += ["## FAIL — reused captures no longer match their recorded hash", "",
+                  "Re-capture these before trusting any finding derived from them:", ""]
+        lines += [f"- `{s}`" for s in drift] + [""]
+    with open(os.path.join(paths["out"], "freshness.md"), "w") as fh:
+        fh.write("\n".join(lines))
+    return ok
