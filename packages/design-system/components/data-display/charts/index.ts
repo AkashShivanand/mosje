@@ -1,3 +1,8 @@
+export { BulletChart } from "./bullet-chart";
+export type { BulletChartProps, BulletRow } from "./bullet-chart";
+export { SmallMultiples } from "./small-multiples";
+export type { SmallMultiplesProps } from "./small-multiples";
+export { texturedColor, CHART_TEXTURE_COUNT } from "./internal/texture";
 /* ============================================================================
    MoSJE / SAMAVESH — Data-visualisation layer (public barrel)
    Dependency-free, token-driven, theme-aware, accessible SVG charts.

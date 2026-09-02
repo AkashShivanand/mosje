@@ -8,41 +8,62 @@
 // carries the usage rules as well as the snippet.
 // See .claude/rules/component-authoring.md §12.
 //
-// REBUILT 2026-08-17. The component set was re-cut IN PLACE (node id and key
-// preserved, every instance link intact) from `Device × Auth Method (5)` = 10
-// variants to `Device × Step` = 8.
+// REBUILT 2026-09-02. The set was re-cut IN PLACE (node id and key preserved,
+// every instance link intact) from `Device × Step` = 8 variants to
+// `Device × Auth Method` = 6.
 //
-// THE OLD AUTH METHOD AXIS WAS INVENTED. `Password + Captcha`, `Mobile OTP`,
-// `DigiLocker SSO`, `NGO DARPAN ID` and `Aadhaar OTP` came from a written brief
-// written before the design file was available. A full read of the MoSJE Portal
-// handoff — 69 auth screens across 10 of its 12 pages — found exactly two
-// credential modes, and NO DARPAN screen and NO Aadhaar screen in any portal.
-// `darpan` and `aadhaar` are gone from `PortalAuthMode` too. Do not reinstate
-// either axis or either mode.
+// WHY THE `Step` AXIS WENT. It conflated two unlike things: `Credentials` and
+// `OTP` are ways of proving identity, while `Reset` and `Success` are stages of
+// credential recovery. One axis cannot mean both, and pinning a recovery screen
+// on the login master made recovery look like a login mode. Reset and Success
+// now live in `Auth / CredentialRecovery` (56640:4103) with their own `Step`
+// axis, and their card in `Auth / RecoveryFormCard` (56640:4104). The component
+// nodes were MOVED, so their keys survive — do not re-create them here.
+//
+// AND WHY AN AUTH METHOD AXIS IS NOT A REINSTATEMENT. An earlier version of this
+// file carried `Password + Captcha`, `Mobile OTP`, `DigiLocker SSO`,
+// `NGO DARPAN ID` and `Aadhaar OTP`, all written from a brief before the design
+// file existed. A full read of the MoSJE Portal handoff — 69 auth screens across
+// 10 of its 12 pages — found NO DARPAN screen and NO Aadhaar screen in any
+// portal, and those two are still gone from `PortalAuthMode`. Do not reinstate
+// either. What the handoff DOES contain is three credential forms: password, OTP
+// and PIN (NOS is PIN-only; both its screens at 2436:15957 are `Sign In Pin`).
 //
 // PROPERTY COVERAGE — both Figma properties are accounted for:
-//   Step    -> which part of the journey is on screen. In code this is not one
-//              prop: `Credentials` is the resting render, `OTP` is reached when
-//              the user submits an OTP-mode form, and `Reset` / `Success` belong
-//              to the recovery flow. The variant exists so a designer can pin a
-//              step on the canvas; the component derives it from its own state.
-//   Device  -> DELIBERATELY OMITTED. There is no `device` prop: the React
-//              component is responsive in CSS, and the Figma axis exists only so
-//              a designer can pin a breakpoint. Desktop is ref/viewport/desktop
-//              (1440), Mobile is ref/viewport/mobile (412) — note 412, not the
-//              375 some specs quote. TABLET (768–1024) uses the Mobile variant
-//              by decision, not by omission: the 922/518 split does not survive
-//              below 1024 and the handoff never designed one.
+//   Auth Method -> `defaultMode` on the active role, and the entry in that
+//                  role's `authModes`. The React component owns the live value
+//                  in its own state, because the citizen switches it with the
+//                  method tabs; the variant exists so a designer can pin one
+//                  method on the canvas.
+//   Device      -> DELIBERATELY OMITTED. There is no `device` prop: the React
+//                  component is responsive in CSS, and the Figma axis exists
+//                  only so a designer can pin a breakpoint. Desktop is 1440×960,
+//                  Mobile 375×1138 — and 1138 is the SCROLL height, not a
+//                  viewport, so do not clip it to 812. TABLET (768–1024) uses
+//                  the Mobile variant by decision, not by omission: the 922/518
+//                  split does not survive below 1024 and the handoff never
+//                  designed one.
 //
-// EVERYTHING A PORTAL VARIES IS A PROPERTY ON A NESTED PART, NOT A VARIANT.
-// Role tabs, the DigiLocker toggle, the credential-method tabs, the identifier
-// label and the account prompt all live on `Auth / *` components inside the
-// shell. If you find yourself wanting a new Step for a portal, you want a
-// property.
+// DIGILOCKER IS NOT AN AUTH METHOD. It is a handoff CTA sitting ABOVE the
+// credentials divider, switched by `Show DigiLocker` on the nested
+// `Auth / AuthFormCard`. `PortalAuthMode` still carries `"digilocker"` for the
+// handoff itself; never give it a variant of its own.
 //
 // HIDE DIGILOCKER FOR OFFICERS. Key it off `PortalRoleTab.audience === "officer"`,
 // never off the tab's label or the portal — SCW calls that tab "Admin", NMBA
 // calls it "Patient Monitoring", and a label test breaks on both.
+//
+// CAPTCHA IS OFF BY DEFAULT AND MUST STAY OFF. `config.captcha` mirrors
+// `Show captcha` on the form card, and both default to false: a captcha is a
+// cognitive function test, and WCAG 2.2 3.3.8 Accessible Authentication (AA)
+// forbids one without an alternative. Switch it on only for a portal that offers
+// that alternative, and say which in the same change.
+//
+// EVERYTHING ELSE A PORTAL VARIES IS A PROPERTY ON A NESTED PART, NOT A VARIANT.
+// Role tabs, the DigiLocker toggle, the credential-method tabs, the role select,
+// the consent line and the account prompt are all booleans on `Auth / *`
+// components inside the shell. If you find yourself wanting a new Auth Method
+// for a portal, you want a property.
 //
 // TONE IS NOT A PROPERTY. Light/dark and high contrast resolve through the
 // `data-color-mode` axis and brand through `data-brand`. Never generate a `tone`,
@@ -51,32 +72,32 @@ import figma from "figma";
 
 const instance = figma.selectedInstance;
 
-// The journey position. `Reset` and `Success` are recovery-flow screens: they
-// render through the same component, driven by its own state rather than a prop,
-// so the snippet shows the entry point and notes where the rest comes from.
-const step = instance.getEnum("Step", {
-  Credentials: "credentials",
+// Maps 1:1 onto `PortalAuthMode`, minus `digilocker` — which is a handoff CTA
+// rather than a form mode and therefore has no variant.
+const authMode = instance.getEnum("Auth Method", {
+  Password: "password",
   OTP: "otp",
-  Reset: "reset",
-  Success: "success",
+  PIN: "pin",
 });
 
 export default {
-  example: figma.code`{/* Figma Step = ${step}. Steps are internal state, not a prop:
-    Credentials is the resting render, OTP follows an otp-mode submit, and
-    Reset / Success belong to the credential-recovery flow. */}
+  example: figma.code`{/* Figma Auth Method = ${authMode}. The live method is the
+    component's own state — the citizen switches it with the method tabs — so it
+    is set here as the active role's defaultMode, not as a prop. */}
 <PortalLoginTemplate
   config={{
     portalId: "portal-slug",
     // The SCHEME name, never the acronym — "Senior Citizens Welfare", not "SCW".
     portalName: "Senior Citizens Welfare",
+    // Off unless the portal offers a non-cognitive alternative (WCAG 2.2 3.3.8).
+    captcha: false,
     roles: [
       {
         id: "citizen",
         label: "Citizen / Beneficiary",
         audience: "citizen",
-        authModes: ["password", "otp"],
-        defaultMode: "password",
+        authModes: ["${authMode}", "otp"],
+        defaultMode: "${authMode}",
       },
       {
         id: "officer",

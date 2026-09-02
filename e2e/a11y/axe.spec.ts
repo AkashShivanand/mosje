@@ -105,6 +105,8 @@ const ROUTES: { name: string; path: string }[] = [
   { name: "design system landing", path: "/design-system" },
   { name: "a component page", path: "/design-system/components/forms/checkbox" },
   { name: "a chart page", path: "/design-system/components/data-display/bar-chart" },
+  { name: "the bullet chart", path: "/design-system/components/data-display/bullet-chart" },
+  { name: "small multiples", path: "/design-system/components/data-display/small-multiples" },
   { name: "the illustration foundation", path: "/design-system/foundations/illustration" },
   // The newest interactive component, and the one with the most keyboard model
   // to get wrong — a listbox with a roving active option.

@@ -276,6 +276,10 @@ export {
   formatCompact,
   formatPercent,
   CHART_CATEGORICAL_SAFE_CAP,
+  BulletChart,
+  SmallMultiples,
+  texturedColor,
+  CHART_TEXTURE_COUNT,
 } from "./components/data-display/charts";
 export type {
   ChartDatum,
@@ -310,6 +314,9 @@ export type {
   IndiaBubbleDatum,
   LegendItem,
   ValueFormat,
+  BulletChartProps,
+  BulletRow,
+  SmallMultiplesProps,
 } from "./components/data-display/charts";
 
 // ---- Components: Dashboard composition ---------------------------------------

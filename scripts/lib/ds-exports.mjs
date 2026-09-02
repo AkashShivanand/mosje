@@ -32,6 +32,11 @@ export const NOT_COMPONENTS = new Set([
   // file and fails if this constant and the measurement disagree, so the
   // documentation that matters is the gate, not a page.
   "CHART_CATEGORICAL_SAFE_CAP",
+  // The texture encoding: `texturedColor(i)` resolves a series to one of the
+  // hatch patterns a chart emits when it sets `textured`, and the count is how
+  // many exist. A resolver and a number, not components — they are shown in
+  // BulletChart.stories.tsx and documented on the Bullet Chart page.
+  "texturedColor", "CHART_TEXTURE_COUNT",
   // Constants
   "COLOR_MODES", "COLOR_MODE_ATTR", "COLOR_MODE_COOKIE", "DEFAULT_COLOR_MODE",
   "DEFAULT_APPS", "PORTAL_CATEGORIES", "PAN_HOLDER_TYPES", "PORTAL_LABELS",

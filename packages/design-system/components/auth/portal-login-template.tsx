@@ -118,6 +118,8 @@ export function PortalLoginTemplate({
           ? "Login via Password"
           : mode === "otp"
           ? "Login via Mobile OTP"
+          : mode === "pin"
+          ? "Login via PIN"
           : "Fast-track DigiLocker SSO",
     }));
   }, [activeRole]);
@@ -147,6 +149,46 @@ export function PortalLoginTemplate({
     setCaptchaCode(code);
     setCaptchaInput("");
   }, []);
+
+  // Shared by the password and PIN forms. OFF unless the portal opts in: a
+  // captcha is a cognitive function test, and WCAG 2.2 3.3.8 Accessible
+  // Authentication (AA) forbids one without an alternative. Mirrors the
+  // `Show captcha` boolean on the Figma `Auth / AuthFormCard`, which defaults
+  // to false for the same reason.
+  const captchaBlock = config.captcha ? (
+    <div className="rounded-md border border-[var(--sa-border-neutral-subtle)] bg-[var(--sa-bg-neutral-subtler)] p-2.5">
+      <label
+        htmlFor="login-captcha"
+        className="block text-xs font-semibold text-[var(--sa-text-neutral-base)]"
+      >
+        Security Captcha <span className="text-[var(--sa-text-status-error-base)]">*</span>
+      </label>
+      <div className="mt-1.5 flex items-center gap-2">
+        <div className="flex h-9 items-center justify-center rounded bg-[var(--sa-bg-neutral-subtle)] px-4 font-mono text-base font-bold tracking-widest text-[var(--sa-text-neutral-base)] select-none">
+          <span className="line-through decoration-gray-400">{captchaCode}</span>
+        </div>
+        <button
+          type="button"
+          onClick={generateCaptcha}
+          title="Refresh Captcha"
+          aria-label="Refresh Captcha Security Code"
+          className="rounded p-2 text-xs font-semibold text-[var(--sa-text-neutral-subtle)] hover:bg-[var(--sa-bg-neutral-subtle)]"
+        >
+          ↻ Refresh
+        </button>
+      </div>
+      <input
+        id="login-captcha"
+        type="text"
+        required
+        maxLength={6}
+        value={captchaInput}
+        onChange={(e) => setCaptchaInput(e.target.value)}
+        placeholder="Enter characters shown above"
+        className="mt-2 w-full rounded-md border border-[var(--sa-border-neutral-subtle)] px-3 py-1.5 text-xs text-[var(--sa-text-neutral-base)] focus:border-[var(--sa-color-primaryScale-800)] focus:outline-none"
+      />
+    </div>
+  ) : null;
 
   // OTP resend timer state
   const [otpTimer, setOtpTimer] = React.useState(30);
@@ -201,7 +243,10 @@ export function PortalLoginTemplate({
       authMode: activeAuthMode,
       credentials: {
         username,
-        password,
+        // The PIN form reuses the `password` field's state, but a consumer must
+        // never receive a PIN under the name `password`.
+        password: activeAuthMode === "pin" ? undefined : password,
+        pin: activeAuthMode === "pin" ? password : undefined,
         mobile,
         otp,
         captcha: captchaInput,
@@ -399,45 +444,80 @@ export function PortalLoginTemplate({
               </div>
             </div>
 
-            {/* Captcha Block */}
-            <div className="rounded-md border border-[var(--sa-border-neutral-subtle)] bg-[var(--sa-bg-neutral-subtler)] p-2.5">
-              <label
-                htmlFor="login-captcha"
-                className="block text-xs font-semibold text-[var(--sa-text-neutral-base)]"
-              >
-                Security Captcha <span className="text-[var(--sa-text-status-error-base)]">*</span>
-              </label>
-              <div className="mt-1.5 flex items-center gap-2">
-                <div className="flex h-9 items-center justify-center rounded bg-[var(--sa-bg-neutral-subtle)] px-4 font-mono text-base font-bold tracking-widest text-[var(--sa-text-neutral-base)] select-none">
-                  <span className="line-through decoration-gray-400">
-                    {captchaCode}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={generateCaptcha}
-                  title="Refresh Captcha"
-                  aria-label="Refresh Captcha Security Code"
-                  className="rounded p-2 text-xs font-semibold text-[var(--sa-text-neutral-subtle)] hover:bg-[var(--sa-bg-neutral-subtle)]"
-                >
-                  ↻ Refresh
-                </button>
-              </div>
-              <input
-                id="login-captcha"
-                type="text"
-                required
-                maxLength={6}
-                value={captchaInput}
-                onChange={(e) => setCaptchaInput(e.target.value)}
-                placeholder="Enter characters shown above"
-                className="mt-2 w-full rounded-md border border-[var(--sa-border-neutral-subtle)] px-3 py-1.5 text-xs text-[var(--sa-text-neutral-base)] focus:border-[var(--sa-color-primaryScale-800)] focus:outline-none"
-              />
-            </div>
+            {captchaBlock}
           </div>
         )}
 
-        {/* ── MODE 2: MOBILE OTP LOGIN ────────────────────────────────────── */}
+        {/* ── MODE 2: PIN LOGIN ───────────────────────────────────────────── */}
+        {/* NOS is PIN-only. Same anatomy as password, so the identifier field is
+            deliberately identical — only the secret and its recovery link differ. */}
+        {activeAuthMode === "pin" && (
+          <div className="space-y-3.5 pt-1">
+            <div>
+              <label
+                htmlFor="login-pin-identifier"
+                className="block text-xs font-semibold text-[var(--sa-text-neutral-base)]"
+              >
+                Username / Email / Mobile <span className="text-[var(--sa-text-status-error-base)]">*</span>
+              </label>
+              <input
+                id="login-pin-identifier"
+                type="text"
+                required
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Enter User ID or Registered Mobile"
+                className="mt-1 w-full rounded-md border border-[var(--sa-border-neutral-subtle)] px-3 py-2 text-sm text-[var(--sa-text-neutral-base)] focus:border-[var(--sa-color-primaryScale-800)] focus:outline-none focus:ring-1 focus:ring-[var(--sa-color-primaryScale-800)]"
+              />
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="login-pin"
+                  className="block text-xs font-semibold text-[var(--sa-text-neutral-base)]"
+                >
+                  PIN <span className="text-[var(--sa-text-status-error-base)]">*</span>
+                </label>
+                {config.links?.forgotPasswordHref && (
+                  <a
+                    href={config.links.forgotPasswordHref}
+                    className="text-xs font-medium text-[var(--sa-color-primaryScale-800)] hover:underline"
+                  >
+                    Forgot PIN?
+                  </a>
+                )}
+              </div>
+              <div className="relative mt-1">
+                <input
+                  id="login-pin"
+                  type={showPassword ? "text" : "password"}
+                  required
+                  inputMode="numeric"
+                  autoComplete="off"
+                  pattern="[0-9]*"
+                  maxLength={6}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value.replace(/\D/g, ""))}
+                  placeholder="Enter your 6-digit PIN"
+                  className="w-full rounded-md border border-[var(--sa-border-neutral-subtle)] px-3 py-2 pr-10 text-sm tracking-[0.35em] text-[var(--sa-text-neutral-base)] focus:border-[var(--sa-color-primaryScale-800)] focus:outline-none focus:ring-1 focus:ring-[var(--sa-color-primaryScale-800)]"
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide PIN" : "Show PIN"}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-xs text-[var(--sa-text-neutral-subtle)] hover:text-black"
+                >
+                  {showPassword ? "Hide" : "Show"}
+                </button>
+              </div>
+            </div>
+
+            {captchaBlock}
+          </div>
+        )}
+
+        {/* ── MODE 3: MOBILE OTP LOGIN ────────────────────────────────────── */}
         {activeAuthMode === "otp" && (
           <div className="space-y-3.5 pt-1">
             <div>
@@ -498,7 +578,7 @@ export function PortalLoginTemplate({
           </div>
         )}
 
-        {/* ── MODE 3: DIGILOCKER SSO ─────────────────────────────────────── */}
+        {/* ── MODE 4: DIGILOCKER SSO ─────────────────────────────────────── */}
         {activeAuthMode === "digilocker" && (
           <div className="space-y-4 py-2 text-center">
             <div className="rounded-lg border border-[var(--sa-border-brand-primary-base)] bg-[var(--sa-bg-brand-primary-subtler)] p-4">

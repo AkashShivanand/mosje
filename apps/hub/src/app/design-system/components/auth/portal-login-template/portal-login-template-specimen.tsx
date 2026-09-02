@@ -34,7 +34,9 @@ const CONFIG: PortalLoginConfig = {
       audience: "citizen",
       label: "Citizen",
       description: "For a member of the public tracking their own application.",
-      authModes: ["password", "otp"],
+      // All three form modes on one role, so the specimen shows every field set
+      // the template can draw. A real portal offers what its own register uses.
+      authModes: ["password", "otp", "pin"],
       defaultMode: "password",
     },
     {

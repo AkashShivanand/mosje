@@ -180,6 +180,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Bullet Chart — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/bullet-chart",
+    "keywords": "bullet chart — design system data display example why the bands are grey  tokens wcag accessibility",
+    "description": "A measure against its target on one line: the value as a bar, the target as a tick across it.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Button",
     "section": "Actions",
     "href": "/design-system/components/actions/button",
@@ -823,7 +832,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Portal Login Template — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/portal-login-template",
-    "keywords": "portal login template — design system auth & dashboard three audiences, whatever they are called two form modes, and one handoff how the mode selector presents itself example linking straight to a role tab portalloginconfig keyboard portalLoginUrl(path, roleId?) roleFromUrl(href) ROLE_PARAM portalId portalName portalTagline portalDescription changeHref roles defaultRoleId brandAssets extraFields extraContent links tokens wcag accessibility",
+    "keywords": "portal login template — design system auth & dashboard three audiences, whatever they are called three form modes, and one handoff how the mode selector presents itself example linking straight to a role tab portalloginconfig keyboard portalLoginUrl(path, roleId?) roleFromUrl(href) ROLE_PARAM portalId portalName portalTagline portalDescription changeHref roles defaultRoleId brandAssets extraFields extraContent links tokens wcag accessibility",
     "description": "A whole portal login page built from one config object — the role tabs, the authentication mode selector, the credential form and the deep-linked URL.",
     "type": "component",
     "iconName": "lock"
@@ -991,6 +1000,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The three shapes an SLA guarantee takes: a linear row, a circular dashboard tile, and a badge for a table cell.",
     "type": "component",
     "iconName": "notifications"
+  },
+  {
+    "title": "Small Multiples — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/small-multiples",
+    "keywords": "small multiples — design system data display example the shared scale is the whole point  tokens wcag accessibility",
+    "description": "The same chart once per category, on one shared scale — the answer to a series count that colour cannot carry.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Spacing",

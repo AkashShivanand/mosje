@@ -476,16 +476,23 @@ copy still documented the retired five-method axis), and `auth-parts.figma.ts` a
 `SigningIntoBar`. Both remain **authored in anticipation** — Code Connect still cannot be
 published on this plan.
 
+> **Superseded 2026-09-02 — see Phase 7.** The `Device × Step` axis is gone and the
+> template has been rewritten again, for `Device × Auth Method`.
+
 **Not done:** the full house-style documentation canvas for all 17 components, and the portal
 configuration table as a Figma page. That is the single largest remaining piece.
 
 ### Phase 6 — the code mirror
 
 **The code carried the same fiction, and it is gone.** `PortalAuthMode` was
-`password | otp | digilocker | darpan | aadhaar`; it is now `password | otp | digilocker`.
+`password | otp | digilocker | darpan | aadhaar`; it became `password | otp | digilocker`.
 The two invented render blocks, their state, and `LoginSubmitPayload.credentials.darpanId` /
 `.aadhaarNo` were removed from `portal-login-template.tsx`. Nothing in the estate consumed it
 — only Storybook — so this broke no portal.
+
+> **Superseded 2026-09-02 — see Phase 7.** `PortalAuthMode` is now
+> `password | otp | pin | digilocker`. The removal above stands; `pin` is a different
+> claim, evidenced by §1 of this document.
 
 **Discovery correction:** `OtpInput`, `Select`, `Chip`, `Stepper` and `SideSheet` **already
 existed in code**. Only the genuinely-missing pieces were built.
@@ -821,3 +828,85 @@ answer for anyone searching, which is the exact failure the rule exists to preve
 wordmark as components (the wordmark is still TEXT), the DigiLocker brand mark, and the
 SCW / SMILE-Beggary / E-Utthaan / E-Anudaan logos. Every placeholder is named in the file
 so an audit can find it.
+
+---
+
+## Phase 7 — the axis was wrong, and it is now `Device × Auth Method` (2026-09-02)
+
+**`Device × Step` conflated two unlike things.** `Credentials` and `OTP` are ways of proving
+identity; `Reset` and `Success` are stages of credential recovery. One axis cannot mean both,
+and pinning a recovery screen on the login master made recovery look like a login mode. This
+was raised as gap **G1** in the review that preceded this phase and accepted.
+
+### What the master is now
+
+Six variants, in `component-authoring.md` §10 order — Device ascending by viewport, then Auth
+Method by number of portals using it, descending:
+
+| Device | Auth Method | Frame | Node |
+|---|---|---|---|
+| Mobile | Password | 375×1138 | `55451:1860` |
+| Mobile | OTP | 375×1138 | `55451:2141` |
+| Mobile | PIN | 375×1138 | `56643:4103` |
+| Desktop | Password | 1440×960 | `55451:2667` |
+| Desktop | OTP | 1440×960 | `55451:2920` |
+| Desktop | PIN | 1440×960 | `56643:4105` |
+
+`Device=Mobile, Auth Method=Password` leads, so a fresh instance defaults to the variant that
+passes accessibility (`ds-documentation-standard.md` §6). Mobile's 1138 is the **scroll**
+height, not a viewport.
+
+**Recovery was moved, not deleted.** `Reset` and `Success` live in
+`Auth / CredentialRecovery` (`56640:4103`) with their card in `Auth / RecoveryFormCard`
+(`56640:4104`). The component nodes were moved rather than re-created, so their keys and every
+instance link survived — §11.
+
+**DigiLocker did not become an axis value.** It is a handoff CTA above the credentials
+divider, switched by `Show DigiLocker` on the nested `Auth / AuthFormCard` — a boolean slot,
+per §4.
+
+### Why PIN is evidenced and the retired modes were not
+
+§1 of this document records NOS as **2 screens, both `Sign In Pin`** (`2436:15957`), and §7's
+portal matrix already listed the auth method as *"Password · OTP · PIN · DigiLocker — NOS is
+PIN-only"*. The evidence was in the analysis before the axis was cut; the axis simply did not
+use it. `darpan` and `aadhaar` had no such screen anywhere, which is why they stay gone.
+
+### The code half
+
+- `PortalAuthMode` is `password | otp | pin | digilocker`.
+- A **PIN mode** renders between password and OTP: a registered identifier, then a six-digit
+  numeric field (`inputMode="numeric"`, digits stripped on input, `autoComplete="off"`) with a
+  Show/Hide toggle and a "Forgot PIN?" link. Same anatomy as password, because that is what the
+  handoff draws — only the secret and its recovery link differ.
+- `LoginSubmitPayload.credentials.pin` carries it. **A PIN never arrives as `password`**, even
+  though the form reuses that field's state internally.
+- **`config.captcha` gates the captcha and defaults to `false`.** It previously rendered
+  unconditionally with no way to switch it off. A captcha is a cognitive function test and
+  **WCAG 2.2 3.3.8 Accessible Authentication (AA)** forbids one without an alternative, so the
+  default is load-bearing rather than a convenience. `Show captcha` on `Auth / AuthFormCard`
+  defaults to `false` for the same reason.
+- `portal-login-template.figma.ts` rewritten a second time, for the new axis.
+
+### Tokenisation audit — authorable nodes only
+
+Zero unbound fills, strokes, radii or text styles across all five sets. Every remaining finding
+is attributable and none is authored here: 10 spacing properties on the **remote** SAMAVESH
+seal (unwritable from this file — `ds-documentation-standard.md` §5), 17 inherited from the
+`Button` and `Link` library mains, and 8 `COMPONENT_SET` corner radii, which are Figma's own
+chrome.
+
+### Still outstanding after Phase 7
+
+1. **Desktop Branding block is 794×241**; an earlier reading of the handoff put it at 500×606.
+   That figure came from a different file and was never confirmed against a live read, so the
+   geometry was left alone rather than changed on a half-remembered number. **Needs a human to
+   confirm against the handoff.**
+2. **`Show captcha` sits last** in the `AuthFormCard` property list. The plugin API exposes no
+   property reordering, so it cannot be moved from a script.
+3. **The OTP variant has no role-tabs, SSO or account-prompt slots** — deliberate, matching the
+   short card the handoff draws.
+4. **`portal-login-template.tsx` hand-rolls the captcha markup** instead of using the exported
+   `CaptchaField`. A DS-reuse defect, and a larger refactor than this change.
+5. The Figma documentation canvas and the `claims.json` pins for the new axis
+   (`figma-code-sync.md`) are not done.

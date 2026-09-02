@@ -25,11 +25,17 @@ export type PortalAudience = "citizen" | "officer" | "organisation";
  *
  * `digilocker` is kept, but note what it is: a CTA that hands off to a
  * government identity provider, sitting ABOVE the credentials divider. It is
- * not a mode of the credential form. The form itself has exactly two modes.
+ * not a mode of the credential form.
+ *
+ * **`"pin"` added 2026-09-02**, and it is not a reinstatement of the invented
+ * modes above — NOS is PIN-only, and both its auth screens (`2436:15957`) are
+ * `Sign In Pin`. The credential form therefore has three modes, and the Figma
+ * master's `Auth Method` axis is Password · OTP · PIN to match.
  */
 export type PortalAuthMode =
   | "password" // Username / Email / Mobile + Password (+ optional captcha)
   | "otp" // Mobile / Email + 6-digit OTP verification
+  | "pin" // Registered identifier + 6-digit numeric PIN
   | "digilocker"; // DigiLocker SSO — a handoff, not a form mode
 
 /**
@@ -97,6 +103,8 @@ export interface LoginSubmitPayload {
   credentials: {
     username?: string;
     password?: string;
+    /** Set only when `authMode === "pin"`. The PIN never arrives as `password`. */
+    pin?: string;
     mobile?: string;
     otp?: string;
     captcha?: string;
@@ -121,6 +129,14 @@ export interface PortalLoginConfig {
   roles: PortalRoleTab[];
   /** Default active role ID — defaults to the first role in `roles` */
   defaultRoleId?: string;
+  /**
+   * Show the security captcha on the password and PIN forms. **Defaults to
+   * `false`, and that default is load-bearing:** a captcha is a cognitive
+   * function test, and WCAG 2.2 3.3.8 Accessible Authentication (AA) forbids one
+   * without an alternative. Switch it on only for a portal that offers that
+   * alternative. Mirrors `Show captcha` on the Figma `Auth / AuthFormCard`.
+   */
+  captcha?: boolean;
   /** Brand asset path overrides */
   brandAssets?: PortalBrandAssets;
   /** Optional custom form fields or controls to inject */

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { cn } from "../../../../utils/cn";
 import { CardState, actionForState, type CardStateKind } from "../../../dashboard/card-state";
+import { ChartTextureDefs } from "./texture";
 import type { ChartTable } from "../types";
 import "../charts.css";
 
@@ -51,6 +52,15 @@ export interface ChartStateProps {
    * a prop no consumer can reach.
    */
   tableView?: "toggle" | "sr-only";
+  /**
+   * Emit the hatch-pattern `<defs>` this chart's series can point at, and pair
+   * it with `texturedColor(i)` as each series' `color`.
+   *
+   * Texture is the encoding that survives colour-vision deficiency, print and
+   * forced-colors — the three situations that take the categorical ramp's six
+   * distinguishable slots away. See `internal/texture.tsx`.
+   */
+  textured?: boolean;
 }
 
 export interface ChartFrameProps extends ChartStateProps {
@@ -215,6 +225,7 @@ export function ChartFrame({
   viewBox,
   table,
   tableView = "toggle",
+  textured = false,
   legend,
   overlay,
   canvasRef,
@@ -262,6 +273,9 @@ export function ChartFrame({
           preserveAspectRatio="xMidYMid meet"
           aria-labelledby={labelledBy}
         >
+          {/* Emitted only when asked for: a chart with no textured series should
+              not carry six unused <pattern> definitions. */}
+          {textured ? <ChartTextureDefs /> : null}
           <title id={titleId}>{title}</title>
           {summary && <desc id={descId}>{summary}</desc>}
           {children}

@@ -65,7 +65,7 @@ const A11Y: A11yItem[] = [
     level: "AA",
     status: "partial",
     description:
-      "The captcha is a cognitive function test. Where it is enabled, the OTP mode is the alternative that satisfies this criterion — so a role offering captcha must also offer another way in.",
+      "The captcha is a cognitive function test, so `config.captcha` defaults to false and the field is not drawn at all unless a portal asks for it. Where it is switched on, the OTP mode is the alternative that satisfies this criterion — a role offering captcha must also offer another way in.",
   },
   {
     criterion: "2.4.7 Focus Visible",
@@ -88,7 +88,7 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
       whenToUse={{
         use: [
           "A portal signs in more than one kind of user and each kind has its own way in.",
-          "The authentication modes are the estate's own — a password form, a mobile OTP, or a DigiLocker handoff.",
+          "The authentication modes are the estate's own — a password form, a mobile OTP, a numeric PIN, or a DigiLocker handoff.",
           "A link from elsewhere should open the login page on a particular role's tab.",
         ],
         avoid: [
@@ -100,7 +100,7 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
       related={[
         { label: "Portal Login Shell", href: "/design-system/components/auth/portal-login-shell", reason: "the layout this template fills; use it directly for a bespoke form" },
         { label: "OTP Input", href: "/design-system/components/forms/otp-input", reason: "the field the OTP mode draws" },
-        { label: "Captcha Field", href: "/design-system/components/forms/captcha-field", reason: "the challenge the password mode can carry" },
+        { label: "Captcha Field", href: "/design-system/components/forms/captcha-field", reason: "the challenge the password and PIN modes can carry, off unless config.captcha asks for it" },
         { label: "Password Input", href: "/design-system/components/forms/password-input", reason: "the reveal-capable field used on its own outside a login page" },
       ]}
       design={
@@ -126,23 +126,35 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
           </section>
           <section className="cdp__section" aria-labelledby="cdp-modes">
             <h2 id="cdp-modes" className="cdp__h2">
-              Two Form Modes, and One Handoff
+              Three Form Modes, and One Handoff
             </h2>
             <MatrixTable
               caption="PortalAuthMode — what each one draws"
               columns={["Mode", "What the form shows", "Where it sits"]}
               rows={[
-                ["password", "Username, email or mobile, plus a password and an optional captcha.", "In the credential form"],
+                ["password", "Username, email or mobile, plus a password and, where the portal asks for it, a captcha.", "In the credential form"],
                 ["otp", "Mobile or email, a send control, and a six-digit code with a resend timer.", "In the credential form"],
+                ["pin", "A registered identifier and a six-digit numeric PIN, masked, with its own Forgot PIN link.", "In the credential form"],
                 ["digilocker", "A single call to action that leaves for a government identity provider.", "Above the credentials divider — it is a handoff, not a form mode"],
               ]}
             />
+            <p>
+              A PIN reaches <code>onSubmit</code> as <code>credentials.pin</code>. The form
+              reuses the password field&rsquo;s own state internally, but a consumer must never
+              receive a PIN under the name <code>password</code>.
+            </p>
             <Callout type="warning" title="Two modes that were invented and are gone">
               This union carried <code>darpan</code> (NGO DARPAN ID) and <code>aadhaar</code>{" "}
               (Aadhaar e-KYC) until 2026-08-17. Neither exists: a full read of the MoSJE portal
               handoff &mdash; 69 authentication screens across 10 pages &mdash; found no DARPAN and
               no Aadhaar screen in any portal. They were written from a brief before the design
               file was available, and the matching Figma variant axis was retired with them.
+            </Callout>
+            <Callout type="info" title="pin is not a reinstatement of those two">
+              It was added on 2026-09-02 on the evidence the retired pair never had: the National
+              Overseas Scholarship signs in on a PIN only, and both its screens in the handoff are{" "}
+              <code>Sign In Pin</code>. The Figma master&rsquo;s variant axis is{" "}
+              <code>Device &times; Auth Method</code> &mdash; Password, OTP, PIN &mdash; to match.
             </Callout>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-selector">

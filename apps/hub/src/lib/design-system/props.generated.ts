@@ -614,6 +614,12 @@ export const GENERATED_PROPS = {
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
       },
       {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
         "name": "valueFormat",
         "type": "ValueFormat",
         "required": false,
@@ -827,6 +833,12 @@ export const GENERATED_PROPS = {
         "onlyIn": "BarMulti"
       },
       {
+        "name": "max",
+        "type": "number",
+        "required": false,
+        "description": "Pin the value axis instead of letting the chart fit its own data. Required for `SmallMultiples`: panels are only comparable when they share one ceiling, and a chart that fits its own data draws a state with 40 beneficiaries the same as one with 40,000. Pass the `sharedMax` that component hands you. Ignored when it is below the data's own maximum — silently clipping bars would be worse than overriding the caller."
+      },
+      {
         "name": "onRetry",
         "type": "() => void",
         "required": false,
@@ -863,6 +875,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
         "name": "valueFormat",
@@ -1059,6 +1077,79 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "true",
         "description": "Whether the trail may run onto a second line when it does not fit. `true` (the default) is right in a page-width container, where truncating a long page title would hide the one crumb the reader most needs. Pass `false` inside a FIXED-WIDTH rail, where a second line would change the panel's height every time the reader drills. Either way the current crumb ellipsises rather than overflowing."
+      }
+    ]
+  },
+  "BulletChartProps": {
+    "source": "packages/design-system/components/data-display/charts/bullet-chart.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "rows",
+        "type": "BulletRow[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "filterLabel",
+        "type": "string",
+        "required": false,
+        "description": "Named on `\"no-results\"` so the reader can undo the filter they applied."
+      },
+      {
+        "name": "onRetry",
+        "type": "() => void",
+        "required": false,
+        "description": "Offered on `\"error\"`. A feed being down is an expected state with a retry, not an exception."
+      },
+      {
+        "name": "state",
+        "type": "ChartState = \"loading\" | \"empty\" | \"no-results\" | \"not-published\" | \"error\" | \"restricted\" | \"offline\"",
+        "required": false,
+        "description": "What to render INSTEAD of the marks. Omit for the populated state. `\"loading\"` draws a skeleton at the chart's own aspect ratio, so the layout does not jump when the figures land. `\"no-results\"` is deliberately separate from `\"empty\"`: \"the feed published nothing\" and \"your filter excluded everything\" are different sentences with different remedies, and a chart that renders one for both is lying about one of them."
+      },
+      {
+        "name": "summary",
+        "type": "string",
+        "required": false,
+        "description": "Short screen-reader summary. Defaults to a value-vs-target sentence."
+      },
+      {
+        "name": "tableView",
+        "type": "\"toggle\" | \"sr-only\"",
+        "required": false,
+        "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
+        "name": "unit",
+        "type": "string",
+        "required": false,
+        "description": "Shown after each value, e.g. \"₹ crore\"."
+      },
+      {
+        "name": "valueFormat",
+        "type": "ValueFormat",
+        "required": false,
+        "default": "formatIndian",
+        "description": ""
       }
     ]
   },
@@ -1577,6 +1668,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"toggle\"",
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       }
     ]
   },
@@ -1631,6 +1729,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       }
     ]
   },
@@ -1661,6 +1765,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       }
     ]
   },
@@ -2113,6 +2223,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
         "name": "valueFormat",
@@ -2633,6 +2749,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "description": "Target threshold (0–max) drawn as a tick on the ring.",
         "onlyIn": "DonutProgress"
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
         "name": "value",
@@ -3190,6 +3312,12 @@ export const GENERATED_PROPS = {
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
       },
       {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
         "name": "valueFormat",
         "type": "ValueFormat",
         "required": false,
@@ -3264,6 +3392,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
         "name": "unit",
@@ -3488,6 +3622,12 @@ export const GENERATED_PROPS = {
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
       },
       {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
         "name": "valueFormat",
         "type": "ValueFormat",
         "required": false,
@@ -3708,6 +3848,12 @@ export const GENERATED_PROPS = {
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
       },
       {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
+      },
+      {
         "name": "valueFormat",
         "type": "ValueFormat",
         "required": false,
@@ -3767,6 +3913,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
         "name": "valueFormat",
@@ -3918,6 +4070,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
         "name": "valueFormat",
@@ -4166,6 +4324,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
         "name": "valueFormat",
@@ -5204,6 +5368,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       }
     ]
   },
@@ -5501,6 +5671,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
         "name": "value",
@@ -5878,6 +6054,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
         "name": "valueFormat",
@@ -6843,6 +7025,62 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "SmallMultiplesProps": {
+    "source": "packages/design-system/components/data-display/charts/small-multiples.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "items",
+        "type": "T[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "labelOf",
+        "type": "(item: T) => string",
+        "required": true,
+        "description": "One panel's caption."
+      },
+      {
+        "name": "renderItem",
+        "type": "(item: T, sharedMax: number) => React.ReactNode",
+        "required": true,
+        "description": "Draw one panel. Receives the item and the ceiling EVERY panel must use. Pass `sharedMax` into the chart's own `max`/domain. A panel that computes its own scale is the defect this component exists to prevent. **Give each panel `tableView=\"sr-only\"`.** Every chart offers a visible \"View as Table\" control by default, which is right for one chart and wrong for a grid — twenty-eight panels would carry twenty-eight links. The screen reader table stays on every panel either way; it is only the visible control that is suppressed."
+      },
+      {
+        "name": "title",
+        "type": "string",
+        "required": true,
+        "description": "The whole grid's heading, e.g. \"Grants Released by State\"."
+      },
+      {
+        "name": "valuesOf",
+        "type": "(item: T) => number[]",
+        "required": true,
+        "description": "Every value the panel will plot. Used ONLY to compute the shared ceiling — see the note below on why this is not optional."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "columns",
+        "type": "2 | 3 | 4 | 6",
+        "required": false,
+        "default": "4",
+        "description": "Panels per row on a wide viewport."
+      },
+      {
+        "name": "emptyLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"No figures to compare.\"",
+        "description": "Rendered when `items` is empty."
+      }
+    ]
+  },
   "SparklineProps": {
     "source": "packages/design-system/components/data-display/charts/sparkline.tsx",
     "inheritsNative": false,
@@ -6921,6 +7159,12 @@ export const GENERATED_PROPS = {
         "type": "\"toggle\" | \"sr-only\"",
         "required": false,
         "description": "Whether the chart's data table is also reachable by a SIGHTED reader. Default `\"toggle\"`. See `ChartFrameProps[\"tableView\"]` for why. This sits on the shared base — which is otherwise about states — because every chart already extends it, and a prop declared on the frame alone is a prop no consumer can reach."
+      },
+      {
+        "name": "textured",
+        "type": "boolean",
+        "required": false,
+        "description": "Emit the hatch-pattern `<defs>` this chart's series can point at, and pair it with `texturedColor(i)` as each series' `color`. Texture is the encoding that survives colour-vision deficiency, print and forced-colors — the three situations that take the categorical ramp's six distinguishable slots away. See `internal/texture.tsx`."
       },
       {
         "name": "width",
