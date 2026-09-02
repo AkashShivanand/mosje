@@ -58,18 +58,6 @@ The worked example to copy from: **[projects/nhapoa/](projects/nhapoa/README.md)
 - `captures/figma/<SLUG>.png` — design-frame screenshots for the side-by-side boards.
 Deep-dive: `~/.claude/skills/design-qc/references/figma-extraction.md`.
 
-## 3. Capture the live build (assistant)
-```bash
-cd tools/design-audit
-python3 engine/run.py --project <name> --phase all      # capture + analyze + report
-```
-Per role it logs in **once** (keep-alive, sessionStorage-safe), discovers sidebar routes, scroll-unclips
-each page, screenshots at 1440-wide, and extracts every element's computed CSS. Modal/sub-states that no
-menu reaches (a "Change" button, a case-detail tab, a confirm dialog) are captured by **driving** the UI —
-see `references/capture-and-auth.md`. Never fire a real OTP or commit a destructive action on dev.
-Admin logins often share a rate-limiter: capture all roles in one pass; retry a failed role after a
-full quiet cooldown.
-
 ## 2b. Reuse the capture bundle (skip if this portal has never been captured)
 Every live capture writes `out/capture-bundle.json` — one row per screen, carrying a structure
 hash (did the DESIGN change?) and a geometry hash (did the LAYOUT move?), plus a build fingerprint
@@ -102,6 +90,18 @@ SAFE to `prod` (loudly), never to the more permissive `dev`. A `captureValidatio
 auto-clicks a destructive label (submit/approve/save/…) while that gate is closed; it logs and
 skips the step, and its automatic click only ever tries the flow's explicit `submitLabel` or
 `"Next"`.
+
+## 3. Capture the live build (assistant)
+```bash
+cd tools/design-audit
+python3 engine/run.py --project <name> --phase all      # capture + analyze + report
+```
+Per role it logs in **once** (keep-alive, sessionStorage-safe), discovers sidebar routes, scroll-unclips
+each page, screenshots at 1440-wide, and extracts every element's computed CSS. Modal/sub-states that no
+menu reaches (a "Change" button, a case-detail tab, a confirm dialog) are captured by **driving** the UI —
+see `references/capture-and-auth.md`. Never fire a real OTP or commit a destructive action on dev.
+Admin logins often share a rate-limiter: capture all roles in one pass; retry a failed role after a
+full quiet cooldown.
 
 ## 4. Coverage — did we reach every screen?
 `out/coverage-ledger.json`: every Figma frame is `MAPPED` or `UNMAPPED`. **Any `UNMAPPED` = a missed
