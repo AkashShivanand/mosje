@@ -76,13 +76,24 @@ tools/design-audit/
     report.py        MACHINE-DRAFT / CERTIFIED PDF+HTML with 🤖/👤 stamps, coverage + DS-adoption tiles
     qc_geometry.py   assertion-gated pin/crop geometry (a pin must sit inside its element+crop+image)
     render.js        HTML → PDF (puppeteer, one dynamically-sized page per screen)
+    bundle.py        capture-bundle.json — structure/geometry hashes, freshness tiers, masking
+    drive.py         executes projects/<name>/screen-manifest.yaml — wizard steps a route-crawl can't reach
+    manifest.py      parses + validates screen-manifest.yaml
+    figures.py       derives web-servable WebP report figures for apps/hub/public/reports/<name>/
   projects/<name>/   per project — the ONLY thing you write
     audit.config.json      figma/live/auth/roles/baseline (no passwords)
-    secrets.json           gitignored — passwords keyed by role
-    inputs/                figma-frames.json (with a `heading` per frame!), tokens.json, manual-screens.json
-    captures/              live screenshots + extracted rows (generated)
-    out/                   coverage-ledger.json, conformance.json, crosscheck.md, failures.md, audit-master.json
+    secrets.json            gitignored — passwords keyed by role
+    screen-manifest.yaml    optional — declarative flows/wizard steps for engine/drive.py
+    inputs/                 figma-frames.json (with a `heading` per frame!), tokens.json, manual-screens.json
+    captures/               live screenshots + extracted rows (generated, gitignored)
+    out/                    coverage-ledger.json, conformance.json, crosscheck.md, failures.md,
+                             freshness.md, capture-bundle.json (tracked), audit-master.json (tracked)
 ```
+
+`--phase bundle` (tier 0) checks `out/freshness.md` and reuses what's unchanged before opening a
+browser; `--phase capture`/`all` always captures, tier-1-deciding per screen. `--phase figures`
+derives the report's WebP figures. See `AUDIT-A-PORTAL.md` §2b for the freshness gate and how
+submission inside a manifest flow is gated by `environment` + `allowSubmit`.
 
 ## Five deliverables, three gates
 

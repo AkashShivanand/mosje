@@ -38,4 +38,13 @@ Phase 0 must dump a **`heading` per frame** in `inputs/figma-frames.json` (power
   (+ `sync_data.py` when a reviewer sheet is synced) which renders the polished PDF into
   `docs/qc/portals/<name>/` via a COPY of the canonical `generate_pdf.py` + `render.js` (the skill's
   `scripts/` are canonical — copy, never fork; fold generator improvements back to the skill).
+- **Interactive drivers are now declarative.** New flows belong in
+  `projects/<name>/screen-manifest.yaml` and are executed by `engine/drive.py`. Do not write a
+  new bespoke `projects/<name>/*.py` capture driver — the existing ones keep working and migrate
+  portal by portal. Submission is gated by `environment` (dev/uat allows it, prod always blocks
+  for a human — an undeclared `environment` fails SAFE to `prod`, never `dev`) **and** by the
+  flow's own `allowSubmit` set to the literal boolean `true` (a YAML string like `"false"` does
+  not count). **Known limitation:** the flow-driving click paths are covered by unit tests against
+  a fake page (`engine/test_capture_bundle.py`), not yet by a real multi-step wizard on a live
+  portal — treat a flow's first live run as a dry run and watch its output closely.
 - Run: `cd tools/design-audit && python3 engine/run.py --project <name> --phase all`.

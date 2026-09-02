@@ -70,6 +70,39 @@ see `references/capture-and-auth.md`. Never fire a real OTP or commit a destruct
 Admin logins often share a rate-limiter: capture all roles in one pass; retry a failed role after a
 full quiet cooldown.
 
+## 2b. Reuse the capture bundle (skip if this portal has never been captured)
+Every live capture writes `out/capture-bundle.json` — one row per screen, carrying a structure
+hash (did the DESIGN change?) and a geometry hash (did the LAYOUT move?), plus a build fingerprint
+per host. A later run consults it before opening a browser:
+
+```bash
+cd tools/design-audit
+python3 engine/run.py --project <name> --phase bundle    # tier 0: freshness check, reuses what's unchanged
+```
+
+`out/freshness.md` records the decision and is a **gate**: it FAILs when a reused screenshot's
+`pngSha256` no longer matches the file on disk. `--force` ignores the bundle and re-captures
+everything; `--verify` always runs the per-screen structure/geometry check even when the build
+fingerprint looks unchanged. `resolve_freshness` never guesses `reuse-all` on doubt — an
+unreachable host, a missing or unreadable fingerprint, an empty host list, or an unreadable
+`capturedAt` all fall back to `verify` or `full`.
+
+Route discovery is **monotonic**: a route recorded for a role in the previous bundle is always
+re-visited this run too (honouring `skipRoutes`), because a slow-loading nav widget makes the
+discovered route set flaky. A route that still fails to load after one extra attempt is logged
+(`navigation failed … screen NOT captured`) and named in a per-role `n screen(s) not captured: …`
+summary — it is never silently backfilled from the previous bundle.
+
+Modal/sub-states no menu reaches are declared in `projects/<name>/screen-manifest.yaml` and driven
+by `engine/drive.py` — see `.claude/rules/design-audit.md`. Submission inside a flow is gated
+**twice**: `environment` (in the manifest or `audit.config.json`) must resolve to `dev` or `uat`
+(case-insensitive), **and** the flow's own `allowSubmit` must be the literal boolean `true` — a
+YAML string like `allowSubmit: "false"` does not open the gate. Undeclared `environment` fails
+SAFE to `prod` (loudly), never to the more permissive `dev`. A `captureValidation` step never
+auto-clicks a destructive label (submit/approve/save/…) while that gate is closed; it logs and
+skips the step, and its automatic click only ever tries the flow's explicit `submitLabel` or
+`"Next"`.
+
 ## 4. Coverage — did we reach every screen?
 `out/coverage-ledger.json`: every Figma frame is `MAPPED` or `UNMAPPED`. **Any `UNMAPPED` = a missed
 screen → the coverage gate FAILs.** `EXTRA` = build-only screens (fine; route to the Suggestions doc).
@@ -155,6 +188,7 @@ the new DS-adoption % and finding counts.
 | Mapping | `out/crosscheck.md` | design title ≠ build title (wrong frame↔capture pairing) |
 | Pins | `out/failures.md` | a pin falls outside its element ⊂ crop ⊂ image |
 | Fresh PDF | file mtime/size | the PDF byte size is identical across runs (silently stale render) |
+| Freshness | `out/freshness.md` | a reused capture no longer matches its recorded sha256 |
 
 ## The running principle — it learns every run
 Before a run, read the ledger (`references/audit-rules.md`, Canonical playbook first); after, append every
