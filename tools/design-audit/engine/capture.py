@@ -348,6 +348,7 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None):
     if carried:
         print(f"  carried forward {len(carried)} route(s) seen in a previous run", flush=True)
     captured = []
+    failed = []
     decision = "recapture"  # Task 9 replaces this; until then every screen is a fresh capture.
     for path in routes:
         slug = slugify(role["name"], path)
@@ -359,8 +360,20 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None):
         try:
             pg.goto(base + path, wait_until="networkidle", timeout=45000)
         except Exception:
-            try: pg.goto(base + path, wait_until="domcontentloaded", timeout=45000)
-            except Exception: continue
+            try:
+                pg.goto(base + path, wait_until="domcontentloaded", timeout=45000)
+            except Exception:
+                # One extra try after a short pause — no loop, no backoff ladder — before we
+                # accept the route is unreachable this run. A screen must never vanish from a
+                # run silently: if this also fails, it is logged here and in the role summary.
+                pg.wait_for_timeout(2000)
+                try:
+                    pg.goto(base + path, wait_until="domcontentloaded", timeout=45000)
+                except Exception as e:
+                    print(f"  ! {slug}: navigation failed ({str(e)[:120]}) — screen NOT captured",
+                          flush=True)
+                    failed.append(slug)
+                    continue
         pg.wait_for_timeout(waitms)
         # Settle FIRST so the screenshot and the extraction describe the same layout.
         settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
@@ -414,6 +427,9 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None):
             print(f"  ok {slug}: {len(data['rows'])} rows pageH={data['pageH']}{warn}", flush=True)
         except Exception as e:
             print(f"  ! {slug} extract failed: {str(e)[:60]}", flush=True)
+    if failed:
+        print(f"[{role['name']}] {len(failed)} screen(s) not captured: {', '.join(failed)}",
+              flush=True)
     return captured
 
 def merge_manifest(existing, fresh):
