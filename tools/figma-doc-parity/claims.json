@@ -596,13 +596,16 @@
           "absent": true,
           "hint": "NGO DARPAN and Aadhaar were removed from PortalAuthMode on 2026-08-17 — a full read of the handoff found no such screen in any portal. Reinstating either breaks the count this claim pins."
         },
-        { "kind": "text", "value": "Password, OTP and PIN" }
+        {
+          "kind": "text",
+          "value": "Password, OTP and PIN"
+        }
       ]
     },
     {
       "node": "55400:1552",
       "where": "PortalLoginTemplate — Documentation › 02 Properties › Device",
-      "figma": "variant → no code prop. Desktop is 1440 × 960 and Mobile 375 × 1138, where 1138 is the scroll height rather than a viewport. The React component is responsive in CSS, so the axis exists only to pin a breakpoint on the canvas.",
+      "figma": "variant → no code prop. Desktop is 1440 × 960 and Mobile 375 × 1138, where 1138 is the scroll height rather than a viewport. The React component is responsive in CSS, so the axis exists only to pin a breakpoint on the canvas. Tablet uses the Mobile variant by decision.",
       "expect": [
         {
           "kind": "source",
@@ -617,7 +620,10 @@
           "pattern": "DELIBERATELY OMITTED",
           "hint": "The Code Connect template must keep saying why Device has no prop, or an agent reading Dev Mode will invent one."
         },
-        { "kind": "text", "value": "no code prop" }
+        {
+          "kind": "text",
+          "value": "no code prop"
+        }
       ]
     },
     {
@@ -637,7 +643,10 @@
           "pattern": "DIGILOCKER IS NOT AN AUTH METHOD",
           "hint": "Giving DigiLocker a variant is the mistake this line exists to prevent — it is a consent handoff, not a credential form."
         },
-        { "kind": "text", "value": "defaultMode" }
+        {
+          "kind": "text",
+          "value": "defaultMode"
+        }
       ]
     },
     {
@@ -651,7 +660,10 @@
           "pattern": "Device × Auth Method` = 6",
           "hint": "The set was re-cut in place from Device × Step = 8 to Device × Auth Method = 6. If that arithmetic changes, this section's three specimens and its title change with it."
         },
-        { "kind": "text", "value": "Six variants ship" }
+        {
+          "kind": "text",
+          "value": "Six variants ship"
+        }
       ]
     },
     {
@@ -664,8 +676,14 @@
           "token": "--sa-shape-12",
           "hint": "Both ladders are value-named, so the rung IS the pixel value. A rung that stops resolving to its own name is the defect space-linkage.test.mjs exists to catch."
         },
-        { "kind": "token", "token": "--sa-padding-24" },
-        { "kind": "token", "token": "--sa-stack-16" },
+        {
+          "kind": "token",
+          "token": "--sa-padding-24"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-stack-16"
+        },
         {
           "kind": "text",
           "value": "shape/lg",
@@ -697,13 +715,16 @@
           "pattern": "Show PIN",
           "hint": "The masked field needs its own reveal control, labelled for a PIN rather than a password."
         },
-        { "kind": "text", "value": "Forgot PIN" }
+        {
+          "kind": "text",
+          "value": "Forgot PIN"
+        }
       ]
     },
     {
       "node": "55402:1879",
       "where": "PortalLoginTemplate — Documentation › 06 Behaviour › DigiLocker handoff",
-      "figma": "DigiLocker is an identity handoff, not a form mode, so it has no variant. The button sits above the credentials divider and is switched by Show DigiLocker on the form card. Hide it for officers by the role's audience, never by the tab's label — SCW calls that tab Admin and NMBA calls it Patient Monitoring.",
+      "figma": "DigiLocker is an identity handoff, not a form mode, so it has no variant. Its button sits above the credentials divider and is switched by Show DigiLocker on the form card. Hide it for officers by the role's audience, never by the tab's label — SCW calls that tab Admin and NMBA calls it Patient Monitoring.",
       "expect": [
         {
           "kind": "source",
@@ -717,7 +738,10 @@
           "pattern": "never off the tab's label",
           "hint": "Written in the Code Connect template because it is the instruction an agent reading Dev Mode needs and cannot infer from geometry."
         },
-        { "kind": "text", "value": "identity handoff" }
+        {
+          "kind": "text",
+          "value": "identity handoff"
+        }
       ]
     },
     {
@@ -741,7 +765,10 @@
           "file": "packages/design-system/components/auth/types.ts",
           "pattern": "defaultMode\\?:"
         },
-        { "kind": "text", "value": "authModes" }
+        {
+          "kind": "text",
+          "value": "authModes"
+        }
       ]
     },
     {
@@ -761,7 +788,10 @@
           "pattern": "3\\.3\\.8",
           "hint": "The reason for the default must stay beside the prop, or the next person removes the default as an inconvenience."
         },
-        { "kind": "text", "value": "3.3.8" },
+        {
+          "kind": "text",
+          "value": "3.3.8"
+        },
         {
           "kind": "text",
           "value": "44 × 44",
