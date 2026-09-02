@@ -119,6 +119,24 @@ export const NOT_RENDERABLE_IN_STORYBOOK = new Set([
  * can see the claim is real.
  */
 export const DOCUMENTED_BY = {
+  // DOCUMENTED ON A FOUNDATION PAGE RATHER THAN A COMPONENT ROUTE. The gate
+  // only scans `components/`, so these three read as undocumented while their
+  // real documentation sits one directory across. Verified by counting actual
+  // references on each page, not by assuming: Illustration 20, the UX4G widget
+  // 6, ToastProvider 8.
+  Illustration: "Illustration (foundation)",
+  UX4GAccessibilityWidget: "Accessibility (foundation)",
+  ToastProvider: "Toast",
+  // THE MASTHEAD'S PARTS. `SiteHeader` is the component a consumer composes;
+  // these are the pieces it composes FROM, and none is used on its own. Its page
+  // names all seven and spends a section on the distinction that actually trips
+  // people up — MenuToggle drives a persistent sidebar and reports
+  // `aria-expanded`, SheetToggle opens an overlay and has one glyph and no
+  // second state. Splitting that across seven routes would put the comparison
+  // on none of them.
+  MenuToggle: "SiteHeader", SheetToggle: "SiteHeader", NavItemLink: "SiteHeader",
+  NavDropdown: "SiteHeader", DropdownItem: "SiteHeader", MegaMenu: "SiteHeader",
+  MegaMenuItem: "SiteHeader",
   CardHeader: "Card", CardBody: "Card", CardFooter: "Card",
   CardTitle: "Card", CardSubtitle: "Card",
   TabPanel: "Tabs",
