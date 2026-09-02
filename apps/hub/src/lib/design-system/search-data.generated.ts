@@ -408,6 +408,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Error Summary — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/error-summary",
+    "keywords": "error summary — design system forms & inputs example why each entry focuses the control  tokens wcag accessibility",
+    "description": "The list at the top of a form that failed validation, naming every problem in field order and linking each one to its control.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Error View — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/error-view",

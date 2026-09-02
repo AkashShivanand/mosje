@@ -2630,6 +2630,51 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "ErrorSummaryProps": {
+    "source": "packages/design-system/components/forms/error-summary.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "errors",
+        "type": "ErrorSummaryItem[]",
+        "required": true,
+        "description": "In the order the fields appear in the form. Empty renders nothing."
+      },
+      {
+        "name": "autoFocus",
+        "type": "boolean",
+        "required": false,
+        "default": "true\n\nThis is the whole point of the component, so think hard before turning it\noff: a submit that fails silently leaves a screen-reader user on the\nbutton, with the errors somewhere above them and nothing said.",
+        "description": "Move focus to the summary when it appears."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "headingLevel",
+        "type": "2 | 3 | 4",
+        "required": false,
+        "default": "2",
+        "description": "Heading level, so the summary fits the page's outline."
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "title",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"There Is a Problem\"",
+        "description": ""
+      }
+    ]
+  },
   "ErrorViewProps": {
     "source": "packages/design-system/components/feedback/error-view.tsx",
     "inheritsNative": false,

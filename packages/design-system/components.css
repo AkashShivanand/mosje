@@ -18,6 +18,7 @@
 @import "./components/forms/chip.css";
 @import "./components/forms/controls.css";
 @import "./components/forms/declaration-checkbox.css";
+@import "./components/forms/error-summary.css";
 @import "./components/forms/filter-select.css";
 @import "./components/forms/form-section.css";
 @import "./components/forms/forms.css";
