@@ -72,13 +72,6 @@ const A11Y: A11yItem[] = [
     level: "AA",
     description: "Fields, buttons and tabs all draw the estate's focus ring, inherited from the DS controls rather than restyled here.",
   },
-  {
-    criterion: "GIGW 3.0 — One h1 per page",
-    level: "GIGW",
-    status: "partial",
-    description:
-      "The component renders “Sign In to <portal>” as the page's `<h1>`, which is correct on a real login page and means it must be the only one there. It also means the template cannot be embedded inside a page that already has an `<h1>` — this documentation page is exactly that case, and carries two.",
-  },
 ];
 
 export default function PortalLoginTemplatePage(): React.JSX.Element {

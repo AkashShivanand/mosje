@@ -226,3 +226,18 @@ export const DeepLinkedRole: Story = {
     onRoleChange: (id: string) => console.info("role ->", id),
   },
 };
+
+/**
+ * **Embedded in a page that already has an `<h1>`.**
+ *
+ * The form heading is the page's `<h1>` by default, which is what a real login
+ * page needs and what GIGW 3.0's one-h1-per-page rule assumes. Wherever the
+ * template sits INSIDE another page — the documentation page for it, a modal in
+ * an authenticated shell — `headingLevel` demotes it so the host page keeps a
+ * single first-level heading and its outline stays readable.
+ */
+export const EmbeddedHeadingLevel: Story = {
+  args: {
+    headingLevel: 2,
+  },
+};

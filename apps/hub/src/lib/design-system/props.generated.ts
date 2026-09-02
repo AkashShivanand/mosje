@@ -5372,6 +5372,13 @@ export const GENERATED_PROPS = {
         "description": "Error message to display inside the alert banner"
       },
       {
+        "name": "headingLevel",
+        "type": "1 | 2 | 3",
+        "required": false,
+        "default": "1\n\nA real login page is the whole page, so its heading is the `<h1>` — which\nis what GIGW 3.0 requires, and why 1 is the default. Anywhere the template\nis EMBEDDED in a page that already has an `<h1>` — a documentation page, a\nmodal inside an authenticated shell — pass 2 or 3, or the page ships two\nfirst-level headings and a screen-reader user loses the outline.",
+        "description": "Heading level for the form heading."
+      },
+      {
         "name": "loading",
         "type": "boolean",
         "required": false,

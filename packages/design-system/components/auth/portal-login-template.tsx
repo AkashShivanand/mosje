@@ -42,6 +42,16 @@ export interface PortalLoginTemplateProps {
    * error: a stale link should open the default tab, not break the page.
    */
   deepLinkRole?: boolean;
+  /**
+   * Heading level for the form heading. @default 1
+   *
+   * A real login page is the whole page, so its heading is the `<h1>` — which
+   * is what GIGW 3.0 requires, and why 1 is the default. Anywhere the template
+   * is EMBEDDED in a page that already has an `<h1>` — a documentation page, a
+   * modal inside an authenticated shell — pass 2 or 3, or the page ships two
+   * first-level headings and a screen-reader user loses the outline.
+   */
+  headingLevel?: 1 | 2 | 3;
 }
 
 export function PortalLoginTemplate({
@@ -53,6 +63,7 @@ export function PortalLoginTemplate({
   roleId,
   onRoleChange,
   deepLinkRole = true,
+  headingLevel = 1,
 }: PortalLoginTemplateProps) {
   const initialRole =
     config.roles.find((r) => r.id === config.defaultRoleId) || config.roles[0];
@@ -212,6 +223,10 @@ export function PortalLoginTemplate({
 
   const selectorType = activeRole?.authSelectorType || (authOptions.length > 2 ? "radio" : "segmented");
 
+  // The heading's LEVEL is the caller's; its size is not. Styling stays on the
+  // element so an embedded template looks identical to a standalone one.
+  const Heading = `h${headingLevel}` as "h1" | "h2" | "h3";
+
   return (
     <PortalLoginShell
       emblemSrc={config.brandAssets?.emblemSrc || "/brand/national-emblem.svg"}
@@ -226,9 +241,9 @@ export function PortalLoginTemplate({
       <form onSubmit={handleSubmit} className="space-y-4" noValidate>
         {/* Form Heading */}
         <div className="text-center sm:text-left">
-          <h1 className="text-xl font-bold tracking-tight text-[var(--sa-color-primaryScale-800)]">
+          <Heading className="text-xl font-bold tracking-tight text-[var(--sa-color-primaryScale-800)]">
             Sign In to {config.portalName}
-          </h1>
+          </Heading>
           <p className="mt-1 text-xs text-[var(--sa-text-neutral-subtle)]">
             {activeRole?.description ||
               `Access your ${activeRole?.label || "account"} workspace.`}

@@ -13,6 +13,9 @@ import { PortalLoginTemplate, type PortalLoginConfig } from "@mosje/design-syste
  * `deepLinkRole` is OFF here. On a real login page it is the point of the
  * component — but on a documentation page it would rewrite this page's URL with
  * `?role=…` as the reader tries the tabs.
+ *
+ * `headingLevel` is 2 for the same class of reason: this page already has an
+ * `<h1>`, and GIGW 3.0 allows one per page.
  */
 const CONFIG: PortalLoginConfig = {
   portalId: "nmba",
@@ -53,5 +56,12 @@ const CONFIG: PortalLoginConfig = {
 };
 
 export function PortalLoginTemplateSpecimen(): React.JSX.Element {
-  return <PortalLoginTemplate config={CONFIG} deepLinkRole={false} onSubmit={() => undefined} />;
+  return (
+    <PortalLoginTemplate
+      config={CONFIG}
+      deepLinkRole={false}
+      headingLevel={2}
+      onSubmit={() => undefined}
+    />
+  );
 }
