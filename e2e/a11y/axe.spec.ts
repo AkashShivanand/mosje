@@ -52,6 +52,26 @@ const DECLARED: { selector: string; why: string }[] = [
     selector: ".ds-samavesh-banner__subline",
     why: "Same band, same ink, same recorded decision as the title above.",
   },
+  {
+    selector: ".sa-ticker__control",
+    why:
+      "target-size, and a FALSE POSITIVE that was measured before it was declared. " +
+      "axe reports the control 'partially obscured, smallest space 40x18.5' because the " +
+      "ticker's scrolling track is twice the window's height and its UNCLIPPED rect " +
+      "reaches down over the control. It is never painted or hit there: the viewport is " +
+      "`overflow-y: hidden` while `[data-scroll]` is set, and axe's obscuring test reads " +
+      "bounding rects with no notion of an ancestor's clip. Measured 2026-09-02 at 1280px " +
+      "— `elementFromPoint` returns the control or its own glyph at 8/25/50/75/92% of its " +
+      "height, and Playwright's actionability check passes. The control is 40x40, above " +
+      "the 24x24 floor, and fully clickable. Re-measure if the ticker stops clipping.",
+  },
+  {
+    selector: ".ds-btn--inverseOutlined",
+    why:
+      "The ticker's 'View All' route, 52.6x32, failing on the same phantom overlap as the " +
+      "control above and measured the same way — clickable at every probe point, real " +
+      "click check passes. Both clear 24x24 on their own geometry.",
+  },
 ];
 
 /** One route per surface the estate actually ships, plus the docs shell. */
@@ -60,6 +80,9 @@ const ROUTES: { name: string; path: string }[] = [
   { name: "a component page", path: "/design-system/components/forms/checkbox" },
   { name: "a chart page", path: "/design-system/components/data-display/bar-chart" },
   { name: "the illustration foundation", path: "/design-system/foundations/illustration" },
+  // The newest interactive component, and the one with the most keyboard model
+  // to get wrong — a listbox with a roving active option.
+  { name: "the filter select", path: "/design-system/components/forms/filter-select" },
   { name: "the website home", path: "/website" },
 ];
 

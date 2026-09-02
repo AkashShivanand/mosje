@@ -1,7 +1,7 @@
 import {
   Button,
   DataTable,
-  FilterSelect,
+  PeriodFilter,
   Pagination,
   PageHeader,
   SearchInput,
@@ -37,17 +37,17 @@ export default function SageHomesPage() {
           placeholder="Search by ngo name, state, district or address"
           className="flex-1"
         />
-        <FilterSelect
+        <PeriodFilter
           options={FACILITY_TYPES}
           defaultLabel="All Facility Types"
           className="w-full lg:w-52"
         />
-        <FilterSelect
+        <PeriodFilter
           options={INDIAN_STATES}
           defaultLabel="All States"
           className="w-full lg:w-44"
         />
-        <FilterSelect
+        <PeriodFilter
           options={[]}
           defaultLabel="All Districts"
           className="w-full lg:w-44"

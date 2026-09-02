@@ -3,7 +3,7 @@ import { UserShell } from "@/components/scw/user-shell";
 import {
   Button,
   Card,
-  FilterSelect,
+  PeriodFilter,
   Pagination,
   SearchInput,
 } from "@/components/scw/ui";
@@ -58,12 +58,12 @@ export default function VolunteerDashboardPage() {
                 placeholder="Search event name, city, district..."
                 className="flex-1"
               />
-              <FilterSelect
+              <PeriodFilter
                 options={INDIAN_STATES}
                 defaultLabel="All States"
                 className="sm:w-44"
               />
-              <FilterSelect options={[]} defaultLabel="All Districts" className="sm:w-44" />
+              <PeriodFilter options={[]} defaultLabel="All Districts" className="sm:w-44" />
             </div>
 
             <div className="mt-4 space-y-3">

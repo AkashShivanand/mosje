@@ -208,6 +208,15 @@ export type { FactStripProps, FactStripItem } from "./components/data-display/fa
 
 export { MetricCard } from "./components/data-display/metric-card";
 export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./components/data-display/metric-card";
+// ---- Forms: FilterSelect ----------------------------------------------------
+// The compact dashboard filter, as a real listbox. `Select` remains the answer
+// for a FORM field — it is a native `<select>`, which every assistive technology
+// and every mobile keyboard already knows. This is for a dashboard filter row,
+// where four portals hand-rolled a button-plus-listbox because a native select
+// cannot carry a hint beside an option or be styled at all on iOS.
+export { FilterSelect } from "./components/forms/filter-select";
+export type { FilterSelectProps, FilterSelectOption } from "./components/forms/filter-select";
+
 export { DataTable } from "./components/data-display/data-table";
 export type {
   DataTableProps,

@@ -213,6 +213,11 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "Filter Select",
+        "href": "/design-system/components/forms/filter-select",
+        "badge": "New"
+      },
+      {
         "label": "Textarea",
         "href": "/design-system/components/forms/textarea",
         "badge": "Stable"

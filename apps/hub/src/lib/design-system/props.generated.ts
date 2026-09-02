@@ -2711,6 +2711,68 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "FilterSelectProps": {
+    "source": "packages/design-system/components/forms/filter-select.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "The control's name, always visible. A dashboard filter with no label is a mystery chip."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "options",
+        "type": "FilterSelectOption[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "Controlled selection."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "default": "\"Select\"",
+        "description": "Shown when `value` matches no option."
+      },
+      {
+        "name": "width",
+        "type": "number | string",
+        "required": false,
+        "description": "Constrain the trigger's width; the popup matches it."
+      }
+    ]
+  },
   "FlaskIconProps": {
     "source": "packages/design-system/demo/flask-icon.tsx",
     "inheritsNative": false,

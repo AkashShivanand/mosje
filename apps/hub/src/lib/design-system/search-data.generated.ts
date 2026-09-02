@@ -426,6 +426,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "lock"
   },
   {
+    "title": "Filter Select — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/filter-select",
+    "keywords": "filter select — design system forms & inputs example keyboard  tokens wcag accessibility",
+    "description": "The compact dashboard filter, as a real listbox. Select remains the answer for a form field; this is for a filter row.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Footer — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/footer",

@@ -1098,6 +1098,9 @@ graph TD
 | Show red error states (`var(--sa-border-status-error-base)` + `var(--sa-text-status-error-base)`) only after validation runs or input blur. | Do not render inline inputs without surrounding margin-bottom/padding constraints. |
 | Use `<FormSection>` to group related fields under a sub-heading within a form. | Do not render a single `<form>` with 20+ fields — break it into `<FormSection>` groups or use `<Wizard>`. |
 | Use `<Search>` (not `<Input>`) for search affordances — it includes the correct icon and clear button. | Do not use `type="search"` on a plain `<Input>` and style it manually. |
+| Use `<Select>` for a FORM field — it is a native `<select>`, which every assistive technology and every mobile keyboard already knows. | Do not reach for `<FilterSelect>` in a form because it looks better. A native control is worth more than a hint column on a field a citizen submits. |
+| Use `<FilterSelect>` in a DASHBOARD FILTER ROW, where the control is a query rather than an answer — it carries a hint beside each option (a count, a code), holds the 40px filter height on every platform, and can be styled on iOS, none of which a native select can do. | Do not hand-roll a button-plus-listbox per portal. Four did — `pm-ajay`, `nhapoa`, `tg`, `scw` — and every accessibility fix shipped here for three months reached none of them. `check:shadow-ui` counts them. |
+| Let `<FilterSelect>` keep focus on the LISTBOX and name the active option with `aria-activedescendant`. | Do not move DOM focus onto each option. It works with a mouse and makes the list unreadable — a screen reader then announces a focus change where the reader expects a selection. |
 
 ### E. Data Tables
 
@@ -1108,6 +1111,9 @@ graph TD
 | Use sticky headers (`position: sticky`) for scrollable tall tables. | Do not render tables without a visible `<caption>` or an `aria-label` on the `<table>` element. |
 | Right-align numeric columns and align the header text to match. | Do not mix left- and right-aligned text in the same column. |
 | Always add a sort indicator icon when a column is sortable. | Do not rely on row order alone to communicate data ranking. |
+
+| Mark a column `sortable` and give it a `sortValue` when its cell comes from `render`. | Do not sort a rendered column by its display string — "₹1,20,000" sorts before "₹9,000", which is the classic register defect. |
+| Let `DataTable` sort the whole set and then page it. | Do not sort the visible page. Reordering ten rows inside a register of four thousand reads as correct and is not. |
 
 ### F. Empty States
 

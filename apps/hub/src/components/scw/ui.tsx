@@ -103,8 +103,14 @@ export function SearchInput({
   );
 }
 
-/* ----------------------------------------------------------- FilterSelect */
-export function FilterSelect({
+/* ----------------------------------------------------------- PeriodFilter */
+/*
+ * RENAMED off `FilterSelect` — the design system now exports one. This is a
+ * narrower thing (an uncontrolled period chip with a default label, no value
+ * prop), so it is not simply the DS component with different classes. The name
+ * was the collision; see pm-ajay's kit for the same note.
+ */
+export function PeriodFilter({
   options,
   defaultLabel,
   className,

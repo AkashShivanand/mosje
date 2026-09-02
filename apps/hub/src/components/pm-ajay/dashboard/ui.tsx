@@ -28,7 +28,7 @@
  *   Status         Badge            ADOPTED. Both render one <span> with the
  *                                   children inline; `.pm-status` overrides
  *                                   every property `.ds-badge` sets.
- *   FilterSelect   Select           No. The design system's Select is a native
+ *   DrillDownSelect   Select           No. The design system's Select is a native
  *                                   <select>; this is a button + listbox filter
  *                                   chip. Different DOM, different keyboard
  *                                   model. RENAMED off the colliding name.
@@ -59,7 +59,7 @@
  *   pillClass      —                Not a component. A pure helper.
  *
  * FOUR NAMES WERE THE ACTIVE HAZARD, and renaming them is what this change
- * bought. `FilterSelect`, `SortableTable`, `Footer` and `DrillDownFilters` are all barrel
+ * bought. `DrillDownSelect`, `SortableTable`, `Footer` and `DrillDownFilters` are all barrel
  * exports, so an import of any of them inside this portal resolved to whichever
  * module the editor offered first — with no error, and the wrong component
  * rendering. Renaming changes no markup, no class and no pixel; it only makes
@@ -197,7 +197,17 @@ export function Panel({
 }
 
 /* ---- Accessible listbox dropdown ---- */
-export function FilterSelect({
+/*
+ * RENAMED off `FilterSelect`, which the design system now exports as a real
+ * listbox with the full keyboard model. This one is not a worse version of it —
+ * it is the same pattern wearing `.pm-*`, and pm-ajay renders the UX4G Portal DS
+ * rather than SAMAVESH, so swapping the DOM would move pixels on a live
+ * citizen-facing dashboard. The NAME was the hazard: an import of `FilterSelect`
+ * inside this portal could resolve to either component, silently.
+ *
+ * The visual migration is now unblocked and is a separate, verifiable change.
+ */
+export function DrillDownSelect({
   k,
   value,
   options,
@@ -341,11 +351,11 @@ export function DrillDownFilters({
   return (
     <div className="pm-filters" role="region" aria-label="Drill-down filters">
       <span className="fl">Drill-down</span>
-      <FilterSelect k="FY" value={filters.fy} options={FY} onChange={(v) => set("fy", v)} />
-      <FilterSelect k="State / UT" value={filters.state} options={stateOpts} onChange={(v) => set("state", v)} />
-      {scope && <FilterSelect k="District" value={filters.district} options={distOpts} onChange={(v) => set("district", v)} />}
-      {showScheme && <FilterSelect k="Scheme" value={filters.scheme} options={SCHEMES} onChange={(v) => set("scheme", v)} />}
-      <FilterSelect k="Period" value={filters.period} options={PERIODS} onChange={(v) => set("period", v)} />
+      <DrillDownSelect k="FY" value={filters.fy} options={FY} onChange={(v) => set("fy", v)} />
+      <DrillDownSelect k="State / UT" value={filters.state} options={stateOpts} onChange={(v) => set("state", v)} />
+      {scope && <DrillDownSelect k="District" value={filters.district} options={distOpts} onChange={(v) => set("district", v)} />}
+      {showScheme && <DrillDownSelect k="Scheme" value={filters.scheme} options={SCHEMES} onChange={(v) => set("scheme", v)} />}
+      <DrillDownSelect k="Period" value={filters.period} options={PERIODS} onChange={(v) => set("period", v)} />
       {filters.period !== "Annual" && (
         <span className="pm-estimate">
           <span className="material-symbols-rounded" aria-hidden="true">
