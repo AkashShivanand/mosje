@@ -36,6 +36,26 @@ export interface ChartTable {
  *   cat-8 ↔ cat-9    ΔE 11.7 with NORMAL colour vision — below the floor of
  *                    15, so nobody separates them reliably
  *
+ * IT COULD BE SIX, AND THAT CHANGE IS PREPARED BUT NOT MADE. An exhaustive
+ * maximum-clique over all 4,095 subsets of the twelve finds SIX mutually
+ * distinguishable slots — 1, 2, 3, 4, 6 and 8. Reordering the ramp to put
+ * those first raises this cap to six, invents no colour, and leaves slots 1–4
+ * unmoved so charts of four or fewer series are pixel-identical. It was built
+ * and verified, then reverted: `figma-value-parity` correctly refuses a value
+ * change that has not been pushed to Figma and read back, and that needs a
+ * token no agent session may handle. The full procedure is in
+ * `docs/audit/ds-world-class-audit.md`.
+ *
+ * SIX IS ALSO THE CEILING, and that is a property of vision rather than of
+ * this palette. `tools/chart-palette/search.mjs` searches the whole admissible
+ * region — every sRGB colour inside the lightness band and chroma floor that
+ * clears 3:1 on both surfaces and is not confusable with a semantic ink — and
+ * the largest mutually distinguishable set it finds is 6 at this estate's
+ * saturation, 7 at a louder one, and 9 only with near-neon colours no
+ * government page would ship. A dichromat's gamut is effectively
+ * two-dimensional, so hues that are far apart in full colour vision collapse
+ * together. Twelve distinguishable categorical colours do not exist.
+ *
  * **This is a cap on colour as the SOLE encoding, not a cap on series.** A
  * fifth series is fine when identity is carried by something else as well:
  * direct labels on the marks, small multiples, or folding the tail into

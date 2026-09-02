@@ -720,3 +720,85 @@ through a page that renders an active row.
 - **The chart palette itself.** Measured, gated, capped at four safe slots — but
   not re-derived. That needs a palette satisfying both the colour maths and the
   estate's six token contract tests at once.
+
+## The palette question, answered: twelve distinguishable colours DO NOT EXIST
+
+"Make the palette perfect" has a definite answer, and it is not a better palette.
+
+`tools/chart-palette/search.mjs` enumerates the whole admissible region — every
+sRGB colour inside the lightness band and above the chroma floor that clears
+3:1 on **both** chart surfaces and is not confusable with any semantic ink —
+and then searches for the largest mutually distinguishable set, where
+"distinguishable" means OKLab ΔE ≥ 15 for normal vision **and** ≥ 8 under
+protanopia, deuteranopia and tritanopia.
+
+| saturation allowed | admissible colours | largest distinguishable set |
+|---|---|---|
+| chroma ≤ 0.15 — this estate's register | 967 | **6** |
+| chroma ≤ 0.18 | 1,651 | 6 |
+| chroma ≤ 0.22 | 2,408 | 7 |
+| chroma ≤ 0.32 — near-neon | 3,134 | **9** |
+
+Even the 9 requires `#eb16fe` and `#0005fd`, which no government page would
+ship. **Twelve is not reachable at any saturation.** This is a property of
+dichromatic vision — a dichromat's gamut is effectively two-dimensional, so
+hues far apart in full colour vision collapse onto each other — not a failure
+of colour choice, and no amount of re-derivation fixes it.
+
+### The existing twelve are the right colours in the wrong order
+
+An **exhaustive** maximum-clique over all 4,095 subsets of the current ramp
+finds six mutually distinguishable slots: **1, 2, 3, 4, 6 and 8** — worst pair
+normal 15.5, protan 10.0, deutan 10.7, tritan 8.4. That equals the theoretical
+ceiling at this saturation, so the palette's *colours* are already as good as
+the constraints allow. Only the ORDER is wrong: slots 5 and 7 are redundant and
+sit ahead of two that are not.
+
+Reordering to put those six first raises `CHART_CATEGORICAL_SAFE_CAP` from
+**4 to 6** — a 50% gain in usable series — invents no colour, and leaves slots
+1–4 untouched, so every chart with four or fewer series is pixel-identical.
+
+### It was built, verified, and then REVERTED — and why
+
+The reorder was made, tokens rebuilt, the ramp screenshotted and audited (slots
+1–6 read as clearly distinct; 7–12 visibly reuse territory — 7/10 both olive,
+8/9 both purple), and 160 of 161 token tests passed after the two contract
+fixtures were regenerated deliberately.
+
+The 161st is `figma-value-parity`, and it is right to fail:
+
+> *A token's VALUE moved. That does not reach designers on its own — push the
+> change to Figma, read the library back, and re-record `$valueChecksums`. Do
+> NOT just update the record: that asserts a state the library is not in, which
+> is the failure this gate exists to catch.*
+
+Completing it requires pushing to Figma with `FIGMA_ACCESS_TOKEN` — a secret no
+agent session creates, reads or commits. Updating the checksum without the push
+is precisely what the gate forbids. So the change was **reverted in full**:
+`semantic.json` and both fixtures restored, tokens rebuilt, all 161 tests
+green, the safe cap back at 4, and the chart-palette baseline byte-identical to
+the committed one.
+
+### The handoff — everything needed, nothing guessed
+
+1. In `packages/tokens/src/semantic.json`, reorder `chart.cat` so the slots
+   currently numbered **1, 2, 3, 4, 6, 8** lead, followed by 5, 7, 9, 10, 11,
+   12. Move each node **whole** — the dark-theme value lives in
+   `$extensions.mosje.themes.dark` and must travel with its light value.
+2. `npm run build -w @mosje/tokens`
+3. Set `CHART_CATEGORICAL_SAFE_CAP = 6` in `charts/types.ts`.
+4. `node packages/tokens/test/lib/write-visual-contract.mjs --visual --ux4g`
+5. `npm run check:chart-palette:baseline`
+6. **Push to Figma, read the library back, re-record `$valueChecksums`** — the
+   step that needs the token, and the reason this is a handoff rather than a
+   commit.
+
+### One more gap this uncovered
+
+**The dark ramp has never been measured.** `--sa-chart-cat-*` carries a
+completely separate set of dark-theme values (`#5fa0ef`, `#fb923c`, `#66bb6a`,
+`#c084fc`, …), and `check:chart-palette` reads only the first `:root` block —
+by construction, so it cannot accidentally measure the dark ramp against the
+light surface. Nothing measures the dark ramp at all, and its ordering is
+inherited from the light one rather than derived from its own clique. It is
+very unlikely that the same six slots are optimal for both.
