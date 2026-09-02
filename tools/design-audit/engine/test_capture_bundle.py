@@ -290,5 +290,45 @@ class FreshnessGate(unittest.TestCase):
         self.assertIn("PASS", open(os.path.join(p["out"], "freshness.md")).read())
 
 
+from engine import drive as D
+
+
+class SubmitGating(unittest.TestCase):
+    FLOW = {"id": "f", "allowSubmit": True, "steps": []}
+
+    def test_dev_allows_submission(self):
+        ok, _ = D.is_submit_allowed("dev", self.FLOW)
+        self.assertTrue(ok)
+
+    def test_uat_allows_submission(self):
+        ok, _ = D.is_submit_allowed("uat", self.FLOW)
+        self.assertTrue(ok)
+
+    def test_prod_never_allows_submission_unattended(self):
+        ok, why = D.is_submit_allowed("prod", self.FLOW)
+        self.assertFalse(ok)
+        self.assertIn("prod", why)
+
+    def test_flow_must_opt_in_even_on_dev(self):
+        ok, why = D.is_submit_allowed("dev", {"id": "f", "steps": []})
+        self.assertFalse(ok)
+        self.assertIn("allowSubmit", why)
+
+
+class Fixtures(unittest.TestCase):
+    MAN = {"fixtures": {"ngo": {"orgName": "Example Welfare Society"}}}
+
+    def test_named_fixture_resolves(self):
+        self.assertEqual(D.resolve_fixture(self.MAN, {"fill": {"fixture": "ngo"}}),
+                         {"orgName": "Example Welfare Society"})
+
+    def test_inline_values_win_over_the_fixture(self):
+        got = D.resolve_fixture(self.MAN, {"fill": {"fixture": "ngo", "orgName": "Other"}})
+        self.assertEqual(got["orgName"], "Other")
+
+    def test_unknown_fixture_is_empty_not_an_error(self):
+        self.assertEqual(D.resolve_fixture(self.MAN, {"fill": {"fixture": "nope"}}), {})
+
+
 if __name__ == "__main__":
     unittest.main()
