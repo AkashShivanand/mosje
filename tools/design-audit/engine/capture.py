@@ -326,13 +326,27 @@ def _engine_sha():
     except Exception:
         return None
 
-def capture_role(pg, role, cfg, paths, bdl, man):
+def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None):
     base = role["base"]; width = cfg.get("capture", {}).get("width", 1440)
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
     routes = discover_routes(pg, cfg)
     land = pg.url.replace(base, "").split("?")[0]
     if land and land not in routes:
         routes.insert(0, land)
+    # Route discovery is a timing race on some live sites (a slow-loading widget's links are
+    # sometimes there, sometimes not — see discover_routes). Rather than keep trying to win that
+    # race, make discovery MONOTONIC: once a route has been seen for this role, always revisit
+    # it, by unioning in every route recorded for this role in the previous bundle.
+    skip = set(cfg.get("live", {}).get("skipRoutes", []))
+    carried = []
+    for s in (prev_bundle or {}).get("screens", []):
+        if s.get("role") == role["name"]:
+            r = s.get("route")
+            if r and r not in routes and r not in skip:
+                routes.append(r)
+                carried.append(r)
+    if carried:
+        print(f"  carried forward {len(carried)} route(s) seen in a previous run", flush=True)
     captured = []
     decision = "recapture"  # Task 9 replaces this; until then every screen is a fresh capture.
     for path in routes:
@@ -440,6 +454,10 @@ def run(project, only_role=None, allow_empty=False):
               f"actions). Set `environment` in screen-manifest.yaml to silence this.", flush=True)
         env = "prod"
     bdl = B.new_bundle(project, env, _engine_sha())
+    # Loaded once, before capture starts: feeds capture_role's route union AND the
+    # carry-forward/shrink-guard below — no bundle write happens in between, so one load
+    # correctly represents "the previous run" for both uses.
+    prev_bundle = B.load_bundle(paths)
     auth = cfg["live"]["auth"]
     mpath = os.path.join(paths["captures"], "_captured.json")
     try:
@@ -474,7 +492,7 @@ def run(project, only_role=None, allow_empty=False):
                 else:
                     pg.goto(role["base"] + "/", wait_until="domcontentloaded", timeout=60000); pg.wait_for_timeout(3000)
                     print(f"[{role['name']}] public -> {pg.url}", flush=True)
-                manifest += capture_role(pg, role, cfg, paths, bdl, man)
+                manifest += capture_role(pg, role, cfg, paths, bdl, man, prev_bundle)
                 visited_roles.add(role["name"])
                 ctx.close()
             except Exception as e:
@@ -505,7 +523,7 @@ def run(project, only_role=None, allow_empty=False):
     json.dump(out, open(mpath, "w"), indent=2)
     print(f"CAPTURED {len(manifest)} screens (manifest now {len(out)})", flush=True)
 
-    prev = B.load_bundle(paths)
+    prev = prev_bundle  # loaded once, above, before the route-union needed it
     if prev:
         # A bundle must not speak for roles it never visited this run — same contract as
         # _captured.json above, but keyed on which roles capture_role actually ran for, not on
