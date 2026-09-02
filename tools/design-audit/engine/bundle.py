@@ -9,7 +9,7 @@ They are separate because `qc_geometry` asserts pin ⊂ element ⊂ crop ⊂ ima
 gained a row is visually unchanged but geometrically shifted; reusing its screenshot puts every
 pin in the wrong place. One combined hash would either re-shoot constantly or ship broken pins.
 """
-import hashlib, json, re
+import hashlib, json, re, urllib.request
 
 MASK_WARN_RATIO = 0.30
 
@@ -120,3 +120,25 @@ def sha256_file(path):
         for chunk in iter(lambda: fh.read(65536), b""):
             h.update(chunk)
     return h.hexdigest()
+
+
+# A hashed asset name: at least 8 hex chars between separators. Matches CRA's
+# `main.<hash>.js` and Next's `<name>-<hash>.js`. An unhashed `/js/app.js` is not a
+# fingerprint — it would never change and would make tier 0 always say "unchanged".
+_HASHED = re.compile(r"/([A-Za-z0-9_\-]+[.\-][0-9a-f]{8,}(?:\.chunk)?\.js)")
+
+
+def extract_fingerprint(html):
+    hit = _HASHED.search(html or "")
+    return hit.group(1) if hit else None
+
+
+def build_fingerprint(base_url, timeout=10):
+    """One HTTP GET of the app shell. Returns None on any failure — callers treat that as
+    'unknown', which falls through to the per-screen tier rather than trusting the bundle."""
+    try:
+        req = urllib.request.Request(base_url, headers={"User-Agent": "mosje-design-audit"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return extract_fingerprint(resp.read(400_000).decode("utf-8", "replace"))
+    except Exception:
+        return None

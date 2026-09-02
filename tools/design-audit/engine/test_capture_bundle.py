@@ -127,5 +127,23 @@ class BundleIO(unittest.TestCase):
         self.assertEqual(B.find_screen(b, "A")["structureHash"], "s2")
 
 
+class Fingerprint(unittest.TestCase):
+    def test_reads_hashed_cra_bundle_name(self):
+        html = '<script src="/static/js/main.9f2c1a3b.js"></script>'
+        self.assertEqual(B.extract_fingerprint(html), "main.9f2c1a3b.js")
+
+    def test_reads_hashed_next_chunk_when_no_cra_bundle(self):
+        html = '<script src="/_next/static/chunks/main-app-4c1e77aa21.js"></script>'
+        self.assertEqual(B.extract_fingerprint(html), "main-app-4c1e77aa21.js")
+
+    def test_unhashed_script_is_not_a_fingerprint(self):
+        self.assertIsNone(B.extract_fingerprint('<script src="/js/app.js"></script>'))
+
+    def test_first_hashed_script_wins_and_is_stable(self):
+        html = ('<script src="/static/js/main.aaaaaaaa.js"></script>'
+                '<script src="/static/js/2.bbbbbbbb.chunk.js"></script>')
+        self.assertEqual(B.extract_fingerprint(html), "main.aaaaaaaa.js")
+
+
 if __name__ == "__main__":
     unittest.main()
