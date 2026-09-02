@@ -28,6 +28,7 @@ const CONFIG: PortalLoginConfig = {
     // The SAMAVESH wordmark is not an organisation mark and is not in the registry.
     samaveshLogoSrc: "/design-system/samavesh-logo.svg",
   },
+  links: { digilockerHref: "https://digilocker.gov.in/" },
   roles: [
     {
       id: "citizen",
@@ -38,6 +39,9 @@ const CONFIG: PortalLoginConfig = {
       // the template can draw. A real portal offers what its own register uses.
       authModes: ["password", "otp", "pin"],
       defaultMode: "password",
+      // On the citizen tab only — switch to Officer or Implementing Agency and
+      // both the card and its divider go, which is the rule the handoff sets.
+      digilocker: true,
     },
     {
       id: "officer",

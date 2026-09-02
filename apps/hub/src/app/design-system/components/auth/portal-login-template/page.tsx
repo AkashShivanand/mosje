@@ -88,7 +88,7 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
       whenToUse={{
         use: [
           "A portal signs in more than one kind of user and each kind has its own way in.",
-          "The authentication modes are the estate's own — a password form, a mobile OTP, a numeric PIN, or a DigiLocker handoff.",
+          "The authentication modes are the estate's own — a password form, a mobile OTP or a numeric PIN, with or without the DigiLocker handoff above them.",
           "A link from elsewhere should open the login page on a particular role's tab.",
         ],
         avoid: [
@@ -119,9 +119,16 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
             </p>
             <p>
               Before this taxonomy existed there were five bespoke ones across nine portals, and
-              no way to write a rule &mdash; such as &ldquo;hide DigiLocker for officers&rdquo;
-              &mdash; that held in more than one of them. A portal that seems to need a fourth
-              audience is renaming, not adding.
+              no way to write a rule about who is signing in that held in more than one of them.
+              A portal that seems to need a fourth audience is renaming, not adding.
+            </p>
+            <p>
+              <strong>The DigiLocker handoff is not one of those rules.</strong> It was keyed off{" "}
+              <code>audience</code> until 2026-09-02, on the reading that officers hold no
+              DigiLocker account. The handoff disproves it: SMILE-Transgender offers the card on
+              Citizen and on neither Admin nor Garima Greh, so an audience rule would have put it
+              on the organisation tab. It is <code>digilocker</code> on the role, a boolean the
+              portal sets for the roles it has actually agreed it for.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-modes">
@@ -130,12 +137,11 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
             </h2>
             <MatrixTable
               caption="PortalAuthMode — what each one draws"
-              columns={["Mode", "What the form shows", "Where it sits"]}
+              columns={["Mode", "What the form shows"]}
               rows={[
-                ["password", "Username, email or mobile, plus a password and, where the portal asks for it, a captcha.", "In the credential form"],
-                ["otp", "Mobile or email, a send control, and a six-digit code with a resend timer.", "In the credential form"],
-                ["pin", "A registered identifier and a six-digit numeric PIN, masked, with its own Forgot PIN link.", "In the credential form"],
-                ["digilocker", "A single call to action that leaves for a government identity provider.", "Above the credentials divider — it is a handoff, not a form mode"],
+                ["password", "Username, email or mobile, plus a password and, where the portal asks for it, a captcha."],
+                ["otp", "Mobile or email, a send control, and a six-digit code with a resend timer."],
+                ["pin", "A registered identifier and a six-digit numeric PIN, masked, with its own Forgot PIN link."],
               ]}
             />
             <p>
@@ -143,6 +149,16 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
               reuses the password field&rsquo;s own state internally, but a consumer must never
               receive a PIN under the name <code>password</code>.
             </p>
+            <Callout type="info" title="The handoff is the fourth thing, and it is not a mode">
+              DigiLocker is a card above the credentials divider &mdash; a route away from the
+              form rather than a way of filling it in. It carried a{" "}
+              <code>PortalAuthMode</code> of its own until 2026-09-02, which made it a fourth
+              selectable method and suppressed the submit button while it was chosen, leaving the
+              form with no way to be completed. It is now{" "}
+              <code>PortalRoleTab.digilocker</code>, a boolean per role, and it renders only when{" "}
+              <code>config.links.digilockerHref</code> is also set. The &ldquo;or sign in with
+              credentials&rdquo; divider belongs to the card: no card, no divider.
+            </Callout>
             <Callout type="warning" title="Two modes that were invented and are gone">
               This union carried <code>darpan</code> (NGO DARPAN ID) and <code>aadhaar</code>{" "}
               (Aadhaar e-KYC) until 2026-08-17. Neither exists: a full read of the MoSJE portal

@@ -2707,9 +2707,11 @@ matching the Figma "Navbar Portal" account.
 **Slots**: `children` is the form. `extraContent` sits **below** the form inside the card and is for page-level content, not credentials — the portal switcher grid, a demo-data notice. A field placed in `extraContent` lands after the submit button, which is the wrong tab order.
 
 #### PortalLoginTemplate
-**Purpose**: A login page described by a **config object** instead of assembled by hand. Renders role tabs, the login-method selector and the right fields for each `PortalAuthMode` — `password`, `otp`, `pin`, `digilocker` — and returns one `LoginSubmitPayload` (role + mode + credentials) from `onSubmit`.
+**Purpose**: A login page described by a **config object** instead of assembled by hand. Renders role tabs, the login-method selector and the right fields for each `PortalAuthMode` — `password`, `otp`, `pin` — and returns one `LoginSubmitPayload` (role + mode + credentials) from `onSubmit`.
 
-> **`darpan` and `aadhaar` were removed on 2026-08-17.** A full read of the Handoff — 69 auth screens across 10 pages — found no DARPAN and no Aadhaar screen in any portal. Both were invented from a written brief before the design file was available. `digilocker` stays, but it is a **handoff above the credentials divider**, not a mode of the form.
+> **`darpan` and `aadhaar` were removed on 2026-08-17.** A full read of the Handoff — 69 auth screens across 10 pages — found no DARPAN and no Aadhaar screen in any portal. Both were invented from a written brief before the design file was available.
+
+> **`digilocker` left the union on 2026-09-02.** It was never a mode of the credential form, and carrying it there made it one — the template rendered it as a fourth selectable method and suppressed the submit button while it was chosen, so the form had no way to be completed. It is now **`PortalRoleTab.digilocker`**, a per-role boolean that draws a card above the credentials divider with the form untouched beneath it. Nothing renders unless `config.links.digilockerHref` is set too, and the divider belongs to the card: no card, no divider.
 
 > **`pin` was added on 2026-09-02, and it is not a reinstatement of those two.** NOS is PIN-only and both its auth screens in the Handoff (`2436:15957`) are `Sign In Pin`, so the credential form has three modes. The Figma master was re-cut in place the same day — `Device × Step` (8 variants) became **`Device × Auth Method`** (Password · OTP · PIN, 6 variants) — because the old axis put `Credentials` and `OTP`, which are ways of proving identity, beside `Reset` and `Success`, which are stages of recovery. Recovery moved to `Auth / CredentialRecovery`; the component nodes were moved rather than re-created, so their keys and every instance link survived.  
 **Props**: `config` (`PortalLoginConfig`), `onSubmit`, `loading`, `error`, `onFooterLinkClick`  
@@ -2744,7 +2746,7 @@ Seven small components mirroring the `Auth / *` sets in the SAMAVESH Figma libra
 - `onEdit` returns to the previous step with the value pre-filled. It must never silently spend another send.
 
 **`SSOButton`** — the DigiLocker handoff.
-- **Hide it whenever the Officer / Admin audience is active.** Officers hold no DigiLocker account, so offering it is a dead end. Key the condition off `PortalRoleTab.audience`, not off the tab's label or the portal.
+- **Offer it per ROLE, not per audience.** It was keyed off `PortalRoleTab.audience` until 2026-09-02, on the reading that officers hold no DigiLocker account. The Handoff (`10767:71293`) disproves it: SMILE-Transgender carries the card on Citizen and on neither Admin nor Garima Greh, so an audience rule would have put it on the organisation tab. Set `PortalRoleTab.digilocker` on the roles the portal has actually agreed it for, and never key it off the tab's label.
 - It sits **above** the credentials divider: an alternative to the form, not a field in it.
 - The subtitle is a trust signal, not decoration. Do not drop it.
 
@@ -2760,7 +2762,9 @@ Seven small components mirroring the `Auth / *` sets in the SAMAVESH Figma libra
 
 #### PortalAudience — one taxonomy for the estate
 
-`citizen · officer · organisation`. Every portal's own wording maps onto these three: NMBA's "Patient Monitoring", SMILE-Transgender's "Garima Greh" and SCW's "SAGE Organisation" are all `organisation`, renamed via the tab's `label`. Before this existed there were five bespoke taxonomies across nine portals and no way to write a rule — such as "hide DigiLocker for officers" — that held in more than one of them. **Do not add a fourth**; a portal that seems to need one is renaming, not adding.
+`citizen · officer · organisation`. Every portal's own wording maps onto these three: NMBA's "Patient Monitoring", SMILE-Transgender's "Garima Greh" and SCW's "SAGE Organisation" are all `organisation`, renamed via the tab's `label`. Before this existed there were five bespoke taxonomies across nine portals and no way to write a rule about who is signing in that held in more than one of them. **Do not add a fourth**; a portal that seems to need one is renaming, not adding.
+
+**The DigiLocker handoff is NOT an audience rule**, though it was written as one until 2026-09-02 — see `SSOButton` above. Where a rule is narrower than the audience, it belongs on the role.
 
 ---
 

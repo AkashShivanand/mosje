@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { Icon } from "../utilities/icon";
 import { PortalLoginShell, PortalLoginTab } from "./portal-login-shell";
 import { portalLoginUrl, roleFromUrl } from "./portal-login-url";
 import {
@@ -11,6 +12,18 @@ import {
 } from "./types";
 
 export { portalLoginUrl, roleFromUrl, ROLE_PARAM } from "./portal-login-url";
+
+/**
+ * A `Record` rather than a ternary chain, so adding a mode to `PortalAuthMode`
+ * fails to compile until it has a label. The chain this replaced had the fourth
+ * arm as its `else`, which is how DigiLocker came to be labelled as a login
+ * method at all.
+ */
+const MODE_LABELS: Record<PortalAuthMode, string> = {
+  password: "Login via Password",
+  otp: "Login via Mobile OTP",
+  pin: "Login via PIN",
+};
 
 export interface PortalLoginTemplateProps {
   /** Declarative configuration object for the portal */
@@ -111,17 +124,7 @@ export function PortalLoginTemplate({
       return activeRole.authModeOptions;
     }
     const modes = activeRole?.authModes || ["password"];
-    return modes.map((mode) => ({
-      mode,
-      label:
-        mode === "password"
-          ? "Login via Password"
-          : mode === "otp"
-          ? "Login via Mobile OTP"
-          : mode === "pin"
-          ? "Login via PIN"
-          : "Fast-track DigiLocker SSO",
-    }));
+    return modes.map((mode) => ({ mode, label: MODE_LABELS[mode] }));
   }, [activeRole]);
 
   const initialAuthMode: PortalAuthMode =
@@ -268,6 +271,16 @@ export function PortalLoginTemplate({
 
   const selectorType = activeRole?.authSelectorType || (authOptions.length > 2 ? "radio" : "segmented");
 
+  /*
+   * Both halves are required. The role decides whether this portal offers the
+   * handoff to this audience; the href decides whether there is anywhere to hand
+   * off to. A card with no destination is worse than no card, so a portal that
+   * sets the boolean and forgets the link gets nothing rather than a dead CTA.
+   */
+  const showDigiLocker = Boolean(
+    activeRole?.digilocker && config.links?.digilockerHref
+  );
+
   // The heading's LEVEL is the caller's; its size is not. Styling stays on the
   // element so an embedded template looks identical to a standalone one.
   const Heading = `h${headingLevel}` as "h1" | "h2" | "h3";
@@ -303,6 +316,64 @@ export function PortalLoginTemplate({
           >
             <span aria-hidden="true">⚠️</span>
             <span>{error}</span>
+          </div>
+        )}
+
+        {/* ── DIGILOCKER HANDOFF — ABOVE THE DIVIDER, OUTSIDE THE FORM ─────── */}
+        {/* Position and visibility both come from the handoff (`10767:71293`):
+            the card sits directly under the header and directly above the
+            "or sign in with credentials" divider, and it appears on the Citizen
+            frames only — Admin and Garima Greh carry neither the card nor the
+            divider. Hence a per-role boolean rather than an audience rule.
+
+            It is a LINK, not a submit: it leaves for the identity provider and
+            takes nothing from the form with it. That is also why the credential
+            form below is untouched by its presence — a citizen who ignores the
+            card still has a complete way to sign in. */}
+        {showDigiLocker && (
+          <div className="space-y-4 pt-1">
+            <a
+              href={config.links!.digilockerHref}
+              className="flex items-center gap-3 rounded-lg border border-[var(--sa-border-neutral-subtle)] p-3 transition hover:border-[var(--sa-color-primaryScale-800)] hover:bg-[var(--sa-bg-neutral-subtler)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--sa-focus-ring)]"
+            >
+              {config.brandAssets?.digilockerLogoSrc && (
+                <img
+                  src={config.brandAssets.digilockerLogoSrc}
+                  alt=""
+                  className="h-10 w-11 shrink-0 object-contain"
+                />
+              )}
+              <span className="min-w-0 flex-1">
+                <span className="block text-sm font-semibold text-[var(--sa-text-neutral-base)]">
+                  Continue with DigiLocker
+                </span>
+                <span className="block text-xs text-[var(--sa-text-neutral-subtle)]">
+                  Secured Government Login
+                </span>
+              </span>
+              <Icon
+                name="arrow_forward"
+                size={24}
+                className="shrink-0 text-[var(--sa-text-neutral-subtle)]"
+              />
+            </a>
+
+            {/* The divider belongs to the card, not to the form. Admin and
+                Garima Greh have no card and no divider — a form with nothing
+                above it needs no "or". */}
+            <div className="flex items-center gap-3">
+              <span
+                aria-hidden="true"
+                className="h-px flex-1 bg-[var(--sa-border-neutral-subtle)]"
+              />
+              <span className="text-xs text-[var(--sa-text-neutral-subtle)]">
+                or sign in with credentials
+              </span>
+              <span
+                aria-hidden="true"
+                className="h-px flex-1 bg-[var(--sa-border-neutral-subtle)]"
+              />
+            </div>
           </div>
         )}
 
@@ -578,44 +649,20 @@ export function PortalLoginTemplate({
           </div>
         )}
 
-        {/* ── MODE 4: DIGILOCKER SSO ─────────────────────────────────────── */}
-        {activeAuthMode === "digilocker" && (
-          <div className="space-y-4 py-2 text-center">
-            <div className="rounded-lg border border-[var(--sa-border-brand-primary-base)] bg-[var(--sa-bg-brand-primary-subtler)] p-4">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[var(--sa-bg-brand-primary-subtle)] text-[var(--sa-color-primaryScale-800)] font-bold text-xl">
-                🔒
-              </div>
-              <h3 className="mt-2 text-sm font-bold text-[var(--sa-text-neutral-base)]">
-                Fast-Track Identity Verification
-              </h3>
-              <p className="mt-1 text-xs text-[var(--sa-text-neutral-subtle)]">
-                Sign in with DigiLocker to auto-verify your identity and retrieve required documents seamlessly.
-              </p>
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex w-full items-center justify-center gap-2 rounded-md bg-[var(--sa-color-primaryScale-800)] px-4 py-2.5 text-sm font-semibold text-white shadow hover:bg-[var(--sa-color-primaryScale-900)] transition"
-            >
-              <span>Sign in with DigiLocker</span>
-              <span>→</span>
-            </button>
-          </div>
-        )}
-
         {/* Additional Configurable Fields */}
         {config.extraFields}
 
-        {/* Submit Button (for non-DigiLocker modes) */}
-        {activeAuthMode !== "digilocker" && (
-          <button
-            type="submit"
-            disabled={loading}
-            className="mt-4 flex w-full items-center justify-center rounded-md bg-[var(--sa-color-primaryScale-800)] px-4 py-2.5 text-sm font-semibold text-white shadow transition hover:opacity-95 disabled:opacity-50"
-          >
-            {loading ? "Verifying..." : "Sign In →"}
-          </button>
-        )}
+        {/* Submit. Unconditional: every mode this form draws is a credential
+            form with something to submit. It used to be suppressed while
+            DigiLocker was the selected "mode", which left the form with no way
+            to be completed. */}
+        <button
+          type="submit"
+          disabled={loading}
+          className="mt-4 flex w-full items-center justify-center rounded-md bg-[var(--sa-color-primaryScale-800)] px-4 py-2.5 text-sm font-semibold text-white shadow transition hover:opacity-95 disabled:opacity-50"
+        >
+          {loading ? "Verifying..." : "Sign In →"}
+        </button>
 
         {/* Secondary Links (Register / Help) */}
         <div className="flex items-center justify-between pt-2 text-xs text-[var(--sa-text-neutral-subtle)]">

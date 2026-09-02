@@ -6,8 +6,13 @@ import * as React from "react";
  * Every portal's own wording maps onto these three: NMBA's "Patient Monitoring",
  * SMILE-Transgender's "Garima Greh" and SCW's "SAGE Organisation" are all
  * `organisation`, renamed via the tab's `label`. Before this existed there were
- * five bespoke taxonomies across nine portals and no way to write a rule — such
- * as "hide DigiLocker for officers" — that held in more than one of them.
+ * five bespoke taxonomies across nine portals and no way to write a rule about
+ * who is signing in that held in more than one of them.
+ *
+ * **The DigiLocker handoff is not such a rule**, though it was written as one
+ * until 2026-09-02. It is narrower than any audience — see
+ * `PortalRoleTab.digilocker`. A rule narrower than the audience belongs on the
+ * role.
  *
  * Do not add a fourth. A portal that seems to need one is renaming, not adding.
  */
@@ -23,9 +28,12 @@ export type PortalAudience = "citizen" | "officer" | "organisation";
  * brief before the design file was available, and the matching Figma variant
  * axis has been retired too.
  *
- * `digilocker` is kept, but note what it is: a CTA that hands off to a
- * government identity provider, sitting ABOVE the credentials divider. It is
- * not a mode of the credential form.
+ * **`"digilocker"` removed 2026-09-02.** It was never a mode of the credential
+ * form, and carrying it in this union made it one: the template rendered it as a
+ * fourth selectable method and suppressed the submit button while it was chosen.
+ * The handoff (`10767:71293`, `03 — LOGIN & AUTHENTICATION`) puts it above the
+ * credentials divider as a standing CTA, with the form untouched beneath it. It
+ * is now `PortalRoleTab.digilocker`, a per-role boolean.
  *
  * **`"pin"` added 2026-09-02**, and it is not a reinstatement of the invented
  * modes above — NOS is PIN-only, and both its auth screens (`2436:15957`) are
@@ -35,8 +43,7 @@ export type PortalAudience = "citizen" | "officer" | "organisation";
 export type PortalAuthMode =
   | "password" // Username / Email / Mobile + Password (+ optional captcha)
   | "otp" // Mobile / Email + 6-digit OTP verification
-  | "pin" // Registered identifier + 6-digit numeric PIN
-  | "digilocker"; // DigiLocker SSO — a handoff, not a form mode
+  | "pin"; // Registered identifier + 6-digit numeric PIN
 
 /**
  * Custom display option for a specific login method under a role.
@@ -58,13 +65,30 @@ export interface PortalRoleTab {
   id: string;
   /**
    * Which of the three estate audiences this tab is, regardless of its label.
-   * Rules key off this, not off `label` — `audience === "officer"` is what hides
-   * the DigiLocker button, and it must keep working when a portal calls its
-   * officer tab "Admin" or its organisation tab "Garima Greh".
+   * Rules key off this, not off `label`, and it must keep working when a portal
+   * calls its officer tab "Admin" or its organisation tab "Garima Greh".
    */
   audience?: PortalAudience;
   /** Display label in the segmented control tab pill */
   label: string;
+  /**
+   * Offer the DigiLocker handoff on this tab. @default false
+   *
+   * It renders as a card above the credentials divider — not as a login method,
+   * and not inside the form. The divider ("or sign in with credentials") belongs
+   * to the card and appears only with it.
+   *
+   * **A per-role boolean, not an audience rule.** The handoff carries the card on
+   * SMILE-Transgender's Citizen tab and on neither Admin nor Garima Greh, so it
+   * is narrower than "not an officer" — an audience-keyed default would have put
+   * it on the organisation tab. Which roles a portal offers it to is the
+   * portal's decision to state, because it is the portal that holds the
+   * agreement with the identity provider.
+   *
+   * Nothing renders unless `config.links.digilockerHref` is also set: a CTA with
+   * nowhere to go is worse than no CTA.
+   */
+  digilocker?: boolean;
   /** Supported authentication modes for this specific role */
   authModes?: PortalAuthMode[];
   /** Custom-labeled authentication method options for this role */
@@ -89,6 +113,16 @@ export interface PortalBrandAssets {
   samaveshLogoSrc?: string;
   /** Optional portal-specific icon / seal path */
   portalLogoSrc?: string;
+  /**
+   * DigiLocker's own mark, for the handoff card's logo slot.
+   *
+   * **Deliberately has no default.** DigiLocker is a partner, its mark is theirs,
+   * and the estate holds no copy of it — so the slot stays empty rather than
+   * being filled with a padlock glyph standing in for a brand. Supply the
+   * official asset and the card draws it; leave it unset and the card renders
+   * its wording and arrow alone, which is complete and honest.
+   */
+  digilockerLogoSrc?: string;
 }
 
 /**
@@ -148,5 +182,11 @@ export interface PortalLoginConfig {
     forgotPasswordHref?: string;
     registerHref?: string;
     helpFaqHref?: string;
+    /**
+     * Where the DigiLocker card hands off to. Required for the card to render at
+     * all — see `PortalRoleTab.digilocker`. It is a real navigation to the
+     * identity provider, so the card is an `<a>`, not a button.
+     */
+    digilockerHref?: string;
   };
 }

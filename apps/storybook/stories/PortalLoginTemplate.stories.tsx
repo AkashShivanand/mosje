@@ -10,9 +10,10 @@ import type { PortalLoginConfig } from "@mosje/design-system";
  * Where `PortalLoginShell` gives you the page furniture and leaves the form to
  * the app, this goes one step further: you hand it `config` and it renders the
  * role tabs, the login-method selector and the correct fields for each
- * `PortalAuthMode` — `password`, `otp`, `pin` and `digilocker`. (`darpan` and
- * `aadhaar` were removed on 2026-08-17: a full read of the handoff found no such
- * screen in any portal.) Submitting calls `onSubmit` with a `LoginSubmitPayload`
+ * `PortalAuthMode` — `password`, `otp` and `pin`. (`darpan` and `aadhaar` were
+ * removed on 2026-08-17: a full read of the handoff found no such screen in any
+ * portal. `digilocker` left the union on 2026-09-02, because it is a handoff
+ * above the form rather than a mode of it.) Submitting calls `onSubmit` with a `LoginSubmitPayload`
  * carrying the role, the mode and the credentials. A PIN arrives as
  * `credentials.pin`, never as `credentials.password`.
  *
@@ -173,10 +174,12 @@ export const Submitting: Story = {
 };
 
 /**
- * **Every login method in one place.** A single role exposing all four
+ * **Every login method in one place.** A single role exposing all three
  * `PortalAuthMode`s — not a realistic portal, but the fastest way to review the
- * field sets side by side. Note DigiLocker is an identity handoff, not a form mode: it
- * collect a consent action, not a password.
+ * field sets side by side.
+ *
+ * DigiLocker is deliberately absent: it is an identity handoff, not a login
+ * method, so it has no field set to compare. See `DigiLockerHandoff` below.
  */
 export const AllAuthModes: Story = {
   args: {
@@ -187,10 +190,52 @@ export const AllAuthModes: Story = {
         {
           id: "all",
           label: "Every method",
-          description: "A specimen role carrying all four modes for review.",
-          authModes: ["password", "otp", "pin", "digilocker"],
+          description: "A specimen role carrying all three modes for review.",
+          authModes: ["password", "otp", "pin"],
           authSelectorType: "dropdown",
           defaultMode: "password",
+        },
+      ],
+    },
+  },
+};
+
+/**
+ * **The DigiLocker handoff — a card above the form, not a method inside it.**
+ *
+ * Switched on per role with `digilocker: true`, and rendered only when
+ * `links.digilockerHref` gives it somewhere to go. It sits above the "or sign in
+ * with credentials" divider, which appears with it and only with it, and the
+ * credential form beneath it is unchanged — a citizen who ignores the card still
+ * has a complete way to sign in.
+ *
+ * **It is per role, not per audience.** Switch to Officer here and both the card
+ * and the divider go, matching the handoff, where SMILE-Transgender carries the
+ * card on Citizen and on neither Admin nor Garima Greh.
+ *
+ * The logo slot is empty because the estate holds no copy of DigiLocker's mark —
+ * pass `brandAssets.digilockerLogoSrc` to fill it.
+ */
+export const DigiLockerHandoff: Story = {
+  args: {
+    config: {
+      ...eAnudaan,
+      links: { ...eAnudaan.links, digilockerHref: "https://digilocker.gov.in/" },
+      roles: [
+        {
+          id: "citizen",
+          audience: "citizen",
+          label: "Citizen",
+          description: "For a member of the public tracking their own application.",
+          digilocker: true,
+          authModes: ["otp"],
+        },
+        {
+          id: "officer",
+          audience: "officer",
+          label: "Officer",
+          description: "For a departmental officer processing applications.",
+          authModes: ["password"],
         },
       ],
     },

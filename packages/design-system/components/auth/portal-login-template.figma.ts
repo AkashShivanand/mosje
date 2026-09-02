@@ -46,12 +46,16 @@
 //
 // DIGILOCKER IS NOT AN AUTH METHOD. It is a handoff CTA sitting ABOVE the
 // credentials divider, switched by `Show DigiLocker` on the nested
-// `Auth / AuthFormCard`. `PortalAuthMode` still carries `"digilocker"` for the
-// handoff itself; never give it a variant of its own.
+// `Auth / AuthFormCard`. In code it is `PortalRoleTab.digilocker`, a per-role
+// boolean; `PortalAuthMode` does NOT carry it, and never give it a variant.
 //
-// HIDE DIGILOCKER FOR OFFICERS. Key it off `PortalRoleTab.audience === "officer"`,
-// never off the tab's label or the portal — SCW calls that tab "Admin", NMBA
-// calls it "Patient Monitoring", and a label test breaks on both.
+// DIGILOCKER IS PER ROLE, AND THE DIVIDER GOES WITH IT. The handoff
+// (`10767:71293`) carries the card on SMILE-Transgender's Citizen frames and on
+// neither Admin nor Garima Greh — so it is narrower than "not an officer", and
+// an audience-keyed default would wrongly put it on the organisation tab. Set
+// `digilocker: true` on the roles the portal has actually agreed it for, and set
+// `links.digilockerHref` or nothing renders. The "or sign in with credentials"
+// divider belongs to the card: no card, no divider.
 //
 // CAPTCHA IS OFF BY DEFAULT AND MUST STAY OFF. `config.captcha` mirrors
 // `Show captcha` on the form card, and both default to false: a captcha is a
@@ -102,7 +106,8 @@ export default {
       {
         id: "officer",
         label: "Officer / Admin",
-        // audience drives the rules — this is what hides DigiLocker.
+        // audience is the estate taxonomy a portal's own label maps onto.
+        // It does NOT decide DigiLocker — omitting \`digilocker\` does.
         audience: "officer",
         authModes: ["password"],
         defaultMode: "password",

@@ -724,18 +724,31 @@
     {
       "node": "55402:1879",
       "where": "PortalLoginTemplate — Documentation › 06 Behaviour › DigiLocker handoff",
-      "figma": "DigiLocker is an identity handoff, not a form mode, so it has no variant. Its button sits above the credentials divider and is switched by Show DigiLocker on the form card. Hide it for officers by the role's audience, never by the tab's label — SCW calls that tab Admin and NMBA calls it Patient Monitoring.",
+      "figma": "DigiLocker is an identity handoff, not a form mode, so it has no variant. Its card sits above the credentials divider and is switched by Show DigiLocker on the form card. It is offered per role rather than per audience: the handoff carries it on Citizen and on neither Admin nor Garima Greh. The divider appears only with the card.",
       "expect": [
         {
           "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.tsx",
+          "pattern": "activeRole\\?\\.digilocker && config\\.links\\?\\.digilockerHref",
+          "hint": "The real gate. This assertion used to match the WORD \"audience\" in a types.ts COMMENT, which made the claim circular — the documentation was pinned to prose restating it rather than to code doing it."
+        },
+        {
+          "kind": "source",
           "file": "packages/design-system/components/auth/types.ts",
-          "pattern": "audience === \"officer\"",
-          "hint": "The taxonomy the rule keys off. A label test breaks on SCW (Admin) and NMBA (Patient Monitoring), which is why audience exists at all."
+          "pattern": "digilocker\\?: boolean",
+          "hint": "Per role, not per audience. The handoff hides the card for officer AND organisation, so an audience rule would have been wrong in both directions."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/types.ts",
+          "pattern": "\\| \"digilocker\"",
+          "absent": true,
+          "hint": "\"Not a form mode\" pinned to the union it must stay out of. While it was a member, the template drew it as a fourth login method and suppressed the submit button behind it."
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
-          "pattern": "never off the tab's label",
+          "pattern": "no card, no divider",
           "hint": "Written in the Code Connect template because it is the instruction an agent reading Dev Mode needs and cannot infer from geometry."
         },
         {
