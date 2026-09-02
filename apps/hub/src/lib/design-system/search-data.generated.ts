@@ -180,6 +180,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Breadcrumb — Design System",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/breadcrumb",
+    "keywords": "breadcrumb — design system navigation example items[].label items[].href tokens wcag accessibility",
+    "description": "The trail showing where a page sits, with the current page as the last, non-interactive crumb.",
+    "type": "component",
+    "iconName": "navigation"
+  },
+  {
     "title": "Bullet Chart — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/bullet-chart",
@@ -792,6 +801,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "dashboard_customize"
   },
   {
+    "title": "Pagination — Design System",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/pagination",
+    "keywords": "pagination — design system navigation prefer links  tokens wcag accessibility",
+    "description": "Moving through a set of results a page at a time, as real links wherever the page number belongs in the URL.",
+    "type": "component",
+    "iconName": "navigation"
+  },
+  {
     "title": "PAN Input — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/pan-input",
@@ -934,6 +952,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "href": "/design-system/components/layout/section",
     "keywords": "section title — design system layout use it rather than hand-rolling one writing the row example keeping the outline sequential  tokens wcag accessibility",
     "description": "The standard heading row for a content section: eyebrow, heading, optional count pill, description, and right-aligned actions.",
+    "type": "component",
+    "iconName": "view_quilt"
+  },
+  {
+    "title": "Section Title — Design System",
+    "section": "Layout",
+    "href": "/design-system/components/layout/section-title",
+    "keywords": "section title — design system layout use it instead of a hand-rolled heading  tokens wcag accessibility",
+    "description": "The estate",
     "type": "component",
     "iconName": "view_quilt"
   },
