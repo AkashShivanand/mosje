@@ -66,6 +66,19 @@ const DECLARED: { selector: string; why: string }[] = [
       "the 24x24 floor, and fully clickable. Re-measure if the ticker stops clipping.",
   },
   {
+    selector: "#dark-btn",
+    why:
+      "`nested-interactive` inside the UX4G accessibility widget — MeitY's own " +
+      "CDN-loaded control, a <button> wrapping a focusable <input>. The four " +
+      "CRITICAL `button-name` failures beside it WERE repaired, in " +
+      "`ux4g-accessibility-widget.tsx`, by pointing `aria-labelledby` at each " +
+      "toggle's own visible heading — additive, no suppression, no restyle. " +
+      "This one is not, deliberately: fixing it means changing which element is " +
+      "focusable in a vendor control, and getting that wrong makes the theme " +
+      "switch unreachable rather than merely mislabelled. It is a defect in the " +
+      "widget and belongs upstream.",
+  },
+  {
     selector: ".ds-btn--inverseOutlined",
     why:
       "The ticker's 'View All' route, 52.6x32, failing on the same phantom overlap as the " +
@@ -84,6 +97,19 @@ const ROUTES: { name: string; path: string }[] = [
   // to get wrong — a listbox with a roving active option.
   { name: "the filter select", path: "/design-system/components/forms/filter-select" },
   { name: "the website home", path: "/website" },
+  /*
+    PORTALS — added 2026-09-02, and the reason they are here is what they found.
+    The suite watched six routes and NONE of the twenty portals, so it was
+    measuring the surface built to be measured. One run against three portals
+    returned seven serious contrast failures and four CRITICAL unnamed buttons,
+    including one in the design system's own sidebar that the documentation
+    could never have shown because no docs page renders an ACTIVE row.
+    These three carry the estate's three private UI kits — the 27 of 41
+    shadow-UI collisions — so they are where DS fixes are least likely to land.
+  */
+  { name: "the scw portal", path: "/portals/scw" },
+  { name: "the tg admin portal", path: "/portals/tg/admin" },
+  { name: "the nhapoa portal", path: "/portals/nhapoa" },
 ];
 
 for (const route of ROUTES) {

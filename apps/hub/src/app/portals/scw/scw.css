@@ -15,14 +15,20 @@
   --portal-saffron: #ec6a1f;
   --portal-surface-muted: #f5f7fb;
 
-  /* CONFLICT — SCW deviates from nmba/nhapoa/tg. Preserved verbatim, NOT
-     "fixed": var(--color-ink-hint) is 2.6:1 on white and fails WCAG 1.4.3, but this port is
-     behaviour-preserving. Raise it as its own a11y change, not here. */
-  --color-ink-hint: #94a3b8;
-  /* CONFLICT — amber-700; nmba/nhapoa/tg darkened theirs to amber-800 #92400e. */
-  --color-await-fg: #b45309;
-  /* CONFLICT — nhapoa/tg darkened theirs to #b8500f for AA on white text. */
-  --color-saffron-600: #d35912;
+  /* THE THREE CONFLICTS ARE GONE — this is the a11y change the note asked for.
+     The comment here used to say the failing values were "preserved verbatim,
+     NOT fixed… raise it as its own a11y change, not here." This is that change.
+     All three overrides put SCW back onto a value that fails WCAG 1.4.3 while
+     the shared block above it already held a passing one:
+
+       --color-ink-hint    #94a3b8  2.56:1 on white  → inherits #64748b
+       --color-saffron-600 #d35912  4.03:1 on white  → inherits #b8500f (5.01)
+       --color-await-fg    #b45309                   → inherits amber-800
+
+     Found by running axe against this portal rather than against the
+     documentation — seven serious contrast failures, none of them visible on
+     any page the accessibility suite was watching. Deleting the overrides is
+     the whole fix; nothing here needs its own value. */
   /* CONFLICT — SCW's emerald citizen hero; nhapoa overrides to navy. */
   --color-herofrom: #4f9d6b;
   --color-heroto: #2f6b46;

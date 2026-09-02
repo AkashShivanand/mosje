@@ -16,7 +16,10 @@ export function Button({
     outline: "border border-navy/30 text-navy hover:bg-navy/5",
     ghost: "text-ink-muted hover:bg-black/5",
     danger: "border border-red-400 text-red-600 hover:bg-red-50",
-    saffron: "bg-saffron text-white hover:bg-saffron-600",
+    // saffron-600, NOT the bare `saffron` (#ec6a1f): white on that measures
+    // 3.15:1 and fails WCAG 1.4.3 for the button's 14px label. saffron-600
+    // #b8500f is 5.01:1. Hover deepens rather than repeating the rest state.
+    saffron: "bg-saffron-600 text-white hover:bg-saffron-dark",
   };
   return (
     <button

@@ -414,83 +414,17 @@ this hook is failing to read. It affects how the whole estate deploys, so it
 belongs to whoever owns the deployment. The alternative is raising the build
 resources.
 
-# PART II — THE RE-AUDIT, 2026-09-02
+**RESOLVED 2026-09-02.** The one-line change was made, scoped so it cannot alter
+how the estate self-hosts:
 
-The finished foundations were put back through four of the same hostile lenses,
-scoped to the NEW work only. It returned 58 findings. The most valuable were the
-ones that faulted the fix rather than the original defect, and several were errors
-of mine that the first audit could not have caught because the code did not exist
-yet.
-
-## What the re-audit caught, and what was done
-
-| # | Finding | Status |
-|---|---|---|
-| **The build was RED** — the docs-coverage baseline held 15 names from the moment before the illustration primitives were withdrawn from the barrel, so every PR would have failed before reaching the build step. | ✅ Re-baselined |
-| **The gate's failure message was wrong.** It could not tell "gained a page" from "no longer exported" and reported both as "now documented" — so it sent the reader to find fifteen pages that had never been written. | ✅ Third branch added, with its own sentence |
-| **80 lines of new chart CSS sat OUTSIDE `@layer components`** — finding F9 of this same programme, reintroduced in the code that answers it. A chart could be overridden by a consumer utility in its populated branch and not in its state branch. | ✅ Layer closed at end of file |
-| **A union props type returned its INTERSECTION.** `BarChartProps = BarSingle \| BarMulti` published `title` and none of `data`, `labels` or `series` — so the generator's headline claim was false for the exact case its own docstring cited. | ✅ Arms walked separately and merged, with an `onlyIn` marker naming which arm accepts each prop |
-| **Cross-file type aliases never expanded.** `getSymbolAtLocation` returns the import specifier, so `CardStateKind` printed expanded where it was local and bare where it was imported — the same type documented two ways in one file — and `ChartState`, the whole state contract, printed bare on all eighteen components that accept it. | ✅ `getAliasedSymbol`, plus nested-alias flattening: `ChartState` now prints all seven states |
-| **`defaultOf` did not read destructured defaults**, though its docstring said it did. 78% of props rendered an em dash that reads as "no default" — `BarChart.orientation` published `—` against a source that reads `orientation = "vertical"`. | ✅ Reads both the parameter pattern and the `const { … } = props` body form that every union-typed chart uses. 207 → 333 defaults |
-| **An empty description rendered as a blank `<td>`** beside a Default column rendering an em dash — the same absence, two renderings. | ✅ |
-| **The three new palette tests were named as conformance claims** and passed at the failing value: "every categorical slot sits inside the lightness band" ✔ with four slots outside it. Three green ticks beside three untrue sentences — the exact defect the `A11yChecklist` rebuild was for, moved into the test suite. | ✅ Renamed to what they measure: "the lightness-band deficit does not grow" |
-| **`role="img"` pruned the charts' own focusable marks.** Nine charts put `tabIndex={0}` and an `aria-label` on every bar, point, cell and region; inside `role="img"` those labels are pruned, so a keyboard reader tabbed through thirty stops that announced nothing. | ✅ `marksAreFocusable` switches the SVG to `role="group"`. **Verified in a browser: role is now `group` and all six marks announce their labels** |
-| **The CSS barrel declared a `demo` rank and never walked `demo/`** — the same silent-absence failure the generator was written to end, at smaller scale. | ✅ 69 → 73 imports |
-| **Dependabot watched npm and not the workflow actions** — the half of the supply chain that runs with repository credentials. | ✅ |
-| **"Related Components" used a raw `<a>`** in a shell where every other link is `next/link`, so the one link whose job is moving between pages re-downloaded the shell, the sidebar and the search index. | ✅ |
-
-## What it caught in the illustration system — all of it mine
-
-| Finding | Status |
-|---|---|
-| **Nine of fourteen scenes floated above the floor** the language calls the family's binding trait, making it "a decorative underline beneath unrelated objects". | ✅ **Every scene now bottoms at exactly y = 40**, measured in a browser. Sheets were grounded; the rule was also restated honestly — an object that stands meets the floor, a ring or a lens is not an object and does not. |
-| **Round caps hung every grounded mark two units BELOW the floor** — a round cap extends half the stroke past the endpoint, so at `scene` that is 6px of bar dangling below the baseline on the five drawings carrying the family's only shared idea. | ✅ Butt caps for grounded marks, stated in §4 |
-| **`complete` shipped TWO accents**, breaking the language's own one-accent rule on the scene that means "finished". | ✅ Ring keeps the accent; the tick moved to ink |
-| **`empty` and `not-published` were the same composition** separated only by a height array — and four EQUAL dashed bars read as four equal VALUES, the one thing an empty state must not say. | ✅ `empty` is now the plot area with no bar shape in it; the dashed ghost outline is `not-published`'s alone |
-| **Two of six scene names diverged from `CardStateKind`**, so `<Illustration name={kind} />` did not typecheck and no translation table existed. | ✅ `no-data`→`empty`, `feed-error`→`error` |
-
-## What the re-audit found that is NOT fixed, and why
-
-- **Four `spot`-tier scenes are illegible at 32×24.** `Sheet` renders 10px wide with three 1px rules; `Ring` becomes a dot. The tier contract claims a drawing "is correct at every size", and for those four it is not. The honest options are per-tier variants or restricting `spot` to the scenes that survive it; both are design work, not a patch.
-- **Nothing in the estate consumes the illustration system yet**, and `CardState`'s `StateArt` still hand-draws six scenes to the same 64×48 grid under a different class family. §7 above explains why they were not merged (a tone axis the language deliberately lacks); the re-audit is right that two systems on one grid is a cost, and the names now line up so the merge is a small change when someone takes the tone decision.
-- **The template's `h1` is `display-1`** — up to 80px at 1920, and 40px/800 in a 288px column at 320px. The re-audit argues for `headline-1`, citing GOV.UK at 36px and Carbon at 42. That is a house-style decision with 100 pages behind it, and it belongs to a human.
-- **Without JavaScript the Suspense fallback has no tab handler**, so only the Design panel is reachable and the props table and accessibility checklist are JS-gated. The fix is to render all three panels as headings in the fallback and enhance on hydration.
-- **The docs kit has no forced-colors support**, so the active tab indicator — drawn with `background` and `color` — disappears in Windows High Contrast.
-- **`--cdp-measure` is a page-kit local, not a token.** One value, correctly, and bound to nothing in `--sa-*`.
-- **`ComponentDocPage` has no documentation page of its own**, and the illustration foundations page hand-rolls the header the template exists to render — it scores 0/6 and the gate cannot see it, because the gate only walks `components/`. Dogfooding is the cheapest credibility a design system has and this is where it is missing.
-
----
-
-## 9. The Vercel preview on PR #247 failed — diagnosis
-
-Both GitHub Actions gates pass: **hub lint + typecheck + build (5m10s)** and
-**quality (4m54s)**. `npm run verify` passes locally, including a full production
-build. The Vercel preview deployment failed, and the evidence says it is not this
-change:
-
-```
-✓ Compiled successfully in 50s
-✓ Generating static pages using 1 worker (832/832) in 36.3s
-> Build error occurred
-Error: ENOENT: no such file or directory, open
-  '/vercel/path0/apps/hub/.next/next-server.js.nft.json'
+```ts
+...(process.env.VERCEL ? {} : { output: "standalone" as const })
 ```
 
-The build **compiled and rendered all 832 static pages**. It failed afterwards, at
-Next's file-tracing step, on a manifest that step is supposed to write. Nothing in
-this branch touches `next.config.ts`, the output mode, or tracing, and the route
-count is unchanged apart from one new foundations page.
-
-Every deployment before it completed in ~5m; this one stopped at 3m — consistent
-with the build process being killed after static generation rather than with a
-compile error. Vercel reported `Generating static pages using 1 worker`, which is
-what it does under memory pressure.
-
-**Next step is a redeploy of the same commit**, which distinguishes an
-infrastructure flake from a deterministic failure in one run. If it fails again,
-the first thing to try is splitting `props.generated.ts` (233 KB, imported by 100
-pages) into one module per interface — which the re-audit recommends anyway on
-bundle grounds, and which would cut the per-route module graph sharply.
+`output: "standalone"` is kept everywhere except on Vercel, which sets `VERCEL`
+in its own build environment and does not need it. Vercel has deployed
+successfully on every commit since. The diagnosis above is left in place because
+it is the evidence for the change, not because the failure is still open.
 
 ---
 
@@ -732,3 +666,57 @@ caught; the escape hatch was documented and unreachable.
 **`design.md` was wrong, and agents read it as truth.** It described the twelve
 categorical slots as "mutually distinguishable". They are not, and the line has
 been replaced with the measured figures and the safe cap.
+
+---
+
+# PART V — THE THIRD RE-AUDIT, 2026-09-02 (all eight lenses, current state)
+
+Run against the state left by the FilterSelect, chart-palette and table-view
+work, which the earlier re-audits predate. Every finding below is a
+**measurement**, and each names the lens that would not have let it through.
+
+## What each lens found
+
+| Lens | Finding | Status |
+|---|---|---|
+| **UI/UX designer** | The DS sidebar's ACTIVE row draws `text/brand/primary/base` on `primaryScale/50` — **4.19:1**, below the 4.5:1 that 14px normal text needs. Invisible to every documentation page, because no docs page renders an active row. | ✅ Both rules bound to `bolder`, **5.74:1** |
+| **Design director** | Three portals shipped seven serious contrast failures — hint text at **2.39:1**, badges at 3.79:1, a white-on-saffron CTA at 3.15:1. | ✅ All seven cleared |
+| **Senior DS manager** | `scw.css` overrode three shared tokens *back* to failing values, with a comment saying so and deferring the fix. The shared block above already held passing ones. | ✅ Overrides deleted; three recorded CONFLICTs removed |
+| **Technical architect** | `--color-ink-hint: #64748b` — the value three portals already used — passes on white (4.76) but **fails on `#f5f7fb` (4.44)** and `#fff7eb` (4.48), grounds the estate actually paints. Copying it would have "fixed" the defect only where anyone had looked. | ✅ slate-600, **7.58 / 7.07 / 7.13** |
+| **CTO** | The estate's own accessibility widget is **not operable by a screen reader**: four CRITICAL unnamed buttons on every page of every portal. On a government estate with a statutory obligation. | ✅ Named from their own visible headings |
+| **Senior developer** | The axe suite watched **six routes and zero of the twenty portals** — it measured the surface built to be measured. | ✅ Three portals added; suite is 9 routes |
+| **Business analyst** | 27 of the 41 shadow-UI collisions are three private portal kits (nhapoa 10, tg 9, scw 8) re-implementing Button, Card, Checkbox, DataTable, EmptyState, PageHeader, SectionTitle, Select, Pagination across 1,180 lines. | ⚠️ Recorded, not fixed — see below |
+| **Product manager** | This audit record itself contained a **duplicated `PART II`**, ~80 lines said twice, one copy carrying a superseded Vercel diagnosis. The estate's own rule is "nothing said twice". | ✅ Stale copy removed |
+
+## A finding of mine that was WRONG, and the correction
+
+The second re-audit recommended splitting `props.generated.ts` (254 KB) "on
+bundle grounds". **That rested on a false premise.** The module is imported by
+`props-table.tsx` and `component-doc-page.tsx`, neither of which is a client
+component, and a grep of the built client bundle for its interface names returns
+**zero matches**. It is server-only and never reaches a browser. The
+recommendation is withdrawn.
+
+## Why these were invisible until now
+
+Every one of the contrast defects sits on a portal, and every gate this
+programme built pointed at the design system and its documentation. A gate
+aimed only at the surface you control reports the health of that surface, not
+of the estate — and the sidebar defect was in the DS itself, reachable only
+through a page that renders an active row.
+
+## Still open, honestly
+
+- **The three portal UI kits.** 1,180 lines, nine components, their own variant
+  vocabulary (`saffron`, `danger`, `outline`, `ghost`) that does not match the
+  DS Button's. Migration is a per-portal job with visual-regression risk on live
+  government portals; it is declared debt in `check:shadow-ui`, not an oversight.
+- **`#dark-btn`'s `nested-interactive`.** A vendor `<button>` wrapping a
+  focusable `<input>`. Repairing it means changing which element is focusable in
+  a control we do not own; wrong, and the theme switch becomes unreachable.
+  Declared in the axe suite with that reasoning. It belongs upstream.
+- **17 portals still unwatched** by the axe suite. Three were added because they
+  carry the private kits; the rest are a coverage ratchet nobody has built yet.
+- **The chart palette itself.** Measured, gated, capped at four safe slots — but
+  not re-derived. That needs a palette satisfying both the colour maths and the
+  estate's six token contract tests at once.
