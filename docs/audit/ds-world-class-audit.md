@@ -959,3 +959,27 @@ assertions.
 5. **Bullet, small multiples, texture fills.** The dataviz gaps that follow
    directly from the six-colour proof.
 6. **Emit or delete the twelve dark chart values.**
+
+---
+
+## 11. A note on commit `fa9a73e6`
+
+That commit is titled "feat(charts): BulletChart, SmallMultiples and texture
+fills" and also contains five files belonging to a **parallel session** working
+on `PortalLoginTemplate` — the heading-level prop, its specimen, its story, its
+Code Connect template and the component itself.
+
+The cause was `git add apps/hub/src`, a directory-wide stage, which is precisely
+what `CLAUDE.md` forbids and for precisely this reason: *"Sessions share this
+working tree, and a tree has no idea which of them authored a change."* The
+`git status` before staging did list those files; they were not read.
+
+**Nothing was lost or broken.** Both sets of work were coherent, the branch is
+the same, the PR is the same, and CI passed on the merged result. The only harm
+is a commit message that does not describe its own contents. It was NOT
+corrected by rewriting history: the branch is pushed and shared with the session
+that authored the other half, and force-pushing it to fix a message would be a
+worse defect than the message.
+
+Recorded here so the history is explicable. Subsequent commits stage explicit
+file paths.

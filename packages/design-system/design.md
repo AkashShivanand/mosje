@@ -1371,6 +1371,24 @@ status/brand tokens above:
 
 **Alpha / transparent overlays (8/16/24/32/40/48%, Figma `<Family> Transparent/*`).** Consumed via `--sa-color-transparent-<family>-<step>` (canonical `--sa-*` name; no `--sa-*` alias). `primary` and `neutral` are brand-aware; `secondary`, `accent`, `success`, `danger`, `warning`, `white` are brand-invariant. Example: `--sa-color-transparent-neutral-8`, `--sa-color-transparent-white-24`. **A translucent fill has no contrast of its own** — its measured ratio depends on what sits behind it, so never use one as the surface behind text you need to guarantee.
 
+**Dates are TYPED, not paged to: use `<DatePicker>`.** The text input in
+`dd/mm/yyyy` is the primary control and the calendar is the second way in — a date
+of birth is roughly four hundred and eighty months in the past, and a calendar-first
+picker asks a pensioner to page there. **Never use `<input type="date">`**: its
+rendering, keyboard model and date ORDER belong to the browser and the OS, so one
+government form shows `mm/dd/yyyy` to one citizen and `dd/mm/yyyy` to the next. A
+form that cannot state its own date order will collect wrong dates, and here a wrong
+date of birth is an eligibility decision. `value` is always ISO `yyyy-mm-dd`.
+
+**A list longer than a reader will scroll: use `<Combobox>`.** Seven hundred
+districts, every scheme, a beneficiary by name — roughly twenty options and up. Below
+that a `Select` is better: no typing, and every assistive technology already knows it.
+It is NOT `FilterSelect`, which is a button opening a listbox for a dashboard filter;
+this is a real text input whose focus never leaves, so a screen reader announces it as
+editable and reads the remaining match count after each keystroke. It refuses
+unmatched text on blur — a box reading "Bankuraa" over a form value of "" is how a
+district goes missing between the screen and the database.
+
 **Reporting a figure against its target: use `<BulletChart>`.** Sanctioned against
 released, released against utilised, places created against places filled — this is
 the shape of almost every number the department publishes, and drawn as two bars it

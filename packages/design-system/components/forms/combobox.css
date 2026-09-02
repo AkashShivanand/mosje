@@ -1,0 +1,156 @@
+/* Declare the order before using it — see design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-combobox {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-combobox__label {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
+  }
+
+  .ds-combobox__required {
+    margin-inline-start: var(--sa-inline-2);
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-combobox__field {
+    display: flex;
+    align-items: center;
+    /* 3.06:1 on white — the subtle rung is 1.66 and fails WCAG 1.4.11 for a
+       control's boundary. Same correction FilterSelect and DatePicker needed. */
+    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-bg-neutral-base);
+    padding-inline-end: var(--sa-padding-4);
+  }
+
+  .ds-combobox__field:focus-within {
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-combobox__field.is-invalid { border-color: var(--sa-border-status-error-base); }
+  .ds-combobox__field.is-disabled { background: var(--sa-bg-neutral-subtler); }
+
+  .ds-combobox__input {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    border: 0;
+    background: transparent;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    color: var(--sa-text-neutral-bolder);
+    font: inherit;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  .ds-combobox__input:focus-visible { outline: none; }
+
+  .ds-combobox__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--sa-inline-32);
+    min-block-size: var(--sa-stack-32);
+    border: 0;
+    border-radius: var(--sa-shape-4);
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    cursor: pointer;
+  }
+
+  .ds-combobox__trigger:hover:not(:disabled) { background: var(--sa-bg-neutral-subtler); }
+
+  .ds-combobox__hint,
+  .ds-combobox__error {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-combobox__hint { color: var(--sa-text-neutral-subtle); }
+  .ds-combobox__error { color: var(--sa-text-status-error-bolder); }
+
+  .ds-combobox__list {
+    position: absolute;
+    z-index: 30;
+    inset-block-start: 100%;
+    inset-inline: 0;
+    margin: var(--sa-stack-4) 0 0;
+    padding: var(--sa-padding-4);
+    list-style: none;
+    /* A LIST THAT SCROLLS, capped. The alternative is a 700-district popup that
+       runs off the bottom of the page; `data-state-completeness.md` bans
+       scrolling a region inside a CARD, but a popup is the case it exempts —
+       the reader opened it and it closes on Escape. */
+    max-block-size: 18rem;
+    overflow-y: auto;
+    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-raised);
+  }
+
+  .ds-combobox__option {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    /* Clears the 24px WCAG 2.5.8 floor with the padding. */
+    min-block-size: var(--sa-stack-32);
+    padding: var(--sa-padding-4) var(--sa-padding-8);
+    border-radius: var(--sa-shape-4);
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    cursor: pointer;
+  }
+
+  /* THE ACTIVE ROW IS MARKED BY A RULE, NOT ONLY A TINT. Every tint in this
+     estate measures 1.1–1.4 against the popup and cannot carry the indicator
+     alone — and the active row is the one thing a keyboard reader follows. */
+  .ds-combobox__option.is-active {
+    background: var(--sa-bg-brand-primary-base);
+    color: var(--sa-text-brand-primary-bolder);
+    box-shadow: inset 3px 0 0 0 var(--sa-border-brand-primary-base);
+  }
+
+  .ds-combobox__option.is-selected { font-weight: 700; }
+
+  .ds-combobox__option.is-disabled {
+    color: var(--sa-text-neutral-subtle);
+    cursor: not-allowed;
+  }
+
+  .ds-combobox__option-hint {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+  }
+
+  .ds-combobox__option.is-active .ds-combobox__option-hint {
+    color: var(--sa-text-brand-primary-bolder);
+  }
+
+  .ds-combobox__nomatch {
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  @media (forced-colors: active) {
+    .ds-combobox__option.is-active {
+      background: Highlight;
+      color: HighlightText;
+    }
+  }
+}

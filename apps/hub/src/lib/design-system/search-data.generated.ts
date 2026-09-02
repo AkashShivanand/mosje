@@ -298,6 +298,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Combobox — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/combobox",
+    "keywords": "combobox — design system forms & inputs example how it differs from filter select  tokens wcag accessibility",
+    "description": "A text field that filters a long list as the reader types, then commits one of its options.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Container — Design System",
     "section": "Layout",
     "href": "/design-system/components/layout/container",
@@ -350,6 +359,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Every chart, metric, table and container in the SAMAVESH data-visualisation layer, rendered live against government data — the reference both designers and developers benchmark against.",
     "type": "page",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Date Picker — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/date-picker",
+    "keywords": "date picker — design system forms & inputs example  tokens wcag accessibility",
+    "description": "A typed date field in dd/mm/yyyy, with a calendar as the second way in. The text input is the primary control.",
+    "type": "component",
+    "iconName": "edit_note"
   },
   {
     "title": "Declaration Checkbox — Design System",

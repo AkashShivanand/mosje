@@ -218,6 +218,10 @@ export type { MetricCardProps, MetricCardSize, MetricCardChange } from "./compon
 // and every mobile keyboard already knows. This is for a dashboard filter row,
 // where four portals hand-rolled a button-plus-listbox because a native select
 // cannot carry a hint beside an option or be styled at all on iOS.
+export { DatePicker } from "./components/forms/date-picker";
+export type { DatePickerProps } from "./components/forms/date-picker";
+export { Combobox } from "./components/forms/combobox";
+export type { ComboboxProps, ComboboxOption } from "./components/forms/combobox";
 export { FilterSelect } from "./components/forms/filter-select";
 export type { FilterSelectProps, FilterSelectOption } from "./components/forms/filter-select";
 

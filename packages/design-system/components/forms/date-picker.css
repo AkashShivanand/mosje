@@ -1,0 +1,199 @@
+/* Declare the order before using it — see design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-datepicker {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-datepicker__label {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
+  }
+
+  .ds-datepicker__required {
+    margin-inline-start: var(--sa-inline-2);
+    color: var(--sa-text-status-error-bolder);
+  }
+
+  .ds-datepicker__field {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    /* `bolder` and not the default border: the subtle rung measures 1.66:1 on
+       white and fails WCAG 1.4.11's 3:1 for the boundary of a control. The same
+       correction FilterSelect needed. */
+    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-bg-neutral-base);
+    padding-inline-end: var(--sa-padding-4);
+  }
+
+  .ds-datepicker__field:focus-within {
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-datepicker__field.is-invalid {
+    border-color: var(--sa-border-status-error-base);
+  }
+
+  .ds-datepicker__field.is-disabled {
+    background: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-datepicker__input {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+    border: 0;
+    background: transparent;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    color: var(--sa-text-neutral-bolder);
+    font: inherit;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    /* Digits line up as they are typed, so a mistyped date is visible. */
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-datepicker__input:focus-visible {
+    outline: none; /* the field wrapper carries the ring */
+  }
+
+  .ds-datepicker__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* 24x24 is the WCAG 2.2 AA floor (2.5.8); 32 gives it room beside the text. */
+    min-inline-size: var(--sa-inline-32);
+    min-block-size: var(--sa-stack-32);
+    border: 0;
+    border-radius: var(--sa-shape-4);
+    background: transparent;
+    color: var(--sa-text-neutral-subtle);
+    cursor: pointer;
+  }
+
+  .ds-datepicker__trigger:hover:not(:disabled) {
+    background: var(--sa-bg-neutral-subtler);
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  .ds-datepicker__hint,
+  .ds-datepicker__error {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-datepicker__hint { color: var(--sa-text-neutral-subtle); }
+  .ds-datepicker__error { color: var(--sa-text-status-error-bolder); }
+
+  .ds-datepicker__dialog {
+    position: absolute;
+    z-index: 30;
+    inset-block-start: 100%;
+    inset-inline-start: 0;
+    margin-block-start: var(--sa-stack-4);
+    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-neutral-base);
+    box-shadow: var(--sa-elevation-raised);
+    padding: var(--sa-padding-12);
+  }
+
+  .ds-datepicker__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-8);
+    margin-block-end: var(--sa-stack-8);
+  }
+
+  .ds-datepicker__navbtn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--sa-inline-32);
+    min-block-size: var(--sa-stack-32);
+    border: 0;
+    border-radius: var(--sa-shape-4);
+    background: transparent;
+    color: var(--sa-text-neutral-bolder);
+    cursor: pointer;
+  }
+
+  .ds-datepicker__navbtn:hover { background: var(--sa-bg-neutral-subtler); }
+
+  .ds-datepicker__month {
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+  }
+
+  .ds-datepicker__weekdays,
+  .ds-datepicker__week {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  .ds-datepicker__weekday {
+    padding-block: var(--sa-padding-4);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    text-align: center;
+  }
+
+  .ds-datepicker__day {
+    /* A day is a target: 32x32 clears 24x24 with room for a finger. */
+    min-inline-size: var(--sa-inline-32);
+    min-block-size: var(--sa-stack-32);
+    border: 0;
+    border-radius: var(--sa-shape-4);
+    background: transparent;
+    color: var(--sa-text-neutral-bolder);
+    font-size: var(--sa-type-body-3-size);
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+  }
+
+  .ds-datepicker__day:hover:not(.is-blocked) { background: var(--sa-bg-neutral-subtler); }
+
+  .ds-datepicker__day:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: -1px;
+  }
+
+  /* A day outside the shown month is context, not a peer — but it stays
+     operable, because arrowing into it is how you reach the next month. */
+  .ds-datepicker__day.is-outside { color: var(--sa-text-neutral-subtle); }
+
+  .ds-datepicker__day.is-selected {
+    background: var(--sa-bg-brand-primary-bolder);
+    color: var(--sa-text-neutral-inverse);
+    font-weight: 700;
+  }
+
+  .ds-datepicker__day.is-blocked {
+    color: var(--sa-text-neutral-subtle);
+    cursor: not-allowed;
+    /* Struck through, not merely dimmed: dimming alone is a contrast signal and
+       reads as "less important" rather than "cannot be chosen". */
+    text-decoration: line-through;
+  }
+
+  @media (forced-colors: active) {
+    .ds-datepicker__day.is-selected {
+      background: Highlight;
+      color: HighlightText;
+    }
+  }
+}

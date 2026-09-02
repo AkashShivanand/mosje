@@ -111,6 +111,8 @@ const ROUTES: { name: string; path: string }[] = [
   // The newest interactive component, and the one with the most keyboard model
   // to get wrong — a listbox with a roving active option.
   { name: "the filter select", path: "/design-system/components/forms/filter-select" },
+  { name: "the date picker", path: "/design-system/components/forms/date-picker" },
+  { name: "the combobox", path: "/design-system/components/forms/combobox" },
   { name: "the error summary", path: "/design-system/components/forms/error-summary" },
   { name: "the website home", path: "/website" },
   /*

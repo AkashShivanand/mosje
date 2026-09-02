@@ -2246,6 +2246,88 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "ComboboxProps": {
+    "source": "packages/design-system/components/forms/combobox.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Always visible."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "options",
+        "type": "ComboboxOption[]",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "The selected option's `value`, or \"\" when nothing is chosen."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "noMatchLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"No match. Check the spelling, or clear the box to see everything.\"",
+        "description": "Wording for \"your search matched nothing\", which is not \"there is nothing\"."
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "default": "\"Start typing to search\"",
+        "description": ""
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      }
+    ]
+  },
   "ConsentLineProps": {
     "source": "packages/design-system/components/auth/auth-parts.tsx",
     "inheritsNative": false,
@@ -2421,6 +2503,80 @@ export const GENERATED_PROPS = {
         "type": "DataTableSort | null",
         "required": false,
         "description": "Controlled sort. Omit to let the table hold its own — the uncontrolled form is right for a register the reader is browsing; the controlled form is for a page that sorts on the server or reflects the order in its URL."
+      }
+    ]
+  },
+  "DatePickerProps": {
+    "source": "packages/design-system/components/forms/date-picker.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "label",
+        "type": "string",
+        "required": true,
+        "description": "Always visible. A date field with only a placeholder is a guess."
+      },
+      {
+        "name": "onChange",
+        "type": "(iso: string) => void",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "ISO `yyyy-mm-dd` — the canonical value. Empty string when unset."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "Shown under the field, and announced."
+      },
+      {
+        "name": "hint",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "max",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "min",
+        "type": "string",
+        "required": false,
+        "description": "ISO bounds. A date outside them cannot be typed or chosen."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
       }
     ]
   },
