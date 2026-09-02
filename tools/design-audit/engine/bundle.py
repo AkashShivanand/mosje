@@ -38,7 +38,10 @@ def mask_rows(rows, patterns):
 
 def _digest(rows, keys, extra=None):
     payload = [[r.get(k) for k in keys] for r in rows]
-    blob = json.dumps([payload, extra], separators=(",", ":"), sort_keys=True, default=str)
+    # Deliberately no default=str — non-JSON values must raise TypeError loudly.
+    # A silent coercion via str() embeds the process's memory addresses, making
+    # two identical extractions hash differently. That breaks the core guarantee.
+    blob = json.dumps([payload, extra], separators=(",", ":"), sort_keys=True)
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 

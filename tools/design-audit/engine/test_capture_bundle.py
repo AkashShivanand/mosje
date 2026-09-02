@@ -87,6 +87,13 @@ class Hashing(unittest.TestCase):
         rows = [_row()]
         self.assertNotEqual(B.geometry_hash(rows, 900), B.geometry_hash(rows, 1200))
 
+    def test_non_json_native_value_raises_type_error(self):
+        """Non-serializable values must raise TypeError, not be silently coerced to str.
+        A silent coercion would embed the process's memory address, breaking determinism."""
+        rows = [_row(text=object())]
+        with self.assertRaises(TypeError):
+            B.structure_hash(rows)
+
 
 class BundleIO(unittest.TestCase):
     def _paths(self):
