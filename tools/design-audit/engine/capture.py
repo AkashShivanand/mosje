@@ -15,6 +15,7 @@ import json, os, struct, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
 import manifest as MAN
+import bundle as B
 from playwright.sync_api import sync_playwright
 
 EXTRACT_JS = r"""
@@ -307,7 +308,16 @@ def discover_routes(pg, cfg):
     skip = set(cfg.get("live", {}).get("skipRoutes", []))
     return [h for h in hrefs if h and h not in skip]
 
-def capture_role(pg, role, cfg, paths):
+def _engine_sha():
+    """Short git sha of the engine, recorded so a bundle can be traced to the code that made it."""
+    try:
+        return subprocess.run(["git", "rev-parse", "--short", "HEAD"],
+                              cwd=os.path.dirname(os.path.abspath(__file__)),
+                              capture_output=True, text=True, timeout=5).stdout.strip() or None
+    except Exception:
+        return None
+
+def capture_role(pg, role, cfg, paths, bdl, man):
     base = role["base"]; width = cfg.get("capture", {}).get("width", 1440)
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
     routes = discover_routes(pg, cfg)
@@ -355,6 +365,22 @@ def capture_role(pg, role, cfg, paths):
             captured.append({"slug": slug, "role": role["name"], "route": path, "url": base + path,
                              "png": f"captures/live/{slug}.png", "rows": len(data["rows"]),
                              "pageH": data["pageH"], "pngH": png_h, "truncated": truncated})
+            kept, masked = B.mask_rows(data["rows"], MAN.volatile_patterns(man, slug) if man else [])
+            entry = B.screen_entry(
+                slug=slug, role=role["name"], route=path, url=base + path, reached_by="nav",
+                png=f"captures/live/{slug}.png", png_sha256=B.sha256_file(png),
+                png_h=png_h, page_h=data["pageH"], truncated=truncated,
+                rows_path=f"captures/live/{slug}.json",
+                structure=B.structure_hash(kept), geometry=B.geometry_hash(kept, data["pageH"]),
+                masked=masked, total=len(data["rows"]),
+                fields=data.get("fields") or [], wizard=None, captured_at=B.now_iso())
+            # `decision` is introduced in Task 9; until then it is always "recapture".
+            entry["designUnchanged"] = (locals().get("decision") == "reshoot")
+            B.upsert_screen(bdl, entry)
+            if len(data["rows"]) and masked / len(data["rows"]) > B.MASK_WARN_RATIO:
+                print(f"  ! {slug}: {masked}/{len(data['rows'])} rows masked as volatile — "
+                      f"the mask is doing too much work and the fingerprint means little",
+                      flush=True)
             print(f"  ok {slug}: {len(data['rows'])} rows pageH={data['pageH']}{warn}", flush=True)
         except Exception as e:
             print(f"  ! {slug} extract failed: {str(e)[:60]}", flush=True)
@@ -379,6 +405,17 @@ def merge_manifest(existing, fresh):
 
 def run(project, only_role=None, allow_empty=False):
     cfg, paths = C.load(project)
+    man = MAN.load(paths["project"])
+    if man:
+        errs = MAN.validate(man)
+        if errs:
+            print("!! screen-manifest.yaml is invalid:", flush=True)
+            for e in errs:
+                print(f"   - {e}", flush=True)
+            return []
+    paths["_manifest"] = man
+    env = (man or {}).get("environment") or cfg.get("live", {}).get("environment") or "dev"
+    bdl = B.new_bundle(project, env, _engine_sha())
     auth = cfg["live"]["auth"]
     mpath = os.path.join(paths["captures"], "_captured.json")
     try:
@@ -411,7 +448,7 @@ def run(project, only_role=None, allow_empty=False):
                 else:
                     pg.goto(role["base"] + "/", wait_until="domcontentloaded", timeout=60000); pg.wait_for_timeout(3000)
                     print(f"[{role['name']}] public -> {pg.url}", flush=True)
-                manifest += capture_role(pg, role, cfg, paths)
+                manifest += capture_role(pg, role, cfg, paths, bdl, man)
                 ctx.close()
             except Exception as e:
                 print(f"[{role['name']}] ROLE ABORTED: {str(e)[:120]}", flush=True)
@@ -440,6 +477,16 @@ def run(project, only_role=None, allow_empty=False):
 
     json.dump(out, open(mpath, "w"), indent=2)
     print(f"CAPTURED {len(manifest)} screens (manifest now {len(out)})", flush=True)
+
+    prev = B.load_bundle(paths)
+    if only_role and prev:
+        # A --role run must not speak for roles it never visited (same contract as _captured.json).
+        for s in prev.get("screens", []):
+            if s.get("role") != only_role and not B.find_screen(bdl, s["slug"]):
+                B.upsert_screen(bdl, s)
+        bdl["records"] = {**prev.get("records", {}), **bdl.get("records", {})}
+    B.write_bundle(paths, bdl)
+    print(f"BUNDLE {len(bdl['screens'])} screen states -> out/capture-bundle.json", flush=True)
     return out
 
 if __name__ == "__main__":
