@@ -380,17 +380,24 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         png = os.path.join(paths["captures_live"], f"{slug}.png")
         dpr = cfg.get("capture", {}).get("dpr", 2)
 
+        # Settle FIRST — always, even for the verify-mode probe — so the probe describes the
+        # same post-settle layout the bundle's recorded hashes came from. Comparing a
+        # pre-settle extraction (no lazy-load scroll pass, no UNCLIP_JS) against post-settle
+        # hashes is invalid for the app-shell / inner-scroller pages this codebase's own
+        # comments say are common: pageH and the row set differ from settling alone, so a
+        # verify run would report "changed" on nearly every page for reasons that have
+        # nothing to do with the page actually changing, and the reuse saving is lost.
+        settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
+        try:
+            probe = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
+        except Exception:
+            probe = None
+
         decision = "recapture"
-        if mode == "verify" and prev:
-            # Cheap probe: extract only, no settle and no screenshot — decides whether a
-            # full re-capture is needed, so a `verify` run stays fast when nothing moved.
-            try:
-                probe = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
-                kept, _ = B.mask_rows(probe["rows"], MAN.volatile_patterns(man, slug) if man else [])
-                decision = B.decide_screen(prev, B.structure_hash(kept),
-                                           B.geometry_hash(kept, probe["pageH"]))
-            except Exception:
-                decision = "recapture"
+        if mode == "verify" and prev and probe is not None:
+            kept, _ = B.mask_rows(probe["rows"], MAN.volatile_patterns(man, slug) if man else [])
+            decision = B.decide_screen(prev, B.structure_hash(kept),
+                                       B.geometry_hash(kept, probe["pageH"]))
 
         if decision == "reuse" and prev and os.path.exists(png):
             decisions[slug] = "reuse"
@@ -408,13 +415,15 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
             decision = "recapture"
         decisions[slug] = decision
 
-        # Settle FIRST so the screenshot and the extraction describe the same layout.
-        settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
+        # Only the genuinely expensive work — the (possibly sliced) screenshot and its sips
+        # normalize() pass — is skipped by an early `reuse` above. Settle and the extraction
+        # already ran (needed for the probe/decision itself), so reuse that same evaluation
+        # here instead of paying for a second one.
         try:
             shoot(pg, png, settled, dpr, width)
         except Exception: pass
         try:
-            data = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
+            data = probe if probe is not None else pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
             data["role"] = role["name"]; data["route"] = path; data["slug"] = slug
             data["figmaImg"] = None; data["url"] = base + path
             json.dump(data, open(os.path.join(paths["captures_live"], f"{slug}.json"), "w"), indent=2)

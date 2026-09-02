@@ -2,12 +2,12 @@
   "version": 1,
   "project": "scw",
   "environment": "prod",
-  "engineSha": "8f1c835d",
-  "capturedAt": "2026-09-03T01:51:55+05:30",
+  "engineSha": "b7ded609",
+  "capturedAt": "2026-09-03T02:16:22+05:30",
   "hosts": {
     "public": {
       "base": "https://scw-user-uat.mosje.in",
-      "buildFingerprint": null
+      "buildFingerprint": "index-m7u9Vf46.js"
     }
   },
   "screens": [
@@ -437,13 +437,13 @@
       "url": "https://scw-user-uat.mosje.in/sage-registration",
       "reachedBy": "nav",
       "png": "captures/live/PUBLIC-SAGE-REGISTRATION.png",
-      "pngSha256": "dca33637085d25913f7cc020d3c0f3fa3f96e4f80e57c58b1f9791d054986e39",
-      "pngH": 6000,
-      "pageH": 6000,
+      "pngSha256": "f44092032e80393ce0a0efa042884ac7ebcde2620d65313b9bc7788e690db839",
+      "pngH": 1000,
+      "pageH": 1000,
       "truncated": false,
       "rows": "captures/live/PUBLIC-SAGE-REGISTRATION.json",
       "structureHash": "f9e4cb1e0cf53f39342206d2b63fae55ada5b2dba34b87b194f01174b7b030d3",
-      "geometryHash": "d6d61ecb7cde58081c5edf41899c2bdacce19b6ae569ab3634f2aea317101e75",
+      "geometryHash": "0ab0c2c284de2aa1abbc721a5c791211cac5c84274df07ed98158844415f9a1a",
       "maskedRows": 0,
       "totalRows": 72,
       "fields": [
@@ -499,8 +499,8 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-03T01:53:02+05:30",
-      "designUnchanged": false
+      "capturedAt": "2026-09-03T02:17:15+05:30",
+      "designUnchanged": true
     },
     {
       "slug": "PUBLIC-ABOUT-US",
@@ -509,13 +509,13 @@
       "url": "https://scw-user-uat.mosje.in/about-us",
       "reachedBy": "nav",
       "png": "captures/live/PUBLIC-ABOUT-US.png",
-      "pngSha256": "4324813b1e7fcd3d47032779710c4e4cbe8910f8e03a4700a3d8d27f8e95e9d7",
-      "pngH": 6000,
-      "pageH": 6000,
+      "pngSha256": "3becff6e431a9230386d41bf536a1cb07153dd554e2a04f3e5b132c54a824873",
+      "pngH": 1000,
+      "pageH": 1000,
       "truncated": false,
       "rows": "captures/live/PUBLIC-ABOUT-US.json",
       "structureHash": "4db35423afcdd72c9ff698beb46d5e450d69fbf2e2584aad62e34d2f567887e6",
-      "geometryHash": "0d2cb0b5047020342cc7e3ce62eaa72ef8923ab5411722fd25ef36185501a163",
+      "geometryHash": "59c517199a74170890dbde634eb720c350ac75c7be34d4ca8b7cfed8ef03f819",
       "maskedRows": 0,
       "totalRows": 62,
       "fields": [
@@ -561,8 +561,8 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-03T01:53:08+05:30",
-      "designUnchanged": false
+      "capturedAt": "2026-09-03T02:17:20+05:30",
+      "designUnchanged": true
     },
     {
       "slug": "PUBLIC-TERMS-CONDITIONS",
@@ -571,13 +571,13 @@
       "url": "https://scw-user-uat.mosje.in/terms-conditions",
       "reachedBy": "nav",
       "png": "captures/live/PUBLIC-TERMS-CONDITIONS.png",
-      "pngSha256": "437582c0db1b086bc992be815890b0cce736c751e6b5b09e9ac06f64f3af8565",
-      "pngH": 6000,
-      "pageH": 6000,
+      "pngSha256": "5680f0fa2ed660bebea1bce8800a97b3914f42021fc80c1f09e44da6aeb64c61",
+      "pngH": 1000,
+      "pageH": 1000,
       "truncated": false,
       "rows": "captures/live/PUBLIC-TERMS-CONDITIONS.json",
       "structureHash": "0b673e081e663475ab0aa6b59407549d46702530878c5cdbcd4a0e80b287475d",
-      "geometryHash": "43f77d47f5047cc0502342a11f2bcc024820cae6582381e45ac73d067199aec0",
+      "geometryHash": "2465751951721d106321b5a4b4cf2fed0cdd3acb68f3e23d5a7be279dad50a4f",
       "maskedRows": 0,
       "totalRows": 62,
       "fields": [
@@ -623,8 +623,8 @@
         }
       ],
       "wizard": null,
-      "capturedAt": "2026-09-03T01:53:13+05:30",
-      "designUnchanged": false
+      "capturedAt": "2026-09-03T02:17:25+05:30",
+      "designUnchanged": true
     }
   ],
   "records": {}

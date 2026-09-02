@@ -221,18 +221,31 @@ class Fingerprint(unittest.TestCase):
         self.assertIsNone(B.extract_fingerprint('<script src="/js/app.js"></script>'))
 
     def test_first_hashed_script_wins_and_is_stable(self):
-        html = ('<script src="/static/js/main.aaaaaaaa.js"></script>'
-                '<script src="/static/js/2.bbbbbbbb.chunk.js"></script>')
-        self.assertEqual(B.extract_fingerprint(html), "main.aaaaaaaa.js")
+        html = ('<script src="/static/js/main.aaaaaaa1.js"></script>'
+                '<script src="/static/js/2.bbbbbbb2.chunk.js"></script>')
+        self.assertEqual(B.extract_fingerprint(html), "main.aaaaaaa1.js")
 
     def test_prefers_own_origin_bundle_over_hashed_cdn(self):
-        html = ('<script src="https://cdn.example.com/vendor.12345678.js"></script>'
-                '<script src="/static/js/main.aaaaaaaa.js"></script>')
-        self.assertEqual(B.extract_fingerprint(html), "main.aaaaaaaa.js")
+        html = ('<script src="https://cdn.example.com/vendor.1234567a.js"></script>'
+                '<script src="/static/js/main.aaaaaaa1.js"></script>')
+        self.assertEqual(B.extract_fingerprint(html), "main.aaaaaaa1.js")
 
     def test_hashed_name_in_body_text_is_not_fingerprint(self):
         html = '<div>The app bundle is main.12345678.js</div><script src="/app.js"></script>'
         self.assertIsNone(B.extract_fingerprint(html))
+
+    def test_reads_vite_style_mixed_case_hash(self):
+        html = '<script type="module" src="/assets/index-m7u9Vf46.js"></script>'
+        self.assertEqual(B.extract_fingerprint(html), "index-m7u9Vf46.js")
+
+    def test_unhashed_vite_asset_name_is_rejected(self):
+        html = '<script type="module" src="/assets/vendor.js"></script>'
+        self.assertIsNone(B.extract_fingerprint(html))
+
+    def test_prefers_own_origin_assets_over_earlier_hashed_cdn(self):
+        html = ('<script src="https://cdn.example.com/lib/react-vendor.a1b2c3d4.js"></script>'
+                '<script type="module" src="/assets/index-m7u9Vf46.js"></script>')
+        self.assertEqual(B.extract_fingerprint(html), "index-m7u9Vf46.js")
 
 
 class Integrity(unittest.TestCase):

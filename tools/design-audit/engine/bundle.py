@@ -122,20 +122,33 @@ def sha256_file(path):
     return h.hexdigest()
 
 
-# A hashed asset name: at least 8 hex chars between separators. Matches CRA's
-# `main.<hash>.js` and Next's `<name>-<hash>.js`. An unhashed `/js/app.js` is not a
-# fingerprint — it would never change and would make tier 0 always say "unchanged".
+# A hashed asset name: a bundler-generated segment of at least 8 characters from
+# [A-Za-z0-9_-], separated from the base name by "." or "-", immediately before ".js"
+# (optionally ".chunk.js"). Deliberately NOT lowercase-hex-only: Vite's default hashes
+# (`index-m7u9Vf46.js`) are mixed-case, unlike CRA's/Next's, so a lowercase-hex-only
+# pattern returns None for every Vite app. The segment is validated separately (see
+# `_looks_hashed`) to require both a letter and a digit — that is what distinguishes a
+# real content hash from an unhashed name like `app`, `application`, `bundle` or `main`,
+# which would never change and would make tier 0 always say "unchanged".
 # Match only within src="..." or src='...' attributes to avoid false matches in body text.
 _SRC_ATTR = re.compile(r'src=["\']([^"\']+)["\']')
-_HASHED = re.compile(r"([A-Za-z0-9_\-]+[.\-][0-9a-f]{8,}(?:\.chunk)?\.js)$")
+_HASHED = re.compile(r"([A-Za-z0-9_\-]+[.\-]([A-Za-z0-9_\-]{8,})(?:\.chunk)?\.js)$")
+
+
+def _looks_hashed(segment):
+    """A real bundler hash contains both a letter and a digit. Filters out an unhashed
+    filename that happens to be 8+ characters (`application`, `vendor`) but is not a
+    fingerprint — it never changes, so trusting it would make tier 0 always say
+    'unchanged' even after a real deploy."""
+    return any(c.isalpha() for c in segment) and any(c.isdigit() for c in segment)
 
 
 def extract_fingerprint(html):
     """Extract the build fingerprint from HTML src attributes.
 
-    Prefers own-origin bundle paths (containing /static/ or /_next/) when present,
-    falling back to the first hashed filename otherwise. Returns None if no qualified
-    asset is found.
+    Prefers own-origin bundle paths (containing /static/, /_next/, or /assets/ — CRA,
+    Next.js, and Vite's default output dir respectively) when present, falling back to
+    the first hashed filename otherwise. Returns None if no qualified asset is found.
     """
     if not html:
         return None
@@ -145,16 +158,19 @@ def extract_fingerprint(html):
     if not srcs:
         return None
 
-    # Prefer own-origin bundles (CRA or Next.js)
-    for src in srcs:
-        if _HASHED.search(src) and ("/static/" in src or "/_next/" in src):
-            match = _HASHED.search(src)
-            return match.group(1) if match else None
-
-    # Fall back to the first hashed asset
+    # Prefer own-origin bundles (CRA, Next.js, or Vite), regardless of source order —
+    # this loop runs to completion over EVERY src before the fallback loop is tried.
     for src in srcs:
         match = _HASHED.search(src)
-        if match:
+        if match and _looks_hashed(match.group(2)) and (
+            "/static/" in src or "/_next/" in src or "/assets/" in src
+        ):
+            return match.group(1)
+
+    # Fall back to the first hashed asset, own-origin or not
+    for src in srcs:
+        match = _HASHED.search(src)
+        if match and _looks_hashed(match.group(2)):
             return match.group(1)
 
     return None
