@@ -48,3 +48,72 @@ def structure_hash(rows):
 
 def geometry_hash(rows, page_h):
     return _digest(rows, GEOMETRY_KEYS, extra={"pageH": page_h})
+
+
+import datetime, os
+
+BUNDLE_VERSION = 1
+
+
+def bundle_path(paths):
+    return os.path.join(paths["out"], "capture-bundle.json")
+
+
+def load_bundle(paths):
+    p = bundle_path(paths)
+    if not os.path.exists(p):
+        return None
+    try:
+        with open(p) as fh:
+            return json.load(fh)
+    except Exception:
+        return None
+
+
+def write_bundle(paths, b):
+    with open(bundle_path(paths), "w") as fh:
+        json.dump(b, fh, indent=2)
+
+
+def now_iso():
+    return datetime.datetime.now().astimezone().isoformat(timespec="seconds")
+
+
+def new_bundle(project, environment, engine_sha):
+    return {"version": BUNDLE_VERSION, "project": project, "environment": environment,
+            "engineSha": engine_sha, "capturedAt": now_iso(),
+            "hosts": {}, "screens": [], "records": {}}
+
+
+def screen_entry(slug, role, route, url, reached_by, png, png_sha256, png_h, page_h,
+                 truncated, rows_path, structure, geometry, masked, total, fields,
+                 wizard, captured_at):
+    return {"slug": slug, "role": role, "route": route, "url": url,
+            "reachedBy": reached_by, "png": png, "pngSha256": png_sha256,
+            "pngH": png_h, "pageH": page_h, "truncated": truncated, "rows": rows_path,
+            "structureHash": structure, "geometryHash": geometry,
+            "maskedRows": masked, "totalRows": total,
+            "fields": fields or [], "wizard": wizard, "capturedAt": captured_at}
+
+
+def find_screen(b, slug):
+    for s in b.get("screens", []):
+        if s.get("slug") == slug:
+            return s
+    return None
+
+
+def upsert_screen(b, entry):
+    for i, s in enumerate(b.setdefault("screens", [])):
+        if s.get("slug") == entry["slug"]:
+            b["screens"][i] = entry
+            return
+    b["screens"].append(entry)
+
+
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()

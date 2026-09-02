@@ -88,5 +88,37 @@ class Hashing(unittest.TestCase):
         self.assertNotEqual(B.geometry_hash(rows, 900), B.geometry_hash(rows, 1200))
 
 
+class BundleIO(unittest.TestCase):
+    def _paths(self):
+        d = tempfile.mkdtemp()
+        out = os.path.join(d, "out")
+        os.makedirs(out, exist_ok=True)
+        return {"project": d, "out": out}
+
+    def test_load_returns_none_when_absent(self):
+        self.assertIsNone(B.load_bundle(self._paths()))
+
+    def test_write_then_load_round_trips(self):
+        p = self._paths()
+        b = B.new_bundle("nhapoa", "uat", "abc123")
+        B.write_bundle(p, b)
+        self.assertEqual(B.load_bundle(p)["project"], "nhapoa")
+        self.assertEqual(B.load_bundle(p)["version"], B.BUNDLE_VERSION)
+
+    def test_upsert_replaces_by_slug_and_preserves_order(self):
+        b = B.new_bundle("p", "dev", "sha")
+        first = B.screen_entry(slug="A", role="r", route="/a", url="u", reached_by="nav",
+                               png="a.png", png_sha256="0", png_h=10, page_h=10,
+                               truncated=False, rows_path="a.json", structure="s1",
+                               geometry="g1", masked=0, total=5, fields=[], wizard=None,
+                               captured_at="2026-09-02T00:00:00+05:30")
+        second = dict(first, slug="B")
+        B.upsert_screen(b, first)
+        B.upsert_screen(b, second)
+        B.upsert_screen(b, dict(first, structureHash="s2"))
+        self.assertEqual([s["slug"] for s in b["screens"]], ["A", "B"])
+        self.assertEqual(B.find_screen(b, "A")["structureHash"], "s2")
+
+
 if __name__ == "__main__":
     unittest.main()
