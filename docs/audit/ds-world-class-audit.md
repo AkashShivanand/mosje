@@ -802,3 +802,129 @@ by construction, so it cannot accidentally measure the dark ramp against the
 light surface. Nothing measures the dark ramp at all, and its ordering is
 inherited from the light one rather than derived from its own clique. It is
 very unlikely that the same six slots are optimal for both.
+
+---
+
+# PART VI — THE A-TO-Z CAPABILITY AUDIT
+
+The audits so far judged what EXISTS. This one asks what is ABSENT, across the
+whole surface. Inventory taken from the barrel: **130 exports in 10 groups.**
+
+| group | n | |
+|---|---|---|
+| data-display | 31 | incl. 13 chart types and 3 India maps |
+| forms | 24 | |
+| navigation | 22 | |
+| feedback | 17 | |
+| layout | 10 | |
+| auth | 9 | |
+| dashboard | 7 | |
+| utilities | 6 | |
+| actions | 3 | |
+| brand | 1 | the illustration system |
+
+## A. Three systemic gaps, and the first is the largest thing in this document
+
+### A1. There is no internationalisation. At all.
+
+**Zero i18n dependencies** in the root or hub `package.json`. No `IntlProvider`,
+no message catalogue, no locale routing. `apps/hub/src/app/layout.tsx` hardcodes
+`lang="en-IN"`.
+
+This is the digital estate of a Government of India ministry, serving Scheduled
+Castes, Scheduled Tribes, OBCs, senior citizens, persons with disabilities and
+transgender persons across a country with **22 scheduled languages**. GIGW 3.0
+requires bilingual delivery (Hindi and English) as a baseline. Every string in
+130 components is an English literal in a `.tsx` file.
+
+This is not a component gap. It is an architectural one, it gets more expensive
+every week, and it is bigger than everything else on this list combined.
+
+### A2. RTL is unhandled
+
+Exactly **two** component stylesheets carry any RTL provision. Urdu and Kashmiri
+are scheduled languages and are written right-to-left. The estate does use CSS
+logical properties in places (`inline-size`, `padding-inline`), which is the
+right foundation — but nothing tests a mirrored layout and no component declares
+RTL support.
+
+### A3. No dark theme — and twelve authored dark colours that reach nothing
+
+The `data-theme` axis was **deliberately retired**, and `skeleton.css` documents
+that decision properly. That is a legitimate scope choice, not a defect.
+
+The defect is what was left behind. `packages/tokens/src/semantic.json` authors a
+**dark value for all twelve categorical chart slots** —
+`#5fa0ef · #fb923c · #66bb6a · #c084fc · #22d3ee · #fbbf24 · #f472b6 · #7aaff8 ·
+#a3e635 · #fb7185 · #5eead4 · #94a3b8` — and **not one of them is emitted into
+any output**. (Two of those hexes appear in `tokens.css`; both are the
+*sequential* ramp coincidentally sharing a value.) Twelve deliberate colour
+decisions, carried in the source, doing nothing, with nothing reporting it —
+the same silent-drop class as the Figma exporter's `return null`.
+
+Either emit them behind a theme axis, or delete them and say the estate is
+light-only. Carrying them is the one option that misleads.
+
+## B. Components a world-class system has and this one does not
+
+Verified absent from the barrel. Ranked by what a DoSJE portal actually needs.
+
+| Priority | Missing | Why it matters here |
+|---|---|---|
+| **P0** | **DatePicker · DateRangePicker** | Every scheme application collects a date — birth, admission, sanction, disbursement. Their absence is why portals hand-roll date fields |
+| **P0** | **ErrorSummary** | The GOV.UK pattern: a list at the top of a failed form linking to each bad field. It is how a screen-reader user finds what went wrong. Nothing here provides it |
+| **P0** | **RadioGroup · CheckboxGroup** | `Radio` and `Checkbox` exist as singles; the GROUP is what carries `fieldset`/`legend` and the accessible group name |
+| **P1** | **Combobox / Autocomplete** | A filterable text input. `FilterSelect` is a listbox and deliberately not this. pm-ajay hand-rolled a village search for exactly this gap |
+| **P1** | NumberInput · TimePicker · CharacterCount | Amounts, slots, and the 500-character grievance box |
+| **P2** | Slider · Popover · TreeView · CommandPalette · SplitButton · Carousel · Calendar · Rating | Real gaps, lower blast radius |
+
+## C. The data-visualisation gap
+
+Thirteen chart types ship, and `BarChart` already carries `grouped | stacked`.
+Missing, ranked by fitness for this estate rather than by catalogue completeness:
+
+| Priority | Missing | Why |
+|---|---|---|
+| **P0** | **Bullet chart** | Target vs actual against a qualitative range. This is the shape of nearly every government KPI — sanctioned vs released vs utilised — and it is currently drawn as two bars that invite the wrong comparison |
+| **P0** | **Small multiples** | The direct remedy for the six-colour ceiling proved above: when a series count exceeds what colour can carry, facet instead. Without it the cap has no escape hatch |
+| **P1** | **Waterfall** | Budget allocation → releases → utilisation → balance. The standard shape for a financial trail |
+| **P1** | **Dot plot / Lollipop** | Ranked comparison across 28 states + 8 UTs. Bars at that count become a wall; dots do not |
+| **P1** | **Gantt / timeline** | Scheme phases and sanction-to-completion tracking |
+| **P2** | Treemap · Sankey · Radar · Histogram · Boxplot · Slopegraph | Real but specialised |
+| **not needed** | Candlestick · Violin · Ridgeline · Chord · Marimekko | Finance and research idioms. A department dashboard does not want them, and shipping them would be catalogue-padding |
+
+**Also missing, and it is an accessibility capability rather than a chart:**
+texture/pattern fills. With the categorical ramp capped at six distinguishable
+colours, a hatch fill at 45°/135° is the standard second encoding for print,
+forced-colors, and readers whose two series measure ΔE 1.5 apart. Nothing in
+`charts/` provides one.
+
+## D. Where the numbers stand
+
+| | |
+|---|---|
+| Components documented | **91 / 130** — 39 undocumented, declared |
+| Storybook coverage | 126 / 126 |
+| Design-context coverage | 130 / 130 |
+| Accessibility criteria **verified** | **124 / 533** — 409 asserted but unverified |
+| Shadow-UI collisions | 41 in 16 files; 27 are three portal kits |
+| axe routes watched | 9 of an estate with 20 portals |
+
+**409 unverified accessibility criteria is the honest headline.** Every one is a
+claim the documentation makes that no machine has checked. The 124 that are
+verified got there by measurement in this programme; the rest are inherited
+assertions.
+
+## E. What would actually make this world-class, in order
+
+1. **Internationalisation.** Nothing else on this list changes who can use the
+   estate as much, and every week of delay adds strings.
+2. **The 409.** A documented accessibility claim that nobody has checked is the
+   thing an audit exists to find.
+3. **DatePicker, ErrorSummary, RadioGroup/CheckboxGroup.** The three absences
+   that force portals to hand-roll, which is what creates the shadow UI.
+4. **Retire the three portal kits** — 1,180 lines, nine components, the reason
+   DS fixes do not reach three live portals.
+5. **Bullet, small multiples, texture fills.** The dataviz gaps that follow
+   directly from the six-colour proof.
+6. **Emit or delete the twelve dark chart values.**
