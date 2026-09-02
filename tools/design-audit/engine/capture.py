@@ -304,6 +304,15 @@ def do_login(pg, role, auth):
     return True
 
 def discover_routes(pg, cfg):
+    # A slow-loading nav/carousel widget can still be rendering when we read hrefs, so the
+    # discovered route SET varies run to run (observed on scw-user-uat: two routes intermittently
+    # missing). Wait briefly for a nav-ish anchor to exist first; a timeout just proceeds with
+    # whatever is there rather than raising — this only ever ADDS routes timing was dropping.
+    try:
+        pg.wait_for_selector("nav a[href], aside a[href], [class*=sidebar] a[href], "
+                             "[class*=menu] a[href]", timeout=4000)
+    except Exception:
+        pass
     hrefs = pg.evaluate("""()=>{const s=new Set();document.querySelectorAll('nav a[href],aside a[href],[class*=sidebar] a[href],[class*=menu] a[href],a[href]').forEach(a=>{const h=a.getAttribute('href');if(h&&h.startsWith('/')&&!h.startsWith('//'))s.add(h.split('?')[0].split('#')[0])});return [...s]}""")
     skip = set(cfg.get("live", {}).get("skipRoutes", []))
     return [h for h in hrefs if h and h not in skip]
@@ -321,11 +330,11 @@ def capture_role(pg, role, cfg, paths, bdl, man):
     base = role["base"]; width = cfg.get("capture", {}).get("width", 1440)
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
     routes = discover_routes(pg, cfg)
-    man = paths.get("_manifest")  # injected by run(); None when the project has no manifest
     land = pg.url.replace(base, "").split("?")[0]
     if land and land not in routes:
         routes.insert(0, land)
     captured = []
+    decision = "recapture"  # Task 9 replaces this; until then every screen is a fresh capture.
     for path in routes:
         slug = slugify(role["name"], path)
         vol_selectors = MAN.volatile_selectors(man, slug) if man else []
@@ -366,16 +375,23 @@ def capture_role(pg, role, cfg, paths, bdl, man):
                              "png": f"captures/live/{slug}.png", "rows": len(data["rows"]),
                              "pageH": data["pageH"], "pngH": png_h, "truncated": truncated})
             kept, masked = B.mask_rows(data["rows"], MAN.volatile_patterns(man, slug) if man else [])
+            # shoot() tolerates a failed screenshot (try/except: pass) — sha256_file would raise
+            # FileNotFoundError on a missing PNG, which the outer handler mislabels as "extract
+            # failed" and leaves the bundle and _captured.json disagreeing about what exists.
+            try:
+                png_sha = B.sha256_file(png)
+            except OSError:
+                png_sha = None
+                print(f"  ! {slug}: screenshot missing — pngSha256 recorded as null", flush=True)
             entry = B.screen_entry(
                 slug=slug, role=role["name"], route=path, url=base + path, reached_by="nav",
-                png=f"captures/live/{slug}.png", png_sha256=B.sha256_file(png),
+                png=f"captures/live/{slug}.png", png_sha256=png_sha,
                 png_h=png_h, page_h=data["pageH"], truncated=truncated,
                 rows_path=f"captures/live/{slug}.json",
                 structure=B.structure_hash(kept), geometry=B.geometry_hash(kept, data["pageH"]),
                 masked=masked, total=len(data["rows"]),
                 fields=data.get("fields") or [], wizard=None, captured_at=B.now_iso())
-            # `decision` is introduced in Task 9; until then it is always "recapture".
-            entry["designUnchanged"] = (locals().get("decision") == "reshoot")
+            entry["designUnchanged"] = (decision == "reshoot")
             B.upsert_screen(bdl, entry)
             if len(data["rows"]) and masked / len(data["rows"]) > B.MASK_WARN_RATIO:
                 print(f"  ! {slug}: {masked}/{len(data['rows'])} rows masked as volatile — "
@@ -414,7 +430,15 @@ def run(project, only_role=None, allow_empty=False):
                 print(f"   - {e}", flush=True)
             return []
     paths["_manifest"] = man
-    env = (man or {}).get("environment") or cfg.get("live", {}).get("environment") or "dev"
+    env = (man or {}).get("environment") or cfg.get("live", {}).get("environment")
+    if not env:
+        # Absence must fail SAFE: `environment` gates whether a later driver may click
+        # Submit/Approve unattended (dev/uat: yes, prod: halt for a human). Defaulting to
+        # "dev" would make missing config resolve to the MOST permissive state.
+        print(f"!! {project}: no `environment` configured (cfg.live.environment or "
+              f"screen-manifest.yaml `environment`) — defaulting to 'prod' (halts unattended "
+              f"actions). Set `environment` in screen-manifest.yaml to silence this.", flush=True)
+        env = "prod"
     bdl = B.new_bundle(project, env, _engine_sha())
     auth = cfg["live"]["auth"]
     mpath = os.path.join(paths["captures"], "_captured.json")
@@ -424,6 +448,8 @@ def run(project, only_role=None, allow_empty=False):
         print(f"!! could not read existing manifest ({str(e)[:80]}) — treating it as empty", flush=True)
         existing = []
     manifest = []
+    visited_roles = set()  # roles capture_role actually ran for — everyone else's bundle
+                            # screens (SKIP/ABORTED/not-in---role) must be carried forward, not lost.
     with sync_playwright() as p:
         b = p.chromium.launch(channel="chrome", headless=True)
         for role in cfg["live"]["roles"]:
@@ -449,6 +475,7 @@ def run(project, only_role=None, allow_empty=False):
                     pg.goto(role["base"] + "/", wait_until="domcontentloaded", timeout=60000); pg.wait_for_timeout(3000)
                     print(f"[{role['name']}] public -> {pg.url}", flush=True)
                 manifest += capture_role(pg, role, cfg, paths, bdl, man)
+                visited_roles.add(role["name"])
                 ctx.close()
             except Exception as e:
                 print(f"[{role['name']}] ROLE ABORTED: {str(e)[:120]}", flush=True)
@@ -479,12 +506,22 @@ def run(project, only_role=None, allow_empty=False):
     print(f"CAPTURED {len(manifest)} screens (manifest now {len(out)})", flush=True)
 
     prev = B.load_bundle(paths)
-    if only_role and prev:
-        # A --role run must not speak for roles it never visited (same contract as _captured.json).
+    if prev:
+        # A bundle must not speak for roles it never visited this run — same contract as
+        # _captured.json above, but keyed on which roles capture_role actually ran for, not on
+        # `--role`: a full run where a role is SKIPPED (e.g. missing credentials) must carry
+        # that role's screens forward too, or they silently vanish from the bundle.
         for s in prev.get("screens", []):
-            if s.get("role") != only_role and not B.find_screen(bdl, s["slug"]):
+            if s.get("role") not in visited_roles and not B.find_screen(bdl, s["slug"]):
                 B.upsert_screen(bdl, s)
         bdl["records"] = {**prev.get("records", {}), **bdl.get("records", {})}
+        prev_n, new_n = len(prev.get("screens", [])), len(bdl.get("screens", []))
+        if new_n < prev_n:
+            dropped = sorted({s.get("slug") or "?" for s in prev.get("screens", [])} -
+                              {s.get("slug") or "?" for s in bdl.get("screens", [])})
+            print(f"!! bundle SHRANK {prev_n} -> {new_n}: {len(dropped)} slug(s) no longer "
+                  f"present (aborted/skipped roles?): {dropped[:8]}{' …' if len(dropped) > 8 else ''}",
+                  flush=True)
     B.write_bundle(paths, bdl)
     print(f"BUNDLE {len(bdl['screens'])} screen states -> out/capture-bundle.json", flush=True)
     return out
