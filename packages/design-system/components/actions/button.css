@@ -668,6 +668,52 @@
   }
 
   /* ==========================================================================
+     SELECTED — `aria-pressed`
+     ==========================================================================
+     THE SEGMENTED CONTROL HAD NO WAY TO SAY WHICH SEGMENT WAS CURRENT.
+
+     `ButtonGroup`'s own docstring sends you to `attached` when the buttons are
+     "ALTERNATIVES to one another (a view switcher, a date range)" — which is a
+     segmented control, and a segmented control that cannot show its current choice is
+     not one. UX4G's own `button-group/.child` carries an `Active` state; Carbon's
+     ContentSwitcher, Material's SegmentedButton, Polaris, Spectrum and Fluent all do.
+     This estate had no `aria-pressed` anywhere, in any component.
+
+     It is modelled as the ARIA ATTRIBUTE, not as a new prop, and that is deliberate:
+     `aria-pressed` already typechecks on Button through React's AriaAttributes, so the
+     accessible half was always available and only the visible half was missing. Half an
+     accessible state is not an accessible state — the same lesson `loading` learned on
+     this component in August, when it set `aria-busy` and drew nothing.
+
+     A pressed OUTLINED or TEXT button takes the filled treatment, so selection reads as
+     weight rather than as a hue the reader has to learn. That also means it inherits the
+     fill/ink pairing that `action-nontext-contrast.test.mjs` already gates, so a selected
+     segment cannot be a contrast failure that a resting one is not.
+     ========================================================================== */
+  .ds-btn--outlined[aria-pressed="true"],
+  .ds-btn--text[aria-pressed="true"] {
+    background-color: var(--_c-fill);
+    color: var(--_c-on);
+    border-color: var(--_c-fill);
+  }
+
+  /* Hover must not wash the selection away. Without this, `--outlined:hover`'s 8%
+     tint paints OVER the fill and the current segment briefly looks unselected — the
+     one moment the reader is most likely to be looking at it. */
+  .ds-btn--outlined[aria-pressed="true"]:hover,
+  .ds-btn--text[aria-pressed="true"]:hover {
+    background-color: var(--_c-fill);
+    filter: brightness(0.95);
+  }
+
+  /* A filled button is already the loudest thing available, so selection cannot add
+     weight — it deepens instead, matching the pressed feedback the reader already
+     associates with "this one is engaged". */
+  .ds-btn--filled[aria-pressed="true"] {
+    filter: brightness(0.88);
+  }
+
+  /* ==========================================================================
      WINDOWS HIGH CONTRAST MODE (forced-colors)
      ==========================================================================
      ABSENT UNTIL 2026-09-03, ON THE ESTATE'S MOST-USED CONTROL. Nine of the
@@ -733,6 +779,15 @@
     .ds-btn--inverse .ds-btn__spinner {
       border-color: GrayText;
       border-top-color: ButtonFace;
+    }
+
+    /* Selection cannot be carried by a fill here either — the forced palette flattens
+       it. The system's own Highlight pair is what the platform uses to mean "this one
+       is chosen", so a selected segment takes it. */
+    .ds-btn[aria-pressed="true"] {
+      background-color: Highlight;
+      color: HighlightText;
+      border-color: Highlight;
     }
 
     /* Opacity is not a forced-colors signal. GrayText is. */

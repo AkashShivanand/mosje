@@ -549,5 +549,26 @@
     ]
    }
   }
+ },
+ "ButtonGroup": {
+  "nodeId": "56793:1214",
+  "captured": "2026-09-03",
+  "note": "Authored 2026-09-03. The component existed in code with no Figma counterpart at all, so a designer had no way to draw a grouped or segmented control and reached for a plain auto-layout frame — which is the touching-targets defect the component exists to prevent. 4 variants = Attached 2 x Orientation 2.",
+  "properties": {
+   "Attached": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "No",
+     "Yes"
+    ]
+   },
+   "Orientation": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Horizontal",
+     "Vertical"
+    ]
+   }
+  }
  }
 }

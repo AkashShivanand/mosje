@@ -246,7 +246,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Button Group — Design System",
     "section": "Actions",
     "href": "/design-system/components/actions/button-group",
-    "keywords": "button group — design system actions   tokens wcag accessibility",
+    "keywords": "button group — design system actions two jobs, and the second one gets forgotten the segmented control  tokens wcag accessibility",
     "description": "Related actions, kept together and kept apart.",
     "type": "component",
     "iconName": "widgets"
