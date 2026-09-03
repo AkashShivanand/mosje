@@ -634,12 +634,15 @@ class WizardPage(FakePage):
         self.review_at = review_at if review_at is not None else len(steps) - 1
         self.file_slots = file_slots
         self.submitted = False
+        self.forward_state = "ready"
         self.url = "http://fake.invalid/apply/step-1"
 
     # position ---------------------------------------------------------------
     def evaluate(self, js, arg=None):
         if "innerText.match" in js:
             return {"n": self.i + 1, "of": self.total, "title": self.steps[self.i]}
+        if "querySelectorAll('button')" in js:
+            return self.forward_state
         return 0                                    # fill_all: nothing left to fill
 
     def query_selector_all(self, sel):
@@ -847,3 +850,62 @@ class ReviewPageDetection(unittest.TestCase):
 
     def test_the_exact_phrase_is_honoured_when_position_is_unknown(self):
         self.assertTrue(D._is_review(("/step-1", None, "Review and Submit"), {}))
+
+
+class ForwardControlReadiness(unittest.TestCase):
+    """e-Anudaan disables "Next →" while it verifies uploaded documents, and says so on the page:
+    "Checking 12 documents… this takes a few seconds. Next opens as soon as the check completes."
+
+    Clicking anyway spent Playwright's 30s actionability timeout and reported the step as blocked
+    — three flows stopped one step short of their review pages because of a portal behaving
+    exactly as designed."""
+
+    class _Page:
+        def __init__(self, states):
+            self.states, self.polls = list(states), 0
+
+        def evaluate(self, js, arg=None):
+            self.polls += 1
+            return self.states.pop(0) if self.states else "ready"
+
+        def wait_for_timeout(self, ms):
+            pass
+
+    def test_waits_through_a_disabled_spell_and_then_proceeds(self):
+        pg = self._Page(["disabled", "disabled", "ready"])
+        self.assertTrue(D.wait_for_forward(pg, ["Next"], timeout_ms=60000))
+        self.assertEqual(pg.polls, 3)
+
+    def test_a_control_that_never_enables_gives_up_rather_than_hanging(self):
+        pg = self._Page(["disabled"] * 100)
+        self.assertFalse(D.wait_for_forward(pg, ["Next"], timeout_ms=6000, poll_ms=2000))
+
+    def test_an_already_enabled_control_is_not_waited_on(self):
+        pg = self._Page(["ready"])
+        self.assertTrue(D.wait_for_forward(pg, ["Next"]))
+        self.assertEqual(pg.polls, 1)
+
+
+class CompleteUploadSetIsLeftAlone(unittest.TestCase):
+    """Re-uploading documents that are already there is not harmless: the portal re-verifies each
+    new file and holds the forward control shut until it finishes. A walk that replaced twelve
+    verified documents with a 416-byte fixture got stuck on a step that was ready when it
+    arrived."""
+
+    def test_the_counter_is_read_off_the_page(self):
+        class P:
+            def inner_text(self, sel):
+                return "Documents Checklist\n12 / 12 uploaded\nPDF / JPG / PNG"
+        self.assertEqual(D.upload_status(P()), (12, 12))
+
+    def test_a_partial_set_is_reported_as_partial(self):
+        class P:
+            def inner_text(self, sel):
+                return "6 / 9 uploaded"
+        self.assertEqual(D.upload_status(P()), (6, 9))
+
+    def test_no_counter_is_not_an_error(self):
+        class P:
+            def inner_text(self, sel):
+                return "Organisation Details"
+        self.assertIsNone(D.upload_status(P()))

@@ -173,6 +173,50 @@ def _walk_slug(prefix, pos, seen):
     return base
 
 
+UPLOAD_COUNTER = re.compile(r"(\d+)\s*/\s*(\d+)\s+uploaded", re.I)
+
+FORWARD_READY_JS = """(labels)=>{
+ const bs=[...document.querySelectorAll('button')];
+ const m=bs.find(b=>labels.some(l=>(b.innerText||'').toLowerCase().includes(l.toLowerCase())));
+ if(!m) return 'absent';
+ return (m.disabled||m.getAttribute('aria-disabled')==='true')?'disabled':'ready';}"""
+
+
+def upload_status(pg):
+    """(done, total) from the step's own "N / M uploaded" counter, or None."""
+    try:
+        m = UPLOAD_COUNTER.search(pg.inner_text("body") or "")
+    except Exception:
+        return None
+    return (int(m.group(1)), int(m.group(2))) if m else None
+
+
+def wait_for_forward(pg, labels, timeout_ms=120000, poll_ms=2000):
+    """Wait until a forward control is present AND enabled.
+
+    e-Anudaan disables "Next →" while it verifies uploaded documents and says so on the page:
+    "Checking 12 documents… this takes a few seconds. Next opens as soon as the check completes."
+    Clicking regardless spent Playwright's whole 30s actionability timeout and then reported the
+    step as blocked — turning a portal behaving correctly into three flows that stopped one step
+    short of their review pages.
+    """
+    waited = 0
+    while waited < timeout_ms:
+        try:
+            state = pg.evaluate(FORWARD_READY_JS, list(labels))
+        except Exception:
+            return True                       # cannot tell — let the click try and report
+        if state == "ready":
+            return True
+        if waited == 0:
+            print(f"    · forward control is {state} — waiting up to {timeout_ms // 1000}s",
+                  flush=True)
+        pg.wait_for_timeout(poll_ms)
+        waited += poll_ms
+    print(f"    ! forward control still not enabled after {timeout_ms // 1000}s", flush=True)
+    return False
+
+
 def _is_review(pos, lab):
     """Is this the wizard's final review-and-submit page?
 
@@ -224,7 +268,15 @@ def walk_wizard(pg, spec, flow, man, cfg, paths, bdl, role, fid, allowed, why):
         uploaded = 0
         if upload_path:
             n_slots = len(pg.query_selector_all("input[type=file]"))
-            if n_slots:
+            status = upload_status(pg)
+            if status and status[0] >= status[1] > 0:
+                # Every slot already holds a document. Replacing them costs nothing and breaks
+                # something: the portal re-verifies each new file and holds the forward control
+                # shut until it finishes, so re-uploading a complete, already-verified set is
+                # how a walk gets stuck on a step that was ready when it arrived.
+                print(f"    · {status[0]}/{status[1]} already uploaded — leaving them alone",
+                      flush=True)
+            elif n_slots:
                 uploaded = upload_all(pg, upload_path)
                 pg.wait_for_timeout(spec.get("uploadSettleMs", 3000))
                 fill_all(pg, spec.get("values"), 1)   # slots that mount only after a file lands
@@ -238,6 +290,7 @@ def walk_wizard(pg, spec, flow, man, cfg, paths, bdl, role, fid, allowed, why):
                                        allowed, why, done)
             break
 
+        wait_for_forward(pg, forward, spec.get("forwardTimeoutMs", 120000))
         moved = False
         for label in forward:
             if _destructive_and_blocked(label, allowed):
