@@ -219,9 +219,12 @@ our rebuild repeating it. Each row was checked against our own code, not assumed
 | **n4** — a Back button on step 1 | **No.** The DS `Wizard` already disables it on the first step | — |
 | **B1** — captcha readable in the DOM | **No.** Our clone has no captcha | Raise with the vendor |
 | **m1** — sub-24px targets in the accessibility bar | **Vendor's UX4G bar.** Ours is SAMAVESH | Not applicable |
-| **M3, M4** — officer vocabulary and overlapping statuses shown to applicants | Needs a content pass against our own seed data | **Open** |
-| **M7, M8** — three money formats, two date formats | Needs an estate-wide formatter audit | **Open** |
-| **M10 / O5** — two `<h1>` per page | Not yet verified in our shells | **Open** |
+| **M3** — officer vocabulary shown to applicants | **No.** Only a code comment mentions IFD; nothing user-facing | — |
+| **M4** — overlapping status taxonomy | **No.** `ngoStatusLabel` already collapses the internal statuses to six applicant-facing ones, with no scheme names among them — the fix the audit asks for is already there | — |
+| **M7** — three money formats | **Yes.** `₹24.38 L`, `₹24,38,356` and a bare `24,38,356` with the symbol in the column header | `rupees` / `rupeesShort` in `format.ts`, documented as never to be mixed in one table |
+| **M8** — two date formats | **Yes, three shapes across two locales** | One `formatDate`, month names written out — `en-IN` renders September as "Sept" and ICU data varies by runtime |
+| **M10 / O5** — two `<h1>` per page | **No.** Our shells render no masthead heading; one `<h1>` per page | — |
+| **n2** — heading names the mechanism | **Yes.** "Select Grant Scheme" over a description that named the task | Swapped; description now says why the choice matters |
 
 ## The submission flow was never captured
 
