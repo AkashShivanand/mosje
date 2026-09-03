@@ -130,7 +130,8 @@
 
   .ds-error-view__search-box:focus-within {
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-bg-brand-primary-subtler);
+    outline: var(--sa-focus-width) solid var(--sa-bg-brand-primary-subtler);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-error-view__search-input {

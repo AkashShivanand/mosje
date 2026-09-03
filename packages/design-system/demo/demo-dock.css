@@ -207,8 +207,9 @@
 }
 
 .ds-demodock__lead:focus-visible .ds-demodock__cell {
-  box-shadow: 0 0 0 2px var(--sa-bg-neutral-base), 0 0 0 4px var(--sa-focus-ring);
-}
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 
 /* ── Tooltip ─────────────────────────────────────────────────────────────
    Replaces the vertical wordmark, which solved a first-encounter problem
@@ -380,9 +381,9 @@
 }
 
 .ds-demodock__door:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--sa-bg-neutral-base), 0 0 0 4px var(--sa-focus-ring);
-}
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 
 /* A three-wedge disc, not a single swatch: the door leads to a PALETTE
    picker, and one colour would claim the palette is one colour. Drawn from
@@ -645,9 +646,9 @@
 }
 
 .ds-demodock__close:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--sa-focus-ring);
-}
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 
 /* ── Tab strip ───────────────────────────────────────────────────────────
    Lighter than it was. Three tabs at 152x44 filled 456 of the panel's 500px
@@ -739,9 +740,9 @@
 }
 
 .ds-demodock__swatch-option:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--sa-bg-neutral-base), 0 0 0 4px var(--sa-color-action-primary-default);
-}
+    outline: var(--sa-focus-width) solid var(--sa-color-action-primary-default);
+    outline-offset: var(--sa-focus-offset);
+  }
 
 /* ── Motif tile — a fixed-size (90×60px) miniature UI abstraction: a header
    bar, a content surface, an accent mark and a button shape. Carries its
@@ -932,10 +933,10 @@
 }
 
 .ds-demodock__colour-summary:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--sa-focus-ring);
-  border-radius: var(--sa-shape-6);
-}
+    border-radius: var(--sa-shape-6);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 
 .ds-demodock__colour-chevron {
   flex: 0 0 auto;

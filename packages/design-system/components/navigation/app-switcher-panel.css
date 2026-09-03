@@ -95,7 +95,7 @@
 
   .ds-appsw__search:focus-within {
     background-color: var(--sa-bg-brand-primary-subtler);
-    outline: 1.5px solid var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
   }
 
   .ds-appsw__search-icon {

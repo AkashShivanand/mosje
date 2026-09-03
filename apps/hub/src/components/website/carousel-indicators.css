@@ -29,8 +29,8 @@
   }
 
   .sa-carousel-indicators__button:focus-visible {
-    outline: 2px solid var(--sa-text-neutral-inverse);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
     border-radius: var(--sa-shape-full);
   }
 

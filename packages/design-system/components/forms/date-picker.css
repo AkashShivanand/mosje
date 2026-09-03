@@ -186,7 +186,7 @@
 
   .ds-datepicker__day:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
-    outline-offset: -1px;
+    outline-offset: calc(var(--sa-focus-offset) * -1);
   }
 
   /* A day outside the shown month is context, not a peer — but it stays

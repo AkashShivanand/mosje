@@ -600,7 +600,7 @@
 
   .sa-ticker__rowlink:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
-    outline-offset: calc(-1 * var(--sa-focus-width));
+    outline-offset: calc(var(--sa-focus-offset) * -1);
     background-color: var(--sa-color-transparent-white-8);
   }
 

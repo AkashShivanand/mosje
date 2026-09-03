@@ -487,8 +487,8 @@
   /* Green ring, not white. A white focus ring on saffron is 2.91:1 and fails
      1.4.11 Non-text Contrast; deep India green is 4.85:1 on the same ground. */
   .ds-samavesh-banner__explore-btn:focus-visible {
-    outline: 2px solid var(--_band-ink);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--_band-ink);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-samavesh-banner__btn-icon {
@@ -831,8 +831,8 @@
   }
 
   .ds-samavesh-banner__view-all:focus-visible {
-    outline: 2px solid var(--sa-brand-samavesh-green);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-brand-samavesh-green);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* The drawer still opens and closes — only the tweening stops, so a reader who

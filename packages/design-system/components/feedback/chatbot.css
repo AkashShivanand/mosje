@@ -1277,7 +1277,7 @@
   .ds-chatbot__composer:focus-within {
     border-color: var(--sa-border-brand-primary-base);
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
-    outline-offset: 1px;
+    outline-offset: var(--sa-focus-offset);
   }
 
   /*

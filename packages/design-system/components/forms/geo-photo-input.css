@@ -94,9 +94,9 @@
   }
 
   .ds-geophoto__dropzone:focus-visible {
-    outline: none;
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-geophoto__dropzone:disabled {
@@ -207,8 +207,8 @@
   }
 
   .ds-geophoto__remove:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* ---- Add tile ---- */
@@ -247,9 +247,9 @@
   }
 
   .ds-geophoto__add:focus-visible {
-    outline: none;
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-geophoto__add:disabled {

@@ -158,8 +158,8 @@
      built from `box-shadow` would not be painted here at all.) */
   @media (forced-colors: active) {
     .ds-card-state__retry:focus-visible {
-      outline: 2px solid Highlight;
-      outline-offset: 2px;
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
     }
   }
 
@@ -249,8 +249,8 @@
     color: var(--sa-text-neutral-base);
   }
   .ds-segmented__option:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
   .ds-segmented__option--active {
     background: var(--sa-bg-neutral-base);
@@ -290,9 +290,9 @@
   }
 
   .ds-chart-export__trigger:focus-visible {
-    outline: none;
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-chart-export__trigger:disabled {

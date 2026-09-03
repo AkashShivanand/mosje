@@ -76,7 +76,7 @@
 
   .ds-toast__close:hover { color: var(--sa-text-neutral-base); }
   .ds-toast__close:focus-visible {
-    outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
     outline-offset: var(--sa-focus-offset);
   }
 

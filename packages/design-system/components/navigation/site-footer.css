@@ -483,8 +483,8 @@
   /* ── Focus — one ring, every control ─────────────────────────────────────── */
 
   .ds-sitefooter :is(a, button):focus-visible {
-    outline: 2px solid var(--ds-footer-ink);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--ds-footer-ink);
+    outline-offset: var(--sa-focus-offset);
   }
 
   @media (prefers-reduced-motion: reduce) {
