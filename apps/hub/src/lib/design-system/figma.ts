@@ -35,6 +35,12 @@ export const FIGMA_NODES = {
 
   // ── Components ──
   buttons: "2141:296705",
+  /* "Button Group" — authored 2026-09-03, page inserted between Buttons and Close
+     Button. The component had existed in code with no Figma counterpart at all, so a
+     designer had no way to draw a grouped or segmented control and reached for a plain
+     auto-layout frame — which is the touching-targets defect it exists to prevent.
+     Attached x Orientation, 4 variants, each built from real Button instances. */
+  buttonGroup: "56793:1214",
   buttonDoc: "56160:1773", // "Button — Documentation" on the Buttons page, authored
   //                          2026-08-25 to the house style. It replaced a 1400px template
   //                          with 16 text nodes, ZERO on a published style, describing a

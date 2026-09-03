@@ -43,4 +43,17 @@
   .ds-icon-btn .ds-btn__icon {
     margin: 0;
   }
+
+  /*
+   * A round icon button, for a control that floats free of a form's rhythm — a dialog's
+   * close, a toast's dismiss, a floating action. Square stays the default because most
+   * icon buttons sit in a toolbar or a table row beside square-cornered siblings, and a
+   * round control in that line reads as a different kind of thing.
+   *
+   * `--sa-shape-full` rather than a large number: the control must stay a circle at
+   * every size on the ladder and at 200% text, and a fixed radius stops being one.
+   */
+  .ds-icon-btn--circle {
+    border-radius: var(--sa-shape-full);
+  }
 }

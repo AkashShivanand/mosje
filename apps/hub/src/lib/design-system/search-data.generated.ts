@@ -237,7 +237,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Button",
     "section": "Actions",
     "href": "/design-system/components/actions/button",
-    "keywords": "button actions purpose anatomy variants states sizes and touch content and voice two deprecated appearances, and one that is gone installation and import example tokens consumed in figma keyboard evidence  tokens wcag accessibility",
+    "keywords": "button actions purpose anatomy variants states sizes and touch width and wrapping content and voice two deprecated appearances, and one that is gone installation and import example tokens consumed retheming without forking in figma keyboard keeping a disabled control findable windows high contrast mode the link form evidence  tokens wcag accessibility",
     "description": "A Button triggers an action within the system — submitting a form, confirming a dialog, or running a command. The most-used interactive atom in the SAMAVESH design system.",
     "type": "component",
     "iconName": "widgets"
@@ -246,7 +246,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Button Group — Design System",
     "section": "Actions",
     "href": "/design-system/components/actions/button-group",
-    "keywords": "button group — design system actions   tokens wcag accessibility",
+    "keywords": "button group — design system actions two jobs, and the second one gets forgotten the segmented control  tokens wcag accessibility",
     "description": "Related actions, kept together and kept apart.",
     "type": "component",
     "iconName": "widgets"
@@ -754,7 +754,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Icon Button — Design System",
     "section": "Actions",
     "href": "/design-system/components/actions/icon-button",
-    "keywords": "icon button — design system actions   tokens wcag accessibility",
+    "keywords": "icon button — design system actions it has exactly one name what it deliberately cannot do  tokens wcag accessibility",
     "description": "A Button whose whole label is its icon.",
     "type": "component",
     "iconName": "widgets"
