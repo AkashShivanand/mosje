@@ -202,3 +202,43 @@ node --experimental-strip-types projects/e-anudaan/clone-parity.mjs
 
 The second command prints every remaining difference between what live rendered and what our
 schema declares.
+
+
+---
+
+## Audit findings applied to our clone
+
+The design audit judges the **vendor's** portal, which we cannot change. What we can do is stop
+our rebuild repeating it. Each row was checked against our own code, not assumed.
+
+| Finding | In our clone? | Done |
+|---|---|---|
+| **B2** — required fields not marked programmatically | **Partly.** `FormField` already set `required` on text and select controls; the radio and checkbox branches hand-rolled their markup and carried a red asterisk and nothing else | Radio group is `role="radiogroup"` with `aria-required`, marker `aria-hidden`; required checkboxes carry `required` |
+| **m3** — "«label» is required." | **Yes**, identically | `requiredMessage()` — a label that already reads as an instruction IS the sentence; one that names a thing gets the verb its control implies |
+| **M1a** — a counter that exceeds its own total | **Yes.** Numerator counted every upload, denominator only the mandatory ones | `uploadProgress()` counts one set on both sides |
+| **n4** — a Back button on step 1 | **No.** The DS `Wizard` already disables it on the first step | — |
+| **B1** — captcha readable in the DOM | **No.** Our clone has no captcha | Raise with the vendor |
+| **m1** — sub-24px targets in the accessibility bar | **Vendor's UX4G bar.** Ours is SAMAVESH | Not applicable |
+| **M3, M4** — officer vocabulary and overlapping statuses shown to applicants | Needs a content pass against our own seed data | **Open** |
+| **M7, M8** — three money formats, two date formats | Needs an estate-wide formatter audit | **Open** |
+| **M10 / O5** — two `<h1>` per page | Not yet verified in our shells | **Open** |
+
+## The submission flow was never captured
+
+Stated plainly because the tracker should not have implied otherwise. **No scheme reached Review
+& Submit and nothing was submitted.** The furthest each got:
+
+| Scheme | Furthest state |
+|---|---|
+| NAPDDR | S09 Document Uploads (of 10) |
+| AVYAY | S06 Document Uploads (of 7 on the renewal branch) |
+| SHRESHTA_M2 | S05 Document Uploads (of 6) |
+
+Two causes, in order. The upload step holds its forward control shut while it verifies, and our
+416-byte fixture PDF does not appear to pass that check. Then the portal began dropping sessions
+mid-run, which is where the last three attempts ended.
+
+A consequence worth knowing: the driver had been harvesting a "record id" from whatever page a
+flow stopped on, so the bundle carried `NGO-DARPAN` and `GIA/2026-27/AVYAY/` as ids of
+applications that do not exist — and would have told the next run a record was already there.
+Only a walk that reaches a confirmation screen harvests one now, and the bogus entries are gone.
