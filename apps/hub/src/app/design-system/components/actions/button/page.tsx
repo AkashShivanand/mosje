@@ -47,7 +47,8 @@ const A11Y: A11yItem[] = [
   {
     criterion: "2.4.7 Focus Visible",
     level: "AA",
-    description: "A 3px focus ring, drawn with `--sa-focus-ring` and never removed by the stylesheet.",
+    description:
+      "An `outline` bound to `--sa-focus-width` and `--sa-focus-ring`, held clear of the control by `--sa-focus-offset` and following its border radius. It was a hardcoded 3px `box-shadow` flush against the fill until 2026-09-03, while this page claimed it was offset. UX4G 3.0 asks for a 2px offset matching the radius, which this now meets; UX4G's 4px width is not adopted, because one component running thicker than every other focusable control in the estate is worse than the 2px.",
   },
   {
     criterion: "2.1.1 Keyboard",
@@ -206,8 +207,9 @@ export default function ButtonPage(): React.JSX.Element {
                 min-height of 32 / 40 / 48px by size.
               </li>
               <li>
-                <strong>Focus ring</strong> &mdash; 3px, drawn with <code>--sa-focus-ring</code>{" "}
-                and never removed.
+                <strong>Focus ring</strong> &mdash; <code>--sa-focus-width</code> thick in{" "}
+                <code>--sa-focus-ring</code>, offset by <code>--sa-focus-offset</code>, and never
+                removed.
               </li>
             </ol>
           </section>
@@ -217,38 +219,96 @@ export default function ButtonPage(): React.JSX.Element {
               Variants
             </h2>
             <p>
-              Variants encode intent and visual weight. Use weight to guide the eye to the single
-              most important action on a view.
+              A button is two independent choices. <strong>Intent</strong> is what the action
+              means; <strong>prominence</strong> is how loudly it says it. Keeping them apart is
+              why a destructive action can be quiet and a housekeeping one can be loud without
+              either needing a new word &mdash; and it is why this component has no variant called
+              &ldquo;secondary&rdquo;. Secondary is a prominence, and it is spelled{" "}
+              <code>appearance=&quot;outlined&quot;</code>.
             </p>
-            <ul>
-              <li>
-                <strong>Primary</strong> &mdash; the main call to action. One per view, at most.
-              </li>
-              <li>
-                <strong>Secondary</strong> &mdash; the actions beside the primary one.
-              </li>
-              <li>
-                <strong>Ghost</strong> &mdash; tertiary, low-emphasis actions such as a table-row
-                control.
-              </li>
-              <li>
-                <strong>Danger</strong> &mdash; destructive actions; always paired with a
-                confirmation step.
-              </li>
-            </ul>
-            <Callout type="info" title="How those four intents map onto the component's API">
-              The component exposes a <code>variant</code> axis (primary · success · danger ·
-              neutral) and an <code>appearance</code> axis (filled · outlined · text), plus a{" "}
-              <code>tone</code> axis (default · inverse). So <strong>secondary</strong> is{" "}
-              <code>appearance=&quot;outlined&quot;</code> and <strong>ghost</strong> is{" "}
-              <code>appearance=&quot;text&quot;</code>. The playground above emits the exact code
-              for a button on a white or light surface. For a button placed on a solid
-              brand-colour surface &mdash; a navy header, a hero band &mdash; use{" "}
-              <code>tone=&quot;inverse&quot;</code> rather than overriding{" "}
-              <code>className</code>. It crosses <code>appearance</code>, so{" "}
-              <code>tone=&quot;inverse&quot; appearance=&quot;outlined&quot;</code> is the
-              secondary form and keeps the variant&rsquo;s own intent.
+
+            <h3 className="cdp__h3">Intent &mdash; the <code>variant</code> axis</h3>
+            <p>
+              <Button variant="primary">Submit application</Button>{" "}
+              <Button variant="success">Approve</Button>{" "}
+              <Button variant="danger">Delete application</Button>{" "}
+              <Button variant="neutral">Start over</Button>
+            </p>
+            <MatrixTable
+              caption="The four intents, and the action each one is for"
+              columns={["variant", "Use for", "Never use for"]}
+              rows={[
+                ["primary", "The main call to action on the view. One per view, at most.", "Three buttons of equal weight in a row — then none of them is primary."],
+                ["success", "Confirming a positive outcome the department is recording — an approval, a sanction.", "An ordinary save. A form that saves is primary; green is for the outcome, not the mechanism."],
+                ["danger", "A step that destroys something the citizen cannot get back. Always paired with a confirmation.", "Anything recoverable. On a portal where red means “your application was rejected”, spending it elsewhere devalues the signal."],
+                ["neutral", "An action carrying no semantic charge — dismiss, reset, “start over”.", "Nothing. This is the one to reach for the moment you want a control to look different from the paragraph beside it."],
+              ]}
+            />
+            <Callout type="warning" title="Neutral exists so nothing has to borrow a signal colour">
+              Before <code>neutral</code> there was no way to say &ldquo;quiet&rdquo; without
+              taking a colour that means something. The chatbot&rsquo;s end-chat control duly
+              shipped in <code>danger</code> &mdash; the estate&rsquo;s rejection red, spent on
+              housekeeping, which made the least-used control the loudest thing in its panel. If
+              you are choosing a variant because of how it <em>looks</em>, the answer is{" "}
+              <code>neutral</code> with an <code>appearance</code>.
             </Callout>
+
+            <h3 className="cdp__h3">Prominence &mdash; the <code>appearance</code> axis</h3>
+            <p>
+              <Button variant="primary" appearance="filled">Filled</Button>{" "}
+              <Button variant="primary" appearance="outlined">Outlined</Button>{" "}
+              <Button variant="primary" appearance="text">Text</Button>
+            </p>
+            <MatrixTable
+              caption="The three prominences. They cross every intent."
+              columns={["appearance", "Reads as", "Use for"]}
+              rows={[
+                ["filled", "The loudest.", "The one action the view exists for."],
+                ["outlined", "The middle weight — what other systems call “secondary”.", "The actions standing beside the primary one."],
+                ["text", "The quietest — what other systems call “ghost”.", "Tertiary actions: a table-row control, a cancel beside a submit."],
+              ]}
+            />
+            <Callout type="info" title="Tonal was retired, and not replaced">
+              A fourth prominence, <code>tonal</code>, was removed on 2026-08-27. Its fill and its
+              border were the same pale wash, so the control had no findable edge against the page
+              &mdash; between 1.21:1 and 1.52:1 where WCAG 2.2 §1.4.11 asks 3:1 &mdash; and
+              darkening the border to fix it would simply have produced <code>outlined</code>.
+              UX4G 3.0 still publishes a tonal button; theirs measures 1.41:1 on a white page. This
+              is a measured divergence from the standard, not an oversight.
+            </Callout>
+
+            <h3 className="cdp__h3">Ground &mdash; the <code>tone</code> axis</h3>
+            <p>
+              <code>tone</code> says which surface the button sits on, and it{" "}
+              <strong>crosses</strong> <code>appearance</code> rather than replacing it &mdash;
+              which is the whole point. Modelled as two extra appearance words, an inverse button
+              could only have one look, so all four intents painted the same white-alpha border and{" "}
+              <code>danger</code> silently lost its signal. Crossed, each intent keeps its own edge
+              on a brand ground.
+            </p>
+            {/* ds-exempt(demo-geometry): the specimen needs the brand ground it is FOR.
+                Every value here is token-bound; only the fact of the stage is literal. */}
+            <div
+              style={{
+                background: "var(--sa-bg-brand-primary-bolder)",
+                padding: "var(--sa-padding-24)",
+                borderRadius: "var(--sa-shape-8)",
+                display: "flex",
+                gap: "var(--sa-stack-8)",
+                flexWrap: "wrap",
+              }}
+            >
+              <Button tone="inverse" appearance="filled">Filled</Button>
+              <Button tone="inverse" appearance="outlined">Outlined</Button>
+              <Button tone="inverse" appearance="text">Text</Button>
+              <Button tone="inverse" appearance="outlined" variant="danger">Danger, outlined</Button>
+            </div>
+            <p>
+              Reach for <code>tone=&quot;inverse&quot;</code> rather than overriding{" "}
+              <code>className</code>. It is in use in the portal login shell&rsquo;s
+              &ldquo;Signing Into&rdquo; strip; the Ticker&rsquo;s documented route-out strips the
+              border in <code>ticker.css</code> and renders as a text link.
+            </p>
           </section>
 
           <section className="cdp__section" aria-labelledby="cdp-states">
@@ -287,7 +347,7 @@ export default function ButtonPage(): React.JSX.Element {
               rows={[
                 ["Default", "Full colour, no overlay.", "The resting state."],
                 ["Hover", "A subtle darkening; the cursor becomes a pointer.", "Declared before :active at equal specificity, or the pressed state is unreachable."],
-                ["Focus", "A 3px --sa-focus-ring, offset from the control.", "Never removed. It is the only signal a keyboard user has."],
+                ["Focus", "A --sa-focus-width ring in --sa-focus-ring, held --sa-focus-offset clear of the control and following its radius.", "Never removed. It is the only signal a keyboard user has. The offset is what makes it findable on a filled button, where a translucent ring flush against the fill is hardest to see."],
                 ["Active", "A momentary deeper tone.", "Pressed. It is a pointer state and does not persist."],
                 [
                   "Disabled",
@@ -306,14 +366,6 @@ export default function ButtonPage(): React.JSX.Element {
                 ],
               ]}
             />
-            <Callout type="info" title="Inverse tone keeps each variant's intent">
-              <code>tone=&quot;inverse&quot;</code> crosses <code>appearance</code>, so all four
-              variants keep their own signal on a brand surface. Until 2026-08-27 the outlined form
-              painted the same white-alpha border for every variant &mdash; and at 2.25:1 it was
-              not a findable edge either. It paints in the portal login shell&rsquo;s
-              &ldquo;Signing Into&rdquo; strip and in Storybook; the Ticker&rsquo;s route-out strips
-              its border in <code>ticker.css</code> and renders as a text link.
-            </Callout>
           </section>
 
           <section className="cdp__section" aria-labelledby="cdp-responsive">
@@ -475,13 +527,26 @@ import { buttonClasses } from "@mosje/design-system";
             <h2 id="cdp-tokens" className="cdp__h2">
               Tokens Consumed
             </h2>
+            {/*
+              READ OFF THE STYLESHEET, NOT REMEMBERED. Three of the five rows here named
+              tokens the component does not consume: `--sa-color-action-primary-default`
+              and `--sa-stack-12` appear nowhere in `button.css`, and
+              `--sa-color-status-danger` is the focus ring's mix, not the danger fill.
+              The primary fill moved to `bolder` on 2026-08-12 and this table was never
+              followed. Every row below is grepped from `button.css`.
+            */}
             <TokenTable
               tokens={[
-                { token: "--sa-color-action-primary-default", value: "#0373df", description: "Fill for the primary variant.", isColor: true },
-                { token: "--sa-color-status-danger", value: "#DC2626", description: "Fill for the danger variant.", isColor: true },
-                { token: "--sa-focus-ring", value: "rgba(3,115,223,0.48)", description: "The 3px focus ring." },
-                { token: "--sa-shape-8", value: "8px", description: "Corner radius of the container." },
-                { token: "--sa-stack-12", value: "12px", description: "Horizontal padding inside the control." },
+                { token: "--sa-bg-brand-primary-bolder", value: "#005eb9", description: "Fill for the primary variant. A rung deeper than the ink of the same family, so white on it clears AA with headroom (6.36:1) rather than by 0.14.", isColor: true },
+                { token: "--sa-text-brand-primary-bolder", value: "#005eb9", description: "Ink for the outlined and text appearances of primary — measured against the page, not against the fill.", isColor: true },
+                { token: "--sa-bg-status-error-bolder", value: "#aa2f25", description: "Fill for the danger variant.", isColor: true },
+                { token: "--sa-focus-ring", value: "rgba(3, 115, 223, 0.48)", description: "Colour of the focus ring.", isColor: true },
+                { token: "--sa-focus-width", value: "2px", description: "Thickness of the focus ring." },
+                { token: "--sa-focus-offset", value: "2px", description: "Gap held between the control and its focus ring." },
+                { token: "--sa-shape-8", value: "8px", description: "Corner radius of the container. The focus outline follows it." },
+                { token: "--sa-padding-16", value: "16px", description: "Horizontal padding, size sm." },
+                { token: "--sa-padding-24", value: "24px", description: "Horizontal padding, sizes md and lg." },
+                { token: "--sa-stack-8", value: "8px", description: "Gap between the label and either icon." },
               ]}
             />
             <p>

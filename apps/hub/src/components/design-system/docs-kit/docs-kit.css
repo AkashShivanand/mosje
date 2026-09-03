@@ -445,6 +445,20 @@
   padding-bottom: var(--sa-padding-8);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
+/* The level BELOW a section heading, and it did not exist.
+   A `.cdp__h2` section that needs to name its parts had nowhere to go: the pages that
+   tried it wrote a bare `<h3>`, which no rule in this stylesheet touches, so it rendered
+   at the browser's default size and weight — an unbound heading on the surface
+   `documentation-ds-linkage.md` calls the strictest in the estate. Headline-4 sits a
+   clear step under `.cdp__h2`'s headline-2 without colliding with body copy, and carries
+   no rule so it reads as a part of its section rather than a new one. */
+.cdp__h3 {
+  font-size: var(--sa-type-headline-4-size);
+  line-height: var(--sa-type-headline-4-lh);
+  font-weight: 600;
+  color: var(--sa-text-neutral-bolder);
+  margin: var(--sa-stack-32) 0 var(--sa-stack-12);
+}
 .cdp__tabbody > .cdp__section:first-child {
   margin-top: var(--sa-section-32);
 }
