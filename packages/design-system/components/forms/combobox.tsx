@@ -109,15 +109,28 @@ export function Combobox({
   const selected = options.find((o) => o.value === value);
   const [query, setQuery] = React.useState(() => selected?.label ?? "");
   const [open, setOpen] = React.useState(false);
-  const [activeIndex, setActiveIndex] = React.useState(0);
+  const [rawActiveIndex, setActiveIndex] = React.useState(0);
 
   const rootRef = React.useRef<HTMLDivElement>(null);
   const inputRef = React.useRef<HTMLInputElement>(null);
   const listRef = React.useRef<HTMLUListElement>(null);
 
-  React.useEffect(() => {
-    setQuery(options.find((o) => o.value === value)?.label ?? "");
-  }, [value, options]);
+  /**
+   * Resynced during render when the SELECTED LABEL changes, using React's
+   * adjust-state-on-prop-change pattern rather than an effect.
+   *
+   * The effect this replaces depended on `options`, and `options` is an array —
+   * a caller passing it inline (the common case) hands over a new identity on
+   * every parent render, so the effect fired constantly and wiped whatever the
+   * applicant was typing. Keying on the resolved label instead means a genuine
+   * change to the selection resyncs the field and a mere re-render does not.
+   */
+  const selectedLabel = selected?.label ?? "";
+  const [prevSelectedLabel, setPrevSelectedLabel] = React.useState(selectedLabel);
+  if (prevSelectedLabel !== selectedLabel) {
+    setPrevSelectedLabel(selectedLabel);
+    setQuery(selectedLabel);
+  }
 
   // Only filter once the query differs from the chosen label — otherwise
   // opening a settled field shows exactly one option, which reads as a broken
@@ -127,9 +140,13 @@ export function Combobox({
     return options.filter((o) => matches(o, q));
   }, [options, query, selected]);
 
-  React.useEffect(() => {
-    setActiveIndex((i) => Math.min(i, Math.max(0, filtered.length - 1)));
-  }, [filtered.length]);
+  /**
+   * Clamped during render, not corrected afterwards by an effect. When the
+   * filter shortens the list the stored index can point past the end, and an
+   * effect fixes that only AFTER the bad render has been shown — one frame with
+   * `aria-activedescendant` naming an option that is not in the list.
+   */
+  const activeIndex = Math.min(rawActiveIndex, Math.max(0, filtered.length - 1));
 
   React.useEffect(() => {
     if (!open) return;

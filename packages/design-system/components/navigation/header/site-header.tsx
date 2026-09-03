@@ -446,10 +446,12 @@ export function SiteHeader({
   /* Condensing swaps the nav row out from under whatever was open in it. Close
      first, so a panel is never orphaned and focus is never stranded on a node that
      is about to be unmounted. */
-  React.useEffect(() => {
+  const [prevCondensed, setPrevCondensed] = React.useState(condensed);
+  if (prevCondensed !== condensed) {
+    setPrevCondensed(condensed);
     if (condensed) setOpenLabel(null);
     else setCondSearchOpen(false);
-  }, [condensed]);
+  }
 
   /**
    * The swap unmounts whatever the reader was on. A pointer user never notices; a

@@ -95,10 +95,19 @@ export function Lightbox({
   const titleId = React.useId();
   const count = items.length;
 
-  // Re-sync to the requested start index each time the lightbox is (re)opened.
-  React.useEffect(() => {
+  /**
+   * Re-syncs to the requested start index each time the lightbox is (re)opened,
+   * during render rather than in an effect. Exactly the same trigger as before —
+   * any change to open, index or count — but without the discarded frame in
+   * which the overlay showed the PREVIOUS image before jumping to the requested
+   * one.
+   */
+  const syncKey = `${open}|${index}|${count}`;
+  const [prevSyncKey, setPrevSyncKey] = React.useState(syncKey);
+  if (prevSyncKey !== syncKey) {
+    setPrevSyncKey(syncKey);
     if (open) setCurrent(Math.min(Math.max(index, 0), Math.max(count - 1, 0)));
-  }, [open, index, count]);
+  }
 
   const go = React.useCallback(
     (next: number) => {

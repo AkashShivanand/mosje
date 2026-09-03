@@ -99,9 +99,17 @@ export function DataTable<T extends Record<string, unknown>>({
   const sort = controlledSort !== undefined ? controlledSort : ownSort;
   const [pageSize, setPageSize] = React.useState<number>(pageSizes[0] ?? 10);
 
-  React.useEffect(() => {
+  /**
+   * Page resets during render when the row count changes — a filter narrowing
+   * the set must not leave the reader stranded on page 7 of 2. Done here rather
+   * than in an effect because the effect rendered that empty page once before
+   * correcting itself.
+   */
+  const [prevTotal, setPrevTotal] = React.useState(total);
+  if (prevTotal !== total) {
+    setPrevTotal(total);
     setPage(1);
-  }, [total]);
+  }
 
   const byKey = React.useMemo(
     () => new Map(columns.map((c) => [c.key, c])),

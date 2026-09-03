@@ -134,9 +134,17 @@ export function DatePicker({
 
   // The field is controlled from outside too — a form reset or a prefill has to
   // reach the text, not just the value.
-  React.useEffect(() => {
+  /**
+   * Resynced during render on a value change, not afterwards by an effect.
+   * The effect version showed the OLD text for one committed render before
+   * correcting it, which on a controlled date field reads as the input briefly
+   * rejecting what was just set.
+   */
+  const [prevValue, setPrevValue] = React.useState(value);
+  if (prevValue !== value) {
+    setPrevValue(value);
     setText(toDisplay(value));
-  }, [value]);
+  }
 
   const minDate = min ? parseIso(min) : null;
   const maxDate = max ? parseIso(max) : null;
