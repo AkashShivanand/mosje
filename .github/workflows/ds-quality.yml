@@ -18,6 +18,7 @@ on:
       - ".stylelintrc.tokens.json"
       - "tools/ds-linkage/**"
       - "tools/type-linkage/**"
+      - "tools/focus-ring/**"
       - ".github/workflows/ds-quality.yml"
   pull_request:
     paths:
@@ -35,6 +36,7 @@ on:
       - ".stylelintrc.tokens.json"
       - "tools/ds-linkage/**"
       - "tools/type-linkage/**"
+      - "tools/focus-ring/**"
       - ".github/workflows/ds-quality.yml"
 
 # A pull request that is pushed again supersedes its own in-flight run. Without this
