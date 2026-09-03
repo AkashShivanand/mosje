@@ -288,23 +288,16 @@
     height: auto;
   }
 
-  .ds-botcheck__refresh {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--sa-target-comfortable);
-    height: var(--sa-target-comfortable);
+  /* The refresh control has NO rules here. It is the library `IconButton`, which
+     already owns the square shape, the border, the radius, the hover and the
+     focus ring — this file used to restate every one of them on a bare
+     `<button>`, which is how a control drifts away from the other 494 buttons
+     in the estate. `flex: none` is the only thing the ROW needs to say about
+     it, and that belongs to the row. */
+  .ds-botcheck__row > .ds-btn {
     flex: none;
-    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
-    border-radius: var(--sa-control-radius);
-    background-color: var(--sa-bg-neutral-base);
-    color: var(--sa-icon-neutral-base);
-    cursor: pointer;
   }
 
-  .ds-botcheck__refresh:hover { background-color: var(--sa-bg-neutral-subtler); }
-
-  .ds-botcheck__refresh:focus-visible,
   .ds-botcheck__help:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);

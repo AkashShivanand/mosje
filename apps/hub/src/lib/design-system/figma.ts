@@ -57,6 +57,13 @@ export const FIGMA_NODES = {
   botCheck: "56824:1294", // the BotCheck set — 9 variants (Invisible draws only its failed
   //                         state, so the matrix is 4 + 4 + 1 rather than 12). It replaced
   //                         Captcha Field, which was deleted from the page on 2026-09-03.
+  inputArea: "87:4945", // the Input Area set (Textarea in code) — 4 sizes x 9 states
+  select: "55430:34472", // the Select set on the INPUTS page. Not `dropdown` below, which
+  //                        is the separate Dropdown page — pointing Select's documentation
+  //                        there sent a designer to a different component entirely.
+  otpInput: "55427:34365", // the OTP Input set — 2 lengths x 4 states
+  otpBox: "55427:704", // its single-digit sub-part, published so a longer code can be built
+  passwordStrengthMeter: "55432:795", // the Password Strength Meter set — 5 strengths
   characterCount: "56792:50500", // the Character Count set, authored 2026-09-03
   requiredFieldsLegend: "56792:50506", // the Required Fields Legend set, authored 2026-09-03
   card: "2141:296707",

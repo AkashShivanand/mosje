@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
 import { Loader } from "../feedback/loader";
 import { Icon } from "../utilities/icon";
 import { Checkbox } from "./checkbox";
@@ -280,15 +281,16 @@ export function BotCheck({
             {challenge?.type === "text" ? challenge.characters : ""}
           </span>
         )}
-        <button
+        <IconButton
           type="button"
-          className="ds-botcheck__refresh"
+          variant="neutral"
+          appearance="outlined"
+          size="lg"
           onClick={onRefresh}
           disabled={disabled}
           aria-label="Get a new security check. This clears anything you have typed."
-        >
-          <Icon name="refresh" size={24} aria-hidden />
-        </button>
+          icon={<Icon name="refresh" size={24} aria-hidden />}
+        />
       </div>,
       <Input
         id={fieldId}

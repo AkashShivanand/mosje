@@ -66,7 +66,7 @@ export default function OtpInputPage(): React.JSX.Element {
       name="OTP Input"
       status="Stable"
       summary="Six separate boxes for a one-time password, as UX4G 3.0 specifies. Pasting the code into any box fills all six, SMS autofill is spread across the boxes rather than truncated, and Backspace on an empty box steps back instead of stranding the caret."
-      figma={{ absent: "Not yet published in the Figma library." }}
+      figma={{ node: "otpInput" }}
       specimen={<OtpInputPlayground />}
       propsFrom="OtpInputProps"
       a11y={A11Y}

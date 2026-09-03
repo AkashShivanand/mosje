@@ -77,7 +77,7 @@ export default function TextareaPage(): React.JSX.Element {
       name="Textarea"
       status="Stable"
       summary="A native, vertically resizable multi-line text field for long-form answers — a grievance description, a set of remarks, an address. It shares the error state and the token styling of Input, and is sized in rows rather than pixels."
-      figma={{ absent: "Not yet published in the Figma library." }}
+      figma={{ node: "inputArea" }}
       specimen={<TextareaPlayground />}
       propsFrom="TextareaProps"
       a11y={A11Y}
