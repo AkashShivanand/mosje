@@ -297,6 +297,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "menu_book"
   },
   {
+    "title": "Character Count — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/character-count",
+    "keywords": "character count — design system forms & inputs notes  tokens wcag accessibility",
+    "description": "A live count of how much of a field",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Chart Card — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/chart-card",
@@ -597,6 +606,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Field Policy Provider — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/field-policy-provider",
+    "keywords": "field policy provider — design system forms & inputs choosing a convention  tokens wcag accessibility",
+    "description": "Sets whether a form marks its mandatory fields or its optional ones, for every field beneath it, and prints the sentence that explains the mark.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Filter Bar — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/filter-bar",
@@ -645,7 +663,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Form Field — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/form-field",
-    "keywords": "form field — design system forms & inputs the render prop, in plain english example notes  tokens wcag accessibility",
+    "keywords": "form field — design system forms & inputs making it yours language the render prop, in plain english example notes  tokens wcag accessibility",
     "description": "The molecule that ties a control to its label, hint and error message, and wires every accessibility attribute through a render prop.",
     "type": "component",
     "iconName": "edit_note"

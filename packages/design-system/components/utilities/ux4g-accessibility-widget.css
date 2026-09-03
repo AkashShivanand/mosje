@@ -149,7 +149,6 @@
   #uw-main .ux4g-accessibility-icon-btn.ux4g-accessibility-active,
   #uw-main .ux4g-accessibility-uw-chip.ux4g-accessibility-active {
     background: var(--sa-bg-brand-primary-subtler) !important;
-    background-color: var(--sa-bg-brand-primary-subtler) !important;
   }
 
   #uw-main .ux4g-accessibility-icon-btn.ux4g-accessibility-active,
