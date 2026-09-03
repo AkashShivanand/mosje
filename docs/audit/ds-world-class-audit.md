@@ -524,7 +524,7 @@ list.
 | **The scene set has no `rejected`, `disbursed`, `window-closed`, `verification-failed`** | All four added. A process that can only be drawn succeeding is half drawn. |
 | **Four scenes illegible at `spot`** | `sa-ill__detail` marks texture, and `spot` drops it; dash patterns go solid at half scale. |
 | **The package has no ESLint config — 117 files, ~29,700 lines never linted** | `packages/design-system/eslint.config.mjs` with `react-hooks` and `jsx-a11y`, gated by `check:ds-lint`, 50 findings frozen per file. |
-| **The five shadow UI kits are untouched** | `check:shadow-ui` — 41 collisions in 16 files, ratcheted. PM-AJAY's dashboard kit migrated as the reference; its status pill measured identical to two decimal places, four colliding names renamed, nothing moved a pixel. Four kits remain, now counted and frozen. |
+| **The five shadow UI kits are untouched** (see §12 — the remaining four are now a recorded DEFERRAL to the portal redesigns, not an open item) | `check:shadow-ui` — 41 collisions in 16 files, ratcheted. PM-AJAY's dashboard kit migrated as the reference; its status pill measured identical to two decimal places, four colliding names renamed, nothing moved a pixel. Four kits remain, now counted and frozen. |
 | **The Vercel deployment fails** | Fixed, and the diagnosis was right: `output: "standalone"` is set only OFF Vercel now. **The preview deploys.** |
 
 ## What the axe suite found the day it first ran
@@ -983,3 +983,35 @@ worse defect than the message.
 
 Recorded here so the history is explicable. Subsequent commits stage explicit
 file paths.
+
+---
+
+## 12. R9 — the shadow UI kits are DEFERRED, not outstanding
+
+**Decided 2026-09-03.** The four remaining kits and their 41 name collisions
+(`check:shadow-ui`) are deliberately left in place until the portals carrying
+them are redesigned.
+
+Every one of those portals is going to be redesigned. A redesign rewrites that
+markup anyway, so migrating a kit costs nothing at that point — whereas doing it
+now means paying for the same markup twice **and** taking all of the regression
+risk up front, on live government portals, in a single change. The components
+are not identical to their design-system namesakes; they drifted, so each swap
+is a visual change on a working portal that needs its own audit.
+
+The estate has already taken exactly this position once, for exactly this
+reason. `.claude/rules/design-system.md` records it for the icon-size scale:
+*"the decision is to let it go as the pages are redesigned one by one"*, because
+sweeping now "would pay for it twice and take all the regression risk up front".
+
+**This is not a licence to drift.** The ratchet stays on, and it cuts both ways:
+
+- a **new** collision fails, so a redesign cannot add kits while clearing them;
+- a baselined collision that **disappears** also fails, so each portal's
+  migration must be banked in the same commit that makes it — one portal's
+  cleanup can never be spent silently on another portal's growth.
+
+The reasoning is also recorded in `tools/shadow-ui/check.mjs` itself, where
+someone hitting the gate will actually read it. A gate reporting 41 known
+collisions with no explanation reads as an open defect, which invites the next
+reader to re-audit settled ground or to start sweeping mid-sprint.
