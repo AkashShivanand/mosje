@@ -19,7 +19,11 @@ The deterministic phases below need no MCP and run standalone."""
 import argparse, sys, os, subprocess
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 ENGINE = os.path.dirname(os.path.abspath(__file__))
-import capture as CAP, analyze as AN, report as REP, figures as FIG
+import capture as CAP, analyze as AN, report as REP
+# NOTE: `figures` is imported inside its own phase branch, not here. It imports PIL, and
+# preflight() installs npm deps and chromium but nothing installs Python deps — so a module-scope
+# import would make `--phase analyze` (which needs no PIL, and worked before figures existed) die
+# at import on any machine without Pillow.
 
 def preflight(need_browser):
     """Self-install deps so the user never runs setup commands. Idempotent + fast when already present."""
@@ -49,15 +53,23 @@ def main():
                     help="ignore any existing capture-bundle.json and re-capture everything")
     ap.add_argument("--verify", action="store_true",
                     help="always run the per-screen freshness check, even when the build "
-                         "fingerprint is unchanged (the default for a QC run)")
+                         "fingerprint is unchanged. Applies to --phase capture/all; "
+                         "--phase bundle always verifies whether or not this is passed")
     a = ap.parse_args()
     ph = a.phase
     preflight(need_browser=ph in ("capture", "all", "bundle"))
     if ph in ("capture", "all"):
         print("== PHASE: capture =="); CAP.run(a.project, a.role, a.allow_empty, a.force, a.verify)
     if ph == "bundle":
-        print("== PHASE: bundle =="); CAP.refresh(a.project, a.force, a.verify)
+        # verify=True ALWAYS, and by keyword. `--verify` is a store_true, so passing it
+        # positionally handed refresh() a False that overrode its deliberate verify=True default
+        # — letting the documented QC entry point reach `reuse-all` on the build fingerprint
+        # alone, when defaulting to --verify is precisely the spec's stated mitigation for a
+        # fingerprint missing server-rendered content change. `--force` still wins: it re-captures
+        # everything regardless.
+        print("== PHASE: bundle =="); CAP.refresh(a.project, force=a.force, verify=True)
     if ph == "figures":
+        import figures as FIG   # local: keeps PIL out of every other phase (see the note above)
         hub = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(ENGINE))),
                            "apps", "hub", "public", "reports", a.project, "figures")
         print("== PHASE: figures =="); FIG.derive(a.project, hub)

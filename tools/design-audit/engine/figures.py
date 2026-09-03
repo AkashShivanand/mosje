@@ -29,8 +29,9 @@ def derive(project, out_dir, max_width=1440, quality=80):
 
     A screen with neither field (e.g. the synthetic GLOBAL-DSCONF rollup row) is
     skipped without a warning — it is not a screen with a missing image, it never
-    claimed to have one. A screen whose referenced file is missing on disk is
-    skipped WITH a one-line warning naming the slug; one bad reference never aborts
+    claimed to have one. A screen whose referenced file is missing on disk — or is
+    present but unreadable (truncated/corrupt) — is skipped WITH a one-line warning
+    naming the slug, and counted in the same tally; one bad reference never aborts
     the run.
     """
     cfg, paths = C.load(project)
@@ -57,7 +58,16 @@ def derive(project, out_dir, max_width=1440, quality=80):
                 missing += 1
                 continue
             dst = os.path.join(out_dir, f"{slug}-{kind}.webp")
-            _convert(src, dst, max_width, quality)
+            try:
+                _convert(src, dst, max_width, quality)
+            except Exception as e:
+                # A truncated or corrupt PNG raises inside Pillow. The docstring promises one bad
+                # reference never aborts the run, and "present but unreadable" is the same class
+                # of bad reference as "absent" — so it is counted and named the same way.
+                print(f"  ! {slug} ({kind}): {ref} could not be converted "
+                      f"({type(e).__name__}: {str(e)[:80]}) — skipped")
+                missing += 1
+                continue
             written.append(dst)
     total = sum(os.path.getsize(p) for p in written)
     print(f"figures: {len(written)} webp, {total / 1e6:.1f} MB -> {out_dir} "

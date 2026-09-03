@@ -326,9 +326,15 @@ def _engine_sha():
     except Exception:
         return None
 
-def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", decisions=None):
+def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", decisions=None,
+                 failures=None):
     if decisions is None:
         decisions = {}
+    # role name -> slugs whose goto failed every attempt this run. run() needs these by name:
+    # such a screen is correctly absent from the bundle, but a previous run's row for it can
+    # still be sitting in _captured.json, which analyze.py reads.
+    if failures is None:
+        failures = {}
     base = role["base"]; width = cfg.get("capture", {}).get("width", 1440)
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
     routes = discover_routes(pg, cfg)
@@ -470,6 +476,7 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
     if failed:
         print(f"[{role['name']}] {len(failed)} screen(s) not captured: {', '.join(failed)}",
               flush=True)
+    failures.setdefault(role["name"], []).extend(failed)
     return captured
 
 def merge_manifest(existing, fresh):
@@ -501,7 +508,6 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
             for e in errs:
                 print(f"   - {e}", flush=True)
             return []
-    paths["_manifest"] = man
     env = (man or {}).get("environment") or cfg.get("live", {}).get("environment")
     if not env:
         # Absence must fail SAFE: `environment` gates whether a later driver may click
@@ -540,6 +546,7 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
     decisions = {}  # slug -> "recapture"|"reshoot"|"reuse", tallied into freshness.md
     visited_roles = set()  # roles capture_role actually ran for — everyone else's bundle
                             # screens (SKIP/ABORTED/not-in---role) must be carried forward, not lost.
+    failures = {}   # role -> slugs whose navigation failed this run (see the pruning below)
     with sync_playwright() as p:
         b = p.chromium.launch(channel="chrome", headless=True)
         for role in cfg["live"]["roles"]:
@@ -564,7 +571,8 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
                 else:
                     pg.goto(role["base"] + "/", wait_until="domcontentloaded", timeout=60000); pg.wait_for_timeout(3000)
                     print(f"[{role['name']}] public -> {pg.url}", flush=True)
-                manifest += capture_role(pg, role, cfg, paths, bdl, man, prev_bundle, mode, decisions)
+                manifest += capture_role(pg, role, cfg, paths, bdl, man, prev_bundle, mode,
+                                         decisions, failures)
                 visited_roles.add(role["name"])
                 for flow in (man or {}).get("flows") or []:
                     if flow.get("role") != role["name"]:
@@ -608,6 +616,25 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
             dropped = sorted({r.get("slug") or "?" for r in existing} - {r.get("slug") or "?" for r in out})
             print(f"!! manifest SHRANK {len(existing)} -> {len(out)}: {len(dropped)} slug(s) no longer "
                   f"captured (aborted roles?): {dropped[:8]}{' …' if len(dropped) > 8 else ''}", flush=True)
+
+    # A screen whose goto failed every attempt this run is correctly absent from
+    # capture-bundle.json — but on a `--role` retry merge_manifest preserves the PREVIOUS run's
+    # row for it in _captured.json, which is what analyze.py reads. Net effect: out/freshness.md
+    # reports PASS while the generated PDF carries the previous run's screenshot inside THIS
+    # run's certification — the stale-reuse failure this whole feature exists to prevent,
+    # arriving by an older path. So prune those rows here, after the merge.
+    #
+    # Scoped to roles capture_role actually RAN for. `failures` is only populated by a role that
+    # reached the end of capture_role, and it is intersected with visited_roles again below, so a
+    # role that was skipped, aborted or excluded by `--role` keeps every row it had — same
+    # contract as the bundle carry-forward and the `--role` manifest merge above.
+    failed_this_run = {slug for r in visited_roles for slug in failures.get(r, [])}
+    if failed_this_run:
+        pruned = sorted({row.get("slug") for row in out if row.get("slug") in failed_this_run})
+        if pruned:
+            out = [row for row in out if row.get("slug") not in failed_this_run]
+            print(f"!! removed {len(pruned)} stale manifest row(s) for screen(s) that failed to "
+                  f"load this run: {', '.join(pruned)}", flush=True)
 
     json.dump(out, open(mpath, "w"), indent=2)
     print(f"CAPTURED {len(manifest)} screens (manifest now {len(out)})", flush=True)
