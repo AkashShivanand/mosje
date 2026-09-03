@@ -168,3 +168,31 @@ whole thing harder to review, not easier.
   the estate.
 - **Nothing is removed.** No prop is renamed, no class is dropped. Every existing call site
   keeps working.
+
+---
+
+## 6. What CI caught that six local gate runs did not
+
+Recorded because the pattern matters more than the three defects.
+
+I ran the gates that *looked* relevant — `lint:css`, `tsc`, `check:ds-pages`,
+`check:props`, `check:code-connect`, the e2e suite — and pushed. CI failed four times
+across two rounds. Every failure was a real defect, and every one was in a gate I had not
+thought to run.
+
+| Round | Gate | What it caught |
+|---|---|---|
+| 1 | `npm test -w @mosje/tokens` | The theming refactor renamed `--_fill` → `--_v-fill`, and `action-nontext-contrast.test.mjs` PARSES button.css for those names. It resolved **0** variant × appearance edges — a WCAG 1.4.11 gate turned into a no-op. |
+| 2 | same | Fixing that, the new doc comment carried the obvious example `.ds-btn--primary { --sa-btn-fill: … }`. The parser read the whole file including comments, matched the comment first, and reported that primary declares no `--_fill`. **A contrast gate was redirected onto a code sample by a documentation change.** |
+| 2 | `check:storybook:parity` | Five new props existed on the component and in no story. |
+| 2 | `check:docs-search` | The docs search index was stale, so five new sections were unfindable. |
+| 2 | `check:dangling-vars` | The theming example named `--sa-color-teal-600`, which is not a generated token — a sample that does nothing when copied. |
+
+Two lessons worth keeping:
+
+1. **Run `npm run check`, not a selection of it.** It exits 0 in about five minutes and
+   would have caught all five. Picking the relevant-looking gates is how a contrast gate
+   spent two commits disarmed.
+2. **A parser that reads a stylesheet must strip comments.** That one is now fixed at the
+   source rather than worked around, and proven: reverting the strip and the placeholder
+   together fails 2 tests; with either in place, 0.
