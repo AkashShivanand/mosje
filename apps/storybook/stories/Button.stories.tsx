@@ -324,3 +324,97 @@ export const Loading: Story = {
     </div>
   ),
 };
+
+/**
+ * **Labels wrap, as of 2026-09-03.** `white-space: nowrap` cannot fail safe: a button
+ * that refuses to wrap does not shrink, it overflows its container and takes the page's
+ * horizontal scrollbar with it. On a 320px bilingual government page that is the common
+ * case, not the edge.
+ *
+ * `nowrap` is the opt-out, for a segmented control or a toolbar where one line is
+ * structural — and there the label has to be short enough for every viewport it appears
+ * on, because the overflow risk comes back with it.
+ */
+export const Wrapping: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 12, alignItems: "flex-start" }}>
+      <div style={{ width: 180, padding: 8, border: "1px solid #d0d5dd", borderRadius: 8 }}>
+        <Button>Submit application for review</Button>
+      </div>
+      <div style={{ width: 180, padding: 8, border: "1px solid #d0d5dd", borderRadius: 8 }}>
+        <Button nowrap>Submit application for review</Button>
+      </div>
+    </div>
+  ),
+};
+
+/**
+ * **`fullWidth` stretches to the container.** The older guidance was to wrap the button
+ * in a full-width container instead. That is right in principle and was ignored
+ * everywhere it mattered — consumers reached for `className` and got the behaviour
+ * without the token discipline — so this is the supported spelling of what they were
+ * already doing. It is the usual shape for a mobile form's submit.
+ */
+export const FullWidth: Story = {
+  render: () => (
+    <div style={{ maxWidth: 320, display: "flex", flexDirection: "column", gap: 8 }}>
+      <Button fullWidth>Continue</Button>
+      <Button fullWidth appearance="outlined">
+        Save draft
+      </Button>
+    </div>
+  ),
+};
+
+/**
+ * **`preserveFocus` keeps a disabled control findable.** A natively `disabled` button
+ * leaves the tab order, so a reader navigating by keyboard never learns it is there —
+ * the form does not appear to have a submit they may not press yet, it appears to have
+ * no submit. This renders the state as `aria-disabled` instead.
+ *
+ * Reachable is not pressable: the pointer is blocked in CSS, Enter and Space are
+ * suppressed, and `type` is forced to `"button"` so the browser's own implicit form
+ * submission cannot fire either — the leak this pattern usually ships with.
+ *
+ * It is opt-in. Switching every disabled button in the estate into the tab order would
+ * change tab order on pages nobody has re-tested, so reach for it where the control is
+ * the point of the screen and leave the default alone for a row of table actions.
+ *
+ * Tab through these two: only the second one stops.
+ */
+export const FindableWhenDisabled: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 12 }}>
+      <Button disabled>Disabled — out of the tab order</Button>
+      <Button disabled preserveFocus>
+        Disabled — still findable
+      </Button>
+    </div>
+  ),
+};
+
+/**
+ * **The link form.** Pass `href` and the component renders a real anchor, so a call to
+ * action that navigates is a link rather than a button that lies about what it does.
+ *
+ * `target="_blank"` gets `rel="noopener noreferrer"` whether or not you remembered:
+ * opening a new tab hands the opened page a reference back to this one, which lets it
+ * navigate the original tab elsewhere. Browsers imply `noopener` now, but that word does
+ * real work on an estate serving older Android WebViews, and `noreferrer` is implied
+ * nowhere. An explicit `rel` wins — someone who wrote one meant it.
+ */
+export const LinkForm: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 12 }}>
+      <Button href="#schemes" appearance="outlined">
+        Browse schemes
+      </Button>
+      <Button href="https://www.india.gov.in" target="_blank" appearance="outlined">
+        Open the National Portal
+      </Button>
+      <Button href="#unreachable" disabled appearance="outlined">
+        Disabled link — genuinely inert
+      </Button>
+    </div>
+  ),
+};

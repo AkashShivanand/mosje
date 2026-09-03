@@ -63,8 +63,21 @@ const AA_NONTEXT = 3.0;
  */
 const EXEMPT = new Set([]);
 
+/**
+ * COMMENTS ARE STRIPPED FIRST, AND THAT IS NOT A TIDINESS MEASURE.
+ *
+ * This matched the FIRST `.ds-btn--<variant> {` in the raw file, comments included. When
+ * button.css documented its new theming hooks with the obvious example —
+ * `[data-portal="nmba"] .ds-btn--primary { --sa-btn-fill: ... }` — inside a comment, this
+ * function read that example as the primary variant's whole declaration block. It then
+ * reported that primary declares no `--_fill` and no `--_inv-edge`, which is to say: a
+ * WCAG 1.4.11 contrast gate was silently redirected onto a code sample by a documentation
+ * change. Stripping comments is what makes the gate measure the stylesheet.
+ */
+const buttonCssCode = buttonCss.replace(/\/\*[\s\S]*?\*\//g, "");
+
 function declsIn(selector) {
-  const body = buttonCss.match(
+  const body = buttonCssCode.match(
     new RegExp(`\\.ds-btn--${selector}\\s*\\{([^}]*)\\}`),
   );
   if (!body) return new Map();
