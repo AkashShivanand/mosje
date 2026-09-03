@@ -983,3 +983,26 @@ class BranchSelection(unittest.TestCase):
             {"walk": {"prefix": "P"}}]}
         self.assertEqual(self._run(flow, pg), [],
                          "nothing may be captured under the new branch's name")
+
+
+class BranchFieldMatching(unittest.TestCase):
+    """A manifest names a field the way a person reads it — "Case Type" — and the DOM names it
+    `case_type`. Whitespace normalisation alone does not bridge that, and every branch in the
+    first live run aborted with "could not be set" because of the underscore."""
+
+    @staticmethod
+    def _key(t):
+        return re.sub(r"[^a-z0-9]", "", (t or "").lower())
+
+    def test_the_manifest_spelling_matches_the_dom_spelling(self):
+        for human, dom in (("Case Type", "case_type"), ("Case Type", "caseType"),
+                           ("case type", "CASE_TYPE")):
+            self.assertEqual(self._key(human), self._key(dom), f"{human!r} vs {dom!r}")
+
+    def test_a_prefixed_dom_name_still_matches_by_containment(self):
+        self.assertIn(self._key("Financial Year"), self._key("fld_financial_year"))
+
+    def test_the_matcher_is_in_the_shipped_javascript(self):
+        """Guards the fix itself: the normaliser must survive edits to SET_FIELD_JS."""
+        self.assertIn("const key=", D.SET_FIELD_JS)
+        self.assertIn("key(e.name)", D.SET_FIELD_JS)

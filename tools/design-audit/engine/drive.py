@@ -224,6 +224,10 @@ def wait_for_forward(pg, labels, timeout_ms=120000, poll_ms=2000):
 
 SET_FIELD_JS = """([field,value])=>{
  const norm=t=>(t||'').replace(/\\s+/g,' ').trim().toLowerCase();
+ // A field is named "case_type" in the DOM and "Case Type" in a manifest. Comparing those with
+ // whitespace normalisation alone fails on the underscore, which is how every branch in the
+ // first run aborted with "could not be set".
+ const key=t=>norm(t).replace(/[^a-z0-9]/g,'');
  const want=norm(value);
  const labelOf=e=>{
    if(e.labels&&e.labels[0])return e.labels[0].innerText;
@@ -231,11 +235,11 @@ SET_FIELD_JS = """([field,value])=>{
    const w=e.closest('label'); return w?w.innerText:'';
  };
  const matchField=e=>{
-   const n=norm(field);
-   return norm(e.name)===n||norm(e.id)===n||norm(labelOf(e)).includes(n);
+   const n=key(field);
+   return key(e.name)===n||key(e.id)===n||key(labelOf(e)).includes(n);
  };
  for(const e of document.querySelectorAll('input[type=radio]')){
-   if(!matchField(e)&&norm(e.name)!==norm(field))continue;
+   if(!matchField(e))continue;
    if(norm(labelOf(e))===want||norm(e.value)===want||norm(labelOf(e)).includes(want)){
      if(!e.checked){e.click();}
      return 'radio';
