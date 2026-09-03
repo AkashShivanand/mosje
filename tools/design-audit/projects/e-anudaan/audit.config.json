@@ -1,8 +1,8 @@
 {
   "project": "e-anudaan",
-  "portal": "E-Anudaan — Grant-in-Aid (Dev)",
+  "portal": "E-Anudaan \u2014 Grant-in-Aid (UAT): Avyay + Shreshta Mode 2",
   "idPrefix": "EAN",
-  "_purpose": "CLONE RECON, not design QC. There is no Figma design for E-Anudaan — this project exists to capture the live dev portal (screenshots + computed CSS per route per role) as the reference for rebuilding it on @mosje/design-system. Only `--phase capture` is meaningful here; analyze/report compare against a Figma baseline that does not exist.",
+  "_purpose": "CLONE RECON + design audit. Captures the live UAT portal (screenshots + computed CSS per route per role, plus driven wizard/modal/validation states) as the reference for rebuilding on @mosje/design-system, and as the evidence base for a judgment-led design review. There is no Figma handoff for E-Anudaan, so baseline stays `internal` and the Figma-parity gates do not apply.",
   "figma": {
     "fileKey": "",
     "rootNode": "0:0",
@@ -10,7 +10,11 @@
     "tokensFile": "inputs/tokens.json",
     "urlTemplate": ""
   },
-  "capture": { "width": 1440, "dpr": 2, "waitMs": 2200 },
+  "capture": {
+    "width": 1440,
+    "dpr": 2,
+    "waitMs": 2200
+  },
   "live": {
     "auth": {
       "type": "form",
@@ -18,32 +22,169 @@
       "userField": "#mobile_number",
       "passField": "#password",
       "submit": "form button[type='submit']",
-      "_submit_why": "The page has stray type=submit buttons in the SAMAVESH accessibility bar (A-, A, A+, language). Scoping to the form gives exactly one match — verified in-browser 2026-08-12.",
+      "_submit_why": "The page has stray type=submit buttons in the SAMAVESH accessibility bar (A-, A, A+, language). Scoping to the form gives exactly one match \u2014 verified in-browser 2026-08-12.",
       "loginMarker": "/login"
     },
     "roles": [
-      { "name": "pd-aso", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000801" },
-      { "name": "pd-so", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000802" },
-      { "name": "pd-us", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000803" },
-      { "name": "pd-ds", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000804" },
-      { "name": "pd-js", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000810" },
-      { "name": "ifd-aso", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000805" },
-      { "name": "ifd-so", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000806" },
-      { "name": "ifd-us", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000807" },
-      { "name": "ifd-ds", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000808" },
-      { "name": "ifd-js", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000809" },
-      { "name": "programme-director", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000811" },
-      { "name": "pmu-field-officer", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000812" },
-      { "name": "pmu-field-officer-2", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9200000032" },
-      { "name": "js-finance", "base": "https://eanudaan-admin-dev.mosje.in", "user": "9000000033" }
+      {
+        "name": "ngo-user",
+        "base": "https://eanudaan-user-uat.mosje.in",
+        "user": "demo_r20",
+        "auth": {
+          "type": "form",
+          "loginPath": "/login",
+          "tab": "#loginv2-tab-credentials",
+          "_tab_why": "The applicant portal has Credentials / DARPAN ID tabs; the fields only mount once the right tab is active.",
+          "userField": "#loginv2-username",
+          "passField": "#loginv2-password",
+          "submit": "form.loginv2-form button[type='submit']",
+          "loginMarker": "/login",
+          "captcha": {
+            "input": "#loginv2-captcha",
+            "textSelector": ".loginv2-captcha-text",
+            "_why": "The challenge is rendered as plain text in the DOM, not as an image.",
+            "image": ".loginv2-captcha-image",
+            "shotFile": "captcha.png",
+            "answerFile": "captcha-answer.txt",
+            "timeoutMs": 600000
+          }
+        }
+      },
+      {
+        "name": "avyay-pd-aso",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000023"
+      },
+      {
+        "name": "avyay-pd-so",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000024"
+      },
+      {
+        "name": "avyay-pd-us",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000025"
+      },
+      {
+        "name": "avyay-pd-ds",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000026"
+      },
+      {
+        "name": "avyay-pd-js",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000027"
+      },
+      {
+        "name": "avyay-ifd-aso",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000028"
+      },
+      {
+        "name": "avyay-ifd-so",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000029"
+      },
+      {
+        "name": "avyay-ifd-us",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000030"
+      },
+      {
+        "name": "avyay-ifd-ds",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000031"
+      },
+      {
+        "name": "avyay-ifd-js",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000032"
+      },
+      {
+        "name": "avyay-programme-director",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000037"
+      },
+      {
+        "name": "avyay-pmu-inspections",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000033"
+      },
+      {
+        "name": "sm2-pd-aso",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000801"
+      },
+      {
+        "name": "sm2-pd-so",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000802"
+      },
+      {
+        "name": "sm2-pd-us",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000803"
+      },
+      {
+        "name": "sm2-pd-ds",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000804"
+      },
+      {
+        "name": "sm2-pd-js",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000810"
+      },
+      {
+        "name": "sm2-ifd-aso",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000805"
+      },
+      {
+        "name": "sm2-ifd-so",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000806"
+      },
+      {
+        "name": "sm2-ifd-us",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000807"
+      },
+      {
+        "name": "sm2-ifd-ds",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000808"
+      },
+      {
+        "name": "sm2-ifd-js",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000809"
+      },
+      {
+        "name": "sm2-programme-director",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000811"
+      },
+      {
+        "name": "sm2-pmu-field-officer",
+        "base": "https://eanudaan-admin-uat.mosje.in",
+        "user": "9200000812"
+      }
     ],
-    "skipRoutes": ["/login", "/logout", "/terms-and-conditions", "/privacy-policy", "/forgot-password", "/reset-password"]
+    "skipRoutes": [
+      "/login",
+      "/logout",
+      "/terms-and-conditions",
+      "/privacy-policy",
+      "/forgot-password",
+      "/reset-password"
+    ]
   },
   "baseline": {
     "mode": "internal",
-    "_why_internal": "No Figma source and no intent to score DS adoption of the VENDOR build — the live app is Mantine + Poppins, deliberately outside the SAMAVESH system. Scoring it against our tokens would be meaningless. The captures are reference material for the rebuild.",
+    "_why_internal": "No Figma source and no intent to score DS adoption of the VENDOR build \u2014 the live app is Mantine + Poppins, deliberately outside the SAMAVESH system. Scoring it against our tokens would be meaningless. The captures are reference material for the rebuild.",
     "source": "inputs/tokens.json"
   },
   "manifest": "screen-manifest.yaml",
-  "notes": "Passwords live in secrets.json (gitignored), keyed by role name. Never commit them. Source: the 'Portal access — dev and UAT test logins' sheet, E-Anudaan rows."
+  "notes": "Credentials live in secrets.json (gitignored), keyed by role name. Source: the 'Portal access \u2014 DEV and UAT test Logins' sheet, e-Anudaan (Avyay) and e-Anudaan (Shreshta Mode 2) rows. Two schemes share one admin host."
 }

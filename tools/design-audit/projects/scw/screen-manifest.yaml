@@ -1,0 +1,26 @@
+version: 1
+environment: uat  # dev | uat | prod
+stalenessCeiling: 14d
+
+volatile:
+  # Content that changes on every load. Without these, dashboards look dirty on every
+  # run and the per-screen freshness tier stops meaning anything.
+  - pattern: '\b\d{2}/\d{2}/\d{4}\b'
+
+fixtures:
+  sage:
+    feedback: This is a design-QC dry run — no data is submitted.
+
+flows:
+  # No allowSubmit here on purpose — this flow must never be able to click a
+  # forward/approve/submit/save/confirm/delete/send control. It only proves the
+  # driver can walk an entry screen and capture two states. /sage-registration is
+  # known to intermittently fail on the live UAT host; that is accepted.
+  - id: sage-registration-walkthrough
+    role: public
+    entry: /sage-registration
+    steps:
+      - capture: PUBLIC-SAGE-REGISTRATION-INITIAL
+      - fill:
+          fixture: sage
+      - capture: PUBLIC-SAGE-REGISTRATION-FEEDBACK

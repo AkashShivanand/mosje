@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@figma/code-connect": "^2.0.0",
-    "@types/d3-geo": "^3.1.0",
+    "@types/d3-geo": "^3.1.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/topojson-client": "^3.1.5",

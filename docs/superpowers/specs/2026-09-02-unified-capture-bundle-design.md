@@ -43,10 +43,15 @@ Three further gaps make reuse impossible today:
    PNG breaks pin placement even when the design is unchanged.
 5. **Volatile content is masked before hashing**, declared globally and per screen.
 6. **`environment` is a first-class config field.** `dev` / `uat` → drivers may walk through final
-   submission unattended. `prod` → the run halts for human confirmation; the existing
-   `DESTRUCTIVE` regex becomes the `prod` guard rather than a blanket ban.
-7. **Created records are recorded and reused**, so a re-run does not file a fresh application
-   every time.
+   submission unattended. `prod` → **destructive clicks are refused and logged**; the existing
+   `DESTRUCTIVE` regex becomes the `prod` guard rather than a blanket ban. Nothing prompts, halts
+   or waits for a human: a flow on `prod` still navigates to its entry, still runs its `fill`
+   steps against the live form, and still clicks labels that do not match `DESTRUCTIVE`. The
+   refusal is applied twice per click — once to the label the step declared, once to the
+   accessible name of the element that label actually resolved to.
+7. **Created records are recorded**, so a re-run has an identifier to work from rather than
+   harvesting a new one. Recording an id does **not** by itself stop a second submission —
+   nothing navigates to or edits the recorded record. See the risk note below.
 8. **Storage splits by lifetime.** Raw corpus stays local and gitignored (220 MB across six
    portals; it only has to outlive the run by days). Report figures are derived as width-capped
    WebP and committed. `img_hashes.json`, `audit-master.json` and `capture-bundle.json` are
@@ -88,7 +93,8 @@ flows:                            # the expensive tier
     entry: /apply-grant/shreshta-m2/step-1
     allowSubmit: true             # honoured only when environment is dev|uat
     alwaysReplay: false
-    reuseRecord: null             # written back after the first submit
+    reuseRecord: null             # id harvested after the first submit, so a later run need not
+                                  # harvest one again — it does NOT prevent a second submission
     steps:
       - { fill: { fixture: ngo } }
       - { capture: NGO-SHRESHTA-STEP-1 }
@@ -213,7 +219,11 @@ committed.
   above 30%.
 - **A fingerprint can miss server-rendered or CMS content change.** Mitigated by the staleness
   ceiling and by QC defaulting to `--verify` rather than trusting tier 0 alone.
-- **Submission pollutes dev data.** Mitigated by `reuseRecord`. Never automatic on `prod`.
+- **Submission pollutes dev data.** Mitigated by `should_replay` skipping a flow whose entry
+  screen is byte-identical, so an unchanged wizard is not re-submitted at all. `reuseRecord` is
+  **not** the mitigation: it only suppresses re-harvesting an identifier — nothing navigates to or
+  edits the recorded record, so a flow that does replay with both gates open submits again and
+  files a second one. Never automatic on `prod`, where a destructive click is refused and logged.
 - **Authoring a manifest is real per-portal work.** Mitigated by `bootstrap.py` seeding it from an
   existing capture, and by migration being opt-in per portal.
 - **Tier 1 saves less than it appears** — an unchanged screen still costs `goto` + `waitMs` +

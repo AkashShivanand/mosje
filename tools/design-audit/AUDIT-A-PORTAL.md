@@ -58,6 +58,54 @@ The worked example to copy from: **[projects/nhapoa/](projects/nhapoa/README.md)
 - `captures/figma/<SLUG>.png` — design-frame screenshots for the side-by-side boards.
 Deep-dive: `~/.claude/skills/design-qc/references/figma-extraction.md`.
 
+## 2b. Reuse the capture bundle (skip if this portal has never been captured)
+Every live capture writes `out/capture-bundle.json` — one row per screen, carrying a structure
+hash (did the DESIGN change?) and a geometry hash (did the LAYOUT move?), plus a build fingerprint
+per host. A later run consults it before opening a browser:
+
+```bash
+cd tools/design-audit
+python3 engine/run.py --project <name> --phase bundle    # tier 0: freshness check, reuses what's unchanged
+```
+
+`out/freshness.md` records the decision and is a **gate**: it FAILs when a reused screenshot's
+`pngSha256` no longer matches the file on disk. `--force` ignores the bundle and re-captures
+everything; `--verify` always runs the per-screen structure/geometry check even when the build
+fingerprint looks unchanged. `resolve_freshness` never guesses `reuse-all` on doubt — an
+unreachable host, a missing or unreadable fingerprint, an empty host list, or an unreadable
+`capturedAt` all fall back to `verify` or `full`.
+
+Route discovery is **monotonic**: a route recorded for a role in the previous bundle is always
+re-visited this run too (honouring `skipRoutes`), because a slow-loading nav widget makes the
+discovered route set flaky. A route that still fails to load after one extra attempt is logged
+(`navigation failed … screen NOT captured`) and named in a per-role `n screen(s) not captured: …`
+summary — it is never silently backfilled from the previous bundle.
+
+Modal/sub-states no menu reaches are declared in `projects/<name>/screen-manifest.yaml` and driven
+by `engine/drive.py` — see `.claude/rules/design-audit.md`. Submission inside a flow is gated
+**twice**: `environment` (in the manifest or `audit.config.json`) must resolve to `dev` or `uat`
+(case-insensitive), **and** the flow's own `allowSubmit` must be the literal boolean `true` — a
+YAML string like `allowSubmit: "false"` does not open the gate. Undeclared `environment` fails
+SAFE to `prod` (loudly), never to the more permissive `dev`. A `captureValidation` step never
+auto-clicks a destructive label (submit/approve/save/…) while that gate is closed; it logs and
+skips the step, and its automatic click only ever tries the flow's explicit `submitLabel` or
+`"Next"`.
+
+**What a closed gate does and does not do.** Nothing prompts, halts or waits for a human. On
+`prod` a flow still navigates to its entry, still runs its `fill` steps against the **live** form,
+and still clicks any label that does not match `DESTRUCTIVE` — only destructive clicks are refused
+and logged. Run a flow against `prod` only if filling its form with fixture data is itself
+acceptable. The refusal is applied **twice** per click, because Playwright resolves a button name
+by case-insensitive substring: once against the label the step declared, and again against the
+accessible name of the element that label actually resolved to — otherwise `"Next"` passes the
+gate and then clicks `"Save & Next"`. A forward `click:` that does not happen **aborts the rest of
+the flow**, so no later step can file the unmoved page under the next screen's name.
+
+`reuseRecord` records the identifier a successful submission produced. It stops the next run
+**re-harvesting** one — it does not stop a second submission, because nothing navigates to or
+edits the recorded record. The thing that actually prevents a second submission is `should_replay`
+skipping a flow whose entry screen is byte-identical to the previous run's.
+
 ## 3. Capture the live build (assistant)
 ```bash
 cd tools/design-audit
@@ -155,6 +203,7 @@ the new DS-adoption % and finding counts.
 | Mapping | `out/crosscheck.md` | design title ≠ build title (wrong frame↔capture pairing) |
 | Pins | `out/failures.md` | a pin falls outside its element ⊂ crop ⊂ image |
 | Fresh PDF | file mtime/size | the PDF byte size is identical across runs (silently stale render) |
+| Freshness | `out/freshness.md` | a reused capture no longer matches its recorded sha256 |
 
 ## The running principle — it learns every run
 Before a run, read the ledger (`references/audit-rules.md`, Canonical playbook first); after, append every

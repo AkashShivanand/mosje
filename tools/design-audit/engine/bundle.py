@@ -1,0 +1,305 @@
+#!/usr/bin/env python3
+"""The capture bundle: masking, fingerprints, freshness.
+
+Two hashes per screen, deliberately:
+  structureHash — did the DESIGN change?  (excludes x/y/w/h)
+  geometryHash  — did the LAYOUT move?    (includes them, plus pageH)
+
+They are separate because `qc_geometry` asserts pin ⊂ element ⊂ crop ⊂ image. A table that
+gained a row is visually unchanged but geometrically shifted; reusing its screenshot puts every
+pin in the wrong place. One combined hash would either re-shoot constantly or ship broken pins.
+"""
+import hashlib, json, re, urllib.request
+
+MASK_WARN_RATIO = 0.30
+
+STRUCTURE_KEYS = ("tag", "role", "dsComponent", "text", "fontFamily", "fontSize",
+                  "fontWeight", "lineHeight", "color", "bg", "radius", "padding",
+                  "borderStyle", "borderColor")
+GEOMETRY_KEYS = STRUCTURE_KEYS + ("x", "y", "w", "h")
+
+
+def mask_rows(rows, patterns):
+    """Drop volatile rows before hashing. Returns (kept, masked_count).
+
+    Selector-based volatiles are flagged in-browser (rows carry `volatile: true`) because a CSS
+    selector cannot be re-evaluated against extracted JSON. Pattern-based ones are applied here.
+    """
+    compiled = [re.compile(p) for p in patterns or []]
+    kept, masked = [], 0
+    for r in rows:
+        text = r.get("text") or ""
+        if r.get("volatile") or any(c.search(text) for c in compiled):
+            masked += 1
+            continue
+        kept.append(r)
+    return kept, masked
+
+
+def _digest(rows, keys, extra=None):
+    payload = [[r.get(k) for k in keys] for r in rows]
+    # Deliberately no default=str — non-JSON values must raise TypeError loudly.
+    # A silent coercion via str() embeds the process's memory addresses, making
+    # two identical extractions hash differently. That breaks the core guarantee.
+    blob = json.dumps([payload, extra], separators=(",", ":"), sort_keys=True)
+    return hashlib.sha256(blob.encode("utf-8")).hexdigest()
+
+
+def structure_hash(rows):
+    return _digest(rows, STRUCTURE_KEYS)
+
+
+def geometry_hash(rows, page_h):
+    return _digest(rows, GEOMETRY_KEYS, extra={"pageH": page_h})
+
+
+import datetime, os
+
+BUNDLE_VERSION = 1
+
+
+def bundle_path(paths):
+    return os.path.join(paths["out"], "capture-bundle.json")
+
+
+def load_bundle(paths):
+    p = bundle_path(paths)
+    if not os.path.exists(p):
+        return None
+    try:
+        with open(p) as fh:
+            return json.load(fh)
+    except Exception:
+        return None
+
+
+def write_bundle(paths, b):
+    with open(bundle_path(paths), "w") as fh:
+        json.dump(b, fh, indent=2)
+
+
+def now_iso():
+    return datetime.datetime.now().astimezone().isoformat(timespec="seconds")
+
+
+def new_bundle(project, environment, engine_sha):
+    return {"version": BUNDLE_VERSION, "project": project, "environment": environment,
+            "engineSha": engine_sha, "capturedAt": now_iso(),
+            "hosts": {}, "screens": [], "records": {}, "manifestHash": None}
+
+
+def screen_entry(slug, role, route, url, reached_by, png, png_sha256, png_h, page_h,
+                 truncated, rows_path, structure, geometry, masked, total, fields,
+                 wizard, captured_at):
+    return {"slug": slug, "role": role, "route": route, "url": url,
+            "reachedBy": reached_by, "png": png, "pngSha256": png_sha256,
+            "pngH": png_h, "pageH": page_h, "truncated": truncated, "rows": rows_path,
+            "structureHash": structure, "geometryHash": geometry,
+            "maskedRows": masked, "totalRows": total,
+            "fields": fields or [], "wizard": wizard, "capturedAt": captured_at}
+
+
+def find_screen(b, slug):
+    for s in b.get("screens", []):
+        if s.get("slug") == slug:
+            return s
+    return None
+
+
+def upsert_screen(b, entry):
+    for i, s in enumerate(b.setdefault("screens", [])):
+        if s.get("slug") == entry["slug"]:
+            b["screens"][i] = entry
+            return
+    b["screens"].append(entry)
+
+
+def sha256_file(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest()
+
+
+# A hashed asset name: a bundler-generated segment of at least 8 characters from
+# [A-Za-z0-9_-], separated from the base name by "." or "-", immediately before ".js"
+# (optionally ".chunk.js"). Deliberately NOT lowercase-hex-only: Vite's default hashes
+# (`index-m7u9Vf46.js`) are mixed-case, unlike CRA's/Next's, so a lowercase-hex-only
+# pattern returns None for every Vite app. The segment is validated separately (see
+# `_looks_hashed`) to require both a letter and a digit — that is what distinguishes a
+# real content hash from an unhashed name like `app`, `application`, `bundle` or `main`,
+# which would never change and would make tier 0 always say "unchanged".
+# Match only within src="..." or src='...' attributes to avoid false matches in body text.
+_SRC_ATTR = re.compile(r'src=["\']([^"\']+)["\']')
+_HASHED = re.compile(r"([A-Za-z0-9_\-]+[.\-]([A-Za-z0-9_\-]{8,})(?:\.chunk)?\.js)$")
+
+
+def _looks_hashed(segment):
+    """A real bundler hash contains both a letter and a digit. Filters out an unhashed
+    filename that happens to be 8+ characters (`application`, `vendor`) but is not a
+    fingerprint — it never changes, so trusting it would make tier 0 always say
+    'unchanged' even after a real deploy."""
+    return any(c.isalpha() for c in segment) and any(c.isdigit() for c in segment)
+
+
+def extract_fingerprint(html):
+    """Extract the build fingerprint from HTML src attributes.
+
+    Prefers own-origin bundle paths (containing /static/, /_next/, or /assets/ — CRA,
+    Next.js, and Vite's default output dir respectively) when present, falling back to
+    the first hashed filename otherwise. Returns None if no qualified asset is found.
+    """
+    if not html:
+        return None
+
+    # Extract all src attribute values
+    srcs = _SRC_ATTR.findall(html or "")
+    if not srcs:
+        return None
+
+    # Prefer own-origin bundles (CRA, Next.js, or Vite), regardless of source order —
+    # this loop runs to completion over EVERY src before the fallback loop is tried.
+    for src in srcs:
+        match = _HASHED.search(src)
+        if match and _looks_hashed(match.group(2)) and (
+            "/static/" in src or "/_next/" in src or "/assets/" in src
+        ):
+            return match.group(1)
+
+    # Fall back to the first hashed asset, own-origin or not
+    for src in srcs:
+        match = _HASHED.search(src)
+        if match and _looks_hashed(match.group(2)):
+            return match.group(1)
+
+    return None
+
+
+def build_fingerprint(base_url, timeout=10):
+    """One HTTP GET of the app shell. Returns None on any failure — callers treat that as
+    'unknown', which falls through to the per-screen tier rather than trusting the bundle."""
+    try:
+        req = urllib.request.Request(base_url, headers={"User-Agent": "mosje-design-audit"})
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return extract_fingerprint(resp.read(400_000).decode("utf-8", "replace"))
+    except Exception:
+        return None
+
+
+def manifest_hash(man):
+    """Digest of the traversal RECIPE — the flows, declared screens and volatile rules.
+
+    Tier 0 asks "has the app moved?" and answers it from the build fingerprint. It never asked
+    "have we changed what we intend to capture?", so editing screen-manifest.yaml to add three
+    wizard flows produced `reuse-all`, no browser launched, and the new flows silently never
+    ran. A recipe change invalidates the bundle for the same reason a build change does: the
+    bundle no longer answers the question being asked of it.
+    """
+    if man is None:
+        return None
+    recipe = {k: man.get(k) for k in ("screens", "flows", "volatile", "fixtures", "environment")}
+    return hashlib.sha256(
+        json.dumps(recipe, separators=(",", ":"), sort_keys=True, default=repr).encode()
+    ).hexdigest()
+
+
+def decide_screen(prev, structure, geometry):
+    """reuse | reshoot | recapture.
+
+    `reshoot` means the design is unchanged but the layout moved — the findings carry forward,
+    the screenshot does not, because pins are geometry-bound.
+    """
+    if not prev:
+        return "recapture"
+    if prev.get("structureHash") != structure:
+        return "recapture"
+    if prev.get("geometryHash") != geometry:
+        return "reshoot"
+    return "reuse"
+
+
+def resolve_freshness(b, man, cfg, force=False, verify=False, now=None, _probe=None):
+    """Tier 0. Returns {"mode": full|verify|reuse-all, "reason": …}.
+
+    Never returns reuse-all on a doubt: an unreachable host, an unreadable fingerprint or an
+    absent one all fall through to `verify`, which re-checks every screen cheaply.
+    """
+    if force:
+        return {"mode": "full", "reason": "--force"}
+    if b is None:
+        return {"mode": "full", "reason": "no existing bundle"}
+    if not b.get("capturedAt"):
+        return {"mode": "full", "reason": "bundle has no capturedAt"}
+    now = now or datetime.datetime.now().astimezone()
+    try:
+        age = (now - datetime.datetime.fromisoformat(b["capturedAt"])).total_seconds()
+    except (ValueError, TypeError):
+        return {"mode": "full", "reason": "bundle capturedAt is unreadable"}
+    ceiling = 14 * 86400
+    if man is not None:
+        try:
+            import manifest as _M
+        except ImportError:
+            from engine import manifest as _M
+        ceiling = _M.staleness_seconds(man)
+    if age > ceiling:
+        return {"mode": "full", "reason": f"bundle is stale ({int(age // 86400)}d > {ceiling // 86400}d)"}
+    recipe = manifest_hash(man)
+    if man is not None and b.get("manifestHash") != recipe:
+        return {"mode": "full",
+                "reason": "screen-manifest.yaml changed since this bundle was captured"}
+    if verify:
+        return {"mode": "verify", "reason": "--verify requested"}
+    probe = _probe or build_fingerprint
+    bases = sorted({r.get("base") for r in cfg.get("live", {}).get("roles", []) if r.get("base")})
+    if not bases:
+        return {"mode": "verify", "reason": "no host bases in config — nothing could be verified"}
+    recorded = {h.get("base"): h.get("buildFingerprint") for h in (b.get("hosts") or {}).values()}
+    for base in bases:
+        live = probe(base)
+        if not live:
+            return {"mode": "verify", "reason": f"could not read a build fingerprint for {base}"}
+        if recorded.get(base) != live:
+            return {"mode": "verify", "reason": f"build moved on {base}: {recorded.get(base)} -> {live}"}
+    return {"mode": "reuse-all", "reason": "build fingerprint unchanged and bundle is fresh"}
+
+
+def verify_integrity(b, project_dir):
+    """A reused screenshot must still be the file the bundle hashed.
+
+    Same corruption class `capture.audit_capture_integrity()` already catches — a stale or
+    overwritten PNG that still renders, so every gate passes and the audit silently describes a
+    screen that no longer exists. Mechanised here so reuse can never inherit it.
+    """
+    bad = []
+    for s in b.get("screens", []):
+        p = os.path.join(project_dir, s.get("png") or "")
+        if not s.get("png") or not os.path.exists(p) or sha256_file(p) != s.get("pngSha256"):
+            bad.append(s.get("slug"))
+    return bad
+
+
+def write_freshness(paths, b, resolution, decisions, drift):
+    ok = not drift
+    tally = {}
+    for v in (decisions or {}).values():
+        tally[v] = tally.get(v, 0) + 1
+    lines = [
+        "# Freshness gate", "",
+        f"**Result:** {'PASS' if ok else 'FAIL'}", "",
+        f"- Bundle captured: `{b.get('capturedAt')}`",
+        f"- Environment: `{b.get('environment')}`",
+        f"- Engine: `{b.get('engineSha')}`",
+        f"- Decision: **{resolution.get('mode')}** — {resolution.get('reason')}", "",
+    ]
+    if tally:
+        lines += ["| Decision | Screens |", "|---|---|"]
+        lines += [f"| {k} | {v} |" for k, v in sorted(tally.items())] + [""]
+    if drift:
+        lines += ["## FAIL — reused captures no longer match their recorded hash", "",
+                  "Re-capture these before trusting any finding derived from them:", ""]
+        lines += [f"- `{s}`" for s in drift] + [""]
+    with open(os.path.join(paths["out"], "freshness.md"), "w") as fh:
+        fh.write("\n".join(lines))
+    return ok

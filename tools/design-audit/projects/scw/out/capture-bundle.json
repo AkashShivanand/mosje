@@ -1,0 +1,781 @@
+{
+  "version": 1,
+  "project": "scw",
+  "environment": "uat",
+  "engineSha": "e4bbc99b",
+  "capturedAt": "2026-09-03T02:43:45+05:30",
+  "hosts": {
+    "public": {
+      "base": "https://scw-user-uat.mosje.in",
+      "buildFingerprint": "index-m7u9Vf46.js"
+    }
+  },
+  "screens": [
+    {
+      "slug": "PUBLIC-HOME",
+      "role": "public",
+      "route": "/",
+      "url": "https://scw-user-uat.mosje.in/",
+      "reachedBy": "nav",
+      "png": "captures/live/PUBLIC-HOME.png",
+      "pngSha256": "bd34f50598c830efaced6745fa2ce2fad3010e9744f1a56714ac24b73ad9c878",
+      "pngH": 1172,
+      "pageH": 1172,
+      "truncated": false,
+      "rows": "captures/live/PUBLIC-HOME.json",
+      "structureHash": "bd6937865d78783ab5329b5d8aebb64ae4429c78588735dd028cf97d88939070",
+      "geometryHash": "a93b945d70702e7a32cfd855102ad327f07f6ea90af44cb48e31a05d50331352",
+      "maskedRows": 0,
+      "totalRows": 77,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": null,
+      "capturedAt": "2026-09-03T02:43:56+05:30",
+      "designUnchanged": false
+    },
+    {
+      "slug": "PUBLIC-EPLEDGE",
+      "role": "public",
+      "route": "/epledge",
+      "url": "https://scw-user-uat.mosje.in/epledge",
+      "reachedBy": "nav",
+      "png": "captures/live/PUBLIC-EPLEDGE.png",
+      "pngSha256": "91d07ed34094fb9eacb95fb5b048c53b41d7096c1ef6d276f1f3ba99ced7e016",
+      "pngH": 1271,
+      "pageH": 1271,
+      "truncated": false,
+      "rows": "captures/live/PUBLIC-EPLEDGE.json",
+      "structureHash": "4f25dfd7ade606805d7bc3d4222614cc1c5901c767d84a716acd692e69136653",
+      "geometryHash": "89e7fde791b31c116e01f75a48e85b4a35b662230f42b7733f133e4bdbd9c1ec",
+      "maskedRows": 0,
+      "totalRows": 67,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": null,
+      "capturedAt": "2026-09-03T02:44:04+05:30",
+      "designUnchanged": false
+    },
+    {
+      "slug": "PUBLIC-GERIATRIC-CAREGIVERS-ENROLL",
+      "role": "public",
+      "route": "/geriatric-caregivers/enroll",
+      "url": "https://scw-user-uat.mosje.in/geriatric-caregivers/enroll",
+      "reachedBy": "nav",
+      "png": "captures/live/PUBLIC-GERIATRIC-CAREGIVERS-ENROLL.png",
+      "pngSha256": "d5ab82c6c405422b97390fb581baad6e5f4931545f3ba48585ecdaced4b6ab83",
+      "pngH": 1219,
+      "pageH": 1219,
+      "truncated": false,
+      "rows": "captures/live/PUBLIC-GERIATRIC-CAREGIVERS-ENROLL.json",
+      "structureHash": "0960ae8e322f97ba61b7a9b92d7f6b558dd50ffa106036ee179acd48bc6f0d16",
+      "geometryHash": "2efe848c3e8682ce2f0146601a57760ef67454ac0af7557e944605617a48b9dd",
+      "maskedRows": 0,
+      "totalRows": 89,
+      "fields": [
+        {
+          "name": "full_name",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Enter Your Name",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "gender",
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "--Select Gender--",
+            "Male",
+            "Female",
+            "Transgender"
+          ],
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "state_id",
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "Select State",
+            "Andaman And Nicobar Islands",
+            "Andhra Pradesh",
+            "Arunachal Pradesh",
+            "Assam",
+            "Bihar",
+            "Chandigarh",
+            "Chhattisgarh",
+            "Delhi",
+            "Goa",
+            "Gujarat",
+            "Haryana",
+            "Himachal Pradesh",
+            "Jammu And Kashmir",
+            "Jharkhand",
+            "Karnataka",
+            "Kerala",
+            "Ladakh",
+            "Lakshadweep",
+            "Madhya Pradesh",
+            "Maharashtra",
+            "Manipur",
+            "Meghalaya",
+            "Mizoram",
+            "Nagaland",
+            "Odisha",
+            "Puducherry",
+            "Punjab",
+            "Rajasthan",
+            "Sikkim",
+            "Tamil Nadu",
+            "Telangana",
+            "The Dadra And Nagar Haveli And Daman And Diu",
+            "Tripura",
+            "Uttarakhand",
+            "Uttar Pradesh",
+            "West Bengal"
+          ],
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "district_id",
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "Select City"
+          ],
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "full_address",
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Enter your address",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "pincode",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Enter Pincode",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "mobile_number",
+          "label": null,
+          "type": "text",
+          "required": false,
+          "options": null,
+          "helper": "Enter Your Mobile",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "email_id",
+          "label": null,
+          "type": "email",
+          "required": false,
+          "options": null,
+          "helper": "Enter Your Email",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "training_certificate_date",
+          "label": null,
+          "type": "date",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "file",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": null,
+      "capturedAt": "2026-09-03T02:44:10+05:30",
+      "designUnchanged": false
+    },
+    {
+      "slug": "PUBLIC-OUR-SERVICES",
+      "role": "public",
+      "route": "/our-services",
+      "url": "https://scw-user-uat.mosje.in/our-services",
+      "reachedBy": "nav",
+      "png": "captures/live/PUBLIC-OUR-SERVICES.png",
+      "pngSha256": "6dfe454401a11a4a5861c69211d3564c8489b4acf6037336da394fb83d45d7fc",
+      "pngH": 1000,
+      "pageH": 6000,
+      "truncated": true,
+      "rows": "captures/live/PUBLIC-OUR-SERVICES.json",
+      "structureHash": "f1f33958aac49d6abbdfe7688f0d81eaf8c448c66fb7571b1e316849d50f5729",
+      "geometryHash": "9ba153da0bcefe57b2e7090c993525b48d7baf025c8e816104250df327805ca8",
+      "maskedRows": 0,
+      "totalRows": 200,
+      "fields": [
+        {
+          "name": null,
+          "label": null,
+          "type": "search",
+          "required": false,
+          "options": null,
+          "helper": " Search by NGO name, city, district, state, or pincode",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "select",
+          "required": false,
+          "options": [
+            "All Projects",
+            "Continuous Care Homes",
+            "Mobile Medicare Units",
+            "Physiotherapy Clinics",
+            "Senior Citizen Homes"
+          ],
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": null,
+      "capturedAt": "2026-09-03T02:44:59+05:30",
+      "designUnchanged": false
+    },
+    {
+      "slug": "PUBLIC-SAGE-REGISTRATION",
+      "role": "public",
+      "route": "/sage-registration",
+      "url": "https://scw-user-uat.mosje.in/sage-registration",
+      "reachedBy": "nav",
+      "png": "captures/live/PUBLIC-SAGE-REGISTRATION.png",
+      "pngSha256": "dca33637085d25913f7cc020d3c0f3fa3f96e4f80e57c58b1f9791d054986e39",
+      "pngH": 6000,
+      "pageH": 6000,
+      "truncated": false,
+      "rows": "captures/live/PUBLIC-SAGE-REGISTRATION.json",
+      "structureHash": "f9e4cb1e0cf53f39342206d2b63fae55ada5b2dba34b87b194f01174b7b030d3",
+      "geometryHash": "d6d61ecb7cde58081c5edf41899c2bdacce19b6ae569ab3634f2aea317101e75",
+      "maskedRows": 0,
+      "totalRows": 72,
+      "fields": [
+        {
+          "name": null,
+          "label": "I confirm that my organization meets the SAGE eligibility criteria mentioned above.",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": null,
+      "capturedAt": "2026-09-03T02:46:03+05:30",
+      "designUnchanged": false
+    },
+    {
+      "slug": "PUBLIC-ABOUT-US",
+      "role": "public",
+      "route": "/about-us",
+      "url": "https://scw-user-uat.mosje.in/about-us",
+      "reachedBy": "nav",
+      "png": "captures/live/PUBLIC-ABOUT-US.png",
+      "pngSha256": "709b602ce38a5e661057ab000a88d79b79f2576d84250e9c5cd24decf69a1d57",
+      "pngH": 6000,
+      "pageH": 6000,
+      "truncated": false,
+      "rows": "captures/live/PUBLIC-ABOUT-US.json",
+      "structureHash": "4db35423afcdd72c9ff698beb46d5e450d69fbf2e2584aad62e34d2f567887e6",
+      "geometryHash": "0d2cb0b5047020342cc7e3ce62eaa72ef8923ab5411722fd25ef36185501a163",
+      "maskedRows": 0,
+      "totalRows": 62,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": null,
+      "capturedAt": "2026-09-03T02:46:08+05:30",
+      "designUnchanged": false
+    },
+    {
+      "slug": "PUBLIC-TERMS-CONDITIONS",
+      "role": "public",
+      "route": "/terms-conditions",
+      "url": "https://scw-user-uat.mosje.in/terms-conditions",
+      "reachedBy": "nav",
+      "png": "captures/live/PUBLIC-TERMS-CONDITIONS.png",
+      "pngSha256": "437582c0db1b086bc992be815890b0cce736c751e6b5b09e9ac06f64f3af8565",
+      "pngH": 6000,
+      "pageH": 6000,
+      "truncated": false,
+      "rows": "captures/live/PUBLIC-TERMS-CONDITIONS.json",
+      "structureHash": "0b673e081e663475ab0aa6b59407549d46702530878c5cdbcd4a0e80b287475d",
+      "geometryHash": "43f77d47f5047cc0502342a11f2bcc024820cae6582381e45ac73d067199aec0",
+      "maskedRows": 0,
+      "totalRows": 62,
+      "fields": [
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": null,
+      "capturedAt": "2026-09-03T02:46:14+05:30",
+      "designUnchanged": false
+    },
+    {
+      "slug": "PUBLIC-SAGE-REGISTRATION-INITIAL",
+      "role": "public",
+      "route": "https://scw-user-uat.mosje.in/sage-registration",
+      "url": "https://scw-user-uat.mosje.in/sage-registration",
+      "reachedBy": "flow:sage-registration-walkthrough",
+      "png": "captures/live/PUBLIC-SAGE-REGISTRATION-INITIAL.png",
+      "pngSha256": "8f5de77a2ec7d41c807224b493be3506a18c2f8c6915940a1699e29293b4c7bc",
+      "pngH": null,
+      "pageH": 6000,
+      "truncated": false,
+      "rows": "captures/live/PUBLIC-SAGE-REGISTRATION-INITIAL.json",
+      "structureHash": "f9e4cb1e0cf53f39342206d2b63fae55ada5b2dba34b87b194f01174b7b030d3",
+      "geometryHash": "d6d61ecb7cde58081c5edf41899c2bdacce19b6ae569ab3634f2aea317101e75",
+      "maskedRows": 0,
+      "totalRows": 72,
+      "fields": [
+        {
+          "name": null,
+          "label": "I confirm that my organization meets the SAGE eligibility criteria mentioned above.",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "sage-registration-walkthrough",
+        "step": 1,
+        "of": 2
+      },
+      "capturedAt": "2026-09-03T02:46:19+05:30"
+    },
+    {
+      "slug": "PUBLIC-SAGE-REGISTRATION-FEEDBACK",
+      "role": "public",
+      "route": "https://scw-user-uat.mosje.in/sage-registration",
+      "url": "https://scw-user-uat.mosje.in/sage-registration",
+      "reachedBy": "flow:sage-registration-walkthrough",
+      "png": "captures/live/PUBLIC-SAGE-REGISTRATION-FEEDBACK.png",
+      "pngSha256": "8f5de77a2ec7d41c807224b493be3506a18c2f8c6915940a1699e29293b4c7bc",
+      "pngH": null,
+      "pageH": 6000,
+      "truncated": false,
+      "rows": "captures/live/PUBLIC-SAGE-REGISTRATION-FEEDBACK.json",
+      "structureHash": "f9e4cb1e0cf53f39342206d2b63fae55ada5b2dba34b87b194f01174b7b030d3",
+      "geometryHash": "d6d61ecb7cde58081c5edf41899c2bdacce19b6ae569ab3634f2aea317101e75",
+      "maskedRows": 0,
+      "totalRows": 72,
+      "fields": [
+        {
+          "name": null,
+          "label": "I confirm that my organization meets the SAGE eligibility criteria mentioned above.",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "checkbox",
+          "label": "Toggle light and dark mode",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Describe your issues here...",
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": "suggested-feedback-checkbox",
+          "label": "Do you like to give feedback",
+          "type": "checkbox",
+          "required": false,
+          "options": null,
+          "helper": null,
+          "validationMessage": null,
+          "conditionalOn": null
+        },
+        {
+          "name": null,
+          "label": null,
+          "type": "textarea",
+          "required": false,
+          "options": null,
+          "helper": "Suggested Feedback",
+          "validationMessage": null,
+          "conditionalOn": null
+        }
+      ],
+      "wizard": {
+        "flow": "sage-registration-walkthrough",
+        "step": 2,
+        "of": 2
+      },
+      "capturedAt": "2026-09-03T02:46:52+05:30"
+    }
+  ],
+  "records": {}
+}

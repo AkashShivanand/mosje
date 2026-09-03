@@ -1,0 +1,687 @@
+{
+  "portal": "National Portal for Transgender Persons (dev)",
+  "idPrefix": "TG",
+  "generated": "auto",
+  "status": "MACHINE-DRAFT",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=13-401",
+  "method": "Machine pass (project-agnostic engine). Baseline=derived. DS-adoption 31.2%. Coverage gate=WARN. \ud83e\udd16 machine checks only; human sign-off (\ud83d\udc64) required before CERTIFIED.",
+  "coverage": {
+    "figma_frames": 38,
+    "captured": 45,
+    "mapped": 14,
+    "unmapped": 0,
+    "design_only": 24,
+    "extra_build_only": 31,
+    "mismap": 0
+  },
+  "coverage_gate": "WARN",
+  "ds_adoption_pct": 31.2,
+  "deferred": [],
+  "screens": [
+    {
+      "slug": "CITIZEN-SIGN-IN",
+      "name": "Citizen \u00b7 Sign In",
+      "figmaImg": "captures/figma/design-CITIZEN-LOGIN.png",
+      "liveImg": "captures/live/CITIZEN-LOGIN.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9379-115794",
+      "liveUrl": "https://tg-user-dev.mosje.in/auth/sign-in",
+      "note": "Design intent = SMILE-Transgender unified login (SMILE-Transgender | Citizen, node 9379:115794). Build = tg-user-dev citizen portal. Findings are dev-fixable fidelity gaps against that design frame.",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-CITIZENSIGNIN-001",
+          "element": "Role-tab switcher removed",
+          "section": "sign-in-form",
+          "axis": "Components & States",
+          "severity": "Major",
+          "check": "\ud83d\udc64 human",
+          "figma": "The login card leads with a three-way role switcher \u2014 Citizen \u00b7 Admin \u00b7 Garima Greh \u2014 with Citizen active.",
+          "live": "The citizen build renders no role tabs; the card opens straight into the 'Log In to your account' heading.",
+          "fix": "Restore the Citizen / Admin / Garima Greh role-tab switcher at the top of the login card, per the design frame.",
+          "figmaBox": [
+            0,
+            151,
+            1440,
+            569
+          ],
+          "liveBox": [
+            0,
+            150,
+            1440,
+            690
+          ],
+          "sectionBox": [
+            0,
+            150,
+            1440,
+            690
+          ],
+          "figmaPin": {
+            "x": 80,
+            "y": 21.3
+          },
+          "livePin": {
+            "x": 80,
+            "y": 16.7
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-CITIZENSIGNIN-002",
+          "element": "Extra Mobile Number field",
+          "section": "sign-in-form",
+          "axis": "Components & States",
+          "severity": "Major",
+          "check": "\ud83d\udc64 human",
+          "figma": "Design offers a single Email field under 'or sign in with credentials', then a Send OTP button.",
+          "live": "Build inserts a second 'Mobile Number' field (with its own 'or' divider) below the Email Id field \u2014 a field absent from the design.",
+          "fix": "Align to the design's single-field pattern, or update the design frame if the Mobile Number entry is a deliberate addition.",
+          "figmaBox": [
+            0,
+            151,
+            1440,
+            569
+          ],
+          "liveBox": [
+            0,
+            150,
+            1440,
+            690
+          ],
+          "sectionBox": [
+            0,
+            150,
+            1440,
+            690
+          ],
+          "figmaPin": {
+            "x": 80,
+            "y": 78.7
+          },
+          "livePin": {
+            "x": 80,
+            "y": 83.3
+          }
+        },
+        {
+          "num": 3,
+          "id": "TG-CITIZENSIGNIN-003",
+          "element": "Heading casing",
+          "section": "sign-in-form",
+          "axis": "Typography",
+          "severity": "Minor",
+          "check": "\ud83d\udc64 human",
+          "figma": "Heading reads 'Log in to your account' (sentence case).",
+          "live": "Build renders 'Log In to your account' \u2014 'In' is capitalised.",
+          "fix": "Match the design's sentence-case heading: 'Log in to your account'.",
+          "figmaBox": [
+            0,
+            151,
+            1440,
+            569
+          ],
+          "liveBox": [
+            0,
+            150,
+            1440,
+            690
+          ],
+          "sectionBox": [
+            0,
+            150,
+            1440,
+            690
+          ],
+          "figmaPin": {
+            "x": 72,
+            "y": 21.3
+          },
+          "livePin": {
+            "x": 72,
+            "y": 16.7
+          }
+        }
+      ]
+    },
+    {
+      "slug": "ADMIN-LOGIN",
+      "name": "Admin \u00b7 Log In",
+      "figmaImg": "captures/figma/design-ADMIN-LOGIN.png",
+      "liveImg": "captures/live/ADMIN-LOGIN.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=9387-138143",
+      "liveUrl": "https://tg-admin-dev.mosje.in/login",
+      "note": "Design intent = SMILE-Transgender unified login, Admin tab (node 9387:138143). Build = tg-admin-dev admin portal. Role tabs (Citizen/Admin/Garima Greh) are present in this build, unlike the citizen portal.",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-ADMINLOGIN-001",
+          "element": "Extra Mobile Number field",
+          "section": "login-form",
+          "axis": "Components & States",
+          "severity": "Major",
+          "check": "\ud83d\udc64 human",
+          "figma": "Design offers a single Email field, then a Send OTP button.",
+          "live": "Build adds a second 'Mobile Number' field (with an 'or' divider) below Email \u2014 a field absent from the design.",
+          "fix": "Align to the design's single Email-field pattern, or update the design frame if Mobile Number entry is a deliberate addition.",
+          "figmaBox": [
+            0,
+            161,
+            1440,
+            521
+          ],
+          "liveBox": [
+            0,
+            210,
+            1440,
+            620
+          ],
+          "sectionBox": [
+            0,
+            210,
+            1440,
+            620
+          ],
+          "figmaPin": {
+            "x": 80,
+            "y": 75.3
+          },
+          "livePin": {
+            "x": 80,
+            "y": 78.0
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-ADMINLOGIN-002",
+          "element": "Heading casing",
+          "section": "login-form",
+          "axis": "Typography",
+          "severity": "Minor",
+          "check": "\ud83d\udc64 human",
+          "figma": "Heading reads 'Log in to your account' (sentence case).",
+          "live": "Build renders 'Log In to your account' \u2014 'In' is capitalised.",
+          "fix": "Match the design's sentence-case heading: 'Log in to your account'.",
+          "figmaBox": [
+            0,
+            161,
+            1440,
+            521
+          ],
+          "liveBox": [
+            0,
+            210,
+            1440,
+            620
+          ],
+          "sectionBox": [
+            0,
+            210,
+            1440,
+            620
+          ],
+          "figmaPin": {
+            "x": 72,
+            "y": 24.6
+          },
+          "livePin": {
+            "x": 72,
+            "y": 22.0
+          }
+        }
+      ]
+    },
+    {
+      "slug": "PORTAL-PICKER",
+      "name": "All roles \u00b7 Portal Picker (Change)",
+      "figmaImg": "captures/figma/design-LOGIN-PORTAL-PICKER.png",
+      "liveImg": "captures/live/CITIZEN-LOGIN-CHANGE.png",
+      "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=8103-39372",
+      "liveUrl": "https://tg-user-dev.mosje.in/auth/sign-in",
+      "note": "The '\u21c4 Change' button in the login footer opens this portal chooser. Verified faithful to the design (same 'Choose a portal to login' list + layout) \u2014 shown as a parity reference, no fidelity defects.",
+      "findings": []
+    },
+    {
+      "slug": "GLOBAL-DSCONF",
+      "name": "Global \u2014 Design-System Conformance (machine-verified every element)",
+      "figmaImg": null,
+      "liveImg": "captures/live/CENTRAL-ADMIN-APPLICATION-DETAIL.png",
+      "figmaUrl": null,
+      "liveUrl": null,
+      "note": "DS-adoption: 31.2% of 2300 elements use design-system tokens. Baseline mode: derived. The full deviation table is in out/conformance.json. These are \ud83e\udd16 machine checks \u2014 verify severity with a human before certifying.",
+      "findings": [
+        {
+          "num": 1,
+          "id": "TG-DSCONF-001",
+          "element": "Off-token color: #334155",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "192 element(s) across 11 screen(s) render color=#334155, which is not a design-system token (first seen near \"ADDRESS & CONTACT\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CENTRAL-ADMIN-APPLICATION-DETAIL.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 52,
+            "y": 72.4
+          }
+        },
+        {
+          "num": 2,
+          "id": "TG-DSCONF-002",
+          "element": "Off-token color: #001be00",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "157 element(s) across 26 screen(s) render color=#001be00, which is not a design-system token (first seen near \"Government of India\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/ADMIN-LOGIN-CHANGE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 16,
+            "y": 8.0
+          }
+        },
+        {
+          "num": 3,
+          "id": "TG-DSCONF-003",
+          "element": "Off-token color: #000000",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "148 element(s) across 45 screen(s) render color=#000000, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/ADMIN-LOGIN-CHANGE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 96,
+            "y": 92.7
+          }
+        },
+        {
+          "num": 4,
+          "id": "TG-DSCONF-004",
+          "element": "Off-token color: #00d000",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "123 element(s) across 24 screen(s) render color=#00d000, which is not a design-system token (first seen near \"Choose a portal to login\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/ADMIN-LOGIN-CHANGE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 77,
+            "y": 5.0
+          }
+        },
+        {
+          "num": 5,
+          "id": "TG-DSCONF-005",
+          "element": "Off-token color: #0f172a",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "105 element(s) across 18 screen(s) render color=#0f172a, which is not a design-system token (first seen near \"BETA\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CENTRAL-ADMIN-APPLICATION-DETAIL.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 7,
+            "y": 3.9
+          }
+        },
+        {
+          "num": 6,
+          "id": "TG-DSCONF-006",
+          "element": "Off-token color: #0022700",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "85 element(s) across 13 screen(s) render color=#0022700, which is not a design-system token (first seen near \"Single Access Mechanism for Al\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/ADMIN-LOGIN-CHANGE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 92,
+            "y": 9.7
+          }
+        },
+        {
+          "num": 7,
+          "id": "TG-DSCONF-007",
+          "element": "Off-token color: #001500",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "77 element(s) across 14 screen(s) render color=#001500, which is not a design-system token (first seen near \"Department of Social Justice &\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/ADMIN-LOGIN-CHANGE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 16,
+            "y": 11.2
+          }
+        },
+        {
+          "num": 8,
+          "id": "TG-DSCONF-008",
+          "element": "Off-token color: #0017500",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "71 element(s) across 26 screen(s) render color=#0017500, which is not a design-system token (first seen near \"Ministry of Social Justice & E\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/ADMIN-LOGIN-CHANGE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 16,
+            "y": 9.4
+          }
+        },
+        {
+          "num": 9,
+          "id": "TG-DSCONF-009",
+          "element": "Off-token fontSize: 10",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Major",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "63 element(s) across 45 screen(s) render fontSize=10, which is not a design-system token (first seen near \"Beta\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/ADMIN-LOGIN-CHANGE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 6,
+            "y": 6.3
+          }
+        },
+        {
+          "num": 10,
+          "id": "TG-DSCONF-010",
+          "element": "Off-token color: #475569",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "62 element(s) across 14 screen(s) render color=#475569, which is not a design-system token (first seen near \"Back to Dashboard\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CENTRAL-ADMIN-APPLICATION-DETAIL.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 28,
+            "y": 11.7
+          }
+        },
+        {
+          "num": 11,
+          "id": "TG-DSCONF-011",
+          "element": "Off-token color: #0a3a74",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "58 element(s) across 12 screen(s) render color=#0a3a74, which is not a design-system token (first seen near \"Terms of Use\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/ADMIN-LOGIN-CHANGE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 87,
+            "y": 76.6
+          }
+        },
+        {
+          "num": 12,
+          "id": "TG-DSCONF-012",
+          "element": "Off-token color: #0024100",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "54 element(s) across 9 screen(s) render color=#0024100, which is not a design-system token (first seen near \"*\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/CITIZEN-CH-APPLY-DOCUMENTS-FILLED.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "sectionBox": [
+            0,
+            0,
+            1440,
+            1623
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 35,
+            "y": 38.1
+          }
+        }
+      ]
+    }
+  ]
+}
