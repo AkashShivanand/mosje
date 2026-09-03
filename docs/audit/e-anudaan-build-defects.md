@@ -117,22 +117,25 @@ assumption the code does.
 
 ---
 
-## The deployed UAT build is not this source
+## Our clone has drifted from the vendor's live portal
 
-The audit was run against `eanudaan-user-uat.mosje.in`, and that deployment is **behind `main`**:
+**Correction to an earlier reading in this file.** `eanudaan-user-uat.mosje.in` is **the vendor's
+portal, not our deployment.** Both it and `-dev` serve `/assets/index-<hash>.js` — a Vite build
+with the Bhashini translation plugin — while our clone is Next.js under `/_next/`. Our clone is
+not deployed at either address. So the differences below are not a stale deployment; they are
+**our clone drifting from the thing it is a clone of.**
 
-| | Source | Live UAT |
+| | Vendor live (UAT) | Our clone |
 |---|---|---|
-| AVYAY steps | 8 (Justification present) | 7 (Justification absent) |
-| SHRESHTA_M2 documents | 20 | 7 counted, 10 slots rendered |
+| AVYAY steps, new project | 8 | 8 ✓ |
+| AVYAY steps, renewal | 7 | **8** ✗ |
+| AVYAY step 1, new project | FY only | FY **+ Installment** ✗ |
+| SHRESHTA_M2 documents | 7 counted (10 slots rendered) | **20** ✗ |
 | NAPDDR steps | 10 | 10 ✓ |
 
-`Justification` was added on **2026-08-23** (`215096bd`). So the deployment predates that, while
-matching NAPDDR's later 10-step form — meaning **it is not a clean snapshot of any single commit.**
-
-**Everything in the design audit describes that deployment, not this source.** Findings about
-layout, vocabulary, status taxonomy and accessibility almost certainly still apply, but no finding
-in it should be actioned without checking the current code first.
+The vendor's UAT is also newer than the dev site our schema was transcribed from on 2026-08-22 —
+it has gained SHRESHTA Mode 2 and a 24-role officer hierarchy. **The transcription is a year-old
+snapshot of a moving target**, which is the underlying reason for every row above.
 
 ---
 

@@ -222,6 +222,61 @@ def wait_for_forward(pg, labels, timeout_ms=120000, poll_ms=2000):
     return False
 
 
+SET_FIELD_JS = """([field,value])=>{
+ const norm=t=>(t||'').replace(/\\s+/g,' ').trim().toLowerCase();
+ const want=norm(value);
+ const labelOf=e=>{
+   if(e.labels&&e.labels[0])return e.labels[0].innerText;
+   if(e.getAttribute('aria-label'))return e.getAttribute('aria-label');
+   const w=e.closest('label'); return w?w.innerText:'';
+ };
+ const matchField=e=>{
+   const n=norm(field);
+   return norm(e.name)===n||norm(e.id)===n||norm(labelOf(e)).includes(n);
+ };
+ for(const e of document.querySelectorAll('input[type=radio]')){
+   if(!matchField(e)&&norm(e.name)!==norm(field))continue;
+   if(norm(labelOf(e))===want||norm(e.value)===want||norm(labelOf(e)).includes(want)){
+     if(!e.checked){e.click();}
+     return 'radio';
+   }
+ }
+ for(const e of document.querySelectorAll('select')){
+   if(!matchField(e))continue;
+   const o=[...e.options].find(o=>norm(o.text)===want||norm(o.text).includes(want));
+   if(o){e.value=o.value;e.dispatchEvent(new Event('change',{bubbles:true}));return 'select';}
+ }
+ for(const e of document.querySelectorAll('input[type=checkbox]')){
+   if(!matchField(e))continue;
+   const on=['yes','true','on','checked'].includes(want);
+   if(e.checked!==on){e.click();}
+   return 'checkbox';
+ }
+ return null;}"""
+
+
+def set_field(pg, field, value):
+    """Set ONE controlling field to a named value, whatever control renders it.
+
+    `fill_all` deliberately never overwrites an answer that is already there — which is right for
+    filling a form and wrong for choosing a branch. A saved draft set to "Ongoing / Renewal" is
+    how 43 wizard screens were captured on one path while the other was never seen: the walker
+    filled around the controller and never touched it.
+    """
+    try:
+        kind = pg.evaluate(SET_FIELD_JS, [field, value])
+    except Exception as e:
+        print(f"    ! set {field!r} failed ({str(e)[:60]})", flush=True)
+        return False
+    if kind:
+        pg.wait_for_timeout(1200)
+        print(f"    · set {field!r} = {value!r} ({kind})", flush=True)
+        return True
+    print(f"    ! no control matched {field!r} — branch NOT set, so the walk that follows would "
+          f"repeat the branch already captured", flush=True)
+    return False
+
+
 def _is_review(pos, lab):
     """Is this the wizard's final review-and-submit page?
 
@@ -524,6 +579,21 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
                 print(f"    ! upload fixture missing: {path}", flush=True)
             else:
                 upload_all(pg, path, spec.get("limit"))
+        elif "set" in step:
+            spec = step["set"]
+            if not set_field(pg, spec["field"], spec["value"]) and spec.get("required", True):
+                print(f"[flow {fid}] ABORTED — {spec['field']!r} could not be set to "
+                      f"{spec['value']!r}; walking on would re-capture the branch already held",
+                      flush=True)
+                break
+        elif "goto" in step:
+            target = base + step["goto"] if base else step["goto"]
+            for wait in ("networkidle", "domcontentloaded"):
+                try:
+                    pg.goto(target, wait_until=wait, timeout=45000); break
+                except Exception:
+                    continue
+            pg.wait_for_timeout(cfg.get("capture", {}).get("waitMs", 1800))
         elif "walk" in step:
             spec = step["walk"] if isinstance(step["walk"], dict) else {}
             done.extend(walk_wizard(pg, spec, flow, man, cfg, paths, bdl, role, fid, allowed, why))

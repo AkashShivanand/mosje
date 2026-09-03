@@ -930,3 +930,56 @@ class SlugReadability(unittest.TestCase):
     def test_an_overlong_title_is_capped_not_left_to_grow(self):
         slug = D._walk_slug("P", ("u", 1, "A " * 60), {})
         self.assertLessEqual(len(slug), 60)
+
+
+class BranchSelection(unittest.TestCase):
+    """`fill_all` never overwrites an answer that is already there — right for filling a form,
+    wrong for choosing a branch. A saved draft set to "Ongoing / Renewal" is how 43 wizard screens
+    were captured on one path while the other was never seen. `set` exists to flip the controller
+    explicitly, and a flow whose branch could not be set must ABORT rather than re-walk the branch
+    it already holds."""
+
+    CFG = {"live": {"roles": [{"name": "ngo", "base": "http://fake.invalid"}]}, "capture": {}}
+
+    class _Page(FakePage):
+        def __init__(self, settable=True):
+            super().__init__(buttons=["Next →"])
+            self.settable, self.set_calls = settable, []
+
+        def evaluate(self, js, arg=None):
+            if "querySelectorAll('input[type=radio]')" in js:
+                self.set_calls.append(tuple(arg))
+                return "radio" if self.settable else None
+            if "innerText.match" in js:
+                return {"n": 1, "of": 1, "title": "Application Type"}
+            if "querySelectorAll('button')" in js:
+                return "ready"
+            return 0
+
+        def query_selector_all(self, sel):
+            return []
+
+    def _run(self, flow, page):
+        captured = []
+        with unittest.mock.patch.object(D, "_capture_state",
+                                        lambda *a, **k: captured.append(a[1])):
+            D.run_flow(page, flow, {}, self.CFG,
+                       {"captures_live": "/dev/null", "project": "/dev/null"}, {}, "uat")
+        return captured
+
+    def test_the_controller_is_set_before_the_walk(self):
+        pg = self._Page()
+        flow = {"id": "f", "role": "ngo", "allowSubmit": True, "steps": [
+            {"set": {"field": "case_type", "value": "New project"}},
+            {"walk": {"prefix": "P"}}]}
+        captured = self._run(flow, pg)
+        self.assertEqual(pg.set_calls, [("case_type", "New project")])
+        self.assertIn("P-S01-APPLICATION-TYPE-ARRIVED", captured)
+
+    def test_a_branch_that_cannot_be_set_aborts_instead_of_recapturing(self):
+        pg = self._Page(settable=False)
+        flow = {"id": "f", "role": "ngo", "allowSubmit": True, "steps": [
+            {"set": {"field": "case_type", "value": "New project"}},
+            {"walk": {"prefix": "P"}}]}
+        self.assertEqual(self._run(flow, pg), [],
+                         "nothing may be captured under the new branch's name")
