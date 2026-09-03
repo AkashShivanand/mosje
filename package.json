@@ -98,6 +98,7 @@
     "check:a11y-evidence:baseline": "node tools/a11y-evidence/check.mjs --baseline",
     "check:a11y-evidence:report": "node tools/a11y-evidence/check.mjs --report",
     "test:a11y": "playwright test e2e/a11y",
+    "check:focus-ring": "node tools/focus-ring/check.mjs",
     "check:ds-lint": "node tools/ds-lint/check.mjs",
     "check:ds-lint:baseline": "node tools/ds-lint/check.mjs --baseline"
   },

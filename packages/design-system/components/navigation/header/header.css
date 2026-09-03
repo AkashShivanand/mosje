@@ -1880,3 +1880,18 @@
 :root:has(.ds-hdr.is-sticky) {
   scroll-padding-top: calc(var(--sa-header-pinned, 204px) + 4px);
 }
+
+@layer components {
+  /* forced-colors mode does not paint `box-shadow`, so the ring above is not
+     drawn there at all. An `outline` IS painted, and `Highlight` is the
+     system's own focus colour, so the ring follows the theme the reader chose.
+     Same footprint as the shadow it stands in for; later source order with equal
+     specificity is what lets it beat the `outline: none` above. */
+  @media (forced-colors: active) {
+    .ds-hdr-account.is-button:focus-visible,
+    .ds-hdr-mega-item:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
+  }
+}
