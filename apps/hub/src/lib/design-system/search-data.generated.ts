@@ -868,7 +868,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Portal Login Template — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/auth/portal-login-template",
-    "keywords": "portal login template — design system auth & dashboard three audiences, whatever they are called three form modes, and one handoff how the mode selector presents itself example linking straight to a role tab portalloginconfig keyboard portalLoginUrl(path, roleId?) roleFromUrl(href) ROLE_PARAM portalId portalName portalTagline portalDescription changeHref roles defaultRoleId brandAssets extraFields extraContent links tokens wcag accessibility",
+    "keywords": "portal login template — design system auth & dashboard three audiences, whatever they are called what the role decides, and what the portal decides three form modes, and one handoff how the mode selector presents itself example linking straight to a role tab portalloginconfig keyboard portalLoginUrl(path, roleId?) roleFromUrl(href) ROLE_PARAM portalId portalName portalTagline portalDescription changeHref roles defaultRoleId captcha brandAssets extraFields extraContent links tokens wcag accessibility",
     "description": "A whole portal login page built from one config object — the role tabs, the authentication mode selector, the credential form and the deep-linked URL.",
     "type": "component",
     "iconName": "lock"

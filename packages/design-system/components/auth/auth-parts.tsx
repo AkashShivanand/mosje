@@ -241,9 +241,11 @@ export function SSOButton({
     <>
       <span className="ds-auth-sso__mark" aria-hidden="true">
         {markSrc ? (
-          // eslint-disable-next-line @next/next/no-img-element -- the DS package
-          // has no next/image dependency; the mark is a fixed-size decorative
-          // raster already sized by the stylesheet.
+          // A raw <img> and not next/image: the DS package carries no Next
+          // dependency, and the mark is a fixed-size decorative raster the
+          // stylesheet already sizes. No eslint-disable sits here because the
+          // design system's own config never loads the Next plugin, so the
+          // directive was unused and ds-lint counts an unused one as a finding.
           <img src={markSrc} alt="" className="ds-auth-sso__markimg" />
         ) : (
           (mark ?? <Icon name="folder_shared" size={32} aria-hidden />)
