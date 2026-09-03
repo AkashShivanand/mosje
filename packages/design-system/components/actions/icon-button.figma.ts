@@ -15,6 +15,22 @@ const instance = figma.selectedInstance;
  * value called `Default` that rendered with NO fill and NO stroke — it was the *text*
  * appearance wearing a name that made the quietest option sound like the normal one.
  */
+/**
+ * Figma `Type` → `ButtonVariant`. ADDED 2026-09-03, with the axis itself.
+ *
+ * The set had Size x Sub-type x State and nothing else, so a danger icon button — the
+ * delete control on a table row, the commonest icon-only action in the estate — could not
+ * be drawn at all, while `IconButton` extends `ButtonProps` and has always rendered one.
+ * UX4G's own icon button carries a Color axis (Primary | Neutral), so we were behind the
+ * library we descend from as well as behind the field.
+ */
+const variant = instance.getEnum("Type", {
+  Primary: "primary",
+  Success: "success",
+  Danger: "danger",
+  Neutral: "neutral",
+});
+
 const appearance = instance.getEnum("Sub-type", {
   Text: "text",
   Outlined: "outlined",
@@ -63,6 +79,7 @@ if (icon && icon.type === "INSTANCE") {
 export default {
   example: figma.code`
     <IconButton
+      variant="${variant}"
       appearance="${appearance}"
       size="${size}"
       ${disabled ? "disabled" : ""}
