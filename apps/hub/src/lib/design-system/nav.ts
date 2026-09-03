@@ -16,16 +16,16 @@ export const NAV: NavGroup[] = [
     "title": "Getting Started",
     "items": [
       {
-        "label": "What is SAMAVESH?",
-        "href": "/design-system"
-      },
-      {
         "label": "For Designers",
         "href": "/design-system#for-designers"
       },
       {
         "label": "For Developers",
         "href": "/design-system#for-developers"
+      },
+      {
+        "label": "What is SAMAVESH?",
+        "href": "/design-system"
       }
     ]
   },
@@ -33,29 +33,34 @@ export const NAV: NavGroup[] = [
     "title": "Foundations",
     "items": [
       {
+        "label": "Accessibility",
+        "href": "/design-system/foundations/accessibility",
+        "badge": "Stable"
+      },
+      {
         "label": "Color",
         "href": "/design-system/foundations/color",
         "badge": "Stable"
       },
       {
-        "label": "Typography",
-        "href": "/design-system/foundations/typography",
-        "badge": "Stable"
-      },
-      {
-        "label": "Spacing",
-        "href": "/design-system/foundations/spacing",
-        "badge": "Stable"
-      },
-      {
-        "label": "Shape",
-        "href": "/design-system/foundations/shape",
+        "label": "Density",
+        "href": "/design-system/foundations/density",
         "badge": "Stable"
       },
       {
         "label": "Elevation",
         "href": "/design-system/foundations/elevation",
         "badge": "Stable"
+      },
+      {
+        "label": "Iconography",
+        "href": "/design-system/foundations/iconography",
+        "badge": "Beta"
+      },
+      {
+        "label": "Illustration",
+        "href": "/design-system/foundations/illustration",
+        "badge": "New"
       },
       {
         "label": "Layout Grid",
@@ -68,24 +73,19 @@ export const NAV: NavGroup[] = [
         "badge": "Beta"
       },
       {
-        "label": "Density",
-        "href": "/design-system/foundations/density",
+        "label": "Shape",
+        "href": "/design-system/foundations/shape",
         "badge": "Stable"
       },
       {
-        "label": "Iconography",
-        "href": "/design-system/foundations/iconography",
-        "badge": "Beta"
-      },
-      {
-        "label": "Accessibility",
-        "href": "/design-system/foundations/accessibility",
+        "label": "Spacing",
+        "href": "/design-system/foundations/spacing",
         "badge": "Stable"
       },
       {
-        "label": "Illustration",
-        "href": "/design-system/foundations/illustration",
-        "badge": "New"
+        "label": "Typography",
+        "href": "/design-system/foundations/typography",
+        "badge": "Stable"
       }
     ]
   },
@@ -105,6 +105,16 @@ export const NAV: NavGroup[] = [
       {
         "label": "Button",
         "href": "/design-system/components/actions/button",
+        "badge": "Stable"
+      },
+      {
+        "label": "Button Group",
+        "href": "/design-system/components/actions/button-group",
+        "badge": "Stable"
+      },
+      {
+        "label": "Icon Button",
+        "href": "/design-system/components/actions/icon-button",
         "badge": "Stable"
       }
     ]
@@ -135,6 +145,11 @@ export const NAV: NavGroup[] = [
       {
         "label": "Declaration Checkbox",
         "href": "/design-system/components/forms/declaration-checkbox",
+        "badge": "New"
+      },
+      {
+        "label": "Filter Select",
+        "href": "/design-system/components/forms/filter-select",
         "badge": "New"
       },
       {
@@ -213,11 +228,6 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
-        "label": "Filter Select",
-        "href": "/design-system/components/forms/filter-select",
-        "badge": "New"
-      },
-      {
         "label": "Textarea",
         "href": "/design-system/components/forms/textarea",
         "badge": "Stable"
@@ -253,6 +263,11 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "Content Nav",
+        "href": "/design-system/components/navigation/content-nav",
+        "badge": "Stable"
+      },
+      {
         "label": "Footer",
         "href": "/design-system/components/navigation/footer",
         "badge": "Stable"
@@ -260,11 +275,6 @@ export const NAV: NavGroup[] = [
       {
         "label": "Nav Sheet",
         "href": "/design-system/components/navigation/nav-sheet",
-        "badge": "Stable"
-      },
-      {
-        "label": "Sidebar",
-        "href": "/design-system/components/section-templates/sidebar",
         "badge": "Stable"
       },
       {
@@ -276,6 +286,16 @@ export const NAV: NavGroup[] = [
         "label": "SAMAVESH Banner",
         "href": "/design-system/components/navigation/samavesh-banner",
         "badge": "New"
+      },
+      {
+        "label": "Sidebar",
+        "href": "/design-system/components/section-templates/sidebar",
+        "badge": "Stable"
+      },
+      {
+        "label": "Sidebar Nav",
+        "href": "/design-system/components/navigation/sidebar-nav",
+        "badge": "Stable"
       },
       {
         "label": "Site Footer",
@@ -397,13 +417,23 @@ export const NAV: NavGroup[] = [
     "title": "Data Visualisation",
     "items": [
       {
-        "label": "Library",
-        "href": "/design-system/data-visualisation",
+        "label": "Dashboard Archetypes",
+        "href": "/design-system/data-visualisation/archetypes",
         "badge": "Beta"
       },
       {
-        "label": "Dashboard Archetypes",
-        "href": "/design-system/data-visualisation/archetypes",
+        "label": "India Bubble Map",
+        "href": "/design-system/components/data-display/india-bubble-map",
+        "badge": "Beta"
+      },
+      {
+        "label": "India Point Map",
+        "href": "/design-system/components/data-display/india-point-map",
+        "badge": "Beta"
+      },
+      {
+        "label": "Library",
+        "href": "/design-system/data-visualisation",
         "badge": "Beta"
       }
     ]
@@ -462,9 +492,19 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "Document Library",
+        "href": "/design-system/components/data-display/document-library",
+        "badge": "Stable"
+      },
+      {
         "label": "Donut Chart",
         "href": "/design-system/components/data-display/donut-chart",
         "badge": "Beta"
+      },
+      {
+        "label": "Fact Strip",
+        "href": "/design-system/components/data-display/fact-strip",
+        "badge": "Stable"
       },
       {
         "label": "Funnel Chart",
@@ -567,6 +607,11 @@ export const NAV: NavGroup[] = [
         "badge": "Stable"
       },
       {
+        "label": "Grid Item",
+        "href": "/design-system/components/layout/grid-item",
+        "badge": "Stable"
+      },
+      {
         "label": "Page Header",
         "href": "/design-system/components/layout/page-header",
         "badge": "Stable"
@@ -580,6 +625,11 @@ export const NAV: NavGroup[] = [
         "label": "Site Layout",
         "href": "/design-system/components/layout/site-layout",
         "badge": "Stable"
+      },
+      {
+        "label": "Site Page Header",
+        "href": "/design-system/components/layout/site-page-header",
+        "badge": "Stable"
       }
     ]
   },
@@ -589,6 +639,36 @@ export const NAV: NavGroup[] = [
       {
         "label": "Accessibility Bar",
         "href": "/design-system/components/utilities/accessibility-bar",
+        "badge": "Stable"
+      },
+      {
+        "label": "Brand Glyph",
+        "href": "/design-system/components/utilities/brand-glyph",
+        "badge": "Stable"
+      },
+      {
+        "label": "Color Mode Provider",
+        "href": "/design-system/components/utilities/color-mode-provider",
+        "badge": "Stable"
+      },
+      {
+        "label": "Demo Accounts Panel",
+        "href": "/design-system/components/utilities/demo-accounts-panel",
+        "badge": "Stable"
+      },
+      {
+        "label": "Demo Dock",
+        "href": "/design-system/components/utilities/demo-dock",
+        "badge": "Stable"
+      },
+      {
+        "label": "Demo Fab",
+        "href": "/design-system/components/utilities/demo-fab",
+        "badge": "Stable"
+      },
+      {
+        "label": "Flask Icon",
+        "href": "/design-system/components/utilities/flask-icon",
         "badge": "Stable"
       },
       {
@@ -612,19 +692,34 @@ export const NAV: NavGroup[] = [
     "title": "Auth & Dashboard",
     "items": [
       {
-        "label": "Portal Login Shell",
-        "href": "/design-system/components/auth/portal-login-shell",
+        "label": "Account Prompt",
+        "href": "/design-system/components/auth/account-prompt",
         "badge": "Stable"
       },
       {
-        "label": "Portal Login Template",
-        "href": "/design-system/components/auth/portal-login-template",
+        "label": "Auth Divider",
+        "href": "/design-system/components/auth/auth-divider",
+        "badge": "Stable"
+      },
+      {
+        "label": "Card Skeleton",
+        "href": "/design-system/components/dashboard/card-skeleton",
+        "badge": "Stable"
+      },
+      {
+        "label": "Card State",
+        "href": "/design-system/components/dashboard/card-state",
         "badge": "Stable"
       },
       {
         "label": "Chart Card",
         "href": "/design-system/components/dashboard/chart-card",
         "badge": "Beta"
+      },
+      {
+        "label": "Consent Line",
+        "href": "/design-system/components/auth/consent-line",
+        "badge": "Stable"
       },
       {
         "label": "Dashboard Grid",
@@ -640,6 +735,41 @@ export const NAV: NavGroup[] = [
         "label": "Kpi Row",
         "href": "/design-system/components/dashboard/kpi-row",
         "badge": "Beta"
+      },
+      {
+        "label": "Masked Contact Row",
+        "href": "/design-system/components/auth/masked-contact-row",
+        "badge": "Stable"
+      },
+      {
+        "label": "Portal Login Shell",
+        "href": "/design-system/components/auth/portal-login-shell",
+        "badge": "Stable"
+      },
+      {
+        "label": "Portal Login Template",
+        "href": "/design-system/components/auth/portal-login-template",
+        "badge": "Stable"
+      },
+      {
+        "label": "Resend Timer",
+        "href": "/design-system/components/auth/resend-timer",
+        "badge": "Stable"
+      },
+      {
+        "label": "Segmented Control",
+        "href": "/design-system/components/dashboard/segmented-control",
+        "badge": "Stable"
+      },
+      {
+        "label": "Signing Into Bar",
+        "href": "/design-system/components/auth/signing-into-bar",
+        "badge": "Stable"
+      },
+      {
+        "label": "SSO Button",
+        "href": "/design-system/components/auth/sso-button",
+        "badge": "Stable"
       }
     ]
   },
@@ -652,16 +782,6 @@ export const NAV: NavGroup[] = [
         "badge": "New"
       },
       {
-        "label": "Portal Login",
-        "href": "/design-system/resources/patterns#login",
-        "badge": "New"
-      },
-      {
-        "label": "Form Wizard",
-        "href": "/design-system/resources/patterns#wizard",
-        "badge": "New"
-      },
-      {
         "label": "Data Tables",
         "href": "/design-system/resources/patterns#data-table",
         "badge": "Alpha"
@@ -670,6 +790,16 @@ export const NAV: NavGroup[] = [
         "label": "Empty States",
         "href": "/design-system/resources/patterns#empty-state",
         "badge": "Alpha"
+      },
+      {
+        "label": "Form Wizard",
+        "href": "/design-system/resources/patterns#wizard",
+        "badge": "New"
+      },
+      {
+        "label": "Portal Login",
+        "href": "/design-system/resources/patterns#login",
+        "badge": "New"
       }
     ]
   },
@@ -677,17 +807,8 @@ export const NAV: NavGroup[] = [
     "title": "Resources",
     "items": [
       {
-        "label": "Overview",
-        "href": "/design-system/resources"
-      },
-      {
         "label": "AI design context",
         "href": "/design-system/resources/design-context",
-        "badge": "New"
-      },
-      {
-        "label": "Design tokens",
-        "href": "/design-system/resources/tokens",
         "badge": "New"
       },
       {
@@ -695,12 +816,21 @@ export const NAV: NavGroup[] = [
         "href": "/design-system/resources/changelog"
       },
       {
+        "label": "Contributing",
+        "href": "/design-system/resources/contributing"
+      },
+      {
+        "label": "Design tokens",
+        "href": "/design-system/resources/tokens",
+        "badge": "New"
+      },
+      {
         "label": "Governance",
         "href": "/design-system/resources/governance"
       },
       {
-        "label": "Contributing",
-        "href": "/design-system/resources/contributing"
+        "label": "Overview",
+        "href": "/design-system/resources"
       },
       {
         "label": "Roadmap",
