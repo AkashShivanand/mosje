@@ -9,7 +9,9 @@
  *
  * One component, four shapes: the step list, the fields, the document checklist and the
  * read-back all come from the per-scheme schema in lib/e-anudaan/form-schema.ts, because the
- * live portal runs a genuinely different form per scheme (6 / 7 / 6 / 3 steps).
+ * live portal runs a genuinely different form per scheme — SHRESHTA_M2 6, AVYAY 8 for a new
+ * project and 7 for a renewal, SMILE 6, NAPDDR 10 — so the step list is read from the schema and
+ * filtered by branch, never assumed.
  */
 
 import * as React from "react";
@@ -43,6 +45,9 @@ import {
   stepFields,
   validateStep,
   visibleDocuments,
+  visibleSteps,
+  visibleOptions,
+  isReadOnly,
   wizardFor,
   type FieldDef,
   type StepDef,
@@ -140,12 +145,16 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
     );
   }
 
-  const docsIndex = def.steps.findIndex((s) => s.kind === "documents");
-  const reviewIndex = def.steps.findIndex((s) => s.kind === "review");
+  // The steps THIS branch shows. Never `def.steps` — AVYAY gives a new project eight steps and a
+  // renewal seven, so counting, indexing and labelling all have to agree on the filtered list or
+  // the stepper, the "Step N of M" line and the routing disagree with one another.
+  const steps = visibleSteps(def, values);
+  const docsIndex = steps.findIndex((s) => s.kind === "documents");
+  const reviewIndex = steps.findIndex((s) => s.kind === "review");
   const activeIndex = phase === "documents" ? docsIndex : phase === "review" ? reviewIndex : step;
 
-  const current = def.steps[activeIndex]!;
-  const total = def.steps.length;
+  const current = steps[Math.min(activeIndex, steps.length - 1)]!;
+  const total = steps.length;
   const isDocs = current.kind === "documents";
   const isReview = current.kind === "review";
   const base = `/portals/e-anudaan/apply-grant/scheme/${def.code}`;
@@ -173,7 +182,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
   /** Jump to any step by index, taking the route with us when the phase changes. */
   const goto = (i: number) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    const kind = def.steps[i]?.kind;
+    const kind = steps[i]?.kind;
     if (kind === "documents") {
       router.push(`${base}/step-2`);
       return;
@@ -253,7 +262,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
       {def.code === "AVYAY" && <Alert status="info">{AVYAY_RENEWAL_NOTICE}</Alert>}
 
       <Wizard
-        steps={def.steps.map((s) => ({ label: s.title }))}
+        steps={steps.map((s) => ({ label: s.title }))}
         current={activeIndex}
         onBack={() => goto(Math.max(activeIndex - 1, 0))}
         onNext={next}
@@ -328,6 +337,7 @@ function FormStep({
                 <Field
                   key={f.name}
                   field={f}
+                  values={values}
                   value={values[f.name] ?? ""}
                   error={errors[f.name]}
                   parentValue={f.districtsOf ? values[f.districtsOf] : undefined}
@@ -343,21 +353,27 @@ function FormStep({
 
 function Field({
   field,
+  values,
   value,
   error,
   parentValue,
   onChange,
 }: {
   field: FieldDef;
+  /** The whole answer set — some options and some read-only states depend on another field. */
+  values: Record<string, string>;
   value: string;
   error?: string;
   parentValue?: string;
   onChange: (v: string) => void;
 }) {
   const wide = field.wide || field.kind === "textarea" || field.kind === "radio";
-  const options = field.districtsOf ? districtsOf(parentValue) : (field.options ?? []);
+  // Not `field.options` — an option can be branch-specific (AVYAY offers Physiotherapy Clinic
+  // and Mobile Medicare Unit to renewals only), and a field can be editable on one branch and
+  // fixed on another.
+  const options = field.districtsOf ? districtsOf(parentValue) : visibleOptions(field, values);
   const isAuto = Boolean(field.auto);
-  const readOnly = field.readOnly || isAuto;
+  const readOnly = isReadOnly(field, values) || isAuto;
 
   // SMILE's undertakings (a)–(j) are individual tick-boxes, not Yes/No pairs.
   if (field.kind === "checkbox") {
@@ -367,6 +383,9 @@ function Field({
           checked={value === "true"}
           onChange={(e) => onChange(e.target.checked ? "true" : "")}
           label={field.label}
+          // A required tick-box that says so only in its styling is announced as optional.
+          required={field.required || undefined}
+          aria-invalid={error != null || undefined}
         />
         {field.help && <p className="mt-1 text-xs text-ink-muted">{field.help}</p>}
         {error && (
@@ -380,12 +399,25 @@ function Field({
 
   if (field.kind === "radio") {
     return (
-      <fieldset className={wide ? "sm:col-span-2" : undefined}>
+      // `role="radiogroup"` so the requirement has somewhere to live: `aria-required` on a bare
+      // fieldset is not exposed. Matches FormField, which puts `required` on the control and
+      // hides the asterisk from assistive technology rather than reading "star" aloud.
+      <fieldset
+        className={wide ? "sm:col-span-2" : undefined}
+        role="radiogroup"
+        aria-required={field.required || undefined}
+        aria-invalid={error != null || undefined}
+      >
         <legend className="text-sm font-semibold text-ink">
-          {field.label} {field.required && <span className="text-status-error">*</span>}
+          {field.label}{" "}
+          {field.required && (
+            <span className="text-status-error" aria-hidden="true">
+              *
+            </span>
+          )}
         </legend>
         <div className="mt-2 flex flex-wrap gap-4">
-          {(field.options ?? []).map((o) => (
+          {options.map((o) => (
             <Radio
               key={o}
               name={field.name}
@@ -476,7 +508,11 @@ function ReviewStep({
   onDeclare: (v: boolean) => void;
   onEdit: (step: number) => void;
 }) {
-  const formSteps = def.steps
+  // Same filtered list the wizard walks. Reading back `def.steps` here would show a renewal the
+  // Justification section it was never asked to fill, and hand `onEdit` an index into a different
+  // list from the one the stepper is numbering.
+  const branchSteps = visibleSteps(def, values);
+  const formSteps = branchSteps
     .map((s, i) => ({ step: s, index: i }))
     .filter(({ step }) => step.kind !== "documents" && step.kind !== "review");
 
@@ -519,7 +555,7 @@ function ReviewStep({
       <section className="rounded-xl border border-line bg-surface p-5 shadow-xs">
         <div className="flex items-center justify-between border-b border-line pb-2">
           <h3 className="text-base font-bold text-ink">Documents</h3>
-          <Button appearance="text" size="sm" onClick={() => onEdit(def.steps.findIndex((s) => s.kind === "documents"))}>
+          <Button appearance="text" size="sm" onClick={() => onEdit(branchSteps.findIndex((s) => s.kind === "documents"))}>
             <Icon name="edit" size={16} aria-hidden /> Edit
           </Button>
         </div>

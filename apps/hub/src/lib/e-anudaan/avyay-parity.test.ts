@@ -11,16 +11,22 @@ import assert from "node:assert/strict";
 import {
   AVYAY_WIZARD,
   applyAutoFields,
+  fieldVisible,
   avyayCostHeads,
   visibleDocuments,
+  visibleSteps,
+  visibleOptions,
+  isReadOnly,
+  requiredMessage,
+  validateStep,
 } from "./form-schema.ts";
 
 const NEW = { case_type: "New project" };
 const RENEWAL = { case_type: "Ongoing / Renewal of an existing project" };
 
-test("AVYAY's steps match live's eight, Justification included", () => {
+test("a new project gets live's eight steps, Justification included", () => {
   assert.deepEqual(
-    AVYAY_WIZARD.steps.map((s) => s.title),
+    visibleSteps(AVYAY_WIZARD, NEW).map((s) => s.title),
     [
       "Application Type",
       "Organisation Details",
@@ -32,6 +38,50 @@ test("AVYAY's steps match live's eight, Justification included", () => {
       "Review & Submit",
     ],
   );
+});
+
+test("a renewal gets live's seven — Justification is carried forward, not re-asked", () => {
+  // The gap this locks: the old version of this test asserted the step list ONCE, with no
+  // branch, so it passed while the wizard showed a renewal an eighth step live never asks for.
+  // Every e-anudaan test was green throughout.
+  assert.deepEqual(
+    visibleSteps(AVYAY_WIZARD, RENEWAL).map((s) => s.title),
+    [
+      "Application Type",
+      "Organisation Details",
+      "Project Details",
+      "Infrastructure, Beneficiaries & Bank",
+      "Grant Sought & Declaration",
+      "Upload Documents",
+      "Review & Submit",
+    ],
+  );
+});
+
+test("a new project is not asked which instalment it is claiming", () => {
+  // Live shows a new applicant the financial year alone. Ours rendered Installment on both
+  // branches, `required`, with help text about "the selected financial year's recurring grant"
+  // — so the new-project path could not be completed at all.
+  const step1 = visibleSteps(AVYAY_WIZARD, NEW)[0]!;
+  const names = step1.sections
+    .flatMap((sec) => sec.fields)
+    .filter((f) => fieldVisible(f, NEW))
+    .map((f) => f.name);
+  assert.deepEqual(names, ["case_type", "fld_financial_year"]);
+});
+
+test("a renewal IS asked, and for the project it is renewing", () => {
+  const step1 = visibleSteps(AVYAY_WIZARD, RENEWAL)[0]!;
+  const names = step1.sections
+    .flatMap((sec) => sec.fields)
+    .filter((f) => fieldVisible(f, RENEWAL))
+    .map((f) => f.name);
+  assert.deepEqual(names, [
+    "case_type",
+    "fld_ongoing_source_application",
+    "fld_financial_year",
+    "fld_installment_no",
+  ]);
 });
 
 test("a new project gets live's eleven documents, in live's order", () => {
@@ -160,5 +210,52 @@ test("city category is derived from the project district, not left blank", () =>
   assert.ok(
     (filled.fld_city_category ?? "").length > 0,
     "a chosen district must produce a category — it is required and read-only, so nothing else can",
+  );
+});
+
+test("Physiotherapy Clinic and Mobile Medicare Unit are offered to renewals only", () => {
+  // FR-NEW-04, stated in the field's own help. Before this the two were named in the help text
+  // and were not in the options array at all, so the sentence promised project types the field
+  // never offered to anybody, and nothing enforced the rule either way.
+  const nature = AVYAY_WIZARD.steps
+    .flatMap((s) => s.sections)
+    .flatMap((sec) => sec.fields)
+    .find((f) => f.name === "fld_nature_of_project")!;
+
+  assert.ok(!visibleOptions(nature, NEW).includes("Physiotherapy Clinic"));
+  assert.ok(!visibleOptions(nature, NEW).includes("Mobile Medicare Unit"));
+  assert.ok(visibleOptions(nature, RENEWAL).includes("Physiotherapy Clinic"));
+  assert.ok(visibleOptions(nature, RENEWAL).includes("Mobile Medicare Unit"));
+  assert.equal(visibleOptions(nature, NEW).length, visibleOptions(nature, RENEWAL).length - 2);
+});
+
+test("the bank account is fixed on a renewal and choosable on a new project", () => {
+  // "Carried forward from this project — it cannot be changed on a renewal" was help text with
+  // nothing behind it; the field was fully editable on both branches.
+  const bank = AVYAY_WIZARD.steps
+    .flatMap((s) => s.sections)
+    .flatMap((sec) => sec.fields)
+    .find((f) => f.name === "fld_bank_account_id")!;
+
+  assert.equal(isReadOnly(bank, RENEWAL), true);
+  assert.equal(isReadOnly(bank, NEW), false);
+});
+
+test("a missing required field is told to the applicant as an instruction", () => {
+  // Audit finding m3. `${label} is required.` produced "Select the existing project to renew is
+  // required." — a label with three words bolted on, which is not a sentence and does not say
+  // what to do. A label that already reads as an instruction IS the sentence.
+  const step1 = visibleSteps(AVYAY_WIZARD, RENEWAL)[0]!;
+  const errors = validateStep(step1, RENEWAL);
+
+  assert.equal(errors.fld_ongoing_source_application, "Select the existing project to renew.");
+  assert.equal(errors.fld_installment_no, "Select Installment.");
+  assert.ok(!Object.values(errors).some((m) => / is required\.$/.test(m)));
+});
+
+test("a required message never lower-cases a label that opens with an acronym", () => {
+  assert.equal(
+    requiredMessage({ name: "x", label: "NGO-Darpan Unique ID", kind: "text", required: true }),
+    "Enter NGO-Darpan Unique ID.",
   );
 });

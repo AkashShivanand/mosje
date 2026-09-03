@@ -17,8 +17,15 @@ export default function SelectSchemePage() {
   return (
     <div className="mx-auto max-w-3xl space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-ink">Select Grant Scheme</h1>
-        <p className="mt-1 text-sm text-ink-muted">Choose the scheme you want to apply for.</p>
+        {/* The heading names the applicant's task, not the mechanism (design audit n2). The
+            second sentence is here because the choice is consequential and looks as if it is
+            not: each scheme runs a different form, of a different length, with its own
+            checklist. */}
+        <h1 className="text-2xl font-bold text-ink">Apply for a Grant</h1>
+        <p className="mt-1 text-sm text-ink-muted">
+          Choose the scheme you are applying under. Each has its own application form and document
+          checklist.
+        </p>
       </div>
 
       <div className="space-y-3" role="radiogroup" aria-label="Select a scheme">

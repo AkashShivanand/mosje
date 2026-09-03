@@ -909,3 +909,173 @@ class CompleteUploadSetIsLeftAlone(unittest.TestCase):
             def inner_text(self, sel):
                 return "Organisation Details"
         self.assertIsNone(D.upload_status(P()))
+
+
+class SlugReadability(unittest.TestCase):
+    """Every step line ends with the same boilerplate — "Fields marked * are mandatory." — so
+    carrying the whole line into the slug pushed the identifying half out under truncation:
+    NGO-NAPDDR-S04-LOCATION-INFRASTRUCTURE-PREPAREDNESS-FIELDS-MARKED-ARE, cut mid-word."""
+
+    def test_the_boilerplate_sentence_is_dropped(self):
+        self.assertEqual(
+            D._walk_slug("NGO-NAPDDR",
+                         ("u", 4, "Location, Infrastructure & Preparedness. "
+                                  "Fields marked * are mandatory."), {}),
+            "NGO-NAPDDR-S04-LOCATION-INFRASTRUCTURE-PREPAREDNESS")
+
+    def test_a_title_with_no_stop_is_kept_whole(self):
+        self.assertEqual(D._walk_slug("P", ("u", 9, "Document Uploads"), {}),
+                         "P-S09-DOCUMENT-UPLOADS")
+
+    def test_an_overlong_title_is_capped_not_left_to_grow(self):
+        slug = D._walk_slug("P", ("u", 1, "A " * 60), {})
+        self.assertLessEqual(len(slug), 60)
+
+
+class BranchSelection(unittest.TestCase):
+    """`fill_all` never overwrites an answer that is already there — right for filling a form,
+    wrong for choosing a branch. A saved draft set to "Ongoing / Renewal" is how 43 wizard screens
+    were captured on one path while the other was never seen. `set` exists to flip the controller
+    explicitly, and a flow whose branch could not be set must ABORT rather than re-walk the branch
+    it already holds."""
+
+    CFG = {"live": {"roles": [{"name": "ngo", "base": "http://fake.invalid"}]}, "capture": {}}
+
+    class _Page(FakePage):
+        def __init__(self, settable=True):
+            super().__init__(buttons=["Next →"])
+            self.settable, self.set_calls = settable, []
+
+        def evaluate(self, js, arg=None):
+            if "querySelectorAll('input[type=radio]')" in js:
+                self.set_calls.append(tuple(arg))
+                return "radio" if self.settable else None
+            if "innerText.match" in js:
+                return {"n": 1, "of": 1, "title": "Application Type"}
+            if "querySelectorAll('button')" in js:
+                return "ready"
+            return 0
+
+        def query_selector_all(self, sel):
+            return []
+
+    def _run(self, flow, page):
+        captured = []
+        with unittest.mock.patch.object(D, "_capture_state",
+                                        lambda *a, **k: captured.append(a[1])):
+            D.run_flow(page, flow, {}, self.CFG,
+                       {"captures_live": "/dev/null", "project": "/dev/null"}, {}, "uat")
+        return captured
+
+    def test_the_controller_is_set_before_the_walk(self):
+        pg = self._Page()
+        flow = {"id": "f", "role": "ngo", "allowSubmit": True, "steps": [
+            {"set": {"field": "case_type", "value": "New project"}},
+            {"walk": {"prefix": "P"}}]}
+        captured = self._run(flow, pg)
+        self.assertEqual(pg.set_calls, [("case_type", "New project")])
+        self.assertIn("P-S01-APPLICATION-TYPE-ARRIVED", captured)
+
+    def test_a_branch_that_cannot_be_set_aborts_instead_of_recapturing(self):
+        pg = self._Page(settable=False)
+        flow = {"id": "f", "role": "ngo", "allowSubmit": True, "steps": [
+            {"set": {"field": "case_type", "value": "New project"}},
+            {"walk": {"prefix": "P"}}]}
+        self.assertEqual(self._run(flow, pg), [],
+                         "nothing may be captured under the new branch's name")
+
+
+class BranchFieldMatching(unittest.TestCase):
+    """A manifest names a field the way a person reads it — "Case Type" — and the DOM names it
+    `case_type`. Whitespace normalisation alone does not bridge that, and every branch in the
+    first live run aborted with "could not be set" because of the underscore."""
+
+    @staticmethod
+    def _key(t):
+        return re.sub(r"[^a-z0-9]", "", (t or "").lower())
+
+    def test_the_manifest_spelling_matches_the_dom_spelling(self):
+        for human, dom in (("Case Type", "case_type"), ("Case Type", "caseType"),
+                           ("case type", "CASE_TYPE")):
+            self.assertEqual(self._key(human), self._key(dom), f"{human!r} vs {dom!r}")
+
+    def test_a_prefixed_dom_name_still_matches_by_containment(self):
+        self.assertIn(self._key("Financial Year"), self._key("fld_financial_year"))
+
+    def test_the_matcher_is_in_the_shipped_javascript(self):
+        """Guards the fix itself: the normaliser must survive edits to SET_FIELD_JS."""
+        self.assertIn("const key=", D.SET_FIELD_JS)
+        self.assertIn("key(e.name)", D.SET_FIELD_JS)
+
+
+class SessionLossGuard(unittest.TestCase):
+    """A portal that drops a session mid-run does not error. It serves its shell, and every screen
+    after that captures happily with a fraction of the content.
+
+    The run this gates took every applicant screen from 150+ rows to 39, wrote them over the good
+    ones, and the bundle shrank 196 -> 188 — eight real wizard states lost, with only a warning."""
+
+    def _prev(self, **sizes):
+        return {"screens": [{"slug": k, "role": "r", "totalRows": v} for k, v in sizes.items()]}
+
+    def test_a_screen_at_a_quarter_of_its_previous_size_is_degraded(self):
+        self.assertTrue(B.looks_degraded(self._prev(A=152), "A", 39))
+
+    def test_a_screen_that_merely_lost_a_row_is_not(self):
+        self.assertFalse(B.looks_degraded(self._prev(A=152), "A", 150))
+
+    def test_exactly_half_is_not_degraded(self):
+        """The threshold is a real cliff, not a gradual shrink — keep it strictly below half."""
+        self.assertFalse(B.looks_degraded(self._prev(A=100), "A", 50))
+
+    def test_a_slug_never_captured_before_cannot_be_degraded(self):
+        self.assertFalse(B.looks_degraded(self._prev(A=152), "BRAND-NEW", 3))
+
+    def test_no_previous_bundle_means_nothing_is_degraded(self):
+        self.assertFalse(B.looks_degraded(None, "A", 1))
+
+    def test_a_previous_entry_with_no_size_recorded_is_not_used_as_evidence(self):
+        self.assertFalse(B.looks_degraded({"screens": [{"slug": "A", "totalRows": 0}]}, "A", 1))
+
+    def test_the_run_length_is_more_than_one(self):
+        """One small screen is a small screen. Three in a row is a lost session."""
+        self.assertGreaterEqual(B.SESSION_LOSS_RUN, 3)
+
+
+class RecordHarvestNeedsASubmission(unittest.TestCase):
+    """A flow's record id is harvested from its confirmation screen. Without checking that one was
+    reached, the regex ran on whatever page the flow stopped on: three real runs filed
+    "NGO-DARPAN" and "GIA/2026-27/AVYAY/" as record ids for flows that never submitted, which
+    tells the NEXT run a record exists when none does."""
+
+    CFG = {"live": {"roles": [{"name": "ngo", "base": "http://fake.invalid"}]}, "capture": {}}
+
+    class _Page(FakePage):
+        def __init__(self):
+            super().__init__(buttons=["Next →"])
+
+        def inner_text(self, *a, **k):
+            return "Reference GIA/2026-27/AVYAY/ shown on an ordinary page"
+
+        def evaluate(self, js, arg=None):
+            if "innerText.match" in js:
+                return None
+            if "querySelectorAll('button')" in js:
+                return "absent"
+            return 0
+
+        def query_selector_all(self, sel):
+            return []
+
+    def _run(self, steps):
+        pg, bdl = self._Page(), {}
+        with unittest.mock.patch.object(D, "_capture_state", lambda *a, **k: None):
+            D.run_flow(pg, {"id": "f", "role": "ngo", "allowSubmit": True, "steps": steps},
+                       {}, self.CFG, {"captures_live": "/dev/null", "project": "/dev/null"},
+                       bdl, "uat")
+        return bdl
+
+    def test_a_flow_that_never_submitted_records_nothing(self):
+        bdl = self._run([{"walk": {"prefix": "P"}}])
+        self.assertEqual(bdl.get("records", {}), {},
+                         "an id was harvested from a page that is not a confirmation screen")

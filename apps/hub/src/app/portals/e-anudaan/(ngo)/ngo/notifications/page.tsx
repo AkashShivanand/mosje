@@ -12,10 +12,11 @@
 import Link from "next/link";
 import { Badge, Button, EmptyState, Icon } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
+import { formatDate } from "@/lib/e-anudaan/format";
 
 function formatStamp(iso: string): string {
   const d = new Date(iso);
-  const date = d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+  const date = formatDate(d);
   const time = d
     .toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: true })
     .toLowerCase();

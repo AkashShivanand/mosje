@@ -166,7 +166,12 @@ def _walk_slug(prefix, pos, seen):
     """Deterministic, human-readable, and stable across runs — the slug is what the freshness
     hashes are filed under, so it must not shift when a scheme gains or loses a section."""
     _, n, title = pos
-    part = re.sub(r"-+", "-", re.sub(r"[^A-Za-z0-9]+", "-", title or "step")).strip("-") or "step"
+    # The page's step line is "Application Type. Fields marked * are mandatory." — the sentence
+    # after the first stop is boilerplate repeated on every step, and carrying it into the slug
+    # produced NGO-NAPDDR-S04-LOCATION-INFRASTRUCTURE-PREPAREDNESS-FIELDS-MARKED-ARE, truncated
+    # mid-word with the identifying half squeezed out.
+    head = (title or "step").split(".")[0]
+    part = re.sub(r"-+", "-", re.sub(r"[^A-Za-z0-9]+", "-", head)).strip("-")[:44] or "step"
     base = f"{prefix}-S{n:02d}-{part}".upper() if n else f"{prefix}-{part}".upper()
     if base in seen:                      # a repeated title would otherwise overwrite its twin
         base = f"{base}-{seen[base] + 1}"
@@ -214,6 +219,65 @@ def wait_for_forward(pg, labels, timeout_ms=120000, poll_ms=2000):
         pg.wait_for_timeout(poll_ms)
         waited += poll_ms
     print(f"    ! forward control still not enabled after {timeout_ms // 1000}s", flush=True)
+    return False
+
+
+SET_FIELD_JS = """([field,value])=>{
+ const norm=t=>(t||'').replace(/\\s+/g,' ').trim().toLowerCase();
+ // A field is named "case_type" in the DOM and "Case Type" in a manifest. Comparing those with
+ // whitespace normalisation alone fails on the underscore, which is how every branch in the
+ // first run aborted with "could not be set".
+ const key=t=>norm(t).replace(/[^a-z0-9]/g,'');
+ const want=norm(value);
+ const labelOf=e=>{
+   if(e.labels&&e.labels[0])return e.labels[0].innerText;
+   if(e.getAttribute('aria-label'))return e.getAttribute('aria-label');
+   const w=e.closest('label'); return w?w.innerText:'';
+ };
+ const matchField=e=>{
+   const n=key(field);
+   return key(e.name)===n||key(e.id)===n||key(labelOf(e)).includes(n);
+ };
+ for(const e of document.querySelectorAll('input[type=radio]')){
+   if(!matchField(e))continue;
+   if(norm(labelOf(e))===want||norm(e.value)===want||norm(labelOf(e)).includes(want)){
+     if(!e.checked){e.click();}
+     return 'radio';
+   }
+ }
+ for(const e of document.querySelectorAll('select')){
+   if(!matchField(e))continue;
+   const o=[...e.options].find(o=>norm(o.text)===want||norm(o.text).includes(want));
+   if(o){e.value=o.value;e.dispatchEvent(new Event('change',{bubbles:true}));return 'select';}
+ }
+ for(const e of document.querySelectorAll('input[type=checkbox]')){
+   if(!matchField(e))continue;
+   const on=['yes','true','on','checked'].includes(want);
+   if(e.checked!==on){e.click();}
+   return 'checkbox';
+ }
+ return null;}"""
+
+
+def set_field(pg, field, value):
+    """Set ONE controlling field to a named value, whatever control renders it.
+
+    `fill_all` deliberately never overwrites an answer that is already there — which is right for
+    filling a form and wrong for choosing a branch. A saved draft set to "Ongoing / Renewal" is
+    how 43 wizard screens were captured on one path while the other was never seen: the walker
+    filled around the controller and never touched it.
+    """
+    try:
+        kind = pg.evaluate(SET_FIELD_JS, [field, value])
+    except Exception as e:
+        print(f"    ! set {field!r} failed ({str(e)[:60]})", flush=True)
+        return False
+    if kind:
+        pg.wait_for_timeout(1200)
+        print(f"    · set {field!r} = {value!r} ({kind})", flush=True)
+        return True
+    print(f"    ! no control matched {field!r} — branch NOT set, so the walk that follows would "
+          f"repeat the branch already captured", flush=True)
     return False
 
 
@@ -519,6 +583,21 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
                 print(f"    ! upload fixture missing: {path}", flush=True)
             else:
                 upload_all(pg, path, spec.get("limit"))
+        elif "set" in step:
+            spec = step["set"]
+            if not set_field(pg, spec["field"], spec["value"]) and spec.get("required", True):
+                print(f"[flow {fid}] ABORTED — {spec['field']!r} could not be set to "
+                      f"{spec['value']!r}; walking on would re-capture the branch already held",
+                      flush=True)
+                break
+        elif "goto" in step:
+            target = base + step["goto"] if base else step["goto"]
+            for wait in ("networkidle", "domcontentloaded"):
+                try:
+                    pg.goto(target, wait_until=wait, timeout=45000); break
+                except Exception:
+                    continue
+            pg.wait_for_timeout(cfg.get("capture", {}).get("waitMs", 1800))
         elif "walk" in step:
             spec = step["walk"] if isinstance(step["walk"], dict) else {}
             done.extend(walk_wizard(pg, spec, flow, man, cfg, paths, bdl, role, fid, allowed, why))
@@ -554,7 +633,12 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
             _capture_state(pg, step["captureValidation"], role, cfg, paths, bdl, man, fid, None)
             done.append(step["captureValidation"])
             _reload(pg)
-    if allowed and flow.get("reuseRecord") is None:
+    # Only a flow that actually reached a confirmation screen has an identifier to harvest.
+    # Without this test the regex ran on whatever page the flow stopped on and recorded junk —
+    # three real runs filed "NGO-DARPAN" and "GIA/2026-27/AVYAY/" as record ids for flows that
+    # never submitted, which then tells the NEXT run a record exists when none does.
+    submitted = any(str(slug).endswith("-SUBMITTED") for slug in done)
+    if allowed and submitted and flow.get("reuseRecord") is None:
         # Harvest whatever identifier the success screen shows and remember it in the bundle.
         #
         # What this does and does NOT do: recording an id only stops the NEXT run re-harvesting

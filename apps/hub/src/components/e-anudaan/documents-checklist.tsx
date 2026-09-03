@@ -17,12 +17,14 @@ import type { DocDef } from "@/lib/e-anudaan/form-schema";
 import {
   DEMO_VERDICTS,
   demoVerdictFor,
+  uploadProgress,
   VERDICT_GLYPH,
   verdictHeadline,
   verdictPill,
   type UploadedDoc,
   type VerdictState,
 } from "@/lib/e-anudaan/doc-verification";
+import { formatDate } from "@/lib/e-anudaan/format";
 
 const TONE: Record<VerdictState, { text: string; border: string; bg: string }> = {
   pending: { text: "text-ink-muted", border: "border-line", bg: "bg-surface-muted" },
@@ -51,8 +53,9 @@ export function DocumentsChecklist({
   onChange: (next: Record<number, UploadedDoc>) => void;
   accept?: string;
 }) {
-  const count = Object.keys(uploaded).length;
-  const mandatory = documents.filter((d) => !d.optional).length;
+  // Both halves count the same set — see uploadProgress. Counting every upload against a
+  // denominator of only the mandatory documents is what produces "10 / 7 uploaded".
+  const { done: count, total: mandatory } = uploadProgress(documents, uploaded);
 
   const upload = (d: DocDef) => {
     // Demo behaviour: a fresh upload starts in "Verifying…", then settles as the live one does.
@@ -61,7 +64,7 @@ export function DocumentsChecklist({
       [d.n]: {
         fileName: `${d.title.replace(/[^A-Za-z0-9]+/g, "_").slice(0, 40)}.pdf`,
         sizeKb: 512,
-        uploadedOn: new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
+        uploadedOn: formatDate(new Date()),
         verdict: DEMO_VERDICTS.pending,
       },
     });

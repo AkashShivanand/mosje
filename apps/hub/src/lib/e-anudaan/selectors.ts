@@ -6,6 +6,7 @@
 import { ROLES, type RoleDef } from "./roles.ts";
 import type { AppStatus, EAnudaanState, GrantApplication, RoleId } from "./types.ts";
 import { holderIsRole } from "./types.ts";
+import { rupeesShort } from "./format";
 
 /** Everything currently sitting in this role's in-tray. */
 export function worklistFor(state: EAnudaanState, roleId: RoleId): GrantApplication[] {
@@ -76,15 +77,13 @@ export function kpisFor(state: EAnudaanState, roleId: RoleId): Kpis {
 }
 
 /** Indian-format currency, abbreviated the way the live portal does it (₹888.31 Cr, ₹10.00 L). */
-export function formatGrant(rupees: number): string {
-  if (rupees >= 10_000_000) return `₹${(rupees / 10_000_000).toFixed(2)} Cr`;
-  if (rupees >= 100_000) return `₹${(rupees / 100_000).toFixed(2)} L`;
-  return `₹${rupees.toLocaleString("en-IN")}`;
+export function formatGrant(amount: number): string {
+  return rupeesShort(amount);
 }
 
-export function formatDate(iso: string): string {
-  return new Date(iso).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
-}
+// Re-exported so the many callers that import it from here keep working, while there remains
+// exactly one implementation (design audit M8).
+export { formatDate } from "./format";
 
 /** Badge tone per status — amber for in-flight, green for sanctioned, red for closed. */
 export function statusTone(status: AppStatus): "warning" | "success" | "danger" | "info" | "neutral" {

@@ -19,44 +19,52 @@ fixtures:
     tel: '9800000000'
 screens: []
 flows:
-# Each scheme has a DIFFERENT number of internal sections behind the same two URLs
-# (/step-1 holds them all, /step-2 is uploads, /review is the end), so the steps are
-# discovered at run time from the page's own "Step N of M — Title" and named after it,
-# not numbered here by hand. Hand numbering filed a document page under the review
-# page's name on the previous run.
-- id: napddr-fresh-application
+# TWO branches per scheme wherever a Case Type controls the form. The previous manifest walked
+# whichever branch the saved draft happened to be on — which was renewal — so the new-project path
+# was never captured, and the defects that live on it (see docs/audit/e-anudaan-build-defects.md)
+# were invisible. `set` flips the controller explicitly; `fill_all` never would, because it does
+# not overwrite an answer that is already there.
+- id: napddr-new
   role: ngo-user
   entry: /apply-grant/scheme/NAPDDR/step-1
   allowSubmit: true
-  alwaysReplay: false
+  alwaysReplay: true
   reuseRecord: null
   steps:
-  - captureValidation: NGO-NAPDDR-VALIDATION-ERRORS
-  - walk:
-      prefix: NGO-NAPDDR
-      upload: fixtures/sample-document.pdf
-      maxSteps: 24
-- id: avyay-fresh-application
+  - set: {field: Case Type, value: New project}
+  - walk: {prefix: NGO-NAPDDR-NEW, upload: fixtures/sample-document.pdf, maxSteps: 24}
+- id: napddr-renewal
+  role: ngo-user
+  entry: /apply-grant/scheme/NAPDDR/step-1
+  allowSubmit: true
+  alwaysReplay: true
+  reuseRecord: null
+  steps:
+  - set: {field: Case Type, value: Ongoing / Renewal}
+  - walk: {prefix: NGO-NAPDDR-RENEWAL, upload: fixtures/sample-document.pdf, maxSteps: 24}
+- id: avyay-new
   role: ngo-user
   entry: /apply-grant/scheme/AVYAY/step-1
   allowSubmit: true
-  alwaysReplay: false
+  alwaysReplay: true
   reuseRecord: null
   steps:
-  - captureValidation: NGO-AVYAY-VALIDATION-ERRORS
-  - walk:
-      prefix: NGO-AVYAY
-      upload: fixtures/sample-document.pdf
-      maxSteps: 24
-- id: shreshta-m2-fresh-application
+  - set: {field: Case Type, value: New project}
+  - walk: {prefix: NGO-AVYAY-NEW, upload: fixtures/sample-document.pdf, maxSteps: 24}
+- id: avyay-renewal
+  role: ngo-user
+  entry: /apply-grant/scheme/AVYAY/step-1
+  allowSubmit: true
+  alwaysReplay: true
+  reuseRecord: null
+  steps:
+  - set: {field: Case Type, value: Ongoing / Renewal}
+  - walk: {prefix: NGO-AVYAY-RENEWAL, upload: fixtures/sample-document.pdf, maxSteps: 24}
+- id: shreshta-m2-application
   role: ngo-user
   entry: /apply-grant/scheme/SHRESHTA_M2/step-1
   allowSubmit: true
-  alwaysReplay: false
+  alwaysReplay: true
   reuseRecord: null
   steps:
-  - captureValidation: NGO-SHRESHTA-M2-VALIDATION-ERRORS
-  - walk:
-      prefix: NGO-SHRESHTA-M2
-      upload: fixtures/sample-document.pdf
-      maxSteps: 24
+  - walk: {prefix: NGO-SHRESHTA-M2, upload: fixtures/sample-document.pdf, maxSteps: 24}

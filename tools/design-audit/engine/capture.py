@@ -418,6 +418,12 @@ def _engine_sha():
     except Exception:
         return None
 
+class SessionLost(Exception):
+    """Raised when a role's captures collapse mid-run. Distinct from any other failure because
+    the response is different: keep the previous bundle's rows for this role and change nothing,
+    rather than write the degraded ones over them."""
+
+
 def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", decisions=None,
                  failures=None):
     if decisions is None:
@@ -429,6 +435,7 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
         failures = {}
     base = role["base"]; width = cfg.get("capture", {}).get("width", 1440)
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
+    degraded = []          # consecutive screens far smaller than the bundle says they were
     routes = discover_routes(pg, cfg)
     land = pg.url.replace(base, "").split("?")[0]
     if land and land not in routes:
@@ -571,6 +578,18 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
                       f"the mask is doing too much work and the fingerprint means little",
                       flush=True)
             print(f"  ok {slug}: {len(data['rows'])} rows pageH={data['pageH']}{warn}", flush=True)
+            # A dropped session does not raise — the portal serves its shell and every screen
+            # after that captures happily with a fraction of the content. Three in a row that
+            # come back at under half their previous size is that, not a redesign.
+            if B.looks_degraded(prev_bundle, slug, len(data["rows"])):
+                degraded.append(slug)
+                if len(degraded) >= B.SESSION_LOSS_RUN:
+                    raise SessionLost(
+                        f"{len(degraded)} consecutive screens came back under half their previous "
+                        f"size ({', '.join(degraded[-3:])}) — the session was almost certainly "
+                        f"dropped. Nothing this role captured is trusted.")
+            else:
+                degraded.clear()
         except Exception as e:
             print(f"  ! {slug} extract failed: {str(e)[:60]}", flush=True)
     if failed:
@@ -709,8 +728,22 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
                 else:
                     pg.goto(role["base"] + "/", wait_until="domcontentloaded", timeout=60000); pg.wait_for_timeout(3000)
                     print(f"[{role['name']}] public -> {pg.url}", flush=True)
-                manifest += capture_role(pg, role, cfg, paths, bdl, man, prev_bundle, mode,
-                                         decisions, failures)
+                try:
+                    manifest += capture_role(pg, role, cfg, paths, bdl, man, prev_bundle, mode,
+                                             decisions, failures)
+                except SessionLost as e:
+                    # Deliberately NOT added to visited_roles, and its flows are not run: the
+                    # bundle then carries this role's previous screens forward untouched instead
+                    # of writing shell pages over them. A run that lost its session must cost
+                    # nothing, not eight real wizard states.
+                    print(f"[{role['name']}] SESSION LOST — {e}\n"
+                          f"[{role['name']}] this role's existing screens are kept as they were; "
+                          f"re-run this role alone once the portal is healthy", flush=True)
+                    for slug in [s["slug"] for s in bdl.get("screens", [])
+                                 if s.get("role") == role["name"]]:
+                        bdl["screens"] = [x for x in bdl["screens"] if x["slug"] != slug]
+                    ctx.close()
+                    continue
                 visited_roles.add(role["name"])
                 for flow in (man or {}).get("flows") or []:
                     if flow.get("role") != role["name"]:
