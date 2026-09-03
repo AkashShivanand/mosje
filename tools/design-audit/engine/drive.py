@@ -112,9 +112,9 @@ def _resolved_text(loc):
     Returns None when nothing readable comes back — an unnamed control, or a locator that
     matched nothing at all. The caller treats None as "cannot prove this is safe".
     """
-    for read in (lambda: loc.get_attribute("aria-label"),
-                 lambda: loc.inner_text(),
-                 lambda: loc.text_content()):
+    for read in (lambda: loc.get_attribute("aria-label", timeout=2000),
+                 lambda: loc.inner_text(timeout=2000),
+                 lambda: loc.text_content(timeout=2000)):
         try:
             txt = read()
         except Exception:

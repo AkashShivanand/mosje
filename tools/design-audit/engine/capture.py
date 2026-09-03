@@ -479,6 +479,38 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
     failures.setdefault(role["name"], []).extend(failed)
     return captured
 
+def rows_to_prune(rows, failures, visited_roles, captured_counts):
+    """Pure decision function for the manifest-pruning step in run().
+
+    A screen whose goto failed every attempt this run should have its stale row removed
+    from the manifest — UNLESS that role captured nothing at all this run, in which case
+    pruning must be skipped: the guard a few lines above this call in run() exists because
+    a single 0-screen retry once wiped 90 entries across 12 roles, and pruning must never
+    bypass that guard by deleting rows out from under it.
+
+    Args:
+      rows: manifest rows (dicts with a `slug` key) to filter, e.g. `out` in run().
+      failures: role name -> list of slugs whose navigation failed this run.
+      visited_roles: set of role names capture_role actually ran for this run.
+      captured_counts: role name -> number of screens successfully captured this run.
+
+    Returns: (kept_rows, pruned_slugs, skipped_roles) — `skipped_roles` is every role whose
+      failed slugs were left alone because it captured 0 screens this run, for logging.
+    """
+    failed_this_run = set()
+    skipped_roles = []
+    for role in visited_roles:
+        role_failed = failures.get(role, [])
+        if not role_failed:
+            continue
+        if captured_counts.get(role, 0) == 0:
+            skipped_roles.append(role)
+            continue
+        failed_this_run.update(role_failed)
+    kept = [row for row in rows if row.get("slug") not in failed_this_run]
+    pruned = sorted({row.get("slug") for row in rows if row.get("slug") in failed_this_run})
+    return kept, pruned, skipped_roles
+
 def merge_manifest(existing, fresh):
     """Replace rows whose `slug` was re-captured, preserving position, and append the rest.
 
@@ -510,12 +542,17 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
             return []
     env = (man or {}).get("environment") or cfg.get("live", {}).get("environment")
     if not env:
-        # Absence must fail SAFE: `environment` gates whether a later driver may click
-        # Submit/Approve unattended (dev/uat: yes, prod: halt for a human). Defaulting to
-        # "dev" would make missing config resolve to the MOST permissive state.
+        # Absence must fail SAFE: `environment` gates whether a later driver may click a
+        # DESTRUCTIVE-labelled Submit/Approve unattended (dev/uat: yes, prod: refused).
+        # Defaulting to "dev" would make missing config resolve to the MOST permissive
+        # state. Note this does NOT halt the run: flows still navigate to their entry and
+        # still run their `fill` steps against the live form on prod — only the destructive
+        # click is refused.
         print(f"!! {project}: no `environment` configured (cfg.live.environment or "
-              f"screen-manifest.yaml `environment`) — defaulting to 'prod' (halts unattended "
-              f"actions). Set `environment` in screen-manifest.yaml to silence this.", flush=True)
+              f"screen-manifest.yaml `environment`) — defaulting to 'prod', which REFUSES "
+              f"DESTRUCTIVE-labelled clicks but still navigates flows and still fills live "
+              f"forms with fixture data. Set `environment` in screen-manifest.yaml to silence "
+              f"this.", flush=True)
         env = "prod"
     bdl = B.new_bundle(project, env, _engine_sha())
     # Loaded once, before capture starts: feeds capture_role's route union AND the
@@ -628,13 +665,22 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
     # reached the end of capture_role, and it is intersected with visited_roles again below, so a
     # role that was skipped, aborted or excluded by `--role` keeps every row it had — same
     # contract as the bundle carry-forward and the `--role` manifest merge above.
-    failed_this_run = {slug for r in visited_roles for slug in failures.get(r, [])}
-    if failed_this_run:
-        pruned = sorted({row.get("slug") for row in out if row.get("slug") in failed_this_run})
-        if pruned:
-            out = [row for row in out if row.get("slug") not in failed_this_run]
-            print(f"!! removed {len(pruned)} stale manifest row(s) for screen(s) that failed to "
-                  f"load this run: {', '.join(pruned)}", flush=True)
+    #
+    # A role that captured NOTHING this run (every route failed — outage, expired login, DNS
+    # blip) must not have its rows pruned either: that is exactly the 0-screen-retry scenario
+    # the guard above (`captured 0 screens — manifest left untouched`) exists to protect, and
+    # pruning here used to run right after it and delete the same rows anyway.
+    captured_counts = {}
+    for row in manifest:
+        r = row.get("role")
+        captured_counts[r] = captured_counts.get(r, 0) + 1
+    out, pruned, skipped_roles = rows_to_prune(out, failures, visited_roles, captured_counts)
+    if skipped_roles:
+        print(f"!! pruning skipped for {', '.join(sorted(skipped_roles))}: captured 0 screens "
+              f"this run, so failed-route rows were left in the manifest", flush=True)
+    if pruned:
+        print(f"!! removed {len(pruned)} stale manifest row(s) for screen(s) that failed to "
+              f"load this run: {', '.join(pruned)}", flush=True)
 
     json.dump(out, open(mpath, "w"), indent=2)
     print(f"CAPTURED {len(manifest)} screens (manifest now {len(out)})", flush=True)

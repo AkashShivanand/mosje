@@ -387,15 +387,15 @@ class _FakeLocator:
     def first(self):
         return self
 
-    def get_attribute(self, name):
+    def get_attribute(self, name, timeout=None):
         return None
 
-    def inner_text(self):
+    def inner_text(self, timeout=None):
         if self.resolved is None:
             raise Exception(f"no element matching {self.requested!r}")
         return self.resolved
 
-    def text_content(self):
+    def text_content(self, timeout=None):
         return self.inner_text()
 
     def click(self):
@@ -559,6 +559,51 @@ class FlowSafety(unittest.TestCase):
         pg, captured = self._run(flow, "uat", buttons=["Something Else Entirely"])
         self.assertEqual(captured, ["STEP-1"],
                          "STEP-2 must not be captured after the forward click failed")
+
+
+from engine import capture as CAP
+
+
+class ManifestPruning(unittest.TestCase):
+    """Regression test for the bug where a `--role X` run that captured ZERO screens (every
+    route failed — outage, expired login, DNS blip) still had its rows pruned from the
+    manifest, emptying `_captured.json` on a single-role project despite the "manifest left
+    untouched" log line right above it. Exercises `rows_to_prune`, the pure helper
+    `run()` now calls for this decision."""
+
+    ROWS = [
+        {"slug": "CITIZEN-HOME"}, {"slug": "CITIZEN-APPLY"}, {"slug": "ADMIN-DASH"},
+    ]
+
+    def test_role_with_zero_captures_is_not_pruned(self):
+        # CITIZEN's every route failed this run (captured_counts has no entry for it, or 0) —
+        # its failed slug must survive, exactly as the "manifest left untouched" guard intends.
+        failures = {"citizen": ["CITIZEN-HOME"]}
+        kept, pruned, skipped = CAP.rows_to_prune(
+            self.ROWS, failures, visited_roles={"citizen"}, captured_counts={})
+        self.assertEqual(kept, self.ROWS, "a 0-capture role's rows must not be pruned")
+        self.assertEqual(pruned, [])
+        self.assertEqual(skipped, ["citizen"])
+
+    def test_role_with_at_least_one_capture_is_pruned(self):
+        # CITIZEN captured 1 screen successfully and 1 route failed — the failed one's stale
+        # row is correctly removed.
+        failures = {"citizen": ["CITIZEN-APPLY"]}
+        kept, pruned, skipped = CAP.rows_to_prune(
+            self.ROWS, failures, visited_roles={"citizen"}, captured_counts={"citizen": 1})
+        self.assertEqual(kept, [{"slug": "CITIZEN-HOME"}, {"slug": "ADMIN-DASH"}])
+        self.assertEqual(pruned, ["CITIZEN-APPLY"])
+        self.assertEqual(skipped, [])
+
+    def test_role_not_visited_this_run_is_left_alone(self):
+        # A role excluded by --role, skipped (missing creds) or aborted keeps every row,
+        # regardless of stale `failures` data left over from a previous run.
+        failures = {"citizen": ["CITIZEN-HOME"]}
+        kept, pruned, skipped = CAP.rows_to_prune(
+            self.ROWS, failures, visited_roles=set(), captured_counts={})
+        self.assertEqual(kept, self.ROWS)
+        self.assertEqual(pruned, [])
+        self.assertEqual(skipped, [])
 
 
 if __name__ == "__main__":
