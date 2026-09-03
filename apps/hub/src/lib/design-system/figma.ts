@@ -46,13 +46,17 @@ export const FIGMA_NODES = {
   inputs: "2141:296720",
   inputsDoc: "56793:50560", // "Inputs — Documentation" on the Inputs page, authored
   //                          2026-09-03 to the house style. It replaced the retired 1400px
-  //                          "DS template" (now in the page's Scratch section), whose six
-  //                          headings described a component with three sizes and five states.
+  //                          "DS template", whose six headings described a component with
+  //                          three sizes and five states; that template sat in a Scratch
+  //                          section which has since been deleted along with it.
   //                          Its six hero statistics are COUNTED from the file at build time,
   //                          not typed, so a wrong number here means the file is wrong.
   inputsRecord: "56793:50803", // "Inputs — Component record" — open items only, forward
   //                          looking, with the provenance of every number on the doc frame.
   inputField: "85:837", // the Input Field set itself — 4 sizes x 9 states = 36 variants
+  botCheck: "56824:1294", // the BotCheck set — 9 variants (Invisible draws only its failed
+  //                         state, so the matrix is 4 + 4 + 1 rather than 12). It replaced
+  //                         Captcha Field, which was deleted from the page on 2026-09-03.
   characterCount: "56792:50500", // the Character Count set, authored 2026-09-03
   requiredFieldsLegend: "56792:50506", // the Required Fields Legend set, authored 2026-09-03
   card: "2141:296707",

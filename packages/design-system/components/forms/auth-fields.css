@@ -158,6 +158,60 @@
     font-family: var(--sa-font-latin);
   }
 
+  /* ONE CARD, WHATEVER THE MODE.
+     A security check that is just a loose tick box reads as an unexplained
+     control someone left on the form. Bounding it makes it one object a citizen
+     can recognise, and gives the status somewhere to be expressed that is not
+     the checkbox itself. No logo and no vendor mark: this is a government form,
+     and the card is a label, not an advertisement. */
+  .ds-botcheck__card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-16);
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-base);
+  }
+
+  /* Colour carries the outcome, and never alone — `verified` is also a tick and
+     the word "Verified"; `failed` is also a sentence in `role="alert"`. */
+  .ds-botcheck__card[data-status="verified"] {
+    border-color: var(--sa-border-status-success-base);
+    background-color: var(--sa-bg-status-success-base);
+  }
+
+  .ds-botcheck__card[data-status="failed"] {
+    border-color: var(--sa-border-status-error-base);
+    background-color: var(--sa-bg-status-error-base);
+  }
+
+  .ds-botcheck__main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--sa-inline-16);
+  }
+
+  .ds-botcheck__control {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-height: var(--sa-target-comfortable);
+  }
+
+  /* The shield and the check's name. Subdued on purpose: it identifies the box
+     without competing with the thing the citizen has to do. */
+  .ds-botcheck__mark {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: var(--sa-inline-4);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
   .ds-botcheck__gesture {
     display: flex;
     align-items: center;
@@ -170,15 +224,38 @@
   }
 
   .ds-botcheck__status {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
     color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-botcheck__card[data-status="verified"] .ds-botcheck__status {
+    color: var(--sa-text-status-success-base);
   }
 
   .ds-botcheck__row {
     display: flex;
     align-items: center;
     gap: var(--sa-inline-8);
+  }
+
+  /* The challenge glyph needs the full width, so the mark moves above it rather
+     than fighting it for the row. */
+  .ds-botcheck--challenge .ds-botcheck__main {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ds-botcheck--challenge .ds-botcheck__mark {
+    order: -1;
+    align-self: flex-start;
+  }
+
+  .ds-botcheck--challenge .ds-botcheck__control {
+    display: block;
   }
 
   .ds-botcheck__challenge {

@@ -107,6 +107,33 @@ export const Checkbox: Story = {
 };
 
 /**
+ * **`label` names the check; `gestureLabel` is what the citizen agrees to.**
+ *
+ * `label` is read out as the group's name and printed beside the shield mark.
+ * `gestureLabel` is the statement beside the tick box, and it should stay a
+ * first-person claim — "I am not a robot", not "Security check", which reads as
+ * a heading rather than as something a person is asserting.
+ *
+ * Override `gestureLabel` for a portal whose register differs, or to translate
+ * it. Keep it short: it sits on one line beside the box at every width.
+ */
+export const CustomWording: Story = {
+  render: (args) => {
+    const [status, setStatus] = React.useState<"idle" | "verified">("idle");
+    return (
+      <BotCheck
+        {...args}
+        mode="checkbox"
+        status={status}
+        label="Anti-spam check"
+        gestureLabel="I am a person, not an automated script"
+        onVerify={() => setStatus("verified")}
+      />
+    );
+  },
+};
+
+/**
  * **`challenge` — deprecated.** Shown so the mode is documented, not so it is
  * chosen. It is the least accessible option and the least effective one; the
  * component's own docstring carries the measurements.
