@@ -581,23 +581,23 @@
     {
       "node": "55399:1367",
       "where": "PortalLoginTemplate — Documentation › hero › axes",
-      "figma": "Device (2) × Auth Method (3) — Password, OTP and PIN. Code also supports NGO-DARPAN ID for E-Anudaan's organisation applicants; the master owes it a fourth variant.",
+      "figma": "Device (2) × Auth Method (4) — Password, OTP, PIN and NGO-DARPAN ID.",
       "expect": [
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
-          "pattern": "Password: \"password\",[\\s\\S]{0,60}PIN: \"pin\"",
-          "hint": "The Figma Auth Method axis maps 1:1 onto these three. A fourth value in the enum means the master needs a fourth variant, or the enum is wrong."
+          "pattern": "Password: \"password\",[\\s\\S]{0,120}DARPAN: \"darpan\"",
+          "hint": "The Figma Auth Method axis maps 1:1 onto these four. A fifth value in the enum means the master needs a fifth variant, or the enum is wrong."
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/types.ts",
           "pattern": "\\| \"darpan\"",
-          "hint": "REINSTATED 2026-09-03. The 2026-08-17 removal reasoned that a full read of the handoff found no DARPAN screen — but E-Anudaan has NO login screen in the handoff at all, so the audit could not have found one. Its wizard says the organisation record is 'Pre-filled from your login / NGO-Darpan'. This assertion now pins the mode's PRESENCE, and the Figma master owes a fourth Auth Method variant to match."
+          "hint": "Reinstated 2026-09-03. The master now carries Device × Auth Method = 8 variants including DARPAN, so code and Figma agree again."
         },
         {
           "kind": "text",
-          "value": "Password, OTP and PIN"
+          "value": "Password, OTP, PIN and NGO-DARPAN ID"
         }
       ]
     },

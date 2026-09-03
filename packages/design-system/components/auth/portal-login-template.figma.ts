@@ -20,15 +20,22 @@
 // axis, and their card in `Auth / RecoveryFormCard` (56640:4104). The component
 // nodes were MOVED, so their keys survive — do not re-create them here.
 //
-// AND WHY AN AUTH METHOD AXIS IS NOT A REINSTATEMENT. An earlier version of this
-// file carried `Password + Captcha`, `Mobile OTP`, `DigiLocker SSO`,
-// `NGO DARPAN ID` and `Aadhaar OTP`, all written from a brief before the design
-// file existed. A full read of the MoSJE Portal handoff — 69 auth screens across
-// 10 of its 12 pages — found NO DARPAN screen and NO Aadhaar screen in any
-// portal, and those two are still gone from `PortalAuthMode`. Do not reinstate
-// either. What the handoff DOES contain is three credential forms: password, OTP
-// and PIN (NOS is PIN-only; both its screens at 2436:15957 are `Sign In Pin`).
+// THE AXIS IS FOUR METHODS, AND ONE OF THEM CAME BACK. An earlier version of
+// this file carried `Password + Captcha`, `Mobile OTP`, `DigiLocker SSO`,
+// `NGO DARPAN ID` and `Aadhaar OTP`, written from a brief before the design file
+// existed. Those were retired on 2026-08-17 after a full read of the handoff.
 //
+// `NGO DARPAN ID` was reinstated on 2026-09-03, because that removal was
+// unsound. Its reasoning was "a full read found no DARPAN screen in any portal"
+// — but DARPAN belongs to E-Anudaan, and E-Anudaan has NO login screen in the
+// handoff at all, so the audit could not have found one either way. E-Anudaan's
+// wizard says the organisation record is "Pre-filled from your login /
+// NGO-Darpan", and carries `NGO-Darpan Unique ID` as a required field.
+//
+// `Aadhaar OTP` stays gone. Nothing has been produced for it, and reinstating
+// one mode is not a reason to reinstate the other. Do not add it back without a
+// screen. The axis is Password · OTP · PIN · DARPAN, eight variants over Device.
+
 // PROPERTY COVERAGE — both Figma properties are accounted for:
 //   Auth Method -> `defaultMode` on the active role, and the entry in that
 //                  role's `authModes`. The React component owns the live value
@@ -85,6 +92,7 @@ const authMode = instance.getEnum("Auth Method", {
   Password: "password",
   OTP: "otp",
   PIN: "pin",
+  DARPAN: "darpan",
 });
 
 export default {
