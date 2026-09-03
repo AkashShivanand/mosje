@@ -1,0 +1,28 @@
+{
+  "$comment": "Recorded Figma effects per component set, captured through the Plugin API. A test cannot call Figma, so this is the design side that tools/figma-effects/check.mjs compares against what the stylesheet actually renders. Re-capture whenever a master's effects change; the gate reports any component with no entry rather than passing it silently.",
+  "$captured": "2026-09-04",
+  "Button": {
+    "nodeId": "609:283111",
+    "variants": 360,
+    "effectsByState": { "Focused": 72 },
+    "note": "72 = 3 sizes x 3 sub-types x 4 types x 2 tones, i.e. every Focused variant and nothing else. Before 2026-09-03 this set also carried 24 hover elevations and 48 resting shadows on outlined and text buttons, inherited from the UX4G set it descends from."
+  },
+  "IconButton": {
+    "nodeId": "3:3497",
+    "variants": 360,
+    "effectsByState": { "Focused": 72 },
+    "note": "Same shape. Before 2026-09-03 it also carried 24 hover elevations, multiplied through the 45 -> 180 -> 360 rebuild because a clone brings its parent's effects with it."
+  },
+  "ButtonGroup": {
+    "nodeId": "56793:1214",
+    "variants": 4,
+    "effectsByState": {},
+    "note": "Composed of Button instances; the group itself paints nothing."
+  },
+  "Link": {
+    "nodeId": "2723:1598",
+    "variants": 36,
+    "effectsByState": {},
+    "note": "Text with a bottom rule. The focus ring is drawn as an outline in code and is not modelled as an effect here."
+  }
+}
