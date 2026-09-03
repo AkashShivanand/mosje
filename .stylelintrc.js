@@ -34,6 +34,15 @@ module.exports = {
           "CanvasText",
           "LinkText",
           "ButtonText",
+          /*
+           * `ButtonText`'s own pair, and it was missing while `ButtonText` was
+           * allowed — so the one control the system reserves these two keywords FOR
+           * could name its ink and not its ground. In forced-colors mode a filled
+           * button has to invert the pair to stay distinguishable from an outlined
+           * one, because the colour that used to distinguish them no longer exists;
+           * without `ButtonFace` there is no way to write that.
+           */
+          "ButtonFace",
           "Highlight",
           "HighlightText",
           /*

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import * as React from "react";
 
-import { ComponentDocPage, type A11yItem } from "@/components/design-system/docs-kit";
+import { Callout, ComponentDocPage, MatrixTable, type A11yItem } from "@/components/design-system/docs-kit";
 
 import { Specimen } from "./specimen";
+import { IconButtonExtras } from "./extras";
 
 export const metadata: Metadata = {
   title: "Icon Button — Design System",
@@ -55,6 +56,54 @@ export default function Page(): React.JSX.Element {
           </p>
         </section>
       }
+    design={
+      <>
+        <section className="cdp__section" aria-labelledby="cdp-ib-name">
+          <h2 id="cdp-ib-name" className="cdp__h2">
+            It Has Exactly One Name
+          </h2>
+          <p>
+            <code>aria-label</code> is required by the type system, and it names what the
+            control <strong>does</strong> &mdash; &ldquo;Close dialog&rdquo;, not
+            &ldquo;Cross&rdquo;. The glyph is marked decorative, because a Material Symbols
+            ligature is real text: unhidden, a screen reader would announce
+            &ldquo;arrow_back Close dialog&rdquo;.
+          </p>
+          <Callout type="warning" title="The tooltip serves the people aria-label does not">
+            A screen-reader user already has the name. The person who can SEE the glyph and
+            does not recognise it gets nothing &mdash; and that is most people, on most icons
+            that are not a cross or a magnifier. Pass <code>tooltip</code> and it reuses the{" "}
+            <code>aria-label</code>; pass a string to say something else. Where the bubble
+            repeats the accessible name it is marked <code>duplicatesTriggerName</code>, so
+            the label is announced once rather than twice.
+          </Callout>
+        </section>
+
+        <IconButtonExtras />
+
+        <section className="cdp__section" aria-labelledby="cdp-ib-omitted">
+          <h2 id="cdp-ib-omitted" className="cdp__h2">
+            What It Deliberately Cannot Do
+          </h2>
+          <MatrixTable
+            caption="Props removed from the inherited Button API"
+            columns={["Prop", "Why it is omitted"]}
+            rows={[
+              ["fullWidth", "This control is square (aspect-ratio: 1). Stretching it into a rectangle breaks the one geometric promise it makes."],
+              ["nowrap", "It governs a label, and this control does not have one."],
+              ["iconLeft / iconRight", "The icon is the label. It arrives as `icon`, and there is only one."],
+              ["children", "Same reason — an icon button with children is an ordinary Button."],
+            ]}
+          />
+          <p>
+            Both were reachable through <code>ButtonProps</code> until 2026-09-03. A prop that
+            cannot do anything useful is a prop somebody will eventually try, so the type
+            removes them rather than the documentation asking nicely.
+          </p>
+        </section>
+      </>
+    }
+
     />
   );
 }

@@ -18,6 +18,7 @@ on:
       - ".stylelintrc.tokens.json"
       - "tools/ds-linkage/**"
       - "tools/type-linkage/**"
+      - "tools/focus-ring/**"
       - ".github/workflows/ds-quality.yml"
   pull_request:
     paths:
@@ -35,6 +36,7 @@ on:
       - ".stylelintrc.tokens.json"
       - "tools/ds-linkage/**"
       - "tools/type-linkage/**"
+      - "tools/focus-ring/**"
       - ".github/workflows/ds-quality.yml"
 
 # A pull request that is pushed again supersedes its own in-flight run. Without this
@@ -207,6 +209,16 @@ jobs:
       # value-naming migration. This gate is why a third one fails the PR instead.
       - name: Dangling vars — every --sa-* reference resolves to a declared token
         run: npm run check:dangling-vars
+
+      # A focus ring drawn with `box-shadow` is not painted in forced-colors mode, so
+      # `outline: none` stands and a keyboard user in Windows High Contrast gets no focus
+      # indicator at all — WCAG 2.2 2.4.7. It is invisible to every other gate and to
+      # normal review, because the ring looks perfect in the browsers people test in.
+      # Eighteen rings were unrescued when this was written, in six portals and the docs
+      # chrome. Checked per SELECTOR, not per file: dashboard.css already had a
+      # forced-colors block, for a different selector, while three of its rings vanished.
+      - name: Focus rings — every box-shadow ring survives forced-colors
+        run: npm run check:focus-ring
 
       # A nav link naming an id no page renders is invisible to every other check:
       # it resolves, returns 200, and silently drops the reader at the top of a page

@@ -513,5 +513,78 @@
     ]
    }
   }
+ },
+ "IconButton": {
+  "nodeId": "3:3497",
+  "captured": "2026-09-03",
+  "note": "360 variants = Size 3 x Sub-type 3 x State 5 x Type 4 x Tone 2. Type was added 2026-09-03 (before it, a danger icon button could not be drawn at all) and Tone the same day (the code supported tone=\"inverse\" and the set could not express it). Every surface and glyph binds a Tier-3 cmp/action/* token; the Text sub-type borrows the secondary inverse family because no tertiary inverse family exists, which is the same choice button.css makes for inverseText.",
+  "properties": {
+   "Change Icon": {
+    "type": "INSTANCE_SWAP"
+   },
+   "Size": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Default",
+     "Large",
+     "Small"
+    ]
+   },
+   "Sub-type": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Text",
+     "Outlined",
+     "Filled"
+    ]
+   },
+   "State": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Default",
+     "Hover",
+     "Pressed",
+     "Focused",
+     "Disabled"
+    ]
+   },
+   "Type": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Primary",
+     "Success",
+     "Danger",
+     "Neutral"
+    ]
+   },
+   "Tone": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Default",
+     "Inverse"
+    ]
+   }
+  }
+ },
+ "ButtonGroup": {
+  "nodeId": "56793:1214",
+  "captured": "2026-09-03",
+  "note": "Authored 2026-09-03. The component existed in code with no Figma counterpart at all, so a designer had no way to draw a grouped or segmented control and reached for a plain auto-layout frame — which is the touching-targets defect the component exists to prevent. 4 variants = Attached 2 x Orientation 2.",
+  "properties": {
+   "Attached": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "No",
+     "Yes"
+    ]
+   },
+   "Orientation": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Horizontal",
+     "Vertical"
+    ]
+   }
+  }
  }
 }

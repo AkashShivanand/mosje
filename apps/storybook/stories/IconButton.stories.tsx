@@ -96,3 +96,70 @@ export const InverseTone: Story = {
     </div>
   ),
 };
+
+/**
+ * **`shape="circle"`** is for a control that floats free of a form's rhythm — a dialog's
+ * close, a toast's dismiss, a floating action.
+ *
+ * Square stays the default because most icon buttons sit in a toolbar or a table row
+ * beside square-cornered siblings, and a round control in that line reads as a different
+ * kind of thing. The radius is `--sa-shape-full` rather than a large number, so it stays
+ * a circle at every size on the ladder and at 200% text.
+ */
+export const Shape: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+      <IconButton aria-label="Close dialog" icon={<Icon name="close" size={20} />} appearance="outlined" />
+      <IconButton
+        aria-label="Close dialog"
+        icon={<Icon name="close" size={20} />}
+        appearance="outlined"
+        shape="circle"
+      />
+    </div>
+  ),
+};
+
+/**
+ * **`tooltip` serves the people `aria-label` does not.**
+ *
+ * An icon-only control is already named for a screen reader. The person who can SEE the
+ * glyph but does not recognise it gets nothing — and that is most people, on most icons
+ * that are not a cross or a magnifier. Primer, Fluent and Carbon all pair icon buttons
+ * with a tooltip for this reason.
+ *
+ * `tooltip` reuses the `aria-label`; pass a string to say something else. When the bubble
+ * repeats the accessible name it is marked `duplicatesTriggerName`, so a screen reader
+ * announces the label once rather than twice.
+ *
+ * Hover these, then Tab to them — a tooltip that only opens on hover is unreachable by
+ * keyboard, so this one opens on focus too.
+ */
+export const WithTooltip: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+      <IconButton aria-label="Download the sanction order" icon={<Icon name="download" size={20} />} tooltip />
+      <IconButton
+        aria-label="Delete application"
+        icon={<Icon name="delete" size={20} />}
+        variant="danger"
+        tooltip="Delete — this cannot be undone"
+        tooltipSide="bottom"
+      />
+    </div>
+  ),
+};
+
+/**
+ * **`fullWidth` and `nowrap` are not available here, and that is deliberate.**
+ *
+ * They leaked in through `ButtonProps` and are meaningless on this control: it is square
+ * (`aspect-ratio: 1`), so `fullWidth` would stretch it into a rectangle and break the one
+ * geometric promise it makes, and `nowrap` governs a label it does not have. The type
+ * omits them rather than the documentation asking nicely.
+ */
+export const OmittedProps: Story = {
+  render: () => (
+    <IconButton aria-label="Add beneficiary" icon={<Icon name="add" size={20} />} appearance="outlined" />
+  ),
+};

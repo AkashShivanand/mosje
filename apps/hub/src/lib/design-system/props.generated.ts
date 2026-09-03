@@ -1315,6 +1315,19 @@ export const GENERATED_PROPS = {
         "description": "Visual style."
       },
       {
+        "name": "download",
+        "type": "string | boolean",
+        "required": false,
+        "description": "Link form only — download the target rather than navigating to it."
+      },
+      {
+        "name": "fullWidth",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nThe older guidance was to wrap the button in a full-width container instead, which\nis correct in principle and was ignored everywhere it mattered — consumers reached\nfor `className` and got the behaviour without the token discipline. This is the\nsupported spelling of what they were already doing.",
+        "description": "Stretch to the full width of the container."
+      },
+      {
         "name": "href",
         "type": "string",
         "required": false,
@@ -1340,11 +1353,37 @@ export const GENERATED_PROPS = {
         "description": "Busy state. Sets `aria-busy` and disables the control, so a form cannot be submitted twice while the first submission is in flight. KEEP THE LABEL MEANINGFUL — pass \"Submitting…\", not a bare spinner. A control that loses its name mid-action is unusable with a screen reader, and this component deliberately does not swap the label for you."
       },
       {
+        "name": "nowrap",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nLabels WRAP by default as of 2026-09-03. A button that refuses to wrap does not\nshrink — it overflows and takes the page's horizontal scrollbar with it, which on a\n320px bilingual government page is the common case rather than the edge. Opt in to\n`nowrap` only where one line is structural: a segmented control, a toolbar.",
+        "description": "Keep the label on one line."
+      },
+      {
+        "name": "preserveFocus",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nA natively `disabled` button is removed from the tab order, which means a reader\nnavigating by keyboard never learns it exists — they cannot discover that the form\nhas a submit at all, only that nothing responds. Primer, Spectrum and Carbon all\noffer this for that reason. It is OPT-IN and not the default, because switching every\ndisabled button in the estate into the tab order would change tab order on pages\nnobody has re-tested.\n\nThe control is still genuinely inoperable: click and key activation are both\nsuppressed, and `aria-disabled` tells assistive technology so.\n\nIgnored on the `href` form, which is already `aria-disabled` — an anchor cannot take\nthe native attribute at all.",
+        "description": "Render the disabled state as `aria-disabled` rather than the native attribute, so the control stays focusable and a screen-reader user can still find it."
+      },
+      {
+        "name": "rel",
+        "type": "string",
+        "required": false,
+        "description": "Link form only. Left unset, `target=\"_blank\"` is given `rel=\"noopener noreferrer\"` automatically; an explicit value here wins."
+      },
+      {
         "name": "size",
         "type": "ButtonSize = \"sm\" | \"md\" | \"lg\"",
         "required": false,
         "default": "\"md\"",
         "description": "Control size."
+      },
+      {
+        "name": "target",
+        "type": "React.HTMLAttributeAnchorTarget",
+        "required": false,
+        "description": "Link form only — where the anchor opens. Ignored without `href`. THE LINK FORM OFFERED `href` AND NONE OF THE ATTRIBUTES THAT GO WITH IT. Because this interface extends `ButtonHTMLAttributes`, the three anchor attributes a CTA actually needs were not assignable, so `<Button href target=\"_blank\">` did not compile and every consumer that wanted one fell back to a raw `<a>` with `buttonClasses()` — losing the disabled-link handling the component exists to provide. Found by the typechecker while adding the `rel` default below, which had been reading a `target` the public API could not set."
       },
       {
         "name": "tone",
@@ -4207,6 +4246,12 @@ export const GENERATED_PROPS = {
         "description": "Visual style."
       },
       {
+        "name": "download",
+        "type": "string | boolean",
+        "required": false,
+        "description": "Link form only — download the target rather than navigating to it."
+      },
+      {
         "name": "href",
         "type": "string",
         "required": false,
@@ -4219,6 +4264,26 @@ export const GENERATED_PROPS = {
         "description": "Busy state. Sets `aria-busy` and disables the control, so a form cannot be submitted twice while the first submission is in flight. KEEP THE LABEL MEANINGFUL — pass \"Submitting…\", not a bare spinner. A control that loses its name mid-action is unusable with a screen reader, and this component deliberately does not swap the label for you."
       },
       {
+        "name": "preserveFocus",
+        "type": "boolean",
+        "required": false,
+        "default": "false\n\nA natively `disabled` button is removed from the tab order, which means a reader\nnavigating by keyboard never learns it exists — they cannot discover that the form\nhas a submit at all, only that nothing responds. Primer, Spectrum and Carbon all\noffer this for that reason. It is OPT-IN and not the default, because switching every\ndisabled button in the estate into the tab order would change tab order on pages\nnobody has re-tested.\n\nThe control is still genuinely inoperable: click and key activation are both\nsuppressed, and `aria-disabled` tells assistive technology so.\n\nIgnored on the `href` form, which is already `aria-disabled` — an anchor cannot take\nthe native attribute at all.",
+        "description": "Render the disabled state as `aria-disabled` rather than the native attribute, so the control stays focusable and a screen-reader user can still find it."
+      },
+      {
+        "name": "rel",
+        "type": "string",
+        "required": false,
+        "description": "Link form only. Left unset, `target=\"_blank\"` is given `rel=\"noopener noreferrer\"` automatically; an explicit value here wins."
+      },
+      {
+        "name": "shape",
+        "type": "\"square\" | \"circle\"",
+        "required": false,
+        "default": "\"square\"\n\n`circle` is for a control that floats free of a form's rhythm — a close button on a\ndialog, a dismiss on a toast, a floating action. Square is the default because most\nicon buttons sit in a toolbar or a table row beside square-cornered siblings, and a\nround control in that line reads as a different kind of thing.",
+        "description": "Corner treatment."
+      },
+      {
         "name": "size",
         "type": "ButtonSize = \"sm\" | \"md\" | \"lg\"",
         "required": false,
@@ -4226,11 +4291,30 @@ export const GENERATED_PROPS = {
         "description": "Control size."
       },
       {
+        "name": "target",
+        "type": "React.HTMLAttributeAnchorTarget",
+        "required": false,
+        "description": "Link form only — where the anchor opens. Ignored without `href`. THE LINK FORM OFFERED `href` AND NONE OF THE ATTRIBUTES THAT GO WITH IT. Because this interface extends `ButtonHTMLAttributes`, the three anchor attributes a CTA actually needs were not assignable, so `<Button href target=\"_blank\">` did not compile and every consumer that wanted one fell back to a raw `<a>` with `buttonClasses()` — losing the disabled-link handling the component exists to provide. Found by the typechecker while adding the `rel` default below, which had been reading a `target` the public API could not set."
+      },
+      {
         "name": "tone",
         "type": "ButtonTone = \"default\" | \"inverse\"",
         "required": false,
         "default": "\"default\"",
         "description": "The ground the button sits on."
+      },
+      {
+        "name": "tooltip",
+        "type": "boolean | string",
+        "required": false,
+        "description": "Show a tooltip naming the action. `true` reuses `aria-label`; a string overrides it. AN ICON-ONLY CONTROL'S BIGGEST GAP IS FOR SIGHTED USERS. The `aria-label` already names it for a screen reader, so the person who cannot see the glyph is served and the person who can see it but does not recognise it is not. Primer, Fluent and Carbon all pair their icon buttons with a tooltip for exactly this reason. When the tooltip text equals the accessible name it is marked `duplicatesTriggerName`, so the label is not announced twice."
+      },
+      {
+        "name": "tooltipSide",
+        "type": "TooltipSide = \"top\" | \"bottom\" | \"left\" | \"right\"",
+        "required": false,
+        "default": "\"top\"",
+        "description": "Which side the tooltip opens on."
       },
       {
         "name": "variant",

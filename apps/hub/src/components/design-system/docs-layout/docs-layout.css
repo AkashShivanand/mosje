@@ -657,3 +657,19 @@
     display: block;
   }
 }
+
+/* forced-colors mode does not paint `box-shadow`, so the ring above is not
+   drawn there at all. An `outline` IS painted, and `Highlight` is the
+   system's own focus colour, so the ring follows the theme the reader chose.
+   Same footprint as the shadow it stands in for; later source order with equal
+   specificity is what lets it beat the `outline: none` above. */
+@media (forced-colors: active) {
+  .docs-nav__item:focus-visible,
+  .docs-header__menu:focus-visible,
+  .docs-header__search-btn:focus-visible,
+  .docs-sidebar__filter-input:focus-visible,
+  .docs-nav__group-header:focus-visible {
+    outline: var(--sa-focus-width) solid Highlight;
+    outline-offset: var(--sa-focus-offset);
+  }
+}
