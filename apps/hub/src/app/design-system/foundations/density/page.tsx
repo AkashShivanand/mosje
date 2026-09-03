@@ -117,8 +117,26 @@ export default function DensityPage(): React.JSX.Element {
         <ul style={{ marginTop: "var(--sa-stack-16)" }}>
           <li>Public-facing forms, where comfortable targets reduce errors.</li>
           <li>Mobile, where fingers need larger touch targets.</li>
-          <li>Accessibility-critical flows, where the 44px minimum target matters most.</li>
+          <li>Accessibility-critical flows, where the extra reach matters most.</li>
         </ul>
+      </section>
+
+      <section aria-labelledby="targets" style={{ marginTop: "var(--sa-stack-40)" }}>
+        <h2 id="targets">Target size</h2>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
+          WCAG 2.2 asks that a target be at least 24 by 24 CSS pixels — success
+          criterion 2.5.8, Target Size (Minimum), at level AA. A comfortable
+          control is 40px high and a compact one is 32px, so{" "}
+          <strong>both modes clear the minimum</strong>, compact with less room
+          to spare. The 44px figure often quoted as a minimum is 2.5.5, Target
+          Size (Enhanced), which is level AAA; neither mode reaches it and this
+          estate does not claim it.
+        </p>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
+          Height is only one axis. A control 32px high can still fail 2.5.8 on
+          its width, and none of the density tokens sets a width — that stays
+          the component&apos;s own responsibility.
+        </p>
       </section>
 
       <section aria-labelledby="activate" style={{ marginTop: "var(--sa-stack-40)" }}>
@@ -133,18 +151,54 @@ export default function DensityPage(): React.JSX.Element {
 
       <section aria-labelledby="tokens" style={{ marginTop: "var(--sa-stack-40)" }}>
         <h2 id="tokens">Tokens</h2>
+        <p style={{ marginTop: "var(--sa-stack-16)" }}>
+          These eight values are the whole axis — each shown as{" "}
+          <strong>comfortable → compact</strong>. Anything not listed here is
+          identical in both modes, including type, icons, radius and colour, so
+          a compact screen is a tighter layout rather than a smaller design.
+        </p>
         <div style={{ marginTop: "var(--sa-stack-16)" }}>
           <TokenTable
             tokens={[
               {
-                token: "--sa-density-control-height (comfortable)",
-                value: "40px",
-                description: "Default control height for public sites and forms",
+                token: "--sa-density-control-height",
+                value: "40px → 32px",
+                description: "Height of a button, an input or a select. −20%.",
               },
               {
-                token: "--sa-density-control-height (compact)",
-                value: "32px",
-                description: 'Active under [data-density="compact"] for dense portals',
+                token: "--sa-density-control-padding-x",
+                value: "16px → 12px",
+                description: "Padding inside a control, left and right. −25%.",
+              },
+              {
+                token: "--sa-density-control-padding-y",
+                value: "8px → 6px",
+                description: "Padding inside a control, top and bottom. −25%.",
+              },
+              {
+                token: "--sa-density-control-gap",
+                value: "8px → 6px",
+                description: "Gap between a control's parts — an icon and its label. −25%.",
+              },
+              {
+                token: "--sa-density-row-height",
+                value: "48px → 36px",
+                description: "Height of a table row or a list row. −25%.",
+              },
+              {
+                token: "--sa-density-row-padding-x",
+                value: "16px → 12px",
+                description: "Padding inside a row, left and right. −25%.",
+              },
+              {
+                token: "--sa-density-row-padding-y",
+                value: "12px → 8px",
+                description: "Padding inside a row, top and bottom. −33%.",
+              },
+              {
+                token: "--sa-density-section-gap",
+                value: "24px → 16px",
+                description: "Gap between sections of a form or a page. −33%.",
               },
             ]}
           />
