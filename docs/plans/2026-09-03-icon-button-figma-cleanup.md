@@ -1,16 +1,16 @@
-# IconButton — the Figma half, and why the app was never broken
+# IconButton — the Figma cleanup, and the two things I got wrong first
 
-**Branch** `ds/icon-button-cleanup` · **Opened** 2026-09-03 · **Status** blocked on the
-Figma MCP call limit; every measurement below is already taken.
+**Branch** `ds/icon-button-cleanup` · **2026-09-03** · **Status** UI defects fixed; one
+item open, one decision for a human.
 
 Reported in review with a screenshot: an icon button drawn as a **white box with a heavy
-drop shadow**, beside two bare glyphs with no container and one blue outlined box.
+drop shadow**, beside bare glyphs with no container.
 
 ---
 
-## 1. The app is not broken. Measured, not assumed.
+## 1. The app was never broken
 
-`/design-system/components/actions/icon-button`, computed styles from a real browser:
+`/design-system/components/actions/icon-button`, computed styles from Chromium:
 
 | | background | border | box-shadow | radius | box |
 |---|---|---|---|---|---|
@@ -19,77 +19,76 @@ drop shadow**, beside two bare glyphs with no container and one blue outlined bo
 | Filled, focus | `rgb(0,94,185)` | same | **none** | 8px | 40×40 |
 | Outlined, rest | transparent | `rgb(0,94,185)` | **none** | 8px | 40×40 |
 
-Blue fill, white glyph, square, no shadow, no white box. The screenshot is of the **Figma
-set**, not the running component.
+The screenshot was of the **Figma set**.
 
 ---
 
-## 2. What is actually wrong, and it is all in Figma
+## 2. What it actually was: a white button on a white page
 
-### F1 — 96 of 360 variants carry effects the code does not render
+`Tone=Inverse` paints `cmp/action/brand/primary/inverse/default/bg`, which resolves to
+**`#ffffff`** — correctly, because the tone exists for a solid brand surface. The two
+tones were **interleaved across the same rows**, so those white buttons sat on Figma's
+white canvas with nothing behind them: an invisible box whose only visible feature was
+its shadow.
 
-Drop shadows on `State=Hover` and glows on `State=Focused`, inherited from the UX4G set
-this component descends from and then multiplied by the 45 → 180 → 360 rebuild, because a
-clone brings its parent's effects with it.
+Not a component defect. A presentation defect in the set, and a real one — 180 variants
+per set were unreadable.
 
-The code renders **`box-shadow: none` in every state** (measured above). Its focus is an
-`outline` bound to `--sa-focus-width` / `--sa-focus-offset`, not a glow, and its hover is
-`filter: brightness(0.95)`, not elevation.
-
-So the white-box-with-shadow in the report is a Figma variant painting an affordance the
-estate does not have. **This is the defect.**
-
-### F2 — no `— Documentation` or `— Component record` frame
-
-`ds-documentation-standard.md` §1 requires both on every component page. The Buttons page
-has them for **Button only**; IconButton and Link are sections on the same page with
-neither. Three components, one component's documentation.
-
-### F3 — a Scratch section is still published alongside the real sets
-
-`4 · Scratch — pre-2026 specimen boards, kept for reference, not published` is **8988 ×
-4459** — larger than the Button section itself. It is named honestly, which is better than
-most, but it sits in the same file a designer opens to find the master.
-
-### F4 — what is already right, and should not be touched
-
-- 360 variants, complete `Size × Sub-type × State × Type × Tone` matrix
-- Fills bound per intent: `cmp/action/{brand,success,destructive,neutral}/primary/<state>/bg`
-- Sections numbered `1 · Button`, `2 · IconButton`, `3 · Link`, `4 · Scratch` — the page IS
-  organised; the earlier work landed
-- The library `Icon` in every slot, zero orphans
+**Fixed:** the grid is now `Sub-type × Size` across (9 columns) and `Type × State` down
+(20 rows), with **Tone as two stacked blocks** and a brand ground painted behind the
+second. The set had also kept the bounds of its old layout — 1376×2303 for 648×3040 of
+content — so variants floated outside their own frame.
 
 ---
 
-## 3. The pass, when the call limit resets
+## 3. Ninety-six shadows the code has never rendered
 
-Each step is one `use_figma` call, and each is verified in a SEPARATE call — mid-script
-reads of Figma getters proved unreliable during the Button work and cost two wrong
-conclusions.
+| Set | Removed | Kept |
+|---|---|---|
+| Button | 24 hover elevations + 48 resting shadows on outlined/text | 72 focus rings |
+| IconButton | 24 hover elevations | 72 focus rings |
 
-- [ ] **S1** Strip `effects` from all 96 variants. Assert `effects.length === 0` across all
-      360 afterwards, in a fresh call.
-- [ ] **S2** Redraw `State=Focused` as the estate's focus ring — a 2px outline offset 2px,
-      bound to `--sa-focus-ring` — rather than a glow, so the drawn state matches what a
-      keyboard user actually sees.
-- [ ] **S3** Author `IconButton — Documentation` and `IconButton — Component record` to the
-      house style: 1680 wide, hero with six COUNTED stats, numbered `NN <claim>` sections,
-      880px prose measure.
-- [ ] **S4** Same for Link, whose set was rebuilt on 2026-09-03 and has no frames either.
-- [ ] **S5** Move the Scratch section to its own page, or delete it against the human's
-      explicit say-so. **Not deleted unilaterally** — it is somebody's reference material.
-- [ ] **S6** Re-verify: 360 variants, zero effects, all fills/glyph inks bound, heights on
-      the ladder, and no descendant exceeding its instance bounds.
-
-**Do not** change fills, the variant matrix, or the icon instances. Those are correct and
-were verified on 2026-09-03.
+Inherited from the UX4G set this descends from, then multiplied by the 45 → 180 → 360
+rebuild, because **a clone brings its parent's effects with it**.
 
 ---
 
-## 4. The rule this earns
+## 4. Two things I got wrong before checking
+
+**The focus shadow is correct, and I had planned to replace it.** The first version of
+this plan said "redraw `Focused` as the estate's focus ring rather than a glow". It
+already is one: a `DROP_SHADOW` of spread 4, `#0373df` at 48% — and `--sa-focus-ring` is
+`rgba(3, 115, 223, 0.48)`, the same colour. Deleting it would have removed the one effect
+the code does draw. All 144 are kept.
+
+**The defect was not confined to IconButton.** Button carried 72 of the 96 — including
+resting shadows on outlined and text buttons, which nothing had reported because they are
+subtle on a white page. Auditing the reported component alone would have fixed a quarter
+of the problem and left the estate's most-used control wrong.
+
+---
+
+## 5. Still open
+
+- [ ] **`IconButton — Documentation`** — the consumer-facing frame (hero, six counted
+      stats, numbered `NN` sections, 880px measure). The **Component record** is authored;
+      this is its other half. `ds-documentation-standard.md` §1 asks for both.
+- [ ] **`Link — Documentation` and `Link — Component record`** — the Link set was rebuilt
+      on 2026-09-03 and has neither.
+- [ ] **The Scratch section.** `4 · Scratch — pre-2026 specimen boards, kept for
+      reference, not published` is **8988 × 4459**, larger than the Button section. It is
+      named honestly. **Not deleted** — it is somebody's reference material, and that is a
+      human's call, not mine.
+
+---
+
+## 6. The rule this earns
 
 **A clone inherits effects, and nobody looks at effects.** The 45 → 360 rebuild verified
 fills, strokes, glyph ink, sizes and bounds — every property it deliberately set — and
 carried a shadow through all of it because nothing asked. When cloning a variant, diff the
-FULL property set against the source of truth, not the properties you happen to be
-changing.
+**full** property set against the source of truth, not the properties you are changing.
+
+And the corollary, from §4: **when a defect is reported on one component, check its
+siblings before believing it is confined there.** This one was three-quarters somewhere
+else.
