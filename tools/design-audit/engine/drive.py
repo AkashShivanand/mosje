@@ -173,6 +173,25 @@ def _walk_slug(prefix, pos, seen):
     return base
 
 
+def _is_review(pos, lab):
+    """Is this the wizard's final review-and-submit page?
+
+    Matching the TITLE loosely is wrong and cost three steps per scheme: a first attempt tested
+    `review|declar|submit`, which matched "Verification & Declaration" (step 8 of 10) and
+    "Grant Sought & Declaration" — so the walker declared the review page reached, tried to
+    submit, found no Submit button and stopped, three steps short of the document uploads and
+    the real review page. Position is the reliable signal; the title is only consulted for the
+    exact phrase a review page actually uses.
+    """
+    url, n, title = pos
+    if "/review" in (url or ""):
+        return True
+    of = (lab or {}).get("of")
+    if n and of and n >= of:
+        return True
+    return bool(re.search(r"review\s*(&|and)\s*submit", title or "", re.I))
+
+
 def walk_wizard(pg, spec, flow, man, cfg, paths, bdl, role, fid, allowed, why):
     """Walk a multi-step wizard to its end, discovering the steps rather than declaring them.
 
@@ -195,7 +214,7 @@ def walk_wizard(pg, spec, flow, man, cfg, paths, bdl, role, fid, allowed, why):
         pos = _position(pg)
         slug = _walk_slug(prefix, pos, seen)
         seen[slug] = seen.get(slug, 0) + 1
-        on_review = "/review" in (pos[0] or "") or re.search(r"review|declar|submit", pos[2] or "", re.I)
+        on_review = _is_review(pos, step_label(pg))
 
         _capture_state(pg, f"{slug}-ARRIVED", role, cfg, paths, bdl, man, fid,
                        {"flow": fid, "step": len(done) + 1, "of": max_steps})

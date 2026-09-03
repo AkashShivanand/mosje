@@ -625,9 +625,12 @@ class WizardPage(FakePage):
     evidence of position is the "Step N of M — Title" line. This is the shape that defeated the
     hand-numbered manifest — every step looked identical to a URL comparison."""
 
-    def __init__(self, steps, review_at=None, forward="Next →", file_slots=0):
+    def __init__(self, steps, review_at=None, forward="Next →", file_slots=0, total=None):
         super().__init__(buttons=[forward, "Back", "Submit Application"])
         self.steps, self.i, self.forward = steps, 0, forward
+        # `total` is what the page ADVERTISES as "of M" — separable from how many steps this
+        # fake can actually reach, so a wizard stuck on step 1 of 2 can be modelled.
+        self.total = total or len(steps)
         self.review_at = review_at if review_at is not None else len(steps) - 1
         self.file_slots = file_slots
         self.submitted = False
@@ -636,7 +639,7 @@ class WizardPage(FakePage):
     # position ---------------------------------------------------------------
     def evaluate(self, js, arg=None):
         if "innerText.match" in js:
-            return {"n": self.i + 1, "of": len(self.steps), "title": self.steps[self.i]}
+            return {"n": self.i + 1, "of": self.total, "title": self.steps[self.i]}
         return 0                                    # fill_all: nothing left to fill
 
     def query_selector_all(self, sel):
@@ -695,8 +698,7 @@ class AdaptiveWizardWalk(unittest.TestCase):
     def test_stops_instead_of_looping_when_the_forward_control_does_not_advance(self):
         """A disabled "Next" on an upload step must end the walk, not spin to maxSteps
         capturing the same page under a new name each time."""
-        pg = WizardPage(["Uploads", "Never reached"], review_at=99)
-        pg.steps = ["Uploads"]                       # forward can never advance past step 1
+        pg = WizardPage(["Uploads"], review_at=99, total=2)   # says "1 of 2", cannot reach 2
         captured = self._walk(pg, spec={"prefix": "P", "maxSteps": 24})
         self.assertEqual(captured, ["P-S01-UPLOADS-ARRIVED", "P-S01-UPLOADS-FILLED"])
 
@@ -815,3 +817,33 @@ class TolerantReload(unittest.TestCase):
         pg = self._Page()
         self.assertTrue(D._reload(pg))
         self.assertEqual(pg.tried, ["networkidle"])
+
+
+class ReviewPageDetection(unittest.TestCase):
+    """Which page is the wizard's end. Getting this wrong is expensive in one direction: a false
+    positive stops the walk early AND tries to submit on a page that is not the review page.
+
+    The bug this gates: matching the title against `review|declar|submit` matched
+    "Verification & Declaration" — step 8 of 10 — so all three schemes stopped three steps short,
+    never reaching Document Uploads or Review & Submit, and reported "did NOT reach a completed
+    submission" for a reason that had nothing to do with the portal."""
+
+    def test_a_declaration_step_in_the_middle_is_not_the_review_page(self):
+        self.assertFalse(D._is_review(
+            ("/apply-grant/scheme/NAPDDR/step-1", 8,
+             "Verification & Declaration. Fields marked * are mandatory."), {"of": 10}))
+
+    def test_a_grant_and_declaration_step_is_not_the_review_page(self):
+        self.assertFalse(D._is_review(("/step-1", 5, "Grant Sought & Declaration"), {"of": 7}))
+
+    def test_the_document_upload_step_is_not_the_review_page(self):
+        self.assertFalse(D._is_review(("/step-2", 9, "Document Uploads"), {"of": 10}))
+
+    def test_the_review_url_is_conclusive(self):
+        self.assertTrue(D._is_review(("/apply-grant/scheme/NAPDDR/review", None, None), {}))
+
+    def test_the_last_step_of_n_is_the_review_page(self):
+        self.assertTrue(D._is_review(("/step-1", 10, "Review & Submit"), {"of": 10}))
+
+    def test_the_exact_phrase_is_honoured_when_position_is_unknown(self):
+        self.assertTrue(D._is_review(("/step-1", None, "Review and Submit"), {}))
