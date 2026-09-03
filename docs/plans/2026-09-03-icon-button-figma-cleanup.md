@@ -315,5 +315,8 @@ The first is the exact defect that shipped.
 
 - [ ] A human deletes the deprecated `CloseButton` set and page in the Figma UI, then
       republishes the library. Zero instances, so it is safe.
-- [ ] The Alert component resizes its close control to 26×27, off the size ladder. That is
-      the Alert's own pass, not this one.
+- [x] **The Alert's close control is back on the ladder.** It had been squashed to 26×27 —
+      not a size the estate ships, and below the 24×24 WCAG 2.2 §2.5.8 floor in one
+      dimension once the glyph's own bearing is allowed for. Restored to Small (32×32);
+      the Alert set is unchanged at 400×352 and both variants render correctly, verified
+      by screenshot rather than inferred.
