@@ -6021,10 +6021,22 @@ export const GENERATED_PROPS = {
     "inheritsNative": true,
     "props": [
       {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Where the handoff goes. **Set it and this renders an `<a>`**, which is what a handoff to an external identity provider actually is — a navigation, not a form control. Left unset it stays a `<button>` for a caller that runs the redirect itself in `onClick`."
+      },
+      {
         "name": "mark",
         "type": "React.ReactNode",
         "required": false,
-        "description": "The provider's mark. Falls back to a Material Symbols glyph when absent."
+        "description": "The provider's mark as a node. Falls back to a Material Symbols glyph."
+      },
+      {
+        "name": "markSrc",
+        "type": "string",
+        "required": false,
+        "description": "The provider's mark as an image path. Wins over `mark`."
       },
       {
         "name": "subtitle",

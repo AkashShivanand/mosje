@@ -65,7 +65,7 @@ const A11Y: A11yItem[] = [
     level: "AA",
     status: "partial",
     description:
-      "The captcha is a cognitive function test, so `config.captcha` defaults to false and the field is not drawn at all unless a portal asks for it. Where it is switched on, the OTP mode is the alternative that satisfies this criterion — a role offering captcha must also offer another way in.",
+      "The captcha is a cognitive function test, so it resolves `role.captcha` ?? `config.captcha` ?? false and the field is not drawn at all unless a role asks for it. Where it is switched on, the OTP mode is the alternative that satisfies this criterion — a role offering captcha must also offer another way in.",
   },
   {
     criterion: "2.4.7 Focus Visible",
@@ -88,7 +88,7 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
       whenToUse={{
         use: [
           "A portal signs in more than one kind of user and each kind has its own way in.",
-          "The authentication modes are the estate's own — a password form, a mobile OTP, a numeric PIN, or a DigiLocker handoff.",
+          "The authentication modes are the estate's own — a password form, a mobile OTP or a numeric PIN, with or without the DigiLocker handoff above them.",
           "A link from elsewhere should open the login page on a particular role's tab.",
         ],
         avoid: [
@@ -100,7 +100,7 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
       related={[
         { label: "Portal Login Shell", href: "/design-system/components/auth/portal-login-shell", reason: "the layout this template fills; use it directly for a bespoke form" },
         { label: "OTP Input", href: "/design-system/components/forms/otp-input", reason: "the field the OTP mode draws" },
-        { label: "Captcha Field", href: "/design-system/components/forms/captcha-field", reason: "the challenge the password and PIN modes can carry, off unless config.captcha asks for it" },
+        { label: "Captcha Field", href: "/design-system/components/forms/captcha-field", reason: "the challenge the password and PIN modes can carry, off unless a role asks for it" },
         { label: "Password Input", href: "/design-system/components/forms/password-input", reason: "the reveal-capable field used on its own outside a login page" },
       ]}
       design={
@@ -119,10 +119,58 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
             </p>
             <p>
               Before this taxonomy existed there were five bespoke ones across nine portals, and
-              no way to write a rule &mdash; such as &ldquo;hide DigiLocker for officers&rdquo;
-              &mdash; that held in more than one of them. A portal that seems to need a fourth
-              audience is renaming, not adding.
+              no way to write a rule about who is signing in that held in more than one of them.
+              A portal that seems to need a fourth audience is renaming, not adding.
             </p>
+            <p>
+              <strong>The DigiLocker handoff is not one of those rules.</strong> It was keyed off{" "}
+              <code>audience</code> until 2026-09-02, on the reading that officers hold no
+              DigiLocker account. The handoff disproves it: SMILE-Transgender offers the card on
+              Citizen and on neither Admin nor Garima Greh, so an audience rule would have put it
+              on the organisation tab. It is <code>digilocker</code> on the role, a boolean the
+              portal sets for the roles it has actually agreed it for.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-per-role">
+            <h2 id="cdp-per-role" className="cdp__h2">
+              What the Role Decides, and What the Portal Decides
+            </h2>
+            <p>
+              Two things on this page are switched on the <strong>role tab</strong> rather than on
+              the portal, because the handoff switches them that way: the DigiLocker card, and the
+              security captcha. SMILE-Transgender asks a Garima Greh organisation for a captcha and
+              asks the same portal&rsquo;s citizen for none; a portal-wide boolean can express
+              neither of those without imposing it on the other.
+            </p>
+            <MatrixTable
+              caption="Where each switch lives"
+              columns={["Switch", "Set on", "Resolves as"]}
+              rows={[
+                [
+                  "DigiLocker card",
+                  "the role",
+                  "role.digilocker && config.links.digilockerHref — both, because a CTA with nowhere to go is worse than no CTA",
+                ],
+                [
+                  "Security captcha",
+                  "the role, then the portal",
+                  "role.captcha ?? config.captcha ?? false",
+                ],
+              ]}
+            />
+            <p>
+              The captcha fallback is <code>??</code> and not <code>||</code> on purpose. A role
+              setting <code>captcha: false</code> is opting <em>out</em> of a portal-wide default;
+              with <code>||</code> that explicit false would read as &ldquo;unset&rdquo; and the
+              portal would overrule it.
+            </p>
+            <Callout type="warning" title="Switching a captcha on is a commitment">
+              A captcha is a cognitive function test, and{" "}
+              <strong>WCAG 2.2 3.3.8 Accessible Authentication (AA)</strong> forbids one without an
+              alternative. Both switches default to off. Turning the captcha on for a role commits
+              the portal to offering that role another way in &mdash; the OTP mode is the usual one
+              &mdash; and the change that turns it on should say which.
+            </Callout>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-modes">
             <h2 id="cdp-modes" className="cdp__h2">
@@ -130,12 +178,11 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
             </h2>
             <MatrixTable
               caption="PortalAuthMode — what each one draws"
-              columns={["Mode", "What the form shows", "Where it sits"]}
+              columns={["Mode", "What the form shows"]}
               rows={[
-                ["password", "Username, email or mobile, plus a password and, where the portal asks for it, a captcha.", "In the credential form"],
-                ["otp", "Mobile or email, a send control, and a six-digit code with a resend timer.", "In the credential form"],
-                ["pin", "A registered identifier and a six-digit numeric PIN, masked, with its own Forgot PIN link.", "In the credential form"],
-                ["digilocker", "A single call to action that leaves for a government identity provider.", "Above the credentials divider — it is a handoff, not a form mode"],
+                ["password", "Username, email or mobile, plus a password and, where the role asks for it, a captcha."],
+                ["otp", "Mobile or email, a send control, and a six-digit code with a resend timer."],
+                ["pin", "A registered identifier and a six-digit numeric PIN, masked, with its own Forgot PIN link."],
               ]}
             />
             <p>
@@ -143,6 +190,16 @@ export default function PortalLoginTemplatePage(): React.JSX.Element {
               reuses the password field&rsquo;s own state internally, but a consumer must never
               receive a PIN under the name <code>password</code>.
             </p>
+            <Callout type="info" title="The handoff is the fourth thing, and it is not a mode">
+              DigiLocker is a card above the credentials divider &mdash; a route away from the
+              form rather than a way of filling it in. It carried a{" "}
+              <code>PortalAuthMode</code> of its own until 2026-09-02, which made it a fourth
+              selectable method and suppressed the submit button while it was chosen, leaving the
+              form with no way to be completed. It is now{" "}
+              <code>PortalRoleTab.digilocker</code>, a boolean per role, and it renders only when{" "}
+              <code>config.links.digilockerHref</code> is also set. The &ldquo;or sign in with
+              credentials&rdquo; divider belongs to the card: no card, no divider.
+            </Callout>
             <Callout type="warning" title="Two modes that were invented and are gone">
               This union carried <code>darpan</code> (NGO DARPAN ID) and <code>aadhaar</code>{" "}
               (Aadhaar e-KYC) until 2026-08-17. Neither exists: a full read of the MoSJE portal
@@ -243,10 +300,11 @@ portalLoginUrl("/portals/scw/login?role=citizen", "officer");
                 { name: "changeHref", type: "string", default: '"/"', description: "Where the “Change” control leads." },
                 { name: "roles", type: "PortalRoleTab[]", required: true, description: "The role tabs, each with an id, a label, an optional audience, and its authentication modes." },
                 { name: "defaultRoleId", type: "string", default: "the first role", description: "Which tab opens when the URL says nothing." },
-                { name: "brandAssets", type: "PortalBrandAssets", description: "Overrides for the emblem, Digital India, SAMAVESH and portal marks." },
+                { name: "captcha", type: "boolean", default: "false", description: "The portal's default for the security captcha. A role's own `captcha` wins over it, and off is the default because WCAG 2.2 3.3.8 forbids a cognitive test without an alternative." },
+                { name: "brandAssets", type: "PortalBrandAssets", description: "Overrides for the emblem, Digital India, SAMAVESH and portal marks, plus `digilockerLogoSrc` for the handoff card's logo slot. That one has no default: every portal mounts under its own basePath, so the path has to come from the caller." },
                 { name: "extraFields", type: "React.ReactNode", description: "Extra controls injected into the credential form." },
                 { name: "extraContent", type: "React.ReactNode", description: "A block below the form — a portal switcher grid, for instance." },
-                { name: "links", type: "{ forgotPasswordHref?; registerHref?; helpFaqHref? }", description: "The help links beneath the form." },
+                { name: "links", type: "{ forgotPasswordHref?; registerHref?; helpFaqHref?; digilockerHref? }", description: "The help links beneath the form, plus where the DigiLocker card hands off to. Without `digilockerHref` the card does not render, whatever the role asks for." },
               ]}
             />
           </section>

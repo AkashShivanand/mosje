@@ -32,9 +32,20 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.95.0",
+    version: "v0.96.0",
     date: "2026-09-02",
     current: true,
+    changes: [
+      { kind: "Changed", text: "THE DIGILOCKER CARD IS A PER-ROLE HANDOFF, NOT A LOGIN METHOD AND NOT AN AUDIENCE RULE. It was modelled first as a fourth `PortalAuthMode` and then as “everyone who is not an officer”; the Handoff supports neither. It carries the card on SMILE-Transgender’s Citizen frames and on neither Admin nor Garima Greh, so one portal disagrees with itself across two tabs and only a per-role switch can say so. It is now `PortalRoleTab.digilocker`, and it renders only when `links.digilockerHref` is also set — a handoff button with nowhere to go is worse than no button. The “or sign in with credentials” divider belongs to the card: no card, no divider" },
+      { kind: "Changed", text: "THE SECURITY CAPTCHA MOVED TO THE ROLE FOR THE SAME REASON, resolving `role.captcha` then `config.captcha` then off. The same portal asks a Garima Greh organisation for a code and asks its own citizen for none, which a portal-wide boolean can express only by imposing one answer on both. The fallback is `??` and never `||`, so a role setting `captcha: false` opts OUT of a portal default rather than being read as unset. It stays off by default: a captcha is a cognitive function test, and WCAG 2.2 3.3.8 Accessible Authentication (AA) forbids one with no alternative, so switching it on is a commitment to provide that alternative and to say which in the same change" },
+      { kind: "Changed", text: "`SSOButton` RENDERS AN ANCHOR WHEN GIVEN AN `href`. A handoff to a government identity provider is a navigation, not a form submission, and it had been a `<button>` in every case. Without an `href` it still renders a button, for a caller running the redirect itself. It also takes the provider’s mark — `markSrc` as an image path, `mark` as a node — and falls back to a Material Symbols glyph, which is a complete card rather than a broken one" },
+      { kind: "Fixed", text: "THE LOGIN TEMPLATE WAS HAND-ROLLING TWO COMPONENTS THE SYSTEM ALREADY SHIPPED. Its DigiLocker call to action and its labelled divider were written inline rather than imported, which is the failure the design-system-first rule exists to catch: the estate ends up with two versions of one thing and no way to fix both at once. Both are now `SSOButton` and `AuthDivider`" },
+      { kind: "Added", text: "The DigiLocker mark ships at `/design-system/digilocker-mark.png`. `brandAssets.digilockerLogoSrc` still has no default and deliberately so — every portal mounts under its own `basePath`, so a default path would resolve to nothing on most of them" },
+    ],
+  },
+  {
+    version: "v0.95.0",
+    date: "2026-09-02",
     changes: [
       { kind: "Added", text: "`ComponentDocPage` — one template carrying the whole documentation shape. Ninety-nine component pages each declared their own heading and prose styles, and with them 161 unbound line heights and 107 width literals across nine different measures. The measure is now one token-bound value in one stylesheet." },
       { kind: "Added", text: "Props tables are generated from the TypeScript type checker (`npm run build:props`, gated by `npm run check:props`). Of twelve components audited against their implementations, one table matched: `ChartCard` documented a prop named `action` where the prop is `actions`, `AppShell` marked two optional props required, and `BarChart` documented two of eleven, hiding its entire multi-series form. A generated table cannot drift from the interface it describes." },

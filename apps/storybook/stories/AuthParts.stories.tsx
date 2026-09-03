@@ -41,10 +41,17 @@ import {
  * previous step with the value pre-filled (never a fresh send), and `prompt`,
  * `actionLabel` and `className` tune the rest.
  *
- * **`SSOButton`** — the DigiLocker handoff. **Hide it whenever the Officer /
- * Admin tab is active**: officers hold no DigiLocker account, so offering it is
- * a dead end, and this is the rule most often missed. `title`, `subtitle` and
- * `mark` are overridable; the subtitle is a trust signal, not decoration.
+ * **`SSOButton`** — the DigiLocker handoff. **Offer it per ROLE, not per
+ * audience** (corrected 2026-09-02; it was written as an officer rule and the
+ * handoff does not support one). The handoff carries the card on
+ * SMILE-Transgender's Citizen frames and on neither Admin nor Garima Greh, so it
+ * is narrower than "not an officer" — in `PortalLoginTemplate` that is
+ * `PortalRoleTab.digilocker`. Set `href` and it renders an `<a>`, which is what a
+ * handoff to an external identity provider actually is; leave it unset and it
+ * stays a `<button>` for a caller running the redirect in `onClick`. `markSrc`
+ * takes the provider's mark as an image path and `mark` as a node; without
+ * either it draws a Material Symbols glyph. `title` and `subtitle` are
+ * overridable, and the subtitle is a trust signal, not decoration.
  *
  * **`AccountPrompt`** — pass one `options` entry for a single Create Account
  * button, two when a portal registers genuinely different applicants (SCW's
@@ -89,6 +96,27 @@ export const Playground: Story = {
       <ResendTimer secondsRemaining={23} onResend={() => {}} />
       <ConsentLine />
       <AccountPrompt options={[{ label: "Create Account", href: "#" }]} />
+    </>
+  ),
+};
+
+/**
+ * **The handoff card, in both elements it can be.**
+ *
+ * With `href` it is an `<a>` — a real navigation to a government identity
+ * provider, which is what the handoff is. Without one it is a `<button>`, for a
+ * caller that runs the redirect itself. `markSrc` fills the logo slot with the
+ * provider's own mark; the fallback glyph below it is what a caller gets when no
+ * mark is supplied, and that is a complete card rather than a broken one.
+ */
+export const SSOModes: Story = {
+  render: () => (
+    <>
+      <SSOButton
+        href="https://digilocker.gov.in/"
+        markSrc="/design-system/digilocker-mark.png"
+      />
+      <SSOButton onClick={() => {}} />
     </>
   ),
 };

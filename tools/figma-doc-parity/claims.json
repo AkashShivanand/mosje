@@ -596,13 +596,16 @@
           "absent": true,
           "hint": "NGO DARPAN and Aadhaar were removed from PortalAuthMode on 2026-08-17 — a full read of the handoff found no such screen in any portal. Reinstating either breaks the count this claim pins."
         },
-        { "kind": "text", "value": "Password, OTP and PIN" }
+        {
+          "kind": "text",
+          "value": "Password, OTP and PIN"
+        }
       ]
     },
     {
       "node": "55400:1552",
       "where": "PortalLoginTemplate — Documentation › 02 Properties › Device",
-      "figma": "variant → no code prop. Desktop is 1440 × 960 and Mobile 375 × 1138, where 1138 is the scroll height rather than a viewport. The React component is responsive in CSS, so the axis exists only to pin a breakpoint on the canvas.",
+      "figma": "variant → no code prop. Desktop is 1440 × 960 and Mobile 375 × 1138, where 1138 is the scroll height rather than a viewport. The React component is responsive in CSS, so the axis exists only to pin a breakpoint on the canvas. Tablet uses the Mobile variant by decision.",
       "expect": [
         {
           "kind": "source",
@@ -617,7 +620,10 @@
           "pattern": "DELIBERATELY OMITTED",
           "hint": "The Code Connect template must keep saying why Device has no prop, or an agent reading Dev Mode will invent one."
         },
-        { "kind": "text", "value": "no code prop" }
+        {
+          "kind": "text",
+          "value": "no code prop"
+        }
       ]
     },
     {
@@ -637,7 +643,10 @@
           "pattern": "DIGILOCKER IS NOT AN AUTH METHOD",
           "hint": "Giving DigiLocker a variant is the mistake this line exists to prevent — it is a consent handoff, not a credential form."
         },
-        { "kind": "text", "value": "defaultMode" }
+        {
+          "kind": "text",
+          "value": "defaultMode"
+        }
       ]
     },
     {
@@ -651,7 +660,10 @@
           "pattern": "Device × Auth Method` = 6",
           "hint": "The set was re-cut in place from Device × Step = 8 to Device × Auth Method = 6. If that arithmetic changes, this section's three specimens and its title change with it."
         },
-        { "kind": "text", "value": "Six variants ship" }
+        {
+          "kind": "text",
+          "value": "Six variants ship"
+        }
       ]
     },
     {
@@ -664,8 +676,14 @@
           "token": "--sa-shape-12",
           "hint": "Both ladders are value-named, so the rung IS the pixel value. A rung that stops resolving to its own name is the defect space-linkage.test.mjs exists to catch."
         },
-        { "kind": "token", "token": "--sa-padding-24" },
-        { "kind": "token", "token": "--sa-stack-16" },
+        {
+          "kind": "token",
+          "token": "--sa-padding-24"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-stack-16"
+        },
         {
           "kind": "text",
           "value": "shape/lg",
@@ -697,27 +715,46 @@
           "pattern": "Show PIN",
           "hint": "The masked field needs its own reveal control, labelled for a PIN rather than a password."
         },
-        { "kind": "text", "value": "Forgot PIN" }
+        {
+          "kind": "text",
+          "value": "Forgot PIN"
+        }
       ]
     },
     {
       "node": "55402:1879",
       "where": "PortalLoginTemplate — Documentation › 06 Behaviour › DigiLocker handoff",
-      "figma": "DigiLocker is an identity handoff, not a form mode, so it has no variant. The button sits above the credentials divider and is switched by Show DigiLocker on the form card. Hide it for officers by the role's audience, never by the tab's label — SCW calls that tab Admin and NMBA calls it Patient Monitoring.",
+      "figma": "DigiLocker is an identity handoff, not a form mode, so it has no variant. Its card sits above the credentials divider and is switched by Show DigiLocker on the form card. It is offered per role rather than per audience: the handoff carries it on Citizen and on neither Admin nor Garima Greh. The divider appears only with the card.",
       "expect": [
         {
           "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.tsx",
+          "pattern": "activeRole\\?\\.digilocker && config\\.links\\?\\.digilockerHref",
+          "hint": "The real gate. This assertion used to match the WORD \"audience\" in a types.ts COMMENT, which made the claim circular — the documentation was pinned to prose restating it rather than to code doing it."
+        },
+        {
+          "kind": "source",
           "file": "packages/design-system/components/auth/types.ts",
-          "pattern": "audience === \"officer\"",
-          "hint": "The taxonomy the rule keys off. A label test breaks on SCW (Admin) and NMBA (Patient Monitoring), which is why audience exists at all."
+          "pattern": "digilocker\\?: boolean",
+          "hint": "Per role, not per audience. The handoff hides the card for officer AND organisation, so an audience rule would have been wrong in both directions."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/types.ts",
+          "pattern": "\\| \"digilocker\"",
+          "absent": true,
+          "hint": "\"Not a form mode\" pinned to the union it must stay out of. While it was a member, the template drew it as a fourth login method and suppressed the submit button behind it."
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
-          "pattern": "never off the tab's label",
+          "pattern": "no card, no divider",
           "hint": "Written in the Code Connect template because it is the instruction an agent reading Dev Mode needs and cannot infer from geometry."
         },
-        { "kind": "text", "value": "identity handoff" }
+        {
+          "kind": "text",
+          "value": "identity handoff"
+        }
       ]
     },
     {
@@ -741,19 +778,22 @@
           "file": "packages/design-system/components/auth/types.ts",
           "pattern": "defaultMode\\?:"
         },
-        { "kind": "text", "value": "authModes" }
+        {
+          "kind": "text",
+          "value": "authModes"
+        }
       ]
     },
     {
       "node": "55403:1848",
-      "where": "PortalLoginTemplate — Documentation › 07 Accessibility › WCAG 2.2",
-      "figma": "Focus is never obscured by the sticky masthead (2.4.11), and every control clears the 24 × 24 minimum (2.5.8). The captcha is off by default: a security code is a cognitive function test, and 3.3.8 Accessible Authentication forbids one without an alternative, so a portal switches it on only where it offers that alternative and says which in the same change.",
+      "where": "PortalLoginTemplate — Documentation › 08 Accessibility › WCAG 2.2",
+      "figma": "Focus is never obscured by the sticky masthead (2.4.11), and every control clears the 24 × 24 minimum (2.5.8). The captcha is off unless a role asks for it — it resolves role.captcha, then config.captcha, then off: a security code is a cognitive function test, and 3.3.8 Accessible Authentication forbids one without an alternative, so a role switches it on only where it offers that alternative and says which in the same change.",
       "expect": [
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-template.tsx",
-          "pattern": "const captchaBlock = config\\.captcha \\?",
-          "hint": "The captcha renders only when a portal opts in. Flipping this to a default-on would put a cognitive function test on every login in the estate."
+          "pattern": "const showCaptcha = activeRole\\?\\.captcha \\?\\? config\\.captcha \\?\\? false;",
+          "hint": "The captcha renders only where a ROLE opts in, with the portal as a fallback. `??` and not `||`, so a role's explicit false opts OUT of a portal-wide default rather than being read as unset. Flipping the final term to true would put a cognitive function test on every login in the estate."
         },
         {
           "kind": "source",
@@ -761,7 +801,10 @@
           "pattern": "3\\.3\\.8",
           "hint": "The reason for the default must stay beside the prop, or the next person removes the default as an inconvenience."
         },
-        { "kind": "text", "value": "3.3.8" },
+        {
+          "kind": "text",
+          "value": "3.3.8"
+        },
         {
           "kind": "text",
           "value": "44 × 44",
