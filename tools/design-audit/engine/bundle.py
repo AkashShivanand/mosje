@@ -85,7 +85,7 @@ def now_iso():
 def new_bundle(project, environment, engine_sha):
     return {"version": BUNDLE_VERSION, "project": project, "environment": environment,
             "engineSha": engine_sha, "capturedAt": now_iso(),
-            "hosts": {}, "screens": [], "records": {}}
+            "hosts": {}, "screens": [], "records": {}, "manifestHash": None}
 
 
 def screen_entry(slug, role, route, url, reached_by, png, png_sha256, png_h, page_h,
@@ -187,6 +187,23 @@ def build_fingerprint(base_url, timeout=10):
         return None
 
 
+def manifest_hash(man):
+    """Digest of the traversal RECIPE — the flows, declared screens and volatile rules.
+
+    Tier 0 asks "has the app moved?" and answers it from the build fingerprint. It never asked
+    "have we changed what we intend to capture?", so editing screen-manifest.yaml to add three
+    wizard flows produced `reuse-all`, no browser launched, and the new flows silently never
+    ran. A recipe change invalidates the bundle for the same reason a build change does: the
+    bundle no longer answers the question being asked of it.
+    """
+    if man is None:
+        return None
+    recipe = {k: man.get(k) for k in ("screens", "flows", "volatile", "fixtures", "environment")}
+    return hashlib.sha256(
+        json.dumps(recipe, separators=(",", ":"), sort_keys=True, default=repr).encode()
+    ).hexdigest()
+
+
 def decide_screen(prev, structure, geometry):
     """reuse | reshoot | recapture.
 
@@ -228,6 +245,10 @@ def resolve_freshness(b, man, cfg, force=False, verify=False, now=None, _probe=N
         ceiling = _M.staleness_seconds(man)
     if age > ceiling:
         return {"mode": "full", "reason": f"bundle is stale ({int(age // 86400)}d > {ceiling // 86400}d)"}
+    recipe = manifest_hash(man)
+    if man is not None and b.get("manifestHash") != recipe:
+        return {"mode": "full",
+                "reason": "screen-manifest.yaml changed since this bundle was captured"}
     if verify:
         return {"mode": "verify", "reason": "--verify requested"}
     probe = _probe or build_fingerprint

@@ -127,17 +127,23 @@ class BundleIO(unittest.TestCase):
         self.assertEqual(B.find_screen(b, "A")["structureHash"], "s2")
 
 
-def _bundle(age_days=0, fp="main.aaaaaaaa.js"):
+_FRESHNESS_MAN = {"version": 1, "environment": "uat", "stalenessCeiling": "14d"}
+
+
+def _bundle(age_days=0, fp="main.aaaaaaaa.js", man=None):
     when = datetime.datetime.now().astimezone() - datetime.timedelta(days=age_days)
     return {"version": 1, "project": "p", "environment": "uat",
             "capturedAt": when.isoformat(timespec="seconds"),
             "hosts": {"admin": {"base": "https://x.test", "buildFingerprint": fp}},
+            # Tier 0 also asks whether the RECIPE moved; a bundle with no recorded recipe is
+            # treated as pre-dating the check and is not trusted (see ManifestRecipeFreshness).
+            "manifestHash": B.manifest_hash(_FRESHNESS_MAN if man is None else man),
             "screens": [], "records": {}}
 
 
 class Freshness(unittest.TestCase):
     CFG = {"live": {"roles": [{"name": "a", "base": "https://x.test"}]}}
-    MAN = {"version": 1, "environment": "uat", "stalenessCeiling": "14d"}
+    MAN = _FRESHNESS_MAN
 
     def test_no_bundle_means_full(self):
         self.assertEqual(B.resolve_freshness(None, self.MAN, self.CFG)["mode"], "full")
@@ -402,6 +408,10 @@ class _FakeLocator:
         if self.resolved is None:
             raise Exception(f"no element matching {self.requested!r}")
         self.page.calls.append(("click", self.requested))
+        # A page that models state (WizardPage) advances here; the plain FakePage does not.
+        advance = getattr(self.page, "_advance", None)
+        if advance:
+            advance(self.resolved)
 
 
 class FakePage:
@@ -608,3 +618,138 @@ class ManifestPruning(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class WizardPage(FakePage):
+    """A single-URL SPA wizard: `pg.url` never changes across the internal steps, and the only
+    evidence of position is the "Step N of M — Title" line. This is the shape that defeated the
+    hand-numbered manifest — every step looked identical to a URL comparison."""
+
+    def __init__(self, steps, review_at=None, forward="Next →", file_slots=0):
+        super().__init__(buttons=[forward, "Back", "Submit Application"])
+        self.steps, self.i, self.forward = steps, 0, forward
+        self.review_at = review_at if review_at is not None else len(steps) - 1
+        self.file_slots = file_slots
+        self.submitted = False
+        self.url = "http://fake.invalid/apply/step-1"
+
+    # position ---------------------------------------------------------------
+    def evaluate(self, js, arg=None):
+        if "innerText.match" in js:
+            return {"n": self.i + 1, "of": len(self.steps), "title": self.steps[self.i]}
+        return 0                                    # fill_all: nothing left to fill
+
+    def query_selector_all(self, sel):
+        return [object()] * self.file_slots if "file" in sel else []
+
+    # advancing --------------------------------------------------------------
+    def _advance(self, name):
+        if name == self.forward and self.i < len(self.steps) - 1:
+            self.i += 1
+            if self.i == self.review_at:
+                self.url = "http://fake.invalid/apply/review"
+        if name == "Submit Application":
+            self.submitted = True
+
+
+class _WizardLocatorMixin:
+    pass
+
+
+class AdaptiveWizardWalk(unittest.TestCase):
+    """Regression tests for the walker that replaced hand-numbered flow steps.
+
+    The bug being gated: a manifest numbered its captures S01..S09 while each scheme had a
+    DIFFERENT number of internal sections, so the review page was captured under a document
+    page's slug — with real hashes, so freshness would keep the wrong state for the whole
+    staleness ceiling."""
+
+    CFG = {"live": {"roles": [{"name": "ngo", "base": "http://fake.invalid"}]}, "capture": {}}
+
+    def _walk(self, page, environment="uat", allow=True, spec=None):
+        flow = {"id": "f", "role": "ngo", "allowSubmit": allow,
+                "steps": [{"walk": spec or {"prefix": "P"}}]}
+        captured = []
+        with unittest.mock.patch.object(D, "_capture_state",
+                                        lambda *a, **k: captured.append(a[1])):
+            D.run_flow(page, flow, {}, self.CFG, {"captures_live": "/dev/null",
+                                                  "project": "/dev/null"}, {}, environment)
+        return captured
+
+    def test_slugs_come_from_the_page_title_not_a_hand_written_index(self):
+        got = D._walk_slug("P", ("u", 6, "Document Uploads"), {})
+        self.assertEqual(got, "P-S06-DOCUMENT-UPLOADS")
+
+    def test_a_repeated_step_title_does_not_overwrite_its_twin(self):
+        seen = {"P-S02-DETAILS": 1}
+        self.assertEqual(D._walk_slug("P", ("u", 2, "Details"), seen), "P-S02-DETAILS-2")
+
+    def test_walks_every_step_and_names_each_after_its_own_title(self):
+        pg = WizardPage(["Organisation", "Project", "Document Uploads", "Review & Submit"])
+        captured = self._walk(pg)
+        self.assertIn("P-S01-ORGANISATION-ARRIVED", captured)
+        self.assertIn("P-S03-DOCUMENT-UPLOADS-FILLED", captured)
+        self.assertIn("P-SUBMITTED", captured)
+        self.assertTrue(pg.submitted)
+
+    def test_stops_instead_of_looping_when_the_forward_control_does_not_advance(self):
+        """A disabled "Next" on an upload step must end the walk, not spin to maxSteps
+        capturing the same page under a new name each time."""
+        pg = WizardPage(["Uploads", "Never reached"], review_at=99)
+        pg.steps = ["Uploads"]                       # forward can never advance past step 1
+        captured = self._walk(pg, spec={"prefix": "P", "maxSteps": 24})
+        self.assertEqual(captured, ["P-S01-UPLOADS-ARRIVED", "P-S01-UPLOADS-FILLED"])
+
+    def test_does_not_submit_when_the_environment_gate_is_closed(self):
+        pg = WizardPage(["Details", "Review & Submit"])
+        captured = self._walk(pg, environment="prod")
+        self.assertFalse(pg.submitted, "a prod walk must never press Submit Application")
+        self.assertNotIn("P-SUBMITTED", captured)
+
+    def test_does_not_submit_when_the_flow_did_not_opt_in(self):
+        pg = WizardPage(["Details", "Review & Submit"])
+        captured = self._walk(pg, allow=False)
+        self.assertFalse(pg.submitted)
+        self.assertNotIn("P-SUBMITTED", captured)
+
+
+class ManifestRecipeFreshness(unittest.TestCase):
+    """A changed traversal recipe must invalidate the bundle.
+
+    The gap this closes cost a whole capture run: three new wizard flows were added to
+    screen-manifest.yaml, tier 0 saw an unchanged build fingerprint and a bundle two hours old,
+    returned `reuse-all`, and no browser ever launched — so the new flows silently never ran and
+    the report was written from the old corpus."""
+
+    CFG = {"live": {"roles": [{"name": "r", "base": "http://h.invalid"}]}}
+    MAN = {"version": 1, "environment": "uat", "flows": [{"id": "one"}]}
+
+    def _bundle(self, man):
+        return {"capturedAt": B.now_iso(), "manifestHash": B.manifest_hash(man),
+                "hosts": {"r": {"base": "http://h.invalid", "buildFingerprint": "abc123"}}}
+
+    def test_unchanged_recipe_still_reuses(self):
+        res = B.resolve_freshness(self._bundle(self.MAN), self.MAN, self.CFG,
+                                  _probe=lambda base: "abc123")
+        self.assertEqual(res["mode"], "reuse-all")
+
+    def test_added_flow_forces_a_full_run(self):
+        changed = {**self.MAN, "flows": [{"id": "one"}, {"id": "two"}]}
+        res = B.resolve_freshness(self._bundle(self.MAN), changed, self.CFG,
+                                  _probe=lambda base: "abc123")
+        self.assertEqual(res["mode"], "full")
+        self.assertIn("screen-manifest", res["reason"])
+
+    def test_recipe_change_outranks_an_explicit_verify(self):
+        """--verify re-checks screens the bundle already holds; it would not run a flow that
+        has never been captured, so a recipe change must beat it."""
+        changed = {**self.MAN, "volatile": [{"pattern": "x"}]}
+        res = B.resolve_freshness(self._bundle(self.MAN), changed, self.CFG, verify=True,
+                                  _probe=lambda base: "abc123")
+        self.assertEqual(res["mode"], "full")
+
+    def test_a_bundle_predating_this_check_is_not_trusted(self):
+        old = self._bundle(self.MAN)
+        del old["manifestHash"]
+        res = B.resolve_freshness(old, self.MAN, self.CFG, _probe=lambda base: "abc123")
+        self.assertEqual(res["mode"], "full")

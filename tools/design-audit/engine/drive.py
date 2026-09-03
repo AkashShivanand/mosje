@@ -59,6 +59,68 @@ def resolve_fixture(man, step):
     return base
 
 
+FILL_ALL_JS = """(F)=>{let n=0;
+ document.querySelectorAll('input,select,textarea').forEach(e=>{
+  if(e.type==='hidden'||e.disabled||e.readOnly||e.type==='file')return;
+  if(e.tagName==='SELECT'){const o=[...e.options].find(o=>o.value&&o.value!=='');
+    if(o&&!e.value){e.value=o.value;e.dispatchEvent(new Event('change',{bubbles:true}));n++;}return;}
+  if(e.type==='radio'){
+    const grp=[...document.querySelectorAll('input[type=radio][name="'+e.name+'"]')];
+    if(grp.some(r=>r.checked))return;
+    const lab=r=>((r.labels&&r.labels[0]?r.labels[0].innerText:'')+' '+(r.value||'')).toLowerCase();
+    (grp.find(r=>/fresh|new/.test(lab(r)))||grp[0]).click();n++;return;}
+  if(e.type==='checkbox'){if(!e.checked){e.click();n++;}return;}
+  if(!e.value){const set=Object.getOwnPropertyDescriptor(e.__proto__,'value').set;
+    set.call(e,F[e.type]||F.text);
+    e.dispatchEvent(new Event('input',{bubbles:true}));
+    e.dispatchEvent(new Event('change',{bubbles:true}));n++;}});
+ return n;}"""
+
+DEFAULT_VALUES = {"text": "Example Welfare Society", "textarea": "12 Example Road, Nagpur 440001",
+                  "email": "contact@example-welfare.org", "tel": "9800000000", "number": "10",
+                  "date": "2020-04-01", "url": "https://example-welfare.org", "search": "Example"}
+
+
+def fill_all(pg, values=None, passes=3):
+    """Populate every empty control on the current step with type-appropriate placeholder data.
+
+    A government grant wizard has 100+ fields across a dozen steps; naming each one in the manifest
+    is neither practical nor useful, because what the capture needs is a step that VALIDATES, not
+    specific values. Radio groups prefer a `fresh`/`new` option so the walk follows the new-
+    application path rather than a renewal path that demands an existing case. Runs several passes
+    because conditional fields only mount after an earlier change settles.
+    """
+    vals = {**DEFAULT_VALUES, **(values or {})}
+    total = 0
+    for _ in range(passes):
+        try:
+            total += pg.evaluate(FILL_ALL_JS, vals)
+        except Exception as e:
+            print(f"    ! fill-all failed ({str(e)[:60]})", flush=True)
+            break
+        pg.wait_for_timeout(700)
+    return total
+
+
+def upload_all(pg, path, limit=None):
+    """Attach the same fixture file to every file input on the step.
+
+    An upload step whose forward control is disabled until every mandatory slot is filled cannot be
+    walked past without this, and those steps are where the highest-value screens sit.
+    """
+    inputs = pg.query_selector_all("input[type=file]")
+    done = 0
+    for el in inputs[: limit or len(inputs)]:
+        try:
+            el.set_input_files(path)
+            done += 1
+            pg.wait_for_timeout(350)
+        except Exception as e:
+            print(f"    ! upload to slot {done + 1} failed ({str(e)[:50]})", flush=True)
+    print(f"    uploaded {done}/{len(inputs)} document slot(s)", flush=True)
+    return done
+
+
 def _fill(pg, values):
     """Fill by field name, then id, then label. Missing fields are skipped, not fatal —
     a wizard step legitimately shows a subset of the fixture."""
@@ -74,6 +136,130 @@ def _fill(pg, values):
                 pg.get_by_label(key, exact=False).first.fill(str(val))
             except Exception:
                 print(f"    · no field for {key!r} on this step", flush=True)
+
+
+
+STEP_LABEL_JS = """()=>{const m=document.body.innerText.match(
+ /Step\\s+(\\d+)\\s*(?:of|\\/)?\\s*(\\d+)?\\s*[\\u2014\\u2013-]\\s*([^\\n]{1,60})/);
+ return m?{n:+m[1],of:m[2]?+m[2]:null,title:m[3].trim()}:null;}"""
+
+FORWARD_LABELS = ("Save & Next", "Next", "Continue", "Proceed")
+SUBMIT_LABELS = ("Submit Application", "Submit")
+
+
+def step_label(pg):
+    """Read `Step N of M — Title` off the page. A single-URL SPA wizard advertises its position
+    nowhere else — `pg.url` is identical on every internal step, which is why an earlier version
+    of this walker believed the form had not advanced when it had."""
+    try:
+        return pg.evaluate(STEP_LABEL_JS)
+    except Exception:
+        return None
+
+
+def _position(pg):
+    lab = step_label(pg) or {}
+    return (pg.url, lab.get("n"), lab.get("title"))
+
+
+def _walk_slug(prefix, pos, seen):
+    """Deterministic, human-readable, and stable across runs — the slug is what the freshness
+    hashes are filed under, so it must not shift when a scheme gains or loses a section."""
+    _, n, title = pos
+    part = re.sub(r"-+", "-", re.sub(r"[^A-Za-z0-9]+", "-", title or "step")).strip("-") or "step"
+    base = f"{prefix}-S{n:02d}-{part}".upper() if n else f"{prefix}-{part}".upper()
+    if base in seen:                      # a repeated title would otherwise overwrite its twin
+        base = f"{base}-{seen[base] + 1}"
+    return base
+
+
+def walk_wizard(pg, spec, flow, man, cfg, paths, bdl, role, fid, allowed, why):
+    """Walk a multi-step wizard to its end, discovering the steps rather than declaring them.
+
+    Every scheme in a grant portal has a DIFFERENT number of internal sections behind the same
+    two URLs, so a manifest that numbers its capture steps by hand is wrong the moment a scheme
+    is added — and wrong silently, filing a document page under a review page's name. This walks
+    until the page stops advancing, naming each state after the step title the page itself shows.
+    """
+    prefix = spec.get("prefix") or fid.upper()
+    max_steps = int(spec.get("maxSteps", 24))
+    upload_file = spec.get("upload")
+    upload_path = os.path.join(paths["project"], upload_file) if upload_file else None
+    if upload_path and not os.path.exists(upload_path):
+        print(f"    ! upload fixture missing: {upload_path}", flush=True)
+        upload_path = None
+    forward = tuple(spec.get("forward") or FORWARD_LABELS)
+    done, seen, submitted = [], {}, False
+
+    for _ in range(max_steps):
+        pos = _position(pg)
+        slug = _walk_slug(prefix, pos, seen)
+        seen[slug] = seen.get(slug, 0) + 1
+        on_review = "/review" in (pos[0] or "") or re.search(r"review|declar|submit", pos[2] or "", re.I)
+
+        _capture_state(pg, f"{slug}-ARRIVED", role, cfg, paths, bdl, man, fid,
+                       {"flow": fid, "step": len(done) + 1, "of": max_steps})
+        done.append(f"{slug}-ARRIVED")
+
+        filled = fill_all(pg, spec.get("values"), spec.get("passes", 3))
+        uploaded = 0
+        if upload_path:
+            n_slots = len(pg.query_selector_all("input[type=file]"))
+            if n_slots:
+                uploaded = upload_all(pg, upload_path)
+                pg.wait_for_timeout(spec.get("uploadSettleMs", 3000))
+                fill_all(pg, spec.get("values"), 1)   # slots that mount only after a file lands
+        print(f"    step {pos[1]} {pos[2]!r}: filled {filled}, uploaded {uploaded}", flush=True)
+
+        _capture_state(pg, f"{slug}-FILLED", role, cfg, paths, bdl, man, fid, None)
+        done.append(f"{slug}-FILLED")
+
+        if on_review:
+            submitted = _submit_review(pg, spec, prefix, role, cfg, paths, bdl, man, fid,
+                                       allowed, why, done)
+            break
+
+        moved = False
+        for label in forward:
+            if _destructive_and_blocked(label, allowed):
+                continue
+            if _click(pg, label, spec.get("waitMs", 3000), allowed):
+                pg.wait_for_timeout(spec.get("settleMs", 1200))
+                if _position(pg) != pos:
+                    moved = True
+                    break
+                print(f"    · {label!r} clicked but the wizard stayed on step {pos[1]}", flush=True)
+        if not moved:
+            print(f"[flow {fid}] STOPPED at step {pos[1]} {pos[2]!r} — no forward control "
+                  f"advanced the wizard. Captured {len(done)} state(s); nothing beyond this "
+                  f"point is captured rather than filed under the wrong name.", flush=True)
+            break
+    else:
+        print(f"[flow {fid}] hit maxSteps={max_steps} without reaching a review page", flush=True)
+
+    if not submitted:
+        print(f"[flow {fid}] did NOT reach a completed submission", flush=True)
+    return done
+
+
+def _submit_review(pg, spec, prefix, role, cfg, paths, bdl, man, fid, allowed, why, done):
+    """Tick the declaration, submit, and capture the acknowledgement. Returns whether the
+    submission actually went through — the caller reports it, because a flow that stops one
+    click short of the confirmation screen looks identical to a complete one in the bundle."""
+    labels = tuple(spec.get("submit") or SUBMIT_LABELS)
+    if not allowed:
+        print(f"    ! review reached but submission is blocked — {why}", flush=True)
+        return False
+    for label in labels:
+        if _click(pg, label, spec.get("submitWaitMs", 6000), allowed):
+            pg.wait_for_timeout(spec.get("confirmSettleMs", 3000))
+            _capture_state(pg, f"{prefix}-SUBMITTED", role, cfg, paths, bdl, man, fid, None)
+            done.append(f"{prefix}-SUBMITTED")
+            print(f"[flow {fid}] SUBMITTED — acknowledgement captured as {prefix}-SUBMITTED",
+                  flush=True)
+            return True
+    print(f"    ! none of {labels} resolved on the review page — not submitted", flush=True)
+    return False
 
 
 def _capture_state(pg, slug, role, cfg, paths, bdl, man, flow_id, wizard):
@@ -201,7 +387,13 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
     print(f"[flow {fid}] submission {'ALLOWED' if allowed else 'BLOCKED'} — {why}", flush=True)
     base = next((r["base"] for r in cfg["live"]["roles"] if r["name"] == role), None)
     if flow.get("entry") and base:
-        pg.goto(base + flow["entry"], wait_until="networkidle", timeout=45000)
+        # Same two-attempt pattern the route crawl uses: an SPA that keeps its token in
+        # sessionStorage can sit forever short of networkidle, and a flow that cannot reach its
+        # entry screen is a silent no-op otherwise.
+        try:
+            pg.goto(base + flow["entry"], wait_until="networkidle", timeout=45000)
+        except Exception:
+            pg.goto(base + flow["entry"], wait_until="domcontentloaded", timeout=45000)
         pg.wait_for_timeout(cfg.get("capture", {}).get("waitMs", 1800))
     done, step_no = [], 0
     steps = flow.get("steps") or []
@@ -225,6 +417,20 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
                       f"this flow rather than filing this page under the next screen's name",
                       flush=True)
                 break
+        elif "fillAll" in step:
+            spec = step["fillAll"] if isinstance(step["fillAll"], dict) else {}
+            vals = dict(((man or {}).get("fixtures") or {}).get(spec.get("fixture"), {})) if spec.get("fixture") else {}
+            print(f"    filled {fill_all(pg, vals, spec.get('passes', 3))} control(s)", flush=True)
+        elif "upload" in step:
+            spec = step["upload"] if isinstance(step["upload"], dict) else {"file": step["upload"]}
+            path = os.path.join(paths["project"], spec["file"])
+            if not os.path.exists(path):
+                print(f"    ! upload fixture missing: {path}", flush=True)
+            else:
+                upload_all(pg, path, spec.get("limit"))
+        elif "walk" in step:
+            spec = step["walk"] if isinstance(step["walk"], dict) else {}
+            done.extend(walk_wizard(pg, spec, flow, man, cfg, paths, bdl, role, fid, allowed, why))
         elif "capture" in step:
             step_no += 1
             _capture_state(pg, step["capture"], role, cfg, paths, bdl, man, fid,

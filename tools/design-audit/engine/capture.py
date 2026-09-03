@@ -258,12 +258,81 @@ def _click_button(pg, label, exact=True):
     except Exception:
         return False
 
+def solve_captcha(pg, cfg_captcha, paths):
+    """Screenshot the captcha, then wait for an operator to write the answer to a file.
+
+    A government login that renders a code as an image cannot be read by a selector, and guessing
+    is not an option. So the run stops at a defined point, publishes the challenge as a PNG, and
+    blocks on an answer file with a bounded timeout — no polling loop against the host, and no
+    attempt to defeat the captcha itself. Returns True when an answer was supplied.
+    """
+    text_sel = cfg_captcha.get("textSelector")
+    if text_sel:
+        try:
+            pg.wait_for_selector(text_sel, timeout=10000)
+            code = (pg.inner_text(text_sel) or "").strip()
+        except Exception as e:
+            print(f"  ! captcha text not readable via {text_sel!r} ({str(e)[:50]})", flush=True)
+            code = ""
+        if code:
+            pg.fill(cfg_captcha["input"], code)
+            print(f"  captcha: read {len(code)} chars from the DOM and answered", flush=True)
+            return True
+        print("  ! captcha text selector matched nothing — falling back to the image handshake",
+              flush=True)
+    img_sel = cfg_captcha.get("image")
+    shot = os.path.join(paths["auth"], cfg_captcha.get("shotFile", "captcha.png"))
+    ans = os.path.join(paths["auth"], cfg_captcha.get("answerFile", "captcha-answer.txt"))
+    timeout_ms = int(cfg_captcha.get("timeoutMs", 300000))
+    try:
+        os.remove(ans)
+    except OSError:
+        pass
+    el = pg.query_selector(img_sel) if img_sel else None
+    if el is None:
+        print(f"  ! captcha image not found via {img_sel!r} — cannot present a challenge", flush=True)
+        return False
+    try:
+        el.screenshot(path=shot)
+    except Exception as e:
+        print(f"  ! could not screenshot the captcha ({str(e)[:60]})", flush=True)
+        return False
+    print(f"  CAPTCHA: challenge saved to {shot}", flush=True)
+    print(f"  CAPTCHA: waiting up to {timeout_ms // 1000}s for the answer in {ans}", flush=True)
+    waited = 0
+    while waited < timeout_ms:
+        if os.path.exists(ans):
+            try:
+                text = open(ans).read().strip()
+            except OSError:
+                text = ""
+            if text:
+                pg.fill(cfg_captcha["input"], text)
+                print(f"  CAPTCHA: answered ({len(text)} chars)", flush=True)
+                return True
+        pg.wait_for_timeout(2000)
+        waited += 2000
+    print("  ! captcha not answered within the timeout — login abandoned", flush=True)
+    return False
+
+
 def login(pg, base, auth, user, pw):
     """Username/password form login."""
     pg.goto(base + auth.get("loginPath", "/login"), wait_until="domcontentloaded", timeout=60000)
     pg.wait_for_timeout(2500)
+    tab = auth.get("tab")
+    if tab:
+        # A tabbed login renders its fields only once the right tab is active.
+        try:
+            pg.click(tab); pg.wait_for_timeout(900)
+        except Exception:
+            print(f"  ! login tab {tab!r} not clickable — continuing", flush=True)
+    pg.wait_for_selector(auth["userField"], timeout=20000)
     pg.fill(auth["userField"], user)
     pg.fill(auth["passField"], pw)
+    if auth.get("captcha"):
+        if not solve_captcha(pg, auth["captcha"], auth["_paths"]):
+            return
     (pg.query_selector(auth.get("submit", "button[type=submit]")) or pg.query_selector("button")).click()
     pg.wait_for_timeout(4500)
 
@@ -290,8 +359,20 @@ def login_email_otp(pg, base, auth, user, otp):
     _click_button(pg, auth.get("verifyButton", "Verify OTP"), exact=False)
     pg.wait_for_timeout(5000)
 
+def role_auth(role, auth):
+    """Merge a role's own `auth` dict over the project's global auth block.
+
+    Two hosts in one portal routinely have two different login forms — E-Anudaan's admin side
+    takes a mobile number, its applicant side a username plus a captcha. A role whose `auth` is
+    the STRING "none" is public and never reaches here.
+    """
+    override = role.get("auth")
+    return {**auth, **override} if isinstance(override, dict) else auth
+
+
 def do_login(pg, role, auth):
     """Dispatch to the right login flow by auth.type. Returns False if creds are missing."""
+    auth = role_auth(role, auth)
     if auth.get("type") == "email-otp":
         otp = role.get("otp") or auth.get("otp")
         if not (role.get("user") and otp):
@@ -579,6 +660,7 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
         return existing
     mode = res["mode"]
     auth = cfg["live"]["auth"]
+    auth["_paths"] = paths   # solve_captcha writes its challenge/answer files under captures/.auth/
     manifest = []
     decisions = {}  # slug -> "recapture"|"reshoot"|"reuse", tallied into freshness.md
     visited_roles = set()  # roles capture_role actually ran for — everyone else's bundle
@@ -703,6 +785,14 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
             print(f"!! bundle SHRANK {prev_n} -> {new_n}: {len(dropped)} slug(s) no longer "
                   f"present (aborted/skipped roles?): {dropped[:8]}{' …' if len(dropped) > 8 else ''}",
                   flush=True)
+    # Record the recipe this bundle was built against, so a later edit to screen-manifest.yaml
+    # invalidates it (see bundle.manifest_hash). A role-limited run applied the recipe to ONE
+    # role, so it must not claim the whole recipe is satisfied — it carries the previous value
+    # forward instead, leaving the next full run to do the work.
+    if only_role:
+        bdl["manifestHash"] = (prev or {}).get("manifestHash")
+    else:
+        bdl["manifestHash"] = B.manifest_hash(man)
     drift = B.verify_integrity(bdl, paths["project"])
     if not B.write_freshness(paths, bdl, res, decisions, drift):
         print(f"freshness gate: FAIL — {len(drift)} capture(s) drifted, see out/freshness.md", flush=True)
