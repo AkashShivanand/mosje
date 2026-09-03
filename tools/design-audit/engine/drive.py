@@ -633,7 +633,12 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
             _capture_state(pg, step["captureValidation"], role, cfg, paths, bdl, man, fid, None)
             done.append(step["captureValidation"])
             _reload(pg)
-    if allowed and flow.get("reuseRecord") is None:
+    # Only a flow that actually reached a confirmation screen has an identifier to harvest.
+    # Without this test the regex ran on whatever page the flow stopped on and recorded junk —
+    # three real runs filed "NGO-DARPAN" and "GIA/2026-27/AVYAY/" as record ids for flows that
+    # never submitted, which then tells the NEXT run a record exists when none does.
+    submitted = any(str(slug).endswith("-SUBMITTED") for slug in done)
+    if allowed and submitted and flow.get("reuseRecord") is None:
         # Harvest whatever identifier the success screen shows and remember it in the bundle.
         #
         # What this does and does NOT do: recording an id only stops the NEXT run re-harvesting

@@ -1040,3 +1040,42 @@ class SessionLossGuard(unittest.TestCase):
     def test_the_run_length_is_more_than_one(self):
         """One small screen is a small screen. Three in a row is a lost session."""
         self.assertGreaterEqual(B.SESSION_LOSS_RUN, 3)
+
+
+class RecordHarvestNeedsASubmission(unittest.TestCase):
+    """A flow's record id is harvested from its confirmation screen. Without checking that one was
+    reached, the regex ran on whatever page the flow stopped on: three real runs filed
+    "NGO-DARPAN" and "GIA/2026-27/AVYAY/" as record ids for flows that never submitted, which
+    tells the NEXT run a record exists when none does."""
+
+    CFG = {"live": {"roles": [{"name": "ngo", "base": "http://fake.invalid"}]}, "capture": {}}
+
+    class _Page(FakePage):
+        def __init__(self):
+            super().__init__(buttons=["Next →"])
+
+        def inner_text(self, *a, **k):
+            return "Reference GIA/2026-27/AVYAY/ shown on an ordinary page"
+
+        def evaluate(self, js, arg=None):
+            if "innerText.match" in js:
+                return None
+            if "querySelectorAll('button')" in js:
+                return "absent"
+            return 0
+
+        def query_selector_all(self, sel):
+            return []
+
+    def _run(self, steps):
+        pg, bdl = self._Page(), {}
+        with unittest.mock.patch.object(D, "_capture_state", lambda *a, **k: None):
+            D.run_flow(pg, {"id": "f", "role": "ngo", "allowSubmit": True, "steps": steps},
+                       {}, self.CFG, {"captures_live": "/dev/null", "project": "/dev/null"},
+                       bdl, "uat")
+        return bdl
+
+    def test_a_flow_that_never_submitted_records_nothing(self):
+        bdl = self._run([{"walk": {"prefix": "P"}}])
+        self.assertEqual(bdl.get("records", {}), {},
+                         "an id was harvested from a page that is not a confirmation screen")

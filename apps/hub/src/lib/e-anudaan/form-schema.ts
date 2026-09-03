@@ -86,6 +86,8 @@ export interface FieldDef {
    * apply.
    */
   readOnlyWhen?: { field: string; equals: readonly string[] };
+  /** Overrides the generated "this field is missing" message where the generic one reads badly. */
+  requiredMessage?: string;
   /** Options come from a state field rather than a literal list (cascading District). */
   districtsOf?: string;
   /** Value derived from other fields; the control renders read-only. */
@@ -1323,6 +1325,29 @@ const LETTERS_ONLY_RE = /^[A-Za-z][A-Za-z .,'-]*$/;
  * field, keyed by field name — the wizard renders it under the control AND rolls the labels up
  * into the live summary line ("N fields need attention before you can continue: …").
  */
+/**
+ * What to say when a required field is empty.
+ *
+ * `${label} is required.` produces "Select the existing project to renew is required." — a label
+ * with three words bolted on, which is not a sentence and does not tell anyone what to do. A
+ * label that already reads as an instruction IS the sentence; one that names a thing gets the
+ * verb its control implies.
+ */
+export function requiredMessage(field: FieldDef): string {
+  if (field.requiredMessage) return field.requiredMessage;
+  const label = field.label.replace(/\s*\*\s*$/, "").trim();
+  if (/^(select|choose|enter|upload|pick|describe|specify|attach|confirm)\b/i.test(label)) {
+    return `${label}.`;
+  }
+  // Never lower-case the label: it opens with acronyms and proper nouns often enough
+  // ("NGO-Darpan Unique ID") that doing so is worse than the capital.
+  const verb =
+    field.kind === "select" || field.kind === "radio" || field.kind === "checkbox"
+      ? "Select"
+      : "Enter";
+  return `${verb} ${label}.`;
+}
+
 export function validateStep(step: StepDef, values: Record<string, string>): Record<string, string> {
   const errors: Record<string, string> = {};
 
@@ -1331,7 +1356,7 @@ export function validateStep(step: StepDef, values: Record<string, string>): Rec
     const v = (values[f.name] ?? "").trim();
 
     if (f.required && !v) {
-      errors[f.name] = `${f.label} is required.`;
+      errors[f.name] = requiredMessage(f);
       continue;
     }
     if (!v) continue;

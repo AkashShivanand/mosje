@@ -383,6 +383,9 @@ function Field({
           checked={value === "true"}
           onChange={(e) => onChange(e.target.checked ? "true" : "")}
           label={field.label}
+          // A required tick-box that says so only in its styling is announced as optional.
+          required={field.required || undefined}
+          aria-invalid={error != null || undefined}
         />
         {field.help && <p className="mt-1 text-xs text-ink-muted">{field.help}</p>}
         {error && (
@@ -396,9 +399,22 @@ function Field({
 
   if (field.kind === "radio") {
     return (
-      <fieldset className={wide ? "sm:col-span-2" : undefined}>
+      // `role="radiogroup"` so the requirement has somewhere to live: `aria-required` on a bare
+      // fieldset is not exposed. Matches FormField, which puts `required` on the control and
+      // hides the asterisk from assistive technology rather than reading "star" aloud.
+      <fieldset
+        className={wide ? "sm:col-span-2" : undefined}
+        role="radiogroup"
+        aria-required={field.required || undefined}
+        aria-invalid={error != null || undefined}
+      >
         <legend className="text-sm font-semibold text-ink">
-          {field.label} {field.required && <span className="text-status-error">*</span>}
+          {field.label}{" "}
+          {field.required && (
+            <span className="text-status-error" aria-hidden="true">
+              *
+            </span>
+          )}
         </legend>
         <div className="mt-2 flex flex-wrap gap-4">
           {options.map((o) => (

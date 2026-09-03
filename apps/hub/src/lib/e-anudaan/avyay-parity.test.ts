@@ -17,6 +17,8 @@ import {
   visibleSteps,
   visibleOptions,
   isReadOnly,
+  requiredMessage,
+  validateStep,
 } from "./form-schema.ts";
 
 const NEW = { case_type: "New project" };
@@ -237,4 +239,23 @@ test("the bank account is fixed on a renewal and choosable on a new project", ()
 
   assert.equal(isReadOnly(bank, RENEWAL), true);
   assert.equal(isReadOnly(bank, NEW), false);
+});
+
+test("a missing required field is told to the applicant as an instruction", () => {
+  // Audit finding m3. `${label} is required.` produced "Select the existing project to renew is
+  // required." — a label with three words bolted on, which is not a sentence and does not say
+  // what to do. A label that already reads as an instruction IS the sentence.
+  const step1 = visibleSteps(AVYAY_WIZARD, RENEWAL)[0]!;
+  const errors = validateStep(step1, RENEWAL);
+
+  assert.equal(errors.fld_ongoing_source_application, "Select the existing project to renew.");
+  assert.equal(errors.fld_installment_no, "Select Installment.");
+  assert.ok(!Object.values(errors).some((m) => / is required\.$/.test(m)));
+});
+
+test("a required message never lower-cases a label that opens with an acronym", () => {
+  assert.equal(
+    requiredMessage({ name: "x", label: "NGO-Darpan Unique ID", kind: "text", required: true }),
+    "Enter NGO-Darpan Unique ID.",
+  );
 });
