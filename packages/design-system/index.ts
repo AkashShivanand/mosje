@@ -103,6 +103,10 @@ export type { SelectProps, SelectAppearance, SelectOption } from "./components/f
 export { PasswordStrengthMeter, strengthFromScore } from "./components/forms/password-strength-meter";
 export type { PasswordStrengthMeterProps, PasswordStrength } from "./components/forms/password-strength-meter";
 export { CaptchaField } from "./components/forms/captcha-field";
+export { BotCheck } from "./components/forms/bot-check";
+export type { BotCheckProps, BotCheckMode, BotCheckStatus } from "./components/forms/bot-check";
+export { useBotCheck } from "./components/forms/use-bot-check";
+export type { BotCheckToken, UseBotCheckOptions, UseBotCheckResult } from "./components/forms/use-bot-check";
 export type { CaptchaFieldProps } from "./components/forms/captcha-field";
 export { RadioGroup, CheckboxGroup } from "./components/forms/control-group";
 export type { RadioGroupProps, CheckboxGroupProps, ControlGroupOption } from "./components/forms/control-group";

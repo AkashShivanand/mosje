@@ -298,4 +298,37 @@
   .ds-auth-signing--surface { color: var(--sa-text-neutral-base); }
   .ds-auth-signing--surface .ds-auth-signing__eyebrow { color: var(--sa-text-neutral-subtle); }
   .ds-auth-signing--surface .ds-auth-signing__name { color: var(--sa-text-neutral-base); }
+
+  /* The question sits ON the rule, not above it — the reference's shape. */
+  .ds-auth-prompt__label {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    text-align: center;
+  }
+
+  .ds-auth-prompt__label::before,
+  .ds-auth-prompt__label::after {
+    content: "";
+    flex: 1 1 auto;
+    height: 1px;
+    background-color: var(--sa-border-neutral-subtle);
+  }
+
+  .ds-auth-prompt__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: var(--sa-target-comfortable);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+    color: var(--sa-text-link-brand-default);
+    text-underline-offset: 2px;
+  }
+
+  .ds-auth-prompt__link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 }

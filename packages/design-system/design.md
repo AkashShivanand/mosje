@@ -12,6 +12,23 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-03 · System version: v0.45.0 (THE LOGIN FORM WAS A DRAWING OF THE
+  DESIGN, NOT AN ASSEMBLY OF IT. `PortalLoginTemplate` imported ZERO components from its own
+  design system: 8 raw inputs, 8 raw labels, 6 raw buttons, a raw select and 77
+  arbitrary-value Tailwind classes wrapping `var(--sa-*)` — token references no token gate
+  can see and no brand mode can re-bind. That is the whole reason the screen drifted from
+  the reference. It now renders Alert, Button, FormField, Input, OtpInput, PasswordInput,
+  RadioGroup, Select and Tabs, and the arbitrary-value count is 0. `ConsentLine` and
+  `AccountPrompt` were exported by the system and rendered by NOTHING — the consent
+  sentence GIGW requires existed only in the Figma drawing. `AccountPrompt` also stopped
+  drawing a second full-width outlined button under the primary action; a single
+  registration route is a link on a rule, as the reference draws it. `BotCheck` replaces
+  `CaptchaField`, invisible by default, with a REQUIRED escape route — and deliberately no
+  audio mode, reversing this file's own earlier advice: bots solve audio challenges over
+  85% of the time while only 31.2% of them get three-person agreement among people.
+  `"darpan"` is back in `PortalAuthMode`; the audit that removed it could not have found an
+  E-Anudaan DARPAN login because E-Anudaan has no login screen in the handoff at all.)
+
   Last reviewed: 2026-09-02 · System version: v0.44.0 (TWO LOGIN SWITCHES BELONGED TO
   THE ROLE AND WERE WRITTEN AS THE PORTAL'S. The DigiLocker card was first modelled as a
   fourth `PortalAuthMode`, then as an audience rule ("everyone who is not an officer");
@@ -1765,6 +1782,39 @@ The details it exists to guarantee:
 - **Pass zxcvbn's own score.** Do not compute it from character classes ("one capital, one symbol") — those measure the wrong thing, failing a strong passphrase and passing `Passw0rd!`.
 - **Advisory, not a gate.** Never block submit on a Fair score. A policy minimum belongs in the field's error message, where it can say what to change; a colour bar cannot.
 - The word carries the meaning, not the colour — a red bar and an amber bar are the same bar to a colour-blind user. Announce politely, never assertively.
+
+#### BotCheck
+
+**Confirms a request came from a person without asking the person to prove it.** The
+replacement for `CaptchaField`, and the component a new portal reaches for.
+
+- **`mode` is `invisible` by default, and invisible draws NOTHING.** The server decides
+  from a self-hosted proof-of-work token, a honeypot and rate limiting. The component
+  appears only when the check has FAILED — a form that silently refuses to submit is the
+  worst of the three outcomes. `checkbox` adds one deliberate gesture, which is not a
+  cognitive function test and is therefore permitted. `challenge` is the legacy
+  distorted-characters test and is **deprecated**.
+- **`helpHref` is REQUIRED, and that is the whole design.** A proof-of-work or reputation
+  check has no accessible workaround of its own: a citizen on a shared connection, an
+  older device that fails the work factor, or a screen reader that cannot complete the
+  gesture is simply locked out with no way to identify themselves as a person. The link is
+  the alternative **WCAG 2.2 3.3.8** asks for, and making it optional is how it goes
+  missing from the one portal that needed it. `PortalLoginTemplate` enforces the same rule
+  one level up: no route, no check at all.
+- **There is deliberately NO audio mode, reversing earlier advice in this file.** Measured:
+  bots solve audio challenges **over 85%** of the time while only **31.2%** of them get
+  three-person agreement among people; a blind citizen takes **65s** against 9.8s for the
+  visual form, and **29.5%** of blind users disagree that audio alternatives are accessible
+  to them at all. An audio alternative is therefore harder for the people it is for and
+  easier for the software it exists to stop — worse on both axes at once.
+- **A hosted service is a data-residency decision, not an import.** Cloudflare Turnstile
+  solves the same problem but sends every visitor's signals to another company. Self-hosted
+  proof-of-work (ALTCHA / Cap, SHA-256) keeps it inside the estate, which also means no
+  cookie and no consent banner. The estate's order of preference is: nothing, then
+  `invisible`, then `checkbox`, then `challenge`.
+- **It cannot enforce anything.** The component renders the presentation and the escape
+  hatch; whether a request is refused is entirely server-side, and a bot never runs this
+  code.
 
 #### CaptchaField
 **Purpose**: A security-check challenge, a refresh control, and an answer field.

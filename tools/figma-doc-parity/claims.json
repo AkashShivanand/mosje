@@ -581,24 +581,23 @@
     {
       "node": "55399:1367",
       "where": "PortalLoginTemplate — Documentation › hero › axes",
-      "figma": "Device (2) × Auth Method (3) — Password, OTP and PIN.",
+      "figma": "Device (2) × Auth Method (4) — Password, OTP, PIN and NGO-DARPAN ID.",
       "expect": [
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-template.figma.ts",
-          "pattern": "Password: \"password\",[\\s\\S]{0,60}PIN: \"pin\"",
-          "hint": "The Figma Auth Method axis maps 1:1 onto these three. A fourth value in the enum means the master needs a fourth variant, or the enum is wrong."
+          "pattern": "Password: \"password\",[\\s\\S]{0,120}DARPAN: \"darpan\"",
+          "hint": "The Figma Auth Method axis maps 1:1 onto these four. A fifth value in the enum means the master needs a fifth variant, or the enum is wrong."
         },
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/types.ts",
           "pattern": "\\| \"darpan\"",
-          "absent": true,
-          "hint": "NGO DARPAN and Aadhaar were removed from PortalAuthMode on 2026-08-17 — a full read of the handoff found no such screen in any portal. Reinstating either breaks the count this claim pins."
+          "hint": "Reinstated 2026-09-03. The master now carries Device × Auth Method = 8 variants including DARPAN, so code and Figma agree again."
         },
         {
           "kind": "text",
-          "value": "Password, OTP and PIN"
+          "value": "Password, OTP, PIN and NGO-DARPAN ID"
         }
       ]
     },
@@ -695,7 +694,7 @@
     {
       "node": "55402:1870",
       "where": "PortalLoginTemplate — Documentation › 06 Behaviour › PIN entry",
-      "figma": "The PIN field takes digits only, renders masked, and carries a Show control. Recovery is Forgot PIN rather than the password link, because a portal that signs in on a PIN has no password to reset.",
+      "figma": "The PIN field takes digits only and renders masked. Its reveal control is PasswordInput's, not a hand-rolled one — the template drew its own Show/Hide button until 2026-09-03. Recovery is Forgot PIN rather than the password link, because a portal that signs in on a PIN has no password to reset.",
       "expect": [
         {
           "kind": "source",
@@ -712,8 +711,8 @@
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-template.tsx",
-          "pattern": "Show PIN",
-          "hint": "The masked field needs its own reveal control, labelled for a PIN rather than a password."
+          "pattern": "<PasswordInput[\\s\\S]{0,400}6-digit PIN",
+          "hint": "The masked field's reveal control belongs to PasswordInput. It was hand-rolled here with its own Show/Hide button and its own aria-label, which is how one field ends up behaving unlike every other password field in the estate."
         },
         {
           "kind": "text",
@@ -787,13 +786,13 @@
     {
       "node": "55403:1848",
       "where": "PortalLoginTemplate — Documentation › 08 Accessibility › WCAG 2.2",
-      "figma": "Focus is never obscured by the sticky masthead (2.4.11), and every control clears the 24 × 24 minimum (2.5.8). The captcha is off unless a role asks for it — it resolves role.captcha, then config.captcha, then off: a security code is a cognitive function test, and 3.3.8 Accessible Authentication forbids one without an alternative, so a role switches it on only where it offers that alternative and says which in the same change.",
+      "figma": "Focus is never obscured by the sticky masthead (2.4.11), and every control clears the 24 × 24 minimum (2.5.8). The security check is off unless a role asks for it — it resolves role.captcha, then config.captcha, then off — and when it is on it renders BotCheck, which is invisible by default and never a cognitive function test. 3.3.8 Accessible Authentication forbids one without an alternative, so a check renders only where a route out is also configured.",
       "expect": [
         {
           "kind": "source",
           "file": "packages/design-system/components/auth/portal-login-template.tsx",
-          "pattern": "const showCaptcha = activeRole\\?\\.captcha \\?\\? config\\.captcha \\?\\? false;",
-          "hint": "The captcha renders only where a ROLE opts in, with the portal as a fallback. `??` and not `||`, so a role's explicit false opts OUT of a portal-wide default rather than being read as unset. Flipping the final term to true would put a cognitive function test on every login in the estate."
+          "pattern": "const showBotCheck = activeRole\\?\\.captcha \\?\\? config\\.captcha \\?\\? false;",
+          "hint": "The check renders only where a ROLE opts in, with the portal as a fallback. `??` and not `||`, so a role's explicit false opts OUT of a portal-wide default rather than being read as unset. Flipping the final term to true would put a check on every login in the estate."
         },
         {
           "kind": "source",
@@ -810,6 +809,12 @@
           "value": "44 × 44",
           "absent": true,
           "hint": "44 × 44 is 2.5.5 Target Size (Enhanced), Level AAA, which this estate does not claim. The AA minimum is 24 × 24 — see standards-precedence.md."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/auth/portal-login-template.tsx",
+          "pattern": "showBotCheck && botCheckHelpHref",
+          "hint": "BOTH halves required. A bot check with nowhere for a blocked citizen to go has no accessible alternative at all, so a portal that switches one on without a route gets nothing rather than a dead end."
         }
       ]
     },

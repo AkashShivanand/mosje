@@ -326,13 +326,29 @@ export function AccountPrompt({
   const resolved = label ?? (options.length > 1 ? "Don't have an account? Register as" : "Don't have an account?");
   return (
     <div className={cn("ds-auth-prompt", className)}>
-      <p className="ds-auth-prompt__label">{resolved}</p>
+      {/* A rule with the question sitting ON it, then the route — which is how
+          the reference (`56693:8704`) draws it. It used to be a paragraph above
+          an OUTLINED BUTTON: a second button the same width as "Log In", one
+          above the other, competing with the primary action of the page. A
+          single registration route is a link. */}
+      <p className="ds-auth-prompt__label">
+        <span>{resolved}</span>
+      </p>
       <div className="ds-auth-prompt__options">
-        {options.map((o) => (
-          <Button key={o.label} appearance="outlined" href={o.href} onClick={o.onClick}>
-            {o.label}
-          </Button>
-        ))}
+        {options.map((o) =>
+          /* Two genuinely different applicants (SCW registers a Volunteer AND a
+             SAGE Organisation) still get buttons — at that point the reader is
+             choosing between them, not being offered one route. */
+          options.length > 1 ? (
+            <Button key={o.label} appearance="outlined" href={o.href} onClick={o.onClick}>
+              {o.label}
+            </Button>
+          ) : (
+            <a key={o.label} className="ds-auth-prompt__link" href={o.href} onClick={o.onClick}>
+              {o.label}
+            </a>
+          ),
+        )}
       </div>
     </div>
   );

@@ -28,11 +28,21 @@ export interface CaptchaFieldProps {
 /**
  * MoSJE / SAMAVESH security-check (captcha) field — a challenge, a refresh control, an answer.
  *
+ * @deprecated Use `BotCheck` instead. This component can only draw a
+ * distorted-characters test, which is the option that fails hardest at both of
+ * the jobs it is given: bots solve the audio form of it over 85% of the time,
+ * while only 31.2% of audio challenges get three-person agreement among people.
+ * `BotCheck` defaults to an invisible, server-verified check, keeps this
+ * presentation as its deprecated `challenge` mode, and — unlike this component
+ * — requires the escalation route that WCAG 2.2 3.3.8 actually asks for.
+ *
  * **Read this before adding one.** A captcha is an accessibility *risk*, not a feature.
  * WCAG 2.2 SC 3.3.8 *Accessible Authentication (Minimum)* is Level AA, and this estate
  * targets AA — so a cognitive-function test with no alternative is a conformance failure,
  * not a hardening measure. Prefer rate limiting, a server-side signal, or nothing at all.
- * If you must ship one, ship an audio alternative alongside it.
+ * Do NOT ship an audio alternative alongside it: measured, an audio challenge is
+ * slower and less usable for blind citizens than the visual one AND easier for
+ * bots, so it weakens both halves at once. Ship `BotCheck` instead.
  *
  * Only one surface in the estate uses this today (SMILE-Transgender / Garima Greh). Adding
  * it to another portal is a decision someone should be able to justify.

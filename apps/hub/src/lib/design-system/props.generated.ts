@@ -949,6 +949,109 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "BotCheckProps": {
+    "source": "packages/design-system/components/forms/bot-check.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "helpHref",
+        "type": "string",
+        "required": true,
+        "description": "Where a citizen goes when the check will not pass them. **Required, and deliberately not optional.** A network-reputation or proof-of-work check has no accessible workaround of its own: a citizen on a shared connection, a screen reader that cannot complete the gesture, or an older device that fails the work factor is simply stuck. This link is the alternative WCAG 2.2 3.3.8 asks for, and making it optional is how it gets dropped from the one portal that needed it."
+      },
+      {
+        "name": "challenge",
+        "type": "| { type: \"image\"; src: string; alt?: string }\n    | { type: \"text\"; characters: string }",
+        "required": false,
+        "description": "`challenge` mode — what the server issued."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "error",
+        "type": "string",
+        "required": false,
+        "description": "Shown when the check failed. A red border on its own is not an error."
+      },
+      {
+        "name": "helpLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"Cannot complete this check? Contact support\"",
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "label",
+        "type": "string",
+        "required": false,
+        "default": "\"Security check\"",
+        "description": "Accessible name for the group."
+      },
+      {
+        "name": "mode",
+        "type": "BotCheckMode = \"invisible\" | \"checkbox\" | \"challenge\"",
+        "required": false,
+        "default": "\"invisible\"",
+        "description": ""
+      },
+      {
+        "name": "onRefresh",
+        "type": "() => void",
+        "required": false,
+        "description": "`challenge` mode — asks for a new challenge. It MUST also clear `value`."
+      },
+      {
+        "name": "onValueChange",
+        "type": "(next: string) => void",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "onVerify",
+        "type": "() => void",
+        "required": false,
+        "description": "`checkbox` mode — the citizen's gesture."
+      },
+      {
+        "name": "placeholder",
+        "type": "string",
+        "required": false,
+        "default": "\"Enter the characters\"",
+        "description": "`challenge` mode placeholder."
+      },
+      {
+        "name": "status",
+        "type": "BotCheckStatus = \"idle\" | \"verifying\" | \"verified\" | \"failed\"",
+        "required": false,
+        "default": "\"idle\"",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": false,
+        "default": "\"\"",
+        "description": "`challenge` mode — the typed answer. Controlled."
+      }
+    ]
+  },
   "BrandGlyphProps": {
     "source": "packages/design-system/components/utilities/brand-glyph.tsx",
     "inheritsNative": true,
