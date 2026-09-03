@@ -222,7 +222,7 @@ export const ComposedDescription: Story = {
           hint="Say what happened and when."
           describedBy="grievance-note"
           characterCount={{ value, maxLength: 120 }}
-          footer={<p style={{ fontSize: 12 }}>Drafts are saved automatically.</p>}
+          footer={<p className="ds-field__hint">Drafts are saved automatically.</p>}
           required
         >
           {(c) => <Textarea {...c} value={value} onChange={(e) => setValue(e.target.value)} />}
