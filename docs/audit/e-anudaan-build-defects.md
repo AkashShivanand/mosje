@@ -1,5 +1,7 @@
 # e-Anudaan — defects in OUR build
 
+**Status:** D1, D2, D6, D7 fixed on `fix/eanudaan-live-parity`. D3 withdrawn against live.
+D4 and D5 open — both need a schema mechanism that does not exist yet.
 **Raised:** 2026-09-03 · **Source:** `apps/hub/src/lib/e-anudaan/form-schema.ts`,
 `apps/hub/src/components/e-anudaan/grant-wizard.tsx`
 **Distinct from** `e-anudaan-uat-design-audit.md`, which judges the *rendered* portal against
@@ -27,7 +29,7 @@ documents; renewal 7 and 9."* Documents honour it. Steps cannot.
 
 ---
 
-## D1 🔴 — AVYAY renders the same number of steps on both branches
+## D1 🔴 ✅ FIXED — AVYAY renders the same number of steps on both branches
 
 | | New project | Renewal |
 |---|---|---|
@@ -44,7 +46,7 @@ that already exist, and have `grant-wizard.tsx` count and index against that lis
 `def.steps`. Note the indices at `grant-wizard.tsx:143-147` (`docsIndex`, `reviewIndex`,
 `activeIndex`) all address `def.steps` and must move with it.
 
-## D2 🔴 — A new-project applicant is forced to pick an installment number
+## D2 🔴 ✅ FIXED — A new-project applicant is forced to pick an installment number
 
 `fld_installment_no` is `required: true` with **no `showWhen`**, so it renders on both branches.
 Its own help text is renewal-only: *"Which installment of the selected financial year's **recurring
@@ -64,13 +66,19 @@ showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing proje
 > *"Installment is required."* as finding **m3, a copywriting problem**. It is not a wording
 > problem. It is this defect, blocking the new-project branch, and m3 should be re-filed.
 
-## D3 🟠 — SHRESHTA_M2 asks a first-time institution when its grant began
+## D3 ⚪ WITHDRAWN — SHRESHTA_M2 asks a first-time institution when its grant began
 
-`fld_gia_since_year`, "Year from which GIA received under SHRESHTA", is `required: true` and always
-shown. Its help says *"Applies to ongoing institutions."*
+Raised on the strength of the help text alone. **Checked against live and withdrawn:** the vendor's
+portal shows `fld_gia_since_year` — *"Year from GIA received under SHRESHTA \*"* — on step 2 to
+everyone, asterisked. Our clone matches it exactly.
 
-SHRESHTA_M2 has **zero conditional fields and zero conditional documents** — it has no branch
-mechanism at all, so there is nowhere for this rule to live yet.
+Our help text, *"Applies to ongoing institutions,"* is ours and is the only thing wrong here: it
+tells an applicant a rule the form does not apply. Either the sentence goes, or it becomes
+guidance a first-time applicant can act on. **Raise the underlying question with the vendor**; do
+not diverge from live to fix it.
+
+> Kept rather than deleted because a withdrawn finding is evidence about the method: it was raised
+> from a comment in our own code and would have been "fixed" into a divergence from live.
 
 ## D4 🟠 — Options are not filtered by branch, only whole fields are
 
@@ -88,7 +96,7 @@ from this project — it cannot be changed on a renewal."* The very next field,
 `fld_bank_account_number`, is properly `readOnly: true`. The rule is stated to the applicant and
 not enforced by the form.
 
-## D6 🟡 — Three different AVYAY step counts in three comments
+## D6 🟡 ✅ FIXED — Three different AVYAY step counts in three comments
 
 | Location | Says |
 |---|---|
@@ -99,7 +107,7 @@ not enforced by the form.
 
 Two of these were true when written. Both NAPDDR counts (3) are stale by seven steps.
 
-## D7 🟠 — The parity test locks the defect in
+## D7 🟠 ✅ FIXED — The parity test locks the defect in
 
 `avyay-parity.test.ts` asserts the step list unconditionally:
 
