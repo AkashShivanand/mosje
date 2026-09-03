@@ -81,6 +81,19 @@
        uses. Naming the fallback here is what lets a consumer override the ring on
        every variant rather than only on the two that happen to declare one. */
     --_c-ring: var(--sa-btn-ring, var(--_ring, var(--sa-focus-ring)));
+    /*
+     * THE INVERSE LADDER GOES THROUGH THE SAME HOOKS, and until 2026-09-03 it did not.
+     *
+     * The docs said a hook is "read by every state, so setting one is complete by
+     * construction", and named the inverse ladder explicitly. It was not true: the
+     * inverse appearances read `--_inv-*` straight from the variant block, so a portal
+     * setting `--sa-btn-fill` was rethemed on a default ground and left on stock brand
+     * colours the moment the button sat on a brand surface. A half-override is the exact
+     * failure the hooks were introduced to prevent, and it was asserted in writing.
+     */
+    --_c-inv-fill: var(--sa-btn-fill, var(--_inv-fill));
+    --_c-inv-on: var(--sa-btn-ink, var(--_inv-on));
+    --_c-inv-edge: var(--sa-btn-edge, var(--_inv-edge));
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -559,9 +572,9 @@
      sit on WHITE, asked to sit on brand blue.
      -------------------------------------------------------------------------- */
   .ds-btn--inverse {
-    background-color: var(--_inv-fill);
-    color: var(--_inv-on);
-    border-color: var(--_inv-fill);
+    background-color: var(--_c-inv-fill);
+    color: var(--_c-inv-on);
+    border-color: var(--_c-inv-fill);
   }
 
   .ds-btn--inverse:hover {
@@ -576,8 +589,8 @@
 
   .ds-btn--inverseOutlined {
     background-color: transparent;
-    color: var(--_inv-ink);
-    border-color: var(--_inv-edge);
+    color: var(--_c-inv-on);
+    border-color: var(--_c-inv-edge);
   }
 
   .ds-btn--inverseOutlined:hover {
@@ -596,7 +609,7 @@
      secondary one, which is the same white. Figma binds it identically. */
   .ds-btn--inverseText {
     background-color: transparent;
-    color: var(--_inv-ink);
+    color: var(--_c-inv-on);
     border-color: transparent;
   }
 

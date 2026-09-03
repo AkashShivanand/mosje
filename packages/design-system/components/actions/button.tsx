@@ -350,6 +350,13 @@ export function buttonClasses(
    * working unchanged.
    */
   tone: ButtonTone = "default",
+  /**
+   * Layout options, added 2026-09-03. The component gained `fullWidth` and `nowrap` and
+   * this helper did not — so the 83 call sites that style a `next/link` as a button could
+   * not make one full width, which is the mobile-submit case `fullWidth` exists for. They
+   * are trailing parameters so every existing call keeps working untouched.
+   */
+  options: { fullWidth?: boolean; nowrap?: boolean } = {},
 ): string {
   // Resolved exactly as the component resolves it, rather than in parallel — a second
   // copy of this branch is how `tone="inverse" appearance="text"` came to render as a
@@ -362,5 +369,13 @@ export function buttonClasses(
         ? "inverseText"
         : "inverse"
     : appearance;
-  return cn("ds-btn", `ds-btn--${variant}`, `ds-btn--${resolved}`, `ds-btn--${size}`, className);
+  return cn(
+    "ds-btn",
+    `ds-btn--${variant}`,
+    `ds-btn--${resolved}`,
+    `ds-btn--${size}`,
+    options.fullWidth === true && "ds-btn--full",
+    options.nowrap === true && "ds-btn--nowrap",
+    className,
+  );
 }

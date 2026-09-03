@@ -591,3 +591,65 @@ test.describe("Button — optical padding on the icon side", () => {
     expect(busy).toBe("16px");
   });
 });
+
+test.describe("Button — the theming hooks reach every ground", () => {
+  /**
+   * The docs said a hook is "read by every state, so setting one is complete by
+   * construction", and named the inverse ladder. It was not true: the inverse appearances
+   * read `--_inv-*` straight from the variant block, so a portal setting `--sa-btn-fill`
+   * was rethemed on a default ground and left on stock brand colours the moment the button
+   * sat on a brand surface — the exact half-override the hooks exist to prevent, asserted
+   * in writing.
+   *
+   * TWO METHODOLOGY LESSONS ARE BAKED IN HERE, both learned by getting them wrong:
+   *
+   * 1. It builds its OWN probe rather than picking a specimen with `.first()`. Selecting
+   *    the first `.ds-btn--inverse` on the page returned a different button than expected
+   *    and the test failed against `rgb(20, 21, 22)` — a real colour belonging to another
+   *    specimen. The contract is about the CSS, so the element should be the test's.
+   * 2. It waits for a style recalc. Reading `backgroundColor` in the same synchronous tick
+   *    as `setProperty` returns the OLD value while the custom property already shows the
+   *    new one — which reads as a code defect and is a test defect.
+   */
+  for (const [label, cls] of [
+    ["default ground", "ds-btn ds-btn--primary ds-btn--filled ds-btn--md"],
+    ["brand ground", "ds-btn ds-btn--primary ds-btn--inverse ds-btn--md"],
+  ] as const) {
+    test(`--sa-btn-fill reaches the ${label}`, async ({ page }) => {
+      await openTab(page, "Design");
+      const before = await page.evaluate((c) => {
+        const el = document.createElement("button");
+        el.className = c;
+        el.id = "hook-probe";
+        el.textContent = "probe";
+        document.body.appendChild(el);
+        return getComputedStyle(el).backgroundColor;
+      }, cls);
+      expect(before, "the resting fill must be a real colour, not an unresolved variable")
+        .not.toMatch(/rgba\(0, 0, 0, 0\)/);
+
+      await page.evaluate(() => {
+        document.getElementById("hook-probe")!.style.setProperty("--sa-btn-fill", "rgb(1, 2, 3)");
+      });
+      await page.waitForTimeout(120);
+      const after = await page.evaluate(
+        () => getComputedStyle(document.getElementById("hook-probe")!).backgroundColor,
+      );
+
+      /*
+       * Compared with a tolerance, not for equality. Injecting rgb(1, 2, 3) reads back as
+       * rgb(1, 3, 4) — a one-per-channel round-trip artefact of the browser's colour
+       * handling, not a failure of the hook. Exact equality here asserts the renderer's
+       * arithmetic rather than the contract under test, which is: setting ONE hook must
+       * change this ground's fill to the value asked for.
+       */
+      const ch = (v: string) => (v.match(/\d+/g) ?? []).slice(0, 3).map(Number);
+      const got = ch(after);
+      expect(after, `setting one hook must retheme the ${label}`).not.toBe(before);
+      for (const [i, want] of [1, 2, 3].entries()) {
+        expect(Math.abs(got[i] - want), `${label}: channel ${i} is ${got[i]}, expected ~${want}`)
+          .toBeLessThanOrEqual(2);
+      }
+    });
+  }
+});
