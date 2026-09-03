@@ -290,6 +290,8 @@
     background-color: var(--sa-bg-neutral-base);
     overflow-x: auto;
     white-space: pre-wrap;
-    word-break: break-word;
+    /* `word-break: break-word` was always a deprecated alias that behaved as
+       overflow-wrap; this is the property that actually means it. */
+    overflow-wrap: break-word;
   }
 }

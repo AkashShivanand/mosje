@@ -97,7 +97,7 @@
   [type="button"],
   [type="submit"],
   [type="reset"] {
-    appearance: button;
+    appearance: auto;
     background-color: transparent;
     background-image: none;
     cursor: pointer;
