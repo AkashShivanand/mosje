@@ -1,7 +1,9 @@
 # e-Anudaan — defects in OUR build
 
-**Status:** D1, D2, D6, D7 fixed on `fix/eanudaan-live-parity`. D3 withdrawn against live.
-D4 and D5 open — both need a schema mechanism that does not exist yet.
+**Status:** D1, D2, D4, D5, D6, D7 **fixed** on `fix/eanudaan-live-parity`; D3 **withdrawn**
+against live evidence. e-Anudaan tests 33 → 38, capture-engine tests 80 → 124.
+**Still to confirm against live:** the exact labels of AVYAY's two renewal-only project types, and
+whether NAPDDR's step 1 forks (live shows a Case Type radio our schema does not model at all).
 **Raised:** 2026-09-03 · **Source:** `apps/hub/src/lib/e-anudaan/form-schema.ts`,
 `apps/hub/src/components/e-anudaan/grant-wizard.tsx`
 **Distinct from** `e-anudaan-uat-design-audit.md`, which judges the *rendered* portal against
@@ -80,16 +82,18 @@ not diverge from live to fix it.
 > Kept rather than deleted because a withdrawn finding is evidence about the method: it was raised
 > from a comment in our own code and would have been "fixed" into a divergence from live.
 
-## D4 🟠 — Options are not filtered by branch, only whole fields are
+## D4 🟠 ✅ FIXED — Options are not filtered by branch, only whole fields are
 
-`fld_nature_of_project` (AVYAY) offers Physiotherapy Clinic and Mobile Medicare Unit to everyone,
-while its own help says they are *"supported for renewal/ongoing cases only (FR-NEW-04)."*
+**Worse than first raised.** `fld_nature_of_project` (AVYAY) does not offer Physiotherapy Clinic
+or Mobile Medicare Unit to *anyone* — neither string was in its `options` array — while its help
+says they are *"supported for renewal/ongoing cases only (FR-NEW-04)."* The sentence promised
+project types the field never rendered, on either branch.
 
 `FieldDef.options` is a flat `string[]`, and `fieldVisible` gates the whole field. There is no
 mechanism to hide an option — so a new applicant can select a project type the rule forbids, and
 nothing stops the submission.
 
-## D5 🟡 — "Cannot be changed on a renewal" is help text, not a constraint
+## D5 🟡 ✅ FIXED — "Cannot be changed on a renewal" is help text, not a constraint
 
 `fld_bank_account_id` is `required: true` with no `readOnly`, and its help says *"Carried forward
 from this project — it cannot be changed on a renewal."* The very next field,
@@ -166,3 +170,35 @@ be applied for at all (design audit M6), so all three of its controllers are unr
 the wizard again, and `fill_all` must be able to override a value rather than only fill an empty
 one. Until then, no capture of this portal is complete, and the tracker should not have implied it
 was.
+
+
+---
+
+## Still open — needs a live walk
+
+**NAPDDR's step 1 does not match ours.** Live shows *Case Type* (radio: New project / Ongoing ·
+Renewal), *Project Type* (select: "DDAC — District De-Addiction Centre") and *Financial Year for
+which grant is sought*. Our schema declares *Application Type* (select), *NAPDDR Intervention
+Category* and *Financial Year for Grant* — different controls, different labels, and **no Case
+Type at all**, so NAPDDR's renewal branch is unmodelled in our clone.
+
+Not fixed here because guessing a fork's contents is how the drift started. It needs the walk
+below.
+
+## The re-capture that is still owed
+
+Both branches of AVYAY and NAPDDR need walking on live, which needs the portal to hold a session.
+The last attempt lost one mid-run — every screen fell from 150+ rows to 39 and a wizard state
+recorded the site root as its URL. The engine now detects that and refuses to overwrite good
+captures, but it cannot make the portal healthy.
+
+Re-run when it is:
+
+```bash
+cd tools/design-audit
+python3 engine/run.py --project e-anudaan --phase capture --role ngo-user
+node --experimental-strip-types projects/e-anudaan/clone-parity.mjs
+```
+
+The second command prints every remaining difference between what live rendered and what our
+schema declares.
