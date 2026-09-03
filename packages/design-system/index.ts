@@ -432,6 +432,12 @@ export type {
   NavSheetProps,
 } from "./components/navigation/header";
 
+// Link — text that takes the reader somewhere. A link changes location; a button
+// performs an action. Added 2026-09-03; before it, 194 hand-rolled brand-coloured
+// anchors each decided their own colour, underline, focus ring and new-tab handling.
+export { Link } from "./components/navigation/link";
+export type { LinkProps, LinkVariant, LinkSize, LinkTone } from "./components/navigation/link";
+
 // Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
 export { ContentNav } from "./components/navigation/content-nav";
 export type {

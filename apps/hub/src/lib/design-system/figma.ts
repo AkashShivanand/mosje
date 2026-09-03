@@ -41,6 +41,11 @@ export const FIGMA_NODES = {
      auto-layout frame — which is the touching-targets defect it exists to prevent.
      Attached x Orientation, 4 variants, each built from real Button instances. */
   buttonGroup: "56793:1214",
+  /* "Link" — the set has lived on the Buttons page since the library was imported from
+     UX4G, and had NO code counterpart until 2026-09-03. It was published, findable, and
+     unbuildable: 194 hand-rolled brand-coloured anchors across the hub are what a
+     designed-but-unbuilt component produces. */
+  link: "2723:1598",
   buttonDoc: "56160:1773", // "Button — Documentation" on the Buttons page, authored
   //                          2026-08-25 to the house style. It replaced a 1400px template
   //                          with 16 text nodes, ZERO on a published style, describing a
