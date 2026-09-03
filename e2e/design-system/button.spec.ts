@@ -511,3 +511,36 @@ test.describe("Button — pointer targets on touch", () => {
     expect(Math.min(...measured.map((m) => m.drawnHeight))).toBeLessThan(44);
   });
 });
+
+
+test.describe("Button — the icon takes the button's ink", () => {
+  /**
+   * REPORTED FROM FIGMA, 2026-09-03: a filled button drew a WHITE label and a DARK icon.
+   * The cause was in the Figma set — the swapped `Icon` instances kept that component's
+   * own default ink (`icon/neutral/base`, #1e2124) instead of the button's, on all 720 of
+   * them — and the code was never affected, because `Icon` sets no colour and
+   * `.ds-btn__icon` sets none either, so the glyph inherits through `currentColor`.
+   *
+   * This pins the reason the code was safe. It fails the moment anyone gives the icon
+   * slot or the Icon component a colour of its own, which is exactly the change that
+   * would reintroduce the defect on this side.
+   */
+  test("a glyph computes the same colour as the label beside it", async ({ page }) => {
+    await openTab(page, "Design");
+
+    for (const id of ["icon-filled", "icon-outlined"]) {
+      const btn = page.getByTestId(id).first();
+      await expect(btn).toBeVisible();
+      const { label, glyph } = await btn.evaluate((el) => {
+        const g = el.querySelector(".ds-btn__icon") as HTMLElement;
+        return { label: getComputedStyle(el).color, glyph: getComputedStyle(g).color };
+      });
+      expect(glyph, `${id}: the glyph does not match its label`).toBe(label);
+    }
+
+    // And the filled one is genuinely light-on-dark, so the assertion above is not
+    // passing because both happen to be the default ink.
+    const filled = await page.getByTestId("icon-filled").first().evaluate((el) => getComputedStyle(el).color);
+    expect(filled).toBe("rgb(255, 255, 255)");
+  });
+});

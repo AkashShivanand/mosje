@@ -10,7 +10,7 @@ import {
   TokenTable,
   type A11yItem,
 } from "@/components/design-system/docs-kit";
-import { Button } from "@mosje/design-system";
+import { Button, Icon } from "@mosje/design-system";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 
 import { ButtonPlayground } from "./button-playground";
@@ -253,6 +253,31 @@ export default function ButtonPage(): React.JSX.Element {
               you are choosing a variant because of how it <em>looks</em>, the answer is{" "}
               <code>neutral</code> with an <code>appearance</code>.
             </Callout>
+
+            <h3 className="cdp__h3">With an Icon</h3>
+            <p>
+              A glyph takes <code>iconLeft</code> or <code>iconRight</code> and is marked
+              decorative &mdash; the label already names the action. It inherits the
+              button&rsquo;s own ink rather than carrying a colour, so it is white on a
+              filled button and the intent&rsquo;s colour on an outlined one, in every
+              state, without anything to keep in sync.
+            </p>
+            <p>
+              <Button variant="primary" iconLeft={<Icon name="add" size={16} />} data-testid="icon-filled">
+                Add beneficiary
+              </Button>{" "}
+              <Button
+                variant="primary"
+                appearance="outlined"
+                iconRight={<Icon name="arrow_forward" size={16} />}
+                data-testid="icon-outlined"
+              >
+                Continue
+              </Button>{" "}
+              <Button variant="danger" iconLeft={<Icon name="delete" size={16} />}>
+                Delete application
+              </Button>
+            </p>
 
             <h3 className="cdp__h3">Prominence &mdash; the <code>appearance</code> axis</h3>
             <p>
