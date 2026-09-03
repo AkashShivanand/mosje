@@ -150,3 +150,54 @@ both directions at once.
 **Recommendation:** one page each — `Button`, `Icon Button`, `Button Group`, `Link`. That
 matches the estate's own code rule (`check:docs-routes`: one docs route per component) and
 gives each component somewhere to put the two frames it owes.
+
+---
+
+## 8. Third pass — the glyph, the pages, and what CloseButton actually costs
+
+### The glyph was the wrong size, not off-centre
+
+The instance was centred to the pixel all along. The **glyph inside it** was not the size
+of its slot: every variant carried `Icon/Size=24` from the wholesale migration, then the
+instance was squeezed to each button's padding box. Resizing an INSTANCE does not change
+the variant inside it — so Small held a 24px glyph in a 20px slot, overflowing its own
+instance by 2px a side, and Large held a 24px glyph in a 32px slot.
+
+**Per-size icons turned out to be structurally impossible here**, and that is the useful
+finding: the set exposes ONE `Change Icon` instance-swap property, every icon is bound to
+it, and a property has one default. Per-variant swaps are overridden the moment the
+property re-resolves — which is why 30 variants kept reverting while 315 clones appeared
+to take it. Exactly the original 45, minus the Smalls that already matched by coincidence.
+
+The model that works is the one the code already uses: **one glyph size, and the button
+grows by padding** — 24 + 2×4 = 32, 24 + 2×8 = 40, 24 + 2×12 = 48. A designer keeps one
+control for the glyph and the sizes stay on the ramp. Verified across all 360: boxes
+exactly 32/40/48, every glyph 24, zero off-centre, zero overflow.
+
+### One page per component
+
+`Button` · `Icon Button` · `Button Group` · `Link`, in that order — the family read as it
+is used. Each section is now `1 · The published set` rather than `2 of 3` on someone
+else's page, and each page can hold the two frames it owes.
+
+### CloseButton is NOT unused — and the guard caught it
+
+The deletion script refused: **4 live instances**, on `Alerts/Toasts` and `Side Sheet`.
+Removing the set would have broken both. It is still the right component to retire — no
+code counterpart, a retired `Tonal` appearance, no intent or tone axis — but retiring it
+means **migrating two other components first**, which is their change and not this one.
+
+- [ ] Migrate the 4 `CloseButton` instances on `Alerts/Toasts` and `Side Sheet` to
+      `IconButton` with a `close` glyph
+- [ ] Then delete the `CloseButton` set and its page
+
+### Improvements implemented
+
+- [x] Inverse ladder resolves through the public hooks, with `check:button-hooks` to keep
+      it that way
+- [x] `buttonClasses` gains `fullWidth` and `nowrap`
+- [x] `IconButton — Component record` authored
+- [ ] `IconButton — Documentation`, `Link — Documentation`, `Link — Component record`
+- [ ] A Figma-side effects gate — 96 shadows survived every check because nothing compares
+      Figma's effects to the code's `box-shadow`. Needs Figma access in CI, which the
+      token is not currently wired for.
