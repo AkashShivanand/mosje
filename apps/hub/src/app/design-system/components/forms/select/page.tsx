@@ -87,7 +87,7 @@ export default function SelectPage(): React.JSX.Element {
       name="Select"
       status="Stable"
       summary="A dropdown built on the native select element, with a custom chevron layered over it for visual consistency. Keeping the native control preserves the platform's own option list, its typeahead and its keyboard behaviour on every device."
-      figma={{ node: "dropdown" }}
+      figma={{ node: "select" }}
       specimen={<SelectPlayground />}
       propsFrom="SelectProps"
       a11y={A11Y}

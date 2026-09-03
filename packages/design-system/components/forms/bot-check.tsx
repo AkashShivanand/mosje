@@ -2,7 +2,10 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { IconButton } from "../actions/icon-button";
+import { Loader } from "../feedback/loader";
 import { Icon } from "../utilities/icon";
+import { Checkbox } from "./checkbox";
 import { Input } from "./input";
 import "./auth-fields.css";
 
@@ -57,8 +60,25 @@ export interface BotCheckProps {
   onRefresh?: () => void;
   /** Shown when the check failed. A red border on its own is not an error. */
   error?: string;
-  /** Accessible name for the group. @default "Security check" */
+  /**
+   * What the check is CALLED. It names the group for assistive technology and
+   * is printed beside the shield mark, so a citizen can tell what the box on
+   * their form is for.
+   *
+   * It is not the text beside the tick box — see `gestureLabel`. Those were one
+   * prop until the Figma master and the code were compared side by side: a
+   * checkbox labelled "Security check" reads as a heading rather than as the
+   * statement the citizen is agreeing to.
+   *
+   * @default "Security check"
+   */
   label?: string;
+  /**
+   * The statement beside the tick box in `checkbox` mode — what the citizen is
+   * asserting by ticking it. Keep it a first-person claim.
+   * @default "I am not a robot"
+   */
+  gestureLabel?: string;
   /** `challenge` mode placeholder. @default "Enter the characters" */
   placeholder?: string;
   disabled?: boolean;
@@ -67,6 +87,7 @@ export interface BotCheckProps {
 }
 
 const DEFAULT_HELP = "Cannot complete this check? Contact support";
+const DEFAULT_GESTURE = "I am not a robot";
 
 /**
  * SAMAVESH bot check — the estate's replacement for a captcha field.
@@ -133,6 +154,7 @@ export function BotCheck({
   onRefresh,
   error,
   label = "Security check",
+  gestureLabel = DEFAULT_GESTURE,
   placeholder = "Enter the characters",
   disabled = false,
   id,
@@ -141,11 +163,16 @@ export function BotCheck({
   const reactId = React.useId();
   const fieldId = id ?? reactId;
   const errorId = `${fieldId}-error`;
+  const statusId = `${fieldId}-status`;
   const failed = status === "failed";
+  const verifying = status === "verifying";
+  const verified = status === "verified";
 
   // The escape hatch. Rendered wherever the check is visible, and whenever it
   // has failed — including in `invisible` mode, which is the one case where the
   // citizen has no other way to understand why the form will not go through.
+  // It sits OUTSIDE the card, because a route out of a failed check should not
+  // be drawn inside the thing that failed.
   const escape = (
     <a className="ds-botcheck__help" href={helpHref}>
       {helpLabel}
@@ -158,47 +185,88 @@ export function BotCheck({
     </p>
   ) : null;
 
+  // `idle` says nothing: there is nothing to report until the citizen or the
+  // server has done something. The spinner and the tick are `aria-hidden`
+  // because the sentence beside them already carries the meaning, and the
+  // Loader's own `role="status"` would otherwise nest inside this one.
+  const statusLine =
+    verifying || verified ? (
+      <p className="ds-botcheck__status" id={statusId} role="status">
+        {verifying ? (
+          <Loader size="sm" label="" aria-hidden="true" />
+        ) : (
+          <Icon name="check_circle" size={20} aria-hidden />
+        )}
+        <span>{verifying ? "Checking…" : "Verified"}</span>
+      </p>
+    ) : null;
+
+  // The mark that says WHAT this box is. Without it a tick box on a government
+  // form is unexplained, and the citizen is being asked to agree to nothing in
+  // particular. It is a label, not a badge: no logo, no vendor, no wordmark.
+  const mark = (
+    <span className="ds-botcheck__mark">
+      <Icon name="verified_user" size={20} aria-hidden />
+      <span>{label}</span>
+    </span>
+  );
+
+  const describedBy = failed ? errorId : verifying || verified ? statusId : undefined;
+
+  // One card, whatever the mode. It is what makes the check read as a single
+  // object rather than as a loose control that wandered into the form, and it
+  // is where the status colour lives.
+  const card = (control: React.ReactNode, below?: React.ReactNode) => (
+    <div className="ds-botcheck__card" data-status={status}>
+      <div className="ds-botcheck__main">
+        {control != null && <div className="ds-botcheck__control">{control}</div>}
+        {mark}
+      </div>
+      {below}
+      {statusLine}
+      {message}
+    </div>
+  );
+
+  const shell = (modifier: string, children: React.ReactNode) => (
+    <div
+      className={cn("ds-botcheck", modifier, className)}
+      role="group"
+      aria-label={label}
+    >
+      {children}
+      {escape}
+    </div>
+  );
+
   if (mode === "invisible") {
     // Nothing to show and nothing to do — so nothing is drawn. A "verified"
     // tick here would be the interface narrating its own construction.
     if (!failed) return null;
-    return (
-      <div className={cn("ds-botcheck", "ds-botcheck--invisible", className)}>
-        {message}
-        {escape}
-      </div>
-    );
+    return shell("ds-botcheck--invisible", card(null));
   }
 
   if (mode === "checkbox") {
-    return (
-      <div className={cn("ds-botcheck", "ds-botcheck--checkbox", className)}>
-        <label className="ds-botcheck__gesture" htmlFor={fieldId}>
-          <input
-            id={fieldId}
-            type="checkbox"
-            checked={status === "verified"}
-            disabled={disabled || status === "verifying"}
-            aria-describedby={failed ? errorId : undefined}
-            onChange={() => onVerify?.()}
-          />
-          <span>{label}</span>
-          {status === "verifying" ? (
-            <span className="ds-botcheck__status" role="status">
-              Checking…
-            </span>
-          ) : null}
-        </label>
-        {message}
-        {escape}
-      </div>
+    return shell(
+      "ds-botcheck--checkbox",
+      card(
+        <Checkbox
+          id={fieldId}
+          checked={verified}
+          disabled={disabled || verifying}
+          label={gestureLabel}
+          aria-describedby={describedBy}
+          onChange={() => onVerify?.()}
+        />,
+      ),
     );
   }
 
   // `challenge` — deprecated. Kept so a legacy backend is not a blocker, and
   // deliberately last so nobody reaches it by accident.
-  return (
-    <div className={cn("ds-botcheck", "ds-botcheck--challenge", className)}>
+  return shell(
+    "ds-botcheck--challenge",
+    card(
       <div className="ds-botcheck__row">
         {challenge?.type === "image" ? (
           <span className="ds-botcheck__challenge">
@@ -213,16 +281,17 @@ export function BotCheck({
             {challenge?.type === "text" ? challenge.characters : ""}
           </span>
         )}
-        <button
+        <IconButton
           type="button"
-          className="ds-botcheck__refresh"
+          variant="neutral"
+          appearance="outlined"
+          size="lg"
           onClick={onRefresh}
           disabled={disabled}
           aria-label="Get a new security check. This clears anything you have typed."
-        >
-          <Icon name="refresh" size={24} aria-hidden />
-        </button>
-      </div>
+          icon={<Icon name="refresh" size={24} aria-hidden />}
+        />
+      </div>,
       <Input
         id={fieldId}
         aria-label={label}
@@ -231,11 +300,9 @@ export function BotCheck({
         disabled={disabled}
         invalid={failed}
         autoComplete="off"
-        aria-describedby={failed ? errorId : undefined}
+        aria-describedby={describedBy}
         onChange={(e) => onValueChange?.(e.target.value)}
-      />
-      {message}
-      {escape}
-    </div>
+      />,
+    ),
   );
 }

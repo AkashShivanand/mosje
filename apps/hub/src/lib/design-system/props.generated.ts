@@ -992,6 +992,13 @@ export const GENERATED_PROPS = {
         "description": "Shown when the check failed. A red border on its own is not an error."
       },
       {
+        "name": "gestureLabel",
+        "type": "string",
+        "required": false,
+        "default": "\"I am not a robot\"",
+        "description": "The statement beside the tick box in `checkbox` mode — what the citizen is asserting by ticking it. Keep it a first-person claim."
+      },
+      {
         "name": "helpLabel",
         "type": "string",
         "required": false,
@@ -1009,7 +1016,7 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "default": "\"Security check\"",
-        "description": "Accessible name for the group."
+        "description": "What the check is CALLED. It names the group for assistive technology and is printed beside the shield mark, so a citizen can tell what the box on their form is for. It is not the text beside the tick box — see `gestureLabel`. Those were one prop until the Figma master and the code were compared side by side: a checkbox labelled \"Security check\" reads as a heading rather than as the statement the citizen is agreeing to."
       },
       {
         "name": "mode",

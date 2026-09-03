@@ -60,7 +60,7 @@ export default function FieldPolicyProviderPage(): React.JSX.Element {
       status="Stable"
       since="0.7.0"
       summary="Sets whether a form marks its mandatory fields or its optional ones, for every field beneath it. Required Fields Legend, documented on this page, prints the sentence that explains the mark and reads the same setting, so the key and the marks can never disagree."
-      figma={{ absent: "No counterpart. UX4G's Form Field Group publishes a required-fields legend as a component; the policy behind it is a code concern and has no drawing." }}
+      figma={{ node: "requiredFieldsLegend" }}
       specimen={<FieldPolicySpecimen />}
       propsFrom="FieldPolicyProviderProps"
       a11y={A11Y}

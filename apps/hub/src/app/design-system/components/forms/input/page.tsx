@@ -115,7 +115,7 @@ export default function InputPage(): React.JSX.Element {
       name="Input"
       status="Stable"
       summary="A single-line text field built on the native input element and styled on the token contract. It accepts every native input attribute and adds three props of its own — the error state and the two icon slots. In practice it is rarely used alone — wrap it in a Form Field so the label, hint and error wiring come with it."
-      figma={{ node: "inputs" }}
+      figma={{ node: "inputField" }}
       specimen={<Playground code={EXAMPLE} />}
       propsFrom="InputProps"
       a11y={A11Y}

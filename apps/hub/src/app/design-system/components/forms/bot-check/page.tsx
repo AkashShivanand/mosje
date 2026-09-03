@@ -48,9 +48,18 @@ const A11Y: A11yItem[] = [
     level: "A",
     status: "verified",
     description:
-      "`checkbox` mode is a real checkbox in a real label. `challenge` mode reuses the DS `Input`. Neither invents a widget role.",
+      "`checkbox` mode renders the design system `Checkbox`, which is a real `<input type=\"checkbox\">` with its own associated `<label>`. `challenge` mode renders the design system `Input`. Neither invents a widget role.",
     evidence:
-      "bot-check.tsx:176 is a `<label htmlFor={fieldId}>` wrapping the `type=\"checkbox\"` input at :179; challenge mode renders the DS `Input` at :226. The only roles in the file are `alert`, `status` and `img` — none of them a widget role.",
+      "Read from the rendered DOM: `.ds-botcheck__control` contains `.ds-checkbox` with a native checked input and a `<label for>`. The only roles the component itself sets are `group`, `alert`, `status` and `img` — none of them a widget role.",
+  },
+  {
+    criterion: "1.3.1 Info and Relationships",
+    level: "A",
+    status: "verified",
+    description:
+      "The card is a `role=\"group\"` named by `label`, so the gesture, the status line and the message are announced as one security check rather than as loose controls. The status line and any error are linked to the control with `aria-describedby`.",
+    evidence:
+      "Read from the rendered DOM: the outer `.ds-botcheck` carries `role=\"group\"` and `aria-label=\"Security check\"`, and the checkbox's `aria-describedby` resolves to the status paragraph when verifying or verified, and to the alert when failed.",
   },
   {
     criterion: "1.1.1 Non-text Content",
@@ -67,7 +76,7 @@ export default function BotCheckPage(): React.JSX.Element {
       name="Bot Check"
       status="Stable"
       summary="Confirms a request came from a person without asking the person to prove it. Invisible and server-verified by default; a deliberate gesture where one is wanted; a distorted-characters challenge only where a legacy backend can issue nothing else — and always a route out for a citizen it will not pass."
-      figma={{ absent: "Not yet published in the Figma library." }}
+      figma={{ node: "botCheck" }}
       specimen={<BotCheckPlayground />}
       propsFrom="BotCheckProps"
       a11y={A11Y}
@@ -191,6 +200,56 @@ export default function BotCheckPage(): React.JSX.Element {
               does not conflate them. A &ldquo;verified&rdquo; tick in invisible mode would be the
               interface narrating its own construction, so there is not one.
             </p>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-anatomy">
+            <h2 id="cdp-anatomy" className="cdp__h2">
+              Anatomy: One Card, Whatever the Mode
+            </h2>
+            <p>
+              A check drawn as a loose tick box reads as a control somebody left on the form by
+              accident. Bounding it makes it one object the citizen can recognise, and gives the
+              outcome somewhere to be shown that is not the checkbox itself.
+            </p>
+            <MatrixTable
+              caption="The parts of the card, and what each is for"
+              columns={["Part", "What it is", "Why it is there"]}
+              rows={[
+                [
+                  "Card",
+                  "A bordered surface, tinted green when verified and red when failed",
+                  "Colour never carries the outcome alone — it is always joined by a tick and the word Verified, or by a sentence in an alert",
+                ],
+                [
+                  "Mark",
+                  "A shield and the name of the check",
+                  "Tells the citizen what the box on their form is. It is a label, not a badge: no logo, no vendor, no wordmark",
+                ],
+                [
+                  "Control",
+                  "The design system Checkbox, or the challenge and its refresh button",
+                  "Neither is redrawn here; both are the library components, so a change to either follows",
+                ],
+                [
+                  "Status line",
+                  "A spinner and “Checking…”, or a tick and “Verified”",
+                  "Carries role=\"status\". The spinner and the tick are aria-hidden, because the sentence beside them already says it",
+                ],
+                [
+                  "Escape link",
+                  "Drawn below the card, never inside it",
+                  "A route out of a failed check should not be drawn inside the thing that failed",
+                ],
+              ]}
+            />
+            <Callout title="The Name of the Check Is Not the Text Beside the Tick Box" type="info">
+              <code>label</code> names the check — it is read out as the group&rsquo;s name and
+              printed beside the shield. <code>gestureLabel</code> is the statement the citizen
+              agrees to by ticking the box, and it defaults to &ldquo;I am not a robot&rdquo;.
+              These were one prop until the Figma master and the code were compared side by side: a
+              checkbox labelled &ldquo;Security check&rdquo; reads as a heading rather than as
+              something a person is asserting.
+            </Callout>
           </section>
 
           <section className="cdp__section" aria-labelledby="cdp-prototype">

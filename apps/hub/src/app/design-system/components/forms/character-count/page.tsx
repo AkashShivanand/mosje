@@ -75,7 +75,7 @@ export default function CharacterCountPage(): React.JSX.Element {
       status="Stable"
       since="0.7.0"
       summary="A live count of how much of a field's limit is left. It counts what a reader would call a character rather than what JavaScript calls one, stays silent until the limit starts to matter, and raises its voice only once the limit is passed."
-      figma={{ absent: "Not yet drawn in the Figma library. UX4G's Input master publishes no count; the pattern is the GOV.UK character count, and the code is authoritative until a counterpart exists." }}
+      figma={{ node: "characterCount" }}
       specimen={<CharacterCountSpecimen />}
       propsFrom="CharacterCountProps"
       a11y={A11Y}

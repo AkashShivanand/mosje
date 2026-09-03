@@ -192,7 +192,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Bot Check — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/bot-check",
-    "keywords": "bot check — design system forms & inputs why this is not a captcha what to reach for, in order the states, and the one that draws nothing what is wired today, and what a developer must build the escape hatch is required, on purpose example notes  tokens wcag accessibility",
+    "keywords": "bot check — design system forms & inputs why this is not a captcha what to reach for, in order the states, and the one that draws nothing anatomy: one card, whatever the mode what is wired today, and what a developer must build the escape hatch is required, on purpose example notes  tokens wcag accessibility",
     "description": "The estate",
     "type": "component",
     "iconName": "edit_note"
@@ -1113,6 +1113,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "href": "/design-system/components/forms/radio",
     "keywords": "radio — design system forms & inputs radio cards example keyboard  tokens wcag accessibility",
     "description": "A radio button for choosing exactly one option from a mutually exclusive set, in an inline variant and a full selectable card variant.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Required Fields Legend — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/required-fields-legend",
+    "keywords": "required fields legend — design system forms & inputs one sentence per convention, and one that is silence example notes  tokens wcag accessibility",
+    "description": "The sentence that explains a form",
     "type": "component",
     "iconName": "edit_note"
   },
