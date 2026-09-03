@@ -753,3 +753,33 @@ class ManifestRecipeFreshness(unittest.TestCase):
         del old["manifestHash"]
         res = B.resolve_freshness(old, self.MAN, self.CFG, _probe=lambda base: "abc123")
         self.assertEqual(res["mode"], "full")
+
+
+from engine import capture as C  # noqa: E402
+
+
+class CarriedRouteNormalisation(unittest.TestCase):
+    """The monotonic route union re-crawls every route a role was ever seen at. It must carry
+    forward PATHS only.
+
+    The bug this gates: flow states record `pg.url` — an absolute URL — as their route. Carrying
+    one into the crawl produced `base + "https://host/path"`, i.e.
+    `https://eanudaan-user-uat.mosje.inhttps//eanudaan-user-uat.mosje.in/apply-grant`, which
+    failed DNS seven times in one run and filed each failure under a slug built from the mangled
+    URL."""
+
+    BASE = "https://eanudaan-user-uat.mosje.in"
+
+    def test_an_absolute_url_on_this_origin_becomes_a_path(self):
+        self.assertEqual(C._route_path(self.BASE + "/apply-grant/scheme/NAPDDR/step-1", self.BASE),
+                         "/apply-grant/scheme/NAPDDR/step-1")
+
+    def test_a_path_is_left_alone_and_loses_its_query(self):
+        self.assertEqual(C._route_path("/dashboard/pd/us?tab=new", self.BASE), "/dashboard/pd/us")
+
+    def test_another_origin_is_refused_rather_than_concatenated(self):
+        self.assertIsNone(C._route_path("https://elsewhere.test/x", self.BASE))
+
+    def test_a_relative_fragment_is_refused(self):
+        self.assertIsNone(C._route_path("apply-grant", self.BASE))
+        self.assertIsNone(C._route_path("", self.BASE))

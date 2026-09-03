@@ -384,6 +384,17 @@ def do_login(pg, role, auth):
     login(pg, role["base"], auth, role["user"], role["pass"])
     return True
 
+def _route_path(route, base):
+    """A crawlable route is a path, never an absolute URL — `base + route` is how the crawl
+    navigates, so an origin left on the front concatenates into an unresolvable host."""
+    r = (route or "").split("?")[0]
+    if r.startswith(base):
+        r = r[len(base):]
+    elif r.startswith("http://") or r.startswith("https://"):
+        return None                     # some other origin — not this role's to crawl
+    return r if r.startswith("/") else None
+
+
 def discover_routes(pg, cfg):
     # A slow-loading nav/carousel widget can still be rendering when we read hrefs, so the
     # discovered route SET varies run to run (observed on scw-user-uat: two routes intermittently
@@ -429,11 +440,19 @@ def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", 
     skip = set(cfg.get("live", {}).get("skipRoutes", []))
     carried = []
     for s in (prev_bundle or {}).get("screens", []):
-        if s.get("role") == role["name"]:
-            r = s.get("route")
-            if r and r not in routes and r not in skip:
-                routes.append(r)
-                carried.append(r)
+        if s.get("role") != role["name"]:
+            continue
+        # A flow state is NOT a crawlable route. Its `route` is the absolute URL the wizard
+        # happened to be on, and carrying it here did two wrong things at once: it re-crawled a
+        # wizard step as if it were a page, and — because the crawl builds `base + route` — it
+        # produced `https://host` + `https://host/path` and failed to resolve. Flow states are
+        # reproduced by re-running their flow, never by navigating to their URL.
+        if str(s.get("reachedBy") or "").startswith("flow:"):
+            continue
+        r = _route_path(s.get("route"), base)
+        if r and r not in routes and r not in skip:
+            routes.append(r)
+            carried.append(r)
     if carried:
         print(f"  carried forward {len(carried)} route(s) seen in a previous run", flush=True)
     captured = []
