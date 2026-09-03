@@ -69,6 +69,23 @@ export interface FieldDef {
   maxLength?: number;
   /** Show the field only while another field holds one of these values. */
   showWhen?: { field: string; equals: readonly string[] };
+  /**
+   * Some OPTIONS fork, not the whole field. AVYAY's Nature of Project is the case: live offers
+   * Physiotherapy Clinic and Mobile Medicare Unit to renewals only (FR-NEW-04). Before this the
+   * rule lived in help text and nothing enforced it, so a new applicant could pick a project type
+   * the scheme forbids and submit it.
+   */
+  optionsOnlyWhen?: {
+    field: string;
+    equals: readonly string[];
+    options: readonly string[];
+  };
+  /**
+   * Read-only on some branches and editable on others. AVYAY's Bank Account says "it cannot be
+   * changed on a renewal" in its help and was fully editable — a stated rule the form did not
+   * apply.
+   */
+  readOnlyWhen?: { field: string; equals: readonly string[] };
   /** Options come from a state field rather than a literal list (cascading District). */
   districtsOf?: string;
   /** Value derived from other fields; the control renders read-only. */
@@ -439,11 +456,21 @@ const AVYAY_STEPS: readonly StepDef[] = [
             kind: "select",
             required: true,
             wide: true,
+            optionsOnlyWhen: {
+              field: "case_type",
+              equals: ["Ongoing / Renewal of an existing project"],
+              options: ["Physiotherapy Clinic", "Mobile Medicare Unit"],
+            },
             options: [
               "Senior Citizens' Home — 25 beneficiaries",
               "Senior Citizens' Home — 50 beneficiaries",
               "Senior Citizens' Home — 50 elderly women only",
               "Continuous Care Home (CCH) / Dementia / Alzheimer's",
+              // Renewal-only, per the help below and FR-NEW-04. These two were named in the help
+              // text and were not in this list at all, so the sentence promised project types the
+              // field never offered to anyone. Labels still to be confirmed against live.
+              "Physiotherapy Clinic",
+              "Mobile Medicare Unit",
             ],
             help: "Physiotherapy Clinic and Mobile Medicare Unit are supported for renewal/ongoing cases only (FR-NEW-04).",
           },
@@ -557,6 +584,10 @@ const AVYAY_STEPS: readonly StepDef[] = [
             kind: "select",
             required: true,
             wide: true,
+            readOnlyWhen: {
+              field: "case_type",
+              equals: ["Ongoing / Renewal of an existing project"],
+            },
             options: ["State Bank of India · ••••••••••4417 · SBIN0001234"],
             help: "Carried forward from this project — it cannot be changed on a renewal. To change it, raise a request from My Bank Accounts; it takes effect once the Ministry approves it. Manage all your accounts from the 'My Bank Accounts' menu.",
           },
@@ -1245,6 +1276,25 @@ export function fieldVisible(field: FieldDef, values: Record<string, string>): b
  * live shows eight and seven. Anything that counts, indexes or labels steps must go through here,
  * never `wizard.steps` directly, or the stepper and the routing disagree with each other.
  */
+/** The options this branch may choose from. See `FieldDef.optionsOnlyWhen`. */
+export function visibleOptions(
+  field: FieldDef,
+  values: Record<string, string>,
+): readonly string[] {
+  const all = field.options ?? [];
+  const rule = field.optionsOnlyWhen;
+  if (!rule) return all;
+  const allowed = rule.equals.includes(values[rule.field] ?? "");
+  return allowed ? all : all.filter((o) => !rule.options.includes(o));
+}
+
+/** Whether this field is read-only on this branch. See `FieldDef.readOnlyWhen`. */
+export function isReadOnly(field: FieldDef, values: Record<string, string>): boolean {
+  if (field.readOnly) return true;
+  const rule = field.readOnlyWhen;
+  return !!rule && rule.equals.includes(values[rule.field] ?? "");
+}
+
 export function visibleSteps(
   wizard: WizardDef,
   values: Record<string, string>,

@@ -15,6 +15,8 @@ import {
   avyayCostHeads,
   visibleDocuments,
   visibleSteps,
+  visibleOptions,
+  isReadOnly,
 } from "./form-schema.ts";
 
 const NEW = { case_type: "New project" };
@@ -207,4 +209,32 @@ test("city category is derived from the project district, not left blank", () =>
     (filled.fld_city_category ?? "").length > 0,
     "a chosen district must produce a category — it is required and read-only, so nothing else can",
   );
+});
+
+test("Physiotherapy Clinic and Mobile Medicare Unit are offered to renewals only", () => {
+  // FR-NEW-04, stated in the field's own help. Before this the two were named in the help text
+  // and were not in the options array at all, so the sentence promised project types the field
+  // never offered to anybody, and nothing enforced the rule either way.
+  const nature = AVYAY_WIZARD.steps
+    .flatMap((s) => s.sections)
+    .flatMap((sec) => sec.fields)
+    .find((f) => f.name === "fld_nature_of_project")!;
+
+  assert.ok(!visibleOptions(nature, NEW).includes("Physiotherapy Clinic"));
+  assert.ok(!visibleOptions(nature, NEW).includes("Mobile Medicare Unit"));
+  assert.ok(visibleOptions(nature, RENEWAL).includes("Physiotherapy Clinic"));
+  assert.ok(visibleOptions(nature, RENEWAL).includes("Mobile Medicare Unit"));
+  assert.equal(visibleOptions(nature, NEW).length, visibleOptions(nature, RENEWAL).length - 2);
+});
+
+test("the bank account is fixed on a renewal and choosable on a new project", () => {
+  // "Carried forward from this project — it cannot be changed on a renewal" was help text with
+  // nothing behind it; the field was fully editable on both branches.
+  const bank = AVYAY_WIZARD.steps
+    .flatMap((s) => s.sections)
+    .flatMap((sec) => sec.fields)
+    .find((f) => f.name === "fld_bank_account_id")!;
+
+  assert.equal(isReadOnly(bank, RENEWAL), true);
+  assert.equal(isReadOnly(bank, NEW), false);
 });

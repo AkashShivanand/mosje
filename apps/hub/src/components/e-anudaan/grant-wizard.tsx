@@ -46,6 +46,8 @@ import {
   validateStep,
   visibleDocuments,
   visibleSteps,
+  visibleOptions,
+  isReadOnly,
   wizardFor,
   type FieldDef,
   type StepDef,
@@ -335,6 +337,7 @@ function FormStep({
                 <Field
                   key={f.name}
                   field={f}
+                  values={values}
                   value={values[f.name] ?? ""}
                   error={errors[f.name]}
                   parentValue={f.districtsOf ? values[f.districtsOf] : undefined}
@@ -350,21 +353,27 @@ function FormStep({
 
 function Field({
   field,
+  values,
   value,
   error,
   parentValue,
   onChange,
 }: {
   field: FieldDef;
+  /** The whole answer set — some options and some read-only states depend on another field. */
+  values: Record<string, string>;
   value: string;
   error?: string;
   parentValue?: string;
   onChange: (v: string) => void;
 }) {
   const wide = field.wide || field.kind === "textarea" || field.kind === "radio";
-  const options = field.districtsOf ? districtsOf(parentValue) : (field.options ?? []);
+  // Not `field.options` — an option can be branch-specific (AVYAY offers Physiotherapy Clinic
+  // and Mobile Medicare Unit to renewals only), and a field can be editable on one branch and
+  // fixed on another.
+  const options = field.districtsOf ? districtsOf(parentValue) : visibleOptions(field, values);
   const isAuto = Boolean(field.auto);
-  const readOnly = field.readOnly || isAuto;
+  const readOnly = isReadOnly(field, values) || isAuto;
 
   // SMILE's undertakings (a)–(j) are individual tick-boxes, not Yes/No pairs.
   if (field.kind === "checkbox") {
@@ -392,7 +401,7 @@ function Field({
           {field.label} {field.required && <span className="text-status-error">*</span>}
         </legend>
         <div className="mt-2 flex flex-wrap gap-4">
-          {(field.options ?? []).map((o) => (
+          {options.map((o) => (
             <Radio
               key={o}
               name={field.name}
