@@ -7,11 +7,27 @@ const instance = figma.selectedInstance;
 
 const label = instance.getString("Text");
 
-/** Figma `Type` → `ButtonVariant`. Exhaustive: all 3 options mapped. */
+/**
+ * Figma `Type` → `ButtonVariant`. Exhaustive: all 4 options mapped.
+ *
+ * `Neutral` WAS MISSING UNTIL 2026-09-03, and the comment here said "all 3 options
+ * mapped" — an assertion that stopped being true the moment the axis grew. Figma
+ * publishes 360 variants; a quarter of them are Neutral, and every one of those
+ * handed a designer a snippet with no usable `variant` in Dev Mode. It is the one
+ * intent the set's own description most wants people to reach for, because its
+ * absence is why a routine chat reset once shipped in the estate's rejection red.
+ *
+ * A count in a comment is a claim that rots. This one is now gated: the set has a
+ * fixture in `tools/code-connect-parity/figma-properties.json`, so
+ * `npm run check:code-connect` fails when an axis option here has no counterpart
+ * there. It had no fixture until 2026-09-03, which is why the gate reported Button
+ * as unverified for months and nobody read the note.
+ */
 const variant = instance.getEnum("Type", {
   Primary: "primary",
   Success: "success",
   Danger: "danger",
+  Neutral: "neutral",
 });
 
 /**
@@ -63,7 +79,8 @@ const disabled = instance.getEnum("State", {
  * The `Icon` VARIANT axis is gone. It was three options multiplying all 720 variants for
  * something that is two independent yes/no choices — the exact case
  * `.claude/rules/component-authoring.md` §4 says to push to properties. Removing it took
- * the set from 720 to 240 and paid for the `Tone` axis twice over.
+ * the set from 1,080 to 360 — Size 3 x Type 4 x Sub-type 3 x State 5 x Tone 2 — and paid
+ * for the `Tone` axis twice over.
  */
 const showLeft = instance.getBoolean("Show Left Icon");
 const showRight = instance.getBoolean("Show Right Icon");
