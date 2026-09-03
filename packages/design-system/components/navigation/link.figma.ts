@@ -40,14 +40,23 @@ const disabled = instance.getEnum("State", {
   Disabled: true,
 });
 
-/*
- * `external`, `download`, `tone` and the two icon slots have NO variant here, and are
- * declared omitted in the fixture rather than silently dropped.
+/**
+ * Figma `External` → the `external` prop, 1:1.
  *
- * Each changes the rendered anchor rather than its resting appearance — `external` adds
- * a target, a rel, a trailing glyph and a hidden new-tab notice — and modelling four
- * booleans as variants would take a 36-variant set past 500 for choices a designer makes
- * on the instance. They are documented on the set instead.
+ * IT WAS LEFT OUT OF THE FIRST CUT AND THAT WAS WRONG. The reasoning — that `external`
+ * changes the rendered anchor rather than its resting appearance — ignored the fact that
+ * the open-in-new glyph IS a visible affordance a designer has to be able to place, and
+ * on an estate that links out to other ministries constantly it is the commonest link on
+ * the page. Caught in review, not by a gate.
+ *
+ * One boolean here drives four things in code: `target`, `rel="noopener noreferrer"`, the
+ * trailing glyph, and the visually hidden "(opens in a new tab)" that GIGW 3.0 requires.
+ */
+const external = instance.getBoolean("External");
+
+/*
+ * `download`, `tone` and the two icon slots remain props in code with no variant here.
+ * They are declared omitted in the fixture rather than silently dropped.
  */
 
 export default {
@@ -56,6 +65,7 @@ export default {
       href="#"
       variant="${variant}"
       size="${size}"
+      ${external ? "external" : ""}
       ${disabled ? "disabled" : ""}
     >
       ${label}

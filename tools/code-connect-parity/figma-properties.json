@@ -590,7 +590,7 @@
  "Link": {
   "nodeId": "2723:1598",
   "captured": "2026-09-03",
-  "note": "36 variants = Size 3 x Variant 2 x State 6. The set had lived on the Buttons page since the library was imported from UX4G with NO code counterpart — published, findable and unbuildable, which is what 194 hand-rolled brand-coloured anchors across the hub are made of. Before this date it painted a raw #155dfc (not a SAMAVESH colour), carried no underline at rest on any variant, and had no Label property, so the text could not be edited from the panel.",
+  "note": "36 variants = Size 3 x Variant 2 x State 6. The set had lived on the Buttons page since the library was imported from UX4G with NO code counterpart — published, findable and unbuildable, which is what 194 hand-rolled brand-coloured anchors across the hub are made of. Before this date it painted a raw #155dfc (not a SAMAVESH colour), carried no underline at rest on any variant, and had no Label property, so the text could not be edited from the panel. `External` was added on review the same day: the open-in-new glyph is a visible affordance a designer must be able to place, and leaving it to code alone meant a government estate's commonest link could not be drawn.",
   "properties": {
    "Label": {
     "type": "TEXT"
@@ -620,6 +620,9 @@
      "Disabled",
      "Visited"
     ]
+   },
+   "External": {
+    "type": "BOOLEAN"
    }
   }
  }
