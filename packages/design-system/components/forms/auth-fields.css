@@ -188,13 +188,22 @@
 
   .ds-botcheck__main {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: var(--sa-inline-16);
   }
 
+  /* `flex-shrink: 0` is what makes the wrap useful rather than decorative.
+     Allowed to shrink, the gesture keeps its place on the row and wraps its own
+     text into a narrow column beside the mark — on a 375px screen a translated
+     or reworded `gestureLabel` became three lines in a 123px gutter. Refusing to
+     shrink pushes the mark onto its own line instead, and the sentence gets the
+     full width of the card. A short label still shares the row, because both
+     still fit. */
   .ds-botcheck__control {
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     gap: var(--sa-inline-8);
     min-height: var(--sa-target-comfortable);
@@ -314,6 +323,16 @@
     font-size: var(--sa-type-body-3-size);
     line-height: var(--sa-type-body-3-lh);
     color: var(--sa-text-link-brand-default);
+    /* UNDERLINED, and not by accident. The rule already carried
+       `text-underline-offset`, which does nothing without a decoration to
+       offset — something upstream had reset the browser's own underline away,
+       so this link was distinguished by colour alone. At 12px on the estate's
+       muted page ground that colour measures 4.07:1, which is under 4.5:1, so
+       colour was carrying identification it could not carry (WCAG 1.4.1, and
+       1.4.3 for the text itself). The underline is the fix that does not
+       require this one link to use a different blue from every other link in
+       the estate. */
+    text-decoration: underline;
     text-underline-offset: 2px;
   }
 }
