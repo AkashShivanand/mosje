@@ -81,6 +81,7 @@
 @import "./components/brand/illustration/illustration.css";
 @import "./components/brand/org-logo.css";
 @import "./components/auth/auth-parts.css";
+@import "./components/auth/portal-login-template.css";
 @import "./components/utilities/accessibility-bar.css";
 @import "./components/utilities/live-region.css";
 @import "./components/utilities/ux4g-accessibility-widget.css";
