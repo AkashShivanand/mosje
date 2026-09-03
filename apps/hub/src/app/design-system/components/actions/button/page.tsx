@@ -14,6 +14,7 @@ import { Button } from "@mosje/design-system";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 
 import { ButtonPlayground } from "./button-playground";
+import { PreserveFocusDemo } from "./preserve-focus-demo";
 
 export const metadata: Metadata = {
   title: "Button",
@@ -289,6 +290,7 @@ export default function ButtonPage(): React.JSX.Element {
             {/* ds-exempt(demo-geometry): the specimen needs the brand ground it is FOR.
                 Every value here is token-bound; only the fact of the stage is literal. */}
             <div
+              data-testid="inverse-strip"
               style={{
                 background: "var(--sa-bg-brand-primary-bolder)",
                 padding: "var(--sa-padding-24)",
@@ -299,9 +301,19 @@ export default function ButtonPage(): React.JSX.Element {
               }}
             >
               <Button tone="inverse" appearance="filled">Filled</Button>
-              <Button tone="inverse" appearance="outlined">Outlined</Button>
               <Button tone="inverse" appearance="text">Text</Button>
-              <Button tone="inverse" appearance="outlined" variant="danger">Danger, outlined</Button>
+              <Button tone="inverse" appearance="outlined" variant="primary" data-testid="inv-primary">
+                Primary
+              </Button>
+              <Button tone="inverse" appearance="outlined" variant="success" data-testid="inv-success">
+                Success
+              </Button>
+              <Button tone="inverse" appearance="outlined" variant="danger" data-testid="inv-danger">
+                Danger
+              </Button>
+              <Button tone="inverse" appearance="outlined" variant="neutral" data-testid="inv-neutral">
+                Neutral
+              </Button>
             </div>
             <p>
               Reach for <code>tone=&quot;inverse&quot;</code> rather than overriding{" "}
@@ -402,6 +414,60 @@ export default function ButtonPage(): React.JSX.Element {
                 giving the button a width of its own.
               </li>
             </ul>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-layout">
+            <h2 id="cdp-layout" className="cdp__h2">
+              Width and Wrapping
+            </h2>
+            <p>
+              A label <strong>wraps</strong>. Until 2026-09-03 it did not, and a button
+              that refuses to wrap does not shrink &mdash; it overflows its container and
+              takes the page&rsquo;s horizontal scrollbar with it. On a 320px screen, with
+              a departmental label in either language, that is the common case rather than
+              the edge.
+            </p>
+            {/* ds-exempt(demo-geometry): the container is deliberately narrow so the
+                wrapping it demonstrates actually happens. Its width is the specimen. */}
+            <div style={{ width: "180px", padding: "var(--sa-padding-8)", border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)" }}>
+              <Button variant="primary" data-testid="btn-wrap">
+                Submit application for review
+              </Button>
+            </div>
+            <p>
+              Pass <code>nowrap</code> only where one line is structural &mdash; a
+              segmented control, a toolbar &mdash; and accept that the label must then be
+              short enough to fit every viewport it will appear on.
+            </p>
+            <p>
+              <code>fullWidth</code> stretches the control to its container. It is the
+              supported spelling of what consumers were already doing with{" "}
+              <code>className</code>.
+            </p>
+            <div style={{ maxWidth: "320px" }}>
+              <Button variant="primary" fullWidth data-testid="btn-full">
+                Continue
+              </Button>
+            </div>
+            <p>
+              A one-word action keeps the same weight as the actions beside it, because the
+              width has a floor:{" "}
+              <Button variant="primary" appearance="outlined" size="sm" data-testid="btn-short">
+                OK
+              </Button>{" "}
+              <Button variant="primary" appearance="outlined" size="sm">
+                Cancel
+              </Button>
+            </p>
+            <MatrixTable
+              caption="What holds a button's shape"
+              columns={["Rule", "Value", "Why"]}
+              rows={[
+                ["Minimum width", "64px", "A one-word action next to a two-word one drew two visibly different weights. It is a floor, so nothing already wider moves; icon-only and full-width buttons are excluded, where a floor is wrong by definition."],
+                ["Minimum height", "32 / 40 / 48px", "A minimum, not a fixed height, so the box grows with the text instead of clipping it at 200%."],
+                ["Pointer target", "44 × 44 on touch", "sm and md are drawn smaller than that. On a coarse pointer an invisible centred area brings the target up to 44 without moving the drawn button, the layout or the focus ring — which is what UX4G asks for when it says to add transparent padding around small controls. Not applied on a mouse, where it would enlarge a dense table's row controls into their neighbours, nor inside an attached group, where buttons touch by design and the overlap would resolve by paint order rather than intent."],
+              ]}
+            />
           </section>
 
           <section className="cdp__section" aria-labelledby="cdp-voice">
@@ -556,6 +622,40 @@ import { buttonClasses } from "@mosje/design-system";
             </p>
           </section>
 
+          <section className="cdp__section" aria-labelledby="cdp-theming">
+            <h2 id="cdp-theming" className="cdp__h2">
+              Retheming Without Forking
+            </h2>
+            <p>
+              A component is reusable to the extent that the next portal can bend it
+              without changing it for everyone else. Four custom properties are the
+              supported way in. They default to the variant&rsquo;s own values, so setting
+              nothing changes nothing.
+            </p>
+            <TokenTable
+              tokens={[
+                { token: "--sa-btn-fill", value: "the variant's fill", description: "Solid background of the filled appearance." },
+                { token: "--sa-btn-ink", value: "the variant's on-fill ink", description: "Label colour on that fill." },
+                { token: "--sa-btn-edge", value: "the variant's edge ink", description: "Ink and border of the outlined and text appearances." },
+                { token: "--sa-btn-ring", value: "--sa-focus-ring", description: "Focus ring colour, on every variant." },
+              ]}
+            />
+            <CodeBlock>{`/* A portal stylesheet. Every state follows — hover, active,
+   disabled, the focus ring and the inverse ladder all read
+   these same four values. */
+[data-portal="nmba"] .ds-btn--primary {
+  --sa-btn-fill: var(--sa-color-teal-600);
+  --sa-btn-ink: var(--sa-on-bg-brand-primary-bolder);
+}`}</CodeBlock>
+            <Callout type="warning" title="This replaces overriding background-color">
+              Overriding <code>background-color</code> from outside the component wins the
+              resting fill and silently loses hover, active, disabled, the focus ring and
+              the whole inverse ladder &mdash; those are separate declarations reading
+              separate values. A hook is read by every state, so setting one is complete
+              by construction.
+            </Callout>
+          </section>
+
           <section className="cdp__section" aria-labelledby="cdp-figma">
             <h2 id="cdp-figma" className="cdp__h2">
               In Figma
@@ -604,6 +704,95 @@ import { buttonClasses } from "@mosje/design-system";
               Keep the label meaningful &mdash; &ldquo;Submitting&hellip;&rdquo; &mdash; rather than
               removing it or replacing it with a bare spinner.
             </Callout>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-discoverable">
+            <h2 id="cdp-discoverable" className="cdp__h2">
+              Keeping a Disabled Control Findable
+            </h2>
+            <p>
+              A natively <code>disabled</code> button leaves the tab order, so a reader
+              navigating by keyboard never learns it is there. The form does not appear to
+              have a submit they may not press yet &mdash; it appears to have no submit.
+            </p>
+            <p>
+              <code>preserveFocus</code> renders the same state as{" "}
+              <code>aria-disabled</code> instead, so the control stays reachable and is
+              announced as dimmed. Reachable is not pressable: click and Enter/Space are
+              both suppressed, and <code>type</code> is forced to{" "}
+              <code>&quot;button&quot;</code> so the browser&rsquo;s own implicit form
+              submission cannot fire either &mdash; the leak this pattern usually ships
+              with.
+            </p>
+            <PreserveFocusDemo />
+            <p>
+              Because it replaces the native attribute with handlers,{" "}
+              <code>preserveFocus</code> only works inside a client component &mdash;
+              which is where an interactive control lives anyway. This specimen is one.
+            </p>
+            <Callout type="info" title="It is opt-in, and that is deliberate">
+              Switching every disabled button in the estate into the tab order would
+              change tab order on pages nobody has re-tested. Reach for{" "}
+              <code>preserveFocus</code> where the control is the point of the screen
+              &mdash; a form&rsquo;s submit, a wizard&rsquo;s next step &mdash; and leave
+              the default alone for a row of table actions.
+            </Callout>
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-hcm">
+            <h2 id="cdp-hcm" className="cdp__h2">
+              Windows High Contrast Mode
+            </h2>
+            <p>
+              In forced-colors mode the operating system replaces every colour this
+              component sets. That is the point of the mode &mdash; but it means the
+              things a button uses to say it is a button stop existing. Filled and text
+              buttons both draw a transparent border, and{" "}
+              <code>transparent</code> is preserved, so both were left with no boundary at
+              all; a text button became an unmarked run of text with nothing to say it
+              could be pressed.
+            </p>
+            <MatrixTable
+              caption="What the component names once the OS takes over its palette"
+              columns={["Element", "System colour", "Why that one"]}
+              rows={[
+                ["Every boundary", "ButtonText", "WCAG 2.2 §1.4.11 asks for a 3:1 non-text boundary. A boundary the OS has erased does not meet it."],
+                ["Filled and inverse", "ButtonText on ButtonFace, inverted", "Colour can no longer separate filled from outlined, so the pair the OS reserves for this control is inverted instead — the same convention the platform uses for its own default button."],
+                ["Disabled", "GrayText", "Opacity is not forced, so the 50% wash stops reading as disabled. GrayText is the one keyword the mode guarantees for it."],
+                ["Focus ring", "Highlight", "The system's own focus colour, held clear by the same offset as everywhere else. It is the one thing that must never be lost."],
+                ["The spinner", "GrayText track, ButtonText head", "Its track is a 25% color-mix, which resolves to a system colour often identical to its own leading edge — leaving a ring that does not visibly turn."],
+              ]}
+            />
+          </section>
+
+          <section className="cdp__section" aria-labelledby="cdp-links">
+            <h2 id="cdp-links" className="cdp__h2">
+              The Link Form
+            </h2>
+            <p>
+              Pass <code>href</code> and the component renders a real anchor. A link that
+              opens in a new tab carries <code>rel=&quot;noopener noreferrer&quot;</code>{" "}
+              whether or not the caller remembered: <code>target=&quot;_blank&quot;</code>{" "}
+              hands the opened page a reference back to this one, which lets it navigate
+              the original tab elsewhere. Browsers imply <code>noopener</code> now, but
+              that word is doing real work on an estate that must serve older Android
+              WebViews, and <code>noreferrer</code> is implied nowhere.
+            </p>
+            <p>
+              An explicit <code>rel</code> from the caller wins &mdash; someone who wrote
+              one meant it.
+            </p>
+            <p>
+              <Button
+                variant="primary"
+                appearance="outlined"
+                href="https://www.india.gov.in"
+                target="_blank"
+                data-testid="btn-external"
+              >
+                Open the National Portal
+              </Button>
+            </p>
           </section>
 
           <section className="cdp__section" aria-labelledby="cdp-evidence">

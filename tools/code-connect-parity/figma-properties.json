@@ -513,5 +513,41 @@
     ]
    }
   }
+ },
+ "IconButton": {
+  "nodeId": "3:3497",
+  "captured": "2026-09-03",
+  "note": "45 variants = Size 3 x Sub-type 3 x State 5. The set carries NEITHER a Type (intent) axis NOR a Tone axis, so a danger or an inverse icon button cannot be drawn in Figma even though IconButton extends ButtonProps and the code supports both. Recorded on the Button component record as open; this fixture is what stops the mapping drifting further in the meantime.",
+  "properties": {
+   "Change Icon": {
+    "type": "INSTANCE_SWAP"
+   },
+   "Size": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Default",
+     "Large",
+     "Small"
+    ]
+   },
+   "Sub-type": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Text",
+     "Outlined",
+     "Filled"
+    ]
+   },
+   "State": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Default",
+     "Hover",
+     "Pressed",
+     "Focused",
+     "Disabled"
+    ]
+   }
+  }
  }
 }

@@ -24,6 +24,12 @@ const PAGE = "/design-system/components/actions/button";
  * `hidden`, which reads like a missing element and is not one. Activate the tab
  * that owns the specimen before asserting anything about it.
  */
+/**
+ * TABS ARE `Design` / `Code` / `Accessibility`. Three tests here asked for a tab called
+ * "Meta", which the page stopped having when it moved onto `ComponentDocPage` — so they
+ * had been failing on `main`, silently, because CI's two jobs do not run Playwright. The
+ * specimens themselves never moved; only the tab that holds them was renamed.
+ */
 async function openTab(page: import("@playwright/test").Page, name: string) {
   await page.goto(PAGE);
   await page.getByRole("tab", { name, exact: true }).click();
@@ -47,7 +53,7 @@ test.describe("Button — audited defects", () => {
    * handler to get wrong and no tabIndex to maintain.
    */
   test("a disabled link-button is inert, not merely styled as inert", async ({ page }) => {
-    await openTab(page, "Meta");
+    await openTab(page, "Design");
     const link = page.getByTestId("btn-disabled-link");
     await expect(link).toBeVisible();
 
@@ -133,7 +139,7 @@ test.describe("Button — audited defects", () => {
    * submission the prop exists to prevent.
    */
   test("a loading button is busy AND disabled, not merely busy", async ({ page }) => {
-    await openTab(page, "Meta");
+    await openTab(page, "Design");
     const btn = page.getByTestId("btn-loading");
     await expect(btn).toBeVisible();
     await expect(btn).toHaveAttribute("aria-busy", "true");
@@ -164,7 +170,7 @@ test.describe("Button — audited defects", () => {
    * fully modelled while nothing read it.
    */
   test("on a brand surface each variant paints its own border", async ({ page }) => {
-    await openTab(page, "Meta");
+    await openTab(page, "Design");
     await expect(page.getByTestId("inverse-strip")).toBeVisible();
 
     // Distinctness ALONE is not enough, and this test learned that the hard way: reverting
@@ -217,5 +223,291 @@ test.describe("Button — audited defects", () => {
       unique.size,
       `all four inverse outlined borders should differ, got ${JSON.stringify(rows.map((r) => r.actual))}`,
     ).toBe(4);
+  });
+});
+
+/* ===========================================================================
+ * The 2026-09-03 "world class" pass — docs/plans/2026-09-03-button-world-class.md
+ *
+ * Each of these was watched to FAIL against the component as it stood before its
+ * fix. The bar set in that plan was: a criterion is met when a test fails without
+ * the fix, and anything that cannot be made to fail is not claimed.
+ * ========================================================================= */
+
+test.describe("Button — width, wrapping and rhythm", () => {
+  /**
+   * S1. `white-space: nowrap` meant a label did not shrink, it OVERFLOWED — and took
+   * the page's horizontal scrollbar with it. Before the fix this specimen, in a 180px
+   * container, measured a scrollWidth well past its clientWidth on one line.
+   */
+  test("a long label wraps inside its container instead of overflowing", async ({ page }) => {
+    await openTab(page, "Design");
+    const btn = page.getByTestId("btn-wrap");
+    await expect(btn).toBeVisible();
+
+    const box = await btn.evaluate((el) => ({
+      scrollWidth: el.scrollWidth,
+      clientWidth: el.clientWidth,
+      height: el.getBoundingClientRect().height,
+      whiteSpace: getComputedStyle(el).whiteSpace,
+    }));
+
+    expect(box.whiteSpace).not.toBe("nowrap");
+    // The label fits the box it was given.
+    expect(box.scrollWidth).toBeLessThanOrEqual(box.clientWidth + 1);
+    // And it fits by WRAPPING — a single 40px line would mean it had not.
+    expect(box.height).toBeGreaterThan(40);
+
+    // The page itself must not have gained a horizontal scrollbar.
+    const overflows = await page.evaluate(
+      () => document.documentElement.scrollWidth > document.documentElement.clientWidth + 1,
+    );
+    expect(overflows).toBe(false);
+  });
+
+  /** S1. `fullWidth` fills its container rather than needing a wrapper class. */
+  test("fullWidth stretches to the container", async ({ page }) => {
+    await openTab(page, "Design");
+    const btn = page.getByTestId("btn-full");
+    await expect(btn).toBeVisible();
+    const { btnW, parentW } = await btn.evaluate((el) => ({
+      btnW: el.getBoundingClientRect().width,
+      parentW: (el.parentElement as HTMLElement).getBoundingClientRect().width,
+    }));
+    expect(Math.abs(btnW - parentW)).toBeLessThanOrEqual(1);
+  });
+
+  /**
+   * S4. A one-word action beside a two-word one drew two visibly different weights.
+   * The floor is 64px and applies to every ordinary button on the page.
+   */
+  test("no ordinary button renders below the rhythm minimum", async ({ page }) => {
+    await openTab(page, "Design");
+
+    /*
+     * MEASURE THE SHORTEST LABEL ON THE PAGE, NOT THE PAGE'S AVERAGE.
+     *
+     * The first version of this only swept every visible button and passed with
+     * `min-width` removed entirely. Measured: an `md` button carries 24px of padding a
+     * side, so "OK" already renders at 72.86px — the floor never binds there and the
+     * test was measuring padding. `btn-short` is `sm` (16px a side), where the label
+     * genuinely cannot reach 64px on its own.
+     */
+    const short = page.getByTestId("btn-short");
+    await expect(short).toBeVisible();
+    expect(await short.evaluate((el) => el.getBoundingClientRect().width)).toBeGreaterThanOrEqual(64);
+
+    const widths = await page.evaluate(() =>
+      [...document.querySelectorAll(".ds-btn")]
+        .filter((el) => !el.classList.contains("ds-icon-btn") && !el.classList.contains("ds-btn--full"))
+        .filter((el) => (el as HTMLElement).offsetParent !== null)
+        .map((el) => el.getBoundingClientRect().width),
+    );
+    expect(widths.length).toBeGreaterThan(0);
+    expect(Math.min(...widths)).toBeGreaterThanOrEqual(64);
+  });
+});
+
+test.describe("Button — the link form", () => {
+  /**
+   * S5. `target="_blank"` hands the opened page a `window.opener` back to this one.
+   * Before the fix the anchor attributes were not even assignable, so this specimen
+   * could not be written — the typechecker found that while the default was added.
+   */
+  test("a new-tab link carries rel=noopener noreferrer", async ({ page }) => {
+    await openTab(page, "Accessibility");
+    const link = page.getByTestId("btn-external");
+    await expect(link).toBeVisible();
+    await expect(link).toHaveJSProperty("tagName", "A");
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+  });
+});
+
+test.describe("Button — a disabled control that stays findable", () => {
+  /**
+   * S6. A natively disabled button leaves the tab order, so a keyboard reader never
+   * learns it exists. `preserveFocus` keeps it reachable without making it operable.
+   */
+  test("preserveFocus is focusable, announced disabled, and still inert", async ({ page }) => {
+    await openTab(page, "Accessibility");
+    const soft = page.getByTestId("btn-soft-disabled");
+    const hard = page.getByTestId("btn-hard-disabled");
+    await expect(soft).toBeVisible();
+
+    // The default is unchanged: natively disabled, out of the tab order.
+    await expect(hard).toBeDisabled();
+    await expect(hard).not.toHaveAttribute("aria-disabled", "true");
+
+    /*
+     * The opt-in is reachable and announced. Assert the NATIVE property, not
+     * `toBeDisabled()` — Playwright resolves that through ARIA, so it reports this
+     * control as disabled, which is exactly what it should be telling a screen reader.
+     * The distinction under test is "not natively disabled, therefore still in the tab
+     * order", and only the DOM property says that.
+     */
+    await expect(soft).toHaveJSProperty("disabled", false);
+    await expect(soft).toHaveAttribute("aria-disabled", "true");
+    await soft.focus();
+    await expect(soft).toBeFocused();
+
+    /*
+     * Reachable is not pressable.
+     *
+     * The first version of this attached a native `click` listener and force-clicked.
+     * That always fires: `stopPropagation` on React's synthetic event cannot unregister
+     * a listener sitting on the same element, and `force: true` deliberately bypasses
+     * the very pointer-blocking under test. It was measuring the test's own listener.
+     *
+     * What actually has to hold is that the POINTER cannot reach it and the KEYBOARD
+     * cannot activate it.
+     */
+    await expect(soft).toHaveCSS("pointer-events", "none");
+
+    await soft.evaluate((el) => {
+      (el as HTMLElement).dataset.fired = "no";
+      el.addEventListener("click", () => ((el as HTMLElement).dataset.fired = "yes"));
+    });
+    await soft.press("Enter");
+    await soft.press(" ");
+    await expect(soft).toHaveAttribute("data-fired", "no");
+
+    // And it can never submit a form implicitly.
+    await expect(soft).toHaveJSProperty("type", "button");
+  });
+});
+
+test.describe("Button — Windows High Contrast Mode", () => {
+  /**
+   * `test.use({ forcedColors: "active" })` DID NOT REACH THE PAGE. Measured:
+   * `matchMedia("(forced-colors: active)").matches` was `false` inside a describe that
+   * declared it, so the CSS under test was never selected and the assertions were
+   * measuring ordinary mode. `page.emulateMedia` sets it at runtime and demonstrably
+   * works — and every test below asserts the mode is ON before asserting anything else,
+   * so this can never again pass by testing the wrong thing.
+   */
+  async function forceColors(page: import("@playwright/test").Page) {
+    await page.emulateMedia({ forcedColors: "active" });
+    expect(
+      await page.evaluate(() => matchMedia("(forced-colors: active)").matches),
+      "forced-colors emulation is not active — the assertions below would measure ordinary mode",
+    ).toBe(true);
+  }
+
+  /**
+   * S2. THIS GUARDS THE OUTCOME, NOT THE MECHANISM — and the distinction was measured
+   * rather than assumed.
+   *
+   * Removing the component's whole `forced-colors` block and re-running this cold still
+   * passed: Chromium's own forced-colors UA styles already give a `<button>` a border,
+   * overriding the author's `transparent`. So this test does not prove that block is
+   * load-bearing in Chromium, and it is not claimed to.
+   *
+   * It is still worth having. It fails the moment anyone reaches for
+   * `forced-color-adjust: none`, paints a background the forced palette cannot override,
+   * or removes the border box — the three ways this control could stop announcing itself
+   * as pressable, against WCAG 2.2 §1.4.11. The block itself earns its place on engines
+   * and real Windows palettes that are not this emulation, and for the filled/outlined
+   * distinction and the GrayText disabled treatment the UA does not supply.
+   */
+  test("every appearance keeps a visible boundary", async ({ page }) => {
+    await openTab(page, "Design");
+    await forceColors(page);
+    const borders = await page.evaluate(() =>
+      [...document.querySelectorAll(".ds-btn")]
+        .filter((el) => (el as HTMLElement).offsetParent !== null)
+        .map((el) => {
+          const cs = getComputedStyle(el);
+          return { cls: el.className, color: cs.borderTopColor, width: cs.borderTopWidth };
+        }),
+    );
+    expect(borders.length).toBeGreaterThan(0);
+    for (const b of borders) {
+      expect(b.color, `${b.cls} has no border colour`).not.toMatch(/transparent|rgba\(0, 0, 0, 0\)/);
+      expect(parseFloat(b.width), `${b.cls} has no border width`).toBeGreaterThan(0);
+    }
+  });
+
+  /** S2. The focus ring is the one thing that must never be lost. */
+  test("the focus ring survives, in the system's own focus colour", async ({ page }) => {
+    await openTab(page, "Design");
+    await forceColors(page);
+    const btn = page.getByTestId("btn-wrap");
+    /*
+     * Focus it BY KEYBOARD. `:focus-visible` is modality-dependent — a programmatic
+     * `.focus()` does not set the keyboard flag in Chromium, so the ring computed as
+     * `outline-style: none` and the first version of this test read that as a missing
+     * focus ring rather than as a focus state it had never entered. Tabbing away and
+     * back is what makes the state real.
+     */
+    /*
+     * `:focus-visible` IS MODALITY-DEPENDENT, AND THE MODALITY IS SET BY A REAL KEY.
+     *
+     * Chromium only treats focus as "visible" once the last interaction was the
+     * keyboard. A bare `.focus()` therefore left the element focused but NOT
+     * focus-visible, so the ring computed as `outline-style: none` and the first version
+     * of this test read that as a missing focus ring. A Tab/Shift+Tab round trip was the
+     * second attempt and simply lost focus to a neighbour.
+     *
+     * One Tab press anywhere flips the modality flag; from then on a programmatic focus
+     * is focus-visible too. That is deterministic, unlike counting Tab stops.
+     */
+    await page.keyboard.press("Tab");
+    await btn.focus();
+    await expect(btn).toBeFocused();
+    expect(
+      await btn.evaluate((el) => el.matches(":focus-visible")),
+      "the button is focused but not focus-visible, so no ring is expected to be drawn",
+    ).toBe(true);
+    const ring = await btn.evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { width: cs.outlineWidth, style: cs.outlineStyle, offset: cs.outlineOffset };
+    });
+    expect(ring.style).toBe("solid");
+    expect(parseFloat(ring.width)).toBeGreaterThan(0);
+    expect(parseFloat(ring.offset)).toBeGreaterThan(0);
+  });
+});
+
+test.describe("Button — pointer targets on touch", () => {
+  test.use({ hasTouch: true, isMobile: true, viewport: { width: 390, height: 844 } });
+
+  /**
+   * S3. `sm` is drawn at 32px and `md` at 40px. Both clear WCAG 2.2 §2.5.8 (24x24 at
+   * AA), but UX4G 3.0 asks for 44x44 on mobile. An invisible centred pseudo-element
+   * raises the TARGET without moving the drawn button — and its first draft carried
+   * `pointer-events: none`, which made it invisible to the pointer and left the target
+   * exactly 32px: a comment claiming a fix over a rule that did nothing.
+   */
+  test("every size presents at least a 44x44 target without growing its drawn box", async ({ page }) => {
+    await openTab(page, "Design");
+    const measured = await page.evaluate(() =>
+      [...document.querySelectorAll(".ds-btn")]
+        .filter((el) => (el as HTMLElement).offsetParent !== null)
+        .filter((el) => !el.closest(".ds-btn-group--attached"))
+        // A disabled control has no target by design — `[aria-disabled]` sets
+        // `pointer-events: none`, which the pseudo-element inherits. Asserting an
+        // active target on it would be asserting that a disabled button is pressable.
+        .filter((el) => !(el as HTMLButtonElement).disabled && el.getAttribute("aria-disabled") !== "true")
+        .map((el) => {
+          const after = getComputedStyle(el, "::after");
+          return {
+            cls: el.className,
+            drawnHeight: el.getBoundingClientRect().height,
+            targetMinH: parseFloat(after.minHeight) || 0,
+            targetMinW: parseFloat(after.minWidth) || 0,
+            events: after.pointerEvents,
+          };
+        }),
+    );
+    expect(measured.length).toBeGreaterThan(0);
+    for (const m of measured) {
+      expect(m.targetMinH, `${m.cls} target height`).toBeGreaterThanOrEqual(44);
+      expect(m.targetMinW, `${m.cls} target width`).toBeGreaterThanOrEqual(44);
+      // The target must actually RECEIVE the press, or it is decoration.
+      expect(m.events, `${m.cls} target is inert`).not.toBe("none");
+    }
+    // The drawn buttons are untouched — `sm` is still 32.
+    expect(Math.min(...measured.map((m) => m.drawnHeight))).toBeLessThan(44);
   });
 });
