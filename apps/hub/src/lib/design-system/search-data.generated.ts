@@ -754,7 +754,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Icon Button — Design System",
     "section": "Actions",
     "href": "/design-system/components/actions/icon-button",
-    "keywords": "icon button — design system actions   tokens wcag accessibility",
+    "keywords": "icon button — design system actions it has exactly one name what it deliberately cannot do  tokens wcag accessibility",
     "description": "A Button whose whole label is its icon.",
     "type": "component",
     "iconName": "widgets"

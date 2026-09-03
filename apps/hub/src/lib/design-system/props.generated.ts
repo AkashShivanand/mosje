@@ -4245,13 +4245,6 @@ export const GENERATED_PROPS = {
         "description": "Link form only — download the target rather than navigating to it."
       },
       {
-        "name": "fullWidth",
-        "type": "boolean",
-        "required": false,
-        "default": "false\n\nThe older guidance was to wrap the button in a full-width container instead, which\nis correct in principle and was ignored everywhere it mattered — consumers reached\nfor `className` and got the behaviour without the token discipline. This is the\nsupported spelling of what they were already doing.",
-        "description": "Stretch to the full width of the container."
-      },
-      {
         "name": "href",
         "type": "string",
         "required": false,
@@ -4262,13 +4255,6 @@ export const GENERATED_PROPS = {
         "type": "boolean",
         "required": false,
         "description": "Busy state. Sets `aria-busy` and disables the control, so a form cannot be submitted twice while the first submission is in flight. KEEP THE LABEL MEANINGFUL — pass \"Submitting…\", not a bare spinner. A control that loses its name mid-action is unusable with a screen reader, and this component deliberately does not swap the label for you."
-      },
-      {
-        "name": "nowrap",
-        "type": "boolean",
-        "required": false,
-        "default": "false\n\nLabels WRAP by default as of 2026-09-03. A button that refuses to wrap does not\nshrink — it overflows and takes the page's horizontal scrollbar with it, which on a\n320px bilingual government page is the common case rather than the edge. Opt in to\n`nowrap` only where one line is structural: a segmented control, a toolbar.",
-        "description": "Keep the label on one line."
       },
       {
         "name": "preserveFocus",
@@ -4282,6 +4268,13 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Link form only. Left unset, `target=\"_blank\"` is given `rel=\"noopener noreferrer\"` automatically; an explicit value here wins."
+      },
+      {
+        "name": "shape",
+        "type": "\"square\" | \"circle\"",
+        "required": false,
+        "default": "\"square\"\n\n`circle` is for a control that floats free of a form's rhythm — a close button on a\ndialog, a dismiss on a toast, a floating action. Square is the default because most\nicon buttons sit in a toolbar or a table row beside square-cornered siblings, and a\nround control in that line reads as a different kind of thing.",
+        "description": "Corner treatment."
       },
       {
         "name": "size",
@@ -4302,6 +4295,19 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"default\"",
         "description": "The ground the button sits on."
+      },
+      {
+        "name": "tooltip",
+        "type": "boolean | string",
+        "required": false,
+        "description": "Show a tooltip naming the action. `true` reuses `aria-label`; a string overrides it. AN ICON-ONLY CONTROL'S BIGGEST GAP IS FOR SIGHTED USERS. The `aria-label` already names it for a screen reader, so the person who cannot see the glyph is served and the person who can see it but does not recognise it is not. Primer, Fluent and Carbon all pair their icon buttons with a tooltip for exactly this reason. When the tooltip text equals the accessible name it is marked `duplicatesTriggerName`, so the label is not announced twice."
+      },
+      {
+        "name": "tooltipSide",
+        "type": "TooltipSide = \"top\" | \"bottom\" | \"left\" | \"right\"",
+        "required": false,
+        "default": "\"top\"",
+        "description": "Which side the tooltip opens on."
       },
       {
         "name": "variant",

@@ -1,12 +1,47 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
 import { Button, type ButtonProps } from "./button";
+import { Tooltip, type TooltipSide } from "../feedback/tooltip";
 import "./icon-button.css";
 
 export interface IconButtonProps
-  extends Omit<ButtonProps, "children" | "iconLeft" | "iconRight" | "aria-label"> {
+  extends Omit<
+    ButtonProps,
+    /*
+     * `fullWidth` and `nowrap` are OMITTED, not merely discouraged. They leaked in
+     * through `ButtonProps` and are meaningless here at best: this control is square
+     * (`aspect-ratio: 1`), so `fullWidth` would stretch it into a rectangle and break
+     * the one geometric promise it makes, and `nowrap` governs a label it does not
+     * have. A prop that cannot do anything useful is a prop somebody will eventually
+     * try, so the type removes them rather than the documentation asking nicely.
+     */
+    "children" | "iconLeft" | "iconRight" | "aria-label" | "fullWidth" | "nowrap"
+  > {
   /** The glyph. Usually an `<Icon>`; it is decorative, because the label below names the control. */
   icon: React.ReactNode;
+  /**
+   * Corner treatment. @default "square"
+   *
+   * `circle` is for a control that floats free of a form's rhythm — a close button on a
+   * dialog, a dismiss on a toast, a floating action. Square is the default because most
+   * icon buttons sit in a toolbar or a table row beside square-cornered siblings, and a
+   * round control in that line reads as a different kind of thing.
+   */
+  shape?: "square" | "circle";
+  /**
+   * Show a tooltip naming the action. `true` reuses `aria-label`; a string overrides it.
+   *
+   * AN ICON-ONLY CONTROL'S BIGGEST GAP IS FOR SIGHTED USERS. The `aria-label` already
+   * names it for a screen reader, so the person who cannot see the glyph is served and
+   * the person who can see it but does not recognise it is not. Primer, Fluent and
+   * Carbon all pair their icon buttons with a tooltip for exactly this reason.
+   *
+   * When the tooltip text equals the accessible name it is marked
+   * `duplicatesTriggerName`, so the label is not announced twice.
+   */
+  tooltip?: boolean | string;
+  /** Which side the tooltip opens on. @default "top" */
+  tooltipSide?: TooltipSide;
   /**
    * REQUIRED. What the control DOES, not what the glyph depicts — "Close dialog", not
    * "Cross". This is the only name the control has.
@@ -35,13 +70,36 @@ export interface IconButtonProps
  * "arrow_back Close dialog".
  */
 export const IconButton = React.forwardRef<HTMLButtonElement, IconButtonProps>(
-  function IconButton({ icon, className, ...rest }, ref) {
-    return (
-      <Button ref={ref} className={cn("ds-icon-btn", className)} {...rest}>
+  function IconButton(
+    { icon, className, shape = "square", tooltip, tooltipSide = "top", ...rest },
+    ref,
+  ) {
+    const button = (
+      <Button
+        ref={ref}
+        className={cn("ds-icon-btn", shape === "circle" && "ds-icon-btn--circle", className)}
+        {...rest}
+      >
         <span className="ds-btn__icon" aria-hidden="true">
           {icon}
         </span>
       </Button>
+    );
+
+    if (tooltip == null || tooltip === false) return button;
+
+    const label = rest["aria-label"];
+    const content = typeof tooltip === "string" ? tooltip : label;
+    return (
+      <Tooltip
+        content={content}
+        side={tooltipSide}
+        // Only when the bubble repeats the accessible name — otherwise the tooltip is
+        // adding information and SHOULD be announced.
+        duplicatesTriggerName={content === label}
+      >
+        {button}
+      </Tooltip>
     );
   },
 );

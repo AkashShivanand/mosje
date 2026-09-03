@@ -517,7 +517,7 @@
  "IconButton": {
   "nodeId": "3:3497",
   "captured": "2026-09-03",
-  "note": "180 variants = Size 3 x Sub-type 3 x State 5 x Type 4. The Type axis was added 2026-09-03; before that a danger or success icon button could not be drawn even though IconButton extends ButtonProps and renders both. Tone is still absent — the code supports tone=\"inverse\" and the set cannot express it, recorded on the Button component record as open.",
+  "note": "360 variants = Size 3 x Sub-type 3 x State 5 x Type 4 x Tone 2. Type was added 2026-09-03 (before it, a danger icon button could not be drawn at all) and Tone the same day (the code supported tone=\"inverse\" and the set could not express it). Every surface and glyph binds a Tier-3 cmp/action/* token; the Text sub-type borrows the secondary inverse family because no tertiary inverse family exists, which is the same choice button.css makes for inverseText.",
   "properties": {
    "Change Icon": {
     "type": "INSTANCE_SWAP"
@@ -555,6 +555,13 @@
      "Success",
      "Danger",
      "Neutral"
+    ]
+   },
+   "Tone": {
+    "type": "VARIANT",
+    "variantOptions": [
+     "Default",
+     "Inverse"
     ]
    }
   }

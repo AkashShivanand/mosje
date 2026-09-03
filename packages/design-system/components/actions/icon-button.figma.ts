@@ -38,6 +38,16 @@ const appearance = instance.getEnum("Sub-type", {
 });
 
 /** Figma `Size` → `ButtonSize`. Figma's "Default" is the code default `md`. */
+/**
+ * Figma `Tone` → `ButtonTone`. Added 2026-09-03 with the axis. Until then the code
+ * supported `tone="inverse"` — an icon button on a navy header or a hero band — and the
+ * set could not express it, so a designer had no way to draw one that existed in the app.
+ */
+const tone = instance.getEnum("Tone", {
+  Default: "default",
+  Inverse: "inverse",
+});
+
 const size = instance.getEnum("Size", {
   Large: "lg",
   Default: "md",
@@ -81,6 +91,7 @@ export default {
     <IconButton
       variant="${variant}"
       appearance="${appearance}"
+      ${tone === "inverse" ? figma.code`tone="inverse"` : ""}
       size="${size}"
       ${disabled ? "disabled" : ""}
       icon={${iconCode}}
