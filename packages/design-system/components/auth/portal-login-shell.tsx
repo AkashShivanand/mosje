@@ -23,10 +23,10 @@ import * as React from "react";
 import { Divider } from "../layout/divider";
 import { AccessibilityBar } from "../utilities/accessibility-bar";
 import { BrandLockup } from "../navigation/header/brand-lockup";
-import { cn } from "../../utils/cn";
 // The chrome rows use the estate content container, so the emblem lines up with
 // the same column every other page uses. Previously max-w-screen-2xl (1536).
 import "../../foundations/layout.css";
+import "./portal-login-template.css";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -214,15 +214,23 @@ export function PortalLoginShell({
         {/* Right panel */}
         <div className="flex flex-1 flex-col" style={{ background: "var(--sa-bg-neutral-base)" }}>
 
-          {/* Tab nav (pill segmented control) — only render if tabs exist */}
+          {/* ROLE TABS.
+              Deliberately NOT the DS `Tabs` component, and the reason is in the
+              markup: these are real `<a href>`s, so middle-click, "copy link
+              address" and a shared URL all land on the right role. `Tabs`
+              renders buttons and has no `href` on `TabDef`, so adopting it here
+              would trade a working capability for a shared one. The right fix is
+              to give `TabDef` an optional `href` — recorded, not done in this
+              change, because that component is on ~95 pages.
+
+              What HAS changed: the appearance now matches the reference
+              (`56693:8704`) and is bound to tokens. It was drawn with inline
+              `style={{ background: "var(--sa-…)" }}` objects, which no token gate
+              can see and no brand mode can re-bind, and `rounded-full` where the
+              reference draws a rounded rectangle. */}
           {tabs && tabs.length > 0 && (
             <div className="px-6 pb-0 pt-5">
-              <div
-                className="flex rounded-full p-1"
-                role="tablist"
-                aria-label="Portal login type"
-                style={{ background: "var(--sa-bg-neutral-subtler)" }}
-              >
+              <div className="ds-plogin__roletabs" role="tablist" aria-label="Portal login type">
                 {tabs.map((tab) => (
                   <a
                     key={tab.href}
@@ -230,15 +238,7 @@ export function PortalLoginShell({
                     onClick={tab.onClick}
                     role="tab"
                     aria-selected={tab.active}
-                    className={cn(
-                      "flex-1 rounded-full py-2 text-center text-sm font-semibold transition-all",
-                      tab.active ? "shadow" : "",
-                    )}
-                    style={
-                      tab.active
-                        ? { background: "var(--sa-color-primaryScale-800)", color: "var(--sa-on-bg-brand-primary-boldest)" }
-                        : { color: "var(--sa-text-neutral-subtle)" }
-                    }
+                    className="ds-plogin__roletab"
                   >
                     {tab.label}
                   </a>

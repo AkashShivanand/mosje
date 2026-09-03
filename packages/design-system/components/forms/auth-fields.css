@@ -144,4 +144,99 @@
     line-height: var(--sa-type-body-3-lh);
     color: var(--sa-text-status-error-base);
   }
+
+  /* ── BotCheck ─────────────────────────────────────────────────────────────
+     The estate's replacement for a captcha. `invisible` renders nothing at all
+     unless the check failed, so most of these rules only ever apply to the
+     deprecated `challenge` mode and to the escape hatch, which every mode
+     carries. */
+
+  .ds-botcheck {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-botcheck__gesture {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    min-height: var(--sa-target-comfortable);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+    cursor: pointer;
+  }
+
+  .ds-botcheck__status {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-botcheck__row {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+  }
+
+  .ds-botcheck__challenge {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-subtle);
+    color: var(--sa-text-neutral-base);
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    letter-spacing: 0.12em;
+    user-select: none;
+  }
+
+  .ds-botcheck__challenge img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .ds-botcheck__refresh {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--sa-target-comfortable);
+    height: var(--sa-target-comfortable);
+    flex: none;
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-radius);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-icon-neutral-base);
+    cursor: pointer;
+  }
+
+  .ds-botcheck__refresh:hover { background-color: var(--sa-bg-neutral-subtler); }
+
+  .ds-botcheck__refresh:focus-visible,
+  .ds-botcheck__help:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-botcheck__error {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-status-error-base);
+  }
+
+  /* The escape hatch is a link and looks like one. It is the only route out for
+     a citizen the check will not pass, so it is never styled down. */
+  .ds-botcheck__help {
+    align-self: flex-start;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-link-brand-default);
+    text-underline-offset: 2px;
+  }
 }

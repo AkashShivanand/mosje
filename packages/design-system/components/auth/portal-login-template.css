@@ -1,0 +1,100 @@
+/* Declare the order before using it — see auth-fields.css for why this line is
+   repeated in every component stylesheet. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* The form column's own type. It used to be four Tailwind utilities and an
+     arbitrary `text-[var(--sa-color-primaryScale-800)]`, which is a token
+     reference that no token gate can see. */
+  .ds-plogin__title {
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: 700;
+    color: var(--sa-text-neutral-boldest);
+  }
+
+  .ds-plogin__lede {
+    margin-top: var(--sa-stack-4);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* Label on the left, recovery route on the right, on one baseline.
+
+     FLOATED, not flexed, and that is deliberate. `FormField` renders its
+     required marker as a sibling AFTER whatever `label` it is given, so a
+     full-width flex row here pushed the asterisk onto a line of its own —
+     "Password / Forgot Password?" with a lone red star underneath it. Keeping
+     the row inline lets the marker stay where every other field puts it, and
+     floats the link out to the right edge without touching FormField. */
+  .ds-plogin__labelrow {
+    display: inline;
+  }
+
+  .ds-plogin__labelrow > a {
+    float: right;
+  }
+
+  .ds-plogin__labelrow a {
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 500;
+    color: var(--sa-text-link-brand-default);
+    text-underline-offset: 2px;
+  }
+
+  .ds-plogin__labelrow a:focus-visible,
+  .ds-plogin__help a:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-plogin__help {
+    text-align: center;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-plogin__help a { color: var(--sa-text-link-brand-default); }
+
+  /* ── Role tabs ────────────────────────────────────────────────────────────
+     The reference draws a grey track holding equal segments, the selected one
+     filled and rounded — a rounded RECTANGLE, not the full pill this used to
+     be. Every value here was an inline style object before, which is invisible
+     to the token gate and cannot follow a brand mode. */
+
+  .ds-plogin__roletabs {
+    display: flex;
+    gap: var(--sa-inline-4);
+    padding: var(--sa-padding-4);
+    border-radius: var(--sa-shape-12);
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-plogin__roletab {
+    flex: 1 1 0;
+    min-height: var(--sa-target-comfortable);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sa-padding-8) var(--sa-padding-12);
+    border-radius: var(--sa-shape-8);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
+    text-align: center;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-plogin__roletab[aria-selected="true"] {
+    background-color: var(--sa-bg-brand-primary-boldest);
+    color: var(--sa-on-bg-brand-primary-boldest);
+  }
+
+  .ds-plogin__roletab:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+}
