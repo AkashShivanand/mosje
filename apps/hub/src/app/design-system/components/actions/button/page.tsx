@@ -644,7 +644,7 @@ import { buttonClasses } from "@mosje/design-system";
    disabled, the focus ring and the inverse ladder all read
    these same four values. */
 [data-portal="nmba"] .ds-btn--primary {
-  --sa-btn-fill: var(--sa-color-teal-600);
+  --sa-btn-fill: var(--sa-color-accentScale-600);
   --sa-btn-ink: var(--sa-on-bg-brand-primary-bolder);
 }`}</CodeBlock>
             <Callout type="warning" title="This replaces overriding background-color">

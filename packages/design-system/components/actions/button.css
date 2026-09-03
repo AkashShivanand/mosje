@@ -48,7 +48,7 @@
    * These four hooks are read by EVERY state, so setting one is complete by
    * construction. Set them on any ancestor and they inherit:
    *
-   *   [data-portal="nmba"] .ds-btn--<variant> { --sa-btn-fill: var(--sa-color-teal-600); }
+   *   [data-portal="nmba"] .ds-btn--<variant> { --sa-btn-fill: var(--sa-color-accentScale-600); }
    *
    * The `<variant>` there is a placeholder on purpose. Spelled out as a real class, this
    * example was parsed as the primary variant's declaration block by
