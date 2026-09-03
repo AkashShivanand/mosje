@@ -35,6 +35,29 @@
  *
  * The baseline only ever shrinks. Never add an entry to make a build green.
  *
+ * ── THE 41 ARE DEFERRED TO THE PORTAL REDESIGNS. DECIDED 2026-09-03. ────────
+ *
+ * This is a DECISION, not an oversight, and it is written here because a gate
+ * that reports 41 known collisions with no explanation reads as an open defect
+ * — which invites the next reader either to re-audit ground already covered or,
+ * worse, to start sweeping the kits mid-sprint.
+ *
+ * Every portal carrying a kit is going to be redesigned. A redesign rewrites
+ * that markup anyway, so migrating the kit costs nothing at that point; doing
+ * it now means paying for the same markup twice AND taking all of the
+ * regression risk up front, on live government portals, in one change. The
+ * estate has already taken this position once, for the same reason — see the
+ * icon-size scale in `.claude/rules/design-system.md`: "the decision is to let
+ * it go as the pages are redesigned one by one".
+ *
+ * What that does NOT mean: the ratchet stays on. A new collision still fails,
+ * so the redesigns cannot introduce more while they clear the old. And because
+ * a baselined collision that disappears ALSO fails, each portal's migration has
+ * to be banked in the same change that makes it — one portal's cleanup can
+ * never be spent silently on another portal's growth.
+ *
+ * When a redesign lands, run `:baseline` in that same commit.
+ *
  *   npm run check:shadow-ui            the gate
  *   npm run check:shadow-ui:baseline   re-freeze after migrating a kit
  */
