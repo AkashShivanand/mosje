@@ -121,20 +121,33 @@ export function PortalLoginTemplate({
   const initialRole =
     config.roles.find((r) => r.id === config.defaultRoleId) || config.roles[0];
 
-  const [activeRoleId, setActiveRoleId] = React.useState<string>(
-    initialRole ? initialRole.id : ""
+  const [activeRoleId, setActiveRoleId] = React.useState<string>(() =>
+    roleId && config.roles.some((r) => r.id === roleId)
+      ? roleId
+      : initialRole
+        ? initialRole.id
+        : ""
   );
 
   const roleIds = React.useMemo(() => config.roles.map((r) => r.id), [config.roles]);
 
-  /*
-   * An explicit `roleId` wins over everything. Kept as an effect rather than as
-   * initial state so a caller that resolves the role asynchronously — from a
-   * session, say — still lands on the right tab.
+  /**
+   * An explicit `roleId` wins over everything, and it has to win in BOTH places.
+   *
+   * The effect this replaces carried two jobs at once, and only one of them was
+   * obvious. On mount it applied `roleId` over `config.defaultRoleId`, because
+   * the initial state above did not consider it; on update it caught a caller
+   * that resolves the role asynchronously — from a session, say. Moving it to a
+   * render-time adjustment drops the mount half, since prev and current start
+   * equal, so the initialiser now takes `roleId` directly and this handles only
+   * genuine changes. Splitting them is the point: each half now says which case
+   * it serves.
    */
-  React.useEffect(() => {
+  const [prevRoleId, setPrevRoleId] = React.useState(roleId);
+  if (prevRoleId !== roleId) {
+    setPrevRoleId(roleId);
     if (roleId && roleIds.includes(roleId)) setActiveRoleId(roleId);
-  }, [roleId, roleIds]);
+  }
 
   /*
    * URL -> tab, ONCE, AFTER MOUNT. Deliberately not a lazy `useState`
@@ -264,13 +277,18 @@ export function PortalLoginTemplate({
     }
   }, [otpSent, otpTimer]);
 
-  // Sync auth mode when active role changes
-  React.useEffect(() => {
+  /**
+   * The auth mode follows the active role. Only on a CHANGE — `initialAuthMode`
+   * above already resolves the same expression for the first render, so the
+   * effect's mount pass was setting the value it already held.
+   */
+  const [prevRoleForMode, setPrevRoleForMode] = React.useState(activeRoleId);
+  if (prevRoleForMode !== activeRoleId) {
+    setPrevRoleForMode(activeRoleId);
     if (activeRole) {
-      const defaultMode = activeRole.defaultMode || authOptions[0]?.mode || "password";
-      setActiveAuthMode(defaultMode);
+      setActiveAuthMode(activeRole.defaultMode || authOptions[0]?.mode || "password");
     }
-  }, [activeRoleId, authOptions]);
+  }
 
   const handleRoleChange = (nextRoleId: string, e: React.MouseEvent) => {
     e.preventDefault();

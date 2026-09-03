@@ -62,7 +62,17 @@ export function Modal({
    * impossible and a stray Enter could fire the close button.
    */
   const onCloseRef = React.useRef(onClose);
-  onCloseRef.current = onClose;
+  /**
+   * Synced in an effect, not written during render. A ref write during render is
+   * not allowed — under StrictMode's double render and under concurrent
+   * rendering a render can be started and thrown away, and this one would have
+   * left `onCloseRef.current` pointing at a callback from a render that never
+   * committed. No dependency array, so it re-syncs after every commit; the ref
+   * is only ever READ from the key handler below, which fires long after.
+   */
+  React.useEffect(() => {
+    onCloseRef.current = onClose;
+  });
 
   React.useEffect(() => {
     if (!open) return;

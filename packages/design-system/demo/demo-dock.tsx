@@ -401,7 +401,7 @@ export function DemoDock({
 }: DemoDockProps): React.JSX.Element {
   const [open, setOpen] = React.useState(false);
   const [closing, setClosing] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState(0);
+  const [rawActiveTab, setActiveTab] = React.useState(0);
   // Whether the rail is showing its two extra doors. Held in React rather
   // than left to a `:hover` rule, because THE LEAD'S CLICK BEHAVIOUR DEPENDS
   // ON IT (see `onLeadClick`), and a CSS-only hover state is not readable
@@ -459,12 +459,16 @@ export function DemoDock({
     tabsRef.current = tabs;
   }, [tabs]);
 
-  // If the tabs shrink (e.g. pathname changes to a surface with no demo
-  // accounts) while "Sign in" is active, fall back to the first tab rather
-  // than pointing at an index that no longer exists.
-  React.useEffect(() => {
-    if (activeTab > tabs.length - 1) setActiveTab(0);
-  }, [tabs.length, activeTab]);
+  /**
+   * If the tabs shrink (e.g. the pathname changes to a surface with no demo
+   * accounts) while "Sign in" is active, fall back to the first tab rather than
+   * pointing at an index that no longer exists.
+   *
+   * A pure derivation, not state to be corrected: the stored index stays put and
+   * the RENDERED one is clamped, so there is never a frame addressing a tab that
+   * is not there.
+   */
+  const activeTab = rawActiveTab > tabs.length - 1 ? 0 : rawActiveTab;
 
   const activeNormPath = React.useMemo(
     () => matchActivePath(apps, pathname ?? ""),
