@@ -176,7 +176,6 @@ export interface LoginSubmitPayload {
     pin?: string;
     mobile?: string;
     otp?: string;
-    captcha?: string;
   };
   /**
    * The proof-of-work receipt, when a bot check ran. `null` when the role did

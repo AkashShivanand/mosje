@@ -21,19 +21,19 @@ const A11Y: A11yItem[] = [
   {
     criterion: "3.3.8 Accessible Authentication (Minimum)",
     level: "AA",
-    status: "partial",
+    status: "verified",
     description:
-      "The default `invisible` mode presents no cognitive function test, which is what the criterion asks for. `checkbox` presents a gesture, not a test. `challenge` DOES present one and is deprecated for exactly that reason — a portal using it does not meet 3.3.8 on this field.",
+      "Neither mode is a cognitive function test. `invisible` asks the citizen for nothing at all — the server decides. `checkbox` asks for one gesture, which the criterion explicitly permits. The characters test that would have failed this criterion was removed from the component on 2026-09-03 rather than documented as a partial pass.",
     evidence:
-      "Verified by reading the rendered output: `invisible` returns null unless status is `failed`, so there is nothing for a citizen to solve.",
+      "`BotCheckMode` is `\"invisible\" | \"checkbox\"` — there is no third value to reach. `invisible` returns null unless status is `failed`, so nothing is ever presented to solve, and `helpHref` is a required prop, so the alternative route the criterion asks for cannot be omitted.",
   },
   {
     criterion: "3.3.1 Error Identification",
     level: "A",
     status: "verified",
     description:
-      "A failed check always renders its message, in every mode including `invisible`, with `role=\"alert\"` and `aria-describedby` on the control. A form that will not submit and will not say why is the failure this component exists to prevent.",
-    evidence: "The `failed` branch is unconditional across all three modes.",
+      "A failed check always renders its message, in both modes including `invisible`, with `role=\"alert\"` and `aria-describedby` on the control. A form that will not submit and will not say why is the failure this component exists to prevent.",
+    evidence: "The `failed` branch is unconditional across both modes.",
   },
   {
     criterion: "2.4.4 Link Purpose (In Context)",
@@ -48,16 +48,9 @@ const A11Y: A11yItem[] = [
     level: "A",
     status: "verified",
     description:
-      "`checkbox` mode is a real checkbox in a real label. `challenge` mode reuses the DS `Input`. Neither invents a widget role.",
+      "`checkbox` mode is a real checkbox in a real label. No widget role is invented anywhere in the component.",
     evidence:
-      "bot-check.tsx:176 is a `<label htmlFor={fieldId}>` wrapping the `type=\"checkbox\"` input at :179; challenge mode renders the DS `Input` at :226. The only roles in the file are `alert`, `status` and `img` — none of them a widget role.",
-  },
-  {
-    criterion: "1.1.1 Non-text Content",
-    level: "A",
-    status: "partial",
-    description:
-      "In `challenge` mode the image carries an `alt` and the text challenge carries `role=\"img\"` with a label, so neither is silently skipped — but neither gives a non-sighted citizen a way to answer. That is the mode's defect, and the escape hatch is the answer to it.",
+      "bot-check.tsx renders a `<label htmlFor={fieldId}>` wrapping a `type=\"checkbox\"` input. The only roles left in the file are `alert` and `status`; neither is a widget role, and the `img` role went with the characters test.",
   },
 ];
 
@@ -66,7 +59,7 @@ export default function BotCheckPage(): React.JSX.Element {
     <ComponentDocPage
       name="Bot Check"
       status="Stable"
-      summary="Confirms a request came from a person without asking the person to prove it. Invisible and server-verified by default; a deliberate gesture where one is wanted; a distorted-characters challenge only where a legacy backend can issue nothing else — and always a route out for a citizen it will not pass."
+      summary="Confirms a request came from a person without asking the person to prove it. Invisible and server-verified by default, a deliberate gesture where one is wanted, and always a route out for a citizen it will not pass. It offers no characters test, because one cannot meet WCAG 2.2 AA."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<BotCheckPlayground />}
       propsFrom="BotCheckProps"
@@ -156,11 +149,6 @@ export default function BotCheckPage(): React.JSX.Element {
                   "One deliberate gesture, where the server wants a human act as well. Not a cognitive test, so 3.3.8 permits it.",
                   "One click",
                 ],
-                [
-                  "challenge",
-                  "The legacy distorted-characters test. Deprecated. Only where a backend can issue nothing else.",
-                  "A cognitive function test",
-                ],
               ]}
             />
             <Callout title="Self-Hosted, Not Hosted" type="info">
@@ -178,12 +166,12 @@ export default function BotCheckPage(): React.JSX.Element {
             </h2>
             <MatrixTable
               caption="What each mode renders for each server state"
-              columns={["Status", "invisible", "checkbox", "challenge"]}
+              columns={["Status", "invisible", "checkbox"]}
               rows={[
-                ["idle", "nothing", "the gesture", "the challenge"],
-                ["verifying", "nothing", "the gesture, disabled, with a status line", "the challenge"],
-                ["verified", "nothing", "the gesture, ticked", "the challenge"],
-                ["failed", "the message + the way out", "the message + the way out", "the message + the way out"],
+                ["idle", "nothing", "the gesture"],
+                ["verifying", "nothing", "the gesture, disabled, with a status line"],
+                ["verified", "nothing", "the gesture, ticked"],
+                ["failed", "the message + the way out", "the message + the way out"],
               ]}
             />
             <p>
@@ -288,19 +276,8 @@ export default function BotCheckPage(): React.JSX.Element {
 // citizen is never asked for anything.
 <BotCheck status={check.status} helpHref="/help/contact" />
 
-// A legacy backend that can only issue characters. Deprecated — record why.
-<BotCheck
-  mode="challenge"
-  status={check.status}
-  helpHref="/help/contact"
-  challenge={{ type: "image", src: check.imageUrl }}
-  value={answer}
-  onValueChange={setAnswer}
-  onRefresh={() => {
-    setAnswer("");           // the component does NOT clear it for you
-    void issueChallenge();
-  }}
-/>`}</CodeBlock>
+// Where the server wants a human gesture on top of the invisible signal.
+<BotCheck mode="checkbox" status={check.status} onVerify={check.solve} helpHref="/help/contact" />`}</CodeBlock>
           <p>
             In a portal config, prefer the template&apos;s own switch — it applies the
             both-halves-required rule for you:
@@ -322,11 +299,14 @@ export default function BotCheckPage(): React.JSX.Element {
             Notes
           </h2>
           <p>
-            The honest position: <code>invisible</code> and <code>checkbox</code> meet WCAG 2.2
-            3.3.8. <code>challenge</code> does not, and no amount of alternative text changes that —
-            it is a cognitive function test by construction. It is kept only so a legacy backend is
-            not a blocker, and a portal that selects it should record the reason in the change that
-            selects it.
+            Both modes meet WCAG 2.2 3.3.8, and there is no third mode. This component carried a
+            distorted-characters <code>challenge</code> for one day and it was removed on
+            2026-09-03. No amount of alternative text would have changed what it was — a cognitive
+            function test by construction — and offering one from the component the estate tells
+            people to reach for is how a new portal inherits a conformance failure by default. A
+            legacy backend that can issue nothing else still has{" "}
+            <a href="/design-system/components/forms/captcha-field">Captcha Field</a>, which is
+            marked Deprecated and says why on its own page.
           </p>
           <p>
             The failure message and the escape hatch are the two things that are never conditional.

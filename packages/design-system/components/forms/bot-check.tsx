@@ -2,8 +2,6 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import { Icon } from "../utilities/icon";
-import { Input } from "./input";
 import "./auth-fields.css";
 
 /**
@@ -17,11 +15,17 @@ import "./auth-fields.css";
  * - `checkbox` — one deliberate act ("I am not a robot"). Not a cognitive
  *   function test, so WCAG 2.2 3.3.8 permits it; use it where the server wants a
  *   human gesture on top of the invisible signal.
- * - `challenge` — the legacy distorted-characters test. **Deprecated.** It is
- *   both the least accessible and the least effective option; see the component
- *   docstring for the measurements.
+ *
+ * **There is no distorted-characters mode, and adding one back is a conformance
+ * decision, not a feature.** This component shipped with a `challenge` mode for
+ * one day. It was removed on 2026-09-03 because it was a cognitive function test
+ * with no alternative — a WCAG 2.2 AA failure under 3.3.8 — offered from inside
+ * the component the estate tells people to reach for, which is how a new portal
+ * inherits a conformance failure by default. A legacy backend that can issue
+ * nothing else still has `CaptchaField`, which is marked Deprecated and says why
+ * on its own page.
  */
-export type BotCheckMode = "invisible" | "checkbox" | "challenge";
+export type BotCheckMode = "invisible" | "checkbox";
 
 /** Where the server has got to. `idle` and `verifying` are not the same thing. */
 export type BotCheckStatus = "idle" | "verifying" | "verified" | "failed";
@@ -46,21 +50,10 @@ export interface BotCheckProps {
   helpLabel?: string;
   /** `checkbox` mode — the citizen's gesture. */
   onVerify?: () => void;
-  /** `challenge` mode — what the server issued. */
-  challenge?:
-    | { type: "image"; src: string; alt?: string }
-    | { type: "text"; characters: string };
-  /** `challenge` mode — the typed answer. Controlled. */
-  value?: string;
-  onValueChange?: (next: string) => void;
-  /** `challenge` mode — asks for a new challenge. It MUST also clear `value`. */
-  onRefresh?: () => void;
   /** Shown when the check failed. A red border on its own is not an error. */
   error?: string;
   /** Accessible name for the group. @default "Security check" */
   label?: string;
-  /** `challenge` mode placeholder. @default "Enter the characters" */
-  placeholder?: string;
   disabled?: boolean;
   id?: string;
   className?: string;
@@ -86,7 +79,7 @@ const DEFAULT_HELP = "Cannot complete this check? Contact support";
  * So the "accessible alternative" that a text captcha ships with is harder for
  * the people it is for and easier for the software it exists to stop. Adding one
  * would have made this component worse on both axes, which is why it does not
- * have one.
+ * have one — and why it no longer has a characters test to attach one to.
  *
  * **WCAG 2.2 SC 3.3.8 Accessible Authentication (Minimum) is Level AA**, this
  * estate targets AA, and a cognitive function test with no alternative is a
@@ -106,7 +99,8 @@ const DEFAULT_HELP = "Cannot complete this check? Contact support";
  *    a decision a Government of India property should take deliberately rather
  *    than by importing a script.
  * 3. **`checkbox`** — where the server wants a human gesture as well.
- * 4. **`challenge`** — only where a legacy backend can issue nothing else.
+ *
+ * There is no fourth step here on purpose. See `BotCheckMode`.
  *
  * ## What this component can and cannot do
  *
@@ -118,7 +112,7 @@ const DEFAULT_HELP = "Cannot complete this check? Contact support";
  *
  * `idle` and `verifying` are different, and `invisible` draws nothing for
  * either — there is nothing for the citizen to do and nothing for them to know.
- * `failed` always draws, in every mode, because a form that will not submit and
+ * `failed` always draws, in both modes, because a form that will not submit and
  * will not say why is the failure this component exists to prevent.
  */
 export function BotCheck({
@@ -127,13 +121,8 @@ export function BotCheck({
   helpHref,
   helpLabel = DEFAULT_HELP,
   onVerify,
-  challenge,
-  value = "",
-  onValueChange,
-  onRefresh,
   error,
   label = "Security check",
-  placeholder = "Enter the characters",
   disabled = false,
   id,
   className,
@@ -170,70 +159,24 @@ export function BotCheck({
     );
   }
 
-  if (mode === "checkbox") {
-    return (
-      <div className={cn("ds-botcheck", "ds-botcheck--checkbox", className)}>
-        <label className="ds-botcheck__gesture" htmlFor={fieldId}>
-          <input
-            id={fieldId}
-            type="checkbox"
-            checked={status === "verified"}
-            disabled={disabled || status === "verifying"}
-            aria-describedby={failed ? errorId : undefined}
-            onChange={() => onVerify?.()}
-          />
-          <span>{label}</span>
-          {status === "verifying" ? (
-            <span className="ds-botcheck__status" role="status">
-              Checking…
-            </span>
-          ) : null}
-        </label>
-        {message}
-        {escape}
-      </div>
-    );
-  }
-
-  // `challenge` — deprecated. Kept so a legacy backend is not a blocker, and
-  // deliberately last so nobody reaches it by accident.
   return (
-    <div className={cn("ds-botcheck", "ds-botcheck--challenge", className)}>
-      <div className="ds-botcheck__row">
-        {challenge?.type === "image" ? (
-          <span className="ds-botcheck__challenge">
-            <img src={challenge.src} alt={challenge.alt ?? "Security check image"} />
+    <div className={cn("ds-botcheck", "ds-botcheck--checkbox", className)}>
+      <label className="ds-botcheck__gesture" htmlFor={fieldId}>
+        <input
+          id={fieldId}
+          type="checkbox"
+          checked={status === "verified"}
+          disabled={disabled || status === "verifying"}
+          aria-describedby={failed ? errorId : undefined}
+          onChange={() => onVerify?.()}
+        />
+        <span>{label}</span>
+        {status === "verifying" ? (
+          <span className="ds-botcheck__status" role="status">
+            Checking…
           </span>
-        ) : (
-          <span
-            className="ds-botcheck__challenge"
-            role="img"
-            aria-label="Security check characters"
-          >
-            {challenge?.type === "text" ? challenge.characters : ""}
-          </span>
-        )}
-        <button
-          type="button"
-          className="ds-botcheck__refresh"
-          onClick={onRefresh}
-          disabled={disabled}
-          aria-label="Get a new security check. This clears anything you have typed."
-        >
-          <Icon name="refresh" size={24} aria-hidden />
-        </button>
-      </div>
-      <Input
-        id={fieldId}
-        aria-label={label}
-        placeholder={placeholder}
-        value={value}
-        disabled={disabled}
-        invalid={failed}
-        autoComplete="off"
-        aria-describedby={failed ? errorId : undefined}
-        onChange={(e) => onValueChange?.(e.target.value)}
-      />
+        ) : null}
+      </label>
       {message}
       {escape}
     </div>

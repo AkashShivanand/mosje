@@ -6,8 +6,12 @@ import { BotCheck } from "@mosje/design-system";
  * **BotCheck** — the estate's replacement for a captcha field.
  *
  * The distorted-characters test is both the least accessible option and the
- * least effective one, so it is not the default here; it is a deprecated mode
- * kept only for a portal that has not yet migrated off it.
+ * least effective one, so this component does not offer it at all. It carried a
+ * `challenge` mode for one day and it was removed on 2026-09-03: a cognitive
+ * function test with no alternative is a WCAG 2.2 AA failure under §3.3.8, and
+ * offering one from the estate's recommended component is how a new portal
+ * inherits a conformance failure by default. A legacy backend that can issue
+ * nothing else still has `CaptchaField`, marked Deprecated.
  *
  * **`invisible` is the default and it usually draws nothing.** The server
  * decides from a proof-of-work token, a honeypot and rate limiting, and the
@@ -22,13 +26,19 @@ import { BotCheck } from "@mosje/design-system";
  * older device that fails the work factor is simply stuck. This link is the
  * alternative WCAG 2.2 §3.3.8 asks for, and making it optional is exactly how
  * it gets dropped from the one portal that needed it.
+ *
+ * **`id` is usually best left alone.** It defaults to a `React.useId()`, so two
+ * checks on one page cannot collide on the checkbox's id and steal each other's
+ * `<label for>`. Set it only where the surrounding form points its own label at
+ * the control — and in `invisible` mode it reaches nothing at all, because there
+ * is no control to name.
  */
 const meta = {
   title: "Components/Forms/BotCheck",
   component: BotCheck,
   args: { helpHref: "/website/contact-us" },
   argTypes: {
-    mode: { control: "inline-radio", options: ["invisible", "checkbox", "challenge"] },
+    mode: { control: "inline-radio", options: ["invisible", "checkbox"] },
     status: { control: "inline-radio", options: ["idle", "verifying", "verified", "failed"] },
     helpHref: { control: "text" },
     helpLabel: { control: "text" },
@@ -101,39 +111,6 @@ export const Checkbox: Story = {
           setStatus("verifying");
           window.setTimeout(() => setStatus("verified"), 700);
         }}
-      />
-    );
-  },
-};
-
-/**
- * **`challenge` — deprecated.** Shown so the mode is documented, not so it is
- * chosen. It is the least accessible option and the least effective one; the
- * component's own docstring carries the measurements.
- *
- * `onRefresh` must also clear `value` — a new challenge with the previous answer
- * still typed in reads as though the reader's input was accepted.
- *
- * `placeholder` overrides the default "Enter the characters" and applies to this
- * mode only; the other two have no field to place text in. `id` is set here so
- * the surrounding form can point its own `<label for>` at the input — pass it
- * whenever the check sits inside a form that labels its fields itself, and let it
- * default otherwise so two instances on one page cannot collide.
- */
-export const ChallengeDeprecated: Story = {
-  render: (args) => {
-    const [value, setValue] = React.useState("");
-    return (
-      <BotCheck
-        {...args}
-        mode="challenge"
-        status="idle"
-        id="bot-check-challenge"
-        placeholder="Type the six characters shown"
-        challenge={{ type: "text", characters: "K7QN2M" }}
-        value={value}
-        onValueChange={setValue}
-        onRefresh={() => setValue("")}
       />
     );
   },

@@ -8,7 +8,7 @@ import {
   type BotCheckStatus,
 } from "@mosje/design-system";
 
-const MODES: BotCheckMode[] = ["invisible", "checkbox", "challenge"];
+const MODES: BotCheckMode[] = ["invisible", "checkbox"];
 const STATES: (BotCheckStatus | "live")[] = ["live", "idle", "verifying", "verified", "failed"];
 
 /**
@@ -22,7 +22,6 @@ const STATES: (BotCheckStatus | "live")[] = ["live", "idle", "verifying", "verif
 export function BotCheckPlayground(): React.JSX.Element {
   const [mode, setMode] = React.useState<BotCheckMode>("invisible");
   const [forced, setForced] = React.useState<BotCheckStatus | "live">("live");
-  const [answer, setAnswer] = React.useState("");
   const check = useBotCheck({ auto: mode !== "checkbox" });
   const status = forced === "live" ? check.status : forced;
 
@@ -58,10 +57,6 @@ export function BotCheckPlayground(): React.JSX.Element {
         status={status}
         helpHref="#"
         onVerify={check.solve}
-        challenge={{ type: "text", characters: "G584V" }}
-        value={answer}
-        onValueChange={setAnswer}
-        onRefresh={() => setAnswer("")}
       />
 
       {mode === "invisible" && status !== "failed" ? (
