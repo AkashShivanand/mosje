@@ -5,6 +5,8 @@
  * Field lists, option sets and the empty-state copy are transcribed from the live portal
  * (walkthrough 2026-08-22). Names below are fictional; the live account carries real residents.
  */
+import { formatDate } from "./format";
+
 
 export const GENDERS = ["Male", "Female", "Other"] as const;
 export const CATEGORIES = ["General", "OBC", "SC", "ST", "Other"] as const;
@@ -103,7 +105,7 @@ export function weekStart(date: Date): Date {
 
 export function formatWeekLabel(date: Date): string {
   const start = weekStart(date);
-  return `Week of ${start.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" })} (Mon–Sun)`;
+  return `Week of ${formatDate(start)} (Mon–Sun)`;
 }
 
 const MONTHS = ["April", "May", "June", "July", "August", "September", "October", "November", "December", "January", "February", "March"];

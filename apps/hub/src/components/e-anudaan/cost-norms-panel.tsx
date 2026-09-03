@@ -15,6 +15,7 @@ import * as React from "react";
 import { Badge, Button, Icon } from "@mosje/design-system";
 import { avyayCostHeads } from "@/lib/e-anudaan/form-schema";
 import { NE_HIMALAYAN_STATES } from "@/lib/e-anudaan/geography";
+import { rupees } from "@/lib/e-anudaan/format";
 
 const FULL_SHARE_AGENCIES = [
   "State Government",
@@ -23,7 +24,6 @@ const FULL_SHARE_AGENCIES = [
   "Regional Resource & Training Centre (RRTC)",
 ];
 
-const rupees = (n: number) => `₹${n.toLocaleString("en-IN")}`;
 
 export function centralSharePercent(agencyType?: string, projectState?: string): number {
   if (agencyType && FULL_SHARE_AGENCIES.includes(agencyType)) return 100;
@@ -126,17 +126,17 @@ export function CostNormsPanel({
             <thead>
               <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
                 <th scope="col" className="pb-2 pr-3 font-medium">Head</th>
-                <th scope="col" className="pb-2 pr-3 text-right font-medium">Norm (₹)</th>
-                <th scope="col" className="pb-2 text-right font-medium">Central share (₹)</th>
+                <th scope="col" className="pb-2 pr-3 text-right font-medium">Norm</th>
+                <th scope="col" className="pb-2 text-right font-medium">Central share</th>
               </tr>
             </thead>
             <tbody>
               {heads.map((h) => (
                 <tr key={h.head} className="border-b border-line/60">
                   <td className="py-1.5 pr-3 text-ink">{h.head}</td>
-                  <td className="py-1.5 pr-3 text-right font-mono text-ink">{h.norm.toLocaleString("en-IN")}</td>
+                  <td className="py-1.5 pr-3 text-right font-mono text-ink">{rupees(h.norm)}</td>
                   <td className="py-1.5 text-right font-mono text-ink">
-                    {Math.round((h.norm * share) / 100).toLocaleString("en-IN")}
+                    {rupees((h.norm * share) / 100)}
                   </td>
                 </tr>
               ))}

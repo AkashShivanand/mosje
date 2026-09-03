@@ -24,6 +24,7 @@ import {
   type UploadedDoc,
   type VerdictState,
 } from "@/lib/e-anudaan/doc-verification";
+import { formatDate } from "@/lib/e-anudaan/format";
 
 const TONE: Record<VerdictState, { text: string; border: string; bg: string }> = {
   pending: { text: "text-ink-muted", border: "border-line", bg: "bg-surface-muted" },
@@ -63,7 +64,7 @@ export function DocumentsChecklist({
       [d.n]: {
         fileName: `${d.title.replace(/[^A-Za-z0-9]+/g, "_").slice(0, 40)}.pdf`,
         sizeKb: 512,
-        uploadedOn: new Date().toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" }),
+        uploadedOn: formatDate(new Date()),
         verdict: DEMO_VERDICTS.pending,
       },
     });

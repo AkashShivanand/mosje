@@ -136,7 +136,7 @@ export default function NgoDashboardPage() {
             <span className="flex items-center gap-1">
               <Icon name="schedule" size={16} className="text-ink-muted shrink-0" aria-hidden />
               Last updated{" "}
-              {new Date().toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })} at{" "}
+              {formatDate(new Date())} at{" "}
               {new Date().toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", hour12: true }).toLowerCase()}
             </span>
           </p>
