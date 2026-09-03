@@ -41,6 +41,19 @@ Said plainly, because a review that only lists faults is not a review.
 - **The accessibility bar is present estate-wide** — skip link, text sizing, contrast toggle.
 - **Financial provenance is stated** — "Auto-populated from DARPAN" tells the applicant where a
   figure came from, which is exactly the provenance habit this estate asks for.
+- **The wizard stepper is exemplary.** All ten NAPDDR steps are shown at once, numbered and named
+  ("Application Type", "Location, Infrastructure & Preparedness", "Review & Submit"), with the
+  current step marked. An applicant knows how long the form is before starting it — which is the
+  single most useful thing a ten-step form can tell them.
+- **The saved-draft banner is the best-designed element in the applicant portal.** *"You are
+  continuing a saved draft for FY 2026-27, last saved 03 Sept 2026. Its answers are already filled
+  in below."* It says what happened, when, and what the applicant is looking at — and puts *Start
+  a fresh application* beside it as the escape. It is the pattern the rest of the portal should be
+  measured against.
+- **Field helper text is written for the applicant, not the officer.** *"Pick the centre type. For
+  a general IRCA, the reviewing officer sets the bed capacity (15/30/50) later — you do not enter
+  beds here."* That sentence prevents a specific, predictable mistake and says who does the thing
+  the applicant is not doing. Contrast with M3, where the same portal shows raw officer codes.
 
 ---
 
@@ -192,6 +205,22 @@ last is a runaway value, not a design decision. A system should carry three or f
 ### 🟡 m6 — Poppins appears alongside Noto Sans
 99 elements render in Poppins against 19,143 in Noto Sans. A residue of the vendor's own styling,
 inconsistent with the estate's single-typeface rule.
+
+### 🟡 m7 — The form card occupies the top third of the screen and nothing occupies the rest
+On a 1440×950 viewport, NAPDDR step 1 asks three questions in a card ending at roughly 940px, with
+the remaining half of the viewport empty below it. The card is a fixed-width panel pinned to the
+top of a full-height page.
+
+Short steps are correct — three questions is the right size for step 1 of 10. The problem is that
+the page does not adapt to them: the same layout that looks balanced on a long step looks abandoned
+on a short one. Centring the card vertically when it is shorter than the viewport, or letting the
+stepper and the card share the height, costs one rule and removes the impression that content
+failed to load.
+
+### ⚪ n4 — A "Back" button on step 1 of 10
+It sits beside "Next →" on the first step, where there is nothing to go back to. Either it leaves
+the wizard — in which case it should say so, because an applicant on a saved draft has to guess
+whether it discards their answers — or it does nothing, in which case it should not be there.
 
 ### ⚪ n1 — "Good morning, Demo" is the page's main heading
 A greeting is not the subject of the page. The `<h1>` of an applicant's grant portfolio should name
