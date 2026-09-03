@@ -87,13 +87,39 @@ fields on "Location, Infrastructure & Preparedness" they must complete. Fails WC
 ### 🟠 M1 — The forward button behaves differently in each scheme
 NAPDDR enables "Next →" and explains on click. AVYAY and SHRESHTA_M2 **disable** it until valid.
 
-Disabled-until-valid gives the applicant a dead control and no reason. Our walk confirmed the worst
-case: on the Document Uploads step of both schemes the button is disabled while **no visible field
-is empty** — the blocker is un-uploaded documents, and nothing on screen says so. An applicant who
-has uploaded 8 of 10 slots sees a grey button and no list of what remains.
-
+Disabled-until-valid gives the applicant a dead control and, on the form steps, no reason for it.
 **Fix:** one behaviour across all schemes — keep the control enabled, and on click name what is
-outstanding. Never disable a primary action without an adjacent explanation.
+outstanding.
+
+> **Correction.** An earlier draft of this finding said the Document Uploads step disables the
+> button with nothing on screen to explain it. That is wrong, and the opposite is true. All three
+> schemes show *"Checking 12 documents… this takes a few seconds. Next opens as soon as the check
+> completes."* — a disabled control, a stated reason, and a stated end condition, which is exactly
+> the pattern the rest of the wizard should copy. The first draft was written from a capture taken
+> before the message rendered. **The upload step is the model, not the offender.**
+
+### 🟠 M1a — SHRESHTA_M2 renders ten upload slots for a seven-document checklist
+Its counter reads **`10 / 7 uploaded`**. The checklist advertises seven mandatory documents, the
+page renders ten file inputs, and the counter's numerator counts slots while its denominator counts
+requirements — so it can exceed its own total and still not mean "done".
+
+An applicant cannot tell how many documents this scheme actually wants. NAPDDR (12/12) and AVYAY
+(9/9) agree with themselves; only SHRESHTA_M2 does not.
+
+### 🟠 M1b — Automatic document checking fails often enough to be the normal case
+*"We could not check this document automatically. Your upload is saved and a reviewer will check
+it."* appears against documents that are uploaded and marked **Uploaded**, on both NAPDDR and AVYAY.
+
+The message itself is good — it degrades gracefully and tells the applicant their upload is safe.
+The problem is what it sits behind. The forward control waits on a check that, on this evidence,
+routinely cannot complete, so an applicant is asked to wait for something that will not happen and
+is then let through anyway. **If the check is advisory, do not gate the forward control on it.**
+
+### ⚪ n5 — One scheme accepts fewer file types than the others
+NAPDDR and SHRESHTA_M2: *"PDF / JPG / PNG · Max 5 MB per file · All mandatory."* AVYAY: *"PDF ·
+Max 5 MB per file · All mandatory."* A photograph of a registration certificate is acceptable
+evidence for two schemes and not the third. If deliberate, say why; if not, it is a one-line
+config difference.
 
 ### 🟠 M2 — NAPDDR lets you walk past its own mandatory document step
 NAPDDR step 9 has 12 document slots. We reached **step 10, Review & Submit, with nothing uploaded.**
