@@ -64,9 +64,11 @@ const A11Y: A11yItem[] = [
   {
     criterion: "1.1.1 Non-text Content",
     level: "A",
-    status: "partial",
+    status: "verified",
     description:
-      "In `challenge` mode the image carries an `alt` and the text challenge carries `role=\"img\"` with a label, so neither is silently skipped — but neither gives a non-sighted citizen a way to answer. That is the mode's defect, and the escape hatch is the answer to it.",
+      "Nothing in the component carries meaning as an image alone. The shield mark, the spinner and the tick are `aria-hidden` with their meaning in the text beside them, and there is no characters test to describe.",
+    evidence:
+      "bot-check.tsx: the three `Icon` and `Loader` uses all pass `aria-hidden`, each inside an element whose visible text says the same thing. The `role=\"img\"` and the `<img>` went with the `challenge` mode on 2026-09-03.",
   },
 ];
 
@@ -75,7 +77,7 @@ export default function BotCheckPage(): React.JSX.Element {
     <ComponentDocPage
       name="Bot Check"
       status="Stable"
-      summary="Confirms a request came from a person without asking the person to prove it. Invisible and server-verified by default; a deliberate gesture where one is wanted; a distorted-characters challenge only where a legacy backend can issue nothing else — and always a route out for a citizen it will not pass."
+      summary="Confirms a request came from a person without asking the person to prove it. Invisible and server-verified by default, a deliberate gesture where one is wanted, and always a route out for a citizen it will not pass. It offers no characters test, because one cannot meet WCAG 2.2 AA."
       figma={{ node: "botCheck" }}
       specimen={<BotCheckPlayground />}
       propsFrom="BotCheckProps"
@@ -165,11 +167,6 @@ export default function BotCheckPage(): React.JSX.Element {
                   "One deliberate gesture, where the server wants a human act as well. Not a cognitive test, so 3.3.8 permits it.",
                   "One click",
                 ],
-                [
-                  "challenge",
-                  "The legacy distorted-characters test. Deprecated. Only where a backend can issue nothing else.",
-                  "A cognitive function test",
-                ],
               ]}
             />
             <Callout title="Self-Hosted, Not Hosted" type="info">
@@ -187,12 +184,12 @@ export default function BotCheckPage(): React.JSX.Element {
             </h2>
             <MatrixTable
               caption="What each mode renders for each server state"
-              columns={["Status", "invisible", "checkbox", "challenge"]}
+              columns={["Status", "invisible", "checkbox"]}
               rows={[
-                ["idle", "nothing", "the gesture", "the challenge"],
-                ["verifying", "nothing", "the gesture, disabled, with a status line", "the challenge"],
-                ["verified", "nothing", "the gesture, ticked", "the challenge"],
-                ["failed", "the message + the way out", "the message + the way out", "the message + the way out"],
+                ["idle", "nothing", "the gesture"],
+                ["verifying", "nothing", "the gesture, disabled, with a status line"],
+                ["verified", "nothing", "the gesture, ticked"],
+                ["failed", "the message + the way out", "the message + the way out"],
               ]}
             />
             <p>
@@ -227,8 +224,8 @@ export default function BotCheckPage(): React.JSX.Element {
                 ],
                 [
                   "Control",
-                  "The design system Checkbox, or the challenge and its refresh button",
-                  "Neither is redrawn here; both are the library components, so a change to either follows",
+                  "The design system Checkbox",
+                  "Not redrawn here; it is the library component, so a change to it follows",
                 ],
                 [
                   "Status line",
@@ -328,10 +325,8 @@ export default function BotCheckPage(): React.JSX.Element {
               the one portal that needed it.
             </p>
             <p>
-              Required is not the same as always shown. The link renders in every{" "}
-              <code>challenge</code> state, because distorted characters are a sensory barrier and
-              nobody should have to fail before finding the way round them, and in every mode once
-              the check has failed. An idle checkbox is one deliberate act, not a cognitive test, so
+              Required is not the same as always shown. The link renders in every mode once the
+              check has failed. An idle checkbox is one deliberate act, not a cognitive test, so
               nothing sits beneath it until something goes wrong.
             </p>
             <p>
@@ -354,18 +349,12 @@ export default function BotCheckPage(): React.JSX.Element {
 // citizen is never asked for anything.
 <BotCheck status={check.status} helpHref="/help/contact" />
 
-// A legacy backend that can only issue characters. Deprecated — record why.
+// Where the server wants a human gesture as well.
 <BotCheck
-  mode="challenge"
+  mode="checkbox"
   status={check.status}
   helpHref="/help/contact"
-  challenge={{ type: "image", src: check.imageUrl }}
-  value={answer}
-  onValueChange={setAnswer}
-  onRefresh={() => {
-    setAnswer("");           // the component does NOT clear it for you
-    void issueChallenge();
-  }}
+  onVerify={check.solve}
 />`}</CodeBlock>
           <p>
             In a portal config, prefer the template&apos;s own switch — it applies the
@@ -389,10 +378,10 @@ export default function BotCheckPage(): React.JSX.Element {
           </h2>
           <p>
             The honest position: <code>invisible</code> and <code>checkbox</code> meet WCAG 2.2
-            3.3.8. <code>challenge</code> does not, and no amount of alternative text changes that —
-            it is a cognitive function test by construction. It is kept only so a legacy backend is
-            not a blocker, and a portal that selects it should record the reason in the change that
-            selects it.
+            3.3.8, and they are the only two modes. A distorted-characters test does not meet it, no
+            amount of alternative text changes that, and so the component does not offer one. The
+            single legacy backend that can issue nothing else uses the deprecated{" "}
+            <code>CaptchaField</code> and records the reason in the change that selects it.
           </p>
           <p>
             The failure message and the escape hatch are the two things that are never conditional.
