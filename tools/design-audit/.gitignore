@@ -14,8 +14,11 @@ __pycache__/
 .qc/
 report-sections.json
 
-# engine PDF deps are installed locally, never committed (may be a symlink)
+# engine PDF deps are installed locally, never committed (may be a symlink). The lockfile
+# goes with them: `npm i` regenerates it on first run, and a machine-specific lockfile is
+# not something the audit engine's history needs to carry.
 engine/node_modules
+engine/package-lock.json
 
 # per-project run logs
 projects/*/*.log
