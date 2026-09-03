@@ -909,3 +909,24 @@ class CompleteUploadSetIsLeftAlone(unittest.TestCase):
             def inner_text(self, sel):
                 return "Organisation Details"
         self.assertIsNone(D.upload_status(P()))
+
+
+class SlugReadability(unittest.TestCase):
+    """Every step line ends with the same boilerplate — "Fields marked * are mandatory." — so
+    carrying the whole line into the slug pushed the identifying half out under truncation:
+    NGO-NAPDDR-S04-LOCATION-INFRASTRUCTURE-PREPAREDNESS-FIELDS-MARKED-ARE, cut mid-word."""
+
+    def test_the_boilerplate_sentence_is_dropped(self):
+        self.assertEqual(
+            D._walk_slug("NGO-NAPDDR",
+                         ("u", 4, "Location, Infrastructure & Preparedness. "
+                                  "Fields marked * are mandatory."), {}),
+            "NGO-NAPDDR-S04-LOCATION-INFRASTRUCTURE-PREPAREDNESS")
+
+    def test_a_title_with_no_stop_is_kept_whole(self):
+        self.assertEqual(D._walk_slug("P", ("u", 9, "Document Uploads"), {}),
+                         "P-S09-DOCUMENT-UPLOADS")
+
+    def test_an_overlong_title_is_capped_not_left_to_grow(self):
+        slug = D._walk_slug("P", ("u", 1, "A " * 60), {})
+        self.assertLessEqual(len(slug), 60)

@@ -166,7 +166,12 @@ def _walk_slug(prefix, pos, seen):
     """Deterministic, human-readable, and stable across runs — the slug is what the freshness
     hashes are filed under, so it must not shift when a scheme gains or loses a section."""
     _, n, title = pos
-    part = re.sub(r"-+", "-", re.sub(r"[^A-Za-z0-9]+", "-", title or "step")).strip("-") or "step"
+    # The page's step line is "Application Type. Fields marked * are mandatory." — the sentence
+    # after the first stop is boilerplate repeated on every step, and carrying it into the slug
+    # produced NGO-NAPDDR-S04-LOCATION-INFRASTRUCTURE-PREPAREDNESS-FIELDS-MARKED-ARE, truncated
+    # mid-word with the identifying half squeezed out.
+    head = (title or "step").split(".")[0]
+    part = re.sub(r"-+", "-", re.sub(r"[^A-Za-z0-9]+", "-", head)).strip("-")[:44] or "step"
     base = f"{prefix}-S{n:02d}-{part}".upper() if n else f"{prefix}-{part}".upper()
     if base in seen:                      # a repeated title would otherwise overwrite its twin
         base = f"{base}-{seen[base] + 1}"
