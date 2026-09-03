@@ -1,6 +1,7 @@
 # e-Anudaan (UAT) — Capture & Audit Tracker
 
 **Last verified:** 2026-09-03 · **Bundle:** `tools/design-audit/projects/e-anudaan/out/capture-bundle.json`
+**Engine status:** merged to `main` via PR #258; one later commit still on the branch.
 **Verified by reading the bundle and the files on disk, not from the run logs.**
 
 Rerun the verification behind every number here with:
@@ -133,7 +134,7 @@ Two claims in the first draft were **corrected**, both recorded in the document 
 | 6 | Keyboard and screen-reader pass | Human work — the machine draft cannot self-certify | Human |
 | 7 | Hindi / bilingual rendering | The language toggle was never exercised | Human |
 | 8 | Mobile and tablet layouts | Every screen in the corpus is 1440px wide | Small (config), then a re-capture |
-| 9 | Branch integration decision | `feat/design-audit-capture-bundle`, 38 commits ahead of `main`, nothing pushed | Yours |
+| 9 | One commit not yet on `main` | PR **#258** merged `feat/design-audit-capture-bundle` into `main` on 2026-09-03. Everything above is on `origin/main` **except** the tracker + slug commit, which was made after the merge | Small — new PR from `main` |
 
 ### Deliberately not done
 
