@@ -85,6 +85,37 @@ module.exports = {
     "no-duplicate-selectors": null,
 
     "no-descending-specificity": null,
+    /**
+     * THREE RULES stylelint-config-standard 40 turned on that this estate does
+     * not take. Each is a deliberate divergence, not a violation given up on.
+     *
+     * `color-function-alias-notation` would rewrite 78 `rgba()` to `rgb()`.
+     * Four-argument `rgb()` is CSS Color 4 — Chrome 65, Safari 12.1, Firefox 52
+     * — while `rgba()` is understood by everything. This estate is a Government
+     * of India property read on old Android handsets in rural districts, and a
+     * shadow or a tint silently dropping to nothing there is a worse outcome
+     * than a legacy function name. Revisit when the floor moves.
+     */
+    "color-function-alias-notation": null,
+    /**
+     * `property-no-deprecated` fires on ~20 `clip: rect(0, 0, 0, 0)`, every one
+     * of them inside the visually-hidden pattern that puts text on screen for a
+     * screen reader and nowhere else. `clip` IS deprecated in favour of
+     * `clip-path`, and `clip-path` is also what older browsers do not have. The
+     * pattern is correct as written; dropping `clip` would un-hide that text on
+     * exactly the devices least able to cope with it. The rule cannot see the
+     * difference, so it is off rather than exempted twenty times.
+     */
+    "property-no-deprecated": null,
+    /**
+     * Two rules that misread TAILWIND V4 syntax rather than finding anything.
+     * `@utility` blocks in globals.css legitimately contain a `:where(&…)`
+     * nesting selector with no scoping root of their own, and a `@media` after
+     * declarations — both valid inside `@utility`, neither known to stylelint.
+     */
+    "nesting-selector-no-missing-scoping-root": null,
+    "no-invalid-position-declaration": null,
+
 
     /**
      * OFF, deliberately — the prefixed declarations here are load-bearing.
