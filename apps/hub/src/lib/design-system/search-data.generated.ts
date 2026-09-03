@@ -63,6 +63,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Account Prompt — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/auth/account-prompt",
+    "keywords": "account prompt — design system auth & dashboard   tokens wcag accessibility",
+    "description": "The registration route at the foot of a sign-in form.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
     "title": "Action Banner — Design System",
     "section": "Feedback & Status",
     "href": "/design-system/components/feedback/action-banner",
@@ -126,6 +135,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Auth Divider — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/auth/auth-divider",
+    "keywords": "auth divider — design system auth & dashboard   tokens wcag accessibility",
+    "description": "A labelled rule separating two ways of signing in.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
     "title": "Avatar — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/avatar",
@@ -171,6 +189,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Brand Glyph — Design System",
+    "section": "Utilities",
+    "href": "/design-system/components/utilities/brand-glyph",
+    "keywords": "brand glyph — design system utilities   tokens wcag accessibility",
+    "description": "A third-party brand mark, optically normalised against its siblings.",
+    "type": "component",
+    "iconName": "build"
+  },
+  {
     "title": "Brand Lockup — Design System",
     "section": "Navigation",
     "href": "/design-system/components/navigation/brand-lockup",
@@ -207,6 +234,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "widgets"
   },
   {
+    "title": "Button Group — Design System",
+    "section": "Actions",
+    "href": "/design-system/components/actions/button-group",
+    "keywords": "button group — design system actions   tokens wcag accessibility",
+    "description": "Related actions, kept together and kept apart.",
+    "type": "component",
+    "iconName": "widgets"
+  },
+  {
     "title": "Captcha Field — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/captcha-field",
@@ -223,6 +259,24 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A surface that groups related content — a header, a body and a footer — so a scheme summary, a metric or a news item reads as one block.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "Card Skeleton — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/dashboard/card-skeleton",
+    "keywords": "card skeleton — design system auth & dashboard   tokens wcag accessibility",
+    "description": "A shaped loading placeholder for a dashboard card.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
+    "title": "Card State — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/dashboard/card-state",
+    "keywords": "card state — design system auth & dashboard   tokens wcag accessibility",
+    "description": "What a card shows when it has no figures to show.",
+    "type": "component",
+    "iconName": "lock"
   },
   {
     "title": "Changelog",
@@ -298,6 +352,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "palette"
   },
   {
+    "title": "Color Mode Provider — Design System",
+    "section": "Utilities",
+    "href": "/design-system/components/utilities/color-mode-provider",
+    "keywords": "color mode provider — design system utilities   tokens wcag accessibility",
+    "description": "Supplies the brand palette every component reads from.",
+    "type": "component",
+    "iconName": "build"
+  },
+  {
     "title": "Combo Chart — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/combo-chart",
@@ -316,6 +379,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Consent Line — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/auth/consent-line",
+    "keywords": "consent line — design system auth & dashboard   tokens wcag accessibility",
+    "description": "The standing consent sentence under every authentication form.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
     "title": "Container — Design System",
     "section": "Layout",
     "href": "/design-system/components/layout/container",
@@ -323,6 +395,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The centred content column. Applies the estate content cap and the responsive side margin together, because they are one rule.",
     "type": "component",
     "iconName": "view_quilt"
+  },
+  {
+    "title": "Content Nav — Design System",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/content-nav",
+    "keywords": "content nav — design system navigation why this is not sidebar nav  tokens wcag accessibility",
+    "description": "The grouped section index beside a long content page.",
+    "type": "component",
+    "iconName": "navigation"
   },
   {
     "title": "Contributing",
@@ -388,6 +469,33 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Demo Accounts Panel — Design System",
+    "section": "Utilities",
+    "href": "/design-system/components/utilities/demo-accounts-panel",
+    "keywords": "demo accounts panel — design system utilities   tokens wcag accessibility",
+    "description": "The shared credentials list used by the demo tooling.",
+    "type": "component",
+    "iconName": "build"
+  },
+  {
+    "title": "Demo Dock — Design System",
+    "section": "Utilities",
+    "href": "/design-system/components/utilities/demo-dock",
+    "keywords": "demo dock — design system utilities   tokens wcag accessibility",
+    "description": "The floating demo console for the estate.",
+    "type": "component",
+    "iconName": "build"
+  },
+  {
+    "title": "Demo Fab — Design System",
+    "section": "Utilities",
+    "href": "/design-system/components/utilities/demo-fab",
+    "keywords": "demo fab — design system utilities   tokens wcag accessibility",
+    "description": "The older, per-page demo credentials control.",
+    "type": "component",
+    "iconName": "build"
+  },
+  {
     "title": "Density",
     "section": "Foundations",
     "href": "/design-system/foundations/density",
@@ -414,6 +522,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The estate",
     "type": "component",
     "iconName": "view_quilt"
+  },
+  {
+    "title": "Document Library — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/document-library",
+    "keywords": "document library — design system data display   tokens wcag accessibility",
+    "description": "One shelf for everything a body publishes.",
+    "type": "component",
+    "iconName": "bar_chart"
   },
   {
     "title": "Donut Chart — Design System",
@@ -462,6 +579,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "notifications"
   },
   {
+    "title": "Fact Strip — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/fact-strip",
+    "keywords": "fact strip — design system data display   tokens wcag accessibility",
+    "description": "The row of standing facts under a page hero.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "Filter Bar — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/filter-bar",
@@ -478,6 +604,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The compact dashboard filter, as a real listbox. Select remains the answer for a form field; this is for a filter row.",
     "type": "component",
     "iconName": "edit_note"
+  },
+  {
+    "title": "Flask Icon — Design System",
+    "section": "Utilities",
+    "href": "/design-system/components/utilities/flask-icon",
+    "keywords": "flask icon — design system utilities   tokens wcag accessibility",
+    "description": "The demo tooling",
+    "type": "component",
+    "iconName": "build"
   },
   {
     "title": "Footer — Design System",
@@ -562,6 +697,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "view_quilt"
   },
   {
+    "title": "Grid Item — Design System",
+    "section": "Layout",
+    "href": "/design-system/components/layout/grid-item",
+    "keywords": "grid item — design system layout   tokens wcag accessibility",
+    "description": "One cell of a Grid.",
+    "type": "component",
+    "iconName": "view_quilt"
+  },
+  {
     "title": "Heatmap — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/heatmap",
@@ -578,6 +722,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A Material Symbols Rounded glyph — the estate",
     "type": "component",
     "iconName": "build"
+  },
+  {
+    "title": "Icon Button — Design System",
+    "section": "Actions",
+    "href": "/design-system/components/actions/icon-button",
+    "keywords": "icon button — design system actions   tokens wcag accessibility",
+    "description": "A Button whose whole label is its icon.",
+    "type": "component",
+    "iconName": "widgets"
   },
   {
     "title": "Iconography",
@@ -609,11 +762,29 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "palette"
   },
   {
+    "title": "India Bubble Map — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/india-bubble-map",
+    "keywords": "india bubble map — design system data display   tokens wcag accessibility",
+    "description": "One circle per state, area proportional to the value.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
     "title": "India Map — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/india-map",
     "keywords": "india map — design system data display the states it draws boundaries and names example what a screen reader gets IndiaMapDatum.state IndiaMapDatum.value tokens wcag accessibility",
     "description": "A state-level choropleth of India, shading each state by its figure, with a legend and a screen-reader table of every value.",
+    "type": "component",
+    "iconName": "bar_chart"
+  },
+  {
+    "title": "India Point Map — Design System",
+    "section": "Data Display",
+    "href": "/design-system/components/data-display/india-point-map",
+    "keywords": "india point map — design system data display   tokens wcag accessibility",
+    "description": "Real coordinates on the national outline.",
     "type": "component",
     "iconName": "bar_chart"
   },
@@ -698,6 +869,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A spinner for a wait whose result has no known shape, announced to assistive technology through a live region and a visually hidden label.",
     "type": "component",
     "iconName": "notifications"
+  },
+  {
+    "title": "Masked Contact Row — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/auth/masked-contact-row",
+    "keywords": "masked contact row — design system auth & dashboard   tokens wcag accessibility",
+    "description": "Confirms where a one-time code was sent, and offers the way back to change it.",
+    "type": "component",
+    "iconName": "lock"
   },
   {
     "title": "Media Gallery Input — Design System",
@@ -901,6 +1081,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "edit_note"
   },
   {
+    "title": "Resend Timer — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/auth/resend-timer",
+    "keywords": "resend timer — design system auth & dashboard the rule most often got wrong  tokens wcag accessibility",
+    "description": "The resend affordance under a one-time-code field.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
     "title": "Resources",
     "section": "Resources",
     "href": "/design-system/resources",
@@ -965,6 +1154,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "view_quilt"
   },
   {
+    "title": "Segmented Control — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/dashboard/segmented-control",
+    "keywords": "segmented control — design system auth & dashboard   tokens wcag accessibility",
+    "description": "A single-select toggle for a dashboard period or view.",
+    "type": "component",
+    "iconName": "lock"
+  },
+  {
     "title": "Select — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/select",
@@ -995,11 +1193,29 @@ export const SEARCH_DATA: SearchEntry[] = [
   {
     "title": "Sidebar Nav — Design System",
     "section": "Navigation",
+    "href": "/design-system/components/navigation/sidebar-nav",
+    "keywords": "sidebar nav — design system navigation   tokens wcag accessibility",
+    "description": "The portal app-shell left navigation.",
+    "type": "component",
+    "iconName": "navigation"
+  },
+  {
+    "title": "Sidebar Nav — Design System",
+    "section": "Navigation",
     "href": "/design-system/components/section-templates/sidebar",
     "keywords": "sidebar nav — design system navigation active detection collapsed mode the connector portal usage sidebarnavgroup, sidebarnavitem and sidebarnavchild example tokens landmarks, and the toggle that points at them SidebarNavGroup · label SidebarNavGroup · items SidebarNavItem · label SidebarNavItem · href SidebarNavItem · icon SidebarNavItem · badge SidebarNavItem · children SidebarNavChild · label SidebarNavChild · href tokens wcag accessibility",
     "description": "The portal app-shell left navigation: a two-level hierarchy with expandable groups and a curved connector, in an expanded or icon-only collapsed mode.",
     "type": "component",
     "iconName": "navigation"
+  },
+  {
+    "title": "Signing Into Bar — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/auth/signing-into-bar",
+    "keywords": "signing into bar — design system auth & dashboard   tokens wcag accessibility",
+    "description": "Tells the citizen which portal they are about to sign into.",
+    "type": "component",
+    "iconName": "lock"
   },
   {
     "title": "Site Footer — Design System",
@@ -1016,6 +1232,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "href": "/design-system/components/layout/site-layout",
     "keywords": "site layout — design system layout every child is a band what goes where overlays belong to a rail example the skip link has two halves  tokens wcag accessibility",
     "description": "The website page skeleton: chrome, then a stack of Bands. The main region grows, so a short page still pins its footer to the bottom of the viewport.",
+    "type": "component",
+    "iconName": "view_quilt"
+  },
+  {
+    "title": "Site Page Header — Design System",
+    "section": "Layout",
+    "href": "/design-system/components/layout/site-page-header",
+    "keywords": "site page header — design system layout   tokens wcag accessibility",
+    "description": "The banner every website page opens with.",
     "type": "component",
     "iconName": "view_quilt"
   },
@@ -1073,6 +1298,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "A small, axis-free line showing the shape of a recent trend, sized to sit inside a table row, a card corner or a metric.",
     "type": "component",
     "iconName": "bar_chart"
+  },
+  {
+    "title": "SSO Button — Design System",
+    "section": "Auth & Dashboard",
+    "href": "/design-system/components/auth/sso-button",
+    "keywords": "sso button — design system auth & dashboard   tokens wcag accessibility",
+    "description": "The federated sign-in entry point — today, DigiLocker.",
+    "type": "component",
+    "iconName": "lock"
   },
   {
     "title": "Stepper — Design System",
