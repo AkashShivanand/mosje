@@ -111,10 +111,17 @@ function MainItem({
 
   const [open, setOpen] = React.useState(highlighted);
 
-  // Keep open when a child is active
-  React.useEffect(() => {
+  /**
+   * Opens the group when a child BECOMES active — on the transition, not on
+   * every render, so the reader can still collapse a group whose child is the
+   * current page. Same trigger as the effect it replaces; the difference is that
+   * the group no longer renders collapsed for one frame before springing open.
+   */
+  const [prevChildActive, setPrevChildActive] = React.useState(isChildActive);
+  if (prevChildActive !== isChildActive) {
+    setPrevChildActive(isChildActive);
     if (isChildActive) setOpen(true);
-  }, [isChildActive]);
+  }
 
   const rowClass = cn("ds-sidebar__main-row", highlighted && "is-active");
 

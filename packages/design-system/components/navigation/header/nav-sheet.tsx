@@ -213,10 +213,17 @@ export function NavSheet({
     };
   }, [open]);
 
-  // Collapse any open row when the sheet closes, so it reopens in its Default state.
-  React.useEffect(() => {
+  /**
+   * Collapses any open row when the sheet closes, so it reopens in its Default
+   * state. Adjusted during render on the open/closed transition rather than in
+   * an effect — the sheet is unmounting on that same commit, and correcting the
+   * state afterwards is a render nobody sees but React still performs.
+   */
+  const [prevOpen, setPrevOpen] = React.useState(open);
+  if (prevOpen !== open) {
+    setPrevOpen(open);
     if (!open) setOpenLabel(null);
-  }, [open]);
+  }
 
   if (!open || !mounted) return null;
 
