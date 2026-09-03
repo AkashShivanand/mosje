@@ -154,3 +154,21 @@ export function invalidDocsWarning(count: number): string | null {
   if (count === 0) return null;
   return `${count} document${count === 1 ? " is" : "s are"} not valid. Continuing anyway — test mode. This would block on the live portal.`;
 }
+
+/**
+ * How far through the mandatory checklist an applicant is.
+ *
+ * Both halves must count the same set. Counting every upload against a denominator of only the
+ * mandatory documents is how live shows SHRESHTA_M2 applicants "10 / 7 uploaded" — a fraction
+ * that exceeds its own total and so cannot mean "done". Our clone had the same arithmetic.
+ */
+export function uploadProgress(
+  documents: readonly { n: number; optional?: boolean }[],
+  uploaded: Record<number, unknown>,
+): { done: number; total: number } {
+  const mandatory = documents.filter((d) => !d.optional);
+  return {
+    done: mandatory.filter((d) => uploaded[d.n] != null).length,
+    total: mandatory.length,
+  };
+}

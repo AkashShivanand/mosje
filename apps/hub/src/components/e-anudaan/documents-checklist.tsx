@@ -17,6 +17,7 @@ import type { DocDef } from "@/lib/e-anudaan/form-schema";
 import {
   DEMO_VERDICTS,
   demoVerdictFor,
+  uploadProgress,
   VERDICT_GLYPH,
   verdictHeadline,
   verdictPill,
@@ -51,8 +52,9 @@ export function DocumentsChecklist({
   onChange: (next: Record<number, UploadedDoc>) => void;
   accept?: string;
 }) {
-  const count = Object.keys(uploaded).length;
-  const mandatory = documents.filter((d) => !d.optional).length;
+  // Both halves count the same set — see uploadProgress. Counting every upload against a
+  // denominator of only the mandatory documents is what produces "10 / 7 uploaded".
+  const { done: count, total: mandatory } = uploadProgress(documents, uploaded);
 
   const upload = (d: DocDef) => {
     // Demo behaviour: a fresh upload starts in "Verifying…", then settles as the live one does.
