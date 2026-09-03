@@ -1,0 +1,465 @@
+{
+  "portal": "SCW \u2014 Senior Citizens Welfare (UAT) \u00b7 Full Design QC",
+  "idPrefix": "SCW",
+  "generated": "auto",
+  "status": "MACHINE-DRAFT",
+  "figmaUrl": "https://www.figma.com/design/gH2vQ62cfg4677YKWuOpLc/MoSJE-Portal--Handoff-?node-id=4619-49381",
+  "method": "Machine pass (project-agnostic engine). Baseline=internal. DS-adoption 96.7%. Coverage gate=FAIL. \ud83e\udd16 machine checks only; human sign-off (\ud83d\udc64) required before CERTIFIED.",
+  "coverage": {
+    "figma_frames": 18,
+    "captured": 6,
+    "mapped": 6,
+    "unmapped": 12,
+    "design_only": 0,
+    "extra_build_only": 0,
+    "mismap": 1
+  },
+  "coverage_gate": "FAIL",
+  "ds_adoption_pct": 96.7,
+  "deferred": [],
+  "screens": [
+    {
+      "slug": "GLOBAL-DSCONF",
+      "name": "Global \u2014 Design-System Conformance (machine-verified every element)",
+      "figmaImg": null,
+      "liveImg": "captures/live/PUBLIC-VOLUNTEER.png",
+      "figmaUrl": null,
+      "liveUrl": null,
+      "note": "DS-adoption: 96.7% of 3168 elements use design-system tokens. Baseline mode: internal. The full deviation table is in out/conformance.json. These are \ud83e\udd16 machine checks \u2014 verify severity with a human before certifying.",
+      "findings": [
+        {
+          "num": 1,
+          "id": "SCW-DSCONF-001",
+          "element": "Off-token color: #1f2937",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Major",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "24 element(s) across 3 screen(s) render color=#1f2937, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-VOLUNTEER.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 25,
+            "y": 24.7
+          }
+        },
+        {
+          "num": 2,
+          "id": "SCW-DSCONF-002",
+          "element": "Off-token color: #003366",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "19 element(s) across 6 screen(s) render color=#003366, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 9,
+            "y": 15.7
+          }
+        },
+        {
+          "num": 3,
+          "id": "SCW-DSCONF-003",
+          "element": "Off-token radius: 6",
+          "section": "ds-conformance",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "Every element should use a radius token from the design system.",
+          "live": "12 element(s) across 3 screen(s) render radius=6, which is not a design-system token (first seen near \"Take the Pledge\").",
+          "fix": "Replace the raw radius value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 87,
+            "y": 21.3
+          }
+        },
+        {
+          "num": 4,
+          "id": "SCW-DSCONF-004",
+          "element": "Off-token color: #0027d00",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "10 element(s) across 1 screen(s) render color=#0027d00, which is not a design-system token (first seen near \"*\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-VOLUNTEER.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 30,
+            "y": 29.4
+          }
+        },
+        {
+          "num": 5,
+          "id": "SCW-DSCONF-005",
+          "element": "Off-token color: #000000",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "7 element(s) across 6 screen(s) render color=#000000, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 96,
+            "y": 93.9
+          }
+        },
+        {
+          "num": 6,
+          "id": "SCW-DSCONF-006",
+          "element": "Off-token radius: 33554400",
+          "section": "ds-conformance",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "Every element should use a radius token from the design system.",
+          "live": "7 element(s) across 6 screen(s) render radius=33554400, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw radius value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 96,
+            "y": 93.9
+          }
+        },
+        {
+          "num": 7,
+          "id": "SCW-DSCONF-007",
+          "element": "Off-token color: #4b5563",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "6 element(s) across 6 screen(s) render color=#4b5563, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 2,
+            "y": 9.7
+          }
+        },
+        {
+          "num": 8,
+          "id": "SCW-DSCONF-008",
+          "element": "Off-token radius: 9999",
+          "section": "ds-conformance",
+          "axis": "Components & States",
+          "severity": "Minor",
+          "figma": "Every element should use a radius token from the design system.",
+          "live": "6 element(s) across 6 screen(s) render radius=9999, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw radius value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 2,
+            "y": 9.7
+          }
+        },
+        {
+          "num": 9,
+          "id": "SCW-DSCONF-009",
+          "element": "Off-token color: #704518",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "5 element(s) across 1 screen(s) render color=#704518, which is not a design-system token (first seen near \"I pledge to respect love and c\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-EPLEDGE.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 60,
+            "y": 74.8
+          }
+        },
+        {
+          "num": 10,
+          "id": "SCW-DSCONF-010",
+          "element": "Off-token color: #0078a8",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Minor",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "5 element(s) across 1 screen(s) render color=#0078a8, which is not a design-system token (first seen near \"\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-OUR-SERVICES.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 22,
+            "y": 31.3
+          }
+        },
+        {
+          "num": 11,
+          "id": "SCW-DSCONF-011",
+          "element": "Off-token color: #1763c6",
+          "section": "ds-conformance",
+          "axis": "Color & Token",
+          "severity": "Nit",
+          "figma": "Every element should use a colour token from the design system.",
+          "live": "4 element(s) across 1 screen(s) render color=#1763c6, which is not a design-system token (first seen near \"Register Profile\").",
+          "fix": "Replace the raw color value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 40,
+            "y": 55.1
+          }
+        },
+        {
+          "num": 12,
+          "id": "SCW-DSCONF-012",
+          "element": "Off-token fontSize: 18",
+          "section": "ds-conformance",
+          "axis": "Typography",
+          "severity": "Nit",
+          "figma": "Every element should use a type-scale token from the design system.",
+          "live": "4 element(s) across 3 screen(s) render fontSize=18, which is not a design-system token (first seen near \"Need Immediate Help?\").",
+          "fix": "Replace the raw fontSize value with the correct design-system token, or add it to the token set if legitimately new.",
+          "check": "\ud83e\udd16 machine",
+          "liveImgO": "captures/live/PUBLIC-HOME.png",
+          "figmaBox": [
+            0,
+            0,
+            1440,
+            420
+          ],
+          "liveBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "sectionBox": [
+            0,
+            76,
+            1440,
+            1000
+          ],
+          "figmaPin": null,
+          "livePin": {
+            "x": 84,
+            "y": 64.8
+          }
+        }
+      ]
+    }
+  ]
+}

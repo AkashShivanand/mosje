@@ -1,0 +1,62 @@
+# e-Anudaan (UAT) capture manifest.
+# environment: uat — this, plus each flow's allowSubmit, is what permits the driver to
+# press 'Submit Application' on a live UAT record. Authorised by the product owner.
+version: 1
+environment: uat
+stalenessCeiling: 14d
+volatile:
+- pattern: \b\d{2}[/-]\d{2}[/-]\d{4}\b
+- pattern: \b\d{1,2}\s+\w+\s+\d{4}\b
+- pattern: \b\d{1,2}:\d{2}\s*(AM|PM|am|pm)?\b
+- pattern: ^\s*\d+\s*$
+- pattern: \b(just now|minutes? ago|hours? ago|days? ago)\b
+- pattern: \bGIA[/-][A-Z0-9/-]+\b
+- pattern: \bSHRESHTA[_/-]M2[/-][A-Z0-9/-]+\b
+fixtures:
+  ngo:
+    text: Example Welfare Society
+    email: contact@example-welfare.org
+    tel: '9800000000'
+screens: []
+flows:
+# Each scheme has a DIFFERENT number of internal sections behind the same two URLs
+# (/step-1 holds them all, /step-2 is uploads, /review is the end), so the steps are
+# discovered at run time from the page's own "Step N of M — Title" and named after it,
+# not numbered here by hand. Hand numbering filed a document page under the review
+# page's name on the previous run.
+- id: napddr-fresh-application
+  role: ngo-user
+  entry: /apply-grant/scheme/NAPDDR/step-1
+  allowSubmit: true
+  alwaysReplay: false
+  reuseRecord: null
+  steps:
+  - captureValidation: NGO-NAPDDR-VALIDATION-ERRORS
+  - walk:
+      prefix: NGO-NAPDDR
+      upload: fixtures/sample-document.pdf
+      maxSteps: 24
+- id: avyay-fresh-application
+  role: ngo-user
+  entry: /apply-grant/scheme/AVYAY/step-1
+  allowSubmit: true
+  alwaysReplay: false
+  reuseRecord: null
+  steps:
+  - captureValidation: NGO-AVYAY-VALIDATION-ERRORS
+  - walk:
+      prefix: NGO-AVYAY
+      upload: fixtures/sample-document.pdf
+      maxSteps: 24
+- id: shreshta-m2-fresh-application
+  role: ngo-user
+  entry: /apply-grant/scheme/SHRESHTA_M2/step-1
+  allowSubmit: true
+  alwaysReplay: false
+  reuseRecord: null
+  steps:
+  - captureValidation: NGO-SHRESHTA-M2-VALIDATION-ERRORS
+  - walk:
+      prefix: NGO-SHRESHTA-M2
+      upload: fixtures/sample-document.pdf
+      maxSteps: 24

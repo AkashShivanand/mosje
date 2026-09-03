@@ -14,10 +14,14 @@ survive a bad write, the set does not."""
 import json, os, struct, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import config as C
+import manifest as MAN
+import bundle as B
 from playwright.sync_api import sync_playwright
 
 EXTRACT_JS = r"""
-() => {
+(arg) => {
+  const volatileSel = (arg && arg.volatileSelectors) || [];
+  const isVolatile = el => volatileSel.some(s => { try { return el.matches(s) || el.closest(s); } catch (e) { return false; } });
   const px = v => Math.round(parseFloat(v)||0);
   const rows = [];
   const els = document.querySelectorAll('h1,h2,h3,h4,h5,h6,button,a,label,p,span,th,td,input,textarea,select,li,[role=button],[role=tab]');
@@ -44,10 +48,32 @@ EXTRACT_JS = r"""
       borderStyle: cs.borderStyle, borderColor: cs.borderColor,
       dsComponent: el.getAttribute('data-ds-component') || null,
       dsState: el.getAttribute('data-ds-state') || null,
+      volatile: isVolatile(el),
+    });
+  }
+  // Field inventory — the machine-readable replacement for the prose in INVENTORY.md.
+  const labelFor = el => {
+    if (el.getAttribute('aria-label')) return el.getAttribute('aria-label');
+    if (el.id) { const l = document.querySelector(`label[for="${CSS.escape(el.id)}"]`); if (l) return l.innerText.trim(); }
+    const wrap = el.closest('label');
+    return wrap ? wrap.innerText.trim() : null;
+  };
+  const fields = [];
+  for (const el of document.querySelectorAll('input,select,textarea')) {
+    if (el.type === 'hidden') continue;
+    fields.push({
+      name: el.name || el.id || null,
+      label: labelFor(el),
+      type: el.tagName === 'SELECT' ? 'select' : (el.type || el.tagName.toLowerCase()),
+      required: el.required || el.getAttribute('aria-required') === 'true',
+      options: el.tagName === 'SELECT' ? [...el.options].map(o => o.text.trim()).slice(0, 200) : null,
+      helper: el.placeholder || el.getAttribute('aria-describedby') || null,
+      validationMessage: null,
+      conditionalOn: null,
     });
   }
   return { pageW: document.documentElement.scrollWidth,
-           pageH: document.documentElement.scrollHeight, rows };
+           pageH: document.documentElement.scrollHeight, rows, fields };
 }
 """
 
@@ -232,12 +258,81 @@ def _click_button(pg, label, exact=True):
     except Exception:
         return False
 
+def solve_captcha(pg, cfg_captcha, paths):
+    """Screenshot the captcha, then wait for an operator to write the answer to a file.
+
+    A government login that renders a code as an image cannot be read by a selector, and guessing
+    is not an option. So the run stops at a defined point, publishes the challenge as a PNG, and
+    blocks on an answer file with a bounded timeout — no polling loop against the host, and no
+    attempt to defeat the captcha itself. Returns True when an answer was supplied.
+    """
+    text_sel = cfg_captcha.get("textSelector")
+    if text_sel:
+        try:
+            pg.wait_for_selector(text_sel, timeout=10000)
+            code = (pg.inner_text(text_sel) or "").strip()
+        except Exception as e:
+            print(f"  ! captcha text not readable via {text_sel!r} ({str(e)[:50]})", flush=True)
+            code = ""
+        if code:
+            pg.fill(cfg_captcha["input"], code)
+            print(f"  captcha: read {len(code)} chars from the DOM and answered", flush=True)
+            return True
+        print("  ! captcha text selector matched nothing — falling back to the image handshake",
+              flush=True)
+    img_sel = cfg_captcha.get("image")
+    shot = os.path.join(paths["auth"], cfg_captcha.get("shotFile", "captcha.png"))
+    ans = os.path.join(paths["auth"], cfg_captcha.get("answerFile", "captcha-answer.txt"))
+    timeout_ms = int(cfg_captcha.get("timeoutMs", 300000))
+    try:
+        os.remove(ans)
+    except OSError:
+        pass
+    el = pg.query_selector(img_sel) if img_sel else None
+    if el is None:
+        print(f"  ! captcha image not found via {img_sel!r} — cannot present a challenge", flush=True)
+        return False
+    try:
+        el.screenshot(path=shot)
+    except Exception as e:
+        print(f"  ! could not screenshot the captcha ({str(e)[:60]})", flush=True)
+        return False
+    print(f"  CAPTCHA: challenge saved to {shot}", flush=True)
+    print(f"  CAPTCHA: waiting up to {timeout_ms // 1000}s for the answer in {ans}", flush=True)
+    waited = 0
+    while waited < timeout_ms:
+        if os.path.exists(ans):
+            try:
+                text = open(ans).read().strip()
+            except OSError:
+                text = ""
+            if text:
+                pg.fill(cfg_captcha["input"], text)
+                print(f"  CAPTCHA: answered ({len(text)} chars)", flush=True)
+                return True
+        pg.wait_for_timeout(2000)
+        waited += 2000
+    print("  ! captcha not answered within the timeout — login abandoned", flush=True)
+    return False
+
+
 def login(pg, base, auth, user, pw):
     """Username/password form login."""
     pg.goto(base + auth.get("loginPath", "/login"), wait_until="domcontentloaded", timeout=60000)
     pg.wait_for_timeout(2500)
+    tab = auth.get("tab")
+    if tab:
+        # A tabbed login renders its fields only once the right tab is active.
+        try:
+            pg.click(tab); pg.wait_for_timeout(900)
+        except Exception:
+            print(f"  ! login tab {tab!r} not clickable — continuing", flush=True)
+    pg.wait_for_selector(auth["userField"], timeout=20000)
     pg.fill(auth["userField"], user)
     pg.fill(auth["passField"], pw)
+    if auth.get("captcha"):
+        if not solve_captcha(pg, auth["captcha"], auth["_paths"]):
+            return
     (pg.query_selector(auth.get("submit", "button[type=submit]")) or pg.query_selector("button")).click()
     pg.wait_for_timeout(4500)
 
@@ -264,8 +359,20 @@ def login_email_otp(pg, base, auth, user, otp):
     _click_button(pg, auth.get("verifyButton", "Verify OTP"), exact=False)
     pg.wait_for_timeout(5000)
 
+def role_auth(role, auth):
+    """Merge a role's own `auth` dict over the project's global auth block.
+
+    Two hosts in one portal routinely have two different login forms — E-Anudaan's admin side
+    takes a mobile number, its applicant side a username plus a captcha. A role whose `auth` is
+    the STRING "none" is public and never reaches here.
+    """
+    override = role.get("auth")
+    return {**auth, **override} if isinstance(override, dict) else auth
+
+
 def do_login(pg, role, auth):
     """Dispatch to the right login flow by auth.type. Returns False if creds are missing."""
+    auth = role_auth(role, auth)
     if auth.get("type") == "email-otp":
         otp = role.get("otp") or auth.get("otp")
         if not (role.get("user") and otp):
@@ -277,21 +384,82 @@ def do_login(pg, role, auth):
     login(pg, role["base"], auth, role["user"], role["pass"])
     return True
 
+def _route_path(route, base):
+    """A crawlable route is a path, never an absolute URL — `base + route` is how the crawl
+    navigates, so an origin left on the front concatenates into an unresolvable host."""
+    r = (route or "").split("?")[0]
+    if r.startswith(base):
+        r = r[len(base):]
+    elif r.startswith("http://") or r.startswith("https://"):
+        return None                     # some other origin — not this role's to crawl
+    return r if r.startswith("/") else None
+
+
 def discover_routes(pg, cfg):
+    # A slow-loading nav/carousel widget can still be rendering when we read hrefs, so the
+    # discovered route SET varies run to run (observed on scw-user-uat: two routes intermittently
+    # missing). Wait briefly for a nav-ish anchor to exist first; a timeout just proceeds with
+    # whatever is there rather than raising — this only ever ADDS routes timing was dropping.
+    try:
+        pg.wait_for_selector("nav a[href], aside a[href], [class*=sidebar] a[href], "
+                             "[class*=menu] a[href]", timeout=4000)
+    except Exception:
+        pass
     hrefs = pg.evaluate("""()=>{const s=new Set();document.querySelectorAll('nav a[href],aside a[href],[class*=sidebar] a[href],[class*=menu] a[href],a[href]').forEach(a=>{const h=a.getAttribute('href');if(h&&h.startsWith('/')&&!h.startsWith('//'))s.add(h.split('?')[0].split('#')[0])});return [...s]}""")
     skip = set(cfg.get("live", {}).get("skipRoutes", []))
     return [h for h in hrefs if h and h not in skip]
 
-def capture_role(pg, role, cfg, paths):
+def _engine_sha():
+    """Short git sha of the engine, recorded so a bundle can be traced to the code that made it."""
+    try:
+        return subprocess.run(["git", "rev-parse", "--short", "HEAD"],
+                              cwd=os.path.dirname(os.path.abspath(__file__)),
+                              capture_output=True, text=True, timeout=5).stdout.strip() or None
+    except Exception:
+        return None
+
+def capture_role(pg, role, cfg, paths, bdl, man, prev_bundle=None, mode="full", decisions=None,
+                 failures=None):
+    if decisions is None:
+        decisions = {}
+    # role name -> slugs whose goto failed every attempt this run. run() needs these by name:
+    # such a screen is correctly absent from the bundle, but a previous run's row for it can
+    # still be sitting in _captured.json, which analyze.py reads.
+    if failures is None:
+        failures = {}
     base = role["base"]; width = cfg.get("capture", {}).get("width", 1440)
     waitms = cfg.get("capture", {}).get("waitMs", 1800)
     routes = discover_routes(pg, cfg)
     land = pg.url.replace(base, "").split("?")[0]
     if land and land not in routes:
         routes.insert(0, land)
+    # Route discovery is a timing race on some live sites (a slow-loading widget's links are
+    # sometimes there, sometimes not — see discover_routes). Rather than keep trying to win that
+    # race, make discovery MONOTONIC: once a route has been seen for this role, always revisit
+    # it, by unioning in every route recorded for this role in the previous bundle.
+    skip = set(cfg.get("live", {}).get("skipRoutes", []))
+    carried = []
+    for s in (prev_bundle or {}).get("screens", []):
+        if s.get("role") != role["name"]:
+            continue
+        # A flow state is NOT a crawlable route. Its `route` is the absolute URL the wizard
+        # happened to be on, and carrying it here did two wrong things at once: it re-crawled a
+        # wizard step as if it were a page, and — because the crawl builds `base + route` — it
+        # produced `https://host` + `https://host/path` and failed to resolve. Flow states are
+        # reproduced by re-running their flow, never by navigating to their URL.
+        if str(s.get("reachedBy") or "").startswith("flow:"):
+            continue
+        r = _route_path(s.get("route"), base)
+        if r and r not in routes and r not in skip:
+            routes.append(r)
+            carried.append(r)
+    if carried:
+        print(f"  carried forward {len(carried)} route(s) seen in a previous run", flush=True)
     captured = []
+    failed = []
     for path in routes:
         slug = slugify(role["name"], path)
+        vol_selectors = MAN.volatile_selectors(man, slug) if man else []
         # Reset the viewport: settle_height grows it per page, and a tall window left over
         # from the previous route changes how the next one lays out.
         try: pg.set_viewport_size({"width": width, "height": 1000})
@@ -299,18 +467,69 @@ def capture_role(pg, role, cfg, paths):
         try:
             pg.goto(base + path, wait_until="networkidle", timeout=45000)
         except Exception:
-            try: pg.goto(base + path, wait_until="domcontentloaded", timeout=45000)
-            except Exception: continue
+            try:
+                pg.goto(base + path, wait_until="domcontentloaded", timeout=45000)
+            except Exception:
+                # One extra try after a short pause — no loop, no backoff ladder — before we
+                # accept the route is unreachable this run. A screen must never vanish from a
+                # run silently: if this also fails, it is logged here and in the role summary.
+                pg.wait_for_timeout(2000)
+                try:
+                    pg.goto(base + path, wait_until="domcontentloaded", timeout=45000)
+                except Exception as e:
+                    print(f"  ! {slug}: navigation failed ({str(e)[:120]}) — screen NOT captured",
+                          flush=True)
+                    failed.append(slug)
+                    continue
         pg.wait_for_timeout(waitms)
-        # Settle FIRST so the screenshot and the extraction describe the same layout.
-        settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
+        prev = B.find_screen(prev_bundle, slug) if prev_bundle else None
         png = os.path.join(paths["captures_live"], f"{slug}.png")
         dpr = cfg.get("capture", {}).get("dpr", 2)
+
+        # Settle FIRST — always, even for the verify-mode probe — so the probe describes the
+        # same post-settle layout the bundle's recorded hashes came from. Comparing a
+        # pre-settle extraction (no lazy-load scroll pass, no UNCLIP_JS) against post-settle
+        # hashes is invalid for the app-shell / inner-scroller pages this codebase's own
+        # comments say are common: pageH and the row set differ from settling alone, so a
+        # verify run would report "changed" on nearly every page for reasons that have
+        # nothing to do with the page actually changing, and the reuse saving is lost.
+        settled = settle_height(pg, UNCLIP_JS, width=width, base_h=1000)
+        try:
+            probe = pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
+        except Exception:
+            probe = None
+
+        decision = "recapture"
+        if mode == "verify" and prev and probe is not None:
+            kept, _ = B.mask_rows(probe["rows"], MAN.volatile_patterns(man, slug) if man else [])
+            decision = B.decide_screen(prev, B.structure_hash(kept),
+                                       B.geometry_hash(kept, probe["pageH"]))
+
+        if decision == "reuse" and prev and os.path.exists(png):
+            decisions[slug] = "reuse"
+            B.upsert_screen(bdl, prev)
+            captured.append({"slug": slug, "role": role["name"], "route": path,
+                             "url": base + path, "png": prev["png"], "rows": prev["totalRows"],
+                             "pageH": prev["pageH"], "pngH": prev["pngH"],
+                             "truncated": prev["truncated"]})
+            print(f"  = {slug}: reused (design and layout unchanged)", flush=True)
+            continue
+        if decision == "reuse":
+            # The probe said reuse but the PNG the bundle points to has vanished — recapture
+            # for real rather than record "reused" for a screenshot that no longer exists.
+            print(f"  ! {slug}: probe says reuse but {png} is missing — recapturing", flush=True)
+            decision = "recapture"
+        decisions[slug] = decision
+
+        # Only the genuinely expensive work — the (possibly sliced) screenshot and its sips
+        # normalize() pass — is skipped by an early `reuse` above. Settle and the extraction
+        # already ran (needed for the probe/decision itself), so reuse that same evaluation
+        # here instead of paying for a second one.
         try:
             shoot(pg, png, settled, dpr, width)
         except Exception: pass
         try:
-            data = pg.evaluate(EXTRACT_JS)
+            data = probe if probe is not None else pg.evaluate(EXTRACT_JS, {"volatileSelectors": vol_selectors})
             data["role"] = role["name"]; data["route"] = path; data["slug"] = slug
             data["figmaImg"] = None; data["url"] = base + path
             json.dump(data, open(os.path.join(paths["captures_live"], f"{slug}.json"), "w"), indent=2)
@@ -328,10 +547,69 @@ def capture_role(pg, role, cfg, paths):
             captured.append({"slug": slug, "role": role["name"], "route": path, "url": base + path,
                              "png": f"captures/live/{slug}.png", "rows": len(data["rows"]),
                              "pageH": data["pageH"], "pngH": png_h, "truncated": truncated})
+            kept, masked = B.mask_rows(data["rows"], MAN.volatile_patterns(man, slug) if man else [])
+            # shoot() tolerates a failed screenshot (try/except: pass) — sha256_file would raise
+            # FileNotFoundError on a missing PNG, which the outer handler mislabels as "extract
+            # failed" and leaves the bundle and _captured.json disagreeing about what exists.
+            try:
+                png_sha = B.sha256_file(png)
+            except OSError:
+                png_sha = None
+                print(f"  ! {slug}: screenshot missing — pngSha256 recorded as null", flush=True)
+            entry = B.screen_entry(
+                slug=slug, role=role["name"], route=path, url=base + path, reached_by="nav",
+                png=f"captures/live/{slug}.png", png_sha256=png_sha,
+                png_h=png_h, page_h=data["pageH"], truncated=truncated,
+                rows_path=f"captures/live/{slug}.json",
+                structure=B.structure_hash(kept), geometry=B.geometry_hash(kept, data["pageH"]),
+                masked=masked, total=len(data["rows"]),
+                fields=data.get("fields") or [], wizard=None, captured_at=B.now_iso())
+            entry["designUnchanged"] = (decision == "reshoot")
+            B.upsert_screen(bdl, entry)
+            if len(data["rows"]) and masked / len(data["rows"]) > B.MASK_WARN_RATIO:
+                print(f"  ! {slug}: {masked}/{len(data['rows'])} rows masked as volatile — "
+                      f"the mask is doing too much work and the fingerprint means little",
+                      flush=True)
             print(f"  ok {slug}: {len(data['rows'])} rows pageH={data['pageH']}{warn}", flush=True)
         except Exception as e:
             print(f"  ! {slug} extract failed: {str(e)[:60]}", flush=True)
+    if failed:
+        print(f"[{role['name']}] {len(failed)} screen(s) not captured: {', '.join(failed)}",
+              flush=True)
+    failures.setdefault(role["name"], []).extend(failed)
     return captured
+
+def rows_to_prune(rows, failures, visited_roles, captured_counts):
+    """Pure decision function for the manifest-pruning step in run().
+
+    A screen whose goto failed every attempt this run should have its stale row removed
+    from the manifest — UNLESS that role captured nothing at all this run, in which case
+    pruning must be skipped: the guard a few lines above this call in run() exists because
+    a single 0-screen retry once wiped 90 entries across 12 roles, and pruning must never
+    bypass that guard by deleting rows out from under it.
+
+    Args:
+      rows: manifest rows (dicts with a `slug` key) to filter, e.g. `out` in run().
+      failures: role name -> list of slugs whose navigation failed this run.
+      visited_roles: set of role names capture_role actually ran for this run.
+      captured_counts: role name -> number of screens successfully captured this run.
+
+    Returns: (kept_rows, pruned_slugs, skipped_roles) — `skipped_roles` is every role whose
+      failed slugs were left alone because it captured 0 screens this run, for logging.
+    """
+    failed_this_run = set()
+    skipped_roles = []
+    for role in visited_roles:
+        role_failed = failures.get(role, [])
+        if not role_failed:
+            continue
+        if captured_counts.get(role, 0) == 0:
+            skipped_roles.append(role)
+            continue
+        failed_this_run.update(role_failed)
+    kept = [row for row in rows if row.get("slug") not in failed_this_run]
+    pruned = sorted({row.get("slug") for row in rows if row.get("slug") in failed_this_run})
+    return kept, pruned, skipped_roles
 
 def merge_manifest(existing, fresh):
     """Replace rows whose `slug` was re-captured, preserving position, and append the rest.
@@ -350,16 +628,63 @@ def merge_manifest(existing, fresh):
     merged += [row for row in fresh if row.get("slug") not in seen]
     return merged
 
-def run(project, only_role=None, allow_empty=False):
+def run(project, only_role=None, allow_empty=False, force=False, verify=False):
+    import drive as DRV   # local import: drive.py imports from capture, so a module-scope
+                          # import here would be circular and fail at load time
     cfg, paths = C.load(project)
-    auth = cfg["live"]["auth"]
+    man = MAN.load(paths["project"])
+    if man:
+        errs = MAN.validate(man)
+        if errs:
+            print("!! screen-manifest.yaml is invalid:", flush=True)
+            for e in errs:
+                print(f"   - {e}", flush=True)
+            return []
+    env = (man or {}).get("environment") or cfg.get("live", {}).get("environment")
+    if not env:
+        # Absence must fail SAFE: `environment` gates whether a later driver may click a
+        # DESTRUCTIVE-labelled Submit/Approve unattended (dev/uat: yes, prod: refused).
+        # Defaulting to "dev" would make missing config resolve to the MOST permissive
+        # state. Note this does NOT halt the run: flows still navigate to their entry and
+        # still run their `fill` steps against the live form on prod — only the destructive
+        # click is refused.
+        print(f"!! {project}: no `environment` configured (cfg.live.environment or "
+              f"screen-manifest.yaml `environment`) — defaulting to 'prod', which REFUSES "
+              f"DESTRUCTIVE-labelled clicks but still navigates flows and still fills live "
+              f"forms with fixture data. Set `environment` in screen-manifest.yaml to silence "
+              f"this.", flush=True)
+        env = "prod"
+    bdl = B.new_bundle(project, env, _engine_sha())
+    # Loaded once, before capture starts: feeds capture_role's route union AND the
+    # carry-forward/shrink-guard below — no bundle write happens in between, so one load
+    # correctly represents "the previous run" for both uses.
+    prev_bundle = B.load_bundle(paths)
     mpath = os.path.join(paths["captures"], "_captured.json")
     try:
         existing = json.load(open(mpath)) if os.path.exists(mpath) else []
     except Exception as e:
         print(f"!! could not read existing manifest ({str(e)[:80]}) — treating it as empty", flush=True)
         existing = []
+    # Tier 0: consult the previous bundle before launching a browser at all. `reuse-all`
+    # short-circuits the whole run; `full`/`verify` fall through and capture_role decides
+    # per screen (mode == "verify" probes cheaply, mode == "full" always recaptures).
+    res = B.resolve_freshness(prev_bundle, man, cfg, force=force, verify=verify)
+    print(f"freshness: {res['mode']} — {res['reason']}", flush=True)
+    if res["mode"] == "reuse-all":
+        drift = B.verify_integrity(prev_bundle, paths["project"])
+        ok = B.write_freshness(paths, prev_bundle, res, {}, drift)
+        print(("freshness gate: PASS — reusing the existing bundle, no browser launched"
+               if ok else f"freshness gate: FAIL — {len(drift)} capture(s) drifted, see out/freshness.md"),
+              flush=True)
+        return existing
+    mode = res["mode"]
+    auth = cfg["live"]["auth"]
+    auth["_paths"] = paths   # solve_captcha writes its challenge/answer files under captures/.auth/
     manifest = []
+    decisions = {}  # slug -> "recapture"|"reshoot"|"reuse", tallied into freshness.md
+    visited_roles = set()  # roles capture_role actually ran for — everyone else's bundle
+                            # screens (SKIP/ABORTED/not-in---role) must be carried forward, not lost.
+    failures = {}   # role -> slugs whose navigation failed this run (see the pruning below)
     with sync_playwright() as p:
         b = p.chromium.launch(channel="chrome", headless=True)
         for role in cfg["live"]["roles"]:
@@ -384,7 +709,34 @@ def run(project, only_role=None, allow_empty=False):
                 else:
                     pg.goto(role["base"] + "/", wait_until="domcontentloaded", timeout=60000); pg.wait_for_timeout(3000)
                     print(f"[{role['name']}] public -> {pg.url}", flush=True)
-                manifest += capture_role(pg, role, cfg, paths)
+                manifest += capture_role(pg, role, cfg, paths, bdl, man, prev_bundle, mode,
+                                         decisions, failures)
+                visited_roles.add(role["name"])
+                for flow in (man or {}).get("flows") or []:
+                    if flow.get("role") != role["name"]:
+                        continue
+                    if not DRV.should_replay(flow, prev_bundle, decisions):
+                        for s in (prev_bundle or {}).get("screens", []):
+                            if s.get("reachedBy") == f"flow:{flow['id']}":
+                                B.upsert_screen(bdl, s)
+                        print(f"[flow {flow['id']}] skipped — entry screen unchanged", flush=True)
+                        continue
+                    if flow.get("reuseRecord") is None and (prev_bundle or {}).get("records", {}).get(flow["id"]):
+                        flow["reuseRecord"] = prev_bundle["records"][flow["id"]]["id"]
+                    # A flow walks a live form and can fail in ways a route crawl cannot — a
+                    # control that never settles, a step that stops advancing. That must cost
+                    # its own flow and nothing else: an exception escaping here aborted the
+                    # whole ROLE, discarding the two flows that had not run yet.
+                    try:
+                        DRV.run_flow(pg, flow, man, cfg, paths, bdl, env)
+                    except Exception as e:
+                        print(f"[flow {flow['id']}] FAILED: {str(e)[:120]} — the remaining "
+                              f"flows for this role still run", flush=True)
+                # Record this host's build fingerprint so a FUTURE run's Tier 0 check
+                # (resolve_freshness) has something to compare against — without this the
+                # bundle's `hosts` map stays empty forever and reuse-all can never trigger.
+                fp = B.build_fingerprint(role["base"])
+                bdl.setdefault("hosts", {})[role["name"]] = {"base": role["base"], "buildFingerprint": fp}
                 ctx.close()
             except Exception as e:
                 print(f"[{role['name']}] ROLE ABORTED: {str(e)[:120]}", flush=True)
@@ -411,8 +763,68 @@ def run(project, only_role=None, allow_empty=False):
             print(f"!! manifest SHRANK {len(existing)} -> {len(out)}: {len(dropped)} slug(s) no longer "
                   f"captured (aborted roles?): {dropped[:8]}{' …' if len(dropped) > 8 else ''}", flush=True)
 
+    # A screen whose goto failed every attempt this run is correctly absent from
+    # capture-bundle.json — but on a `--role` retry merge_manifest preserves the PREVIOUS run's
+    # row for it in _captured.json, which is what analyze.py reads. Net effect: out/freshness.md
+    # reports PASS while the generated PDF carries the previous run's screenshot inside THIS
+    # run's certification — the stale-reuse failure this whole feature exists to prevent,
+    # arriving by an older path. So prune those rows here, after the merge.
+    #
+    # Scoped to roles capture_role actually RAN for. `failures` is only populated by a role that
+    # reached the end of capture_role, and it is intersected with visited_roles again below, so a
+    # role that was skipped, aborted or excluded by `--role` keeps every row it had — same
+    # contract as the bundle carry-forward and the `--role` manifest merge above.
+    #
+    # A role that captured NOTHING this run (every route failed — outage, expired login, DNS
+    # blip) must not have its rows pruned either: that is exactly the 0-screen-retry scenario
+    # the guard above (`captured 0 screens — manifest left untouched`) exists to protect, and
+    # pruning here used to run right after it and delete the same rows anyway.
+    captured_counts = {}
+    for row in manifest:
+        r = row.get("role")
+        captured_counts[r] = captured_counts.get(r, 0) + 1
+    out, pruned, skipped_roles = rows_to_prune(out, failures, visited_roles, captured_counts)
+    if skipped_roles:
+        print(f"!! pruning skipped for {', '.join(sorted(skipped_roles))}: captured 0 screens "
+              f"this run, so failed-route rows were left in the manifest", flush=True)
+    if pruned:
+        print(f"!! removed {len(pruned)} stale manifest row(s) for screen(s) that failed to "
+              f"load this run: {', '.join(pruned)}", flush=True)
+
     json.dump(out, open(mpath, "w"), indent=2)
     print(f"CAPTURED {len(manifest)} screens (manifest now {len(out)})", flush=True)
+
+    prev = prev_bundle  # loaded once, above, before the route-union needed it
+    if prev:
+        # A bundle must not speak for roles it never visited this run — same contract as
+        # _captured.json above, but keyed on which roles capture_role actually ran for, not on
+        # `--role`: a full run where a role is SKIPPED (e.g. missing credentials) must carry
+        # that role's screens forward too, or they silently vanish from the bundle.
+        for s in prev.get("screens", []):
+            if s.get("role") not in visited_roles and not B.find_screen(bdl, s["slug"]):
+                B.upsert_screen(bdl, s)
+        bdl["records"] = {**prev.get("records", {}), **bdl.get("records", {})}
+        bdl["hosts"] = {**prev.get("hosts", {}), **bdl.get("hosts", {})}
+        prev_n, new_n = len(prev.get("screens", [])), len(bdl.get("screens", []))
+        if new_n < prev_n:
+            dropped = sorted({s.get("slug") or "?" for s in prev.get("screens", [])} -
+                              {s.get("slug") or "?" for s in bdl.get("screens", [])})
+            print(f"!! bundle SHRANK {prev_n} -> {new_n}: {len(dropped)} slug(s) no longer "
+                  f"present (aborted/skipped roles?): {dropped[:8]}{' …' if len(dropped) > 8 else ''}",
+                  flush=True)
+    # Record the recipe this bundle was built against, so a later edit to screen-manifest.yaml
+    # invalidates it (see bundle.manifest_hash). A role-limited run applied the recipe to ONE
+    # role, so it must not claim the whole recipe is satisfied — it carries the previous value
+    # forward instead, leaving the next full run to do the work.
+    if only_role:
+        bdl["manifestHash"] = (prev or {}).get("manifestHash")
+    else:
+        bdl["manifestHash"] = B.manifest_hash(man)
+    drift = B.verify_integrity(bdl, paths["project"])
+    if not B.write_freshness(paths, bdl, res, decisions, drift):
+        print(f"freshness gate: FAIL — {len(drift)} capture(s) drifted, see out/freshness.md", flush=True)
+    B.write_bundle(paths, bdl)
+    print(f"BUNDLE {len(bdl['screens'])} screen states -> out/capture-bundle.json", flush=True)
     return out
 
 if __name__ == "__main__":
@@ -421,7 +833,17 @@ if __name__ == "__main__":
     ap.add_argument("--project", required=True); ap.add_argument("--role", default=None)
     ap.add_argument("--allow-empty", action="store_true",
                     help="permit a full run that captured nothing to overwrite a non-empty manifest")
-    a = ap.parse_args(); run(a.project, a.role, a.allow_empty)
+    ap.add_argument("--force", action="store_true",
+                    help="ignore any existing capture-bundle.json and re-capture everything")
+    ap.add_argument("--verify", action="store_true",
+                    help="always run the per-screen freshness check, even when the build "
+                         "fingerprint is unchanged")
+    a = ap.parse_args(); run(a.project, a.role, a.allow_empty, a.force, a.verify)
+
+
+def refresh(project, force=False, verify=True):
+    """Re-check freshness without a full capture. `--phase bundle` — what a QC run calls first."""
+    return run(project, only_role=None, allow_empty=False, force=force, verify=verify)
 
 
 def audit_capture_integrity(paths, verbose=True):

@@ -15,6 +15,12 @@ every portal is reviewed to the **same senior-designer standard**.
 ## How it works (per screen)
 1. **Design truth** — Figma frame screenshot + tokens/specs (`design-truth-tokens.md`).
 2. **Live truth** — authenticated screenshot + computed CSS at matched viewports.
+
+> **Live truth is captured once.** A portal captured within its staleness window already has a
+> `capture-bundle.json` (tracked; the raw `captures/` corpus is not); the QC run reuses it and
+> re-captures only what moved, verified against `out/freshness.md`. See
+> `tools/design-audit/AUDIT-A-PORTAL.md` §2b.
+
 3. **Diff** across 6 axes with quantified deltas (`rubric.md`).
 4. **Annotate** — one comparison board PNG with numbered callouts (`annotation-system.md`).
 5. **Log** — one row per finding in the unified Excel tracker.

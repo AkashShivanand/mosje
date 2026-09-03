@@ -96,5 +96,34 @@ def main():
     print(f"created projects/{a.name}/secrets.json  ({len(secrets)-1} passwords)" if len(secrets) > 1 else "no passwords (public-only)")
     print("NEXT: agent dumps Figma via MCP into inputs/, then: python3 engine/run.py --project %s --phase all" % a.name)
 
+def seed_manifest(project):
+    """Write a starter screen-manifest.yaml from whatever has already been captured.
+
+    Authoring one from nothing is the main adoption cost, so give the user a file that already
+    lists their screens and only needs volatiles and flows added by hand.
+    """
+    import json as _json
+    pdir = C.project_dir(project)
+    path = os.path.join(pdir, "screen-manifest.yaml")
+    if os.path.exists(path):
+        print(f"screen-manifest.yaml already exists at {path} — not overwriting")
+        return path
+    mpath = os.path.join(pdir, "captures", "_captured.json")
+    rows = _json.load(open(mpath)) if os.path.exists(mpath) else []
+    lines = ["version: 1", "environment: uat  # dev | uat | prod", "stalenessCeiling: 14d", "",
+             "volatile:", "  # Content that changes on every load. Without these, dashboards look",
+             "  # dirty on every run and the per-screen freshness tier stops meaning anything.",
+             "  - pattern: '\\b\\d{2}/\\d{2}/\\d{4}\\b'", "",
+             "fixtures: {}", "", "screens:"]
+    for r in rows:
+        lines += [f"  - slug: {r.get('slug')}", f"    route: {r.get('route')}",
+                  f"    roles: [{r.get('role')}]"]
+    lines += ["", "flows: []  # add wizards, modals and validation states here", ""]
+    with open(path, "w") as fh:
+        fh.write("\n".join(lines))
+    print(f"seeded {path} with {len(rows)} screens")
+    return path
+
+
 if __name__ == "__main__":
     main()
