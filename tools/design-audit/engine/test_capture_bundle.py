@@ -1006,3 +1006,37 @@ class BranchFieldMatching(unittest.TestCase):
         """Guards the fix itself: the normaliser must survive edits to SET_FIELD_JS."""
         self.assertIn("const key=", D.SET_FIELD_JS)
         self.assertIn("key(e.name)", D.SET_FIELD_JS)
+
+
+class SessionLossGuard(unittest.TestCase):
+    """A portal that drops a session mid-run does not error. It serves its shell, and every screen
+    after that captures happily with a fraction of the content.
+
+    The run this gates took every applicant screen from 150+ rows to 39, wrote them over the good
+    ones, and the bundle shrank 196 -> 188 — eight real wizard states lost, with only a warning."""
+
+    def _prev(self, **sizes):
+        return {"screens": [{"slug": k, "role": "r", "totalRows": v} for k, v in sizes.items()]}
+
+    def test_a_screen_at_a_quarter_of_its_previous_size_is_degraded(self):
+        self.assertTrue(B.looks_degraded(self._prev(A=152), "A", 39))
+
+    def test_a_screen_that_merely_lost_a_row_is_not(self):
+        self.assertFalse(B.looks_degraded(self._prev(A=152), "A", 150))
+
+    def test_exactly_half_is_not_degraded(self):
+        """The threshold is a real cliff, not a gradual shrink — keep it strictly below half."""
+        self.assertFalse(B.looks_degraded(self._prev(A=100), "A", 50))
+
+    def test_a_slug_never_captured_before_cannot_be_degraded(self):
+        self.assertFalse(B.looks_degraded(self._prev(A=152), "BRAND-NEW", 3))
+
+    def test_no_previous_bundle_means_nothing_is_degraded(self):
+        self.assertFalse(B.looks_degraded(None, "A", 1))
+
+    def test_a_previous_entry_with_no_size_recorded_is_not_used_as_evidence(self):
+        self.assertFalse(B.looks_degraded({"screens": [{"slug": "A", "totalRows": 0}]}, "A", 1))
+
+    def test_the_run_length_is_more_than_one(self):
+        """One small screen is a small screen. Three in a row is a lost session."""
+        self.assertGreaterEqual(B.SESSION_LOSS_RUN, 3)

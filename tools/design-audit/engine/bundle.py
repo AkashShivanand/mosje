@@ -204,6 +204,26 @@ def manifest_hash(man):
     ).hexdigest()
 
 
+SESSION_LOSS_RATIO = 0.5
+SESSION_LOSS_RUN = 3
+
+
+def looks_degraded(prev_bundle, slug, total_rows, ratio=SESSION_LOSS_RATIO):
+    """Did this capture come back with far less on it than last time?
+
+    A portal that drops a session mid-run does not error — it serves the shell, and every screen
+    after that captures perfectly happily with a fraction of the content. One real run took every
+    applicant screen from 150+ rows to 39 and wrote them over the good ones; the bundle shrank
+    196 -> 188 and eight real wizard states were lost. Unknown slugs are never degraded: a screen
+    captured for the first time has nothing to be compared against.
+    """
+    prev = find_screen(prev_bundle or {}, slug)
+    if not prev:
+        return False
+    was = prev.get("totalRows") or prev.get("total") or 0
+    return bool(was) and total_rows < was * ratio
+
+
 def decide_screen(prev, structure, geometry):
     """reuse | reshoot | recapture.
 
