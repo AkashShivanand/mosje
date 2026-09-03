@@ -49,6 +49,8 @@ const A11Y: A11yItem[] = [
     status: "verified",
     description:
       "`checkbox` mode is a real checkbox in a real label. `challenge` mode reuses the DS `Input`. Neither invents a widget role.",
+    evidence:
+      "bot-check.tsx:176 is a `<label htmlFor={fieldId}>` wrapping the `type=\"checkbox\"` input at :179; challenge mode renders the DS `Input` at :226. The only roles in the file are `alert`, `status` and `img` — none of them a widget role.",
   },
   {
     criterion: "1.1.1 Non-text Content",
