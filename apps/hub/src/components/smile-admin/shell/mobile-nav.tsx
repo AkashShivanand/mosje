@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { navForRole } from "@/lib/smile-admin/nav";
 import { useApp } from "@/store/smile-admin/app-context";
@@ -11,6 +11,7 @@ import { Icon } from "@mosje/design-system";
 
 export function MobileNav() {
   const pathname = usePathname();
+  const router = useRouter();
   const { account, mobileNavOpen, setMobileNavOpen, signOut } = useApp();
 
   // Lock body scroll while open
@@ -162,7 +163,10 @@ export function MobileNav() {
             onClick={() => {
               signOut();
               setMobileNavOpen(false);
-              window.location.href = "/portals/smile-admin/login";
+              // router.push, not window.location.href: a full document load here
+              // throws away the client state signOut() just cleared and reloads
+              // the whole bundle to reach a route Next already has.
+              router.push("/portals/smile-admin/login");
             }}
             className="flex w-full items-center gap-md rounded-md px-md py-2 text-body-2 font-semibold text-danger hover:bg-danger-50"
           >
