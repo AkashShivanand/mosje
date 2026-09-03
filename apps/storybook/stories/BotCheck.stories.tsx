@@ -59,7 +59,15 @@ export const InvisibleStates: Story = {
     <div style={{ display: "grid", gap: "1.5rem" }}>
       {(["idle", "verifying", "verified", "failed"] as const).map((s) => (
         <div key={s}>
-          <div style={{ fontSize: 12, fontWeight: 700, textTransform: "uppercase", marginBottom: 8 }}>
+          <div
+            style={{
+              fontSize: "var(--sa-type-label-2-size)",
+              lineHeight: "var(--sa-type-label-2-lh)",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              marginBottom: "var(--sa-stack-8)",
+            }}
+          >
             {s}
           </div>
           <BotCheck

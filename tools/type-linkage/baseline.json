@@ -36,8 +36,8 @@
     "size is the failure mode this gate exists for."
   ],
   "totals": {
-    "size-off-ramp": 186,
-    "size": 376,
+    "size-off-ramp": 184,
+    "size": 375,
     "leading": 127,
     "tracking": 20,
     "family": 19
@@ -909,13 +909,6 @@
       "size": 0,
       "leading": 0,
       "tracking": 1,
-      "family": 0
-    },
-    "packages/design-system/components/auth/portal-login-template.tsx": {
-      "size-off-ramp": 2,
-      "size": 1,
-      "leading": 0,
-      "tracking": 0,
       "family": 0
     },
     "packages/design-system/components/data-display/charts/charts.css": {
