@@ -91,6 +91,21 @@ auto-clicks a destructive label (submit/approve/save/…) while that gate is clo
 skips the step, and its automatic click only ever tries the flow's explicit `submitLabel` or
 `"Next"`.
 
+**What a closed gate does and does not do.** Nothing prompts, halts or waits for a human. On
+`prod` a flow still navigates to its entry, still runs its `fill` steps against the **live** form,
+and still clicks any label that does not match `DESTRUCTIVE` — only destructive clicks are refused
+and logged. Run a flow against `prod` only if filling its form with fixture data is itself
+acceptable. The refusal is applied **twice** per click, because Playwright resolves a button name
+by case-insensitive substring: once against the label the step declared, and again against the
+accessible name of the element that label actually resolved to — otherwise `"Next"` passes the
+gate and then clicks `"Save & Next"`. A forward `click:` that does not happen **aborts the rest of
+the flow**, so no later step can file the unmoved page under the next screen's name.
+
+`reuseRecord` records the identifier a successful submission produced. It stops the next run
+**re-harvesting** one — it does not stop a second submission, because nothing navigates to or
+edits the recorded record. The thing that actually prevents a second submission is `should_replay`
+skipping a flow whose entry screen is byte-identical to the previous run's.
+
 ## 3. Capture the live build (assistant)
 ```bash
 cd tools/design-audit
