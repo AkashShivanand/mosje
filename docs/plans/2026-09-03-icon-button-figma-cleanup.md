@@ -92,3 +92,61 @@ carried a shadow through all of it because nothing asked. When cloning a variant
 And the corollary, from §4: **when a defect is reported on one component, check its
 siblings before believing it is confined there.** This one was three-quarters somewhere
 else.
+
+---
+
+## 7. Second pass — alignment, Scratch, and the CloseButton question
+
+### Icons were not positioned properly, and it was my grid
+
+Variants sat at their cell's **top-left**, so a 32px Small and a 48px Large in adjacent
+columns shared a top edge and not a centre line:
+
+| | cx | cy |
+|---|---|---|
+| Small (32) | 16 | 16 |
+| Default (40) | 92 | 20 |
+| Large (48) | 168 | 24 |
+
+Read across a row, the glyphs stepped down and to the right as the size grew. Every
+variant is now centred in its 72px cell: `cy = 36` for all nine columns, `cx` stepping
+36, 108, 180 … The cell is the unit; the control sits in the middle of it.
+
+### Scratch is gone
+
+`4 · Scratch — pre-2026 specimen boards` — 8988 × 4459, three frames: `Icon Buttons`
+(1837×2477), `Buttons` (4834×4219), and an empty wrapper misnamed "Icon Buttons".
+Removed on explicit instruction. The page re-stacks to three sections.
+
+### Do we need a separate CloseButton? No.
+
+Measured, not assumed:
+
+| | Figma `CloseButton` | Reality |
+|---|---|---|
+| Variants | 45 — Size × Type × State | IconButton covers this and more (360) |
+| `Type` options | Default, Outlined, **Tonal** | **Tonal was retired estate-wide in August** for a 1.21–1.52:1 edge |
+| Intent axis | none | IconButton has four |
+| Tone axis | none | IconButton has both grounds |
+| Code counterpart | **none** | — |
+| Instances on the Buttons page | **0** | — |
+
+A close button is an icon button whose glyph is `close`. **31 call sites in code already
+build it that way**, two of them through `IconButton`. The set is a stale duplicate
+carrying a retired appearance, and it is the same shape of problem `Link` was: published,
+findable, and unbuildable.
+
+**Recommendation: delete the `CloseButton` set and its page.** Not done here — a published
+set may hold instances on pages this session has not loaded, and `loadAllPagesAsync` is
+not available, so file-wide verification needs a human with the file open.
+
+### One page per component, not one page for the family
+
+`ds-documentation-standard.md` §1 describes a **component page**: a Documentation frame, a
+Component record, then numbered sections. Today `Button`, `IconButton` and `Link` share
+the "Buttons" page while `CloseButton` has one to itself — the opposite of the rule, in
+both directions at once.
+
+**Recommendation:** one page each — `Button`, `Icon Button`, `Button Group`, `Link`. That
+matches the estate's own code rule (`check:docs-routes`: one docs route per component) and
+gives each component somewhere to put the two frames it owes.
