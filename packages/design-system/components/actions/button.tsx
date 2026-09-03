@@ -210,14 +210,21 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           region inside an already-busy control and announce twice.
         */}
         {loading && <span className="ds-btn__spinner" aria-hidden="true" />}
+        {/*
+          THE SIDE IS IN THE CLASS, NOT IN THE POSITION.
+          `.ds-btn__icon:last-child` looked like a fair way to find a trailing icon and
+          is not: the label is a bare TEXT NODE, not an element, so a LEADING icon is
+          also the last element child and picked up the trailing rule too — both sides
+          compensated, on a button with one icon. Naming the side removes the guess.
+        */}
         {iconLeft != null && !loading && (
-          <span className="ds-btn__icon" aria-hidden="true">
+          <span className="ds-btn__icon ds-btn__icon--start" aria-hidden="true">
             {iconLeft}
           </span>
         )}
         {children}
         {iconRight != null && (
-          <span className="ds-btn__icon" aria-hidden="true">
+          <span className="ds-btn__icon ds-btn__icon--end" aria-hidden="true">
             {iconRight}
           </span>
         )}

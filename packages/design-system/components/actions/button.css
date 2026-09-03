@@ -446,6 +446,52 @@
     line-height: var(--sa-type-body-1-lh);
   }
 
+  /* ==========================================================================
+     OPTICAL PADDING — the icon side sits closer than the label side
+     ==========================================================================
+     A GLYPH IS NOT INK TO ITS OWN EDGE. Material Symbols draws inside a square
+     em-box with its own internal bearing, so the visible mark starts inset from
+     the box the layout measures. Give both sides the same geometric padding and
+     the icon side LOOKS further in than the label side — the label's letterforms
+     begin much closer to their box edge.
+
+     So the side carrying a glyph loses a step: 24 -> 16 at md and lg, 16 -> 12 at
+     sm. Material 3 does exactly this (16dp leading with an icon against 24dp
+     trailing), and Carbon and Polaris both compensate the same way. It is applied
+     per side, so a button with only a trailing arrow keeps its full leading
+     padding and vice versa.
+
+     THE SPINNER COUNTS AS A LEADING ICON, and that is load-bearing rather than
+     tidy. `loading` deliberately puts the spinner in the leading icon's PLACE so a
+     button does not change width the moment it is pressed. If the compensation
+     matched only `.ds-btn__icon`, a button with a leading icon would jump by 8px
+     on going busy — reintroducing, through the padding, the exact mis-click this
+     component avoided through the icon slot.
+
+     `.ds-icon-btn` is excluded: it is square, its padding is 0, and its glyph IS
+     the label, so there is no asymmetry to correct.
+
+     Matched on `--start` / `--end`, NOT on `:first-child` / `:last-child`. The label
+     is a bare text node rather than an element, so a leading icon is also the last
+     ELEMENT child — the positional version compensated both sides of a button that
+     had one icon. Caught by the test asserting the uncompensated side is still 24px.
+     ========================================================================== */
+  .ds-btn--sm:not(.ds-icon-btn):has(> :is(.ds-btn__icon--start, .ds-btn__spinner)) {
+    padding-inline-start: var(--sa-padding-12);
+  }
+  .ds-btn--sm:not(.ds-icon-btn):has(> .ds-btn__icon--end) {
+    padding-inline-end: var(--sa-padding-12);
+  }
+
+  .ds-btn--md:not(.ds-icon-btn):has(> :is(.ds-btn__icon--start, .ds-btn__spinner)),
+  .ds-btn--lg:not(.ds-icon-btn):has(> :is(.ds-btn__icon--start, .ds-btn__spinner)) {
+    padding-inline-start: var(--sa-padding-16);
+  }
+  .ds-btn--md:not(.ds-icon-btn):has(> .ds-btn__icon--end),
+  .ds-btn--lg:not(.ds-icon-btn):has(> .ds-btn__icon--end) {
+    padding-inline-end: var(--sa-padding-16);
+  }
+
   /* --------------------------------------------------------------------------
      Appearance: filled
      -------------------------------------------------------------------------- */

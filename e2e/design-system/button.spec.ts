@@ -544,3 +544,50 @@ test.describe("Button — the icon takes the button's ink", () => {
     expect(filled).toBe("rgb(255, 255, 255)");
   });
 });
+
+test.describe("Button — optical padding on the icon side", () => {
+  /**
+   * A glyph is not ink to its own edge: Material Symbols draws inside a square em-box
+   * with its own bearing, so equal geometric padding makes the icon side LOOK further in
+   * than the label side. The side carrying a glyph therefore loses a step.
+   */
+  test("the side with a glyph is tighter than the side without", async ({ page }) => {
+    await openTab(page, "Design");
+
+    const lead = await page.getByTestId("icon-filled").first().evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { start: cs.paddingLeft, end: cs.paddingRight };
+    });
+    // Leading icon: the left is compensated, the right keeps the full step.
+    expect(lead.start).toBe("16px");
+    expect(lead.end).toBe("24px");
+
+    const trail = await page.getByTestId("icon-outlined").first().evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { start: cs.paddingLeft, end: cs.paddingRight };
+    });
+    // Trailing icon: the mirror image, so it is per side rather than blanket.
+    expect(trail.start).toBe("24px");
+    expect(trail.end).toBe("16px");
+
+    // A button with no glyph at all keeps both sides full.
+    const plain = await page.getByTestId("btn-wrap").evaluate((el) => {
+      const cs = getComputedStyle(el);
+      return { start: cs.paddingLeft, end: cs.paddingRight };
+    });
+    expect(plain.start).toBe("24px");
+    expect(plain.end).toBe("24px");
+  });
+
+  /**
+   * `loading` puts the spinner in the leading icon's PLACE precisely so the button does
+   * not change width when pressed. If the compensation matched only `.ds-btn__icon`, a
+   * button would jump 8px on going busy — reintroducing through the padding the exact
+   * mis-click the icon slot was designed to avoid.
+   */
+  test("a busy button keeps the same leading padding as an iconed one", async ({ page }) => {
+    await openTab(page, "Design");
+    const busy = await page.getByTestId("btn-loading").first().evaluate((el) => getComputedStyle(el).paddingLeft);
+    expect(busy).toBe("16px");
+  });
+});
