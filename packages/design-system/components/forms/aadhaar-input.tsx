@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import type { FieldSize } from "./field-types";
 import { digitsOnly, formatAadhaar, isValidAadhaar, maskAadhaar } from "../../utils/india-id";
 import "./forms.css";
 import "./india-id.css";
@@ -9,7 +10,7 @@ import "./india-id.css";
 export interface AadhaarInputProps
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
-    "value" | "onChange" | "type" | "maxLength" | "inputMode"
+    "value" | "onChange" | "type" | "maxLength" | "inputMode" | "size"
   > {
   /** The raw 12 digits, no separators. Controlled. */
   value: string;
@@ -17,6 +18,13 @@ export interface AadhaarInputProps
   onValueChange: (digits: string) => void;
   /** Render the error state (sets aria-invalid). @default false */
   invalid?: boolean;
+  /**
+   * Control height, matching the Input scale. Declared here because the native
+   * `size` attribute on an `<input>` means character width, which is not a thing
+   * this control has — it is a fixed-length identity number.
+   * @default "md"
+   */
+  size?: FieldSize;
   /**
    * Mask to the last four digits when the field is complete and not focused.
    * Leave this ON unless you have a specific, recorded reason. @default true
@@ -66,7 +74,7 @@ function caretAfterDigits(str: string, n: number): number {
  */
 export const AadhaarInput = React.forwardRef<HTMLInputElement, AadhaarInputProps>(
   function AadhaarInput(
-    { value, onValueChange, invalid = false, mask = true, className, onFocus, onBlur, ...rest },
+    { value, onValueChange, invalid = false, size = "md", mask = true, className, onFocus, onBlur, ...rest },
     forwardedRef,
   ) {
     const innerRef = React.useRef<HTMLInputElement | null>(null);
@@ -107,7 +115,8 @@ export const AadhaarInput = React.forwardRef<HTMLInputElement, AadhaarInputProps
       <input
         ref={setRefs}
         type="text"
-        className={cn("ds-input", "ds-input--aadhaar", className)}
+        className={cn("ds-input", `ds-input--${size}`, "ds-input--aadhaar", className)}
+        data-size={size}
         value={display}
         onChange={handleChange}
         onFocus={(e) => {

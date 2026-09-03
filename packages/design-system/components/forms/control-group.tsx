@@ -28,6 +28,11 @@ interface ControlGroupBase {
   hint?: React.ReactNode;
   /** Error message; sets the group's invalid state and is announced. */
   error?: React.ReactNode;
+  /**
+   * Sets the invalid state without a message, so spreading `FormField`'s
+   * render-prop object onto a group degrades rather than breaks. Prefer `error`.
+   */
+  invalid?: boolean;
   required?: boolean;
   /** `card` renders each option as a selectable card. @default "default" */
   variant?: "default" | "card";
@@ -72,6 +77,7 @@ function GroupShell({
   legend,
   hint,
   error,
+  invalid = false,
   required,
   orientation = "vertical",
   className,
@@ -81,6 +87,7 @@ function GroupShell({
   legend: React.ReactNode;
   hint?: React.ReactNode;
   error?: React.ReactNode;
+  invalid?: boolean;
   required?: boolean;
   orientation?: "vertical" | "horizontal";
   className?: string;
@@ -93,9 +100,9 @@ function GroupShell({
 
   return (
     <fieldset
-      className={cn("ds-control-group", error ? "is-invalid" : null, className)}
+      className={cn("ds-control-group", error || invalid ? "is-invalid" : null, className)}
       aria-describedby={describedBy}
-      aria-invalid={error ? true : undefined}
+      aria-invalid={error || invalid ? true : undefined}
       aria-required={required || undefined}
     >
       <legend className="ds-control-group__legend">
@@ -147,6 +154,7 @@ export function RadioGroup({
   onChange,
   hint,
   error,
+  invalid,
   required,
   variant = "default",
   orientation = "vertical",
@@ -160,6 +168,7 @@ export function RadioGroup({
       legend={legend}
       hint={hint}
       error={error}
+      invalid={invalid}
       required={required}
       orientation={orientation}
       className={className}
@@ -198,6 +207,7 @@ export function CheckboxGroup({
   onChange,
   hint,
   error,
+  invalid,
   required,
   orientation = "vertical",
   className,
@@ -211,6 +221,7 @@ export function CheckboxGroup({
       legend={legend}
       hint={hint}
       error={error}
+      invalid={invalid}
       required={required}
       orientation={orientation}
       className={className}

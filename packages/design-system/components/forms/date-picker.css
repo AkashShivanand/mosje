@@ -2,6 +2,23 @@
 @layer theme, base, components, utilities;
 
 @layer components {
+
+  /* Visually hidden, still read. Defined here because this stylesheet is its own
+     CSS root: the component using the class cannot rely on another component's
+     file having been loaded, and when this definition was missing the
+     "(required)" text rendered visible on screen. */
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   .ds-datepicker {
     position: relative;
     display: flex;

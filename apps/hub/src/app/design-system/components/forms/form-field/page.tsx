@@ -20,44 +20,70 @@ const A11Y: A11yItem[] = [
   {
     criterion: "1.3.1 Info and Relationships",
     level: "A",
+    status: "verified",
+    evidence:
+      "The label is bound with `htmlFor`/`id`, and hint, contextual help, status message and character count are composed into ONE `aria-describedby` string \u2014 in a single expression, so no feature can displace another. Ids the caller supplies in `describedBy` join the same list rather than replacing it.",
     description:
-      "The label's `htmlFor` matches the control's `id`, so clicking the label focuses the field and assistive technology reads the right name.",
+      "Systems that set `aria-describedby` per feature let the last writer win, and a reader loses the hint the moment an error appears.",
   },
   {
     criterion: "1.4.1 Use of Colour",
     level: "A",
-    description:
-      "The required state is carried by the marker and the `required` attribute, and the error state by `role=\"alert\"` text — neither depends on the red border.",
+    status: "verified",
+    evidence:
+      "Every status message carries a glyph, a visually-hidden word (\u201cError: \u201d, \u201cWarning: \u201d, \u201cSuccess: \u201d) and the text itself. The colours are `--sa-text-status-*-base`, measured 2026-09-03 on white: error 9.1:1, warning 7.79:1, success 11.67:1.",
+    description: "Three channels before colour, and colour that would pass on its own anyway.",
   },
   {
     criterion: "3.3.1 Error Identification",
     level: "A",
+    status: "verified",
+    evidence:
+      "`error` sets `aria-invalid` on the control and links the message. `warning` and `success` deliberately do not \u2014 a warning that blocks is an error wearing the wrong colour.",
+    description: "Precedence is fixed: error, then warning, then success. Only one message shows.",
+  },
+  {
+    criterion: "4.1.3 Status Messages",
+    level: "AA",
+    status: "verified",
+    evidence:
+      "Two live regions are present from the first paint holding empty strings, and are filled only when the message changes AFTER mount. Verified by rendering a field with an error already present: nothing is announced on load, and the same error arriving from a client-side validator is. An error is assertive; a warning or success is polite.",
     description:
-      "An `error` sets `aria-invalid` on the control and renders the message in a `role=\"alert\"` region, so it is announced the moment it appears.",
+      "A plain `role=\"alert\"` on the message \u2014 which is what this component used to ship, and what most React systems still ship \u2014 announces every server-rendered validation error on page load, out of reading order and detached from its field. An initially-present error belongs to Error Summary, which takes focus.",
   },
   {
     criterion: "3.3.2 Labels or Instructions",
     level: "A",
+    status: "verified",
+    evidence:
+      "The label is always rendered. `labelHidden` hides it visually only. `labelHelp` is a disclosure button with `aria-expanded` and `aria-controls`, and its target is rendered even while shut \u2014 hidden with the `hidden` attribute \u2014 so the reference always resolves.",
     description:
-      "The hint is linked through `aria-describedby` and read with the field, so the instruction reaches a screen-reader user in the same breath as the question.",
+      "A disclosure rather than a tooltip: a tooltip cannot be opened by touch and cannot be read at leisure.",
   },
   {
     criterion: "3.3.3 Error Suggestion",
     level: "AA",
-    description:
-      "The message is the caller's text, and this component gives it a place where a suggested correction is read out rather than only shown.",
+    status: "partial",
+    evidence:
+      "The component renders whatever message it is given; it cannot enforce the wording. UX4G\u2019s formula \u2014 [Problem] + [Solution], \u201cEnter a valid 10-digit mobile number\u201d, not \u201cInvalid input\u201d \u2014 is stated here and in the props table, and is the caller\u2019s responsibility.",
+    description: "The one criterion on this page that code cannot close.",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
+    status: "verified",
+    evidence:
+      "`required` is passed to the control, so a screen reader announces \u201crequired\u201d and the asterisk stays `aria-hidden`. \u201c(optional)\u201d is left readable, because there is no attribute for it to announce instead. `readOnly` is passed as a real `readonly`.",
     description:
-      "The wiring is passed to the control rather than reimplemented around it, so the control keeps its own native role and value.",
+      "Read-only is not disabled: the field keeps its place in the tab order and its value stays selectable, so a citizen can copy an application number out of it.",
   },
   {
-    criterion: "GIGW 3.0 — Forms",
+    criterion: "GIGW 3.0 \u2014 Forms",
     level: "GIGW",
-    description:
-      "Every field carries a persistent visible label, a linked instruction where one is needed, and an announced error.",
+    status: "verified",
+    evidence:
+      "Associated label, visible required indicator with an explaining legend, helper text wired through `aria-describedby`, error linked with `aria-invalid` \u2014 the four GIGW names for forms, and Error Summary supplies the fifth.",
+    description: "The marking convention itself comes from Field Policy Provider, one per form.",
   },
 ];
 
@@ -106,6 +132,71 @@ export default function FormFieldPage(): React.JSX.Element {
         },
       ]}
       design={
+        <>
+        <section className="cdp__section" aria-labelledby="cdp-customise">
+          <h2 id="cdp-customise" className="cdp__h2">
+            Making It Yours
+          </h2>
+          <p>
+            Four levers, in the order you should reach for them. Nothing here requires forking the
+            component, and none of them is a selector written against one of its internal class
+            names — those are an implementation detail and they will move.
+          </p>
+          <ol>
+            <li>
+              <strong>Props.</strong> <code>size</code>, <code>orientation</code>,{" "}
+              <code>messageIcon</code>, <code>footer</code>, <code>labelHidden</code>. Between them
+              they cover most of what a screen asks for.
+            </li>
+            <li>
+              <strong><code>classNames</code>.</strong> A class name per part — root, label row,
+              label, help toggle, help, hint, message, count. This is the supported way to restyle
+              one field without touching the rest.
+            </li>
+            <li>
+              <strong>Data attributes.</strong> Every part carries <code>data-part</code>, and the
+              root carries <code>data-status</code>, <code>data-size</code>,{" "}
+              <code>data-required</code>, <code>data-readonly</code> and <code>data-disabled</code>.
+              A stylesheet can target{" "}
+              <code>[data-status=&quot;error&quot;] [data-part=&quot;message&quot;]</code> without
+              knowing a single class name.
+            </li>
+            <li>
+              <strong>The parts themselves.</strong> <code>FieldLabel</code>,{" "}
+              <code>FieldHint</code>, <code>FieldMessage</code>, <code>FieldHelp</code>,{" "}
+              <code>FieldHelpToggle</code> and <code>useFieldIds</code> are exported. Assemble your
+              own arrangement and the accessibility comes with the parts rather than being
+              re-implemented.
+            </li>
+          </ol>
+          <Callout type="info" title="Ids Are Derived, Not Registered">
+            <code>useFieldIds</code> computes every id up front from one <code>useId</code>, and the
+            caller says which parts exist. A compound component that discovers its children through
+            context and an effect cannot compose <code>aria-describedby</code> until after
+            hydration — so the server sends a control with no description, and a screen reader
+            reaching it first hears nothing. Less magical, and correct on the first paint.
+          </Callout>
+        </section>
+        <section className="cdp__section" aria-labelledby="cdp-language">
+          <h2 id="cdp-language" className="cdp__h2">
+            Language
+          </h2>
+          <p>
+            Every string this component speaks — the required marker, the word
+            &ldquo;optional&rdquo;, the spoken status prefixes, the help button&rsquo;s name, the
+            character count and the necessity legend — comes from{" "}
+            <code>FieldPolicyProvider</code>. Put one at the root of a portal and the whole field
+            stack changes language at once. Overrides merge over the English defaults and are
+            inherited by nested providers, so a form that sets only <code>necessity</code> inside a
+            Hindi portal stays in Hindi.
+          </p>
+          <p>
+            The three count strings are functions rather than templates with placeholders, because
+            pluralisation is not the same shape in every language and{" "}
+            <code>{"{n} characters remaining"}</code> cannot express Hindi&rsquo;s agreement rules.
+            A translator is handed the number and writes the sentence.
+          </p>
+        </section>
         <section className="cdp__section" aria-labelledby="cdp-renderprop">
           <h2 id="cdp-renderprop" className="cdp__h2">
             The Render Prop, in Plain English
@@ -123,6 +214,7 @@ export default function FormFieldPage(): React.JSX.Element {
             above the controls push the inputs out of alignment across the row.
           </p>
         </section>
+        </>
       }
       code={
         <section className="cdp__section" aria-labelledby="cdp-example">

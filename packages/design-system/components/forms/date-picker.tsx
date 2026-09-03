@@ -18,6 +18,14 @@ export interface DatePickerProps {
   hint?: string;
   /** Shown under the field, and announced. */
   error?: string;
+  /**
+   * Sets the error state without supplying a message. It exists so that
+   * spreading `FormField`'s render-prop object onto this component degrades
+   * rather than breaks: `FormField` hands over `invalid`, this component asks
+   * for `error`, and before this alias the field simply lost its error state.
+   * A message is still better — prefer `error`.
+   */
+  invalid?: boolean;
   required?: boolean;
   disabled?: boolean;
   id?: string;
@@ -102,6 +110,7 @@ export function DatePicker({
   max,
   hint,
   error,
+  invalid = false,
   required = false,
   disabled = false,
   id,
@@ -240,7 +249,7 @@ export function DatePicker({
           disabled={disabled}
           required={required}
           aria-describedby={describedBy || undefined}
-          aria-invalid={error ? true : undefined}
+          aria-invalid={error || invalid ? true : undefined}
           onChange={(e) => setText(e.target.value)}
           onBlur={commitText}
           onKeyDown={(e) => {

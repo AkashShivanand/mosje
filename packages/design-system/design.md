@@ -661,7 +661,7 @@
   `[data-surface="portal"]` block did not re-assert the `--ds-text-*`/`--ds-leading-*` aliases,
   so every natively-mounted portal rendered the WEBSITE type scale (display headings to 80px
   instead of 56px) — alias re-assertion is now targeted per block, which also cut tokens.css
-  from 92 KB to 60 KB. v1.7.2: Text-entry controls take a hard 16px floor below 768px: iOS Safari zooms any focused control under 16px and does not zoom back out, and the fluid ramp put body-1 at ~14px on a phone. Desktop density unchanged. v1.7.1: `SideSheet` gains `side="left"` for navigation drawers, so portal shells can collapse a fixed sidebar into a drawer on small screens instead of squeezing the page. `DeclarationCheckbox` attestation row now meets the 44px touch floor. v1.7.0: Adds three components for field reporting with sign-off: `GeoPhotoInput` (EXIF/device geo-tagging + auto-downscale), `DeclarationCheckbox` (statutory certification panel), `ApprovalTimeline` (multi-tier approval audit trail). No token values changed. v1.6.2: Theming: `[data-color-mode="…"]` blocks now re-declare the `--ds-*` aliases, exactly as `[data-theme="…"]` blocks already did, so colour-mode "islands" repaint a nested subtree instead of only flipping `--sa-*` primitives. Fixed in the generator `packages/tokens/build/formats/legacy-ds-css.mjs`; surfaced when portals mounted natively in the hub and `data-brand` moved off `<html>` onto a wrapper. No token values changed. v1.6.1: Icon loading: icons.css now declares an inline @font-face (pinned gstatic woff2) instead of an @import, so the documented `import "@mosje/design-system/icons.css"` finally loads the font under Next/Turbopack — no per-app <link> hack. Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
+  from 92 KB to 60 KB. v1.7.3: The field stack reaches parity with the UX4G 3.0 Figma library and past it. All EIGHT states (adds success, warning, read-only), a four-step size scale (40/44/48/56 — UX4G's 32px S is not offered, because 44 is the AAA target size), prefix/suffix affixes, contextual help, a pending state, and a grapheme-counting CharacterCount. FIXED: the focus ring was rgba(3,115,223,0.48) — 2.01:1 flattened on white, failing SC 1.4.11 — and a box-shadow, invisible in forced-colours; it is now a solid 3px outline at 2px offset, 4.64:1. FIXED: `md` and `lg` both rendered at 50px because padding, not min-height, decided the height. FIXED: a server-rendered error was announced on load. FIXED: `.ds-sr-only` was undefined in date-picker.css, combobox.css and chip.css, so their visually-hidden text was visible. Label 14→16px and hint/message 12→14px, taking the larger where UX4G's two sources disagree. Every string is overridable through `FieldPolicyProvider`; `autoComplete` is typed to the autofill field names. v1.7.2: Text-entry controls take a hard 16px floor below 768px: iOS Safari zooms any focused control under 16px and does not zoom back out, and the fluid ramp put body-1 at ~14px on a phone. Desktop density unchanged. v1.7.1: `SideSheet` gains `side="left"` for navigation drawers, so portal shells can collapse a fixed sidebar into a drawer on small screens instead of squeezing the page. `DeclarationCheckbox` attestation row now meets the 44px touch floor. v1.7.0: Adds three components for field reporting with sign-off: `GeoPhotoInput` (EXIF/device geo-tagging + auto-downscale), `DeclarationCheckbox` (statutory certification panel), `ApprovalTimeline` (multi-tier approval audit trail). No token values changed. v1.6.2: Theming: `[data-color-mode="…"]` blocks now re-declare the `--ds-*` aliases, exactly as `[data-theme="…"]` blocks already did, so colour-mode "islands" repaint a nested subtree instead of only flipping `--sa-*` primitives. Fixed in the generator `packages/tokens/build/formats/legacy-ds-css.mjs`; surfaced when portals mounted natively in the hub and `data-brand` moved off `<html>` onto a wrapper. No token values changed. v1.6.1: Icon loading: icons.css now declares an inline @font-face (pinned gstatic woff2) instead of an @import, so the documented `import "@mosje/design-system/icons.css"` finally loads the font under Next/Turbopack — no per-app <link> hack. Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -1728,12 +1728,69 @@ one. Each segment still meets 24×24 on its own, which the size ladder guarantee
 ### Forms
 
 #### FormField
-**Purpose**: The binding wrapper that auto-associates label, input control, hint text, and error message.  
+**Purpose**: The binding wrapper that associates label, help, control, hint, status message and
+character count, and owns every accessibility decision the field stack makes.  
 **Rules**:
 - Every `<Input>`, `<Select>`, `<Textarea>`, `<Checkbox>`, `<Radio>`, `<Toggle>` **must** be wrapped in `<FormField>`.
 - FormField auto-generates `htmlFor` / `aria-describedby` linkage. Do not bypass it.
-- Layout order is **label → control → hint → error** (hint renders as helper text *below* the control so inputs stay aligned across grid rows). All four remain linked via `aria-describedby`.
-- Error prop only activates after validation runs — never on initial render.
+- Layout order is **label → help → control → hint → message → count** (the hint renders *below*
+  the control so inputs stay aligned across grid rows, which is also where UX4G's Input master
+  draws its Caption). Every part is linked via `aria-describedby`.
+- **`aria-describedby` is COMPOSED, never replaced.** Hint, help, message, count and anything
+  passed in `describedBy` are joined by one expression, in reading order. Assigning the
+  attribute per feature lets the last writer win, and the reader loses the hint the moment an
+  error appears.
+- **Three message channels, one at a time.** `error` (blocks), `warning` (does not block),
+  `success` (a real check passed, not "you typed something"). Precedence is fixed and not
+  configurable. `warning` and `success` deliberately do **not** set `aria-invalid`.
+- **The error is not announced on first paint.** Two live regions sit on the page from the
+  first render holding nothing, and fill only when the message changes away from the one the
+  field was born with. A server-rendered error belongs to `ErrorSummary`, which takes focus.
+- **`readOnly` is a real `readonly`**, not a dressed-up `disabled`: focusable, selectable,
+  announced as read-only. Use it for pre-filled and under-review values.
+- Customise through `classNames` (per-part) and the `data-part` / `data-status` / `data-size`
+  attributes. Never write a selector against a `.ds-field__*` class — that is an
+  implementation detail and it will move.
+- Its parts — `FieldLabel`, `FieldHint`, `FieldMessage`, `FieldHelp`, `FieldHelpToggle` — are
+  exported with `useFieldIds` for the rare screen that needs a different arrangement. Ids are
+  derived from one `useId` rather than registered through context, so `aria-describedby` is
+  correct on the server's first paint.
+
+#### FieldPolicyProvider · RequiredFieldsLegend
+**Purpose**: Sets, for every field beneath it, whether the form marks its **mandatory** fields
+or its **optional** ones — and what words the whole field stack uses.  
+**Rules**:
+- **Mark the minority.** A form where two of forty fields are optional marks those two. Most
+  scheme applications here are almost entirely mandatory, so `necessity="optional"` is usually
+  right; asterisking forty of forty-two fields marks nothing.
+- **One provider per form.** Necessity is a form-level decision. Putting it on the field lets
+  one form mark half its fields each way, and the unmarked ones then read as a third category.
+- `RequiredFieldsLegend` prints the sentence that explains the mark, reading the same policy,
+  so the key and the marks cannot disagree. UX4G publishes this as its own component in the
+  Form Field Group. A mark with no key is not an instruction — an asterisk means "footnote" to
+  a great many readers.
+- **`copy` translates the whole stack.** Put one provider at the root of a portal.  Overrides
+  merge over the English defaults and are inherited by nested providers, so a form that changes
+  only `necessity` inside a Hindi portal stays in Hindi. The count strings are functions, not
+  templates, because pluralisation is not the same shape in every language.
+- Do not reach for `necessity="none"` unless every field is mandatory **and** the form says so
+  in prose above the fields.
+
+#### CharacterCount
+**Purpose**: A live count of how much of a text field's limit is left.  
+**Rules**:
+- Reach for it through `FormField`'s `characterCount` prop, which wires its description into
+  the field's `aria-describedby`. Render it directly only outside a field.
+- **Do not also set `maxLength` on the control.** A hard limit silently swallows keystrokes,
+  and a reader pasting a prepared answer loses the end of it without being told. Let them go
+  over and let the count say so — that is what its over-limit state is for. The browser also
+  counts UTF-16 units, so on Devanagari it would cut a word mid-cluster.
+- It counts **grapheme clusters**: `"नमस्ते".length` is 6 where a reader counts 3, and
+  `"👍🏽".length` is 4 where a reader counts 1.
+- Silent until three quarters of the limit is used, then debounced; polite inside the limit and
+  assertive past it, in two separate live regions.
+- Use it only where the limit is real and reachable. A count against a 4,000-character box
+  nobody fills is decoration.
 
 #### Label
 **Purpose**: A standalone `<label>` for controls that are **not** wrapped in `<FormField>`.  

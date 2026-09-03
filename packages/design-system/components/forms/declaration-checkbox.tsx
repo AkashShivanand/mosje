@@ -21,6 +21,14 @@ export interface DeclarationCheckboxProps {
   lead?: React.ReactNode;
   /** Error message shown when submission was attempted unchecked. */
   error?: React.ReactNode;
+  /**
+   * Sets the error state without supplying a message. It exists so that
+   * spreading `FormField`'s render-prop object onto this component degrades
+   * rather than breaks: `FormField` hands over `invalid`, this component asks
+   * for `error`, and before this alias the field simply lost its error state.
+   * A message is still better — prefer `error`.
+   */
+  invalid?: boolean;
   disabled?: boolean;
   id?: string;
   className?: string;
@@ -44,6 +52,7 @@ export function DeclarationCheckbox({
   title = "Declaration",
   lead = "I certify that:",
   error,
+  invalid = false,
   disabled = false,
   id,
   className,
@@ -73,7 +82,7 @@ export function DeclarationCheckbox({
         disabled={disabled}
         onChange={(e) => onChange(e.target.checked)}
         aria-describedby={[statementId, errorId].filter(Boolean).join(" ")}
-        aria-invalid={error != null || undefined}
+        aria-invalid={error != null || invalid || undefined}
         label={<span className="ds-declaration__confirm">I agree to the declaration above</span>}
       />
 
