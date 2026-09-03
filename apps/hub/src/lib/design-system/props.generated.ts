@@ -5026,6 +5026,71 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "LinkProps": {
+    "source": "packages/design-system/components/navigation/link.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Inert, and genuinely so: `href` is dropped, so the browser's own rules make it unfocusable and unactivatable. `aria-disabled` carries the state, since an anchor has no native `disabled` to read. Same mechanism the Button's link form uses."
+      },
+      {
+        "name": "download",
+        "type": "string | boolean",
+        "required": false,
+        "description": "Download rather than navigate. Adds a trailing download glyph."
+      },
+      {
+        "name": "external",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The link leaves this site, so it opens in a new tab. Sets `target=\"_blank\"`, adds `rel=\"noopener noreferrer\"`, draws a trailing open-in-new glyph, AND appends a visually hidden \"(opens in a new tab)\" to the accessible name. GIGW 3.0 requires telling the reader when a link opens a new window; the glyph tells the people who can see it and the hidden text tells the people who cannot. One without the other serves half the audience."
+      },
+      {
+        "name": "href",
+        "type": "string",
+        "required": false,
+        "description": "Where it goes. Omitted or `disabled` renders an inert anchor."
+      },
+      {
+        "name": "iconLeft",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Glyph before the label. Decorative — the label names the destination."
+      },
+      {
+        "name": "iconRight",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Glyph after the label. Suppressed when `external` draws its own."
+      },
+      {
+        "name": "size",
+        "type": "LinkSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "tone",
+        "type": "LinkTone = \"default\" | \"inverse\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "LinkVariant = \"inline\" | \"standalone\"",
+        "required": false,
+        "default": "\"inline\"",
+        "description": ""
+      }
+    ]
+  },
   "LiveRegionProps": {
     "source": "packages/design-system/components/utilities/live-region.tsx",
     "inheritsNative": false,

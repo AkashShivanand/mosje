@@ -880,6 +880,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Link",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/link",
+    "keywords": "link navigation a link changes location inline and standalone leaving the site  tokens wcag accessibility",
+    "description": "Text that takes the reader somewhere. A link changes location; a button performs an action.",
+    "type": "component",
+    "iconName": "navigation"
+  },
+  {
     "title": "Live Region — Design System",
     "section": "Utilities",
     "href": "/design-system/components/utilities/live-region",
