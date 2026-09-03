@@ -14,6 +14,7 @@ import { AccountPrompt, AuthDivider, ConsentLine, SSOButton } from "./auth-parts
 import { Alert } from "../feedback/alert";
 import { Button } from "../actions/button";
 import { BotCheck } from "../forms/bot-check";
+import { useBotCheck } from "../forms/use-bot-check";
 import { RadioGroup } from "../forms/control-group";
 import { FormField } from "../forms/form-field";
 import { Input } from "../forms/input";
@@ -222,16 +223,29 @@ export function PortalLoginTemplate({
    * over 85% of the time while only 31.2% of audio challenges get three-person
    * agreement among people, so it protected nothing and excluded many.
    */
-  // The server owns this. Until one is wired the check is inert, which is the
-  // honest resting state for a prototype: it never claims to have verified.
-  const botCheckStatus = "idle" as const;
+  /*
+   * The check runs REAL proof-of-work in the browser — SHA-256 over a random
+   * challenge until the digest clears 12 leading zero bits, a few hundred
+   * milliseconds of actual computation. The status the citizen sees is earned,
+   * not simulated.
+   *
+   * The half that is stubbed is the server's: the challenge is minted here
+   * rather than issued and remembered by an endpoint, so a token proves work was
+   * done but not that WE asked for it. `useBotCheck`'s docstring lists the four
+   * things that move server-side to close that. The hook always runs — hooks
+   * cannot be conditional — and its result is simply not rendered when the role
+   * has not asked for a check.
+   */
+  const botCheckMode = config.botCheck?.mode ?? "invisible";
+  const check = useBotCheck({ auto: botCheckMode !== "checkbox" });
   const botCheckHelpHref = config.botCheck?.helpHref ?? config.links?.helpFaqHref;
   const botCheck =
     showBotCheck && botCheckHelpHref ? (
       <BotCheck
-        mode={config.botCheck?.mode ?? "invisible"}
-        status={botCheckStatus}
+        mode={botCheckMode}
+        status={check.status}
         helpHref={botCheckHelpHref}
+        onVerify={check.solve}
         challenge={{ type: "text", characters: captchaCode }}
         value={captchaInput}
         onValueChange={setCaptchaInput}
@@ -300,6 +314,10 @@ export function PortalLoginTemplate({
         otp,
         captcha: captchaInput,
       },
+      // The proof-of-work receipt, where a check ran. A server verifies this;
+      // see `useBotCheck` for what it must check and why a token it did not
+      // issue has to be refused.
+      botCheck: showBotCheck ? check.token : null,
     });
   };
 

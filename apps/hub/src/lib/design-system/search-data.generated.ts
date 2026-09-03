@@ -192,7 +192,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Bot Check — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/bot-check",
-    "keywords": "bot check — design system forms & inputs why this is not a captcha what to reach for, in order the states, and the one that draws nothing the escape hatch is required, on purpose example notes  tokens wcag accessibility",
+    "keywords": "bot check — design system forms & inputs why this is not a captcha what to reach for, in order the states, and the one that draws nothing what is wired today, and what a developer must build the escape hatch is required, on purpose example notes  tokens wcag accessibility",
     "description": "The estate",
     "type": "component",
     "iconName": "edit_note"

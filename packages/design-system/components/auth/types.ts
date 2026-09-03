@@ -1,4 +1,5 @@
 import type { BotCheckMode } from "../forms/bot-check";
+import type { BotCheckToken } from "../forms/use-bot-check";
 import * as React from "react";
 
 /**
@@ -177,6 +178,16 @@ export interface LoginSubmitPayload {
     otp?: string;
     captcha?: string;
   };
+  /**
+   * The proof-of-work receipt, when a bot check ran. `null` when the role did
+   * not ask for one.
+   *
+   * **The server must verify this, not trust it.** It has to recompute the
+   * hash, confirm the difficulty, confirm it issued that exact challenge, burn
+   * it so it cannot be replayed, and reject anything stale. A token the server
+   * did not issue proves only that somebody did some arithmetic.
+   */
+  botCheck?: BotCheckToken | null;
 }
 
 /**

@@ -191,6 +191,69 @@ export default function BotCheckPage(): React.JSX.Element {
             </p>
           </section>
 
+          <section className="cdp__section" aria-labelledby="cdp-prototype">
+            <h2 id="cdp-prototype" className="cdp__h2">
+              What Is Wired Today, and What a Developer Must Build
+            </h2>
+            <p>
+              <code>useBotCheck</code> runs <strong>real proof-of-work in the browser</strong>. It
+              mints a random challenge, then hashes <code>challenge + nonce</code> with SHA-256
+              through the Web Crypto API, raising the nonce until the digest carries twelve leading
+              zero bits — about 4,096 hashes and a few hundred milliseconds. The specimen above
+              prints the receipt, and the hash is recomputable by hand. Nothing is faked and no
+              timer is pretending to work.
+            </p>
+            <Callout title="One Half Is Real, One Half Is Stubbed" type="warning">
+              The challenge is minted <strong>in the browser</strong>. That is the difference
+              between a demonstration and a defence: a bot can mint its own challenge, solve it, and
+              present a perfectly valid token, because nothing ever asked whether that challenge was
+              issued. Treat a passing check in this prototype as a rendering, not a decision.
+            </Callout>
+            <MatrixTable
+              caption="Moving from the prototype to a real check"
+              columns={["Step", "What the server does", "What breaks without it"]}
+              rows={[
+                [
+                  "Issue",
+                  "GET /api/bot-check/challenge returns { challenge, difficulty, issuedAt } and REMEMBERS it. Unguessable, single-use.",
+                  "Anyone can invent a challenge and solve their own homework.",
+                ],
+                [
+                  "Verify",
+                  "On submit, recompute SHA-256(challenge + nonce), check the leading zero bits, and check that this server issued that exact challenge.",
+                  "A token that proves arithmetic, not permission.",
+                ],
+                [
+                  "Burn",
+                  "Mark the challenge used the moment it is accepted.",
+                  "One solve buys unlimited submissions — replay.",
+                ],
+                [
+                  "Expire",
+                  "Refuse anything older than a few minutes.",
+                  "Tokens can be farmed in advance and spent in a burst.",
+                ],
+              ]}
+            />
+            <p>
+              Nothing else changes. <code>BotCheckToken</code>, the status transitions, this
+              component and the template&apos;s wiring all stay exactly as they are — the client
+              half is finished, and only issuing and verifying are stubbed.
+            </p>
+            <Callout title="Two Things Not to Do When Wiring It Up" type="info">
+              Do not raise <code>difficulty</code> to compensate for the missing server. Each extra
+              bit doubles the work, and that cost lands on the oldest phone on the estate, never on
+              an attacker with better hardware than any citizen. And do not treat a passing check as
+              authentication — it says &ldquo;probably a person&rdquo;, never &ldquo;this
+              person&rdquo;.
+            </Callout>
+            <p>
+              A browser with no Web Crypto — an old device, or a page served over plain HTTP —
+              reports <code>failed</code> rather than throwing. The citizen then gets the sentence
+              and the route out, instead of a form that refuses to submit and never says why.
+            </p>
+          </section>
+
           <section className="cdp__section" aria-labelledby="cdp-escape">
             <h2 id="cdp-escape" className="cdp__h2">
               The Escape Hatch Is Required, on Purpose
