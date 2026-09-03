@@ -31,6 +31,7 @@ PY
 | Screens missing a screenshot hash | **0** |
 | Screenshots + element files on disk | 268 pairs (153 MB) |
 | Applications submitted end to end | **0 of 3** |
+| Conditional branches captured | **1 of 4 controllers**, one branch of that one |
 
 ---
 
@@ -38,7 +39,7 @@ PY
 
 | Family | Roles | Screens | Status |
 |---|---|---|---|
-| Applicant | `ngo-user` | 49 | ✅ Complete (nav + 3 wizards) |
+| Applicant | `ngo-user` | 49 | ⚠️ Nav complete; wizards captured on **one branch only** |
 | AVYAY — Programme Division | `avyay-pd-{aso,so,us,ds,js}` | 8–9 each | ✅ Sidebar routes complete |
 | AVYAY — Integrated Finance | `avyay-ifd-{aso,so,us,ds,js}` | 6–7 each | ✅ Sidebar routes complete |
 | AVYAY — PMU & Director | `avyay-pmu-inspections`, `avyay-programme-director` | 6 each | ✅ Sidebar routes complete |
@@ -67,6 +68,27 @@ Each scheme puts every form section behind `/step-1`, uploads behind `/step-2`, 
 Two states are captured per step — `-ARRIVED` (as the page was found) and `-FILLED` (after the
 walker filled and uploaded) — plus one `-VALIDATION-ERRORS` per scheme, taken by submitting the
 first step empty.
+
+### One branch only — the gap the first version of this tracker hid
+
+All 43 wizard screens are the **renewal** path. The resumed draft had `case_type` set to
+*"Ongoing / Renewal of an existing project"*, and `fill_all` only fills controls that are empty, so
+it never flipped it. Across the four schemes there are **four branch controllers**
+(`AVYAY:case_type`, `SMILE:case_type`, `SMILE:website_available`, `SMILE:fcra_80g`) governing 7
+conditional fields and 8 conditional documents.
+
+Uncaptured: AVYAY's new-project path — its Justification step, its 11-document checklist against
+renewal's 9, and the step-1 state where defect **D2** blocks the applicant. See
+`e-anudaan-build-defects.md`.
+
+**No capture of this portal is complete until the walker can set a controlling field and walk
+again.**
+
+### The audited deployment is not this source
+
+`eanudaan-user-uat.mosje.in` is behind `main`: AVYAY renders 7 steps where the source declares 8,
+and SHRESHTA_M2 counts 7 documents where the source declares 20. NAPDDR matches at 10. It is not a
+clean snapshot of any single commit — details in `e-anudaan-build-defects.md`.
 
 ### Why all three stop at the same step
 
@@ -156,7 +178,8 @@ should carry `allowSubmit: false` so the gate refuses the click.
 | Traversal recipe | `tools/design-audit/projects/e-anudaan/screen-manifest.yaml` |
 | Roles, routes, auth | `tools/design-audit/projects/e-anudaan/audit.config.json` |
 | Credentials | `tools/design-audit/projects/e-anudaan/secrets.json` — gitignored |
-| The audit | `docs/audit/e-anudaan-uat-design-audit.md` |
+| The UI/UX audit | `docs/audit/e-anudaan-uat-design-audit.md` |
+| Build defects (our code) | `docs/audit/e-anudaan-build-defects.md` |
 | This tracker | `docs/audit/e-anudaan-capture-tracker.md` |
 
 **Re-running:**
