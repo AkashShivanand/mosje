@@ -9,7 +9,9 @@
  *
  * One component, four shapes: the step list, the fields, the document checklist and the
  * read-back all come from the per-scheme schema in lib/e-anudaan/form-schema.ts, because the
- * live portal runs a genuinely different form per scheme (6 / 7 / 6 / 3 steps).
+ * live portal runs a genuinely different form per scheme — SHRESHTA_M2 6, AVYAY 8 for a new
+ * project and 7 for a renewal, SMILE 6, NAPDDR 10 — so the step list is read from the schema and
+ * filtered by branch, never assumed.
  */
 
 import * as React from "react";

@@ -11,7 +11,7 @@
  *   AVYAY      8/7 steps  11/9 documents  (PDF)          + a cost-norms panel on the grant step
  *                  NEW branch has 8 steps and 11 documents; renewal 7 and 9.
  *   SMILE        6 steps   12 documents   (PDF)
- *   NAPDDR       3 steps   17 documents   (PDF)          — the generic short form
+ *   NAPDDR      10 steps   17 documents   (PDF)
  *
  * Routing note, also from the walkthrough: the early steps sit under `.../step-1`, the upload
  * step under `.../step-2` and the read-back under `.../review`. Step state within `step-1` is
@@ -342,7 +342,7 @@ export const SHRESHTA_WIZARD: WizardDef = {
 };
 
 /* ══════════════════════════════════════════════════════════════════════════════
-   AVYAY (Atal Vayo Abhyuday Yojana) — 7 steps, with the cost-norms entitlement panel
+   AVYAY (Atal Vayo Abhyuday Yojana) — 8 steps new / 7 renewal, with the cost-norms panel
    ══════════════════════════════════════════════════════════════════════════════ */
 
 /** The live standing notice that sits under the AVYAY stepper on every step. */
