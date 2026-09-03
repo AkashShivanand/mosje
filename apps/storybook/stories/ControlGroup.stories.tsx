@@ -35,6 +35,11 @@ import { CheckboxGroup, RadioGroup, type RadioGroupProps } from "@mosje/design-s
  * outside the group has to point at it — an `ErrorSummary` entry whose
  * `fieldId` must resolve to this group, say. Every option's own id is derived
  * from it, so setting it makes the whole group's ids predictable.
+ *
+ * **`invalid`** is a legacy alias that sets the error state without a message. It exists only
+ * so that spreading `FormField`'s render-prop object onto this component degrades instead of
+ * breaking — `FormField` hands over `invalid`, this component asks for `error`. Prefer `error`:
+ * a field marked wrong with nothing said about it tells the reader only that they are stuck.
  */
 const meta = {
   title: "Forms/ControlGroup",

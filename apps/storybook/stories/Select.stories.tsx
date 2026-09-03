@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { Select } from "@mosje/design-system";
+import { FormField, Select } from "@mosje/design-system";
 
 const STATES = [
   { label: "Maharashtra", value: "MH" },
@@ -109,4 +109,31 @@ export const GroupedChildren: Story = {
  */
 export const FilterAppearance: Story = {
   args: { appearance: "filter", options: STATES, placeholder: "All states" },
+};
+
+/**
+ * **Status and size.** The `field` appearance runs the shared scale — `sm` 40, `md` 44, `lg` 48,
+ * `xl` 56 — and carries the same three statuses as every other control. There is deliberately
+ * no read-only select: HTML has none, and faking one with `disabled` would take the control out
+ * of the tab order and out of the submitted form.
+ */
+export const StatusesAndSizes: Story = {
+  render: () => {
+    const options = [
+      { value: "ts", label: "Telangana" },
+      { value: "ka", label: "Karnataka" },
+    ];
+    return (
+      <div style={{ display: "grid", gap: 16, maxWidth: 420 }}>
+        <FormField label="Error" error="Select the State where you are applying">
+          {(c) => <Select {...c} placeholder="Choose a State" options={options} />}
+        </FormField>
+        <FormField label="Success" success="Districts loaded for Telangana">
+          {(c) => <Select {...c} status="success" defaultValue="ts" options={options} />}
+        </FormField>
+        <FormField label="Small">{(c) => <Select {...c} size="sm" options={options} />}</FormField>
+        <FormField label="Extra large">{(c) => <Select {...c} size="xl" options={options} />}</FormField>
+      </div>
+    );
+  },
 };

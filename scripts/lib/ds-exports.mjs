@@ -24,6 +24,11 @@ export const BARREL = process.env.DS_BARREL ?? "packages/design-system/index.ts"
  * being forgotten.
  */
 export const NOT_COMPONENTS = new Set([
+  // The field stack's English strings, exported so a portal can spread them and
+  // override two rather than restate ten. An object of sentences has no visual
+  // form, so it has no story and no page; the contract it satisfies is
+  // documented on Form Field, which is what reads it.
+  "DEFAULT_FIELD_COPY",
   // The illustration set's own index — a string array naming every scene, used
   // by the specimen sheet and by anything that needs to enumerate them.
   "SCENE_NAMES",
@@ -148,6 +153,17 @@ export const DOCUMENTED_BY = {
   // group radios" goes to the Radio page, not to a separate route — the
   // fieldset/legend wrapper belongs beside the control it wraps.
   RadioGroup: "Radio", CheckboxGroup: "Checkbox",
+  // The legend is the visible half of the field policy and is meaningless
+  // without it — the sentence it prints IS the policy, read back. Documented on
+  // the provider's page for the same reason RadioGroup is documented on Radio's.
+  RequiredFieldsLegend: "FieldPolicyProvider",
+  // FORM FIELD'S PARTS. `FormField` is what a consumer composes; these are the
+  // pieces it is assembled from, exported only so a screen needing a different
+  // arrangement can build one without re-implementing the accessibility. Each is
+  // meaningless alone, and splitting them across five routes would scatter the
+  // one thing worth reading — how they wire together.
+  FieldLabel: "FormField", FieldHint: "FormField", FieldMessage: "FormField",
+  FieldHelp: "FormField", FieldHelpToggle: "FormField",
   // ChartExport is the download control ChartCard renders in its header when
   // `exportable`; it cannot stand alone (it reads the sibling chart's <svg> and
   // <table> from the DOM), so it is shown and documented through ChartCard.

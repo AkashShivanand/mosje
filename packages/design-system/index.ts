@@ -114,6 +114,48 @@ export { ErrorSummary } from "./components/forms/error-summary";
 export type { ErrorSummaryProps, ErrorSummaryItem } from "./components/forms/error-summary";
 export { FormField } from "./components/forms/form-field";
 export type { FormFieldProps, FormFieldControlProps } from "./components/forms/form-field";
+export type { FormFieldCharacterCount } from "./components/forms/form-field";
+export type { FormFieldClassNames } from "./components/forms/form-field";
+export {
+  FieldPolicyProvider,
+  RequiredFieldsLegend,
+  useFieldCopy,
+  useFieldPolicy,
+} from "./components/forms/field-policy";
+export type {
+  FieldPolicy,
+  FieldPolicyProviderProps,
+  NecessityIndicator,
+  RequiredFieldsLegendProps,
+} from "./components/forms/field-policy";
+export { DEFAULT_FIELD_COPY, resolveFieldCopy } from "./components/forms/field-copy";
+export type { FieldCopy, FieldCopyOverride } from "./components/forms/field-copy";
+export {
+  FieldHelp,
+  FieldHelpToggle,
+  FieldHint,
+  FieldLabel,
+  FieldMessage,
+  useFieldIds,
+} from "./components/forms/field-parts";
+export type {
+  FieldHelpProps,
+  FieldHelpToggleProps,
+  FieldHintProps,
+  FieldIds,
+  FieldLabelProps,
+  FieldMessageProps,
+  FieldPart,
+} from "./components/forms/field-parts";
+export { CharacterCount, countCharacters } from "./components/forms/character-count";
+export type { CharacterCountProps } from "./components/forms/character-count";
+export { resolveFieldStatus } from "./components/forms/field-types";
+export type {
+  AutocompleteFieldName,
+  AutocompleteToken,
+  FieldSize,
+  FieldStatus,
+} from "./components/forms/field-types";
 export { Label } from "./components/forms/label";
 export type { LabelProps } from "./components/forms/label";
 export { Checkbox } from "./components/forms/checkbox";

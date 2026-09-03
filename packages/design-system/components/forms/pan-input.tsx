@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import type { FieldSize } from "./field-types";
 import { formatPan, isValidPan } from "../../utils/india-id";
 import "./forms.css";
 import "./india-id.css";
@@ -9,7 +10,7 @@ import "./india-id.css";
 export interface PanInputProps
   extends Omit<
     React.InputHTMLAttributes<HTMLInputElement>,
-    "value" | "onChange" | "type" | "maxLength"
+    "value" | "onChange" | "type" | "maxLength" | "size"
   > {
   /** The normalised PAN (uppercase, alphanumeric, ≤10). Controlled. */
   value: string;
@@ -17,6 +18,13 @@ export interface PanInputProps
   onValueChange: (pan: string) => void;
   /** Render the error state (sets aria-invalid). @default false */
   invalid?: boolean;
+  /**
+   * Control height, matching the Input scale. Declared here because the native
+   * `size` attribute on an `<input>` means character width, which is not a thing
+   * this control has — it is a fixed-length identity number.
+   * @default "md"
+   */
+  size?: FieldSize;
 }
 
 /**
@@ -37,14 +45,15 @@ export interface PanInputProps
  * </FormField>
  */
 export const PanInput = React.forwardRef<HTMLInputElement, PanInputProps>(
-  function PanInput({ value, onValueChange, invalid = false, className, ...rest }, ref) {
+  function PanInput({ value, onValueChange, invalid = false, size = "md", className, ...rest }, ref) {
     const complete = value.length === 10;
 
     return (
       <input
         ref={ref}
         type="text"
-        className={cn("ds-input", "ds-input--pan", className)}
+        className={cn("ds-input", `ds-input--${size}`, "ds-input--pan", className)}
+        data-size={size}
         value={value}
         onChange={(e) => onValueChange(formatPan(e.target.value))}
         inputMode="text"

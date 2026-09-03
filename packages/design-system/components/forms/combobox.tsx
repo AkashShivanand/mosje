@@ -26,6 +26,14 @@ export interface ComboboxProps {
   noMatchLabel?: string;
   hint?: string;
   error?: string;
+  /**
+   * Sets the error state without supplying a message. It exists so that
+   * spreading `FormField`'s render-prop object onto this component degrades
+   * rather than breaks: `FormField` hands over `invalid`, this component asks
+   * for `error`, and before this alias the field simply lost its error state.
+   * A message is still better — prefer `error`.
+   */
+  invalid?: boolean;
   required?: boolean;
   disabled?: boolean;
   id?: string;
@@ -84,6 +92,7 @@ export function Combobox({
   noMatchLabel = "No match. Check the spelling, or clear the box to see everything.",
   hint,
   error,
+  invalid = false,
   required = false,
   disabled = false,
   id,
@@ -251,7 +260,7 @@ export function Combobox({
           aria-autocomplete="list"
           aria-activedescendant={open && filtered.length > 0 ? `${baseId}-opt-${activeIndex}` : undefined}
           aria-describedby={[describedBy, open ? countId : null].filter(Boolean).join(" ") || undefined}
-          aria-invalid={error ? true : undefined}
+          aria-invalid={error || invalid ? true : undefined}
           onChange={(e) => {
             setQuery(e.target.value);
             setOpen(true);

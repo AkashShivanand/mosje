@@ -64,6 +64,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "true",
         "description": "Mask to the last four digits when the field is complete and not focused. Leave this ON unless you have a specific, recorded reason."
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "Control height, matching the Input scale. Declared here because the native `size` attribute on an `<input>` means character width, which is not a thing this control has — it is a fixed-length identity number."
       }
     ]
   },
@@ -1499,6 +1506,43 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "CharacterCountProps": {
+    "source": "packages/design-system/components/forms/character-count.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "maxLength",
+        "type": "number",
+        "required": true,
+        "description": "The limit."
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": true,
+        "description": "The current value of the field being counted."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "id",
+        "type": "string",
+        "required": false,
+        "description": "Id, so `FormField` can wire the count into the field's description."
+      },
+      {
+        "name": "threshold",
+        "type": "number",
+        "required": false,
+        "default": "75% of `maxLength`",
+        "description": "Start announcing once this many characters have been used. Below it the count is on screen but silent, because a reader who has typed four characters of a 500-character box does not need to hear about it."
+      }
+    ]
+  },
   "ChartCardProps": {
     "source": "packages/design-system/components/dashboard/chart-card.tsx",
     "inheritsNative": true,
@@ -2095,6 +2139,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Sets the invalid state without a message, so spreading `FormField`'s render-prop object onto a group degrades rather than breaks. Prefer `error`."
+      },
+      {
         "name": "orientation",
         "type": "\"vertical\" | \"horizontal\"",
         "required": false,
@@ -2409,6 +2459,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Sets the error state without supplying a message. It exists so that spreading `FormField`'s render-prop object onto this component degrades rather than breaks: `FormField` hands over `invalid`, this component asks for `error`, and before this alias the field simply lost its error state. A message is still better — prefer `error`."
+      },
+      {
         "name": "noMatchLabel",
         "type": "string",
         "required": false,
@@ -2663,6 +2720,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Sets the error state without supplying a message. It exists so that spreading `FormField`'s render-prop object onto this component degrades rather than breaks: `FormField` hands over `invalid`, this component asks for `error`, and before this alias the field simply lost its error state. A message is still better — prefer `error`."
+      },
+      {
         "name": "max",
         "type": "string",
         "required": false,
@@ -2729,6 +2793,13 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Sets the error state without supplying a message. It exists so that spreading `FormField`'s render-prop object onto this component degrades rather than breaks: `FormField` hands over `invalid`, this component asks for `error`, and before this alias the field simply lost its error state. A message is still better — prefer `error`."
       },
       {
         "name": "lead",
@@ -3230,6 +3301,97 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "FieldHelpToggleProps": {
+    "source": "packages/design-system/components/forms/field-parts.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "labelText",
+        "type": "string",
+        "required": true,
+        "description": "The field's label, used to build the button's accessible name."
+      },
+      {
+        "name": "open",
+        "type": "boolean",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "icon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Replace the glyph."
+      }
+    ]
+  },
+  "FieldLabelProps": {
+    "source": "packages/design-system/components/forms/field-parts.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "optional",
+        "type": "boolean",
+        "required": false,
+        "description": "Append the policy's optional wording."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "description": "Append the policy's mandatory marker."
+      },
+      {
+        "name": "visuallyHidden",
+        "type": "boolean",
+        "required": false,
+        "description": "Hide visually, keep for assistive tech."
+      }
+    ]
+  },
+  "FieldMessageProps": {
+    "source": "packages/design-system/components/forms/field-parts.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "status",
+        "type": "FieldStatus = \"error\" | \"warning\" | \"success\"",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "icon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Replace the leading glyph. Pass `null` to drop it."
+      }
+    ]
+  },
+  "FieldPolicyProviderProps": {
+    "source": "packages/design-system/components/forms/field-policy.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "copy",
+        "type": "FieldCopyOverride",
+        "required": false,
+        "description": "Replace any of the field stack's strings — for another language, or for a portal whose register differs. Merged over the English defaults, so an override supplies only what it changes."
+      },
+      {
+        "name": "necessity",
+        "type": "NecessityIndicator = \"required\" | \"optional\" | \"none\"",
+        "required": false,
+        "default": "\"required\"",
+        "description": "How this form marks mandatory and optional fields."
+      }
+    ]
+  },
   "FilterBarProps": {
     "source": "packages/design-system/components/dashboard/filter-bar.tsx",
     "inheritsNative": false,
@@ -3422,7 +3584,7 @@ export const GENERATED_PROPS = {
         "name": "invalid",
         "type": "boolean",
         "required": true,
-        "description": ""
+        "description": "Legacy alias, true when `status` is `error`. Kept so old call sites work."
       },
       {
         "name": "aria-describedby",
@@ -3431,10 +3593,34 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
         "name": "required",
         "type": "boolean",
         "required": false,
         "description": ""
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "status",
+        "type": "FieldStatus = \"error\" | \"warning\" | \"success\"",
+        "required": false,
+        "description": "The field's condition, derived from which message was supplied."
       }
     ]
   },
@@ -3446,7 +3632,7 @@ export const GENERATED_PROPS = {
         "name": "children",
         "type": "(control: FormFieldControlProps) => React.ReactNode",
         "required": true,
-        "description": "Render-prop receiving the wiring for the control: `{ id, invalid, \"aria-describedby\" }`. Spread it onto Input/Select/Textarea."
+        "description": "Render-prop receiving the wiring for the control. Spread it onto Input/Select/Textarea."
       },
       {
         "name": "label",
@@ -3455,22 +3641,53 @@ export const GENERATED_PROPS = {
         "description": "Visible field label (associated with the control via htmlFor)."
       },
       {
+        "name": "characterCount",
+        "type": "FormFieldCharacterCount",
+        "required": false,
+        "description": "Live character count. Its description and announcements are wired for you."
+      },
+      {
         "name": "className",
         "type": "string",
         "required": false,
         "description": ""
       },
       {
+        "name": "classNames",
+        "type": "FormFieldClassNames",
+        "required": false,
+        "description": "Per-part class names — see `FormFieldClassNames`."
+      },
+      {
+        "name": "describedBy",
+        "type": "string",
+        "required": false,
+        "description": "Ids of elements elsewhere on the page that also describe this field. They are MERGED into `aria-describedby`, never replaced."
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Pass through to the control."
+      },
+      {
         "name": "error",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Error message; when set the field renders the error state + role=\"alert\"."
+        "description": "Error message. Blocks submission. Wins over `warning` and `success`."
+      },
+      {
+        "name": "footer",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Extra content rendered at the end of the field, after the count."
       },
       {
         "name": "hint",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Helper text rendered below the label, linked via aria-describedby."
+        "description": "Helper text rendered BELOW the control, linked via aria-describedby."
       },
       {
         "name": "id",
@@ -3479,11 +3696,75 @@ export const GENERATED_PROPS = {
         "description": "Control id; auto-generated when omitted."
       },
       {
+        "name": "labelHelp",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Extra explanation, revealed by a small button beside the label. A disclosure, not a tooltip: a tooltip cannot be opened by touch and cannot be read at leisure."
+      },
+      {
+        "name": "labelHidden",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Hide the label visually while keeping it for assistive tech. Only correct when a nearby heading already asks the question — never to save space."
+      },
+      {
+        "name": "labelText",
+        "type": "string",
+        "required": false,
+        "description": "Plain-text form of the label, for the contextual-help button's accessible name. Required only when `label` is not a string and `labelHelp` is set."
+      },
+      {
+        "name": "messageIcon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Replace the status glyph. `null` drops it."
+      },
+      {
+        "name": "optional",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Mark the field as optional. Rendered only when the form's policy is `optional`."
+      },
+      {
+        "name": "orientation",
+        "type": "\"stacked\" | \"inline\"",
+        "required": false,
+        "default": "\"stacked\"",
+        "description": "Lay the label beside the control rather than above it."
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Pass through to the control as a real `readonly`."
+      },
+      {
         "name": "required",
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Mark the field as required (adds a marker + `required` to the control)."
+        "description": "Mark the field as mandatory (adds `required` to the control)."
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "description": "Pass through to the control, so a field's size is set in one place."
+      },
+      {
+        "name": "success",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Success message — a real check passed, not merely \"you typed something\"."
+      },
+      {
+        "name": "warning",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Warning message. Does NOT block. Wins over `success`."
       }
     ]
   },
@@ -4350,11 +4631,16 @@ export const GENERATED_PROPS = {
     "inheritsNative": true,
     "props": [
       {
+        "name": "autoComplete",
+        "type": "AutocompleteToken = \"name\" | \"honorific-prefix\" | \"given-name\" | \"additional-name\" | \"family-name\" | \"honorific-suffix\" | \"nickname\" | \"username\" | \"new-password\" | \"current-password\" | \"one-time-code\" | \"organization-title\" | \"organization\" | \"street-address\" | \"address-line1\" | \"address-line2\" | \"address-line3\" | \"address-level4\" | \"address-level3\" | \"address-level2\" | \"address-level1\" | \"country\" | \"country-name\" | \"postal-code\" | \"cc-name\" | \"cc-given-name\" | \"cc-additional-name\" | \"cc-family-name\" | \"cc-number\" | \"cc-exp\" | \"cc-exp-month\" | \"cc-exp-year\" | \"cc-csc\" | \"cc-type\" | \"transaction-currency\" | \"transaction-amount\" | \"language\" | \"bday\" | \"bday-day\" | \"bday-month\" | \"bday-year\" | \"sex\" | \"url\" | \"photo\" | \"tel\" | \"tel-country-code\" | \"tel-national\" | \"tel-area-code\" | \"tel-local\" | \"tel-local-prefix\" | \"tel-local-suffix\" | \"tel-extension\" | \"email\" | \"impp\" | \"off\" | \"on\" | `section-${string} ${AutocompleteFieldName}` | `shipping ${AutocompleteFieldName}` | `billing ${AutocompleteFieldName}` | `home ${AutocompleteFieldName}` | `work ${AutocompleteFieldName}` | `mobile ${AutocompleteFieldName}` | `fax ${AutocompleteFieldName}` | `pager ${AutocompleteFieldName}`",
+        "required": false,
+        "description": "`autocomplete`, typed to the HTML autofill field names rather than to `string`, so a token that does nothing fails the build instead of shipping. WCAG 2.2 1.3.5 (Identify Input Purpose, AA) is met by putting the right one on any field collecting information about the reader."
+      },
+      {
         "name": "invalid",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": "Render the error state (sets aria-invalid)."
+        "description": "Legacy alias for `status=\"error\"`. Still honoured everywhere, including the object `FormField` spreads onto its control, so no existing call site had to change when `status` arrived. Prefer `status`."
       },
       {
         "name": "leftIcon",
@@ -4363,10 +4649,54 @@ export const GENERATED_PROPS = {
         "description": "Decorative icon rendered inside the field, before the text. Purely visual — it is `aria-hidden`, so the field still needs a real label."
       },
       {
+        "name": "pending",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "The value is being checked against something — a PAN lookup, a pincode resolving to a district. Renders a spinner in the trailing slot and sets `aria-busy`. It does NOT disable the field: a reader who wants to correct a value should not have to wait for a request they cannot see."
+      },
+      {
+        "name": "prefix",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Fixed text before the value — a currency symbol, a country code, a scheme prefix. Drawn inside the field's border and **hidden from assistive tech**, because a screen reader announcing \"rupee sign\" in the middle of a value is noise. Its meaning reaches the reader through `prefixLabel` instead."
+      },
+      {
+        "name": "prefixLabel",
+        "type": "string",
+        "required": false,
+        "description": "What the prefix MEANS, spoken. Appended to the field's description, so \"₹\" is announced as \"Amount in rupees\" rather than as a symbol or not at all. Falls back to the prefix itself when that is already a word; **always pass this explicitly when the prefix is a symbol.**"
+      },
+      {
         "name": "rightIcon",
         "type": "React.ReactNode",
         "required": false,
         "description": "Trailing slot inside the field. Unlike `leftIcon` this is NOT hidden from assistive tech, because it is commonly an interactive control (a show/hide-password toggle, a clear button). Give that control its own accessible name. For a plain password reveal, prefer `<PasswordInput>`."
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"md\" (44px)",
+        "description": "Control height."
+      },
+      {
+        "name": "status",
+        "type": "FieldStatus = \"error\" | \"warning\" | \"success\"",
+        "required": false,
+        "description": "The condition the field is in. `error` blocks, `warning` does not, and `success` means a real check passed. Takes precedence over `invalid`."
+      },
+      {
+        "name": "suffix",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Fixed text after the value — a unit, a domain suffix. Same rules as `prefix`."
+      },
+      {
+        "name": "suffixLabel",
+        "type": "string",
+        "required": false,
+        "description": "What the suffix means, spoken. Same rules as `prefixLabel`."
       }
     ]
   },
@@ -5502,6 +5832,13 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "false",
         "description": "Render the error state (sets aria-invalid)."
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "Control height, matching the Input scale. Declared here because the native `size` attribute on an `<input>` means character width, which is not a thing this control has — it is a fixed-length identity number."
       }
     ]
   },
@@ -5509,6 +5846,12 @@ export const GENERATED_PROPS = {
     "source": "packages/design-system/components/forms/password-input.tsx",
     "inheritsNative": true,
     "props": [
+      {
+        "name": "autoComplete",
+        "type": "AutocompleteToken = \"name\" | \"honorific-prefix\" | \"given-name\" | \"additional-name\" | \"family-name\" | \"honorific-suffix\" | \"nickname\" | \"username\" | \"new-password\" | \"current-password\" | \"one-time-code\" | \"organization-title\" | \"organization\" | \"street-address\" | \"address-line1\" | \"address-line2\" | \"address-line3\" | \"address-level4\" | \"address-level3\" | \"address-level2\" | \"address-level1\" | \"country\" | \"country-name\" | \"postal-code\" | \"cc-name\" | \"cc-given-name\" | \"cc-additional-name\" | \"cc-family-name\" | \"cc-number\" | \"cc-exp\" | \"cc-exp-month\" | \"cc-exp-year\" | \"cc-csc\" | \"cc-type\" | \"transaction-currency\" | \"transaction-amount\" | \"language\" | \"bday\" | \"bday-day\" | \"bday-month\" | \"bday-year\" | \"sex\" | \"url\" | \"photo\" | \"tel\" | \"tel-country-code\" | \"tel-national\" | \"tel-area-code\" | \"tel-local\" | \"tel-local-prefix\" | \"tel-local-suffix\" | \"tel-extension\" | \"email\" | \"impp\" | \"off\" | \"on\" | `section-${string} ${AutocompleteFieldName}` | `shipping ${AutocompleteFieldName}` | `billing ${AutocompleteFieldName}` | `home ${AutocompleteFieldName}` | `work ${AutocompleteFieldName}` | `mobile ${AutocompleteFieldName}` | `fax ${AutocompleteFieldName}` | `pager ${AutocompleteFieldName}`",
+        "required": false,
+        "description": "`autocomplete`, typed to the HTML autofill field names rather than to `string`, so a token that does nothing fails the build instead of shipping. WCAG 2.2 1.3.5 (Identify Input Purpose, AA) is met by putting the right one on any field collecting information about the reader."
+      },
       {
         "name": "hideLabel",
         "type": "string",
@@ -5527,14 +5870,31 @@ export const GENERATED_PROPS = {
         "name": "invalid",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": "Render the error state (sets aria-invalid)."
+        "description": "Legacy alias for `status=\"error\"`. Still honoured everywhere, including the object `FormField` spreads onto its control, so no existing call site had to change when `status` arrived. Prefer `status`."
       },
       {
         "name": "leftIcon",
         "type": "React.ReactNode",
         "required": false,
         "description": "Decorative icon rendered inside the field, before the text. Purely visual — it is `aria-hidden`, so the field still needs a real label."
+      },
+      {
+        "name": "pending",
+        "type": "boolean",
+        "required": false,
+        "description": "The value is being checked against something — a PAN lookup, a pincode resolving to a district. Renders a spinner in the trailing slot and sets `aria-busy`. It does NOT disable the field: a reader who wants to correct a value should not have to wait for a request they cannot see."
+      },
+      {
+        "name": "prefix",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Fixed text before the value — a currency symbol, a country code, a scheme prefix. Drawn inside the field's border and **hidden from assistive tech**, because a screen reader announcing \"rupee sign\" in the middle of a value is noise. Its meaning reaches the reader through `prefixLabel` instead."
+      },
+      {
+        "name": "prefixLabel",
+        "type": "string",
+        "required": false,
+        "description": "What the prefix MEANS, spoken. Appended to the field's description, so \"₹\" is announced as \"Amount in rupees\" rather than as a symbol or not at all. Falls back to the prefix itself when that is already a word; **always pass this explicitly when the prefix is a symbol.**"
       },
       {
         "name": "rightIcon",
@@ -5548,6 +5908,31 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"Show password\"",
         "description": "Accessible name for the reveal button when the password is hidden."
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"md\" (44px)",
+        "description": "Control height."
+      },
+      {
+        "name": "status",
+        "type": "FieldStatus = \"error\" | \"warning\" | \"success\"",
+        "required": false,
+        "description": "The condition the field is in. `error` blocks, `warning` does not, and `success` means a real check passed. Takes precedence over `invalid`."
+      },
+      {
+        "name": "suffix",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Fixed text after the value — a unit, a domain suffix. Same rules as `prefix`."
+      },
+      {
+        "name": "suffixLabel",
+        "type": "string",
+        "required": false,
+        "description": "What the suffix means, spoken. Same rules as `prefixLabel`."
       }
     ]
   },
@@ -6004,6 +6389,12 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Sets the invalid state without a message, so spreading `FormField`'s render-prop object onto a group degrades rather than breaks. Prefer `error`."
+      },
+      {
         "name": "orientation",
         "type": "\"vertical\" | \"horizontal\"",
         "required": false,
@@ -6071,6 +6462,30 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"default\"",
         "description": "Visual variant. \"default\" = inline circle + label. \"card\" = a full selectable card (Portal DS Radio Card) with optional description."
+      }
+    ]
+  },
+  "RequiredFieldsLegendProps": {
+    "source": "packages/design-system/components/forms/field-policy.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Replace the sentence outright, ignoring the policy's copy."
+      },
+      {
+        "name": "className",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "necessity",
+        "type": "NecessityIndicator = \"required\" | \"optional\" | \"none\"",
+        "required": false,
+        "description": "Override the form's policy for this legend alone. Rarely correct."
       }
     ]
   },
@@ -6522,8 +6937,7 @@ export const GENERATED_PROPS = {
         "name": "invalid",
         "type": "boolean",
         "required": false,
-        "default": "false",
-        "description": "Render the error state (sets aria-invalid)."
+        "description": "Legacy alias for `status=\"error\"`. Prefer `status`."
       },
       {
         "name": "options",
@@ -6536,6 +6950,19 @@ export const GENERATED_PROPS = {
         "type": "string",
         "required": false,
         "description": "Optional placeholder rendered as a disabled first option."
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "Control height, matching the Input scale. Ignored by `appearance=\"filter\"`."
+      },
+      {
+        "name": "status",
+        "type": "FieldStatus = \"error\" | \"warning\" | \"success\"",
+        "required": false,
+        "description": "The condition the field is in. Takes precedence over `invalid`."
       }
     ]
   },
@@ -7591,11 +8018,37 @@ export const GENERATED_PROPS = {
     "inheritsNative": true,
     "props": [
       {
-        "name": "invalid",
+        "name": "autoResize",
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Render the error state (sets aria-invalid)."
+        "description": "Grow to fit the value as it is typed, up to `maxRows`. Off by default, because a field that changes height under a reader's cursor moves everything below it — acceptable for a comment box, not for a field in the middle of a long form."
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Legacy alias for `status=\"error\"`. Prefer `status`."
+      },
+      {
+        "name": "maxRows",
+        "type": "number",
+        "required": false,
+        "default": "12",
+        "description": "Ceiling for `autoResize`, in rows. Beyond it the field scrolls."
+      },
+      {
+        "name": "size",
+        "type": "FieldSize = \"sm\" | \"md\" | \"lg\" | \"xl\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": "Sets the resting height, matching the Input scale — 2, 4, 6 and 8 rows. `md` is four rows, which is what this component has always rendered, so a textarea that names no size is unchanged. An explicit `rows` still wins."
+      },
+      {
+        "name": "status",
+        "type": "FieldStatus = \"error\" | \"warning\" | \"success\"",
+        "required": false,
+        "description": "The condition the field is in. Takes precedence over `invalid`."
       }
     ]
   },
