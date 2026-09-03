@@ -262,6 +262,25 @@ def _submit_review(pg, spec, prefix, role, cfg, paths, bdl, man, fid, allowed, w
     return False
 
 
+def _reload(pg):
+    """Reload, tolerating an SPA that never reaches networkidle.
+
+    e-Anudaan keeps a long-lived connection open, so `wait_until="networkidle"` times out after
+    30s and RAISES — which aborted the whole role from inside a flow, taking the two flows that
+    had not run yet with it. Same two-attempt pattern the entry `goto` uses, and a failure here
+    is reported, not fatal: the page is still on screen and the walk can carry on from it."""
+    for wait in ("networkidle", "domcontentloaded"):
+        try:
+            pg.reload(wait_until=wait, timeout=30000)
+            pg.wait_for_timeout(1500)
+            return True
+        except Exception as e:
+            last = e
+    print(f"    ! reload did not settle ({str(last)[:60]}) — continuing from the current page",
+          flush=True)
+    return False
+
+
 def _capture_state(pg, slug, role, cfg, paths, bdl, man, flow_id, wizard):
     width = cfg.get("capture", {}).get("width", 1440)
     dpr = cfg.get("capture", {}).get("dpr", 2)
@@ -462,7 +481,7 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
                 continue
             _capture_state(pg, step["captureValidation"], role, cfg, paths, bdl, man, fid, None)
             done.append(step["captureValidation"])
-            pg.reload(wait_until="networkidle"); pg.wait_for_timeout(1500)
+            _reload(pg)
     if allowed and flow.get("reuseRecord") is None:
         # Harvest whatever identifier the success screen shows and remember it in the bundle.
         #

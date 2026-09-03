@@ -723,7 +723,15 @@ def run(project, only_role=None, allow_empty=False, force=False, verify=False):
                         continue
                     if flow.get("reuseRecord") is None and (prev_bundle or {}).get("records", {}).get(flow["id"]):
                         flow["reuseRecord"] = prev_bundle["records"][flow["id"]]["id"]
-                    DRV.run_flow(pg, flow, man, cfg, paths, bdl, env)
+                    # A flow walks a live form and can fail in ways a route crawl cannot — a
+                    # control that never settles, a step that stops advancing. That must cost
+                    # its own flow and nothing else: an exception escaping here aborted the
+                    # whole ROLE, discarding the two flows that had not run yet.
+                    try:
+                        DRV.run_flow(pg, flow, man, cfg, paths, bdl, env)
+                    except Exception as e:
+                        print(f"[flow {flow['id']}] FAILED: {str(e)[:120]} — the remaining "
+                              f"flows for this role still run", flush=True)
                 # Record this host's build fingerprint so a FUTURE run's Tier 0 check
                 # (resolve_freshness) has something to compare against — without this the
                 # bundle's `hosts` map stays empty forever and reuse-all can never trigger.

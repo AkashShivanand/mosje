@@ -783,3 +783,35 @@ class CarriedRouteNormalisation(unittest.TestCase):
     def test_a_relative_fragment_is_refused(self):
         self.assertIsNone(C._route_path("apply-grant", self.BASE))
         self.assertIsNone(C._route_path("", self.BASE))
+
+
+class TolerantReload(unittest.TestCase):
+    """`captureValidation` reloads to reset a form it deliberately submitted empty. On an SPA
+    that holds a connection open, `wait_until="networkidle"` times out and RAISES — which aborted
+    the whole role from inside the first flow, discarding the two flows that had not run yet."""
+
+    class _Page:
+        def __init__(self, fail_on=()):
+            self.tried, self.fail_on = [], fail_on
+
+        def reload(self, wait_until=None, timeout=None):
+            self.tried.append(wait_until)
+            if wait_until in self.fail_on:
+                raise Exception(f"Timeout {timeout}ms exceeded waiting for {wait_until}")
+
+        def wait_for_timeout(self, *a):
+            pass
+
+    def test_falls_back_to_domcontentloaded_when_networkidle_times_out(self):
+        pg = self._Page(fail_on=("networkidle",))
+        self.assertTrue(D._reload(pg))
+        self.assertEqual(pg.tried, ["networkidle", "domcontentloaded"])
+
+    def test_a_reload_that_never_settles_is_reported_not_raised(self):
+        pg = self._Page(fail_on=("networkidle", "domcontentloaded"))
+        self.assertFalse(D._reload(pg), "must return False rather than abort the role")
+
+    def test_the_happy_path_does_not_reload_twice(self):
+        pg = self._Page()
+        self.assertTrue(D._reload(pg))
+        self.assertEqual(pg.tried, ["networkidle"])
