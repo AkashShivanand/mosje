@@ -256,3 +256,64 @@ effects — all of them the `Focused` ring, which is the one effect the code dra
       delete that set and its page
 - [ ] A Figma-side effects gate. Ninety-six shadows survived every check because nothing
       compares Figma's effects to the code's `box-shadow`; that needs Figma access in CI
+
+---
+
+## 10. Fifth pass — CloseButton retired, and the gate that was missing
+
+### The migration
+
+All four `CloseButton` instances moved to `IconButton`:
+
+| Where | Was | Now | Why that variant |
+|---|---|---|---|
+| Alerts/Toasts ×2 | `Size=Default, Type=Default` drawn at 26×27 | `Sub-type=Text, Type=Neutral`, glyph `close` | Kept the Alert's own 26×27 so its layout did not move |
+| Side Sheet ×2 | `Size=Default, Type=Default` at 40×40 | `Size=Default, Sub-type=Text, Type=Neutral` | Kept 40 so the header it sits in did not move |
+
+**Neutral, not Primary or Danger.** A dismiss carries no semantic charge, which is the
+whole reason that intent exists: Primary would put brand blue on housekeeping and Danger
+would spend the estate's rejection red on closing a toast.
+
+Both pages render correctly after the swap — verified by screenshot, not by assuming.
+
+### CloseButton cannot be deleted by the API
+
+`remove()` refuses on both the set and its page: *"Removing this node is not allowed"* —
+Figma protects components published to the team library. Its instance count is now **0**,
+so nothing breaks when it goes, but the deletion itself needs a human in the UI plus a
+library republish.
+
+It is marked in the meantime: the set is `CloseButton — DEPRECATED, use IconButton`, the
+page is `⛔ Close Button — DEPRECATED`, and the description carries the migration path and
+the four reasons it is going.
+
+### The gate that should have existed
+
+**Ninety-six shadows survived every gate in this repo.** `check:code-connect` verifies
+properties; `check:ds-pages` verifies documentation; nothing compared Figma's *effects* to
+the stylesheet's `box-shadow`.
+
+`check:figma-effects` closes it, on the estate's usual fixture-plus-gate pattern
+(`tools/figma-effects/effects.json` is the recorded design side, because a test cannot call
+Figma). It asserts in **both directions**:
+
+1. Every recorded effect sits on a state the CSS draws one for — today only `Focused`,
+   which is the ring. Hover is `filter: brightness()`; everything else paints with colour.
+2. The stylesheet still agrees. A non-`none` `box-shadow` in button.css fails it, because
+   then the fixture has stopped describing the code.
+
+Verified against both:
+
+```
+Button: 24 variant(s) carry an effect on State=Hover, and the stylesheet renders no shadow there.
+button.css declares 1 non-none box-shadow(s) — 0 2px 4px rgba(0,0,0,0.2).
+```
+
+The first is the exact defect that shipped.
+
+### Still open
+
+- [ ] A human deletes the deprecated `CloseButton` set and page in the Figma UI, then
+      republishes the library. Zero instances, so it is safe.
+- [ ] The Alert component resizes its close control to 26×27, off the size ladder. That is
+      the Alert's own pass, not this one.
