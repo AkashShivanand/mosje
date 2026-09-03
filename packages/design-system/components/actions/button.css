@@ -86,10 +86,26 @@
     flex: 0 0 auto;
   }
 
-  /* Visible, accessible focus ring (keyboard) */
+  /* Visible, accessible focus ring (keyboard).
+
+     BOUND TO THE TOKENS, AND OFFSET. This was `box-shadow: 0 0 0 3px` with
+     `outline: none` — a hardcoded width on a component whose own documentation
+     claimed the ring was "offset from the control" when it was flush against the
+     fill. Two defects in one declaration: a literal where `--sa-focus-width` and
+     `--sa-focus-offset` already existed and 14 other components already bind them,
+     and a ring drawn touching a filled button's edge, where a translucent blue on
+     a blue fill is exactly where a ring is hardest to see.
+
+     `outline` rather than `box-shadow` because outline-offset is the only way to
+     get the gap, and a modern outline follows `border-radius` on its own. UX4G 3.0
+     (Accessibility → Focus visibility) asks for a ring offset by 2px matching the
+     element's radius; that is what this now draws. UX4G names 4px where the estate's
+     token says 2px — the token wins, because one component quietly running thicker
+     than every other focusable control in the estate is worse than the 2px itself.
+     Recorded in the component's Figma record. */
   .ds-btn:focus-visible {
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* --------------------------------------------------------------------------
@@ -232,7 +248,7 @@
      load-bearing and is not is worse than no variable. */
   .ds-btn--success:focus-visible,
   .ds-btn--danger:focus-visible {
-    box-shadow: 0 0 0 3px var(--_ring);
+    outline-color: var(--_ring);
   }
 
   /* --------------------------------------------------------------------------
@@ -393,7 +409,7 @@
   .ds-btn--inverse:focus-visible,
   .ds-btn--inverseText:focus-visible,
   .ds-btn--inverseOutlined:focus-visible {
-    box-shadow: 0 0 0 3px color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);
+    outline-color: color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);
   }
 
   .ds-btn--inverseOutlined:disabled:hover,
