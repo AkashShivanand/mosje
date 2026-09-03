@@ -3,7 +3,7 @@
 Run:  cd tools/design-audit && python3 -m unittest engine.test_capture_bundle -v
       (stdlib only — no pytest, no new deps)
 """
-import datetime, os, sys, tempfile, unittest, unittest.mock
+import datetime, os, re, sys, tempfile, unittest, unittest.mock
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from engine import manifest as M
 
@@ -372,28 +372,63 @@ class FlowReplay(unittest.TestCase):
 
 
 class _FakeLocator:
-    """What `pg.get_by_role(...).first` returns. `.click()` either records the attempt or
-    raises, mimicking Playwright's own behaviour when the control isn't on the page."""
-    def __init__(self, page, name, exists):
-        self.page, self.name, self.exists = page, name, exists
+    """What `pg.get_by_role(...).first` / `pg.locator(...).first` returns.
+
+    `resolved` is the accessible name of the button the query really matched — which is NOT
+    always the name that was asked for, because Playwright's `name=` is a case-insensitive
+    SUBSTRING match. That gap is the whole point of the FlowSafety tests below. `None` means
+    the query matched nothing, so both reading the name and clicking raise, exactly as
+    Playwright does.
+    """
+    def __init__(self, page, requested, resolved):
+        self.page, self.requested, self.resolved = page, requested, resolved
 
     @property
     def first(self):
         return self
 
+    def get_attribute(self, name):
+        return None
+
+    def inner_text(self):
+        if self.resolved is None:
+            raise Exception(f"no element matching {self.requested!r}")
+        return self.resolved
+
+    def text_content(self):
+        return self.inner_text()
+
     def click(self):
-        if not self.exists:
-            raise Exception(f"no element matching {self.name!r}")
-        self.page.calls.append(("click", self.name))
+        if self.resolved is None:
+            raise Exception(f"no element matching {self.requested!r}")
+        self.page.calls.append(("click", self.requested))
 
 
 class FakePage:
     """Records every click Playwright would have been asked to attempt. No network, no
-    browser — just enough surface for run_flow to walk a flow against it."""
-    def __init__(self, button_exists=True):
+    browser — just enough surface for run_flow to walk a flow against it.
+
+    `buttons` names the accessible names really on the page, and the locators resolve against
+    them the way Playwright does (substring, or exact when asked). Left as None, any label
+    resolves to a button of exactly that name — the older, simpler model, kept because most
+    tests only care whether a click was attempted at all.
+    """
+    def __init__(self, button_exists=True, buttons=None):
         self.calls = []
         self.url = "http://fake.invalid/screen"
         self._button_exists = button_exists
+        self._buttons = buttons
+
+    def _match(self, label, exact):
+        """The accessible name Playwright would resolve `label` to, or None."""
+        if label is None:
+            return None
+        if self._buttons is None:
+            return label if self._button_exists else None
+        for b in self._buttons:
+            if (b.lower() == label.lower()) if exact else (label.lower() in b.lower()):
+                return b
+        return None
 
     def goto(self, *a, **k):
         self.calls.append(("goto", a))
@@ -409,10 +444,18 @@ class FakePage:
 
     def get_by_role(self, kind, name=None, exact=False):
         self.calls.append(("get_by_role", name))
-        return _FakeLocator(self, name, self._button_exists)
+        return _FakeLocator(self, name, self._match(name, exact))
+
+    def locator(self, selector):
+        # _click's CSS leg: `button:has-text("X")` (substring) or `button:text-is("X")` (exact).
+        self.calls.append(("locator", selector))
+        m = re.search(r'(has-text|text-is)\("(.*)"\)', selector)
+        kind, label = (m.group(1), m.group(2)) if m else ("has-text", None)
+        return _FakeLocator(self, label, self._match(label, kind == "text-is"))
 
     def click(self, selector):
-        # _click's CSS fallback, tried only if get_by_role's locator raised.
+        # Legacy CSS fallback. drive.py no longer calls this — it needs the ELEMENT so it can
+        # re-check the resolved name — but a recorded call here would still fail the tests.
         self.calls.append(("click_css", selector))
         raise Exception("no fallback button either — fine, the test only checks attempts")
 
@@ -425,13 +468,17 @@ class FlowSafety(unittest.TestCase):
 
     CFG = {"live": {"roles": [{"name": "citizen", "base": "http://fake.invalid"}]}, "capture": {}}
 
-    def _run(self, flow, environment, button_exists=True):
-        pg = FakePage(button_exists=button_exists)
+    def _run(self, flow, environment, button_exists=True, buttons=None):
+        pg = FakePage(button_exists=button_exists, buttons=buttons)
         captured = []
         with unittest.mock.patch.object(D, "_capture_state",
                                         lambda *a, **k: captured.append(a[1])):
             D.run_flow(pg, flow, {}, self.CFG, {"captures_live": "/dev/null"}, {}, environment)
         return pg, captured
+
+    @staticmethod
+    def _clicks(pg):
+        return [c for c in pg.calls if c[0] in ("click", "click_css")]
 
     def test_a_click_step_matching_destructive_is_never_attempted_on_prod(self):
         flow = {"id": "f", "role": "citizen", "steps": [{"click": "Submit"}]}
@@ -461,6 +508,57 @@ class FlowSafety(unittest.TestCase):
         ok, why = D.is_submit_allowed("uat", {"id": "f", "allowSubmit": "false"})
         self.assertFalse(ok)
         self.assertIn("allowSubmit", why)
+
+    # --- The gate guards the DECLARED label; these guard the RESOLVED one. -----------------
+    # Playwright's `name=` is a case-insensitive SUBSTRING match, so a label that passes
+    # `_destructive_and_blocked` can still resolve to a destructive control. Tests (e) and (g)
+    # both FAIL against the pre-fix drive.py, which clicked whatever the substring matched.
+
+    def test_e_engine_default_next_must_not_resolve_to_save_and_next(self):
+        """THE critical case. `captureValidation` with no `submitLabel` defaults to "Next",
+        which passes the label gate — and on a real wizard resolves to "Save & Next", which
+        saves the step server-side while the log prints "submission BLOCKED"."""
+        flow = {"id": "f", "role": "citizen",
+                "steps": [{"captureValidation": "STEP-1-ERRORS"}]}
+        pg, captured = self._run(flow, "prod", buttons=["Save & Next"])
+        self.assertEqual(self._clicks(pg), [],
+                         f"'Next' resolved to a destructive button and was clicked: {pg.calls}")
+        self.assertEqual(captured, [], "nothing may be captured after a refused click")
+
+    def test_f_same_flow_does_click_save_and_next_when_both_gates_open(self):
+        """The refusal is the gate doing its job, not the feature being neutered: on uat with
+        allowSubmit the identical flow clicks and captures exactly as before."""
+        flow = {"id": "f", "role": "citizen", "allowSubmit": True,
+                "steps": [{"captureValidation": "STEP-1-ERRORS"}]}
+        pg, captured = self._run(flow, "uat", buttons=["Save & Next"])
+        self.assertTrue(self._clicks(pg), f"the click should have happened: {pg.calls}")
+        self.assertEqual(captured, ["STEP-1-ERRORS"])
+
+    def test_g_declared_click_resolving_to_a_destructive_button_is_refused(self):
+        """A `click:` label the author believes is safe — "Continue" — resolving to
+        "Confirm & Continue". The declared label carries no DESTRUCTIVE word, so only the
+        resolved-name re-check can catch this one."""
+        flow = {"id": "f", "role": "citizen",
+                "steps": [{"click": "Continue"}, {"capture": "STEP-2"}]}
+        pg, captured = self._run(flow, "prod", buttons=["Confirm & Continue"])
+        self.assertEqual(self._clicks(pg), [], f"a destructive click was made: {pg.calls}")
+        self.assertEqual(captured, [], "the flow must abort, not capture the unmoved page")
+
+    def test_h_declared_save_resolving_to_save_and_exit_is_refused(self):
+        """"Save" is caught by the declared-label gate before `_click` is even reached; this
+        pins that the belt and the braces agree, so a later refactor cannot drop one and pass."""
+        flow = {"id": "f", "role": "citizen", "steps": [{"click": "Save"}]}
+        pg, _ = self._run(flow, "prod", buttons=["Save & Exit"])
+        self.assertEqual(self._clicks(pg), [], f"a destructive click was made: {pg.calls}")
+
+    def test_i_failed_forward_click_aborts_the_flow(self):
+        """I3. A forward click that did not happen leaves the page where it was, so every
+        later `capture:` step would shoot THAT page under the NEXT screen's slug."""
+        flow = {"id": "f", "role": "citizen", "allowSubmit": True,
+                "steps": [{"capture": "STEP-1"}, {"click": "Next"}, {"capture": "STEP-2"}]}
+        pg, captured = self._run(flow, "uat", buttons=["Something Else Entirely"])
+        self.assertEqual(captured, ["STEP-1"],
+                         "STEP-2 must not be captured after the forward click failed")
 
 
 if __name__ == "__main__":

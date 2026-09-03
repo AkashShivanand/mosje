@@ -6,8 +6,17 @@ step 4 or a confirm dialog. Those are the highest-value screens in a portal and,
 reached by bespoke per-project drivers written once and discarded. This module replaces them.
 
 SAFETY. Submission is gated twice: the environment must be dev or uat, AND the flow must set
-`allowSubmit: true`. On prod the run stops and asks for a human. The DESTRUCTIVE regex is the
-prod guard, not a blanket ban — walking a wizard to its end on dev/uat is the point.
+`allowSubmit: true`. The DESTRUCTIVE regex is the prod guard, not a blanket ban — walking a
+wizard to its end on dev/uat is the point.
+
+What `prod` actually does, precisely: nothing prompts, halts or waits for a human. A flow on
+prod still navigates to its entry, still runs its `fill` steps against the live form, and still
+clicks labels that do not match DESTRUCTIVE. What it refuses is a destructive click — that step
+is logged and skipped (or, for a forward `click`, the rest of the flow is abandoned). Run a flow
+against prod only if filling its form with fixture data is itself acceptable.
+
+The gate is applied TWICE per click: once against the label the step declared, and again
+against the accessible name of the element that label actually resolved to (see `_click`).
 """
 import json, os, re, sys
 
@@ -37,8 +46,8 @@ def is_submit_allowed(environment, flow):
         return False, f"flow {flow.get('id')!r} allowSubmit is {val!r}, not True"
     env = str(environment or "").strip().lower()
     if env not in SAFE_ENVIRONMENTS:
-        return False, (f"environment is {environment!r} — submission on prod needs a human; "
-                       f"re-run with the flow disabled or confirm interactively")
+        return False, (f"environment is {environment!r} — destructive clicks are refused and "
+                       f"logged; nothing prompts, so re-run against dev/uat to walk the flow")
     return True, "dev/uat and the flow opted in"
 
 
@@ -97,18 +106,77 @@ def _capture_state(pg, slug, role, cfg, paths, bdl, man, flow_id, wizard):
     print(f"  ok {slug}: {len(data['rows'])} rows (flow {flow_id})", flush=True)
 
 
-def _click(pg, label, waitms):
+def _resolved_text(loc):
+    """The accessible name of the element a locator actually resolved to, normalised.
+
+    Returns None when nothing readable comes back — an unnamed control, or a locator that
+    matched nothing at all. The caller treats None as "cannot prove this is safe".
+    """
+    for read in (lambda: loc.get_attribute("aria-label"),
+                 lambda: loc.inner_text(),
+                 lambda: loc.text_content()):
+        try:
+            txt = read()
+        except Exception:
+            continue
+        if txt and txt.strip():
+            return " ".join(txt.split())
+    return None
+
+
+def _resolve(pg, label, exact):
+    """(locator, resolved_text) for the button `label` would click, or (None, None).
+
+    Role first, CSS second — the same two-step tolerance the old `_click` had, but it now
+    hands back the ELEMENT instead of clicking it blind, so the caller can inspect what was
+    really matched. `exact` picks `:text-is()` over `:has-text()` for the CSS leg too, so an
+    engine-chosen label cannot fuzzy-match through the fallback either.
+    """
+    for build in (lambda: pg.get_by_role("button", name=label, exact=exact).first,
+                  lambda: pg.locator(
+                      (f'button:text-is("{label}")' if exact else f'button:has-text("{label}")')
+                  ).first):
+        try:
+            loc = build()
+        except Exception:
+            continue
+        txt = _resolved_text(loc)
+        if txt is not None:
+            return loc, txt
+    return None, None
+
+
+def _click(pg, label, waitms, allowed, exact=False):
     """Click a button by visible text, tolerant of role/CSS variance. Never raises — a
     button that cannot be found is printed, not fatal, so one missing control on a live
-    portal doesn't abort the whole flow silently or noisily crash the run."""
-    try:
-        pg.get_by_role("button", name=label, exact=False).first.click()
-    except Exception:
-        try:
-            pg.click(f'button:has-text("{label}")')
-        except Exception as e:
-            print(f"    ! could not click {label!r} ({str(e)[:80]}) — step skipped", flush=True)
+    portal doesn't abort the whole flow silently or noisily crash the run.
+
+    SAFETY — the second half of the gate. `_destructive_and_blocked` tests the label a flow
+    author (or the engine) DECLARED, but Playwright's `name=` resolves by case-insensitive
+    substring: `"Next"` passes the gate and then matches a button whose real accessible name
+    is `"Save & Next"`, which is destructive. So before clicking, read the accessible name of
+    the element that was actually resolved and test THAT against DESTRUCTIVE. `allowed` is
+    passed in explicitly by every caller — never read from a module global — so there is one
+    obvious place to see which authority a click is proceeding under.
+    """
+    loc, resolved = _resolve(pg, label, exact)
+    if loc is None:
+        print(f"    ! could not click {label!r} (no button resolved) — step skipped", flush=True)
+        return False
+    if not allowed:
+        if resolved is None:
+            print(f"    ! requested {label!r} but the resolved button has no readable name — "
+                  f"cannot prove it is non-destructive, gate closed, not clicked", flush=True)
             return False
+        if DESTRUCTIVE.search(resolved):
+            print(f"    ! requested {label!r} but resolved to {resolved!r} — destructive, "
+                  f"gate closed, not clicked", flush=True)
+            return False
+    try:
+        loc.click()
+    except Exception as e:
+        print(f"    ! could not click {label!r} ({str(e)[:80]}) — step skipped", flush=True)
+        return False
     pg.wait_for_timeout(waitms)
     return True
 
@@ -117,7 +185,11 @@ def _destructive_and_blocked(label, allowed):
     """The ONE test any step must pass before it may click a button. A label matching
     DESTRUCTIVE (submit/save/confirm/delete/…) is refused whenever `allowed` is False —
     regardless of which kind of step asked for it. `click` and `captureValidation` both
-    route through this; neither may click a destructive control on its own authority."""
+    route through this; neither may click a destructive control on its own authority.
+
+    This is the FIRST of two tests. It only sees the DECLARED label; `_click` re-tests the
+    accessible name of the element that label actually resolved to, because a declared label
+    is a substring query and a substring of a safe word can name a destructive control."""
     return bool(DESTRUCTIVE.search(label)) and not allowed
 
 
@@ -142,7 +214,17 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
             if _destructive_and_blocked(label, allowed):
                 print(f"    ! stopping before {label!r} — {why}", flush=True)
                 break
-            _click(pg, label, step.get("waitMs", 2500))
+            if not _click(pg, label, step.get("waitMs", 2500), allowed):
+                # A forward click that did not happen leaves the page where it was. Every
+                # later `capture:` step would then shoot THAT page under the NEXT screen's
+                # slug, with real structure/geometry hashes and a wizard marker — and
+                # should_replay would skip the flow on later runs because the entry screen is
+                # unchanged, so the wrong state would persist for the whole staleness ceiling.
+                print(f"[flow {fid}] ABORTED at click {label!r} (step {len(done) + 1} captured "
+                      f"so far) — the forward click failed, so nothing further is captured for "
+                      f"this flow rather than filing this page under the next screen's name",
+                      flush=True)
+                break
         elif "capture" in step:
             step_no += 1
             _capture_state(pg, step["capture"], role, cfg, paths, bdl, man, fid,
@@ -154,18 +236,35 @@ def run_flow(pg, flow, man, cfg, paths, bdl, environment):
             # submitLabel if given, else "Next". No fallback chain to "Save"/"Submit": both
             # match DESTRUCTIVE, and trying them unconditionally regardless of the gate was
             # the exact bug this branch used to have (both click branches now share one test).
-            label = step.get("submitLabel") or "Next"
+            declared = step.get("submitLabel")
+            label = declared or "Next"
             if _destructive_and_blocked(label, allowed):
                 print(f"    ! validation state {step['captureValidation']!r} skipped — "
                       f"{label!r} needs allowSubmit — {why}", flush=True)
                 continue
-            _click(pg, label, 1200)
+            # The engine's OWN default label gets EXACT matching whenever the gate is closed, so
+            # the engine's fallback cannot fuzzy-match "Next" into "Save & Next" on a portal it
+            # has no authority to submit to. With both gates open the flow IS authorised to
+            # submit, and substring tolerance is then the point — a wizard's forward control is
+            # labelled "Save & Next" as often as "Next". An author-declared submitLabel stays
+            # substring-tolerant either way (portals label the same control a dozen ways); the
+            # resolved-name re-check inside _click is what protects that case.
+            if not _click(pg, label, 1200, allowed, exact=not declared and not allowed):
+                print(f"    ! validation state {step['captureValidation']!r} skipped — the "
+                      f"{label!r} click did not happen, so this would capture the untouched "
+                      f"form rather than its error state", flush=True)
+                continue
             _capture_state(pg, step["captureValidation"], role, cfg, paths, bdl, man, fid, None)
             done.append(step["captureValidation"])
             pg.reload(wait_until="networkidle"); pg.wait_for_timeout(1500)
     if allowed and flow.get("reuseRecord") is None:
-        # Harvest whatever identifier the success screen shows, so the next run edits/views that
-        # record instead of filing a fresh application on dev every time.
+        # Harvest whatever identifier the success screen shows and remember it in the bundle.
+        #
+        # What this does and does NOT do: recording an id only stops the NEXT run re-harvesting
+        # one. Nothing here navigates to that record, edits it, or reuses it in place of a fresh
+        # submission — so if this flow replays with both gates open, it submits again and files a
+        # second record. The thing that actually keeps a second submission from happening is
+        # should_replay(), which skips a flow whose entry screen is byte-identical.
         try:
             txt = pg.inner_text("body")
             hit = re.search(r"\b([A-Z]{2,}[-/][A-Z0-9\-/]{4,})\b", txt)
