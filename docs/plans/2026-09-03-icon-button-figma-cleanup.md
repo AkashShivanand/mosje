@@ -201,3 +201,58 @@ means **migrating two other components first**, which is their change and not th
 - [ ] A Figma-side effects gate — 96 shadows survived every check because nothing compares
       Figma's effects to the code's `box-shadow`. Needs Figma access in CI, which the
       token is not currently wired for.
+
+---
+
+## 9. Fourth pass — the whole family audited, structured and documented
+
+### What the audit found
+
+| Page | Documentation | Component record | Container |
+|---|---|---|---|
+| Button | ✅ | ✅ | section |
+| Icon Button | **missing** | ✅ | section |
+| Button Group | **missing** | **missing** | **a plain FRAME, not a section** |
+| Link | **missing** | **missing** | section |
+
+Four of the eight required frames did not exist, and Button Group's set sat in a frame
+while every other component used a section — a frame clips, participates in layout, and
+can be dragged into another frame by accident.
+
+Two consistency defects behind that: the **layer order** on three pages put the section or
+the record above the Documentation frame, and the Icon Button frames were named
+`IconButton — …` (the code identifier) on a page called `Icon Button`.
+
+### What was authored
+
+| Frame | Text nodes | Unbound text styles |
+|---|---|---|
+| Icon Button — Documentation | 27 | **0** |
+| Link — Documentation + Component record | 40 | **0** |
+| Button Group — Documentation + Component record | 40 | **0** |
+
+Each Documentation frame carries the house shape: 1680 wide, an eyebrow, a display title,
+an 880px standfirst, **six counted stats**, and numbered `NN /` sections at the same
+measure. Each Component record is forward-looking only, with a SOURCES panel saying where
+its numbers came from.
+
+Every page now reads identically, in the layers panel and on the canvas:
+
+```
+<Component> — Documentation
+<Component> — Component record
+1 · The published set
+```
+
+### Deep audit of the sets
+
+`IconButton`, re-measured after the earlier passes: 360 variants, **0** unbound fills,
+**0** unbound text fills, **0** malformed variant names, and 72 variants carrying
+effects — all of them the `Focused` ring, which is the one effect the code draws.
+
+### Still open
+
+- [ ] Migrate the 4 `CloseButton` instances on `Alerts/Toasts` and `Side Sheet`, then
+      delete that set and its page
+- [ ] A Figma-side effects gate. Ninety-six shadows survived every check because nothing
+      compares Figma's effects to the code's `box-shadow`; that needs Figma access in CI
