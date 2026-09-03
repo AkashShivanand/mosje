@@ -48,11 +48,24 @@
    * These four hooks are read by EVERY state, so setting one is complete by
    * construction. Set them on any ancestor and they inherit:
    *
-   *   [data-portal="nmba"] .ds-btn--primary { --sa-btn-fill: var(--sa-color-teal-600); }
+   *   [data-portal="nmba"] .ds-btn--<variant> { --sa-btn-fill: var(--sa-color-teal-600); }
+   *
+   * The `<variant>` there is a placeholder on purpose. Spelled out as a real class, this
+   * example was parsed as the primary variant's declaration block by
+   * `packages/tokens/test/action-nontext-contrast.test.mjs`, which read the whole file
+   * including comments — pointing a contrast gate at a code sample. That parser strips
+   * comments now; this stays a placeholder so the next one does not have to.
    *
    * They default to the variant's own value, so a consumer that sets nothing sees no
    * change. This is the documented extension point; `!important` on `background-color`
    * is not, and never was.
+   *
+   * It resolves into `--_c-*` and leaves the variant blocks declaring `--_fill` /
+   * `--_on` / `--_color` under their ORIGINAL names. That is not cosmetic:
+   * `packages/tokens/test/action-nontext-contrast.test.mjs` PARSES this stylesheet for
+   * those declarations to measure every variant x appearance edge against WCAG 1.4.11.
+   * Renaming them resolved 0 combinations and turned a load-bearing contrast gate into
+   * a no-op — which still reported green in every local check and was caught only by CI.
    *
    *   --sa-btn-fill   the solid background of the filled appearance
    *   --sa-btn-ink    the label colour ON that fill
@@ -60,14 +73,14 @@
    *   --sa-btn-ring   the focus ring colour
    */
   .ds-btn {
-    --_fill: var(--sa-btn-fill, var(--_v-fill));
-    --_on: var(--sa-btn-ink, var(--_v-on));
-    --_color: var(--sa-btn-edge, var(--_v-color));
-    /* `--_v-ring` is declared only by success and danger; primary and neutral fall
+    --_c-fill: var(--sa-btn-fill, var(--_fill));
+    --_c-on: var(--sa-btn-ink, var(--_on));
+    --_c-edge: var(--sa-btn-edge, var(--_color));
+    /* `--_ring` is declared only by success and danger; primary and neutral fall
        through to the estate's focus colour, which is what the base outline already
        uses. Naming the fallback here is what lets a consumer override the ring on
        every variant rather than only on the two that happen to declare one. */
-    --_ring: var(--sa-btn-ring, var(--_v-ring, var(--sa-focus-ring)));
+    --_c-ring: var(--sa-btn-ring, var(--_ring, var(--sa-focus-ring)));
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -264,8 +277,8 @@
      The full Tier-3 matrix (`--sa-cmp-action-brand-primary-*`) models every state and is the
      eventual home for this; restructuring the Button onto it is a separate change. */
   .ds-btn--primary {
-    --_v-fill: var(--sa-bg-brand-primary-bolder);
-    --_v-on: var(--sa-on-bg-brand-primary-bolder);
+    --_fill: var(--sa-bg-brand-primary-bolder);
+    --_on: var(--sa-on-bg-brand-primary-bolder);
     /*
      * 4.19:1 → 5.74:1. `--_color` is, by this block's own comment, "the ink the
      * outlined and text appearances paint with, MEASURED AGAINST THE PAGE" — and
@@ -277,7 +290,7 @@
      * the split was made so the ink could move independently. It then did not.
      * Found by the axe suite the day one existed.
      */
-    --_v-color: var(--sa-text-brand-primary-bolder);
+    --_color: var(--sa-text-brand-primary-bolder);
     /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
        intent survives the trip. A flat white-alpha border used to be identical for all
        four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it
@@ -291,10 +304,10 @@
   }
 
   .ds-btn--success {
-    --_v-fill: var(--sa-bg-status-success-bolder);
-    --_v-on: var(--sa-on-bg-status-success-bolder);
-    --_v-color: var(--sa-text-status-success-base);
-    --_v-ring: color-mix(in oklab, var(--sa-color-status-success) 40%, transparent);
+    --_fill: var(--sa-bg-status-success-bolder);
+    --_on: var(--sa-on-bg-status-success-bolder);
+    --_color: var(--sa-text-status-success-base);
+    --_ring: color-mix(in oklab, var(--sa-color-status-success) 40%, transparent);
     /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
        intent survives the trip. A flat white-alpha border used to be identical for all
        four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it
@@ -308,10 +321,10 @@
   }
 
   .ds-btn--danger {
-    --_v-fill: var(--sa-bg-status-error-bolder);
-    --_v-on: var(--sa-on-bg-status-error-bolder);
-    --_v-color: var(--sa-text-status-error-base);
-    --_v-ring: color-mix(in oklab, var(--sa-color-status-danger) 40%, transparent);
+    --_fill: var(--sa-bg-status-error-bolder);
+    --_on: var(--sa-on-bg-status-error-bolder);
+    --_color: var(--sa-text-status-error-base);
+    --_ring: color-mix(in oklab, var(--sa-color-status-danger) 40%, transparent);
     /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
        intent survives the trip. A flat white-alpha border used to be identical for all
        four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it
@@ -367,9 +380,9 @@
      No `--_dark`: it was declared by the three variants above and consumed by
      nothing, and has now been deleted from all three. */
   .ds-btn--neutral {
-    --_v-fill: var(--sa-cmp-action-neutral-primary-default-bg);
-    --_v-on: var(--sa-cmp-action-neutral-primary-default-text);
-    --_v-color: var(--sa-cmp-action-neutral-tertiary-default-text);
+    --_fill: var(--sa-cmp-action-neutral-primary-default-bg);
+    --_on: var(--sa-cmp-action-neutral-primary-default-text);
+    --_color: var(--sa-cmp-action-neutral-tertiary-default-text);
     /* The inverse ladder — a button on a solid brand surface. Bound PER VARIANT so the
        intent survives the trip. A flat white-alpha border used to be identical for all
        four, which is how `danger` lost its signal, and at 2.25:1 on the ticker bar it
@@ -391,7 +404,7 @@
      their own — otherwise `--sa-btn-ring` would be an override that worked on success
      and danger and silently did nothing on primary and neutral. */
   .ds-btn:focus-visible {
-    outline-color: var(--_ring);
+    outline-color: var(--_c-ring);
   }
 
   /* --------------------------------------------------------------------------
@@ -437,9 +450,9 @@
      Appearance: filled
      -------------------------------------------------------------------------- */
   .ds-btn--filled {
-    background-color: var(--_fill);
-    color: var(--_on);
-    border-color: var(--_fill);
+    background-color: var(--_c-fill);
+    color: var(--_c-on);
+    border-color: var(--_c-fill);
   }
 
   .ds-btn--filled:hover {
@@ -455,16 +468,16 @@
      -------------------------------------------------------------------------- */
   .ds-btn--outlined {
     background-color: transparent;
-    color: var(--_color);
-    border-color: var(--_color);
+    color: var(--_c-edge);
+    border-color: var(--_c-edge);
   }
 
   .ds-btn--outlined:hover {
-    background-color: color-mix(in srgb, var(--_color) 8%, transparent);
+    background-color: color-mix(in srgb, var(--_c-edge) 8%, transparent);
   }
 
   .ds-btn--outlined:active {
-    background-color: color-mix(in srgb, var(--_color) 14%, transparent);
+    background-color: color-mix(in srgb, var(--_c-edge) 14%, transparent);
   }
 
   /* --------------------------------------------------------------------------
@@ -472,16 +485,16 @@
      -------------------------------------------------------------------------- */
   .ds-btn--text {
     background-color: transparent;
-    color: var(--_color);
+    color: var(--_c-edge);
     border-color: transparent;
   }
 
   .ds-btn--text:hover {
-    background-color: color-mix(in srgb, var(--_color) 8%, transparent);
+    background-color: color-mix(in srgb, var(--_c-edge) 8%, transparent);
   }
 
   .ds-btn--text:active {
-    background-color: color-mix(in srgb, var(--_color) 14%, transparent);
+    background-color: color-mix(in srgb, var(--_c-edge) 14%, transparent);
   }
 
 
