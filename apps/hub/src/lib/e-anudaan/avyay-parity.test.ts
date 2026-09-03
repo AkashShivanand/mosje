@@ -11,16 +11,18 @@ import assert from "node:assert/strict";
 import {
   AVYAY_WIZARD,
   applyAutoFields,
+  fieldVisible,
   avyayCostHeads,
   visibleDocuments,
+  visibleSteps,
 } from "./form-schema.ts";
 
 const NEW = { case_type: "New project" };
 const RENEWAL = { case_type: "Ongoing / Renewal of an existing project" };
 
-test("AVYAY's steps match live's eight, Justification included", () => {
+test("a new project gets live's eight steps, Justification included", () => {
   assert.deepEqual(
-    AVYAY_WIZARD.steps.map((s) => s.title),
+    visibleSteps(AVYAY_WIZARD, NEW).map((s) => s.title),
     [
       "Application Type",
       "Organisation Details",
@@ -32,6 +34,50 @@ test("AVYAY's steps match live's eight, Justification included", () => {
       "Review & Submit",
     ],
   );
+});
+
+test("a renewal gets live's seven — Justification is carried forward, not re-asked", () => {
+  // The gap this locks: the old version of this test asserted the step list ONCE, with no
+  // branch, so it passed while the wizard showed a renewal an eighth step live never asks for.
+  // Every e-anudaan test was green throughout.
+  assert.deepEqual(
+    visibleSteps(AVYAY_WIZARD, RENEWAL).map((s) => s.title),
+    [
+      "Application Type",
+      "Organisation Details",
+      "Project Details",
+      "Infrastructure, Beneficiaries & Bank",
+      "Grant Sought & Declaration",
+      "Upload Documents",
+      "Review & Submit",
+    ],
+  );
+});
+
+test("a new project is not asked which instalment it is claiming", () => {
+  // Live shows a new applicant the financial year alone. Ours rendered Installment on both
+  // branches, `required`, with help text about "the selected financial year's recurring grant"
+  // — so the new-project path could not be completed at all.
+  const step1 = visibleSteps(AVYAY_WIZARD, NEW)[0]!;
+  const names = step1.sections
+    .flatMap((sec) => sec.fields)
+    .filter((f) => fieldVisible(f, NEW))
+    .map((f) => f.name);
+  assert.deepEqual(names, ["case_type", "fld_financial_year"]);
+});
+
+test("a renewal IS asked, and for the project it is renewing", () => {
+  const step1 = visibleSteps(AVYAY_WIZARD, RENEWAL)[0]!;
+  const names = step1.sections
+    .flatMap((sec) => sec.fields)
+    .filter((f) => fieldVisible(f, RENEWAL))
+    .map((f) => f.name);
+  assert.deepEqual(names, [
+    "case_type",
+    "fld_ongoing_source_application",
+    "fld_financial_year",
+    "fld_installment_no",
+  ]);
 });
 
 test("a new project gets live's eleven documents, in live's order", () => {

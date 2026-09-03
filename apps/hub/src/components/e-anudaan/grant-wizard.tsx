@@ -43,6 +43,7 @@ import {
   stepFields,
   validateStep,
   visibleDocuments,
+  visibleSteps,
   wizardFor,
   type FieldDef,
   type StepDef,
@@ -140,12 +141,16 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
     );
   }
 
-  const docsIndex = def.steps.findIndex((s) => s.kind === "documents");
-  const reviewIndex = def.steps.findIndex((s) => s.kind === "review");
+  // The steps THIS branch shows. Never `def.steps` — AVYAY gives a new project eight steps and a
+  // renewal seven, so counting, indexing and labelling all have to agree on the filtered list or
+  // the stepper, the "Step N of M" line and the routing disagree with one another.
+  const steps = visibleSteps(def, values);
+  const docsIndex = steps.findIndex((s) => s.kind === "documents");
+  const reviewIndex = steps.findIndex((s) => s.kind === "review");
   const activeIndex = phase === "documents" ? docsIndex : phase === "review" ? reviewIndex : step;
 
-  const current = def.steps[activeIndex]!;
-  const total = def.steps.length;
+  const current = steps[Math.min(activeIndex, steps.length - 1)]!;
+  const total = steps.length;
   const isDocs = current.kind === "documents";
   const isReview = current.kind === "review";
   const base = `/portals/e-anudaan/apply-grant/scheme/${def.code}`;
@@ -173,7 +178,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
   /** Jump to any step by index, taking the route with us when the phase changes. */
   const goto = (i: number) => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-    const kind = def.steps[i]?.kind;
+    const kind = steps[i]?.kind;
     if (kind === "documents") {
       router.push(`${base}/step-2`);
       return;
@@ -253,7 +258,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
       {def.code === "AVYAY" && <Alert status="info">{AVYAY_RENEWAL_NOTICE}</Alert>}
 
       <Wizard
-        steps={def.steps.map((s) => ({ label: s.title }))}
+        steps={steps.map((s) => ({ label: s.title }))}
         current={activeIndex}
         onBack={() => goto(Math.max(activeIndex - 1, 0))}
         onNext={next}
@@ -476,7 +481,11 @@ function ReviewStep({
   onDeclare: (v: boolean) => void;
   onEdit: (step: number) => void;
 }) {
-  const formSteps = def.steps
+  // Same filtered list the wizard walks. Reading back `def.steps` here would show a renewal the
+  // Justification section it was never asked to fill, and hand `onEdit` an index into a different
+  // list from the one the stepper is numbering.
+  const branchSteps = visibleSteps(def, values);
+  const formSteps = branchSteps
     .map((s, i) => ({ step: s, index: i }))
     .filter(({ step }) => step.kind !== "documents" && step.kind !== "review");
 
@@ -519,7 +528,7 @@ function ReviewStep({
       <section className="rounded-xl border border-line bg-surface p-5 shadow-xs">
         <div className="flex items-center justify-between border-b border-line pb-2">
           <h3 className="text-base font-bold text-ink">Documents</h3>
-          <Button appearance="text" size="sm" onClick={() => onEdit(def.steps.findIndex((s) => s.kind === "documents"))}>
+          <Button appearance="text" size="sm" onClick={() => onEdit(branchSteps.findIndex((s) => s.kind === "documents"))}>
             <Icon name="edit" size={16} aria-hidden /> Edit
           </Button>
         </div>

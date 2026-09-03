@@ -93,6 +93,14 @@ export interface StepDef {
   kind?: StepKind;
   /** Overrides the default "Next →" at the foot of this step. */
   nextLabel?: string;
+  /**
+   * Whole steps fork too, not just fields and documents. AVYAY is the case that forced this:
+   * live shows a new project EIGHT steps and a renewal SEVEN, the missing one being
+   * Justification — a renewal carries its justification forward from the sanctioned project.
+   * Without this the step list could not vary, so whichever count was hard-coded left one
+   * branch wrong: our clone showed the renewal an eighth step it never asks for.
+   */
+  showWhen?: { field: string; equals: readonly string[] };
   sections: readonly SectionDef[];
 }
 
@@ -382,6 +390,11 @@ const AVYAY_STEPS: readonly StepDef[] = [
             label: "Installment",
             kind: "select",
             required: true,
+            // Renewal only. A first-time applicant has no recurring grant and no prior
+            // instalments, and live does not ask them — it shows the financial year alone.
+            // Without this the field rendered on both branches, `required`, and blocked the
+            // whole new-project path with "Installment is required."
+            showWhen: { field: "case_type", equals: ["Ongoing / Renewal of an existing project"] },
             options: ["1st Installment", "2nd Installment", "3rd Installment", "4th Installment"],
             help: "Which installment of the selected financial year's recurring grant this application releases. The next un-submitted installment for that year is preselected; ones already submitted for the same year are marked and cannot be reselected.",
           },
@@ -469,6 +482,9 @@ const AVYAY_STEPS: readonly StepDef[] = [
   },
   {
     title: "Justification",
+    // New projects only — live gives a renewal seven steps, not eight. A renewal carries its
+    // justification forward from the project already sanctioned.
+    showWhen: { field: "case_type", equals: ["New project"] },
     sections: [
       {
         title: "Justification",
@@ -1221,6 +1237,23 @@ export function fieldVisible(field: FieldDef, values: Record<string, string>): b
  * The checklist for the answers given so far, renumbered 1..n the way live numbers whichever
  * documents it is actually showing.
  */
+/**
+ * The steps this branch actually shows.
+ *
+ * Sits beside `fieldVisible` and `visibleDocuments`, which have always existed — the absence of
+ * this third one is why AVYAY rendered the same eight steps to a new project and a renewal when
+ * live shows eight and seven. Anything that counts, indexes or labels steps must go through here,
+ * never `wizard.steps` directly, or the stepper and the routing disagree with each other.
+ */
+export function visibleSteps(
+  wizard: WizardDef,
+  values: Record<string, string>,
+): readonly StepDef[] {
+  return wizard.steps.filter(
+    (step) => !step.showWhen || step.showWhen.equals.includes(values[step.showWhen.field] ?? ""),
+  );
+}
+
 export function visibleDocuments(
   wizard: WizardDef,
   values: Record<string, string>,
