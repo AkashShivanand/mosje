@@ -61,6 +61,12 @@ export function normValue(val) {
     const hx = "#" + [c.r, c.g, c.b].map((x) => Math.round(x).toString(16).padStart(2, "0")).join("");
     return hx + (c.a < 1 ? "@" + c.a.toFixed(4) : "");
   }
+  if (val.type === "TIMING") return String(Math.round(val.value * 10000) / 10000);
+  if (val.type === "EASING") {
+    const r = (n) => Math.round(n * 10000) / 10000;
+    const b = val.value;
+    return `bezier(${r(b.x1)},${r(b.y1)},${r(b.x2)},${r(b.y2)})`;
+  }
   if (val.type === "FLOAT") {
     const n = val.unit === "rem" ? val.value * 16 : val.value;
     return String(Math.round(n * 10000) / 10000);

@@ -81,10 +81,10 @@ them (`1var(…)`); restored from git and recorded here.
 
 ### 4.3 Figma
 
-- **Motion** 17 → 42 variables: seven renamed in place (ids and the ten intent aliases kept), 25 created. Read back `c979be26:42`, byte-equal to the payload.
+- **Motion** 17 → 42 active variables, every duration a native **TIMING** (milliseconds) and every curve a native **EASING** (cubic-bezier control points) — the types Figma Motion binds directly. The first push had shipped them as FLOAT/STRING on the authority of a stale typings file; a live `createVariable` probe proved TIMING and EASING creatable, so the 41 mistyped variables were renamed `_legacy/motion/*` and hidden (the type is immutable) and recreated correctly. Active read `4ff49255:42`, byte-equal to the payload.
 - **Static** 92 → 94: `alpha/disabled`, `alpha/muted` (OPACITY scope; `COLOR_OPACITY` is UI-only and is noted in each description); eight `ref/z/*` renamed to `_deprecated/z/*` with a retirement description, pending a full-file binding scan before deletion; descriptions re-asserted on 24 primitives.
 - **Type**: the library already held the parent branch's 113-variable re-cut; the reconciliation record now says so instead of failing.
-- **The standard** every future push follows: `.claude/rules/figma-variables-standard.md` — the four API-creatable types and what each binds to, why a duration is a FLOAT in ms and an easing a STRING with empty scopes, modes only on collections whose variables all vary on the axis, and the five fields (name = path, description, narrowest scopes, `codeSyntax.WEB`, `hiddenFromPublishing` by tier).
+- **The standard** every future push follows: `.claude/rules/figma-variables-standard.md` — the six API-creatable types (COLOR · FLOAT · STRING · BOOLEAN · TIMING · EASING) and what each binds to, the value shapes TIMING and EASING take, the rule that a typings file is a claim and a probe is evidence, modes only on collections whose variables all vary on the axis, and the five fields (name = path, description, narrowest scopes, `codeSyntax.WEB`, `hiddenFromPublishing` by tier).
 
 ### 4.4 Documentation architecture
 
@@ -131,14 +131,14 @@ them (`1var(…)`); restored from git and recorded here.
 | Foundation pages / on one template / with badge+tabs+feedback | 11 / 0 / 0 | 19 / 19 / 19 |
 | Foundation pages typing their own values | 2 | 0 (gated) |
 | Foundations documented in Figma but not on the web | 2 | 0 |
-| Figma Motion variables | 17 | 42 (byte-equal) |
+| Figma Motion variables | 17, FLOAT/STRING | 42 native TIMING/EASING (byte-equal) |
 | Token tests | 164 pass · 2 fail (inherited) | 166 pass |
 
 ## 8. Still open, and why
 
 | Item | Why it is not in this change |
 |---|---|
-| Delete `_deprecated/z/*` from Figma | Needs a full-file binding scan (68 pages, one per call) before a delete is licensed (`figma-variables-standard.md` §6). Renamed and hidden meanwhile. |
+| Delete `_deprecated/z/*` and `_legacy/motion/*` from Figma | Needs a full-file binding scan (68 pages, one per call) before a delete is licensed (`figma-variables-standard.md` §6). Renamed and hidden meanwhile. |
 | `COLOR_OPACITY` scope on `alpha/disabled` and `alpha/muted` | UI-only; the Plugin API rejects it. One tick each in the variables panel. |
 | Per-foundation source files | See §5. |
 | Portal-owned CSS (`smile-admin`, `pm-ajay`, `eutthan-admin`) z-index literals | Portal stylesheets are owned by their redesign work (`ds-linkage` config); the ladder is documented for them to adopt. |

@@ -29,24 +29,39 @@ A token that is a BUNDLE (a shadow with three layers, a type role with size + le
 numbers inside its layers are variables. `Body/body-1` is a style; `type/body/1/size`
 is a variable it binds.
 
-## 2. The four types the API can create, and the two it cannot
+## 2. The six types the API creates — probe the live API, never trust a typings file
 
-`VariableResolvedDataType = 'BOOLEAN' | 'COLOR' | 'FLOAT' | 'STRING'`.
+`createVariable(name, collection, type)` accepts
+`'BOOLEAN' | 'COLOR' | 'FLOAT' | 'STRING' | 'TIMING' | 'EASING'` (probed live on
+2026-09-04, apiVersion 1.0.0). The Plugin API typings bundled with the `figma-use` skill
+listed only the first four, and the first Motion push shipped durations as `FLOAT` and
+curves as `STRING` on that authority — 41 variables that had to be recreated the same
+day. **A typings file is a claim; a one-line `createVariable` probe is evidence.**
 
 | Type | Token families | Binds to (scopes) |
 |---|---|---|
 | `COLOR` | every colour role, ramp, mark, chart slot | `FRAME_FILL` `SHAPE_FILL` `TEXT_FILL` `STROKE_COLOR` `EFFECT_COLOR` (`ALL_FILLS` is the wildcard — never ship it) |
-| `FLOAT` | space, size, radius, stroke width, opacity, blur, font size / weight / leading / tracking / paragraph spacing, container, breakpoint, **duration (ms)**, z | `GAP` `WIDTH_HEIGHT` `CORNER_RADIUS` `STROKE_FLOAT` `EFFECT_FLOAT` `OPACITY` `FONT_SIZE` `FONT_WEIGHT` `LINE_HEIGHT` `LETTER_SPACING` `PARAGRAPH_SPACING` `PARAGRAPH_INDENT` `TEXT_CONTENT` |
-| `STRING` | font family, font style NAME, **easing curve** (a `cubic-bezier()` string) | `FONT_FAMILY` `FONT_STYLE` `TEXT_CONTENT` |
+| `FLOAT` | space, size, radius, stroke width, opacity, blur, font size / weight / leading / tracking / paragraph spacing, container, breakpoint, counts (`stagger/max`) | `GAP` `WIDTH_HEIGHT` `CORNER_RADIUS` `STROKE_FLOAT` `EFFECT_FLOAT` `OPACITY` `FONT_SIZE` `FONT_WEIGHT` `LINE_HEIGHT` `LETTER_SPACING` `PARAGRAPH_SPACING` `PARAGRAPH_INDENT` `TEXT_CONTENT` |
+| `STRING` | font family, font style NAME | `FONT_FAMILY` `FONT_STYLE` `TEXT_CONTENT` |
 | `BOOLEAN` | component options only (`Component Options` collection) — never a token | layer visibility, boolean variant properties |
+| **`TIMING`** | every **duration** — `ref/motion/duration/*`, `motion/<intent>/duration`, `loading/spin`, `loading/pulse`, `stagger/step` | Figma Motion binds it by TYPE (animation duration and delay). **Scopes cannot be set** — `variable.scopes = …` throws `Cannot set scopes on this variable type` |
+| **`EASING`** | every **curve** — `ref/motion/easing/*`, `motion/<intent>/easing` | Figma Motion binds it by TYPE (presets and keyframes). No scopes, as above |
 
-Figma also documents **Timing** (ms) and **Easing** (curve or spring) variable types.
-They exist only for Figma Motion presets and **the Plugin API cannot create them**
-(`createVariable` accepts the four types above). Until it can, a duration ships as a
-`FLOAT` in milliseconds and an easing as a `STRING`, both with **empty scopes** and a
-description saying why: nothing on a static canvas binds them, and offering them in
-a Gap or Width picker would be a lie. Re-check this table when the API version
-changes; the gate that reads it is `figma-export.test.mjs`.
+Value shapes the API takes: a `TIMING` value is a number in **milliseconds**
+(`setValueForMode(modeId, 150)`); an `EASING` value is
+`{ type: "CUSTOM_CUBIC_BEZIER", easingFunctionCubicBezier: { x1, y1, x2, y2 } }`
+(Figma also offers named presets and springs — the estate authors its five curves as
+DTCG `cubicBezier` arrays, so the custom form is the honest one). Figma stores the
+control points as float32 (`0.2` reads back `0.20000000298…`); the parity normaliser
+rounds to four decimals on both sides for that reason.
+
+`figmaTypeOf()` in `build/formats/figma-variables.mjs` maps DTCG `duration` → `TIMING`
+and `cubicBezier` → `EASING`; a token of either type must never fall through to
+`FLOAT`/`STRING` again. `resolvedType` is immutable after creation, so a mistyped
+variable cannot be corrected in place — it is renamed under `_legacy/` and hidden
+until a binding scan licenses its deletion (§6), and the correct one is created beside
+it. That is the one exception to "rename, never recreate", and it exists because the
+type IS the identity a designer's motion preset binds to.
 
 A number variable is also the **opacity of a colour variable** — that is what
 `alpha/*` carries `COLOR_OPACITY` for, and why every translucent colour token is a
@@ -81,7 +96,7 @@ colour reference PLUS an `{alpha.N}` reference rather than a baked hex8.
 |---|---|
 | **name** | the DTCG path joined with `/`, tier-prefixed for `ref` and `cmp` only (`grammar.mjs`) |
 | **description** | the `$description` from source, or the sentence `usage-guidance.mjs` derives — never empty. `figma-variables.mjs` writes an empty description when guidance is silent; that is a bug to fix in the guidance module, not in Figma |
-| **scopes** | the narrowest set that is true (§2). `ALL_SCOPES` never. Empty ONLY for values nothing on the canvas can bind (duration, easing, breakpoint), with the reason in the description |
+| **scopes** | the narrowest set that is true (§2). `ALL_SCOPES` never. Empty ONLY for values nothing on the canvas can bind (breakpoint), with the reason in the description; TIMING and EASING have no scopes property at all |
 | **codeSyntax.WEB** | `var(--sa-…)`, the projected CSS name, so Dev Mode shows the line a developer types. ANDROID / iOS are set only when a native platform consumes the token — the estate has none, so they stay unset rather than invented |
 | **hiddenFromPublishing** | `true` for every `ref/*` primitive and every value that only exists to be aliased; `false` for the semantic and component tiers. Consumers must see the semantic layer and nothing beneath it |
 
@@ -108,7 +123,7 @@ consumers is the only licence.
 
 ## 7. Checklist for any script that writes a variable
 
-- [ ] Type is one of the four the API supports, chosen by §2
+- [ ] Type is one of the six the API supports, chosen by §2 — a duration is TIMING, a curve is EASING, never FLOAT/STRING
 - [ ] Collection chosen by axis (§3), and it already exists — never a new collection
       without a token-architecture decision
 - [ ] `name` equals the DTCG path; `description` non-empty; `scopes` narrowest true

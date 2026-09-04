@@ -59,7 +59,7 @@ export default function MotionPage(): React.JSX.Element {
         { value: durations.length, label: "duration steps", note: `${durations[0]?.value} to ${maxMs}ms, value-named` },
         { value: easings.length, label: "easing curves", note: "named by behaviour, Material 3 vocabulary" },
         { value: REDUCED_MOTION_COLLAPSES.length, label: "collapse under reduced motion", note: "emitted once, in tokens.css" },
-        { value: `${FOUNDATIONS.motion.stats.figma}/${FOUNDATIONS.motion.stats.total}`, label: "in Figma", note: "Motion collection, one mode" },
+        { value: `${FOUNDATIONS.motion.stats.figma}/${FOUNDATIONS.motion.stats.total}`, label: "in Figma", note: "native Timing and Easing variables" },
         { value: "0.01ms", label: "reduced-motion floor", note: "transitionend still fires" },
       ]}
       sections={[
@@ -201,7 +201,7 @@ export default function MotionPage(): React.JSX.Element {
         },
       ]}
       tokens={rows}
-      tokensIntro="Tier 2 is what you bind: motion/<intent>/duration and motion/<intent>/easing, always together. Tier 1 is the value-named ladder beneath — visible so the alias chain can be checked, hidden from Figma publishing, and banned in app code."
+      tokensIntro="Tier 2 is what you bind: motion/<intent>/duration and motion/<intent>/easing, always together. Tier 1 is the value-named ladder beneath — visible so the alias chain can be checked, hidden from Figma publishing, and banned in app code. In Figma every duration is a native Timing variable and every curve a native Easing variable, so a Figma Motion preset binds the token itself."
       a11y={[
         {
           criterion: "2.3.3 Animation from Interactions",

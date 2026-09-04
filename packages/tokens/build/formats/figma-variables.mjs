@@ -373,10 +373,31 @@ const COLOR_RE = /^(#|rgba?\(|hsla?\()/i;
 const DIMENSION_RE = /^(-?\d*\.?\d+)(px|rem|em|ms|s|%)?$/;
 
 /** Infer the Figma type. 517 tokens carry no DTCG `$type`, so this cannot depend on it. */
+/** Parse a DTCG cubicBezier — the authored [x1, y1, x2, y2] or the projected CSS string. */
+export function bezierOf(raw) {
+  if (Array.isArray(raw) && raw.length === 4 && raw.every((n) => typeof n === "number")) return raw;
+  const m = /cubic-bezier\(([^)]+)\)/.exec(String(raw));
+  if (!m) return null;
+  const pts = m[1].split(",").map((s) => Number(s.trim()));
+  return pts.length === 4 && pts.every((n) => Number.isFinite(n)) ? pts : null;
+}
+
 export function figmaTypeOf(token) {
   const declared = token.$type ?? token.original?.$type;
   if (declared === "color") return { type: "COLOR" };
   if (declared === "fontFamily") return { type: "STRING" };
+  // Figma's NATIVE motion types (Plugin API resolvedType TIMING | EASING, probed live on
+  // 2026-09-04 — the bundled typings that listed only four types were stale). A duration is
+  // a TIMING in milliseconds; a curve is an EASING carrying its cubic-bezier control points.
+  // Figma Motion binds them directly, so a designer animates with the token, not a copy.
+  if (declared === "duration") {
+    const m = /^(-?\d*\.?\d+)(ms|s)?$/.exec(String(val(token) ?? "").trim());
+    if (m) return { type: "TIMING", number: m[2] === "s" ? parseFloat(m[1]) * 1000 : parseFloat(m[1]) };
+  }
+  if (declared === "cubicBezier") {
+    const b = bezierOf(val(token));
+    if (b) return { type: "EASING", bezier: b };
+  }
   const v = String(val(token) ?? "");
   if (COLOR_RE.test(v)) return { type: "COLOR" };
   const m = DIMENSION_RE.exec(v.trim());
@@ -599,6 +620,11 @@ function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
     return { type: "STRING", value: figmaFontStyle(raw, token.path?.[2]) };
   }
   if (t.type === "FLOAT") return { type: "FLOAT", value: t.number, unit: t.unit };
+  if (t.type === "TIMING") return { type: "TIMING", value: t.number };
+  if (t.type === "EASING") {
+    const [x1, y1, x2, y2] = t.bezier;
+    return { type: "EASING", value: { x1, y1, x2, y2 } };
+  }
   if (token.path?.[0] === "font" && token.path?.[1] === "family") {
     return { type: t.type, value: primaryFontFamily(raw) };
   }
@@ -792,6 +818,8 @@ export function scopesFor(path, tier, type, figmaName) {
     return ["FONT_FAMILY"];
   }
   if (type === "STRING") return [];
+  // Timing and Easing are bound by Figma Motion by TYPE; they take no property scope.
+  if (type === "TIMING" || type === "EASING") return [];
   // FLOAT
   if (head === "alpha") return ["OPACITY", "COLOR_OPACITY"];
   if (head === "shape" || tail === "radius") return ["CORNER_RADIUS"];

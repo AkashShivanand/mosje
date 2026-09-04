@@ -29234,12 +29234,11 @@
         {
           "name": "ref/motion/duration/0",
           "path": "motion/duration/0",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 0,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 0
             }
           },
           "description": "0ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.",
@@ -29257,12 +29256,11 @@
         {
           "name": "ref/motion/duration/50",
           "path": "motion/duration/50",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 50,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 50
             }
           },
           "description": "50ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.",
@@ -29280,12 +29278,11 @@
         {
           "name": "ref/motion/duration/100",
           "path": "motion/duration/100",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 100,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 100
             }
           },
           "description": "100ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.",
@@ -29303,12 +29300,11 @@
         {
           "name": "ref/motion/duration/150",
           "path": "motion/duration/150",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 150,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 150
             }
           },
           "description": "150ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.",
@@ -29326,12 +29322,11 @@
         {
           "name": "ref/motion/duration/200",
           "path": "motion/duration/200",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 200,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 200
             }
           },
           "description": "200ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.",
@@ -29349,12 +29344,11 @@
         {
           "name": "ref/motion/duration/250",
           "path": "motion/duration/250",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 250,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 250
             }
           },
           "description": "250ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.",
@@ -29372,12 +29366,11 @@
         {
           "name": "ref/motion/duration/300",
           "path": "motion/duration/300",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 300,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 300
             }
           },
           "description": "300ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.",
@@ -29395,12 +29388,11 @@
         {
           "name": "ref/motion/duration/400",
           "path": "motion/duration/400",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 400,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 400
             }
           },
           "description": "400ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.",
@@ -29418,12 +29410,11 @@
         {
           "name": "ref/motion/duration/500",
           "path": "motion/duration/500",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 500,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 500
             }
           },
           "description": "500ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.",
@@ -29441,12 +29432,11 @@
         {
           "name": "ref/motion/duration/700",
           "path": "motion/duration/700",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 700,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 700
             }
           },
           "description": "700ms raw duration step, value-named. TIER 1 — bind a motion/<intent> pair instead; the intent carries the easing that belongs to this duration.",
@@ -29464,11 +29454,16 @@
         {
           "name": "ref/motion/easing/linear",
           "path": "motion/easing/linear",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "STRING",
-              "value": "cubic-bezier(0, 0, 1, 1)"
+              "type": "EASING",
+              "value": {
+                "x1": 0,
+                "y1": 0,
+                "x2": 1,
+                "y2": 1
+              }
             }
           },
           "description": "Constant rate. Progress bars, spinners and anything that measures time. Never for an element that moves — a linear move reads as mechanical. The linear easing curve. TIER 1 — bind a motion/<intent> pair instead, which pairs it with its duration.",
@@ -29486,11 +29481,16 @@
         {
           "name": "ref/motion/easing/accelerate",
           "path": "motion/easing/accelerate",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "STRING",
-              "value": "cubic-bezier(0.4, 0, 1, 1)"
+              "type": "EASING",
+              "value": {
+                "x1": 0.4,
+                "y1": 0,
+                "x2": 1,
+                "y2": 1
+              }
             }
           },
           "description": "Starts slow, leaves fast. Things LEAVING the screen: they get out of the way and the eye does not follow them out. Material 3 standard-accelerate. The accelerate easing curve. TIER 1 — bind a motion/<intent> pair instead, which pairs it with its duration.",
@@ -29508,11 +29508,16 @@
         {
           "name": "ref/motion/easing/decelerate",
           "path": "motion/easing/decelerate",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "STRING",
-              "value": "cubic-bezier(0, 0, 0.2, 1)"
+              "type": "EASING",
+              "value": {
+                "x1": 0,
+                "y1": 0,
+                "x2": 0.2,
+                "y2": 1
+              }
             }
           },
           "description": "Arrives fast, settles gently. Things ENTERING the screen and any colour, border or shadow change on hover — the change is over before the reader looks for it. Material 3 standard-decelerate. The decelerate easing curve. TIER 1 — bind a motion/<intent> pair instead, which pairs it with its duration.",
@@ -29530,11 +29535,16 @@
         {
           "name": "ref/motion/easing/standard",
           "path": "motion/easing/standard",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "STRING",
-              "value": "cubic-bezier(0.4, 0, 0.2, 1)"
+              "type": "EASING",
+              "value": {
+                "x1": 0.4,
+                "y1": 0,
+                "x2": 0.2,
+                "y2": 1
+              }
             }
           },
           "description": "Eases at both ends. A move the reader is meant to watch — an element changing place or size on the same screen. Material 3 standard. The standard easing curve. TIER 1 — bind a motion/<intent> pair instead, which pairs it with its duration.",
@@ -29552,11 +29562,16 @@
         {
           "name": "ref/motion/easing/emphasized",
           "path": "motion/easing/emphasized",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "STRING",
-              "value": "cubic-bezier(0.22, 1, 0.36, 1)"
+              "type": "EASING",
+              "value": {
+                "x1": 0.22,
+                "y1": 1,
+                "x2": 0.36,
+                "y2": 1
+              }
             }
           },
           "description": "Exponential ease-out. Most of the distance is covered in the first third, so a large surface reads as arriving under its own momentum rather than being played back at a fixed rate. For anything the reader opened — a drawer, a panel, a disclosure — and for press feedback. The emphasized easing curve. TIER 1 — bind a motion/<intent> pair instead, which pairs it with its duration.",
@@ -29574,7 +29589,7 @@
         {
           "name": "motion/instant/duration",
           "path": "motion/instant/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29597,7 +29612,7 @@
         {
           "name": "motion/instant/easing",
           "path": "motion/instant/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29620,7 +29635,7 @@
         {
           "name": "motion/hover/duration",
           "path": "motion/hover/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29643,7 +29658,7 @@
         {
           "name": "motion/hover/easing",
           "path": "motion/hover/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29666,7 +29681,7 @@
         {
           "name": "motion/press/duration",
           "path": "motion/press/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29689,7 +29704,7 @@
         {
           "name": "motion/press/easing",
           "path": "motion/press/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29712,7 +29727,7 @@
         {
           "name": "motion/focus/duration",
           "path": "motion/focus/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29735,7 +29750,7 @@
         {
           "name": "motion/focus/easing",
           "path": "motion/focus/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29758,7 +29773,7 @@
         {
           "name": "motion/enter/duration",
           "path": "motion/enter/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29781,7 +29796,7 @@
         {
           "name": "motion/enter/easing",
           "path": "motion/enter/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29804,7 +29819,7 @@
         {
           "name": "motion/exit/duration",
           "path": "motion/exit/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29827,7 +29842,7 @@
         {
           "name": "motion/exit/easing",
           "path": "motion/exit/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29850,7 +29865,7 @@
         {
           "name": "motion/expand/duration",
           "path": "motion/expand/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29873,7 +29888,7 @@
         {
           "name": "motion/expand/easing",
           "path": "motion/expand/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29896,7 +29911,7 @@
         {
           "name": "motion/collapse/duration",
           "path": "motion/collapse/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29919,7 +29934,7 @@
         {
           "name": "motion/collapse/easing",
           "path": "motion/collapse/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29942,7 +29957,7 @@
         {
           "name": "motion/emphasis/duration",
           "path": "motion/emphasis/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29965,7 +29980,7 @@
         {
           "name": "motion/emphasis/easing",
           "path": "motion/emphasis/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -29988,7 +30003,7 @@
         {
           "name": "motion/reveal/duration",
           "path": "motion/reveal/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -30011,7 +30026,7 @@
         {
           "name": "motion/reveal/easing",
           "path": "motion/reveal/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -30034,7 +30049,7 @@
         {
           "name": "motion/page/duration",
           "path": "motion/page/duration",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -30057,7 +30072,7 @@
         {
           "name": "motion/page/easing",
           "path": "motion/page/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -30080,12 +30095,11 @@
         {
           "name": "motion/loading/spin",
           "path": "motion/loading/spin",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 1000,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 1000
             }
           },
           "description": "One revolution of a spinner. Linear, always.",
@@ -30103,7 +30117,7 @@
         {
           "name": "motion/loading/pulse",
           "path": "motion/loading/pulse",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -30126,7 +30140,7 @@
         {
           "name": "motion/loading/easing",
           "path": "motion/loading/easing",
-          "type": "STRING",
+          "type": "EASING",
           "valuesByMode": {
             "Mode 1": {
               "type": "ALIAS",
@@ -30149,12 +30163,11 @@
         {
           "name": "motion/stagger/step",
           "path": "motion/stagger/step",
-          "type": "FLOAT",
+          "type": "TIMING",
           "valuesByMode": {
             "Mode 1": {
-              "type": "FLOAT",
-              "value": 45,
-              "unit": "ms"
+              "type": "TIMING",
+              "value": 45
             }
           },
           "description": "Use as the delay between neighbours when a list cascades in. Bind on transition-delay, multiplied by the item's index, and stop at stagger/max.",

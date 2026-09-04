@@ -60,7 +60,7 @@ Per variable, the push sets all five fields from the payload row:
 | `scopes` | `variable.scopes` — narrowest true set; `COLOR_OPACITY` is UI-only and must be ticked by hand |
 | `codeSyntax.WEB` | `variable.codeSyntax.WEB` |
 | `hiddenFromPublishing` | `variable.hiddenFromPublishing` (`true` for `ref/*`) |
-| value per mode | `valuesByMode[mode]` — `ALIAS` → `createVariableAlias(target)`; `FLOAT` with `unit: "rem"` × 16; `STRING` as is |
+| value per mode | `valuesByMode[mode]` — `ALIAS` → `createVariableAlias(target)`; `FLOAT` with `unit: "rem"` × 16; `STRING` as is; `TIMING` a number in ms; `EASING` → `{ type: "CUSTOM_CUBIC_BEZIER", easingFunctionCubicBezier: { x1, y1, x2, y2 } }`. TIMING and EASING take no scopes — do not assign any |
 
 Order: literals first, aliases second, so a target always exists. Work one collection per
 `use_figma` call; the script is atomic, so an error leaves the file untouched.
