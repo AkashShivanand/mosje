@@ -8307,7 +8307,7 @@
               "name": "color/neutralScale/800"
             }
           },
-          "description": "Use for body copy and headings — the default reading colour. Contrast 16.18:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for body copy and headings — the default reading colour. Contrast 14.17:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-neutral-base)"
           },
@@ -8318,7 +8318,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 16.18,
+              "measured": 14.17,
               "meets": true
             }
           }
@@ -8334,7 +8334,7 @@
               "name": "color/neutralScale/700"
             }
           },
-          "description": "Use for captions, hints and secondary labels that sit beside primary text. Contrast 10.92:1 vs bg/neutral/base — meets ≥4.5:1: captions and hints — still text, still AA.",
+          "description": "Use for captions, hints and secondary labels that sit beside primary text. Contrast 9.56:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: captions and hints — still text, still AA.",
           "codeSyntax": {
             "WEB": "var(--sa-text-neutral-subtle)"
           },
@@ -8345,7 +8345,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtle",
               "min": 4.5,
-              "measured": 10.92,
+              "measured": 9.56,
               "meets": true
             }
           }
@@ -8436,7 +8436,7 @@
               "name": "color/primaryScale/700"
             }
           },
-          "description": "Use for a standard text link in its hover state. Contrast 8.58:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
+          "description": "Use for a standard text link in its hover state. Contrast 7.52:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-brand-hover)"
           },
@@ -8447,7 +8447,7 @@
             "in.gov.mosje.contrast": {
               "rung": null,
               "min": 4.5,
-              "measured": 8.58,
+              "measured": 7.52,
               "meets": true
             }
           }
@@ -8463,7 +8463,7 @@
               "name": "color/primaryScale/800"
             }
           },
-          "description": "Use for a standard text link in its active state. Contrast 11.4:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
+          "description": "Use for a standard text link in its active state. Contrast 9.99:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-brand-active)"
           },
@@ -8474,7 +8474,7 @@
             "in.gov.mosje.contrast": {
               "rung": null,
               "min": 4.5,
-              "measured": 11.4,
+              "measured": 9.99,
               "meets": true
             }
           }
@@ -8511,7 +8511,7 @@
               "name": "color/primaryScale/800"
             }
           },
-          "description": "Use for an already-visited link. Contrast 11.4:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
+          "description": "Use for an already-visited link. Contrast 9.99:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-visited-default)"
           },
@@ -8522,7 +8522,7 @@
             "in.gov.mosje.contrast": {
               "rung": null,
               "min": 4.5,
-              "measured": 11.4,
+              "measured": 9.99,
               "meets": true
             }
           }
@@ -8538,7 +8538,7 @@
               "name": "color/neutralScale/700"
             }
           },
-          "description": "Use for a link that must not stand out from surrounding text. Contrast 10.92:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
+          "description": "Use for a link that must not stand out from surrounding text. Contrast 9.56:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-neutral-default)"
           },
@@ -8549,7 +8549,7 @@
             "in.gov.mosje.contrast": {
               "rung": null,
               "min": 4.5,
-              "measured": 10.92,
+              "measured": 9.56,
               "meets": true
             }
           }
@@ -8592,7 +8592,7 @@
               "name": "color/primaryScale/600"
             }
           },
-          "description": "Use for text in the primary brand colour — not for long-form reading. Contrast 6.36:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text in the primary brand colour — not for long-form reading. Contrast 5.57:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-brand-primary-bolder)"
           },
@@ -8603,7 +8603,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.36,
+              "measured": 5.57,
               "meets": true
             }
           }
@@ -8619,7 +8619,7 @@
               "name": "color/successScale/700"
             }
           },
-          "description": "Use for text that report a successful or completed state. Contrast 11.67:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a successful or completed state. Contrast 10.22:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-success-base)"
           },
@@ -8630,7 +8630,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 11.67,
+              "measured": 10.22,
               "meets": true
             }
           }
@@ -8646,7 +8646,7 @@
               "name": "color/successScale/600"
             }
           },
-          "description": "Use for text that report a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a successful or completed state. Contrast 7.99:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-success-bolder)"
           },
@@ -8657,7 +8657,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 9.12,
+              "measured": 7.99,
               "meets": true
             }
           }
@@ -8673,7 +8673,7 @@
               "name": "color/dangerScale/700"
             }
           },
-          "description": "Use for text that report an error or destructive state. Contrast 9.1:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text that report an error or destructive state. Contrast 7.97:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-error-base)"
           },
@@ -8684,7 +8684,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 9.1,
+              "measured": 7.97,
               "meets": true
             }
           }
@@ -8700,7 +8700,7 @@
               "name": "color/dangerScale/600"
             }
           },
-          "description": "Use for text that report an error or destructive state. Contrast 6.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text that report an error or destructive state. Contrast 5.85:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-error-bolder)"
           },
@@ -8711,7 +8711,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.68,
+              "measured": 5.85,
               "meets": true
             }
           }
@@ -8727,7 +8727,7 @@
               "name": "color/warningScale/700"
             }
           },
-          "description": "Use for text that report a warning or a state needing attention. Contrast 7.79:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a warning or a state needing attention. Contrast 6.82:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-warning-base)"
           },
@@ -8738,7 +8738,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 7.79,
+              "measured": 6.82,
               "meets": true
             }
           }
@@ -8754,7 +8754,7 @@
               "name": "color/warningScale/600"
             }
           },
-          "description": "Use for text that report a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a warning or a state needing attention. Contrast 4.97:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-warning-bolder)"
           },
@@ -8765,7 +8765,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 5.68,
+              "measured": 4.97,
               "meets": true
             }
           }
@@ -8781,7 +8781,7 @@
               "name": "color/infoScale/600"
             }
           },
-          "description": "Use for text that report an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text that report an informational or in-progress state. Contrast 5.52:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-info-base)"
           },
@@ -8792,7 +8792,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 6.3,
+              "measured": 5.52,
               "meets": true
             }
           }
@@ -8808,7 +8808,7 @@
               "name": "color/infoScale/600"
             }
           },
-          "description": "Use for text that report an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text that report an informational or in-progress state. Contrast 5.52:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-info-bolder)"
           },
@@ -8819,7 +8819,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.3,
+              "measured": 5.52,
               "meets": true
             }
           }
@@ -15373,7 +15373,7 @@
               "name": "color/neutralScale/900"
             }
           },
-          "description": "Use for max-contrast headings that need to outrank surrounding text. Contrast 18.94:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for max-contrast headings that need to outrank surrounding text. Contrast 16.59:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-neutral-bolder)"
           },
@@ -15384,7 +15384,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 18.94,
+              "measured": 16.59,
               "meets": true
             }
           }
@@ -15400,7 +15400,7 @@
               "name": "color/primaryScale/600"
             }
           },
-          "description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast. BLUE IS RAMP 600, NOT 500, and the reason is the ground it actually sits on: 500 (#0373df) measures 4.64:1 on white but 4.07:1 on bg/surface/muted, which is the class the estate's own <body> carries — so the link failed 1.4.3 on most pages while passing every check. 600 (#005eb9) is 6.36:1 and 5.57:1. It passed because the contrast contract judges text against bg/neutral/base, i.e. white; that surface assumption is recorded as an open item rather than widened here, since widening it re-judges every text token at once. Navy holds ramp 500 through its own colorModes override and already clears 4.5:1 on that ground. dbim has no such override, so it follows the base step and moved to 600 with it across all six of its hues — which only darkens those links, never lightens them. Contrast 6.36:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
+          "description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast. BLUE IS RAMP 600, NOT 500, and the reason is the ground it actually sits on: 500 (#0373df) measures 4.64:1 on white but 4.07:1 on bg/surface/muted, which is the class the estate's own <body> carries — so the link failed 1.4.3 on most pages while passing every check. 600 (#005eb9) is 6.36:1 and 5.57:1. It passed because the contrast contract judges text against bg/neutral/base, i.e. white; that surface assumption is recorded as an open item rather than widened here, since widening it re-judges every text token at once. Navy holds ramp 500 through its own colorModes override and already clears 4.5:1 on that ground. dbim has no such override, so it follows the base step and moved to 600 with it across all six of its hues — which only darkens those links, never lightens them. Contrast 5.57:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-brand-default)"
           },
@@ -15411,7 +15411,7 @@
             "in.gov.mosje.contrast": {
               "rung": null,
               "min": 4.5,
-              "measured": 6.36,
+              "measured": 5.57,
               "meets": true
             }
           }
