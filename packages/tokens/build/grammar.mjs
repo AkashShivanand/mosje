@@ -137,8 +137,16 @@ export const PROMINENCE_CONTRACT = {
   fill: {
     base: { minContrast: 0, use: "decorative fills only" },
     subtler: { minContrast: 0, use: "decorative fills only" },
-    subtle: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
-    bold: { minContrast: 3.0, use: "UI boundaries, icons, non-text (WCAG 1.4.11)" },
+    // `subtle` and `bold` are TONAL FILLS — a chip, a tinted row, a plate. Their readability is
+    // carried by the measured `on/*` ink (every pairing is AA in every brand), not by the
+    // fill's distance from the page. Until 2026-09-04 both claimed ≥3:1 against the page, which
+    // SC 1.4.11 asks only of boundaries that identify a control, and the shortfall ledger held
+    // sixteen "failures" that were this claim and nothing else — every ramp's rung 300 sits at
+    // L* 64–74, which is 2.3–2.7:1 on white by construction. Re-anchoring India Green at its own
+    // rung made green the seventeenth, and a ledger that may only shrink cannot record a ladder
+    // that is wrong. The claim is dropped; the ladder now says what these rungs are for.
+    subtle: { minContrast: 0, use: "tonal fill — readable through its on/* ink; no boundary guarantee" },
+    bold: { minContrast: 0, use: "tonal fill — readable through its on/* ink; no boundary guarantee" },
     bolder: { minContrast: 4.5, use: "text-safe (WCAG 1.4.3 AA)" },
     boldest: { minContrast: 7.0, use: "text-safe (WCAG 1.4.6 AAA)" },
   },
@@ -169,6 +177,12 @@ export const STATE = new Set([
 export const GROUP = new Set([
   "space", "inline", "stack", "padding", "section",
   "radius", "opacity", "z", "border", "elevation", "motion",
+  // `alpha` is the Tier-2 OPACITY, and it is not called `opacity` for the reason `shape` is not
+  // called `radius`: Style Dictionary merges the primitive and semantic namespaces, so a Tier-2
+  // `opacity/*` would self-reference the Tier-1 scale it aliases. `alpha` is also the channel's
+  // own name in every colour model. Added 2026-09-04 with the alias-plus-opacity restructuring:
+  // every translucent colour token is now a colour reference AND an `{alpha.N}` reference.
+  "alpha",
   "type", "density", "chart", "on", "layer", "font", "leading", "blur",
   // `icon` and `control` are also a colour ROLE and a Tier-3 component respectively. RULE 2
   // keeps that unambiguous by position, not by exception: a colour role always takes a FAMILY

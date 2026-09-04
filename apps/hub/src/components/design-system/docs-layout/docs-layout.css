@@ -527,12 +527,16 @@
 
 .docs-nav__badge--stable {
   background: var(--sa-bg-status-success-subtler);
-  color: var(--sa-text-status-success-base);
+  /* `bolder` ink on the `subtler` tint: the base ink is measured for the page and the base
+     tint, and the 2026-09-04 status ladder puts it at 4.05:1 (warning) and 4.31:1 (info) here. */
+  color: var(--sa-text-status-success-bolder);
 }
 
 .docs-nav__badge--beta {
   background: var(--sa-bg-status-warning-subtler);
-  color: var(--sa-text-status-warning-base);
+  /* `bolder` ink on the `subtler` tint: the base ink is measured for the page and the base
+     tint, and the 2026-09-04 status ladder puts it at 4.05:1 (warning) and 4.31:1 (info) here. */
+  color: var(--sa-text-status-warning-bolder);
 }
 
 .docs-nav__badge--alpha {
@@ -543,7 +547,9 @@
 
 .docs-nav__badge--new {
   background: var(--sa-bg-status-info-subtler);
-  color: var(--sa-text-status-info-base);
+  /* `bolder` ink on the `subtler` tint: the base ink is measured for the page and the base
+     tint, and the 2026-09-04 status ladder puts it at 4.05:1 (warning) and 4.31:1 (info) here. */
+  color: var(--sa-text-status-info-bolder);
 }
 
 /* ── Article Container ── */

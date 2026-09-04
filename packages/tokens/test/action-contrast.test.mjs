@@ -50,7 +50,18 @@ function resolve(name, depth = 0) {
   const v = CURRENT.get(name);
   if (v === undefined) return null;
   const ref = v.match(/^var\((--[A-Za-z0-9-]+)\)$/);
-  return ref ? resolve(ref[1], depth + 1) : v;
+  if (ref) return resolve(ref[1], depth + 1);
+  // A translucent token is `color-mix(in srgb, var(base) calc(var(alpha) * 100%), transparent)`
+  // since 2026-09-04 — resolve both halves and hand back the rgba() the literal used to be.
+  const mix = v.match(/^color-mix\(in srgb, var\((--[A-Za-z0-9-]+)\) calc\(var\((--[A-Za-z0-9-]+)\) \* 100%\), transparent\)$/);
+  if (mix) {
+    const base = resolve(mix[1], depth + 1);
+    const alpha = resolve(mix[2], depth + 1);
+    const c = base && parseColor(base);
+    if (!c || alpha === null) return null;
+    return `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${c[3] * parseFloat(alpha)})`;
+  }
+  return v;
 }
 
 /** Parse #rgb / #rrggbb / #rrggbbaa / rgb() / rgba() into [r,g,b,a]. */

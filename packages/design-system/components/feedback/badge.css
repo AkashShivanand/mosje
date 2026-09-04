@@ -113,8 +113,11 @@
     --_fg: var(--sa-color-text-onPrimary);
   }
   .ds-badge--solid.ds-badge--warning {
-    --_bg: var(--sa-color-status-warning);
-    --_fg: var(--sa-color-text-default);
+    /* Amber is the one family whose SOLID chip takes the `bold` rung and dark ink (#e09c1d,
+       6.9:1): its `bolder` rung is a brown. Until 2026-09-04 this was the warning INK
+       (#704b00) as a fill, under dark text — 2.08:1, unreadable. */
+    --_bg: var(--sa-bg-status-warning-bold);
+    --_fg: var(--sa-on-bg-status-warning-bold);
   }
   .ds-badge--solid.ds-badge--neutral {
     --_bg: var(--sa-color-text-default);

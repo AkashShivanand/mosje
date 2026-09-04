@@ -12,6 +12,34 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-04 · System version: v0.47.0 (EVERY TRANSLUCENT TOKEN IS A REFERENCE
+  PLUS AN OPACITY REFERENCE. Figma can alias a colour and keep a separate, variable-bound
+  opacity, so the 136 rgba() literals — 48 overlay tiers, scrim, inverse rules, inverse button
+  states — are now `{base}` + `{alpha.N}`; CSS resolves them as color-mix() over two custom
+  properties and they follow every brand island. Navy's scrim had been the Blue neutral and
+  every DBIM wash a Blue literal. The opacity scale is ONE thirteen-step ladder, 0 · 4 · 8 · 16 ·
+  24 · 32 · 40 · 48 · 64 · 72 · 80 · 88 · 100, bound as `alpha/*`; Figma reads an opacity-bound
+  number as a percentage, so `ref/opacity/*` is projected ×100. The Plugin API cannot write an
+  alias's opacity or the "Color variable opacity" scope — both are recorded as UI steps.
+  Library scopes follow the agreed rule: Tier-1 `ref/*` is offered in no picker, each alias is
+  scoped to the property it is for, and the exporter states the scope in the payload.
+  Audit §16.)
+
+  Last reviewed: 2026-09-04 · System version: v0.46.0 (THE COLOUR SYSTEM WAS DULL BECAUSE IT
+  WAS TWO RUNGS TOO DARK, AND ONE RAMP WAS STARVING ITS OWN TINTS. Every status ink sat at
+  rung 700 (7.8–11.7:1, L* 33–44) where peers sit at L* 48–57; India Green anchored at 500
+  dragged its whole ladder a rung darker than every sibling, so the success fill under white
+  text was 9.1:1 and its rung-100 tint held 17% of the chroma sRGB allows there — a sage grey
+  called "success". Every status `bolder` ink was LIGHTER than its `base`. Info was the brand
+  blue (dE 0.5). The alert painted its grounds with four hand-mixed percentages and its warning
+  glyph with a 1.44:1 badge yellow; the solid warning badge was dark text on a brown, 2.08:1.
+  Status inks now sit at 600 and bolder at 700; India Green anchors at 600 and IS the success
+  ink and fill; the tint exponent
+  is 0.5; danger rotated to hue 24; info is cyan-teal at 220; brand text is rung 600 (it was
+  4.07:1 on the page ground); disabled ink is opaque; the resting control border is 4.65:1.
+  Pushed to Figma and read back the same day — `reference/figma-live.json` records both halves.
+  Audit: docs/audit/2026-09-04-colour-system-audit-and-redesign.md.)
+
   Last reviewed: 2026-09-03 · System version: v0.45.0 (THE LOGIN FORM WAS A DRAWING OF THE
   DESIGN, NOT AN ASSEMBLY OF IT. `PortalLoginTemplate` imported ZERO components from its own
   design system: 8 raw inputs, 8 raw labels, 6 raw buttons, a raw select and 77
@@ -740,25 +768,31 @@ that changes a colour is `data-brand`, so the two value columns below are Blue a
 | Token | Blue | Navy | Correct usage | Never use for |
 |-------|------|------|---------------|---------------|
 | `--sa-bg-brand-primary-bolder` | `#005EB9` | `#003366` | **Solid primary fills** — filled buttons, active nav, brand banners | Text or borders on a light page; the ink slot below is measured for that |
-| `--sa-text-brand-primary-base` | `#0373DF` | `#244C7B` | Brand-coloured text, links, outlined-button ink, key icons | Solid fills behind white text — that is the `bg` slot's job |
+| `--sa-text-brand-primary-base` | `#005EB9` | `#003366` | Brand-coloured text, links, outlined-button ink | Solid fills behind white text — that is the `bg` slot's job. Since 2026-09-04 this is rung 600, because #0373DF measured 4.07:1 on the page ground; the key colour stays on `icon/brand/primary/base` and the fills |
 | `--sa-color-brand-saffron` | `#FF671F` | same | Accents, badges, decorative emphasis | Text, icons or chart series on white — **2.91:1**, below even the 3:1 non-text floor |
 | `--sa-color-brand-yellow` | `#FFD323` | same | Nothing, in new work. Retained for older markup | Text at any size (**1.44:1**). For yellow emphasis use `bg/status/warning/subtler` behind dark ink |
 | `--sa-text-neutral-base` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
 | `--sa-text-neutral-subtle` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
 | `--sa-bg-neutral-base` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
 | `--sa-bg-neutral-subtler` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
-| `--sa-text-status-error-base` | `#8B1F18` | same | Error text and icons on white, destructive labels | Decorative fills (use `bg/status/error/subtler`) |
-| `--sa-text-status-success-base` | `#004220` | same | Success states, validation confirmation | Primary brand actions |
+| `--sa-text-status-error-base` | `#AA2D30` | same | Error text and icons on white, destructive labels — rung 600, 6.72:1 | Decorative fills (use `bg/status/error/subtler`) |
+| `--sa-text-status-success-base` | `#046A38` | same | Success states, validation confirmation — rung 600, which is India Green itself, 6.72:1 | Primary brand actions |
 | `--sa-on-bg-brand-primary-bolder` | `#FFFFFF` | same | Text/icons on a solid primary fill | Any other background |
 
-> **A fill sits one rung deeper than the ink of the same family, and that is the point.**
-> `bg/brand/primary/bolder` is `primaryScale/600`; `text/brand/primary/base` is `/500`. The fill
-> carries white text, so it is measured against white and needs the headroom; the ink sits on the
-> page, where 4.64:1 is measured against the page and correct. Reaching for the ink token to paint
-> a button is the mistake this split exists to prevent — and it is the one the DS Button itself
-> made until 2026-08-12.
+> **Ink and fill are different tokens even when they resolve to the same rung.** Since 2026-09-04
+> `text/brand/primary/base` and `bg/brand/primary/bolder` are both `primaryScale/600`: the fill
+> needs 4.5:1 under white text, the ink needs 4.5:1 on the muted page ground, and rung 600 is the
+> first rung that pays both (6.36:1 and 5.57:1). The key colour `#0373DF` remains the ICON and
+> the identity, not body text — it measured 4.07:1 on the ground every page carries. Reaching for
+> the ink token to paint a button is still the mistake the split exists to prevent.
+>
+> **Status roles read the same ladder in every family.** `text|icon|border/status/*/base` is rung
+> 600 (5.7–6.7:1 on white) and `bolder` is rung 700 (7.8–9.3:1). Until 2026-09-04 base was 700
+> and bolder was 600 — the louder name was the lighter colour. Amber is the one family whose SOLID
+> chip takes the `bold` rung (300, `#E09C1D`) with its measured dark ink (6.9:1) instead of
+> `bolder` under white: warningScale/600 is a brown, and USWDS treats amber the same way.
 
-*Every value above was read from `packages/tokens/dist/tokens.css` on 2026-08-12. The previous
+*Every value above was read from `packages/tokens/dist/tokens.css` on 2026-09-04. The previous
 table pre-dated the 2026-08-11 ramp rebuild and was wrong on `--ds-saffron`, `--ds-ink`,
 `--ds-ink-muted`, `--ds-danger` and `--ds-success`, and carried a Dark column for an axis that had
 already been removed.*

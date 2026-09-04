@@ -132,7 +132,11 @@ test("no --sa-cmp-* is emitted as a resolved literal when its source is a refere
   const rootBlock = css.slice(css.indexOf(":root"), css.indexOf("}", css.indexOf(":root")));
   const frozen = [];
   for (const m of rootBlock.matchAll(/(--sa-cmp-[A-Za-z0-9-]+)\s*:\s*([^;]+);/g)) {
-    if (referenced.has(m[1]) && !m[2].trim().startsWith("var(")) frozen.push(m[1]);
+    const value = m[2].trim();
+    // A chain is `var(...)`, or — for a translucent token — a color-mix() whose colour AND
+    // opacity are both var() chains. Either follows data-brand; a hex or an rgba() does not.
+    const isChain = value.startsWith("var(") || (value.startsWith("color-mix(") && /var\(--sa-[A-Za-z0-9-]+\) calc\(var\(--sa-alpha-/.test(value));
+    if (referenced.has(m[1]) && !isChain) frozen.push(m[1]);
   }
   assert.deepEqual(
     frozen.slice(0, 10),

@@ -217,14 +217,14 @@
         "border": "white"
       },
       "hover": {
-        "bg": "white92",
+        "bg": "white88",
         "text": "800",
-        "border": "white92"
+        "border": "white88"
       },
       "active": {
-        "bg": "white84",
+        "bg": "white80",
         "text": "900",
-        "border": "white84"
+        "border": "white80"
       },
       "disabled": {
         "bg": "white40",
@@ -239,7 +239,7 @@
         "border": "100"
       },
       "hover": {
-        "bg": "white10",
+        "bg": "white8",
         "text": "white",
         "border": "50"
       },

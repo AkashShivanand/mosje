@@ -49,7 +49,10 @@ function parseColour(raw) {
  * payload and `24` in the library. Comparing those raw would report every rem token as drifted.
  */
 export function normValue(val) {
-  if (val.type === "ALIAS") return "->" + val.name;
+  // An alias that carries its own opacity is a different value from the bare alias: the
+  // checksum has to move when the binding is made in Figma, or the parity gate could not tell
+  // "alias at 8%" from "alias at 100%".
+  if (val.type === "ALIAS") return "->" + val.name + (val.opacity ? "@->" + val.opacity.name : "");
   if (val.type === "COLOR") {
     const c = parseColour(val.value);
     if (!c) return "COLOR?" + val.value;

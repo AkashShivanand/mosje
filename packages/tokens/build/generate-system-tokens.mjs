@@ -52,7 +52,7 @@ const put = (path, ref, description) => {
 put(["bg", "neutral", "subtle"], "{color.neutralScale.100}", "Hovered rows, quiet panels");
 put(["bg", "neutral", "bold"], "{color.neutralScale.200}", "Pressed rows, dividers as fills");
 put(["bg", "neutral", "inverse"], "{color.neutralScale.900}", "Inverted surface (tooltips, dark panels)");
-put(["bg", "neutral", "disabled"], "{color.neutralScale.200}", "Disabled control fill");
+put(["bg", "neutral", "disabled"], "{color.neutralScale.100}", "Disabled control fill — rung 100, one lighter than before, so a disabled control no longer shares its fill with border/neutral/base and loses its edge");
 
 for (const [variant, scale] of Object.entries(BRAND)) {
   for (const [rung, step] of Object.entries(LADDER)) {
@@ -61,6 +61,12 @@ for (const [variant, scale] of Object.entries(BRAND)) {
 }
 for (const [variant, scale] of Object.entries(STATUS)) {
   for (const [rung, step] of Object.entries(LADDER)) {
+    // AMBER HAS NO DARK RUNG THAT IS STILL AMBER: warningScale/600 (#8b5e00, the `bolder` fill
+    // under white ink) is a brown. The ladder is left uniform — `bolder` means "white ink is
+    // AA on this" in every family — and a component that wants a VIVID amber fill takes the
+    // `bold` rung (300, #e09c1d) with its measured DARK ink, `on/bg/status/warning/bold`
+    // (6.9:1). That is how USWDS (#ffbe2e + black) treats the same problem. The solid warning
+    // badge does exactly this; see badge.css.
     put(["bg", "status", variant, rung], `{color.${scale}.${step}}`, `${variant} background, ${rung}`);
   }
 }
@@ -71,7 +77,7 @@ put(["text", "neutral", "subtle"], "{color.text.muted}", "Captions, hints, secon
 put(["text", "neutral", "disabled"], "{color.text.disabled}", "Disabled label");
 put(["text", "neutral", "inverse"], "{color.text.onPrimary}", "Text on a solid brand or inverse surface");
 put(["text", "neutral", "subtler"], "{color.neutralScale.500}", "Quietest ink that is still AA on bg/neutral/base (4.72:1) — placeholders in an unfilled input or select. It must read as 'not yet entered'; text/neutral/subtle is dark enough to look like a real value. Named for its rung, not its use, per the grammar: 'placeholder' is neither a prominence nor a state and adding it to STATE would let bg/*/placeholder parse too.");
-put(["text", "brand", "primary", "base"], "{color.action.primary.default}", "Brand-coloured text");
+put(["text", "brand", "primary", "base"], "{color.primaryScale.600}", "Brand-coloured text — rung 600, because TEXT owes 4.5:1 on the ground it sits on and the key colour does not pay it: #0373DF is 4.07:1 on bg/neutral/subtler, the <body> of every page. The key colour stays the ICON and FILL token; text moved on 2026-09-04.");
 /**
  * The ACCESSIBLE brand ink. `text/brand/primary/base` is the brand key colour, and a key
  * colour is chosen to be recognisable, not to be readable: #0373DF measures 4.07:1 on
@@ -80,12 +86,12 @@ put(["text", "brand", "primary", "base"], "{color.action.primary.default}", "Bra
  * Reach for this whenever brand-coloured text lands on anything other than plain white; the
  * selected tab's label is the first call site.
  */
-put(["text", "brand", "primary", "bolder"], "{color.primaryScale.600}", "Brand-coloured text that must pass AA on a tinted surface");
+put(["text", "brand", "primary", "bolder"], "{color.primaryScale.700}", "Brand-coloured text, bolder — rung 700 (8.6:1), for a label on a tinted brand surface");
 for (const [variant] of Object.entries(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
-  put(["text", "status", variant, "base"], `{color.status.${src}}`, `${variant} message text`);
+  put(["text", "status", variant, "base"], `{color.${STATUS[variant]}.600}`, `${variant} message text — rung 600, the AA rung on the body ground (5.7–6.7:1). Was rung 700 (7.8–11.7:1), two rungs darker than text needs, which is what made every status read as brown or black-green.`);
   /** Same gap as the icon family: the ladder's 600 rung existed only for backgrounds. */
-  put(["text", "status", variant, "bolder"], `{color.${STATUS[variant]}.600}`, `${variant} text, bolder — the darker rung, for a label on a tinted status surface`);
+  put(["text", "status", variant, "bolder"], `{color.${STATUS[variant]}.700}`, `${variant} text, bolder — rung 700, AAA on white; for a label on a tinted status surface. Until 2026-09-04 this was rung 600 while base was 700, so "bolder" was the LIGHTER of the two.`);
 }
 // Link states — the estate had exactly one link token before this (--ds-link). GIGW expects
 // visited links to be distinguishable on public pages.
@@ -113,13 +119,13 @@ put(["icon", "brand", "primary", "bolder"], "{color.primaryScale.600}", "Brand-c
 put(["icon", "neutral", "subtler"], "{color.neutralScale.500}", "Quietest glyph that still clears 1.4.11 on bg/neutral/base (4.6:1) — a secondary control's icon, a stepper chevron. Not for a DISABLED glyph: that is icon/neutral/disabled, which is allowed to fail because WCAG exempts inactive controls.");
 for (const variant of Object.keys(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
-  put(["icon", "status", variant, "base"], `{color.status.${src}}`, `${variant} icon`);
+  put(["icon", "status", variant, "base"], `{color.${STATUS[variant]}.600}`, `${variant} icon — rung 600, matching the message text`);
   /**
    * The 600 rung of each status ramp, as an ICON. The bg family has had `bolder` since the
    * ladder landed; text, icon and border never got it, so a status glyph that needed the
    * darker step bound `ref/color/<status>/source` directly — 112 of them across the library.
    */
-  put(["icon", "status", variant, "bolder"], `{color.${STATUS[variant]}.600}`, `${variant} icon, bolder — the darker rung, for a glyph on a tinted status surface where the base rung would not carry`);
+  put(["icon", "status", variant, "bolder"], `{color.${STATUS[variant]}.700}`, `${variant} icon, bolder — rung 700, for a glyph on a tinted status surface where the base rung would not carry`);
 }
 
 // ---- border --------------------------------------------------------------
@@ -144,8 +150,8 @@ put(["border", "brand", "primary", "base"], "{color.action.primary.default}", "B
 put(["border", "brand", "primary", "bolder"], "{color.primaryScale.600}", "Brand border that must pass 1.4.11 on a tinted surface — the outlined counterpart of text/brand/primary/bolder");
 for (const variant of Object.keys(STATUS)) {
   const src = variant === "error" ? "danger" : variant;
-  put(["border", "status", variant, "base"], `{color.status.${src}}`, `${variant} border`);
-  put(["border", "status", variant, "bolder"], `{color.${STATUS[variant]}.600}`, `${variant} border, bolder — the darker rung, for an outline on a tinted status surface`);
+  put(["border", "status", variant, "base"], `{color.${STATUS[variant]}.600}`, `${variant} border — rung 600 (≥5.7:1, well past the 3:1 of 1.4.11)`);
+  put(["border", "status", variant, "bolder"], `{color.${STATUS[variant]}.700}`, `${variant} border, bolder — rung 700, for an outline on a tinted status surface`);
 }
 
 // ---- focus / overlay -----------------------------------------------------

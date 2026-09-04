@@ -107,6 +107,17 @@ function monotoneLadder(anchorIndex, lightest, anchorL, darkest) {
 /* ------------------------------------------------------------------ chroma arc */
 
 /**
+ * How fast tints shed chroma above the anchor. 0.85 (until 2026-09-04) tapered so steeply that a
+ * ramp anchored on a DARK colour starved its own tints: India Green sits at L* 46, and at rung
+ * 100 (L* 86) the arc left 17% of the chroma sRGB can hold there — a sage grey wearing the name
+ * "success". The blue and red ramps never showed it because their anchors are light enough that
+ * the same taper still hits the gamut wall. 0.5 holds chroma into the tints (Radix and Tailwind
+ * greens measure C 0.05–0.09 at that lightness; this lands at 0.055) and is gamut-clamped by
+ * `oklchToHex`, so ramps already at the wall are unchanged to the hex.
+ */
+export const TINT_EXPONENT = 0.5;
+
+/**
  * Chroma as a single arc peaking at the anchor and tapering to both ends.
  *
  * Tints near white and shades near black cannot hold much chroma without looking synthetic,
@@ -121,7 +132,7 @@ function monotoneLadder(anchorIndex, lightest, anchorL, darkest) {
 function chromaArc(L, anchorL, anchorC) {
   if (L >= anchorL) {
     const t = (100 - L) / (100 - anchorL);
-    return anchorC * Math.pow(Math.max(0, t), 0.85);
+    return anchorC * Math.pow(Math.max(0, t), TINT_EXPONENT);
   }
   const t = L / anchorL;
   return anchorC * Math.pow(Math.max(0, t), 0.7);
