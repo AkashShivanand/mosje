@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ListingPage } from "@/components/website/templates/ListingPage";
+import { Link } from "@mosje/design-system";
 import {
   ngoEnforcementColumns,
   ngoEnforcementRows,
@@ -40,9 +41,9 @@ export default function Page() {
                 {BLACKLISTING_ORDERS.map((order) => (
                   <li key={order.title}>
                     {order.fileUrl ? (
-                      <a href={order.fileUrl} target="_blank" rel="noreferrer">
+                      <Link href={order.fileUrl} external>
                         {order.title}
-                      </a>
+                      </Link>
                     ) : (
                       order.title
                     )}{" "}

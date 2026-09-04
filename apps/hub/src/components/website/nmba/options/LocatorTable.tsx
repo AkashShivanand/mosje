@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Icon, Search, Select } from "@mosje/design-system";
+import { Icon, Link, Search, Select } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 import { CENTRE_TYPE_META, CENTRE_TYPE_ORDER, type CentreType, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres, ALL_STATES } from "./locator-shared";
@@ -81,7 +81,7 @@ export function LocatorTable() {
                     <td className="whitespace-nowrap px-4 py-2.5 text-right">
                       <span className="inline-flex items-center gap-2">
                         <button type="button" onClick={(e) => { e.stopPropagation(); setSelected(c); }} className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:text-primary-dark"><Icon name="location_on" size={14} /> Map</button>
-                        <a href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()} className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:text-primary-dark"><Icon name="navigation" size={14} /> Directions</a>
+                        <Link href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} external variant="standalone" onClick={(e) => e.stopPropagation()} className="text-[12px] font-semibold" iconLeft={<Icon name="navigation" size={14} />}>Directions</Link>
                       </span>
                     </td>
                   </tr>

@@ -37,7 +37,7 @@
   ],
   "totals": {
     "size-off-ramp": 184,
-    "size": 375,
+    "size": 374,
     "leading": 127,
     "tracking": 20,
     "family": 19
@@ -815,7 +815,7 @@
     },
     "apps/hub/src/components/website/nmba/options/LocatorMapFirst.tsx": {
       "size-off-ramp": 3,
-      "size": 5,
+      "size": 4,
       "leading": 0,
       "tracking": 0,
       "family": 0

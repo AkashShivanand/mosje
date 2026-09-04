@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import NextLink from "next/link";
+import { Link } from "@mosje/design-system";
 import { ContentPage } from "@/components/website/templates/ContentPage";
 
 export const metadata: Metadata = {
@@ -81,9 +82,9 @@ export default function AccessibilityPage() {
       <ul>
         <li>
           <strong>PDF files</strong> can be viewed with{" "}
-          <a href="https://get.adobe.com/reader/" rel="noopener noreferrer" target="_blank">
+          <Link href="https://get.adobe.com/reader/" external>
             Adobe Acrobat Reader
-          </a>
+          </Link>
           .
         </li>
         <li>
@@ -105,7 +106,7 @@ export default function AccessibilityPage() {
       <p>
         We welcome your feedback on the accessibility of this website. If you encounter any accessibility
         barrier, or require any information on this website in an alternative format, please reach us through
-        the details on our <Link href="/website/contact-us">Contact Us</Link> page, describing the page concerned and the
+        the details on our <NextLink href="/website/contact-us">Contact Us</NextLink> page, describing the page concerned and the
         difficulty you experienced. We will make every reasonable effort to address the issue and to provide
         the information you need.
       </p>

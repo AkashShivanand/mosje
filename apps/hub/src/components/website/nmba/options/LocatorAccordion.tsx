@@ -3,7 +3,7 @@
 import * as React from "react";
 import { CENTRE_TYPE_META, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres } from "./locator-shared";
-import { Icon, Search } from "@mosje/design-system";
+import { Icon, Link, Search } from "@mosje/design-system";
 
 export function LocatorAccordion() {
   const [query, setQuery] = React.useState("");
@@ -63,8 +63,8 @@ export function LocatorAccordion() {
                               <span className="block truncate text-[13px] font-medium text-ink">{c.name}</span>
                               <span className="block text-[12px] text-ink-muted">{c.type} · {c.district}</span>
                               {active && (
-                                <a href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}
-                                  className="mt-1 inline-flex items-center gap-1 text-[12px] font-semibold text-primary"><Icon name="navigation" size={12} /> Directions</a>
+                                <Link href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} external variant="standalone" onClick={(e) => e.stopPropagation()}
+                                  className="mt-1 text-[12px] font-semibold" iconLeft={<Icon name="navigation" size={12} />}>Directions</Link>
                               )}
                             </span>
                           </button>
