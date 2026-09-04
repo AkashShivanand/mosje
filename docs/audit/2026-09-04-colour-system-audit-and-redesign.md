@@ -45,7 +45,7 @@ carries; and the resting form-control border was **2.68:1 on that same ground**.
 the tint exponent in `ramp.mjs` went 0.85 → 0.5; danger rotated 28.7° → 24°; info moved to
 hue 220; brand text moved to rung 600; disabled ink became opaque; the control border moved to
 rung 500; the alert, toast and badge read tokens. **164/164 token gates pass**, every `on/*`
-pair is AA in all eight modes, no ramp broke the shape rule, and the shortfall ledger went 16 → 0 with nothing added. **Figma has not been pushed** (§12).
+pair is AA in all eight modes, no ramp broke the shape rule, and the shortfall ledger went 16 → 0 with nothing added. **The library holds the new colours** (§12).
 
 ---
 
@@ -416,31 +416,32 @@ and the review page:
 
 ---
 
-## 12. Code ↔ Figma gap — highlighted
+## 12. Code ↔ Figma — pushed and read back
 
-**As of this branch, code is ahead of the SAMAVESH Figma library on every colour changed
-above.** Nothing was pushed: pushing rewrites a published library that other files consume, and
-that is a human decision. What the record and the diff show:
+**The SAMAVESH library holds the new colours.** Palette (57 rung values) and Color (73 values,
+80 measured-contrast descriptions) were written through the Plugin API as diff-and-apply
+scripts — each variable compared against the library and set only where its value or
+description differed — and the library was then read back into the parity records:
 
-| Area | State |
+| Record | State after the push |
 |---|---|
-| **Palette collection (Tier-1 rungs, Blue/Navy modes)** | 44 rung values changed in code (accent/success ×11, danger ×11, info ×11, tints of warning/primary/secondary ×11) — **library holds the old values**. Payload checksum `166809b5:282` → `e5eb9e7a:278`; `figmaObserved` unchanged. |
-| **Color collection (roles)** | 26 role bindings changed (status base/bolder ×24 across text/icon/border, brand text ×2, disabled ×2, control border ×2, infoTonal) — **library holds the old bindings**. Checksum `1317770d:495` → `4ac20269:495`. |
-| **Contrast NOTES (the sentence each variable publishes)** | 60 figures now differ between code and library (every status text/icon/border rung, the brand text, the control border, and the tints whose ratio moved ≤0.05). Held in `$contrastNotes.knownDifference` with a dated reason; `figmaObserved` left as last read. The gate that owns this landed in main from PR #287 during this work. |
-| Pre-existing: Palette VALUE drift | Flagged 2026-08-18 as an unexplained edit in the library with the count unchanged; never diffed at value level. Still open. |
-| Pre-existing: 23 library-only Tier-1 variables | `ref/color/ink/*` (9), `ref/color/stroke/*` (7), `ref/color/*/source` (5), `ref/color/badge/beta`, `border/neutral/inverse` — a parallel ink and stroke palette in Figma that code has never defined. Orphans; retire by rename to `deprecated/*` with evidence of zero consumers. |
-| Pre-existing: 9 code-only Color variables | `border/neutral/inverse/{default,subtle}`, `cmp/accessibilityBar/{hoverBg,pillBg}`, `icon/brand/primary/bolder`, `overlay/brand/{active,hover}`, `text/brand/primary/bolder`, `text/neutral/subtler` — reach Figma on the next push. |
-| Pre-existing: 1 library-only Color variable | `border/brand/primary/hover` — code has no matching rung. |
-| DBIM modes | Code-only by standing instruction (2026-08-11); the Palette collection stays [Blue, Navy]. |
-| Live read | Blocked in this session: the Figma MCP variable tools require a selection in the desktop app. The gap above is measured against `reference/figma-live.json` (names read 2026-08-12, checksums re-verified 2026-09-01/04), not a fresh read. |
+| `$valueChecksums.figmaObserved` | Palette `8fc80366:328`, Color `55f27257:496`, read from the library |
+| `$contrastNotes.figmaObserved` | the 94 contrast sentences the library now publishes |
+| Holding notes dated 2026-09-04 | closed — 60 contrast notes and the two code-ahead value notes |
+| The unexplained Palette edit of 2026-08-18 | closed by the overwrite: any library-only value was replaced by the code value and read back |
+| `figma-value-parity` and `figma-contrast-parity` gates | green, against the live library |
 
-**To close it (a human, with the file open):** run the exporter (`npm run build -w @mosje/tokens`
-already writes `dist/figma.variables.json`), push the Palette and Color collections, read the
-library back, re-record `$valueChecksums.figmaObserved`, delete the two `knownDifference`
-holding notes dated 2026-09-04, and republish the library so the new descriptions (each with
-its measured contrast) reach Dev Mode.
+What remains, and is pre-existing rather than part of this change: 24 library-only Tier-1
+variables (`ref/color/ink/*`, `ref/color/stroke/*`, `ref/color/*/source`, the BETA badge, and a
+Palette-collection `border/neutral/inverse`) that code has never defined — orphans to retire by
+rename with evidence of zero consumers; and one library-only Color variable,
+`border/brand/primary/hover`, which needs the code to grow the matching rung. The DBIM modes
+stay code-only by standing instruction.
 
----
+**Documentation on both surfaces.** The `Colour — Documentation` frame gained sections 18–20
+(in use, colour vision, modes), built to the house pattern with every fill and text bound, and
+its sentences about info, the focus ring, the rung ledger and the chart floor were corrected.
+The web page mirrors the 22-section list, gated by `scripts/check-color-docs.mjs`.
 
 ## 13. Not done here, deliberately
 
@@ -450,7 +451,6 @@ its measured contrast) reach Dev Mode.
   rename with a Figma migration; recorded in §11.6 as a semantics decision instead.
 - **Dark theme** — none exists on the estate (owned by the UX4G widget); the staged dark values
   in the source were preserved, not designed.
-- **The Figma push** — §12.
 
 ---
 
