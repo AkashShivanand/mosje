@@ -15,17 +15,25 @@
  * is one people learn to ignore. The danger is not the red tick, it is the habit of
  * merging past it.
  *
+ * THE ORDERING FIX IS THE OTHER HALF, AND IT CHANGES WHAT THIS SCRIPT SHOULD DO. The
+ * audit step now runs LAST in the job (see apps-ci.yml), so it can no longer skip the
+ * build or the accessibility suite whatever it decides. The first version of this file
+ * therefore warned and PASSED on a persistent outage, to keep a third-party failure from
+ * blocking a PR. With the ordering fixed that trade no longer applies: failing costs
+ * nothing but the tick on a step that genuinely did not run, and — as the review of
+ * PR #290 put it — a security gate that passes when it could not execute is not a gate.
+ * So a persistent outage now FAILS, loudly and last.
+ *
  * WHAT THIS DOES NOT DO. It does not weaken the audit. `|| true` would have "fixed" the
  * outage and also swallowed every real advisory forever, which is worse than no gate at
  * all — a security gate that cannot fail is a false assurance. So:
  *
  *   • A REPORT that comes back is always obeyed. High or critical → exit 1, listed.
- *   • Only a registry failure is forgiven, and it is forgiven loudly, as a warning that
- *     names the audit as SKIPPED rather than passed.
- *
- * The residual risk is real and bounded: during an npm outage a PR can merge without a
- * production audit. The next run on `main` audits the same tree, so an advisory is
- * caught within a commit or two rather than never.
+ *   • A registry failure is RETRIED, then reported as "the audit did not run" — never as
+ *     a pass. It exits 1, but it says which of the two things went wrong, which is the
+ *     whole point: the log tells you whether to fix a dependency or re-run the job.
+ *   • A failure it cannot classify exits 2, so an unrecognised state can never be
+ *     mistaken for either answer.
  *
  * It also fails FAST. npm's default retry ladder spends seven minutes before admitting
  * defeat; this asks for two retries and takes its own three attempts with a short
@@ -35,7 +43,10 @@ import { spawnSync } from "node:child_process";
 
 const LEVEL = "high";
 const ATTEMPTS = 3;
-const BACKOFF_MS = 4000;
+// Patient rather than quick: a persistent outage now fails the step, so it is worth
+// giving a blip a real chance to clear. 15s then 30s — under a minute in the worst case,
+// against npm's own seven-minute retry ladder.
+const BACKOFF_MS = 15000;
 
 /** npm's code for "the audit endpoint did not answer" — the case we forgive. */
 const OUTAGE = /ENOAUDIT|audit endpoint returned an error|503 Service Unavailable|ECONNRESET|ETIMEDOUT|EAI_AGAIN|socket hang up/i;
@@ -45,7 +56,12 @@ const sleep = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 
 function runAudit() {
   const res = spawnSync(
     "npm",
-    ["audit", "--omit=dev", "--json", "--fetch-retries=2", "--fetch-retry-maxtimeout=20000"],
+    // `--fetch-retries` bounds the RETRIES, not the wait. Without `--fetch-timeout` a
+    // hung endpoint costs npm's default per-request patience on every attempt: on
+    // 2026-09-04 three attempts against a timing-out registry took 932 SECONDS to
+    // conclude "it is down". Fifteen minutes to learn nothing is its own defect —
+    // people stop running the thing.
+    ["audit", "--omit=dev", "--json", "--fetch-retries=2", "--fetch-retry-maxtimeout=20000", "--fetch-timeout=60000"],
     { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 },
   );
   const raw = `${res.stdout ?? ""}\n${res.stderr ?? ""}`;
@@ -103,9 +119,14 @@ for (let attempt = 1; attempt <= ATTEMPTS; attempt++) {
 
 if (OUTAGE.test(last.raw)) {
   const detail = (last.raw.match(/npm (?:error|warn) audit.*/i) ?? ["registry error"])[0].trim();
-  console.log(`::warning::Production audit SKIPPED — the npm registry audit endpoint is unavailable (${detail}). This is NOT a pass: no advisories were checked. The next run on main audits the same tree.`);
-  console.log(`  · audit endpoint unavailable after ${ATTEMPTS} attempts — skipped, not passed.`);
-  process.exit(0);
+  console.error(
+    `::error::The production audit DID NOT RUN — the npm registry audit endpoint was ` +
+      `unavailable after ${ATTEMPTS} attempts (${detail}). This is not a finding about ` +
+      `this commit: nothing was checked. Re-run the job once the registry recovers. ` +
+      `Because this step runs last, the build and the accessibility suite above it have ` +
+      `already reported.`,
+  );
+  process.exit(1);
 }
 
 // Anything else — a broken invocation, an unparseable payload — is a real failure. A

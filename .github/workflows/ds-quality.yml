@@ -18,6 +18,7 @@ on:
       - ".stylelintrc.tokens.json"
       - "tools/ds-linkage/**"
       - "tools/type-linkage/**"
+      - "tools/figma-index-parity/**"
       - "tools/focus-ring/**"
       - ".github/workflows/ds-quality.yml"
   pull_request:
@@ -36,6 +37,7 @@ on:
       - ".stylelintrc.tokens.json"
       - "tools/ds-linkage/**"
       - "tools/type-linkage/**"
+      - "tools/figma-index-parity/**"
       - "tools/focus-ring/**"
       - ".github/workflows/ds-quality.yml"
 
@@ -244,6 +246,49 @@ jobs:
       # Mode served developers a snippet that does not compile. This is that gate.
       - name: Code Connect parity — templates match the props and the masters
         run: npm run check:code-connect
+
+      # The Index page is the only place anyone sees the whole library at once, which is
+      # why a stale one is worse than none — it is a directory that sends people to the
+      # wrong place with confidence. It went stale within a day of being built (eleven
+      # pages it did not know about, three cards pointing at pages that had gone) and
+      # again within hours of being repaired (a deleted page whose card outlived it, and
+      # two cards reading "Published" for pages that were fully documented).
+      #
+      # This half needs no secret: it asks whether the committed snapshot is coherent —
+      # every page carded, every card naming a page, counts and stat line agreeing with
+      # what they count. It catches a hand-edited snapshot, not a drifted file.
+      - name: Figma index parity — the committed snapshot is coherent
+        run: npm run check:figma-index
+
+      # This half is the real one, and it cannot be offline: the Index indexes FIGMA
+      # PAGES, and the repository has no idea what pages the file has. Guarded on the
+      # secret for the same reason the Code Connect dry run is — a gate that fails on
+      # every fork PR for the wrong reason is one people learn to ignore. The offline
+      # half above always runs.
+      - name: Figma index parity — the live file still matches the Index
+        env:
+          FIGMA_ACCESS_TOKEN: ${{ secrets.FIGMA_ACCESS_TOKEN }}
+        run: |
+          if [ -z "$FIGMA_ACCESS_TOKEN" ]; then
+            echo "::warning::FIGMA_ACCESS_TOKEN unavailable (fork PR, or secret not set) — skipping live index parity. check:figma-index still ran."
+            exit 0
+          fi
+          # The checker separates the two kinds of bad news: exit 1 is DRIFT — the Index
+          # no longer describes the library, which is this gate's whole job and must fail
+          # the PR. Exit 2 is the tool or the network — a Figma outage, a rate limit, a
+          # revoked token — which has nothing to do with the change under review. Failing
+          # a PR for that is the "fails for the wrong reason" trap this file warns about
+          # two steps above, so it warns instead. The offline half still gates every PR.
+          set +e
+          npm run check:figma-index:live
+          code=$?
+          set -e
+          if [ $code -eq 2 ]; then
+            echo "::warning::Live index parity could not run (Figma API or token problem, exit 2) — not treated as drift."
+            exit 0
+          fi
+          exit $code
+
 
       # Publishing is the other half. A mapping that PARSES is not a mapping that
       # PUBLISHES, so PRs dry-run it: a template that would fail to publish fails the PR
