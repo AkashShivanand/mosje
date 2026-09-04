@@ -141,7 +141,10 @@
 
   /* ── State matrix (shared cells; the box/circle rules live beside each shape) ──
      default · hover · active · focus-visible · checked · invalid · read-only · disabled */
-  .ds-selection__input:focus-visible ~ .ds-selection__visual {
+  /* The ring is drawn on the box or circle itself, never on the wrapper span: an outline
+     follows the element's own border-radius, and the wrapper has none, so a ring on it drew
+     square corners around a rounded box and a circle. */
+  .ds-selection__input:focus-visible ~ .ds-selection__visual > * {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
@@ -233,7 +236,7 @@
   }
 
   /* On the card the ring is on the tile, so the inner visual does not draw a second one. */
-  .ds-selection--card .ds-selection__input:focus-visible ~ .ds-selection__visual {
+  .ds-selection--card .ds-selection__input:focus-visible ~ .ds-selection__visual > * {
     outline: none;
   }
 
@@ -253,7 +256,7 @@
      the glyph carries the state. Paint the state in the system's own pair, and the ring in
      Highlight (an outline IS painted there; a shadow is not). */
   @media (forced-colors: active) {
-    .ds-selection__input:focus-visible ~ .ds-selection__visual,
+    .ds-selection__input:focus-visible ~ .ds-selection__visual > *,
     .ds-selection--card:focus-within {
       outline: var(--sa-focus-width) solid Highlight;
       outline-offset: var(--sa-focus-offset);
