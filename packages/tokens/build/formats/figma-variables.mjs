@@ -608,7 +608,13 @@ function applyContractNotes(payload) {
     for (const v of c.variables) {
       const record = byKey.get(`${c.name}::${v.name}`);
       if (!record) continue;
-      const note = contractNote(record, labelByPath.get(record.surface) ?? record.surface);
+      // Name EVERY ground the number was taken against. `measured` is the worst of them, so
+      // naming only the first would attribute a muted-ground figure to the white one — the
+      // precise kind of false claim this module exists to prevent.
+      const label = (record.surfaces ?? [record.surface])
+        .map((s) => labelByPath.get(s) ?? s)
+        .join(" and ");
+      const note = contractNote(record, label);
       v.description = [v.description, note].filter(Boolean).join(" ");
       v.$extensions = {
         ...v.$extensions,
