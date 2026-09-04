@@ -40,7 +40,6 @@ import { readFileSync, readdirSync, existsSync, mkdtempSync, rmSync } from "node
 import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import { parse } from "yaml";
 
 const ROOT = fileURLToPath(new URL("../..", import.meta.url));
 const WORKFLOWS = join(ROOT, ".github/workflows");
@@ -88,6 +87,68 @@ function evaluateIf(expr, outcomes) {
   if (/^(true|false)(\s*&&\s*(true|false))*$/.test(e)) return { run: !/\bfalse\b/.test(e) };
   return { run: true, why: `unrecognised condition, running anyway: ${body}` };
 }
+
+// ── --clean: the only way to answer "does it work from the lockfile?" ───────
+//
+// It runs FIRST, before anything that needs a dependency. The whole premise is that
+// nothing is installed yet, so the runner cannot parse a workflow to get started — it
+// prepares the checkout, installs from the lockfile, and then RE-EXECS itself inside
+// that tree, where its own dependencies exist. The first version imported `yaml` at the
+// top and died with ERR_MODULE_NOT_FOUND before it could create anything.
+let CWD = ROOT;
+let cleanDir = null;
+function startClean() {
+  const dirty = execFileSync("git", ["status", "--porcelain"], { cwd: ROOT, encoding: "utf8" }).trim();
+  if (dirty) {
+    console.log(
+      "⚠  --clean checks out HEAD into a fresh worktree, so it tests the COMMIT, not your\n" +
+      "   working tree. You have uncommitted changes; they will not be included.\n",
+    );
+  }
+  cleanDir = mkdtempSync(join(tmpdir(), "mosje-clean-"));
+  console.log(`▶ preparing a clean checkout in ${cleanDir}`);
+  execFileSync("git", ["worktree", "add", "--detach", cleanDir, "HEAD"], { cwd: ROOT, stdio: "inherit" });
+  console.log("▶ npm ci (from the lockfile, into an empty tree — this is the slow part)");
+  const r = spawnSync("npm", ["ci"], { cwd: cleanDir, stdio: "inherit" });
+  if (r.status !== 0) {
+    console.error("✖ npm ci failed in the clean checkout — that IS the finding.");
+    stopClean();
+    process.exit(1);
+  }
+  console.log("");
+}
+function stopClean() {
+  if (!cleanDir) return;
+  try { execFileSync("git", ["worktree", "remove", "--force", cleanDir], { cwd: ROOT }); } catch {}
+  try { rmSync(cleanDir, { recursive: true, force: true }); } catch {}
+  cleanDir = null;
+}
+if (CLEAN) {
+  process.on("exit", stopClean);
+  startClean();
+  // Hand over to the copy inside the clean tree. Everything below this point needs
+  // dependencies, and that tree is the only one guaranteed to have them.
+  const pass = argv.filter((a) => a !== "--clean");
+  console.log(`▶ handing over to the clean checkout${pass.length ? ` (${pass.join(" ")})` : ""}\n`);
+  const child = spawnSync("node", ["tools/local-ci/run.mjs", ...pass], { cwd: cleanDir, stdio: "inherit" });
+  console.log(
+    "\n─".repeat(1) + "─".repeat(71) +
+    "\nThat run used a CLEAN checkout of HEAD, installed from package-lock.json." +
+    "\nIt therefore DID prove the lockfile resolves and the tree builds from it —" +
+    "\nthe one thing a run against your own node_modules cannot.",
+  );
+  stopClean();
+  process.exit(child.status ?? 1);
+}
+
+const parse = await import("yaml").then((m) => m.parse).catch(() => {
+  console.error(
+    "✖ local-ci: cannot load `yaml`, which it reads the workflow files with.\n" +
+    "  Run `npm install` first — every step below needs node_modules anyway.\n" +
+    "  (`--clean` does not need this: it installs from the lockfile before it starts.)",
+  );
+  process.exit(2);
+});
 
 function collect() {
   const files = readdirSync(WORKFLOWS).filter((f) => /\.ya?ml$/.test(f)).sort();
@@ -155,39 +216,6 @@ if (LIST) {
   }
   process.exit(0);
 }
-
-// ── --clean: the only way to answer "does it work from the lockfile?" ───────
-let CWD = ROOT;
-let cleanDir = null;
-function startClean() {
-  const dirty = execFileSync("git", ["status", "--porcelain"], { cwd: ROOT, encoding: "utf8" }).trim();
-  if (dirty) {
-    console.log(
-      "⚠  --clean checks out HEAD into a fresh worktree, so it tests the COMMIT, not your\n" +
-      "   working tree. You have uncommitted changes; they will not be included.\n",
-    );
-  }
-  cleanDir = mkdtempSync(join(tmpdir(), "mosje-clean-"));
-  console.log(`▶ preparing a clean checkout in ${cleanDir}`);
-  execFileSync("git", ["worktree", "add", "--detach", cleanDir, "HEAD"], { cwd: ROOT, stdio: "inherit" });
-  console.log("▶ npm ci (from the lockfile, into an empty tree — this is the slow part)");
-  const r = spawnSync("npm", ["ci"], { cwd: cleanDir, stdio: "inherit" });
-  if (r.status !== 0) {
-    console.error("✖ npm ci failed in the clean checkout — that IS the finding.");
-    stopClean();
-    process.exit(1);
-  }
-  CWD = cleanDir;
-  console.log("");
-}
-function stopClean() {
-  if (!cleanDir) return;
-  try { execFileSync("git", ["worktree", "remove", "--force", cleanDir], { cwd: ROOT }); } catch {}
-  try { rmSync(cleanDir, { recursive: true, force: true }); } catch {}
-  cleanDir = null;
-}
-if (CLEAN) startClean();
-process.on("exit", stopClean);
 
 // ── Run ─────────────────────────────────────────────────────────────────────
 console.log(`local-ci: ${steps.length} step(s), derived from the workflow files${FAST ? " · --fast" : ""}\n`);
