@@ -1,0 +1,495 @@
+{
+  "file": "3FF5l0SMNIwdpZrKkeyPTm",
+  "indexPage": "56757:725",
+  "indexFrame": "56757:726",
+  "capturedOn": "2026-09-04",
+  "statLine": "66 pages · 192 components · counted 4 September 2026",
+  "statuses": [
+    "Ready",
+    "Published",
+    "Older format",
+    "Reference",
+    "Deprecated"
+  ],
+  "understatedBy": [
+    "Published",
+    "Older format"
+  ],
+  "excludedPages": {
+    "Changelog & Governance": "An empty page. Recorded as open item 03 on `Index — Component record`; New in 2.0 carries the change log instead."
+  },
+  "pageExclusionRules": {
+    "divider": "-------------------------------",
+    "groupLabels": [
+      "FOUNDATION",
+      "COMPONENTS",
+      "Actions",
+      "Forms & Inputs",
+      "Navigation",
+      "Feedback & Status",
+      "Overlays",
+      "Data Display",
+      "Utilities",
+      "Section Templates"
+    ],
+    "special": [
+      "Thumbnail",
+      "Index"
+    ]
+  },
+  "contentPages": [
+    "Get Started",
+    "New in 2.0",
+    "Changelog & Governance",
+    "Typography",
+    "Color",
+    "Effects",
+    "Layout Grid",
+    "Spacing",
+    "Radius",
+    "Motion",
+    "Density",
+    "Iconography",
+    "Brand",
+    "Button",
+    "Icon Button",
+    "Button Group",
+    "Link",
+    "Checkbox",
+    "Chips",
+    "Color Picker",
+    "Date-Time Picker",
+    "Input Field",
+    "Input Area",
+    "Select",
+    "OTP Input",
+    "Bot Check",
+    "Radio Buttons",
+    "Range Slider",
+    "Search",
+    "Toggle",
+    "Accordion",
+    "Breadcrumbs",
+    "Dropdown",
+    "Pagination",
+    "Portal Card",
+    "Stepper",
+    "Tabs",
+    "Alerts/Toasts",
+    "Chatbot",
+    "Empty State",
+    "Feedback Widget",
+    "Loader",
+    "Progress Indicators",
+    "Ticker",
+    "Modal",
+    "Side Sheet",
+    "Popover",
+    "Tooltip",
+    "Avatars",
+    "Badges",
+    "Card",
+    "Charts & Graphs",
+    "Comment",
+    "List",
+    "Map of India",
+    "Tables",
+    "Accessibility Bar",
+    "Cursor",
+    "Divider",
+    "Carousel",
+    "Navbar",
+    "SAMAVESH Banner",
+    "Footer",
+    "Sidebar",
+    "Portal Login Template",
+    "Roadmap"
+  ],
+  "groups": [
+    {
+      "name": "Start Here",
+      "stated": 3,
+      "cards": [
+        {
+          "name": "Get Started",
+          "status": "Older format",
+          "linked": true
+        },
+        {
+          "name": "New in 2.0",
+          "status": "Reference",
+          "linked": true
+        },
+        {
+          "name": "Roadmap",
+          "status": "Reference",
+          "linked": true
+        }
+      ]
+    },
+    {
+      "name": "Foundations",
+      "stated": 10,
+      "cards": [
+        {
+          "name": "Typography",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Color",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Spacing",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Radius",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Layout Grid",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Iconography",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Brand",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Effects",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Motion",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Density",
+          "status": "Ready",
+          "linked": true
+        }
+      ]
+    },
+    {
+      "name": "Actions",
+      "stated": 4,
+      "cards": [
+        {
+          "name": "Button",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Icon Button",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Button Group",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Link",
+          "status": "Ready",
+          "linked": true
+        }
+      ]
+    },
+    {
+      "name": "Forms & Inputs",
+      "stated": 13,
+      "cards": [
+        {
+          "name": "Input Field",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Input Area",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Select",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Checkbox",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Radio Buttons",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Toggle",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "OTP Input",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Bot Check",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Chips",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Search",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Date-Time Picker",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Range Slider",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Color Picker",
+          "status": "Published",
+          "linked": true
+        }
+      ]
+    },
+    {
+      "name": "Navigation",
+      "stated": 7,
+      "cards": [
+        {
+          "name": "Tabs",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Breadcrumbs",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Pagination",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Dropdown",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Accordion",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Stepper",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Portal Card",
+          "status": "Ready",
+          "linked": true
+        }
+      ]
+    },
+    {
+      "name": "Feedback & Status",
+      "stated": 7,
+      "cards": [
+        {
+          "name": "Alerts/Toasts",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Progress Indicators",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Loader",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Empty State",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Ticker",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Chatbot",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Feedback Widget",
+          "status": "Published",
+          "linked": true
+        }
+      ]
+    },
+    {
+      "name": "Overlays",
+      "stated": 4,
+      "cards": [
+        {
+          "name": "Modal",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Side Sheet",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Popover",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Tooltip",
+          "status": "Published",
+          "linked": true
+        }
+      ]
+    },
+    {
+      "name": "Data Display",
+      "stated": 8,
+      "cards": [
+        {
+          "name": "Card",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Tables",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "List",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Charts & Graphs",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Map of India",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Avatars",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Badges",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Comment",
+          "status": "Published",
+          "linked": true
+        }
+      ]
+    },
+    {
+      "name": "Utilities",
+      "stated": 3,
+      "cards": [
+        {
+          "name": "Accessibility Bar",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Divider",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Cursor",
+          "status": "Reference",
+          "linked": true
+        }
+      ]
+    },
+    {
+      "name": "Section Templates",
+      "stated": 6,
+      "cards": [
+        {
+          "name": "Navbar",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Footer",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Sidebar",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "SAMAVESH Banner",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Carousel",
+          "status": "Published",
+          "linked": true
+        },
+        {
+          "name": "Portal Login Template",
+          "status": "Ready",
+          "linked": true
+        }
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@ paths:
 
 # The Index is part of the library, not a picture of it (MANDATORY)
 
-**The SAMAVESH Figma library has an `Index` page — 66 cards, one per content page,
+**The SAMAVESH Figma library has an `Index` page — one card per content page,
 each with a preview, a status and a link. It is the only place anyone can see the
 whole library at once, which means a stale Index is worse than no Index: it is a
 directory that confidently sends people to the wrong place.**
@@ -126,25 +126,46 @@ Two lines, and the second one is one sentence.
 
 ---
 
-## 6. Why there is no gate yet, and what one would look like
+## 6. The gate
 
-This estate's own lesson is that a rule without a gate is worth nothing after
-three weeks — `ds-documentation-standard.md` measured exactly that. So the honest
-statement is that **this rule is currently advisory, and it will decay**.
+`npm run check:figma-index` — **the rule is enforced.** It exists because this estate
+already measured what a rule without a gate is worth: three of a hundred pages carried
+the documentation shape three weeks after it was written down
+(`ds-documentation-standard.md`). This one decayed faster than that — twice in two days.
 
-A gate is possible and should be built. It cannot be an offline check: the Index
-indexes *Figma pages*, and the repository has no idea what pages the file has.
-It has to be the same secret-guarded shape `tools/figma-doc-parity/check.mjs`
-already uses for its `--verify-figma` mode:
+**Two halves, because the Index indexes Figma pages and the repository cannot see them.**
 
-1. `GET /v1/files/{key}?depth=1` — the page list, one cheap call.
-2. `GET /v1/files/{key}/nodes?ids={indexPageId}` — the Index subtree, to read
-   the card names out of the grids.
-3. Fail when either difference is non-empty, printing the page names.
+| Command | Needs the secret | Asks |
+|---|---|---|
+| `check:figma-index` | no — runs on every PR | Is the committed snapshot coherent? Every page carded, every card naming a page, statuses on the ladder, group counts and stat line agreeing with what they count. |
+| `check:figma-index:live` | yes — `FIGMA_ACCESS_TOKEN` | Does the Index still describe the LIVE file? Page/card parity both ways, every card linked, group counts and stat line against the real page count, and no card understating a page that is in fact documented. |
+| `check:figma-index:sync` | yes | Re-captures `tools/figma-index-parity/index.json` from the file. **Run this after every §3 pass** — it is how the snapshot stays honest. |
 
-It needs `FIGMA_ACCESS_TOKEN`, so it runs where `check:code-connect` and
-`check:figma-docs:live` already run, and skips with a notice when the secret is
-absent. Until that exists, §3 is a checklist a human or an agent runs by hand.
+Both are wired into `ds-quality.yml`. The live half is guarded on the secret in the same
+shape as the Code Connect dry run, and **skips with a notice** rather than failing when it
+is absent — a gate that fails on every fork PR for the wrong reason is one people learn to
+ignore.
+
+### What it catches, and what it cannot
+
+It was verified by breaking it, not by watching it pass: a card removed, a card renamed to
+a page that no longer exists, a group count edited, a stale exclusion, and — against the
+live file — a status that understates its page. All five fail with exit 1.
+
+Two things are out of reach, and the checker says so out loud rather than passing quietly:
+
+- **Where a link points.** The REST API renders a NODE hyperlink as `"hyperlink": {}` — it
+  confirms a link is there and refuses to say where it goes (verified 4 September 2026
+  against this file). So a deleted page is caught by NAME parity instead, which is what
+  caught Close Button. What escapes is a card whose name is right but whose link points at
+  a node deleted by a page *restructure*. That needs the Plugin API, which a CI runner
+  does not have.
+- **Whether a preview still looks like its master.** Previews are baked PNGs with no
+  timestamp and nothing to diff against — open item 09 on `Index — Component record`. The
+  gate checks a preview *exists* and says nothing about its currency.
+
+Both remain human steps in §3, and §3.4's list of hand-cropped previews is the reason a
+blanket re-export is never the answer.
 
 ---
 
@@ -159,3 +180,5 @@ absent. Until that exists, §3 is a checklist a human or an agent runs by hand.
 - [ ] Status chips derived from evidence, not assigned
 - [ ] Zero unbound fills, unstyled text or raw spacing on the Index
 - [ ] Anything unfixed written onto `Index — Component record`
+- [ ] `npm run check:figma-index:sync` run, and the re-captured snapshot committed
+- [ ] `npm run check:figma-index:live` green

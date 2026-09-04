@@ -213,8 +213,11 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   retire a page — or restyle a master enough that its card preview lies — and the Index
   is brought back into line **in the same session**. It went stale within a day of being
   built: eleven pages it did not know about and three cards pointing at pages that had
-  gone. Statuses are derived from the page, never assigned; several previews are
-  deliberately hand-cropped and a blanket re-export destroys them.
+  gone — then again within hours, a deleted page whose card outlived it. Statuses are
+  derived from the page, never assigned; several previews are deliberately hand-cropped
+  and a blanket re-export destroys them. **`npm run check:figma-index` gates it** — the
+  offline half on every PR, the live half (`:live`) guarded on `FIGMA_ACCESS_TOKEN`.
+  Re-capture the snapshot with `npm run check:figma-index:sync` after every pass.
   → `.claude/rules/figma-library-index.md`
 - **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` or a
   "Generated with Claude Code" trailer. `.husky/commit-msg` strips them as a backstop.
