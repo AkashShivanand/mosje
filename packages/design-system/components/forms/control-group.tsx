@@ -7,7 +7,7 @@ import { useControllableState } from "../../utils/use-controllable-state";
 import { Checkbox } from "./checkbox";
 import { nextCheckboxValue, nextSelectAllValue, selectAllState } from "./control-group-logic";
 import { Radio } from "./radio";
-import type { SelectionLabelPlacement, SelectionSize, SelectionVariant } from "./selection-types";
+import type { SelectionCardLayout, SelectionLabelPlacement, SelectionSize, SelectionVariant } from "./selection-types";
 import "./control-group.css";
 
 export interface ControlGroupOption {
@@ -18,6 +18,8 @@ export interface ControlGroupOption {
   disabled?: boolean;
   /** Leading glyph, card variant only. Pass an `<Icon>`. */
   icon?: React.ReactNode;
+  /** Card variant: one fact to choose by, under the description. */
+  meta?: React.ReactNode;
   /**
    * Content revealed beneath this option only while it is selected — a follow-up field, a
    * note (GOV.UK's conditional reveal). Always in the DOM, hidden with `hidden`, so the
@@ -56,6 +58,8 @@ interface ControlGroupBaseProps {
   labelPlacement?: SelectionLabelPlacement;
   /** `card` renders each option as a selectable card. @default "default" */
   variant?: SelectionVariant;
+  /** With `variant="card"`: `detailed` for scheme tiles, `compact` for a short list. @default "compact" */
+  cardLayout?: SelectionCardLayout;
   /** @default "vertical" */
   orientation?: "vertical" | "horizontal";
   className?: string;
@@ -198,7 +202,7 @@ function Reveal({ id, open, children }: { id: string; open: boolean; children: R
 export const RadioGroup = React.forwardRef<HTMLFieldSetElement, RadioGroupProps>(function RadioGroup(
   {
     legend, hideLegend, options, name, value, defaultValue, onChange, hint, error, invalid, required,
-    disabled, readOnly, size, labelPlacement, variant = "default", orientation = "vertical", className, id,
+    disabled, readOnly, size, labelPlacement, variant = "default", cardLayout, orientation = "vertical", className, id,
   },
   ref,
 ) {
@@ -241,9 +245,11 @@ export const RadioGroup = React.forwardRef<HTMLFieldSetElement, RadioGroupProps>
               label={o.label}
               description={o.description}
               icon={o.icon}
+              meta={o.meta}
               size={size}
               labelPlacement={labelPlacement}
               variant={variant}
+              cardLayout={cardLayout}
               aria-controls={revealId}
               onChange={() => setCurrent(o.value)}
             />
@@ -270,7 +276,7 @@ export const RadioGroup = React.forwardRef<HTMLFieldSetElement, RadioGroupProps>
 export const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroupProps>(function CheckboxGroup(
   {
     legend, hideLegend, options, name, value, defaultValue, onChange, hint, error, invalid, required,
-    disabled, readOnly, size, labelPlacement, variant = "default", orientation = "vertical", className, id,
+    disabled, readOnly, size, labelPlacement, variant = "default", cardLayout, orientation = "vertical", className, id,
     selectAll, exclusiveDivider = "or",
   },
   ref,
@@ -301,9 +307,11 @@ export const CheckboxGroup = React.forwardRef<HTMLFieldSetElement, CheckboxGroup
           label={o.label}
           description={o.description}
           icon={o.icon}
+          meta={o.meta}
           size={size}
           labelPlacement={labelPlacement}
           variant={variant}
+          cardLayout={cardLayout}
           aria-controls={revealId}
           aria-expanded={revealId ? isOn : undefined}
           onChange={() => setCurrent(nextCheckboxValue(options, current, o.value))}

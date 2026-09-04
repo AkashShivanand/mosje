@@ -77,6 +77,14 @@ describe("CheckboxGroup", () => {
     expect(out).toMatch(/id="g-select-all"[\s\S]*?data-state="indeterminate"|data-state="indeterminate"[\s\S]*?id="g-select-all"/);
   });
 
+  it("cardLayout and per-option meta reach every card in a group", () => {
+    const opts = [{ value: "a", label: "A", meta: "Target: Senior citizens" }, { value: "b", label: "B" }];
+    const out = html(<CheckboxGroup id="g" legend="Q" options={opts} variant="card" cardLayout="detailed" />);
+    expect(out.match(/data-card-layout="detailed"/g)?.length).toBe(2);
+    expect(out).toContain('id="g-a-meta"');
+    expect(out).not.toContain('id="g-b-meta"');
+  });
+
   it("checkbox reveal also reports aria-expanded", () => {
     const opts = [{ value: "a", label: "A", reveal: <p>More</p> }];
     expect(html(<CheckboxGroup legend="Q" options={opts} value={["a"]} />)).toContain('aria-expanded="true"');

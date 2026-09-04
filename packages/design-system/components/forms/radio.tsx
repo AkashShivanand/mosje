@@ -55,6 +55,8 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(function Rad
     size,
     labelPlacement,
     variant,
+    cardLayout,
+    meta,
     icon,
     name,
     value,
@@ -91,6 +93,8 @@ export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(function Rad
       size={size}
       labelPlacement={labelPlacement}
       variant={variant}
+      cardLayout={cardLayout}
+      meta={meta}
       icon={icon}
       label={label}
       hideLabel={hideLabel}

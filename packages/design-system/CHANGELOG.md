@@ -5,6 +5,11 @@ Format: [Keep a Changelog](https://keepachangelog.com/en/1.0.0/). Versions track
 
 ---
 
+## [0.7.1] — 2026-09-04
+
+### Added
+- **`cardLayout="detailed"` and `meta` on the card variant** of Checkbox, Radio and both groups: the scheme tile — a 64px tinted icon tile, title, description, a meta fact to choose by, and the control trailing on the right. Follows the Figma `Selection Card` set's new `Layout` axis (40 variants). `SelectionCardLayout` exported.
+
 ## [0.7.0] — 2026-09-04
 
 ### Added

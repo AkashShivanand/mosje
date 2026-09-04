@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.99.0",
+    version: "v0.100.0",
     date: "2026-09-04",
     current: true,
+    changes: [
+      { kind: "Added", text: "THE SCHEME TILE IS BACK, AND FIGMA LED. The Selection Card set gained a `Layout` axis \u2014 Compact (control first, 24px glyph, one line) and Detailed (a tinted 64px icon tile, a title, a fuller description, a `Meta` fact such as the target group, and the control trailing on the right) \u2014 40 variants, key unchanged, on its own page with its own Index card. Code follows it: `cardLayout=\"detailed\"` and `meta` on Checkbox, Radio and both groups, with `meta` joining `aria-describedby` so a screen reader hears the fact after the name and never as part of it" },
+    ],
+  },
+  {
+    version: "v0.99.0",
+    date: "2026-09-04",
+    current: false,
     changes: [
       { kind: "Changed", text: "EVERY TRANSLUCENT TOKEN IS A COLOUR REFERENCE PLUS AN OPACITY REFERENCE. Figma variables can now alias a colour while keeping a separate opacity, and that opacity can be a number variable — so the 48 overlay tiers, the modal scrim, the inverse rules, the code-specimen chrome and all 84 inverse button states are authored as `{base}` + `{alpha.N}` instead of 136 rgba() literals. In CSS a tier resolves as `color-mix(in srgb, var(base) calc(var(alpha step) * 100%), transparent)`, so it follows its base through every brand island; the Figma payload states the alias-with-opacity binding and the exporter writes the composited fallback where the Plugin API cannot yet write it. What this corrected: Navy's scrim was the Blue neutral (#1E2124 for #1E2024) and every wash under a DBIM mode was a Blue-brand literal. The opacity scale was rationalised to ONE thirteen-step ladder (0 · 4 · 8 · 16 · 24 · 32 · 40 · 48 · 64 · 72 · 80 · 88 · 100) from UX4G's fourteen plus ten estate one-offs — six had zero consumers, eight snapped (the titlebar label rose from 4.52:1 to 4.97:1; nothing fell below its floor). Figma reads an opacity-bound number as a PERCENTAGE, so ref/opacity/* is projected ×100; the library's old 0–1 values were a factor of 100 wrong for the purpose. THE LIBRARY'S SCOPES NOW FOLLOW THE AGREED RULE: a designer is offered the Tier-2 alias and only the alias — 109 ref/* primitives that were offered as gaps, radii and fills are offered nowhere, twelve motion tokens left every picker, each alias carries the scope of the property it is for, and the two radii that sat in the Color collection moved to Radius with their 72 bindings re-pointed. The scope is part of the token payload, so a push re-asserts it." },
       { kind: "Changed", text: "THE COLOUR SYSTEM READ AS DULL BECAUSE IT WAS TWO RUNGS TOO DARK. Every status ink sat at rung 700 (7.8\u201311.7:1, L* 33\u201344) where USWDS, GOV.UK, Carbon and Primer sit at L* 48\u201357; a dark colour has little chroma to give, so success was a black-green and warning a brown. `text|icon|border/status/*/base` is now rung 600 and `bolder` is 700 \u2014 until now base was 700 and bolder 600, so the louder name was the LIGHTER colour. The legacy `--sa-color-status-*` aliases moved one rung with them" },

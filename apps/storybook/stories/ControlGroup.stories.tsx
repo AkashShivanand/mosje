@@ -26,8 +26,8 @@ import { CheckboxGroup, Icon, Input, RadioGroup, type RadioGroupProps } from "@m
  * component was built to stop.
  *
  * `orientation="horizontal"` wraps rather than scrolling, and `variant="card"`
- * renders each option as a selectable card with an optional `description` and
- * `icon` — on BOTH groups now. `hint` and `error` are linked through
+ * renders each option as a selectable card with an optional `description`,
+ * `icon` and `meta` — on BOTH groups now; `cardLayout="detailed"` is the scheme tile. `hint` and `error` are linked through
  * `aria-describedby`; the error is announced after the options, because a message
  * announced before the controls describes a failure the reader has not reached yet.
  *
@@ -112,6 +112,20 @@ export const AsCards: Story = {
           { value: "cheque", label: "Account Payee Cheque", icon: <Icon name="payments" />, description: "Issued to the applicant's registered address." },
         ]}
       />
+    );
+  },
+};
+
+/** `cardLayout="detailed"` with `meta` per option — a scheme picker, control trailing. */
+export const DetailedCards: Story = {
+  args: { legend: "Scheme", name: "scheme", options: [] },
+  render: function DetailedStory(args) {
+    const [v, setV] = React.useState("napddr");
+    return (
+      <RadioGroup {...args} variant="card" cardLayout="detailed" value={v} onChange={setV} options={[
+        { value: "napddr", label: "NAPDDR - National Action Plan for Drug Demand Reduction", icon: <Icon name="workspace_premium" size={40} />, description: "Prevention, treatment, rehabilitation, social-reintegration and aftercare for persons affected by substance abuse.", meta: "Target: Persons affected by substance abuse" },
+        { value: "avyay", label: "AVYAY - Atal Vayo Abhyuday Yojana", icon: <Icon name="workspace_premium" size={40} />, description: "An umbrella scheme for senior citizens: IPSrC, Old Age Homes, Rashtriya Vayoshri Yojana and Silver Economy support.", meta: "Target: Senior citizens" },
+      ]} />
     );
   },
 };

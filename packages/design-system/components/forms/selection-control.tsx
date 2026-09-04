@@ -3,7 +3,7 @@
 import * as React from "react";
 
 import { cn } from "../../utils/cn";
-import type { SelectionLabelPlacement, SelectionSize, SelectionVariant } from "./selection-types";
+import type { SelectionCardLayout, SelectionLabelPlacement, SelectionSize, SelectionVariant } from "./selection-types";
 import "./selection-control.css";
 
 /**
@@ -54,8 +54,12 @@ export interface SelectionCommonProps {
   labelPlacement?: SelectionLabelPlacement;
   /** @default "default" */
   variant?: SelectionVariant;
-  /** Leading glyph, card variant only. Pass an `<Icon>`. */
+  /** Leading glyph, card variant only. Pass an `<Icon>` — `size={40}` in the detailed layout. */
   icon?: React.ReactNode;
+  /** Card variant only. `detailed` is the scheme tile: icon tile, title, description, meta, control trailing. @default "compact" */
+  cardLayout?: SelectionCardLayout;
+  /** One fact to choose by — the target group, the fee, the timeline. Card variant; joins `aria-describedby`. */
+  meta?: React.ReactNode;
 }
 
 interface SelectionControlProps extends SelectionCommonProps {
@@ -93,6 +97,8 @@ export function SelectionControl({
   size = "md",
   labelPlacement = "end",
   variant = "default",
+  cardLayout = "compact",
+  meta,
   label,
   hideLabel = false,
   description,
@@ -104,6 +110,8 @@ export function SelectionControl({
   className,
 }: SelectionControlProps): React.JSX.Element {
   const descriptionId = description != null ? `${inputId}-description` : undefined;
+  const isCard = variant === "card";
+  const metaId = isCard && meta != null ? `${inputId}-meta` : undefined;
   const errorId = error != null ? `${inputId}-error` : undefined;
   const isInvalid = invalid || error != null;
 
@@ -126,12 +134,14 @@ export function SelectionControl({
       className={cn(
         "ds-selection",
         kind === "checkbox" ? "ds-checkbox" : "ds-radio",
-        variant === "card" && "ds-selection--card",
+        isCard && "ds-selection--card",
+        isCard && cardLayout === "detailed" && "ds-selection--card-detailed",
         className,
       )}
       data-state={state}
       data-size={size}
       data-variant={variant}
+      data-card-layout={isCard ? cardLayout : undefined}
       data-label-placement={labelPlacement}
       data-disabled={disabled || undefined}
       data-readonly={readOnly || undefined}
@@ -151,18 +161,18 @@ export function SelectionControl({
           // axe aria-allowed-attr). A read-only radio is announced by its group instead.
           aria-readonly={readOnly && kind === "checkbox" ? true : undefined}
           {...inputProps}
-          aria-describedby={joinIds(descriptionId, errorId, inputProps["aria-describedby"])}
+          aria-describedby={joinIds(descriptionId, metaId, errorId, inputProps["aria-describedby"])}
         />
         <span className="ds-selection__visual" aria-hidden="true">
           {visual}
         </span>
       </span>
-      {variant === "card" && icon != null ? (
+      {isCard && icon != null ? (
         <span className="ds-selection__icon" aria-hidden="true">
           {icon}
         </span>
       ) : null}
-      {label != null || description != null ? (
+      {label != null || description != null || metaId ? (
         <span className="ds-selection__body">
           {label != null ? (
             <label
@@ -180,6 +190,11 @@ export function SelectionControl({
           {description != null ? (
             <span id={descriptionId} className="ds-selection__description">
               {description}
+            </span>
+          ) : null}
+          {metaId ? (
+            <span id={metaId} className="ds-selection__meta">
+              {meta}
             </span>
           ) : null}
         </span>

@@ -2156,6 +2156,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "cardLayout",
+        "type": "SelectionCardLayout = \"compact\" | \"detailed\"",
+        "required": false,
+        "default": "\"compact\"",
+        "description": "With `variant=\"card\"`: `detailed` for scheme tiles, `compact` for a short list."
+      },
+      {
         "name": "className",
         "type": "string",
         "required": false,
@@ -2281,6 +2288,13 @@ export const GENERATED_PROPS = {
     "inheritsNative": true,
     "props": [
       {
+        "name": "cardLayout",
+        "type": "SelectionCardLayout = \"compact\" | \"detailed\"",
+        "required": false,
+        "default": "\"compact\"",
+        "description": "Card variant only. `detailed` is the scheme tile: icon tile, title, description, meta, control trailing."
+      },
+      {
         "name": "checked",
         "type": "boolean",
         "required": false,
@@ -2315,7 +2329,7 @@ export const GENERATED_PROPS = {
         "name": "icon",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Leading glyph, card variant only. Pass an `<Icon>`."
+        "description": "Leading glyph, card variant only. Pass an `<Icon>` — `size={40}` in the detailed layout."
       },
       {
         "name": "indeterminate",
@@ -2342,6 +2356,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"end\"",
         "description": ""
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One fact to choose by — the target group, the fee, the timeline. Card variant; joins `aria-describedby`."
       },
       {
         "name": "onChange",
@@ -6657,6 +6677,13 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "cardLayout",
+        "type": "SelectionCardLayout = \"compact\" | \"detailed\"",
+        "required": false,
+        "default": "\"compact\"",
+        "description": "With `variant=\"card\"`: `detailed` for scheme tiles, `compact` for a short list."
+      },
+      {
         "name": "className",
         "type": "string",
         "required": false,
@@ -6775,6 +6802,13 @@ export const GENERATED_PROPS = {
         "description": "This option's value."
       },
       {
+        "name": "cardLayout",
+        "type": "SelectionCardLayout = \"compact\" | \"detailed\"",
+        "required": false,
+        "default": "\"compact\"",
+        "description": "Card variant only. `detailed` is the scheme tile: icon tile, title, description, meta, control trailing."
+      },
+      {
         "name": "checked",
         "type": "boolean",
         "required": false,
@@ -6803,7 +6837,7 @@ export const GENERATED_PROPS = {
         "name": "icon",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Leading glyph, card variant only. Pass an `<Icon>`."
+        "description": "Leading glyph, card variant only. Pass an `<Icon>` — `size={40}` in the detailed layout."
       },
       {
         "name": "invalid",
@@ -6823,6 +6857,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"end\"",
         "description": ""
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One fact to choose by — the target group, the fee, the timeline. Card variant; joins `aria-describedby`."
       },
       {
         "name": "onChange",
@@ -7372,6 +7412,13 @@ export const GENERATED_PROPS = {
     "inheritsNative": false,
     "props": [
       {
+        "name": "cardLayout",
+        "type": "SelectionCardLayout = \"compact\" | \"detailed\"",
+        "required": false,
+        "default": "\"compact\"",
+        "description": "Card variant only. `detailed` is the scheme tile: icon tile, title, description, meta, control trailing."
+      },
+      {
         "name": "description",
         "type": "React.ReactNode",
         "required": false,
@@ -7387,7 +7434,7 @@ export const GENERATED_PROPS = {
         "name": "icon",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Leading glyph, card variant only. Pass an `<Icon>`."
+        "description": "Leading glyph, card variant only. Pass an `<Icon>` — `size={40}` in the detailed layout."
       },
       {
         "name": "invalid",
@@ -7407,6 +7454,12 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"end\"",
         "description": ""
+      },
+      {
+        "name": "meta",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "One fact to choose by — the target group, the fee, the timeline. Card variant; joins `aria-describedby`."
       },
       {
         "name": "readOnly",
