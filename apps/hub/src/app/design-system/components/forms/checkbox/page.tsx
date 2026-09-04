@@ -316,7 +316,7 @@ const some = items.some((i) => i.selected);
               <code>variant=&quot;card&quot;</code> renders the option as a tile with room for an <code>icon</code> and a
               description, and the whole tile is the target; <code>cardLayout=&quot;detailed&quot;</code> adds the
               icon tile, a <code>meta</code> line and moves the control to the trailing edge, for a scheme
-              checklist, and the Radio page shows both layouts. Use it where the options are pathways through a
+              checklist; the specimen above shows it on a group. Use it where the options are pathways through a
               service — the schemes an applicant is claiming under — rather than values in a field.
             </p>
             <CodeBlock>{`<Checkbox
