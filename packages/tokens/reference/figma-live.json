@@ -1632,8 +1632,8 @@
       ]
     },
     "preExisting": {
-      "note": "Six `Shadows/shadow-*` effect styles predate the token sync and the code never knew about them. NONE of the six matches the token source: all use flat #212121 where the tokens use the tinted rgb(31,36,40), and shadow-s and shadow-md also differ in GEOMETRY, so a design using either does not match what ships. They were NOT changed — this is a published library and they are applied in consumer files, so altering their geometry would restyle other people's work unannounced. Each now carries a description naming the elevation/* style that supersedes it and the exact divergence. Retire them only with evidence of zero consumers ACROSS EVERY CONSUMING FILE \u2014 the library file alone cannot supply that, and as of 2026-09-03 it no longer uses them at all (see `repointedInLibrary`), so a zero read there proves nothing.",
-      "repointedInLibrary": "2026-09-03 \u2014 every node in the LIBRARY file that used one of the six was repointed to its elevation/* replacement (159 nodes: xs 116, s 3, md 2, lg 27, xl 3, 2xl 8; 2xl has no true replacement and went to elevation/toast). The STYLES were not touched and stay published. This knowingly restyled published components \u2014 Buttons, Chips, Navbar, Close Button, Color Picker \u2014 so files instancing them inherit the change; downstream was not notified. Zero consumers in this file is NOT the evidence the note above asks for.",
+      "note": "Six `Shadows/shadow-*` effect styles predate the token sync and the code never knew about them. NONE of the six matches the token source: all use flat #212121 where the tokens use the tinted rgb(31,36,40), and shadow-s and shadow-md also differ in GEOMETRY, so a design using either does not match what ships. They were NOT changed — this is a published library and they are applied in consumer files, so altering their geometry would restyle other people's work unannounced. Each now carries a description naming the elevation/* style that supersedes it and the exact divergence. Retire them only with evidence of zero consumers ACROSS EVERY CONSUMING FILE — the library file alone cannot supply that, and as of 2026-09-03 it no longer uses them at all (see `repointedInLibrary`), so a zero read there proves nothing.",
+      "repointedInLibrary": "2026-09-03 — every node in the LIBRARY file that used one of the six was repointed to its elevation/* replacement (159 nodes: xs 116, s 3, md 2, lg 27, xl 3, 2xl 8; 2xl has no true replacement and went to elevation/toast). The STYLES were not touched and stay published. This knowingly restyled published components — Buttons, Chips, Navbar, Close Button, Color Picker — so files instancing them inherit the change; downstream was not notified. Zero consumers in this file is NOT the evidence the note above asks for.",
       "Shadows/shadow-xs": "colour differs only — superseded by elevation/card",
       "Shadows/shadow-s": "GEOMETRY differs — superseded by elevation/raised",
       "Shadows/shadow-md": "GEOMETRY differs — superseded by elevation/dropdown",
@@ -1656,12 +1656,12 @@
   },
   "$valueChecksums": {
     "note": "Per-collection checksum over `name|mode|value`, computed by build/figma-value-parity.mjs. The rest of this file records NAMES, and every check built on it compares names — which is why the library could hold 13 component tokens bound to the wrong palette rung, a reverted webfont, and 54 fluid-type variables carrying the old tablet curve, all under the correct names, with nothing noticing. `payload` is what the build produces; `figmaObserved` is a verified read of the library. They are expected to be EQUAL, and figma-value-parity.test.mjs fails when the payload moves without this record being refreshed.",
-    "recordedAt": "2026-09-02",
-    "$lastChange": "Motion 12 -> 17: added ref/motion/easing/outStrong and the motion/reveal + motion/press semantic pairings. PUSHED TO THE LIBRARY FIRST and read back — all 17 resolve identically on both sides (reveal 400ms / press 150ms, both on cubic-bezier(0.22, 1, 0.36, 1)). The record was refreshed only after that reconciliation, never ahead of it.",
+    "recordedAt": "2026-09-04",
+    "$lastChange": "text/link/brand/default re-aliased color/primaryScale/500 -> /600 (#0373df -> #005eb9) on 2026-09-04. #0373df measures 4.07:1 on bg/surface/muted, the class the estate <body> carries, against the 4.5:1 that 1.4.3 asks of text; #005eb9 is 5.57:1 there and 6.36:1 on white. Pushed to the library and READ BACK resolved (#005eb9) before this was re-recorded, per the note above. dbim follows the base ramp step and moved with it across all six hues; navy holds 500 through its own override and already cleared 4.5:1.",
     "payload": {
       "Space": "23c0c381:142",
       "Palette": "166809b5:282",
-      "Color": "4fdef7ae:495",
+      "Color": "1317770d:495",
       "Type": "6e26a634:618",
       "Radius": "77e146:25",
       "Motion": "775c9461:17",
