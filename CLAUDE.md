@@ -312,6 +312,23 @@ The Figma Palette collection stays `[Blue, Navy]`, enforced by construction in
 Two DBIM usage rules where `dbim` is active: **text** uses shade 1 or 2 (§4.4); **icons
 and the footer** use the key colour, shade 1 (§3.7, §5.6).
 
+## CI also runs here
+
+`npm run ci` executes the same steps as `.github/workflows/*.yml`, **read from those files
+rather than copied**, plus a case audit that ubuntu gets for free and macOS cannot. Run it
+before opening or merging a PR. `ci:fast` while iterating, `ci:list` to see what would run,
+`ci:clean` for a lockfile install in a throwaway worktree.
+
+It exists because the remote twice was not the net it was assumed to be: a prerender error
+reached main on 2026-08-23 and served a four-hour-old build, and on 2026-09-04 GitHub
+stopped assigning runners on a billing block — every workflow died in three seconds with
+zero steps while PRs still showed check names. `npm run verify` covered four of the
+twenty-eight workflow steps.
+
+It does not prove a clean install (`--clean` does), it does not prove Linux beyond the case
+audit, and a hook is advisory — only a required status check is a gate, and branch
+protection is free while the repo is public. → `.claude/rules/local-ci.md`
+
 ## Safety rules (learned the hard way)
 
 - **macOS is case-insensitive.** `Portals` and `portals` are the SAME directory. Never

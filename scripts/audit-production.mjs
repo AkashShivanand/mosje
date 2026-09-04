@@ -56,7 +56,12 @@ const sleep = (ms) => Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 
 function runAudit() {
   const res = spawnSync(
     "npm",
-    ["audit", "--omit=dev", "--json", "--fetch-retries=2", "--fetch-retry-maxtimeout=20000"],
+    // `--fetch-retries` bounds the RETRIES, not the wait. Without `--fetch-timeout` a
+    // hung endpoint costs npm's default per-request patience on every attempt: on
+    // 2026-09-04 three attempts against a timing-out registry took 932 SECONDS to
+    // conclude "it is down". Fifteen minutes to learn nothing is its own defect —
+    // people stop running the thing.
+    ["audit", "--omit=dev", "--json", "--fetch-retries=2", "--fetch-retry-maxtimeout=20000", "--fetch-timeout=60000"],
     { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 },
   );
   const raw = `${res.stdout ?? ""}\n${res.stderr ?? ""}`;

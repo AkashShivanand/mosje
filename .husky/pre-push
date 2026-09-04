@@ -1,39 +1,37 @@
-# Typecheck the hub before anything reaches main.
+# Run the estate's own CI before anything leaves this machine.
 #
-# The hub build already runs in CI (Apps CI: lint → check → build), and it works
-# — it failed on 81c61b3, which deleted apps/hub/src/lib/theme.ts and two
-# siblings while three files still imported them:
+# The gate below used to be a hub typecheck, for a reason that is worth keeping:
+# 81c61b3 deleted apps/hub/src/lib/theme.ts and two siblings while three files
+# still imported them, was pushed STRAIGHT TO main, and CI reported after the
+# fact — racing a production deploy that failed the same way. A `push:` workflow
+# reports; it cannot block.
 #
-#   src/components/site-header.tsx(2,29): error TS2307:
-#     Cannot find module './theme-toggle'
+# WHAT CHANGED, 2026-09-04. That reasoning ended "and CI already covers it", and
+# twice now it has not. A prerender error reached main on 2026-08-23 and served a
+# four-hour-old build, because only `next build` sees that class. And on
+# 2026-09-04 GitHub Actions stopped assigning runners entirely — every workflow
+# died in three seconds with `runner=""`, so for a stretch of the evening NOTHING
+# was enforced anywhere while pull requests still showed ticks.
 #
-# But that commit was pushed STRAIGHT TO main, so CI ran after the fact, racing
-# a production deploy that failed the same way. A `push:` workflow reports; it
-# cannot block. Required status checks would, except branch protection needs
-# GitHub Pro or a public repo — neither applies here.
+# So the local runner is no longer a convenience. `npm run ci` executes the same
+# steps as .github/workflows/*.yml, derived FROM those files rather than copied,
+# plus the case audit that ubuntu gets for free and macOS cannot.
 #
-# So the gate has to be local. This is the same typecheck CI runs, and it takes
-# about 3 seconds, which is the whole reason it is affordable here: a missing
-# module is caught before the push instead of after the deploy.
+# COST IS THE WHOLE DESIGN. A hook people bypass is worse than no hook, because it
+# manufactures the belief that something was checked. So:
 #
-# Deliberately NOT the full build (~3 min) — too slow for a hook.
+#   pushing to main      → `npm run ci`      the full suite, several minutes
+#   pushing anywhere else → a fast subset     seconds, and it catches the two
+#                                             things a branch push actually gets
+#                                             wrong: a broken type and a wrongly
+#                                             cased import
 #
-# That reasoning used to end "and CI already covers it". READ THAT AGAIN BEFORE
-# TRUSTING IT: while GitHub Actions is blocked on billing, every workflow dies in
-# about three seconds and covers nothing. On 2026-08-23 a `useSearchParams()`
-# without a Suspense boundary reached main that way and production served a
-# four-hour-old build, because a prerender error is invisible to typecheck, to
-# lint and to `npm run check` — only `next build` sees it.
+# Before opening or merging a PR, run `npm run ci` yourself. While Actions is
+# unavailable, that is the only thing standing between a branch and main.
 #
-# So while CI is red for billing, run `npm run verify` before merging a PR. It is
-# lint + lint:css + check + build, which is what Apps CI runs when it can run.
-# Vercel still builds every PR and is the only check that catches this class
-# automatically — a red Vercel is never noise.
-#
-# Only guards main. Feature branches push freely; their PR runs the full CI.
-# Genuinely need to bypass: `git push --no-verify`.
+# Genuinely need to bypass: `git push --no-verify`. It is there deliberately, and
+# it is the reason this is not a gate — only a required status check is.
 
-# Which remote ref is being pushed? stdin is "<local ref> <local sha> <remote ref> <remote sha>".
 pushing_to_main=0
 while read -r _local_ref _local_sha remote_ref _remote_sha; do
   case "$remote_ref" in
@@ -41,13 +39,31 @@ while read -r _local_ref _local_sha remote_ref _remote_sha; do
   esac
 done
 
-[ "$pushing_to_main" -eq 1 ] || exit 0
+if [ "$pushing_to_main" -eq 1 ]; then
+  echo "pre-push: main — running the full local CI (npm run ci)…"
+  if ! npm run ci --silent; then
+    echo ""
+    echo "✖ pre-push: local CI failed — not pushing to main."
+    echo "  This is what reaches production, so it fails here rather than in the deploy."
+    echo "  Fix it, or bypass deliberately with: git push --no-verify"
+    exit 1
+  fi
+  exit 0
+fi
 
-echo "pre-push: typechecking the hub before main…"
-if ! npm run check --silent; then
+# Feature branch: seconds, not minutes. A wrongly cased import resolves on this
+# filesystem and fails on the Linux runner, so it is worth the half second even
+# on a branch nobody will merge today.
+echo "pre-push: quick checks (case audit + hub typecheck)…"
+if ! npm run check:case --silent; then
   echo ""
-  echo "✖ pre-push: the hub does not typecheck — not pushing to main."
-  echo "  This is what reaches production, so it fails here rather than in the deploy."
-  echo "  Fix it, or bypass deliberately with: git push --no-verify"
+  echo "✖ pre-push: an import does not match the real spelling on disk."
+  echo "  macOS resolves it; Linux will not. Fix it, or: git push --no-verify"
+  exit 1
+fi
+if ! npm run check:hub --silent; then
+  echo ""
+  echo "✖ pre-push: the hub does not typecheck."
+  echo "  Run \`npm run ci\` for the full suite. Bypass with: git push --no-verify"
   exit 1
 fi
