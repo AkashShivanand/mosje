@@ -1,8 +1,8 @@
 # Radio — component spec
 
 Source: `packages/design-system/components/forms/radio.tsx` (shared markup in
-`selection-control.tsx`, group in `control-group.tsx`). Figma: `Radio` set `18:791`,
-`Radio Group` and `Selection Card` sets on the `Radio` page. Web docs:
+`selection-control.tsx`, group in `control-group.tsx`). Figma: `Radio` set `18:791` and
+`Radio Group` on the `Radio` page; `Selection Card` (`55530:2932`) has its own page since 2026-09-04. Web docs:
 `/design-system/components/forms/radio`.
 
 ## Anatomy
