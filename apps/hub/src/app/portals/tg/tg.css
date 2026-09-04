@@ -15,7 +15,7 @@
   /* DS-token names TG redefines (hub keeps its own value outside this scope). */
   --portal-ink: #0f172a;
   --portal-ink-muted: #475569;
-  --portal-saffron: #ec6a1f;
+  --portal-saffron: var(--sa-color-brand-saffron);
   --portal-surface-muted: #f5f7fb;
 
   /* borderRadius.extend — stock Tailwind is 0.75rem / 1rem. */

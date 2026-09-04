@@ -1660,8 +1660,8 @@
     "$lastChange": "COLOUR-SYSTEM REDESIGN, 2026-09-04 (branch ds/colour-system-redesign). Palette and Color changed value in CODE and the library has NOT been pushed: figmaObserved is left exactly as last read, so the two halves of this record now disagree ON PURPOSE and knownDifference says why. What moved: the tint chroma exponent (ramp.mjs 0.85 -> 0.5) re-cut every ramp’s 50-300 rungs; accentScale/successScale re-anchored at rung 600 (all 11 rungs); dangerScale rotated hue 28.7 -> 24 (all 11); infoScale moved to hue 220 (all 11); status text/icon/border base -> rung 600 and bolder -> 700; text/brand/primary base -> 600, bolder -> 700; text/neutral/disabled opaque neutral 400; bg/neutral/disabled -> neutral 100; border/neutral/bolder/default -> neutral 500, hover -> 600; color/status/* legacy aliases one rung lighter; color/status/infoTonal -> info/50. The push is a human act: run the exporter, push, READ BACK, then re-record figmaObserved. Previous $lastChange: \"text/link/brand/default re-aliased color/primaryScale/500 -> /600 (#0373df -> #005eb9) on 2026-09-04. #0373df measures 4.07:1 on bg/surface/muted, the class the estate <body> carries, against the 4.5:1 that 1.4.3 asks of text; #005eb9 is 5.57:1 there and 6.36:1 on white. Pushed to the library and READ BACK resolved (#005eb9) before this was re-recorded, per the note above. dbim follows the base ramp step and moved with it across all six hues; navy holds 500 through its own override and already cleared 4.5:1.\"",
     "payload": {
       "Space": "23c0c381:142",
-      "Palette": "6f2014da:278",
-      "Color": "e963cc45:495",
+      "Palette": "bcbe7961:276",
+      "Color": "87bf9b48:495",
       "Type": "6e26a634:618",
       "Radius": "77e146:25",
       "Motion": "775c9461:17",

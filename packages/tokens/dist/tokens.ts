@@ -1082,7 +1082,7 @@ export const tokens = {
     }
   },
   "focus": {
-    "ring": "rgba(3, 115, 223, 0.48)",
+    "ring": "#0373df",
     "width": "2px",
     "offset": "2px"
   },

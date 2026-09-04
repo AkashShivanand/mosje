@@ -536,3 +536,28 @@ restored hue diversity.
 
 What remains outside the validator's band is stated in the token description itself, with the
 measurement that justifies it, so the next person does not re-run the search to rediscover it.
+
+---
+
+## 15. Colour that lives outside the token gates — the third validation pass
+
+Asked whether *every* colour in the project had been revalidated, the answer was no: the token
+system had, and three surfaces outside it had not. This pass inventoried them.
+
+| Surface | Raw hex declarations (comments stripped) | Finding | Action |
+|---|---|---|---|
+| `--sa-focus-ring` token | — | `rgba(3,115,223,.48)`, composites to `#86bcf0`, **2.01:1** on white. The 2026-09-03 focus fix corrected `forms.css` only; **53 `outline:` rules** in 12 other stylesheets (chips, search, controls, filter-select, media inputs, the auth stack) still read the wash — a 1.4.11 failure on every one. | Token now aliases the brand key colour: solid `#0373df` (4.64:1 white, 4.07:1 muted), `#003366` in Navy, the DBIM key colour in its modes. Fixed at the token, so all 53 sites move at once |
+| Design-system component CSS | 2 | Both are `mask` gradients using `#000000` as an alpha stop, not colours | None |
+| Portal stylesheets (8 files) | 126 | Per-portal palettes, re-bound under `[data-portal]` by design. Eight near-duplicates of brand or status colours: `--portal-saffron: #ec6a1f` (ΔE 3.4 from India Saffron) in nhapoa, nmba, scw and tg; PM-AJAY's `--pm-brand-orange: #f97316` (the retired saffron, ΔE 2.6), `--pm-danger-strong: #c0392b` and `--pm-danger-stronger: #b91c1c` (ΔE 5.4 / 3.3 from the error ink); SCW's hero green `#2f6b46` (ΔE 3.3 from success, a gradient ground) | The seven brand/status duplicates re-bound to the tokens (`--sa-color-brand-saffron`, `text/status/error/base`, `/bolder`); the hero gradient left, it is not a status |
+| Website (`website.css`, 5 files) | 33 | Site tokens alias the DS tokens; the literals are the NMBA campaign reds (a campaign palette, deliberate), social-network brand marks, and two `oklch()` approximations in comments | None; the NMBA reds are recorded as campaign colours, not estate tokens |
+| Design-system docs pages | 475, in 12 files | 60 are hexes quoted in changelog prose; the rest are specimen swatches on component pages that display a colour by name | None |
+| Code specimen palette (`code/*`) | 6 literals | Re-measured against `code/bg`: text 12.95, string 11.37, builtin 9.58, keyword 6.04, comment 5.09 — unchanged and AA | None |
+| Overlay / scrim | 2 | `overlay/neutral/boldest` 50 % ink, `overlay/brand/hover` 8 % white — washes, no text obligation | None |
+| Organisation marks, illustrations, SVG logos | — | Artwork, not tokens; outside a colour audit's remit (the marks have their own resolution rule) | None |
+
+**What "all the colours" now means.** Every token in every tier and every mode has been
+measured; every raw literal in component, portal and website CSS has been inventoried and
+either re-bound, justified or recorded. What is *not* claimed: that a portal's own palette is
+the best palette for that portal — those are per-portal design decisions with their own
+visual review, and this pass only removed the places where a portal had quietly re-drawn a
+brand or status colour a few ΔE off the estate's.

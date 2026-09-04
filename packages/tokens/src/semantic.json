@@ -1530,18 +1530,15 @@
   },
   "focus": {
     "ring": {
-      "$value": "rgba(3, 115, 223, 0.48)",
+      "$value": "{color.action.primary.default}",
       "$extensions": {
         "mosje": {
-          "colorModes": {
-            "navy": "rgba(0, 51, 102, 0.48)",
-            "dbim": "rgba(0, 51, 102, 0.48)"
-          },
           "themes": {
             "dark": "rgba(125, 180, 245, 0.55)"
           }
         }
-      }
+      },
+      "$description": "The keyboard focus ring. SOLID since 2026-09-04: it was rgba(3,115,223,.48), which flattens on white to #86bcf0 \u2014 2.01:1 against the 3:1 that WCAG 2.2 1.4.11 asks of a focus indicator \u2014 and 53 outline rules across chips, search, controls and the auth stack still read it after forms.css alone was corrected on 2026-09-03. It now aliases the brand key colour, which is 4.64:1 on white and 4.07:1 on the muted page in Blue, and follows Navy and the DBIM modes through the alias. Paint it as `outline: var(--sa-focus-width) solid var(--sa-focus-ring)` with `outline-offset: var(--sa-focus-offset)`, never as a box-shadow \u2014 a shadow is not painted in Windows High Contrast Mode."
     },
     "width": {
       "$value": "{border.width.md}"

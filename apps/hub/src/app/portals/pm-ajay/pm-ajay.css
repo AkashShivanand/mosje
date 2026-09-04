@@ -134,8 +134,8 @@
 
   /* Deeper danger inks, for the login surface where the coral --danger-700 sits
      on white rather than on its tint and needs more weight. */
-  --pm-danger-strong: #C0392B;
-  --pm-danger-stronger: #B91C1C;
+  --pm-danger-strong: var(--sa-text-status-error-base);
+  --pm-danger-stronger: var(--sa-text-status-error-bolder);
   --pm-danger-tint-faint: #FFF8F7;   /* errored field fill */
   --pm-danger-tint-soft: #FEE2E2;    /* destructive control, hover */
 
@@ -176,7 +176,7 @@
   --pm-track: #EEF1F5;                        /* unfilled part of a progress or bar track */
   --pm-hero-wash: #fbfdff;                    /* the pale end of the hero KPI gradient */
   --pm-alert-hover: #F7F9FC;                  /* governance alert row under the pointer */
-  --pm-brand-orange: #F97316;                 /* the scheme bar's underline on the login page */
+  --pm-brand-orange: var(--sa-color-brand-saffron);                 /* the scheme bar's underline on the login page */
   --pm-field-border: #d1d9e0;                 /* login input border at rest */
   --pm-error-tint: #fff1f0;                   /* login error panel fill */
   --pm-error-border: #f5c6c3;                 /* login error panel border */

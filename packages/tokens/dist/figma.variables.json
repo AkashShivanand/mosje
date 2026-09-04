@@ -6697,27 +6697,6 @@
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
           }
-        },
-        {
-          "name": "focus/ring",
-          "path": "focus/ring",
-          "role": "brand-source",
-          "type": "COLOR",
-          "status": "existing",
-          "valuesByMode": {
-            "Blue": {
-              "type": "COLOR",
-              "value": "rgba(3, 115, 223, 0.48)"
-            },
-            "Navy": {
-              "type": "COLOR",
-              "value": "rgba(0, 51, 102, 0.48)"
-            }
-          },
-          "description": "Brand-aware source for Theme::focus/ring. Generated because that token’s light value is a literal that differs between Blue and Navy; without it the Navy brand is lost.",
-          "codeSyntax": {
-            "WEB": "var(--sa-focus-ring)"
-          }
         }
       ]
     },
@@ -15383,10 +15362,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "focus/ring"
+              "name": "color/primaryScale/500"
             }
           },
-          "description": "Use for the focus indicator. WCAG 2.4.7 makes this non-optional — never suppress it, and never substitute a colour with less contrast.",
+          "description": "The keyboard focus ring. SOLID since 2026-09-04: it was rgba(3,115,223,.48), which flattens on white to #86bcf0 — 2.01:1 against the 3:1 that WCAG 2.2 1.4.11 asks of a focus indicator — and 53 outline rules across chips, search, controls and the auth stack still read it after forms.css alone was corrected on 2026-09-03. It now aliases the brand key colour, which is 4.64:1 on white and 4.07:1 on the muted page in Blue, and follows Navy and the DBIM modes through the alias. Paint it as `outline: var(--sa-focus-width) solid var(--sa-focus-ring)` with `outline-offset: var(--sa-focus-offset)`, never as a box-shadow — a shadow is not painted in Windows High Contrast Mode.",
           "codeSyntax": {
             "WEB": "var(--sa-focus-ring)"
           },

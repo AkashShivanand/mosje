@@ -698,7 +698,7 @@
   --sa-text-status-warning-bolder: var(--sa-color-warningScale-700);
   --sa-text-status-info-base: var(--sa-color-infoScale-600);
   --sa-text-status-info-bolder: var(--sa-color-infoScale-700);
-  --sa-focus-ring: rgba(3, 115, 223, 0.48);
+  --sa-focus-ring: #0373df;
   --sa-focus-width: 2px;
   --sa-focus-offset: 2px;
   --sa-overlay-neutral-boldest: rgba(30, 33, 36, 0.5);
@@ -1415,7 +1415,6 @@
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDark-50);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDark-900);
   --sa-text-link-brand-default: var(--sa-ref-color-primaryRamp-navy-500);
-  --sa-focus-ring: rgba(0, 51, 102, 0.48);
 
   /* re-resolve every alias whose source changed in this block */
   --sa-border-neutral-bolder-hover: var(--sa-color-border-controlHover);
@@ -4154,7 +4153,6 @@
   --sa-bg-neutral-subtler: #eef0f3;
   --sa-text-neutral-bolder: #0e1114;
   --sa-text-link-brand-default: #005eb9;
-  --sa-focus-ring: rgba(3, 115, 223, 0.48);
   --sa-overlay-neutral-boldest: rgba(30, 33, 36, 0.5);
   --sa-chart-div-negStrong: #6c0f15;
   --sa-chart-div-neg: #ec4e4f;
