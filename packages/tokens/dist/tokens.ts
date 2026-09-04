@@ -1044,7 +1044,7 @@ export const tokens = {
     },
     "link": {
       "brand": {
-        "default": "#0373df",
+        "default": "#005eb9",
         "hover": "#004b96",
         "active": "#003975",
         "disabled": "rgba(30, 33, 36, 0.48)"

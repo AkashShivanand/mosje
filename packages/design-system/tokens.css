@@ -682,7 +682,7 @@
   --sa-text-neutral-disabled: var(--sa-color-text-disabled);
   --sa-text-neutral-inverse: var(--sa-color-text-onPrimary);
   --sa-text-neutral-subtler: var(--sa-color-neutralScale-500);
-  --sa-text-link-brand-default: #0373df;
+  --sa-text-link-brand-default: #005eb9;
   --sa-text-link-brand-hover: var(--sa-color-action-primary-hover);
   --sa-text-link-brand-active: var(--sa-color-primaryScale-800);
   --sa-text-link-brand-disabled: var(--sa-color-text-disabled);
@@ -1702,7 +1702,7 @@
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-blue-500);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-blue-600);
   --sa-overlay-neutral-boldest: rgba(21, 2, 2, 0.5);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -2108,7 +2108,7 @@
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-burgundy-500);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-burgundy-600);
   --sa-overlay-neutral-boldest: rgba(21, 2, 2, 0.5);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -2514,7 +2514,7 @@
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-purple-500);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-purple-600);
   --sa-overlay-neutral-boldest: rgba(21, 2, 2, 0.5);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -2920,7 +2920,7 @@
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-green-500);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-green-600);
   --sa-overlay-neutral-boldest: rgba(21, 2, 2, 0.5);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -3326,7 +3326,7 @@
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-chromeYellow-500);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-chromeYellow-600);
   --sa-overlay-neutral-boldest: rgba(21, 2, 2, 0.5);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -3732,7 +3732,7 @@
   --sa-bg-neutral-base: var(--sa-ref-color-neutralDbim-0);
   --sa-bg-neutral-subtler: var(--sa-ref-color-neutralDbim-50);
   --sa-text-neutral-bolder: var(--sa-ref-color-neutralDbim-900);
-  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-cinnamonRed-500);
+  --sa-text-link-brand-default: var(--sa-ref-color-dbimPrimary-cinnamonRed-600);
   --sa-overlay-neutral-boldest: rgba(21, 2, 2, 0.5);
   --sa-chart-div-negStrong: var(--sa-ref-color-redDbim-800);
   --sa-chart-div-neg: var(--sa-ref-color-redDbim-400);
@@ -4172,7 +4172,7 @@
   --sa-bg-neutral-base: #ffffff;
   --sa-bg-neutral-subtler: #eef0f3;
   --sa-text-neutral-bolder: #0e1114;
-  --sa-text-link-brand-default: #0373df;
+  --sa-text-link-brand-default: #005eb9;
   --sa-focus-ring: rgba(3, 115, 223, 0.48);
   --sa-overlay-neutral-boldest: rgba(30, 33, 36, 0.5);
   --sa-chart-div-negStrong: #6c100c;

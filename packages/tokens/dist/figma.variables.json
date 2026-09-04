@@ -15397,10 +15397,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500"
+              "name": "color/primaryScale/600"
             }
           },
-          "description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast. Contrast 4.64:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
+          "description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast. BLUE IS RAMP 600, NOT 500, and the reason is the ground it actually sits on: 500 (#0373df) measures 4.64:1 on white but 4.07:1 on bg/surface/muted, which is the class the estate's own <body> carries — so the link failed 1.4.3 on most pages while passing every check. 600 (#005eb9) is 6.36:1 and 5.57:1. It passed because the contrast contract judges text against bg/neutral/base, i.e. white; that surface assumption is recorded as an open item rather than widened here, since widening it re-judges every text token at once. Navy holds ramp 500 through its own colorModes override and already clears 4.5:1 on that ground. dbim has no such override, so it follows the base step and moved to 600 with it across all six of its hues — which only darkens those links, never lightens them. Contrast 6.36:1 vs bg/neutral/base — meets ≥4.5:1: text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-link-brand-default)"
           },
@@ -15411,7 +15411,7 @@
             "in.gov.mosje.contrast": {
               "rung": null,
               "min": 4.5,
-              "measured": 4.64,
+              "measured": 6.36,
               "meets": true
             }
           }
