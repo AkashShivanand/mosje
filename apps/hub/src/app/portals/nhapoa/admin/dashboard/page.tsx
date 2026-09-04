@@ -32,14 +32,14 @@ export default function AdminDashboard() {
       </div>
 
       <Card className="mt-6 p-6">
-        <h2 className="text-sm font-bold text-ink">Grievance Lifecycle Funnel</h2>
-        <p className="text-xs text-ink-hint">Distribution across statuses</p>
+        <h2 className="text-title-2 text-ink">Grievance Lifecycle Funnel</h2>
+        <p className="text-body-3 text-ink-hint">Distribution across statuses</p>
         <div className="mt-6 space-y-3">
           {FUNNEL.map((s) => (
             <div key={s} className="flex items-center gap-3">
-              <span className="w-40 shrink-0 text-xs text-ink-muted">{CASE_STATUS_META[s].label}</span>
+              <span className="w-40 shrink-0 text-body-3 text-ink-muted">{CASE_STATUS_META[s].label}</span>
               <div className="h-6 flex-1 overflow-hidden rounded bg-line">
-                <div className="flex h-full items-center rounded bg-navy/70 px-2 text-[10px] font-semibold text-white" style={{ width: `${Math.max(6, ((counts[s] ?? 0) / maxFunnel) * 100)}%` }}>{counts[s] ?? 0}</div>
+                <div className="flex h-full items-center rounded bg-navy/70 px-2 text-label-2 font-semibold text-white" style={{ width: `${Math.max(6, ((counts[s] ?? 0) / maxFunnel) * 100)}%` }}>{counts[s] ?? 0}</div>
               </div>
             </div>
           ))}

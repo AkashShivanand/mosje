@@ -92,8 +92,8 @@ export default function NewFollowUpPage() {
   return (
     <div className="flex flex-col gap-6 max-w-4xl mx-auto py-4">
       <div>
-        <h1 className="text-xl font-bold text-ink">New OPD Follow-Up Registration</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">New OPD Follow-Up Registration</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Lookup patient by registration number and record follow-up details.
         </p>
       </div>
@@ -127,19 +127,19 @@ export default function NewFollowUpPage() {
       {patient && (
         <form onSubmit={handleSave} className="flex flex-col gap-6">
           <FormSection title="Patient Demographics (Auto-filled)" columns={2}>
-            <div className="text-sm">
+            <div className="text-body-2">
               <span className="block font-semibold text-ink-muted">Patient Name</span>
               <span className="text-ink font-medium">{patient.name}</span>
             </div>
-            <div className="text-sm">
+            <div className="text-body-2">
               <span className="block font-semibold text-ink-muted">Age / Gender</span>
               <span className="text-ink font-medium">{patient.age} / {patient.gender}</span>
             </div>
-            <div className="text-sm">
+            <div className="text-body-2">
               <span className="block font-semibold text-ink-muted">Contact Number</span>
               <span className="text-ink font-medium">{patient.contactNumber}</span>
             </div>
-            <div className="text-sm">
+            <div className="text-body-2">
               <span className="block font-semibold text-ink-muted">Date of Admission</span>
               <span className="text-ink font-medium">{patient.dateOfAdmission}</span>
             </div>

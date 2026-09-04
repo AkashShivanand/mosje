@@ -15,8 +15,8 @@ export default function OfficerNotificationsPage() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-ink">Notifications</h1>
-          <p className="mt-1 text-sm text-ink-muted">{unread} unread</p>
+          <h1 className="text-headline-1 text-ink">Notifications</h1>
+          <p className="mt-1 text-body-2 text-ink-muted">{unread} unread</p>
         </div>
         {unread > 0 && (
           <Button appearance="outlined" onClick={markAllNotificationsRead}>
@@ -34,11 +34,11 @@ export default function OfficerNotificationsPage() {
               <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="font-semibold text-ink">{n.title}</p>
-                  <p className="mt-1 text-sm text-ink-muted">{n.body}</p>
+                  <p className="mt-1 text-body-2 text-ink-muted">{n.body}</p>
                 </div>
                 {!n.read && <Badge status="info">New</Badge>}
               </div>
-              <p className="mt-2 text-xs text-ink-hint">{formatDate(n.at)}</p>
+              <p className="mt-2 text-body-3 text-ink-hint">{formatDate(n.at)}</p>
             </li>
           ))}
         </ul>

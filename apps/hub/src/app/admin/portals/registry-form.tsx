@@ -306,7 +306,7 @@ export function RegistryForm({
         )}
       </div>
 
-      <p className="mt-6 text-xs text-ink-hint" role="status" aria-live="polite">
+      <p className="mt-6 text-body-3 text-ink-hint" role="status" aria-live="polite">
         {announcement ||
           (overrideCount === 0
             ? `${rows.length} entries, all following the code defaults.`
@@ -331,16 +331,16 @@ export function RegistryForm({
         <section className="mb-4 rounded-xl border border-border bg-surface p-5 shadow-xs">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="max-w-xl">
-              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
+              <h2 className="text-label-3 uppercase text-ink">
                 Demo dock
               </h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+              <p className="mt-1.5 text-body-2 text-ink-muted">
                 The floating rail that switches between portals, re-tones the
                 brand palette and fills in demo sign-ins. Turn it off for a
                 walkthrough, a screenshot or a recording, and put it back
                 afterwards — no redeploy.
               </p>
-              <p className="mt-2 text-xs leading-relaxed text-ink-hint">
+              <p className="mt-2 text-body-3 text-ink-hint">
                 It never appears on this admin surface, on the hub root or on
                 the gate, whatever this is set to.
               </p>
@@ -363,17 +363,17 @@ export function RegistryForm({
         <section className="mb-6 rounded-xl border border-border bg-surface p-5 shadow-xs">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="max-w-xl">
-              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
+              <h2 className="text-label-3 uppercase text-ink">
                 Assistant
               </h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+              <p className="mt-1.5 text-body-2 text-ink-muted">
                 Samajik Sahayak, the chat assistant in the bottom-right corner. This is the
                 master switch; turn it on per surface in the list below. What it
                 says is set in code, not here.
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-xs text-ink-hint">
+              <span className="text-body-3 text-ink-hint">
                 {assistantOn} of {assistantTotal} on
               </span>
               <Toggle
@@ -395,14 +395,14 @@ export function RegistryForm({
         <section className="mb-6 rounded-xl border border-border bg-surface p-5 shadow-xs">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="max-w-xl">
-              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
+              <h2 className="text-label-3 uppercase text-ink">
                 Cookie banner
               </h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+              <p className="mt-1.5 text-body-2 text-ink-muted">
                 The consent notice along the foot of the website. Off while it
                 is being redesigned.
               </p>
-              <p className="mt-2 text-xs leading-relaxed text-ink-hint">
+              <p className="mt-2 text-body-3 text-ink-hint">
                 Its copy cites GIGW 3.0 and DBIM, so this is a compliance
                 control as well as a visual one. Defensible while the estate is
                 a gated prototype storing only a first-party consent flag; put
@@ -427,13 +427,13 @@ export function RegistryForm({
         <section className="mb-6 rounded-xl border border-border bg-surface p-5 shadow-xs">
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="max-w-xl">
-              <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
+              <h2 className="text-label-3 uppercase text-ink">
                 SAMAVESH Banner
               </h2>
-              <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+              <p className="mt-1.5 text-body-2 text-ink-muted">
                 Controls where the top saffron SAMAVESH banner and expandable portal exploration drawer appear across the website.
               </p>
-              <p className="mt-2 text-xs leading-relaxed text-ink-hint">
+              <p className="mt-2 text-body-3 text-ink-hint">
                 Choose between displaying on all pages, hiding specifically on organisation detail profiles, or restricting exclusively to the homepage.
               </p>
             </div>
@@ -467,7 +467,7 @@ export function RegistryForm({
                 {showHeading && (
                   <li className="!mt-8 flex items-center gap-3 first:!mt-0">
                     <span className="h-4 w-1 rounded-full bg-primary" aria-hidden="true" />
-                    <h2 className="text-sm font-bold uppercase tracking-[0.12em] text-ink">
+                    <h2 className="text-label-3 uppercase text-ink">
                       {bucketLabel(row)}
                     </h2>
                   </li>
@@ -485,12 +485,12 @@ export function RegistryForm({
                         instead. */}
                     <div className="min-w-0 flex-1 basis-56">
                       <div className="flex items-center gap-2">
-                        <span className="truncate text-sm font-semibold text-ink">
+                        <span className="truncate text-title-3 text-ink">
                           {displayName}
                         </span>
                         {statusBadge(row.status)}
                       </div>
-                      <code className="mt-0.5 block truncate text-xs text-ink-muted">
+                      <code className="mt-0.5 block truncate text-body-3 text-ink-muted">
                         {row.path}
                       </code>
                     </div>
@@ -518,13 +518,13 @@ export function RegistryForm({
                             }))
                           }
                         />
-                        <span className="text-xs font-medium text-ink-muted">
+                        <span className="text-label-2 text-ink-muted">
                           Assistant
                         </span>
                       </span>
                     )}
 
-                    <label className="flex items-center gap-2 text-xs font-medium text-ink-muted">
+                    <label className="flex items-center gap-2 text-label-2 text-ink-muted">
                       <span className="sr-only">{`Status for ${displayName}`}</span>
                       <Select
                         value={row.status}
@@ -579,7 +579,7 @@ export function RegistryForm({
                       className="grid gap-4 border-t border-border p-4 sm:grid-cols-2"
                     >
                       {LABEL_FIELDS.map(({ key, label }) => (
-                        <label key={key} className="flex flex-col gap-1.5 text-xs">
+                        <label key={key} className="flex flex-col gap-1.5 text-label-2">
                           <span className="font-semibold text-ink">{label}</span>
                           <Input
                             value={row.override[key]}
@@ -593,7 +593,7 @@ export function RegistryForm({
                           />
                         </label>
                       ))}
-                      <p className="text-xs leading-relaxed text-ink-hint sm:col-span-2">
+                      <p className="text-body-3 text-ink-hint sm:col-span-2">
                         Leave a field empty to keep the value from the code
                         registry, shown as the placeholder. The path, group and
                         new-tab behaviour are code-only and cannot be changed
@@ -619,7 +619,7 @@ export function RegistryForm({
 
         <div className="sticky bottom-0 mt-8 flex flex-wrap items-center gap-3 border-t border-border bg-surface-muted/95 py-4 backdrop-blur">
           <SaveButton disabled={!storeConfigured} />
-          <span className="text-xs text-ink-hint">
+          <span className="text-body-3 text-ink-hint">
             Nothing is stored until you save.
           </span>
         </div>
@@ -629,7 +629,7 @@ export function RegistryForm({
         action={resetAction}
         className="mt-6 border-t border-border pt-6"
       >
-        <p className="mb-3 text-xs leading-relaxed text-ink-hint">
+        <p className="mb-3 text-body-3 text-ink-hint">
           Clearing removes every override at once and puts the estate back on
           the code defaults. It cannot be undone from this page.
         </p>

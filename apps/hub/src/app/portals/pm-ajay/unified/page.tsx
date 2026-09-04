@@ -21,7 +21,7 @@ export default function Page() {
   if (!account) {
     return (
       <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: "var(--sa-bg-neutral-subtler)", fontFamily: "var(--font-sans)" }}>
-        <span style={{ color: "var(--sa-text-neutral-subtle)", fontSize: 14 }}>Redirecting to sign-in…</span>
+        <span style={{ color: "var(--sa-text-neutral-subtle)", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)" }}>Redirecting to sign-in…</span>
       </div>
     );
   }

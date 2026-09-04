@@ -30,8 +30,8 @@ export default function StateNodalOfficersPage() {
     <AdminShell>
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-ink">List of State Nodal Officers</h1>
-          <p className="mt-1 text-sm text-ink-muted">
+          <h1 className="text-headline-1 text-ink">List of State Nodal Officers</h1>
+          <p className="mt-1 text-body-2 text-ink-muted">
             {SNO_TOTAL} State Nodal Officers registered
           </p>
         </div>

@@ -58,7 +58,7 @@ export function ScwHeader({
 export function Ux4gFooter() {
   return (
     <footer className="border-t border-line bg-navy-950 text-white">
-      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-xs">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-body-3">
         <span>© 2026 - Copyright UX4G. All rights reserved. Powered by NeGD | MeitY Government of India ® 2026 UX4G</span>
         <div className="flex items-center gap-3">
           <a href="#" className="hover:underline">Terms &amp; Conditions</a>

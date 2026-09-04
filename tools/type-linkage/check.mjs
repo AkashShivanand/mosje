@@ -91,6 +91,11 @@ const RAMP = (() => {
 /** CSS + Tailwind-arbitrary + React-style-object forms of each typographic property. */
 const MATCHERS = [
   ["size", /(?:font-size\s*:\s*|fontSize\s*:\s*|\btext-\[)\s*"?(-?\d*\.?\d+)(px|rem|em)?/g],
+  // The `font:` SHORTHAND — `font: 600 13px/1.4 var(--font-sans)` — carries a size the
+  // longhand matcher above never sees. PM-AJAY's sheet held 103 of them, at 12.5, 11.5 and
+  // 10.5px, and reported clean. The optional weight/style words are consumed so the
+  // captured number is the size, and the unit is REQUIRED so `font: inherit` cannot match.
+  ["size", /\bfont\s*:\s*(?:(?:italic|normal|bold|lighter|bolder|\d{3})\s+)*(-?\d*\.?\d+)(px|rem|em)\b/g],
   ["leading", /(?:line-height\s*:\s*|lineHeight\s*:\s*|\bleading-\[)\s*"?(-?\d*\.?\d+)(px|rem|em)?/g],
   ["tracking", /(?:letter-spacing\s*:\s*|letterSpacing\s*:\s*|\btracking-\[)\s*"?(-?\d*\.?\d+)(px|rem|em)?/g],
   ["family", /(?:font-family\s*:\s*|fontFamily\s*:\s*)\s*("?[^;,\n}]+)/g],
@@ -192,12 +197,87 @@ function checkFile(path) {
       }
     }
   }
+
+  /*
+   * NAMED UTILITIES — the half the 2026-09-04 audit found the gate blind to. The matchers
+   * above only fire on a NUMBER, so `text-sm` (Tailwind's 14/20, never re-bound to a token),
+   * `text-4xl` (36px, not on the ramp), `leading-tight`, `tracking-wide` and `font-black`
+   * (900 — a weight nothing loads, so the browser synthesises it) passed straight through:
+   * 1,622 stock size utilities and 242 static-scale ones against 374 counted literals.
+   * Since 2026-09-04 `globals.css` clears those namespaces, so each of these is also a class
+   * that no longer produces CSS — a finding here is text that has silently lost its size.
+   *
+   * Scanned over the WHOLE source, not only className regions, because class strings are
+   * built with cn()/clsx()/template literals as often as they are written inline. A docs
+   * page that NAMES a utility in prose is a false positive it can exempt with
+   * `ds-exempt(specimen)`, the same escape every other gate offers.
+   */
+  if (!isCss) {
+    const UTILITY_MATCHERS = [
+      ["utility-size", /\btext-(?:xs|sm|base|lg|xl|[2-9]xl|num-(?:xl|lg))\b/g],
+      ["utility-leading", /\bleading-(?:none|tight|snug|normal|relaxed|loose|\d+)\b/g],
+      ["utility-tracking", /\btracking-(?:tighter|tight|normal|wide|wider|widest)\b/g],
+    ];
+    for (const [kind, re] of UTILITY_MATCHERS) {
+      re.lastIndex = 0;
+      let m;
+      while ((m = re.exec(src))) {
+        const line = lineAt(src, m.index);
+        if (perLine.get(line)) continue;
+        const key = `${line}:${kind}:${m[0]}`;
+        if (seen.has(key)) continue;
+        seen.add(key);
+        findings.push({ file: rel, line, kind, value: m[0], text: (raw.split("\n")[line - 1] ?? "").trim().slice(0, 120) });
+      }
+    }
+
+    /*
+     * HINDI WITHOUT lang="hi". Devanagari text with no language attribute is voiced by a
+     * screen reader's English engine, and the `--sa-font-devanagari` binding — keyed on
+     * `[lang="hi"]` — never applies to it. 16 of the 20 files carrying Devanagari had no
+     * attribute at the audit. A file-level test, deliberately: the attribute may sit on an
+     * ancestor in another file, so this asserts only that a file which writes Devanagari
+     * also writes the attribute SOMEWHERE — and a file that centralises Hindi strings for
+     * consumers that mark them can say so with `ds-exempt(hindi-source)`.
+     */
+    // Only where markup is WRITTEN (.tsx). A .ts data module — mock rows, a search
+    // vocabulary, a generated props table — holds Hindi as DATA and cannot carry an
+    // attribute; the component that renders it is the one this check reaches.
+    const dev = /\.tsx$/.test(path) ? /[ऀ-ॿ]/.exec(src) : null;
+    if (dev && !/\blang\s*=\s*(?:"hi(?:-IN)?"|\{["'`]hi(?:-IN)?["'`]\}|\{[^}]*\bhi\b[^}]*\})/.test(src) && !/\blang\s*[:=][^\n]*\bhi\b/.test(src)) {
+      const line = lineAt(src, dev.index);
+      if (!perLine.get(line)) findings.push({ file: rel, line, kind: "hindi-unmarked", value: "Devanagari", text: (raw.split("\n")[line - 1] ?? "").trim().slice(0, 120) });
+    }
+  }
+
+  /*
+   * WEIGHT. `font-weight` has no size and no token by design, so the audit rule was
+   * "write the number" — and 800 and 900 were written 33 times against a font that
+   * loads 400–700. Any weight outside the loaded cuts is a finding: thin, extralight,
+   * light (300 is the ICON cut, and only the icon font carries it), extrabold, black.
+   */
+  {
+    // `(?!\s+\d)` leaves a variable-font RANGE (`font-weight: 100 700` in an @font-face) alone.
+    const re = /\bfont-(?:thin|extralight|light|extrabold|black)\b|(?:font-weight|fontWeight)\s*:\s*["']?(?:100|200|300|800|900)\b(?!\s+\d)/g;
+    let m;
+    while ((m = re.exec(src))) {
+      const line = lineAt(src, m.index);
+      if (perLine.get(line)) continue;
+      const lineText = (raw.split("\n")[line - 1] ?? "").trim();
+      if (ICONISH.test(`${selectorAt(src, m.index)} ${lineText}`)) continue;
+      const key = `${line}:weight:${m[0]}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      findings.push({ file: rel, line, kind: "weight", value: m[0], text: lineText.slice(0, 120) });
+    }
+  }
+
   return findings;
 }
 
 /* ── collect ────────────────────────────────────────────────────────────── */
 
-const KINDS = ["size-off-ramp", "size", "leading", "tracking", "family"];
+const KINDS = ["size-off-ramp", "size", "leading", "tracking", "family", "utility-size", "utility-leading", "utility-tracking", "weight", "hindi-unmarked"];
 
 let all = [];
 for (const dir of SCAN) {

@@ -47,7 +47,8 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 24,
+            fontSize: "var(--sa-type-headline-4-size)",
+            lineHeight: "var(--sa-type-headline-4-lh)",
             marginBottom: "var(--sa-padding-20, 20px)",
           }}
         >
@@ -56,7 +57,8 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
 
         <h1
           style={{
-            fontSize: "var(--sa-type-headline-2-size, 22px)",
+            fontSize: "var(--sa-type-headline-2-size)",
+            lineHeight: "var(--sa-type-headline-2-lh)",
             fontWeight: 600,
             color: "var(--sa-text-neutral-base, #1f2428)",
             marginBottom: "var(--sa-stack-8, 8px)",
@@ -67,9 +69,9 @@ export default async function ZoneUnavailablePage({ searchParams }: PageProps): 
 
         <p
           style={{
-            fontSize: "var(--sa-type-body-1-size, 16px)",
+            fontSize: "var(--sa-type-body-1-size)",
             color: "var(--sa-text-neutral-subtle, #343a40)",
-            lineHeight: 1.6,
+            lineHeight: "var(--sa-type-body-1-lh)",
             marginBottom: "var(--sa-padding-20, 20px)",
           }}
         >

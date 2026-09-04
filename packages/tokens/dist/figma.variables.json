@@ -18,8 +18,8 @@
       "existing": 484
     },
     "Type": {
-      "total": 103,
-      "new": 0,
+      "total": 104,
+      "new": 1,
       "existing": 103
     },
     "Radius": {
@@ -38,8 +38,8 @@
       "existing": 8
     },
     "Static": {
-      "total": 80,
-      "new": 0,
+      "total": 81,
+      "new": 1,
       "existing": 80
     },
     "Viewport": {
@@ -23026,7 +23026,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 57.74,
+              "value": 58,
               "unit": null
             },
             "Website · Mobile": {
@@ -23041,7 +23041,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 47.1,
+              "value": 47,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23075,12 +23075,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 63.51,
+              "value": 66,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 44,
+              "value": 48,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23090,7 +23090,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 55.1,
+              "value": 55,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23124,7 +23124,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Website · Mobile": {
@@ -23139,7 +23139,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23173,7 +23173,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 51.97,
+              "value": 52,
               "unit": null
             },
             "Website · Mobile": {
@@ -23188,7 +23188,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 39.1,
+              "value": 39,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23222,12 +23222,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 57.74,
+              "value": 60,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 40,
+              "value": 44,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23237,7 +23237,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 47.1,
+              "value": 47,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23271,7 +23271,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 25.32,
+              "value": 25,
               "unit": null
             },
             "Website · Mobile": {
@@ -23286,7 +23286,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 25.32,
+              "value": 25,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23320,7 +23320,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 46.19,
+              "value": 46,
               "unit": null
             },
             "Website · Mobile": {
@@ -23335,7 +23335,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 33.32,
+              "value": 33,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23369,12 +23369,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 51.97,
+              "value": 54,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 36,
+              "value": 40,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23384,7 +23384,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 41.32,
+              "value": 41,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23418,7 +23418,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Website · Mobile": {
@@ -23433,7 +23433,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23467,7 +23467,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 40.42,
+              "value": 40,
               "unit": null
             },
             "Website · Mobile": {
@@ -23482,7 +23482,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23516,12 +23516,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 46.19,
+              "value": 48,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 32,
+              "value": 36,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23531,7 +23531,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 35.55,
+              "value": 36,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23565,7 +23565,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Website · Mobile": {
@@ -23580,7 +23580,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23614,12 +23614,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 35.76,
+              "value": 35,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 26,
+              "value": 24,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23629,12 +23629,12 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 24.66,
+              "value": 26,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 22,
+              "value": 24,
               "unit": null
             }
           },
@@ -23663,12 +23663,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 40.42,
+              "value": 43,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 28,
+              "value": 32,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23678,12 +23678,12 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 31.55,
+              "value": 34,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 28,
+              "value": 32,
               "unit": null
             }
           },
@@ -23712,7 +23712,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Website · Mobile": {
@@ -23727,7 +23727,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23761,12 +23761,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 31.1,
+              "value": 30,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 24,
+              "value": 22,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23776,7 +23776,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 22,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23810,7 +23810,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 36.87,
+              "value": 37,
               "unit": null
             },
             "Website · Mobile": {
@@ -23825,7 +23825,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 29.77,
+              "value": 30,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23859,7 +23859,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Website · Mobile": {
@@ -23874,7 +23874,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23908,7 +23908,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 33.32,
+              "value": 33,
               "unit": null
             },
             "Website · Mobile": {
@@ -23923,7 +23923,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23957,12 +23957,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 39.1,
+              "value": 41,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 32,
+              "value": 36,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23972,7 +23972,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 35.55,
+              "value": 36,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24006,7 +24006,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 22,
               "unit": null
             },
             "Website · Mobile": {
@@ -24021,7 +24021,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 22,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24055,7 +24055,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Website · Mobile": {
@@ -24070,7 +24070,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 23.55,
+              "value": 24,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24104,12 +24104,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 33.32,
+              "value": 36,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 28,
+              "value": 32,
               "unit": null
             },
             "Portal · Desktop": {
@@ -24119,7 +24119,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 31.55,
+              "value": 32,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24153,7 +24153,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Website · Mobile": {
@@ -24168,7 +24168,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24202,7 +24202,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 24.66,
+              "value": 25,
               "unit": null
             },
             "Website · Mobile": {
@@ -24217,7 +24217,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 20.66,
+              "value": 21,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24246,12 +24246,12 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 32,
+              "value": 36,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 29.77,
+              "value": 32,
               "unit": null
             },
             "Website · Mobile": {
@@ -24266,7 +24266,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24300,7 +24300,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Website · Mobile": {
@@ -24315,7 +24315,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24349,7 +24349,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 22,
               "unit": null
             },
             "Website · Mobile": {
@@ -24364,7 +24364,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24393,17 +24393,17 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 28,
+              "value": 32,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 25.77,
+              "value": 30,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 24,
+              "value": 28,
               "unit": null
             },
             "Portal · Desktop": {
@@ -24413,7 +24413,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 25.77,
+              "value": 26,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24447,7 +24447,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Website · Mobile": {
@@ -24462,7 +24462,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24496,7 +24496,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 18.89,
+              "value": 19,
               "unit": null
             },
             "Website · Mobile": {
@@ -24511,12 +24511,12 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 16.33,
+              "value": 17,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 15,
+              "value": 16,
               "unit": null
             }
           },
@@ -24540,12 +24540,12 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 24,
+              "value": 28,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 24,
+              "value": 26,
               "unit": null
             },
             "Website · Mobile": {
@@ -24560,12 +24560,12 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 24,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             }
           },
@@ -24594,7 +24594,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Website · Mobile": {
@@ -24609,7 +24609,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24658,12 +24658,12 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 14.89,
+              "value": 16,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 14,
+              "value": 16,
               "unit": null
             }
           },
@@ -24687,17 +24687,17 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             },
             "Portal · Desktop": {
@@ -24707,12 +24707,12 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 24,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             }
           },
@@ -24741,7 +24741,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Website · Mobile": {
@@ -24756,7 +24756,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24790,7 +24790,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 19.77,
+              "value": 20,
               "unit": null
             },
             "Website · Mobile": {
@@ -24800,17 +24800,17 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 22,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 20,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 16,
+              "value": 18,
               "unit": null
             }
           },
@@ -24839,7 +24839,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 25.77,
+              "value": 26,
               "unit": null
             },
             "Website · Mobile": {
@@ -24854,7 +24854,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 25.77,
+              "value": 26,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24888,7 +24888,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Website · Mobile": {
@@ -24903,7 +24903,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24947,17 +24947,17 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 18,
+              "value": 16,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 16.33,
+              "value": 16,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 15,
+              "value": 16,
               "unit": null
             }
           },
@@ -25001,12 +25001,12 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 24,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             }
           },
@@ -25035,7 +25035,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Website · Mobile": {
@@ -25050,7 +25050,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25094,12 +25094,12 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 16,
+              "value": 14,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 14.89,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25143,12 +25143,12 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 24,
+              "value": 20,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 20,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25182,7 +25182,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Website · Mobile": {
@@ -25197,7 +25197,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25246,12 +25246,12 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 14.89,
+              "value": 16,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 14,
+              "value": 16,
               "unit": null
             }
           },
@@ -25295,12 +25295,12 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 24,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             }
           },
@@ -25329,7 +25329,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Website · Mobile": {
@@ -25344,7 +25344,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25393,12 +25393,12 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.44,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 13,
+              "value": 14,
               "unit": null
             }
           },
@@ -25535,12 +25535,12 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 13,
+              "value": 12,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 12.44,
+              "value": 12,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25584,17 +25584,17 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 16,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 16,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 16,
               "unit": null
             }
           },
@@ -25961,32 +25961,32 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             }
           },
@@ -26108,32 +26108,32 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -1.2,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.9,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.6,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": -1.12,
+              "value": -0.8,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": -0.94,
+              "value": -0.7,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": -0.8,
+              "value": -0.6,
               "unit": null
             }
           },
@@ -26157,32 +26157,32 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -1.1,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.8,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.5,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": -0.96,
+              "value": -0.7,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": -0.78,
+              "value": -0.6,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": -0.64,
+              "value": -0.5,
               "unit": null
             }
           },
@@ -26206,32 +26206,32 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.6,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.5,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.3,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": -0.6,
+              "value": -0.4,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": -0.5,
+              "value": -0.3,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": -0.42,
+              "value": -0.3,
               "unit": null
             }
           },
@@ -26255,32 +26255,32 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.6,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.4,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.3,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": -0.32,
+              "value": -0.3,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": -0.28,
+              "value": -0.3,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": -0.24,
+              "value": -0.2,
               "unit": null
             }
           },
@@ -26304,32 +26304,32 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.2,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.2,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.1,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": -0.28,
+              "value": -0.1,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": -0.25,
+              "value": -0.1,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": -0.22,
+              "value": -0.1,
               "unit": null
             }
           },
@@ -26586,6 +26586,55 @@
             "LETTER_SPACING"
           ],
           "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "ref",
+            "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/caps/tracking",
+          "path": "font/tracking/caps",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            }
+          },
+          "description": "Tracking for the CAPS label role (label-3, 12px, uppercase): +0.06em, which at 12px is 0.72px. The only positive tracking in the system; uppercase without it is a defect the type gate reports. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-caps-tracking)"
+          },
+          "scopes": [
+            "LETTER_SPACING"
+          ],
+          "status": "new",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -29570,6 +29619,30 @@
             "STROKE_FLOAT"
           ],
           "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "container/measure",
+          "path": "container/measure",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 36,
+              "unit": "rem"
+            }
+          },
+          "description": "The MEASURE — the widest a run of body text may be. 36rem is about 68 characters of Noto Sans at 16px, inside the 45–75 the typography page requires and DBIM §7 asks for; in rem so a reader who raises their default font size keeps the same character count, not the same pixels. Added 2026-09-04: `.ds-prose` carried a 72ch literal, `max-w-prose` had four consumers, and the container ladder kept widening to 1376px while body stayed 16px — a 130-character line on a wide monitor. Bind prose containers to `--sa-container-measure`; Tailwind exposes it as `max-w-measure`.",
+          "codeSyntax": {
+            "WEB": "var(--sa-container-measure)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "new",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"

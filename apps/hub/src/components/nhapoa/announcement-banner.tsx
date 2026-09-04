@@ -33,12 +33,12 @@ export function AnnouncementBanner() {
       aria-label="Portal name change notice"
       className="sticky top-0 z-40 border-b border-white/10 bg-navy-950 text-white"
     >
-      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2 text-xs sm:text-sm">
+      <div className="mx-auto flex max-w-6xl items-center gap-3 px-4 py-2 text-body-2">
         <span aria-hidden className="hidden h-2 w-2 shrink-0 rounded-full bg-saffron sm:block" />
-        <p className="min-w-0 flex-1 leading-snug">
+        <p className="min-w-0 flex-1">
           <span className="font-semibold">{RENAME.oldName}</span> is now{" "}
           <span className="font-bold">
-            {RENAME.newNameHi} {RENAME.newName}
+            <span lang="hi">{RENAME.newNameHi}</span> {RENAME.newName}
           </span>{" "}
           <span className="text-white/75">
             — same helpline, same number ({RENAME.helpline} · {RENAME.shortCode}).

@@ -20,8 +20,8 @@ export default function TrackStatusPage() {
   return (
     <CitizenShell>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-ink">Track Grievance Status</h1>
-        <p className="mt-1 text-sm text-ink-muted">Enter your Reference ID to view the current status of your case.</p>
+        <h1 className="text-headline-1 text-ink">Track Grievance Status</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">Enter your Reference ID to view the current status of your case.</p>
       </div>
 
       <Card className="p-6 sm:p-8">
@@ -38,11 +38,11 @@ export default function TrackStatusPage() {
             <Icon name="find_in_page" size={16} /> Get OTP &amp; Track Status
           </Button>
         </div>
-        <p className="mt-3 text-xs text-ink-hint">For your security, in production a one-time password is sent to the registered mobile before results are shown.</p>
+        <p className="mt-3 text-body-3 text-ink-hint">For your security, in production a one-time password is sent to the registered mobile before results are shown.</p>
       </Card>
 
       {result === "notfound" && (
-        <Card className="mt-6 flex items-center gap-3 p-6 text-sm">
+        <Card className="mt-6 flex items-center gap-3 p-6 text-body-2">
           <Icon name="error" size={20} className="text-reject-fg" />
           <span className="text-ink">No case found for <span className="font-mono font-semibold">{ref}</span>. Check the Reference ID and try again.</span>
         </Card>
@@ -52,13 +52,13 @@ export default function TrackStatusPage() {
         <Card className="mt-6 p-6 sm:p-8">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-5">
             <div>
-              <p className="font-mono text-sm font-bold text-navy">{result.refNo}</p>
-              <p className="mt-1 text-sm text-ink-muted">{result.category} · {result.district}, {result.state}</p>
+              <p className="font-mono text-title-3 text-navy">{result.refNo}</p>
+              <p className="mt-1 text-body-2 text-ink-muted">{result.category} · {result.district}, {result.state}</p>
             </div>
             <StatusPill status={result.status} />
           </div>
 
-          <p className="mb-4 mt-6 text-xs font-bold uppercase tracking-wide text-ink-hint">Case Timeline</p>
+          <p className="mb-4 mt-6 text-label-3 uppercase text-ink-hint">Case Timeline</p>
           <ol className="relative ml-2 border-l border-line">
             {result.timeline.map((t, i) => {
               const last = i === result.timeline.length - 1;
@@ -67,9 +67,9 @@ export default function TrackStatusPage() {
                   <span className={`absolute -left-3 flex h-6 w-6 items-center justify-center rounded-full ${last ? "bg-navy text-white" : "bg-approve text-white"}`}>
                     {last ? <Icon name="schedule" size={14} /> : <Icon name="check_circle" size={14} />}
                   </span>
-                  <p className="text-sm font-semibold text-ink">{CASE_STATUS_META[t.status].label}</p>
-                  <p className="text-xs text-ink-hint">{new Date(t.at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}{t.byRole ? ` · ${t.byRole}` : ""}</p>
-                  {t.note && <p className="mt-1 text-xs text-ink-muted">{t.note}</p>}
+                  <p className="text-title-3 text-ink">{CASE_STATUS_META[t.status].label}</p>
+                  <p className="text-body-3 text-ink-hint">{new Date(t.at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}{t.byRole ? ` · ${t.byRole}` : ""}</p>
+                  {t.note && <p className="mt-1 text-body-3 text-ink-muted">{t.note}</p>}
                 </li>
               );
             })}

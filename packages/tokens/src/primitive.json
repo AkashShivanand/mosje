@@ -802,7 +802,7 @@
       }
     },
     "role": {
-      "$description": "Two-surface responsive type role scale (Portal DS naming: hyphenated roles). Each size/lh/para carries mosje.type website/portal min+max bounds (min at 360px viewport, max at 1280px). The formatter emits --sa-type-ROLE-size/lh/para as clamp(min, fluid, max): Website in :root, Portal under data-surface=portal. $value is the Website desktop fallback.",
+      "$description": "Two-surface responsive type role scale (Portal DS naming: hyphenated roles). Each size/lh/para carries mosje.type website/portal min+max bounds (min at 360px viewport, max at 1280px). The formatter emits --sa-type-ROLE-size/lh/para as clamp(min, fluid, max): Website in :root, Portal under data-surface=portal. $value is the Website desktop fallback. RE-CUT 2026-09-04: Title, Body and Label are IDENTICAL on both surfaces (the productive core is shared, as Carbon's productive set is), only Display and Headline differ by surface; every size is on the 16-step ramp 12·14·16·18·20·22·24·28·32·36·40·48·56·64·72·80 (36 is DBIM §4's desktop H1, UX4G's Display/XS, and the phone bound of display-2), every line height on the 4px grid, leading ratios rise monotonically as size falls (display 1.10→1.20, headline 1.20→1.50), body is 1.5 on both surfaces, and nothing renders below 12px (UX4G 3.0 §2 minimum; label-3 is the CAPS role at 12/16 with type/caps/tracking). The 13px and 15px stops the old Portal ramp carried are gone.",
       "display": {
         "1": {
           "size": {
@@ -830,7 +830,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "44px",
+                    "min": "48px",
                     "max": "88px"
                   },
                   "portal": {
@@ -886,7 +886,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "40px",
+                    "min": "44px",
                     "max": "80px"
                   },
                   "portal": {
@@ -942,7 +942,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "36px",
+                    "min": "40px",
                     "max": "72px"
                   },
                   "portal": {
@@ -998,7 +998,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "32px",
+                    "min": "36px",
                     "max": "64px"
                   },
                   "portal": {
@@ -1036,11 +1036,11 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "26px",
+                    "min": "24px",
                     "max": "48px"
                   },
                   "portal": {
-                    "min": "22px",
+                    "min": "24px",
                     "max": "28px"
                   }
                 }
@@ -1054,11 +1054,11 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "28px",
+                    "min": "32px",
                     "max": "56px"
                   },
                   "portal": {
-                    "min": "28px",
+                    "min": "32px",
                     "max": "36px"
                   }
                 }
@@ -1092,7 +1092,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "24px",
+                    "min": "22px",
                     "max": "40px"
                   },
                   "portal": {
@@ -1168,7 +1168,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "32px",
+                    "min": "36px",
                     "max": "48px"
                   },
                   "portal": {
@@ -1224,7 +1224,7 @@
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "28px",
+                    "min": "32px",
                     "max": "40px"
                   },
                   "portal": {
@@ -1275,13 +1275,13 @@
           },
           "lh": {
             "$type": "dimension",
-            "$value": "32px",
+            "$value": "36px",
             "$extensions": {
               "mosje": {
                 "type": {
                   "website": {
                     "min": "28px",
-                    "max": "32px"
+                    "max": "36px"
                   },
                   "portal": {
                     "min": "24px",
@@ -1331,13 +1331,13 @@
           },
           "lh": {
             "$type": "dimension",
-            "$value": "28px",
+            "$value": "32px",
             "$extensions": {
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "24px",
-                    "max": "28px"
+                    "min": "28px",
+                    "max": "32px"
                   },
                   "portal": {
                     "min": "24px",
@@ -1378,7 +1378,7 @@
                     "max": "20px"
                   },
                   "portal": {
-                    "min": "15px",
+                    "min": "16px",
                     "max": "18px"
                   }
                 }
@@ -1387,16 +1387,16 @@
           },
           "lh": {
             "$type": "dimension",
-            "$value": "24px",
+            "$value": "28px",
             "$extensions": {
               "mosje": {
                 "type": {
                   "website": {
                     "min": "24px",
-                    "max": "24px"
+                    "max": "28px"
                   },
                   "portal": {
-                    "min": "20px",
+                    "min": "24px",
                     "max": "24px"
                   }
                 }
@@ -1434,7 +1434,7 @@
                     "max": "16px"
                   },
                   "portal": {
-                    "min": "14px",
+                    "min": "16px",
                     "max": "16px"
                   }
                 }
@@ -1443,16 +1443,16 @@
           },
           "lh": {
             "$type": "dimension",
-            "$value": "20px",
+            "$value": "24px",
             "$extensions": {
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "20px",
-                    "max": "20px"
+                    "min": "24px",
+                    "max": "24px"
                   },
                   "portal": {
-                    "min": "20px",
+                    "min": "24px",
                     "max": "24px"
                   }
                 }
@@ -1492,8 +1492,8 @@
                     "max": "22px"
                   },
                   "portal": {
-                    "min": "16px",
-                    "max": "20px"
+                    "min": "18px",
+                    "max": "22px"
                   }
                 }
               }
@@ -1548,8 +1548,8 @@
                     "max": "16px"
                   },
                   "portal": {
-                    "min": "15px",
-                    "max": "18px"
+                    "min": "16px",
+                    "max": "16px"
                   }
                 }
               }
@@ -1566,7 +1566,7 @@
                     "max": "24px"
                   },
                   "portal": {
-                    "min": "20px",
+                    "min": "24px",
                     "max": "24px"
                   }
                 }
@@ -1605,7 +1605,7 @@
                   },
                   "portal": {
                     "min": "14px",
-                    "max": "16px"
+                    "max": "14px"
                   }
                 }
               }
@@ -1623,7 +1623,7 @@
                   },
                   "portal": {
                     "min": "20px",
-                    "max": "24px"
+                    "max": "20px"
                   }
                 }
               }
@@ -1662,7 +1662,7 @@
                     "max": "16px"
                   },
                   "portal": {
-                    "min": "14px",
+                    "min": "16px",
                     "max": "16px"
                   }
                 }
@@ -1680,7 +1680,7 @@
                     "max": "24px"
                   },
                   "portal": {
-                    "min": "20px",
+                    "min": "24px",
                     "max": "24px"
                   }
                 }
@@ -1718,7 +1718,7 @@
                     "max": "14px"
                   },
                   "portal": {
-                    "min": "13px",
+                    "min": "14px",
                     "max": "14px"
                   }
                 }
@@ -1775,7 +1775,7 @@
                   },
                   "portal": {
                     "min": "12px",
-                    "max": "13px"
+                    "max": "12px"
                   }
                 }
               }
@@ -1792,8 +1792,8 @@
                     "max": "16px"
                   },
                   "portal": {
-                    "min": "20px",
-                    "max": "20px"
+                    "min": "16px",
+                    "max": "16px"
                   }
                 }
               }
@@ -1935,17 +1935,17 @@
         "3": {
           "size": {
             "$type": "dimension",
-            "$value": "11px",
+            "$value": "12px",
             "$extensions": {
               "mosje": {
                 "type": {
                   "website": {
-                    "min": "11px",
-                    "max": "11px"
+                    "min": "12px",
+                    "max": "12px"
                   },
                   "portal": {
-                    "min": "11px",
-                    "max": "11px"
+                    "min": "12px",
+                    "max": "12px"
                   }
                 }
               }
@@ -1991,21 +1991,21 @@
       }
     },
     "tracking": {
-      "$description": "Letter-spacing (Portal DS naming). Website tracking is 0; Portal display tiers use negative tracking that scales with the fluid size. mosje.type website/portal min+max (px).",
+      "$description": "Letter-spacing (Portal DS naming). Display tiers carry negative tracking on BOTH surfaces, derived from one em rule per rung (display-1/2 −0.015em, 3/4 −0.01em, 5 −0.005em, 6 zero) against each surface's own size bounds, so the two surfaces track alike per pixel of type. Heading, title, body and label are zero: Noto Sans is drawn with the spacing they need. `caps` is the one positive value, for the 12px uppercase label role. mosje.type website/portal min+max (px).",
       "display": {
         "1": {
           "$type": "dimension",
-          "$value": "0px",
+          "$value": "-1.2px",
           "$extensions": {
             "mosje": {
               "type": {
                 "website": {
-                  "min": "0px",
-                  "max": "0px"
+                  "min": "-0.6px",
+                  "max": "-1.2px"
                 },
                 "portal": {
-                  "min": "-0.8px",
-                  "max": "-1.12px"
+                  "min": "-0.6px",
+                  "max": "-0.84px"
                 }
               }
             }
@@ -2013,17 +2013,17 @@
         },
         "2": {
           "$type": "dimension",
-          "$value": "0px",
+          "$value": "-1.08px",
           "$extensions": {
             "mosje": {
               "type": {
                 "website": {
-                  "min": "0px",
-                  "max": "0px"
+                  "min": "-0.54px",
+                  "max": "-1.08px"
                 },
                 "portal": {
-                  "min": "-0.64px",
-                  "max": "-0.96px"
+                  "min": "-0.48px",
+                  "max": "-0.72px"
                 }
               }
             }
@@ -2031,17 +2031,17 @@
         },
         "3": {
           "$type": "dimension",
-          "$value": "0px",
+          "$value": "-0.64px",
           "$extensions": {
             "mosje": {
               "type": {
                 "website": {
-                  "min": "0px",
-                  "max": "0px"
+                  "min": "-0.32px",
+                  "max": "-0.64px"
                 },
                 "portal": {
-                  "min": "-0.42px",
-                  "max": "-0.6px"
+                  "min": "-0.28px",
+                  "max": "-0.4px"
                 }
               }
             }
@@ -2049,13 +2049,13 @@
         },
         "4": {
           "$type": "dimension",
-          "$value": "0px",
+          "$value": "-0.56px",
           "$extensions": {
             "mosje": {
               "type": {
                 "website": {
-                  "min": "0px",
-                  "max": "0px"
+                  "min": "-0.28px",
+                  "max": "-0.56px"
                 },
                 "portal": {
                   "min": "-0.24px",
@@ -2067,17 +2067,17 @@
         },
         "5": {
           "$type": "dimension",
-          "$value": "0px",
+          "$value": "-0.24px",
           "$extensions": {
             "mosje": {
               "type": {
                 "website": {
-                  "min": "0px",
-                  "max": "0px"
+                  "min": "-0.12px",
+                  "max": "-0.24px"
                 },
                 "portal": {
-                  "min": "-0.22px",
-                  "max": "-0.28px"
+                  "min": "-0.12px",
+                  "max": "-0.14px"
                 }
               }
             }
@@ -2169,6 +2169,25 @@
               "portal": {
                 "min": "0px",
                 "max": "0px"
+              }
+            }
+          }
+        }
+      },
+      "caps": {
+        "$type": "dimension",
+        "$value": "0.72px",
+        "$description": "Tracking for the CAPS label role (label-3, 12px, uppercase): +0.06em, which at 12px is 0.72px. The only positive tracking in the system; uppercase without it is a defect the type gate reports.",
+        "$extensions": {
+          "mosje": {
+            "type": {
+              "website": {
+                "min": "0.72px",
+                "max": "0.72px"
+              },
+              "portal": {
+                "min": "0.72px",
+                "max": "0.72px"
               }
             }
           }

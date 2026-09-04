@@ -201,10 +201,11 @@ export default function RoadmapPage(): React.JSX.Element {
                     {group.heading ? (
                       <div
                         style={{
-                          fontSize: "var(--sa-type-body-3-size)",
+                          fontSize: "var(--sa-type-label-3-size)",
+                          lineHeight: "var(--sa-type-label-3-lh)",
                           fontWeight: 700,
                           textTransform: "uppercase",
-                          letterSpacing: "0.04em",
+                          letterSpacing: "var(--sa-type-caps-tracking)",
                           color: "var(--sa-text-neutral-subtle)",
                           marginBottom: "var(--sa-stack-8)",
                         }}

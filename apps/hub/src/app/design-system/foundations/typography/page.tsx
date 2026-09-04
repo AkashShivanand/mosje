@@ -150,8 +150,8 @@ export default function TypographyPage(): React.JSX.Element {
               preview: (
                 <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-default)", textAlign: "left", whiteSpace: "pre" }}>
 {`.lead {
-  font-size: 16px;
-  line-height: 1.4;
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
   /* breaks on mobile + portal */
 }`}
                 </code>
@@ -242,7 +242,7 @@ export default function TypographyPage(): React.JSX.Element {
           items={[
             { criterion: "Resize text — 200% zoom with no loss of content or function", level: "AA", description: "Fluid clamp() already holds sizes steady above 1280px, so browser zoom is the case that actually needs testing." },
             { criterion: "Reflow — usable at a 320px equivalent without two-dimensional scrolling", level: "AA", description: "The 360px anchor is the min of every role; below it, values hold flat rather than shrinking further." },
-            { criterion: "Contrast (minimum) — 4.5:1 for body, 3:1 for large text", level: "AA", description: "label-3 at 11px is the smallest permitted text. At that size treat 4.5:1 as a floor and prefer 7:1." },
+            { criterion: "Contrast (minimum) — 4.5:1 for body, 3:1 for large text", level: "AA", description: "label-3 at 12px is the smallest permitted text. At that size treat 4.5:1 as a floor and prefer 7:1." },
             { criterion: "Text spacing — survives increased line height and letter spacing", level: "AA", description: "Roles ship their own -lh and -tracking, so user stylesheets layer on top without clipping." },
             { criterion: "Info and relationships — hierarchy comes from heading order, not size", level: "A", description: "Anything communicated by making text bigger must also exist in words, structure or state. Screen readers do not announce font size." },
             { criterion: "Language of parts — lang=\"hi\" on every Devanagari string", level: "AA", description: "Screen readers switch voice on it, and the Devanagari face is applied from it." },

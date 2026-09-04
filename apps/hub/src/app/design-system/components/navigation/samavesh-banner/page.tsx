@@ -35,8 +35,8 @@ const h2Style: React.CSSProperties = {
 const proseStyle: React.CSSProperties = {
   color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
+  lineHeight: "var(--sa-type-body-1-lh)",
+  maxWidth: "var(--sa-container-measure)",
 };
 
 /**
@@ -106,7 +106,8 @@ export default function SamaveshBannerDocPage(): React.JSX.Element {
           <h1
             style={{
               fontSize: "var(--sa-type-display-1-size)",
-              fontWeight: 800,
+              lineHeight: "var(--sa-type-display-1-lh)",
+              fontWeight: 500,
               color: "var(--sa-text-neutral-base)",
               margin: 0,
             }}

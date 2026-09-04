@@ -22,7 +22,7 @@ export default async function SageApplicationDetailPage({
           >
             <Icon name="arrow_back" size={20} />
           </Link>
-          <h1 className="text-2xl font-bold text-ink">{SAGE_DETAIL.organisation}</h1>
+          <h1 className="text-headline-1 text-ink">{SAGE_DETAIL.organisation}</h1>
           <StatusPill status={SAGE_DETAIL.status} />
         </div>
         <div className="flex items-center gap-3">
@@ -35,7 +35,7 @@ export default async function SageApplicationDetailPage({
         <DetailTabs detail={SAGE_DETAIL} />
       </Card>
 
-      <p className="mt-4 px-1 text-xs text-ink-hint">
+      <p className="mt-4 px-1 text-body-3 text-ink-hint">
         Submitted on {SAGE_DETAIL.submitted} · Last updated {SAGE_DETAIL.updated}
       </p>
     </div>

@@ -86,8 +86,8 @@ export function PdfUploadField({
               <Icon name="description" size={16} />
             </span>
             <span className="min-w-0">
-              <span className="block truncate text-sm font-medium text-ink">{value.name}</span>
-              <span className="block text-xs text-ink-hint">
+              <span className="block truncate text-label-1 text-ink">{value.name}</span>
+              <span className="block text-body-3 text-ink-hint">
                 {formatSize(value.sizeBytes)}
                 {value.blobUrl ? "" : " · re-upload to view"}
               </span>
@@ -99,7 +99,7 @@ export function PdfUploadField({
                 href={value.blobUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="rounded-md px-2.5 py-1 text-sm font-semibold text-navy hover:bg-brandwash"
+                className="rounded-md px-2.5 py-1 text-label-1 font-semibold text-navy hover:bg-brandwash"
               >
                 View
               </a>
@@ -147,15 +147,15 @@ export function PdfUploadField({
           <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white text-ink-muted shadow-sm">
             <Icon name="description" size={20} />
           </span>
-          <span className="text-sm font-semibold text-ink">Click or drag PDF to upload</span>
-          <span id={`${id}-hint`} className="text-xs text-ink-hint">
+          <span className="text-title-3 text-ink">Click or drag PDF to upload</span>
+          <span id={`${id}-hint`} className="text-body-3 text-ink-hint">
             {hint}
           </span>
         </div>
       )}
 
       {error && (
-        <p role="alert" className="mt-1.5 text-xs text-danger">
+        <p role="alert" className="mt-1.5 text-body-3 text-danger">
           {error}
         </p>
       )}

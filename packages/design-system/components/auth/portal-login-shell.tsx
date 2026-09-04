@@ -128,9 +128,9 @@ export function PortalLoginShell({
             <Divider orientation="vertical" tone="default" length={32} />
             <div className="flex items-center gap-2.5">
               <img src={samaveshLogoSrc} alt="SAMAVESH" className="h-10 w-10" />
-              <div className="leading-snug">
-                <p className="text-xs font-bold" style={{ color: "var(--sa-color-primaryScale-800)" }}>SAMAVESH</p>
-                <p lang="hi" style={{ fontSize: "var(--sa-type-label-3-size)", color: "var(--sa-text-neutral-subtle)" }}>समावेश</p>
+              <div>
+                <p className="text-label-2 font-semibold" style={{ color: "var(--sa-color-primaryScale-800)" }}>SAMAVESH</p>
+                <p lang="hi" className="text-label-2" style={{ color: "var(--sa-text-neutral-subtle)" }}>समावेश</p>
               </div>
             </div>
           </div>
@@ -158,13 +158,13 @@ export function PortalLoginShell({
               className="mb-6 h-24 w-24 rounded-full"
               style={{ boxShadow: "0 0 0 4px color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 20%, transparent)" }}
             />
-            <p className="text-4xl font-extrabold tracking-tight">SAMAVESH</p>
+            <p className="text-headline-2">SAMAVESH</p>
             <p lang="hi" className="mt-1.5 font-medium" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 80%, transparent)" }}>समावेश</p>
             <div className="mx-auto mt-6 h-px w-14" style={{ background: "var(--sa-color-secondaryScale-400)" }} />
-            <p className="mt-6 text-2xl font-bold leading-snug" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 90%, transparent)" }}>
+            <p className="mt-6 text-headline-4" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 90%, transparent)" }}>
               Justice. Equality. Dignity.
             </p>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 55%, transparent)" }}>
+            <p className="mt-4 max-w-xs text-body-2" style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 55%, transparent)" }}>
               A unified digital platform for social welfare schemes under the Ministry of Social
               Justice &amp; Empowerment, Government of India.
             </p>
@@ -183,22 +183,21 @@ export function PortalLoginShell({
                 <img src={samaveshLogoSrc} alt="" className="h-8 w-8 rounded-full border border-white/20 bg-white/10 p-0.5" />
                 <div>
                   <p
-                    className="font-semibold uppercase tracking-widest"
+                    className="text-label-3 uppercase font-semibold"
                     style={{
-                      fontSize: "var(--sa-type-label-3-size)",
                       color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 70%, transparent)",
                     }}
                   >
                     Signing Into
                   </p>
-                  <p className="mt-0.5 text-sm font-bold text-white">
+                  <p className="mt-0.5 text-title-3 text-white">
                     {signingInto}
                   </p>
                 </div>
               </div>
               <a
                 href={changeHref}
-                className="flex items-center gap-1.5 rounded-full px-3.5 py-1 text-xs font-semibold transition hover:bg-white/10"
+                className="flex items-center gap-1.5 rounded-full px-3.5 py-1 text-label-2 font-semibold transition hover:bg-white/10"
                 style={{
                   border: "1px solid color-mix(in oklab, var(--sa-on-bg-brand-primary-boldest) 25%, transparent)",
                   color: "var(--sa-on-bg-brand-primary-boldest)",
@@ -264,7 +263,7 @@ export function PortalLoginShell({
           >
             <nav
               aria-label="Footer links"
-              className="flex flex-wrap items-center justify-center gap-4 text-xs"
+              className="flex flex-wrap items-center justify-center gap-4 text-body-3"
               style={{ color: "var(--sa-text-neutral-subtle)" }}
             >
               <button

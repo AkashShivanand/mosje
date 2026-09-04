@@ -225,8 +225,8 @@
   border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-neutral-inverse);
   color: var(--sa-text-neutral-inverse);
-  font-size: var(--sa-type-label-3-size);
-  line-height: var(--sa-type-label-3-lh);
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
   font-weight: 600;
   white-space: nowrap;
   opacity: 0;
@@ -596,9 +596,9 @@
 
 .ds-demodock__title {
   font-size: var(--sa-type-title-1-size);
-  font-weight: 700;
+  line-height: var(--sa-type-title-1-lh);
+  font-weight: 600;
   color: var(--sa-text-neutral-base);
-  line-height: 1.2;
 }
 
 .ds-demodock__current {
@@ -888,7 +888,8 @@
   border-radius: var(--sa-shape-6);
   background-color: var(--sa-bg-neutral-base);
   font-family: var(--sa-font-latin);
-  font-size: 0.9em;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
 }
 
 /* ── DBIM conformance previews ──────────────────────────────────────────
@@ -979,7 +980,7 @@
   line-height: var(--sa-type-label-3-lh);
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--sa-type-caps-tracking);
 }
 
 .ds-demodock__colour-subnote {

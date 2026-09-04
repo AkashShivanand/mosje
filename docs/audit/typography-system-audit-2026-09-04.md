@@ -443,3 +443,30 @@ body-2 1.43/1.43 · body-3 1.33/1.54 · label-1 1.43/1.43 · label-2 1.33/1.33 �
 `docs/guidelines/{DBIM-3.0,GIGW-3.0,UX4G-3.0}/*.md` · `docs/specs/samavesh-typography-unification-spec.md` ·
 `docs/research/figma-typography-3way-comparison.md` · Figma `3FF5l0SMNIwdpZrKkeyPTm` pages list and
 node `54955:731` ("Typography — Documentation", 1680 × 20026, 12 sections).
+
+---
+
+## Resolution — 2026-09-04, same day
+
+Every critical issue and every recommendation above was acted on in `ds/typography-harmonisation`
+(system version v0.42.0). What changed, by finding:
+
+| Finding | Resolution |
+|---|---|
+| C1 three scales | `globals.css` clears Tailwind's stock `text-*`, `leading-*`, `tracking-*` and the thin/light/extrabold/black weights and binds `text-<role>` to the 21 tokens (size + leading + tracking + weight). The static smile-admin scale is deleted. 2,742 findings across 415 files were migrated to roles; the type gate now also sees named utilities, `font:` shorthand, illegal weights and unmarked Hindi, and its baseline is **0**. |
+| C2 website | One `h1` per page (the hero at display-3 on the Display cut), every section `h2` at headline-2, card titles at one title role. `SectionTitle` moved to headline-4. `Heading` and `Text` primitives added. |
+| C3 weights | 800/900 removed estate-wide; headings and titles are 600; Title tier moved 500 → 600 in tokens, Figma text styles and docs. |
+| C4 standards | `docs/audit/typography-deviation-register.md` (T1–T6), three rows in `docs/guidelines/README.md`, the docs page and the Figma "09 Standards" section corrected. |
+| C5 accessibility | Floor raised to 12px (label-3 12/16 caps); the four px root overrides removed; `lang="hi"` on every Devanagari run reachable from markup, with `departmentHi` and `language.lang` added to the header so the two DS-rendered strings can carry it; `subtler` confirmed on white only. The UX4G widget's own 10px text is third-party and untouched by rule. The A−/A+ vw-term effect is documented, not changed. |
+| C6 fonts | Devanagari is a second `next/font` loader with `preload: false` behind Latin in every stack; the English page's preload set drops from 148 KB to 49 KB. The icon font stays on the CDN — self-hosting needs a file added to the repo, which is a human decision (see the summary). |
+| C7 tier | Not moved. `font.role.*` stays in `primitive.json` because three build readers and the Figma name projection depend on that path; the projection comment in `figma-variables.mjs` records it. The flat `font.size.*` ramp stays for the generated UX4G parity layer only. |
+| C8 Figma | Type collection re-pushed (168 values, whole-pixel Tablet samples, `type/caps/tracking` added), Title styles SemiBold, label-3 uppercase and bound to caps tracking, `container/measure` in Static, checksums re-recorded, sections 02 and 09 of the documentation frame rewritten. Ghost bindings on deleted `Font Size/N` variables remain the separate sweep the ghost baseline already records. |
+| M1–M4 | Scale re-cut: Title/Body/Label identical on both surfaces, 13/15px stops gone, leading monotonic, body-3 16 on both. `type-scale.test.mjs` asserts all of it. |
+| M5 | Display tracking negative on both surfaces from one em rule; `tracking-caps` and `tracking-digits` are the only tracking utilities. |
+| M6 | `-para` consumed by `Text flow`. |
+| M7, M9, M10, M16, M19 | Storybook story rewritten (21 roles, two surfaces); `design.md` §D–E rewritten and versioned; stale comments and prose corrected. |
+| M8 | The six docs-surface literals bound; the docs base `h1–h4` bound. |
+| M11, M15 | `--sa-container-measure` (36rem) with `max-w-measure`, `Text measure`, `.ds-prose`; inline Hindi takes the face only, a Hindi block takes the Devanagari leading. |
+| M12 | `h1–h3 { text-wrap: balance }` and `p, li, dd, figcaption { text-wrap: pretty }` in the hub base layer and in the primitives. |
+| M14 | Portal body-1 is 16px on phones; the input floor and the copy agree. |
+| M17, M18 | Charts, metric card and app switcher on roles; the icon font's `font-display: block` kept. |

@@ -42,6 +42,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
         govLink={{ href: "https://india.gov.in", label: "Government of India" }}
         language={{
           label: lang,
+          lang: lang === "English" ? "en" : "hi",
           onClick: () => setLang((l) => (l === "English" ? "हिंदी" : "English")),
         }}
         actions={
@@ -60,7 +61,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
               href="tel:14446"
               // saffron-600, not the bare `saffron` (#ec6a1f): white on that is 3.15:1 and
               // fails WCAG 1.4.3 for this 14px label. saffron-600 #b8500f is 5.01:1.
-              className="flex items-center gap-2 rounded-lg bg-saffron-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-saffron-dark"
+              className="flex items-center gap-2 rounded-lg bg-saffron-600 px-3 py-1.5 text-label-1 font-semibold text-white hover:bg-saffron-dark"
               aria-label="Call National De-addiction Helpline 14446"
             >
               <Icon name="call" size={16} />
@@ -88,7 +89,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
                   title={collapsed ? label : undefined}
                   aria-current={active ? "page" : undefined}
                   className={cn(
-                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-label-1 transition-colors",
                     active
                       ? "bg-brandwash font-semibold text-navy"
                       : "text-ink-muted hover:bg-black/5"

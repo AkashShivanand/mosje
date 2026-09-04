@@ -20,12 +20,12 @@ export default function TransactionsPage() {
       />
       <SearchInput placeholder="Search by ID, citizen name, category…" value={q} onChange={(e) => setQ(e.target.value)} className="mb-4 max-w-2xl" />
       {txns.length === 0 ? (
-        <Card className="px-6 py-16 text-center text-sm text-ink-muted">No transactions match the current filters.</Card>
+        <Card className="px-6 py-16 text-center text-body-2 text-ink-muted">No transactions match the current filters.</Card>
       ) : (
         <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-card">
-          <table className="w-full min-w-[820px] text-left text-sm">
+          <table className="w-full min-w-[820px] text-left text-body-2">
             <thead>
-              <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-hint">
+              <tr className="border-b border-line text-label-3 uppercase text-ink-hint">
                 <th className="px-5 py-3.5 font-semibold">Transaction ID</th>
                 <th className="px-5 py-3.5 font-semibold">Grievance ID</th>
                 <th className="px-5 py-3.5 font-semibold">Beneficiary</th>
@@ -38,13 +38,13 @@ export default function TransactionsPage() {
             <tbody className="divide-y divide-line">
               {txns.map((d) => (
                 <tr key={d.id} className="hover:bg-surface-muted/60">
-                  <td className="px-5 py-4 font-mono text-xs font-semibold text-navy">{d.txnRef}</td>
-                  <td className="px-5 py-4 font-mono text-xs text-ink">{d.refNo}</td>
+                  <td className="px-5 py-4 font-mono text-body-3 font-semibold text-navy">{d.txnRef}</td>
+                  <td className="px-5 py-4 font-mono text-body-3 text-ink">{d.refNo}</td>
                   <td className="px-5 py-4 text-ink">{d.beneficiary}</td>
                   <td className="px-5 py-4 font-semibold text-ink">{fmtINR(d.amount)}</td>
                   <td className="px-5 py-4 text-ink-muted">{d.mode}</td>
                   <td className="px-5 py-4 text-ink-muted">{fmtDate(d.at)}</td>
-                  <td className="px-5 py-4"><span className="inline-flex rounded-full bg-approve-bg px-2.5 py-0.5 text-xs font-semibold text-approve-fg">Success</span></td>
+                  <td className="px-5 py-4"><span className="inline-flex rounded-full bg-approve-bg px-2.5 py-0.5 text-label-2 font-semibold text-approve-fg">Success</span></td>
                 </tr>
               ))}
             </tbody>

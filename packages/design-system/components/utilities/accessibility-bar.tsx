@@ -75,7 +75,7 @@ export interface AccessibilityBarProps {
    */
   onAccessibility?: () => void;
   /** Language selector. Pass `false` to hide. @default { label: "English" } */
-  language?: { label?: string; onClick?: () => void } | false;
+  language?: { label?: string; /** BCP-47 tag of the LABEL's own language (e.g. "hi" for हिंदी) so a screen reader voices it correctly. */ lang?: string; onClick?: () => void } | false;
   /** Content-container width: narrow (720) · wide (flat 1200) · page (1200/1320/1440 ladder) · fluid (full-bleed). @default "wide" */
   layout?: AccessibilityBarLayout;
   /**

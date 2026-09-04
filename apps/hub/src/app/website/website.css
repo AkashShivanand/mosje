@@ -151,8 +151,8 @@
 /* Readable long-form content for inner/content pages (DBIM typography: left-aligned, Noto Sans). */
 .gov-prose {
   color: var(--ink-muted);
-  font-size: 15px;
-  line-height: 1.7;
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
   text-align: left;
 }
 /* The scraped organisation content arrives inside a nested wrapper div, so its
@@ -166,20 +166,22 @@
 }
 .gov-prose h2 {
   color: var(--primary-dark);
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 1.3;
+  font-size: var(--sa-type-headline-4-size);
+  font-weight: 600;
+  line-height: var(--sa-type-headline-4-lh);
   margin-top: var(--sa-stack-32);
 }
 .gov-prose h3 {
   color: var(--ink);
-  font-size: 18px;
+  font-size: var(--sa-type-headline-5-size);
+  line-height: var(--sa-type-headline-5-lh);
   font-weight: 600;
   margin-top: var(--sa-stack-24);
 }
 .gov-prose h4 {
   color: var(--primary-dark);
-  font-size: 16px;
+  font-size: var(--sa-type-headline-6-size);
+  line-height: var(--sa-type-headline-6-lh);
   font-weight: 600;
   margin-top: var(--sa-stack-20);
 }
@@ -212,7 +214,7 @@
   line-height: var(--sa-type-label-2-lh);
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--sa-type-caps-tracking);
   color: var(--sa-text-neutral-bolder);
   padding: var(--sa-padding-12) var(--sa-padding-16);
   text-align: left;

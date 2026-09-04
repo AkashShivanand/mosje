@@ -75,10 +75,10 @@ export function MobileNav() {
         {/* Header */}
         <div className="flex items-center gap-md border-b border-stroke-200 bg-primary px-lg py-md text-white">
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-white/10 ring-1 ring-inset ring-white/20">
-            <span className="text-label-3 font-bold tracking-[0.16em]">MoSJE</span>
+            <span className="text-label-2 font-bold">MoSJE</span>
           </div>
-          <div className="min-w-0 leading-tight">
-            <div className="text-label-3 uppercase tracking-[0.12em] text-white/70">
+          <div className="min-w-0">
+            <div className="text-label-3 uppercase text-white/70">
               SMILE Admin
             </div>
             <div className="truncate text-body-2 font-semibold">
@@ -100,11 +100,11 @@ export function MobileNav() {
           <div className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-primary text-label-1 font-bold text-white shadow-xs ring-1 ring-inset ring-primary-700/30">
             {initials(account.name)}
           </div>
-          <div className="min-w-0 leading-tight">
+          <div className="min-w-0">
             <div className="truncate text-body-2 font-semibold text-ink">
               {account.name}
             </div>
-            <div className="truncate text-label-3 text-ink-muted">
+            <div className="truncate text-body-3 text-ink-muted">
               {ROLE_LABELS[account.role]}
             </div>
           </div>
@@ -115,7 +115,7 @@ export function MobileNav() {
           {groups.map((group, gi) => (
             <div key={gi} className="mb-md">
               {group.label ? (
-                <div className="px-md pb-1 pt-md text-label-3 font-semibold uppercase tracking-[0.12em] text-ink-hint">
+                <div className="px-md pb-1 pt-md text-label-3 uppercase text-ink-hint">
                   {group.label}
                 </div>
               ) : null}
@@ -140,7 +140,7 @@ export function MobileNav() {
                         <Icon name={iconName} aria-hidden className={cn( "h-4 w-4 shrink-0", active ? "text-primary" : "text-ink-hint", )} />
                         <span className="flex-1 truncate">{item.label}</span>
                         {item.badge ? (
-                          <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-danger px-1 text-label-3 font-bold text-white">
+                          <span className="inline-flex h-5 min-w-[20px] items-center justify-center rounded-full bg-danger px-1 text-label-2 text-white">
                             {item.badge}
                           </span>
                         ) : null}
@@ -185,7 +185,7 @@ export function MobileNav() {
             <Icon name="logout" size={16} />
             Sign out
           </button>
-          <div className="mt-sm flex items-center gap-sm px-md text-label-3 text-ink-hint">
+          <div className="mt-sm flex items-center gap-sm px-md text-body-3 text-ink-hint">
             <span className="live-dot" aria-hidden />
             All systems online · v1.0.0
           </div>

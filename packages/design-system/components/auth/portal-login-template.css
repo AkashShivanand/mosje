@@ -9,7 +9,7 @@
   .ds-plogin__title {
     font-size: var(--sa-type-title-2-size);
     line-height: var(--sa-type-title-2-lh);
-    font-weight: 700;
+    font-weight: 600;
     color: var(--sa-text-neutral-bolder);
   }
 

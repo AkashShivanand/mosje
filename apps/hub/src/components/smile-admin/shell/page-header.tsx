@@ -24,15 +24,15 @@ export function PageHeader({
       <div className="flex flex-wrap items-end justify-between gap-md">
         <div className="min-w-0 space-y-xxs">
           {eyebrow ? (
-            <div className="text-label-3 font-semibold uppercase tracking-[0.14em] text-primary">
+            <div className="text-label-3 uppercase text-primary">
               {eyebrow}
             </div>
           ) : null}
-          <h1 className="text-headline-3 font-bold tracking-tight text-ink sm:text-headline-2">
+          <h1 className="text-headline-1 text-ink">
             {title}
           </h1>
           {subtitle ? (
-            <p className="max-w-prose text-body-2 text-ink-muted">{subtitle}</p>
+            <p className="max-w-measure text-body-2 text-ink-muted">{subtitle}</p>
           ) : null}
         </div>
         {actions ? (

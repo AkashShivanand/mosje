@@ -82,19 +82,19 @@ export function CostNormsPanel({
   return (
     <div className="space-y-3 rounded-lg border border-line bg-surface-muted p-4">
       <div>
-        <h3 className="text-sm font-bold text-ink">What the AVYAY cost norms allow for this project</h3>
-        <p className="mt-0.5 text-xs text-ink-muted">
+        <h3 className="text-title-3 text-ink">What the AVYAY cost norms allow for this project</h3>
+        <p className="mt-0.5 text-body-3 text-ink-muted">
           Based on the project type, district, agency type and building ownership you have entered.
           {natureOfProject ? ` (${natureOfProject})` : ""}
         </p>
       </div>
 
-      <dl className="space-y-1.5 text-sm">
+      <dl className="space-y-1.5 text-body-2">
         <div className="flex items-baseline justify-between gap-4">
           <dt className="text-ink-muted">
             Recurring
             {ownedDeduction > 0 && (
-              <span className="block text-xs">
+              <span className="block text-body-3">
                 Norm {rupees(recurringNorm)}, less {rupees(ownedDeduction)} because the building is owned
               </span>
             )}
@@ -104,7 +104,7 @@ export function CostNormsPanel({
         <div className="flex items-baseline justify-between gap-4">
           <dt className="text-ink-muted">
             Non-recurring
-            <span className="block text-xs">Norm {rupees(nonRecurringNorm)}</span>
+            <span className="block text-body-3">Norm {rupees(nonRecurringNorm)}</span>
           </dt>
           <dd className="font-mono font-semibold text-ink">{rupees(nonRecurringCentral)}</dd>
         </div>
@@ -121,10 +121,10 @@ export function CostNormsPanel({
 
       {open && (
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[32rem] text-sm">
+          <table className="w-full min-w-[32rem] text-body-2">
             <caption className="sr-only">AVYAY cost norms, head by head</caption>
             <thead>
-              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
+              <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
                 <th scope="col" className="pb-2 pr-3 font-medium">Head</th>
                 <th scope="col" className="pb-2 pr-3 text-right font-medium">Norm</th>
                 <th scope="col" className="pb-2 text-right font-medium">Central share</th>
@@ -145,7 +145,7 @@ export function CostNormsPanel({
         </div>
       )}
 
-      <p className="text-xs text-ink-muted">
+      <p className="text-body-3 text-ink-muted">
         Central share {share}% · city category {tier} · norms of 2021-22. {rupees(attendanceLinked)} of the
         recurring norm is linked to the residents actually served, and is reduced if the home runs below its
         sanctioned strength. Indicative. The amount sanctioned is decided by the Ministry from these same
@@ -153,7 +153,7 @@ export function CostNormsPanel({
       </p>
 
       {overNorm && (
-        <p className="flex items-start gap-1.5 text-xs font-medium text-status-warning">
+        <p className="flex items-start gap-1.5 text-label-2 text-status-warning">
           <Icon name="warning" size={16} className="shrink-0" aria-hidden />
           You have asked for more than the norms allow. You may still submit — the officer will see your
           figure beside the norm — but the grant cannot exceed the norm.

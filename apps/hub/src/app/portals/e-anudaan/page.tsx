@@ -31,11 +31,11 @@ const ENTRIES = [
 export default function EAnudaanLandingPage() {
   return (
     <main className="mx-auto w-full max-w-4xl px-4 py-12 sm:px-6 lg:py-16">
-      <p className="text-sm font-semibold uppercase tracking-wide text-navy">
+      <p className="text-label-3 uppercase text-navy">
         Ministry of Social Justice &amp; Empowerment
       </p>
-      <h1 className="mt-2 text-3xl font-bold text-ink sm:text-4xl">E-Anudaan</h1>
-      <p className="mt-3 max-w-2xl text-ink-muted">
+      <h1 className="mt-2 text-headline-1 text-ink">E-Anudaan</h1>
+      <p className="mt-3 max-w-measure text-ink-muted">
         Grant-in-Aid Management Portal — for NGOs applying under SHRESHTA Mode&nbsp;2, AVYAY,
         NAPDDR and SMILE, and for the Ministry officers who examine and sanction those
         applications.
@@ -49,9 +49,9 @@ export default function EAnudaanLandingPage() {
             className="group flex flex-col rounded-xl border border-line bg-surface p-6 shadow-card transition-colors hover:border-navy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-navy"
           >
             <Icon name={e.icon} size={32} className="text-navy" />
-            <h2 className="mt-4 text-lg font-semibold text-ink">{e.title}</h2>
-            <p className="mt-2 flex-1 text-sm text-ink-muted">{e.body}</p>
-            <span className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-navy">
+            <h2 className="mt-4 text-title-1 text-ink">{e.title}</h2>
+            <p className="mt-2 flex-1 text-body-2 text-ink-muted">{e.body}</p>
+            <span className="mt-4 inline-flex items-center gap-1 text-label-1 font-semibold text-navy">
               {e.cta}
               <Icon name="arrow_forward" size={16} aria-hidden />
             </span>
@@ -59,7 +59,7 @@ export default function EAnudaanLandingPage() {
         ))}
       </div>
 
-      <p className="mt-10 text-sm text-ink-muted">
+      <p className="mt-10 text-body-2 text-ink-muted">
         This is a demonstration portal on mock data. No real application is filed and no funds
         move. Use the demo console (bottom-left) for sign-in credentials.
       </p>

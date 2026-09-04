@@ -102,7 +102,11 @@
   and `wrap={false}` keeps a fixed-width rail on one line so its height does not
   change as the reader drills.)
 
-  Last reviewed: 2026-09-01 · System version: v0.41.0 (TYPOGRAPHY WAS THE LAST TOKEN
+  Last reviewed: 2026-09-04 · System version: v0.42.0 (THREE TYPE SCALES WERE IN PRODUCTION —
+  the token scale, a static px scale in globals.css and stock Tailwind, invisible to the gate;
+  the scale is re-cut, Tailwind is bound to the 21 roles and nothing else, Heading and Text
+  are the primitives, nothing renders below 12px, and the deviations from DBIM/UX4G are
+  recorded — see the changelog.) v0.41.0 (TYPOGRAPHY WAS THE LAST TOKEN
   FAMILY WITH NO GATE, AND IT COST 562 LITERAL FONT SIZES — 224 of them off the 15-step
   ramp, 13px alone 71 times, plus 100 raw letter-spacings against 10 tracking tokens, a
   second hand-maintained type scale in globals.css, and a component shipping
@@ -850,85 +854,93 @@ already been removed.*
 
 ### D. Typography
 
-- **Typeface**: Noto Sans (`var(--ds-font-sans)`) — non-negotiable across all English interfaces. Devanagari/Hindi uses `--sa-font-devanagari`.
-- **Which faces are actually loaded** (`apps/hub` root layout — a token that names a font nobody loads renders as a system fallback, which is how Hindi silently lost its typeface):
-  - `Noto Sans`, subsets `latin` + `devanagari`, weights 400/500/600/700. One superfamily covers both scripts; `unicode-range` means the Devanagari file is fetched only by pages that contain Devanagari.
-  - `Noto Sans Display`, subset `latin`, weight 500 — the optical Display cut, for the 40–80px Display ramp only.
-  - **No monospace webfont**, by choice — see the mono rule below.
-- **The Display cut is addressed differently in each medium.** Noto Sans ships two cuts of one design: the text cut is drawn for 12–24px, and at 80px its open spacing reads as loose. CSS loads the cut as a **separate family** (`"Noto Sans Display"` + `font-weight: 500`); Figma exposes it as a **style of Noto Sans** (`Display Medium`), because Figma's style axis conflates cut and weight into one string. So `font/display` says `Noto Sans` in Figma and `"Noto Sans Display", …` in CSS — deliberately, not a drift. The `Display/display-1…6` text styles bind `font/display` and `font/weight/displayMedium`, which is the one weight the build special-cases: 500 would otherwise project to the style `Medium`, a real cut on the wrong drawing.
-  - **Latin only.** `Noto Sans Display` has no Devanagari subset and `Noto Sans Devanagari` has no Display cut — the pairing does not exist in Noto. A Hindi display heading falls through the stack to Noto Sans, which is correct; the alternative is no glyphs.
-- **Numbers are NOT a job for monospace.** Use `font-variant-numeric: tabular-nums` on Noto Sans: digits get equal width so a column of amounts, counts or reference numbers aligns and can be scanned down, while staying in the same typeface as the text beside them. Switching a column to a mono face is the clumsier fix and reads as a different design. Already applied in `DataTable`, the Aadhaar/PAN field, charts, the SLA indicator and `Section`.
-- **`--ds-font-mono` is for CODE AND TECHNICAL STRINGS ONLY** — token names, CSS snippets, file paths in these docs. It is a **system stack** (`ui-monospace` → SF Mono / Cascadia / Roboto Mono), deliberately not a webfont: mono appears only on documentation pages, and a download on every page to style sample code is a poor trade for a low-bandwidth government audience. The Figma variable is hidden from publishing, because "whatever mono the device has" has no single Figma family.
-- **Line Length**: Body text and prose containers max-width `65ch`–`75ch` (`max-w-prose`). Never wider.
-- **Fluid type**: Every role is `clamp(min, fluid, max)` — `min` at a 360px viewport, `max` at 1280px. No type media queries. Two surfaces (`data-surface`) supply different min/max: **Website** (expressive) vs **Portal** (dense).
-- **NEVER TYPE A FONT SIZE, LEADING, TRACKING OR FAMILY.** `npm run check:type-linkage` is a per-file ratchet and any NEW literal fails the build — in a stylesheet, in a Tailwind arbitrary value (`text-[13px]`), or as a bare numeric in a style object (`fontSize: 13`, which React turns into px and no grep for "px" can find). Bind the size AND its paired leading in the same rule: a `--ds-type-<role>-size` without its `-lh` is half a binding, and it is the half that only shows up between breakpoints — `line-height: 1.2` on `headline-1` renders 48px at desktop, which is exactly right, and 39.98px at tablet where the token says 39.10. A size the 21-role scale cannot express is a DESIGN question, not a binding one: the answer is `body-2` at 14 or `body-3` at 12, never a 22nd size invented for one card, and nothing may render below 11px (`label-3`). A deliberate specimen declares itself: `/* ds-exempt(specimen): why */`.
-- **Text Wrapping**: Use `text-wrap: balance` on `h1`–`h3`; `text-wrap: pretty` on paragraphs to eliminate orphans.
+- **Typeface**: Noto Sans — non-negotiable across all English interfaces (`--sa-font-latin`).
+  Devanagari/Hindi is Noto Sans's own Devanagari subset (`--sa-font-devanagari`), applied by
+  `lang="hi"`. The 40–80px Display roles use the optical **Noto Sans Display** cut
+  (`--sa-font-display`), Latin only — a Hindi display heading falls through to Noto Sans.
+- **Which faces are loaded** (`apps/hub` root layout): Noto Sans Latin 400/500/600/700
+  (preloaded), Noto Sans Devanagari 400/500/600/700 (**not** preloaded — lazy through
+  `unicode-range`, so an English page never downloads it; it was 99 KB on every page until
+  2026-09-04), Noto Sans Display 500 Latin. No monospace webfont: `--sa-font-mono` is a
+  system stack for code and token names in the docs only.
+- **The two primitives.** `<Heading level={1..6} variant?>` and `<Text as? variant?>` are the
+  only way a page asks for type. A Heading's level is the outline and is required; its role
+  defaults from the level (h1 → headline-1 … h6 → headline-6) and `variant` departs from it
+  (a hero at `display-3`, a card h3 at `title-1`). A Text is a body, label or title role;
+  `measure` caps it at the measure token, `flow` spaces consecutive paragraphs with the role's
+  paragraph-spacing token, `numeric` sets tabular figures, `lang="hi"` switches face and leading.
+  `SectionTitle` (headline-4) composes them for a section heading with an eyebrow, count and
+  actions. In Tailwind the same roles are `text-<role>` (size + leading + tracking + weight in
+  one class; display roles add `font-display`), `tracking-caps`, `max-w-measure`.
+- **There is no other typography.** `globals.css` clears Tailwind's stock `text-xs…6xl`,
+  `leading-*`, `tracking-*` and the thin/light/extrabold/black weights, so they produce no
+  CSS; `npm run check:type-linkage` reports every raw size, leading, tracking, family, a
+  stock or static utility, a weight outside 400–700, and a file that writes Devanagari
+  without `lang="hi"`. Nothing renders below 12px. A size the 21-role scale cannot express is
+  a DESIGN question — the answer is a neighbouring role, never a 22nd size.
+- **Weights.** Display 500 (on the Display cut), Headline 600, Title 600, Body 400, Label 500.
+  700 is inline emphasis and KPI numerals only. 800 and 900 do not exist — they were
+  browser-synthesised bold against a font that loads 400–700.
+- **Case and tracking.** Uppercase is the `label-3` role only (12px, +0.06em
+  `--sa-type-caps-tracking`), for 1–3-word overlines. Display roles carry negative tracking
+  from one em rule per rung (−0.015em at display-1/2, −0.01em at 3/4, −0.005em at 5) on
+  both surfaces; every other tier is zero.
+- **Numbers are NOT a job for monospace.** `font-variant-numeric: tabular-nums` (Text's
+  `numeric`) aligns a column of figures in the same face as the text beside them.
+- **Line length**: the measure token `--sa-container-measure` (36rem ≈ 68 characters, in
+  rem so a raised default font size keeps the character count). `.ds-prose`, `Text measure`
+  and `max-w-measure` all bind it; nothing is wider.
+- **Fluid type**: every role is `clamp(min@360px, fluid, max@1280px)` in rem. Two surfaces
+  (`data-surface`): **Website** (expressive) and **Portal** (dense) differ ONLY in the Display
+  and Headline tiers; Title, Body and Label are identical on both, so a card, a form and a
+  table read the same wherever they sit.
+- **Text wrapping**: `h1`–`h3` balance and `p`, `li`, `dd`, `figcaption` are `pretty`, from one
+  `@layer base` rule in the hub and inside the primitives.
+- **Standards**: DBIM §4, GIGW 5.2 and UX4G §2 are followed except where
+  `docs/audit/typography-deviation-register.md` records why not (headline sizes one step
+  above DBIM's ladder, display leading below 1.2, no 18px body). `packages/tokens/test/
+  type-scale.test.mjs` asserts the floor, the ramp, the 4px grid, the leading band, the
+  monotonic ratio, and the loaded weights on every build.
 
 ### E. Type Scale Reference
 
-**21 responsive roles** with **hyphenated Portal-DS names** (`display-1…6`, `headline-1…6`, `title-1…3`,
-`body-1…3`, `label-1…3`), each exposed with four fluid properties:
-`--ds-type-<role>-size`, `-lh` (line-height), `-para` (paragraph-spacing), `-tracking` (letter-spacing),
-plus friendly aliases `--ds-text-<role>` / `--ds-leading-<role>`. Letter-spacing is also grouped for non-display
-tiers: `--ds-type-{heading,title,body,label}-tracking`. Values differ by **surface** — the table shows desktop
-(`max`) size; both surfaces scale fluidly to their 360px `min`. Full min/max tables live in
-`packages/tokens/src/primitive.json` (`font.role.*` + `font.tracking.*`) and
-`docs/specs/samavesh-typography-unification-spec.md`. Names match the SAMAVESH Figma library 1:1, and so do the VALUES: all 115 Type variables were read
-live from the library on 2026-09-01 and diffed against the emitted `clamp()`s evaluated at 360 / 768 /
-1280px on both surfaces — **438 of 438** name-by-mode pairs identical, including the fluid tablet
-midpoints, which are samples of a linear interpolation and can only agree if the whole curve does.
+**21 responsive roles** in five tiers — `display-1…6`, `headline-1…6`, `title-1…3`,
+`body-1…3`, `label-1…3` — each with four fluid properties: `--sa-type-<role>-size`,
+`-lh` (line-height), `-para` (paragraph-spacing), `-tracking` (letter-spacing; grouped for
+the non-display tiers as `--sa-type-{heading,title,body,label}-tracking`, plus
+`--sa-type-caps-tracking`). Re-cut 2026-09-04: every size on the 16-step ramp
+12·14·16·18·20·22·24·28·32·36·40·48·56·64·72·80, every line height on the 4px grid, leading
+ratios rising as size falls (display 1.10 → 1.20, headline 1.20 → 1.50, body 1.50), and the
+13px and 15px stops the old Portal ramp carried are gone. Source of truth:
+`packages/tokens/src/primitive.json` (`font.role.*`, `font.tracking.*`); the generated
+`typography-data.ts` feeds the docs page, and Figma's six Type modes (Website/Portal ×
+Desktop/Tablet/Mobile) sample the same clamp() at 1280/768/360px, rounded to whole pixels.
 
-| Role (sample) | Canonical token | Website max | Portal max | Weight | When to use |
-|------|---------------|:-----------:|:----------:|--------|-------------|
-| Display 1 | `--ds-type-display-1-size` | 80px | 56px | 500 | Hero headings only |
-| Headline 1 | `--ds-type-headline-1-size` | 40px | 32px | 600 | Major section headings |
-| Title 1 | `--ds-type-title-1-size` | 22px | 20px | 500 | Section headings, page titles |
-| Body 1 | `--ds-type-body-1-size` | 16px | 16px | 400 | Standard body text |
-| Body 2 | `--ds-type-body-2-size` | 14px | 14px | 400 | Secondary text, table cells |
-| Label 1 | `--ds-type-label-1-size` | 14px | 14px | 500 | Input labels, button text |
-| Label 3 | `--ds-type-label-3-size` | 11px | 11px | 500 | Table headers, caps labels |
+| Role | Website max / min | Portal max / min | Leading (web) | Weight | Use |
+|---|:--:|:--:|:--:|:--:|---|
+| display-1 | 80 / 40 | 56 / 40 | 88 (1.10) | 500 | Hero only |
+| display-3 | 64 / 32 | 40 / 28 | 72 (1.13) | 500 | Campaign hero |
+| display-6 | 40 / 22 | 24 / 20 | 48 (1.20) | 500 | Small hero |
+| headline-1 | 40 / 28 | 32 / 24 | 48 (1.20) | 600 | The page h1 |
+| headline-2 | 32 / 24 | 28 / 20 | 40 (1.25) | 600 | Section h2 |
+| headline-3 | 28 / 22 | 24 / 18 | 36 (1.29) | 600 | Sub-section |
+| headline-4 | 24 / 20 | 20 / 16 | 32 (1.33) | 600 | `SectionTitle` |
+| headline-5 | 20 / 18 | 18 / 16 | 28 (1.40) | 600 | Minor heading |
+| headline-6 | 16 | 16 | 24 (1.50) | 600 | Smallest heading |
+| title-1 | 22 / 18 | same | 28 (1.27) | 600 | Card, panel, dialog title |
+| title-2 | 16 | same | 24 (1.50) | 600 | List-item title |
+| title-3 | 14 | same | 20 (1.43) | 600 | Dense table header |
+| body-1 | 16 | same | 24 (1.50) | 400 | Running text |
+| body-2 | 14 | same | 20 (1.43) | 400 | Secondary, table cells |
+| body-3 | 12 | same | 16 (1.33) | 400 | Captions, timestamps |
+| label-1 | 14 | same | 20 (1.43) | 500 | Form labels, buttons |
+| label-2 | 12 | same | 16 (1.33) | 500 | Badges, chips |
+| label-3 | 12 | same | 16 (1.33) | 500 caps | Overlines, +0.06em |
 
-> **Surface selection:** the website & hub render the Website scale (default); portals set `data-surface="portal"`
-> on `<html>` to get the Portal scale. Legacy aliases (`--ds-text-display`, `--ds-text-title-1`, …) still resolve and
-> inherit the active surface automatically.
-
-> ### ⚠ The table above names `--ds-type-<role>-*`. It does **not** describe `--ds-text-<role>`.
->
-> Three families of typography variable exist, and only the first two agree with this table:
->
-> | Family | Example | Relationship to the table |
-> |---|---|---|
-> | **Canonical roles** | `--ds-type-title-1-size` | ✅ Exactly the table. **Use these.** |
-> | Unhyphenated aliases | `--ds-text-title1` | ✅ 1:1 with the role of the same name |
-> | **Hyphenated legacy aliases** | `--ds-text-title-1` | ❌ **Named for the pre-Portal-DS scale** |
->
-> The hyphenated family is mapped to whichever role reproduces each alias's
-> *historical rendered value*, so its names deliberately do not line up:
-> `--ds-text-title-1` is the **headline-2** role (24→32px), not Title 1 (20/22px);
-> `--ds-text-title-2` is Title 1.
->
-> **RETIRED 2026-08-12.** The whole `--ds-*` layer, including this hyphenated family,
-> was deleted from the build — see the retirement note later in this document. The
-> paragraphs above are kept as the record of a hazard that no longer exists, because
-> the reasoning still applies to any alias family: read the resolved value, not the name.
->
-> For the record, measured against the generated `tokens.css` on 2026-08-11 before
-> deletion: **precisely two of the nine hyphenated aliases misled** — `title-1` and
-> `title-2`. The other seven (`display`, `headline`, `body-1/2/3`, `label-1/3`) resolved
-> to the role they named. `--ds-text-title-3` and `--ds-text-label-2` never existed at all.
-> Those values are frozen in
-> `packages/tokens/test/legacy-snapshot.json` and asserted on every build — re-pointing
-> one at its same-named role silently resizes every legacy callsite in the estate.
->
-> **This has caused four separate bugs**, all the same mistake — reading the alias
-> name instead of its resolved size: `CardTitle` painted at 32–40px; the docs portal's
-> `h2` rendered *smaller* than its `h3`; twelve docs pages set a 40px lead against a
-> 24px line-height; and `zone-unavailable` still carries a `22px` fallback for a token
-> that resolves to 32px.
->
-> **Rule: in new code reference `--ds-type-<role>-size` / `-lh`.** Reach for a
-> `--ds-text-*` alias only to keep an existing callsite compiling, and check its
-> resolved value first. Guarded by `packages/tokens/test/type-alias-parity.test.mjs`.
+> **Rule: in code use `<Heading>` / `<Text>` or `text-<role>`; in a stylesheet bind
+> `--sa-type-<role>-size` AND `-lh` in the same rule.** The retired `--ds-*` alias layer
+> (removed 2026-08-12) is gone from code; its hazard record lives in
+> `docs/rules-rationale/CLAUDE-md-full-2026-08-20.md`.
 
 ### F. Bilingual (English + Hindi) Usage
 

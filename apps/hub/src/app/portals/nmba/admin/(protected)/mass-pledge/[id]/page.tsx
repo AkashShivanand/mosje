@@ -34,8 +34,8 @@ const BASE = "/portals/nmba/admin/mass-pledge";
 function Row({ label, value }: { label: React.ReactNode; value: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-0.5 border-b border-line py-2.5 last:border-0 sm:flex-row sm:gap-4">
-      <dt className="w-full text-sm text-ink-muted sm:w-64 sm:shrink-0">{label}</dt>
-      <dd className="text-sm font-medium text-ink">{value}</dd>
+      <dt className="w-full text-body-2 text-ink-muted sm:w-64 sm:shrink-0">{label}</dt>
+      <dd className="text-label-1 text-ink">{value}</dd>
     </div>
   );
 }
@@ -148,7 +148,7 @@ export default function MassPledgeDetailPage() {
       <header className="mb-8">
         <Link
           href={BASE}
-          className="inline-flex items-center gap-1.5 text-sm text-ink-muted transition-colors hover:text-navy"
+          className="inline-flex items-center gap-1.5 text-label-1 text-ink-muted transition-colors hover:text-navy"
         >
           <Icon name="arrow_back" size={16} aria-hidden="true" />
           All reports
@@ -158,13 +158,13 @@ export default function MassPledgeDetailPage() {
           <div>
             {/* The reporter kind is context, so it sits above the name at a
                 lower weight rather than competing with it on the same line. */}
-            <p className="text-xs font-semibold uppercase tracking-wide text-ink-hint">
+            <p className="text-label-3 uppercase text-ink-hint">
               {REPORTER_LABEL[submission.reporterKind]}
             </p>
-            <h1 className="mt-1 text-2xl font-bold tracking-tight text-ink">
+            <h1 className="mt-1 text-headline-1 text-ink">
               {submissionScopeLabel(submission) || REPORTER_LABEL[submission.reporterKind]}
             </h1>
-            <p className="mt-1 text-sm text-ink-muted">{EVENT_DATE_LABEL}</p>
+            <p className="mt-1 text-body-2 text-ink-muted">{EVENT_DATE_LABEL}</p>
           </div>
           <div className="flex flex-wrap gap-1.5">
             <StatusBadge status={submission.status} />
@@ -176,7 +176,7 @@ export default function MassPledgeDetailPage() {
       {lastReturn && submission.status === "RETURNED" && (
         <Alert status="warning" title="Returned for correction" className="mb-5">
           <p>{lastReturn.remarks}</p>
-          <p className="mt-1 text-xs">
+          <p className="mt-1 text-body-3">
             Returned by {lastReturn.actorDisplayName}, {roleLabel(lastReturn.actorRole)}
           </p>
         </Alert>
@@ -194,7 +194,7 @@ export default function MassPledgeDetailPage() {
         <div className="flex flex-col gap-5">
           <Card>
             <div className="p-4">
-              <h2 className="mb-2 text-base font-semibold text-ink">Participation</h2>
+              <h2 className="mb-2 text-title-2 text-ink">Participation</h2>
 
               {editing ? (
                 <>
@@ -257,7 +257,7 @@ export default function MassPledgeDetailPage() {
                   <Row
                     label="Total participants"
                     value={
-                      <strong className="text-base text-navy">{total.toLocaleString("en-IN")}</strong>
+                      <strong className="text-title-2 tabular-nums text-navy">{total.toLocaleString("en-IN")}</strong>
                     }
                   />
                 </dl>
@@ -268,7 +268,7 @@ export default function MassPledgeDetailPage() {
           {!editing && (
             <Card>
               <div className="p-4">
-                <h2 className="mb-3 text-base font-semibold text-ink">
+                <h2 className="mb-3 text-title-2 text-ink">
                   Photographs ({submission.photos.length})
                 </h2>
                 <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -287,7 +287,7 @@ export default function MassPledgeDetailPage() {
                             alt={photo.originalName}
                             className="aspect-[4/3] w-full object-cover"
                           />
-                          <span className="flex items-center gap-1 px-2 py-1.5 text-[11px] text-ink-muted">
+                          <span className="flex items-center gap-1 px-2 py-1.5 text-body-3 text-ink-muted">
                             {located ? (
                               <>
                                 <Icon name="location_on" size={12} className="shrink-0" aria-hidden="true" />
@@ -313,7 +313,7 @@ export default function MassPledgeDetailPage() {
 
           <Card>
             <div className="p-4">
-              <h2 className="mb-2 text-base font-semibold text-ink">Report details</h2>
+              <h2 className="mb-2 text-title-2 text-ink">Report details</h2>
               <dl>
                 {submission.coordinatingMinistry && (
                   <Row
@@ -345,8 +345,8 @@ export default function MassPledgeDetailPage() {
           {mayApprove && (
             <Card>
               <div className="flex flex-col gap-3 p-4">
-                <h2 className="text-base font-semibold text-ink">Your decision</h2>
-                <p className="text-sm text-ink-muted">
+                <h2 className="text-title-2 text-ink">Your decision</h2>
+                <p className="text-body-2 text-ink-muted">
                   Approving moves this report to the next tier. Returning it sends it back to the
                   submitting officer with your remarks.
                 </p>
@@ -369,8 +369,8 @@ export default function MassPledgeDetailPage() {
           {mayEdit && !editing && (
             <Card>
               <div className="flex flex-col gap-3 p-4">
-                <h2 className="text-base font-semibold text-ink">Correction needed</h2>
-                <p className="text-sm text-ink-muted">
+                <h2 className="text-title-2 text-ink">Correction needed</h2>
+                <p className="text-body-2 text-ink-muted">
                   This report was returned to you. Correct the figures or photographs and resubmit.
                 </p>
                 <Button onClick={startEditing} iconLeft={<Icon name="edit" size={16} />}>
@@ -382,7 +382,7 @@ export default function MassPledgeDetailPage() {
 
           <Card>
             <div className="p-4">
-              <h2 className="mb-3 text-base font-semibold text-ink">Approval history</h2>
+              <h2 className="mb-3 text-title-2 text-ink">Approval history</h2>
               <ApprovalTimeline
                 events={submission.history.map((e) => ({
                   at: e.at,

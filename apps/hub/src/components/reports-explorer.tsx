@@ -60,7 +60,7 @@ function SevChip({
   if (!count) return null;
   return (
     <span
-      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold"
+      className="inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-label-2 font-semibold"
       style={{ background: tone.bg, color: tone.fg }}
     >
       <span className="font-bold">{count}</span>
@@ -88,18 +88,18 @@ function ReportCard({ p }: { p: PortalReport }) {
             <Icon name="description" size={20} aria-hidden="true" />
           </span>
           <div>
-            <h2 className="text-base font-bold text-ink transition-colors group-hover:text-primary">
+            <h2 className="text-title-2 text-ink transition-colors group-hover:text-primary">
               {p.title}
             </h2>
-            <p className="text-xs text-ink-muted">{p.subtitle}</p>
+            <p className="text-body-3 text-ink-muted">{p.subtitle}</p>
           </div>
         </div>
-        <span className="shrink-0 rounded-full bg-success-tonal px-2 py-0.5 text-[11px] font-bold uppercase tracking-wide text-success">
+        <span className="shrink-0 rounded-full bg-success-tonal px-2 py-0.5 text-label-3 uppercase text-success">
           {p.status}
         </span>
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-ink-muted">
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-body-3 text-ink-muted">
         <span><span className="font-semibold text-ink">{p.screens}</span> screens</span>
         <span aria-hidden="true" className="text-border">·</span>
         <span><span className="font-semibold text-ink">{total}</span> findings</span>
@@ -114,7 +114,7 @@ function ReportCard({ p }: { p: PortalReport }) {
         <SevChip label="Minor" count={p.findings.Minor} tone={SEV.minor} />
       </div>
 
-      <div className="mt-auto flex items-center gap-1.5 border-t border-border pt-3 text-sm font-semibold text-primary transition-all group-hover:gap-2.5">
+      <div className="mt-auto flex items-center gap-1.5 border-t border-border pt-3 text-label-1 font-semibold text-primary transition-all group-hover:gap-2.5">
         View report
         <Icon name="arrow_forward" size={16} aria-hidden="true" />
       </div>
@@ -153,13 +153,13 @@ export function ReportsExplorer() {
     <>
       {/* Summary stats */}
       <dl className="mb-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {stats.map(({ label, value, color }) => (
+        {stats.map(({ label, value }) => (
           <div
             key={label}
             className="rounded-xl border border-border bg-surface px-4 py-3"
           >
-            <dd className={`text-2xl font-bold ${color}`}>{value}</dd>
-            <dt className="text-xs text-ink-muted">{label}</dt>
+            <dd className={`text-headline-4 font-bold tabular-nums `}>{value}</dd>
+            <dt className="text-body-3 text-ink-muted">{label}</dt>
           </div>
         ))}
       </dl>
@@ -174,7 +174,7 @@ export function ReportsExplorer() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             aria-label="Search reports"
-            className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-9 text-sm text-ink placeholder:text-ink-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
+            className="w-full rounded-lg border border-border bg-surface py-2 pl-9 pr-9 text-body-2 text-ink placeholder:text-ink-muted focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/30"
           />
           {query && (
             <button
@@ -187,7 +187,7 @@ export function ReportsExplorer() {
             </button>
           )}
         </div>
-        <p className="ml-auto text-xs text-ink-muted" role="status" aria-live="polite">
+        <p className="ml-auto text-body-3 text-ink-muted" role="status" aria-live="polite">
           {filtered.length} of {PORTALS.length}
         </p>
       </div>
@@ -196,11 +196,11 @@ export function ReportsExplorer() {
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-border py-20 text-center">
           <Icon name="description" size={40} className="mb-3 text-ink-muted/40" aria-hidden="true" />
-          <p className="text-sm font-semibold text-ink">No reports match your search</p>
+          <p className="text-title-3 text-ink">No reports match your search</p>
           <button
             type="button"
             onClick={() => setQuery("")}
-            className="mt-3 text-xs font-semibold text-primary hover:underline"
+            className="mt-3 text-label-2 font-semibold text-primary hover:underline"
           >
             Clear search
           </button>
@@ -215,10 +215,10 @@ export function ReportsExplorer() {
 
       {/* Coming next */}
       <div className="mt-10 rounded-2xl border border-dashed border-border p-6">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.14em] text-ink-muted">
+        <p className="mb-2 text-label-3 uppercase text-ink-muted">
           Coming next
         </p>
-        <p className="text-sm leading-relaxed text-ink-muted">
+        <p className="text-body-2 text-ink-muted">
           eUtthan Ministry role audit · Accessibility compliance report (WCAG
           2.1 AA) · PM-AJAY portal QC · SMILE Admin portal QC
         </p>

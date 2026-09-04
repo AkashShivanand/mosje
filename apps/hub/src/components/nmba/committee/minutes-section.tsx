@@ -56,15 +56,15 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
     <section className="mt-6 rounded-xl border border-line bg-white p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h3 className="flex items-center gap-2 text-base font-semibold text-ink">
+          <h3 className="flex items-center gap-2 text-title-2 text-ink">
             Minutes of Meeting
             {count > 0 && (
-              <span className="rounded-full bg-brandwash px-2 py-0.5 text-xs font-semibold text-navy">
+              <span className="rounded-full bg-brandwash px-2 py-0.5 text-label-2 font-semibold text-navy">
                 {count}
               </span>
             )}
           </h3>
-          <p className="mt-1 text-sm text-ink-muted">
+          <p className="mt-1 text-body-2 text-ink-muted">
             {canManage
               ? "Meeting minutes uploaded for this committee."
               : "Minutes uploaded for this committee (read-only)."}
@@ -89,10 +89,10 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
                 <Icon name="calendar_month" size={16} />
               </span>
               <span className="min-w-0">
-                <span className="block text-sm font-medium text-ink">
+                <span className="block text-label-1 text-ink">
                   Meeting on {formatDate(m.meetingDate)}
                 </span>
-                <span className="flex items-center gap-1 text-xs text-ink-hint">
+                <span className="flex items-center gap-1 text-body-3 text-ink-hint">
                   <Icon name="description" size={14} />
                   <span className="truncate">{m.file.name}</span>
                 </span>
@@ -103,12 +103,12 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
                     href={m.file.blobUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="rounded-md px-2.5 py-1 text-sm font-semibold text-navy hover:bg-brandwash"
+                    className="rounded-md px-2.5 py-1 text-label-1 font-semibold text-navy hover:bg-brandwash"
                   >
                     View
                   </a>
                 ) : (
-                  <span className="text-xs text-ink-hint">On file</span>
+                  <span className="text-body-3 text-ink-hint">On file</span>
                 )}
               </span>
             </li>
@@ -116,9 +116,9 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
         </ul>
       ) : (
         <div className="mt-4 rounded-xl border border-dashed border-line bg-surface-muted px-4 py-6 text-center">
-          <p className="text-sm text-ink-muted">No meeting minutes uploaded yet.</p>
+          <p className="text-body-2 text-ink-muted">No meeting minutes uploaded yet.</p>
           {canManage && !adding && (
-            <p className="mt-0.5 text-xs text-ink-hint">
+            <p className="mt-0.5 text-body-3 text-ink-hint">
               Use “Add meeting minutes” to upload the minutes of a meeting.
             </p>
           )}
@@ -132,7 +132,7 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
           className="mt-4 rounded-xl border border-line bg-surface-muted p-4"
         >
           <div className="mb-3 flex items-center justify-between">
-            <h4 className="text-sm font-semibold text-ink">Add minutes for a meeting</h4>
+            <h4 className="text-title-3 text-ink">Add minutes for a meeting</h4>
             <button
               type="button"
               onClick={() => {
@@ -161,7 +161,7 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
               )}
             </FormField>
             <div className="sm:col-span-2">
-              <label htmlFor="minute-file" className="mb-2 block text-sm font-medium text-ink">
+              <label htmlFor="minute-file" className="mb-2 block text-label-1 text-ink">
                 Minutes of the Meeting <span className="text-danger">*</span>
               </label>
               <PdfUploadField
@@ -174,7 +174,7 @@ export function MinutesSection({ record, onAdd, canManage = true }: MinutesSecti
                 }}
               />
               {errors.file && (
-                <p role="alert" className="mt-1.5 text-xs text-danger">
+                <p role="alert" className="mt-1.5 text-body-3 text-danger">
                   {errors.file}
                 </p>
               )}

@@ -95,11 +95,11 @@ export const Triggers: Story = {
       <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
         <div style={{ display: "grid", gap: 8, justifyItems: "center" }}>
           <MenuToggle expanded={expanded} onToggle={() => setExpanded((v) => !v)} />
-          <code style={{ fontSize: 12 }}>{expanded ? "menu_open" : "menu"}</code>
+          <code style={{ fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)" }}>{expanded ? "menu_open" : "menu"}</code>
         </div>
         <div style={{ display: "grid", gap: 8, justifyItems: "center" }}>
           <SheetToggle open={sheetOpen} onOpen={() => setSheetOpen((v) => !v)} />
-          <code style={{ fontSize: 12 }}>menu (always)</code>
+          <code style={{ fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)" }}>menu (always)</code>
         </div>
       </div>
     );

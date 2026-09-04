@@ -31,9 +31,9 @@ export default function RolesPage() {
     <div>
       <PageHeader title="Role Management" subtitle="RBAC permission matrix — least-privilege principle" />
       <Card className="overflow-x-auto p-0">
-        <table className="w-full min-w-[880px] text-left text-sm">
+        <table className="w-full min-w-[880px] text-left text-body-2">
           <thead>
-            <tr className="border-b border-line bg-surface-muted text-xs uppercase tracking-wide text-ink-hint">
+            <tr className="border-b border-line bg-surface-muted text-label-3 uppercase text-ink-hint">
               <th className="sticky left-0 bg-surface-muted px-5 py-3.5 font-semibold">Permission / Module</th>
               {COLS.map((c) => <th key={c} className="px-3 py-3.5 text-center font-semibold">{c}</th>)}
             </tr>

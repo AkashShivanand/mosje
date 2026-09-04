@@ -30,7 +30,7 @@ export function DateRangeChips({ initial = "Current FY" }: { initial?: Range }) 
             aria-selected={active === r}
             onClick={() => setActive(r)}
             className={cn(
-              "rounded-sm px-sm py-1 text-body-3 font-semibold transition-colors duration-150",
+              "rounded-sm px-sm py-1 text-label-1 transition-colors duration-150",
               active === r
                 ? "bg-primary text-white shadow-xs"
                 : "text-ink-muted hover:bg-neutral-100 hover:text-ink",
@@ -45,7 +45,7 @@ export function DateRangeChips({ initial = "Current FY" }: { initial?: Range }) 
           aria-selected={active === "Custom"}
           onClick={() => setActive("Custom")}
           className={cn(
-            "inline-flex items-center gap-xs rounded-sm px-sm py-1 text-body-3 font-semibold transition-colors duration-150",
+            "inline-flex items-center gap-xs rounded-sm px-sm py-1 text-label-1 transition-colors duration-150",
             active === "Custom"
               ? "bg-primary text-white shadow-xs"
               : "text-ink-muted hover:bg-neutral-100 hover:text-ink",

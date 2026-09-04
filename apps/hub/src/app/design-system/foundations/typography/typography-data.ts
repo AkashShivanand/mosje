@@ -44,7 +44,7 @@ export const ROLES: RoleSpec[] = [
     },
     "lh": {
       "website": [
-        44,
+        48,
         88
       ],
       "portal": [
@@ -54,12 +54,12 @@ export const ROLES: RoleSpec[] = [
     },
     "tracking": {
       "website": [
-        0,
-        0
+        -0.6,
+        -1.2
       ],
       "portal": [
-        -0.8,
-        -1.12
+        -0.6,
+        -0.84
       ]
     },
     "para": [
@@ -86,7 +86,7 @@ export const ROLES: RoleSpec[] = [
     },
     "lh": {
       "website": [
-        40,
+        44,
         80
       ],
       "portal": [
@@ -96,12 +96,12 @@ export const ROLES: RoleSpec[] = [
     },
     "tracking": {
       "website": [
-        0,
-        0
+        -0.54,
+        -1.08
       ],
       "portal": [
-        -0.64,
-        -0.96
+        -0.48,
+        -0.72
       ]
     },
     "para": [
@@ -128,7 +128,7 @@ export const ROLES: RoleSpec[] = [
     },
     "lh": {
       "website": [
-        36,
+        40,
         72
       ],
       "portal": [
@@ -138,12 +138,12 @@ export const ROLES: RoleSpec[] = [
     },
     "tracking": {
       "website": [
-        0,
-        0
+        -0.32,
+        -0.64
       ],
       "portal": [
-        -0.42,
-        -0.6
+        -0.28,
+        -0.4
       ]
     },
     "para": [
@@ -170,7 +170,7 @@ export const ROLES: RoleSpec[] = [
     },
     "lh": {
       "website": [
-        32,
+        36,
         64
       ],
       "portal": [
@@ -180,8 +180,8 @@ export const ROLES: RoleSpec[] = [
     },
     "tracking": {
       "website": [
-        0,
-        0
+        -0.28,
+        -0.56
       ],
       "portal": [
         -0.24,
@@ -202,32 +202,32 @@ export const ROLES: RoleSpec[] = [
     "weightVal": 500,
     "size": {
       "website": [
-        26,
+        24,
         48
       ],
       "portal": [
-        22,
+        24,
         28
       ]
     },
     "lh": {
       "website": [
-        28,
+        32,
         56
       ],
       "portal": [
-        28,
+        32,
         36
       ]
     },
     "tracking": {
       "website": [
-        0,
-        0
+        -0.12,
+        -0.24
       ],
       "portal": [
-        -0.22,
-        -0.28
+        -0.12,
+        -0.14
       ]
     },
     "para": [
@@ -244,7 +244,7 @@ export const ROLES: RoleSpec[] = [
     "weightVal": 500,
     "size": {
       "website": [
-        24,
+        22,
         40
       ],
       "portal": [
@@ -296,7 +296,7 @@ export const ROLES: RoleSpec[] = [
     },
     "lh": {
       "website": [
-        32,
+        36,
         48
       ],
       "portal": [
@@ -338,7 +338,7 @@ export const ROLES: RoleSpec[] = [
     },
     "lh": {
       "website": [
-        28,
+        32,
         40
       ],
       "portal": [
@@ -381,7 +381,7 @@ export const ROLES: RoleSpec[] = [
     "lh": {
       "website": [
         28,
-        32
+        36
       ],
       "portal": [
         24,
@@ -422,8 +422,8 @@ export const ROLES: RoleSpec[] = [
     },
     "lh": {
       "website": [
-        24,
-        28
+        28,
+        32
       ],
       "portal": [
         24,
@@ -458,17 +458,17 @@ export const ROLES: RoleSpec[] = [
         20
       ],
       "portal": [
-        15,
+        16,
         18
       ]
     },
     "lh": {
       "website": [
         24,
-        24
+        28
       ],
       "portal": [
-        20,
+        24,
         24
       ]
     },
@@ -500,17 +500,17 @@ export const ROLES: RoleSpec[] = [
         16
       ],
       "portal": [
-        14,
+        16,
         16
       ]
     },
     "lh": {
       "website": [
-        20,
-        20
+        24,
+        24
       ],
       "portal": [
-        20,
+        24,
         24
       ]
     },
@@ -534,16 +534,16 @@ export const ROLES: RoleSpec[] = [
   {
     "role": "title-1",
     "tier": "title",
-    "weight": "Medium",
-    "weightVal": 500,
+    "weight": "SemiBold",
+    "weightVal": 600,
     "size": {
       "website": [
         18,
         22
       ],
       "portal": [
-        16,
-        20
+        18,
+        22
       ]
     },
     "lh": {
@@ -576,16 +576,16 @@ export const ROLES: RoleSpec[] = [
   {
     "role": "title-2",
     "tier": "title",
-    "weight": "Medium",
-    "weightVal": 500,
+    "weight": "SemiBold",
+    "weightVal": 600,
     "size": {
       "website": [
         16,
         16
       ],
       "portal": [
-        15,
-        18
+        16,
+        16
       ]
     },
     "lh": {
@@ -594,7 +594,7 @@ export const ROLES: RoleSpec[] = [
         24
       ],
       "portal": [
-        20,
+        24,
         24
       ]
     },
@@ -618,8 +618,8 @@ export const ROLES: RoleSpec[] = [
   {
     "role": "title-3",
     "tier": "title",
-    "weight": "Medium",
-    "weightVal": 500,
+    "weight": "SemiBold",
+    "weightVal": 600,
     "size": {
       "website": [
         14,
@@ -627,7 +627,7 @@ export const ROLES: RoleSpec[] = [
       ],
       "portal": [
         14,
-        16
+        14
       ]
     },
     "lh": {
@@ -637,7 +637,7 @@ export const ROLES: RoleSpec[] = [
       ],
       "portal": [
         20,
-        24
+        20
       ]
     },
     "tracking": {
@@ -668,7 +668,7 @@ export const ROLES: RoleSpec[] = [
         16
       ],
       "portal": [
-        14,
+        16,
         16
       ]
     },
@@ -678,7 +678,7 @@ export const ROLES: RoleSpec[] = [
         24
       ],
       "portal": [
-        20,
+        24,
         24
       ]
     },
@@ -710,7 +710,7 @@ export const ROLES: RoleSpec[] = [
         14
       ],
       "portal": [
-        13,
+        14,
         14
       ]
     },
@@ -753,7 +753,7 @@ export const ROLES: RoleSpec[] = [
       ],
       "portal": [
         12,
-        13
+        12
       ]
     },
     "lh": {
@@ -762,8 +762,8 @@ export const ROLES: RoleSpec[] = [
         16
       ],
       "portal": [
-        20,
-        20
+        16,
+        16
       ]
     },
     "tracking": {
@@ -874,12 +874,12 @@ export const ROLES: RoleSpec[] = [
     "weightVal": 500,
     "size": {
       "website": [
-        11,
-        11
+        12,
+        12
       ],
       "portal": [
-        11,
-        11
+        12,
+        12
       ]
     },
     "lh": {
@@ -911,31 +911,32 @@ export const ROLES: RoleSpec[] = [
   }
 ];
 
+/* ds-exempt-end */
 export const TIERS: { key: Tier; label: string; blurb: string }[] = [
   {
     "key": "display",
     "label": "Display",
-    "blurb": "Hero and marketing headings"
+    "blurb": "Hero and campaign headings, on the optical Display cut"
   },
   {
     "key": "headline",
     "label": "Headline",
-    "blurb": "Page and section headings (h1–h3)"
+    "blurb": "Document structure — the page h1 and its sections"
   },
   {
     "key": "title",
     "label": "Title",
-    "blurb": "Panel, list and card titles"
+    "blurb": "The name of a thing: a card, a panel, a dialog, a table"
   },
   {
     "key": "body",
     "label": "Body",
-    "blurb": "Running text and paragraphs"
+    "blurb": "Running text and paragraphs, 1.5 leading on both surfaces"
   },
   {
     "key": "label",
     "label": "Label",
-    "blurb": "UI controls, badges, captions"
+    "blurb": "Controls, badges and captions; label-3 is the uppercase overline"
   }
 ];
 
@@ -949,7 +950,7 @@ export const SURFACES: { key: Surface; label: string; note: string; sample: stri
   {
     "key": "portal",
     "label": "Portal",
-    "note": "20+ workflow portals · dense, functional",
+    "note": "20+ workflow portals · dense, functional — only Display and Headline differ from the website",
     "sample": "display-1 = 56px"
   }
 ];
@@ -1003,8 +1004,8 @@ export const STANDARDS: StandardsGroup[] = [
         "src": "SAMAVESH"
       },
       {
-        "rule": "The 21-role scale is the DBIM type scale as implemented — no ad-hoc sizes outside it.",
-        "src": "DBIM 4.3.1"
+        "rule": "The 21-role scale is the estate's implementation of DBIM §4's hierarchy — with three recorded deviations: headline sizes (40/32/28 against DBIM's 36/24/20), display leading below 1.2, and no size below 12px. See the deviation register.",
+        "src": "DBIM 4.3 · docs/audit/typography-deviation-register.md"
       }
     ]
   },
@@ -1016,7 +1017,7 @@ export const STANDARDS: StandardsGroup[] = [
         "src": "SAMAVESH · DBIM 4.3.1"
       },
       {
-        "rule": "ALL-CAPS is never used for a sentence or paragraph — only 1–3 word labels, always with added tracking.",
+        "rule": "ALL-CAPS is never used for a sentence or paragraph — only 1–3 word overlines, and only in the label-3 role, which carries the +0.06em caps tracking.",
         "src": "DBIM 4.1.1"
       },
       {
@@ -1064,6 +1065,31 @@ export const STANDARDS: StandardsGroup[] = [
       {
         "rule": "Text-entry controls hold a hard 16px floor below 768px so iOS Safari does not trap the user zoomed in.",
         "src": "SAMAVESH · GIGW"
+      }
+    ]
+  },
+  {
+    "title": "Floor and rhythm",
+    "rules": [
+      {
+        "rule": "Nothing renders below 12px. label-3 is 12px; there is no 11px, 10px or 9px anywhere.",
+        "src": "UX4G 3.0 §2 · SAMAVESH"
+      },
+      {
+        "rule": "Every size is on the 16-step ramp and every line height on the 4px grid; leading rises as size falls, from 1.10 at display-1 to 1.5 at body.",
+        "src": "SAMAVESH"
+      },
+      {
+        "rule": "Title, Body and Label are identical on both surfaces. Only Display and Headline are cut differently for the website and the portals.",
+        "src": "SAMAVESH"
+      },
+      {
+        "rule": "Headings and titles are semibold (600); display is medium (500) on the Display cut; body is regular; labels are medium. 700 is inline emphasis and KPI numerals only; 800 and 900 do not exist.",
+        "src": "SAMAVESH"
+      },
+      {
+        "rule": "Type is written through Heading and Text (or the text-<role> utilities). A raw size, leading, tracking or a stock Tailwind size utility fails the type gate.",
+        "src": "SAMAVESH · check:type-linkage"
       }
     ]
   }

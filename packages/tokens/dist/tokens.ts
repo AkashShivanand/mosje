@@ -670,22 +670,22 @@ export const tokens = {
         },
         "3": {
           "size": "28px",
-          "lh": "32px",
+          "lh": "36px",
           "para": "20px"
         },
         "4": {
           "size": "24px",
-          "lh": "28px",
+          "lh": "32px",
           "para": "20px"
         },
         "5": {
           "size": "20px",
-          "lh": "24px",
+          "lh": "28px",
           "para": "16px"
         },
         "6": {
           "size": "16px",
-          "lh": "20px",
+          "lh": "24px",
           "para": "16px"
         }
       },
@@ -735,7 +735,7 @@ export const tokens = {
           "para": "8px"
         },
         "3": {
-          "size": "11px",
+          "size": "12px",
           "lh": "16px",
           "para": "8px"
         }
@@ -743,17 +743,18 @@ export const tokens = {
     },
     "tracking": {
       "display": {
-        "1": "0px",
-        "2": "0px",
-        "3": "0px",
-        "4": "0px",
-        "5": "0px",
+        "1": "-1.2px",
+        "2": "-1.08px",
+        "3": "-0.64px",
+        "4": "-0.56px",
+        "5": "-0.24px",
         "6": "0px"
       },
       "heading": "0px",
       "title": "0px",
       "body": "0px",
-      "label": "0px"
+      "label": "0px",
+      "caps": "0.72px"
     },
     "devanagari": "\"Noto Sans Devanagari\", \"Noto Sans\", ui-sans-serif, sans-serif",
     "latin": "\"Noto Sans\", ui-sans-serif, system-ui, sans-serif",
@@ -1350,6 +1351,7 @@ export const tokens = {
     }
   },
   "container": {
+    "measure": "36rem",
     "sm": "540px",
     "md": "720px",
     "lg": "960px",

@@ -75,7 +75,7 @@ function PeerEducatorFormSheet({
         </>
       }
     >
-      <p className="mb-4 text-xs text-ink-muted">
+      <p className="mb-4 text-body-3 text-ink-muted">
         Fields marked <span aria-hidden="true">*</span>
         <span className="sr-only">with an asterisk</span> are required.
       </p>
@@ -141,7 +141,7 @@ function DeleteConfirmModal({
         <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-danger-bg text-danger-fg" aria-hidden>
           <Icon name="warning" size={20} />
         </span>
-        <div className="text-sm text-ink">
+        <div className="text-body-2 text-ink">
           <p>
             You are about to remove <span className="font-semibold">{educator?.name}</span>
             {educator && educator.numberOfVolunteers > 0 && (
@@ -247,14 +247,14 @@ function UploadVolunteersSheet({
         </FormField>
 
         <div className="-mt-1 flex flex-wrap items-center justify-between gap-x-3 gap-y-1.5">
-          <p className="flex items-center gap-1.5 text-xs text-ink-muted">
+          <p className="flex items-center gap-1.5 text-body-3 text-ink-muted">
             <Icon name="table_chart" size={14} className="shrink-0 text-ink-hint" aria-hidden />
             Expected columns: <span className="font-mono text-ink">Name, Mobile, Status</span>
           </p>
           <button
             type="button"
             onClick={downloadSample}
-            className="inline-flex items-center gap-1.5 rounded text-xs font-semibold text-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
+            className="inline-flex items-center gap-1.5 rounded text-label-2 font-semibold text-navy hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
           >
             <Icon name="download" size={14} aria-hidden /> Download sample CSV
           </button>
@@ -263,16 +263,16 @@ function UploadVolunteersSheet({
         {previewRows.length > 0 && (
           <div className="overflow-hidden rounded-lg border border-line bg-surface-muted">
             <div className="flex items-center justify-between border-b border-line bg-white px-4 py-2">
-              <span className="text-xs font-semibold uppercase tracking-wide text-ink-muted">Preview — to be added</span>
+              <span className="text-label-3 uppercase text-ink-muted">Preview — to be added</span>
               <Badge status="info">{previewRows.length} rows</Badge>
             </div>
             <ul className="divide-y divide-line">
               {previewRows.map((v, i) => (
-                <li key={i} className="flex items-center justify-between gap-2 px-4 py-2 text-sm">
+                <li key={i} className="flex items-center justify-between gap-2 px-4 py-2 text-body-2">
                   <span className="flex min-w-0 items-center gap-2">
                     <Icon name="check_circle" size={16} className="shrink-0 text-green-600" aria-hidden />
                     <span className="truncate font-medium text-ink">{v.name}</span>
-                    <span className="font-mono text-xs text-ink-muted">{v.phone}</span>
+                    <span className="font-mono text-body-3 text-ink-muted">{v.phone}</span>
                   </span>
                   <Badge status="success">New</Badge>
                 </li>
@@ -358,7 +358,7 @@ export default function CpliPeerEducatorsPage() {
             type="button"
             aria-haspopup="dialog"
             onClick={() => { setSelectedEducator(null); setAddOpen(true); }}
-            className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-navy transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
+            className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-label-1 font-semibold text-navy transition hover:bg-white/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-navy"
           >
             <Icon name="add" size={16} aria-hidden /> Add New Peer Educator
           </button>

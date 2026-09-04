@@ -35,7 +35,9 @@ export function NhapoaHeader({
       brandLines={{
         org: "Government of India",
         ministry: "National Helpline Against Atrocities",
-        department: "SAMBAL संबल",
+        department: "SAMBAL",
+        // ds-exempt(hindi-source): SiteHeader renders departmentHi inside its own <span lang="hi">
+        departmentHi: "संबल",
       }}
       beta
       skipTo="#main"

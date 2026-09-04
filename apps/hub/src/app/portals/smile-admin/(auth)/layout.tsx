@@ -40,10 +40,10 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           <div className="relative p-3xl">
             <div className="flex items-center gap-md">
               <div className="grid h-12 w-12 place-items-center rounded-md bg-white/10 ring-1 ring-inset ring-white/20 backdrop-blur-sm">
-                <span className="text-label-3 font-bold tracking-[0.18em]">MoSJE</span>
+                <span className="text-label-2 font-bold">MoSJE</span>
               </div>
-              <div className="leading-tight">
-                <div className="text-label-3 font-medium uppercase tracking-[0.14em] text-white/70">
+              <div>
+                <div className="text-label-3 uppercase text-white/70">
                   Government of India
                 </div>
                 <div className="text-body-2 font-semibold text-white">
@@ -54,17 +54,17 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
           </div>
 
           <div className="relative px-3xl pb-3xl">
-            <div className="mb-md inline-flex items-center gap-xs rounded-full border border-white/15 bg-white/5 px-md py-1 text-label-3 font-semibold uppercase tracking-[0.12em] text-white/80 backdrop-blur-sm">
+            <div className="mb-md inline-flex items-center gap-xs rounded-full border border-white/15 bg-white/5 px-md py-1 text-label-3 uppercase text-white/80 backdrop-blur-sm">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-secondary-400" />
               National programme · active
             </div>
-            <h1 className="text-headline-1 font-bold leading-tight">
-              समावेश
-              <span className="mt-1 block text-headline-3 font-semibold tracking-[0.14em] text-white/85">
+            <p className="text-display-5 font-display">
+              <span lang="hi">समावेश</span>
+              <span className="mt-1 block text-headline-3 text-white/85">
                 SAMAVESH
               </span>
-            </h1>
-            <p className="mt-md max-w-md text-body-1 leading-relaxed text-white/85">
+            </p>
+            <p className="mt-md max-w-md text-body-1 text-white/85">
               Single Access Mechanism for All Verticals of Empowerment &amp; Social Harmony.
               SMILE — Support for Marginalised Individuals for Livelihood &amp; Enterprise.
             </p>
@@ -78,8 +78,8 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
                   key={s.k}
                   className="rounded-md border border-white/15 bg-white/[0.06] p-md backdrop-blur-sm"
                 >
-                  <div className="text-num-xl font-bold tabular-nums leading-none">{s.v}</div>
-                  <div className="mt-xs text-label-3 font-medium uppercase tracking-[0.08em] text-white/70">
+                  <div className="text-headline-2 tabular-nums">{s.v}</div>
+                  <div className="mt-xs text-label-3 uppercase text-white/70">
                     {s.k}
                   </div>
                 </div>
@@ -87,7 +87,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
 
-          <div className="relative flex items-center gap-md px-3xl pb-lg text-label-3 text-white/70">
+          <div className="relative flex items-center gap-md px-3xl pb-lg text-body-3 text-white/70">
             <span className="inline-flex items-center gap-xs">256-bit TLS</span>
             <Divider orientation="vertical" tone="inverse-subtle" length={12} />
             <span>GIGW 3.0 compliant</span>

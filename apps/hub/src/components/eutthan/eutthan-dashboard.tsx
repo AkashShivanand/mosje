@@ -19,7 +19,7 @@ export function AdminDashboard() {
         }}
       >
         <h2 className="page-title">Dashboard</h2>
-        <span style={{ fontSize: 14, color: "var(--text-muted)" }}>
+        <span style={{ fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--text-muted)" }}>
           Active FY: <strong>2025-2026</strong>
         </span>
       </div>
@@ -44,7 +44,7 @@ export function AdminDashboard() {
         <div className="panel">
           <div className="panel-head">
             <h3>Progress Overview</h3>
-            <span style={{ fontSize: 13, color: "var(--text-muted)" }}>
+            <span style={{ fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--text-muted)" }}>
               As on 10 Jun 2026
             </span>
           </div>
@@ -52,7 +52,7 @@ export function AdminDashboard() {
             {adminProgressCards.map((c) => (
               <div key={c.label} className="stat-card">
                 <span>{c.label}</span>
-                <strong style={{ fontSize: 22 }}>{c.value}</strong>
+                <strong style={{ fontSize: "var(--sa-type-headline-4-size)", lineHeight: "var(--sa-type-headline-4-lh)", fontVariantNumeric: "tabular-nums" }}>{c.value}</strong>
               </div>
             ))}
           </div>
@@ -102,7 +102,7 @@ export function MinistryDashboard() {
         }}
       >
         <h2 className="page-title">Dashboard</h2>
-        <span style={{ fontSize: 14, color: "var(--text-muted)" }}>
+        <span style={{ fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--text-muted)" }}>
           Active FY: <strong>2025-2026</strong>
         </span>
       </div>
@@ -119,7 +119,7 @@ export function MinistryDashboard() {
       <div className="panel">
         <div className="panel-head">
           <h3>Progress Overview</h3>
-          <span style={{ fontSize: 13, color: "var(--text-muted)" }}>
+          <span style={{ fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--text-muted)" }}>
             As on 10 Jun 2026
           </span>
         </div>
@@ -127,7 +127,7 @@ export function MinistryDashboard() {
           {ministryProgressCards.map((c) => (
             <div key={c.label} className="stat-card">
               <span>{c.label}</span>
-              <strong style={{ fontSize: 22 }}>{c.value}</strong>
+              <strong style={{ fontSize: "var(--sa-type-headline-4-size)", lineHeight: "var(--sa-type-headline-4-lh)", fontVariantNumeric: "tabular-nums" }}>{c.value}</strong>
             </div>
           ))}
         </div>

@@ -78,7 +78,7 @@ export default function SurveyorMappedPage() {
           >
             <div className="flex items-start justify-between gap-sm">
               <div className="min-w-0">
-                <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-ink-hint">
+                <div className="text-label-3 uppercase text-ink-hint">
                   #{m.sno.toString().padStart(2, "0")}
                 </div>
                 <div className="truncate text-body-1 font-semibold text-ink">
@@ -92,11 +92,11 @@ export default function SurveyorMappedPage() {
                 {m.status}
               </Badge>
             </div>
-            <div className="mt-sm border-t border-stroke-100 pt-sm text-label-3">
+            <div className="mt-sm border-t border-stroke-100 pt-sm text-body-3">
               <div className="text-ink-hint">Survey location</div>
               <div className="font-medium text-ink">{m.surveyLocation}</div>
             </div>
-            <div className="mt-sm flex items-center justify-between text-label-3">
+            <div className="mt-sm flex items-center justify-between text-body-3">
               <span className="text-ink-hint">
                 Created <span className="font-mono">{m.createdOn}</span>
               </span>
@@ -131,7 +131,7 @@ export default function SurveyorMappedPage() {
                 <TD>{m.state}</TD>
                 <TD>{m.city}</TD>
                 <TD className="text-ink-muted">{m.surveyLocation}</TD>
-                <TD className="font-mono text-body-3 text-ink-muted">{m.createdOn}</TD>
+                <TD className="font-mono text-body-2 text-ink-muted">{m.createdOn}</TD>
                 <TD>
                   <Badge status={statusTone(m.status)} dot>
                     {m.status}

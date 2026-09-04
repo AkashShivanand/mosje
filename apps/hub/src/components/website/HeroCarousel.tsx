@@ -33,16 +33,16 @@ export function HeroCarousel() {
           <div className="h-full w-full bg-white grid grid-cols-1 md:grid-cols-12 items-center">
             {/* Left Content */}
             <div className="md:col-span-6 px-8 py-10 md:px-16 lg:px-24 flex flex-col justify-center">
-              <h2 className="text-[38px] sm:text-[50px] lg:text-[62px] font-black leading-[1.05] tracking-tight text-[var(--nmba-red-deep)]">
+              <h1 className="text-display-3 font-display text-[var(--nmba-red-deep)]">
                 Mann<br />
                 <span className="text-[var(--nmba-red)]">Ki Baat</span>
-              </h2>
-              <p className="mt-2 text-[18px] sm:text-[22px] font-bold text-gray-800 tracking-tight">
-                on 26<sup className="text-xs">th</sup> Oct 2025
+              </h1>
+              <p className="mt-2 text-title-1 text-gray-800">
+                on 26<sup className="text-body-3">th</sup> Oct 2025
               </p>
 
               <div className="mt-6 flex flex-wrap items-center gap-4">
-                <div className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-xs sm:text-sm font-bold text-gray-700">
+                <div className="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-gray-50 px-4 py-2 text-label-1 text-gray-700">
                   <Icon name="schedule" size={20} className="text-gray-500" />
                   TIME : 11 AM
                 </div>
@@ -51,7 +51,7 @@ export function HeroCarousel() {
                   href="https://pmindia.gov.in"
                   external
                   variant="standalone"
-                  className="rounded-lg bg-[var(--nmba-red-cta)] px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-[var(--nmba-red-cta-hover)]"
+                  className="rounded-lg bg-[var(--nmba-red-cta)] px-5 py-2 text-label-1 text-white shadow-sm transition hover:bg-[var(--nmba-red-cta-hover)]"
                   iconLeft={<Icon name="play_arrow" size={20} />}
                 >
                   WATCH LIVE

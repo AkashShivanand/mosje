@@ -140,6 +140,7 @@ export interface RoleSpec {
 
 export const ROLES: RoleSpec[] = ${JSON.stringify(roles, null, 2)};
 
+/* ds-exempt-end */
 export const TIERS: { key: Tier; label: string; blurb: string }[] = ${JSON.stringify(content.tiers, null, 2)};
 
 export const SURFACES: { key: Surface; label: string; note: string; sample: string }[] = ${JSON.stringify(content.surfaces, null, 2)};

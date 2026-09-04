@@ -56,26 +56,26 @@ function ReadonlyTextarea({
         disabled
         readOnly
         rows={3}
-        className="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15 disabled:opacity-100"
+        className="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-body-2 text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15 disabled:opacity-100"
       />
     </Field>
   );
 }
 
 function GroupTitle({ children }: { children: React.ReactNode }) {
-  return <h3 className="mb-4 text-sm font-bold text-ink">{children}</h3>;
+  return <h2 className="mb-4 text-title-2 text-ink">{children}</h2>;
 }
 
 function DocumentRow({ label, filename }: { label: string; filename: string }) {
   return (
     <div className="flex items-center justify-between gap-4 rounded-lg border border-line px-4 py-3">
       <div>
-        <div className="text-sm font-medium text-ink">{label}</div>
-        <div className="mt-0.5 text-xs text-ink-hint">{filename}</div>
+        <div className="text-label-1 text-ink">{label}</div>
+        <div className="mt-0.5 text-body-3 text-ink-hint">{filename}</div>
       </div>
       <button
         type="button"
-        className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy hover:underline"
+        className="inline-flex items-center gap-1.5 text-label-1 text-navy hover:underline"
       >
         <Icon name="download" size={16} />
         Download
@@ -223,7 +223,7 @@ function StepFinancialInvestors() {
     <div className="space-y-8">
       <section>
         <GroupTitle>Investors List</GroupTitle>
-        <div className="rounded-2xl border border-dashed border-line p-8 text-center text-sm text-ink-hint">
+        <div className="rounded-2xl border border-dashed border-line p-8 text-center text-body-2 text-ink-hint">
           No Investor Added yet
         </div>
       </section>
@@ -268,8 +268,8 @@ function StepAchievements() {
         <div className="flex h-12 w-12 items-center justify-center rounded-full bg-brandwash text-navy">
           <Icon name="add" />
         </div>
-        <div className="mt-4 text-sm font-semibold text-ink">No Award Added yet</div>
-        <div className="mt-1 text-sm text-ink-hint">No awards were added.</div>
+        <div className="mt-4 text-title-3 text-ink">No Award Added yet</div>
+        <div className="mt-1 text-body-2 text-ink-hint">No awards were added.</div>
       </div>
     </section>
   );
@@ -280,8 +280,8 @@ function StepReviewSubmit() {
     <section>
       <GroupTitle>Review & Submit</GroupTitle>
       <div className="rounded-2xl border border-line bg-surface-muted p-6">
-        <p className="text-sm text-ink-muted">Review your application before submission.</p>
-        <p className="mt-3 text-sm text-ink">
+        <p className="text-body-2 text-ink-muted">Review your application before submission.</p>
+        <p className="mt-3 text-body-2 text-ink">
           This application has been approved and submitted. All sections are read-only and no
           further changes can be made.
         </p>
@@ -299,12 +299,12 @@ export default function SageRegistrationFormPage() {
   return (
     <UserShell user={{ name: "vikram", email: "vikrammallu123@gmail.com", initials: "V" }}>
       <Card className="p-6 sm:p-8">
-        <h1 className="text-2xl font-bold text-ink">SAGE Registration</h1>
-        <p className="mt-2 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">SAGE Registration</h1>
+        <p className="mt-2 text-body-2 text-ink-muted">
           Your application has been approved. Fields are read-only.
         </p>
 
-        <div className="mt-4 rounded bg-approve-bg p-3 text-sm font-medium text-approve-fg">
+        <div className="mt-4 rounded bg-approve-bg p-3 text-body-2 font-medium text-approve-fg">
           Read-only view — application approved. No changes can be made.
         </div>
 

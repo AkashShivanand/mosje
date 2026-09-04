@@ -101,30 +101,30 @@ export default function NgoApplicationDetailPage() {
 
       <header className="space-y-1">
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <h1 className="text-2xl font-bold text-ink">Application — {app.id}</h1>
+          <h1 className="text-headline-1 text-ink">Application — {app.id}</h1>
           <Badge status={statusTone(app.status)}>{ngoStatusLabel(app)}</Badge>
         </div>
-        <p className="text-sm text-ink-muted">{ngo?.name}</p>
-        <p className="text-sm text-ink-muted">
+        <p className="text-body-2 text-ink-muted">{ngo?.name}</p>
+        <p className="text-body-2 text-ink-muted">
           {app.schemeCode} — {scheme?.name ?? app.schemeCode}
         </p>
       </header>
 
       {/* ── Processing History ─────────────────────────────────────────────── */}
       <section className="rounded-xl border border-line bg-surface p-5">
-        <h2 className="text-base font-bold text-ink">Processing History</h2>
-        <p className="mt-1 text-sm text-ink-muted">Where your application has been, and when.</p>
+        <h2 className="text-title-2 text-ink">Processing History</h2>
+        <p className="mt-1 text-body-2 text-ink-muted">Where your application has been, and when.</p>
         {app.audit.length === 0 ? (
-          <p className="mt-4 text-sm text-ink-muted">Not submitted yet.</p>
+          <p className="mt-4 text-body-2 text-ink-muted">Not submitted yet.</p>
         ) : (
           <ol className="mt-4 space-y-4">
             {app.audit.map((e) => (
               <li key={e.id} className="border-l-2 border-primary/30 pl-4">
-                <p className="text-sm font-semibold text-ink">{ACTION_TITLE[e.action] ?? e.action}</p>
-                <p className="text-xs text-ink-muted">
+                <p className="text-body-2 font-semibold text-ink">{ACTION_TITLE[e.action] ?? e.action}</p>
+                <p className="text-body-3 text-ink-muted">
                   {formatDate(e.at)} · {e.byRole === "ngo" ? "You" : ROLES[e.byRole].label}
                 </p>
-                {e.remarks && <p className="mt-1 text-sm text-ink-muted">{e.remarks}</p>}
+                {e.remarks && <p className="mt-1 text-body-2 text-ink-muted">{e.remarks}</p>}
               </li>
             ))}
           </ol>
@@ -137,21 +137,21 @@ export default function NgoApplicationDetailPage() {
           status="warning"
           title={`${flagged.length} Document${flagged.length === 1 ? "" : "s"} Require Attention`}
         >
-          <p className="text-sm">
+          <p className="text-body-2">
             The following documents were flagged during verification by Assistant Section Officer.
           </p>
-          <p className="mt-2 text-sm">
+          <p className="mt-2 text-body-2">
             No action is needed from you yet — the application is still with the Ministry. If a
             correction is required, it will be returned to you and you will be able to replace
             these files here.
           </p>
           <ul className="mt-3 space-y-1.5">
             {flagged.map((d) => (
-              <li key={d.id} className="text-sm">
+              <li key={d.id} className="text-body-2">
                 <span className="font-semibold text-ink">
                   {d.slot}. {d.title}
                 </span>
-                <span className="block text-xs text-ink-muted">
+                <span className="block text-body-3 text-ink-muted">
                   {d.officerRemarks
                     ? `Flagged by Assistant Section Officer — ${d.officerRemarks}`
                     : "Flagged by Assistant Section Officer — no remark recorded."}
@@ -165,7 +165,7 @@ export default function NgoApplicationDetailPage() {
       {/* ── Application Summary ────────────────────────────────────────────── */}
       <section className="space-y-4 rounded-xl border border-line bg-surface p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-base font-bold text-ink">Application Summary</h2>
+          <h2 className="text-title-2 text-ink">Application Summary</h2>
           <Badge status={statusTone(app.status)}>{ngoStatusLabel(app)}</Badge>
         </div>
 
@@ -187,8 +187,8 @@ export default function NgoApplicationDetailPage() {
             ] as const
           ).map(([label, value]) => (
             <div key={label} className="flex flex-col border-b border-line/50 py-1.5">
-              <dt className="text-xs text-ink-muted">{label}</dt>
-              <dd className="text-sm font-medium text-ink">{value}</dd>
+              <dt className="text-body-3 text-ink-muted">{label}</dt>
+              <dd className="text-body-2 font-medium text-ink">{value}</dd>
             </div>
           ))}
         </dl>
@@ -199,8 +199,8 @@ export default function NgoApplicationDetailPage() {
         <section className="space-y-3 rounded-xl border border-line bg-surface p-5">
           <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
             <div>
-              <h2 className="text-base font-bold text-ink">Application Data — as submitted</h2>
-              <p className="mt-0.5 text-sm text-ink-muted">
+              <h2 className="text-title-2 text-ink">Application Data — as submitted</h2>
+              <p className="mt-0.5 text-body-2 text-ink-muted">
                 {totalFilled} of {totalFields} answered
               </p>
             </div>
@@ -212,7 +212,7 @@ export default function NgoApplicationDetailPage() {
                 key={s.title}
                 title={
                   <div className="flex w-full items-center justify-between gap-3 pr-2">
-                    <span className="text-sm font-semibold text-ink">
+                    <span className="text-body-2 font-semibold text-ink">
                       {s.index}. {s.title}
                     </span>
                     <Badge status={s.filled === s.fields.length ? "success" : "warning"}>
@@ -221,12 +221,12 @@ export default function NgoApplicationDetailPage() {
                   </div>
                 }
               >
-                {s.lead && <p className="mb-3 text-sm text-ink-muted">{s.lead}</p>}
+                {s.lead && <p className="mb-3 text-body-2 text-ink-muted">{s.lead}</p>}
                 <dl className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
                   {s.fields.map((f: FieldDef) => (
                     <div key={f.name} className="flex flex-col border-b border-line/40 py-1">
-                      <dt className="text-xs text-ink-muted">{f.label}</dt>
-                      <dd className="text-sm font-medium text-ink">
+                      <dt className="text-body-3 text-ink-muted">{f.label}</dt>
+                      <dd className="text-body-2 font-medium text-ink">
                         {(values[f.name] ?? "").trim() || "—"}
                       </dd>
                     </div>
@@ -241,17 +241,17 @@ export default function NgoApplicationDetailPage() {
       {/* ── Uploaded Documents ─────────────────────────────────────────────── */}
       <section className="space-y-3 rounded-xl border border-line bg-surface p-5">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <h2 className="text-base font-bold text-ink">Uploaded Documents</h2>
+          <h2 className="text-title-2 text-ink">Uploaded Documents</h2>
           <Badge status="info">
             {uploaded.length} of {app.documents.length} uploaded
           </Badge>
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[44rem] text-sm">
+          <table className="w-full min-w-[44rem] text-body-2">
             <caption className="sr-only">Documents uploaded with this application</caption>
             <thead>
-              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
+              <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
                 <th scope="col" className="pb-2 pr-3 font-medium">Document</th>
                 <th scope="col" className="pb-2 pr-3 font-medium">Uploaded On</th>
                 <th scope="col" className="pb-2 pr-3 font-medium">Status</th>
@@ -280,20 +280,20 @@ function DocumentRow({ doc, schemeCode }: { doc: MockDoc; schemeCode: string }) 
     <>
       <tr className="border-b border-line align-top">
         <td className="py-2 pr-3">
-          <span className="block text-sm font-medium text-ink">
+          <span className="block text-body-2 font-medium text-ink">
             {doc.slot}. {doc.title}
             {!doc.optional && <span className="text-status-error"> *</span>}
           </span>
-          <span className="mt-0.5 block text-xs text-ink-hint">{schemeCode}</span>
+          <span className="mt-0.5 block text-body-3 text-ink-hint">{schemeCode}</span>
           {verdict && (
-            <span className="mt-1 flex items-center gap-1 text-xs text-ink-muted">
+            <span className="mt-1 flex items-center gap-1 text-body-3 text-ink-muted">
               <Icon name={VERDICT_GLYPH[verdict.state]} size={16} aria-hidden />
               AI: {verdict.state === "pending" ? "pending" : verdict.state === "verified" ? "verified" : verdict.state === "review" ? "needs review" : "not valid"}
               {pill && <span className="text-ink-hint">· {pill}</span>}
             </span>
           )}
           {verdict?.summary && verdict.state !== "pending" && (
-            <span className="mt-1 block text-xs text-ink-muted">{verdictHeadline(verdict)} — {verdict.summary}</span>
+            <span className="mt-1 block text-body-3 text-ink-muted">{verdictHeadline(verdict)} — {verdict.summary}</span>
           )}
         </td>
         <td className="py-2 pr-3 text-ink">{doc.uploadedAt ? formatDate(doc.uploadedAt) : "—"}</td>
@@ -315,7 +315,7 @@ function DocumentRow({ doc, schemeCode }: { doc: MockDoc; schemeCode: string }) 
       </tr>
       {flagged && (
         <tr className="border-b border-line">
-          <td colSpan={5} className="px-0 pb-2 text-xs text-ink-muted">
+          <td colSpan={5} className="px-0 pb-2 text-body-3 text-ink-muted">
             You will be able to upload a corrected file once the application is returned to you.
           </td>
         </tr>

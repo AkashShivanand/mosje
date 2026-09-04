@@ -119,14 +119,14 @@ export default function OnboardPage() {
         <Card className="lg:col-span-2">
           <CardHeader><CardTitle>Invitation</CardTitle></CardHeader>
           <CardBody className="space-y-md">
-            <p className="text-body-3 text-ink-muted">
+            <p className="text-body-2 text-ink-muted">
               We&apos;ll send the user a secure invite link valid for 24 hours. They can complete profile setup, set a password and verify their mobile via OTP before signing in.
             </p>
             <div className="flex flex-wrap items-center gap-lg">
-              <label className="flex items-center gap-sm text-body-3">
+              <label className="flex items-center gap-sm text-body-2">
                 <Checkbox checked={form.notifyByEmail} onChange={(e) => setForm({ ...form, notifyByEmail: e.target.checked === true })} /> Email invite
               </label>
-              <label className="flex items-center gap-sm text-body-3">
+              <label className="flex items-center gap-sm text-body-2">
                 <Checkbox checked={form.notifyBySms} onChange={(e) => setForm({ ...form, notifyBySms: e.target.checked === true })} /> SMS invite
               </label>
             </div>

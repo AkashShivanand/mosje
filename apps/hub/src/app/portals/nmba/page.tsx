@@ -44,10 +44,10 @@ export default function NmbaHome() {
       {/* Hero band — full-bleed green */}
       <div className="-mx-4 sm:-mx-6 lg:-mx-8 -mt-6 mb-8 flex items-center justify-between gap-6 bg-green-700 px-6 py-7 text-white sm:px-8">
         <div>
-          <h1 className="text-xl font-bold leading-snug sm:text-2xl">
+          <h1 className="text-headline-1">
             Nasha Mukt Bharat Abhiyaan
           </h1>
-          <p className="mt-1 text-sm text-white">
+          <p className="mt-1 text-body-2 text-white">
             Join 98 Lakh+ citizens committed to a drug-free society.
           </p>
         </div>
@@ -57,7 +57,7 @@ export default function NmbaHome() {
             // #1a8e4a, where white text measures 4.19:1 and fails AA — and
             // `hover:bg-white/20` made it worse still. The border carries the button
             // shape; hover DARKENS instead, which raises contrast rather than lowering it.
-            className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-white/40 px-4 py-2 text-sm font-semibold text-white hover:bg-black/10"
+            className="inline-flex shrink-0 items-center gap-2 rounded-lg border border-white/40 px-4 py-2 text-label-1 font-semibold text-white hover:bg-black/10"
         >
           Take the Pledge
           <Icon name="arrow_forward" size={16} />
@@ -68,8 +68,8 @@ export default function NmbaHome() {
       <div className="mb-6">
         <div className="mb-4 flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="text-lg font-bold text-ink">Dashboard</h2>
-            <p className="mt-0.5 text-xs text-ink-muted">
+            <h2 className="text-headline-3 text-ink">Dashboard</h2>
+            <p className="mt-0.5 text-body-3 text-ink-muted">
               Live impact metrics verified from field reports across 372 districts.
             </p>
           </div>
@@ -108,7 +108,7 @@ export default function NmbaHome() {
 
       {/* NUMBER OF PROGRAMMES */}
       <section aria-labelledby="prog-heading" className="mb-8">
-        <h2 id="prog-heading" className="mb-4 text-[10px] font-bold uppercase tracking-widest text-ink-muted">
+        <h2 id="prog-heading" className="mb-4 text-headline-3 text-ink-muted">
           Number of Programmes
         </h2>
         <div className="grid gap-4 sm:grid-cols-2">
@@ -116,13 +116,13 @@ export default function NmbaHome() {
             <div key={cat.label} className="rounded-xl border border-line bg-white p-5 shadow-card">
               <div className="mb-3 flex items-center gap-2">
                 <Icon name={cat.icon} size={20} className="text-navy" aria-hidden="true" />
-                <h3 className="text-sm font-bold text-ink">{cat.label}</h3>
+                <h3 className="text-title-3 text-ink">{cat.label}</h3>
               </div>
               <div className="grid grid-cols-2 gap-x-4 gap-y-2">
                 {cat.items.map(({ label, value }) => (
                   <div key={label}>
-                    <div className="text-[10px] leading-tight text-ink-muted">{label}</div>
-                    <div className="mt-0.5 text-sm font-bold text-green-700">{value}</div>
+                    <div className="text-body-3 text-ink-muted">{label}</div>
+                    <div className="mt-0.5 text-title-3 tabular-nums text-green-700">{value}</div>
                   </div>
                 ))}
               </div>
@@ -134,10 +134,10 @@ export default function NmbaHome() {
       {/* Recent Activities */}
       <section aria-labelledby="activities-heading" className="mb-8">
         <div className="mb-4 flex items-center justify-between">
-          <h2 id="activities-heading" className="text-[10px] font-bold uppercase tracking-widest text-ink-muted">
+          <h2 id="activities-heading" className="text-headline-3 text-ink-muted">
             Recent Activities Across India
           </h2>
-          <a href={`${BASE}/activities`} className="flex items-center gap-1 text-sm font-medium text-navy hover:underline">
+          <a href={`${BASE}/activities`} className="flex items-center gap-1 text-label-1 text-navy hover:underline">
             View all Activities
             <Icon name="arrow_forward" size={14} />
           </a>
@@ -160,9 +160,9 @@ export default function NmbaHome() {
                     {act.category}
                   </Badge>
                 )}
-                <h3 className="font-semibold text-sm text-ink leading-snug">{act.title}</h3>
-                <p className="mt-1 text-xs text-ink-muted line-clamp-2">{act.description}</p>
-                <div className="mt-3 flex items-center gap-3 text-xs text-ink-hint">
+                <h3 className="text-title-3 text-ink">{act.title}</h3>
+                <p className="mt-1 text-body-3 text-ink-muted line-clamp-2">{act.description}</p>
+                <div className="mt-3 flex items-center gap-3 text-body-3 text-ink-hint">
                   <span className="flex items-center gap-1">
                     <Icon name="location_on" size={12} className="shrink-0" />
                     {act.location}
@@ -180,8 +180,8 @@ export default function NmbaHome() {
         <div className="rounded-xl border border-line bg-white p-6 shadow-card">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h2 id="map-heading" className="text-base font-bold text-navy">Find De-addiction Facilities Near You</h2>
-              <p className="mt-1 text-xs text-ink-muted">
+              <h2 id="map-heading" className="text-title-2 text-navy">Find De-addiction Facilities Near You</h2>
+              <p className="mt-1 text-body-3 text-ink-muted">
                 Locate verified Integrated Rehabilitation Centres (IRCA), Outreach Centres (ODIC), and Addiction Treatment Facilities (ATF) in your district.
               </p>
             </div>

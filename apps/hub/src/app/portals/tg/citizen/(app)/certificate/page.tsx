@@ -35,11 +35,11 @@ export default function CertificatePage() {
               <Icon name="check_circle" />
             </span>
             <div>
-              <h1 className="text-xl font-bold text-ink">Application Approved</h1>
-              <p className="text-sm text-ink-muted">You are officially recognized.</p>
+              <h1 className="text-headline-3 text-ink">Application Approved</h1>
+              <p className="text-body-2 text-ink-muted">You are officially recognized.</p>
             </div>
           </div>
-          <p className="mt-4 text-sm text-ink-muted">
+          <p className="mt-4 text-body-2 text-ink-muted">
             Your Transgender Certificate and Identity Card have been issued by the District Magistrate
             under the Transgender Persons (Protection of Rights) Act, 2019.
           </p>
@@ -51,12 +51,12 @@ export default function CertificatePage() {
 
         <Card className="p-6">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold text-ink">Gender Revision Request</h2>
-            <Link href="/portals/tg/citizen/apply" className="inline-flex items-center gap-1.5 text-sm font-semibold text-navy hover:underline">
+            <h2 className="text-title-2 text-ink">Gender Revision Request</h2>
+            <Link href="/portals/tg/citizen/apply" className="inline-flex items-center gap-1.5 text-label-1 font-semibold text-navy hover:underline">
               <Icon name="refresh" size={16} /> Request Revised Certificate
             </Link>
           </div>
-          <p className="mt-2 text-sm text-ink-muted">
+          <p className="mt-2 text-body-2 text-ink-muted">
             Applied for a revised certificate after medical intervention? Start a Revised Certificate
             application to update your details.
           </p>
@@ -67,20 +67,20 @@ export default function CertificatePage() {
       <Card className="h-fit overflow-hidden">
         <div className="bg-navy px-5 py-4 text-center text-white">
           <Image src="/portals/tg/brand/national-emblem-white.svg" alt="" width={44} height={62} className="mx-auto h-10 w-auto" />
-          <div className="mt-2 text-xs text-white/80">Government of India</div>
-          <div className="text-sm font-semibold">Ministry of Social Justice &amp; Empowerment</div>
+          <div className="mt-2 text-body-3 text-white/80">Government of India</div>
+          <div className="text-body-2 font-semibold">Ministry of Social Justice &amp; Empowerment</div>
         </div>
         <div className="space-y-3 p-5">
           <div className="flex items-center gap-3">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-navy/10 text-lg font-bold text-navy">
+            <span className="flex h-14 w-14 items-center justify-center rounded-full bg-navy/10 text-title-1 font-bold text-navy">
               {a.chosenName.slice(0, 2).toUpperCase()}
             </span>
             <div>
-              <div className="text-lg font-bold text-ink">{a.chosenName}</div>
-              <div className="text-xs text-ink-muted">Transgender Identity Card</div>
+              <div className="text-title-1 text-ink">{a.chosenName}</div>
+              <div className="text-body-3 text-ink-muted">Transgender Identity Card</div>
             </div>
           </div>
-          <dl className="space-y-1.5 text-sm">
+          <dl className="space-y-1.5 text-body-2">
             <div className="flex justify-between"><dt className="text-ink-hint">DOB</dt><dd className="font-medium text-ink">{a.dob}</dd></div>
             <div className="flex justify-between"><dt className="text-ink-hint">Gender</dt><dd className="font-medium text-ink">{a.genderRequested}</dd></div>
             <div className="flex justify-between"><dt className="text-ink-hint">Certificate No.</dt><dd className="font-mono font-medium text-ink">{cert.certificateNo}</dd></div>

@@ -27,18 +27,18 @@ export default function SADashboard() {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-sm font-bold text-ink">Priority Pending</h2>
-              <p className="text-xs text-ink-hint">Requires your immediate decision</p>
+              <h2 className="text-title-2 text-ink">Priority Pending</h2>
+              <p className="text-body-3 text-ink-hint">Requires your immediate decision</p>
             </div>
-            <Link href="/portals/nhapoa/state-authority/pending-approvals" className="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:underline">View all <Icon name="arrow_forward" size={14} /></Link>
+            <Link href="/portals/nhapoa/state-authority/pending-approvals" className="inline-flex items-center gap-1 text-label-2 font-semibold text-navy hover:underline">View all <Icon name="arrow_forward" size={14} /></Link>
           </div>
           <ul className="mt-4 divide-y divide-line">
-            {pending.length === 0 && <li className="py-6 text-center text-sm text-ink-hint">No pending approvals.</li>}
+            {pending.length === 0 && <li className="py-6 text-center text-body-2 text-ink-hint">No pending approvals.</li>}
             {pending.slice(0, 6).map((c) => (
               <li key={c.id} className="flex items-center justify-between gap-3 py-3">
                 <Link href="/portals/nhapoa/state-authority/pending-approvals" className="min-w-0">
-                  <p className="truncate font-mono text-xs font-semibold text-navy hover:underline">{c.refNo}</p>
-                  <p className="truncate text-xs text-ink-muted">{c.category} · {c.district}, {c.state}</p>
+                  <p className="truncate font-mono text-body-3 font-semibold text-navy hover:underline">{c.refNo}</p>
+                  <p className="truncate text-body-3 text-ink-muted">{c.category} · {c.district}, {c.state}</p>
                 </Link>
                 <StatusPill status={c.status} />
               </li>
@@ -47,13 +47,13 @@ export default function SADashboard() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-sm font-bold text-ink">Decision Trend</h2>
-          <p className="text-xs text-ink-hint">Approvals vs send-backs</p>
+          <h2 className="text-title-2 text-ink">Decision Trend</h2>
+          <p className="text-body-3 text-ink-hint">Approvals vs send-backs</p>
           <div className="mt-6 space-y-4">
             <TrendBar label="Approved" value={approved.length} total={Math.max(1, approved.length + sentBack.length)} tone="bg-approve" />
             <TrendBar label="Sent Back" value={sentBack.length} total={Math.max(1, approved.length + sentBack.length)} tone="bg-reject" />
           </div>
-          <p className="mt-6 rounded-lg bg-surface-muted px-4 py-3 text-xs text-ink-muted">Stale cases (no action past the 30-day SLA) are flagged here for escalation.</p>
+          <p className="mt-6 rounded-lg bg-surface-muted px-4 py-3 text-body-3 text-ink-muted">Stale cases (no action past the 30-day SLA) are flagged here for escalation.</p>
         </Card>
       </div>
     </div>
@@ -63,7 +63,7 @@ export default function SADashboard() {
 function TrendBar({ label, value, total, tone }: { label: string; value: number; total: number; tone: string }) {
   return (
     <div>
-      <div className="mb-1 flex justify-between text-xs"><span className="text-ink-muted">{label}</span><span className="font-semibold text-ink">{value}</span></div>
+      <div className="mb-1 flex justify-between text-body-3"><span className="text-ink-muted">{label}</span><span className="font-semibold text-ink">{value}</span></div>
       <div className="h-2.5 w-full overflow-hidden rounded-full bg-line"><div className={`h-full rounded-full ${tone}`} style={{ width: `${(value / total) * 100}%` }} /></div>
     </div>
   );

@@ -65,6 +65,8 @@ const SUGGESTIONS: Suggestion[] = [
     title: "Adopt DS typography scale",
     context: "All portal screens use hardcoded font sizes (14px body, 30px headings) that diverge from the DS type ramp.",
     current: "Hardcoded: 14px body · 30px H1 · 20px H2 — no token references",
+    // ds-exempt(specimen): report CONTENT — this sentence quotes the utilities the audit told the
+    // portal to adopt; it is a finding about that build, not a class on this page
     proposed: "Map to DS tokens: text-sm (14px) · text-3xl (28px) · text-xl (20px). Every text element bound to a token.",
     rationale: "Typography divergence compounds with each new screen. A single token migration now prevents 20× the rework later.",
     action: "Create a typography token map. Replace all hardcoded sizes in one PR per portal screen.",
@@ -233,7 +235,7 @@ function FindingCard({ f }: { f: Finding }) {
     <div className={`flex gap-3 rounded-lg border border-border bg-white border-l-4 ${s.border} p-4`}>
       {/* Pin number badge matching the annotation board */}
       <div
-        className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-sm font-bold text-white shadow-sm"
+        className="mt-0.5 flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-label-1 font-semibold text-white shadow-sm"
         style={{ background: s.pinBg }}
         aria-label={`Finding ${f.num}`}
       >
@@ -243,33 +245,33 @@ function FindingCard({ f }: { f: Finding }) {
       <div className="flex-1 min-w-0">
         {/* Header row */}
         <div className="flex flex-wrap items-center gap-2 mb-2">
-          <span className={`rounded px-2 py-0.5 text-[11px] font-bold ${s.pill}`}>
+          <span className={`rounded px-2 py-0.5 text-label-2 font-semibold ${s.pill}`}>
             {f.severity}
           </span>
-          <code className="rounded bg-surface-muted px-1.5 py-0.5 font-mono text-[11px] text-ink-muted">
+          <code className="rounded bg-surface-muted px-1.5 py-0.5 font-mono text-body-3 text-ink-muted">
             {f.id}
           </code>
-          <span className="font-semibold text-sm text-ink leading-snug flex-1">{f.element}</span>
-          <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[11px] text-ink-muted">
+          <span className="text-title-3 text-ink flex-1">{f.element}</span>
+          <span className="rounded-full bg-surface-muted px-2 py-0.5 text-body-3 text-ink-muted">
             {f.axis}
           </span>
         </div>
 
         {/* Design intent vs As built */}
-        <div className="grid grid-cols-2 gap-2 text-xs mb-2">
+        <div className="grid grid-cols-2 gap-2 text-body-3 mb-2">
           <div className="rounded-md border border-blue-100 bg-blue-50 p-2.5">
-            <div className="mb-1 text-[10px] font-bold uppercase tracking-widest text-blue-600">Design intent</div>
-            <p className="leading-relaxed text-blue-900">{f.figma}</p>
+            <div className="mb-1 text-label-3 uppercase text-blue-600">Design intent</div>
+            <p className="text-blue-900">{f.figma}</p>
           </div>
           <div className="rounded-md border border-orange-100 bg-orange-50 p-2.5">
-            <div className="mb-1 text-[10px] font-bold uppercase tracking-widest text-orange-600">As built</div>
-            <p className="leading-relaxed text-orange-900">{f.live}</p>
+            <div className="mb-1 text-label-3 uppercase text-orange-600">As built</div>
+            <p className="text-orange-900">{f.live}</p>
           </div>
         </div>
 
         {/* Fix */}
-        <div className="rounded-md border border-emerald-100 bg-emerald-50 px-3 py-2 text-xs">
-          <span className="font-bold uppercase tracking-widest text-[10px] text-emerald-700 mr-2">Fix</span>
+        <div className="rounded-md border border-emerald-100 bg-emerald-50 px-3 py-2 text-body-3">
+          <span className="text-label-3 uppercase text-emerald-700 mr-2">Fix</span>
           <span className="text-emerald-900">{f.fix}</span>
         </div>
       </div>
@@ -296,9 +298,9 @@ function ScreenGroup({ screen, findings }: { screen: Screen; findings: Finding[]
       {/* Screen header */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3 border-b-2 border-border pb-4">
         <div>
-          <h2 className="text-base font-bold text-ink">{screen.name}</h2>
+          <h2 className="text-headline-5 text-ink">{screen.name}</h2>
           {screen.note && (
-            <p className="mt-1 rounded-md border border-amber-200 bg-amber-50 px-2.5 py-1 text-xs text-amber-700">
+            <p className="mt-1 rounded-md border border-amber-200 bg-amber-50 px-2.5 py-1 text-body-3 text-amber-700">
               {screen.note}
             </p>
           )}
@@ -307,7 +309,7 @@ function ScreenGroup({ screen, findings }: { screen: Screen; findings: Finding[]
           {(["Blocker", "Major", "Minor"] as Sev[]).map(
             (sev) =>
               counts[sev] > 0 && (
-                <span key={sev} className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${SEV[sev].pill}`}>
+                <span key={sev} className={`rounded-full px-2 py-0.5 text-label-2 font-semibold ${SEV[sev].pill}`}>
                   {counts[sev]} {sev}
                 </span>
               )
@@ -317,7 +319,7 @@ function ScreenGroup({ screen, findings }: { screen: Screen; findings: Finding[]
               href={screen.figmaUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 rounded-full bg-blue-50 border border-blue-200 px-2.5 py-0.5 text-[11px] font-medium text-primary hover:bg-blue-100 transition"
+              className="flex items-center gap-1 rounded-full bg-blue-50 border border-blue-200 px-2.5 py-0.5 text-label-2 text-primary hover:bg-blue-100 transition"
             >
               <Icon name="open_in_new" size={12} /> Figma
             </a>
@@ -327,7 +329,7 @@ function ScreenGroup({ screen, findings }: { screen: Screen; findings: Finding[]
               href={screen.liveUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-1 rounded-full bg-surface-muted border border-border px-2.5 py-0.5 text-[11px] font-medium text-ink-muted hover:text-ink transition"
+              className="flex items-center gap-1 rounded-full bg-surface-muted border border-border px-2.5 py-0.5 text-label-2 text-ink-muted hover:text-ink transition"
             >
               <Icon name="open_in_new" size={12} /> Live
             </a>
@@ -340,7 +342,7 @@ function ScreenGroup({ screen, findings }: { screen: Screen; findings: Finding[]
         <div key={section} className="mb-10">
           {/* Section label — only shown when screen has multiple sections */}
           {multiSection && (
-            <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-ink-muted">
+            <p className="mb-3 text-label-3 uppercase text-ink-muted">
               {SEC_LABEL[section] ?? section.replace(/-/g, " ")}
             </p>
           )}
@@ -379,35 +381,35 @@ function SuggestionCard({ s }: { s: Suggestion }) {
   return (
     <div className={`rounded-lg border border-border bg-white border-l-4 ${st.border} mb-4 last:mb-0`}>
       <div className="flex flex-wrap items-start gap-2 px-4 pt-4 pb-2">
-        <span className={`flex-shrink-0 rounded px-2 py-0.5 text-[11px] font-bold ${st.pill}`}>
+        <span className={`flex-shrink-0 rounded px-2 py-0.5 text-label-2 font-semibold ${st.pill}`}>
           {s.severity}
         </span>
-        <code className="flex-shrink-0 rounded bg-surface-muted px-1.5 py-0.5 font-mono text-[11px] text-ink-muted">
+        <code className="flex-shrink-0 rounded bg-surface-muted px-1.5 py-0.5 font-mono text-body-3 text-ink-muted">
           {s.id}
         </code>
-        <span className="flex-1 text-sm font-semibold text-ink">{s.title}</span>
+        <span className="flex-1 text-title-3 text-ink">{s.title}</span>
       </div>
 
-      <p className="mx-4 mb-3 text-xs leading-relaxed text-ink-muted">{s.context}</p>
+      <p className="mx-4 mb-3 text-body-3 text-ink-muted">{s.context}</p>
 
-      <div className="mx-4 mb-3 grid grid-cols-2 gap-2 text-xs">
+      <div className="mx-4 mb-3 grid grid-cols-2 gap-2 text-body-3">
         <div className="rounded-md border border-slate-100 bg-slate-50 p-3">
-          <div className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-500">Current state</div>
-          <p className="leading-relaxed text-slate-800">{s.current}</p>
+          <div className="mb-1.5 text-label-3 uppercase text-slate-500">Current state</div>
+          <p className="text-slate-800">{s.current}</p>
         </div>
         <div className="rounded-md border border-primary/10 bg-blue-50 p-3">
-          <div className="mb-1.5 text-[10px] font-bold uppercase tracking-widest text-primary">Proposed</div>
-          <p className="leading-relaxed text-blue-900">{s.proposed}</p>
+          <div className="mb-1.5 text-label-3 uppercase text-primary">Proposed</div>
+          <p className="text-blue-900">{s.proposed}</p>
         </div>
       </div>
 
-      <div className="mx-4 mb-3 rounded-md border border-purple-100 bg-purple-50 px-3 py-2.5 text-xs">
-        <span className="font-bold uppercase tracking-widest text-[10px] text-purple-700 mr-2">Rationale</span>
+      <div className="mx-4 mb-3 rounded-md border border-purple-100 bg-purple-50 px-3 py-2.5 text-body-3">
+        <span className="text-label-3 uppercase text-purple-700 mr-2">Rationale</span>
         <span className="text-purple-900">{s.rationale}</span>
       </div>
 
-      <div className="mx-4 mb-4 rounded-md border border-emerald-100 bg-emerald-50 px-3 py-2.5 text-xs">
-        <span className="font-bold uppercase tracking-widest text-[10px] text-emerald-700 mr-2">Action</span>
+      <div className="mx-4 mb-4 rounded-md border border-emerald-100 bg-emerald-50 px-3 py-2.5 text-body-3">
+        <span className="text-label-3 uppercase text-emerald-700 mr-2">Action</span>
         <span className="text-emerald-900">{s.action}</span>
         <span className="ml-3 text-ink-muted">· {s.figmaRef}</span>
       </div>
@@ -474,12 +476,12 @@ export default function EutthanAdminReport() {
         <div className="sa-container flex items-center gap-4 py-3">
           <Link
             href="/reports"
-            className="flex items-center gap-1.5 text-xs text-ink-muted hover:text-ink transition"
+            className="flex items-center gap-1.5 text-body-3 text-ink-muted hover:text-ink transition"
           >
             <Icon name="arrow_back" size={14} /> Reports
           </Link>
           <span className="text-border">/</span>
-          <span className="text-xs font-semibold text-ink">eUtthan Admin</span>
+          <span className="text-label-2 font-semibold text-ink">eUtthan Admin</span>
 
           <div className="ml-4 flex items-center gap-1 rounded-lg bg-surface-muted p-1">
             {(
@@ -491,13 +493,13 @@ export default function EutthanAdminReport() {
               <button
                 key={key}
                 onClick={() => setTab(key)}
-                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition ${
+                className={`flex items-center gap-1.5 rounded-md px-3 py-1.5 text-label-2 font-semibold transition ${
                   tab === key ? "bg-white text-ink shadow-sm" : "text-ink-muted hover:text-ink"
                 }`}
               >
                 {label}
                 <span
-                  className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                  className={`rounded-full px-1.5 py-0.5 text-label-2 font-semibold ${
                     tab === key ? "bg-primary text-white" : "bg-border text-ink-muted"
                   }`}
                 >
@@ -515,7 +517,7 @@ export default function EutthanAdminReport() {
                   : "/reports/eUtthan-Admin-Design-Suggestions.pdf"
               }
               download
-              className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 text-xs font-semibold text-ink transition hover:bg-surface-muted"
+              className="flex items-center gap-1.5 rounded-lg border border-border bg-surface px-3 py-1.5 text-label-2 font-semibold text-ink transition hover:bg-surface-muted"
             >
               <Icon name="download" size={14} /> Download PDF
             </a>
@@ -536,7 +538,7 @@ export default function EutthanAdminReport() {
                   placeholder="Search findings, elements, axis…"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  className="w-full rounded-lg border border-border bg-surface py-2 pl-8 pr-8 text-xs text-ink placeholder:text-ink-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
+                  className="w-full rounded-lg border border-border bg-surface py-2 pl-8 pr-8 text-body-3 text-ink placeholder:text-ink-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary"
                 />
                 {query && (
                   <button
@@ -549,7 +551,7 @@ export default function EutthanAdminReport() {
               </div>
 
               <div className="flex flex-wrap items-center gap-1.5">
-                <span className="text-[11px] text-ink-muted mr-1">Screen:</span>
+                <span className="text-body-3 text-ink-muted mr-1">Screen:</span>
                 {[
                   { slug: "ALL", name: "All" },
                   ...audit.screens.map((s) => ({ slug: s.slug, name: SCREEN_SHORT[s.slug] ?? s.slug })),
@@ -562,7 +564,7 @@ export default function EutthanAdminReport() {
                     <button
                       key={slug}
                       onClick={() => setActiveScreen(slug)}
-                      className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold transition ${
+                      className={`rounded-full px-2.5 py-0.5 text-label-2 font-semibold transition ${
                         activeScreen === slug
                           ? "bg-primary text-white"
                           : "bg-surface-muted text-ink-muted hover:text-ink"
@@ -573,12 +575,12 @@ export default function EutthanAdminReport() {
                   );
                 })}
 
-                <span className="ml-3 text-[11px] text-ink-muted">Severity:</span>
+                <span className="ml-3 text-body-3 text-ink-muted">Severity:</span>
                 {(["All", "Blocker", "Major", "Minor", "Nit"] as const).map((sev) => (
                   <button
                     key={sev}
                     onClick={() => setActiveSev(sev)}
-                    className={`rounded-full px-2.5 py-0.5 text-[11px] font-semibold transition ${
+                    className={`rounded-full px-2.5 py-0.5 text-label-2 font-semibold transition ${
                       activeSev === sev
                         ? sev === "All"
                           ? "bg-ink text-white"
@@ -591,7 +593,7 @@ export default function EutthanAdminReport() {
                   </button>
                 ))}
 
-                <span className="ml-auto text-[11px] text-ink-muted">
+                <span className="ml-auto text-body-3 text-ink-muted">
                   {matchCount} finding{matchCount !== 1 ? "s" : ""}
                 </span>
               </div>
@@ -602,8 +604,8 @@ export default function EutthanAdminReport() {
           <div className="border-b border-border bg-surface">
             <div className="sa-container flex items-center gap-6 py-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-muted mb-0.5">Portal</p>
-                <p className="text-sm font-bold text-ink">{audit.portal}</p>
+                <p className="text-label-3 uppercase text-ink-muted mb-0.5">Portal</p>
+                <h1 className="text-title-1 text-ink">{audit.portal}</h1>
               </div>
               <Divider orientation="vertical" length={32} />
               <div className="flex flex-wrap gap-5">
@@ -615,12 +617,12 @@ export default function EutthanAdminReport() {
                   { label: "Minor",    value: counts.Minor,           color: "text-amber-600" },
                 ].map(({ label, value, color }) => (
                   <div key={label} className="text-center">
-                    <div className={`text-xl font-bold ${color}`}>{value}</div>
-                    <div className="text-[11px] text-ink-muted">{label}</div>
+                    <div className={`text-headline-4 font-bold tabular-nums ${color}`}>{value}</div>
+                    <div className="text-body-3 text-ink-muted">{label}</div>
                   </div>
                 ))}
               </div>
-              <div className="ml-auto text-[11px] text-ink-muted">Generated {audit.generated}</div>
+              <div className="ml-auto text-body-3 text-ink-muted">Generated {audit.generated}</div>
             </div>
           </div>
 
@@ -629,11 +631,11 @@ export default function EutthanAdminReport() {
             {filteredScreens.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 text-center">
                 <Icon name="search" size={40} className="text-ink-muted/30 mb-4" />
-                <p className="text-sm font-semibold text-ink">No findings match your filters</p>
-                <p className="text-xs text-ink-muted mt-1">Try adjusting the search or filter criteria.</p>
+                <p className="text-title-3 text-ink">No findings match your filters</p>
+                <p className="text-body-3 text-ink-muted mt-1">Try adjusting the search or filter criteria.</p>
                 <button
                   onClick={() => { setQuery(""); setActiveScreen("ALL"); setActiveSev("All"); }}
-                  className="mt-4 text-xs font-semibold text-primary hover:underline"
+                  className="mt-4 text-label-2 font-semibold text-primary hover:underline"
                 >
                   Clear all filters
                 </button>
@@ -653,8 +655,8 @@ export default function EutthanAdminReport() {
           <div className="border-b border-border bg-surface">
             <div className="sa-container flex items-center gap-6 py-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-ink-muted mb-0.5">Portal</p>
-                <p className="text-sm font-bold text-ink">{audit.portal}</p>
+                <p className="text-label-3 uppercase text-ink-muted mb-0.5">Portal</p>
+                <h1 className="text-title-1 text-ink">{audit.portal}</h1>
               </div>
               <Divider orientation="vertical" length={32} />
               <div className="flex flex-wrap gap-5">
@@ -665,19 +667,19 @@ export default function EutthanAdminReport() {
                   { label: "Medium",   value: SUGGESTIONS.filter((s) => s.severity === "Medium").length,   color: "text-amber-600" },
                 ].map(({ label, value, color }) => (
                   <div key={label} className="text-center">
-                    <div className={`text-xl font-bold ${color}`}>{value}</div>
-                    <div className="text-[11px] text-ink-muted">{label}</div>
+                    <div className={`text-headline-4 font-bold tabular-nums ${color}`}>{value}</div>
+                    <div className="text-body-3 text-ink-muted">{label}</div>
                   </div>
                 ))}
               </div>
-              <div className="ml-auto text-[11px] text-ink-muted">Generated {audit.generated}</div>
+              <div className="ml-auto text-body-3 text-ink-muted">Generated {audit.generated}</div>
             </div>
           </div>
 
           <main className="sa-container py-8 space-y-10">
             {sugCategories.map((cat) => (
               <section key={cat}>
-                <h2 className="mb-4 text-base font-bold text-ink border-b border-border pb-2">{cat}</h2>
+                <h2 className="mb-4 text-headline-5 text-ink border-b border-border pb-2">{cat}</h2>
                 {SUGGESTIONS.filter((s) => s.category === cat).map((s) => (
                   <SuggestionCard key={s.id} s={s} />
                 ))}

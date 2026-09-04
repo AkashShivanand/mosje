@@ -348,8 +348,8 @@
   .ds-samavesh-banner__title {
     font-size: var(--sa-type-headline-3-size);
     line-height: var(--sa-type-headline-3-lh);
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    font-weight: 600;
+    letter-spacing: var(--sa-type-caps-tracking);
     color: var(--_band-ink);
     white-space: nowrap;
   }
@@ -647,10 +647,9 @@
   .ds-samavesh-banner__drawer-heading {
     font-size: var(--sa-type-title-1-size);
     line-height: var(--sa-type-title-1-lh);
-    font-weight: 700;
+    font-weight: 600;
     color: var(--sa-color-status-successStrong);
     margin-block: 0 var(--sa-stack-20);
-    letter-spacing: -0.01em;
   }
 
   @media (min-width: 1024px) {

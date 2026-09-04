@@ -17,8 +17,8 @@ export default function PdAllApplicationsPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-ink">All Applications</h1>
-        <p className="mt-1 text-sm text-ink-muted">Application Explorer — every application in the scheme, whatever stage it has reached.</p>
+        <h1 className="text-headline-1 text-ink">All Applications</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">Application Explorer — every application in the scheme, whatever stage it has reached.</p>
       </div>
       <WorklistTable
         rows={rows}

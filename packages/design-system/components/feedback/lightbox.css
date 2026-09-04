@@ -61,10 +61,10 @@
   }
 
   .ds-lightbox__counter {
-    font-size: 14px;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
     font-weight: 600;
     font-variant-numeric: tabular-nums;
-    letter-spacing: 0.02em;
     color: color-mix(in oklab, var(--sa-bg-neutral-base) 92%, transparent);
   }
 
@@ -163,8 +163,8 @@
     margin: 0;
     max-width: min(72ch, 90vw);
     text-align: center;
-    font-size: 14px;
-    line-height: 1.5;
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
     color: color-mix(in oklab, var(--sa-bg-neutral-base) 88%, transparent);
   }
 

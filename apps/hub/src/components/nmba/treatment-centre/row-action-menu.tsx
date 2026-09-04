@@ -137,7 +137,7 @@ export function RowActionMenu({ label, items }: { label: string; items: RowActio
                   type="button"
                   role="menuitem"
                   onClick={() => { closeMenu(false); onClick(); }}
-                  className={`flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm font-medium focus-visible:outline-none focus-visible:bg-navy/10 ${ITEM_TONES[tone]}`}
+                  className={`flex w-full items-center gap-2.5 px-3 py-2 text-left text-label-1 focus-visible:outline-none focus-visible:bg-navy/10 ${ITEM_TONES[tone]}`}
                 >
                   <Icon name={iconName} size={16} className="shrink-0" aria-hidden />
                   {itemLabel}

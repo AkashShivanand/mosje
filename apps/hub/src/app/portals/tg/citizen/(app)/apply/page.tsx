@@ -150,12 +150,12 @@ export default function ApplyPage() {
         onBack={() => setPhase("method")}
       >
         <div className="rounded-2xl border border-line bg-white p-6 shadow-card">
-          <h3 className="text-sm font-bold text-ink">How this works</h3>
+          <h3 className="text-title-3 text-ink">How this works</h3>
           <ol className="mt-4 space-y-4">
             <HowStep n={1} title="Enter Details" desc="Fill in your Name, Date of Birth, and Gender exactly as they appear on your ID document." />
             <HowStep n={2} title="Upload Proof" desc="You will need to upload a self-attested copy of your Affidavit and Photo." />
           </ol>
-          <p className="mt-4 text-xs text-ink-hint">
+          <p className="mt-4 text-body-3 text-ink-hint">
             Manual applications are processed with the same priority and timeline as digital ones.
           </p>
         </div>
@@ -176,8 +176,8 @@ export default function ApplyPage() {
         <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-approve-bg text-approve-fg">
           <Icon name="check_circle" size={32} />
         </span>
-        <h1 className="mt-5 text-2xl font-bold text-ink">Application Submitted</h1>
-        <p className="mt-2 text-sm text-ink-muted">
+        <h1 className="mt-5 text-headline-1 text-ink">Application Submitted</h1>
+        <p className="mt-2 text-body-2 text-ink-muted">
           Your {type} Certificate application <span className="font-mono font-semibold text-navy">{newId}</span> has been
           submitted and is now under review. You can track its status from your dashboard.
         </p>
@@ -202,8 +202,8 @@ export default function ApplyPage() {
       {step === 0 && (
         <Card className="space-y-6 p-6">
           <div>
-            <h1 className="text-xl font-bold text-ink">Basic Identity Details</h1>
-            <p className="mt-1 text-sm text-ink-muted">
+            <h1 className="text-headline-1 text-ink">Basic Identity Details</h1>
+            <p className="mt-1 text-body-2 text-ink-muted">
               Please enter your details exactly as they appear on your official ID proof (Aadhaar, etc.).
             </p>
           </div>
@@ -242,7 +242,7 @@ export default function ApplyPage() {
               <Field label="Mobile Number" required><TextInput inputMode="numeric" maxLength={10} value={form.mobile} onChange={(e) => set("mobile", e.target.value)} placeholder="Enter 10-digit number" /></Field>
               <Field label="Email Address" required>
                 <TextInput type="email" value={form.email} readOnly aria-readonly="true" className="bg-surface-muted text-ink-muted" />
-                <span className="mt-1 block text-xs text-ink-hint">Linked to your signed-in account.</span>
+                <span className="mt-1 block text-body-3 text-ink-hint">Linked to your signed-in account.</span>
               </Field>
               <Field label="State"><Select options={STATES} value={form.state} onChange={(e) => { set("state", e.target.value); set("district", STATE_DISTRICTS[e.target.value]?.[0] ?? ""); }} /></Field>
               <Field label="District"><Select options={districts} value={form.district} onChange={(e) => set("district", e.target.value)} /></Field>
@@ -264,8 +264,8 @@ export default function ApplyPage() {
       {step === 1 && (
         <Card className="space-y-6 p-6">
           <div>
-            <h1 className="text-xl font-bold text-ink">Required Documents</h1>
-            <p className="mt-1 text-sm text-ink-muted">Upload self-attested copies. PDF/JPG/PNG • Max 2MB each.</p>
+            <h1 className="text-headline-1 text-ink">Required Documents</h1>
+            <p className="mt-1 text-body-2 text-ink-muted">Upload self-attested copies. PDF/JPG/PNG • Max 2MB each.</p>
           </div>
 
           <Field label="ID Proof Type" className="max-w-xs">
@@ -289,8 +289,8 @@ export default function ApplyPage() {
       {step === 2 && (
         <Card className="space-y-6 p-6">
           <div>
-            <h1 className="text-xl font-bold text-ink">Review & Submit</h1>
-            <p className="mt-1 text-sm text-ink-muted">Please verify your details before submitting. You cannot edit after submission.</p>
+            <h1 className="text-headline-1 text-ink">Review & Submit</h1>
+            <p className="mt-1 text-body-2 text-ink-muted">Please verify your details before submitting. You cannot edit after submission.</p>
           </div>
 
           <ReviewGrid rows={[
@@ -313,7 +313,7 @@ export default function ApplyPage() {
 
           <div>
             <SectionTitle>Documents</SectionTitle>
-            <ul className="space-y-1.5 text-sm text-ink">
+            <ul className="space-y-1.5 text-body-2 text-ink">
               <li className="flex items-center gap-2"><Icon name="task" size={16} className="text-approve-fg" /> {idProofType}: {docs.idProof || "id-proof.pdf"}</li>
               <li className="flex items-center gap-2"><Icon name="task" size={16} className="text-approve-fg" /> Passport Photo: {docs.photo || "photo.jpg"}</li>
               <li className="flex items-center gap-2"><Icon name="task" size={16} className="text-approve-fg" /> Signature: {docs.signature || "signature.jpg"}</li>
@@ -336,12 +336,12 @@ function Wrap({ title, subtitle, onBack, children }: { title: string; subtitle: 
   return (
     <div className="mx-auto max-w-3xl">
       {onBack && (
-        <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-muted hover:text-navy">
+        <button type="button" onClick={onBack} className="mb-4 inline-flex items-center gap-1.5 text-label-1 font-semibold text-ink-muted hover:text-navy">
           <Icon name="arrow_back" size={16} /> Back
         </button>
       )}
-      <h1 className="text-2xl font-bold text-ink">{title}</h1>
-      <p className="mt-1 mb-6 text-sm text-ink-muted">{subtitle}</p>
+      <h1 className="text-headline-1 text-ink">{title}</h1>
+      <p className="mt-1 mb-6 text-body-2 text-ink-muted">{subtitle}</p>
       {children}
     </div>
   );
@@ -358,8 +358,8 @@ function SelectCard({ icon: iconName, title, desc, active, onClick }: { icon: st
       <span className={`mb-3 flex h-11 w-11 items-center justify-center rounded-xl ${active ? "bg-navy text-white" : "bg-navy/10 text-navy"}`}>
         <Icon name={iconName} size={20} />
       </span>
-      <span className="text-base font-semibold text-ink">{title}</span>
-      <span className="mt-1 text-sm text-ink-muted">{desc}</span>
+      <span className="text-title-2 text-ink">{title}</span>
+      <span className="mt-1 text-body-2 text-ink-muted">{desc}</span>
     </button>
   );
 }
@@ -367,10 +367,10 @@ function SelectCard({ icon: iconName, title, desc, active, onClick }: { icon: st
 function HowStep({ n, title, desc }: { n: number; title: string; desc: string }) {
   return (
     <li className="flex gap-3">
-      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-navy text-sm font-bold text-white">{n}</span>
+      <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-navy text-label-1 font-bold text-white">{n}</span>
       <div>
-        <div className="text-sm font-semibold text-ink">{title}</div>
-        <div className="text-sm text-ink-muted">{desc}</div>
+        <div className="text-body-2 font-semibold text-ink">{title}</div>
+        <div className="text-body-2 text-ink-muted">{desc}</div>
       </div>
     </li>
   );
@@ -381,11 +381,11 @@ function UploadField({ label, hint, value, onFile }: { label: string; hint: stri
   return (
     <div>
       <span className={cnField}>{label} <span className="text-reject-fg">*</span></span>
-      <label htmlFor={id} className="flex cursor-pointer items-center gap-3 rounded-lg border border-dashed border-navy/30 bg-surface-muted px-4 py-3 text-sm hover:border-navy/50">
+      <label htmlFor={id} className="flex cursor-pointer items-center gap-3 rounded-lg border border-dashed border-navy/30 bg-surface-muted px-4 py-3 text-label-1 hover:border-navy/50">
         {value ? <Icon name="task" size={20} className="text-approve-fg" /> : <Icon name="upload" size={20} className="text-navy" />}
         <span className="min-w-0">
           <span className="block truncate font-medium text-ink">{value || "Click to upload"}</span>
-          <span className="block text-xs text-ink-hint">{hint}</span>
+          <span className="block text-body-3 text-ink-hint">{hint}</span>
         </span>
       </label>
       <input
@@ -404,8 +404,8 @@ function ReviewGrid({ rows }: { rows: [string, string][] }) {
     <dl className="grid gap-x-6 gap-y-3 sm:grid-cols-2">
       {rows.map(([k, v]) => (
         <div key={k} className="flex flex-col">
-          <dt className="text-xs font-medium uppercase tracking-wide text-ink-hint">{k}</dt>
-          <dd className="text-sm text-ink">{v || "—"}</dd>
+          <dt className="text-label-3 uppercase text-ink-hint">{k}</dt>
+          <dd className="text-body-2 text-ink">{v || "—"}</dd>
         </div>
       ))}
     </dl>

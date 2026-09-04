@@ -25,6 +25,13 @@ Everything else is craft. These four are gates.
    keyboard nav, visible focus, AA contrast, on every public-facing page.
 4. **Design tokens, never hardcoded values.** No raw hex, `rgb()`, or arbitrary px
    in component CSS or Tailwind classes. `npm run lint:css` blocks them.
+5. **No typography outside the 21 roles.** Type is `<Heading level>` / `<Text variant>`
+   or a `text-<role>` utility; in a stylesheet bind `--sa-type-<role>-size` AND `-lh`
+   together. Tailwind's `text-sm`…`text-6xl`, `leading-*`, `tracking-*` (except
+   `tracking-caps` / `tracking-digits`) and thin/light/extrabold/black weights produce no
+   CSS on this estate. Nothing renders below 12px; uppercase is the `label-3` role only;
+   every Devanagari run carries `lang="hi"`. `npm run check:type-linkage` fails on any
+   of these, with a baseline of zero.
 
 ## Branch procedure — run this before your first edit
 

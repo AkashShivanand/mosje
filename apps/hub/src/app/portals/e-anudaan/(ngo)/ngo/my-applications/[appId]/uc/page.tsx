@@ -30,8 +30,8 @@ export default function UtilisationCertificatePage() {
   return (
     <div className="mx-auto max-w-2xl space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-ink">Utilisation Certificate — {app.id}</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Utilisation Certificate — {app.id}</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Certify how the sanctioned grant was spent, under GFR 12-A. Must be signed by a
           Chartered Accountant before the next instalment is released.
         </p>
@@ -51,12 +51,12 @@ export default function UtilisationCertificatePage() {
       <section className="space-y-4 rounded-xl border border-line bg-surface p-5">
         <dl className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
           <div className="flex items-baseline justify-between gap-4 border-b border-line pb-2">
-            <dt className="text-sm text-ink-muted">Sanctioned</dt>
-            <dd className="text-sm font-semibold text-ink">{formatGrant(sanctioned)}</dd>
+            <dt className="text-body-2 text-ink-muted">Sanctioned</dt>
+            <dd className="text-body-2 font-semibold text-ink">{formatGrant(sanctioned)}</dd>
           </div>
           <div className="flex items-baseline justify-between gap-4 border-b border-line pb-2">
-            <dt className="text-sm text-ink-muted">Financial Year</dt>
-            <dd className="text-sm font-semibold text-ink">{app.financialYear}</dd>
+            <dt className="text-body-2 text-ink-muted">Financial Year</dt>
+            <dd className="text-body-2 font-semibold text-ink">{app.financialYear}</dd>
           </div>
         </dl>
 

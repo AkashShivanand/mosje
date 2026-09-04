@@ -25,11 +25,11 @@ export function SubmissionCard({ submission }: { submission: MassPledgeSubmissio
           <div className="min-w-0">
             <Link
               href={`${BASE}/${submission.id}`}
-              className="text-base font-semibold text-navy hover:underline"
+              className="text-title-2 text-navy hover:underline"
             >
               {scope || REPORTER_LABEL[submission.reporterKind]}
             </Link>
-            <p className="mt-0.5 text-xs text-ink-muted">
+            <p className="mt-0.5 text-body-3 text-ink-muted">
               {REPORTER_LABEL[submission.reporterKind]}
             </p>
           </div>
@@ -39,7 +39,7 @@ export function SubmissionCard({ submission }: { submission: MassPledgeSubmissio
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-sm text-ink-muted">
+        <div className="flex flex-wrap items-center gap-x-5 gap-y-1.5 text-body-2 text-ink-muted">
           <span className="inline-flex items-center gap-1.5">
             <Icon name="group" size={16} aria-hidden="true" />
             <strong className="font-semibold tabular-nums text-ink">
@@ -56,7 +56,7 @@ export function SubmissionCard({ submission }: { submission: MassPledgeSubmissio
           </span>
         </div>
 
-        <p className="text-xs text-ink-hint">
+        <p className="text-body-3 text-ink-hint">
           Reported by {submission.reportingOfficerName}, {submission.reportingOfficerDesignation}
         </p>
       </div>

@@ -15,8 +15,8 @@ const PERIODS = ["Last 12 months", "Current FY", "Last FY", "Calendar Year"] as 
 function HeroStat({ label, value, delta, positive }: { label: string; value: string; delta: string; positive: boolean }) {
   return (
     <div className="rounded-lg border border-stroke-200 bg-white p-lg shadow-xs">
-      <div className="text-label-1 uppercase tracking-wide text-ink-muted">{label}</div>
-      <div className="mt-xs text-headline-2 font-bold tabular-nums text-ink">{value}</div>
+      <div className="text-label-3 uppercase text-ink-muted">{label}</div>
+      <div className="mt-xs text-headline-2 tabular-nums text-ink">{value}</div>
       <div className={cn("mt-sm inline-flex items-center gap-xs rounded-xs px-sm py-0.5 text-label-2 font-semibold", positive ? "bg-success-50 text-success-600" : "bg-danger-50 text-danger-600")}>
         {positive ? <Icon name="arrow_outward" size={12} /> : <Icon name="south_east" size={12} />}
         {delta} <span className="text-ink-muted">vs prior</span>
@@ -67,7 +67,7 @@ export default function PerformanceStatsPage() {
             key={p}
             onClick={() => setPeriod(p)}
             className={cn(
-              "rounded-md border px-md py-1.5 text-body-3 font-semibold transition",
+              "rounded-md border px-md py-1.5 text-label-1 transition",
               p === period ? "border-primary bg-primary text-white" : "border-stroke-200 bg-white text-ink-muted hover:text-primary"
             )}
           >
@@ -97,7 +97,7 @@ export default function PerformanceStatsPage() {
         <Card>
           <CardHeader>
             <CardTitle>Top performing states</CardTitle>
-            <span className="inline-flex items-center gap-xs rounded-xs bg-primary-50 px-sm py-0.5 text-label-3 font-semibold text-primary">
+            <span className="inline-flex items-center gap-xs rounded-xs bg-primary-50 px-sm py-0.5 text-label-2 text-primary">
               <Icon name="target" size={12} /> Beneficiaries onboarded
             </span>
           </CardHeader>
@@ -181,7 +181,7 @@ export default function PerformanceStatsPage() {
                     <TD className="text-right tabular-nums">{formatNumber(a.rehab)}</TD>
                     <TD>
                       <span className={cn(
-                        "inline-flex items-center gap-xs rounded-xs px-sm py-0.5 text-label-3 font-semibold",
+                        "inline-flex items-center gap-xs rounded-xs px-sm py-0.5 text-label-2",
                         conv >= 20 ? "bg-success-50 text-success-600" : conv >= 15 ? "bg-warning-50 text-warning-600" : "bg-danger-50 text-danger-600"
                       )}>
                         {conv}%

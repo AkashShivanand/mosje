@@ -34,11 +34,11 @@ export default function StateComparisonPage() {
       </div>
 
       <Card className="mt-6 p-6">
-        <h2 className="mb-4 text-sm font-bold text-ink">State-wise Performance Table</h2>
+        <h2 className="mb-4 text-title-2 text-ink">State-wise Performance Table</h2>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[640px] text-left text-sm">
+          <table className="w-full min-w-[640px] text-left text-body-2">
             <thead>
-              <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-hint">
+              <tr className="border-b border-line text-label-3 uppercase text-ink-hint">
                 <th className="py-2.5 pr-4 font-semibold">Rank</th>
                 <th className="py-2.5 pr-4 font-semibold">State</th>
                 <th className="py-2.5 pr-4 text-right font-semibold">Total</th>

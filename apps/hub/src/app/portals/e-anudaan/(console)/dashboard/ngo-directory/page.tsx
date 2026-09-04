@@ -20,7 +20,7 @@ export default function NgoDirectoryPage() {
   const { state } = useEAnudaan();
   return (
     <div className="space-y-5">
-      <h1 className="text-2xl font-bold text-ink">NGO Directory</h1>
+      <h1 className="text-headline-1 text-ink">NGO Directory</h1>
       <section className="rounded-xl border border-line bg-surface p-4 lg:p-5">
         <DataTable columns={COLUMNS as unknown as DataTableColumn<Record<string, unknown>>[]} data={state.ngos as unknown as Record<string, unknown>[]} total={state.ngos.length} caption="NGO directory" />
       </section>

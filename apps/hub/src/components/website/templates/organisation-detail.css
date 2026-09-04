@@ -370,7 +370,7 @@
     line-height: var(--sa-type-label-2-lh);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
     white-space: nowrap;
   }
@@ -879,14 +879,14 @@
 
   .orgd__date-day {
     font-size: var(--sa-type-title-1-size);
-    line-height: 1;
+    line-height: var(--sa-type-title-1-lh);
     font-weight: 700;
     color: var(--sa-text-brand-primary-bolder);
   }
 
   .orgd__date-month {
     font-size: var(--sa-type-label-3-size);
-    line-height: 1.2;
+    line-height: var(--sa-type-label-3-lh);
     font-weight: 600;
     color: var(--sa-text-brand-primary-bolder);
     text-transform: uppercase;

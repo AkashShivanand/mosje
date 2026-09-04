@@ -21,7 +21,7 @@ export function SearchPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
           <strong>Size:</strong>
           <select 
             value={size} 
@@ -34,7 +34,7 @@ export function SearchPlayground() {
           </select>
         </label>
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
           <input 
             type="checkbox" 
             checked={disabled} 
@@ -43,7 +43,7 @@ export function SearchPlayground() {
           <strong>Disabled</strong>
         </label>
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
           <input 
             type="checkbox" 
             checked={withClear} 
@@ -52,7 +52,7 @@ export function SearchPlayground() {
           <strong>Has Clear Button</strong>
         </label>
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
           <input 
             type="checkbox" 
             checked={withSubmit} 

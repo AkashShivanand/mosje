@@ -94,7 +94,6 @@
     font-size: var(--sa-type-label-2-size);
     line-height: var(--sa-type-label-2-lh);
     font-weight: 500;
-    letter-spacing: 0.5px;
   }
 
   .sa-siteheader__logo {
@@ -142,7 +141,6 @@
      * happens to match one surface is not a binding, it is a coincidence.
      */
     line-height: var(--sa-type-body-1-lh);
-    letter-spacing: 0.5px;
   }
 
   .sa-siteheader__actions {

@@ -82,8 +82,8 @@ export function DocumentsChecklist({
     <section className="space-y-4 rounded-xl border border-line bg-surface p-5 shadow-xs">
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-line pb-3">
         <div>
-          <h2 className="text-base font-bold text-ink">Documents Checklist</h2>
-          <p className="mt-1 text-sm text-ink-muted">{note}</p>
+          <h2 className="text-headline-6 text-ink">Documents Checklist</h2>
+          <p className="mt-1 text-body-2 text-ink-muted">{note}</p>
         </div>
         <Badge status={count >= mandatory ? "success" : "info"}>
           {count} / {mandatory} uploaded
@@ -100,15 +100,15 @@ export function DocumentsChecklist({
             <li key={d.n} className="rounded-lg border border-line p-4">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div className="min-w-0 space-y-1">
-                  <p className="text-sm font-semibold text-ink">
+                  <p className="text-title-3 text-ink">
                     {d.n}. {d.title}
                     {!d.optional && <span className="text-status-error"> *</span>}
-                    {d.optional && <span className="ml-2 text-xs font-normal text-ink-hint">OPTIONAL</span>}
+                    {d.optional && <span className="ml-2 text-label-2 text-ink-hint">OPTIONAL</span>}
                   </p>
-                  {d.note && <p className="text-xs italic text-ink-muted">{d.note}</p>}
-                  {d.description && <p className="text-xs text-ink-muted">{d.description}</p>}
+                  {d.note && <p className="text-body-3 italic text-ink-muted">{d.note}</p>}
+                  {d.description && <p className="text-body-3 text-ink-muted">{d.description}</p>}
                   {up && (
-                    <p className="font-mono text-xs text-ink-muted">
+                    <p className="font-mono text-body-3 text-ink-muted">
                       {up.fileName} · {up.sizeKb} KB
                     </p>
                   )}
@@ -139,20 +139,20 @@ export function DocumentsChecklist({
 
               {up && (
                 <div className={`mt-3 rounded-md border ${tone.border} ${tone.bg} p-3`}>
-                  <p className={`flex items-center gap-1.5 text-sm font-semibold ${tone.text}`}>
+                  <p className={`flex items-center gap-1.5 text-label-1 font-semibold ${tone.text}`}>
                     <Icon name={VERDICT_GLYPH[up.verdict.state]} size={16} aria-hidden />
                     {verdictHeadline(up.verdict)}
                   </p>
-                  {up.verdict.summary && <p className="mt-1.5 text-xs text-ink">{up.verdict.summary}</p>}
+                  {up.verdict.summary && <p className="mt-1.5 text-body-3 text-ink">{up.verdict.summary}</p>}
                   {up.verdict.reasons && (
-                    <ul className="mt-1.5 list-disc space-y-1 pl-5 text-xs text-ink-muted">
+                    <ul className="mt-1.5 list-disc space-y-1 pl-5 text-body-3 text-ink-muted">
                       {up.verdict.reasons.map((r) => (
                         <li key={r}>{r}</li>
                       ))}
                     </ul>
                   )}
                   {up.verdict.extracted && (
-                    <dl className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-xs">
+                    <dl className="mt-2 flex flex-wrap gap-x-6 gap-y-1 text-body-3">
                       {Object.entries(up.verdict.extracted).map(([k, v]) => (
                         <div key={k} className="flex gap-1.5">
                           <dt className="text-ink-muted">{k}:</dt>

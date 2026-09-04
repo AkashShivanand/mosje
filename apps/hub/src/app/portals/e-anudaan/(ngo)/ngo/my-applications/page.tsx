@@ -91,7 +91,7 @@ export default function MyApplicationsPage() {
         ) : (
           <Link
             href={`/portals/e-anudaan/ngo/my-applications/${encodeURIComponent(a.id)}`}
-            className="flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+            className="flex items-center gap-1 text-label-2 font-semibold text-primary hover:underline"
             aria-label={`View application ${a.id}`}
           >
             View <span aria-hidden="true">→</span>
@@ -104,8 +104,8 @@ export default function MyApplicationsPage() {
     <div className="space-y-5">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-ink">My Applications</h1>
-          <p className="mt-1 text-sm text-ink-muted">
+          <h1 className="text-headline-1 text-ink">My Applications</h1>
+          <p className="mt-1 text-body-2 text-ink-muted">
             All grant applications submitted by your organisation.
           </p>
         </div>
@@ -156,7 +156,7 @@ export default function MyApplicationsPage() {
             type="button"
             onClick={() => setFilter(f)}
             aria-pressed={filter === f}
-            className={`rounded-full border px-3 py-1 text-sm transition-colors ${
+            className={`rounded-full border px-3 py-1 text-label-1 transition-colors ${
               filter === f
                 ? "border-navy bg-navy text-white"
                 : "border-line bg-surface text-ink hover:bg-surface-muted"

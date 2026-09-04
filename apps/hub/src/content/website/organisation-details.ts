@@ -1,3 +1,4 @@
+/* ds-exempt-start(hindi-source): organisation records hold Hindi names as DATA; the components that render them mark the run with lang="hi" */
 /**
  * Hand-authored structure for organisation detail pages.
  *
@@ -1958,3 +1959,5 @@ export function getOrganisationDetail(slug?: string): OrganisationDetail | undef
   return undefined;
 }
 
+
+/* ds-exempt-end */

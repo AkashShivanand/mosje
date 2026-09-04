@@ -32,7 +32,7 @@ function DetailSection({
     cols === 2 ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-4";
   return (
     <section className="overflow-hidden rounded-lg border border-line">
-      <h3 className="bg-navy px-4 py-2.5 text-sm font-semibold text-white">{title}</h3>
+      <h3 className="bg-navy px-4 py-2.5 text-title-3 text-white">{title}</h3>
       <dl className={`grid gap-px bg-line ${grid}`}>{children}</dl>
     </section>
   );
@@ -42,8 +42,8 @@ function DetailRow({ label, value, wide = false }: { label: string; value?: Reac
   const empty = value == null || value === "";
   return (
     <div className={`bg-white px-4 py-2.5 ${wide ? "sm:col-span-2 lg:col-span-4" : ""}`}>
-      <dt className="text-xs font-medium text-ink-muted">{label}</dt>
-      <dd className="mt-0.5 break-words text-sm text-ink">{empty ? "—" : value}</dd>
+      <dt className="text-label-2 text-ink-muted">{label}</dt>
+      <dd className="mt-0.5 break-words text-body-2 text-ink">{empty ? "—" : value}</dd>
     </div>
   );
 }
@@ -64,16 +64,16 @@ function DetailTable({
   if (rows.length === 0) return null;
   return (
     <section className="overflow-hidden rounded-lg border border-line">
-      <h3 className="flex items-center justify-between gap-2 bg-navy px-4 py-2.5 text-sm font-semibold text-white">
+      <h3 className="flex items-center justify-between gap-2 bg-navy px-4 py-2.5 text-title-3 text-white">
         <span>{caption}</span>
-        <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs font-medium tabular-nums">
+        <span className="rounded-full bg-white/15 px-2 py-0.5 text-label-2 tabular-nums">
           {rows.length} {rows.length === 1 ? "entry" : "entries"}
         </span>
       </h3>
       <div className="overflow-x-auto">
-        <table className="min-w-full text-sm">
+        <table className="min-w-full text-body-2">
           <thead>
-            <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
+            <tr className="bg-brandwash text-left text-label-3 uppercase text-navy">
               <th scope="col" className="px-4 py-2.5 w-14">
                 S.No.
               </th>
@@ -114,11 +114,11 @@ function MatrixTable({
 }) {
   return (
     <section className="overflow-hidden rounded-lg border border-line">
-      <h3 className="bg-navy px-4 py-2.5 text-sm font-semibold text-white">{caption}</h3>
+      <h3 className="bg-navy px-4 py-2.5 text-title-3 text-white">{caption}</h3>
       <div className="overflow-x-auto">
-        <table className="min-w-full text-sm">
+        <table className="min-w-full text-body-2">
           <thead>
-            <tr className="bg-brandwash text-left text-xs font-semibold uppercase tracking-wide text-navy">
+            <tr className="bg-brandwash text-left text-label-3 uppercase text-navy">
               <th scope="col" className="px-4 py-2.5">
                 Reason
               </th>
@@ -145,8 +145,8 @@ function MatrixTable({
       </div>
       {footnote && footnote.value ? (
         <div className="border-t border-line bg-white px-4 py-2.5">
-          <dt className="text-xs font-medium text-ink-muted">{footnote.label}</dt>
-          <dd className="mt-0.5 break-words text-sm text-ink">{footnote.value}</dd>
+          <dt className="text-label-2 text-ink-muted">{footnote.label}</dt>
+          <dd className="mt-0.5 break-words text-body-2 text-ink">{footnote.value}</dd>
         </div>
       ) : null}
     </section>

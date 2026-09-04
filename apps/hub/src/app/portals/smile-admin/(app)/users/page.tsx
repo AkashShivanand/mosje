@@ -101,7 +101,7 @@ export default function UsersPage() {
                 <div className="flex items-start justify-between gap-sm">
                   <div className="min-w-0">
                     <div className="truncate font-semibold text-ink">{u.name}</div>
-                    <div className="truncate text-label-3 text-ink-muted">
+                    <div className="truncate text-body-3 text-ink-muted">
                       {u.email}
                     </div>
                   </div>
@@ -109,12 +109,12 @@ export default function UsersPage() {
                     {u.status}
                   </Badge>
                 </div>
-                <div className="text-label-3 text-ink-hint">
+                <div className="text-body-3 text-ink-hint">
                   <span className="font-mono">{u.mobile}</span>
                   <span aria-hidden> · </span>
                   <span>{u.role}</span>
                 </div>
-                <div className="text-label-3 text-ink-hint">
+                <div className="text-body-3 text-ink-hint">
                   {u.state}
                   {u.district ? ` / ${u.district}` : ""} · Last seen{" "}
                   <span className="font-mono">{u.lastLogin}</span>
@@ -154,7 +154,7 @@ export default function UsersPage() {
                     </div>
                   </div>
                 </TD>
-                <TD className="font-mono text-body-3 text-ink-muted">{u.mobile}</TD>
+                <TD className="font-mono text-body-2 text-ink-muted">{u.mobile}</TD>
                 <TD>{u.role}</TD>
                 <TD>{u.state}{u.district ? ` / ${u.district}` : ""}</TD>
                 <TD>

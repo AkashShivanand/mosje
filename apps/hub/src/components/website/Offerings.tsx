@@ -174,10 +174,10 @@ export function Offerings() {
     <section className="bg-primary-50 py-12 md:py-16">
       <div className="sa-container">
         <div>
-          <h2 className="text-[28px] sm:text-[32px] font-semibold leading-tight text-primary-dark">
+          <h2 className="text-headline-2 text-primary-dark">
             Our Offerings
           </h2>
-          <p className="mt-2 text-[15px] sm:text-[16px] text-ink-muted">
+          <p className="mt-2 text-body-1 text-ink-muted">
             Discover our schemes, careers, and partnerships.
           </p>
         </div>
@@ -203,7 +203,7 @@ export function Offerings() {
                   aria-controls={`tabpanel-${tab.key}`}
                   onClick={() => setActiveTab(tab.key)}
                   className={cn(
-                    "flex items-center gap-2 rounded-lg px-4 py-2 text-[14px] font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
+                    "flex items-center gap-2 rounded-lg px-4 py-2 text-label-1 transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary",
                     isActive
                       ? "bg-primary text-white shadow-xs"
                       : "text-ink-muted hover:bg-primary-50 hover:text-ink",
@@ -278,20 +278,20 @@ export function Offerings() {
                   {/* Content column */}
                   <div className="flex min-w-0 flex-1 flex-col">
                     {item.tag && (
-                      <span className="mb-1 text-[10px] font-bold uppercase tracking-wider text-ink-muted">
+                      <span className="mb-1 text-label-3 uppercase text-ink-muted">
                         {item.tag}
                       </span>
                     )}
-                    <h3 className="text-[15px] font-semibold leading-snug text-ink transition-colors line-clamp-3 group-hover:text-primary">
+                    <h3 className="text-title-2 text-ink transition-colors line-clamp-3 group-hover:text-primary">
                       {item.title}
                     </h3>
                     {item.description && (
-                      <p className="mt-1.5 text-[13px] leading-snug text-ink-muted line-clamp-4">
+                      <p className="mt-1.5 text-body-2 text-ink-muted line-clamp-4">
                         {item.description}
                       </p>
                     )}
 
-                    <span className="mt-auto flex items-center justify-end gap-1 pt-3 text-xs font-semibold text-primary group-hover:underline">
+                    <span className="mt-auto flex items-center justify-end gap-1 pt-3 text-label-2 text-primary group-hover:underline">
                       {current.cardLink}
                       <Icon
                         name="arrow_forward"

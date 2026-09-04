@@ -63,25 +63,25 @@ export default function AdminLoginPage() {
     <div className="flex min-h-screen flex-col md:flex-row">
       <a
         href="#login-main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-navy focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-navy focus:px-4 focus:py-2 focus:text-label-1 focus:font-semibold focus:text-white"
       >
         Skip to login form
       </a>
       {/* Left hero panel */}
       <aside className="relative hidden flex-col justify-center bg-navy p-12 text-white md:flex md:w-1/2">
         <Image src="/portals/tg/brand/samavesh-logo.svg" alt="SAMAVESH" width={40} height={40} className="h-16 w-16" />
-        <h1 className="mt-6 text-4xl font-bold tracking-tight">National Portal for Transgender Persons</h1>
-        <p className="mt-3 text-xl text-white/85">Officer &amp; Administration Console</p>
+        <h1 className="mt-6 text-headline-3">National Portal for Transgender Persons</h1>
+        <p className="mt-3 text-body-1 text-white/85">Officer &amp; Administration Console</p>
         <div className="my-6 h-1 w-64 rounded bg-saffron" />
-        <p className="text-2xl font-bold leading-tight">Review. Verify. Certify.</p>
-        <p className="mt-5 max-w-md text-base leading-relaxed text-white/75">
+        <p className="text-headline-4">Review. Verify. Certify.</p>
+        <p className="mt-5 max-w-md text-body-1 text-white/75">
           Certificate-of-Identity applications flow through a maker → checker → District Magistrate
           approval chain, with SLA tracking end to end.
         </p>
         {/* bottom offset clears the fixed AppSwitcher FAB (bottom-left) */}
         <div className="absolute inset-x-12 bottom-[var(--cmp-appsw-safe-area)] border-t border-white/15 pt-6">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-white/55">Signing Into</p>
-          <p className="text-sm font-bold">TG Administration</p>
+          <p className="text-label-3 uppercase text-white/55">Signing Into</p>
+          <p className="text-body-2 font-bold">TG Administration</p>
         </div>
       </aside>
 
@@ -90,12 +90,12 @@ export default function AdminLoginPage() {
         <div className="w-full max-w-md">
           <div className="mb-6 flex items-center gap-2 text-navy">
             <Icon name="verified_user" />
-            <span className="rounded-full bg-navy/10 px-2.5 py-1 text-xs font-bold uppercase tracking-wide">
+            <span className="rounded-full bg-navy/10 px-2.5 py-1 text-label-3 uppercase">
               Admin
             </span>
           </div>
-          <h2 className="text-2xl font-bold text-ink">Officer / Admin Login</h2>
-          <p className="mt-1 mb-6 text-sm text-ink-muted">
+          <h2 className="text-headline-4 text-ink">Officer / Admin Login</h2>
+          <p className="mt-1 mb-6 text-body-2 text-ink-muted">
             Sign in with your official email and one-time password.
           </p>
 
@@ -124,11 +124,11 @@ export default function AdminLoginPage() {
                   onChange={(e) => setOtp(e.target.value)}
                   autoFocus
                 />
-                <span className="mt-1.5 block text-xs text-ink-hint">Dev OTP: 123456</span>
+                <span className="mt-1.5 block text-body-3 text-ink-hint">Dev OTP: 123456</span>
               </Field>
             )}
 
-            {error && <p className="text-sm font-medium text-reject-fg">{error}</p>}
+            {error && <p className="text-body-2 font-medium text-reject-fg">{error}</p>}
 
             <Button type="submit" className="w-full">
               {otpSent ? "Verify OTP" : "Send OTP"}
@@ -136,7 +136,7 @@ export default function AdminLoginPage() {
             </Button>
           </form>
 
-          <p className="mt-8 text-center text-xs text-ink-hint">
+          <p className="mt-8 text-center text-body-3 text-ink-hint">
             Ministry of Social Justice &amp; Empowerment, Government of India
           </p>
         </div>

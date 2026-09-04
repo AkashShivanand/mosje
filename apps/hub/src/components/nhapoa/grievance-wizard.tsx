@@ -49,6 +49,17 @@ function districtsFor(state: string): string[] {
   return DISTRICTS[state] ?? ["District 1", "District 2", "District 3"];
 }
 
+/**
+ * The wizard is the whole page for a citizen, so its step title is the page <h1>.
+ * The call-centre page wraps it under its own "Register Grievance" <h1>, so there the
+ * step title is an <h2> at the section role — one h1 per page, no skipped level.
+ */
+function stepHeading(source: CaseSource): { Tag: "h1" | "h2"; className: string } {
+  return source === "call-center"
+    ? { Tag: "h2", className: "text-headline-3 text-ink" }
+    : { Tag: "h1", className: "text-headline-1 text-ink" };
+}
+
 export function GrievanceWizard({
   source = "citizen",
   homeHref = "/portals/nhapoa",
@@ -91,16 +102,18 @@ export function GrievanceWizard({
     setRefNo(c.refNo);
   }
 
+  const { Tag: H, className: hClass } = stepHeading(source);
+
   if (refNo) {
     return (
       <Card className="mx-auto max-w-xl p-10 text-center">
         <Icon name="check_circle" size={56} className="mx-auto text-approve" />
-        <h1 className="mt-4 text-2xl font-bold text-ink">Grievance submitted</h1>
-        <p className="mt-2 text-sm text-ink-muted">The grievance has been registered. Save the reference ID to track its progress.</p>
-        <p className="mt-5 rounded-lg bg-surface-muted px-4 py-3 font-mono text-lg font-bold text-navy">{refNo}</p>
+        <H className={`mt-4 ${hClass}`}>Grievance submitted</H>
+        <p className="mt-2 text-body-2 text-ink-muted">The grievance has been registered. Save the reference ID to track its progress.</p>
+        <p className="mt-5 rounded-lg bg-surface-muted px-4 py-3 font-mono text-title-1 text-navy">{refNo}</p>
         <div className="mt-6 flex justify-center gap-3">
-          <Link href={trackHref} className="rounded-lg bg-navy px-5 py-2.5 text-sm font-semibold text-white hover:bg-navy-800">Track Status</Link>
-          <Link href={homeHref} className="rounded-lg border border-navy/30 px-5 py-2.5 text-sm font-semibold text-navy hover:bg-navy/5">Back to Home</Link>
+          <Link href={trackHref} className="rounded-lg bg-navy px-5 py-2.5 text-label-1 font-semibold text-white hover:bg-navy-800">Track Status</Link>
+          <Link href={homeHref} className="rounded-lg border border-navy/30 px-5 py-2.5 text-label-1 font-semibold text-navy hover:bg-navy/5">Back to Home</Link>
         </div>
       </Card>
     );
@@ -114,8 +127,8 @@ export function GrievanceWizard({
         {step === 0 && (
           <div className="space-y-7">
             <div>
-              <h1 className="text-xl font-bold text-ink">Grievance Registration</h1>
-              <p className="mt-1 text-sm text-ink-muted">Select grievance type, FIR details, and your submission role to proceed.</p>
+              <H className={hClass}>Grievance Registration</H>
+              <p className="mt-1 text-body-2 text-ink-muted">Select grievance type, FIR details, and your submission role to proceed.</p>
             </div>
             <Fieldset legend="Grievance Related To" required>
               <div className="mt-1"><RadioRow name="type" options={GRIEVANCE_TYPES} value={d.type} onChange={(v) => set("type", v)} /></div>
@@ -129,7 +142,7 @@ export function GrievanceWizard({
               </Field>
             )}
             <div role="group" aria-label="Registration of Grievance By">
-              <p className="mb-3 text-xs font-bold uppercase tracking-wide text-ink-hint">Registration of Grievance By</p>
+              <p className="mb-3 text-label-3 uppercase text-ink-hint">Registration of Grievance By</p>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
                 {SUBMISSION_ROLES.map((r) => {
                   const iconName = ROLE_ICON[r.id as keyof typeof ROLE_ICON];
@@ -143,15 +156,15 @@ export function GrievanceWizard({
                       className={`rounded-xl border p-4 text-left transition-colors ${active ? "border-navy bg-brandwash" : "border-line hover:border-navy/30"}`}
                     >
                       <span className={`flex h-9 w-9 items-center justify-center rounded-lg ${active ? "bg-navy text-white" : "bg-navy/10 text-navy"}`}><Icon name={iconName} size={20} /></span>
-                      <p className="mt-3 text-sm font-bold text-ink">{r.label}</p>
-                      <p className="mt-1 text-xs text-ink-muted">{r.desc}</p>
+                      <p className="mt-3 text-title-3 text-ink">{r.label}</p>
+                      <p className="mt-1 text-body-3 text-ink-muted">{r.desc}</p>
                     </button>
                   );
                 })}
               </div>
             </div>
             <div>
-              <p className="mb-3 text-xs font-bold uppercase tracking-wide text-ink-hint">Identity Verification</p>
+              <p className="mb-3 text-label-3 uppercase text-ink-hint">Identity Verification</p>
               <Field label="Mobile No." required>
                 <div className="flex gap-2">
                   <TextInput inputMode="numeric" maxLength={10} value={d.idMobile} onChange={(e) => set("idMobile", e.target.value.replace(/\D/g, ""))} placeholder="Enter 10-digit Mobile Number" />
@@ -160,14 +173,14 @@ export function GrievanceWizard({
                       {otpSent ? "Verify" : "Send OTP"}
                     </Button>
                   ) : (
-                    <span className="inline-flex items-center gap-1 rounded-lg bg-approve-bg px-3 text-sm font-semibold text-approve-fg"><Icon name="check_circle" size={16} /> Verified</span>
+                    <span className="inline-flex items-center gap-1 rounded-lg bg-approve-bg px-3 text-label-1 font-semibold text-approve-fg"><Icon name="check_circle" size={16} /> Verified</span>
                   )}
                 </div>
               </Field>
               {otpSent && !d.otpVerified && (
                 <div className="mt-3 flex items-end gap-2">
                   <Field label="Enter OTP" className="w-40"><TextInput inputMode="numeric" maxLength={6} placeholder="6-digit OTP" onChange={(e) => { if (e.target.value.replace(/\D/g, "").length === 6) set("otpVerified", true); }} /></Field>
-                  <span className="pb-3 text-xs text-ink-hint">OTP sent to your registered mobile (demo: any 6 digits).</span>
+                  <span className="pb-3 text-body-3 text-ink-hint">OTP sent to your registered mobile (demo: any 6 digits).</span>
                 </div>
               )}
             </div>
@@ -175,7 +188,7 @@ export function GrievanceWizard({
         )}
 
         {step === 1 && (
-          <StepForm title="Informer Details" desc="Details of the person filing this grievance.">
+          <StepForm source={source} title="Informer Details" desc="Details of the person filing this grievance.">
             <Field label="Full Name" required><TextInput value={d.infName} onChange={(e) => set("infName", e.target.value)} placeholder="Enter full name" /></Field>
             <Field label="Mobile" required><TextInput inputMode="numeric" maxLength={10} value={d.infMobile} onChange={(e) => set("infMobile", e.target.value.replace(/\D/g, ""))} placeholder="10-digit mobile" /></Field>
             <Field label="State" required><Select options={STATES} placeholder="Select State" value={d.infState} onChange={(e) => { set("infState", e.target.value); set("infDistrict", ""); }} /></Field>
@@ -185,7 +198,7 @@ export function GrievanceWizard({
         )}
 
         {step === 2 && (
-          <StepForm title="Victim Details" desc={d.role === "Informer" ? "Details of the affected person (optional if same as informer)." : "Details of the affected person."}>
+          <StepForm source={source} title="Victim Details" desc={d.role === "Informer" ? "Details of the affected person (optional if same as informer)." : "Details of the affected person."}>
             <Field label="Full Name" required={d.role === "Victim"}><TextInput value={d.vicName} onChange={(e) => set("vicName", e.target.value)} placeholder="Enter full name" /></Field>
             <Field label="Mobile"><TextInput inputMode="numeric" maxLength={10} value={d.vicMobile} onChange={(e) => set("vicMobile", e.target.value.replace(/\D/g, ""))} placeholder="10-digit mobile" /></Field>
             <Field label="Date of Birth"><TextInput type="date" value={d.vicDob} onChange={(e) => set("vicDob", e.target.value)} /></Field>
@@ -193,7 +206,7 @@ export function GrievanceWizard({
         )}
 
         {step === 3 && (
-          <StepForm title="Grievance Details" desc="Describe the incident and its category.">
+          <StepForm source={source} title="Grievance Details" desc="Describe the incident and its category.">
             <Field label="Category (nature of atrocity)" required className="sm:col-span-2"><Select options={categoryOptions} placeholder="Select category" value={d.category} onChange={(e) => set("category", e.target.value)} /></Field>
             <Field label="State" required><Select options={STATES} placeholder="Select State" value={d.incState} onChange={(e) => { set("incState", e.target.value); set("incDistrict", ""); }} /></Field>
             <Field label="District"><Select options={districtsFor(d.incState)} placeholder="Select District" value={d.incDistrict} onChange={(e) => set("incDistrict", e.target.value)} /></Field>
@@ -201,11 +214,11 @@ export function GrievanceWizard({
             <Field label="Incident Date" required><TextInput type="date" value={d.incDate} onChange={(e) => set("incDate", e.target.value)} /></Field>
             <Field label="Description" required className="sm:col-span-2"><Textarea rows={4} value={d.description} onChange={(e) => set("description", e.target.value)} placeholder="Describe what happened in your own words" /></Field>
             <div className="sm:col-span-2">
-              <p className="mb-1.5 text-sm font-medium text-ink">Supporting Documents</p>
-              <button type="button" onClick={() => set("documents", [...d.documents, `evidence-${d.documents.length + 1}.pdf`])} className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-navy/30 bg-white px-4 py-6 text-sm font-semibold text-navy hover:bg-navy/5">
+              <p className="mb-1.5 text-label-1 text-ink">Supporting Documents</p>
+              <button type="button" onClick={() => set("documents", [...d.documents, `evidence-${d.documents.length + 1}.pdf`])} className="flex w-full items-center justify-center gap-2 rounded-lg border border-dashed border-navy/30 bg-white px-4 py-6 text-label-1 font-semibold text-navy hover:bg-navy/5">
                 <Icon name="cloud_upload" size={20} /> Add a document (max 5 MB · PDF/JPG/PNG)
               </button>
-              {d.documents.map((f) => <p key={f} className="mt-2 rounded bg-surface-muted px-3 py-1.5 text-xs text-ink-muted">{f}</p>)}
+              {d.documents.map((f) => <p key={f} className="mt-2 rounded bg-surface-muted px-3 py-1.5 text-body-3 text-ink-muted">{f}</p>)}
             </div>
           </StepForm>
         )}
@@ -213,10 +226,10 @@ export function GrievanceWizard({
         {step === 4 && (
           <div className="space-y-6">
             <div>
-              <h1 className="text-xl font-bold text-ink">Review Your Submission</h1>
-              <p className="mt-1 text-sm text-ink-muted">Please review all details carefully. You will not be able to edit after submission.</p>
+              <H className={hClass}>Review Your Submission</H>
+              <p className="mt-1 text-body-2 text-ink-muted">Please review all details carefully. You will not be able to edit after submission.</p>
             </div>
-            <div className="flex items-start gap-2 rounded-lg bg-await-bg/60 px-4 py-3 text-sm text-await-fg">
+            <div className="flex items-start gap-2 rounded-lg bg-await-bg/60 px-4 py-3 text-body-2 text-await-fg">
               <Icon name="verified_user" size={16} className="mt-0.5 shrink-0" />
               Once submitted, the details of your grievance cannot be modified. Please verify everything is accurate before proceeding.
             </div>
@@ -225,8 +238,8 @@ export function GrievanceWizard({
             <ReviewBlock title="Grievance Details" rows={[["Type", d.type], ["Category", d.category], ["Location", [d.incLocation, d.incDistrict, d.incState].filter(Boolean).join(", ")], ["Incident Date", d.incDate], ["Description", d.description]]} />
             {d.documents.length > 0 && (
               <div>
-                <p className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-hint">Uploaded Documents ({d.documents.length})</p>
-                {d.documents.map((f) => <p key={f} className="rounded border border-line px-3 py-2 text-sm text-ink">{f}</p>)}
+                <p className="mb-2 text-label-3 uppercase text-ink-hint">Uploaded Documents ({d.documents.length})</p>
+                {d.documents.map((f) => <p key={f} className="rounded border border-line px-3 py-2 text-body-2 text-ink">{f}</p>)}
               </div>
             )}
             <Checkbox
@@ -254,12 +267,13 @@ export function GrievanceWizard({
   );
 }
 
-function StepForm({ title, desc, children }: { title: string; desc: string; children: React.ReactNode }) {
+function StepForm({ source, title, desc, children }: { source: CaseSource; title: string; desc: string; children: React.ReactNode }) {
+  const { Tag: H, className: hClass } = stepHeading(source);
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-xl font-bold text-ink">{title}</h1>
-        <p className="mt-1 text-sm text-ink-muted">{desc}</p>
+        <H className={hClass}>{title}</H>
+        <p className="mt-1 text-body-2 text-ink-muted">{desc}</p>
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">{children}</div>
     </div>
@@ -269,12 +283,12 @@ function StepForm({ title, desc, children }: { title: string; desc: string; chil
 function ReviewBlock({ title, rows }: { title: string; rows: [string, string | undefined][] }) {
   return (
     <div className="border-t border-line pt-5">
-      <p className="mb-3 text-xs font-bold uppercase tracking-wide text-ink-hint">{title}</p>
+      <p className="mb-3 text-label-3 uppercase text-ink-hint">{title}</p>
       <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-3">
         {rows.map(([label, value]) => (
           <div key={label}>
-            <div className="text-xs text-ink-hint">{label}</div>
-            <div className="mt-0.5 text-sm text-ink">{value || "—"}</div>
+            <div className="text-body-3 text-ink-hint">{label}</div>
+            <div className="mt-0.5 text-body-2 text-ink">{value || "—"}</div>
           </div>
         ))}
       </div>

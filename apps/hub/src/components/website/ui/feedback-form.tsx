@@ -23,7 +23,7 @@ export function FeedbackForm() {
         setSent(true);
       }}
     >
-      <p className="text-[13px] text-ink-muted">
+      <p className="text-body-2 text-ink-muted">
         Fields marked <span className="text-red-600">*</span> are required. We typically respond within 3 working days.
       </p>
       <div className="grid gap-4 sm:grid-cols-2">

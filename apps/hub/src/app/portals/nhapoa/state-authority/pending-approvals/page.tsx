@@ -60,19 +60,19 @@ export default function PendingApprovalsPage() {
 
       <div className="mb-5 flex flex-wrap gap-2">
         {tabs.map((t) => (
-          <button key={t.key} type="button" onClick={() => setTab(t.key)} className={cn("rounded-lg border px-4 py-2 text-sm font-semibold transition-colors", tab === t.key ? "border-navy bg-navy text-white" : "border-line text-ink-muted hover:bg-black/5")}>
+          <button key={t.key} type="button" onClick={() => setTab(t.key)} className={cn("rounded-lg border px-4 py-2 text-label-1 font-semibold transition-colors", tab === t.key ? "border-navy bg-navy text-white" : "border-line text-ink-muted hover:bg-black/5")}>
             {t.label} ({t.count})
           </button>
         ))}
       </div>
 
       {filtered.length === 0 ? (
-        <Card className="px-6 py-16 text-center text-sm text-ink-muted">No pending approvals.</Card>
+        <Card className="px-6 py-16 text-center text-body-2 text-ink-muted">No pending approvals.</Card>
       ) : (
         <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-card">
-          <table className="w-full min-w-[820px] text-left text-sm">
+          <table className="w-full min-w-[820px] text-left text-body-2">
             <thead>
-              <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-hint">
+              <tr className="border-b border-line text-label-3 uppercase text-ink-hint">
                 <th className="px-5 py-3.5 font-semibold">Grievance ID</th>
                 <th className="px-5 py-3.5 font-semibold">Citizen / Role</th>
                 <th className="px-5 py-3.5 font-semibold">Category</th>
@@ -85,8 +85,8 @@ export default function PendingApprovalsPage() {
             <tbody className="divide-y divide-line">
               {filtered.map((c) => (
                 <tr key={c.id} className="hover:bg-surface-muted/60">
-                  <td className="px-5 py-4 align-top"><span className="font-mono text-xs font-semibold text-navy">{c.refNo}</span><PriorityBadge case={c} /></td>
-                  <td className="px-5 py-4 align-top"><div className="font-medium text-ink">{c.complainant.name}</div><div className="text-xs text-ink-hint">{c.complainantRole}</div></td>
+                  <td className="px-5 py-4 align-top"><span className="font-mono text-body-3 font-semibold text-navy">{c.refNo}</span><PriorityBadge case={c} /></td>
+                  <td className="px-5 py-4 align-top"><div className="font-medium text-ink">{c.complainant.name}</div><div className="text-body-3 text-ink-hint">{c.complainantRole}</div></td>
                   <td className="px-5 py-4 align-top max-w-[200px]"><span className="line-clamp-2 text-ink">{c.category}</span></td>
                   <td className="px-5 py-4 align-top text-ink-muted">{c.district}</td>
                   <td className="px-5 py-4 align-top text-ink-muted">{fmtDate(c.createdAt)}</td>
@@ -116,7 +116,7 @@ export default function PendingApprovalsPage() {
         }
       >
         {review && (
-          <div className="space-y-5 text-sm">
+          <div className="space-y-5 text-body-2">
             <div className="grid grid-cols-2 gap-4">
               <Info label="Citizen" value={`${review.complainant.name} (${review.complainantRole})`} />
               <Info label="Category" value={review.category} />
@@ -128,7 +128,7 @@ export default function PendingApprovalsPage() {
             <Field label="Decision note"><Textarea rows={2} value={note} onChange={(e) => setNote(e.target.value)} placeholder="Reason / remarks for the audit log" /></Field>
             {decision && (
               <div className="flex items-center justify-between rounded-lg bg-surface-muted px-4 py-3">
-                <span className="text-sm">
+                <span className="text-body-2">
                   {decision === "approve"
                     ? <>Approve and forward to <span className="font-semibold text-ink">Finance Officer</span> ({fmtINR(Number(amount) || undefined)})?</>
                     : <>Send back to <span className="font-semibold text-ink">DM/DC Office</span> for rework?</>}
@@ -146,7 +146,7 @@ export default function PendingApprovalsPage() {
 function Info({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div>
-      <div className="text-xs text-ink-hint">{label}</div>
+      <div className="text-body-3 text-ink-hint">{label}</div>
       <div className="mt-0.5 text-ink">{value}</div>
     </div>
   );

@@ -13,21 +13,21 @@ export default function SageRegistrationLandingPage() {
   return (
     <UserShell>
       <Card className="p-6 sm:p-8">
-        <h1 className="text-2xl font-bold text-ink">SAGE Initiative</h1>
-        <p className="mt-2 text-sm leading-relaxed text-ink-muted">
+        <h1 className="text-headline-1 text-ink">SAGE Initiative</h1>
+        <p className="mt-2 text-body-2 text-ink-muted">
           The Seniorcare Ageing Growth Engine (SAGE) identifies, evaluates, and supports
           innovative products and services for senior citizens.
         </p>
 
         {/* Eligibility Criteria nested card */}
         <div className="mt-6 rounded-2xl border border-line p-5 sm:p-6">
-          <h2 className="text-lg font-bold text-ink">Eligibility Criteria</h2>
+          <h2 className="text-title-1 text-ink">Eligibility Criteria</h2>
 
           <div className="mt-5">
-            <div className="text-xs font-bold uppercase tracking-wide text-ink-hint">
+            <div className="text-label-3 uppercase text-ink-hint">
               Category Requirement (Must meet either A or B)
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-ink-muted">
+            <p className="mt-3 text-body-2 text-ink-muted">
               a) Innovative ideas awarded in National level innovation challenges such as Smart
               India Hackathons (of M/o Education) or such other innovative drives – proposing to
               set up companies&apos; products and services aimed at the welfare of the elderly in
@@ -35,12 +35,12 @@ export default function SageRegistrationLandingPage() {
             </p>
 
             <div className="my-4 flex justify-center">
-              <span className="inline-flex items-center rounded-full bg-navy px-4 py-1.5 text-xs font-bold text-white">
+              <span className="inline-flex items-center rounded-full bg-navy px-4 py-1.5 text-label-2 text-white">
                 OR
               </span>
             </div>
 
-            <p className="text-sm leading-relaxed text-ink-muted">
+            <p className="text-body-2 text-ink-muted">
               b) Start-ups already functioning in the elderly segment in India proposing to expand
               operations. All the startups fulfilling the startup norms as per guidelines by the
               Department for Promotion of Industry and Internal Trade (DPIIT), Ministry of
@@ -49,10 +49,10 @@ export default function SageRegistrationLandingPage() {
           </div>
 
           <div className="mt-6">
-            <div className="text-xs font-bold uppercase tracking-wide text-ink-hint">
+            <div className="text-label-3 uppercase text-ink-hint">
               Essential Criteria (Both A &amp; B must meet all)
             </div>
-            <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-ink-muted">
+            <ul className="mt-3 list-disc space-y-2 pl-5 text-body-2 text-ink-muted">
               {ESSENTIAL_CRITERIA.map((c) => (
                 <li key={c}>{c}</li>
               ))}
@@ -61,7 +61,7 @@ export default function SageRegistrationLandingPage() {
         </div>
 
         {/* Confirmation checkbox */}
-        <label className="mt-6 flex items-start gap-3 text-sm text-ink">
+        <label className="mt-6 flex items-start gap-3 text-body-2 text-ink">
           <input
             type="checkbox"
             className="mt-0.5 h-4 w-4 shrink-0 rounded border-line text-navy focus:ring-navy/30"

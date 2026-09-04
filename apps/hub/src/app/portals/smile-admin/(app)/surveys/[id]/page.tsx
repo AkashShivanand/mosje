@@ -110,7 +110,7 @@ export default function SurveyLocationDetailPage() {
                     Surveyors assigned
                   </span>
                 </div>
-                <span className="text-title-2 font-bold tabular-nums text-ink">
+                <span className="text-title-2 tabular-nums text-ink">
                   {formatNumber(loc.surveyors)}
                 </span>
               </li>
@@ -123,7 +123,7 @@ export default function SurveyLocationDetailPage() {
                     Identified
                   </span>
                 </div>
-                <span className="text-title-2 font-bold tabular-nums text-ink">
+                <span className="text-title-2 tabular-nums text-ink">
                   {formatNumber(loc.identified)}
                 </span>
               </li>
@@ -153,7 +153,7 @@ function Field({
 }) {
   return (
     <div className={wide ? "sm:col-span-2" : ""}>
-      <dt className="inline-flex items-center gap-xs text-label-3 font-semibold uppercase tracking-[0.08em] text-ink-muted">
+      <dt className="inline-flex items-center gap-xs text-label-3 uppercase text-ink-muted">
         <span className="text-ink-hint">{icon}</span>
         {label}
       </dt>

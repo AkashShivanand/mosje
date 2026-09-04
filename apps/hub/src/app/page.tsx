@@ -59,7 +59,7 @@ export default async function HomePage() {
     <div className="flex min-h-screen flex-col bg-surface-muted">
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-on-primary"
+        className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:left-4 focus:top-4 focus:rounded-lg focus:bg-primary focus:px-4 focus:py-2 text-label-1 font-semibold focus:text-on-primary"
       >
         Skip to main content
       </a>
@@ -73,7 +73,7 @@ export default async function HomePage() {
           <EstateField />
 
           <div className="sa-container relative py-20 sm:py-24">
-            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em] text-primary shadow-xs backdrop-blur">
+            <div className="inline-flex items-center gap-2 rounded-full border border-border bg-surface/70 px-3 py-1 text-label-3 uppercase text-primary shadow-xs backdrop-blur">
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-primary" />
               Government of India
             </div>
@@ -81,12 +81,12 @@ export default async function HomePage() {
             {/* No max-width clamp: the full title fits the 1280px column on one
                 line at lg. Clamping it to max-w-3xl (768px) forced a wrap that
                 orphaned the "&" at the end of line 1. */}
-            <h1 className="mt-6 text-balance text-4xl font-bold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.5rem]">
+            <h1 className="mt-6 text-balance text-headline-1 text-ink">
               Ministry of Social Justice{" "}
               <span className="whitespace-nowrap text-primary">&amp; Empowerment</span>
             </h1>
 
-            <p className="mt-5 max-w-2xl text-lg leading-relaxed text-ink-muted">
+            <p className="mt-5 max-w-measure text-body-1 text-ink-muted">
               One front door to the entire digital estate — the unified website,
               the SAMAVESH design system, every workflow portal, and the reports
               behind them.
@@ -95,14 +95,14 @@ export default async function HomePage() {
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <a
                 href="/portals"
-                className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-semibold text-on-primary shadow-xs transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                className="inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 text-label-1 font-semibold text-on-primary shadow-xs transition-colors hover:bg-primary-dark focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 Browse the portals
                 <Icon name="arrow_forward" size={16} aria-hidden="true" />
               </a>
               <a
                 href="/website"
-                className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-border-strong hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                className="inline-flex items-center gap-2 rounded-lg border border-border bg-surface px-5 py-3 text-label-1 font-semibold text-ink transition-colors hover:border-border-strong hover:bg-surface-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
               >
                 Visit the website
               </a>
@@ -118,7 +118,7 @@ export default async function HomePage() {
           <div className="mb-8">
             <h2
               id="destinations-heading"
-              className="text-2xl font-bold tracking-tight text-ink"
+              className="text-headline-2 text-ink"
             >
               Explore the estate
             </h2>
@@ -140,11 +140,11 @@ export default async function HomePage() {
                     <Icon name={iconName} aria-hidden="true" />
                   </span>
                 </div>
-                <h3 className="text-xl font-bold tracking-tight text-ink">{title}</h3>
-                <p className="mb-6 mt-2 flex-1 text-sm leading-relaxed text-ink-muted">
+                <h3 className="text-title-2 text-ink">{title}</h3>
+                <p className="mb-6 mt-2 flex-1 text-body-2 text-ink-muted">
                   {description}
                 </p>
-                <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary transition-all group-hover:gap-2.5">
+                <span className="inline-flex items-center gap-1.5 text-label-1 font-semibold text-primary transition-all group-hover:gap-2.5">
                   {cta}
                   <Icon name="arrow_forward" size={16} aria-hidden="true" />
                 </span>
@@ -161,7 +161,7 @@ export default async function HomePage() {
           <div className="sa-container py-12">
             <h2
               id="glance-heading"
-              className="mb-8 text-xs font-semibold uppercase tracking-[0.16em] text-ink-muted"
+              className="mb-8 text-headline-2 text-ink-muted"
             >
               The estate at a glance
             </h2>
@@ -169,11 +169,11 @@ export default async function HomePage() {
               {glance.map(({ icon: iconName, value, label, sub }) => (
                 <div key={label} className="flex flex-col gap-2">
                   <Icon name={iconName} size={20} className="text-primary" aria-hidden="true" />
-                  <dd className="text-4xl font-bold tracking-tight text-ink">
+                  <dd className="text-headline-2 font-bold tabular-nums text-ink">
                     {value}
                   </dd>
-                  <dt className="text-sm font-semibold text-ink">{label}</dt>
-                  <p className="text-xs text-ink-muted">{sub}</p>
+                  <dt className="text-label-1 font-semibold text-ink">{label}</dt>
+                  <p className="text-body-3 text-ink-muted">{sub}</p>
                 </div>
               ))}
             </dl>

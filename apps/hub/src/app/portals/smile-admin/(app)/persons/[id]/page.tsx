@@ -50,7 +50,7 @@ export default function PersonDetail() {
               { label: "District",  value: person.district,       icon: "call" },
             ].map((f) => (
               <div key={f.label} className="space-y-xs">
-                <div className="text-label-2 uppercase tracking-wide text-ink-muted">{f.label}</div>
+                <div className="text-label-3 uppercase text-ink-muted">{f.label}</div>
                 <div className="flex items-center gap-xs text-body-2 font-semibold text-ink"><Icon name={f.icon} size={14} className="text-ink-muted" />{f.value}</div>
               </div>
             ))}
@@ -60,7 +60,7 @@ export default function PersonDetail() {
           <CardHeader><CardTitle>Implementing Agency</CardTitle></CardHeader>
           <CardBody>
             <div className="text-body-1 font-semibold text-ink">{person.ia ?? "Not yet assigned"}</div>
-            <p className="mt-xs text-body-3 text-ink-muted">Field operations partner responsible for the active stage of this beneficiary&apos;s rehabilitation journey.</p>
+            <p className="mt-xs text-body-2 text-ink-muted">Field operations partner responsible for the active stage of this beneficiary&apos;s rehabilitation journey.</p>
           </CardBody>
         </Card>
       </div>
@@ -72,14 +72,14 @@ export default function PersonDetail() {
             {TIMELINE.map((t, i) => (
               <li key={t.stage} className="mb-lg ml-lg">
                 <span className="absolute -left-2 grid h-4 w-4 place-items-center rounded-full bg-primary text-white">
-                  <span className="text-label-3 font-bold">{i + 1}</span>
+                  <span className="text-label-2">{i + 1}</span>
                 </span>
                 <div className="flex flex-wrap items-baseline gap-sm">
                   <div className="text-body-2 font-semibold text-ink">{t.stage}</div>
                   <div className="text-label-2 text-ink-muted">· {t.date}</div>
                 </div>
                 <div className="text-label-2 text-ink-muted">{t.who}</div>
-                <p className="mt-xs text-body-3 text-ink">{t.note}</p>
+                <p className="mt-xs text-body-2 text-ink">{t.note}</p>
               </li>
             ))}
           </ol>

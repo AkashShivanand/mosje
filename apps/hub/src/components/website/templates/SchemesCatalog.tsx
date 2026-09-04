@@ -92,7 +92,7 @@ export function SchemesCatalog({
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search schemes by name, keyword or category…"
-                  className="w-full rounded-xl border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-sm focus:border-primary focus:outline-none shadow-xs"
+                  className="w-full rounded-xl border border-gray-300 bg-white py-2.5 pl-10 pr-4 text-body-2 focus:border-primary focus:outline-none shadow-xs"
                 />
               </div>
 
@@ -129,7 +129,7 @@ export function SchemesCatalog({
 
             {/* Category Filter Pills */}
             <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-gray-200/80">
-              <span className="text-xs font-bold text-ink-muted uppercase mr-1">
+              <span className="text-label-3 uppercase text-ink-muted mr-1">
                 Filter:
               </span>
               {CATEGORIES.map((cat) => {
@@ -140,7 +140,7 @@ export function SchemesCatalog({
                     type="button"
                     onClick={() => setActiveCategory(cat)}
                     className={cn(
-                      "rounded-full px-4 py-1.5 text-xs font-semibold transition",
+                      "rounded-full px-4 py-1.5 text-label-2 transition",
                       isActive
                         ? "bg-primary text-white shadow-xs"
                         : "bg-white border border-gray-200 text-ink-muted hover:border-primary/40 hover:text-primary"
@@ -154,7 +154,7 @@ export function SchemesCatalog({
           </div>
 
           {/* Results Count */}
-          <div className="mt-6 flex items-center justify-between text-xs text-ink-muted px-1">
+          <div className="mt-6 flex items-center justify-between text-body-3 text-ink-muted px-1">
             <span>
               Showing <strong>{filtered.length}</strong> schemes
             </span>
@@ -170,22 +170,22 @@ export function SchemesCatalog({
                 >
                   <div>
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
-                      <span className="rounded bg-primary/10 px-2.5 py-0.5 text-[11px] font-bold text-primary uppercase tracking-wide">
+                      <span className="rounded bg-primary/10 px-2.5 py-0.5 text-label-3 uppercase text-primary">
                         {scheme.category ?? "Welfare Scheme"}
                       </span>
                       {scheme.targetGroup && scheme.targetGroup.length > 0 && (
-                        <span className="text-[11px] font-medium text-ink-muted">
+                        <span className="text-body-3 text-ink-muted">
                           {scheme.targetGroup[0]}
                         </span>
                       )}
                     </div>
 
-                    <h3 className="text-[17px] font-bold leading-snug text-ink group-hover:text-primary transition-colors">
+                    <h3 className="text-title-2 text-ink group-hover:text-primary transition-colors">
                       {scheme.title}
                     </h3>
 
                     {scheme.description && (
-                      <p className="mt-2.5 text-xs leading-relaxed text-ink-muted line-clamp-3">
+                      <p className="mt-2.5 text-body-3 text-ink-muted line-clamp-3">
                         {scheme.description}
                       </p>
                     )}
@@ -194,7 +194,7 @@ export function SchemesCatalog({
                   <div className="mt-6 pt-4 border-t border-gray-150 flex items-center justify-between">
                     <NextLink
                       href={`/website/schemes-services/${scheme.slug}`}
-                      className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
+                      className="text-label-2 text-primary hover:underline flex items-center gap-1"
                     >
                       Scheme Details
                       <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-1" />
@@ -204,7 +204,7 @@ export function SchemesCatalog({
                         href={scheme.sourceUrl}
                         external
                         variant="standalone"
-                        className="text-[11px] font-semibold text-gray-500 hover:text-primary"
+                        className="text-label-2 text-gray-500 hover:text-primary"
                       >
                         Portal
                       </Link>
@@ -216,8 +216,8 @@ export function SchemesCatalog({
           ) : (
             <div className="mt-5 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-xs">
               <div className="overflow-x-auto">
-                <table className="w-full text-left text-sm text-ink border-collapse">
-                  <thead className="bg-gray-50 text-xs font-bold uppercase tracking-wider text-ink-muted border-b border-gray-200">
+                <table className="w-full text-left text-body-2 text-ink border-collapse">
+                  <thead className="bg-gray-50 text-label-3 uppercase text-ink-muted border-b border-gray-200">
                     <tr>
                       <th className="py-3.5 px-4">Scheme Name</th>
                       <th className="py-3.5 px-4">Category</th>
@@ -225,7 +225,7 @@ export function SchemesCatalog({
                       <th className="py-3.5 px-4 text-right">Action</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-150 text-xs sm:text-sm">
+                  <tbody className="divide-y divide-gray-150 text-body-2">
                     {filtered.map((s) => (
                       <tr key={s.slug} className="hover:bg-gray-50/80 transition">
                         <td className="py-3.5 px-4 font-semibold text-ink">
@@ -242,7 +242,7 @@ export function SchemesCatalog({
                         <td className="py-3.5 px-4 text-right">
                           <NextLink
                             href={`/website/schemes-services/${s.slug}`}
-                            className={buttonClasses("primary", "outlined", "sm", "text-xs px-3 py-1")}
+                            className={buttonClasses("primary", "outlined", "sm", "text-label-2 px-3 py-1")}
                           >
                             View
                           </NextLink>

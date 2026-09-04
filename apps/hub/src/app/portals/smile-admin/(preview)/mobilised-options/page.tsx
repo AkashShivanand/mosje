@@ -39,10 +39,10 @@ function Header({ compact = false }: { compact?: boolean }) {
   return (
     <div className="flex items-start justify-between gap-sm md:gap-md">
       <div className="min-w-0 space-y-1">
-        <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-primary md:tracking-[0.1em]">
+        <div className="text-label-3 uppercase text-primary">
           Total Mobilised
         </div>
-        <div className="text-num-lg font-bold leading-none tabular-nums text-ink md:text-num-xl">
+        <div className="text-headline-2 tabular-nums text-ink">
           {TOTAL}
         </div>
       </div>
@@ -66,13 +66,13 @@ function VariantA() {
       <Header />
       <div className="grid grid-cols-2 gap-xs">
         <div className="rounded-md bg-primary-50/70 p-xs ring-1 ring-inset ring-primary-100">
-          <div className="flex items-center gap-xxs text-label-3 font-medium text-ink-muted">
+          <div className="flex items-center gap-xxs text-label-2 text-ink-muted">
             <Icon name="home" size={12} aria-hidden className="text-primary" /> Shelter Home
           </div>
           <div className="mt-0.5 text-body-1 font-bold tabular-nums text-ink">{SHELTER}</div>
         </div>
         <div className="rounded-md bg-info-50 p-xs ring-1 ring-inset ring-info-100">
-          <div className="flex items-center gap-xxs text-label-3 font-medium text-ink-muted">
+          <div className="flex items-center gap-xxs text-label-2 text-ink-muted">
             <Icon name="child_care" size={12} aria-hidden className="text-info-600" /> Child Rehab
           </div>
           <div className="mt-0.5 text-body-1 font-bold tabular-nums text-ink">{CHILD}</div>
@@ -179,13 +179,13 @@ function VariantD() {
       <Header />
       <div className="grid grid-cols-2 divide-x divide-stroke-200 border-t border-stroke-100 pt-sm">
         <div className="flex flex-col items-center gap-0.5 px-xs text-center">
-          <div className="flex items-center gap-xxs text-label-3 font-medium uppercase tracking-[0.06em] text-ink-muted">
+          <div className="flex items-center gap-xxs text-label-3 uppercase text-ink-muted">
             <Icon name="home" size={12} aria-hidden className="text-primary" /> Shelter
           </div>
           <div className="text-body-1 font-bold tabular-nums text-ink">{SHELTER}</div>
         </div>
         <div className="flex flex-col items-center gap-0.5 px-xs text-center">
-          <div className="flex items-center gap-xxs text-label-3 font-medium uppercase tracking-[0.06em] text-ink-muted">
+          <div className="flex items-center gap-xxs text-label-3 uppercase text-ink-muted">
             <Icon name="child_care" size={12} aria-hidden className="text-info-600" /> Child Rehab
           </div>
           <div className="text-body-1 font-bold tabular-nums text-ink">{CHILD}</div>
@@ -203,11 +203,11 @@ function VariantE() {
       <AccentBar />
       <Header compact />
       <div className="flex flex-wrap items-center gap-xs">
-        <span className="inline-flex items-center gap-xxs rounded-full bg-primary-50 px-2 py-0.5 text-label-3 font-semibold text-primary ring-1 ring-inset ring-primary-100">
+        <span className="inline-flex items-center gap-xxs rounded-full bg-primary-50 px-2 py-0.5 text-label-2 text-primary ring-1 ring-inset ring-primary-100">
           <Icon name="home" size={12} aria-hidden /> Shelter
           <span className="tabular-nums">{SHELTER}</span>
         </span>
-        <span className="inline-flex items-center gap-xxs rounded-full bg-info-50 px-2 py-0.5 text-label-3 font-semibold text-info-600 ring-1 ring-inset ring-info-100">
+        <span className="inline-flex items-center gap-xxs rounded-full bg-info-50 px-2 py-0.5 text-label-2 text-info-600 ring-1 ring-inset ring-info-100">
           <Icon name="child_care" size={12} aria-hidden /> Child Rehab
           <span className="tabular-nums">{CHILD}</span>
         </span>
@@ -278,10 +278,10 @@ function VariantF() {
       <AccentBar />
       <div className="flex items-center justify-between gap-md">
         <div className="min-w-0 space-y-1">
-          <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-primary md:tracking-[0.1em]">
+          <div className="text-label-3 uppercase text-primary">
             Total Mobilised
           </div>
-          <div className="text-num-lg font-bold leading-none tabular-nums text-ink md:text-num-xl">
+          <div className="text-headline-2 tabular-nums text-ink">
             {TOTAL}
           </div>
         </div>
@@ -380,13 +380,13 @@ export default function MobilisedOptionsPreview() {
     <div className="min-h-screen bg-neutral-50/60 p-lg md:p-2xl">
       <div className="mx-auto max-w-[1200px] space-y-2xl">
         <header className="space-y-1">
-          <div className="text-label-3 font-semibold uppercase tracking-[0.1em] text-primary">
+          <div className="text-label-3 uppercase text-primary">
             SMILE · dashboard preview
           </div>
           <h1 className="text-heading-2 font-bold text-ink">
             Mobilised aggregate card — layout options
           </h1>
-          <p className="max-w-2xl text-body-2 text-ink-muted">
+          <p className="max-w-measure text-body-2 text-ink-muted">
             Six faithful variants of the restructured card. Total Mobilised{" "}
             <strong className="text-ink">10,229</strong> = Shelter Home{" "}
             <strong className="text-ink">7,579</strong> + Child Rehabilitation{" "}
@@ -404,7 +404,7 @@ export default function MobilisedOptionsPreview() {
                 <div className="min-w-0 truncate text-body-2 font-semibold text-ink">
                   Option {v.id} · {v.title}
                 </div>
-                <span className="shrink-0 rounded-full bg-primary-50 px-2 py-0.5 text-label-3 font-semibold text-primary">
+                <span className="shrink-0 rounded-full bg-primary-50 px-2 py-0.5 text-label-2 text-primary">
                   {v.note}
                 </span>
               </div>

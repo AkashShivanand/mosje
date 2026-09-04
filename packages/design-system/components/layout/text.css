@@ -1,0 +1,252 @@
+/*
+ * Heading and Text — the estate's two text primitives.
+ *
+ * One rule binds the four properties a role owns (size, leading, tracking, weight) plus
+ * the family and the paragraph-spacing token, and each role class only re-points the six
+ * custom properties. So a role is one class, the 21 roles are 21 short blocks, and a
+ * change to the scale reaches every heading and paragraph in the estate through the
+ * tokens without this file changing.
+ *
+ * Why the primitives exist (2026-09-04 typography audit): with no Heading or Text
+ * component, every page assembled size + leading + weight by hand — which is how three
+ * type scales came to be in production. `SectionTitle` remains the SECTION heading
+ * (eyebrow, count, actions); these are the elements it is built from.
+ */
+@layer theme, base, components, utilities;
+
+@layer components {
+  .ds-type {
+    margin: 0;
+    font-family: var(--ds-type-family);
+    font-size: var(--ds-type-size);
+    line-height: var(--ds-type-lh);
+    letter-spacing: var(--ds-type-tracking);
+    font-weight: var(--ds-type-weight);
+    color: var(--sa-text-neutral-base);
+    /* Never clip: text that can outgrow its track wraps. */
+    overflow-wrap: anywhere;
+  }
+
+  /* Headings balance their last line; running text avoids a one-word orphan. Both are
+     no-ops in a browser without `text-wrap`. */
+  .ds-heading {
+    text-wrap: balance;
+  }
+  .ds-text {
+    text-wrap: pretty;
+  }
+
+  /* ── The 21 roles ──────────────────────────────────────────────────────────── */
+  .ds-type--display-1 {
+    --ds-type-size: var(--sa-type-display-1-size);
+    --ds-type-lh: var(--sa-type-display-1-lh);
+    --ds-type-tracking: var(--sa-type-display-1-tracking);
+    --ds-type-weight: var(--sa-font-weight-displayMedium);
+    --ds-type-family: var(--sa-font-display);
+    --ds-type-para: var(--sa-type-display-1-para);
+  }
+  .ds-type--display-2 {
+    --ds-type-size: var(--sa-type-display-2-size);
+    --ds-type-lh: var(--sa-type-display-2-lh);
+    --ds-type-tracking: var(--sa-type-display-2-tracking);
+    --ds-type-weight: var(--sa-font-weight-displayMedium);
+    --ds-type-family: var(--sa-font-display);
+    --ds-type-para: var(--sa-type-display-2-para);
+  }
+  .ds-type--display-3 {
+    --ds-type-size: var(--sa-type-display-3-size);
+    --ds-type-lh: var(--sa-type-display-3-lh);
+    --ds-type-tracking: var(--sa-type-display-3-tracking);
+    --ds-type-weight: var(--sa-font-weight-displayMedium);
+    --ds-type-family: var(--sa-font-display);
+    --ds-type-para: var(--sa-type-display-3-para);
+  }
+  .ds-type--display-4 {
+    --ds-type-size: var(--sa-type-display-4-size);
+    --ds-type-lh: var(--sa-type-display-4-lh);
+    --ds-type-tracking: var(--sa-type-display-4-tracking);
+    --ds-type-weight: var(--sa-font-weight-displayMedium);
+    --ds-type-family: var(--sa-font-display);
+    --ds-type-para: var(--sa-type-display-4-para);
+  }
+  .ds-type--display-5 {
+    --ds-type-size: var(--sa-type-display-5-size);
+    --ds-type-lh: var(--sa-type-display-5-lh);
+    --ds-type-tracking: var(--sa-type-display-5-tracking);
+    --ds-type-weight: var(--sa-font-weight-displayMedium);
+    --ds-type-family: var(--sa-font-display);
+    --ds-type-para: var(--sa-type-display-5-para);
+  }
+  .ds-type--display-6 {
+    --ds-type-size: var(--sa-type-display-6-size);
+    --ds-type-lh: var(--sa-type-display-6-lh);
+    --ds-type-tracking: var(--sa-type-display-6-tracking);
+    --ds-type-weight: var(--sa-font-weight-displayMedium);
+    --ds-type-family: var(--sa-font-display);
+    --ds-type-para: var(--sa-type-display-6-para);
+  }
+  .ds-type--headline-1 {
+    --ds-type-size: var(--sa-type-headline-1-size);
+    --ds-type-lh: var(--sa-type-headline-1-lh);
+    --ds-type-tracking: var(--sa-type-heading-tracking);
+    --ds-type-weight: var(--sa-font-weight-semibold);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-headline-1-para);
+  }
+  .ds-type--headline-2 {
+    --ds-type-size: var(--sa-type-headline-2-size);
+    --ds-type-lh: var(--sa-type-headline-2-lh);
+    --ds-type-tracking: var(--sa-type-heading-tracking);
+    --ds-type-weight: var(--sa-font-weight-semibold);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-headline-2-para);
+  }
+  .ds-type--headline-3 {
+    --ds-type-size: var(--sa-type-headline-3-size);
+    --ds-type-lh: var(--sa-type-headline-3-lh);
+    --ds-type-tracking: var(--sa-type-heading-tracking);
+    --ds-type-weight: var(--sa-font-weight-semibold);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-headline-3-para);
+  }
+  .ds-type--headline-4 {
+    --ds-type-size: var(--sa-type-headline-4-size);
+    --ds-type-lh: var(--sa-type-headline-4-lh);
+    --ds-type-tracking: var(--sa-type-heading-tracking);
+    --ds-type-weight: var(--sa-font-weight-semibold);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-headline-4-para);
+  }
+  .ds-type--headline-5 {
+    --ds-type-size: var(--sa-type-headline-5-size);
+    --ds-type-lh: var(--sa-type-headline-5-lh);
+    --ds-type-tracking: var(--sa-type-heading-tracking);
+    --ds-type-weight: var(--sa-font-weight-semibold);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-headline-5-para);
+  }
+  .ds-type--headline-6 {
+    --ds-type-size: var(--sa-type-headline-6-size);
+    --ds-type-lh: var(--sa-type-headline-6-lh);
+    --ds-type-tracking: var(--sa-type-heading-tracking);
+    --ds-type-weight: var(--sa-font-weight-semibold);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-headline-6-para);
+  }
+  .ds-type--title-1 {
+    --ds-type-size: var(--sa-type-title-1-size);
+    --ds-type-lh: var(--sa-type-title-1-lh);
+    --ds-type-tracking: var(--sa-type-title-tracking);
+    --ds-type-weight: var(--sa-font-weight-semibold);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-title-1-para);
+  }
+  .ds-type--title-2 {
+    --ds-type-size: var(--sa-type-title-2-size);
+    --ds-type-lh: var(--sa-type-title-2-lh);
+    --ds-type-tracking: var(--sa-type-title-tracking);
+    --ds-type-weight: var(--sa-font-weight-semibold);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-title-2-para);
+  }
+  .ds-type--title-3 {
+    --ds-type-size: var(--sa-type-title-3-size);
+    --ds-type-lh: var(--sa-type-title-3-lh);
+    --ds-type-tracking: var(--sa-type-title-tracking);
+    --ds-type-weight: var(--sa-font-weight-semibold);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-title-3-para);
+  }
+  .ds-type--body-1 {
+    --ds-type-size: var(--sa-type-body-1-size);
+    --ds-type-lh: var(--sa-type-body-1-lh);
+    --ds-type-tracking: var(--sa-type-body-tracking);
+    --ds-type-weight: var(--sa-font-weight-regular);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-body-1-para);
+  }
+  .ds-type--body-2 {
+    --ds-type-size: var(--sa-type-body-2-size);
+    --ds-type-lh: var(--sa-type-body-2-lh);
+    --ds-type-tracking: var(--sa-type-body-tracking);
+    --ds-type-weight: var(--sa-font-weight-regular);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-body-2-para);
+  }
+  .ds-type--body-3 {
+    --ds-type-size: var(--sa-type-body-3-size);
+    --ds-type-lh: var(--sa-type-body-3-lh);
+    --ds-type-tracking: var(--sa-type-body-tracking);
+    --ds-type-weight: var(--sa-font-weight-regular);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-body-3-para);
+  }
+  .ds-type--label-1 {
+    --ds-type-size: var(--sa-type-label-1-size);
+    --ds-type-lh: var(--sa-type-label-1-lh);
+    --ds-type-tracking: var(--sa-type-label-tracking);
+    --ds-type-weight: var(--sa-font-weight-medium);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-label-1-para);
+  }
+  .ds-type--label-2 {
+    --ds-type-size: var(--sa-type-label-2-size);
+    --ds-type-lh: var(--sa-type-label-2-lh);
+    --ds-type-tracking: var(--sa-type-label-tracking);
+    --ds-type-weight: var(--sa-font-weight-medium);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-label-2-para);
+  }
+  .ds-type--label-3 {
+    --ds-type-size: var(--sa-type-label-3-size);
+    --ds-type-lh: var(--sa-type-label-3-lh);
+    --ds-type-tracking: var(--sa-type-caps-tracking);
+    --ds-type-weight: var(--sa-font-weight-medium);
+    --ds-type-family: var(--sa-font-latin);
+    --ds-type-para: var(--sa-type-label-3-para);
+    text-transform: uppercase;
+  }
+
+  /* ── Modifiers ─────────────────────────────────────────────────────────────── */
+
+  /* Paragraph rhythm: a Text block that is followed by another gets the role's
+     paragraph-spacing token — the `-para` value the scale has carried since v1.6.1 and
+     nothing consumed. Opt in with `flow`, so a Text inside a flex/grid gap does not
+     double up. */
+  .ds-text--flow + .ds-text--flow {
+    margin-block-start: var(--ds-type-para);
+  }
+
+  /* The measure — the widest a run of body text may be. */
+  .ds-type--measure {
+    max-width: var(--sa-container-measure);
+  }
+
+  /* Numerals that line up in a column. */
+  .ds-type--numeric {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Ink. The role decides the size; the tone decides the colour, from the same ink
+     ladder every component uses. `subtler` is a PLACEHOLDER ink — 4.65:1 on white and
+     3.45:1 on bg/neutral/subtle — so it is not offered here. */
+  .ds-type--tone-subtle { color: var(--sa-text-neutral-subtle); }
+  .ds-type--tone-inverse { color: var(--sa-text-neutral-inverse); }
+  .ds-type--tone-brand { color: var(--sa-text-brand-primary-base); }
+  .ds-type--tone-inherit { color: inherit; }
+
+  /* Hindi. `lang="hi"` is what switches the face; Devanagari's matras sit above and
+     below the base line, so the script takes the unitless leading token instead of
+     the role's Latin line height. The Display cut has no Devanagari, so a display role
+     in Hindi falls through its stack to Noto Sans — correct, and documented in design.md. */
+  .ds-type:lang(hi) {
+    font-family: var(--sa-font-devanagari);
+    line-height: var(--sa-leading-devanagari);
+  }
+  /* An INLINE Hindi run inside a Latin block takes the face only. Giving it the
+     Devanagari leading too inflates the line box of the English heading around it —
+     measured at 82px inside a 48px h1 — so the block's own leading stands. */
+  .ds-type [lang="hi"] {
+    font-family: var(--sa-font-devanagari);
+  }
+}

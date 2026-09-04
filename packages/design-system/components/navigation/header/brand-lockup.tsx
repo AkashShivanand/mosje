@@ -67,7 +67,15 @@ export function BrandLockup({
         {lines.ministry && (
           <span className="ds-hdr-lockup__ministry">{lines.ministry}</span>
         )}
-        <span className="ds-hdr-lockup__dept">{lines.department}</span>
+        <span className="ds-hdr-lockup__dept">
+          {lines.department}
+          {lines.departmentHi && (
+            <>
+              {" "}
+              <span lang="hi">{lines.departmentHi}</span>
+            </>
+          )}
+        </span>
       </span>
     </a>
   );

@@ -13,8 +13,8 @@ export default function DeficienciesPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-ink">Deficiencies</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Deficiencies</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Everything the Ministry has asked you to clarify, across all your applications.
         </p>
       </div>
@@ -32,8 +32,8 @@ export default function DeficienciesPage() {
                 <span className="font-semibold text-ink">{a.id}</span>
                 <Badge status="warning">Awaiting your response</Badge>
               </div>
-              <p className="mt-2 text-sm text-ink">{d.detail}</p>
-              <p className="mt-1 text-xs text-ink-muted">Raised {formatDate(d.raisedAt)}</p>
+              <p className="mt-2 text-body-2 text-ink">{d.detail}</p>
+              <p className="mt-1 text-body-3 text-ink-muted">Raised {formatDate(d.raisedAt)}</p>
               <Button
                 size="sm"
                 className="mt-3"

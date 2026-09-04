@@ -48,7 +48,7 @@ export default function EAnudaanOfficerLoginPage() {
         toast(`Viewing ${link} policy.`, "info");
       }}
     >
-      <h2 className="mb-6 text-2xl font-bold text-ink">Log in to your account</h2>
+      <h1 className="mb-6 text-headline-3 text-ink">Log in to your account</h1>
 
       <form onSubmit={handleSubmit} className="flex flex-col gap-4" noValidate>
         <FormField label="Mobile Number" id="mobile_number">
@@ -68,7 +68,7 @@ export default function EAnudaanOfficerLoginPage() {
 
         <div>
           <div className="mb-1.5 flex items-center justify-between">
-            <label htmlFor="password" className="text-sm font-semibold text-ink">
+            <label htmlFor="password" className="text-label-1 text-ink">
               Password
             </label>
             <a
@@ -77,7 +77,7 @@ export default function EAnudaanOfficerLoginPage() {
                 e.preventDefault();
                 toast("Please contact system admin to reset officer password.", "info");
               }}
-              className="text-xs font-semibold text-primary hover:underline"
+              className="text-label-2 font-semibold text-primary hover:underline"
             >
               Forgot Password?
             </a>
@@ -96,7 +96,7 @@ export default function EAnudaanOfficerLoginPage() {
         </Button>
       </form>
 
-      <p className="mt-4 text-xs text-ink-muted">
+      <p className="mt-4 text-body-3 text-ink-muted">
         Demonstration portal on mock data. Open the demo console (bottom-left) to fill an officer role.
       </p>
     </PortalLoginShell>

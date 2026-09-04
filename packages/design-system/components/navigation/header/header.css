@@ -130,8 +130,8 @@
 
   .ds-hdr-lockup.is-compact .ds-hdr-lockup__org,
   .ds-hdr-lockup.is-compact .ds-hdr-lockup__ministry {
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
   }
 
   .ds-hdr-lockup.is-compact .ds-hdr-lockup__dept {
@@ -144,9 +144,9 @@
     align-self: flex-start;
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-color-neutralScale-1000);
     background-color: var(--sa-cmp-badge-beta-bg);
     border-radius: var(--sa-shape-2);
@@ -478,7 +478,7 @@
     flex-direction: column;
     align-items: flex-end;
     text-align: end;
-    line-height: 1.2;
+    line-height: var(--sa-type-label-2-lh);
     min-width: 0;
     max-width: 22ch;
   }
@@ -614,7 +614,6 @@
     border-radius: var(--sa-shape-4);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);
-    letter-spacing: 0.1px;
     font-weight: 500;
     color: var(--sa-text-neutral-base);
   }
@@ -865,10 +864,11 @@
   .ds-hdr-nav__mega-head {
     margin: 0 0 var(--sa-padding-8);
     padding: 0 var(--sa-padding-12);
-    font-size: var(--sa-type-title-3-size);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
     font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: var(--sa-type-title-tracking, 0);
+    letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -1121,7 +1121,8 @@
   }
 
   .ds-hdr-acct__menu-role {
-    font-size: var(--sa-type-label-3-size);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     color: var(--sa-text-neutral-subtle);
   }
 
@@ -1770,9 +1771,11 @@
   .ds-navsheet__mega-head {
     margin: 0;
     padding: 0 var(--sa-padding-12);
-    font-size: var(--sa-type-title-3-size);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
     font-weight: 500;
     text-transform: uppercase;
+    letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
   }
 

@@ -225,9 +225,8 @@
   .ds-portal-card__code {
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    font-weight: 700;
+    font-weight: 600;
     color: var(--sa-color-secondaryScale-600);
-    letter-spacing: 0.01em;
   }
 
   .ds-portal-card__name {
@@ -296,12 +295,12 @@
      which is exactly what the retired "Live Portal" / "Under Onboarding" badges
      did, on a directory where every entry is now live and the badge said nothing. */
   .ds-portal-card__category {
-    font-size: var(--sa-type-label-2-size);
-    line-height: var(--sa-type-label-2-lh);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
     font-weight: 600;
     color: var(--sa-text-neutral-subtle);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--sa-type-caps-tracking);
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;

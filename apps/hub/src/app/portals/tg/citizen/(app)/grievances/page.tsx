@@ -36,8 +36,8 @@ export default function GrievancesPage() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-ink">Grievances</h1>
-          <p className="mt-1 text-sm text-ink-muted">Raise and track issues with your application or welfare access.</p>
+          <h1 className="text-headline-1 text-ink">Grievances</h1>
+          <p className="mt-1 text-body-2 text-ink-muted">Raise and track issues with your application or welfare access.</p>
         </div>
         <Button onClick={() => setOpen(true)}><Icon name="add_comment" size={16} /> Raise Grievance</Button>
       </div>
@@ -50,9 +50,9 @@ export default function GrievancesPage() {
             <Card key={g.id} className="p-5">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <h3 className="text-base font-semibold text-ink">{g.subject}</h3>
-                  <p className="mt-1 text-sm text-ink-muted">{g.detail}</p>
-                  <p className="mt-2 text-xs text-ink-hint">
+                  <h3 className="text-title-2 text-ink">{g.subject}</h3>
+                  <p className="mt-1 text-body-2 text-ink-muted">{g.detail}</p>
+                  <p className="mt-2 text-body-3 text-ink-hint">
                     {g.category} • {new Date(g.raisedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}
                   </p>
                 </div>

@@ -733,6 +733,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "view_quilt"
   },
   {
+    "title": "Heading — Design System",
+    "section": "Layout",
+    "href": "/design-system/components/layout/heading",
+    "keywords": "heading — design system layout level is the outline, variant is the size  tokens wcag accessibility",
+    "description": "An h1–h6 bound to one type role. The level is the document outline; the role defaults from it.",
+    "type": "component",
+    "iconName": "view_quilt"
+  },
+  {
     "title": "Heatmap — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/heatmap",
@@ -1379,6 +1388,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "The Tabs / More trigger and its menu. Internal to Tabs: it appears only when a horizontal row cannot show every tab, and lists all of them.",
     "type": "component",
     "iconName": "navigation"
+  },
+  {
+    "title": "Text — Design System",
+    "section": "Layout",
+    "href": "/design-system/components/layout/text",
+    "keywords": "text — design system layout the role is the job, not the size  tokens wcag accessibility",
+    "description": "A run of copy bound to a body, label or title role. Never sets a size of its own.",
+    "type": "component",
+    "iconName": "view_quilt"
   },
   {
     "title": "Textarea — Design System",

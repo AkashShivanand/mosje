@@ -11,8 +11,8 @@
       "value": 600
     },
     "title": {
-      "name": "Medium",
-      "value": 500
+      "name": "SemiBold",
+      "value": 600
     },
     "body": {
       "name": "Regular",
@@ -27,27 +27,27 @@
     {
       "key": "display",
       "label": "Display",
-      "blurb": "Hero and marketing headings"
+      "blurb": "Hero and campaign headings, on the optical Display cut"
     },
     {
       "key": "headline",
       "label": "Headline",
-      "blurb": "Page and section headings (h1–h3)"
+      "blurb": "Document structure — the page h1 and its sections"
     },
     {
       "key": "title",
       "label": "Title",
-      "blurb": "Panel, list and card titles"
+      "blurb": "The name of a thing: a card, a panel, a dialog, a table"
     },
     {
       "key": "body",
       "label": "Body",
-      "blurb": "Running text and paragraphs"
+      "blurb": "Running text and paragraphs, 1.5 leading on both surfaces"
     },
     {
       "key": "label",
       "label": "Label",
-      "blurb": "UI controls, badges, captions"
+      "blurb": "Controls, badges and captions; label-3 is the uppercase overline"
     }
   ],
   "surfaces": [
@@ -60,7 +60,7 @@
     {
       "key": "portal",
       "label": "Portal",
-      "note": "20+ workflow portals · dense, functional",
+      "note": "20+ workflow portals · dense, functional — only Display and Headline differ from the website",
       "sample": "display-1 = 56px"
     }
   ],
@@ -188,8 +188,8 @@
           "src": "SAMAVESH"
         },
         {
-          "rule": "The 21-role scale is the DBIM type scale as implemented — no ad-hoc sizes outside it.",
-          "src": "DBIM 4.3.1"
+          "rule": "The 21-role scale is the estate's implementation of DBIM §4's hierarchy — with three recorded deviations: headline sizes (40/32/28 against DBIM's 36/24/20), display leading below 1.2, and no size below 12px. See the deviation register.",
+          "src": "DBIM 4.3 · docs/audit/typography-deviation-register.md"
         }
       ]
     },
@@ -201,7 +201,7 @@
           "src": "SAMAVESH · DBIM 4.3.1"
         },
         {
-          "rule": "ALL-CAPS is never used for a sentence or paragraph — only 1–3 word labels, always with added tracking.",
+          "rule": "ALL-CAPS is never used for a sentence or paragraph — only 1–3 word overlines, and only in the label-3 role, which carries the +0.06em caps tracking.",
           "src": "DBIM 4.1.1"
         },
         {
@@ -249,6 +249,31 @@
         {
           "rule": "Text-entry controls hold a hard 16px floor below 768px so iOS Safari does not trap the user zoomed in.",
           "src": "SAMAVESH · GIGW"
+        }
+      ]
+    },
+    {
+      "title": "Floor and rhythm",
+      "rules": [
+        {
+          "rule": "Nothing renders below 12px. label-3 is 12px; there is no 11px, 10px or 9px anywhere.",
+          "src": "UX4G 3.0 §2 · SAMAVESH"
+        },
+        {
+          "rule": "Every size is on the 16-step ramp and every line height on the 4px grid; leading rises as size falls, from 1.10 at display-1 to 1.5 at body.",
+          "src": "SAMAVESH"
+        },
+        {
+          "rule": "Title, Body and Label are identical on both surfaces. Only Display and Headline are cut differently for the website and the portals.",
+          "src": "SAMAVESH"
+        },
+        {
+          "rule": "Headings and titles are semibold (600); display is medium (500) on the Display cut; body is regular; labels are medium. 700 is inline emphasis and KPI numerals only; 800 and 900 do not exist.",
+          "src": "SAMAVESH"
+        },
+        {
+          "rule": "Type is written through Heading and Text (or the text-<role> utilities). A raw size, leading, tracking or a stock Tailwind size utility fails the type gate.",
+          "src": "SAMAVESH · check:type-linkage"
         }
       ]
     }

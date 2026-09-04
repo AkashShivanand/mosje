@@ -25,8 +25,8 @@ export default function CitizenDashboardPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-bold text-ink">Welcome, {DEMO_CITIZEN.chosenName}</h1>
-        <p className="mt-1 text-sm text-ink-muted">Your Transgender Certificate &amp; Identity dashboard.</p>
+        <h1 className="text-headline-1 text-ink">Welcome, {DEMO_CITIZEN.chosenName}</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">Your Transgender Certificate &amp; Identity dashboard.</p>
       </div>
 
       {certificate ? (
@@ -37,10 +37,10 @@ export default function CitizenDashboardPage() {
             </span>
             <div>
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-ink">Certificate Active</span>
+                <span className="text-title-1 text-ink">Certificate Active</span>
                 <StatusPill status="APPROVED_SIGNED" />
               </div>
-              <p className="text-sm text-ink-muted">
+              <p className="text-body-2 text-ink-muted">
                 {certificate.certificateNo} • Valid Lifetime
               </p>
             </div>
@@ -52,8 +52,8 @@ export default function CitizenDashboardPage() {
       ) : (
         <Card className="flex flex-col items-start gap-3 p-6">
           <div>
-            <h2 className="text-lg font-bold text-ink">No certificate yet</h2>
-            <p className="text-sm text-ink-muted">Apply for your Transgender Certificate of Identity to get started.</p>
+            <h2 className="text-title-1 text-ink">No certificate yet</h2>
+            <p className="text-body-2 text-ink-muted">Apply for your Transgender Certificate of Identity to get started.</p>
           </div>
           <Link href="/portals/tg/citizen/apply">
             <Button><Icon name="note_add" size={16} /> Start Application</Button>
@@ -63,13 +63,13 @@ export default function CitizenDashboardPage() {
 
       {inProgress.length > 0 && (
         <div>
-          <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-ink-hint">Applications in Progress</h2>
+          <h2 className="mb-3 text-label-3 uppercase text-ink-hint">Applications in Progress</h2>
           <div className="space-y-3">
             {inProgress.map((a) => (
               <Card key={a.id} className="flex flex-wrap items-center justify-between gap-3 p-4">
                 <div>
-                  <div className="font-mono text-sm font-semibold text-navy">{a.id}</div>
-                  <div className="text-xs text-ink-muted">{a.type} Certificate • Submitted {new Date(a.submittedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</div>
+                  <div className="font-mono text-body-2 font-semibold text-navy">{a.id}</div>
+                  <div className="text-body-3 text-ink-muted">{a.type} Certificate • Submitted {new Date(a.submittedAt).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" })}</div>
                 </div>
                 <div className="flex items-center gap-2">
                   <StatusPill status={a.stage} />
@@ -89,16 +89,16 @@ export default function CitizenDashboardPage() {
       )}
 
       <div>
-        <h2 className="mb-3 text-sm font-bold uppercase tracking-wide text-ink-hint">Welfare &amp; Benefits</h2>
+        <h2 className="mb-3 text-label-3 uppercase text-ink-hint">Welfare &amp; Benefits</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {WELFARE.map(({ icon: iconName, title, desc, cta }) => (
             <Card key={title} className="flex flex-col p-5">
               <span className="mb-3 flex h-11 w-11 items-center justify-center rounded-xl bg-navy/10 text-navy">
                 <Icon name={iconName} size={20} />
               </span>
-              <h3 className="text-base font-semibold text-ink">{title}</h3>
-              <p className="mt-1 flex-1 text-sm text-ink-muted">{desc}</p>
-              <Link href="/portals/tg/citizen/welfare" className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-navy hover:gap-2">
+              <h3 className="text-title-2 text-ink">{title}</h3>
+              <p className="mt-1 flex-1 text-body-2 text-ink-muted">{desc}</p>
+              <Link href="/portals/tg/citizen/welfare" className="mt-4 inline-flex items-center gap-1 text-label-1 font-semibold text-navy hover:gap-2">
                 {cta} →
               </Link>
             </Card>

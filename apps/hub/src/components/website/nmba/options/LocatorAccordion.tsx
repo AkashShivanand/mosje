@@ -33,7 +33,7 @@ export function LocatorAccordion() {
           placeholder="Search centre, area, district or state"
           aria-label="Search centres"
         />
-        <p className="mt-2 text-[12px] text-ink-muted">{filtered.length} centres across {byState.length} states — expand a state to explore.</p>
+        <p className="mt-2 text-body-3 text-ink-muted">{filtered.length} centres across {byState.length} states — expand a state to explore.</p>
       </div>
 
       <div className="mt-4 divide-y divide-gray-100 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
@@ -43,9 +43,9 @@ export function LocatorAccordion() {
             <div key={st}>
               <button type="button" onClick={() => { setOpen(isOpen ? null : st); setSelected(null); }}
                 className="flex w-full items-center justify-between px-4 py-3 text-left transition-colors hover:bg-surface-muted/50">
-                <span className="text-[15px] font-semibold text-ink">{st}</span>
+                <span className="text-title-2 text-ink">{st}</span>
                 <span className="flex items-center gap-3">
-                  <span className="rounded-full bg-surface-muted px-2 py-0.5 text-[12px] font-semibold text-ink-muted">{centres.length}</span>
+                  <span className="rounded-full bg-surface-muted px-2 py-0.5 text-label-2 text-ink-muted">{centres.length}</span>
                   <Icon name="keyboard_arrow_down" size={16} className={`text-ink-muted transition-transform ${isOpen ? "rotate-180" : ""}`} />
                 </span>
               </button>
@@ -60,11 +60,11 @@ export function LocatorAccordion() {
                             className={`flex w-full items-start gap-2.5 rounded-lg px-2.5 py-2 text-left transition-colors ${active ? "bg-primary/[0.06]" : "hover:bg-white"}`}>
                             <span className="mt-1 h-2.5 w-2.5 shrink-0 rounded-full" style={{ background: CENTRE_TYPE_META[c.type].color }} />
                             <span className="min-w-0">
-                              <span className="block truncate text-[13px] font-medium text-ink">{c.name}</span>
-                              <span className="block text-[12px] text-ink-muted">{c.type} · {c.district}</span>
+                              <span className="block truncate text-title-3 text-ink">{c.name}</span>
+                              <span className="block text-body-3 text-ink-muted">{c.type} · {c.district}</span>
                               {active && (
                                 <Link href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} external variant="standalone" onClick={(e) => e.stopPropagation()}
-                                  className="mt-1 text-[12px] font-semibold" iconLeft={<Icon name="navigation" size={12} />}>Directions</Link>
+                                  className="mt-1 text-label-2" iconLeft={<Icon name="navigation" size={12} />}>Directions</Link>
                               )}
                             </span>
                           </button>

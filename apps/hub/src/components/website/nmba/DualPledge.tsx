@@ -32,8 +32,8 @@ export function DualPledge() {
   return (
     <div className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 border-b border-gray-100 px-6 py-5 sm:px-8">
-        <h3 className="text-[20px] font-semibold text-ink">Take the pledge</h3>
-        <p className="text-[14px] text-ink-muted">
+        <h3 className="text-title-1 text-ink">Take the pledge</h3>
+        <p className="text-body-2 text-ink-muted">
           <span className="font-semibold text-primary-dark">{total}</span> Indians have
           already pledged
         </p>
@@ -48,10 +48,10 @@ export function DualPledge() {
             >
               {/* momentum number — the hook */}
               <div className="w-[104px] shrink-0 sm:w-[132px]">
-                <div className="text-[26px] font-bold leading-none tracking-tight text-primary-dark sm:text-[30px]">
+                <div className="text-headline-3 tabular-nums text-primary-dark">
                   {p.count}
                 </div>
-                <div className="mt-1 text-[12px] uppercase tracking-wide text-ink-muted">
+                <div className="mt-1 text-label-3 uppercase text-ink-muted">
                   {p.countLabel}
                 </div>
               </div>
@@ -59,11 +59,11 @@ export function DualPledge() {
               <Divider orientation="vertical" length={48} />
 
               <div className="min-w-0 flex-1">
-                <div className="text-[17px] font-semibold text-ink">{p.label}</div>
-                <p className="mt-1 text-[14px] leading-relaxed text-ink-muted">{p.blurb}</p>
+                <div className="text-title-2 text-ink">{p.label}</div>
+                <p className="mt-1 text-body-2 text-ink-muted">{p.blurb}</p>
               </div>
 
-              <span className="ml-auto hidden shrink-0 items-center gap-1.5 text-[14px] font-semibold text-primary sm:inline-flex">
+              <span className="ml-auto hidden shrink-0 items-center gap-1.5 text-label-1 text-primary sm:inline-flex">
                 Pledge
                 <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-1" />
               </span>

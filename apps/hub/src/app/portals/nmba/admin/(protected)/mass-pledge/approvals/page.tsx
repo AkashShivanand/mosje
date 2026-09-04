@@ -20,11 +20,11 @@ export default function MassPledgeApprovalsPage() {
     <AdminShell>
       <header className="mb-8 flex flex-wrap items-start justify-between gap-x-6 gap-y-2">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-ink-hint">
+          <p className="text-label-3 uppercase text-ink-hint">
             Nasha Mukt Bharat Abhiyaan
           </p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-ink">Approvals</h1>
-          <p className="mt-1 text-sm text-ink-muted">
+          <h1 className="mt-1 text-headline-1 text-ink">Approvals</h1>
+          <p className="mt-1 text-body-2 text-ink-muted">
             Mass Pledge reports awaiting your decision · {EVENT_DATE_LABEL}
           </p>
         </div>
@@ -43,7 +43,7 @@ export default function MassPledgeApprovalsPage() {
         />
       ) : (
         <>
-          <p className="mb-4 text-sm text-ink-muted">
+          <p className="mb-4 text-body-2 text-ink-muted">
             Figures stay out of the published national total until approved.
           </p>
           <div className="grid gap-3">

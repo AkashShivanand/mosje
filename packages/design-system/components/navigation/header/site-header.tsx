@@ -54,7 +54,7 @@ export interface SiteHeaderProps {
   /** Accessibility-statement page (GIGW-required). @default "/accessibility-statement" */
   accessibilityHref?: string;
   /** Language selector. @default { label: "English" } */
-  language?: { label?: string; onClick?: () => void };
+  language?: { label?: string; lang?: string; onClick?: () => void };
 
   // ── Brand row ──
   /** National Emblem image URL (basePath-aware). */

@@ -39,7 +39,7 @@ export default async function VolunteerDetailPage({
           >
             <Icon name="arrow_back" size={20} />
           </Link>
-          <h1 className="text-2xl font-bold text-ink">{v.name}</h1>
+          <h1 className="text-headline-1 text-ink">{v.name}</h1>
         </div>
         <div className="flex items-center gap-3">
           <Button variant="danger">Reject</Button>
@@ -56,8 +56,8 @@ export default async function VolunteerDetailPage({
         <section>
           <SectionTitle>ADDRESS &amp; CONTACT</SectionTitle>
           <div className="mb-6">
-            <div className="text-xs text-ink-hint">FULL ADDRESS</div>
-            <div className="mt-1 text-sm text-ink">{v.address || "-"}</div>
+            <div className="text-label-3 uppercase text-ink-hint">FULL ADDRESS</div>
+            <div className="mt-1 text-body-2 text-ink">{v.address || "-"}</div>
           </div>
           <FieldGrid items={contact} />
         </section>
@@ -66,12 +66,12 @@ export default async function VolunteerDetailPage({
           <SectionTitle>AREAS OF INTEREST</SectionTitle>
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
-              <div className="mb-2 text-xs text-ink-hint">INTERESTS</div>
+              <div className="mb-2 text-label-3 uppercase text-ink-hint">INTERESTS</div>
               <div className="flex flex-wrap gap-2">
                 {v.interests.map((interest) => (
                   <span
                     key={interest}
-                    className="rounded-full bg-navy/5 px-3 py-1 text-xs text-navy"
+                    className="rounded-full bg-navy/5 px-3 py-1 text-label-2 text-navy"
                   >
                     {interest}
                   </span>
@@ -79,8 +79,8 @@ export default async function VolunteerDetailPage({
               </div>
             </div>
             <div className="text-right">
-              <div className="text-xs text-ink-hint">SUBMITTED ON</div>
-              <div className="mt-1 text-sm text-ink">{v.submitted}</div>
+              <div className="text-label-3 uppercase text-ink-hint">SUBMITTED ON</div>
+              <div className="mt-1 text-body-2 text-ink">{v.submitted}</div>
             </div>
           </div>
         </section>

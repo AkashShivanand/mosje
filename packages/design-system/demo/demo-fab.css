@@ -37,7 +37,8 @@
   border-radius: 9999px;
   background-color: var(--sa-bg-brand-primary-bolder);
   color: var(--sa-on-bg-brand-primary-bolder);
-  font-size: 0.75rem;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
   font-weight: 600;
   cursor: pointer;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
@@ -69,7 +70,8 @@
   display: flex;
   align-items: center;
   gap: 0.375rem;
-  font-size: 0.75rem;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
   font-weight: 600;
   color: var(--sa-text-neutral-bolder);
 }

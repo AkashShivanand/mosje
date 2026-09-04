@@ -54,6 +54,7 @@ export function LanguageDialog({
       {PROTOTYPE_MODE && (
         <p className="lang-dialog__note">
           {t(
+            // ds-exempt(specimen): the language's own name in its own script, inside an English sentence that is one translation key — the sentence cannot carry lang="hi" and cannot be split without breaking the key
             "In this prototype English and हिन्दी are translated. The rest are configured and will translate on the live site — choosing one here still switches the page's language and reading direction.",
           )}
         </p>

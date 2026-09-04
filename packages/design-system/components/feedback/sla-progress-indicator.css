@@ -163,7 +163,8 @@
     display: grid;
     place-items: center;
     font-size: var(--sa-type-title-1-size);
-    line-height: 1;
+    line-height: var(--sa-type-title-1-lh);
+    /* 700, not 600: a KPI numeral, not a heading. */
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     color: var(--sla-ink);

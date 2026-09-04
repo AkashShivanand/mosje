@@ -13,7 +13,7 @@ export const metadata: Metadata = {
       url:
         "data:image/svg+xml;utf8," +
         encodeURIComponent(
-          `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23003366'/><text x='16' y='21' text-anchor='middle' font-family='Inter,sans-serif' font-size='12' font-weight='800' fill='%23ffffff'>स</text></svg>`
+          `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23003366'/><text x='16' y='21' text-anchor='middle' font-family='Inter,sans-serif' font-size='12' font-weight='800' fill='%23ffffff' lang="hi">स</text></svg>`
         ),
     },
   ],

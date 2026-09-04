@@ -53,7 +53,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
       />
       <nav aria-label="Citizen navigation" className="border-b border-line bg-white">
         <div className="mx-auto flex max-w-6xl items-center gap-1 px-4">
-          <span className="mr-3 py-3 text-sm font-bold text-navy">Transgender</span>
+          <span className="mr-3 py-3 text-label-1 font-bold text-navy">Transgender</span>
           {NAV.map(({ label, href, icon: iconName }) => {
             const active = pathname === href || pathname.startsWith(`${href}/`);
             return (
@@ -62,7 +62,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
                 href={href}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex items-center gap-1.5 border-b-2 px-3 py-3 text-sm font-medium transition-colors",
+                  "flex items-center gap-1.5 border-b-2 px-3 py-3 text-label-1 transition-colors",
                   active ? "border-navy text-navy" : "border-transparent text-ink-muted hover:text-navy",
                 )}
               >
@@ -73,7 +73,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
           })}
           <Link
             href="/portals/tg/citizen/apply"
-            className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-navy px-3.5 py-2 text-sm font-semibold text-white hover:bg-navy-800"
+            className="ml-auto inline-flex items-center gap-1.5 rounded-lg bg-navy px-3.5 py-2 text-label-1 font-semibold text-white hover:bg-navy-800"
           >
             <Icon name="note_add" size={16} />
             Apply

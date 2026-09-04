@@ -11,13 +11,13 @@ export default function FeedbackPage() {
   return (
     <AdminShell>
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-ink">Feedback / Grievances</h1>
-        <p className="mt-1 text-sm text-ink-muted">{FEEDBACK_LIST.length} entries</p>
+        <h1 className="text-headline-1 text-ink">Feedback / Grievances</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">{FEEDBACK_LIST.length} entries</p>
       </div>
 
       <div className="rounded-xl border border-line bg-white shadow-card overflow-hidden">
-        <table className="min-w-full text-sm">
-          <thead className="bg-surface-muted text-left text-xs font-semibold uppercase tracking-wider text-ink-muted">
+        <table className="min-w-full text-body-2">
+          <thead className="bg-surface-muted text-left text-label-3 uppercase text-ink-muted">
             <tr>
               <th scope="col" className="px-4 py-3">S.No</th>
               <th scope="col" className="px-4 py-3">Name</th>

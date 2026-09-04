@@ -27,27 +27,27 @@ export default function CallCenterDashboard() {
         {ACTIONS.map(({ href, icon: iconName, title, desc }) => (
           <Link key={href} href={href} className="group flex flex-col rounded-2xl border border-line bg-white p-5 shadow-card transition-colors hover:border-navy/30">
             <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-navy"><Icon name={iconName} size={20} /></span>
-            <h3 className="mt-3 text-sm font-bold text-ink">{title}</h3>
-            <p className="mt-1 flex-1 text-xs text-ink-muted">{desc}</p>
-            <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-navy">Open <Icon name="arrow_forward" size={14} className="transition-transform group-hover:translate-x-0.5" /></span>
+            <h3 className="mt-3 text-title-2 text-ink">{title}</h3>
+            <p className="mt-1 flex-1 text-body-3 text-ink-muted">{desc}</p>
+            <span className="mt-3 inline-flex items-center gap-1 text-label-2 font-semibold text-navy">Open <Icon name="arrow_forward" size={14} className="transition-transform group-hover:translate-x-0.5" /></span>
           </Link>
         ))}
         <Link href="/portals/nhapoa/call-center/faq" className="group flex flex-col rounded-2xl border border-line bg-white p-5 shadow-card transition-colors hover:border-navy/30">
           <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-navy/10 text-navy"><Icon name="help" size={20} /></span>
-          <h3 className="mt-3 text-sm font-bold text-ink">Open Help & FAQs</h3>
-          <p className="mt-1 flex-1 text-xs text-ink-muted">Answer common caller questions.</p>
-          <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-navy">Open <Icon name="arrow_forward" size={14} /></span>
+          <h3 className="mt-3 text-title-2 text-ink">Open Help & FAQs</h3>
+          <p className="mt-1 flex-1 text-body-3 text-ink-muted">Answer common caller questions.</p>
+          <span className="mt-3 inline-flex items-center gap-1 text-label-2 font-semibold text-navy">Open <Icon name="arrow_forward" size={14} /></span>
         </Link>
       </div>
 
       <Card className="mt-6 p-6">
-        <h2 className="text-sm font-bold text-ink">Call Handling Process</h2>
+        <h2 className="text-title-2 text-ink">Call Handling Process</h2>
         <div className="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {PROCESS.map((p) => (
             <div key={p.step} className="rounded-xl border border-line p-4">
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy text-sm font-bold text-white">{p.step}</span>
-              <p className="mt-3 text-sm font-bold text-ink">{p.title}</p>
-              <p className="mt-1 text-xs text-ink-muted">{p.desc}</p>
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-navy text-label-1 font-semibold text-white">{p.step}</span>
+              <p className="mt-3 text-title-3 text-ink">{p.title}</p>
+              <p className="mt-1 text-body-3 text-ink-muted">{p.desc}</p>
             </div>
           ))}
         </div>

@@ -34,11 +34,11 @@ export default function SchemePerformancePage() {
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="p-6">
-          <h2 className="text-sm font-bold text-ink">Grievance Category Breakdown</h2>
+          <h2 className="text-title-2 text-ink">Grievance Category Breakdown</h2>
           <div className="mt-5 space-y-3">
             {byCategory.map(([cat, v]) => (
               <div key={cat}>
-                <div className="mb-1 flex justify-between text-xs"><span className="line-clamp-1 text-ink-muted">{cat}</span><span className="font-semibold text-ink">{v}</span></div>
+                <div className="mb-1 flex justify-between text-body-3"><span className="line-clamp-1 text-ink-muted">{cat}</span><span className="font-semibold text-ink">{v}</span></div>
                 <div className="h-2 w-full overflow-hidden rounded-full bg-line"><div className="h-full rounded-full bg-navy/70" style={{ width: `${(v / maxCat) * 100}%` }} /></div>
               </div>
             ))}
@@ -46,12 +46,12 @@ export default function SchemePerformancePage() {
         </Card>
 
         <Card className="p-6">
-          <h2 className="text-sm font-bold text-ink">Submission Role Breakdown</h2>
+          <h2 className="text-title-2 text-ink">Submission Role Breakdown</h2>
           <div className="mt-5 space-y-3">
             {byRole.map(([role, v]) => (
               <div key={role} className="flex items-center justify-between border-b border-line pb-2 last:border-0">
-                <span className="text-sm text-ink-muted">{role}</span>
-                <span className="text-sm font-semibold text-ink">{v}</span>
+                <span className="text-body-2 text-ink-muted">{role}</span>
+                <span className="text-title-3 text-ink">{v}</span>
               </div>
             ))}
           </div>

@@ -25,7 +25,7 @@ export function PersonaPage({ tagline, cards, ...hero }: PersonaPageProps) {
     <PageLayout {...hero}>
       <section>
         <div className="sa-container py-10 md:py-12">
-          <h2 className="mb-8 text-center text-[22px] font-semibold text-ink md:text-[26px]">{tagline}</h2>
+          <h2 className="mb-8 text-center text-headline-2 text-ink">{tagline}</h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {cards.map((card) => {
               const iconName = card.icon;
@@ -38,8 +38,8 @@ export function PersonaPage({ tagline, cards, ...hero }: PersonaPageProps) {
                   <span className="mb-4 inline-flex h-12 w-12 items-center justify-center rounded-lg bg-saffron-light text-saffron-dark">
                     <Icon name={iconName} aria-hidden="true" />
                   </span>
-                  <h3 className="text-[18px] font-semibold text-primary-dark">{card.title}</h3>
-                  <p className="mt-2 flex-1 text-[14px] leading-relaxed text-ink-muted">{card.description}</p>
+                  <h3 className="text-title-1 text-primary-dark">{card.title}</h3>
+                  <p className="mt-2 flex-1 text-body-2 text-ink-muted">{card.description}</p>
                   <Button
                     href={card.href}
                     appearance="text"
