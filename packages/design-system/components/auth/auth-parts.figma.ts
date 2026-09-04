@@ -1,4 +1,4 @@
-// url=<SAMAVESH>?node-id=55439-749
+// url=<SAMAVESH>?node-id=55439-731
 // source=packages/design-system/components/auth/auth-parts.tsx
 // component=SigningIntoBar
 //
@@ -8,9 +8,15 @@
 // carries the rules as well as the snippet.
 // See .claude/rules/component-authoring.md §12.
 //
-// PROPERTY COVERAGE — both Figma properties are accounted for:
-//   Tone         -> `tone` ("On hero" -> "hero", "On surface" -> "surface")
+// PROPERTY COVERAGE — the one Figma property is accounted for:
 //   Portal name  -> `portalName`
+//
+// TONE HAS NO FIGMA PROPERTY SINCE 2026-09-04. The component set with a Tone axis
+// (55439:749, "On hero" | "On surface") was dissolved in the library; what remains is
+// the single component 55439:731, drawn on the hero scrim. So the snippet emits
+// tone="hero" as a constant — that is what the Figma master IS — and a developer
+// placing the bar on an ordinary surface changes it to "surface" in code. When the
+// library regains a Tone axis, restore the getEnum mapping here.
 //
 // TONE FOLLOWS THE SURFACE, NOT THE BRAND. `hero` sits over the photograph
 // scrim, `surface` over any ordinary background. Getting it backwards is the
@@ -57,17 +63,12 @@ import figma from "figma";
 
 const instance = figma.selectedInstance;
 
-const tone = instance.getEnum("Tone", {
-  "On hero": "hero",
-  "On surface": "surface",
-});
-
 const portalName = instance.getString("Portal name");
 
 export default {
   example: figma.code`<SigningIntoBar
   portalName="${portalName}"
-  tone="${tone}"
+  tone="hero"
   onChange={openPortalPicker}
 />`,
   imports: ['import { SigningIntoBar } from "@mosje/design-system"'],
