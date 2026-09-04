@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Checkbox, FormField, Radio, Textarea, Toggle } from "@mosje/design-system";
+import { Checkbox, FormField, Icon, Radio, Textarea, Toggle } from "@mosje/design-system";
 
 /**
  * **Checkbox · Radio · Toggle · Textarea** — the selection and long-text
@@ -11,11 +11,22 @@ import { Checkbox, FormField, Radio, Textarea, Toggle } from "@mosje/design-syst
  * **Checkbox** is a value you submit with the rest of the form. If flipping it
  * needs a Save button afterwards, it is a checkbox. Lifecycle: **Stable**.
  *
- * `Radio` has a second `variant`: `"card"` turns each option into a full
- * selectable card with a `description`, which is worth the space when the
- * options need explaining — choosing a scheme, picking a reporting category.
- * For a short list of self-evident options, the default inline circle is
- * quicker to scan.
+ * `Checkbox` and `Radio` share one API. `checked` + `onChange` make it controlled;
+ * omit them and `defaultChecked` seeds an uncontrolled control that a plain form can
+ * post. `onCheckedChange` hands over the next boolean. `size` is `sm` 16 · `md` 20 ·
+ * `lg` 24 — the HIT AREA is 24 / 44 / 48, so the default is already a comfortable
+ * touch target. `description` is a second line linked through `aria-describedby`,
+ * never part of the name. `error` (Checkbox only) renders an alert under the box
+ * and sets `aria-invalid`; `invalid` paints the state without a message, for a group
+ * that owns the message. `readOnly` keeps the tab stop and refuses the change; it is
+ * NOT `disabled`. `required` draws the marker and sets the native attribute.
+ * `labelPlacement="start"` puts the label first; `hideLabel` keeps the name and
+ * hides the text. `variant="card"` turns the option into a tile with room for an
+ * `icon` and a description, and the whole tile is the target. Never pre-check a
+ * consent box — `defaultChecked` on a declaration is prohibited (UX4G §7).
+ *
+ * `indeterminate` is the mixed state of a "select all" parent; a click on it
+ * yields `true`, as the native control does.
  *
  * `Toggle` takes a `size`; use `"small"` in a dense settings table and
  * `"default"` everywhere else.
@@ -25,11 +36,6 @@ import { Checkbox, FormField, Radio, Textarea, Toggle } from "@mosje/design-syst
 const meta = {
   title: "Components/Controls",
   component: Checkbox,
-  // Checkbox is controlled, so `checked` and `onChange` are required. They live
-  // here rather than on each story because every story below drives its own
-  // state through `render` — without them, `StoryObj<typeof meta>` demands the
-  // pair on all five.
-  args: { checked: false, onChange: () => {} },
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
@@ -42,12 +48,71 @@ export const Checkboxes: Story = {
       <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
         <Checkbox
           checked={checked}
-          onChange={(e) => setChecked(e.target.checked)}
+          onCheckedChange={setChecked}
           label="I agree to the declaration"
         />
-        <Checkbox checked={false} onChange={() => {}} label="Unchecked" />
-        <Checkbox checked={false} indeterminate onChange={() => {}} label="Some districts selected" />
-        <Checkbox checked disabled onChange={() => {}} label="Locked after approval" />
+        <Checkbox label="Unchecked, uncontrolled" />
+        <Checkbox indeterminate label="Some districts selected" />
+        <Checkbox defaultChecked disabled label="Locked after approval" />
+      </div>
+    );
+  },
+};
+
+/** `sm` for dense tables, `md` (default) beside body text, `lg` where the box must meet 24×24 alone. */
+export const CheckboxSizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+      <Checkbox size="sm" defaultChecked label="Small — 16px box, 24px target" />
+      <Checkbox size="md" defaultChecked label="Medium — 20px box, 44px target" />
+      <Checkbox size="lg" defaultChecked label="Large — 24px box, 48px target" />
+    </div>
+  ),
+};
+
+/**
+ * Every state the control can be in. `readOnly` keeps its tab stop; `disabled` leaves the
+ * form. `error` announces; `invalid` only paints.
+ */
+export const CheckboxStates: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 480 }}>
+      <Checkbox label="Hostel accommodation" description="Available only to students living away from the district of domicile." />
+      <Checkbox label="I have read the scheme guidelines" required />
+      <Checkbox label="I have read the scheme guidelines" error="Confirm you have read the guidelines to continue" />
+      <Checkbox label="Aadhaar seeded to the bank account" invalid defaultChecked />
+      <Checkbox label="Verified by the district officer" readOnly defaultChecked />
+      <Checkbox label="Verified by the district officer" disabled />
+      <Checkbox label="Send updates by SMS" labelPlacement="start" defaultChecked />
+      <Checkbox label="Select row 4" hideLabel size="sm" />
+    </div>
+  ),
+};
+
+/** `variant="card"` — the whole tile is the target, with room for an icon and a description. */
+export const CheckboxCards: Story = {
+  render: function Render() {
+    const [claims, setClaims] = React.useState<string[]>(["hostel"]);
+    const toggle = (v: string) => (on: boolean) =>
+      setClaims((c) => (on ? [...c, v] : c.filter((x) => x !== v)));
+    return (
+      <div style={{ display: "grid", gap: 12, maxWidth: 520 }}>
+        <Checkbox
+          variant="card"
+          icon={<Icon name="apartment" />}
+          label="Hostel Accommodation"
+          description="Babu Jagjivan Ram Chhatrawas Yojana. Apply through the institution."
+          checked={claims.includes("hostel")}
+          onCheckedChange={toggle("hostel")}
+        />
+        <Checkbox
+          variant="card"
+          icon={<Icon name="school" />}
+          label="Post-Matric Scholarship"
+          description="Class XI upwards, including degree and professional courses."
+          checked={claims.includes("scholarship")}
+          onCheckedChange={toggle("scholarship")}
+        />
       </div>
     );
   },
@@ -77,9 +142,25 @@ export const Radios: Story = {
   },
 };
 
+/** The same states as Checkbox, minus `error`: an error belongs to the QUESTION, i.e. the group. */
+export const RadioStates: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: 12, maxWidth: 480 }}>
+      <Radio name="rs" value="a" size="sm" label="Small" />
+      <Radio name="rs" value="b" label="Medium with a description" description="Linked through aria-describedby." />
+      <Radio name="rs" value="c" size="lg" label="Large" />
+      <Radio name="rs2" value="d" invalid label="Invalid — painted by the group" />
+      <Radio name="rs3" value="e" readOnly defaultChecked label="Read-only" />
+      <Radio name="rs4" value="f" disabled defaultChecked label="Disabled" />
+      <Radio name="rs5" value="g" labelPlacement="start" label="Label first" />
+    </div>
+  ),
+};
+
 /**
  * `variant="card"` — worth the space when the options need explaining. The
- * `description` is what the extra room buys you.
+ * `description` is what the extra room buys you, and it is a description, not
+ * part of the option's name.
  */
 export const RadioCards: Story = {
   render: function Render() {
@@ -107,6 +188,7 @@ export const RadioCards: Story = {
           <Radio
             key={o.id}
             variant="card"
+            icon={<Icon name="verified" />}
             name="scheme"
             value={o.id}
             checked={scheme === o.id}
@@ -120,7 +202,6 @@ export const RadioCards: Story = {
   },
 };
 
-/** Applies immediately — no Save step. That is what separates it from a checkbox. */
 export const Toggles: Story = {
   render: function Render() {
     const [on, setOn] = React.useState(true);

@@ -159,8 +159,12 @@ export type {
 export { Label } from "./components/forms/label";
 export type { LabelProps } from "./components/forms/label";
 export { Checkbox } from "./components/forms/checkbox";
+export type { CheckboxProps } from "./components/forms/checkbox";
 export { Radio } from "./components/forms/radio";
+export type { RadioProps } from "./components/forms/radio";
+export type { SelectionSize, SelectionLabelPlacement, SelectionVariant, CheckboxState } from "./components/forms/selection-types";
 export { Toggle } from "./components/forms/toggle";
+export type { ToggleProps, ToggleSize } from "./components/forms/toggle";
 export { Search } from "./components/forms/search";
 export type { SearchProps, SearchSize, SearchSuggestion } from "./components/forms/search";
 export { Chip } from "./components/forms/chip";

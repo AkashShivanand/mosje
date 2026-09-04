@@ -1,0 +1,140 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css — see design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     SAMAVESH — Toggle (switch). Moved out of the shared controls.css when the
+     selection controls were rebuilt; geometry unchanged, durations now tokened.
+     ============================================================================ */
+  .ds-toggle__input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 1;
+  }
+
+  .ds-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sa-inline-8);
+    font-family: var(--sa-font-latin);
+
+    /* Per-size local vars (default: 52×32 track, 24 knob). Geometry carried over verbatim
+       from controls.css; the track has no token of its own yet — the Toggle follow-up in
+       docs/plans/2026-09-04-checkbox-radio-world-class.md owns that. */
+    --_track-w: 52px;
+    --_track-h: 32px;
+    --_knob: 24px;
+    --_pad: 4px;
+  }
+
+  .ds-toggle--small {
+    --_track-w: 39px;
+    --_track-h: 24px;
+    --_knob: 18px;
+    --_pad: 3px;
+  }
+
+  .ds-toggle__control {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    width: var(--_track-w);
+    height: var(--_track-h);
+  }
+
+  .ds-toggle__track {
+    display: inline-flex;
+    align-items: center;
+    width: var(--_track-w);
+    height: var(--_track-h);
+    padding: var(--_pad);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-border-neutral-base);
+    transition: background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  .ds-toggle__knob {
+    width: var(--_knob);
+    height: var(--_knob);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-neutral-base);
+    box-shadow: 0 1px 2px color-mix(in oklab, var(--sa-text-neutral-bolder) 25%, transparent);
+    transform: translateX(0);
+    transition: transform var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  .ds-toggle__input:checked ~ .ds-toggle__track {
+    background-color: var(--sa-bg-brand-primary-bolder);
+  }
+
+  .ds-toggle__input:checked ~ .ds-toggle__track .ds-toggle__knob {
+    /* slide = track width − knob − padding on both sides */
+    transform: translateX(calc(var(--_track-w) - var(--_knob) - (var(--_pad) * 2)));
+  }
+
+  .ds-toggle__input:focus-visible ~ .ds-toggle__track {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-toggle__label {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .ds-toggle--disabled,
+  .ds-toggle--disabled .ds-toggle__input,
+  .ds-toggle--disabled .ds-toggle__label {
+    cursor: not-allowed;
+  }
+
+  .ds-toggle--disabled .ds-toggle__track {
+    background-color: var(--sa-border-neutral-subtle);
+  }
+
+  .ds-toggle--disabled .ds-toggle__label {
+    color: var(--sa-text-neutral-disabled);
+  }
+}
+
+@layer components {
+  @media (forced-colors: active) {
+    .ds-toggle__input:focus-visible ~ .ds-toggle__track {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
+
+    .ds-toggle__track {
+      border: var(--sa-stroke-1) solid ButtonText;
+    }
+
+    .ds-toggle__input:checked ~ .ds-toggle__track {
+      background-color: Highlight;
+    }
+
+    .ds-toggle__knob {
+      background-color: ButtonText;
+    }
+
+    .ds-toggle__input:checked ~ .ds-toggle__track .ds-toggle__knob {
+      background-color: HighlightText;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-toggle * {
+      transition: none;
+    }
+  }
+}

@@ -61,7 +61,7 @@
   }
 
   .ds-declaration__statement ul {
-    padding-left: var(--sa-padding-20);
+    padding-inline-start: var(--sa-padding-20);
     margin: 0;
   }
 
@@ -73,16 +73,9 @@
      was the smallest target on the page at 20px tall. Give the whole row the
      44px touch floor so it is the easiest thing to hit, not the hardest. */
   .ds-declaration .ds-checkbox {
-    align-items: center;
-    min-height: 44px;
+    min-block-size: var(--sa-target-comfortable);
     padding: var(--sa-padding-4) 0;
     cursor: pointer;
-  }
-
-  .ds-declaration .ds-checkbox__control {
-    display: inline-flex;
-    align-items: center;
-    align-self: center;
   }
 
   .ds-declaration__confirm {

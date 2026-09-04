@@ -23,9 +23,9 @@
       "existing": 103
     },
     "Radius": {
-      "total": 27,
+      "total": 28,
       "new": 0,
-      "existing": 27
+      "existing": 28
     },
     "Motion": {
       "total": 17,
@@ -38,9 +38,9 @@
       "existing": 8
     },
     "Static": {
-      "total": 80,
+      "total": 91,
       "new": 0,
-      "existing": 80
+      "existing": 91
     },
     "Viewport": {
       "total": 2,
@@ -27441,6 +27441,30 @@
           }
         },
         {
+          "name": "control/selection/radius",
+          "path": "control/selection/radius",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Radius",
+              "name": "shape/4"
+            }
+          },
+          "description": "The checkbox corner. shape/4, not the 8px control/radius a text field uses: at 20px a box with an 8px corner reads as a circle, and a circle is the radio.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-radius)"
+          },
+          "scopes": [
+            "CORNER_RADIUS"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
           "name": "shape/0",
           "path": "shape/0",
           "type": "FLOAT",
@@ -29832,6 +29856,270 @@
           },
           "scopes": [
             "STROKE_FLOAT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/size/sm",
+          "path": "control/selection/size/sm",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "ref/size/16"
+            }
+          },
+          "description": "16px box. Dense tables and filter rails, inside a 24px target/min hit area with target/spacing between neighbours.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-size-sm)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/size/md",
+          "path": "control/selection/size/md",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "ref/size/20"
+            }
+          },
+          "description": "20px box, the default. Sits beside 14 to 16px body text inside a 44px target/comfortable hit area.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-size-md)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/size/lg",
+          "path": "control/selection/size/lg",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "ref/size/24"
+            }
+          },
+          "description": "24px box. Touch-first screens and the card variant; the box alone meets WCAG 2.2 SC 2.5.8.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-size-lg)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/glyph/sm",
+          "path": "control/selection/glyph/sm",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "ref/size/12"
+            }
+          },
+          "description": "12px check or dash inside the 16px box.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-glyph-sm)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/glyph/md",
+          "path": "control/selection/glyph/md",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "ref/size/16"
+            }
+          },
+          "description": "16px check or dash inside the 20px box. The same step as icon/size/16, so the glyph can be a library icon instance.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-glyph-md)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/glyph/lg",
+          "path": "control/selection/glyph/lg",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "ref/size/20"
+            }
+          },
+          "description": "20px check or dash inside the 24px box.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-glyph-lg)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/dot/sm",
+          "path": "control/selection/dot/sm",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "ref/size/8"
+            }
+          },
+          "description": "8px dot inside the 16px circle.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-dot-sm)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/dot/md",
+          "path": "control/selection/dot/md",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 10,
+              "unit": "px"
+            }
+          },
+          "description": "A literal rather than an alias because no ref/size step is 10, and inventing one would add a scale step used by a single dot. Half of size/20, which is the md circle.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-dot-md)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/dot/lg",
+          "path": "control/selection/dot/lg",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "ref/size/12"
+            }
+          },
+          "description": "12px dot inside the 24px circle.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-dot-lg)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/border/width",
+          "path": "control/selection/border/width",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/border/width/md"
+            }
+          },
+          "description": "2px, up from a raw 1.5px. A 1.5px edge anti-aliases to a lighter, thinner line at 1x pixel density, and that rendered edge is the surface WCAG 2.2 SC 1.4.11 measures a control's boundary against. 2px is what GOV.UK, USWDS, Polaris and Material draw, and it equals stroke/2 and focus/width. control/border/width stays 1px for text fields, whose edge is a frame rather than the control itself.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-border-width)"
+          },
+          "scopes": [
+            "STROKE_FLOAT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "control/selection/gap",
+          "path": "control/selection/gap",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Space",
+              "name": "ref/space/8"
+            }
+          },
+          "description": "Between the control and its label. Was stack/8, a vertical token bound to a horizontal gap.",
+          "codeSyntax": {
+            "WEB": "var(--sa-control-selection-gap)"
+          },
+          "scopes": [
+            "GAP"
           ],
           "status": "existing",
           "$extensions": {

@@ -246,7 +246,9 @@ function collectionFor(path, tier, type) {
   if (head === "container") return "Static";
   if (head === "focus" && (rest[0] === "width" || rest[0] === "offset")) return "Static";
   if (head === "icon" && rest[0] === "size") return "Space";
-  if (head === "control") return rest[0] === "radius" ? "Radius" : "Static";
+  // `control/radius` and `control/selection/radius` are corners; everything else under
+  // `control` — border weights, the selection box, glyph, dot and gap — is a Static measurement.
+  if (head === "control") return path[path.length - 1] === "radius" ? "Radius" : "Static";
   // Same class as the two above: `badge` is a COLOUR root, so the status dot's DIAMETER —
   // a measurement, bound to WIDTH_HEIGHT — went to the Color collection purely because of
   // whose namespace it sits in. Caught on the run that added it (2026-08-17), which is the
@@ -776,7 +778,9 @@ export function scopesFor(path, tier, type, figmaName) {
   // FLOAT
   if (head === "alpha") return ["OPACITY", "COLOR_OPACITY"];
   if (head === "shape" || tail === "radius") return ["CORNER_RADIUS"];
-  if (head === "stroke" || (head === "control" && rest[0] === "border") || head === "focus") return ["STROKE_FLOAT"];
+  if (head === "stroke" || (head === "control" && rest.includes("border")) || head === "focus") return ["STROKE_FLOAT"];
+  // `control/selection/gap` is the box-to-label gap — a GAP, like the spacing ladder.
+  if (head === "control" && tail === "gap") return ["GAP"];
   if (head === "blur") return ["EFFECT_FLOAT"];
   if (head === "type" || head === "leading") {
     if (tail === "size") return ["FONT_SIZE"];

@@ -1,0 +1,124 @@
+/* Declare the order before using it. A cascade layer's position is fixed by where its NAME
+   first appears, and each of these stylesheets is a separate CSS root the bundler may inject
+   before the app's globals.css — see design-system-architecture.md §2a. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     SAMAVESH — Checkbox box. The shared root, text, hit area and states are in
+     selection-control.css; this file draws only the box and its mark.
+     ============================================================================ */
+  .ds-checkbox__box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--_box);
+    block-size: var(--_box);
+    border: var(--sa-control-selection-border-width) solid var(--sa-border-neutral-base);
+    border-radius: var(--sa-control-selection-radius);
+    background-color: var(--sa-bg-neutral-base);
+    color: var(--sa-on-bg-brand-primary-bolder);
+    transition:
+      background-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing),
+      border-color var(--sa-motion-exit-duration) var(--sa-motion-exit-easing);
+  }
+
+  .ds-checkbox__mark {
+    inline-size: var(--_glyph);
+    block-size: var(--_glyph);
+    opacity: 0;
+    transition: opacity var(--sa-motion-press-duration) var(--sa-motion-press-easing);
+  }
+
+  /* hover */
+  .ds-selection__input:hover:not(:disabled, [aria-readonly="true"]) ~ .ds-selection__visual .ds-checkbox__box {
+    border-color: var(--sa-border-brand-primary-base);
+  }
+
+  /* active — a state layer under the pointer, so the press is seen before the change lands */
+  .ds-selection__input:active:not(:disabled, [aria-readonly="true"]) ~ .ds-selection__visual .ds-checkbox__box {
+    border-color: var(--sa-border-brand-primary-base);
+    background-color: var(--sa-bg-brand-primary-subtler);
+  }
+
+  /* checked · indeterminate. The pseudo-class is the no-JS path; the data attribute is the
+     server-rendered one, so the dash paints before hydration. */
+  .ds-selection__input:checked ~ .ds-selection__visual .ds-checkbox__box,
+  .ds-checkbox[data-state="indeterminate"] .ds-checkbox__box {
+    background-color: var(--sa-bg-brand-primary-bolder);
+    border-color: var(--sa-border-brand-primary-base);
+  }
+
+  .ds-selection__input:checked ~ .ds-selection__visual .ds-checkbox__mark,
+  .ds-checkbox[data-state="indeterminate"] .ds-checkbox__mark {
+    opacity: 1;
+  }
+
+  /* invalid */
+  .ds-checkbox[data-invalid] .ds-checkbox__box {
+    border-color: var(--sa-border-status-error-bolder);
+  }
+
+  .ds-checkbox[data-invalid] .ds-selection__input:checked ~ .ds-selection__visual .ds-checkbox__box,
+  .ds-checkbox[data-invalid][data-state="indeterminate"] .ds-checkbox__box {
+    background-color: var(--sa-bg-status-error-bolder);
+    border-color: var(--sa-border-status-error-bolder);
+  }
+
+  /* read-only — keeps its ink, loses its affordance */
+  .ds-checkbox[data-readonly] .ds-checkbox__box {
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  .ds-checkbox[data-readonly] .ds-selection__input:checked ~ .ds-selection__visual .ds-checkbox__box {
+    background-color: var(--sa-bg-brand-primary-bolder);
+  }
+
+  /* disabled — tokened, not an opacity */
+  .ds-checkbox[data-disabled] .ds-checkbox__box {
+    background-color: var(--sa-bg-neutral-subtle);
+    border-color: var(--sa-border-neutral-subtle);
+    color: var(--sa-text-neutral-disabled);
+  }
+
+  .ds-checkbox[data-disabled] .ds-selection__input:checked ~ .ds-selection__visual .ds-checkbox__box,
+  .ds-checkbox[data-disabled][data-state="indeterminate"] .ds-checkbox__box {
+    background-color: var(--sa-bg-neutral-subtle);
+    border-color: var(--sa-border-neutral-subtle);
+  }
+}
+
+@layer components {
+  @media (forced-colors: active) {
+    .ds-checkbox__box {
+      border-color: ButtonText;
+      background-color: Canvas;
+      color: HighlightText;
+    }
+
+    .ds-selection__input:checked ~ .ds-selection__visual .ds-checkbox__box,
+    .ds-checkbox[data-state="indeterminate"] .ds-checkbox__box {
+      background-color: Highlight;
+      border-color: Highlight;
+      color: HighlightText;
+    }
+
+    .ds-checkbox[data-disabled] .ds-checkbox__box {
+      border-color: GrayText;
+      color: GrayText;
+    }
+
+    /* Forced colours has no error colour, and a non-system border is forced to a value that
+       vanished on a dark Canvas in testing. The error TEXT carries the state there; the box
+       keeps the system edge so it stays a box. */
+    .ds-checkbox[data-invalid] .ds-checkbox__box {
+      border-color: ButtonText;
+    }
+
+    .ds-checkbox[data-invalid] .ds-selection__input:checked ~ .ds-selection__visual .ds-checkbox__box,
+    .ds-checkbox[data-invalid][data-state="indeterminate"] .ds-checkbox__box {
+      background-color: Highlight;
+      border-color: Highlight;
+    }
+  }
+}

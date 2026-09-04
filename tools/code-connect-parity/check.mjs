@@ -121,7 +121,13 @@ for (const file of templates) {
     ...[...src.matchAll(/get(?:String|Boolean|InstanceSwap)\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
     ...[...src.matchAll(/getEnum\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
   ]);
-  const fx = fixtures[componentName];
+  // A fixture is keyed by component name, but ONE code component can be served by TWO
+  // Figma sets (Radio has a set of its own and shares `Selection Card` with Checkbox), so
+  // the node id in the template's `// url=` header is tried first and the name is the
+  // fallback. Without this the card template was checked against the Radio set's fixture
+  // and reported four properties the master "does not have".
+  const urlNode = (src.match(/^\/\/\s*url=.*?node-id=(\d+)-(\d+)/m) ?? []).slice(1).join(":");
+  const fx = Object.values(fixtures).find((f) => f && f.nodeId === urlNode) ?? fixtures[componentName];
   if (!fx) {
     notes.push(`${rel}: no Figma fixture for \`${componentName}\` — Figma property names NOT verified. Capture with get_context_for_code_connect and add to tools/code-connect-parity/figma-properties.json`);
   } else {
