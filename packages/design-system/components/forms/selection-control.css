@@ -261,11 +261,16 @@
      The scheme tile: a 64px icon tile, title, description and meta, with the control
      trailing on the right so the left edge stays with the content. The Figma
      `Layout=Detailed` variants are the reference; this follows them. */
-  .ds-selection--card-detailed,
-  .ds-selection--card-detailed:has(.ds-selection__icon) {
-    grid-template-columns: max-content minmax(0, 1fr) max-content;
+  .ds-selection--card-detailed {
+    grid-template-columns: minmax(0, 1fr) max-content; /* body · control */
     column-gap: var(--sa-inline-24);
     padding: var(--sa-padding-24);
+  }
+
+  /* Three tracks ONLY when the tile is there (Figma `Show Icon`). Declared
+     unconditionally, a tile-less card put the body in the icon track. */
+  .ds-selection--card-detailed:has(.ds-selection__icon) {
+    grid-template-columns: max-content minmax(0, 1fr) max-content; /* tile · body · control */
   }
 
   .ds-selection--card-detailed .ds-selection__control {

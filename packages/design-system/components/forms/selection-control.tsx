@@ -24,9 +24,15 @@ import "./selection-control.css";
  *     <span class="ds-selection__body">
  *       <label for>label [*]</label>
  *       [<span id=…-description>description</span>] aria-describedby, NEVER in the name
+ *       [<span id=…-meta>meta</span>]               card only; aria-describedby, after
+ *                                                    the description
  *     </span>
  *     [<p id=…-error role="alert">error</p>]         checkbox only
  *   </div>
+ *
+ * DOM order never changes. `cardLayout="detailed"` puts the control LAST visually
+ * with CSS `order`, so the reading order (control, then its name) stays the same
+ * whichever tile is drawn.
  *
  * The description used to sit inside the card's `<label>`, so a screen reader read a
  * paragraph as the option's NAME. It is a sibling now, linked through `aria-describedby`,
