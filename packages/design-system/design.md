@@ -12,6 +12,51 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-04 · System version: v0.47.0 (EVERY TRANSLUCENT TOKEN IS A REFERENCE
+  PLUS AN OPACITY REFERENCE. Figma can alias a colour and keep a separate, variable-bound
+  opacity, so the 136 rgba() literals — 48 overlay tiers, scrim, inverse rules, inverse button
+  states — are now `{base}` + `{alpha.N}`; CSS resolves them as color-mix() over two custom
+  properties and they follow every brand island. Navy's scrim had been the Blue neutral and
+  every DBIM wash a Blue literal. The opacity scale is ONE thirteen-step ladder, 0 · 4 · 8 · 16 ·
+  24 · 32 · 40 · 48 · 64 · 72 · 80 · 88 · 100, bound as `alpha/*`; Figma reads an opacity-bound
+  number as a percentage, so `ref/opacity/*` is projected ×100. The Plugin API cannot write an
+  alias's opacity or the "Color variable opacity" scope — both are recorded as UI steps.
+  Library scopes follow the agreed rule: Tier-1 `ref/*` is offered in no picker, each alias is
+  scoped to the property it is for, and the exporter states the scope in the payload.
+  Audit §16.)
+
+  Last reviewed: 2026-09-04 · System version: v0.46.0 (THE COLOUR SYSTEM WAS DULL BECAUSE IT
+  WAS TWO RUNGS TOO DARK, AND ONE RAMP WAS STARVING ITS OWN TINTS. Every status ink sat at
+  rung 700 (7.8–11.7:1, L* 33–44) where peers sit at L* 48–57; India Green anchored at 500
+  dragged its whole ladder a rung darker than every sibling, so the success fill under white
+  text was 9.1:1 and its rung-100 tint held 17% of the chroma sRGB allows there — a sage grey
+  called "success". Every status `bolder` ink was LIGHTER than its `base`. Info was the brand
+  blue (dE 0.5). The alert painted its grounds with four hand-mixed percentages and its warning
+  glyph with a 1.44:1 badge yellow; the solid warning badge was dark text on a brown, 2.08:1.
+  Status inks now sit at 600 and bolder at 700; India Green anchors at 600 and IS the success
+  ink and fill; the tint exponent
+  is 0.5; danger rotated to hue 24; info is cyan-teal at 220; brand text is rung 600 (it was
+  4.07:1 on the page ground); disabled ink is opaque; the resting control border is 4.65:1.
+  Pushed to Figma and read back the same day — `reference/figma-live.json` records both halves.
+  Audit: docs/audit/2026-09-04-colour-system-audit-and-redesign.md.)
+
+  Last reviewed: 2026-09-03 · System version: v0.45.0 (THE LOGIN FORM WAS A DRAWING OF THE
+  DESIGN, NOT AN ASSEMBLY OF IT. `PortalLoginTemplate` imported ZERO components from its own
+  design system: 8 raw inputs, 8 raw labels, 6 raw buttons, a raw select and 77
+  arbitrary-value Tailwind classes wrapping `var(--sa-*)` — token references no token gate
+  can see and no brand mode can re-bind. That is the whole reason the screen drifted from
+  the reference. It now renders Alert, Button, FormField, Input, OtpInput, PasswordInput,
+  RadioGroup, Select and Tabs, and the arbitrary-value count is 0. `ConsentLine` and
+  `AccountPrompt` were exported by the system and rendered by NOTHING — the consent
+  sentence GIGW requires existed only in the Figma drawing. `AccountPrompt` also stopped
+  drawing a second full-width outlined button under the primary action; a single
+  registration route is a link on a rule, as the reference draws it. `BotCheck` replaces
+  `CaptchaField`, invisible by default, with a REQUIRED escape route — and deliberately no
+  audio mode, reversing this file's own earlier advice: bots solve audio challenges over
+  85% of the time while only 31.2% of them get three-person agreement among people.
+  `"darpan"` is back in `PortalAuthMode`; the audit that removed it could not have found an
+  E-Anudaan DARPAN login because E-Anudaan has no login screen in the handoff at all.)
+
   Last reviewed: 2026-09-02 · System version: v0.44.0 (TWO LOGIN SWITCHES BELONGED TO
   THE ROLE AND WERE WRITTEN AS THE PORTAL'S. The DigiLocker card was first modelled as a
   fourth `PortalAuthMode`, then as an audience rule ("everyone who is not an officer");
@@ -644,7 +689,7 @@
   `[data-surface="portal"]` block did not re-assert the `--ds-text-*`/`--ds-leading-*` aliases,
   so every natively-mounted portal rendered the WEBSITE type scale (display headings to 80px
   instead of 56px) — alias re-assertion is now targeted per block, which also cut tokens.css
-  from 92 KB to 60 KB. v1.7.2: Text-entry controls take a hard 16px floor below 768px: iOS Safari zooms any focused control under 16px and does not zoom back out, and the fluid ramp put body-1 at ~14px on a phone. Desktop density unchanged. v1.7.1: `SideSheet` gains `side="left"` for navigation drawers, so portal shells can collapse a fixed sidebar into a drawer on small screens instead of squeezing the page. `DeclarationCheckbox` attestation row now meets the 44px touch floor. v1.7.0: Adds three components for field reporting with sign-off: `GeoPhotoInput` (EXIF/device geo-tagging + auto-downscale), `DeclarationCheckbox` (statutory certification panel), `ApprovalTimeline` (multi-tier approval audit trail). No token values changed. v1.6.2: Theming: `[data-color-mode="…"]` blocks now re-declare the `--ds-*` aliases, exactly as `[data-theme="…"]` blocks already did, so colour-mode "islands" repaint a nested subtree instead of only flipping `--sa-*` primitives. Fixed in the generator `packages/tokens/build/formats/legacy-ds-css.mjs`; surfaced when portals mounted natively in the hub and `data-brand` moved off `<html>` onto a wrapper. No token values changed. v1.6.1: Icon loading: icons.css now declares an inline @font-face (pinned gstatic woff2) instead of an @import, so the documented `import "@mosje/design-system/icons.css"` finally loads the font under Next/Turbopack — no per-app <link> hack. Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
+  from 92 KB to 60 KB. v1.7.3: The field stack reaches parity with the UX4G 3.0 Figma library and past it. All EIGHT states (adds success, warning, read-only), a four-step size scale (40/44/48/56 — UX4G's 32px S is not offered, because 44 is the AAA target size), prefix/suffix affixes, contextual help, a pending state, and a grapheme-counting CharacterCount. FIXED: the focus ring was rgba(3,115,223,0.48) — 2.01:1 flattened on white, failing SC 1.4.11 — and a box-shadow, invisible in forced-colours; it is now a solid 3px outline at 2px offset, 4.64:1. FIXED: `md` and `lg` both rendered at 50px because padding, not min-height, decided the height. FIXED: a server-rendered error was announced on load. FIXED: `.ds-sr-only` was undefined in date-picker.css, combobox.css and chip.css, so their visually-hidden text was visible. Label 14→16px and hint/message 12→14px, taking the larger where UX4G's two sources disagree. Every string is overridable through `FieldPolicyProvider`; `autoComplete` is typed to the autofill field names. v1.7.2: Text-entry controls take a hard 16px floor below 768px: iOS Safari zooms any focused control under 16px and does not zoom back out, and the fluid ramp put body-1 at ~14px on a phone. Desktop density unchanged. v1.7.1: `SideSheet` gains `side="left"` for navigation drawers, so portal shells can collapse a fixed sidebar into a drawer on small screens instead of squeezing the page. `DeclarationCheckbox` attestation row now meets the 44px touch floor. v1.7.0: Adds three components for field reporting with sign-off: `GeoPhotoInput` (EXIF/device geo-tagging + auto-downscale), `DeclarationCheckbox` (statutory certification panel), `ApprovalTimeline` (multi-tier approval audit trail). No token values changed. v1.6.2: Theming: `[data-color-mode="…"]` blocks now re-declare the `--ds-*` aliases, exactly as `[data-theme="…"]` blocks already did, so colour-mode "islands" repaint a nested subtree instead of only flipping `--sa-*` primitives. Fixed in the generator `packages/tokens/build/formats/legacy-ds-css.mjs`; surfaced when portals mounted natively in the hub and `data-brand` moved off `<html>` onto a wrapper. No token values changed. v1.6.1: Icon loading: icons.css now declares an inline @font-face (pinned gstatic woff2) instead of an @import, so the documented `import "@mosje/design-system/icons.css"` finally loads the font under Next/Turbopack — no per-app <link> hack. Typography: hyphenated Portal-DS role names — display-1…label-3; added -para (paragraph-spacing) + -tracking (letter-spacing) fluid props so code ↔ SAMAVESH Figma are at full parity. v1.6.0: two-surface fluid type via data-surface=website|portal, 21 role tokens as clamp(min@360px, fluid, max@1280px). v1.5.0: Figma→code colour sync, mode-aware Blue-Light/Blue-Dark, danger-strong #B8382F)
 -->
 
 # SAMAVESH Design System — Specification & AI Design Context
@@ -723,25 +768,31 @@ that changes a colour is `data-brand`, so the two value columns below are Blue a
 | Token | Blue | Navy | Correct usage | Never use for |
 |-------|------|------|---------------|---------------|
 | `--sa-bg-brand-primary-bolder` | `#005EB9` | `#003366` | **Solid primary fills** — filled buttons, active nav, brand banners | Text or borders on a light page; the ink slot below is measured for that |
-| `--sa-text-brand-primary-base` | `#0373DF` | `#244C7B` | Brand-coloured text, links, outlined-button ink, key icons | Solid fills behind white text — that is the `bg` slot's job |
+| `--sa-text-brand-primary-base` | `#005EB9` | `#003366` | Brand-coloured text, links, outlined-button ink | Solid fills behind white text — that is the `bg` slot's job. Since 2026-09-04 this is rung 600, because #0373DF measured 4.07:1 on the page ground; the key colour stays on `icon/brand/primary/base` and the fills |
 | `--sa-color-brand-saffron` | `#FF671F` | same | Accents, badges, decorative emphasis | Text, icons or chart series on white — **2.91:1**, below even the 3:1 non-text floor |
 | `--sa-color-brand-yellow` | `#FFD323` | same | Nothing, in new work. Retained for older markup | Text at any size (**1.44:1**). For yellow emphasis use `bg/status/warning/subtler` behind dark ink |
 | `--sa-text-neutral-base` | `#1E2124` | `#1E2024` | All body/heading text | Interactive elements, backgrounds |
 | `--sa-text-neutral-subtle` | `#3A3D41` | `#3B3D41` | Captions, hints, helper text | — comfortably AA at 10.92:1; the old "check below 16px" caveat no longer applies |
 | `--sa-bg-neutral-base` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
 | `--sa-bg-neutral-subtler` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
-| `--sa-text-status-error-base` | `#8B1F18` | same | Error text and icons on white, destructive labels | Decorative fills (use `bg/status/error/subtler`) |
-| `--sa-text-status-success-base` | `#004220` | same | Success states, validation confirmation | Primary brand actions |
+| `--sa-text-status-error-base` | `#AA2D30` | same | Error text and icons on white, destructive labels — rung 600, 6.72:1 | Decorative fills (use `bg/status/error/subtler`) |
+| `--sa-text-status-success-base` | `#046A38` | same | Success states, validation confirmation — rung 600, which is India Green itself, 6.72:1 | Primary brand actions |
 | `--sa-on-bg-brand-primary-bolder` | `#FFFFFF` | same | Text/icons on a solid primary fill | Any other background |
 
-> **A fill sits one rung deeper than the ink of the same family, and that is the point.**
-> `bg/brand/primary/bolder` is `primaryScale/600`; `text/brand/primary/base` is `/500`. The fill
-> carries white text, so it is measured against white and needs the headroom; the ink sits on the
-> page, where 4.64:1 is measured against the page and correct. Reaching for the ink token to paint
-> a button is the mistake this split exists to prevent — and it is the one the DS Button itself
-> made until 2026-08-12.
+> **Ink and fill are different tokens even when they resolve to the same rung.** Since 2026-09-04
+> `text/brand/primary/base` and `bg/brand/primary/bolder` are both `primaryScale/600`: the fill
+> needs 4.5:1 under white text, the ink needs 4.5:1 on the muted page ground, and rung 600 is the
+> first rung that pays both (6.36:1 and 5.57:1). The key colour `#0373DF` remains the ICON and
+> the identity, not body text — it measured 4.07:1 on the ground every page carries. Reaching for
+> the ink token to paint a button is still the mistake the split exists to prevent.
+>
+> **Status roles read the same ladder in every family.** `text|icon|border/status/*/base` is rung
+> 600 (5.7–6.7:1 on white) and `bolder` is rung 700 (7.8–9.3:1). Until 2026-09-04 base was 700
+> and bolder was 600 — the louder name was the lighter colour. Amber is the one family whose SOLID
+> chip takes the `bold` rung (300, `#E09C1D`) with its measured dark ink (6.9:1) instead of
+> `bolder` under white: warningScale/600 is a brown, and USWDS treats amber the same way.
 
-*Every value above was read from `packages/tokens/dist/tokens.css` on 2026-08-12. The previous
+*Every value above was read from `packages/tokens/dist/tokens.css` on 2026-09-04. The previous
 table pre-dated the 2026-08-11 ramp rebuild and was wrong on `--ds-saffron`, `--ds-ink`,
 `--ds-ink-muted`, `--ds-danger` and `--ds-success`, and carried a Dark column for an axis that had
 already been removed.*
@@ -1711,12 +1762,69 @@ one. Each segment still meets 24×24 on its own, which the size ladder guarantee
 ### Forms
 
 #### FormField
-**Purpose**: The binding wrapper that auto-associates label, input control, hint text, and error message.  
+**Purpose**: The binding wrapper that associates label, help, control, hint, status message and
+character count, and owns every accessibility decision the field stack makes.  
 **Rules**:
 - Every `<Input>`, `<Select>`, `<Textarea>`, `<Checkbox>`, `<Radio>`, `<Toggle>` **must** be wrapped in `<FormField>`.
 - FormField auto-generates `htmlFor` / `aria-describedby` linkage. Do not bypass it.
-- Layout order is **label → control → hint → error** (hint renders as helper text *below* the control so inputs stay aligned across grid rows). All four remain linked via `aria-describedby`.
-- Error prop only activates after validation runs — never on initial render.
+- Layout order is **label → help → control → hint → message → count** (the hint renders *below*
+  the control so inputs stay aligned across grid rows, which is also where UX4G's Input master
+  draws its Caption). Every part is linked via `aria-describedby`.
+- **`aria-describedby` is COMPOSED, never replaced.** Hint, help, message, count and anything
+  passed in `describedBy` are joined by one expression, in reading order. Assigning the
+  attribute per feature lets the last writer win, and the reader loses the hint the moment an
+  error appears.
+- **Three message channels, one at a time.** `error` (blocks), `warning` (does not block),
+  `success` (a real check passed, not "you typed something"). Precedence is fixed and not
+  configurable. `warning` and `success` deliberately do **not** set `aria-invalid`.
+- **The error is not announced on first paint.** Two live regions sit on the page from the
+  first render holding nothing, and fill only when the message changes away from the one the
+  field was born with. A server-rendered error belongs to `ErrorSummary`, which takes focus.
+- **`readOnly` is a real `readonly`**, not a dressed-up `disabled`: focusable, selectable,
+  announced as read-only. Use it for pre-filled and under-review values.
+- Customise through `classNames` (per-part) and the `data-part` / `data-status` / `data-size`
+  attributes. Never write a selector against a `.ds-field__*` class — that is an
+  implementation detail and it will move.
+- Its parts — `FieldLabel`, `FieldHint`, `FieldMessage`, `FieldHelp`, `FieldHelpToggle` — are
+  exported with `useFieldIds` for the rare screen that needs a different arrangement. Ids are
+  derived from one `useId` rather than registered through context, so `aria-describedby` is
+  correct on the server's first paint.
+
+#### FieldPolicyProvider · RequiredFieldsLegend
+**Purpose**: Sets, for every field beneath it, whether the form marks its **mandatory** fields
+or its **optional** ones — and what words the whole field stack uses.  
+**Rules**:
+- **Mark the minority.** A form where two of forty fields are optional marks those two. Most
+  scheme applications here are almost entirely mandatory, so `necessity="optional"` is usually
+  right; asterisking forty of forty-two fields marks nothing.
+- **One provider per form.** Necessity is a form-level decision. Putting it on the field lets
+  one form mark half its fields each way, and the unmarked ones then read as a third category.
+- `RequiredFieldsLegend` prints the sentence that explains the mark, reading the same policy,
+  so the key and the marks cannot disagree. UX4G publishes this as its own component in the
+  Form Field Group. A mark with no key is not an instruction — an asterisk means "footnote" to
+  a great many readers.
+- **`copy` translates the whole stack.** Put one provider at the root of a portal.  Overrides
+  merge over the English defaults and are inherited by nested providers, so a form that changes
+  only `necessity` inside a Hindi portal stays in Hindi. The count strings are functions, not
+  templates, because pluralisation is not the same shape in every language.
+- Do not reach for `necessity="none"` unless every field is mandatory **and** the form says so
+  in prose above the fields.
+
+#### CharacterCount
+**Purpose**: A live count of how much of a text field's limit is left.  
+**Rules**:
+- Reach for it through `FormField`'s `characterCount` prop, which wires its description into
+  the field's `aria-describedby`. Render it directly only outside a field.
+- **Do not also set `maxLength` on the control.** A hard limit silently swallows keystrokes,
+  and a reader pasting a prepared answer loses the end of it without being told. Let them go
+  over and let the count say so — that is what its over-limit state is for. The browser also
+  counts UTF-16 units, so on Devanagari it would cut a word mid-cluster.
+- It counts **grapheme clusters**: `"नमस्ते".length` is 6 where a reader counts 3, and
+  `"👍🏽".length` is 4 where a reader counts 1.
+- Silent until three quarters of the limit is used, then debounced; polite inside the limit and
+  assertive past it, in two separate live regions.
+- Use it only where the limit is real and reachable. A count against a 4,000-character box
+  nobody fills is decoration.
 
 #### Label
 **Purpose**: A standalone `<label>` for controls that are **not** wrapped in `<FormField>`.  
@@ -1765,6 +1873,39 @@ The details it exists to guarantee:
 - **Pass zxcvbn's own score.** Do not compute it from character classes ("one capital, one symbol") — those measure the wrong thing, failing a strong passphrase and passing `Passw0rd!`.
 - **Advisory, not a gate.** Never block submit on a Fair score. A policy minimum belongs in the field's error message, where it can say what to change; a colour bar cannot.
 - The word carries the meaning, not the colour — a red bar and an amber bar are the same bar to a colour-blind user. Announce politely, never assertively.
+
+#### BotCheck
+
+**Confirms a request came from a person without asking the person to prove it.** The
+replacement for `CaptchaField`, and the component a new portal reaches for.
+
+- **`mode` is `invisible` by default, and invisible draws NOTHING.** The server decides
+  from a self-hosted proof-of-work token, a honeypot and rate limiting. The component
+  appears only when the check has FAILED — a form that silently refuses to submit is the
+  worst of the three outcomes. `checkbox` adds one deliberate gesture, which is not a
+  cognitive function test and is therefore permitted. `challenge` is the legacy
+  distorted-characters test and is **deprecated**.
+- **`helpHref` is REQUIRED, and that is the whole design.** A proof-of-work or reputation
+  check has no accessible workaround of its own: a citizen on a shared connection, an
+  older device that fails the work factor, or a screen reader that cannot complete the
+  gesture is simply locked out with no way to identify themselves as a person. The link is
+  the alternative **WCAG 2.2 3.3.8** asks for, and making it optional is how it goes
+  missing from the one portal that needed it. `PortalLoginTemplate` enforces the same rule
+  one level up: no route, no check at all.
+- **There is deliberately NO audio mode, reversing earlier advice in this file.** Measured:
+  bots solve audio challenges **over 85%** of the time while only **31.2%** of them get
+  three-person agreement among people; a blind citizen takes **65s** against 9.8s for the
+  visual form, and **29.5%** of blind users disagree that audio alternatives are accessible
+  to them at all. An audio alternative is therefore harder for the people it is for and
+  easier for the software it exists to stop — worse on both axes at once.
+- **A hosted service is a data-residency decision, not an import.** Cloudflare Turnstile
+  solves the same problem but sends every visitor's signals to another company. Self-hosted
+  proof-of-work (ALTCHA / Cap, SHA-256) keeps it inside the estate, which also means no
+  cookie and no consent banner. The estate's order of preference is: nothing, then
+  `invisible`, then `checkbox`, then `challenge`.
+- **It cannot enforce anything.** The component renders the presentation and the escape
+  hatch; whether a request is refused is entirely server-side, and a bot never runs this
+  code.
 
 #### CaptchaField
 **Purpose**: A security-check challenge, a refresh control, and an answer field.

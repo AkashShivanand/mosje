@@ -46,8 +46,8 @@ export default function CaptchaFieldPage(): React.JSX.Element {
   return (
     <ComponentDocPage
       name="Captcha Field"
-      status="Stable"
-      summary="The security-check field: a challenge, a refresh control and an answer. It is retained for one existing portal. On a new portal a visual challenge with no alternative is a WCAG 2.2 AA conformance failure, not a hardening measure."
+      status="Deprecated"
+      summary="DEPRECATED — use Bot Check. The legacy security-check field: a challenge, a refresh control and an answer. A visual challenge with no alternative is a WCAG 2.2 AA conformance failure, not a hardening measure, and the audio alternative it would ship with is easier for bots than for people."
       figma={{ absent: "Not yet published in the Figma library." }}
       specimen={<CaptchaFieldPlayground />}
       propsFrom="CaptchaFieldProps"
@@ -89,8 +89,11 @@ export default function CaptchaFieldPage(): React.JSX.Element {
             WCAG 2.2 SC 3.3.8 <em>Accessible Authentication (Minimum)</em> is Level AA, and this estate
             targets AA — so a cognitive function test with no alternative is a conformance failure.
             GIGW 3.0 binds government properties to the same expectation. Prefer rate limiting, a
-            server-side signal, or nothing at all. If one must ship, ship an audio alternative
-            alongside it.
+            server-side signal, or nothing at all. Do <strong>not</strong> reach for an audio
+            alternative: bots solve audio challenges over 85% of the time while only 31.2% of them
+            get three-person agreement among people, so it weakens the check and excludes the
+            readers it was meant to serve. Use <a href="/design-system/components/forms/bot-check">Bot
+            Check</a> instead.
           </Callout>
           <p>
             Only one surface in the estate uses this today. Adding it to another portal is a decision

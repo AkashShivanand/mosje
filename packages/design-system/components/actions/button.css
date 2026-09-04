@@ -35,7 +35,65 @@
      `outlined`. It had two consumers in 494 buttons.
      ============================================================================ */
 
+  /*
+   * THE PUBLIC OVERRIDE LAYER — four properties, and nothing else to learn.
+   *
+   * A design system component is reusable to the extent that the next portal can bend it
+   * without forking it. Before this, bending a button meant either adding a variant to
+   * the shared library — a change every consumer pays for — or overriding
+   * `background-color` from the outside, which wins the fill and silently loses hover,
+   * active, disabled, the focus ring and the whole inverse ladder, because those are
+   * separate declarations reading separate values.
+   *
+   * These four hooks are read by EVERY state, so setting one is complete by
+   * construction. Set them on any ancestor and they inherit:
+   *
+   *   [data-portal="nmba"] .ds-btn--<variant> { --sa-btn-fill: var(--sa-color-accentScale-600); }
+   *
+   * The `<variant>` there is a placeholder on purpose. Spelled out as a real class, this
+   * example was parsed as the primary variant's declaration block by
+   * `packages/tokens/test/action-nontext-contrast.test.mjs`, which read the whole file
+   * including comments — pointing a contrast gate at a code sample. That parser strips
+   * comments now; this stays a placeholder so the next one does not have to.
+   *
+   * They default to the variant's own value, so a consumer that sets nothing sees no
+   * change. This is the documented extension point; `!important` on `background-color`
+   * is not, and never was.
+   *
+   * It resolves into `--_c-*` and leaves the variant blocks declaring `--_fill` /
+   * `--_on` / `--_color` under their ORIGINAL names. That is not cosmetic:
+   * `packages/tokens/test/action-nontext-contrast.test.mjs` PARSES this stylesheet for
+   * those declarations to measure every variant x appearance edge against WCAG 1.4.11.
+   * Renaming them resolved 0 combinations and turned a load-bearing contrast gate into
+   * a no-op — which still reported green in every local check and was caught only by CI.
+   *
+   *   --sa-btn-fill   the solid background of the filled appearance
+   *   --sa-btn-ink    the label colour ON that fill
+   *   --sa-btn-edge   the ink and border of the outlined and text appearances
+   *   --sa-btn-ring   the focus ring colour
+   */
   .ds-btn {
+    --_c-fill: var(--sa-btn-fill, var(--_fill));
+    --_c-on: var(--sa-btn-ink, var(--_on));
+    --_c-edge: var(--sa-btn-edge, var(--_color));
+    /* `--_ring` is declared only by success and danger; primary and neutral fall
+       through to the estate's focus colour, which is what the base outline already
+       uses. Naming the fallback here is what lets a consumer override the ring on
+       every variant rather than only on the two that happen to declare one. */
+    --_c-ring: var(--sa-btn-ring, var(--_ring, var(--sa-focus-ring)));
+    /*
+     * THE INVERSE LADDER GOES THROUGH THE SAME HOOKS, and until 2026-09-03 it did not.
+     *
+     * The docs said a hook is "read by every state, so setting one is complete by
+     * construction", and named the inverse ladder explicitly. It was not true: the
+     * inverse appearances read `--_inv-*` straight from the variant block, so a portal
+     * setting `--sa-btn-fill` was rethemed on a default ground and left on stock brand
+     * colours the moment the button sat on a brand surface. A half-override is the exact
+     * failure the hooks were introduced to prevent, and it was asserted in writing.
+     */
+    --_c-inv-fill: var(--sa-btn-fill, var(--_inv-fill));
+    --_c-inv-on: var(--sa-btn-ink, var(--_inv-on));
+    --_c-inv-edge: var(--sa-btn-edge, var(--_inv-edge));
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -51,7 +109,24 @@
     border: 1px solid transparent;
     border-radius: var(--sa-shape-8);
     cursor: pointer;
-    white-space: nowrap;
+    /*
+     * LABELS WRAP. THIS WAS `nowrap`, AND `nowrap` CANNOT FAIL SAFE.
+     *
+     * A button whose label will not wrap does not shrink — it overflows, and takes
+     * the page's horizontal scrollbar with it. On a 320px screen that is the common
+     * case, not the edge: "Submit application" is 154px at `md`, but its Hindi
+     * counterpart and every three-word departmental label are not, and the estate is
+     * bilingual by requirement. Every system in the field wraps — GOV.UK, Material,
+     * Carbon, Polaris — because a two-line button is a smaller failure than a clipped
+     * one, and it is not close.
+     *
+     * `nowrap` is still available where a label genuinely must stay on one line
+     * (a segmented control, a toolbar) via `.ds-btn--nowrap`. Opt in to the risk.
+     */
+    white-space: normal;
+    /* Wrapping needs somewhere to break. A long unbroken token — a scheme code, a
+       URL-ish label — would otherwise still overflow a wrapping box. */
+    overflow-wrap: anywhere;
     text-decoration: none;
     user-select: none;
     -webkit-appearance: none;
@@ -63,6 +138,98 @@
       box-shadow 0.15s ease,
       filter 0.15s ease,
       transform 0.16s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  /* Opt back out of wrapping, for the places that genuinely need one line. */
+  .ds-btn--nowrap {
+    white-space: nowrap;
+  }
+
+  /*
+   * FULL WIDTH, BECAUSE THE GUIDANCE WAS RIGHT AND WAS IGNORED ANYWAY.
+   *
+   * The docs said to put the button in a full-width container rather than give it a
+   * width. That is correct in principle, and in practice every consumer that wanted a
+   * full-width mobile submit reached for a `className` instead — so the estate got the
+   * behaviour without the token discipline. A prop that is right 95% of the time beats
+   * a rule nobody follows.
+   *
+   * `justify-content` is not touched: the label stays centred, which is what a
+   * full-width form button wants everywhere it appears.
+   */
+  .ds-btn--full {
+    display: flex;
+    width: 100%;
+  }
+
+  /*
+   * A RHYTHM MINIMUM, SO SHORT LABELS DO NOT PRODUCE STUBS.
+   *
+   * "OK" next to "Cancel" drew two boxes of visibly different weight, and a row of
+   * one-word actions read as ragged rather than as a set. Carbon, Polaris and GOV.UK
+   * all floor the width for the same reason. It is a MINIMUM, so nothing that is
+   * already wider moves, and it is deliberately below the width of any two-word
+   * label — this straightens stubs, it does not pad the component.
+   *
+   * Excluded from the icon-only shape and from full-width, where a floor is wrong by
+   * definition: an icon button is square, and a full-width button already has a width.
+   */
+  .ds-btn:not(.ds-icon-btn, .ds-btn--full) {
+    min-width: 64px;
+  }
+
+  /*
+   * THE POINTER TARGET IS 44x44 EVEN WHERE THE DRAWN BOX IS NOT.
+   *
+   * `sm` is 32px and `md` is 40px. Both clear WCAG 2.2 §2.5.8 Target Size (Minimum),
+   * which is 24x24 at Level AA — but UX4G 3.0 asks for 44x44 on mobile and says, in as
+   * many words, to "add transparent padding around small icons to reach target size".
+   * That is exactly this: an invisible pseudo-element centred on the control, so the
+   * thumb target grows while the drawn button, the layout and the focus ring stay
+   * exactly where they were. Material and Spectrum both solve it this way.
+   *
+   * Pointer-coarse only. On a mouse it would enlarge the click area of a dense admin
+   * table's row controls into their neighbours, which is a regression, not a fix —
+   * the 44px figure is a thumb measurement and belongs to thumbs.
+   */
+  @media (pointer: coarse) {
+    .ds-btn::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      min-width: 44px;
+      min-height: 44px;
+      /*
+       * NO `pointer-events: none` HERE, AND THAT IS THE WHOLE MECHANISM.
+       *
+       * The first draft of this rule had it, which made the pseudo-element invisible
+       * to the pointer and left the target exactly 32px — a comment claiming a fix
+       * over a rule that did nothing. The element must RECEIVE the press; because it
+       * is a child of the button, the event bubbles and the button fires.
+       */
+    }
+
+    /*
+     * Except where buttons touch on purpose. In an attached group a 44px target on a
+     * 32px control overlaps its neighbour by 6px a side, and the overlap resolves by
+     * paint order rather than by intent — so the reader presses "Week" and gets
+     * "Month". An attached group is a single segmented control and is sized as one;
+     * a spaced group keeps the expansion, and `ButtonGroup`'s own 8px gap is what
+     * keeps those targets from colliding.
+     */
+    .ds-btn-group--attached .ds-btn::after {
+      content: none;
+    }
+
+    /* `position: relative` only under coarse pointers, so nothing about the default
+       stacking context changes on desktop. */
+    .ds-btn {
+      position: relative;
+    }
   }
 
   /* Press feedback. Colour alone tells you the button noticed; a slight give
@@ -86,10 +253,26 @@
     flex: 0 0 auto;
   }
 
-  /* Visible, accessible focus ring (keyboard) */
+  /* Visible, accessible focus ring (keyboard).
+
+     BOUND TO THE TOKENS, AND OFFSET. This was `box-shadow: 0 0 0 3px` with
+     `outline: none` — a hardcoded width on a component whose own documentation
+     claimed the ring was "offset from the control" when it was flush against the
+     fill. Two defects in one declaration: a literal where `--sa-focus-width` and
+     `--sa-focus-offset` already existed and 14 other components already bind them,
+     and a ring drawn touching a filled button's edge, where a translucent blue on
+     a blue fill is exactly where a ring is hardest to see.
+
+     `outline` rather than `box-shadow` because outline-offset is the only way to
+     get the gap, and a modern outline follows `border-radius` on its own. UX4G 3.0
+     (Accessibility → Focus visibility) asks for a ring offset by 2px matching the
+     element's radius; that is what this now draws. UX4G names 4px where the estate's
+     token says 2px — the token wins, because one component quietly running thicker
+     than every other focusable control in the estate is worse than the 2px itself.
+     Recorded in the component's Figma record. */
   .ds-btn:focus-visible {
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* --------------------------------------------------------------------------
@@ -230,9 +413,11 @@
      base rule at the top of this file already sets, so they declare nothing. They
      used to declare it anyway and no rule ever read it — a variable that looks
      load-bearing and is not is worse than no variable. */
-  .ds-btn--success:focus-visible,
-  .ds-btn--danger:focus-visible {
-    box-shadow: 0 0 0 3px var(--_ring);
+  /* Every variant routes its ring through `--_ring` now, not just the two that declare
+     their own — otherwise `--sa-btn-ring` would be an override that worked on success
+     and danger and silently did nothing on primary and neutral. */
+  .ds-btn:focus-visible {
+    outline-color: var(--_c-ring);
   }
 
   /* --------------------------------------------------------------------------
@@ -274,13 +459,59 @@
     line-height: var(--sa-type-body-1-lh);
   }
 
+  /* ==========================================================================
+     OPTICAL PADDING — the icon side sits closer than the label side
+     ==========================================================================
+     A GLYPH IS NOT INK TO ITS OWN EDGE. Material Symbols draws inside a square
+     em-box with its own internal bearing, so the visible mark starts inset from
+     the box the layout measures. Give both sides the same geometric padding and
+     the icon side LOOKS further in than the label side — the label's letterforms
+     begin much closer to their box edge.
+
+     So the side carrying a glyph loses a step: 24 -> 16 at md and lg, 16 -> 12 at
+     sm. Material 3 does exactly this (16dp leading with an icon against 24dp
+     trailing), and Carbon and Polaris both compensate the same way. It is applied
+     per side, so a button with only a trailing arrow keeps its full leading
+     padding and vice versa.
+
+     THE SPINNER COUNTS AS A LEADING ICON, and that is load-bearing rather than
+     tidy. `loading` deliberately puts the spinner in the leading icon's PLACE so a
+     button does not change width the moment it is pressed. If the compensation
+     matched only `.ds-btn__icon`, a button with a leading icon would jump by 8px
+     on going busy — reintroducing, through the padding, the exact mis-click this
+     component avoided through the icon slot.
+
+     `.ds-icon-btn` is excluded: it is square, its padding is 0, and its glyph IS
+     the label, so there is no asymmetry to correct.
+
+     Matched on `--start` / `--end`, NOT on `:first-child` / `:last-child`. The label
+     is a bare text node rather than an element, so a leading icon is also the last
+     ELEMENT child — the positional version compensated both sides of a button that
+     had one icon. Caught by the test asserting the uncompensated side is still 24px.
+     ========================================================================== */
+  .ds-btn--sm:not(.ds-icon-btn):has(> :is(.ds-btn__icon--start, .ds-btn__spinner)) {
+    padding-inline-start: var(--sa-padding-12);
+  }
+  .ds-btn--sm:not(.ds-icon-btn):has(> .ds-btn__icon--end) {
+    padding-inline-end: var(--sa-padding-12);
+  }
+
+  .ds-btn--md:not(.ds-icon-btn):has(> :is(.ds-btn__icon--start, .ds-btn__spinner)),
+  .ds-btn--lg:not(.ds-icon-btn):has(> :is(.ds-btn__icon--start, .ds-btn__spinner)) {
+    padding-inline-start: var(--sa-padding-16);
+  }
+  .ds-btn--md:not(.ds-icon-btn):has(> .ds-btn__icon--end),
+  .ds-btn--lg:not(.ds-icon-btn):has(> .ds-btn__icon--end) {
+    padding-inline-end: var(--sa-padding-16);
+  }
+
   /* --------------------------------------------------------------------------
      Appearance: filled
      -------------------------------------------------------------------------- */
   .ds-btn--filled {
-    background-color: var(--_fill);
-    color: var(--_on);
-    border-color: var(--_fill);
+    background-color: var(--_c-fill);
+    color: var(--_c-on);
+    border-color: var(--_c-fill);
   }
 
   .ds-btn--filled:hover {
@@ -296,16 +527,16 @@
      -------------------------------------------------------------------------- */
   .ds-btn--outlined {
     background-color: transparent;
-    color: var(--_color);
-    border-color: var(--_color);
+    color: var(--_c-edge);
+    border-color: var(--_c-edge);
   }
 
   .ds-btn--outlined:hover {
-    background-color: color-mix(in srgb, var(--_color) 8%, transparent);
+    background-color: color-mix(in srgb, var(--_c-edge) 8%, transparent);
   }
 
   .ds-btn--outlined:active {
-    background-color: color-mix(in srgb, var(--_color) 14%, transparent);
+    background-color: color-mix(in srgb, var(--_c-edge) 14%, transparent);
   }
 
   /* --------------------------------------------------------------------------
@@ -313,16 +544,16 @@
      -------------------------------------------------------------------------- */
   .ds-btn--text {
     background-color: transparent;
-    color: var(--_color);
+    color: var(--_c-edge);
     border-color: transparent;
   }
 
   .ds-btn--text:hover {
-    background-color: color-mix(in srgb, var(--_color) 8%, transparent);
+    background-color: color-mix(in srgb, var(--_c-edge) 8%, transparent);
   }
 
   .ds-btn--text:active {
-    background-color: color-mix(in srgb, var(--_color) 14%, transparent);
+    background-color: color-mix(in srgb, var(--_c-edge) 14%, transparent);
   }
 
 
@@ -341,9 +572,9 @@
      sit on WHITE, asked to sit on brand blue.
      -------------------------------------------------------------------------- */
   .ds-btn--inverse {
-    background-color: var(--_inv-fill);
-    color: var(--_inv-on);
-    border-color: var(--_inv-fill);
+    background-color: var(--_c-inv-fill);
+    color: var(--_c-inv-on);
+    border-color: var(--_c-inv-fill);
   }
 
   .ds-btn--inverse:hover {
@@ -358,8 +589,8 @@
 
   .ds-btn--inverseOutlined {
     background-color: transparent;
-    color: var(--_inv-ink);
-    border-color: var(--_inv-edge);
+    color: var(--_c-inv-on);
+    border-color: var(--_c-inv-edge);
   }
 
   .ds-btn--inverseOutlined:hover {
@@ -378,7 +609,7 @@
      secondary one, which is the same white. Figma binds it identically. */
   .ds-btn--inverseText {
     background-color: transparent;
-    color: var(--_inv-ink);
+    color: var(--_c-inv-on);
     border-color: transparent;
   }
 
@@ -393,7 +624,7 @@
   .ds-btn--inverse:focus-visible,
   .ds-btn--inverseText:focus-visible,
   .ds-btn--inverseOutlined:focus-visible {
-    box-shadow: 0 0 0 3px color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);
+    outline-color: color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);
   }
 
   .ds-btn--inverseOutlined:disabled:hover,
@@ -459,6 +690,25 @@
     box-shadow: none;
   }
 
+  /*
+   * `aria-disabled` HAS TO BLOCK THE POINTER ITSELF.
+   *
+   * A natively `disabled` button gets this from the browser. The `preserveFocus` form
+   * deliberately drops that attribute to stay in the tab order, and with it goes the
+   * pointer blocking — leaving a control that looks disabled, announces itself as
+   * disabled, and still fires on click. The keyboard half is handled in `button.tsx`;
+   * this is the pointer half, and it belongs in CSS because it must hold before
+   * hydration as well as after.
+   *
+   * `:disabled` is deliberately NOT included: the browser already ignores clicks on it,
+   * and adding `pointer-events: none` there would also suppress the `cursor:
+   * not-allowed` above, which is the one affordance telling the reader why nothing
+   * happened.
+   */
+  .ds-btn[aria-disabled="true"] {
+    pointer-events: none;
+  }
+
   /* Neutralise interactive feedback while disabled */
   .ds-btn--filled:disabled:hover,
   .ds-btn--filled[aria-disabled="true"]:hover,
@@ -475,4 +725,170 @@
   .ds-btn--text[aria-disabled="true"]:active {
     background-color: transparent;
   }
+
+  /* ==========================================================================
+     SELECTED — `aria-pressed`
+     ==========================================================================
+     THE SEGMENTED CONTROL HAD NO WAY TO SAY WHICH SEGMENT WAS CURRENT.
+
+     `ButtonGroup`'s own docstring sends you to `attached` when the buttons are
+     "ALTERNATIVES to one another (a view switcher, a date range)" — which is a
+     segmented control, and a segmented control that cannot show its current choice is
+     not one. UX4G's own `button-group/.child` carries an `Active` state; Carbon's
+     ContentSwitcher, Material's SegmentedButton, Polaris, Spectrum and Fluent all do.
+     This estate had no `aria-pressed` anywhere, in any component.
+
+     It is modelled as the ARIA ATTRIBUTE, not as a new prop, and that is deliberate:
+     `aria-pressed` already typechecks on Button through React's AriaAttributes, so the
+     accessible half was always available and only the visible half was missing. Half an
+     accessible state is not an accessible state — the same lesson `loading` learned on
+     this component in August, when it set `aria-busy` and drew nothing.
+
+     A pressed OUTLINED or TEXT button takes the filled treatment, so selection reads as
+     weight rather than as a hue the reader has to learn. That also means it inherits the
+     fill/ink pairing that `action-nontext-contrast.test.mjs` already gates, so a selected
+     segment cannot be a contrast failure that a resting one is not.
+     ========================================================================== */
+  .ds-btn--outlined[aria-pressed="true"],
+  .ds-btn--text[aria-pressed="true"] {
+    background-color: var(--_c-fill);
+    color: var(--_c-on);
+    border-color: var(--_c-fill);
+  }
+
+  /* Hover must not wash the selection away. Without this, `--outlined:hover`'s 8%
+     tint paints OVER the fill and the current segment briefly looks unselected — the
+     one moment the reader is most likely to be looking at it. */
+  .ds-btn--outlined[aria-pressed="true"]:hover,
+  .ds-btn--text[aria-pressed="true"]:hover {
+    background-color: var(--_c-fill);
+    filter: brightness(0.95);
+  }
+
+  /* A filled button is already the loudest thing available, so selection cannot add
+     weight — it deepens instead, matching the pressed feedback the reader already
+     associates with "this one is engaged". */
+  .ds-btn--filled[aria-pressed="true"] {
+    filter: brightness(0.88);
+  }
+
+  /* ==========================================================================
+     WINDOWS HIGH CONTRAST MODE (forced-colors)
+     ==========================================================================
+     ABSENT UNTIL 2026-09-03, ON THE ESTATE'S MOST-USED CONTROL. Nine of the
+     sixty-nine component stylesheets handled it; Button was not one of them.
+
+     In forced-colors mode the OS replaces every author colour with a small system
+     palette. That is a feature — it is how a reader who needs maximum contrast gets
+     it — but it means the things this component uses to say "I am a button" simply
+     stop existing:
+
+       - `background-color` is overridden, so the FILLED appearance loses the block
+         of colour that distinguishes it;
+       - `border-color: transparent` is honoured, so FILLED and TEXT buttons — which
+         both draw a transparent border — end up with NO boundary at all;
+       - `opacity` is not forced, but colour is, so the disabled wash stops reading
+         as disabled;
+       - `color-mix` and `currentColor` resolve against system colours, so the
+         inverse ring's white-alpha mix collapses.
+
+     The result, before this block: a text button in High Contrast was an unmarked
+     run of text with no indication it could be pressed. WCAG 2.2 §1.4.11 asks for a
+     3:1 non-text boundary; a boundary the OS has erased does not meet it.
+
+     The fix is to name system colours explicitly. `ButtonText`/`ButtonFace` are the
+     pair the OS reserves for exactly this control, `Highlight` is the focus colour,
+     and `GrayText` is the one keyword forced-colors guarantees for a disabled
+     control — it is the only reliable way to say "disabled" once opacity stops
+     carrying meaning. */
+  @media (forced-colors: active) {
+    /* Every appearance gets a real, forced boundary. `transparent` is preserved by
+       forced-colors, so this cannot be left to the appearance rules above. */
+    .ds-btn {
+      border-color: ButtonText;
+      /* Let the system paint the ink and the ground rather than fighting it. */
+      color: ButtonText;
+      background-color: ButtonFace;
+      /* The scale-on-press is a colour-free signal and survives; the shadow does not. */
+      box-shadow: none;
+    }
+
+    /* The FILLED appearance has to stay distinguishable from the outlined one, and
+       colour can no longer do it. Inverting the system pair is the convention the
+       platform itself uses for a default button. */
+    .ds-btn--filled,
+    .ds-btn--inverse {
+      color: ButtonFace;
+      background-color: ButtonText;
+      border-color: ButtonText;
+    }
+
+    /* `forced-color-adjust: none` would opt the icon out of the system palette and
+       leave it painted in a colour the reader has explicitly overridden. It stays in.
+       The glyph is a font ligature, so it follows `color` and needs no rule of its
+       own — but the spinner is a BORDER, and its 25% `color-mix` track resolves to a
+       system colour that is often identical to its own top edge, leaving a ring that
+       does not visibly turn. Give it a real contrast pair. */
+    .ds-btn__spinner {
+      border-color: GrayText;
+      border-top-color: ButtonText;
+    }
+
+    .ds-btn--filled .ds-btn__spinner,
+    .ds-btn--inverse .ds-btn__spinner {
+      border-color: GrayText;
+      border-top-color: ButtonFace;
+    }
+
+    /* Selection cannot be carried by a fill here either — the forced palette flattens
+       it. The system's own Highlight pair is what the platform uses to mean "this one
+       is chosen", so a selected segment takes it. */
+    .ds-btn[aria-pressed="true"] {
+      background-color: Highlight;
+      color: HighlightText;
+      border-color: Highlight;
+    }
+
+    /* Opacity is not a forced-colors signal. GrayText is. */
+    .ds-btn:disabled,
+    .ds-btn[aria-disabled="true"] {
+      opacity: 1;
+      color: GrayText;
+      border-color: GrayText;
+      background-color: ButtonFace;
+    }
+
+    .ds-btn--filled:disabled,
+    .ds-btn--filled[aria-disabled="true"],
+    .ds-btn--inverse:disabled,
+    .ds-btn--inverse[aria-disabled="true"] {
+      color: ButtonFace;
+      background-color: GrayText;
+      border-color: GrayText;
+    }
+
+    /* The focus ring is the one thing that must never be lost. `Highlight` is the
+       system's own focus colour, and the offset keeps it clear of the border that
+       is now always painted. */
+    .ds-btn:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
+  }
+
+  /* The visually hidden new-tab warning that `external` appends. Declared here rather
+     than borrowed, because this stylesheet must stand alone — the same pattern
+     link.css, chip.css and wizard.css use. */
+  .ds-btn .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+
 }

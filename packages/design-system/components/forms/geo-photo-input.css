@@ -94,9 +94,9 @@
   }
 
   .ds-geophoto__dropzone:focus-visible {
-    outline: none;
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-geophoto__dropzone:disabled {
@@ -207,8 +207,8 @@
   }
 
   .ds-geophoto__remove:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* ---- Add tile ---- */
@@ -247,9 +247,9 @@
   }
 
   .ds-geophoto__add:focus-visible {
-    outline: none;
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-geophoto__add:disabled {
@@ -282,5 +282,21 @@
     /* Error TEXT must clear 4.5:1 (WCAG 1.4.3); --sa-color-status-danger only meets the 3:1
        UI-border bar. Same rule as forms.css. */
     color: var(--sa-color-status-dangerStrong);
+  }
+}
+
+@layer components {
+  /* forced-colors mode does not paint `box-shadow`, so the ring above is not
+     drawn there at all. An `outline` IS painted, and `Highlight` is the
+     system's own focus colour, so the ring follows the theme the reader chose.
+     Same footprint as the shadow it stands in for; later source order with equal
+     specificity is what lets it beat the `outline: none` above. */
+  @media (forced-colors: active) {
+    .ds-geophoto__dropzone:focus-visible,
+    .ds-geophoto__remove:focus-visible,
+    .ds-geophoto__add:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
   }
 }

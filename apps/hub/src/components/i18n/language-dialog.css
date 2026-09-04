@@ -47,8 +47,8 @@
   }
 
   .lang-dialog__option:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* The current language is marked by more than colour — a border weight and the

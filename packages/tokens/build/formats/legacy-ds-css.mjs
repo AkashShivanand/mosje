@@ -124,6 +124,23 @@ function buildResponsiveType(dictionary) {
  * DTCG path stays identical to the Figma variable path — the tier becomes the collection
  * and the CSS marker. Tier 2 carries no marker, so the most-typed token is the shortest.
  */
+/**
+ * A translucent token — a colour reference plus an `$extensions.mosje.alpha` reference — is
+ * emitted as ONE expression over TWO custom properties, never as a pre-multiplied rgba():
+ *
+ *   color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-8) * 100%), transparent)
+ *
+ * Mixing a colour with `transparent` in sRGB keeps the colour and scales only its alpha, so the
+ * result is exactly the rgba() the old literal spelled out — except that it now follows the base
+ * through every brand island and follows the step if the opacity scale ever moves. The ×100% is
+ * because the alpha scale is authored 0–1 (the CSS convention) and color-mix wants a percentage.
+ * Baseline since 2023 in every engine; Tailwind v4, which this estate already builds on, relies
+ * on the same function.
+ */
+function alphaMix(baseRef, alphaRef, refToVar) {
+  return `color-mix(in srgb, var(${refToVar(baseRef)}) calc(var(${refToVar(alphaRef)}) * 100%), transparent)`;
+}
+
 export const legacyDsCss = {
   name: "css/legacy-ds",
   format: ({ dictionary }) => {
@@ -161,13 +178,24 @@ export const legacyDsCss = {
      * 196 references and zero literals. Only the emit flattened it.
      */
     const ALIAS_EMIT_FILE = /(system|component)\.generated\.json$|component\.json$/;
+    // [name, dependencies[], emitted value]. A plain alias depends on one variable and its value
+    // is `var(target)`; a translucent token depends on TWO (its base colour and its alpha step)
+    // and its value is a color-mix() over both. Either way the brand blocks below re-assert the
+    // declaration whenever any dependency is redeclared, which is what keeps a wash on-brand
+    // inside a nested [data-brand] island.
     const systemAliasPairs = [];
     const lines = regularTokens.map((t) => {
       const name = cssNameFor(t);
       const orig = t.original?.$value ?? t.original?.value;
+      const alpha = t.original?.$extensions?.mosje?.alpha;
+      if (alpha) {
+        const value = alphaMix(orig, alpha, refToVar);
+        systemAliasPairs.push([name, [refToVar(orig), refToVar(alpha)], value]);
+        return `  ${name}: ${value};`;
+      }
       if (ALIAS_EMIT_FILE.test(t.filePath ?? "") && typeof orig === "string" && orig.startsWith("{")) {
         const target = refToVar(orig);
-        systemAliasPairs.push([name, target]);
+        systemAliasPairs.push([name, [target], `var(${target})`]);
         return `  ${name}: var(${target});`;
       }
       return `  ${name}: ${val(t)};`;
@@ -258,15 +286,15 @@ export const legacyDsCss = {
       const emitted = new Map();
       for (let pass = 0; pass < 16; pass++) {
         let grew = false;
-        for (const [name, target] of pairs) {
-          if (emitted.has(name) || !changed.has(target)) continue;
-          emitted.set(name, target);
+        for (const [name, deps, value] of pairs) {
+          if (emitted.has(name) || !deps.some((d) => changed.has(d))) continue;
+          emitted.set(name, value);
           changed.add(name);
           grew = true;
         }
         if (!grew) break;
       }
-      const lines = [...emitted].map(([oldName, target]) => `  ${oldName}: var(${target});`);
+      const lines = [...emitted].map(([oldName, value]) => `  ${oldName}: ${value};`);
       return lines.length
         ? `\n\n  /* re-resolve every alias whose source changed in this block */\n${lines.join("\n")}`
         : "";

@@ -60,7 +60,9 @@
   font-family: var(--sa-font-icon, "Material Symbols Rounded", sans-serif);
   font-style: normal;
   font-weight: normal;
-  font-display: block;
+  /* `font-display` was here and did nothing: it is an @font-face DESCRIPTOR, and
+     this is a class rule. The real one is on the @font-face above. Removed after
+     stylelint 17 flagged it — the first genuine defect the upgrade found. */
   speak: never;
   text-transform: none;
   white-space: nowrap;

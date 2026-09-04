@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import dynamic from "next/dynamic";
-import { Icon, Search, Select } from "@mosje/design-system";
+import { Icon, Link, Search, Select } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 import {
   DEADDICTION_CENTRES,
@@ -292,15 +292,16 @@ export function DeAddictionMap({ mapSide = "right", compact = false }: DeAddicti
                           {c.district}, {c.state}
                         </span>
                         {active && (
-                          <a
+                          <Link
                             href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`}
-                            target="_blank"
-                            rel="noreferrer"
+                            external
+                            variant="standalone"
                             onClick={(e) => e.stopPropagation()}
-                            className="mt-1.5 inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:text-primary-dark"
+                            className="mt-1.5 text-[12px] font-semibold"
+                            iconLeft={<Icon name="navigation" size={12} aria-hidden />}
                           >
-                            <Icon name="navigation" size={12} aria-hidden /> Get directions
-                          </a>
+                            Get directions
+                          </Link>
                         )}
                       </span>
                     </button>

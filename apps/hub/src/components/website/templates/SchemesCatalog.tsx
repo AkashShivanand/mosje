@@ -1,8 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
-import { Card, Icon, buttonClasses } from "@mosje/design-system";
+import NextLink from "next/link";
+import { Card, Icon, Link, buttonClasses } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import type { Crumb } from "@/components/website/layout/Breadcrumb";
 import { cn } from "@/lib/website/utils";
@@ -192,22 +192,22 @@ export function SchemesCatalog({
                   </div>
 
                   <div className="mt-6 pt-4 border-t border-gray-150 flex items-center justify-between">
-                    <Link
+                    <NextLink
                       href={`/website/schemes-services/${scheme.slug}`}
                       className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
                     >
                       Scheme Details
                       <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-1" />
-                    </Link>
+                    </NextLink>
                     {scheme.sourceUrl && (
-                      <a
+                      <Link
                         href={scheme.sourceUrl}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-[11px] font-semibold text-gray-500 hover:text-primary flex items-center gap-0.5"
+                        external
+                        variant="standalone"
+                        className="text-[11px] font-semibold text-gray-500 hover:text-primary"
                       >
-                        Portal <Icon name="open_in_new" size={16} />
-                      </a>
+                        Portal
+                      </Link>
                     )}
                   </div>
                 </Card>
@@ -240,12 +240,12 @@ export function SchemesCatalog({
                             : "—"}
                         </td>
                         <td className="py-3.5 px-4 text-right">
-                          <Link
+                          <NextLink
                             href={`/website/schemes-services/${s.slug}`}
                             className={buttonClasses("primary", "outlined", "sm", "text-xs px-3 py-1")}
                           >
                             View
-                          </Link>
+                          </NextLink>
                         </td>
                       </tr>
                     ))}

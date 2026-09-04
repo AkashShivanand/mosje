@@ -78,8 +78,8 @@
 
   .ds-otp__box:focus-visible {
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-otp__box:disabled {
@@ -94,7 +94,8 @@
   }
 
   .ds-otp--invalid .ds-otp__box:focus-visible {
-    box-shadow: 0 0 0 3px var(--sa-color-status-danger);
+    outline: var(--sa-focus-width) solid var(--sa-color-status-danger);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* Six 44px boxes plus gaps overflow a 320px viewport. Let them shrink rather than push the
@@ -114,6 +115,21 @@
   @media (prefers-reduced-motion: reduce) {
     .ds-otp__box {
       transition: none;
+    }
+  }
+}
+
+@layer components {
+  /* forced-colors mode does not paint `box-shadow`, so the ring above is not
+     drawn there at all. An `outline` IS painted, and `Highlight` is the
+     system's own focus colour, so the ring follows the theme the reader chose.
+     Same footprint as the shadow it stands in for; later source order with equal
+     specificity is what lets it beat the `outline: none` above. */
+  @media (forced-colors: active) {
+    .ds-otp__box:focus-visible,
+    .ds-otp--invalid .ds-otp__box:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
     }
   }
 }

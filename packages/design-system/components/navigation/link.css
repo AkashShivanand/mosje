@@ -1,0 +1,170 @@
+/* Declare the order before using it — see the note at the top of button.css. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     Link — text that takes the reader somewhere.
+
+     It binds the `--sa-text-link-*` family, which had existed since the token build
+     and which NO component consumed: the tokens were designed for a Link that was
+     never built, so 194 hand-rolled anchors each picked their own blue instead.
+     ============================================================================ */
+
+  .ds-link {
+    display: inline;
+    color: var(--sa-text-link-brand-default);
+    font-family: inherit;
+    /* `inherit` on purpose for the inline variant — a link inside a sentence must sit
+       on the same baseline and weight as the words around it, or it reads as a
+       different kind of text before the reader has parsed it. The size modifiers
+       below override this for standalone use. */
+    font-size: inherit;
+    line-height: inherit;
+    cursor: pointer;
+    /* Underline offset and thickness rather than the browser default, which crowds
+       Devanagari descenders badly enough to touch the mark. */
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    transition:
+      color 0.15s ease,
+      text-decoration-color 0.15s ease;
+  }
+
+  /* An icon inside a link is inline-flex so it sits on the text baseline rather than
+     the line box's bottom, which is where a raw inline-block glyph lands. */
+  .ds-link__icon {
+    display: inline-flex;
+    align-items: center;
+    vertical-align: -0.15em;
+    margin-inline: 0.25em 0;
+  }
+  .ds-link__icon:first-child {
+    margin-inline: 0 0.25em;
+  }
+
+  /* --------------------------------------------------------------------------
+     Variant: inline — ALWAYS underlined, and not negotiable
+     --------------------------------------------------------------------------
+     WCAG 2.2 §1.4.1 Use of Color: a link inside a block of text must not be
+     distinguished from the surrounding text by colour alone. Colour is the only
+     other signal a text link has, so the underline is the compliance, not the
+     decoration. There is deliberately no modifier to remove it — a link that should
+     not be underlined is not inside a block of text, and is therefore `standalone`.
+     -------------------------------------------------------------------------- */
+  .ds-link--inline {
+    text-decoration-line: underline;
+  }
+
+  /* --------------------------------------------------------------------------
+     Variant: standalone — a card's "Read more", a list of downloads
+     --------------------------------------------------------------------------
+     Not inside a block of text, so 1.4.1 does not bind it and the underline can be
+     held back until hover or focus. It gains its own size ramp, because a standalone
+     link is not sitting in a sentence whose size it should inherit.
+     -------------------------------------------------------------------------- */
+  .ds-link--standalone {
+    display: inline-flex;
+    align-items: center;
+    text-decoration-line: none;
+    font-weight: 500;
+  }
+  .ds-link--standalone:hover,
+  .ds-link--standalone:focus-visible {
+    text-decoration-line: underline;
+  }
+
+  .ds-link--standalone.ds-link--sm {
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+  }
+  .ds-link--standalone.ds-link--md {
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+  }
+  .ds-link--standalone.ds-link--lg {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+
+  /* --------------------------------------------------------------------------
+     States
+     -------------------------------------------------------------------------- */
+  .ds-link:hover {
+    color: var(--sa-text-link-brand-hover);
+  }
+  .ds-link:active {
+    color: var(--sa-text-link-brand-active);
+  }
+
+  /* VISITED IS A LINK'S ONE UNIQUE STATE, and the reason a link is not a Button
+     appearance. On a catalogue of schemes or a list of circulars, "have I already
+     opened this?" is the question the reader is actually asking. Only the default
+     tone carries it: on a brand surface the visited rung is unreadable, and a
+     history signal is worth less there than legibility. */
+  .ds-link:not(.ds-link--inverse):visited {
+    color: var(--sa-text-link-visited-default);
+  }
+
+  .ds-link:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-2);
+  }
+
+  .ds-link[aria-disabled="true"] {
+    color: var(--sa-text-link-brand-disabled);
+    cursor: not-allowed;
+    pointer-events: none;
+    text-decoration-line: none;
+  }
+
+  /* --------------------------------------------------------------------------
+     Tone: inverse — on a solid brand surface
+     -------------------------------------------------------------------------- */
+  .ds-link--inverse {
+    color: var(--sa-cmp-action-brand-primary-inverse-default-text);
+  }
+  .ds-link--inverse:hover,
+  .ds-link--inverse:active {
+    color: var(--sa-cmp-action-brand-primary-inverse-hover-text);
+  }
+  .ds-link--inverse:focus-visible {
+    outline-color: color-mix(in oklab, var(--sa-bg-neutral-base) 55%, transparent);
+  }
+
+  /* --------------------------------------------------------------------------
+     Windows High Contrast
+     --------------------------------------------------------------------------
+     `LinkText` is the system colour the OS reserves for exactly this element, and
+     the underline has to be restated: forced-colors replaces the palette, so a
+     standalone link that relied on colour alone would have nothing left to say it is
+     a link. In this mode every link is underlined, standalone included.
+     -------------------------------------------------------------------------- */
+  @media (forced-colors: active) {
+    .ds-link {
+      color: LinkText;
+      text-decoration-line: underline;
+    }
+    .ds-link[aria-disabled="true"] {
+      color: GrayText;
+    }
+    .ds-link:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
+  }
+
+  /* The visually hidden new-tab warning. Declared here rather than borrowed, because
+     this stylesheet must stand alone — the same pattern chip.css and wizard.css use. */
+  .ds-link .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}

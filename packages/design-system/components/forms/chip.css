@@ -20,6 +20,23 @@
  * a new one, so these rules sit below utilities exactly as component CSS should.
  */
 @layer components {
+
+  /* Visually hidden, still read. Defined here because this stylesheet is its own
+     CSS root: the component using the class cannot rely on another component's
+     file having been loaded, and when this definition was missing the
+     "(required)" text rendered visible on screen. */
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
   /* ============================================================================
      MoSJE / UX4G — Chip atom
      Semantic CSS classes only; all colours reference design tokens (--sa-*).
@@ -113,8 +130,8 @@
   }
 
   .ds-chip:focus-visible {
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* --------------------------------------------------------------------------
@@ -272,8 +289,8 @@
   }
 
   .ds-chip__dismiss:focus-visible {
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* --------------------------------------------------------------------------
@@ -305,5 +322,20 @@
 
   .ds-chip--disabled .ds-chip__dismiss:hover {
     background-color: transparent;
+  }
+}
+
+@layer components {
+  /* forced-colors mode does not paint `box-shadow`, so the ring above is not
+     drawn there at all. An `outline` IS painted, and `Highlight` is the
+     system's own focus colour, so the ring follows the theme the reader chose.
+     Same footprint as the shadow it stands in for; later source order with equal
+     specificity is what lets it beat the `outline: none` above. */
+  @media (forced-colors: active) {
+    .ds-chip:focus-visible,
+    .ds-chip__dismiss:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
   }
 }

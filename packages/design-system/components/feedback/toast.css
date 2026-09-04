@@ -76,7 +76,7 @@
 
   .ds-toast__close:hover { color: var(--sa-text-neutral-base); }
   .ds-toast__close:focus-visible {
-    outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
     outline-offset: var(--sa-focus-offset);
   }
 
@@ -84,8 +84,8 @@
   .ds-toast--success { border-color: color-mix(in srgb, var(--sa-border-status-success-base) 30%, transparent); background-color: var(--sa-bg-status-success-subtler); }
   .ds-toast--success .ds-toast__icon { color: var(--sa-text-status-success-base); }
 
-  .ds-toast--info { border-color: color-mix(in srgb, var(--sa-border-brand-primary-base) 25%, transparent); background-color: var(--sa-color-primaryScale-50); }
-  .ds-toast--info .ds-toast__icon { color: var(--sa-text-brand-primary-base); }
+  .ds-toast--info { border-color: color-mix(in srgb, var(--sa-border-status-info-base) 30%, transparent); background-color: var(--sa-bg-status-info-base); }
+  .ds-toast--info .ds-toast__icon { color: var(--sa-text-status-info-base); }
 
   .ds-toast--warning { border-color: color-mix(in srgb, var(--sa-border-status-warning-base) 35%, transparent); background-color: var(--sa-bg-status-warning-base); }
   /* `status/warningStrong` DOES NOT EXIST — it is the one absent member of the four-token

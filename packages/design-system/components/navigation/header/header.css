@@ -411,8 +411,8 @@
   }
 
   .ds-hdr-cobrand-link:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* Account block (portal) — details + 48px avatar; static, or a dropdown trigger */
@@ -452,8 +452,8 @@
   }
 
   .ds-hdr-account.is-button:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* Font glyph: it sizes from the `size` prop, so no width/height here — those
@@ -645,8 +645,8 @@
   .ds-hdr-iconbtn:focus-visible,
   .ds-hdr-drawer__link:focus-visible,
   .ds-hdr-drawer__sublink:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: -2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
     border-radius: var(--sa-shape-4);
   }
 
@@ -850,8 +850,8 @@
   }
 
   .ds-hdr-nav__overview:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: -2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
   }
 
   /* In the simple dropdown it is a closing row rather than a full-width strip. */
@@ -1020,8 +1020,8 @@
   }
 
   .ds-hdr-mega-item:focus-visible {
-    box-shadow: inset 0 0 0 1px var(--sa-border-brand-primary-base),
-                0 0 0 2px var(--sa-color-action-primary-default);
+    outline: var(--sa-focus-width) solid var(--sa-color-action-primary-default);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* Mobile drawer */
@@ -1431,8 +1431,8 @@
   }
 
   .ds-hdr-cond__home:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-hdr-cond__emblem {
@@ -1475,8 +1475,8 @@
   }
 
   .ds-hdr-cond__iconbtn:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: -2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
   }
 
   /* The sheet trigger comes in at the masthead's 48px, which is right in a 100px
@@ -1743,8 +1743,8 @@
   .ds-navsheet__close:focus-visible,
   .ds-navsheet__link:focus-visible,
   .ds-navsheet__sublink:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: -2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
     border-radius: var(--sa-shape-4);
   }
 
@@ -1879,4 +1879,19 @@
    whose script has not measured yet over-pads rather than under-pads. */
 :root:has(.ds-hdr.is-sticky) {
   scroll-padding-top: calc(var(--sa-header-pinned, 204px) + 4px);
+}
+
+@layer components {
+  /* forced-colors mode does not paint `box-shadow`, so the ring above is not
+     drawn there at all. An `outline` IS painted, and `Highlight` is the
+     system's own focus colour, so the ring follows the theme the reader chose.
+     Same footprint as the shadow it stands in for; later source order with equal
+     specificity is what lets it beat the `outline: none` above. */
+  @media (forced-colors: active) {
+    .ds-hdr-account.is-button:focus-visible,
+    .ds-hdr-mega-item:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
+  }
 }

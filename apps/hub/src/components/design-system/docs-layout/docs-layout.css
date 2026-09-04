@@ -187,9 +187,9 @@
 }
 .docs-header__menu:hover { background: var(--sa-bg-neutral-subtler); }
 .docs-header__menu:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-}
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 
 
 .docs-header__search-btn {
@@ -210,9 +210,9 @@
 }
 .docs-header__search-btn:hover { border-color: var(--sa-border-brand-primary-base); color: var(--sa-text-neutral-base); }
 .docs-header__search-btn:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 3px var(--sa-focus-ring);
-}
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 
 .docs-header__search-kbd {
   margin-left: auto;
@@ -449,10 +449,10 @@
 }
 
 .docs-sidebar__filter-input:focus-visible {
-  outline: none;
-  border-color: var(--sa-border-brand-primary-base);
-  box-shadow: 0 0 0 2px var(--sa-focus-ring);
-}
+    border-color: var(--sa-border-brand-primary-base);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 
 .docs-sidebar__filter-clear {
   position: absolute;
@@ -527,12 +527,16 @@
 
 .docs-nav__badge--stable {
   background: var(--sa-bg-status-success-subtler);
-  color: var(--sa-text-status-success-base);
+  /* `bolder` ink on the `subtler` tint: the base ink is measured for the page and the base
+     tint, and the 2026-09-04 status ladder puts it at 4.05:1 (warning) and 4.31:1 (info) here. */
+  color: var(--sa-text-status-success-bolder);
 }
 
 .docs-nav__badge--beta {
   background: var(--sa-bg-status-warning-subtler);
-  color: var(--sa-text-status-warning-base);
+  /* `bolder` ink on the `subtler` tint: the base ink is measured for the page and the base
+     tint, and the 2026-09-04 status ladder puts it at 4.05:1 (warning) and 4.31:1 (info) here. */
+  color: var(--sa-text-status-warning-bolder);
 }
 
 .docs-nav__badge--alpha {
@@ -543,7 +547,9 @@
 
 .docs-nav__badge--new {
   background: var(--sa-bg-status-info-subtler);
-  color: var(--sa-text-status-info-base);
+  /* `bolder` ink on the `subtler` tint: the base ink is measured for the page and the base
+     tint, and the 2026-09-04 status ladder puts it at 4.05:1 (warning) and 4.31:1 (info) here. */
+  color: var(--sa-text-status-info-bolder);
 }
 
 /* ── Article Container ── */
@@ -655,5 +661,21 @@
 @media (max-width: 1024px) {
   .docs-mobile-toc-bar {
     display: block;
+  }
+}
+
+/* forced-colors mode does not paint `box-shadow`, so the ring above is not
+   drawn there at all. An `outline` IS painted, and `Highlight` is the
+   system's own focus colour, so the ring follows the theme the reader chose.
+   Same footprint as the shadow it stands in for; later source order with equal
+   specificity is what lets it beat the `outline: none` above. */
+@media (forced-colors: active) {
+  .docs-nav__item:focus-visible,
+  .docs-header__menu:focus-visible,
+  .docs-header__search-btn:focus-visible,
+  .docs-sidebar__filter-input:focus-visible,
+  .docs-nav__group-header:focus-visible {
+    outline: var(--sa-focus-width) solid Highlight;
+    outline-offset: var(--sa-focus-offset);
   }
 }

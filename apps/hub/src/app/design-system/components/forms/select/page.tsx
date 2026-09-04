@@ -20,41 +20,62 @@ const A11Y: A11yItem[] = [
   {
     criterion: "1.3.1 Info and Relationships",
     level: "A",
+    status: "verified",
+    evidence:
+      "Label bound by Form Field; `options` render real `<option>` elements, so the list is the platform's own.",
     description:
       "Wrap the control in Form Field so the label is associated through `htmlFor`/`id`. A placeholder option is not a label.",
   },
   {
     criterion: "2.1.1 Keyboard",
     level: "A",
+    status: "verified",
+    evidence:
+      "A native `<select>` — type-ahead, arrow keys and the mobile picker are the platform's, not ours.",
     description:
       "Because it is a real `<select>`, arrow keys, typeahead and the platform's own option list all work without being re-implemented.",
   },
   {
     criterion: "2.4.7 Focus Visible",
     level: "AA",
+    status: "verified",
+    evidence:
+      "A solid 3px outline in `--sa-color-action-primary-default` at a 2px offset, measured 4.64:1 on white 2026-09-03. An outline rather than a box-shadow, so it survives Windows High Contrast Mode.",
     description: "The focus ring is drawn on the control itself, not on the chevron wrapper.",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
+    status: "verified",
+    evidence:
+      "The `field` appearance is 44px at `md` and 40px at the smallest. The `filter` appearance is 40px, sized for a toolbar and still past the 24px AA floor.",
     description:
       "The `field` appearance is 44px tall and the `filter` appearance 40px, both past the 24×24 minimum.",
   },
   {
     criterion: "3.3.1 Error Identification",
     level: "A",
+    status: "verified",
+    evidence:
+      "`status=\"error\"` sets `aria-invalid`; the message and its words come from Form Field.",
     description:
       "`invalid` sets `aria-invalid`; Form Field links the message with `aria-describedby` and `role=\"alert\"`.",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
+    status: "verified",
+    evidence:
+      "Native role and value. There is deliberately no read-only select: HTML has none, and faking it with `disabled` would remove the control from the tab order and from the submitted form.",
     description:
       "Role, value and expanded state are native, including on a screen reader driving the platform's own picker on a phone.",
   },
   {
     criterion: "GIGW 3.0 — Forms",
     level: "GIGW",
+    status: "verified",
+    evidence:
+      "Persistent visible label; the placeholder option is `disabled` so it cannot be submitted as a value.",
     description:
       "The control degrades to the operating system's native picker on low-end devices, which is the behaviour government services are expected to keep.",
   },
@@ -66,7 +87,7 @@ export default function SelectPage(): React.JSX.Element {
       name="Select"
       status="Stable"
       summary="A dropdown built on the native select element, with a custom chevron layered over it for visual consistency. Keeping the native control preserves the platform's own option list, its typeahead and its keyboard behaviour on every device."
-      figma={{ node: "dropdown" }}
+      figma={{ node: "select" }}
       specimen={<SelectPlayground />}
       propsFrom="SelectProps"
       a11y={A11Y}

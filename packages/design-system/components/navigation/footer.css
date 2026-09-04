@@ -83,8 +83,8 @@
   }
 
   .ds-footer__link:focus-visible {
-    outline: 2px solid var(--sa-color-text-onPrimary);
-    outline-offset: 3px;
+    outline: var(--sa-focus-width) solid var(--sa-color-text-onPrimary);
+    outline-offset: var(--sa-focus-offset);
     border-radius: var(--sa-shape-4);
   }
 }

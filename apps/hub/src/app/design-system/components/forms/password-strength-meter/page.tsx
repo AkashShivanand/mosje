@@ -55,7 +55,7 @@ export default function PasswordStrengthMeterPage(): React.JSX.Element {
       name="Password Strength Meter"
       status="Stable"
       summary="Four segments and a word, shown under a password the reader is creating. The word carries the meaning rather than the colour, and changes are announced politely so a screen-reader user is not interrupted mid-word."
-      figma={{ absent: "Not yet published in the Figma library." }}
+      figma={{ node: "passwordStrengthMeter" }}
       specimen={<PasswordStrengthMeterPlayground />}
       propsFrom="PasswordStrengthMeterProps"
       a11y={A11Y}

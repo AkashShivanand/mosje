@@ -14,36 +14,74 @@
  * plain class selector here beat any utility a consumer wrote. Seven portal shells asked for
  * `hidden md:flex` on the sidebar and all seven were ignored, because `.ds-sidebar`'s
  * `display: flex` outranked `.hidden`.
- *
- * The layer order is established by `@import "tailwindcss"` in the app's globals.css
- * (theme, base, components, utilities). Naming that layer here joins it rather than creating
- * a new one, so these rules sit below utilities exactly as component CSS should.
  */
 @layer components {
   /* ============================================================================
      MoSJE / SAMAVESH — Form atoms (Input · Textarea · Select · FormField)
      Semantic CSS classes only; every value references a design token (--sa- vars).
      No raw hex (token-lint clean). Native elements → built-in keyboard/SR a11y.
-     Min control height 44px (WCAG 2.2 target size); compact density via [data-density].
+
+     THE SIZE SCALE.  sm 40 · md 44 · lg 48 · xl 56.
+     `md` is the default and is 44px — WCAG 2.2's Level AAA target size (2.5.5),
+     not merely the 24px Level AA minimum (2.5.8) — so the height a developer
+     gets without choosing is the accessible one. UX4G's 32px S is deliberately
+     not offered; see FieldSize in field-types.ts.
+
+     THE STATE MODEL.  Every control carries `data-status="error|warning|success"`,
+     written once here and read by Input, Textarea, Select and the field wrapper,
+     so the three controls cannot drift apart.
      ============================================================================ */
+
+  /* Visually hidden, still read. Each stylesheet that uses this defines it — the
+     estate's convention, because a component's CSS is its own root and cannot
+     rely on another component's file having been loaded. This file previously
+     omitted it while date-picker.tsx, combobox.tsx and chip.tsx used the class,
+     which left their "(required)" text visible on any page that happened not to
+     load one of the nine stylesheets that did define it. */
+  .ds-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ── The field box ─────────────────────────────────────────────────────── */
 
   .ds-input,
   .ds-textarea,
-  .ds-select__el {
+  .ds-select__el,
+  .ds-input-shell {
     display: block;
     width: 100%;
-    min-height: 44px;
+    min-height: var(--sa-target-comfortable); /* 44px — see the size-scale note above */
     padding: var(--sa-padding-12) var(--sa-padding-12);
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
     color: var(--sa-text-neutral-base);
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-base);
+    /* BOLDER, not base, and this is a conformance fix rather than a taste one.
+       `border/neutral/base` is #c6c9cd, which measures 1.66:1 against the field's
+       own white fill and 1.46:1 against the estate's muted page ground. WCAG 2.2
+       SC 1.4.11 asks 3:1 of the boundary that identifies a control, and for a
+       text field that boundary is the only thing that identifies it.
+       `border/neutral/bolder/default` is #8e949c at 3.06:1.
+
+       It is also what the DESIGN already said. All three field masters in Figma
+       draw this border at #8e949c — Select through the semantic token, Input
+       Field and Input Area through the Tier-1 primitive behind it — so the code
+       was the half that had drifted, and it had drifted in the direction that
+       fails. */
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-8);
     transition:
       border-color 0.15s ease,
-      box-shadow 0.15s ease;
+      background-color 0.15s ease;
     -webkit-appearance: none;
     appearance: none;
   }
@@ -51,6 +89,66 @@
   .ds-textarea {
     min-height: 88px;
     resize: vertical;
+  }
+
+  /* ── Size scale ────────────────────────────────────────────────────────── */
+
+  /* THE PADDING HAS TO COME DOWN WITH THE HEIGHT, or the height is a lie.
+     `min-height` only governs while the content box is smaller than it. At the
+     base padding of 12 a 16/24 line plus 24px of padding plus 2px of border is
+     50px, so `md` (44) and `lg` (48) BOTH rendered at 50 and were indis-
+     tinguishable — found by measuring the rendered matrix, not by looking at it.
+     Each step therefore sets a padding that leaves `min-height` in charge:
+     24 + 2·pad + 2 must stay under the target. */
+
+  .ds-input--sm,
+  .ds-select__el--sm,
+  .ds-input-shell--sm {
+    min-height: var(--sa-stack-40);
+    padding-top: var(--sa-padding-6);
+    padding-bottom: var(--sa-padding-6);
+  }
+
+  .ds-input--md,
+  .ds-select__el--md,
+  .ds-input-shell--md {
+    min-height: 44px; /* see the size-scale note at the top of this file */
+    padding-top: var(--sa-padding-8);
+    padding-bottom: var(--sa-padding-8);
+  }
+
+  .ds-input--lg,
+  .ds-select__el--lg,
+  .ds-input-shell--lg {
+    min-height: var(--sa-stack-48);
+    padding-top: var(--sa-padding-8);
+    padding-bottom: var(--sa-padding-8);
+  }
+
+  .ds-input--xl,
+  .ds-select__el--xl,
+  .ds-input-shell--xl {
+    min-height: var(--sa-stack-56);
+    padding-top: var(--sa-padding-12);
+    padding-bottom: var(--sa-padding-12);
+  }
+
+  /* The textarea's size axis is its resting height, matching UX4G's separate
+     min-height S/M/L axis on the Text Area master. */
+  .ds-textarea--sm {
+    min-height: var(--sa-stack-80);
+  }
+
+  .ds-textarea--md {
+    min-height: 88px;
+  }
+
+  .ds-textarea--lg {
+    min-height: calc(var(--sa-stack-40) * 3);
+  }
+
+  .ds-textarea--xl {
+    min-height: calc(var(--sa-stack-40) * 4);
   }
 
   /* iOS Safari zooms into any focused control whose font-size is under 16px, and
@@ -73,18 +171,121 @@
     opacity: 0.7;
   }
 
-  .ds-input:hover:not(:disabled),
-  .ds-textarea:hover:not(:disabled),
-  .ds-select__el:hover:not(:disabled) {
+  /* ── Hover ─────────────────────────────────────────────────────────────── */
+
+  .ds-input:hover:not(:disabled, [readonly]),
+  .ds-textarea:hover:not(:disabled, [readonly]),
+  .ds-select__el:hover:not(:disabled),
+  .ds-input-shell:not([data-disabled], [data-readonly]):hover {
     border-color: var(--sa-border-brand-primary-base);
   }
 
+  /* ── Focus ─────────────────────────────────────────────────────────────────
+     An `outline` with an offset, not a box-shadow, and a SOLID colour.
+
+     Two defects this replaces. The ring was `0 0 0 3px var(--sa-focus-ring)`,
+     and `--sa-focus-ring` is `rgba(3, 115, 223, 0.48)` — flattened on white that
+     is #86bcf0, **2.01:1**, which fails WCAG 2.2 SC 1.4.11 (Non-text Contrast)
+     for a focus indicator. The solid action colour measures 4.64:1 on white and
+     is darker still in the navy and dbim modes, so it passes in all three.
+
+     And a box-shadow is not painted at all in Windows High Contrast Mode, so a
+     keyboard user in forced colours had no focus indicator on any field in the
+     estate. An outline is preserved there, recoloured to the system highlight.
+
+     The 2px offset is UX4G's published figure and it also does the work: it
+     lifts the ring clear of the field's own border instead of sitting on it. */
   .ds-input:focus-visible,
   .ds-textarea:focus-visible,
-  .ds-select__el:focus-visible {
+  .ds-select__el:focus-visible,
+  .ds-input-shell:focus-within {
+    outline: var(--sa-focus-width) solid var(--sa-color-action-primary-default);
+    outline-offset: var(--sa-focus-offset);
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+  }
+
+  /* The shell already draws the ring for the whole field; a second one around
+     the borderless input inside it would be two rings, 2px apart. */
+  .ds-input--bare:focus-visible {
     outline: none;
+  }
+
+  /* ── Read-only ─────────────────────────────────────────────────────────────
+     A real `readonly`, not a disabled field wearing its clothes. It keeps its
+     text colour (the value is the point), keeps its place in the tab order, and
+     stays selectable so a reader can copy an application number out of it.
+     Disabled below is dimmed BECAUSE it is unusable; read-only is not. */
+  .ds-input[readonly],
+  .ds-textarea[readonly],
+  .ds-input-shell[data-readonly] {
+    background-color: var(--sa-bg-neutral-subtler);
+    border-color: var(--sa-border-neutral-subtle);
+    cursor: default;
+  }
+
+  .ds-input[readonly]::placeholder,
+  .ds-textarea[readonly]::placeholder {
+    color: transparent;
+  }
+
+  /* ── Disabled ──────────────────────────────────────────────────────────── */
+
+  .ds-input:disabled,
+  .ds-textarea:disabled,
+  .ds-select__el:disabled,
+  .ds-input-shell[data-disabled] {
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: var(--sa-bg-neutral-subtler);
+  }
+
+  /* ── Status ────────────────────────────────────────────────────────────────
+     Colour is never the only channel: the message below the field names the
+     status in words and carries a glyph, and an error additionally sets
+     `aria-invalid`. This is the third channel, not the first. */
+
+  .ds-input[data-status="error"],
+  .ds-textarea[data-status="error"],
+  .ds-select__el[data-status="error"],
+  .ds-input-shell[data-status="error"] {
+    border-color: var(--sa-border-status-error-base);
+  }
+
+  .ds-input[data-status="warning"],
+  .ds-textarea[data-status="warning"],
+  .ds-select__el[data-status="warning"],
+  .ds-input-shell[data-status="warning"] {
+    border-color: var(--sa-border-status-warning-base);
+  }
+
+  .ds-input[data-status="success"],
+  .ds-textarea[data-status="success"],
+  .ds-select__el[data-status="success"],
+  .ds-input-shell[data-status="success"] {
+    border-color: var(--sa-border-status-success-base);
+  }
+
+  /* ── Select: native element + custom chevron ───────────────────────────── */
+
+  .ds-select {
+    position: relative;
+    display: block;
+    width: 100%;
+  }
+
+  .ds-select__el {
+    padding-right: var(--sa-stack-40);
+  }
+
+  .ds-select__chevron {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    width: 18px;
+    height: 18px;
+    transform: translateY(-50%);
+    color: var(--sa-text-neutral-subtle);
+    pointer-events: none;
   }
 
   /* ── Filter appearance ─────────────────────────────────────────────────────
@@ -114,22 +315,23 @@
 
   .ds-select--filter .ds-select__el {
     width: 100%;
-    min-height: 40px;
+    min-height: var(--sa-stack-40);
     padding: var(--sa-padding-8) var(--sa-padding-32) var(--sa-padding-8) var(--sa-padding-16);
     font-size: var(--sa-type-body-2-size);
     line-height: var(--sa-type-body-2-lh);
     font-weight: 500;
     border-radius: var(--sa-shape-full);
-    border-color: var(--sa-border-neutral-subtle);
+    /* The filter pill was the faintest control in the estate at 1.35:1. A
+       "hairline" is a look, not a licence — it is still the boundary that says
+       where the control is. Now the same 3:1 border as every other field, and
+       its hover state below moves to the brand colour so hover still reads. */
+    border-color: var(--sa-border-neutral-bolder-default);
     color: var(--sa-text-neutral-bolder);
     text-overflow: ellipsis;
-    transition:
-      border-color 0.15s ease,
-      background-color 0.15s ease;
   }
 
   .ds-select--filter .ds-select__el:hover:not(:disabled) {
-    border-color: var(--sa-border-neutral-bolder-default);
+    border-color: var(--sa-border-brand-primary-base);
   }
 
   .ds-select--filter .ds-select__chevron {
@@ -138,133 +340,86 @@
     height: 18px;
   }
 
-  .ds-input:disabled,
-  .ds-textarea:disabled,
-  .ds-select__el:disabled {
-    cursor: not-allowed;
-    opacity: 0.5;
-    background-color: var(--sa-bg-neutral-subtler);
-  }
+  /* ── The adorned field ─────────────────────────────────────────────────────
+     One path for every adornment — leading icon, prefix, suffix, spinner,
+     trailing control. The shell draws the border and the states; the input
+     inside is borderless and transparent.
 
-  /* Error state (driven by aria-invalid="true") */
-  .ds-input[aria-invalid="true"],
-  .ds-textarea[aria-invalid="true"],
-  .ds-select__el[aria-invalid="true"] {
-    border-color: var(--sa-border-status-error-base);
-  }
+     The previous version overlaid absolutely-positioned icons on a bordered
+     input and padded the text away from them. That works for a fixed-width
+     glyph and cannot work for a text affix, whose width depends on its content
+     — "₹" and "+91" and "kg" are three different paddings. Rather than keep two
+     mechanisms that would disagree about where the border is, there is now one. */
 
-  .ds-input[aria-invalid="true"]:focus-visible,
-  .ds-textarea[aria-invalid="true"]:focus-visible,
-  .ds-select__el[aria-invalid="true"]:focus-visible {
-    box-shadow: 0 0 0 3px var(--sa-color-status-danger);
-  }
-
-  /* ---- Select: native element + custom chevron ---- */
-  .ds-select {
-    position: relative;
-    display: block;
-    width: 100%;
-  }
-
-  .ds-select__el {
-    padding-right: var(--sa-stack-40);
-  }
-
-  .ds-select__chevron {
-    position: absolute;
-    top: 50%;
-    right: 12px;
-    width: 18px;
-    height: 18px;
-    transform: translateY(-50%);
-    color: var(--sa-text-neutral-subtle);
-    pointer-events: none;
-  }
-
-  /* ---- FormField wrapper: label + control + hint + error ---- */
-  .ds-field {
-    display: flex;
-    flex-direction: column;
-    gap: var(--sa-stack-8);
-    font-family: var(--sa-font-latin);
-  }
-
-  .ds-field__label {
-    font-size: var(--sa-type-body-2-size);
-    line-height: var(--sa-type-body-2-lh);
-    font-weight: 500;
-    color: var(--sa-text-neutral-base);
-  }
-
-  .ds-field__required {
-    margin-left: var(--sa-padding-2);
-    /* dangerStrong (#b8382f, Figma Danger/700) clears 4.5:1 on white (5.8:1); --sa-color-status-danger (#ec5042) is only 3.6:1. */
-    color: var(--sa-color-status-dangerStrong);
-  }
-
-  .ds-field__hint {
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
-    color: var(--sa-text-neutral-subtle);
-  }
-
-  .ds-field__error {
+  .ds-input-shell {
     display: flex;
     align-items: center;
-    gap: var(--sa-stack-4);
-    font-size: var(--sa-type-body-3-size);
-    line-height: var(--sa-type-body-3-lh);
-    /* Error TEXT must clear 4.5:1 (WCAG 1.4.3); --sa-color-status-danger only meets the 3:1 UI-border bar. */
-    color: var(--sa-color-status-dangerStrong);
+    gap: var(--sa-inline-8);
   }
 
-  /* Compact density reduces control height to 40px */
-  [data-density="compact"] .ds-input,
-  [data-density="compact"] .ds-textarea,
-  [data-density="compact"] .ds-select__el {
-    min-height: 40px;
-    padding-top: var(--sa-padding-8);
-    padding-bottom: var(--sa-padding-8);
+  /* The shell centres its children, so its block padding would add to the
+     height rather than position anything. Every size modifier's padding is
+     overridden here on purpose — this rule follows all of them. */
+  .ds-input-shell,
+  .ds-input-shell--sm,
+  .ds-input-shell--md,
+  .ds-input-shell--lg,
+  .ds-input-shell--xl {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
-  /* ----------------------------------------------------------------------------
-     Input adornments (leftIcon / rightIcon)
-     Only emitted when <Input> is given an icon; a bare input renders no wrapper.
-     The icon sits on top of the field rather than inside a bordered flex row, so
-     the focus ring stays on the <input> itself and none of the states above need
-     to be duplicated for a wrapper.
-     -------------------------------------------------------------------------- */
-  .ds-input-shell {
-    position: relative;
-    display: block;
+  .ds-input--bare {
+    min-height: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    flex: 1 1 auto;
     width: 100%;
+    /* Without this a flex item refuses to shrink below its content width, and a
+       long value pushes the trailing control out past the field's border. */
+    min-width: 0;
   }
 
-  .ds-input-shell__icon {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
+  .ds-input-shell__icon,
+  .ds-input-shell__affix {
     display: inline-flex;
     align-items: center;
-    justify-content: center;
+    flex: 0 0 auto;
     color: var(--sa-text-neutral-subtle);
     pointer-events: none;
+    user-select: none;
   }
 
-  /* The right slot is usually an interactive control (password reveal, clear),
-     so it must remain clickable — only the decorative left slot opts out. */
-  .ds-input-shell__icon--right {
-    pointer-events: auto;
+  /* The affix is the reader's anchor for what the field wants — a currency, a
+     country code — so it is set in the field's own text colour and weight
+     rather than in the muted tone an icon takes. */
+  .ds-input-shell__affix {
+    color: var(--sa-text-neutral-bolder);
+    font-weight: 500;
+    white-space: nowrap;
   }
 
-  /* ANY INTERACTIVE CHILD OF THIS SLOT IS A REAL TARGET.
+  .ds-input-shell__pending {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+
+  .ds-input-shell__action {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+
+  /* ANY INTERACTIVE CHILD OF THE TRAILING SLOT IS A REAL TARGET.
      The slot is where a password-reveal toggle, a clear button or a search
      submit lands, and every consumer that put a bare <button> here inherited
      its icon's size — smile-admin's reveal toggle measured 16x24, a third under
      the 24x24 WCAG 2.2 AA floor (2.5.8). Enforcing it on the SLOT fixes every
-     consumer at once and stops the next one reintroducing it. The slot is
-     centred and absolutely positioned, so growing the hit area moves nothing. */
-  .ds-input-shell__icon--right :is(button, a, [role="button"]) {
+     consumer at once and stops the next one reintroducing it. */
+  .ds-input-shell__action :is(button, a, [role="button"]) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -272,30 +427,223 @@
     min-block-size: var(--sa-stack-24);
   }
 
-  .ds-input-shell__icon--left {
-    left: 12px;
-  }
-
-  .ds-input-shell__icon--right {
-    right: 12px;
-  }
-
-  /* Pad the text away from whichever adornment is present. 12px gutter + 20px
-     icon + 8px gap. */
-  .ds-input--has-left {
-    padding-left: var(--sa-stack-40);
-  }
-
-  .ds-input--has-right {
-    padding-right: var(--sa-stack-40);
-  }
-
-  /* Tint the leading icon to match the field's focus/error state. */
-  .ds-input-shell:focus-within .ds-input-shell__icon--left {
+  /* Tint the leading icon to match the field's focus and status. */
+  .ds-input-shell:focus-within .ds-input-shell__icon {
     color: var(--sa-text-brand-primary-base);
   }
 
-  .ds-input-shell:has(.ds-input[aria-invalid="true"]) .ds-input-shell__icon--left {
+  .ds-input-shell[data-status="error"] .ds-input-shell__icon {
     color: var(--sa-text-status-error-base);
+  }
+
+  .ds-input-shell[data-status="warning"] .ds-input-shell__icon {
+    color: var(--sa-text-status-warning-base);
+  }
+
+  .ds-input-shell[data-status="success"] .ds-input-shell__icon {
+    color: var(--sa-text-status-success-base);
+  }
+
+  /* ── FormField wrapper: label + control + hint + message + count ────────── */
+
+  .ds-field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    font-family: var(--sa-font-latin);
+  }
+
+  /* ── Orientation ───────────────────────────────────────────────────────────
+     `inline` puts the label beside its control, for the dense review tables and
+     settings panels where a stacked field wastes half the row. The label column
+     is capped rather than fluid, so a long label wraps instead of squeezing the
+     control, and the whole thing folds back to stacked below the tablet
+     breakpoint — a label beside a field on a phone leaves neither enough room. */
+  .ds-field--inline {
+    display: grid;
+    grid-template-columns: minmax(0, 14rem) minmax(0, 1fr);
+    column-gap: var(--sa-inline-16);
+    align-items: start;
+  }
+
+  .ds-field--inline > .ds-field__label-row {
+    padding-top: var(--sa-padding-12);
+  }
+
+  /* Everything after the control shares the control's column. */
+  .ds-field--inline > :not(.ds-field__label-row) {
+    grid-column: 2;
+  }
+
+  @media (max-width: 767px) {
+    .ds-field--inline {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ds-field--inline > .ds-field__label-row {
+      padding-top: 0;
+    }
+  }
+
+  .ds-field__label-row {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-4);
+  }
+
+  /* 16px, medium — UX4G's Label/XL, which its written guidance names as the
+     default for a form field label. Its own Figma master binds Label/M (12px)
+     at size M; the two sources are 4px apart, and where a standard contradicts
+     itself the estate takes the larger, because nobody has ever been failed by
+     a label that was easier to read. Recorded in
+     docs/audit/input-fields-audit-2026-09-03.md §4. */
+  .ds-field__label {
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: 500;
+    color: var(--sa-text-neutral-base);
+  }
+
+  .ds-field__required {
+    margin-left: var(--sa-padding-2);
+    color: var(--sa-text-status-error-base);
+  }
+
+  /* Not hidden from assistive tech, unlike the asterisk: "optional" is a word a
+     screen reader should say, because there is no `optional` attribute for it
+     to announce the way `required` announces the other side. */
+  .ds-field__optional {
+    font-weight: 400;
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-field__help-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--sa-inline-24);
+    min-block-size: var(--sa-stack-24);
+    padding: 0;
+    color: var(--sa-text-neutral-subtle);
+    background: none;
+    border: none;
+    border-radius: var(--sa-shape-full);
+    cursor: pointer;
+  }
+
+  .ds-field__help-toggle:hover {
+    color: var(--sa-text-brand-primary-base);
+  }
+
+  .ds-field__help-toggle:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-color-action-primary-default);
+    outline-offset: var(--sa-focus-offset);
+  }
+
+  .ds-field__help {
+    padding: var(--sa-padding-12);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-base);
+    background-color: var(--sa-bg-neutral-subtler);
+    border-radius: var(--sa-shape-8);
+  }
+
+  /* 14px — UX4G's Body/S, which its written guidance names for "helper text
+     below an input". Was 12px, which that same guidance reserves for captions,
+     legal text and timestamps. */
+  .ds-field__hint {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .ds-field__message {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sa-inline-4);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 500;
+  }
+
+  /* Every status message colour is taken from the -base status text token,
+     each of which measures well past 4.5:1 on the page ground: error #8b1f18
+     at 9.1:1, warning #704b00 at 7.79:1, success #004220 at 11.67:1. */
+  .ds-field__message--error {
+    color: var(--sa-text-status-error-base);
+  }
+
+  .ds-field__message--warning {
+    color: var(--sa-text-status-warning-base);
+  }
+
+  .ds-field__message--success {
+    color: var(--sa-text-status-success-base);
+  }
+
+  .ds-field__count {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+    text-align: right;
+  }
+
+  .ds-field__count--over {
+    color: var(--sa-text-status-error-base);
+    font-weight: 500;
+  }
+
+  .ds-field-legend {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── Density ───────────────────────────────────────────────────────────── */
+
+  [data-density="compact"] .ds-input,
+  [data-density="compact"] .ds-textarea,
+  [data-density="compact"] .ds-select__el,
+  [data-density="compact"] .ds-input-shell {
+    min-height: var(--sa-stack-40);
+    padding-top: var(--sa-padding-8);
+    padding-bottom: var(--sa-padding-8);
+  }
+
+  [data-density="compact"] .ds-input-shell {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  /* ── Devanagari ────────────────────────────────────────────────────────────
+     Hindi needs more leading than Latin: its ascenders and descenders collide at
+     the ratio that reads comfortably in Latin script, and UX4G §2.8 sets 1.8.
+
+     RE-BIND THE TOKEN, do not override `line-height`. Writing `line-height: 1.8`
+     on each rule would unpair every size from its leading and put two unbound
+     numbers in the estate's strictest stylesheet. Declaring the leading tokens
+     for the subtree instead keeps every rule below bound to `--sa-type-*-lh`,
+     exactly as it is in Latin, and puts the script's ratio in one place. This is
+     the same mechanism `[data-color-mode]` uses to repaint a subtree.
+
+     Matched on `:lang`, so a bilingual page gets each script's own leading with
+     nothing asked of the consumer. Latin is untouched. */
+  :is(:lang(hi), :lang(mr), :lang(ne), :lang(sa))
+    :is(.ds-field, .ds-input, .ds-textarea, .ds-select__el, .ds-field-legend) {
+    --sa-type-body-1-lh: calc(var(--sa-type-body-1-size) * 1.8);
+    --sa-type-body-2-lh: calc(var(--sa-type-body-2-size) * 1.8);
+  }
+
+  /* ── Reduced motion ────────────────────────────────────────────────────── */
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-input,
+    .ds-textarea,
+    .ds-select__el,
+    .ds-input-shell {
+      transition: none;
+    }
   }
 }

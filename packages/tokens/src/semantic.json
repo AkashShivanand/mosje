@@ -1,10 +1,10 @@
 {
-  "$description": "Tier 2 \u2014 semantic/alias tokens. The PUBLIC contract apps consume.",
+  "$description": "Tier 2 — semantic/alias tokens. The PUBLIC contract apps consume.",
   "color": {
     "$type": "color",
     "action": {
       "primary": {
-        "$description": "Button/CTA fill. MUST stay dark enough to carry white label text at AA in EVERY theme \u2014 that is why the dark theme sits on 500 and not on a lighter step, and why hover goes DARKER (600) rather than lighter. Text links use color.action.link instead, which is free to lighten on dark surfaces. Enforced by test/mode-contrast.test.mjs; the dark theme shipped white-on-#2d84e8 at 3.77:1 until 2026-08.",
+        "$description": "Button/CTA fill. MUST stay dark enough to carry white label text at AA in EVERY theme — that is why the dark theme sits on 500 and not on a lighter step, and why hover goes DARKER (600) rather than lighter. Text links use color.action.link instead, which is free to lighten on dark surfaces. Enforced by test/mode-contrast.test.mjs; the dark theme shipped white-on-#2d84e8 at 3.77:1 until 2026-08.",
         "default": {
           "$value": "{color.primaryRamp.blue.500}",
           "$extensions": {
@@ -171,7 +171,7 @@
           }
         }
       },
-      "$description": "Full mode-aware primary ramp (50\u2013900). Consume via --sa-color-primaryScale-50\u2026950. Each step follows the active brand."
+      "$description": "Full mode-aware primary ramp (50–900). Consume via --sa-color-primaryScale-50…950. Each step follows the active brand."
     },
     "secondaryScale": {
       "50": {
@@ -295,7 +295,7 @@
           }
         }
       },
-      "$description": "Full mode-aware SECONDARY ramp (50\u2013900) = Figma Secondary/*. BRAND-INVARIANT since 2026-08-11 \u2014 India Saffron in both brands. Consume via --sa-color-secondaryScale-*."
+      "$description": "Full mode-aware SECONDARY ramp (50–900) = Figma Secondary/*. BRAND-INVARIANT since 2026-08-11 — India Saffron in both brands. Consume via --sa-color-secondaryScale-*."
     },
     "accentScale": {
       "50": {
@@ -419,7 +419,7 @@
           }
         }
       },
-      "$description": "ACCENT brand scale \u2014 India Green #046A38 from the SAMAVESH logo. Brand-INVARIANT (blue and navy resolve to identical values), and deliberately the same green as color.successScale: two greens nine degrees apart is a defect whichever token owns them."
+      "$description": "ACCENT brand scale — India Green #046A38 from the SAMAVESH logo. Brand-INVARIANT (blue and navy resolve to identical values), and deliberately the same green as color.successScale: two greens nine degrees apart is a defect whichever token owns them."
     },
     "neutralScale": {
       "0": {
@@ -565,7 +565,7 @@
           }
         }
       },
-      "$description": "Full mode-aware NEUTRAL ramp (0\u20131000) = Figma Palette/color/neutralScale/*. Hue-locked to the brand's own primary. Consume via --sa-color-neutralScale-*. Renumbered 2026-08-11 to match UX4G: pure white at 0, pure black at 1000, near-black at 950. There is no 1100 \u2014 the old top step was retired by that renumbering."
+      "$description": "Full mode-aware NEUTRAL ramp (0–1000) = Figma Palette/color/neutralScale/*. Hue-locked to the brand's own primary. Consume via --sa-color-neutralScale-*. Renumbered 2026-08-11 to match UX4G: pure white at 0, pure black at 1000, near-black at 950. There is no 1100 — the old top step was retired by that renumbering."
     },
     "successScale": {
       "50": {
@@ -601,7 +601,7 @@
       "950": {
         "$value": "{color.green.950}"
       },
-      "$description": "Full SUCCESS ramp (50\u2013900) = Figma Success/*. Mode-invariant (identical in Blue-Light and Blue-Dark). Consume via --sa-success-50\u2026900."
+      "$description": "Full SUCCESS ramp (50–900) = Figma Success/*. Mode-invariant (identical in Blue-Light and Blue-Dark). Consume via --sa-success-50…900."
     },
     "dangerScale": {
       "50": {
@@ -637,7 +637,7 @@
       "950": {
         "$value": "{color.red.950}"
       },
-      "$description": "Full DANGER ramp (50\u2013900) = Figma Danger/*. Mode-invariant. Consume via --sa-danger-50\u2026900."
+      "$description": "Full DANGER ramp (50–900) = Figma Danger/*. Mode-invariant. Consume via --sa-danger-50…900."
     },
     "warningScale": {
       "50": {
@@ -673,7 +673,7 @@
       "950": {
         "$value": "{color.amber.950}"
       },
-      "$description": "Full WARNING ramp (50\u2013900) = Figma Warning/*. Mode-invariant. Consume via --sa-warning-50\u2026900."
+      "$description": "Full WARNING ramp (50–900) = Figma Warning/*. Mode-invariant. Consume via --sa-warning-50…900."
     },
     "infoScale": {
       "50": {
@@ -709,252 +709,408 @@
       "950": {
         "$value": "{color.info.950}"
       },
-      "$description": "Full INFO ramp (50\u2013900) = Figma Info/*. Mode-invariant. Consume via --sa-info-50\u2026900."
+      "$description": "Full INFO ramp (50–900) = Figma Info/*. Mode-invariant. Consume via --sa-info-50…900."
     },
     "transparent": {
-      "$description": "Alpha overlay tiers (8/16/24/32/40/48%). GENERATED by build/brand-ramps.mjs from each family's base colour \u2014 never hand-written, because 42 rgba() literals is exactly the shape of thing that silently keeps a retired colour alive. primary and neutral vary by brand; secondary and accent do NOT (both are SAMAVESH logo colours); the status tiers and white are brand-invariant. Consume via --sa-color-transparent-<family>-<step>.",
+      "$description": "Alpha overlay tiers (8/16/24/32/40/48%). GENERATED by build/brand-ramps.mjs. Each tier is a colour REFERENCE plus an alpha/N REFERENCE — never an rgba() literal, because 48 literals is exactly the shape of thing that silently keeps a retired colour alive, and because a literal cannot follow a brand. In CSS a tier resolves as color-mix(in srgb, var(base) calc(var(--sa-alpha-N) * 100%), transparent); in Figma it is an alias to the base variable with its opacity bound to alpha/N. Consume via --sa-color-transparent-<family>-<step>.",
       "primary": {
         "8": {
-          "$value": "rgba(3, 115, 223, 0.08)",
+          "$value": "{color.primaryScale.500}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.08)"
-              }
+              "alpha": "{alpha.8}"
             }
           }
         },
         "16": {
-          "$value": "rgba(3, 115, 223, 0.16)",
+          "$value": "{color.primaryScale.500}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.16)"
-              }
+              "alpha": "{alpha.16}"
             }
           }
         },
         "24": {
-          "$value": "rgba(3, 115, 223, 0.24)",
+          "$value": "{color.primaryScale.500}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.24)"
-              }
+              "alpha": "{alpha.24}"
             }
           }
         },
         "32": {
-          "$value": "rgba(3, 115, 223, 0.32)",
+          "$value": "{color.primaryScale.500}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.32)"
-              }
+              "alpha": "{alpha.32}"
             }
           }
         },
         "40": {
-          "$value": "rgba(3, 115, 223, 0.40)",
+          "$value": "{color.primaryScale.500}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.40)"
-              }
+              "alpha": "{alpha.40}"
             }
           }
         },
         "48": {
-          "$value": "rgba(3, 115, 223, 0.48)",
+          "$value": "{color.primaryScale.500}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(0, 51, 102, 0.48)"
-              }
+              "alpha": "{alpha.48}"
             }
           }
         }
       },
       "secondary": {
         "8": {
-          "$value": "rgba(255, 103, 31, 0.08)"
+          "$value": "{color.secondaryScale.400}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.8}"
+            }
+          }
         },
         "16": {
-          "$value": "rgba(255, 103, 31, 0.16)"
+          "$value": "{color.secondaryScale.400}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.16}"
+            }
+          }
         },
         "24": {
-          "$value": "rgba(255, 103, 31, 0.24)"
+          "$value": "{color.secondaryScale.400}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.24}"
+            }
+          }
         },
         "32": {
-          "$value": "rgba(255, 103, 31, 0.32)"
+          "$value": "{color.secondaryScale.400}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.32}"
+            }
+          }
         },
         "40": {
-          "$value": "rgba(255, 103, 31, 0.40)"
+          "$value": "{color.secondaryScale.400}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.40}"
+            }
+          }
         },
         "48": {
-          "$value": "rgba(255, 103, 31, 0.48)"
+          "$value": "{color.secondaryScale.400}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.48}"
+            }
+          }
         }
       },
       "accent": {
         "8": {
-          "$value": "rgba(4, 106, 56, 0.08)"
+          "$value": "{color.accentScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.8}"
+            }
+          }
         },
         "16": {
-          "$value": "rgba(4, 106, 56, 0.16)"
+          "$value": "{color.accentScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.16}"
+            }
+          }
         },
         "24": {
-          "$value": "rgba(4, 106, 56, 0.24)"
+          "$value": "{color.accentScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.24}"
+            }
+          }
         },
         "32": {
-          "$value": "rgba(4, 106, 56, 0.32)"
+          "$value": "{color.accentScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.32}"
+            }
+          }
         },
         "40": {
-          "$value": "rgba(4, 106, 56, 0.40)"
+          "$value": "{color.accentScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.40}"
+            }
+          }
         },
         "48": {
-          "$value": "rgba(4, 106, 56, 0.48)"
+          "$value": "{color.accentScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.48}"
+            }
+          }
         }
       },
       "neutral": {
         "8": {
-          "$value": "rgba(30, 33, 36, 0.08)",
+          "$value": "{color.neutralScale.800}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(30, 32, 36, 0.08)"
-              }
+              "alpha": "{alpha.8}"
             }
           }
         },
         "16": {
-          "$value": "rgba(30, 33, 36, 0.16)",
+          "$value": "{color.neutralScale.800}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(30, 32, 36, 0.16)"
-              }
+              "alpha": "{alpha.16}"
             }
           }
         },
         "24": {
-          "$value": "rgba(30, 33, 36, 0.24)",
+          "$value": "{color.neutralScale.800}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(30, 32, 36, 0.24)"
-              }
+              "alpha": "{alpha.24}"
             }
           }
         },
         "32": {
-          "$value": "rgba(30, 33, 36, 0.32)",
+          "$value": "{color.neutralScale.800}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(30, 32, 36, 0.32)"
-              }
+              "alpha": "{alpha.32}"
             }
           }
         },
         "40": {
-          "$value": "rgba(30, 33, 36, 0.40)",
+          "$value": "{color.neutralScale.800}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(30, 32, 36, 0.40)"
-              }
+              "alpha": "{alpha.40}"
             }
           }
         },
         "48": {
-          "$value": "rgba(30, 33, 36, 0.48)",
+          "$value": "{color.neutralScale.800}",
           "$extensions": {
             "mosje": {
-              "colorModes": {
-                "navy": "rgba(30, 32, 36, 0.48)"
-              }
+              "alpha": "{alpha.48}"
             }
           }
         }
       },
       "success": {
         "8": {
-          "$value": "rgba(4, 106, 56, 0.08)"
+          "$value": "{color.successScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.8}"
+            }
+          }
         },
         "16": {
-          "$value": "rgba(4, 106, 56, 0.16)"
+          "$value": "{color.successScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.16}"
+            }
+          }
         },
         "24": {
-          "$value": "rgba(4, 106, 56, 0.24)"
+          "$value": "{color.successScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.24}"
+            }
+          }
         },
         "32": {
-          "$value": "rgba(4, 106, 56, 0.32)"
+          "$value": "{color.successScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.32}"
+            }
+          }
         },
         "40": {
-          "$value": "rgba(4, 106, 56, 0.40)"
+          "$value": "{color.successScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.40}"
+            }
+          }
         },
         "48": {
-          "$value": "rgba(4, 106, 56, 0.48)"
+          "$value": "{color.successScale.600}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.48}"
+            }
+          }
         }
       },
       "danger": {
         "8": {
-          "$value": "rgba(203, 63, 51, 0.08)"
+          "$value": "{color.dangerScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.8}"
+            }
+          }
         },
         "16": {
-          "$value": "rgba(203, 63, 51, 0.16)"
+          "$value": "{color.dangerScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.16}"
+            }
+          }
         },
         "24": {
-          "$value": "rgba(203, 63, 51, 0.24)"
+          "$value": "{color.dangerScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.24}"
+            }
+          }
         },
         "32": {
-          "$value": "rgba(203, 63, 51, 0.32)"
+          "$value": "{color.dangerScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.32}"
+            }
+          }
         },
         "40": {
-          "$value": "rgba(203, 63, 51, 0.40)"
+          "$value": "{color.dangerScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.40}"
+            }
+          }
         },
         "48": {
-          "$value": "rgba(203, 63, 51, 0.48)"
+          "$value": "{color.dangerScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.48}"
+            }
+          }
         }
       },
       "warning": {
         "8": {
-          "$value": "rgba(167, 114, 0, 0.08)"
+          "$value": "{color.warningScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.8}"
+            }
+          }
         },
         "16": {
-          "$value": "rgba(167, 114, 0, 0.16)"
+          "$value": "{color.warningScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.16}"
+            }
+          }
         },
         "24": {
-          "$value": "rgba(167, 114, 0, 0.24)"
+          "$value": "{color.warningScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.24}"
+            }
+          }
         },
         "32": {
-          "$value": "rgba(167, 114, 0, 0.32)"
+          "$value": "{color.warningScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.32}"
+            }
+          }
         },
         "40": {
-          "$value": "rgba(167, 114, 0, 0.40)"
+          "$value": "{color.warningScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.40}"
+            }
+          }
         },
         "48": {
-          "$value": "rgba(167, 114, 0, 0.48)"
+          "$value": "{color.warningScale.500}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.48}"
+            }
+          }
         }
       },
       "white": {
         "8": {
-          "$value": "rgba(255, 255, 255, 0.08)"
+          "$value": "{color.neutralScale.0}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.8}"
+            }
+          }
         },
         "16": {
-          "$value": "rgba(255, 255, 255, 0.16)"
+          "$value": "{color.neutralScale.0}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.16}"
+            }
+          }
         },
         "24": {
-          "$value": "rgba(255, 255, 255, 0.24)"
+          "$value": "{color.neutralScale.0}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.24}"
+            }
+          }
         },
         "32": {
-          "$value": "rgba(255, 255, 255, 0.32)"
+          "$value": "{color.neutralScale.0}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.32}"
+            }
+          }
         },
         "40": {
-          "$value": "rgba(255, 255, 255, 0.40)"
+          "$value": "{color.neutralScale.0}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.40}"
+            }
+          }
         },
         "48": {
-          "$value": "rgba(255, 255, 255, 0.48)"
+          "$value": "{color.neutralScale.0}",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.48}"
+            }
+          }
         }
       }
     },
@@ -989,17 +1145,13 @@
         }
       },
       "disabled": {
-        "$value": "rgba(30, 33, 36, 0.48)",
+        "$value": "{color.neutral.400}",
+        "$description": "Disabled label ink. OPAQUE, and one rung darker than the 48% wash it replaced: rgba(30,33,36,.48) composited to #939496, which measured 1.83:1 on bg/neutral/disabled — a disabled button whose label could not be read at all. neutralScale/400 is 3.06:1 on white and 2.68:1 on the disabled fill: legible, and still unmistakably inactive. WCAG exempts disabled controls (1.4.3), so this is a floor the estate sets for itself, not a conformance claim. Follows the brand's neutral hue, and DBIM's pure greys under a dbim-* mode, by reference.",
         "$extensions": {
           "mosje": {
             "colorModes": {
-              "navy": "rgba(30, 32, 36, 0.48)",
-              "dbim-blue": "rgba(21, 2, 2, 0.48)",
-              "dbim-burgundy": "rgba(21, 2, 2, 0.48)",
-              "dbim-purple": "rgba(21, 2, 2, 0.48)",
-              "dbim-green": "rgba(21, 2, 2, 0.48)",
-              "dbim-chrome-yellow": "rgba(21, 2, 2, 0.48)",
-              "dbim-cinnamon-red": "rgba(21, 2, 2, 0.48)"
+              "navy": "{color.neutralDark.400}",
+              "dbim": "{color.neutralDark.400}"
             },
             "themes": {
               "dark": "rgba(243, 244, 246, 0.40)"
@@ -1023,7 +1175,7 @@
     },
     "border": {
       "controlHover": {
-        "$value": "{color.neutral.500}",
+        "$value": "{color.neutral.600}",
         "$extensions": {
           "mosje": {
             "colorModes": {
@@ -1040,7 +1192,7 @@
     },
     "status": {
       "success": {
-        "$value": "{color.green.700}",
+        "$value": "{color.green.600}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1050,7 +1202,7 @@
         }
       },
       "successStrong": {
-        "$value": "{color.green.800}",
+        "$value": "{color.green.700}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1070,7 +1222,7 @@
         }
       },
       "warning": {
-        "$value": "{color.amber.700}"
+        "$value": "{color.amber.600}"
       },
       "warningTonal": {
         "$value": "{color.amber.50}",
@@ -1083,7 +1235,7 @@
         }
       },
       "danger": {
-        "$value": "{color.red.700}",
+        "$value": "{color.red.600}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1093,7 +1245,7 @@
         }
       },
       "dangerStrong": {
-        "$value": "{color.red.800}",
+        "$value": "{color.red.700}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1133,7 +1285,7 @@
         }
       },
       "infoTonal": {
-        "$value": "{color.info.100}",
+        "$value": "{color.info.50}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1304,7 +1456,7 @@
     "devanagari": {
       "$type": "fontFamily",
       "$value": "{font.family.devanagari}",
-      "$description": "Devanagari/Hindi text. Pair with lang=hi on the element. Never italic \u2014 the script has no italic tradition and slanting degrades legibility."
+      "$description": "Devanagari/Hindi text. Pair with lang=hi on the element. Never italic — the script has no italic tradition and slanting degrades legibility."
     },
     "latin": {
       "$type": "fontFamily",
@@ -1323,10 +1475,10 @@
     },
     "weight": {
       "$type": "fontWeight",
-      "$description": "Tier-2 font weights. They were Tier-1 `ref/font/weight/*` until 2026-08-26, and that was the whole reason 24 of the library's text styles bound a reference token: a text style has to name a cut, and no Tier-2 cut existed to name. They are a ROLE, not a raw step \u2014 a brand pack that ships a heavier body face changes them here, and every style follows. Figma has no numeric weight, so the build projects each one to the STYLE NAME its family is addressed by (see FIGMA_FONT_STYLES).",
+      "$description": "Tier-2 font weights. They were Tier-1 `ref/font/weight/*` until 2026-08-26, and that was the whole reason 24 of the library's text styles bound a reference token: a text style has to name a cut, and no Tier-2 cut existed to name. They are a ROLE, not a raw step — a brand pack that ships a heavier body face changes them here, and every style follows. Figma has no numeric weight, so the build projects each one to the STYLE NAME its family is addressed by (see FIGMA_FONT_STYLES).",
       "light": {
         "$value": 300,
-        "$description": "300 \u2014 the ICON cut, and the only place the estate uses it. Every Figma `Icon/*` text style is Material Symbols Rounded / Light and `<Icon>` defaults to 300, so this is the one token both read. NOT for prose: 300 on Noto Sans at body sizes thins the stroke below what the ramp is drawn for."
+        "$description": "300 — the ICON cut, and the only place the estate uses it. Every Figma `Icon/*` text style is Material Symbols Rounded / Light and `<Icon>` defaults to 300, so this is the one token both read. NOT for prose: 300 on Noto Sans at body sizes thins the stroke below what the ramp is drawn for."
       },
       "regular": {
         "$value": 400,
@@ -1334,7 +1486,7 @@
       },
       "medium": {
         "$value": 500,
-        "$description": "Titles and labels \u2014 the weight that separates a heading from its paragraph without shouting."
+        "$description": "Titles and labels — the weight that separates a heading from its paragraph without shouting."
       },
       "semibold": {
         "$value": 600,
@@ -1346,22 +1498,22 @@
       },
       "displayMedium": {
         "$value": 500,
-        "$description": "The Display cut at Medium \u2014 500 on `Noto Sans Display` for the 40-80px ramp. It is a SEPARATE token from `medium` because Figma does not model the Display cut as a family: it is the STYLE string \"Display Medium\" of Noto Sans, which is why the build special-cases this one name instead of projecting 500 to \"Medium\". In CSS the same pairing is `font/display` plus this weight."
+        "$description": "The Display cut at Medium — 500 on `Noto Sans Display` for the 40-80px ramp. It is a SEPARATE token from `medium` because Figma does not model the Display cut as a family: it is the STYLE string \"Display Medium\" of Noto Sans, which is why the build special-cases this one name instead of projecting 500 to \"Medium\". In CSS the same pairing is `font/display` plus this weight."
       }
     },
     "icon": {
       "$type": "fontFamily",
       "$value": "{font.family.icon}",
-      "$description": "Material Symbols Rounded \u2014 the face every icon glyph renders in. Bind this from `.material-symbols-rounded`, never the Tier-1 primitive. The `@font-face` rule in icons.css still names the family literally because a font-face descriptor cannot take a custom property; that literal is the font LOADER, this token is what everything else reads."
+      "$description": "Material Symbols Rounded — the face every icon glyph renders in. Bind this from `.material-symbols-rounded`, never the Tier-1 primitive. The `@font-face` rule in icons.css still names the family literally because a font-face descriptor cannot take a custom property; that literal is the font LOADER, this token is what everything else reads."
     }
   },
   "brand": {
     "$type": "color",
-    "$description": "MARK COLOURS \u2014 the fixed palette of a logo, not a role in the interface. They are Tier 2 and they alias NOTHING, which is the one place in this file where a literal is the correct answer: a mark does not re-colour when the brand pack changes, because the mark IS the brand. That is also why they belong in the mode-less Static collection rather than in Color \u2014 a value that must never move should not sit in a collection whose whole purpose is moving. Authored here on 2026-08-26; the library had carried them as hand-made `ref/brand/*` variables since before the pipeline, with a codeSyntax pointing at `--sa-ref-brand-samavesh-*` names that had never existed in any stylesheet. USE THEM ONLY inside the mark they belong to. The SAMAVESH ink is #1F2428 and the estate's text ink is #1E2124 \u2014 two colours that look identical in review and are not the same, which is exactly why the mark needs its own token rather than borrowing `text/neutral/base`.",
+    "$description": "MARK COLOURS — the fixed palette of a logo, not a role in the interface. They are Tier 2 and they alias NOTHING, which is the one place in this file where a literal is the correct answer: a mark does not re-colour when the brand pack changes, because the mark IS the brand. That is also why they belong in the mode-less Static collection rather than in Color — a value that must never move should not sit in a collection whose whole purpose is moving. Authored here on 2026-08-26; the library had carried them as hand-made `ref/brand/*` variables since before the pipeline, with a codeSyntax pointing at `--sa-ref-brand-samavesh-*` names that had never existed in any stylesheet. USE THEM ONLY inside the mark they belong to. The SAMAVESH ink is #1F2428 and the estate's text ink is #1E2124 — two colours that look identical in review and are not the same, which is exactly why the mark needs its own token rather than borrowing `text/neutral/base`.",
     "samavesh": {
       "ink": {
         "$value": "#1f2428",
-        "$description": "The wordmark's own ink. NOT `text/neutral/base` (#1E2124) \u2014 close enough to pass a glance, far enough to be a defect."
+        "$description": "The wordmark's own ink. NOT `text/neutral/base` (#1E2124) — close enough to pass a glance, far enough to be a defect."
       },
       "blue": {
         "$value": "#06038d"
@@ -1396,7 +1548,7 @@
     "devanagari": {
       "$type": "number",
       "$value": "{font.lineHeight.devanagari}",
-      "$description": "Devanagari needs more leading than Latin at the same size \u2014 the matras sit above and below the base line."
+      "$description": "Devanagari needs more leading than Latin at the same size — the matras sit above and below the base line."
     }
   },
   "bg": {
@@ -1453,8 +1605,8 @@
     "link": {
       "brand": {
         "default": {
-          "$description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (\u22654.5:1 as text) without weakening white-on-primary button contrast.",
-          "$value": "{color.primaryRamp.blue.500}",
+          "$description": "Text-link colour. Decoupled from action.primary so it can be lighter on dark surfaces (≥4.5:1 as text) without weakening white-on-primary button contrast. BLUE IS RAMP 600, NOT 500, and the reason is the ground it actually sits on: 500 (#0373df) measures 4.64:1 on white but 4.07:1 on bg/surface/muted, which is the class the estate's own <body> carries — so the link failed 1.4.3 on most pages while passing every check. 600 (#005eb9) is 6.36:1 and 5.57:1. It passed because the contrast contract judges text against bg/neutral/base, i.e. white; that surface assumption is recorded as an open item rather than widened here, since widening it re-judges every text token at once. Navy holds ramp 500 through its own colorModes override and already clears 4.5:1 on that ground. dbim has no such override, so it follows the base step and moved to 600 with it across all six of its hues — which only darkens those links, never lightens them.",
+          "$value": "{color.primaryRamp.blue.600}",
           "$extensions": {
             "mosje": {
               "colorModes": {
@@ -1504,47 +1656,50 @@
       },
       "bolder": {
         "default": {
-          "$value": "{color.neutral.400}",
+          "$value": "{color.neutral.500}",
           "$extensions": {
             "mosje": {
               "colorModes": {
-                "navy": "{color.neutralDark.400}",
-                "dbim": "{color.neutralDark.400}"
+                "navy": "{color.neutralDark.500}",
+                "dbim": "{color.neutralDark.500}"
               },
               "themes": {
                 "dark": "#4a5263",
                 "hc": "#000000"
               }
             }
-          }
+          },
+          "$description": "Form control border, resting. Rung 500 since 2026-09-04: rung 400 (#8e949c) was 3.06:1 on white — a hairline pass of 1.4.11 — and 2.68:1 on bg/neutral/subtler, the ground most forms actually sit on, which is a FAIL. 500 measures 4.65:1 on white and 4.07:1 on the muted ground. Hover steps to 600."
         }
       },
       "inverse": {
         "default": {
           "$value": "#ffffff",
-          "$description": "Border/rule ink on a dark or brand surface \u2014 the inverse of border/neutral/base. Nested as inverse/default rather than a bare `inverse` leaf because it has a `subtle` sibling, which is the same shape border/neutral/bolder already uses (bolder/default, bolder/hover)."
+          "$description": "Border/rule ink on a dark or brand surface — the inverse of border/neutral/base. Nested as inverse/default rather than a bare `inverse` leaf because it has a `subtle` sibling, which is the same shape border/neutral/bolder already uses (bolder/default, bolder/hover)."
         },
         "subtle": {
-          "$value": "rgba(255, 255, 255, 0.4)",
-          "$description": "The quieter inverse rule \u2014 white at 40%, pre-composited so consumers never hand-roll an opacity. Used by Divider Tone=Inverse subtle and the AccessibilityBar's separators. The Figma variable was `border/neutral/inverse-subtle` until 2026-08-18 \u2014 a hyphen inside a segment, which grammar RULE 1 forbids; renamed IN PLACE so bindings followed."
+          "$value": "{color.neutralScale.0}",
+          "$description": "The quieter inverse rule — white (neutralScale/0) at alpha/40, authored as a reference plus an opacity reference since 2026-09-04 rather than a pre-composited rgba(). Used by Divider Tone=Inverse subtle and the AccessibilityBar's separators. The Figma variable was `border/neutral/inverse-subtle` until 2026-08-18 — a hyphen inside a segment, which grammar RULE 1 forbids; renamed IN PLACE so bindings followed.",
+          "$extensions": {
+            "mosje": {
+              "alpha": "{alpha.40}"
+            }
+          }
         }
       }
     }
   },
   "focus": {
     "ring": {
-      "$value": "rgba(3, 115, 223, 0.48)",
+      "$value": "{color.action.primary.default}",
       "$extensions": {
         "mosje": {
-          "colorModes": {
-            "navy": "rgba(0, 51, 102, 0.48)",
-            "dbim": "rgba(0, 51, 102, 0.48)"
-          },
           "themes": {
             "dark": "rgba(125, 180, 245, 0.55)"
           }
         }
-      }
+      },
+      "$description": "The keyboard focus ring. SOLID since 2026-09-04: it was rgba(3,115,223,.48), which flattens on white to #86bcf0 — 2.01:1 against the 3:1 that WCAG 2.2 1.4.11 asks of a focus indicator — and 53 outline rules across chips, search, controls and the auth stack still read it after forms.css alone was corrected on 2026-09-03. It now aliases the brand key colour, which is 4.64:1 on white and 4.07:1 on the muted page in Blue, and follows Navy and the DBIM modes through the alias. Paint it as `outline: var(--sa-focus-width) solid var(--sa-focus-ring)` with `outline-offset: var(--sa-focus-offset)`, never as a box-shadow — a shadow is not painted in Windows High Contrast Mode."
     },
     "width": {
       "$value": "{border.width.md}"
@@ -1556,37 +1711,47 @@
   "overlay": {
     "neutral": {
       "boldest": {
-        "$value": "rgba(30, 33, 36, 0.5)",
-        "$description": "The scrim behind a modal \u2014 neutral 800 at 50%. The NAVY line below is structural, not stylistic: Figma cannot express \"alias plus alpha\", so a translucent token can only be a LITERAL, and a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed. Without it, Navy inherited the BLUE neutral (#1E2124 instead of #1E2024) and the scrim was quietly the wrong brand \u2014 invisible in review, wrong in every Navy screenshot. Authoring the second value is what makes the exporter generate a brand-aware companion in Palette (which does carry the brand modes) and alias this token to it. Every other rgba() in this file is exposed to the same trap.",
+        "$value": "{color.neutralScale.800}",
+        "$description": "The scrim behind a modal — the brand's neutral 800 at alpha/48, as a REFERENCE plus an OPACITY reference. Until 2026-09-04 this was an rgba() literal with six hand-authored DBIM copies, because a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed — and Navy once inherited the Blue neutral (#1E2124 for #1E2024) without anyone seeing it. Figma can now alias a colour and keep a separate opacity, so the copies are gone: the scrim follows neutralScale/800 through Blue, Navy and every DBIM mode by construction.",
         "$extensions": {
           "mosje": {
             "themes": {
               "dark": "rgba(0, 0, 0, 0.6)"
             },
+            "alpha": "{alpha.48}",
             "colorModes": {
-              "navy": "rgba(30, 32, 36, 0.5)",
-              "dbim-blue": "rgba(21, 2, 2, 0.5)",
-              "dbim-burgundy": "rgba(21, 2, 2, 0.5)",
-              "dbim-purple": "rgba(21, 2, 2, 0.5)",
-              "dbim-green": "rgba(21, 2, 2, 0.5)",
-              "dbim-chrome-yellow": "rgba(21, 2, 2, 0.5)",
-              "dbim-cinnamon-red": "rgba(21, 2, 2, 0.5)"
+              "dbim-blue": "{color.neutralScale.800}",
+              "dbim-burgundy": "{color.neutralScale.800}",
+              "dbim-purple": "{color.neutralScale.800}",
+              "dbim-green": "{color.neutralScale.800}",
+              "dbim-chrome-yellow": "{color.neutralScale.800}",
+              "dbim-cinnamon-red": "{color.neutralScale.800}"
             }
           }
         }
       }
     },
     "brand": {
-      "$description": "Translucent white washes for interactive states on a BRAND-coloured surface, where a solid hover fill would fight the brand. The family slot names the SURFACE, not the wash \u2014 the same reading as `on/bg/brand/*`, which is ink for a brand background rather than brand-coloured ink. Authored in Figma first as `overlay/on-brand/*`, a name the grammar rejects (a hyphen inside a path segment), which is exactly why it could never be generated and its codeSyntax named a CSS variable that did not exist.",
+      "$description": "Translucent white washes for interactive states on a BRAND-coloured surface, where a solid hover fill would fight the brand. The family slot names the SURFACE, not the wash — the same reading as `on/bg/brand/*`, which is ink for a brand background rather than brand-coloured ink. Authored in Figma first as `overlay/on-brand/*`, a name the grammar rejects (a hyphen inside a path segment), which is exactly why it could never be generated and its codeSyntax named a CSS variable that did not exist.",
       "hover": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.08)",
-        "$description": "Hover wash on a brand-coloured surface. 8%, matching the published Figma variable and the AccessibilityBar's States documentation. This family was authored here at 12% from a base that predated 33cbb4f, which had already corrected the component from 12% to 8%; reconciled to 8% on 2026-08-19."
+        "$value": "{color.neutralScale.0}",
+        "$description": "Hover wash on a brand-coloured surface. 8%, matching the published Figma variable and the AccessibilityBar's States documentation. This family was authored here at 12% from a base that predated 33cbb4f, which had already corrected the component from 12% to 8%; reconciled to 8% on 2026-08-19.",
+        "$extensions": {
+          "mosje": {
+            "alpha": "{alpha.8}"
+          }
+        }
       },
       "active": {
         "$type": "color",
-        "$value": "rgba(255, 255, 255, 0.16)",
-        "$description": "Pressed/selected wash on a brand-coloured surface. Named `active`, not `pressed` \u2014 `active` is the state word the whole system uses (cmp/action/*/active/bg), and the grammar has no `pressed`."
+        "$value": "{color.neutralScale.0}",
+        "$description": "Pressed/selected wash on a brand-coloured surface. Named `active`, not `pressed` — `active` is the state word the whole system uses (cmp/action/*/active/bg), and the grammar has no `pressed`.",
+        "$extensions": {
+          "mosje": {
+            "alpha": "{alpha.16}"
+          }
+        }
       }
     }
   },
@@ -1639,7 +1804,7 @@
     "80": {
       "$value": "{space.80}"
     },
-    "$description": "Horizontal gap between items on one line. VALUE-NAMED: `inline/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible \u2014 the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$description": "Horizontal gap between items on one line. VALUE-NAMED: `inline/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
     "$type": "dimension"
   },
   "stack": {
@@ -1691,7 +1856,7 @@
     "80": {
       "$value": "{space.80}"
     },
-    "$description": "Vertical gap between stacked items, and vertical rhythm inside a block. VALUE-NAMED: `stack/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible \u2014 the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$description": "Vertical gap between stacked items, and vertical rhythm inside a block. VALUE-NAMED: `stack/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
     "$type": "dimension"
   },
   "padding": {
@@ -1749,7 +1914,7 @@
     "360": {
       "$value": "{space.360}"
     },
-    "$description": "Inset between a container's edge and its content. VALUE-NAMED: `padding/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible \u2014 the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$description": "Inset between a container's edge and its content. VALUE-NAMED: `padding/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
     "$type": "dimension"
   },
   "section": {
@@ -1783,13 +1948,12 @@
     "120": {
       "$value": "{space.120}"
     },
-    "$description": "Vertical rhythm between page-level sections. VALUE-NAMED: `section/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible \u2014 the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
+    "$description": "Vertical rhythm between page-level sections. VALUE-NAMED: `section/16` is 16px, and 16px in every other family too. Every family carries the same ladder so no measurement is unexpressible — the old scale could not state a 20px gap or a 40px padding at all, and work reached past the layer to a hidden ref/space/* primitive instead.",
     "$type": "dimension"
   },
   "chart": {
-    "$description": "Data-visualisation roles, and the one place in this system where a literal is sometimes the RIGHT answer \u2014 so each group states which it is and why, because the difference is not guessable from the values.\n\nREFERENCES the system ramps: div/* (signed data) and trend/* (KPI direction). Both encode MEANING the rest of the UI already has a colour for \u2014 negative is what error means \u2014 so they follow it, and follow it into a DBIM conformance mode too.\n\nLITERAL on purpose: cat/* (twelve categorical series) and seq/* (single-hue sequential ramp). Both are tuned as a SET for a job the UI ramps are not tuned for \u2014 mutual distinguishability and even perceptual steps respectively \u2014 and a reference would let one member drift out of that tuning on a brand swap. Their own descriptions carry the argument in full.\n\ngrid/axis/tooltip/region are structural. Theme-aware dark/hc overrides are retained on these tokens but NOT currently emitted: the appearance axis was retired on 2026-08-10 and the UX4G accessibility widget owns dark and high contrast (see build/formats/legacy-ds-css.mjs).",
+    "$description": "Data-visualisation roles, and the one place in this system where a literal is sometimes the RIGHT answer — so each group states which it is and why, because the difference is not guessable from the values.\n\nREFERENCES the system ramps: div/* (signed data) and trend/* (KPI direction). Both encode MEANING the rest of the UI already has a colour for — negative is what error means — so they follow it, and follow it into a DBIM conformance mode too.\n\nLITERAL on purpose: cat/* (twelve categorical series) and seq/* (single-hue sequential ramp). Both are tuned as a SET for a job the UI ramps are not tuned for — mutual distinguishability and even perceptual steps respectively — and a reference would let one member drift out of that tuning on a brand swap. Their own descriptions carry the argument in full.\n\ngrid/axis/tooltip/region are structural. Theme-aware dark/hc overrides are retained on these tokens but NOT currently emitted: the appearance axis was retired on 2026-08-10 and the UX4G accessibility widget owns dark and high contrast (see build/formats/legacy-ds-css.mjs).",
     "cat": {
-      "$description": "Twelve categorical series. DELIBERATELY LITERAL, and deliberately NOT tracking the brand ramps \u2014 do not \"fix\" these into references. A categorical palette has one job: colours a reader can tell apart AT ONCE, which is a property of the SET, chosen and checked together. A reference would let one member move on its own: point cat/1 at primaryScale and a Blue-to-Navy brand swap slides it toward another blue, and two series in one chart become one. The set is fixed so that cannot happen.\n\nREGENERATED 2026-08-28, and the reason matters more than the values. The previous twelve sat at near-constant lightness (L 44-63), so they were separated by HUE ALONE \u2014 and hue is the channel a dichromat loses. Measured, that palette failed colour-vision deficiency at every slot count including three (worst pair dE 1.0 under protanopia, effectively one colour), held for only five slots before two oranges collided, and cat/3 was byte-identical to chart/trend/up, so slot 3 WAS the semantic success green.\n\nThis set varies lightness as well as hue. SLOTS 1-9 ARE GUARANTEED mutually distinguishable, including through protanopia, deuteranopia and tritanopia (worst pair dE 8.0); there are zero colliding pairs across all twelve; every member clears 3:1 against both the base and elevated surface; and every member is dE 12 or 25 degrees clear of every semantic ink, so none can be mistaken for \"good\" or \"bad\".\n\nSLOTS 10-12 ARE EXTENSION COLOURS. They are distinct in full colour and carry NO colour-vision guarantee. Reaching one throws the guarantee away for the whole chart \u2014 which is not hypothetical: the public NMBA facility locator sat at dE 1.5 under deuteranopia doing exactly that. tools/chart-slot-order/check.mjs now fails the build on it. Need more than nine categories? Bucket the tail as \"Other\".\n\ncat/1 is gov-blue #0373DF, the brand anchor, and is the one member that did not move. If this palette is ever re-cut, re-cut all twelve together and re-measure every property above \u2014 packages/tokens/test/chart-palette.test.mjs holds the numbers as ratchets.",
       "1": {
         "$value": "#0373df",
         "$extensions": {
@@ -1801,7 +1965,7 @@
         }
       },
       "2": {
-        "$value": "#a25a00",
+        "$value": "#e7173a",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1811,7 +1975,7 @@
         }
       },
       "3": {
-        "$value": "#007668",
+        "$value": "#644588",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1821,7 +1985,7 @@
         }
       },
       "4": {
-        "$value": "#930121",
+        "$value": "#1a801c",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1831,7 +1995,7 @@
         }
       },
       "5": {
-        "$value": "#b671a6",
+        "$value": "#c930b4",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1841,7 +2005,7 @@
         }
       },
       "6": {
-        "$value": "#323ca8",
+        "$value": "#7a3901",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1851,7 +2015,7 @@
         }
       },
       "7": {
-        "$value": "#719348",
+        "$value": "#a35b7a",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1861,7 +2025,7 @@
         }
       },
       "8": {
-        "$value": "#7261a8",
+        "$value": "#481dc2",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1871,7 +2035,7 @@
         }
       },
       "9": {
-        "$value": "#5a406e",
+        "$value": "#a1015b",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1881,7 +2045,7 @@
         }
       },
       "10": {
-        "$value": "#594d00",
+        "$value": "#06569b",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1891,7 +2055,7 @@
         }
       },
       "11": {
-        "$value": "#c02865",
+        "$value": "#7568bf",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1901,7 +2065,7 @@
         }
       },
       "12": {
-        "$value": "#4c90ac",
+        "$value": "#b15b4a",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1909,11 +2073,12 @@
             }
           }
         }
-      }
+      },
+      "$description": "Twelve categorical series. DELIBERATELY LITERAL, and deliberately NOT tracking the brand ramps — do not \"fix\" these into references. A categorical palette has one job: colours a reader can tell apart AT ONCE, which is a property of the SET, chosen and checked together. A reference would let one member move on its own: point cat/1 at primaryScale and a Blue-to-Navy brand swap slides it toward another blue, and two series in one chart become one. The set is fixed so that cannot happen.\n\nRE-CUT 2026-09-04 by simulated annealing over all twelve slots at once, against six constraints held simultaneously: every slot OKLCH chroma >= 0.10 (four of the previous twelve sat at 0.08-0.09 and read as grey); every slot >= 3:1 on both the white card and the muted page; every slot at least dE 8 from each of the four status inks (the previous brown cat/2 sat dE 4 from the warning ink and the crimson cat/4 dE 7 from the error ink — a series that IS a status colour to the eye); adjacent slots >= dE 15 in ordinary vision (the previous 8 and 9 were 12.6); every pair among 1-9 at least dE 12.2 apart in ordinary vision (was 11.7); and, the ratchet, every pair among 1-9 >= dE 8 under protanopia, deuteranopia AND tritanopia (Machado 2009), now 8.22 against 8.04 before.\n\nWHAT NINE COLOUR-BLIND-SAFE SLOTS COST, MEASURED. A dichromat keeps one chromatic axis plus lightness, so nine mutually distinct colours need lightness coding, and the search proves it: inside the OKLCH lightness band 43-77 that data-visualisation practice recommends, no nine-slot set reaches dE 8 on every pair (best found 7.5). Two slots therefore sit at L* 42.2-42.3, one point below the band, where four did before. Slots 1-6 are additionally kept >= 25 degrees apart in hue so the six a chart most often uses are six hues, not three at two lightnesses. A chart with more than six series should be small multiples or fold its tail into \"Other\" regardless.\n\nSLOTS 1-9 ARE GUARANTEED mutually distinguishable including through every dichromacy; SLOTS 10-12 ARE EXTENSION COLOURS, distinct in full colour only. tools/chart-slot-order/check.mjs fails the build on a consumer reaching past 9. A series may share a hue family with a status colour (cat/2 is a red, cat/4 a green) — the dataviz reference palette does the same — because a status colour never carries meaning alone: it ships with its icon and its word, and a series never wears a status token. cat/1 is gov-blue #0373DF, the brand anchor, and is the one member that did not move. If this palette is ever re-cut, re-cut all twelve together and re-measure every property above — packages/tokens/test/chart-palette.test.mjs holds the numbers as ratchets."
     },
     "seq": {
       "50": {
-        "$value": "#e8f2fd",
+        "$value": "#e8f2ff",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1923,7 +2088,7 @@
         }
       },
       "100": {
-        "$value": "#c6dcf9",
+        "$value": "#bddaff",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1933,7 +2098,7 @@
         }
       },
       "200": {
-        "$value": "#94bff5",
+        "$value": "#91c1ff",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1943,7 +2108,7 @@
         }
       },
       "300": {
-        "$value": "#5fa0ef",
+        "$value": "#62a7ff",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1953,7 +2118,7 @@
         }
       },
       "400": {
-        "$value": "#2d84e8",
+        "$value": "#3b8df0",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1973,7 +2138,7 @@
         }
       },
       "600": {
-        "$value": "#025fb8",
+        "$value": "#005eb9",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1983,7 +2148,7 @@
         }
       },
       "700": {
-        "$value": "#014b92",
+        "$value": "#004992",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -1993,7 +2158,7 @@
         }
       },
       "800": {
-        "$value": "#01376b",
+        "$value": "#00356e",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -2003,7 +2168,7 @@
         }
       },
       "900": {
-        "$value": "#002448",
+        "$value": "#00234c",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -2012,7 +2177,7 @@
           }
         }
       },
-      "$description": "Single-hue sequential ramp for choropleths and heatmaps. DELIBERATELY LITERAL \u2014 do not point it at primaryScale, even though seq/500 is gov-blue exactly. The two ramps are tuned for different jobs and cannot share a ladder: primaryScale places its rungs by CONTRAST, so a named rung clears a WCAG threshold against its ink, while a sequential data ramp needs even PERCEPTUAL steps so equal differences in the data read as equal differences on the map. Rungs chosen for contrast produce a choropleth with a visible band where two adjacent buckets look identical and another where they jump. Ten steps here against primaryScale's eleven is the same story from the other end."
+      "$description": "Single-hue sequential ramp for choropleths and heatmaps. DELIBERATELY LITERAL — do not point it at primaryScale, even though seq/500 is gov-blue exactly. The two ramps are tuned for different jobs and cannot share a ladder: primaryScale places its rungs by CONTRAST, so a named rung clears a WCAG threshold against its ink, while a sequential data ramp needs even PERCEPTUAL steps so equal differences in the data read as equal differences on the map. Rungs chosen for contrast produce a choropleth with a visible band where two adjacent buckets look identical and another where they jump. Ten steps here against primaryScale's eleven is the same story from the other end.\n\nRE-SPACED 2026-09-04: the ladder was 6.9 / 9.4 / 9.7 / 8.3 / 5.0 / 7.3 / 7.5 / 7.9 / 7.8 L* per step — the 400->500 step was half its neighbours because 500 is pinned to gov-blue and the rest had been placed by eye — so two adjacent classes on a choropleth were closer than any other two. Steps are now 7.6-7.8 L* apart from 95.7 to 25.9, 500 still exactly #0373DF, chroma following the same arc the brand ramps use. A class scale should start at 100, not 50: 50 measures 1.01:1 against the muted page and exists as the lightest tint for a heatmap on a white card."
     },
     "div": {
       "negStrong": {
@@ -2056,17 +2221,17 @@
         }
       },
       "posSoft": {
-        "$value": "{color.green.100}",
+        "$value": "{chart.seq.100}",
         "$extensions": {
           "mosje": {
             "themes": {
-              "dark": "#1e3a24"
+              "dark": "rgba(102, 187, 106, 0.16)"
             }
           }
         }
       },
       "pos": {
-        "$value": "{color.green.300}",
+        "$value": "{chart.seq.400}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -2076,7 +2241,7 @@
         }
       },
       "posStrong": {
-        "$value": "{color.green.700}",
+        "$value": "{chart.seq.800}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -2085,11 +2250,11 @@
           }
         }
       },
-      "$description": "Diverging scale for SIGNED data \u2014 negative through neutral to positive. REFERENCES the danger, neutral and success ramps rather than carrying its own hexes, for the same reason chart/trend/* always has: \"negative\" here means exactly what \"error\" means everywhere else, so a scale keeping its own red is a chart saying that bad news is a different kind of bad news. It had drifted into saying that \u2014 negSoft and mid were copies of danger/100 and neutral/200 taken before those ramps were rebuilt, and the pos end was Material green, which this estate retired.\n\nRungs were chosen for SYMMETRY, measured, not for nearest-match: a diverging scale whose wings differ in lightness encodes one sign as louder than the other. The old set was 15.8 L* asymmetric across its three matched pairs (negative reading heavier); this is 2.1, with neg and pos landing on the same L* 64.4. div/neg is unchanged at #ec5042 \u2014 it turned out to be exactly danger/400, the ramp anchor, which is where the copy came from.\n\nOne limit worth knowing: div/mid follows the neutral ramp but does NOT re-tint between the Blue and Navy brands, because  is the blue ramp and the navy override lives on each consuming token. Every other chart neutral (grid, axis, tooltipBg, regionEmpty, trend/flat) behaves the same way, so this is the chart layer's existing convention rather than a gap introduced here \u2014 and the two neutrals differ by ~9 degrees of hue at chroma 0.015, which is not visible on a gridline. It DOES follow a DBIM conformance mode, where the whole neutral family is remapped to DBIM's pure greys."
+      "$description": "Diverging scale for SIGNED data — negative through neutral to positive. The NEGATIVE wing references the danger ramp, for the reason chart/trend/* always has: \"negative\" here means exactly what \"error\" means everywhere else. The POSITIVE wing is the sequential BLUE since 2026-09-04, not the success green. Measured under deuteranopia — the most common colour-vision deficiency, about one man in twelve — the red and green wings were one colour: dE 4.1 at the strong ends, 7.9 at the mid steps, 1.7 at the soft steps, so a diverging map showed no direction at all to those readers. Red against blue measures dE 17.9 / 26.9 / 9.3 at the same three steps (the soft ends are meant to sit close to the neutral midpoint), which is why every published diverging scheme (ColorBrewer RdBu, the ONS and Census maps) is red-blue or purple-green rather than red-green. Blue also makes the diverging scale the sequential scale with a red wing added, so magnitude and sign read from one vocabulary. Rungs are chosen for LIGHTNESS SYMMETRY, measured: neg L* 64.4 / pos 64.3, negStrong 34.5 / posStrong 33.6, negSoft 86.6 / posSoft 87.9. The wing is brand-invariant because chart/seq is literal. div/mid follows the neutral ramp; see the note on chart neutrals elsewhere in this group."
     },
     "trend": {
       "up": {
-        "$value": "{color.green.500}",
+        "$value": "{color.green.600}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -2099,7 +2264,7 @@
         }
       },
       "down": {
-        "$value": "{color.red.500}",
+        "$value": "{color.red.600}",
         "$extensions": {
           "mosje": {
             "themes": {
@@ -2117,7 +2282,8 @@
             }
           }
         }
-      }
+      },
+      "$description": "\n\n2026-09-04: up and down are rung 600, the same rung the status text and icons read, so an arrow in a metric-card pill and the success ink beside it are one colour. Under deuteranopia the pair measures dE 5.7 (it was 6.4 at rung 500): red against green is a property of the deficiency, not of any palette, and the direction is carried by the arrow and the sign, never by the colour alone."
     },
     "grid": {
       "$value": "{color.neutral.100}",
@@ -2187,7 +2353,7 @@
     }
   },
   "code": {
-    "$description": "Code and terminal specimens \u2014 the chrome a documentation page needs in order to SHOW code, which until now every docs page hand-rolled. The same six hexes were copied into two pages independently, which is exactly the drift the design system exists to stop.\n\nLITERAL on purpose, like chart/cat/* and chart/seq/*: this palette is tuned as a SET against its own background for token-level legibility, not against the page. Referencing the UI ramps would let one member drift out of that tuning on a brand swap and quietly wreck the contrast the set was built for.\n\nDELIBERATELY DARK IN EVERY THEME. A terminal specimen that flips to a light surface stops reading as a terminal, so there are no colorModes or themes overrides here \u2014 the block looks the same under blue, navy, dbim, light and dark. It is chrome around a specimen, not a UI surface.\n\nEvery foreground role clears WCAG AA against code/bg, measured: text 12.95:1, string 11.37:1, builtin 9.58:1, keyword 6.04:1, comment 5.09:1. Comment is the floor and has the least headroom \u2014 if it is ever lightened, re-measure.",
+    "$description": "Code and terminal specimens — the chrome a documentation page needs in order to SHOW code, which until now every docs page hand-rolled. The same six hexes were copied into two pages independently, which is exactly the drift the design system exists to stop.\n\nLITERAL on purpose, like chart/cat/* and chart/seq/*: this palette is tuned as a SET against its own background for token-level legibility, not against the page. Referencing the UI ramps would let one member drift out of that tuning on a brand swap and quietly wreck the contrast the set was built for.\n\nDELIBERATELY DARK IN EVERY THEME. A terminal specimen that flips to a light surface stops reading as a terminal, so there are no colorModes or themes overrides here — the block looks the same under blue, navy, dbim, light and dark. It is chrome around a specimen, not a UI surface.\n\nEvery foreground role clears WCAG AA against code/bg, measured: text 12.95:1, string 11.37:1, builtin 9.58:1, keyword 6.04:1, comment 5.09:1. Comment is the floor and has the least headroom — if it is ever lightened, re-measure.",
     "$type": "color",
     "bg": {
       "$value": "#1e2130",
@@ -2195,15 +2361,15 @@
     },
     "text": {
       "$value": "#e2e8f0",
-      "$description": "Default code foreground \u2014 plain identifiers, punctuation, shell output. 12.95:1."
+      "$description": "Default code foreground — plain identifiers, punctuation, shell output. 12.95:1."
     },
     "comment": {
       "$value": "#8892a4",
-      "$description": "Comments and shell prompt annotations (the # lines). 5.09:1 \u2014 the lowest-contrast role in the set, and still AA."
+      "$description": "Comments and shell prompt annotations (the # lines). 5.09:1 — the lowest-contrast role in the set, and still AA."
     },
     "keyword": {
       "$value": "#c084fc",
-      "$description": "Language keywords \u2014 import, from, const, export. 6.04:1."
+      "$description": "Language keywords — import, from, const, export. 6.04:1."
     },
     "string": {
       "$value": "#86efac",
@@ -2211,35 +2377,65 @@
     },
     "builtin": {
       "$value": "#7dd3fc",
-      "$description": "The executable or callee in a command \u2014 npm, node, git. 9.58:1."
+      "$description": "The executable or callee in a command — npm, node, git. 9.58:1."
     },
     "shell": {
       "$value": "#12141c",
-      "$description": "The terminal WINDOW around the code body \u2014 deliberately a step darker than code/bg so the titlebar reads as chrome and the code reads as content. The two were #12141c and #1e2130 chosen independently in two files; this pair makes that relationship intentional."
+      "$description": "The terminal WINDOW around the code body — deliberately a step darker than code/bg so the titlebar reads as chrome and the code reads as content. The two were #12141c and #1e2130 chosen independently in two files; this pair makes that relationship intentional."
     },
     "border": {
-      "$value": "rgba(255, 255, 255, 0.1)",
-      "$description": "Hairline around the terminal window and under its titlebar. Alpha-on-dark rather than a solid, so it holds up if the shell colour is ever retuned."
+      "$value": "{color.neutralScale.0}",
+      "$description": "Hairline around the terminal window and under its titlebar. Alpha-on-dark rather than a solid, so it holds up if the shell colour is ever retuned.",
+      "$extensions": {
+        "mosje": {
+          "alpha": "{alpha.8}"
+        }
+      }
     },
     "chrome": {
-      "$value": "rgba(255, 255, 255, 0.03)",
-      "$description": "The titlebar strip fill \u2014 barely-there lift off code/shell."
+      "$value": "{color.neutralScale.0}",
+      "$description": "The titlebar strip fill — barely-there lift off code/shell.",
+      "$extensions": {
+        "mosje": {
+          "alpha": "{alpha.4}"
+        }
+      }
     },
     "chromeText": {
-      "$value": "rgba(255, 255, 255, 0.45)",
-      "$description": "Titlebar label and the resting state of the copy button. 4.6:1 on code/shell \u2014 AA for the UI text it carries."
+      "$value": "{color.neutralScale.0}",
+      "$description": "Titlebar label and the resting state of the copy button. White at alpha/48 — 4.97:1 on code/shell, AA for the UI text it carries (was 45%, 4.52:1, before the scale was rationalised on 2026-09-04).",
+      "$extensions": {
+        "mosje": {
+          "alpha": "{alpha.48}"
+        }
+      }
     },
     "chromeTextStrong": {
-      "$value": "rgba(255, 255, 255, 0.7)",
-      "$description": "Copy button on hover/focus, and any titlebar affordance that must read as interactive."
+      "$value": "{color.neutralScale.0}",
+      "$description": "Copy button on hover/focus, and any titlebar affordance that must read as interactive. White at alpha/72 — 9.6:1 on code/shell.",
+      "$extensions": {
+        "mosje": {
+          "alpha": "{alpha.72}"
+        }
+      }
     },
     "chromeHover": {
-      "$value": "rgba(255, 255, 255, 0.08)",
-      "$description": "Titlebar affordance background on hover \u2014 the resting state is transparent, so this is the whole hover cue."
+      "$value": "{color.neutralScale.0}",
+      "$description": "Titlebar affordance background on hover — the resting state is transparent, so this is the whole hover cue.",
+      "$extensions": {
+        "mosje": {
+          "alpha": "{alpha.8}"
+        }
+      }
     },
     "borderStrong": {
-      "$value": "rgba(255, 255, 255, 0.3)",
-      "$description": "Border of a titlebar affordance on hover/focus, where the resting code/border hairline is too faint to read as a control edge."
+      "$value": "{color.neutralScale.0}",
+      "$description": "Border of a titlebar affordance on hover/focus, where the resting code/border hairline is too faint to read as a control edge.",
+      "$extensions": {
+        "mosje": {
+          "alpha": "{alpha.32}"
+        }
+      }
     }
   },
   "layer": {
@@ -2273,7 +2469,7 @@
     }
   },
   "on": {
-    "$description": "Guaranteed foreground for a given fill \u2014 Material 3's `on-` pairing. Every entry was CHOSEN BY MEASUREMENT, not by eye: the ink (dark or inverse) that clears AA on that fill in the WORST brand wins, because a pairing is only as accessible as its least accessible brand. This exists so a designer reaching for a status chip does not have to guess the label colour.",
+    "$description": "Guaranteed foreground for a given fill — Material 3's `on-` pairing. Every entry was CHOSEN BY MEASUREMENT, not by eye: the ink (dark or inverse) that clears AA on that fill in the WORST brand wins, because a pairing is only as accessible as its least accessible brand. This exists so a designer reaching for a status chip does not have to guess the label colour.",
     "$type": "color",
     "bg": {
       "neutral": {
@@ -2437,7 +2633,7 @@
     }
   },
   "blur": {
-    "$description": "Named blur strengths \u2014 UX4G 3.0's four semantic names over its own ramp.",
+    "$description": "Named blur strengths — UX4G 3.0's four semantic names over its own ramp.",
     "$type": "dimension",
     "subtle": {
       "$value": "{blur.1}"
@@ -2453,7 +2649,7 @@
     }
   },
   "icon": {
-    "$description": "Icon sizes: 16, 20, 24, 32, 40, 48, 64. DBIM 3.0 section 3.4 (Figure 9) publishes four \u2014 24, 32, 48, 64 \u2014 and all four are here. The other three are NOT a deviation to be corrected: 16px is the correct icon beside 14px body text and is the estate's most-used size, and DBIM 3.4 governs the downloadable asset bank rather than forbidding a smaller inline glyph. A standard's list is a floor, not a ceiling \u2014 see .claude/rules/standards-precedence.md. 24 is the estate default and the Material Symbols optical size <Icon> ships with. Each step is a FRAME: DBIM's four include 2px padding per edge, so their live area is size minus 4 (24>20, 32>28, 48>44, 64>60). Named for the pixel value on purpose \u2014 a t-shirt name can drift from what it renders, a number cannot.",
+    "$description": "Icon sizes: 16, 20, 24, 32, 40, 48, 64. DBIM 3.0 section 3.4 (Figure 9) publishes four — 24, 32, 48, 64 — and all four are here. The other three are NOT a deviation to be corrected: 16px is the correct icon beside 14px body text and is the estate's most-used size, and DBIM 3.4 governs the downloadable asset bank rather than forbidding a smaller inline glyph. A standard's list is a floor, not a ceiling — see .claude/rules/standards-precedence.md. 24 is the estate default and the Material Symbols optical size <Icon> ships with. Each step is a FRAME: DBIM's four include 2px padding per edge, so their live area is size minus 4 (24>20, 32>28, 48>44, 64>60). Named for the pixel value on purpose — a t-shirt name can drift from what it renders, a number cannot.",
     "$type": "dimension",
     "size": {
       "16": {
@@ -2481,7 +2677,7 @@
     }
   },
   "container": {
-    "$description": "Page container max-widths. `sm`\u2013`xl` carry UX4G 3.0's Bootstrap container ladder verbatim. `content` and `contentXl` are the estate's own page container \u2014 the pair a page skeleton actually binds. A container is a CAP, never a width: `grid/margin/*` is a floor that wins on narrower viewports, so the effective column is min(container, viewport - 2 x margin).",
+    "$description": "Page container max-widths. `sm`–`xl` carry UX4G 3.0's Bootstrap container ladder verbatim. `content` and `contentXl` are the estate's own page container — the pair a page skeleton actually binds. A container is a CAP, never a width: `grid/margin/*` is a floor that wins on narrower viewports, so the effective column is min(container, viewport - 2 x margin).",
     "$type": "dimension",
     "sm": {
       "$value": "540px"
@@ -2501,28 +2697,28 @@
     },
     "content": {
       "$value": "1200px",
-      "$description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once \u2014 this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor. BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
+      "$description": "The desktop content cap. Changed from 1280px to UX4G 3.0's published 1200px on 13 August 2026 ('Grid and layout': max content width 1200px desktop, 1320px desktop XL). Until then the estate ran FOUR widths at once — this token said 1280 and nothing consumed it, 22 website section files hardcoded the same 1280 as a literal, SiteHeader defaulted to 1320, and PortalLoginShell's chrome used 1536. The visible defect was that above 1320px the masthead's content ran 20px wider each side than the page beneath it, so the National Emblem did not line up with the content column. At the 1440 design frame 1200 leaves a 120px margin either side, comfortably clear of the 32px `grid/margin/desktop` floor. BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
     },
     "contentXl": {
       "$value": "{container.2xl}",
-      "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages, so the anchor is the estate's own `breakpoint/desktopXl` \u2014 1440 since 2026-08-24 (it read 1768, then 1600, before the page itself was measured). Bootstrap's `container-xxl` at 1400 was considered and rejected: at 1400 the 1440 design frame would take this cap, contradicting the 1200-at-desktop guidance. (This note said 1400 WAS the anchor until 2026-08-24; it never was \u2014 the token has read 1768, then 1600, and now 1440.) BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
+      "$description": "The content cap above `breakpoint/desktopXl`. Aliases `container/2xl` rather than restating 1320, so the estate's cap and UX4G's ladder cannot drift apart. UX4G publishes the value but not the point at which it engages, so the anchor is the estate's own `breakpoint/desktopXl` — 1440 since 2026-08-24 (it read 1768, then 1600, before the page itself was measured). Bootstrap's `container-xxl` at 1400 was considered and rejected: at 1400 the 1440 design frame would take this cap, contradicting the 1200-at-desktop guidance. (This note said 1400 WAS the anchor until 2026-08-24; it never was — the token has read 1768, then 1600, and now 1440.) BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
     },
     "contentWide": {
       "$value": "1440px",
       "$type": "dimension",
-      "$description": "The content cap at `breakpoint/desktopWide` (1920) and above \u2014 the third and last step of the page container (1200 -> 1320 -> 1440). Exists because two steps left a 2560-wide monitor rendering a 1320 column between 620px margins. Stops here rather than tracking the viewport: past ~1440 a 12-column grid costs more in eye travel than it returns in density, and the line lengths inside it stop being scannable. Consumed only through `--sa-container-page` in foundations/layout.css; never restate it in a component. BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
+      "$description": "The content cap at `breakpoint/desktopWide` (1920) and above — the third and last step of the page container (1200 -> 1320 -> 1440). Exists because two steps left a 2560-wide monitor rendering a 1320 column between 620px margins. Stops here rather than tracking the viewport: past ~1440 a 12-column grid costs more in eye travel than it returns in density, and the line lengths inside it stop being scannable. Consumed only through `--sa-container-page` in foundations/layout.css; never restate it in a component. BIND `container/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
     },
     "narrow": {
       "$description": "AccessibilityBar narrow content container (Figma layout/container/narrow). Same 720px as container.md, named for the bar's own Layout variant.",
       "$value": "{container.md}"
     },
     "wide": {
-      "$description": "AccessibilityBar wide content container (Figma layout/container/wide). 1200px is the Figma master's own value. It now COINCIDES with `container/content`, which moved 1280 > 1200 on 13 August 2026, but is deliberately left as a literal rather than aliased: the two are independent decisions that happen to agree today \u2014 this one is the bar's Figma master, that one is UX4G's published desktop cap \u2014 and aliasing would silently drag the bar along if the page cap moves again.",
+      "$description": "AccessibilityBar wide content container (Figma layout/container/wide). 1200px is the Figma master's own value. It now COINCIDES with `container/content`, which moved 1280 > 1200 on 13 August 2026, but is deliberately left as a literal rather than aliased: the two are independent decisions that happen to agree today — this one is the bar's Figma master, that one is UX4G's published desktop cap — and aliasing would silently drag the bar along if the page cap moves again.",
       "$value": "1200px"
     },
     "page": {
       "$value": "{container.content}",
-      "$description": "The RESOLVED page cap at a given window size \u2014 what `.sa-container` actually applies, and the one container token a page skeleton should bind. `content`/`contentXl`/`contentWide` are the three rungs; this is which rung is in force. It carries a mode per viewport, so a designer opening a frame in Desktop XL sees 1320 without having to know the media query that picks it. That was previously impossible: the CSS derived `--sa-container-page` in a media query, and a Figma variable cannot express a media query, so the cap was the one layout value the library could not represent at all. $value is the mobile-first base, which is `content` \u2014 the cap is 1200 everywhere below 1600.",
+      "$description": "The RESOLVED page cap at a given window size — what `.sa-container` actually applies, and the one container token a page skeleton should bind. `content`/`contentXl`/`contentWide` are the three rungs; this is which rung is in force. It carries a mode per viewport, so a designer opening a frame in Desktop XL sees 1320 without having to know the media query that picks it. That was previously impossible: the CSS derived `--sa-container-page` in a media query, and a Figma variable cannot express a media query, so the cap was the one layout value the library could not represent at all. $value is the mobile-first base, which is `content` — the cap is 1200 everywhere below 1600.",
       "$extensions": {
         "mosje": {
           "viewport": {
@@ -2538,19 +2734,19 @@
     }
   },
   "grid": {
-    "$description": "The LAYOUT grid. Geometry is UX4G 3.0's \u2014 12 columns, a 24px gutter \u2014 because UX4G is the Government of India's own system and we hold a parity contract with it; a designer moving between the two libraries must not find a different grid. What is NOT UX4G's is the shape: UX4G expresses its grid as Bootstrap CSS classes, which is exactly why none of it ever reached Figma and why a designer had nothing to bind a layout grid to. These are tokens instead, per IBM Carbon's model, so the grid is bindable in Figma and auditable in code. Page MARGIN is deliberately responsive rather than Bootstrap's flat half-gutter (12px): 12px of breathing room either side of a government page on a 1280px desktop is too thin, and Carbon (32px) and GOV.UK (30px) both agree. Every value aliases an existing space step \u2014 no new literals. NOTE `grid/*` is the layout grid; `chart/grid` is a chart gridline COLOUR. Different objects, kept apart by position.",
+    "$description": "The LAYOUT grid. Geometry is UX4G 3.0's — 12 columns, a 24px gutter — because UX4G is the Government of India's own system and we hold a parity contract with it; a designer moving between the two libraries must not find a different grid. What is NOT UX4G's is the shape: UX4G expresses its grid as Bootstrap CSS classes, which is exactly why none of it ever reached Figma and why a designer had nothing to bind a layout grid to. These are tokens instead, per IBM Carbon's model, so the grid is bindable in Figma and auditable in code. Page MARGIN is deliberately responsive rather than Bootstrap's flat half-gutter (12px): 12px of breathing room either side of a government page on a 1280px desktop is too thin, and Carbon (32px) and GOV.UK (30px) both agree. Every value aliases an existing space step — no new literals. NOTE `grid/*` is the layout grid; `chart/grid` is a chart gridline COLOUR. Different objects, kept apart by position.",
     "$type": "dimension",
     "columns": {
       "$value": 12,
       "$type": "number",
-      "$description": "Column count, 12 \u2014 UX4G/Bootstrap. Divisible by 2, 3, 4 and 6, which is the whole reason 12 is the near-universal choice. Carbon's 16 (dropping to 8 and 4 at smaller breakpoints) is more expressive but would break UX4G parity for no gain the estate can use."
+      "$description": "Column count, 12 — UX4G/Bootstrap. Divisible by 2, 3, 4 and 6, which is the whole reason 12 is the near-universal choice. Carbon's 16 (dropping to 8 and 4 at smaller breakpoints) is more expressive but would break UX4G parity for no gain the estate can use."
     },
     "gutter": {
       "$value": "{space.24}",
-      "$description": "The gap BETWEEN columns \u2014 24px, UX4G/Bootstrap's 1.5rem exactly. Bootstrap applies half either side of each column; bind this as the layout grid's gutter and let the implementation split it."
+      "$description": "The gap BETWEEN columns — 24px, UX4G/Bootstrap's 1.5rem exactly. Bootstrap applies half either side of each column; bind this as the layout grid's gutter and let the implementation split it."
     },
     "margin": {
-      "$description": "The page's own side margin \u2014 the gap between the grid and the viewport edge. Responsive, because a margin that reads generous on a phone reads cramped on a desktop.",
+      "$description": "The page's own side margin — the gap between the grid and the viewport edge. Responsive, because a margin that reads generous on a phone reads cramped on a desktop.",
       "mobile": {
         "$value": "{space.16}",
         "$description": "BIND `grid/margin/page` INSTEAD unless you specifically mean this rung: `page` carries a mode per viewport and resolves to the right rung on its own. This one is fixed at every window size."
@@ -2565,7 +2761,7 @@
       },
       "page": {
         "$value": "{grid.margin.mobile}",
-        "$description": "The RESOLVED page margin at a given window size \u2014 the companion to `container/page`, and what `.sa-container` applies as its inline padding. `mobile`/`tablet`/`desktop` are the three rungs; this is which rung is in force. It steps with the CAP, not with the viewport anchors: a wider margin only buys breathing room while the container is still fluid, and once the cap binds it buys nothing and costs content. Stepping it at the desktop anchor did exactly that \u2014 content went 1152 -> 1136 crossing 1280 \u2014 so Laptop, Desktop and Desktop XL hold the tablet rung and the 32px step waits for Desktop Wide. Keeping 24 at Desktop XL is also what makes the content there exactly 1272 \u2014 the width the Handoff's own frame draws. $value is the mobile-first base.",
+        "$description": "The RESOLVED page margin at a given window size — the companion to `container/page`, and what `.sa-container` applies as its inline padding. `mobile`/`tablet`/`desktop` are the three rungs; this is which rung is in force. It steps with the CAP, not with the viewport anchors: a wider margin only buys breathing room while the container is still fluid, and once the cap binds it buys nothing and costs content. Stepping it at the desktop anchor did exactly that — content went 1152 -> 1136 crossing 1280 — so Laptop, Desktop and Desktop XL hold the tablet rung and the 32px step waits for Desktop Wide. Keeping 24 at Desktop XL is also what makes the content there exactly 1272 — the width the Handoff's own frame draws. $value is the mobile-first base.",
         "$extensions": {
           "mosje": {
             "viewport": {
@@ -2582,7 +2778,7 @@
     }
   },
   "layout": {
-    "$description": "Page-skeleton geometry \u2014 the measurements a shell needs that do NOT come from its content. `grid/*` describes the column system, `container/*` caps the content column, and this group holds the chrome around them. Only genuinely fixed values belong here. A masthead, a page header and a sidebar's own height all size to what they contain, so they are hugs in the component and carry at most a minimum here; a shell must never be laid out by subtracting a hardcoded chrome height. Measured from MoSJE-Portal--Handoff- node 2309:14405, a native 1440 x 1068 frame.",
+    "$description": "Page-skeleton geometry — the measurements a shell needs that do NOT come from its content. `grid/*` describes the column system, `container/*` caps the content column, and this group holds the chrome around them. Only genuinely fixed values belong here. A masthead, a page header and a sidebar's own height all size to what they contain, so they are hugs in the component and carry at most a minimum here; a shell must never be laid out by subtracting a hardcoded chrome height. Measured from MoSJE-Portal--Handoff- node 2309:14405, a native 1440 x 1068 frame.",
     "$type": "dimension",
     "bar": {
       "height": {
@@ -2610,12 +2806,12 @@
       "bubbleMax": {
         "$type": "dimension",
         "$value": "246px",
-        "$description": "Message bubble cap \u2014 67% of the 368px content column, so the transcript never reads as a wall of text. CSS expresses it as the ratio rather than this number, so the cap follows the column if the panel width ever changes; this token is that ratio resolved at the default width, for Figma to bind."
+        "$description": "Message bubble cap — 67% of the 368px content column, so the transcript never reads as a wall of text. CSS expresses it as the ratio rather than this number, so the cap follows the column if the panel width ever changes; this token is that ratio resolved at the default width, for Figma to bind."
       },
       "typingDot": {
         "$type": "dimension",
         "$value": "5px",
-        "$description": "Diameter of one dot in the typing indicator. Four of them, 110ms apart. Was recorded as 6 in the library while both the master and the stylesheet drew 5 \u2014 the variable was carried but never bound."
+        "$description": "Diameter of one dot in the typing indicator. Four of them, 110ms apart. Was recorded as 6 in the library while both the master and the stylesheet drew 5 — the variable was carried but never bound."
       }
     },
     "flag": {
@@ -2627,23 +2823,23 @@
     "masthead": {
       "minHeight": {
         "$value": "72px",
-        "$description": "The brand row's MINIMUM, not its height. It hugs its content, which varies: two or three lines of ministry lockup, an optional BETA badge, a search field on the website, an account block on portals. 72 is the floor that keeps the emblem legible when the lockup is shortest. Never lay out against a fixed masthead height \u2014 see `layout/chrome/minHeight`."
+        "$description": "The brand row's MINIMUM, not its height. It hugs its content, which varies: two or three lines of ministry lockup, an optional BETA badge, a search field on the website, an account block on portals. 72 is the floor that keeps the emblem legible when the lockup is shortest. Never lay out against a fixed masthead height — see `layout/chrome/minHeight`."
       }
     },
     "chrome": {
       "minHeight": {
         "$value": "118px",
-        "$description": "Accessibility bar plus brand row at their minimum \u2014 the offset the sidebar and content start at on a portal page. Use it for a scroll anchor or a sticky offset, NOT to size the shell: the brand row hugs, so the real value moves with the content. AppShell lays the shell out as a three-row grid (`auto auto 1fr`) so nothing subtracts this from the viewport. At the documented content the navbar measures 134 including its shadow, of which 118 is the layout box."
+        "$description": "Accessibility bar plus brand row at their minimum — the offset the sidebar and content start at on a portal page. Use it for a scroll anchor or a sticky offset, NOT to size the shell: the brand row hugs, so the real value moves with the content. AppShell lays the shell out as a three-row grid (`auto auto 1fr`) so nothing subtracts this from the viewport. At the documented content the navbar measures 134 including its shadow, of which 118 is the layout box."
       }
     },
     "sidebar": {
       "width": {
         "$value": "300px",
-        "$description": "The portal sidebar's expanded width. Genuinely fixed: the nav labels are known copy, and a fluid sidebar would move the content edge on every route. Its inner padding is `padding/m` (16), leaving a 268 item column; items are `target/spacious` (48) tall. Below the tablet breakpoint the sidebar is not narrowed \u2014 it becomes a drawer."
+        "$description": "The portal sidebar's expanded width. Genuinely fixed: the nav labels are known copy, and a fluid sidebar would move the content edge on every route. Its inner padding is `padding/m` (16), leaving a 268 item column; items are `target/spacious` (48) tall. Below the tablet breakpoint the sidebar is not narrowed — it becomes a drawer."
       }
     },
     "login": {
-      "$description": "The authentication page split. Desktop is a 922 hero beside a 518 form panel; the panel insets by 64 each side leaving a 390 content column. These are genuinely fixed: the split is the design, not a consequence of content. Source: MoSJE Portal \u2014 Handoff, Login/Signup. Mobile drops the hero entirely, so none of these apply below 1024.",
+      "$description": "The authentication page split. Desktop is a 922 hero beside a 518 form panel; the panel insets by 64 each side leaving a 390 content column. These are genuinely fixed: the split is the design, not a consequence of content. Source: MoSJE Portal — Handoff, Login/Signup. Mobile drops the hero entirely, so none of these apply below 1024.",
       "hero": {
         "width": {
           "$value": "922px",
@@ -2668,7 +2864,7 @@
       }
     },
     "tab": {
-      "$description": "The two measurements a tablist needs that are not derivable from its content. Everything else about a tab \u2014 its height above all \u2014 is a hug of padding plus type, and must stay one: a fixed tab height stops the label growing when a citizen raises their browser font size.",
+      "$description": "The two measurements a tablist needs that are not derivable from its content. Everything else about a tab — its height above all — is a hug of padding plus type, and must stay one: a fixed tab height stops the label growing when a citizen raises their browser font size.",
       "indicator": {
         "$type": "dimension",
         "$value": "2px",
@@ -2677,16 +2873,16 @@
       "track": {
         "$type": "dimension",
         "$value": "4px",
-        "$description": "Inset between an enclosed track and the pills inside it \u2014 the track's own padding, and the indicator's top/bottom inset. Small enough that the track reads as a frame around the pills rather than a panel containing them."
+        "$description": "Inset between an enclosed track and the pills inside it — the track's own padding, and the indicator's top/bottom inset. Small enough that the track reads as a frame around the pills rather than a panel containing them."
       }
     }
   },
   "target": {
-    "$description": "Minimum POINTER TARGET sizes. There is no single correct number, which is the entire reason this group exists as a ladder rather than one token: 44px is WCAG 2.5.5 Target Size (Enhanced), which is Level AAA \u2014 NOT the AA floor it is usually quoted as. The AA floor is WCAG 2.2's 2.5.8 Target Size (Minimum) at 24x24 CSS px, and it carries a spacing exception: an undersized target passes if a 24px-diameter circle centred on it touches no other target's circle. GIGW 3.0 binds this estate to WCAG 2.1 Level AA + IS 17802 \u2014 and WCAG 2.1 AA contains NO target-size criterion at all, because 2.5.8 arrived in 2.2 and 2.5.5 is AAA. So every value here is a deliberate choice above the mandate, not a compliance minimum. UNITS: these alias the `size/*` scale, so CSS emits rem (1.5/2.75/3/0.5rem) and Figma receives the px equivalent (24/44/48/8). rem is the right choice and not an accident \u2014 a citizen who raises their browser font size gets proportionally larger targets, which a hardcoded px floor would deny them; at the 16px browser default the values are exactly the published numbers. Apple's 44 is points and Material's 48 is dp \u2014 equal to CSS px at 1x, but not the same unit, so do not treat the three as interchangeable when reading their specs.",
+    "$description": "Minimum POINTER TARGET sizes. There is no single correct number, which is the entire reason this group exists as a ladder rather than one token: 44px is WCAG 2.5.5 Target Size (Enhanced), which is Level AAA — NOT the AA floor it is usually quoted as. The AA floor is WCAG 2.2's 2.5.8 Target Size (Minimum) at 24x24 CSS px, and it carries a spacing exception: an undersized target passes if a 24px-diameter circle centred on it touches no other target's circle. GIGW 3.0 binds this estate to WCAG 2.1 Level AA + IS 17802 — and WCAG 2.1 AA contains NO target-size criterion at all, because 2.5.8 arrived in 2.2 and 2.5.5 is AAA. So every value here is a deliberate choice above the mandate, not a compliance minimum. UNITS: these alias the `size/*` scale, so CSS emits rem (1.5/2.75/3/0.5rem) and Figma receives the px equivalent (24/44/48/8). rem is the right choice and not an accident — a citizen who raises their browser font size gets proportionally larger targets, which a hardcoded px floor would deny them; at the 16px browser default the values are exactly the published numbers. Apple's 44 is points and Material's 48 is dp — equal to CSS px at 1x, but not the same unit, so do not treat the three as interchangeable when reading their specs.",
     "$type": "dimension",
     "min": {
       "$value": "{size.24}",
-      "$description": "The absolute floor \u2014 WCAG 2.2 SC 2.5.8 Target Size (Minimum), Level AA. Use ONLY where the spacing exception is genuinely satisfied or the target is inline in a sentence. Anything a citizen must hit on a phone deserves `comfortable`."
+      "$description": "The absolute floor — WCAG 2.2 SC 2.5.8 Target Size (Minimum), Level AA. Use ONLY where the spacing exception is genuinely satisfied or the target is inline in a sentence. Anything a citizen must hit on a phone deserves `comfortable`."
     },
     "comfortable": {
       "$value": "{size.44}",
@@ -2694,11 +2890,11 @@
     },
     "spacious": {
       "$value": "{size.48}",
-      "$description": "Material Design 3 / Android's minimum touch target (48dp). Use for primary actions and anything used one-handed on the move \u2014 this is the largest of the three published floors, so meeting it satisfies all of them."
+      "$description": "Material Design 3 / Android's minimum touch target (48dp). Use for primary actions and anything used one-handed on the move — this is the largest of the three published floors, so meeting it satisfies all of them."
     },
     "spacing": {
       "$value": "{size.8}",
-      "$description": "Minimum gap BETWEEN adjacent targets \u2014 Material 3's 8dp separation. It is also what makes WCAG 2.5.8's spacing exception reachable: separation, not size, is what stops a 24px target being mis-tapped."
+      "$description": "Minimum gap BETWEEN adjacent targets — Material 3's 8dp separation. It is also what makes WCAG 2.5.8's spacing exception reachable: separation, not size, is what stops a 24px target being mis-tapped."
     }
   },
   "elevation": {
@@ -2773,7 +2969,7 @@
     "radius": {
       "$type": "dimension",
       "$value": "{shape.8}",
-      "$description": "Aliases shape/8, the system default control shape. Value unchanged at 8px. It previously aliased the Tier-1 radius primitive directly \u2014 a published variable pointing at one designers cannot see."
+      "$description": "Aliases shape/8, the system default control shape. Value unchanged at 8px. It previously aliased the Tier-1 radius primitive directly — a published variable pointing at one designers cannot see."
     },
     "border": {
       "width": {
@@ -2816,7 +3012,7 @@
     "40": {
       "$value": "{radius.40}"
     },
-    "$description": "Tier-2 corner radius (\"shape\"). VALUE-NAMED: the rung IS the pixel value, matching the spacing ladder, except `full` \u2014 a sentinel meaning fully rounded, not a measurement. Apps bind these, never the Tier-1 ref/radius/* primitives. Named shape rather than radius because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 group called radius would self-reference the Tier-1 scale it aliases. ROLES live at Tier 3 (control/radius, cmp/*/radius) \u2014 that is why the rungs need not carry role names.",
+    "$description": "Tier-2 corner radius (\"shape\"). VALUE-NAMED: the rung IS the pixel value, matching the spacing ladder, except `full` — a sentinel meaning fully rounded, not a measurement. Apps bind these, never the Tier-1 ref/radius/* primitives. Named shape rather than radius because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 group called radius would self-reference the Tier-1 scale it aliases. ROLES live at Tier 3 (control/radius, cmp/*/radius) — that is why the rungs need not carry role names.",
     "$type": "dimension",
     "full": {
       "$value": "{radius.full}"
@@ -2829,7 +3025,7 @@
     },
     "1": {
       "$value": "{border.width.sm}",
-      "$description": "The hairline \u2014 the default rule weight. Dividers, table rules, card edges, documentation borders."
+      "$description": "The hairline — the default rule weight. Dividers, table rules, card edges, documentation borders."
     },
     "2": {
       "$value": "{border.width.md}",
@@ -2843,7 +3039,50 @@
       "$value": "{border.width.xl}",
       "$description": "Heaviest edge in the system. Rare."
     },
-    "$description": "Tier-2 border width (\"stroke\"). VALUE-NAMED: the rung IS the pixel value, matching the space and radius ladders. Named stroke rather than border because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 border/width/* would self-reference the Tier-1 border.width.* it aliases \u2014 the same reason the corner-radius group is called shape. It is also Figma's own word for the property (STROKE_FLOAT). Bind these for any rule, hairline or edge weight; control/border/width remains the right choice for an interactive control specifically.",
+    "$description": "Tier-2 border width (\"stroke\"). VALUE-NAMED: the rung IS the pixel value, matching the space and radius ladders. Named stroke rather than border because Style Dictionary merges the primitive and semantic namespaces, so a Tier-2 border/width/* would self-reference the Tier-1 border.width.* it aliases — the same reason the corner-radius group is called shape. It is also Figma's own word for the property (STROKE_FLOAT). Bind these for any rule, hairline or edge weight; control/border/width remains the right choice for an interactive control specifically.",
     "$type": "dimension"
+  },
+  "alpha": {
+    "0": {
+      "$value": "{opacity.0}"
+    },
+    "4": {
+      "$value": "{opacity.4}"
+    },
+    "8": {
+      "$value": "{opacity.8}"
+    },
+    "16": {
+      "$value": "{opacity.16}"
+    },
+    "24": {
+      "$value": "{opacity.24}"
+    },
+    "32": {
+      "$value": "{opacity.32}"
+    },
+    "40": {
+      "$value": "{opacity.40}"
+    },
+    "48": {
+      "$value": "{opacity.48}"
+    },
+    "64": {
+      "$value": "{opacity.64}"
+    },
+    "72": {
+      "$value": "{opacity.72}"
+    },
+    "80": {
+      "$value": "{opacity.80}"
+    },
+    "88": {
+      "$value": "{opacity.88}"
+    },
+    "100": {
+      "$value": "{opacity.100}"
+    },
+    "$description": "Tier-2 opacity. Each step aliases the Tier-1 `opacity/*` scale, the way `shape` wraps `radius` and `stroke` wraps `border/width`, so a designer binds `alpha/8` and never a `ref/*` primitive. Since 2026-09-04 every translucent colour token in the system (thirteen steps: 0 · 4 · 8 · 16 · 24 · 32 · 40 · 48 · 64 · 72 · 80 · 88 · 100) is a colour reference PLUS one of these — `color/transparent/accent/8` is `color/accentScale/600` at `alpha/8`, not a frozen rgba() — which is what lets a wash follow its base colour through a brand change, and what Figma's alias-with-opacity binding needs on the other side. In CSS the same token resolves as `color-mix(in srgb, var(base) calc(var(--sa-alpha-N) * 100%), transparent)`.",
+    "$type": "number"
   }
 }

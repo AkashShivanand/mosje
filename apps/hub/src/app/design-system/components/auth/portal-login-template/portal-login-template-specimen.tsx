@@ -9,8 +9,11 @@ import { PortalLoginTemplate, type PortalLoginConfig } from "@mosje/design-syste
  * Three roles with different authentication modes, so the specimen shows what
  * the config actually decides: the tab strip, the mode selector's presentation,
  * which fields the form draws, and the two things that are switched per role
- * rather than per portal — the DigiLocker card (Citizen) and the security
- * captcha (Implementing Agency).
+ * rather than per portal — the DigiLocker card (Citizen) and the bot check
+ * (Implementing Agency).
+ *
+ * The Implementing Agency tab also carries `darpan`, so the radio selector shows
+ * the three ways an organisation can be offered a way in.
  *
  * `deepLinkRole` is OFF here. On a real login page it is the point of the
  * component — but on a documentation page it would rewrite this page's URL with
@@ -34,7 +37,18 @@ const CONFIG: PortalLoginConfig = {
     // to come from the caller.
     digilockerLogoSrc: "/design-system/digilocker-mark.png",
   },
-  links: { digilockerHref: "https://digilocker.gov.in/" },
+  links: {
+    digilockerHref: "https://digilocker.gov.in/",
+    forgotPasswordHref: "#",
+    registerHref: "#",
+    helpFaqHref: "#",
+    termsHref: "#",
+    privacyHref: "#",
+  },
+  // Invisible by default — the citizen sees nothing unless the server says the
+  // check failed, and then they get a sentence and a way out. `helpHref` is the
+  // route a blocked person takes, and without one no check renders at all.
+  botCheck: { mode: "invisible", helpHref: "#" },
   roles: [
     {
       id: "citizen",
@@ -61,7 +75,12 @@ const CONFIG: PortalLoginConfig = {
       audience: "organisation",
       label: "Implementing Agency",
       description: "For an agency reporting against a sanctioned project.",
-      authModes: ["password", "otp"],
+      // E-Anudaan's organisation applicants sign in with the NGO-DARPAN Unique
+      // ID issued by NITI Aayog, so the specimen carries all three an agency can
+      // be offered. `darpan` was wrongly retired on 2026-08-17 and is back —
+      // see PortalAuthMode for why the audit that removed it could not have
+      // found it.
+      authModes: ["password", "otp", "darpan"],
       authSelectorType: "radio",
       // On this tab only. An agency signing in on behalf of a shelter home is a
       // different risk from a citizen checking their own application, and the

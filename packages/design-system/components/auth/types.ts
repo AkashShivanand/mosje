@@ -1,3 +1,5 @@
+import type { BotCheckMode } from "../forms/bot-check";
+import type { BotCheckToken } from "../forms/use-bot-check";
 import * as React from "react";
 
 /**
@@ -21,12 +23,22 @@ export type PortalAudience = "citizen" | "officer" | "organisation";
 /**
  * Supported authentication workflows for MoSJE Portals.
  *
- * **Corrected 2026-08-17.** This union previously carried `"darpan"` (NGO DARPAN
- * ID) and `"aadhaar"` (Aadhaar e-KYC). Neither exists: a full read of the
- * MoSJE Portal handoff — 69 auth screens across 10 pages — found no DARPAN and
- * no Aadhaar screen anywhere, in any portal. They were invented from a written
- * brief before the design file was available, and the matching Figma variant
- * axis has been retired too.
+ * **`"darpan"` reinstated 2026-09-03, and the 2026-08-17 removal was unsound.**
+ * That removal reasoned: "a full read of the Handoff — 69 auth screens across 10
+ * pages — found no DARPAN and no Aadhaar screen in any portal, so both were
+ * invented from a written brief." The premise is true and the conclusion does
+ * not follow. DARPAN belongs to E-Anudaan, and **E-Anudaan has no login screen
+ * in the Handoff at all** — a search of its page returns zero frames matching
+ * login, sign-in or auth. An audit cannot find a DARPAN login in a portal whose
+ * login was never drawn, so its silence was never evidence either way.
+ *
+ * What E-Anudaan's designs DO carry, throughout the application wizard:
+ * `NGO-Darpan Unique ID *` as a required field, `Auto-populated from DARPAN`,
+ * and — the corroborating one — `Pre-filled from your login / NGO-Darpan`. The
+ * login already carries DARPAN identity; only the screen for it is missing.
+ *
+ * `"aadhaar"` stays out. Nothing has been produced for it, and reinstating one
+ * mode is not a reason to reinstate the other.
  *
  * **`"digilocker"` removed 2026-09-02.** It was never a mode of the credential
  * form, and carrying it in this union made it one: the template rendered it as a
@@ -43,7 +55,8 @@ export type PortalAudience = "citizen" | "officer" | "organisation";
 export type PortalAuthMode =
   | "password" // Username / Email / Mobile + Password (+ optional captcha)
   | "otp" // Mobile / Email + 6-digit OTP verification
-  | "pin"; // Registered identifier + 6-digit numeric PIN
+  | "pin" // Registered identifier + 6-digit numeric PIN
+  | "darpan"; // NGO-DARPAN Unique ID — E-Anudaan's organisation applicants
 
 /**
  * Custom display option for a specific login method under a role.
@@ -165,6 +178,16 @@ export interface LoginSubmitPayload {
     otp?: string;
     captcha?: string;
   };
+  /**
+   * The proof-of-work receipt, when a bot check ran. `null` when the role did
+   * not ask for one.
+   *
+   * **The server must verify this, not trust it.** It has to recompute the
+   * hash, confirm the difficulty, confirm it issued that exact challenge, burn
+   * it so it cannot be replayed, and reject anything stale. A token the server
+   * did not issue proves only that somebody did some arithmetic.
+   */
+  botCheck?: BotCheckToken | null;
 }
 
 /**
@@ -214,5 +237,24 @@ export interface PortalLoginConfig {
      * identity provider, so the card is an `<a>`, not a button.
      */
     digilockerHref?: string;
+    /** Terms of Use, for the consent line GIGW requires under the button. */
+    termsHref?: string;
+    /** Privacy Policy, same line. */
+    privacyHref?: string;
+  };
+  /**
+   * How this portal proves a request came from a person.
+   *
+   * Omit it and a role asking for a check falls back to `invisible` with the
+   * portal's `links.helpFaqHref` as the escape route. Omit BOTH and no check
+   * renders at all — a bot check with nowhere for a blocked citizen to go has no
+   * accessible alternative, which is the failure the escape route exists to
+   * prevent.
+   */
+  botCheck?: {
+    /** @default "invisible" */
+    mode?: BotCheckMode;
+    /** Where a citizen the check will not pass goes instead. */
+    helpHref: string;
   };
 }

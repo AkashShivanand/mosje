@@ -103,6 +103,10 @@ export type { SelectProps, SelectAppearance, SelectOption } from "./components/f
 export { PasswordStrengthMeter, strengthFromScore } from "./components/forms/password-strength-meter";
 export type { PasswordStrengthMeterProps, PasswordStrength } from "./components/forms/password-strength-meter";
 export { CaptchaField } from "./components/forms/captcha-field";
+export { BotCheck } from "./components/forms/bot-check";
+export type { BotCheckProps, BotCheckMode, BotCheckStatus } from "./components/forms/bot-check";
+export { useBotCheck } from "./components/forms/use-bot-check";
+export type { BotCheckToken, UseBotCheckOptions, UseBotCheckResult } from "./components/forms/use-bot-check";
 export type { CaptchaFieldProps } from "./components/forms/captcha-field";
 export { RadioGroup, CheckboxGroup } from "./components/forms/control-group";
 export type { RadioGroupProps, CheckboxGroupProps, ControlGroupOption } from "./components/forms/control-group";
@@ -110,6 +114,48 @@ export { ErrorSummary } from "./components/forms/error-summary";
 export type { ErrorSummaryProps, ErrorSummaryItem } from "./components/forms/error-summary";
 export { FormField } from "./components/forms/form-field";
 export type { FormFieldProps, FormFieldControlProps } from "./components/forms/form-field";
+export type { FormFieldCharacterCount } from "./components/forms/form-field";
+export type { FormFieldClassNames } from "./components/forms/form-field";
+export {
+  FieldPolicyProvider,
+  RequiredFieldsLegend,
+  useFieldCopy,
+  useFieldPolicy,
+} from "./components/forms/field-policy";
+export type {
+  FieldPolicy,
+  FieldPolicyProviderProps,
+  NecessityIndicator,
+  RequiredFieldsLegendProps,
+} from "./components/forms/field-policy";
+export { DEFAULT_FIELD_COPY, resolveFieldCopy } from "./components/forms/field-copy";
+export type { FieldCopy, FieldCopyOverride } from "./components/forms/field-copy";
+export {
+  FieldHelp,
+  FieldHelpToggle,
+  FieldHint,
+  FieldLabel,
+  FieldMessage,
+  useFieldIds,
+} from "./components/forms/field-parts";
+export type {
+  FieldHelpProps,
+  FieldHelpToggleProps,
+  FieldHintProps,
+  FieldIds,
+  FieldLabelProps,
+  FieldMessageProps,
+  FieldPart,
+} from "./components/forms/field-parts";
+export { CharacterCount, countCharacters } from "./components/forms/character-count";
+export type { CharacterCountProps } from "./components/forms/character-count";
+export { resolveFieldStatus } from "./components/forms/field-types";
+export type {
+  AutocompleteFieldName,
+  AutocompleteToken,
+  FieldSize,
+  FieldStatus,
+} from "./components/forms/field-types";
 export { Label } from "./components/forms/label";
 export type { LabelProps } from "./components/forms/label";
 export { Checkbox } from "./components/forms/checkbox";
@@ -385,6 +431,12 @@ export type {
   MegaMenuItemProps,
   NavSheetProps,
 } from "./components/navigation/header";
+
+// Link — text that takes the reader somewhere. A link changes location; a button
+// performs an action. Added 2026-09-03; before it, 194 hand-rolled brand-coloured
+// anchors each decided their own colour, underline, focus ring and new-tab handling.
+export { Link } from "./components/navigation/link";
+export type { LinkProps, LinkVariant, LinkSize, LinkTone } from "./components/navigation/link";
 
 // Sidebar — portal app-shell left navigation (Figma: sidebar/type-1).
 export { ContentNav } from "./components/navigation/content-nav";

@@ -19,46 +19,95 @@ const A11Y: A11yItem[] = [
   {
     criterion: "1.3.1 Info and Relationships",
     level: "A",
+    status: "verified",
+    evidence:
+      "The label is associated through `htmlFor`/`id` by Form Field. A prefix or suffix is `aria-hidden` and its meaning is carried by a visually-hidden description joined into `aria-describedby`, so \u20b9 is announced as \u201cAmount in rupees\u201d rather than as a symbol inside the value.",
     description:
-      "The label is associated through `htmlFor`/`id`. Wrap the input in FormField, or supply your own `<label htmlFor>`; placeholder text is not a label.",
+      "Wrap the input in Form Field, or supply your own `<label htmlFor>`; placeholder text is not a label.",
   },
   {
     criterion: "1.3.5 Identify Input Purpose",
     level: "AA",
+    status: "verified",
+    evidence:
+      "`autoComplete` is typed to `AutocompleteToken`, the union of the HTML autofill field names. Verified by compiling `autoComplete=\"firstname\"`, which fails the build; `autoComplete=\"given-name\"` compiles.",
     description:
-      "The native `autocomplete` attribute passes through unchanged, so a field collecting a name, an email address or a telephone number can declare its purpose.",
+      "The criterion most often claimed and least often checked, because `autocomplete` is a plain string on every other framework\u2019s input type. Here a token that does nothing cannot ship.",
   },
   {
     criterion: "2.1.1 Keyboard",
     level: "A",
-    description: "A real `<input>` carries the native key handling. Nothing is re-implemented.",
+    status: "verified",
+    evidence:
+      "A real `<input>` carries the native key handling; nothing is re-implemented. A read-only field keeps its place in the tab order and its value stays selectable.",
+    description: "The adorned form wraps the same input rather than replacing it.",
+  },
+  {
+    criterion: "1.4.11 Non-text Contrast",
+    level: "AA",
+    status: "verified",
+    evidence:
+      "The focus ring is a solid 3px outline in `--sa-color-action-primary-default` (#0373df, 4.64:1 on white; darker in the navy and dbim modes) at a 2px offset. It replaced `rgba(3, 115, 223, 0.48)`, which flattens on white to #86bcf0 \u2014 2.01:1, a failing indicator. Ratios computed 2026-09-03.",
+    description:
+      "An outline rather than a box-shadow, so the indicator survives Windows High Contrast Mode, where a shadow is not painted at all.",
   },
   {
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
+    status: "verified",
+    evidence:
+      "The default `md` size is 44px, and the smallest offered is 40px. Any interactive child of the trailing slot is forced to a 24\u00d724 minimum by the stylesheet, so a consumer\u2019s bare `<button>` cannot inherit its icon\u2019s size.",
     description:
-      "The field has a 44px minimum height — past the 24×24 Level AA minimum, and meeting the 44×44 Level AAA size of 2.5.5.",
+      "44px is WCAG 2.2\u2019s Level AAA target size (2.5.5), well past the 24px Level AA minimum. UX4G\u2019s 32px S size is deliberately not offered.",
+  },
+  {
+    criterion: "1.4.1 Use of Colour",
+    level: "A",
+    status: "verified",
+    evidence:
+      "A status changes the border colour, and Form Field additionally prints the message in words with a glyph and a visually-hidden \u201cError: \u201d / \u201cWarning: \u201d / \u201cSuccess: \u201d prefix. Colour is the third channel, never the first.",
+    description: "Warning and success are as much at risk here as error, and are treated the same way.",
   },
   {
     criterion: "3.3.1 Error Identification",
     level: "A",
-    description:
-      "`invalid` sets `aria-invalid`, and FormField links the message with `aria-describedby` and `role=\"alert\"`.",
+    status: "verified",
+    evidence:
+      "`status=\"error\"` (and the legacy `invalid`) set `aria-invalid`; Form Field links the message through `aria-describedby` and announces changes in a live region.",
+    description: "`warning` and `success` deliberately do NOT set `aria-invalid` \u2014 neither is a failure.",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
-    description:
-      "Role and value are native. A decorative `leftIcon` is `aria-hidden`, so it cannot displace the accessible name.",
+    status: "verified",
+    evidence:
+      "Role and value are native. A decorative `leftIcon` is `aria-hidden`, so it cannot displace the accessible name. `pending` sets `aria-busy` without disabling the field.",
+    description: "A field being checked stays editable \u2014 a reader should not have to wait for a request they cannot see.",
   },
   {
-    criterion: "GIGW 3.0 — Forms",
+    criterion: "GIGW 3.0 \u2014 Forms",
     level: "GIGW",
-    description: "Every control carries a persistent visible label; placeholder text is never the label.",
+    status: "verified",
+    evidence: "Every control carries a persistent visible label; placeholder text is never the label.",
+    description: "Form Field renders the label; the input has no mode in which it supplies its own.",
   },
 ];
 
 const EXAMPLE = `<Input placeholder="Enter your full name" />`;
+
+const AFFIX_EXAMPLE = `// A prefix is drawn inside the border and hidden from
+// assistive tech; \`prefixLabel\` is what a screen reader hears.
+<FormField label="Annual income" hint="As declared in your latest ITR">
+  {(control) => (
+    <Input
+      {...control}
+      prefix="\u20b9"
+      prefixLabel="Amount in rupees"
+      inputMode="numeric"
+      autoComplete="off"
+    />
+  )}
+</FormField>`;
 
 export default function InputPage(): React.JSX.Element {
   return (
@@ -66,7 +115,7 @@ export default function InputPage(): React.JSX.Element {
       name="Input"
       status="Stable"
       summary="A single-line text field built on the native input element and styled on the token contract. It accepts every native input attribute and adds three props of its own — the error state and the two icon slots. In practice it is rarely used alone — wrap it in a Form Field so the label, hint and error wiring come with it."
-      figma={{ node: "inputs" }}
+      figma={{ node: "inputField" }}
       specimen={<Playground code={EXAMPLE} />}
       propsFrom="InputProps"
       a11y={A11Y}
@@ -149,6 +198,14 @@ export default function InputPage(): React.JSX.Element {
           <h2 id="cdp-a11y-notes" className="cdp__h2">
             Notes
           </h2>
+          <Callout type="warning" title="Always Give a Symbol Prefix a prefixLabel">
+            A screen reader reading \u201c\u20b9\u201d aloud says either \u201crupee sign\u201d in the middle of the
+            value or nothing at all. The affix is therefore hidden, and{" "}
+            <code>prefixLabel</code> carries its meaning into the field\u2019s description. The
+            fallback \u2014 announcing the affix text itself \u2014 only applies when the affix is already
+            a word, such as <code>kg</code>.
+          </Callout>
+          <CodeBlock>{AFFIX_EXAMPLE}</CodeBlock>
           <Callout type="warning" title="A Placeholder Is Not a Label">
             Placeholder text disappears the moment the reader types, so it cannot carry the question
             the field is asking. It also renders at a lower contrast than body text. Every field

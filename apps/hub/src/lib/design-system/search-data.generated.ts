@@ -189,6 +189,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Bot Check — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/bot-check",
+    "keywords": "bot check — design system forms & inputs why this is not a captcha what to reach for, in order the states, and the one that draws nothing anatomy: one card, whatever the mode what is wired today, and what a developer must build the escape hatch is required, on purpose example notes  tokens wcag accessibility",
+    "description": "The estate",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Brand Glyph — Design System",
     "section": "Utilities",
     "href": "/design-system/components/utilities/brand-glyph",
@@ -228,7 +237,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Button",
     "section": "Actions",
     "href": "/design-system/components/actions/button",
-    "keywords": "button actions purpose anatomy variants states sizes and touch content and voice two deprecated appearances, and one that is gone installation and import example tokens consumed in figma keyboard evidence  tokens wcag accessibility",
+    "keywords": "button actions purpose anatomy variants states sizes and touch width and wrapping content and voice two deprecated appearances, and one that is gone installation and import example tokens consumed retheming without forking in figma keyboard keeping a disabled control findable windows high contrast mode the link form evidence  tokens wcag accessibility",
     "description": "A Button triggers an action within the system — submitting a form, confirming a dialog, or running a command. The most-used interactive atom in the SAMAVESH design system.",
     "type": "component",
     "iconName": "widgets"
@@ -237,7 +246,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Button Group — Design System",
     "section": "Actions",
     "href": "/design-system/components/actions/button-group",
-    "keywords": "button group — design system actions   tokens wcag accessibility",
+    "keywords": "button group — design system actions two jobs, and the second one gets forgotten the segmented control  tokens wcag accessibility",
     "description": "Related actions, kept together and kept apart.",
     "type": "component",
     "iconName": "widgets"
@@ -286,6 +295,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "description": "Every release of the SAMAVESH design system — what was added, changed, and fixed in each version.",
     "type": "resource",
     "iconName": "menu_book"
+  },
+  {
+    "title": "Character Count — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/character-count",
+    "keywords": "character count — design system forms & inputs notes  tokens wcag accessibility",
+    "description": "A live count of how much of a field",
+    "type": "component",
+    "iconName": "edit_note"
   },
   {
     "title": "Chart Card — Design System",
@@ -499,7 +517,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Density",
     "section": "Foundations",
     "href": "/design-system/foundations/density",
-    "keywords": "density foundations side by side when to use compact when not to use compact how to activate it tokens  tokens wcag accessibility",
+    "keywords": "density foundations side by side when to use compact when not to use compact target size how to activate it tokens  tokens wcag accessibility",
     "description": "Comfortable and compact density modes — how SAMAVESH adapts control sizing for spacious public forms and data-dense portals.",
     "type": "foundation",
     "badge": "Stable",
@@ -588,6 +606,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Field Policy Provider — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/field-policy-provider",
+    "keywords": "field policy provider — design system forms & inputs choosing a convention  tokens wcag accessibility",
+    "description": "Sets whether a form marks its mandatory fields or its optional ones, for every field beneath it, and prints the sentence that explains the mark.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
     "title": "Filter Bar — Design System",
     "section": "Auth & Dashboard",
     "href": "/design-system/components/dashboard/filter-bar",
@@ -636,7 +663,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Form Field — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/form-field",
-    "keywords": "form field — design system forms & inputs the render prop, in plain english example notes  tokens wcag accessibility",
+    "keywords": "form field — design system forms & inputs making it yours language the render prop, in plain english example notes  tokens wcag accessibility",
     "description": "The molecule that ties a control to its label, hint and error message, and wires every accessibility attribute through a render prop.",
     "type": "component",
     "iconName": "edit_note"
@@ -727,7 +754,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Icon Button — Design System",
     "section": "Actions",
     "href": "/design-system/components/actions/icon-button",
-    "keywords": "icon button — design system actions   tokens wcag accessibility",
+    "keywords": "icon button — design system actions it has exactly one name what it deliberately cannot do  tokens wcag accessibility",
     "description": "A Button whose whole label is its icon.",
     "type": "component",
     "iconName": "widgets"
@@ -853,6 +880,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "bar_chart"
   },
   {
+    "title": "Link",
+    "section": "Navigation",
+    "href": "/design-system/components/navigation/link",
+    "keywords": "link navigation a link changes location inline and standalone leaving the site  tokens wcag accessibility",
+    "description": "Text that takes the reader somewhere. A link changes location; a button performs an action.",
+    "type": "component",
+    "iconName": "navigation"
+  },
+  {
     "title": "Live Region — Design System",
     "section": "Utilities",
     "href": "/design-system/components/utilities/live-region",
@@ -919,7 +955,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Motion",
     "section": "Foundations",
     "href": "/design-system/foundations/motion",
-    "keywords": "motion foundations duration scale easing live demo reduced motion tokens guidance  tokens wcag accessibility",
+    "keywords": "motion foundations the five pairs duration scale easing live demo reduced motion tokens guidance  tokens wcag accessibility",
     "description": "Duration and easing for SAMAVESH — purposeful, fast and respectful of reduced-motion preferences.",
     "type": "foundation",
     "badge": "Stable",
@@ -1077,6 +1113,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "href": "/design-system/components/forms/radio",
     "keywords": "radio — design system forms & inputs radio cards example keyboard  tokens wcag accessibility",
     "description": "A radio button for choosing exactly one option from a mutually exclusive set, in an inline variant and a full selectable card variant.",
+    "type": "component",
+    "iconName": "edit_note"
+  },
+  {
+    "title": "Required Fields Legend — Design System",
+    "section": "Forms & Inputs",
+    "href": "/design-system/components/forms/required-fields-legend",
+    "keywords": "required fields legend — design system forms & inputs one sentence per convention, and one that is silence example notes  tokens wcag accessibility",
+    "description": "The sentence that explains a form",
     "type": "component",
     "iconName": "edit_note"
   },

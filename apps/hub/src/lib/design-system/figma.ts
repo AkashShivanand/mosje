@@ -35,6 +35,17 @@ export const FIGMA_NODES = {
 
   // ── Components ──
   buttons: "2141:296705",
+  /* "Button Group" — authored 2026-09-03, page inserted between Buttons and Close
+     Button. The component had existed in code with no Figma counterpart at all, so a
+     designer had no way to draw a grouped or segmented control and reached for a plain
+     auto-layout frame — which is the touching-targets defect it exists to prevent.
+     Attached x Orientation, 4 variants, each built from real Button instances. */
+  buttonGroup: "56793:1214",
+  /* "Link" — the set has lived on the Buttons page since the library was imported from
+     UX4G, and had NO code counterpart until 2026-09-03. It was published, findable, and
+     unbuildable: 194 hand-rolled brand-coloured anchors across the hub are what a
+     designed-but-unbuilt component produces. */
+  link: "2723:1598",
   buttonDoc: "56160:1773", // "Button — Documentation" on the Buttons page, authored
   //                          2026-08-25 to the house style. It replaced a 1400px template
   //                          with 16 text nodes, ZERO on a published style, describing a
@@ -43,7 +54,36 @@ export const FIGMA_NODES = {
   buttonRecord: "56164:1805", // "Button — Component record" — the maintainer frame. The
   //                          FIRST one in the library; figma-code-sync.md records that no
   //                          page had one, which is why open work kept being rediscovered.
-  inputs: "2141:296720",
+  // THE INPUT FAMILY IS FIVE PAGES, not one. Until 2026-09-04 a single "Inputs" page
+  // carried eight components behind one label, while Checkbox, Radio, Toggle and Search
+  // each had their own — so Select was the only form control a designer could not find by
+  // name. The split follows one test: does a designer ever place this WITHOUT placing a
+  // field? Input Field, Input Area, Select, OTP Input and Bot Check answer yes and have a
+  // page each. Character Count, Required Fields Legend, Password Strength Meter and the
+  // OTP Box answer no and stay as numbered sections under the component they serve.
+  //
+  // Node ids survive a page move, which is why none of the ids below changed.
+  inputs: "2141:296720", // the page itself, renamed "Input Field" in the split
+  inputsDoc: "56793:50560", // "Input Field — Documentation", authored 2026-09-03 to the
+  //                          house style and re-scoped on 2026-09-04 when the family split.
+  //                          Its six hero statistics are COUNTED from the page, not typed,
+  //                          so a wrong number here means the file is wrong.
+  inputsRecord: "56793:50803", // "Input Field — Component record" — open items only,
+  //                          forward looking. Items belonging to the four components that
+  //                          moved went with them to their own records.
+  inputField: "85:837", // the Input Field set itself — 4 sizes x 9 states = 36 variants
+  botCheck: "56824:1294", // the BotCheck set — 9 variants (Invisible draws only its failed
+  //                         state, so the matrix is 4 + 4 + 1 rather than 12). It replaced
+  //                         Captcha Field, which was deleted on 2026-09-03.
+  inputArea: "87:4945", // the Input Area set (Textarea in code) — 4 sizes x 9 states
+  select: "55430:34472", // the Select set, on its own page since the split. Not `dropdown`
+  //                        below, which is the separate Dropdown page — pointing Select's
+  //                        documentation there sent a designer to a different component.
+  otpInput: "55427:34365", // the OTP Input set — 2 lengths x 4 states
+  otpBox: "55427:704", // its single-digit sub-part, published so a longer code can be built
+  passwordStrengthMeter: "55432:795", // the Password Strength Meter set — 5 strengths
+  characterCount: "56792:50500", // the Character Count set, authored 2026-09-03
+  requiredFieldsLegend: "56792:50506", // the Required Fields Legend set, authored 2026-09-03
   card: "2141:296707",
   badges: "2141:296703",
   checkbox: "2141:296710",

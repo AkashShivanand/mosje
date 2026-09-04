@@ -14,7 +14,7 @@
     "noEmit": true,
     "types": ["react", "react-dom"]
   },
-  "include": ["index.ts", "tokens.ts", "components/**/*.ts", "components/**/*.tsx",
+  "include": ["css.d.ts", "index.ts", "tokens.ts", "components/**/*.ts", "components/**/*.tsx",
               "foundations/**/*.ts", "foundations/**/*.tsx",
               "demo/**/*.ts", "demo/**/*.tsx",
               "utils/**/*.ts"],

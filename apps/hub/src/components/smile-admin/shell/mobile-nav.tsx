@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { navForRole } from "@/lib/smile-admin/nav";
 import { useApp } from "@/store/smile-admin/app-context";
@@ -12,6 +12,7 @@ import { Icon } from "@mosje/design-system";
 export function MobileNav() {
   const pathname = usePathname();
   const { account, mobileNavOpen, setMobileNavOpen, signOut } = useApp();
+  const router = useRouter();
 
   // Lock body scroll while open
   useEffect(() => {
@@ -160,9 +161,24 @@ export function MobileNav() {
           <button
             type="button"
             onClick={() => {
+              /*
+               * A CLIENT NAVIGATION IS ENOUGH HERE, AND THE DESKTOP HEADER ALREADY DOES IT.
+               *
+               * `window.location.href` forced a full document reload, which looked like it
+               * was there to guarantee a clean slate. It was not doing that work: signOut()
+               * in the smile-admin app-context already nulls the account state, removes the
+               * `smile.session.v1` localStorage entry and expires the `smile_session`
+               * cookie the proxy reads — so nothing survives the transition that a reload
+               * would have cleared. The cookie write is synchronous, so the middleware sees
+               * it gone on the next request either way.
+               *
+               * `header.tsx` runs the identical sign-out through `router.push`, so the two
+               * paths out of this portal now behave the same instead of one of them
+               * discarding the app shell.
+               */
               signOut();
               setMobileNavOpen(false);
-              window.location.href = "/portals/smile-admin/login";
+              router.push("/portals/smile-admin/login");
             }}
             className="flex w-full items-center gap-md rounded-md px-md py-2 text-body-2 font-semibold text-danger hover:bg-danger-50"
           >

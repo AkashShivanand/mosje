@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/website/utils";
 import { CENTRE_TYPE_META, CENTRE_TYPE_ORDER, type CentreType, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres } from "./locator-shared";
-import { Icon, Search } from "@mosje/design-system";
+import { Icon, Link, Search } from "@mosje/design-system";
 
 const CAP = 48;
 
@@ -73,10 +73,11 @@ export function LocatorGallery() {
               <p className="mt-2 text-[17px] font-semibold text-ink">{modal.name}</p>
               <p className="mt-1.5 text-[13px] text-ink-muted">{modal.address}</p>
               <p className="mt-1 text-[13px] font-medium text-ink">{modal.district}, {modal.state}</p>
-              <a href={`https://www.google.com/maps/search/?api=1&query=${modal.lat},${modal.lng}`} target="_blank" rel="noreferrer"
-                className="mt-3 inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2 text-[14px] font-semibold text-white hover:bg-primary-dark">
-                <Icon name="navigation" size={16} /> Get directions
-              </a>
+              <Link href={`https://www.google.com/maps/search/?api=1&query=${modal.lat},${modal.lng}`} external variant="standalone"
+                className="mt-3 rounded-lg bg-primary px-4 py-2 text-[14px] font-semibold text-white hover:bg-primary-dark"
+                iconLeft={<Icon name="navigation" size={16} />}>
+                Get directions
+              </Link>
             </div>
           </div>
         </div>

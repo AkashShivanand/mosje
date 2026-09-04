@@ -1,6 +1,6 @@
 import * as React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
-import { Checkbox, Radio, Textarea, Toggle } from "@mosje/design-system";
+import { Checkbox, FormField, Radio, Textarea, Toggle } from "@mosje/design-system";
 
 /**
  * **Checkbox · Radio · Toggle · Textarea** — the selection and long-text
@@ -147,4 +147,54 @@ export const Textareas: Story = {
       <Textarea defaultValue="Address does not match the ration card." invalid rows={3} />
     </div>
   ),
+};
+
+/**
+ * **Textarea `status`** — the same three conditions every control in the stack carries.
+ * `error` blocks and sets `aria-invalid`; `warning` does not block; `success` reports a check
+ * that passed.
+ */
+export const TextareaStatuses: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 16, maxWidth: 460 }}>
+      <FormField label="Grievance" error="Describe what happened in at least twenty words">
+        {(c) => <Textarea {...c} defaultValue="Too short." />}
+      </FormField>
+      <FormField label="Remarks" warning="This will be visible to the district officer">
+        {(c) => <Textarea {...c} status="warning" defaultValue="Warden was informed on 12 August." />}
+      </FormField>
+      <FormField label="Justification" success="Saved as a draft">
+        {(c) => <Textarea {...c} defaultValue="The hostel has been without water since Monday." />}
+      </FormField>
+    </div>
+  ),
+};
+
+/**
+ * **`autoResize` and `maxRows`** — grow to fit the value, up to a ceiling, then scroll.
+ *
+ * Off by default, and that default is deliberate: a field that changes height under the
+ * reader's cursor moves everything below it. Acceptable for a comment box at the end of a form;
+ * not for a field in the middle of a long application, where the Submit button would walk down
+ * the page as the reader types.
+ */
+export const TextareaAutoResize: Story = {
+  render: () => {
+    const [value, setValue] = React.useState("Type here and the field grows to fit, up to four rows.");
+    return (
+      <div style={{ maxWidth: 460 }}>
+        <FormField label="Remarks" hint="Grows as you type, then scrolls past four rows.">
+          {(c) => (
+            <Textarea
+              {...c}
+              autoResize
+              maxRows={4}
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+            />
+          )}
+        </FormField>
+      </div>
+    );
+  },
 };

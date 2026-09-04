@@ -19,35 +19,53 @@ const A11Y: A11yItem[] = [
   {
     criterion: "1.3.1 Info and Relationships",
     level: "A",
+    status: "verified",
+    evidence:
+      "Label bound by Form Field through `htmlFor`/`id`; hint, message and character count composed into one `aria-describedby`.",
     description:
       "Pair with Form Field so the label is associated with the textarea through `htmlFor`/`id`. A placeholder is not a label.",
   },
   {
     criterion: "1.4.4 Resize Text",
     level: "AA",
+    status: "verified",
+    evidence:
+      "Sizes and leading are token-bound in rem, so browser zoom to 200% reflows rather than clipping. `autoResize` measures computed line-height rather than assuming one.",
     description:
       "The field is sized in `rows` and in tokenised type, so it grows with the reader's text size rather than clipping it.",
   },
   {
     criterion: "2.1.1 Keyboard",
     level: "A",
+    status: "verified",
+    evidence:
+      "A real `<textarea>`; nothing re-implemented. A read-only field keeps its tab stop and its value stays selectable.",
     description:
       "A real `<textarea>` carries the native key handling, including Enter for a new line — which is why a textarea inside a form does not submit it.",
   },
   {
     criterion: "3.3.1 Error Identification",
     level: "A",
+    status: "verified",
+    evidence:
+      "`status=\"error\"` (and the legacy `invalid`) set `aria-invalid`; `warning` and `success` deliberately do not.",
     description:
       "`invalid` sets `aria-invalid`; Form Field links the message with `aria-describedby` and `role=\"alert\"` so it is announced when it appears.",
   },
   {
     criterion: "4.1.2 Name, Role, Value",
     level: "A",
+    status: "verified",
+    evidence:
+      "Role and value are native. `data-status` drives the border only; the message below carries the words.",
     description: "Role and value are native. Nothing is re-implemented in ARIA.",
   },
   {
     criterion: "GIGW 3.0 — Forms",
     level: "GIGW",
+    status: "verified",
+    evidence:
+      "Persistent visible label supplied by Form Field; placeholder is never the label.",
     description:
       "A character limit is stated in the hint, where `aria-describedby` reads it with the field, rather than only enforced by `maxLength`.",
   },
@@ -59,7 +77,7 @@ export default function TextareaPage(): React.JSX.Element {
       name="Textarea"
       status="Stable"
       summary="A native, vertically resizable multi-line text field for long-form answers — a grievance description, a set of remarks, an address. It shares the error state and the token styling of Input, and is sized in rows rather than pixels."
-      figma={{ absent: "Not yet published in the Figma library." }}
+      figma={{ node: "inputArea" }}
       specimen={<TextareaPlayground />}
       propsFrom="TextareaProps"
       a11y={A11Y}

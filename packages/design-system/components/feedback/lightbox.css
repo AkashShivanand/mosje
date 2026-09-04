@@ -89,7 +89,7 @@
 
   .ds-lightbox__close:hover { background: color-mix(in oklab, var(--sa-bg-neutral-base) 22%, transparent); }
   .ds-lightbox__close:focus-visible {
-    outline: 2px solid var(--sa-color-neutralScale-0);
+    outline: var(--sa-focus-width) solid var(--sa-color-neutralScale-0);
     outline-offset: var(--sa-focus-offset);
   }
 
@@ -117,7 +117,7 @@
   .ds-lightbox__nav:hover { background: color-mix(in oklab, var(--sa-bg-neutral-base) 22%, transparent); }
   .ds-lightbox__nav:active { transform: scale(0.94); }
   .ds-lightbox__nav:focus-visible {
-    outline: 2px solid var(--sa-color-neutralScale-0);
+    outline: var(--sa-focus-width) solid var(--sa-color-neutralScale-0);
     outline-offset: var(--sa-focus-offset);
   }
 
@@ -199,7 +199,7 @@
     border-color: var(--sa-color-neutralScale-0);
   }
   .ds-lightbox__thumb:focus-visible {
-    outline: 2px solid var(--sa-color-neutralScale-0);
+    outline: var(--sa-focus-width) solid var(--sa-color-neutralScale-0);
     outline-offset: var(--sa-focus-offset);
   }
 

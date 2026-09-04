@@ -285,8 +285,8 @@
   .sa-abar__skip:focus-visible,
   .sa-abar__fsbtn:focus-visible,
   .sa-abar__icbtn:focus-visible {
-    outline: 2px solid var(--sa-text-neutral-inverse);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-text-neutral-inverse);
+    outline-offset: var(--sa-focus-offset);
     border-radius: var(--sa-shape-4);
   }
 
@@ -419,8 +419,8 @@
   }
 
   .sa-a11yc__step:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .sa-a11yc__action {
@@ -439,8 +439,8 @@
   }
 
   .sa-a11yc__action:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: -2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
     border-radius: var(--sa-shape-4);
   }
 

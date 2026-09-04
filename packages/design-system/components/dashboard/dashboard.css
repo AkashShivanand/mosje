@@ -158,8 +158,8 @@
      built from `box-shadow` would not be painted here at all.) */
   @media (forced-colors: active) {
     .ds-card-state__retry:focus-visible {
-      outline: 2px solid Highlight;
-      outline-offset: 2px;
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
     }
   }
 
@@ -249,8 +249,8 @@
     color: var(--sa-text-neutral-base);
   }
   .ds-segmented__option:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
   .ds-segmented__option--active {
     background: var(--sa-bg-neutral-base);
@@ -290,9 +290,9 @@
   }
 
   .ds-chart-export__trigger:focus-visible {
-    outline: none;
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-chart-export__trigger:disabled {
@@ -367,4 +367,20 @@
     color: var(--sa-text-neutral-subtle);
   }
 
+}
+
+@layer components {
+  /* forced-colors mode does not paint `box-shadow`, so the ring above is not
+     drawn there at all. An `outline` IS painted, and `Highlight` is the
+     system's own focus colour, so the ring follows the theme the reader chose.
+     Same footprint as the shadow it stands in for; later source order with equal
+     specificity is what lets it beat the `outline: none` above. */
+  @media (forced-colors: active) {
+    .ds-segmented__option:focus-visible,
+    .ds-chart-export__trigger:focus-visible,
+    .ds-chart-export__item:focus-visible {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
+  }
 }

@@ -32,6 +32,11 @@ import { Combobox, DatePicker } from "@mosje/design-system";
  * value of "" is how a district goes missing between the screen and the
  * database. `noMatchLabel` words the filtered-to-nothing case, `placeholder` the
  * empty one.
+ *
+ * **`invalid`** is a legacy alias that sets the error state without a message. It exists only
+ * so that spreading `FormField`'s render-prop object onto this component degrades instead of
+ * breaking — `FormField` hands over `invalid`, this component asks for `error`. Prefer `error`:
+ * a field marked wrong with nothing said about it tells the reader only that they are stuck.
  */
 const meta = {
   title: "Forms/DatePicker",

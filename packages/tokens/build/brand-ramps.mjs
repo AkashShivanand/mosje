@@ -141,10 +141,23 @@ export const ANCHORS = {
   },
   accentRamp: {
     anchor: "#046A38",
-    lightest: 96,
+    anchorStep: 600,
+    lightest: 96.5,
     darkest: 18,
-    note: "India Green from the SAMAVESH logo. Brand-INVARIANT. Deliberately the SAME green as the success status: two greens nine degrees apart is a defect whichever token owns it, and a citizen seeing the ministry's own green on a success state is better brand than a leftover Material green.",
+    note:
+      "India Green #046A38 from the SAMAVESH logo. Brand-INVARIANT. Deliberately the SAME green " +
+      "as the success status: two greens nine degrees apart is a defect whichever token owns it, " +
+      "and a citizen seeing the ministry's own green on a success state is better brand than a " +
+      "leftover Material green. ANCHORED AT 600, NOT 500, since 2026-09-04 — the rule every other " +
+      "anchor already follows: #046A38 is L* 46, which is where rung 600 sits on every other ramp " +
+      "(primary 49, danger 49, info 49). Pinned at 500 it dragged the whole ladder down a rung, so " +
+      "success/600 — the fill under white text everywhere — was L* 39 and 9.1:1, two rungs darker " +
+      "than the AA it needed, and success/700, the message ink, was a near-black L* 33 at 11.7:1. " +
+      "That over-darkness is what read as dull: a dark colour has little chroma to give. At 600 the " +
+      "ladder is uniform with its siblings, 500 is a live mid-green (L* 54, 4.8:1), and the tints " +
+      "hold real chroma. The anchor hex is unchanged.",
   },
+
 
   /* ---------------------------------------------------------------- functional ramps
    *
@@ -161,12 +174,19 @@ export const ANCHORS = {
    */
 
   dangerRamp: {
-    anchor: "#ec5042",
+    // #ec5042 rotated from hue 28.7 to 24 at identical L* and chroma.
+    anchor: "#ec4e4f",
     anchorStep: 400,
     lightest: 94,
     darkest: 19.5,
     note:
-      "The estate's error red, unchanged as a colour and re-laddered around. ANCHORED AT 400, " +
+      "The estate's error red, re-laddered around its own lightness. THE HUE MOVED 4.7 DEGREES " +
+      "TOWARD CRIMSON on 2026-09-04 (28.7 -> 24), at identical L* and chroma, for the reason the " +
+      "separation ledger has carried since it existed: at hue 29 the red is a coral, 12 degrees " +
+      "from India Saffron (41), and the two families' tints measured dE 3.4 at rung 50. Carbon " +
+      "(25.9), Primer (24.5) and Material (28.7 -> 24 here) all sit on this side of orange; the " +
+      "estate's red now does too, and reads as an error rather than a second brand orange. " +
+      "Rotation is the same operation the warning ramp already had. ANCHORED AT 400, " +
       "NOT 500, and that is what closes the AA gap: #ec5042 is L* 64, which sits INSIDE the " +
       "dead zone (roughly L* 59-66) where a fill is too dark for dark ink and too light for " +
       "white, so neither ink reaches 4.5:1. At 500 the rung below it — 600, the `bolder` fill " +
@@ -197,17 +217,23 @@ export const ANCHORS = {
   },
 
   infoRamp: {
-    anchor: "#1a73e8",
+    // The old #1a73e8 (hue 258) at the same L*, moved to hue 220 and the chroma the gamut allows there.
+    anchor: "#0b86a2",
     anchorStep: 500,
     lightest: 96.5,
     darkest: 18,
     note:
-      "The info blue, unchanged as a colour and re-laddered around. L* 57 is a mid-tone and 500 " +
-      "is where it belongs — the only ramp here whose anchor did not have to move rung. It had " +
-      "no AA shortfall; what it had was `info/400` and `info/500` 2.3 L* apart, a duplicate " +
-      "pair. Stays in the blue family on purpose: `info|primary` is a recorded INTENTIONAL " +
-      "UNION (Carbon and Spectrum do the same), and moving it would break that gate rather " +
-      "than satisfy it.",
+      "The info colour is CYAN-TEAL since 2026-09-04, hue 220, not the brand's blue. It used to be " +
+      "#1a73e8 at hue 258 — three degrees and dE 0.5 from gov-blue — and the union was recorded as " +
+      "intentional. In use it meant an information banner, an info badge and a primary button were " +
+      "one colour, the toast's info variant was literally painted with primaryScale/50, and on a " +
+      "dashboard a citizen could not tell 'this is a notice' from 'this is the action'. USWDS " +
+      "(#00bde3) and GOV.UK's inset text both keep notice and action apart the same way. Hue 220 " +
+      "is 35 degrees from primary, 39 from the chart's teal (cat/3) and 66 from success; it holds " +
+      "under protanopia and deuteranopia (dE 10+ from primary at the filled rung) and is the " +
+      "weakest under tritanopia (dE 2.2), which is why an info surface always carries its icon. " +
+      "Chroma is lower than the brand's on purpose (0.10 vs 0.19 at 500): a notice is quieter " +
+      "than a call to action. L* 57 keeps 500 at the mid-tone rung; the ink is 600 (5.96:1).",
   },
 };
 
@@ -508,40 +534,39 @@ function retintRgba(value, hex) {
  * @param {Record<string, Record<number,string>>} ramps  output of `generateAll()`
  * @param {object} primitive  parsed src/primitive.json, for the status + neutral bases
  */
-export function buildAlphaTiers(ramps, primitive) {
-  const hex = (fam, step) => primitive.color[fam][String(step)].$value;
-
-  // family -> { blue, navy }. Where the two are equal the family is brand-invariant, which
-  // for `secondary` and `accent` is the whole point — they are logo colours, not variants.
+export function buildAlphaTiers() {
+  // family -> the Tier-2 scale rung the wash is cut from. A REFERENCE, never a hex: the wash
+  // follows its base through Blue, Navy and every DBIM mode by construction, so the
+  // `colorModes.navy` copies this function used to write are gone (they existed only because
+  // an rgba() literal cannot follow a brand). `primary` reads the 500 rung, which is the key
+  // colour in Blue (#0373DF) and navy 500 in Navy — the hand-picked navy 600 it carried before
+  // differs from that by less than 1 dE at the 8–48% the tiers are used at. `secondary` and
+  // `accent` are SAMAVESH logo colours and do not vary by brand; `accent` reads rung 600
+  // because that is where India Green itself sits since 2026-09-04.
   const BASE = {
-    primary: { blue: ramps["primaryRamp.blue"][500], navy: ramps["primaryRamp.navy"][600] },
-    secondary: { blue: ramps.secondaryRamp[400], navy: ramps.secondaryRamp[400] },
-    accent: { blue: ramps.accentRamp[500], navy: ramps.accentRamp[500] },
-    neutral: { blue: hex("neutral", 800), navy: hex("neutralDark", 800) },
-    success: { blue: hex("green", 500), navy: hex("green", 500) },
-    danger: { blue: hex("red", 500), navy: hex("red", 500) },
-    warning: { blue: hex("amber", 500), navy: hex("amber", 500) },
-    white: { blue: "#ffffff", navy: "#ffffff" },
+    primary: "{color.primaryScale.500}",
+    secondary: "{color.secondaryScale.400}",
+    accent: "{color.accentScale.600}",
+    neutral: "{color.neutralScale.800}",
+    success: "{color.successScale.600}",
+    danger: "{color.dangerScale.500}",
+    warning: "{color.warningScale.500}",
+    white: "{color.neutralScale.0}",
   };
-
   const out = {
     $description:
-      `Alpha overlay tiers (${ALPHA_STEPS.join("/")}%). GENERATED by build/brand-ramps.mjs ` +
-      `from each family's base colour — never hand-written, because 42 rgba() literals is ` +
-      `exactly the shape of thing that silently keeps a retired colour alive. ` +
-      `primary and neutral vary by brand; secondary and accent do NOT (both are SAMAVESH ` +
-      `logo colours); the status tiers and white are brand-invariant. ` +
+      `Alpha overlay tiers (${ALPHA_STEPS.join("/")}%). GENERATED by build/brand-ramps.mjs. ` +
+      `Each tier is a colour REFERENCE plus an alpha/N REFERENCE — never an rgba() literal, ` +
+      `because 48 literals is exactly the shape of thing that silently keeps a retired colour ` +
+      `alive, and because a literal cannot follow a brand. In CSS a tier resolves as ` +
+      `color-mix(in srgb, var(base) calc(var(--sa-alpha-N) * 100%), transparent); in Figma it is ` +
+      `an alias to the base variable with its opacity bound to alpha/N. ` +
       `Consume via --sa-color-transparent-<family>-<step>.`,
   };
-
   for (const [family, base] of Object.entries(BASE)) {
     const tier = {};
     for (const step of ALPHA_STEPS) {
-      const entry = { $value: rgba(base.blue, step) };
-      if (base.navy !== base.blue) {
-        entry.$extensions = { mosje: { colorModes: { navy: rgba(base.navy, step) } } };
-      }
-      tier[String(step)] = entry;
+      tier[String(step)] = { $value: base, $extensions: { mosje: { alpha: `{alpha.${step}}` } } };
     }
     out[family] = tier;
   }
@@ -750,12 +775,12 @@ function main() {
   // rewritten here — one command regenerates every colour this file is the source of.
   const semanticPath = here("../src/semantic.json");
   const semantic = JSON.parse(readFileSync(semanticPath, "utf8"));
-  semantic.color.transparent = buildAlphaTiers(ramps, primitive);
+  semantic.color.transparent = buildAlphaTiers();
 
   /* ---- the two composite ALPHA values, per brand ----
    *
-   * `text.disabled` is the body ink at 48% and `overlay.neutral.boldest` is the modal scrim at
-   * 50%. Both are rgba() literals rather than references, because neither can alias a colour
+   * `overlay.neutral.boldest` is the modal scrim at 50% (and `text.disabled` WAS the body ink at
+   * 48%, until 2026-09-04). Such values are rgba() literals rather than references, because neither can alias a colour
    * token — one is consumed as a flat colour with baked-in alpha, the other sits inside a
    * composite. That is precisely what made them rot: a derived value with no reference to
    * break, still carrying a retired colour long after its source moved.
@@ -768,11 +793,11 @@ function main() {
    * the brand ids out here fixes that, and the preprocessor leaves them alone because it only
    * ever touches refs.
    */
-  const disabled = semantic.color.text.disabled;
-  disabled.$value = rgba(neutrals.neutral[800], 48);
-  disabled.$extensions.mosje.colorModes = Object.fromEntries(
-    Object.entries(brandInk).map(([mode, ink]) => [mode, rgba(ink, 48)]),
-  );
+  // `text.disabled` is no longer written here. Since 2026-09-04 it is an OPAQUE reference,
+  // `{color.neutralScale.400}`, authored in semantic.json: the 48% wash composited to 1.83:1 on
+  // the disabled fill, so a disabled button's label could not be read. A reference follows the
+  // brand's neutral hue — and DBIM's pure greys — through the ordinary colorModes machinery,
+  // which is exactly what the literal below could not do.
 
   /*
    * The modal scrim, at 50% the heaviest alpha in the system — and the one place the DBIM ink

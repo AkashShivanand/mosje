@@ -18,6 +18,14 @@ export interface DatePickerProps {
   hint?: string;
   /** Shown under the field, and announced. */
   error?: string;
+  /**
+   * Sets the error state without supplying a message. It exists so that
+   * spreading `FormField`'s render-prop object onto this component degrades
+   * rather than breaks: `FormField` hands over `invalid`, this component asks
+   * for `error`, and before this alias the field simply lost its error state.
+   * A message is still better — prefer `error`.
+   */
+  invalid?: boolean;
   required?: boolean;
   disabled?: boolean;
   id?: string;
@@ -102,6 +110,7 @@ export function DatePicker({
   max,
   hint,
   error,
+  invalid = false,
   required = false,
   disabled = false,
   id,
@@ -125,9 +134,17 @@ export function DatePicker({
 
   // The field is controlled from outside too — a form reset or a prefill has to
   // reach the text, not just the value.
-  React.useEffect(() => {
+  /**
+   * Resynced during render on a value change, not afterwards by an effect.
+   * The effect version showed the OLD text for one committed render before
+   * correcting it, which on a controlled date field reads as the input briefly
+   * rejecting what was just set.
+   */
+  const [prevValue, setPrevValue] = React.useState(value);
+  if (prevValue !== value) {
+    setPrevValue(value);
     setText(toDisplay(value));
-  }, [value]);
+  }
 
   const minDate = min ? parseIso(min) : null;
   const maxDate = max ? parseIso(max) : null;
@@ -240,7 +257,7 @@ export function DatePicker({
           disabled={disabled}
           required={required}
           aria-describedby={describedBy || undefined}
-          aria-invalid={error ? true : undefined}
+          aria-invalid={error || invalid ? true : undefined}
           onChange={(e) => setText(e.target.value)}
           onBlur={commitText}
           onKeyDown={(e) => {

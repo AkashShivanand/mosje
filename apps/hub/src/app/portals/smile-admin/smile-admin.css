@@ -155,9 +155,12 @@ body::before {
 
 /* Focus ring — government a11y (GIGW 3.0) — visible against any surface */
 :where(button, a, input, select, textarea, [tabindex]):focus-visible {
-  outline: 2px solid var(--ring);
-  outline-offset: 2px;
+  outline: var(--sa-focus-width) solid var(--ring);
+  outline-offset: var(--sa-focus-offset);
   border-radius: var(--sa-shape-6);
+  /* A second, softer halo OUTSIDE the ring — not a second ring. The ring itself is
+     the house 2px at 2px offset; this only widens the halo so the indicator stays
+     legible on the portal's washed backgrounds. */
   box-shadow: 0 0 0 4px var(--navy-wash-12);
 }
 
@@ -314,4 +317,16 @@ select:focus {
 .tabular-nums {
   font-variant-numeric: tabular-nums;
   font-feature-settings: "tnum" 1, "lnum" 1;
+}
+
+/* forced-colors mode does not paint `box-shadow`, so the ring above is not
+   drawn there at all. An `outline` IS painted, and `Highlight` is the
+   system's own focus colour, so the ring follows the theme the reader chose.
+   Same footprint as the shadow it stands in for; later source order with equal
+   specificity is what lets it beat the `outline: none` above. */
+@media (forced-colors: active) {
+  :where(button, a, input, select, textarea, [tabindex]):focus-visible {
+    outline: var(--sa-focus-width) solid Highlight;
+    outline-offset: var(--sa-focus-offset);
+  }
 }

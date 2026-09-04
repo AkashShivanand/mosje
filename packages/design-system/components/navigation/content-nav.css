@@ -182,8 +182,8 @@
 
   .ds-content-nav__link:focus-visible,
   .ds-content-nav__sublink:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* Below the two-column breakpoint the index sits above the article and must

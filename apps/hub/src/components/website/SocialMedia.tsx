@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { BrandGlyph, Icon, type BrandGlyphName } from "@mosje/design-system";
+import { BrandGlyph, Icon, Link, type BrandGlyphName } from "@mosje/design-system";
 import { cn } from "@/lib/website/utils";
 
 type SocialTab = "facebook" | "x" | "youtube";
@@ -287,16 +287,16 @@ export function SocialMedia() {
                     </span>
                   ))}
                 </div>
-                <a
+                <Link
                   href={currentTab.profileUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-1 rounded text-[11px] font-semibold text-primary-dark transition-colors hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+                  external
+                  variant="standalone"
+                  className="text-[11px] font-semibold text-primary-dark"
+                  iconLeft={<Icon name="share" size={16} aria-hidden />}
                 >
-                  <Icon name="share" size={16} aria-hidden />
                   Share
                   <span className="sr-only"> this post on {currentTab.name}</span>
-                </a>
+                </Link>
               </div>
             </article>
           ))}

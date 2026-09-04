@@ -123,12 +123,13 @@ const INTENTIONAL_UNIONS = new Map([
   [
     // Keys are the pair names sorted alphabetically — see `key()` below.
     "info|primary",
-    "Info IS the blue family, as in IBM Carbon and Adobe Spectrum. They measured 3 degrees " +
-      "apart BEFORE this gate existed, so this records a pre-existing decision rather than " +
-      "blessing a new one. It is defensible — an informational callout reading as brand-blue " +
-      "is conventional — but it does mean `bg/status/info/*` carries no signal `bg/brand/" +
-      "primary/*` does not. Worth revisiting: moving info to cyan (~200 degrees) would " +
-      "separate it and cost nothing, since no other family sits there.",
+    "Info WAS the blue family until 2026-09-04 (3 degrees and dE 0.5 from primary in the " +
+      "estate brands — an info banner, an info badge and a primary button were one colour). " +
+      "The estate's info ramp now sits at hue 220, 35 degrees from gov-blue, which is the " +
+      "revisit this entry used to recommend. The union SURVIVES ONLY IN THE DBIM CONFORMANCE " +
+      "MODES, where DBIM's own functional palette maps info to DBIM Blue (#0D6EFD) — a fact " +
+      "about DBIM's palette, reported rather than corrected, like the dbim-green shortfall. " +
+      "This entry therefore records that worst case; in `blue` and `navy` the pair is separated.",
   ],
 ]);
 

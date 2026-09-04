@@ -23,22 +23,31 @@ function resolveCell(spec, intent, isInverse) {
   const { scale, onFill } = matrix.intents[intent];
 
   if (spec === "onFill") return onFill;
-  // Literal, not a reference: there is no transparent entry on neutralScale, and adding one
-  // would put a non-colour in a colour ramp. rgba(0,0,0,0) survives the color/css transform
-  // where the `transparent` keyword does not.
-  if (spec === "transparent") return "rgba(0, 0, 0, 0)";
+  // A fully transparent fill is white at alpha/0 — a colour REFERENCE plus an OPACITY reference,
+  // the same shape as every other translucent token since 2026-09-04. It was an rgba(0,0,0,0)
+  // literal before, because there is no transparent entry on neutralScale and adding one would
+  // put a non-colour in a colour ramp; the alpha extension is what makes the literal unnecessary.
+  if (spec === "transparent") return { $value: "{color.neutralScale.0}", alpha: "{alpha.0}" };
   if (spec === "white") return "{color.neutralScale.0}";
   if (spec === "neutralDisabled") return "{color.text.disabled}";
   if (/^neutral(\d+)$/.test(spec)) return `{color.neutralScale.${spec.slice(7)}}`;
 
   // White at a named alpha — used only by the inverse qualifier, so a button on a solid
-  // surface works on ANY brand colour rather than assuming one.
+  // surface works on ANY brand colour rather than assuming one. Emitted as neutralScale/0 plus
+  // an `{alpha.N}` reference (never a pre-multiplied rgba), so the CSS is a color-mix() over
+  // two variables and the Figma variable is an alias with its own opacity.
   const alpha = /^white(\d+)$/.exec(spec);
-  if (alpha) return `rgba(255, 255, 255, ${(Number(alpha[1]) / 100).toFixed(2)})`;
+  if (alpha) return { $value: "{color.neutralScale.0}", alpha: `{alpha.${alpha[1]}}` };
 
   if (/^\d+$/.test(spec)) return `{color.${scale}.${spec}}`;
 
   throw new Error(`unrecognised matrix cell ${JSON.stringify(spec)} (intent ${intent}, inverse=${isInverse})`);
+}
+
+/** A cell resolves to a reference string, or to `{ $value, alpha }` for a translucent one. */
+function cellFields(cell) {
+  if (typeof cell === "string") return { $value: cell };
+  return { $value: cell.$value, $extensions: { mosje: { alpha: cell.alpha } } };
 }
 
 function setPath(root, path, node) {
@@ -72,7 +81,7 @@ for (const intent of Object.keys(matrix.intents)) {
         }
         setPath(out, path, {
           $type: "color",
-          $value: resolveCell(spec, intent, false),
+          ...cellFields(resolveCell(spec, intent, false)),
           $description: guidanceFor(["action", intent, variant, state, property], "cmp") ?? `${intent} ${variant} button, ${state} state, ${property}`,
         });
         generated.push(toCssName(path, "cmp"));
@@ -92,7 +101,7 @@ for (const intent of Object.keys(matrix.intents)) {
         }
         setPath(out, path, {
           $type: "color",
-          $value: resolveCell(spec, intent, true),
+          ...cellFields(resolveCell(spec, intent, true)),
           $description: guidanceFor(["action", intent, variant, "inverse", state, property], "cmp") ?? `${intent} ${variant} button on a solid brand surface, ${state} state, ${property}`,
         });
         generated.push(toCssName(path, "cmp"));

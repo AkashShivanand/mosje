@@ -113,8 +113,12 @@ for (const file of templates) {
   }
 
   // 6 — Figma properties, against the recorded snapshot.
+  // `getInstanceSwap` WAS MISSING, and its absence inverted the check it feeds:
+  // an INSTANCE_SWAP property that a template maps correctly was counted as unread,
+  // so check 6 would report a mapped property as "silently dropped". Button maps two
+  // (`Left Icon`, `Right Icon`); adding its fixture is what surfaced this.
   const read = new Set([
-    ...[...src.matchAll(/get(?:String|Boolean)\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
+    ...[...src.matchAll(/get(?:String|Boolean|InstanceSwap)\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
     ...[...src.matchAll(/getEnum\(\s*["']([^"']+)["']/g)].map((m) => m[1]),
   ]);
   const fx = fixtures[componentName];

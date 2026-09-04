@@ -111,8 +111,8 @@
   }
 
   .dm-panel__opt:focus-within {
-    outline: 2px solid var(--sa-focus-ring);
-    outline-offset: -2px;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
   }
 
   /* The native input is the control; this is its face. Keeping the input in
@@ -227,8 +227,8 @@
   }
 
   .dm-panel__switch-input:focus-visible + .dm-panel__track {
-    outline: 2px solid var(--sa-focus-ring);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .dm-panel__switch-body {
@@ -350,8 +350,8 @@
   }
 
   .dm-panel__seg-btn:focus-visible {
-    outline: 2px solid var(--sa-focus-ring);
-    outline-offset: 1px;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .dm-panel__note {

@@ -39,6 +39,9 @@ const A11Y: A11yItem[] = [
   {
     criterion: "3.3.1 Error Identification",
     level: "A",
+    status: "verified",
+    evidence:
+      "Read in code, both halves. `Alert` renders `role=\"alert\"` (feedback/alert.tsx:107), and the template renders `<Alert status=\"error\">{error}</Alert>` unconditionally whenever `error` is set (portal-login-template.tsx:377). A submission failure is therefore announced when it appears, not only when focus returns to it.",
     description:
       "A submission failure renders in a `role=\"alert\"` banner above the fields, so it is announced the moment it appears rather than only when a reader happens to move focus back up.",
   },
@@ -70,6 +73,9 @@ const A11Y: A11yItem[] = [
   {
     criterion: "2.4.7 Focus Visible",
     level: "AA",
+    status: "verified",
+    evidence:
+      "portal-login-template.css contains no `outline: none` and no `outline: 0` anywhere, so nothing inherited from the DS controls is suppressed; and the two controls it styles itself draw the ring explicitly — `.ds-plogin__labelrow a`, `.ds-plogin__help a` (:47) and `.ds-plogin__roletab` (:96) each set `outline: var(--sa-focus-width) solid var(--sa-focus-ring)` with `--sa-focus-offset`.",
     description: "Fields, buttons and tabs all draw the estate's focus ring, inherited from the DS controls rather than restyled here.",
   },
 ];

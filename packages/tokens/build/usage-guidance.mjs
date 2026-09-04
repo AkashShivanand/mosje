@@ -280,6 +280,7 @@ export function guidanceFor(path, tier, parse) {
   // Tier-2 corner radius. Added 2026-08-12 with the retirement of `--ds-radius-*`, whose 248
   // usages had no Tier-2 home — every one of them was binding a Tier-1 primitive by proxy.
   if (path[0] === "shape") return SHAPE_GUIDANCE[path[1]] ?? null;
+  if (path[0] === "alpha") return alphaGuidance(path[1]);
 
   // The legacy `color/*` Tier-2 layer: brand-aware ramps and alpha tiers. They are a palette,
   // not a decision, so they get the same pointer a primitive does — the semantic roles above
@@ -360,6 +361,32 @@ const SHAPE_GUIDANCE = {
   "full": "Use for pills and circles \u2014 avatars, toggles, status dots. Fully rounded at any size."
 };
 
+/**
+ * Tier-2 opacity. The sentence says what the step is USED for in this system, then how to bind
+ * it — a designer reaching for it is almost always setting the opacity of a colour variable's
+ * alias, which is the one place Figma lets a number variable drive a colour.
+ */
+export const ALPHA_USE = {
+  "0": "Fully transparent — the resting fill of an outlined button on a brand surface.",
+  "4": "Hairline or the faintest lift on a dark surface: the code specimen's border and titlebar strip.",
+  "8": "Hover wash on a brand or neutral surface, and the lightest overlay tier.",
+  "16": "Pressed/selected wash on a brand surface, and the second overlay tier.",
+  "24": "Third overlay tier; the disabled border of a secondary inverse button.",
+  "32": "Fourth overlay tier; a stronger hairline on a dark surface.",
+  "40": "The quieter inverse rule (border/neutral/inverse/subtle) and a disabled inverse fill.",
+  "48": "The strongest overlay tier, the modal scrim, and the resting label on a dark titlebar.",
+  "64": "Disabled ink on a dark or brand surface.",
+  "72": "Secondary ink on a dark or brand surface — an interactive titlebar label.",
+  "80": "Pressed fill of a primary inverse button.",
+  "88": "Hover fill of a primary inverse button.",
+  "100": "Opaque — a sentinel so a binding can be switched off without unbinding.",
+};
+function alphaGuidance(step) {
+  const use = ALPHA_USE[step];
+  if (!use) throw new Error(`alpha/${step} is not on the ladder — add its role to ALPHA_USE or do not add the step`);
+  return `${use} Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/${step}); never type the percentage. In CSS it is --sa-alpha-${step}, and every translucent token already resolves as color-mix() over it.`;
+}
+
 export function primitivePointer(path) {
   const [head] = path;
   if (head === "color") return "Palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee and follow the brand.";
@@ -367,7 +394,8 @@ export function primitivePointer(path) {
   if (head === "space") return `${path[1]}px raw spacing step, value-named. TIER 1 — hidden from publishing and banned in app code by tier-discipline.test.mjs. Bind \`inline/${path[1]}\`, \`stack/${path[1]}\`, \`padding/${path[1]}\` or \`section/${path[1]}\` instead; all four resolve here.`;
   if (head === "font") return fontPointer(path);
   if (head === "radius") return `${path[1] === "full" ? "Fully-rounded sentinel" : path[1] + "px raw radius step, value-named"}. TIER 1 — hidden from publishing and banned in app code. Bind \`shape/${path[1]}\` instead, which resolves here.`;
-  if (head === "motion" || head === "opacity" || head === "blur") return `Raw ${head} step.`;
+  if (head === "opacity") return `Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind \`alpha/${path[1]}\` instead, which resolves here.`;
+  if (head === "motion" || head === "blur") return `Raw ${head} step.`;
   // `border` was the one primitive group with no pointer, so all five ref/border/width/*
   // shipped to Figma with an EMPTY description — the only variables in the library that had
   // none. A missing case here is silent: guidanceFor returns null and the exporter writes "".

@@ -182,9 +182,9 @@
 }
 
 .ds-demo-accounts__hit:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--sa-focus-ring);
-}
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 
 /* Everything visible sits above the hit area so the copy buttons stay
    clickable and the text stays selectable. */
@@ -209,4 +209,16 @@
 .ds-demo-accounts__hit:focus-visible ~ .ds-demo-accounts__data .ds-demo-accounts__use {
   color: var(--sa-text-brand-primary-base);
   text-decoration: underline;
+}
+
+/* forced-colors mode does not paint `box-shadow`, so the ring above is not
+   drawn there at all. An `outline` IS painted, and `Highlight` is the
+   system's own focus colour, so the ring follows the theme the reader chose.
+   Same footprint as the shadow it stands in for; later source order with equal
+   specificity is what lets it beat the `outline: none` above. */
+@media (forced-colors: active) {
+  .ds-demo-accounts__hit:focus-visible {
+    outline: var(--sa-focus-width) solid Highlight;
+    outline-offset: var(--sa-focus-offset);
+  }
 }

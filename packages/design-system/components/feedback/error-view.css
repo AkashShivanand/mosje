@@ -130,7 +130,8 @@
 
   .ds-error-view__search-box:focus-within {
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-bg-brand-primary-subtler);
+    outline: var(--sa-focus-width) solid var(--sa-bg-brand-primary-subtler);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-error-view__search-input {
@@ -290,6 +291,22 @@
     background-color: var(--sa-bg-neutral-base);
     overflow-x: auto;
     white-space: pre-wrap;
-    word-break: break-word;
+    /* `word-break: break-word` was always a deprecated alias that behaved as
+       overflow-wrap; this is the property that actually means it. */
+    overflow-wrap: break-word;
+  }
+}
+
+@layer components {
+  /* forced-colors mode does not paint `box-shadow`, so the ring above is not
+     drawn there at all. An `outline` IS painted, and `Highlight` is the
+     system's own focus colour, so the ring follows the theme the reader chose.
+     Same footprint as the shadow it stands in for; later source order with equal
+     specificity is what lets it beat the `outline: none` above. */
+  @media (forced-colors: active) {
+    .ds-error-view__search-box:focus-within {
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
+    }
   }
 }
