@@ -72,7 +72,7 @@
   }
   .el-ramp__value {
     color: var(--sa-text-neutral-subtle);
-    word-break: break-word;
+    overflow-wrap: anywhere;
   }
   /* The "don't" specimen: a text shadow, shown to be refused. */
   .el-text-shadow {
