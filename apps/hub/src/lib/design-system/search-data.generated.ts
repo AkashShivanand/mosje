@@ -1447,7 +1447,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Typography",
     "section": "Foundations",
     "href": "/design-system/foundations/typography",
-    "keywords": "typography foundations why two typefaces line height for indic scripts do &amp; don&rsquo;t the rules, and where each one comes from the alias family that lied, and why it is gone non-negotiable, because these are government services where these numbers come from  tokens wcag accessibility",
+    "keywords": "typography foundations why two typefaces line height for indic scripts do &amp; don&rsquo;t why these values the rules, and where each one comes from the alias family that lied, and why it is gone non-negotiable, because these are government services where these numbers come from  tokens wcag accessibility",
     "description": "SAMAVESH typography — one 21-role scale rendered on two surfaces (Website, Portal), fluid across every viewport, and drawn for both English and हिन्दी.",
     "type": "foundation",
     "badge": "Stable",
