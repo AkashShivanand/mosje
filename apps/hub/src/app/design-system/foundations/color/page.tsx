@@ -6,7 +6,7 @@ import { BrandSwitcher, LivePair } from "./color-live";
 import "./color.css";
 import {
   META, SECTIONS, RAMPS, INK_PAIRS, CHART, ALPHA, LAYERS, SLOT_COUNTS, RETIRED,
-  STATUS_MATRIX, CVD, MODES, ROLE_CONTRAST,
+  STATUS_MATRIX, CVD, MODES, ROLE_CONTRAST, ALPHA_SCALE, TRANSLUCENT,
 } from "./color-data";
 
 export const metadata: Metadata = { title: "Color — Foundations" };
@@ -874,6 +874,64 @@ export default function ColorPage(): React.JSX.Element {
       </Section>
 
       {/* ── Provenance ────────────────────────────────────────── */}
+      {/* ── Alpha: every translucent token is a reference plus an opacity reference ── */}
+      <Section id="alpha">
+        <p className="docs-lede">
+          Every translucent colour in the system — the overlay tiers, the modal scrim, the inverse
+          rules and every inverse button state, {META.translucentTokens} tokens in all — is a colour
+          variable plus an opacity variable. Nothing is a pre-mixed <code>rgba()</code>, so a wash
+          follows its base colour through Blue, Navy and every DBIM mode by construction, and a
+          retired colour cannot survive inside a literal.
+        </p>
+        <div className="color-alpha color-alpha--scale" style={{ background: "var(--sa-bg-brand-primary-bolder)" }}>
+          <code className="color-alpha__label" style={{ color: "var(--sa-on-bg-brand-primary-bolder)" }}>alpha/*</code>
+          {ALPHA_SCALE.map((s) => (
+            <div key={s.step} className="color-alpha__chip color-alpha__chip--labelled"
+                 style={{ background: `color-mix(in srgb, var(--sa-color-neutralScale-0) calc(var(${s.css}) * 100%), transparent)` }}
+                 title={`${s.figma} — ${s.value}`}>
+              <span className="color-alpha__step" style={{ color: s.step >= 48 ? "var(--sa-text-neutral-base)" : "var(--sa-on-bg-brand-primary-bolder)" }}>{s.step}</span>
+            </div>
+          ))}
+        </div>
+        <table className="token-table" aria-label="The alpha ladder and what each step is for">
+          <thead>
+            <tr><th scope="col">Step</th><th scope="col">Value</th><th scope="col">Used for</th></tr>
+          </thead>
+          <tbody>
+            {ALPHA_SCALE.map((s) => (
+              <tr key={s.step}>
+                <th scope="row"><code>{s.figma}</code></th>
+                <td><code>{s.value}</code></td>
+                <td>{s.use}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="color-examples">
+          {TRANSLUCENT.map((g) => (
+            <div key={g.group} className="color-example">
+              <p className="color-example__title">{g.group}</p>
+              <p className="color-example__label">{g.count} tokens</p>
+              <ul className="color-example__list">
+                {g.examples.map((e) => (
+                  <li key={e.token}><code>{e.token}</code> = <code>{e.base}</code> at <code>{e.alpha}</code></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+        <pre className="docs-code" aria-label="How a translucent token resolves in CSS"><code>{`--sa-color-transparent-accent-8:
+  color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-8) * 100%), transparent);`}</code></pre>
+        <Callout type="info" title="In Figma: alias the colour, then bind the opacity">
+          A translucent variable aliases its base colour and carries its own opacity, bound to the
+          matching <code>alpha/*</code> number variable in the Static collection. The Plugin API
+          cannot yet write that binding, so the library holds the composited literal and each
+          variable&rsquo;s description states the intended binding; apply it in the variable panel.
+          The alpha variables need the &ldquo;Color variable opacity&rdquo; scope ticked, which the
+          API also cannot set.
+        </Callout>
+      </Section>
+
       <Section id="provenance">
         <p className="docs-lede">
           Every value on this page is read from <code>packages/tokens/dist/tokens.css</code> at

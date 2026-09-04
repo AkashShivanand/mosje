@@ -12,6 +12,17 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-04 · System version: v0.47.0 (EVERY TRANSLUCENT TOKEN IS A REFERENCE
+  PLUS AN OPACITY REFERENCE. Figma can alias a colour and keep a separate, variable-bound
+  opacity, so the 136 rgba() literals — overlay tiers, scrim, inverse rules, inverse button
+  states — are now `{base}` + `{alpha.N}`; CSS resolves them as color-mix() over two custom
+  properties and they follow every brand island. Navy's scrim had been the Blue neutral and
+  every DBIM wash a Blue literal. The opacity scale is ONE thirteen-step ladder, 0 · 4 · 8 · 16 ·
+  24 · 32 · 40 · 48 · 64 · 72 · 80 · 88 · 100, bound as `alpha/*`; Figma reads an opacity-bound
+  number as a percentage, so `ref/opacity/*` is projected ×100. The Plugin API cannot write an
+  alias's opacity or the "Color variable opacity" scope — both are recorded as UI steps.
+  Audit §16.)
+
   Last reviewed: 2026-09-04 · System version: v0.46.0 (THE COLOUR SYSTEM WAS DULL BECAUSE IT
   WAS TWO RUNGS TOO DARK, AND ONE RAMP WAS STARVING ITS OWN TINTS. Every status ink sat at
   rung 700 (7.8–11.7:1, L* 33–44) where peers sit at L* 48–57; India Green anchored at 500
@@ -24,7 +35,7 @@
   ink and fill; the tint exponent
   is 0.5; danger rotated to hue 24; info is cyan-teal at 220; brand text is rung 600 (it was
   4.07:1 on the page ground); disabled ink is opaque; the resting control border is 4.65:1.
-  Figma has NOT been pushed — `reference/figma-live.json` records code ahead of the library.
+  Pushed to Figma and read back the same day — `reference/figma-live.json` records both halves.
   Audit: docs/audit/2026-09-04-colour-system-audit-and-redesign.md.)
 
   Last reviewed: 2026-09-03 · System version: v0.45.0 (THE LOGIN FORM WAS A DRAWING OF THE

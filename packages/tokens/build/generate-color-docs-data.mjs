@@ -23,6 +23,7 @@
  * colours, not a conformance claim.
  */
 import { readFileSync, writeFileSync } from "node:fs";
+import { ALPHA_USE } from "./usage-guidance.mjs";
 import { hexToOklch, deltaE, hueDelta } from "./oklch.mjs";
 import { simulateCvd, CVD_TYPES } from "./cvd.mjs";
 
@@ -136,6 +137,37 @@ const alpha = ALPHA_FAMILIES.map((f) => ({
   steps: [8, 16, 24, 32, 40, 48].map((s) => ({ step: s, token: `color/transparent/${f}/${s}`,
     value: resolve(`--sa-color-transparent-${f}-${s}`) })).filter((x) => x.value),
 })).filter((f) => f.steps.length);
+
+// ── the alpha ladder, and every token built on it ────────────────────────
+// Read from the payload rather than the CSS so the base+opacity STRUCTURE is visible: the
+// stylesheet has already folded it into a color-mix() expression.
+const alphaScale = payload.collections.find((c) => c.name === "Static").variables
+  .filter((v) => /^alpha\//.test(v.name))
+  .map((v) => ({ step: Number(v.name.split("/")[1]), css: `--sa-alpha-${v.name.split("/")[1]}`, figma: v.name,
+    value: resolve(`--sa-alpha-${v.name.split("/")[1]}`), use: ALPHA_USE[v.name.split("/")[1]] ?? "" }))
+  .sort((a, b) => a.step - b.step);
+const translucent = [];
+for (const c of payload.collections) for (const v of c.variables) {
+  const first = Object.values(v.valuesByMode)[0];
+  if (first?.type === "ALIAS" && first.opacity) translucent.push({ token: v.name, base: first.name, alpha: first.opacity.name, fallback: first.fallback?.value ?? null, css: `--sa-${v.path.replace(/\//g, "-")}` });
+}
+const translucentGroups = [
+  { group: "Overlay tiers", match: (t) => /^color\/transparent\//.test(t) },
+  { group: "Inverse button states", match: (t) => /^cmp\/action\/.*\/inverse\//.test(t) },
+  { group: "Transparent resting fills", match: (t) => /^cmp\/action\//.test(t) && !/\/inverse\//.test(t) },
+  { group: "Scrim, washes and rules", match: () => true },
+].map((g) => { const rows = translucent.filter((t) => g.match(t.token)); translucent.splice(0, 0); return { group: g.group, count: rows.length, examples: rows.slice(0, 3).map((r) => ({ token: r.token, base: r.base, alpha: r.alpha })) }; });
+// each token belongs to the FIRST group that matches, so re-run as a partition
+{
+  const seen = new Set();
+  for (const g of translucentGroups) {
+    const spec = [/^color\/transparent\//, /^cmp\/action\/.*\/inverse\//, /^cmp\/action\//, /./][translucentGroups.indexOf(g)];
+    const rows = translucent.filter((t) => !seen.has(t.token) && spec.test(t.token));
+    rows.forEach((r) => seen.add(r.token));
+    g.count = rows.length;
+    g.examples = rows.slice(0, 3).map((r) => ({ token: r.token, base: r.base, alpha: r.alpha, css: r.css }));
+  }
+}
 
 const layers = [0, 1, 2, 3].map((d) => ({ depth: d, surface: resolve(`--sa-layer-${d}`), border: resolve(`--sa-layer-border-${d}`) }));
 
@@ -272,10 +304,13 @@ const SECTIONS = [
   ["in-use", "Three contexts, one palette"],
   ["colour-vision", "What a colour-blind reader sees"],
   ["modes", "Ten modes, one set of measurements"],
+  ["alpha", "Translucency is a reference, not a hex"],
   ["provenance", "Where these numbers come from"],
 ].map(([id, title]) => ({ id, title }));
 
 const meta = {
+  translucentTokens: translucent.length,
+  alphaSteps: alphaScale.length,
   ramps: ramps.length,
   brands: 2,
   rungs: RUNGS.length,
@@ -332,6 +367,10 @@ export const RUNG_LEDGER: readonly LedgerEntry[] = ${JSON.stringify(ledger, null
 export const CHART = ${JSON.stringify(chart, null, 2)} as const;
 
 export const ALPHA = ${JSON.stringify(alpha, null, 2)} as const;
+
+export const ALPHA_SCALE = ${JSON.stringify(alphaScale, null, 2)} as const;
+
+export const TRANSLUCENT = ${JSON.stringify(translucentGroups, null, 2)} as const;
 
 export const LAYERS = ${JSON.stringify(layers, null, 2)} as const;
 

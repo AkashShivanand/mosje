@@ -177,6 +177,12 @@ export const STATE = new Set([
 export const GROUP = new Set([
   "space", "inline", "stack", "padding", "section",
   "radius", "opacity", "z", "border", "elevation", "motion",
+  // `alpha` is the Tier-2 OPACITY, and it is not called `opacity` for the reason `shape` is not
+  // called `radius`: Style Dictionary merges the primitive and semantic namespaces, so a Tier-2
+  // `opacity/*` would self-reference the Tier-1 scale it aliases. `alpha` is also the channel's
+  // own name in every colour model. Added 2026-09-04 with the alias-plus-opacity restructuring:
+  // every translucent colour token is now a colour reference AND an `{alpha.N}` reference.
+  "alpha",
   "type", "density", "chart", "on", "layer", "font", "leading", "blur",
   // `icon` and `control` are also a colour ROLE and a Tier-3 component respectively. RULE 2
   // keeps that unambiguous by position, not by exception: a colour role always takes a FAMILY

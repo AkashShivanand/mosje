@@ -25,6 +25,8 @@ export type LedgerEntry = { token: string; measured?: number; implied?: number; 
 export type Section = { id: string; title: string };
 
 export const META = {
+  "translucentTokens": 136,
+  "alphaSteps": 13,
   "ramps": 8,
   "brands": 2,
   "rungs": 6,
@@ -129,6 +131,10 @@ export const SECTIONS: readonly Section[] = [
   {
     "id": "modes",
     "title": "Ten modes, one set of measurements"
+  },
+  {
+    "id": "alpha",
+    "title": "Translucency is a reference, not a hex"
   },
   {
     "id": "provenance",
@@ -2090,32 +2096,32 @@ export const ALPHA = [
       {
         "step": 8,
         "token": "color/transparent/neutral/8",
-        "value": "rgba(30, 33, 36, 0.08)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent)"
       },
       {
         "step": 16,
         "token": "color/transparent/neutral/16",
-        "value": "rgba(30, 33, 36, 0.16)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent)"
       },
       {
         "step": 24,
         "token": "color/transparent/neutral/24",
-        "value": "rgba(30, 33, 36, 0.24)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-24) * 100%), transparent)"
       },
       {
         "step": 32,
         "token": "color/transparent/neutral/32",
-        "value": "rgba(30, 33, 36, 0.32)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-32) * 100%), transparent)"
       },
       {
         "step": 40,
         "token": "color/transparent/neutral/40",
-        "value": "rgba(30, 33, 36, 0.4)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-40) * 100%), transparent)"
       },
       {
         "step": 48,
         "token": "color/transparent/neutral/48",
-        "value": "rgba(30, 33, 36, 0.48)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-48) * 100%), transparent)"
       }
     ]
   },
@@ -2125,32 +2131,32 @@ export const ALPHA = [
       {
         "step": 8,
         "token": "color/transparent/primary/8",
-        "value": "rgba(3, 115, 223, 0.08)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-8) * 100%), transparent)"
       },
       {
         "step": 16,
         "token": "color/transparent/primary/16",
-        "value": "rgba(3, 115, 223, 0.16)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-16) * 100%), transparent)"
       },
       {
         "step": 24,
         "token": "color/transparent/primary/24",
-        "value": "rgba(3, 115, 223, 0.24)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-24) * 100%), transparent)"
       },
       {
         "step": 32,
         "token": "color/transparent/primary/32",
-        "value": "rgba(3, 115, 223, 0.32)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-32) * 100%), transparent)"
       },
       {
         "step": 40,
         "token": "color/transparent/primary/40",
-        "value": "rgba(3, 115, 223, 0.4)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-40) * 100%), transparent)"
       },
       {
         "step": 48,
         "token": "color/transparent/primary/48",
-        "value": "rgba(3, 115, 223, 0.48)"
+        "value": "color-mix(in srgb, var(--sa-color-primaryScale-500) calc(var(--sa-alpha-48) * 100%), transparent)"
       }
     ]
   },
@@ -2160,32 +2166,32 @@ export const ALPHA = [
       {
         "step": 8,
         "token": "color/transparent/secondary/8",
-        "value": "rgba(255, 103, 31, 0.08)"
+        "value": "color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-8) * 100%), transparent)"
       },
       {
         "step": 16,
         "token": "color/transparent/secondary/16",
-        "value": "rgba(255, 103, 31, 0.16)"
+        "value": "color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-16) * 100%), transparent)"
       },
       {
         "step": 24,
         "token": "color/transparent/secondary/24",
-        "value": "rgba(255, 103, 31, 0.24)"
+        "value": "color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-24) * 100%), transparent)"
       },
       {
         "step": 32,
         "token": "color/transparent/secondary/32",
-        "value": "rgba(255, 103, 31, 0.32)"
+        "value": "color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-32) * 100%), transparent)"
       },
       {
         "step": 40,
         "token": "color/transparent/secondary/40",
-        "value": "rgba(255, 103, 31, 0.4)"
+        "value": "color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-40) * 100%), transparent)"
       },
       {
         "step": 48,
         "token": "color/transparent/secondary/48",
-        "value": "rgba(255, 103, 31, 0.48)"
+        "value": "color-mix(in srgb, var(--sa-color-secondaryScale-400) calc(var(--sa-alpha-48) * 100%), transparent)"
       }
     ]
   },
@@ -2195,32 +2201,32 @@ export const ALPHA = [
       {
         "step": 8,
         "token": "color/transparent/accent/8",
-        "value": "rgba(4, 106, 56, 0.08)"
+        "value": "color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-8) * 100%), transparent)"
       },
       {
         "step": 16,
         "token": "color/transparent/accent/16",
-        "value": "rgba(4, 106, 56, 0.16)"
+        "value": "color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-16) * 100%), transparent)"
       },
       {
         "step": 24,
         "token": "color/transparent/accent/24",
-        "value": "rgba(4, 106, 56, 0.24)"
+        "value": "color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-24) * 100%), transparent)"
       },
       {
         "step": 32,
         "token": "color/transparent/accent/32",
-        "value": "rgba(4, 106, 56, 0.32)"
+        "value": "color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-32) * 100%), transparent)"
       },
       {
         "step": 40,
         "token": "color/transparent/accent/40",
-        "value": "rgba(4, 106, 56, 0.4)"
+        "value": "color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-40) * 100%), transparent)"
       },
       {
         "step": 48,
         "token": "color/transparent/accent/48",
-        "value": "rgba(4, 106, 56, 0.48)"
+        "value": "color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-48) * 100%), transparent)"
       }
     ]
   },
@@ -2230,32 +2236,32 @@ export const ALPHA = [
       {
         "step": 8,
         "token": "color/transparent/success/8",
-        "value": "rgba(4, 106, 56, 0.08)"
+        "value": "color-mix(in srgb, var(--sa-color-successScale-600) calc(var(--sa-alpha-8) * 100%), transparent)"
       },
       {
         "step": 16,
         "token": "color/transparent/success/16",
-        "value": "rgba(4, 106, 56, 0.16)"
+        "value": "color-mix(in srgb, var(--sa-color-successScale-600) calc(var(--sa-alpha-16) * 100%), transparent)"
       },
       {
         "step": 24,
         "token": "color/transparent/success/24",
-        "value": "rgba(4, 106, 56, 0.24)"
+        "value": "color-mix(in srgb, var(--sa-color-successScale-600) calc(var(--sa-alpha-24) * 100%), transparent)"
       },
       {
         "step": 32,
         "token": "color/transparent/success/32",
-        "value": "rgba(4, 106, 56, 0.32)"
+        "value": "color-mix(in srgb, var(--sa-color-successScale-600) calc(var(--sa-alpha-32) * 100%), transparent)"
       },
       {
         "step": 40,
         "token": "color/transparent/success/40",
-        "value": "rgba(4, 106, 56, 0.4)"
+        "value": "color-mix(in srgb, var(--sa-color-successScale-600) calc(var(--sa-alpha-40) * 100%), transparent)"
       },
       {
         "step": 48,
         "token": "color/transparent/success/48",
-        "value": "rgba(4, 106, 56, 0.48)"
+        "value": "color-mix(in srgb, var(--sa-color-successScale-600) calc(var(--sa-alpha-48) * 100%), transparent)"
       }
     ]
   },
@@ -2265,32 +2271,32 @@ export const ALPHA = [
       {
         "step": 8,
         "token": "color/transparent/danger/8",
-        "value": "rgba(203, 61, 63, 0.08)"
+        "value": "color-mix(in srgb, var(--sa-color-dangerScale-500) calc(var(--sa-alpha-8) * 100%), transparent)"
       },
       {
         "step": 16,
         "token": "color/transparent/danger/16",
-        "value": "rgba(203, 61, 63, 0.16)"
+        "value": "color-mix(in srgb, var(--sa-color-dangerScale-500) calc(var(--sa-alpha-16) * 100%), transparent)"
       },
       {
         "step": 24,
         "token": "color/transparent/danger/24",
-        "value": "rgba(203, 61, 63, 0.24)"
+        "value": "color-mix(in srgb, var(--sa-color-dangerScale-500) calc(var(--sa-alpha-24) * 100%), transparent)"
       },
       {
         "step": 32,
         "token": "color/transparent/danger/32",
-        "value": "rgba(203, 61, 63, 0.32)"
+        "value": "color-mix(in srgb, var(--sa-color-dangerScale-500) calc(var(--sa-alpha-32) * 100%), transparent)"
       },
       {
         "step": 40,
         "token": "color/transparent/danger/40",
-        "value": "rgba(203, 61, 63, 0.4)"
+        "value": "color-mix(in srgb, var(--sa-color-dangerScale-500) calc(var(--sa-alpha-40) * 100%), transparent)"
       },
       {
         "step": 48,
         "token": "color/transparent/danger/48",
-        "value": "rgba(203, 61, 63, 0.48)"
+        "value": "color-mix(in srgb, var(--sa-color-dangerScale-500) calc(var(--sa-alpha-48) * 100%), transparent)"
       }
     ]
   },
@@ -2300,32 +2306,32 @@ export const ALPHA = [
       {
         "step": 8,
         "token": "color/transparent/warning/8",
-        "value": "rgba(167, 114, 0, 0.08)"
+        "value": "color-mix(in srgb, var(--sa-color-warningScale-500) calc(var(--sa-alpha-8) * 100%), transparent)"
       },
       {
         "step": 16,
         "token": "color/transparent/warning/16",
-        "value": "rgba(167, 114, 0, 0.16)"
+        "value": "color-mix(in srgb, var(--sa-color-warningScale-500) calc(var(--sa-alpha-16) * 100%), transparent)"
       },
       {
         "step": 24,
         "token": "color/transparent/warning/24",
-        "value": "rgba(167, 114, 0, 0.24)"
+        "value": "color-mix(in srgb, var(--sa-color-warningScale-500) calc(var(--sa-alpha-24) * 100%), transparent)"
       },
       {
         "step": 32,
         "token": "color/transparent/warning/32",
-        "value": "rgba(167, 114, 0, 0.32)"
+        "value": "color-mix(in srgb, var(--sa-color-warningScale-500) calc(var(--sa-alpha-32) * 100%), transparent)"
       },
       {
         "step": 40,
         "token": "color/transparent/warning/40",
-        "value": "rgba(167, 114, 0, 0.4)"
+        "value": "color-mix(in srgb, var(--sa-color-warningScale-500) calc(var(--sa-alpha-40) * 100%), transparent)"
       },
       {
         "step": 48,
         "token": "color/transparent/warning/48",
-        "value": "rgba(167, 114, 0, 0.48)"
+        "value": "color-mix(in srgb, var(--sa-color-warningScale-500) calc(var(--sa-alpha-48) * 100%), transparent)"
       }
     ]
   },
@@ -2335,32 +2341,225 @@ export const ALPHA = [
       {
         "step": 8,
         "token": "color/transparent/white/8",
-        "value": "rgba(255, 255, 255, 0.08)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-0) calc(var(--sa-alpha-8) * 100%), transparent)"
       },
       {
         "step": 16,
         "token": "color/transparent/white/16",
-        "value": "rgba(255, 255, 255, 0.16)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-0) calc(var(--sa-alpha-16) * 100%), transparent)"
       },
       {
         "step": 24,
         "token": "color/transparent/white/24",
-        "value": "rgba(255, 255, 255, 0.24)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-0) calc(var(--sa-alpha-24) * 100%), transparent)"
       },
       {
         "step": 32,
         "token": "color/transparent/white/32",
-        "value": "rgba(255, 255, 255, 0.32)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-0) calc(var(--sa-alpha-32) * 100%), transparent)"
       },
       {
         "step": 40,
         "token": "color/transparent/white/40",
-        "value": "rgba(255, 255, 255, 0.4)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-0) calc(var(--sa-alpha-40) * 100%), transparent)"
       },
       {
         "step": 48,
         "token": "color/transparent/white/48",
-        "value": "rgba(255, 255, 255, 0.48)"
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-0) calc(var(--sa-alpha-48) * 100%), transparent)"
+      }
+    ]
+  }
+] as const;
+
+export const ALPHA_SCALE = [
+  {
+    "step": 0,
+    "css": "--sa-alpha-0",
+    "figma": "alpha/0",
+    "value": "0",
+    "use": "Fully transparent — the resting fill of an outlined button on a brand surface."
+  },
+  {
+    "step": 4,
+    "css": "--sa-alpha-4",
+    "figma": "alpha/4",
+    "value": "0.04",
+    "use": "Hairline or the faintest lift on a dark surface: the code specimen's border and titlebar strip."
+  },
+  {
+    "step": 8,
+    "css": "--sa-alpha-8",
+    "figma": "alpha/8",
+    "value": "0.08",
+    "use": "Hover wash on a brand or neutral surface, and the lightest overlay tier."
+  },
+  {
+    "step": 16,
+    "css": "--sa-alpha-16",
+    "figma": "alpha/16",
+    "value": "0.16",
+    "use": "Pressed/selected wash on a brand surface, and the second overlay tier."
+  },
+  {
+    "step": 24,
+    "css": "--sa-alpha-24",
+    "figma": "alpha/24",
+    "value": "0.24",
+    "use": "Third overlay tier; the disabled border of a secondary inverse button."
+  },
+  {
+    "step": 32,
+    "css": "--sa-alpha-32",
+    "figma": "alpha/32",
+    "value": "0.32",
+    "use": "Fourth overlay tier; a stronger hairline on a dark surface."
+  },
+  {
+    "step": 40,
+    "css": "--sa-alpha-40",
+    "figma": "alpha/40",
+    "value": "0.4",
+    "use": "The quieter inverse rule (border/neutral/inverse/subtle) and a disabled inverse fill."
+  },
+  {
+    "step": 48,
+    "css": "--sa-alpha-48",
+    "figma": "alpha/48",
+    "value": "0.48",
+    "use": "The strongest overlay tier, the modal scrim, and the resting label on a dark titlebar."
+  },
+  {
+    "step": 64,
+    "css": "--sa-alpha-64",
+    "figma": "alpha/64",
+    "value": "0.64",
+    "use": "Disabled ink on a dark or brand surface."
+  },
+  {
+    "step": 72,
+    "css": "--sa-alpha-72",
+    "figma": "alpha/72",
+    "value": "0.72",
+    "use": "Secondary ink on a dark or brand surface — an interactive titlebar label."
+  },
+  {
+    "step": 80,
+    "css": "--sa-alpha-80",
+    "figma": "alpha/80",
+    "value": "0.8",
+    "use": "Pressed fill of a primary inverse button."
+  },
+  {
+    "step": 88,
+    "css": "--sa-alpha-88",
+    "figma": "alpha/88",
+    "value": "0.88",
+    "use": "Hover fill of a primary inverse button."
+  },
+  {
+    "step": 100,
+    "css": "--sa-alpha-100",
+    "figma": "alpha/100",
+    "value": "1",
+    "use": "Opaque — a sentinel so a binding can be switched off without unbinding."
+  }
+] as const;
+
+export const TRANSLUCENT = [
+  {
+    "group": "Overlay tiers",
+    "count": 48,
+    "examples": [
+      {
+        "token": "color/transparent/primary/8",
+        "base": "color/primaryScale/500",
+        "alpha": "alpha/8",
+        "css": "--sa-color-transparent-primary-8"
+      },
+      {
+        "token": "color/transparent/primary/16",
+        "base": "color/primaryScale/500",
+        "alpha": "alpha/16",
+        "css": "--sa-color-transparent-primary-16"
+      },
+      {
+        "token": "color/transparent/primary/24",
+        "base": "color/primaryScale/500",
+        "alpha": "alpha/24",
+        "css": "--sa-color-transparent-primary-24"
+      }
+    ]
+  },
+  {
+    "group": "Inverse button states",
+    "count": 52,
+    "examples": [
+      {
+        "token": "cmp/action/brand/primary/inverse/hover/bg",
+        "base": "color/neutralScale/0",
+        "alpha": "alpha/88",
+        "css": "--sa-action-brand-primary-inverse-hover-bg"
+      },
+      {
+        "token": "cmp/action/brand/primary/inverse/hover/border",
+        "base": "color/neutralScale/0",
+        "alpha": "alpha/88",
+        "css": "--sa-action-brand-primary-inverse-hover-border"
+      },
+      {
+        "token": "cmp/action/brand/primary/inverse/active/bg",
+        "base": "color/neutralScale/0",
+        "alpha": "alpha/80",
+        "css": "--sa-action-brand-primary-inverse-active-bg"
+      }
+    ]
+  },
+  {
+    "group": "Transparent resting fills",
+    "count": 32,
+    "examples": [
+      {
+        "token": "cmp/action/brand/secondary/default/bg",
+        "base": "color/neutralScale/0",
+        "alpha": "alpha/0",
+        "css": "--sa-action-brand-secondary-default-bg"
+      },
+      {
+        "token": "cmp/action/brand/secondary/disabled/bg",
+        "base": "color/neutralScale/0",
+        "alpha": "alpha/0",
+        "css": "--sa-action-brand-secondary-disabled-bg"
+      },
+      {
+        "token": "cmp/action/brand/tertiary/default/bg",
+        "base": "color/neutralScale/0",
+        "alpha": "alpha/0",
+        "css": "--sa-action-brand-tertiary-default-bg"
+      }
+    ]
+  },
+  {
+    "group": "Scrim, washes and rules",
+    "count": 4,
+    "examples": [
+      {
+        "token": "border/neutral/inverse/subtle",
+        "base": "color/neutralScale/0",
+        "alpha": "alpha/40",
+        "css": "--sa-border-neutral-inverse-subtle"
+      },
+      {
+        "token": "overlay/neutral/boldest",
+        "base": "color/neutralScale/800",
+        "alpha": "alpha/48",
+        "css": "--sa-overlay-neutral-boldest"
+      },
+      {
+        "token": "overlay/brand/hover",
+        "base": "color/neutralScale/0",
+        "alpha": "alpha/8",
+        "css": "--sa-overlay-brand-hover"
       }
     ]
   }

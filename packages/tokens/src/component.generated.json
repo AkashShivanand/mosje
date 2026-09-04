@@ -92,7 +92,12 @@
           "hover": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.92)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.88}"
+                }
+              },
               "$description": "Use when the user hovers over a primary-brand primary button placed on a solid brand surface — the fill."
             },
             "text": {
@@ -102,14 +107,24 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.92)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.88}"
+                }
+              },
               "$description": "Use when the user hovers over a primary-brand primary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.84)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.80}"
+                }
+              },
               "$description": "Use when a primary-brand primary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
@@ -119,24 +134,44 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.84)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.80}"
+                }
+              },
               "$description": "Use when a primary-brand primary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a primary-brand primary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.64)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.64}"
+                }
+              },
               "$description": "Use when a primary-brand primary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a primary-brand primary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
@@ -146,7 +181,12 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for primary-brand secondary buttons at rest — the fill."
           },
           "text": {
@@ -197,7 +237,12 @@
         "disabled": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a primary-brand secondary button’s action is not available — the fill."
           },
           "text": {
@@ -215,7 +260,12 @@
           "default": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(0, 0, 0, 0)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.0}"
+                }
+              },
               "$description": "Use for primary-brand secondary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
@@ -232,7 +282,12 @@
           "hover": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.10)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.8}"
+                }
+              },
               "$description": "Use when the user hovers over a primary-brand secondary button placed on a solid brand surface — the fill."
             },
             "text": {
@@ -249,7 +304,12 @@
           "active": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.16)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.16}"
+                }
+              },
               "$description": "Use when a primary-brand secondary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
@@ -266,17 +326,32 @@
           "disabled": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(0, 0, 0, 0)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.0}"
+                }
+              },
               "$description": "Use when a primary-brand secondary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a primary-brand secondary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.24)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.24}"
+                }
+              },
               "$description": "Use when a primary-brand secondary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
@@ -286,7 +361,12 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for primary-brand tertiary buttons at rest — the fill."
           },
           "text": {
@@ -296,7 +376,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for primary-brand tertiary buttons at rest — the outline."
           }
         },
@@ -313,7 +398,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when the user hovers over a primary-brand tertiary button — the outline."
           }
         },
@@ -330,14 +420,24 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a primary-brand tertiary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a primary-brand tertiary button’s action is not available — the fill."
           },
           "text": {
@@ -347,7 +447,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a primary-brand tertiary button’s action is not available — the outline."
           }
         }
@@ -514,7 +619,12 @@
           "hover": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.92)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.88}"
+                }
+              },
               "$description": "Use when the user hovers over a confirming primary button placed on a solid brand surface — the fill."
             },
             "text": {
@@ -524,14 +634,24 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.92)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.88}"
+                }
+              },
               "$description": "Use when the user hovers over a confirming primary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.84)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.80}"
+                }
+              },
               "$description": "Use when a confirming primary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
@@ -541,24 +661,44 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.84)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.80}"
+                }
+              },
               "$description": "Use when a confirming primary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a confirming primary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.64)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.64}"
+                }
+              },
               "$description": "Use when a confirming primary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a confirming primary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
@@ -568,7 +708,12 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for confirming secondary buttons at rest — the fill."
           },
           "text": {
@@ -619,7 +764,12 @@
         "disabled": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a confirming secondary button’s action is not available — the fill."
           },
           "text": {
@@ -637,7 +787,12 @@
           "default": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(0, 0, 0, 0)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.0}"
+                }
+              },
               "$description": "Use for confirming secondary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
@@ -654,7 +809,12 @@
           "hover": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.10)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.8}"
+                }
+              },
               "$description": "Use when the user hovers over a confirming secondary button placed on a solid brand surface — the fill."
             },
             "text": {
@@ -671,7 +831,12 @@
           "active": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.16)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.16}"
+                }
+              },
               "$description": "Use when a confirming secondary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
@@ -688,17 +853,32 @@
           "disabled": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(0, 0, 0, 0)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.0}"
+                }
+              },
               "$description": "Use when a confirming secondary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a confirming secondary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.24)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.24}"
+                }
+              },
               "$description": "Use when a confirming secondary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
@@ -708,7 +888,12 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for confirming tertiary buttons at rest — the fill."
           },
           "text": {
@@ -718,7 +903,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for confirming tertiary buttons at rest — the outline."
           }
         },
@@ -735,7 +925,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when the user hovers over a confirming tertiary button — the outline."
           }
         },
@@ -752,14 +947,24 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a confirming tertiary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a confirming tertiary button’s action is not available — the fill."
           },
           "text": {
@@ -769,7 +974,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a confirming tertiary button’s action is not available — the outline."
           }
         }
@@ -936,7 +1146,12 @@
           "hover": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.92)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.88}"
+                }
+              },
               "$description": "Use when the user hovers over a destructive primary button placed on a solid brand surface — the fill."
             },
             "text": {
@@ -946,14 +1161,24 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.92)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.88}"
+                }
+              },
               "$description": "Use when the user hovers over a destructive primary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.84)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.80}"
+                }
+              },
               "$description": "Use when a destructive primary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
@@ -963,24 +1188,44 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.84)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.80}"
+                }
+              },
               "$description": "Use when a destructive primary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a destructive primary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.64)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.64}"
+                }
+              },
               "$description": "Use when a destructive primary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a destructive primary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
@@ -990,7 +1235,12 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for destructive secondary buttons at rest — the fill."
           },
           "text": {
@@ -1041,7 +1291,12 @@
         "disabled": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a destructive secondary button’s action is not available — the fill."
           },
           "text": {
@@ -1059,7 +1314,12 @@
           "default": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(0, 0, 0, 0)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.0}"
+                }
+              },
               "$description": "Use for destructive secondary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
@@ -1076,7 +1336,12 @@
           "hover": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.10)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.8}"
+                }
+              },
               "$description": "Use when the user hovers over a destructive secondary button placed on a solid brand surface — the fill."
             },
             "text": {
@@ -1093,7 +1358,12 @@
           "active": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.16)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.16}"
+                }
+              },
               "$description": "Use when a destructive secondary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
@@ -1110,17 +1380,32 @@
           "disabled": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(0, 0, 0, 0)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.0}"
+                }
+              },
               "$description": "Use when a destructive secondary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a destructive secondary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.24)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.24}"
+                }
+              },
               "$description": "Use when a destructive secondary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
@@ -1130,7 +1415,12 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for destructive tertiary buttons at rest — the fill."
           },
           "text": {
@@ -1140,7 +1430,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for destructive tertiary buttons at rest — the outline."
           }
         },
@@ -1157,7 +1452,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when the user hovers over a destructive tertiary button — the outline."
           }
         },
@@ -1174,14 +1474,24 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a destructive tertiary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a destructive tertiary button’s action is not available — the fill."
           },
           "text": {
@@ -1191,7 +1501,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a destructive tertiary button’s action is not available — the outline."
           }
         }
@@ -1358,7 +1673,12 @@
           "hover": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.92)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.88}"
+                }
+              },
               "$description": "Use when the user hovers over a neutral primary button placed on a solid brand surface — the fill."
             },
             "text": {
@@ -1368,14 +1688,24 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.92)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.88}"
+                }
+              },
               "$description": "Use when the user hovers over a neutral primary button placed on a solid brand surface — the outline."
             }
           },
           "active": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.84)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.80}"
+                }
+              },
               "$description": "Use when a neutral primary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
@@ -1385,24 +1715,44 @@
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.84)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.80}"
+                }
+              },
               "$description": "Use when a neutral primary button is pressed placed on a solid brand surface — the outline."
             }
           },
           "disabled": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a neutral primary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.64)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.64}"
+                }
+              },
               "$description": "Use when a neutral primary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a neutral primary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
@@ -1412,7 +1762,12 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for neutral secondary buttons at rest — the fill."
           },
           "text": {
@@ -1463,7 +1818,12 @@
         "disabled": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a neutral secondary button’s action is not available — the fill."
           },
           "text": {
@@ -1481,7 +1841,12 @@
           "default": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(0, 0, 0, 0)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.0}"
+                }
+              },
               "$description": "Use for neutral secondary buttons at rest placed on a solid brand surface — the fill."
             },
             "text": {
@@ -1498,7 +1863,12 @@
           "hover": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.10)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.8}"
+                }
+              },
               "$description": "Use when the user hovers over a neutral secondary button placed on a solid brand surface — the fill."
             },
             "text": {
@@ -1515,7 +1885,12 @@
           "active": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.16)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.16}"
+                }
+              },
               "$description": "Use when a neutral secondary button is pressed placed on a solid brand surface — the fill."
             },
             "text": {
@@ -1532,17 +1907,32 @@
           "disabled": {
             "bg": {
               "$type": "color",
-              "$value": "rgba(0, 0, 0, 0)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.0}"
+                }
+              },
               "$description": "Use when a neutral secondary button’s action is not available placed on a solid brand surface — the fill."
             },
             "text": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.40)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.40}"
+                }
+              },
               "$description": "Use when a neutral secondary button’s action is not available placed on a solid brand surface — the label."
             },
             "border": {
               "$type": "color",
-              "$value": "rgba(255, 255, 255, 0.24)",
+              "$value": "{color.neutralScale.0}",
+              "$extensions": {
+                "mosje": {
+                  "alpha": "{alpha.24}"
+                }
+              },
               "$description": "Use when a neutral secondary button’s action is not available placed on a solid brand surface — the outline."
             }
           }
@@ -1552,7 +1942,12 @@
         "default": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for neutral tertiary buttons at rest — the fill."
           },
           "text": {
@@ -1562,7 +1957,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use for neutral tertiary buttons at rest — the outline."
           }
         },
@@ -1579,7 +1979,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when the user hovers over a neutral tertiary button — the outline."
           }
         },
@@ -1596,14 +2001,24 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a neutral tertiary button is pressed — the outline."
           }
         },
         "disabled": {
           "bg": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a neutral tertiary button’s action is not available — the fill."
           },
           "text": {
@@ -1613,7 +2028,12 @@
           },
           "border": {
             "$type": "color",
-            "$value": "rgba(0, 0, 0, 0)",
+            "$value": "{color.neutralScale.0}",
+            "$extensions": {
+              "mosje": {
+                "alpha": "{alpha.0}"
+              }
+            },
             "$description": "Use when a neutral tertiary button’s action is not available — the outline."
           }
         }

@@ -454,68 +454,68 @@ export const tokens = {
     },
     "transparent": {
       "primary": {
-        "8": "rgba(3, 115, 223, 0.08)",
-        "16": "rgba(3, 115, 223, 0.16)",
-        "24": "rgba(3, 115, 223, 0.24)",
-        "32": "rgba(3, 115, 223, 0.32)",
-        "40": "rgba(3, 115, 223, 0.4)",
-        "48": "rgba(3, 115, 223, 0.48)"
+        "8": "#0373df",
+        "16": "#0373df",
+        "24": "#0373df",
+        "32": "#0373df",
+        "40": "#0373df",
+        "48": "#0373df"
       },
       "secondary": {
-        "8": "rgba(255, 103, 31, 0.08)",
-        "16": "rgba(255, 103, 31, 0.16)",
-        "24": "rgba(255, 103, 31, 0.24)",
-        "32": "rgba(255, 103, 31, 0.32)",
-        "40": "rgba(255, 103, 31, 0.4)",
-        "48": "rgba(255, 103, 31, 0.48)"
+        "8": "#ff671f",
+        "16": "#ff671f",
+        "24": "#ff671f",
+        "32": "#ff671f",
+        "40": "#ff671f",
+        "48": "#ff671f"
       },
       "accent": {
-        "8": "rgba(4, 106, 56, 0.08)",
-        "16": "rgba(4, 106, 56, 0.16)",
-        "24": "rgba(4, 106, 56, 0.24)",
-        "32": "rgba(4, 106, 56, 0.32)",
-        "40": "rgba(4, 106, 56, 0.4)",
-        "48": "rgba(4, 106, 56, 0.48)"
+        "8": "#046a38",
+        "16": "#046a38",
+        "24": "#046a38",
+        "32": "#046a38",
+        "40": "#046a38",
+        "48": "#046a38"
       },
       "neutral": {
-        "8": "rgba(30, 33, 36, 0.08)",
-        "16": "rgba(30, 33, 36, 0.16)",
-        "24": "rgba(30, 33, 36, 0.24)",
-        "32": "rgba(30, 33, 36, 0.32)",
-        "40": "rgba(30, 33, 36, 0.4)",
-        "48": "rgba(30, 33, 36, 0.48)"
+        "8": "#1e2124",
+        "16": "#1e2124",
+        "24": "#1e2124",
+        "32": "#1e2124",
+        "40": "#1e2124",
+        "48": "#1e2124"
       },
       "success": {
-        "8": "rgba(4, 106, 56, 0.08)",
-        "16": "rgba(4, 106, 56, 0.16)",
-        "24": "rgba(4, 106, 56, 0.24)",
-        "32": "rgba(4, 106, 56, 0.32)",
-        "40": "rgba(4, 106, 56, 0.4)",
-        "48": "rgba(4, 106, 56, 0.48)"
+        "8": "#046a38",
+        "16": "#046a38",
+        "24": "#046a38",
+        "32": "#046a38",
+        "40": "#046a38",
+        "48": "#046a38"
       },
       "danger": {
-        "8": "rgba(203, 61, 63, 0.08)",
-        "16": "rgba(203, 61, 63, 0.16)",
-        "24": "rgba(203, 61, 63, 0.24)",
-        "32": "rgba(203, 61, 63, 0.32)",
-        "40": "rgba(203, 61, 63, 0.4)",
-        "48": "rgba(203, 61, 63, 0.48)"
+        "8": "#cb3d3f",
+        "16": "#cb3d3f",
+        "24": "#cb3d3f",
+        "32": "#cb3d3f",
+        "40": "#cb3d3f",
+        "48": "#cb3d3f"
       },
       "warning": {
-        "8": "rgba(167, 114, 0, 0.08)",
-        "16": "rgba(167, 114, 0, 0.16)",
-        "24": "rgba(167, 114, 0, 0.24)",
-        "32": "rgba(167, 114, 0, 0.32)",
-        "40": "rgba(167, 114, 0, 0.4)",
-        "48": "rgba(167, 114, 0, 0.48)"
+        "8": "#a77200",
+        "16": "#a77200",
+        "24": "#a77200",
+        "32": "#a77200",
+        "40": "#a77200",
+        "48": "#a77200"
       },
       "white": {
-        "8": "rgba(255, 255, 255, 0.08)",
-        "16": "rgba(255, 255, 255, 0.16)",
-        "24": "rgba(255, 255, 255, 0.24)",
-        "32": "rgba(255, 255, 255, 0.32)",
-        "40": "rgba(255, 255, 255, 0.4)",
-        "48": "rgba(255, 255, 255, 0.48)"
+        "8": "#ffffff",
+        "16": "#ffffff",
+        "24": "#ffffff",
+        "32": "#ffffff",
+        "40": "#ffffff",
+        "48": "#ffffff"
       }
     },
     "text": {
@@ -827,7 +827,7 @@ export const tokens = {
       },
       "inverse": {
         "default": "#ffffff",
-        "subtle": "rgba(255, 255, 255, 0.4)"
+        "subtle": "#ffffff"
       }
     },
     "brand": {
@@ -857,18 +857,17 @@ export const tokens = {
   },
   "opacity": {
     "0": "0",
-    "5": "0.05",
-    "10": "0.1",
-    "20": "0.2",
-    "25": "0.25",
-    "30": "0.3",
+    "4": "0.04",
+    "8": "0.08",
+    "16": "0.16",
+    "24": "0.24",
+    "32": "0.32",
     "40": "0.4",
-    "50": "0.5",
-    "60": "0.6",
-    "70": "0.7",
-    "75": "0.75",
+    "48": "0.48",
+    "64": "0.64",
+    "72": "0.72",
     "80": "0.8",
-    "90": "0.9",
+    "88": "0.88",
     "100": "1"
   },
   "z": {
@@ -1088,11 +1087,11 @@ export const tokens = {
   },
   "overlay": {
     "neutral": {
-      "boldest": "rgba(30, 33, 36, 0.5)"
+      "boldest": "#1e2124"
     },
     "brand": {
-      "hover": "rgba(255, 255, 255, 0.08)",
-      "active": "rgba(255, 255, 255, 0.16)"
+      "hover": "#ffffff",
+      "active": "#ffffff"
     }
   },
   "inline": {
@@ -1219,12 +1218,12 @@ export const tokens = {
     "string": "#86efac",
     "builtin": "#7dd3fc",
     "shell": "#12141c",
-    "border": "rgba(255, 255, 255, 0.1)",
-    "chrome": "rgba(255, 255, 255, 0.03)",
-    "chromeText": "rgba(255, 255, 255, 0.45)",
-    "chromeTextStrong": "rgba(255, 255, 255, 0.7)",
-    "chromeHover": "rgba(255, 255, 255, 0.08)",
-    "borderStrong": "rgba(255, 255, 255, 0.3)"
+    "border": "#ffffff",
+    "chrome": "#ffffff",
+    "chromeText": "#ffffff",
+    "chromeTextStrong": "#ffffff",
+    "chromeHover": "#ffffff",
+    "borderStrong": "#ffffff"
   },
   "layer": {
     "0": "#ffffff",
@@ -1454,6 +1453,21 @@ export const tokens = {
     "3": "3px",
     "4": "4px"
   },
+  "alpha": {
+    "0": "0",
+    "4": "0.04",
+    "8": "0.08",
+    "16": "0.16",
+    "24": "0.24",
+    "32": "0.32",
+    "40": "0.4",
+    "48": "0.48",
+    "64": "0.64",
+    "72": "0.72",
+    "80": "0.8",
+    "88": "0.88",
+    "100": "1"
+  },
   "button": {
     "primary": {
       "bg": "#0373df",
@@ -1479,8 +1493,8 @@ export const tokens = {
     "flagWidth": "33px",
     "flagHeight": "1.375rem",
     "pillSize": "2rem",
-    "pillBg": "rgba(255, 255, 255, 0.16)",
-    "hoverBg": "rgba(255, 255, 255, 0.08)",
+    "pillBg": "#ffffff",
+    "hoverBg": "#ffffff",
     "stepSize": "1.5rem",
     "launchIconSize": "0.75rem",
     "iconButtonSize": "1.75rem"
@@ -1518,25 +1532,25 @@ export const tokens = {
             "border": "#ffffff"
           },
           "hover": {
-            "bg": "rgba(255, 255, 255, 0.92)",
+            "bg": "#ffffff",
             "text": "#003975",
-            "border": "rgba(255, 255, 255, 0.92)"
+            "border": "#ffffff"
           },
           "active": {
-            "bg": "rgba(255, 255, 255, 0.84)",
+            "bg": "#ffffff",
             "text": "#002855",
-            "border": "rgba(255, 255, 255, 0.84)"
+            "border": "#ffffff"
           },
           "disabled": {
-            "bg": "rgba(255, 255, 255, 0.4)",
-            "text": "rgba(255, 255, 255, 0.64)",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "bg": "#ffffff",
+            "text": "#ffffff",
+            "border": "#ffffff"
           }
         }
       },
       "secondary": {
         "default": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#004b96",
           "border": "#62a7ff"
         },
@@ -1551,53 +1565,53 @@ export const tokens = {
           "border": "#0373df"
         },
         "disabled": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
           "default": {
-            "bg": "rgba(0, 0, 0, 0)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#c0dbff"
           },
           "hover": {
-            "bg": "rgba(255, 255, 255, 0.1)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#ecf4ff"
           },
           "active": {
-            "bg": "rgba(255, 255, 255, 0.16)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#ffffff"
           },
           "disabled": {
-            "bg": "rgba(0, 0, 0, 0)",
-            "text": "rgba(255, 255, 255, 0.4)",
-            "border": "rgba(255, 255, 255, 0.24)"
+            "bg": "#ffffff",
+            "text": "#ffffff",
+            "border": "#ffffff"
           }
         }
       },
       "tertiary": {
         "default": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#004b96",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "hover": {
           "bg": "#ecf4ff",
           "text": "#004b96",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "active": {
           "bg": "#c0dbff",
           "text": "#003975",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "disabled": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#8e949c",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         }
       },
       "tonal": {
@@ -1652,25 +1666,25 @@ export const tokens = {
             "border": "#ffffff"
           },
           "hover": {
-            "bg": "rgba(255, 255, 255, 0.92)",
+            "bg": "#ffffff",
             "text": "#003d1e",
-            "border": "rgba(255, 255, 255, 0.92)"
+            "border": "#ffffff"
           },
           "active": {
-            "bg": "rgba(255, 255, 255, 0.84)",
+            "bg": "#ffffff",
             "text": "#002a12",
-            "border": "rgba(255, 255, 255, 0.84)"
+            "border": "#ffffff"
           },
           "disabled": {
-            "bg": "rgba(255, 255, 255, 0.4)",
-            "text": "rgba(255, 255, 255, 0.64)",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "bg": "#ffffff",
+            "text": "#ffffff",
+            "border": "#ffffff"
           }
         }
       },
       "secondary": {
         "default": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#00532a",
           "border": "#76b188"
         },
@@ -1685,53 +1699,53 @@ export const tokens = {
           "border": "#338051"
         },
         "disabled": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
           "default": {
-            "bg": "rgba(0, 0, 0, 0)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#bde3c7"
           },
           "hover": {
-            "bg": "rgba(255, 255, 255, 0.1)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#e5faea"
           },
           "active": {
-            "bg": "rgba(255, 255, 255, 0.16)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#ffffff"
           },
           "disabled": {
-            "bg": "rgba(0, 0, 0, 0)",
-            "text": "rgba(255, 255, 255, 0.4)",
-            "border": "rgba(255, 255, 255, 0.24)"
+            "bg": "#ffffff",
+            "text": "#ffffff",
+            "border": "#ffffff"
           }
         }
       },
       "tertiary": {
         "default": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#00532a",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "hover": {
           "bg": "#e5faea",
           "text": "#00532a",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "active": {
           "bg": "#bde3c7",
           "text": "#003d1e",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "disabled": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#8e949c",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         }
       },
       "tonal": {
@@ -1786,25 +1800,25 @@ export const tokens = {
             "border": "#ffffff"
           },
           "hover": {
-            "bg": "rgba(255, 255, 255, 0.92)",
+            "bg": "#ffffff",
             "text": "#6c0f15",
-            "border": "rgba(255, 255, 255, 0.92)"
+            "border": "#ffffff"
           },
           "active": {
-            "bg": "rgba(255, 255, 255, 0.84)",
+            "bg": "#ffffff",
             "text": "#4e0209",
-            "border": "rgba(255, 255, 255, 0.84)"
+            "border": "#ffffff"
           },
           "disabled": {
-            "bg": "rgba(255, 255, 255, 0.4)",
-            "text": "rgba(255, 255, 255, 0.64)",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "bg": "#ffffff",
+            "text": "#ffffff",
+            "border": "#ffffff"
           }
         }
       },
       "secondary": {
         "default": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#8b1e22",
           "border": "#fe716d"
         },
@@ -1819,53 +1833,53 @@ export const tokens = {
           "border": "#cb3d3f"
         },
         "disabled": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
           "default": {
-            "bg": "rgba(0, 0, 0, 0)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#ffc1bc"
           },
           "hover": {
-            "bg": "rgba(255, 255, 255, 0.1)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#ffe4e1"
           },
           "active": {
-            "bg": "rgba(255, 255, 255, 0.16)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#ffffff"
           },
           "disabled": {
-            "bg": "rgba(0, 0, 0, 0)",
-            "text": "rgba(255, 255, 255, 0.4)",
-            "border": "rgba(255, 255, 255, 0.24)"
+            "bg": "#ffffff",
+            "text": "#ffffff",
+            "border": "#ffffff"
           }
         }
       },
       "tertiary": {
         "default": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#8b1e22",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "hover": {
           "bg": "#ffe4e1",
           "text": "#8b1e22",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "active": {
           "bg": "#ffc1bc",
           "text": "#6c0f15",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "disabled": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#8e949c",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         }
       },
       "tonal": {
@@ -1920,25 +1934,25 @@ export const tokens = {
             "border": "#ffffff"
           },
           "hover": {
-            "bg": "rgba(255, 255, 255, 0.92)",
+            "bg": "#ffffff",
             "text": "#1e2124",
-            "border": "rgba(255, 255, 255, 0.92)"
+            "border": "#ffffff"
           },
           "active": {
-            "bg": "rgba(255, 255, 255, 0.84)",
+            "bg": "#ffffff",
             "text": "#0e1114",
-            "border": "rgba(255, 255, 255, 0.84)"
+            "border": "#ffffff"
           },
           "disabled": {
-            "bg": "rgba(255, 255, 255, 0.4)",
-            "text": "rgba(255, 255, 255, 0.64)",
-            "border": "rgba(255, 255, 255, 0.4)"
+            "bg": "#ffffff",
+            "text": "#ffffff",
+            "border": "#ffffff"
           }
         }
       },
       "secondary": {
         "default": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#3a3d41",
           "border": "#adb1b7"
         },
@@ -1953,53 +1967,53 @@ export const tokens = {
           "border": "#6f757d"
         },
         "disabled": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
           "default": {
-            "bg": "rgba(0, 0, 0, 0)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#dcdee1"
           },
           "hover": {
-            "bg": "rgba(255, 255, 255, 0.1)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#eef0f3"
           },
           "active": {
-            "bg": "rgba(255, 255, 255, 0.16)",
+            "bg": "#ffffff",
             "text": "#ffffff",
             "border": "#ffffff"
           },
           "disabled": {
-            "bg": "rgba(0, 0, 0, 0)",
-            "text": "rgba(255, 255, 255, 0.4)",
-            "border": "rgba(255, 255, 255, 0.24)"
+            "bg": "#ffffff",
+            "text": "#ffffff",
+            "border": "#ffffff"
           }
         }
       },
       "tertiary": {
         "default": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#1e2124",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "hover": {
           "bg": "#eef0f3",
           "text": "#1e2124",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "active": {
           "bg": "#dcdee1",
           "text": "#1e2124",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         },
         "disabled": {
-          "bg": "rgba(0, 0, 0, 0)",
+          "bg": "#ffffff",
           "text": "#8e949c",
-          "border": "rgba(0, 0, 0, 0)"
+          "border": "#ffffff"
         }
       },
       "tonal": {

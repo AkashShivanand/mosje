@@ -198,6 +198,10 @@ function collectionFor(path, tier, type) {
   // the variable name (`ref/radius/md` vs `shape/md`), exactly as it does in CSS.
   if (head === "radius" || head === "shape") return "Radius";
   if (head === "opacity" || head === "z") return "Static";
+  // Tier-2 opacity. Sits with the Tier-1 `ref/opacity/*` it aliases, so a designer binding a
+  // colour variable's opacity finds `alpha/8` and `ref/opacity/8` in one collection and picks
+  // the Tier-2 one — the same pairing as `shape`/`ref/radius` and `stroke`/`ref/border/width`.
+  if (head === "alpha") return "Static";
   if (head === "border" && rest[0] === "width") return "Static";
   // Tier-2 border width. Sits with the Tier-1 `border/width/*` it aliases and with
   // `control/border/width`, so every edge-weight token is findable in one collection.
@@ -456,6 +460,87 @@ function brandOwner(token, tokenByPath, depth = 0) {
     if (next) return brandOwner(next, tokenByPath, depth + 1);
   }
   return null;
+}
+
+/**
+ * Figma interprets a number variable bound to an opacity — a layer's, or a colour variable's —
+ * as a PERCENTAGE: 50 is 50%, 0.5 is half a percent. Verified 2026-09-04 by binding a probe
+ * variable worth 50 to a rectangle and reading `node.opacity` back as 0.5. The CSS convention
+ * is 0–1, so the `opacity/*` and `alpha/*` scales are authored 0–1 and projected ×100 here.
+ */
+const FIGMA_OPACITY_SCALE = 100;
+
+/**
+ * Alias-with-opacity. Figma variables can alias a colour "while maintaining a separate
+ * opacity", and that opacity can itself be a number variable
+ * (help.figma.com/hc/en-us/articles/14506821864087#colorvar). The payload states exactly that:
+ *
+ *   { type: "ALIAS", collection: "Palette", name: "color/accentScale/600",
+ *     opacity: { type: "ALIAS", collection: "Static", name: "alpha/8" },
+ *     fallback: { type: "COLOR", value: "rgba(4, 106, 56, 0.08)" } }
+ *
+ * `fallback` is the composited literal, for a writer that cannot express the binding: the
+ * Plugin API this estate pushes through (apiVersion 1.0.0, 2026-09-04) rejects every shape of
+ * opacity on a VariableAlias, so the push script writes the fallback and the binding is made
+ * in the Figma UI. `figma-value-parity` compares the INTENDED value, so the library reads as a
+ * known difference until it is.
+ */
+function applyAlpha(valuesByMode, alphaRef, nameByPath, resolvedByPath, tokenByPath) {
+  const alphaKey = alphaRef.trim().slice(1, -1);
+  const alphaTarget = nameByPath.get(alphaKey);
+  const alphaValue = Number(resolvedByPath.get(alphaKey));
+  if (!alphaTarget || !Number.isFinite(alphaValue)) {
+    throw new Error(`alpha reference ${alphaRef} has no Figma home or no resolved value`);
+  }
+  for (const mode of Object.keys(valuesByMode)) {
+    const v = valuesByMode[mode];
+    if (v.type === "ALIAS") {
+      // Resolve the aliased colour to a literal for the fallback. The alias target is a
+      // Figma NAME; walk back to a path through the same map.
+      const basePath = [...nameByPath.entries()].find(([, t]) => t.collection === v.collection && t.name === v.name)?.[0];
+      // The fallback is written INTO a mode, so it has to be that mode's colour: the Navy
+      // fallback of color/transparent/primary/8 is navy's primaryScale/500, not blue's.
+      const baseHex = basePath !== undefined ? brandLiteral(basePath, mode, tokenByPath, resolvedByPath) : undefined;
+      valuesByMode[mode] = {
+        ...v,
+        opacity: { type: "ALIAS", collection: alphaTarget.collection, name: alphaTarget.name },
+        ...(typeof baseHex === "string" ? { fallback: { type: "COLOR", value: withAlpha(baseHex, alphaValue) } } : {}),
+      };
+    } else if (v.type === "COLOR") {
+      valuesByMode[mode] = { type: "COLOR", value: withAlpha(v.value, alphaValue) };
+    }
+  }
+}
+
+/**
+ * The literal a token path resolves to IN A BRAND MODE, following the alias chain and taking
+ * each token's `colorModes` override where the mode has one. Falls back to the build's
+ * (Blue) resolution when nothing on the chain varies.
+ */
+function brandLiteral(path, mode, tokenByPath, resolvedByPath, depth = 0) {
+  const token = tokenByPath.get(path);
+  if (!token || depth > 12) return resolvedByPath.get(path);
+  const raw = brandValue(token, mode);
+  if (typeof raw === "string" && /^\{[^}]+\}$/.test(raw.trim())) {
+    return brandLiteral(raw.trim().slice(1, -1), mode, tokenByPath, resolvedByPath, depth + 1);
+  }
+  return typeof raw === "string" ? raw : resolvedByPath.get(path);
+}
+
+/** `#rrggbb` (or rgb()/rgba()) at a given alpha, as an rgba() string. */
+function withAlpha(colour, alpha) {
+  const s = String(colour).trim();
+  let r, g, b;
+  const hex = /^#([0-9a-f]{6})$/i.exec(s);
+  const fn = /^rgba?\(([^)]+)\)$/i.exec(s);
+  if (hex) {
+    r = parseInt(hex[1].slice(0, 2), 16); g = parseInt(hex[1].slice(2, 4), 16); b = parseInt(hex[1].slice(4, 6), 16);
+  } else if (fn) {
+    [r, g, b] = fn[1].split(",").map((x) => parseFloat(x));
+  } else {
+    throw new Error(`withAlpha: cannot parse colour ${s}`);
+  }
+  return `rgba(${r}, ${g}, ${b}, ${alpha.toFixed(2)})`;
 }
 
 function encodeValue(raw, token, nameByPath, resolvedByPath, selfTarget) {
@@ -794,6 +879,16 @@ export function buildPayload(dictionary) {
         raw = token.original?.$value ?? token.original?.value ?? val(token);
       }
       valuesByMode[mode] = encodeValue(raw, token, nameByPath, resolvedByPath, target);
+    }
+    // A translucent token: the base resolved above, now attach its opacity.
+    const alphaRef = token.original?.$extensions?.mosje?.alpha;
+    if (alphaRef) applyAlpha(valuesByMode, alphaRef, nameByPath, resolvedByPath, tokenByPath);
+    // Figma reads a number bound to an opacity as a PERCENTAGE. See FIGMA_OPACITY_SCALE.
+    if (type === "FLOAT" && (token.path[0] === "opacity" || token.path[0] === "alpha")) {
+      for (const mode of Object.keys(valuesByMode)) {
+        const v = valuesByMode[mode];
+        if (v.type === "FLOAT") valuesByMode[mode] = { ...v, value: Math.round(v.value * FIGMA_OPACITY_SCALE * 1e6) / 1e6 };
+      }
     }
 
     /**

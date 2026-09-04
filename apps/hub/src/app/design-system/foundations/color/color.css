@@ -382,3 +382,10 @@
 .color-roles__chip { display: inline-block; width: 14px; height: 14px; border-radius: var(--sa-shape-4); border: 1px solid var(--sa-border-neutral-subtle); margin-right: var(--sa-inline-8); vertical-align: middle; }
 .color-roles__na { color: var(--sa-text-neutral-subtle); font-size: var(--sa-type-label-3-size); }
 .color-chart-cat[data-guaranteed] .color-chart-cat__swatch { box-shadow: inset 0 0 0 2px var(--sa-bg-neutral-base), inset 0 0 0 3px var(--sa-border-neutral-bolder-default); }
+
+/* ── Alpha ladder (section 21) ─────────────────────────────────────────── */
+.color-alpha--scale { flex-wrap: wrap; }
+.color-alpha__chip--labelled { display: grid; place-items: center; min-width: var(--sa-target-min); }
+.color-alpha__step { font-size: var(--sa-type-label-3-size); line-height: var(--sa-type-label-3-lh); font-weight: 600; }
+.color-example__list { margin: 0; padding-left: var(--sa-inline-16); display: grid; gap: var(--sa-stack-4); }
+.color-example__list code { font-size: var(--sa-type-body-3-size); }

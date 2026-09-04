@@ -561,3 +561,75 @@ either re-bound, justified or recorded. What is *not* claimed: that a portal's o
 the best palette for that portal — those are per-portal design decisions with their own
 visual review, and this pass only removed the places where a portal had quietly re-drawn a
 brand or status colour a few ΔE off the estate's.
+
+
+## 16. Translucency as a reference plus an opacity reference — the fourth pass
+
+Figma variables can now alias a colour "while maintaining a separate opacity", and that
+opacity can be driven by a number variable. That removes the one structural reason this
+system carried rgba() literals: a literal cannot follow a brand, so every translucent value
+was frozen at whatever brand was current when it was typed.
+
+### What changed
+
+| Family | Before | After |
+|---|---|---|
+| `color/transparent/<family>/<8–48>` (42) | rgba() literal, Navy copies hand-authored for primary and neutral only | `{color.<scale>.<rung>}` + `{alpha.N}`; Navy and every DBIM mode follow by reference |
+| `overlay/neutral/boldest` | rgba(30,33,36,.5) with six hand-authored DBIM copies | `{color.neutralScale.800}` at `alpha/48` |
+| `overlay/brand/hover`, `overlay/brand/active`, `border/neutral/inverse/subtle` | white rgba() | `{color.neutralScale.0}` at `alpha/8`, `/16`, `/40` |
+| `code/*` chrome (6) | white rgba() at 3/10/45/70/8/30 % | white at `alpha/4`, `/8`, `/48`, `/72`, `/8`, `/32` |
+| `cmp/action/*/inverse/*` and transparent resting fills (84) | rgba(255,255,255,.92/.84/.40/.64/.10/.16/.24) and rgba(0,0,0,0) | white at `alpha/88`, `/80`, `/40`, `/64`, `/8`, `/16`, `/24`, `/0` |
+
+Zero rgba() colour literals remain in `tokens.css` outside the shadow ramp.
+
+**CSS.** A translucent token is one expression over two custom properties:
+`color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-8) * 100%), transparent)`.
+The brand blocks re-assert the declaration whenever either dependency is redeclared, so a
+nested `[data-brand]` island repaints the base and the wash follows. Baseline since 2023;
+Tailwind v4 already relies on the same function.
+
+**Values that moved as a consequence.** Navy's scrim was the Blue neutral (#1E2124 where
+Navy's neutral 800 is #1E2024). Every wash under a DBIM mode was a Blue-brand literal — the
+danger wash was #CB3D3F where DBIM's Coral Red is #DC3545, the neutral wash #1E2124 where
+DBIM's neutral 800 is #2C2C2C, the primary wash the Blue key colour under all six DBIM
+primaries. All now follow their scale. Navy's primary wash reads navy 500 (#224C7D) rather
+than the hand-picked navy 600 (#003366); at the 8–48 % the tiers are used at the two differ by
+under 1 ΔE.
+
+### The opacity scale, rationalised
+
+UX4G's fourteen steps plus ten estate one-offs made twenty-four rows for a system that used
+sixteen. Usage audit: 5, 20, 25, 60, 75, 90 had zero consumers in any tier or stylesheet;
+3, 10, 30, 45, 50, 70, 84, 92 each served one or two tokens. The scale is now ONE ladder of
+thirteen, derived from use and the two roles the system will foreseeably need:
+
+| Step | Role |
+|---|---|
+| 0 | transparent resting fill |
+| 4 | hairline / faint lift on a dark surface |
+| 8 · 16 · 24 · 32 · 40 · 48 | the six wash and overlay tiers; 48 is also the scrim |
+| 64 · 72 | disabled and secondary ink on a dark surface |
+| 80 · 88 | pressed and hover fill of an inverse button |
+| 100 | opaque sentinel |
+
+Snaps: 3→4, 10→8, 30→32, 45→48 (titlebar label 4.52→4.97:1), 50→48, 70→72 (9.32→9.6:1),
+84→80, 92→88. Nothing fell below its floor. The UX4G parity stylesheet carries UX4G's own
+opacity values as literals, so nothing UX4G publishes is lost; this is a recorded divergence
+from adopting the list verbatim, on the ground that a scale is what the system uses.
+
+### Figma — what the API could and could not do
+
+- **Percent, not fraction.** A number variable bound to an opacity is read as a percentage:
+  a probe variable worth 50 gave `node.opacity` 0.5, one worth 0.5 gave 0.005. The library's
+  `ref/opacity/*` had held 0–1 values since they were created — a factor of 100 wrong for the
+  one purpose they exist for. They are now percentages, and the exporter projects ×100.
+- **Pushed.** Static: 13 `ref/opacity/*` and 13 `alpha/*` (aliases), scope OPACITY, with
+  descriptions; 28 retired steps removed (all created today or with zero consumers in code).
+  Palette and Color: every translucent variable holds the brand-correct composited fallback,
+  and its description ends with `FIGMA BINDING: <base> @ alpha/N`.
+- **Not possible through this API (apiVersion 1.0.0).** `setValueForMode` rejects every
+  shape of opacity on a VariableAlias, and the scope enum has no "Color variable opacity"
+  entry. Both are UI steps for a designer: tick the scope on the 13 alpha variables (one
+  multi-select), then on each translucent variable alias the base and set the alias's opacity
+  to the alpha variable named in its description. `figma-value-parity` records the payload's
+  alias-with-opacity intent against the library's literal as a known difference until then.

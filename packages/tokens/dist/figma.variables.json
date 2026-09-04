@@ -38,9 +38,9 @@
       "existing": 8
     },
     "Static": {
-      "total": 68,
-      "new": 22,
-      "existing": 46
+      "total": 80,
+      "new": 0,
+      "existing": 80
     },
     "Viewport": {
       "total": 2,
@@ -5552,12 +5552,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(3, 115, 223, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(3, 115, 223, 0.08)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(0, 51, 102, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(34, 76, 125, 0.08)"
+              }
             }
           },
           "description": "Use for a translucent primary wash at 8% — for overlays and hover states, not as a text colour.",
@@ -5576,12 +5596,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(3, 115, 223, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(3, 115, 223, 0.16)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(0, 51, 102, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(34, 76, 125, 0.16)"
+              }
             }
           },
           "description": "Use for a translucent primary wash at 16% — for overlays and hover states, not as a text colour.",
@@ -5600,12 +5640,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(3, 115, 223, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(3, 115, 223, 0.24)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(0, 51, 102, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(34, 76, 125, 0.24)"
+              }
             }
           },
           "description": "Use for a translucent primary wash at 24% — for overlays and hover states, not as a text colour.",
@@ -5624,12 +5684,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(3, 115, 223, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(3, 115, 223, 0.32)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(0, 51, 102, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(34, 76, 125, 0.32)"
+              }
             }
           },
           "description": "Use for a translucent primary wash at 32% — for overlays and hover states, not as a text colour.",
@@ -5648,12 +5728,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(3, 115, 223, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(3, 115, 223, 0.40)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(0, 51, 102, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(34, 76, 125, 0.40)"
+              }
             }
           },
           "description": "Use for a translucent primary wash at 40% — for overlays and hover states, not as a text colour.",
@@ -5672,12 +5772,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(3, 115, 223, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(3, 115, 223, 0.48)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(0, 51, 102, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/primaryScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(34, 76, 125, 0.48)"
+              }
             }
           },
           "description": "Use for a translucent primary wash at 48% — for overlays and hover states, not as a text colour.",
@@ -5696,12 +5816,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.08)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.08)"
+              }
             }
           },
           "description": "Use for a translucent secondary wash at 8% — for overlays and hover states, not as a text colour.",
@@ -5720,12 +5860,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.16)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.16)"
+              }
             }
           },
           "description": "Use for a translucent secondary wash at 16% — for overlays and hover states, not as a text colour.",
@@ -5744,12 +5904,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.24)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.24)"
+              }
             }
           },
           "description": "Use for a translucent secondary wash at 24% — for overlays and hover states, not as a text colour.",
@@ -5768,12 +5948,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.32)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.32)"
+              }
             }
           },
           "description": "Use for a translucent secondary wash at 32% — for overlays and hover states, not as a text colour.",
@@ -5792,12 +5992,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.40)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.40)"
+              }
             }
           },
           "description": "Use for a translucent secondary wash at 40% — for overlays and hover states, not as a text colour.",
@@ -5816,12 +6036,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.48)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 103, 31, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/secondaryScale/400",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 103, 31, 0.48)"
+              }
             }
           },
           "description": "Use for a translucent secondary wash at 48% — for overlays and hover states, not as a text colour.",
@@ -5840,12 +6080,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.08)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.08)"
+              }
             }
           },
           "description": "Use for a translucent accent wash at 8% — for overlays and hover states, not as a text colour.",
@@ -5864,12 +6124,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.16)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.16)"
+              }
             }
           },
           "description": "Use for a translucent accent wash at 16% — for overlays and hover states, not as a text colour.",
@@ -5888,12 +6168,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.24)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.24)"
+              }
             }
           },
           "description": "Use for a translucent accent wash at 24% — for overlays and hover states, not as a text colour.",
@@ -5912,12 +6212,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.32)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.32)"
+              }
             }
           },
           "description": "Use for a translucent accent wash at 32% — for overlays and hover states, not as a text colour.",
@@ -5936,12 +6256,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.40)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.40)"
+              }
             }
           },
           "description": "Use for a translucent accent wash at 40% — for overlays and hover states, not as a text colour.",
@@ -5960,12 +6300,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.48)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/accentScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.48)"
+              }
             }
           },
           "description": "Use for a translucent accent wash at 48% — for overlays and hover states, not as a text colour.",
@@ -5984,12 +6344,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 33, 36, 0.08)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(30, 32, 36, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 32, 36, 0.08)"
+              }
             }
           },
           "description": "Use for a translucent neutral wash at 8% — for overlays and hover states, not as a text colour.",
@@ -6008,12 +6388,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 33, 36, 0.16)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(30, 32, 36, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 32, 36, 0.16)"
+              }
             }
           },
           "description": "Use for a translucent neutral wash at 16% — for overlays and hover states, not as a text colour.",
@@ -6032,12 +6432,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 33, 36, 0.24)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(30, 32, 36, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 32, 36, 0.24)"
+              }
             }
           },
           "description": "Use for a translucent neutral wash at 24% — for overlays and hover states, not as a text colour.",
@@ -6056,12 +6476,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 33, 36, 0.32)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(30, 32, 36, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 32, 36, 0.32)"
+              }
             }
           },
           "description": "Use for a translucent neutral wash at 32% — for overlays and hover states, not as a text colour.",
@@ -6080,12 +6520,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 33, 36, 0.40)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(30, 32, 36, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 32, 36, 0.40)"
+              }
             }
           },
           "description": "Use for a translucent neutral wash at 40% — for overlays and hover states, not as a text colour.",
@@ -6104,12 +6564,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 33, 36, 0.48)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(30, 32, 36, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 32, 36, 0.48)"
+              }
             }
           },
           "description": "Use for a translucent neutral wash at 48% — for overlays and hover states, not as a text colour.",
@@ -6128,12 +6608,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.08)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.08)"
+              }
             }
           },
           "description": "Use for a translucent success wash at 8% — for overlays and hover states, not as a text colour.",
@@ -6152,12 +6652,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.16)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.16)"
+              }
             }
           },
           "description": "Use for a translucent success wash at 16% — for overlays and hover states, not as a text colour.",
@@ -6176,12 +6696,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.24)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.24)"
+              }
             }
           },
           "description": "Use for a translucent success wash at 24% — for overlays and hover states, not as a text colour.",
@@ -6200,12 +6740,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.32)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.32)"
+              }
             }
           },
           "description": "Use for a translucent success wash at 32% — for overlays and hover states, not as a text colour.",
@@ -6224,12 +6784,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.40)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.40)"
+              }
             }
           },
           "description": "Use for a translucent success wash at 40% — for overlays and hover states, not as a text colour.",
@@ -6248,12 +6828,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.48)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(4, 106, 56, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/successScale/600",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(4, 106, 56, 0.48)"
+              }
             }
           },
           "description": "Use for a translucent success wash at 48% — for overlays and hover states, not as a text colour.",
@@ -6272,12 +6872,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.08)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.08)"
+              }
             }
           },
           "description": "Use for a translucent danger wash at 8% — for overlays and hover states, not as a text colour.",
@@ -6296,12 +6916,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.16)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.16)"
+              }
             }
           },
           "description": "Use for a translucent danger wash at 16% — for overlays and hover states, not as a text colour.",
@@ -6320,12 +6960,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.24)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.24)"
+              }
             }
           },
           "description": "Use for a translucent danger wash at 24% — for overlays and hover states, not as a text colour.",
@@ -6344,12 +7004,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.32)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.32)"
+              }
             }
           },
           "description": "Use for a translucent danger wash at 32% — for overlays and hover states, not as a text colour.",
@@ -6368,12 +7048,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.40)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.40)"
+              }
             }
           },
           "description": "Use for a translucent danger wash at 40% — for overlays and hover states, not as a text colour.",
@@ -6392,12 +7092,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.48)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(203, 61, 63, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/dangerScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(203, 61, 63, 0.48)"
+              }
             }
           },
           "description": "Use for a translucent danger wash at 48% — for overlays and hover states, not as a text colour.",
@@ -6416,12 +7136,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.08)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.08)"
+              }
             }
           },
           "description": "Use for a translucent warning wash at 8% — for overlays and hover states, not as a text colour.",
@@ -6440,12 +7180,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.16)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.16)"
+              }
             }
           },
           "description": "Use for a translucent warning wash at 16% — for overlays and hover states, not as a text colour.",
@@ -6464,12 +7224,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.24)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.24)"
+              }
             }
           },
           "description": "Use for a translucent warning wash at 24% — for overlays and hover states, not as a text colour.",
@@ -6488,12 +7268,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.32)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.32)"
+              }
             }
           },
           "description": "Use for a translucent warning wash at 32% — for overlays and hover states, not as a text colour.",
@@ -6512,12 +7312,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.40)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.40)"
+              }
             }
           },
           "description": "Use for a translucent warning wash at 40% — for overlays and hover states, not as a text colour.",
@@ -6536,12 +7356,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.48)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(167, 114, 0, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/warningScale/500",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(167, 114, 0, 0.48)"
+              }
             }
           },
           "description": "Use for a translucent warning wash at 48% — for overlays and hover states, not as a text colour.",
@@ -6560,12 +7400,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.08)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.08)"
+              }
             }
           },
           "description": "Use for a translucent white wash at 8% — for overlays and hover states, not as a text colour.",
@@ -6584,12 +7444,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.16)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.16)"
+              }
             }
           },
           "description": "Use for a translucent white wash at 16% — for overlays and hover states, not as a text colour.",
@@ -6608,12 +7488,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.24)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.24)"
+              }
             }
           },
           "description": "Use for a translucent white wash at 24% — for overlays and hover states, not as a text colour.",
@@ -6632,12 +7532,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.32)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.32)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/32"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.32)"
+              }
             }
           },
           "description": "Use for a translucent white wash at 32% — for overlays and hover states, not as a text colour.",
@@ -6656,12 +7576,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use for a translucent white wash at 40% — for overlays and hover states, not as a text colour.",
@@ -6680,12 +7620,32 @@
           "type": "COLOR",
           "valuesByMode": {
             "Blue": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.48)"
+              }
             },
             "Navy": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.48)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.48)"
+              }
             }
           },
           "description": "Use for a translucent white wash at 48% — for overlays and hover states, not as a text colour.",
@@ -9482,8 +10442,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/88"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.88)"
+              }
             }
           },
           "description": "Use when the user hovers over a primary-brand primary button placed on a solid brand surface — the fill.",
@@ -9523,8 +10493,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/88"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.88)"
+              }
             }
           },
           "description": "Use when the user hovers over a primary-brand primary button placed on a solid brand surface — the outline.",
@@ -9543,8 +10523,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/80"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.80)"
+              }
             }
           },
           "description": "Use when a primary-brand primary button is pressed placed on a solid brand surface — the fill.",
@@ -9584,8 +10574,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/80"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.80)"
+              }
             }
           },
           "description": "Use when a primary-brand primary button is pressed placed on a solid brand surface — the outline.",
@@ -9604,8 +10604,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a primary-brand primary button’s action is not available placed on a solid brand surface — the fill.",
@@ -9624,8 +10634,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/64"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.64)"
+              }
             }
           },
           "description": "Use when a primary-brand primary button’s action is not available placed on a solid brand surface — the label.",
@@ -9644,8 +10664,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a primary-brand primary button’s action is not available placed on a solid brand surface — the outline.",
@@ -9664,8 +10694,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for primary-brand secondary buttons at rest — the fill.",
@@ -9852,8 +10892,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a primary-brand secondary button’s action is not available — the fill.",
@@ -9914,8 +10964,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for primary-brand secondary buttons at rest placed on a solid brand surface — the fill.",
@@ -9976,8 +11036,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.08)"
+              }
             }
           },
           "description": "Use when the user hovers over a primary-brand secondary button placed on a solid brand surface — the fill.",
@@ -10038,8 +11108,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.16)"
+              }
             }
           },
           "description": "Use when a primary-brand secondary button is pressed placed on a solid brand surface — the fill.",
@@ -10100,8 +11180,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a primary-brand secondary button’s action is not available placed on a solid brand surface — the fill.",
@@ -10120,8 +11210,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a primary-brand secondary button’s action is not available placed on a solid brand surface — the label.",
@@ -10140,8 +11240,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.24)"
+              }
             }
           },
           "description": "Use when a primary-brand secondary button’s action is not available placed on a solid brand surface — the outline.",
@@ -10160,8 +11270,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for primary-brand tertiary buttons at rest — the fill.",
@@ -10201,8 +11321,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for primary-brand tertiary buttons at rest — the outline.",
@@ -10263,8 +11393,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when the user hovers over a primary-brand tertiary button — the outline.",
@@ -10325,8 +11465,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a primary-brand tertiary button is pressed — the outline.",
@@ -10345,8 +11495,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a primary-brand tertiary button’s action is not available — the fill.",
@@ -10386,8 +11546,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a primary-brand tertiary button’s action is not available — the outline.",
@@ -10973,8 +12143,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/88"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.88)"
+              }
             }
           },
           "description": "Use when the user hovers over a confirming primary button placed on a solid brand surface — the fill.",
@@ -11014,8 +12194,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/88"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.88)"
+              }
             }
           },
           "description": "Use when the user hovers over a confirming primary button placed on a solid brand surface — the outline.",
@@ -11034,8 +12224,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/80"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.80)"
+              }
             }
           },
           "description": "Use when a confirming primary button is pressed placed on a solid brand surface — the fill.",
@@ -11075,8 +12275,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/80"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.80)"
+              }
             }
           },
           "description": "Use when a confirming primary button is pressed placed on a solid brand surface — the outline.",
@@ -11095,8 +12305,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a confirming primary button’s action is not available placed on a solid brand surface — the fill.",
@@ -11115,8 +12335,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/64"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.64)"
+              }
             }
           },
           "description": "Use when a confirming primary button’s action is not available placed on a solid brand surface — the label.",
@@ -11135,8 +12365,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a confirming primary button’s action is not available placed on a solid brand surface — the outline.",
@@ -11155,8 +12395,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for confirming secondary buttons at rest — the fill.",
@@ -11343,8 +12593,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a confirming secondary button’s action is not available — the fill.",
@@ -11405,8 +12665,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for confirming secondary buttons at rest placed on a solid brand surface — the fill.",
@@ -11467,8 +12737,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.08)"
+              }
             }
           },
           "description": "Use when the user hovers over a confirming secondary button placed on a solid brand surface — the fill.",
@@ -11529,8 +12809,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.16)"
+              }
             }
           },
           "description": "Use when a confirming secondary button is pressed placed on a solid brand surface — the fill.",
@@ -11591,8 +12881,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a confirming secondary button’s action is not available placed on a solid brand surface — the fill.",
@@ -11611,8 +12911,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a confirming secondary button’s action is not available placed on a solid brand surface — the label.",
@@ -11631,8 +12941,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.24)"
+              }
             }
           },
           "description": "Use when a confirming secondary button’s action is not available placed on a solid brand surface — the outline.",
@@ -11651,8 +12971,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for confirming tertiary buttons at rest — the fill.",
@@ -11692,8 +13022,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for confirming tertiary buttons at rest — the outline.",
@@ -11754,8 +13094,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when the user hovers over a confirming tertiary button — the outline.",
@@ -11816,8 +13166,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a confirming tertiary button is pressed — the outline.",
@@ -11836,8 +13196,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a confirming tertiary button’s action is not available — the fill.",
@@ -11877,8 +13247,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a confirming tertiary button’s action is not available — the outline.",
@@ -12464,8 +13844,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/88"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.88)"
+              }
             }
           },
           "description": "Use when the user hovers over a destructive primary button placed on a solid brand surface — the fill.",
@@ -12505,8 +13895,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/88"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.88)"
+              }
             }
           },
           "description": "Use when the user hovers over a destructive primary button placed on a solid brand surface — the outline.",
@@ -12525,8 +13925,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/80"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.80)"
+              }
             }
           },
           "description": "Use when a destructive primary button is pressed placed on a solid brand surface — the fill.",
@@ -12566,8 +13976,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/80"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.80)"
+              }
             }
           },
           "description": "Use when a destructive primary button is pressed placed on a solid brand surface — the outline.",
@@ -12586,8 +14006,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a destructive primary button’s action is not available placed on a solid brand surface — the fill.",
@@ -12606,8 +14036,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/64"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.64)"
+              }
             }
           },
           "description": "Use when a destructive primary button’s action is not available placed on a solid brand surface — the label.",
@@ -12626,8 +14066,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a destructive primary button’s action is not available placed on a solid brand surface — the outline.",
@@ -12646,8 +14096,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for destructive secondary buttons at rest — the fill.",
@@ -12834,8 +14294,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a destructive secondary button’s action is not available — the fill.",
@@ -12896,8 +14366,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for destructive secondary buttons at rest placed on a solid brand surface — the fill.",
@@ -12958,8 +14438,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.08)"
+              }
             }
           },
           "description": "Use when the user hovers over a destructive secondary button placed on a solid brand surface — the fill.",
@@ -13020,8 +14510,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.16)"
+              }
             }
           },
           "description": "Use when a destructive secondary button is pressed placed on a solid brand surface — the fill.",
@@ -13082,8 +14582,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a destructive secondary button’s action is not available placed on a solid brand surface — the fill.",
@@ -13102,8 +14612,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a destructive secondary button’s action is not available placed on a solid brand surface — the label.",
@@ -13122,8 +14642,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.24)"
+              }
             }
           },
           "description": "Use when a destructive secondary button’s action is not available placed on a solid brand surface — the outline.",
@@ -13142,8 +14672,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for destructive tertiary buttons at rest — the fill.",
@@ -13183,8 +14723,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for destructive tertiary buttons at rest — the outline.",
@@ -13245,8 +14795,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when the user hovers over a destructive tertiary button — the outline.",
@@ -13307,8 +14867,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a destructive tertiary button is pressed — the outline.",
@@ -13327,8 +14897,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a destructive tertiary button’s action is not available — the fill.",
@@ -13368,8 +14948,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a destructive tertiary button’s action is not available — the outline.",
@@ -13955,8 +15545,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/88"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.88)"
+              }
             }
           },
           "description": "Use when the user hovers over a neutral primary button placed on a solid brand surface — the fill.",
@@ -13996,8 +15596,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.92)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/88"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.88)"
+              }
             }
           },
           "description": "Use when the user hovers over a neutral primary button placed on a solid brand surface — the outline.",
@@ -14016,8 +15626,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/80"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.80)"
+              }
             }
           },
           "description": "Use when a neutral primary button is pressed placed on a solid brand surface — the fill.",
@@ -14057,8 +15677,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.84)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/80"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.80)"
+              }
             }
           },
           "description": "Use when a neutral primary button is pressed placed on a solid brand surface — the outline.",
@@ -14077,8 +15707,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a neutral primary button’s action is not available placed on a solid brand surface — the fill.",
@@ -14097,8 +15737,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.64)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/64"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.64)"
+              }
             }
           },
           "description": "Use when a neutral primary button’s action is not available placed on a solid brand surface — the label.",
@@ -14117,8 +15767,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a neutral primary button’s action is not available placed on a solid brand surface — the outline.",
@@ -14137,8 +15797,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for neutral secondary buttons at rest — the fill.",
@@ -14325,8 +15995,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a neutral secondary button’s action is not available — the fill.",
@@ -14387,8 +16067,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for neutral secondary buttons at rest placed on a solid brand surface — the fill.",
@@ -14449,8 +16139,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.10)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.08)"
+              }
             }
           },
           "description": "Use when the user hovers over a neutral secondary button placed on a solid brand surface — the fill.",
@@ -14511,8 +16211,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.16)"
+              }
             }
           },
           "description": "Use when a neutral secondary button is pressed placed on a solid brand surface — the fill.",
@@ -14573,8 +16283,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a neutral secondary button’s action is not available placed on a solid brand surface — the fill.",
@@ -14593,8 +16313,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.40)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
           "description": "Use when a neutral secondary button’s action is not available placed on a solid brand surface — the label.",
@@ -14613,8 +16343,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.24)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/24"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.24)"
+              }
             }
           },
           "description": "Use when a neutral secondary button’s action is not available placed on a solid brand surface — the outline.",
@@ -14633,8 +16373,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for neutral tertiary buttons at rest — the fill.",
@@ -14674,8 +16424,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use for neutral tertiary buttons at rest — the outline.",
@@ -14736,8 +16496,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when the user hovers over a neutral tertiary button — the outline.",
@@ -14798,8 +16568,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a neutral tertiary button is pressed — the outline.",
@@ -14818,8 +16598,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a neutral tertiary button’s action is not available — the fill.",
@@ -14859,8 +16649,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(0, 0, 0, 0)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/0"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.00)"
+              }
             }
           },
           "description": "Use when a neutral tertiary button’s action is not available — the outline.",
@@ -15232,11 +17032,21 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.4)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/40"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.40)"
+              }
             }
           },
-          "description": "The quieter inverse rule — white at 40%, pre-composited so consumers never hand-roll an opacity. Used by Divider Tone=Inverse subtle and the AccessibilityBar's separators. The Figma variable was `border/neutral/inverse-subtle` until 2026-08-18 — a hyphen inside a segment, which grammar RULE 1 forbids; renamed IN PLACE so bindings followed. Contrast 3.81:1 vs bg/neutral/inverse — no guaranteed contrast class; treat as a boundary, not as text.",
+          "description": "The quieter inverse rule — white (neutralScale/0) at alpha/40, authored as a reference plus an opacity reference since 2026-09-04 rather than a pre-composited rgba(). Used by Divider Tone=Inverse subtle and the AccessibilityBar's separators. The Figma variable was `border/neutral/inverse-subtle` until 2026-08-18 — a hyphen inside a segment, which grammar RULE 1 forbids; renamed IN PLACE so bindings followed. Contrast 3.81:1 vs bg/neutral/inverse — no guaranteed contrast class; treat as a boundary, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-border-neutral-inverse-subtle)"
           },
@@ -15381,11 +17191,21 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.5)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/800",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/48"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(30, 33, 36, 0.48)"
+              }
             }
           },
-          "description": "The scrim behind a modal — neutral 800 at 50%. The NAVY line below is structural, not stylistic: Figma cannot express \"alias plus alpha\", so a translucent token can only be a LITERAL, and a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed. Without it, Navy inherited the BLUE neutral (#1E2124 instead of #1E2024) and the scrim was quietly the wrong brand — invisible in review, wrong in every Navy screenshot. Authoring the second value is what makes the exporter generate a brand-aware companion in Palette (which does carry the brand modes) and alias this token to it. Every other rgba() in this file is exposed to the same trap.",
+          "description": "The scrim behind a modal — the brand's neutral 800 at alpha/48, as a REFERENCE plus an OPACITY reference. Until 2026-09-04 this was an rgba() literal with six hand-authored DBIM copies, because a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed — and Navy once inherited the Blue neutral (#1E2124 for #1E2024) without anyone seeing it. Figma can now alias a colour and keep a separate opacity, so the copies are gone: the scrim follows neutralScale/800 through Blue, Navy and every DBIM mode by construction.",
           "codeSyntax": {
             "WEB": "var(--sa-overlay-neutral-boldest)"
           },
@@ -15401,8 +17221,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.08)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/8"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.08)"
+              }
             }
           },
           "description": "Hover wash on a brand-coloured surface. 8%, matching the published Figma variable and the AccessibilityBar's States documentation. This family was authored here at 12% from a base that predated 33cbb4f, which had already corrected the component from 12% to 8%; reconciled to 8% on 2026-08-19.",
@@ -15421,8 +17251,18 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "COLOR",
-              "value": "rgba(255, 255, 255, 0.16)"
+              "type": "ALIAS",
+              "collection": "Palette",
+              "name": "color/neutralScale/0",
+              "opacity": {
+                "type": "ALIAS",
+                "collection": "Static",
+                "name": "alpha/16"
+              },
+              "fallback": {
+                "type": "COLOR",
+                "value": "rgba(255, 255, 255, 0.16)"
+              }
             }
           },
           "description": "Pressed/selected wash on a brand-coloured surface. Named `active`, not `pressed` — `active` is the state word the whole system uses (cmp/action/*/active/bg), and the grammar has no `pressed`.",
@@ -17519,8 +19359,8 @@
           "valuesByMode": {
             "Default": {
               "type": "ALIAS",
-              "collection": "Color",
-              "name": "overlay/brand/active"
+              "collection": "Palette",
+              "name": "color/neutralScale/0"
             }
           },
           "description": "ACTIVE state layer on the bar — aliases overlay/brand/active (16% white). Per the component's States documentation ACTIVE covers BOTH senses: a control being pressed, AND the current selection (the middle A at default size). One value, two meanings, deliberately — the name still says `pill` for historical reasons and is flagged for a rename.",
@@ -17540,8 +19380,8 @@
           "valuesByMode": {
             "Default": {
               "type": "ALIAS",
-              "collection": "Color",
-              "name": "overlay/brand/hover"
+              "collection": "Palette",
+              "name": "color/neutralScale/0"
             }
           },
           "description": "HOVER state layer for the bar's controls on the brand fill — aliases overlay/brand/hover (8% white). RECONCILED 2026-08-19: this branch re-created the wash at 12% from a base that predated 33cbb4f, which had already corrected 12% to 8% against the published Figma variable and the component's States documentation. 8% stands; the alias replaces the literal so the value now lives in exactly one place.",
@@ -23479,7 +25319,7 @@
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/0` instead, which resolves here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-opacity-0)"
           },
@@ -23490,19 +25330,19 @@
           }
         },
         {
-          "name": "ref/opacity/5",
-          "path": "opacity/5",
+          "name": "ref/opacity/4",
+          "path": "opacity/4",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.05,
+              "value": 4,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/4` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-opacity-5)"
+            "WEB": "var(--sa-ref-opacity-4)"
           },
           "status": "existing",
           "$extensions": {
@@ -23511,19 +25351,19 @@
           }
         },
         {
-          "name": "ref/opacity/10",
-          "path": "opacity/10",
+          "name": "ref/opacity/8",
+          "path": "opacity/8",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.1,
+              "value": 8,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/8` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-opacity-10)"
+            "WEB": "var(--sa-ref-opacity-8)"
           },
           "status": "existing",
           "$extensions": {
@@ -23532,19 +25372,19 @@
           }
         },
         {
-          "name": "ref/opacity/20",
-          "path": "opacity/20",
+          "name": "ref/opacity/16",
+          "path": "opacity/16",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.2,
+              "value": 16,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/16` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-opacity-20)"
+            "WEB": "var(--sa-ref-opacity-16)"
           },
           "status": "existing",
           "$extensions": {
@@ -23553,19 +25393,19 @@
           }
         },
         {
-          "name": "ref/opacity/25",
-          "path": "opacity/25",
+          "name": "ref/opacity/24",
+          "path": "opacity/24",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.25,
+              "value": 24,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/24` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-opacity-25)"
+            "WEB": "var(--sa-ref-opacity-24)"
           },
           "status": "existing",
           "$extensions": {
@@ -23574,19 +25414,19 @@
           }
         },
         {
-          "name": "ref/opacity/30",
-          "path": "opacity/30",
+          "name": "ref/opacity/32",
+          "path": "opacity/32",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.3,
+              "value": 32,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/32` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-opacity-30)"
+            "WEB": "var(--sa-ref-opacity-32)"
           },
           "status": "existing",
           "$extensions": {
@@ -23601,11 +25441,11 @@
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.4,
+              "value": 40,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/40` instead, which resolves here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-opacity-40)"
           },
@@ -23616,19 +25456,19 @@
           }
         },
         {
-          "name": "ref/opacity/50",
-          "path": "opacity/50",
+          "name": "ref/opacity/48",
+          "path": "opacity/48",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.5,
+              "value": 48,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/48` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-opacity-50)"
+            "WEB": "var(--sa-ref-opacity-48)"
           },
           "status": "existing",
           "$extensions": {
@@ -23637,19 +25477,19 @@
           }
         },
         {
-          "name": "ref/opacity/60",
-          "path": "opacity/60",
+          "name": "ref/opacity/64",
+          "path": "opacity/64",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.6,
+              "value": 64,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/64` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-opacity-60)"
+            "WEB": "var(--sa-ref-opacity-64)"
           },
           "status": "existing",
           "$extensions": {
@@ -23658,40 +25498,19 @@
           }
         },
         {
-          "name": "ref/opacity/70",
-          "path": "opacity/70",
+          "name": "ref/opacity/72",
+          "path": "opacity/72",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.7,
+              "value": 72,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/72` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-opacity-70)"
-          },
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/opacity/75",
-          "path": "opacity/75",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Mode 1": {
-              "type": "FLOAT",
-              "value": 0.75,
-              "unit": null
-            }
-          },
-          "description": "Raw opacity step.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-opacity-75)"
+            "WEB": "var(--sa-ref-opacity-72)"
           },
           "status": "existing",
           "$extensions": {
@@ -23706,11 +25525,11 @@
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.8,
+              "value": 80,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/80` instead, which resolves here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-opacity-80)"
           },
@@ -23721,19 +25540,19 @@
           }
         },
         {
-          "name": "ref/opacity/90",
-          "path": "opacity/90",
+          "name": "ref/opacity/88",
+          "path": "opacity/88",
           "type": "FLOAT",
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 0.9,
+              "value": 88,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/88` instead, which resolves here.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-opacity-90)"
+            "WEB": "var(--sa-ref-opacity-88)"
           },
           "status": "existing",
           "$extensions": {
@@ -23748,11 +25567,11 @@
           "valuesByMode": {
             "Mode 1": {
               "type": "FLOAT",
-              "value": 1,
+              "value": 100,
               "unit": null
             }
           },
-          "description": "Raw opacity step.",
+          "description": "Raw opacity step, 0–100 as Figma reads a number bound to an opacity. TIER 1 — bind `alpha/100` instead, which resolves here.",
           "codeSyntax": {
             "WEB": "var(--sa-ref-opacity-100)"
           },
@@ -24155,7 +25974,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-breakpoint-laptop)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -24197,7 +26016,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-breakpoint-desktopXl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -24218,7 +26037,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-ref-breakpoint-desktopWide)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -24238,7 +26057,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-brand-samavesh-ink)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24258,7 +26077,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-brand-samavesh-blue)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24278,7 +26097,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-brand-samavesh-green)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24298,7 +26117,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-brand-samavesh-orange)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24318,7 +26137,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-brand-samavesh-saffron)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24338,7 +26157,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-brand-samavesh-navy)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24358,7 +26177,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-brand-samavesh-white)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24378,7 +26197,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-brand-samavesh-black)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24398,7 +26217,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-brand-digilocker-purple)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24545,7 +26364,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-container-2xl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24587,7 +26406,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-container-contentXl)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24608,7 +26427,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-container-contentWide)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24629,7 +26448,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-container-narrow)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24650,7 +26469,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-container-wide)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24692,7 +26511,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stroke-0)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24713,7 +26532,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stroke-1)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24734,7 +26553,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stroke-2)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24755,7 +26574,7 @@
           "codeSyntax": {
             "WEB": "var(--sa-stroke-3)"
           },
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
@@ -24776,7 +26595,280 @@
           "codeSyntax": {
             "WEB": "var(--sa-stroke-4)"
           },
-          "status": "new",
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/0",
+          "path": "alpha/0",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/0"
+            }
+          },
+          "description": "Fully transparent — the resting fill of an outlined button on a brand surface. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/0); never type the percentage. In CSS it is --sa-alpha-0, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-0)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/4",
+          "path": "alpha/4",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/4"
+            }
+          },
+          "description": "Hairline or the faintest lift on a dark surface: the code specimen's border and titlebar strip. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/4); never type the percentage. In CSS it is --sa-alpha-4, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-4)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/8",
+          "path": "alpha/8",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/8"
+            }
+          },
+          "description": "Hover wash on a brand or neutral surface, and the lightest overlay tier. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/8); never type the percentage. In CSS it is --sa-alpha-8, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-8)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/16",
+          "path": "alpha/16",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/16"
+            }
+          },
+          "description": "Pressed/selected wash on a brand surface, and the second overlay tier. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/16); never type the percentage. In CSS it is --sa-alpha-16, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-16)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/24",
+          "path": "alpha/24",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/24"
+            }
+          },
+          "description": "Third overlay tier; the disabled border of a secondary inverse button. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/24); never type the percentage. In CSS it is --sa-alpha-24, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-24)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/32",
+          "path": "alpha/32",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/32"
+            }
+          },
+          "description": "Fourth overlay tier; a stronger hairline on a dark surface. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/32); never type the percentage. In CSS it is --sa-alpha-32, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-32)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/40",
+          "path": "alpha/40",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/40"
+            }
+          },
+          "description": "The quieter inverse rule (border/neutral/inverse/subtle) and a disabled inverse fill. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/40); never type the percentage. In CSS it is --sa-alpha-40, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-40)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/48",
+          "path": "alpha/48",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/48"
+            }
+          },
+          "description": "The strongest overlay tier, the modal scrim, and the resting label on a dark titlebar. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/48); never type the percentage. In CSS it is --sa-alpha-48, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-48)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/64",
+          "path": "alpha/64",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/64"
+            }
+          },
+          "description": "Disabled ink on a dark or brand surface. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/64); never type the percentage. In CSS it is --sa-alpha-64, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-64)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/72",
+          "path": "alpha/72",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/72"
+            }
+          },
+          "description": "Secondary ink on a dark or brand surface — an interactive titlebar label. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/72); never type the percentage. In CSS it is --sa-alpha-72, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-72)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/80",
+          "path": "alpha/80",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/80"
+            }
+          },
+          "description": "Pressed fill of a primary inverse button. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/80); never type the percentage. In CSS it is --sa-alpha-80, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-80)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/88",
+          "path": "alpha/88",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/88"
+            }
+          },
+          "description": "Hover fill of a primary inverse button. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/88); never type the percentage. In CSS it is --sa-alpha-88, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-88)"
+          },
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "alpha/100",
+          "path": "alpha/100",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "ALIAS",
+              "collection": "Static",
+              "name": "ref/opacity/100"
+            }
+          },
+          "description": "Opaque — a sentinel so a binding can be switched off without unbinding. Bind this as the OPACITY of a colour variable's alias (Figma: alias a colour, then set its opacity to alpha/100); never type the percentage. In CSS it is --sa-alpha-100, and every translucent token already resolves as color-mix() over it.",
+          "codeSyntax": {
+            "WEB": "var(--sa-alpha-100)"
+          },
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"

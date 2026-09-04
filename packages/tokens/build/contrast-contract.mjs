@@ -262,8 +262,32 @@ function resolveColor(index, collection, name, brand, depth = 0) {
   const mode = modes.includes(brand) ? brand : modes[0];
   const entry = v.valuesByMode[mode];
   if (!entry) return null;
-  if (entry.type === "ALIAS") return resolveColor(index, entry.collection, entry.name, brand, depth + 1);
+  if (entry.type === "ALIAS") {
+    const base = resolveColor(index, entry.collection, entry.name, brand, depth + 1);
+    if (!base || !entry.opacity) return base;
+    // Alias-with-opacity: the alias carries its own alpha, bound to a number variable that
+    // Figma reads as a PERCENTAGE (see FIGMA_OPACITY_SCALE in the exporter). Composite it in,
+    // or border/neutral/inverse/subtle — white at 40% — measures as opaque white, 18.94:1
+    // instead of 3.81:1, and the published figure is a lie.
+    const step = index.get(`${entry.opacity.collection}::${entry.opacity.name}`);
+    const alphaEntry = step && resolveFloat(index, entry.opacity.collection, entry.opacity.name, brand);
+    if (typeof alphaEntry !== "number") return null;
+    return [base[0], base[1], base[2], base[3] * (alphaEntry / 100)];
+  }
   return parseColor(entry.value);
+}
+
+/** Resolve a FLOAT variable through its alias chain. */
+function resolveFloat(index, collection, name, brand, depth = 0) {
+  if (depth > 12) return null;
+  const v = index.get(`${collection}::${name}`);
+  if (!v) return null;
+  const modes = Object.keys(v.valuesByMode);
+  const mode = modes.includes(brand) ? brand : modes[0];
+  const entry = v.valuesByMode[mode];
+  if (!entry) return null;
+  if (entry.type === "ALIAS") return resolveFloat(index, entry.collection, entry.name, brand, depth + 1);
+  return entry.type === "FLOAT" ? Number(entry.value) : null;
 }
 
 /** Every brand the payload can be read in. */

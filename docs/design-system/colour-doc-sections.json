@@ -116,6 +116,11 @@
       "title": "Ten modes, one set of measurements"
     },
     {
+      "figma": "21 Translucency is a reference, not a hex",
+      "web": "alpha",
+      "title": "Translucency is a reference, not a hex"
+    },
+    {
       "figma": "Provenance",
       "web": "provenance",
       "title": "Where these numbers come from"
