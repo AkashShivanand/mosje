@@ -59,8 +59,24 @@ const WHICH = value("workflow") || "all";
 /**
  * Steps that cost minutes and prove things a feature-branch push rarely needs. `--fast`
  * drops them; a push to main does not.
+ *
+ * IT HAS TO COVER THE WHOLE CHAIN, NOT THE EXPENSIVE STEP. The first version listed the
+ * hub build and the Playwright install but not `playwright test`, so `--fast` removed a
+ * step's prerequisites and left the step. The clean run failed with
+ * `.bin/next: No such file or directory` — a failure invented entirely by the skipping,
+ * which is worse than a slow run: it teaches people that --fast reports false alarms, and
+ * a runner nobody believes is not a runner.
+ *
+ * So a chain is slow or it is not. Anything that needs a built app or a browser belongs
+ * here together.
  */
-const SLOW = [/playwright install/i, /smoke-storybook/i, /apps\/hub run build/i, /check:build/i];
+const SLOW = [
+  /playwright install/i,
+  /playwright test/i,      // needs the build AND the browser above
+  /smoke-storybook/i,
+  /apps\/hub run build/i,
+  /check:build/i,
+];
 
 /** Steps a local machine must not run, with the reason shown rather than a silent skip. */
 function localSkip(cmd) {
