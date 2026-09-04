@@ -209,6 +209,13 @@ stories**; the static build takes precedence at `/storybook` until you rebuild
   — text to published styles, fills/strokes to Color variables, padding/gap to Space, radius
   to Radius. A literal that merely *equals* a token is a defect. The only exemption is a
   **specimen**, and it must be named as one. → `.claude/rules/documentation-ds-linkage.md`
+- **The Figma library's `Index` page is part of the library.** Add, rename, split or
+  retire a page — or restyle a master enough that its card preview lies — and the Index
+  is brought back into line **in the same session**. It went stale within a day of being
+  built: eleven pages it did not know about and three cards pointing at pages that had
+  gone. Statuses are derived from the page, never assigned; several previews are
+  deliberately hand-cropped and a blanket re-export destroys them.
+  → `.claude/rules/figma-library-index.md`
 - **Commit messages: no AI attribution.** Never add `Co-Authored-By: Claude` or a
   "Generated with Claude Code" trailer. `.husky/commit-msg` strips them as a backstop.
 

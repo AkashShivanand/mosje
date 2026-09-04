@@ -173,6 +173,7 @@ Open the file when you touch its area. Plain markdown; any tool can read them.
 | `.claude/rules/component-authoring.md` | Authoring a component in Figma **and** code |
 | `.claude/rules/documentation-ds-linkage.md` | Documentation pages — the strictest binding rules |
 | `.claude/rules/figma-documentation-style.md` · `figma-code-sync.md` | Figma work and Code Connect |
+| `.claude/rules/figma-library-index.md` | **Adding, renaming, splitting or retiring a Figma library page** |
 | `.claude/rules/design-audit.md` | Auditing visual work |
 | `.claude/rules/portals.md` · `portal-appswitcher.md` · `portal-login-demos.md` | Portal work |
 | `.claude/rules/website.md` | The public website |
