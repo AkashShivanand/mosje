@@ -1041,6 +1041,80 @@
           "hint": "The dot is painted in the system colour under forced colours."
         }
       ]
+    },
+    {
+      "node": "57072:896",
+      "where": "Selection Card — Documentation › hero › 20 variants",
+      "figma": "20",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "20"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"55530:2932\"[\\s\\S]*?\"Control\"[\\s\\S]*?\"Radio\",\\s*\"Checkbox\"[\\s\\S]*?\"Checked\"[\\s\\S]*?\"Off\",\\s*\"On\"[\\s\\S]*?\"State\"[\\s\\S]*?\"Enabled\",\\s*\"Hover\",\\s*\"Focused\",\\s*\"Pressed\",\\s*\"Disabled\"",
+          "hint": "20 = Control 2 x Checked 2 x State 5."
+        }
+      ]
+    },
+    {
+      "node": "57072:906",
+      "where": "Selection Card — Documentation › hero › 6 properties",
+      "figma": "6",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "6"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"55530:2932\"[\\s\\S]*?\"Icon\": \\{[\\s\\S]*?\"Title\": \\{[\\s\\S]*?\"Description\": \\{[\\s\\S]*?\"Invalid\": \\{[\\s\\S]*?\"Show Icon\": \\{[\\s\\S]*?\"Show Description\": \\{[\\s\\S]*?\"Control\": \\{",
+          "hint": "Six non-variant properties before the three axes: Icon, Title, Description, Invalid, Show Icon, Show Description."
+        }
+      ]
+    },
+    {
+      "node": "57072:911",
+      "where": "Selection Card — Documentation › hero › 44px minimum target",
+      "figma": "44",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-target-comfortable",
+          "hint": "The tile's minimum height is the comfortable target."
+        }
+      ]
+    },
+    {
+      "node": "57072:916",
+      "where": "Selection Card — Documentation › hero › 12px corner",
+      "figma": "12",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-cmp-card-radius",
+          "hint": "Every card in the estate binds cmp/card/radius."
+        }
+      ]
+    },
+    {
+      "node": "57072:921",
+      "where": "Selection Card — Documentation › hero › 0 raw values",
+      "figma": "0",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "0"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/selection-css.test.ts",
+          "pattern": "has no raw px outside comments"
+        }
+      ]
     }
   ],
   "tokenTables": [
