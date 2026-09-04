@@ -214,7 +214,10 @@ module.exports = {
     "apps/hub/public/storybook/**",
     "packages/tokens/tokens.css",
     "packages/design-system/tokens.css",
-    "packages/design-system/ux4g.css",
+    // The UX4G parity mapping is a build output for tools/ux4g-conformance/measure.mjs
+    // (it stopped shipping as packages/design-system/ux4g.css on 2026-09-04); same rule —
+    // fix the generator, never the output.
+    "tools/ux4g-conformance/parity.generated.css",
     // A NEGATIVE fixture. It violates the token rules on purpose, to prove the
     // token-lint gate catches them; `--fix` cheerfully "corrected" it, which
     // would have quietly disarmed the test it exists to be.
