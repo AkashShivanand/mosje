@@ -249,10 +249,23 @@ const outcomes = new Map();
 const results = [];
 const started = Date.now();
 
+/**
+ * In GitHub, the two workflows are independent JOBS. A failure stops the rest of ITS job
+ * and nothing else — Design System Quality does not care that Apps CI fell over.
+ *
+ * Concatenating them into one local sequence lost that: on 2026-09-04 a timing-out npm
+ * registry failed the audit — the LAST step of Apps CI — and took all 28 Design System
+ * Quality gates down with it, unrun. A local runner that lets one flaky network call
+ * silence the entire design system is precisely the dependency this tool exists to
+ * remove. So failure is scoped to its own job, as it is upstream.
+ */
+const failedJobs = new Set();
+
 for (const s of steps) {
   const skip =
     s.jobSkip ??
     localSkip(s.run) ??
+    (failedJobs.has(`${s.file}::${s.job}`) ? "an earlier step in this job failed" : null) ??
     (FAST && s.slow ? "slow, skipped by --fast" : null) ??
     (evaluateIf(s.if, outcomes).run ? null : evaluateIf(s.if, outcomes).why ?? "condition false");
 
@@ -276,7 +289,7 @@ for (const s of steps) {
   if (s.id) outcomes.set(s.id, ok ? "success" : "failure");
   results.push({ ...s, status: ok ? "pass" : "fail", code: res.status, ms });
   console.log(`${ok ? "✔" : "✖"} ${s.name}  (${dur(ms)})\n`);
-  if (!ok && !KEEP_GOING) break;
+  if (!ok && !KEEP_GOING) failedJobs.add(`${s.file}::${s.job}`);
 }
 
 // ── Report ──────────────────────────────────────────────────────────────────
