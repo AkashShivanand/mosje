@@ -54,8 +54,21 @@ jobs:
       # step none enforced that the software is not exploitable. Eight runtime
       # advisories accumulated silently, one of them critical. High and above
       # fails; moderate is reported and does not block.
+      #
+      # Wrapped since 2026-09-04 because `npm audit` exits 1 for two very different
+      # things. That day the registry's audit endpoint returned 503 for half an hour;
+      # npm retried for SEVEN MINUTES and exited 1 with "audit endpoint returned an
+      # error" — the same code it uses for "a critical advisory was found". Two PRs went
+      # red for a reason belonging to neither of them, and because this step failed, the
+      # three after it (hub build, Playwright, axe) were SKIPPED — so the accessibility
+      # gate quietly did not run.
+      #
+      # The wrapper forgives ONLY a registry failure, and says SKIPPED rather than passed
+      # when it does. A report that comes back is always obeyed, and a failure it cannot
+      # explain exits 2 rather than passing. `|| true` would have fixed the outage and
+      # swallowed every real advisory with it.
       - name: Audit production dependencies
-        run: npm audit --omit=dev --audit-level=high
+        run: npm run check:audit
 
       # The build is the gate that lint and typecheck cannot be: it is the only
       # step that proves every dependency actually resolves. The consolidation
