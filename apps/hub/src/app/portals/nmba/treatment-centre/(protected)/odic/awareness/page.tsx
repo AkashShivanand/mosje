@@ -76,13 +76,13 @@ export default function OdicAwarenessPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-4 rounded-xl bg-navy px-5 py-3.5 text-white">
-        <h1 className="text-lg font-bold">Details of Awareness Generation Program</h1>
+        <h1 className="text-headline-1">Details of Awareness Generation Program</h1>
       </div>
 
       <div className="rounded-xl border border-line bg-white p-5">
-        <h2 className="mb-4 text-base font-semibold text-navy">Details of Outreach Activity</h2>
+        <h2 className="mb-4 text-title-2 text-navy">Details of Outreach Activity</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <h3 className="text-sm font-semibold text-ink">Awareness Generation Program</h3>
+          <h3 className="text-title-3 text-ink">Awareness Generation Program</h3>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             <FormField label="Name of the hotspots Identified" required error={err("hotspot")}>
               {(c) => (
@@ -153,7 +153,7 @@ export default function OdicAwarenessPage() {
       </div>
 
       <div className="rounded-xl border border-line bg-white p-5">
-        <h2 className="mb-4 text-base font-semibold text-navy">Details of Awareness Program List</h2>
+        <h2 className="mb-4 text-title-2 text-navy">Details of Awareness Program List</h2>
         <DataTable columns={columns} data={rows} total={rows.length} />
       </div>
     </div>

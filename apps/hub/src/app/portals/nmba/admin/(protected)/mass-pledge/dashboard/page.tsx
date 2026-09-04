@@ -96,11 +96,11 @@ export default function MassPledgeDashboardPage() {
   return (
     <AdminShell>
       <header className="mb-8">
-        <p className="text-xs font-semibold uppercase tracking-wide text-ink-hint">
+        <p className="text-label-3 uppercase text-ink-hint">
           Nasha Mukt Bharat Abhiyaan
         </p>
-        <h1 className="mt-1 text-2xl font-bold tracking-tight text-ink">Mass Pledge dashboard</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="mt-1 text-headline-1 text-ink">Mass Pledge dashboard</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           National Pledge Against Drug Abuse · {EVENT_DATE_LABEL}
         </p>
       </header>
@@ -140,11 +140,11 @@ export default function MassPledgeDashboardPage() {
         <Card>
           <div className="p-4">
             <div className="mb-1 flex items-center gap-2">
-              <h2 className="text-sm font-semibold text-ink">Verified through approval chain</h2>
+              <h2 className="text-title-2 text-ink">Verified through approval chain</h2>
               <VerificationBadge verification="VERIFIED" />
             </div>
-            <p className="text-2xl font-bold tabular-nums text-navy">{fmt(sumTotals(verified))}</p>
-            <p className="mt-1 text-xs text-ink-muted">
+            <p className="text-headline-2 tabular-nums text-navy">{fmt(sumTotals(verified))}</p>
+            <p className="mt-1 text-body-3 text-ink-muted">
               {verified.length} report{verified.length === 1 ? "" : "s"} from States, Districts and
               Blocks
             </p>
@@ -153,11 +153,11 @@ export default function MassPledgeDashboardPage() {
         <Card>
           <div className="p-4">
             <div className="mb-1 flex items-center gap-2">
-              <h2 className="text-sm font-semibold text-ink">Self-declared</h2>
+              <h2 className="text-title-2 text-ink">Self-declared</h2>
               <VerificationBadge verification="SELF_DECLARED" />
             </div>
-            <p className="text-2xl font-bold tabular-nums text-ink">{fmt(sumTotals(selfDeclared))}</p>
-            <p className="mt-1 text-xs text-ink-muted">
+            <p className="text-headline-2 tabular-nums text-ink">{fmt(sumTotals(selfDeclared))}</p>
+            <p className="mt-1 text-body-3 text-ink-muted">
               {selfDeclared.length} report{selfDeclared.length === 1 ? "" : "s"} from Ministries,
               Spiritual Organisations, Institutions and GIAs
             </p>
@@ -187,7 +187,7 @@ export default function MassPledgeDashboardPage() {
       </div>
 
       <div className="mb-6">
-        <h2 className="mb-3 text-base font-semibold text-ink">State / UT rollup</h2>
+        <h2 className="mb-3 text-headline-3 text-ink">State / UT rollup</h2>
         <DataTable<StateRow>
           data={byState}
           total={byState.length}
@@ -206,10 +206,10 @@ export default function MassPledgeDashboardPage() {
       </div>
 
       <div>
-        <h2 className="mb-1 flex items-center gap-2 text-base font-semibold text-ink">
+        <h2 className="mb-1 flex items-center gap-2 text-headline-3 text-ink">
           Coordinating ministry attribution
         </h2>
-        <p className="mb-3 text-sm text-ink-muted">
+        <p className="mb-3 text-body-2 text-ink-muted">
           Events organised by States, Districts and Blocks, grouped by the ministry that coordinated
           them. These figures are already counted in the State rollup above and are shown here for
           attribution only. They are not added to any ministry&rsquo;s own self-declared total.
@@ -231,7 +231,7 @@ export default function MassPledgeDashboardPage() {
         />
       </div>
 
-      <p className="mt-8 text-xs text-ink-hint">
+      <p className="mt-8 text-body-3 text-ink-hint">
         Reporter categories in this rollup:{" "}
         {Object.values(REPORTER_LABEL).join(" · ")}
       </p>

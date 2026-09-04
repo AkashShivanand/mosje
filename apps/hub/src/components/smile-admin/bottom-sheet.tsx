@@ -57,7 +57,7 @@ export function BottomSheet({
         )}
       >
         <div className="flex items-center justify-between border-b border-stroke-100 px-lg py-md">
-          <div className="text-title-2 font-semibold text-ink">{title}</div>
+          <div className="text-title-2 text-ink">{title}</div>
           <button
             type="button"
             aria-label="Close"

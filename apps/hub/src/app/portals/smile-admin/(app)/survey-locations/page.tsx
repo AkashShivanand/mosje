@@ -50,7 +50,7 @@ export default function SurveyLocationsPage() {
               <TR key={r.id}>
                 <TD className="font-semibold text-ink">{r.name}</TD>
                 <TD>{r.state} <span className="text-ink-muted">/ {r.district}</span></TD>
-                <TD className="font-mono text-body-3 text-ink-muted">{r.pincode}</TD>
+                <TD className="font-mono text-body-2 text-ink-muted">{r.pincode}</TD>
                 <TD><Badge status="info">{r.type}</Badge></TD>
                 <TD className="text-right tabular-nums">{r.surveyors}</TD>
                 <TD className="text-right tabular-nums">{formatNumber(r.identified)}</TD>

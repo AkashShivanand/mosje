@@ -48,7 +48,7 @@ export function AddEventModal({ open, onClose }: AddEventModalProps) {
       <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={onClose} aria-hidden />
       <div className="relative z-10 w-full max-w-2xl rounded-2xl bg-white p-6 shadow-pop">
         <div className="mb-5 flex items-center justify-between">
-          <h2 id="modal-title" className="text-lg font-bold text-ink">Add Event</h2>
+          <h2 id="modal-title" className="text-title-1 text-ink">Add Event</h2>
           <button onClick={onClose} aria-label="Close modal" className="rounded-lg p-1.5 text-ink-hint hover:bg-black/5">
             <Icon name="close" size={20} />
           </button>

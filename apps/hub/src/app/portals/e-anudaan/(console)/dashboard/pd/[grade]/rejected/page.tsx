@@ -14,8 +14,8 @@ export default function PdRejectedPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-ink">Returned to State GIA</h1>
-        <p className="mt-1 text-sm text-ink-muted">Applications rejected or returned for reconsideration.</p>
+        <h1 className="text-headline-1 text-ink">Returned to State GIA</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">Applications rejected or returned for reconsideration.</p>
       </div>
       <WorklistTable
         rows={rows}

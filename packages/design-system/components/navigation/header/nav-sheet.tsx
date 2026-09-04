@@ -53,7 +53,7 @@ export interface NavSheetProps {
   accessibility?: boolean;
   accessibilityHref?: string;
   onAccessibility?: () => void;
-  language?: { label?: string; onClick?: () => void } | false;
+  language?: { label?: string; /** BCP-47 tag of the LABEL's own language (e.g. "hi" for हिंदी) so a screen reader voices it correctly. */ lang?: string; onClick?: () => void } | false;
   id?: string;
   className?: string;
 }

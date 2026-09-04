@@ -26,7 +26,7 @@ export default function AdminReportsPage() {
           <Card key={r.name} className="flex items-start justify-between gap-4 p-5">
             <div className="flex gap-3">
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-lg bg-navy/10 text-navy"><Icon name="assessment" size={20} /></span>
-              <div><p className="text-sm font-bold text-ink">{r.name}</p><p className="mt-0.5 text-xs text-ink-muted">{r.desc}</p></div>
+              <div><p className="text-title-3 text-ink">{r.name}</p><p className="mt-0.5 text-body-3 text-ink-muted">{r.desc}</p></div>
             </div>
             <div className="flex shrink-0 gap-1.5">
               <Button variant="outline" className="px-2.5"><Icon name="description" size={16} /></Button>

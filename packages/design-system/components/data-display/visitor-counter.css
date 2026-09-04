@@ -38,7 +38,7 @@
        row it sits in runs at — pinned to body-2 it rendered 14px inside a 12px
        colophon and stood out for no reason. */
     font-size: inherit;
-    line-height: 1.4;
+    line-height: inherit;
     color: var(--ds-footer-ink-muted, currentColor);
   }
 

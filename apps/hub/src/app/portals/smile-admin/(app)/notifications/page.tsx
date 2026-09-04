@@ -65,9 +65,9 @@ export default function NotificationsPage() {
                       {c}
                     </Badge>
                   ))}
-                  <span className="ml-auto text-label-3 text-ink-hint">{n.sentAt}</span>
+                  <span className="ml-auto text-body-3 text-ink-hint">{n.sentAt}</span>
                 </div>
-                <div className="text-label-3 text-ink-hint">{n.audience}</div>
+                <div className="text-body-3 text-ink-hint">{n.audience}</div>
               </div>
             </div>
           </li>

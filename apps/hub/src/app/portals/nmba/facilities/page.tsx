@@ -37,8 +37,8 @@ export default function FacilitiesPage() {
   return (
     <PublicShell>
       <div className="mb-4">
-        <h1 className="text-xl font-bold text-ink">De-addiction Facilities</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">De-addiction Facilities</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Locate IRCA, CPLI, ODIC, DDAC, and ATF centres across India.
         </p>
       </div>
@@ -53,12 +53,12 @@ export default function FacilitiesPage() {
             placeholder="Search by name, type, or location…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            className="w-full rounded-lg border border-line pl-9 pr-3 py-2 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
+            className="w-full rounded-lg border border-line pl-9 pr-3 py-2 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
           />
         </div>
         <button
           onClick={() => toast("Location access would be requested here.", "info")}
-          className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-sm font-medium text-ink hover:bg-surface-muted"
+          className="inline-flex items-center gap-2 rounded-lg border border-line bg-white px-4 py-2 text-label-1 text-ink hover:bg-surface-muted"
           aria-label="Find facilities near my location"
         >
           <Icon name="location_on" size={16} className="text-navy" />
@@ -70,20 +70,20 @@ export default function FacilitiesPage() {
 
       {/* Facilities list */}
       <section aria-labelledby="facilities-list-heading">
-        <h2 id="facilities-list-heading" className="mb-4 text-base font-semibold text-ink">
+        <h2 id="facilities-list-heading" className="mb-4 text-headline-3 text-ink">
           {filtered.length} Facilit{filtered.length === 1 ? "y" : "ies"} found
         </h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((f, i) => (
             <div key={i} className="rounded-xl border border-line bg-white p-4 shadow-card">
               <div className="mb-2">
-                <span className="rounded-full bg-brandwash px-2 py-0.5 text-xs font-semibold text-navy">
+                <span className="rounded-full bg-brandwash px-2 py-0.5 text-label-2 font-semibold text-navy">
                   {f.type}
                 </span>
               </div>
               <h3 className="font-semibold text-ink">{f.name}</h3>
-              <p className="mt-0.5 text-xs text-ink-muted">{TYPE_LABELS[f.type]}</p>
-              <p className="mt-2 text-xs text-ink-hint">{f.address}</p>
+              <p className="mt-0.5 text-body-3 text-ink-muted">{TYPE_LABELS[f.type]}</p>
+              <p className="mt-2 text-body-3 text-ink-hint">{f.address}</p>
             </div>
           ))}
         </div>

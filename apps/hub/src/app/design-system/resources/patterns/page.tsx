@@ -47,8 +47,8 @@ const h3Style: React.CSSProperties = {
 const proseStyle: React.CSSProperties = {
   color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
+  lineHeight: "var(--sa-type-body-1-lh)",
+  maxWidth: "var(--sa-container-measure)",
 };
 const preStyle: React.CSSProperties = {
   background: "var(--sa-bg-neutral-subtler)",
@@ -58,7 +58,7 @@ const preStyle: React.CSSProperties = {
   fontSize: "var(--sa-type-body-3-size)",
   fontFamily: "var(--sa-font-mono)",
   overflowX: "auto",
-  lineHeight: 1.7,
+  lineHeight: "var(--sa-type-body-3-lh)",
   color: "var(--sa-text-neutral-base)",
 };
 
@@ -261,8 +261,9 @@ export default function PatternsPage(): React.JSX.Element {
                                 color: "var(--sa-text-neutral-subtle)",
                                 fontWeight: 700,
                                 fontSize: "var(--sa-type-label-3-size)",
+                                lineHeight: "var(--sa-type-label-3-lh)",
                                 textTransform: "uppercase",
-                                letterSpacing: "0.06em",
+                                letterSpacing: "var(--sa-type-caps-tracking)",
                               }}
                             >
                               {col}
@@ -424,7 +425,7 @@ export default function PatternsPage(): React.JSX.Element {
                 </div>
               </div>
             </div>
-            <p style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 85%, transparent)", fontSize: "var(--sa-type-body-2-size)", lineHeight: 1.6 }}>
+            <p style={{ color: "color-mix(in oklab, var(--sa-on-bg-brand-primary-bolder) 85%, transparent)", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)" }}>
               PM Anudaan for Jobs and Aspirations for Youth — one portal for all beneficiary management.
             </p>
           </div>

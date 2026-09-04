@@ -54,7 +54,7 @@ export default async function SchemeDetailPage({
               variant="primary"
               appearance="filled"
               size="sm"
-              className="text-xs px-4 py-2"
+              className="text-label-2 px-4 py-2"
             >
               Apply Online
             </Button>
@@ -66,7 +66,7 @@ export default async function SchemeDetailPage({
               variant="primary"
               appearance="outlined"
               size="sm"
-              className="text-xs px-3.5 py-2"
+              className="text-label-2 px-3.5 py-2"
               iconRight={<Icon name="arrow_outward" size={16} />}
             >
               Portal
@@ -98,14 +98,14 @@ export default async function SchemeDetailPage({
               scheme.sections.map((s, i) => (
                 <section key={s.heading ?? i} className="mb-8">
                   {s.heading && (
-                    <h2 className="text-[22px] font-bold text-primary-dark border-b border-gray-200 pb-2 mb-4">
+                    <h2 className="text-headline-2 text-primary-dark border-b border-gray-200 pb-2 mb-4">
                       {s.heading}
                     </h2>
                   )}
                   {/* Sanitized HTML content */}
                   <div
                     dangerouslySetInnerHTML={{ __html: withAssetBasePath(s.html) }}
-                    className="leading-relaxed text-ink"
+                    className="text-body-1 text-ink"
                   />
                 </section>
               ))
@@ -115,10 +115,10 @@ export default async function SchemeDetailPage({
           {/* Sidebar Info Card */}
           <aside className="space-y-6">
             <div className="rounded-2xl border border-gray-200 bg-surface-muted p-6 shadow-xs">
-              <h2 className="text-[17px] font-bold text-primary-dark border-b border-gray-200/80 pb-3">
+              <h2 className="text-title-1 text-primary-dark border-b border-gray-200/80 pb-3">
                 Key Details
               </h2>
-              <dl className="mt-4 space-y-4 text-xs sm:text-sm">
+              <dl className="mt-4 space-y-4 text-body-2">
                 {scheme.category && (
                   <div>
                     <dt className="font-bold text-ink">Category</dt>
@@ -161,11 +161,11 @@ export default async function SchemeDetailPage({
 
             {/* Helpline / Quick Assistance Box */}
             <div className="rounded-2xl bg-gradient-to-br from-primary-dark to-primary p-6 text-white shadow-xs">
-              <h3 className="text-[16px] font-bold text-white">Need Assistance?</h3>
-              <p className="mt-1.5 text-xs text-white/90 leading-relaxed">
+              <h3 className="text-title-1 text-white">Need Assistance?</h3>
+              <p className="mt-1.5 text-body-3 text-white/90">
                 Reach out to the scheme helpline for queries related to application status and eligibility.
               </p>
-              <div className="mt-4 pt-3 border-t border-white/20 flex items-center justify-between text-xs font-semibold">
+              <div className="mt-4 pt-3 border-t border-white/20 flex items-center justify-between text-label-2">
                 <span>National Helpline</span>
                 <span className="text-white font-bold">14446 / 14566</span>
               </div>

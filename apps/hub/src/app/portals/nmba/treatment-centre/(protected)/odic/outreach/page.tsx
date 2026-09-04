@@ -31,7 +31,7 @@ export default function OdicOutreachListPage() {
       searchKeys={["registrationNumber", "name", "hotspot"]}
       fileName="odic-outreach"
       action={
-        <Link href="/portals/nmba/treatment-centre/odic/outreach/register" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-navy hover:bg-white/90">
+        <Link href="/portals/nmba/treatment-centre/odic/outreach/register" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-label-1 font-semibold text-navy hover:bg-white/90">
           <Icon name="add" size={16} /> New Outreach Beneficiary
         </Link>
       }

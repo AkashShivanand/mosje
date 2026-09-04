@@ -54,8 +54,8 @@
   .sa-action-banner__title {
     margin: 0;
     font-size: var(--sa-type-title-1-size);
+    line-height: var(--sa-type-title-1-lh);
     font-weight: 600;
-    line-height: 1.3;
     color: var(--sa-action-banner-ink);
     text-wrap: balance;
   }
@@ -63,7 +63,7 @@
   .sa-action-banner__description {
     margin: 0;
     font-size: var(--sa-type-body-2-size);
-    line-height: 1.5;
+    line-height: var(--sa-type-body-2-lh);
     color: var(--sa-action-banner-ink-muted);
     /* A CTA's sentence is one or two lines. Past ~60ch it is a paragraph, and a
        paragraph beside a button reads as an article with a button stuck on it. */

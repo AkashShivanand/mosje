@@ -543,6 +543,26 @@ export type {
 export { SectionTitle } from "./components/layout/section";
 export type { SectionTitleProps } from "./components/layout/section";
 
+// ---- Components: Text primitives ------------------------------------------
+// Heading binds an h1–h6 to one of the 21 type roles (the role defaults from the
+// level); Text binds a run of copy to a body, label or title role. Neither sets a
+// size, leading, tracking or weight of its own — the tokens do — so they are the
+// same on every surface and are the only way a page should ask for type.
+export { Heading, Text } from "./components/layout/text";
+export type {
+  HeadingProps,
+  HeadingLevel,
+  TextProps,
+  TextElement,
+  TextTone,
+  TypeRole,
+  DisplayRole,
+  HeadlineRole,
+  TitleRole,
+  BodyRole,
+  LabelRole,
+} from "./components/layout/text";
+
 // ---- Components: Layout (the page skeleton) ---------------------------------
 // Primitives compose the content column; templates compose the page. All are
 // presentational — no store, no router, no redirect. See the Layout page in the

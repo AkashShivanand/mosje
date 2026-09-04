@@ -26,7 +26,7 @@ export default function ResetPasswordPage() {
           <Icon name="check_circle" size={32} />
         </div>
         <header className="space-y-xs">
-          <h1 className="text-headline-2 font-bold tracking-tight text-ink">
+          <h1 className="text-headline-3 text-ink">
             Password updated
           </h1>
           <p className="text-body-2 text-ink-muted">
@@ -48,7 +48,7 @@ export default function ResetPasswordPage() {
             <Icon name="key" size={20} />
           </div>
           <div className="space-y-xs">
-            <h1 className="text-headline-2 font-bold tracking-tight text-ink">
+            <h1 className="text-headline-3 text-ink">
               Create new password
             </h1>
             <p className="text-body-2 text-ink-muted">
@@ -112,13 +112,13 @@ export default function ResetPasswordPage() {
           <Icon name="key" size={20} />
         </div>
         <div className="space-y-xs">
-          <h1 className="text-headline-2 font-bold tracking-tight text-ink">
+          <h1 className="text-headline-3 text-ink">
             Verify your phone number
           </h1>
           <p className="text-body-2 text-ink-muted">
             For your security, enter the 6-digit OTP we sent to your registered phone.
           </p>
-          <p className="text-body-3 text-ink">
+          <p className="text-body-2 text-ink">
             Sent to <span className="font-semibold">+91 98••••1234</span>.
           </p>
         </div>
@@ -139,7 +139,7 @@ export default function ResetPasswordPage() {
             placeholder="• • • • • •"
             value={otp}
             onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-            className="text-center font-mono text-headline-5 tracking-[0.4em]"
+            className="text-center font-mono text-headline-5 tracking-digits"
           />
         </div>
 
@@ -166,7 +166,7 @@ export default function ResetPasswordPage() {
 
         <Link
           href="/portals/smile-admin/login"
-          className="block text-center text-body-3 font-semibold text-ink-muted hover:text-primary"
+          className="block text-center text-label-1 text-ink-muted hover:text-primary"
         >
           Cancel and return to sign in
         </Link>

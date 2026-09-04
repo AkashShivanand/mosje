@@ -5,6 +5,7 @@ import { makeRetier, retierCss } from "./formats/retier.mjs";
 import { figmaVariables } from "./formats/figma-variables.mjs";
 import { tierOfFile, toCssName } from "./grammar.mjs";
 import { addDbimBrandModes } from "./dbim-brand-modes.mjs";
+import { addDevanagariLeading } from "./devanagari-leading.mjs";
 
 /**
  * Wrap a CSS format so every `var(--sa-…)` it emits carries the referent's tier marker
@@ -49,6 +50,16 @@ StyleDictionary.registerPreprocessor({
     addDbimBrandModes(dictionary);
     return dictionary;
   },
+});
+
+/**
+ * Every role's Devanagari line height, derived from its Latin leading and the offset primitive
+ * instead of authored 21 times. See `build/devanagari-leading.mjs` for the rule and why the flat
+ * 1.7 it replaces was wrong on both surfaces and unusable in Figma.
+ */
+StyleDictionary.registerPreprocessor({
+  name: "mosje/devanagari-leading",
+  preprocessor: (dictionary) => addDevanagariLeading(dictionary),
 });
 
 StyleDictionary.registerFormat({
@@ -151,7 +162,7 @@ const TRANSFORMS = ["attribute/cti", "name/kebab", "color/css"];
 const BRAND = process.env.BRAND || "mosje";
 
 const sd = new StyleDictionary({
-  preprocessors: ["mosje/dbim-brands"],
+  preprocessors: ["mosje/dbim-brands", "mosje/devanagari-leading"],
   source: [`brands/${BRAND}/brand.json`, "src/primitive.json", "src/semantic.json", "src/system.generated.json", "src/component.json", "src/component.generated.json"],
   platforms: {
     css: {
@@ -160,7 +171,6 @@ const sd = new StyleDictionary({
       files: [
         { destination: "tokens.css", format: "css/legacy-ds" },
         { destination: "tokens-tailwind.css", format: "css/tailwind-v4" },
-        { destination: "ux4g.css", format: "css/ux4g-parity" },
       ],
     },
     ts: {
@@ -189,8 +199,16 @@ const sd = new StyleDictionary({
       buildPath: "../design-system/",
       files: [
         { destination: "tokens.css", format: "css/legacy-ds" },
-        { destination: "ux4g.css", format: "css/ux4g-parity" },
       ],
+    },
+    // The `--ux4g-*` parity mapping is a MEASUREMENT artifact for tools/ux4g-conformance, not a
+    // shipped stylesheet: nothing in the estate ever imported `@mosje/design-system/ux4g.css`,
+    // so since 2026-09-04 it is built into the tool's own folder (gitignored) and read only by
+    // measure.mjs. Removing the shipped copy is what let the flat `font.size.*` ramp go.
+    ux4gConformance: {
+      transforms: TRANSFORMS,
+      buildPath: "../../tools/ux4g-conformance/",
+      files: [{ destination: "parity.generated.css", format: "css/ux4g-parity" }],
     },
     // Generate the portal Tailwind v3 preset straight into @mosje/config, so portals keep
     // importing "@mosje/config/tailwind-preset" with no extra package resolution.

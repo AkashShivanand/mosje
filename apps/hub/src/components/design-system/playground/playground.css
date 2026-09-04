@@ -25,10 +25,11 @@
 
 .playground-toolbar__label {
   font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
   color: var(--sa-text-neutral-subtle);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--sa-type-caps-tracking);
   margin-right: auto;
 }
 
@@ -115,7 +116,8 @@
   border-radius: var(--sa-shape-4);
   color: var(--sa-code-comment);
   font-family: var(--sa-font-latin);
-  font-size: 11px;
+  font-size: var(--sa-type-label-2-size);
+  line-height: var(--sa-type-label-2-lh);
   padding: var(--sa-padding-2) var(--sa-padding-8);
   cursor: pointer;
   transition: color 0.1s, border-color 0.1s;
@@ -126,8 +128,8 @@
 .playground-code .prism-code {
   background: var(--sa-code-bg) !important;
   padding: var(--sa-padding-16) var(--sa-padding-20) !important;
-  font-size: 13px !important;
-  line-height: 1.6 !important;
+  font-size: var(--sa-type-body-2-size) !important;
+  line-height: var(--sa-type-body-2-lh) !important;
   min-height: 80px;
 }
 

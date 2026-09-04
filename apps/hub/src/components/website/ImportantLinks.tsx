@@ -63,7 +63,7 @@ export function ImportantLinks() {
             unaffected by a space problem it cannot see. */}
         <span
           data-sa-wall-label
-          className="text-[14px] font-semibold tracking-wide"
+          className="text-label-1"
           style={{ writingMode: "vertical-rl" }}
         >
           Important Links
@@ -87,7 +87,7 @@ export function ImportantLinks() {
             <div className="flex items-center justify-between gap-3 bg-primary px-5 py-4">
               <h2
                 id="important-links-title"
-                className="text-[18px] font-semibold text-white"
+                className="text-title-1 text-white"
               >
                 Important Links Directory
               </h2>
@@ -110,7 +110,7 @@ export function ImportantLinks() {
             <div className="max-h-[70vh] divide-y divide-gray-100 overflow-y-auto p-5">
               {DIVISIONS.map((group) => (
                 <div key={group.id} className="py-4 first:pt-0 last:pb-0">
-                  <h3 className="mb-2 text-[14px] font-bold uppercase tracking-wider text-primary-dark">
+                  <h3 className="mb-2 text-label-3 uppercase text-primary-dark">
                     {group.name}
                   </h3>
                   <ul className="space-y-1.5">
@@ -120,7 +120,7 @@ export function ImportantLinks() {
                           href={item.href}
                           target={item.href.startsWith("http") ? "_blank" : undefined}
                           rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-                          className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-[14px] font-medium text-ink transition-colors hover:bg-surface-muted hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
+                          className="flex items-center justify-between gap-2 rounded-md px-2 py-1.5 text-label-1 text-ink transition-colors hover:bg-surface-muted hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-primary"
                         >
                           <span className="min-w-0 flex-1">{item.label}</span>
                           <Icon name={item.href.startsWith("http") ? "open_in_new" : "chevron_right"} size={16} className="shrink-0 text-primary-dark/60" aria-hidden="true" />

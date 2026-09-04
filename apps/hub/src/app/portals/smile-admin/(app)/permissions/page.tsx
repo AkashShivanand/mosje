@@ -42,7 +42,7 @@ export default function PermissionsPage() {
                   </div>
                   <div className="flex-1">
                     <div className="text-body-2 font-semibold text-ink">{p.label}</div>
-                    <div className="font-mono text-label-3 text-ink-muted">{p.key}</div>
+                    <div className="font-mono text-body-2 text-ink-muted">{p.key}</div>
                   </div>
                   {/* Read-only: this page displays which permissions a role
                       holds, it does not grant them. Editing happens on

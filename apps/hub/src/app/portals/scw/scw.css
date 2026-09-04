@@ -54,7 +54,6 @@
    this file resolves through one of these names, never through a repeated literal. */
 
 :root {
-  --font-scale: 1;
 
   /* SCW / SAMAVESH brand surface tokens */
   --scw-navy: #13366b;
@@ -68,10 +67,6 @@
 /* ds-exempt-end */
 
 
-/* GIGW accessibility — font scaling hooks (top-bar A- / A / A+) */
-[data-fontscale="small"] { --font-scale: 0.92; }
-[data-fontscale="default"] { --font-scale: 1; }
-[data-fontscale="large"] { --font-scale: 1.12; }
 /* ds-exempt-start(portal-palette): SCW renders its own palette, transcribed from its
    own design source rather than from SAMAVESH. CLAUDE.md sanctions a per-portal palette
    ("palettes genuinely conflict") and binding these to the nearest --sa-* token would
@@ -88,8 +83,12 @@
 /* ds-exempt-end */
 
 
+/* The root font size is the READER'S — their browser default, their zoom, and the DS
+   accessibility bar's A−/A/A+ stepper (`--sa-font-scale` on :root). Until 2026-09-04 this
+   rule pinned it to `calc(16px * var(--font-scale))`, which silently overrode a raised
+   browser default — the one preference the rem-based type scale exists to honour — and
+   the `[data-fontscale]` attribute that would have varied it was never set anywhere. */
 html {
-  font-size: calc(16px * var(--font-scale));
   -webkit-text-size-adjust: 100%;
 }
 

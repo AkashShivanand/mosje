@@ -84,14 +84,14 @@ function ServiceTile({ icon, title, description, actionLabel, href, isNew }: Ser
           <Icon name={icon} size={24} aria-hidden />
         </span>
         {isNew && (
-          <span className="rounded-full bg-saffron-50 px-2.5 py-1 text-[10px] font-bold uppercase tracking-wide text-saffron-600">
+          <span className="rounded-full bg-saffron-50 px-2.5 py-1 text-label-3 uppercase text-saffron-600">
             New
           </span>
         )}
       </div>
-      <h3 className="text-lg font-bold text-ink">{title}</h3>
-      <p className="mt-2 flex-1 text-sm leading-relaxed text-ink-muted">{description}</p>
-      <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-navy">
+      <h2 className="text-title-1 text-ink">{title}</h2>
+      <p className="mt-2 flex-1 text-body-2 text-ink-muted">{description}</p>
+      <span className="mt-4 inline-flex items-center gap-1.5 text-label-1 text-navy">
         {actionLabel}
         <Icon
           name="arrow_forward"
@@ -115,16 +115,16 @@ export default function HomePage() {
             className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-white/10"
           />
           <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-            <div className="max-w-2xl">
-              <h2 className="text-3xl font-bold sm:text-4xl">Senior Citizens Welfare</h2>
-              <p className="mt-3 text-base leading-relaxed text-white/90">
+            <div className="max-w-measure">
+              <h1 className="text-headline-1">Senior Citizens Welfare</h1>
+              <p className="mt-3 text-body-1 text-white/90">
                 Commit to creating a safe, inclusive environment that allows our senior citizens to
                 age with dignity. Get your official Ministry certificate upon completion.
               </p>
             </div>
             <Link
               href="/portals/scw/epledge"
-              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-navy shadow-sm transition-colors hover:bg-white/90"
+              className="inline-flex shrink-0 items-center gap-2 rounded-lg bg-white px-5 py-3 text-label-1 text-navy shadow-sm transition-colors hover:bg-white/90"
             >
               Take the Pledge
               <Icon name="arrow_forward" size={18} aria-hidden />
@@ -139,8 +139,8 @@ export default function HomePage() {
               <Icon name="support" size={24} aria-hidden />
             </span>
             <div>
-              <h3 className="text-base font-bold text-ink">Need immediate help?</h3>
-              <p className="mt-1 text-sm text-ink-muted">
+              <h2 className="text-title-2 text-ink">Need immediate help?</h2>
+              <p className="mt-1 text-body-2 text-ink-muted">
                 The National Helpline offers guidance and field intervention, 7 days a week.
               </p>
             </div>

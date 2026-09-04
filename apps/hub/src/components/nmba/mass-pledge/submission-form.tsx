@@ -366,7 +366,7 @@ export function SubmissionForm() {
       </FormSection>
 
       {errors.counts && (
-        <p id={COUNTS_ERROR_ID} className="-mt-2 text-sm text-danger-strong" role="alert">
+        <p id={COUNTS_ERROR_ID} className="-mt-2 text-body-2 text-danger-strong" role="alert">
           {errors.counts}
         </p>
       )}
@@ -374,12 +374,12 @@ export function SubmissionForm() {
       {/* Outside the FormSection: its grid is for fields, and the running total
           is a summary that must span the full width. */}
       <div className="-mt-2 flex items-center justify-between rounded-lg border border-line bg-surface-muted px-4 py-3">
-        <span className="text-sm font-semibold text-ink">
+        <span className="text-title-3 text-ink">
           Total participants
         </span>
         <output
           aria-live="polite"
-          className="text-lg font-bold tabular-nums text-navy"
+          className="text-headline-4 tabular-nums text-navy"
         >
           {total.toLocaleString("en-IN")}
         </output>
@@ -486,7 +486,7 @@ export function SubmissionForm() {
 
         {contactVerified ? (
           <div className="flex items-end">
-            <p className="flex items-center gap-1.5 pb-2 text-sm font-semibold text-approve">
+            <p className="flex items-center gap-1.5 pb-2 text-title-3 text-approve">
               <Icon name="verified_user" size={16} aria-hidden="true" />
               Mobile number verified
             </p>

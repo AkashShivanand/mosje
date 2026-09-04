@@ -27,10 +27,10 @@ export function ActionQueue({ variant = "pd" }: { variant?: "pd" | "finance" }) 
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-ink">
+        <h1 className="text-headline-1 text-ink">
           {isPd ? "My Action Queue" : "Finance / IFD Dashboard"}
         </h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <p className="mt-1 text-body-2 text-ink-muted">
           Every application awaiting your action — across all your schemes and both workflows ·
           Role: <span className="font-semibold text-navy">{role.label}</span>
         </p>
@@ -65,14 +65,14 @@ export function ActionQueue({ variant = "pd" }: { variant?: "pd" | "finance" }) 
 
       <div className="grid gap-4 lg:grid-cols-2">
         <section className="rounded-xl border border-line bg-surface p-5">
-          <h2 className="flex items-center gap-2 text-base font-semibold text-ink">
+          <h2 className="flex items-center gap-2 text-headline-6 text-ink">
             <Icon name="bar_chart" size={20} aria-hidden /> Queue by Scheme
           </h2>
           <ul className="mt-4 space-y-3">
-            {kpis.byScheme.length === 0 && <li className="text-sm text-ink-muted">Nothing in your queue.</li>}
+            {kpis.byScheme.length === 0 && <li className="text-body-2 text-ink-muted">Nothing in your queue.</li>}
             {kpis.byScheme.map((s) => (
               <li key={s.scheme}>
-                <div className="flex items-baseline justify-between text-sm">
+                <div className="flex items-baseline justify-between text-body-2">
                   <span className="text-ink">{s.scheme}</span>
                   <span className="font-semibold text-ink">{s.count}</span>
                 </div>
@@ -88,13 +88,13 @@ export function ActionQueue({ variant = "pd" }: { variant?: "pd" | "finance" }) 
         </section>
 
         <section className="rounded-xl border border-line bg-surface p-5">
-          <h2 className="flex items-center gap-2 text-base font-semibold text-ink">
+          <h2 className="flex items-center gap-2 text-headline-6 text-ink">
             <Icon name="schedule" size={20} aria-hidden /> Pending — Ageing
           </h2>
           <ul className="mt-4 space-y-3">
             {kpis.ageing.map((b) => (
               <li key={b.band}>
-                <div className="flex items-baseline justify-between text-sm">
+                <div className="flex items-baseline justify-between text-body-2">
                   <span className="text-ink">{b.band}</span>
                   <span className="font-semibold text-ink">{b.count}</span>
                 </div>
@@ -122,7 +122,7 @@ export function ActionQueue({ variant = "pd" }: { variant?: "pd" | "finance" }) 
         caption="Applications awaiting action"
       />
 
-      <p className="text-xs text-ink-muted">
+      <p className="text-body-3 text-ink-muted">
         Tip: use the scheme sections in the sidebar to browse a single scheme, or Sanctioned /
         Rejected / Forwarded for those outcomes.
       </p>

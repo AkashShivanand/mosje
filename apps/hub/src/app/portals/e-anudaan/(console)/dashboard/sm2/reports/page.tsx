@@ -20,7 +20,7 @@ export default function ReportsPage() {
   const { state } = useEAnudaan();
   return (
     <div className="space-y-5">
-      <h1 className="text-2xl font-bold text-ink">Reports &amp; Analytics</h1>
+      <h1 className="text-headline-1 text-ink">Reports &amp; Analytics</h1>
       <section className="rounded-xl border border-line bg-surface p-4 lg:p-5">
         <DataTable
           columns={COLUMNS as unknown as DataTableColumn<Record<string, unknown>>[]}

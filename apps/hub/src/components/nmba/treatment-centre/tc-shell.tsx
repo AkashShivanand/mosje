@@ -44,7 +44,7 @@ function NavTree({
               href={node.href}
               aria-current={isActive(node.href) ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-label-1 transition-colors",
                 depth > 0 && "pl-9",
                 isActive(node.href)
                   ? "bg-brandwash font-semibold text-navy"
@@ -57,7 +57,7 @@ function NavTree({
                 className={cn(isActive(node.href) && "text-navy")}
                 aria-hidden
               />
-              <span className="leading-tight">{node.label}</span>
+              <span>{node.label}</span>
             </Link>
           </li>
         ) : (
@@ -96,13 +96,13 @@ function NavGroupItem({
         aria-expanded={open}
         aria-controls={contentId}
         className={cn(
-          "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition-colors",
+          "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-label-1 font-semibold transition-colors",
           depth > 0 && "pl-6",
           active ? "text-navy" : "text-ink hover:bg-black/5",
         )}
       >
         <Icon name={group.icon} size={20} aria-hidden />
-        <span className="flex-1 text-left leading-tight">{group.label}</span>
+        <span className="flex-1 text-left">{group.label}</span>
         <Icon name="keyboard_arrow_down" className={cn("h-4 w-4 shrink-0 transition-transform", open && "rotate-180")} aria-hidden />
       </button>
       {open && (

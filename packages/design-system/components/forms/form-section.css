@@ -57,9 +57,10 @@
      letter-spaced, sitting above a hairline rule (the head's bottom border). */
   .ds-form-section__title {
     margin: 0;
-    font-size: var(--sa-type-label-2-size);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
     font-weight: 600;
-    letter-spacing: 0.06em;
+    letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     color: var(--sa-text-neutral-subtle);
   }

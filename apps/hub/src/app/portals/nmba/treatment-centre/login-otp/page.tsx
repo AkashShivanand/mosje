@@ -94,8 +94,8 @@ export default function TreatmentCentreLoginPage() {
         tabs={TABS}
         onFooterLinkClick={() => toast("This page is coming soon.", "info")}
       >
-        <h2 className="mb-1 text-xl font-bold text-ink">Log in to your account</h2>
-        <p className="mb-6 text-sm text-ink-muted">
+        <h1 className="mb-1 text-headline-3 text-ink">Log in to your account</h1>
+        <p className="mb-6 text-body-2 text-ink-muted">
           Enter your Project Id to receive a one-time password
         </p>
 
@@ -127,7 +127,7 @@ export default function TreatmentCentreLoginPage() {
           </form>
         ) : (
           <form onSubmit={verify} className="flex flex-col gap-4" noValidate>
-            <div className="flex items-center justify-between text-sm">
+            <div className="flex items-center justify-between text-body-2">
               <span className="text-ink-muted">
                 OTP sent to <strong className="text-ink">99******40</strong>
               </span>
@@ -170,14 +170,14 @@ export default function TreatmentCentreLoginPage() {
             <button
               type="button"
               onClick={() => toast("OTP resent (demo OTP: 123456).", "info")}
-              className="text-center text-xs text-ink-hint hover:text-navy"
+              className="text-center text-label-2 text-ink-hint hover:text-navy"
             >
               Didn&apos;t receive it? <span className="font-semibold text-navy">Resend OTP</span>
             </button>
           </form>
         )}
 
-        <p className="mt-6 text-center text-xs text-ink-hint">
+        <p className="mt-6 text-center text-body-3 text-ink-hint">
           For access issues, contact the IDAMS helpdesk.
         </p>
       </PortalLoginShell>

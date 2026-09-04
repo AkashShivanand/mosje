@@ -33,8 +33,8 @@ export default function HelplinePage() {
   return (
     <PublicShell>
       <div className="mb-6">
-        <h1 className="text-xl font-bold text-ink">National Helpline</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">National Helpline</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Confidential support, counselling, and referral to de-addiction services.
         </p>
       </div>
@@ -46,14 +46,14 @@ export default function HelplinePage() {
             <Icon name="call" />
           </div>
           <div>
-            <p className="text-xs font-semibold uppercase tracking-widest text-white/70">Primary Helpline</p>
+            <p className="text-label-3 uppercase text-white/70">Primary Helpline</p>
             <a
               href="tel:14446"
-              className="mt-1 block text-4xl font-bold leading-none tracking-tight hover:underline"
+              className="mt-1 block text-headline-2 tabular-nums hover:underline"
             >
               14446
             </a>
-            <p className="mt-2 text-sm text-white">
+            <p className="mt-2 text-body-2 text-white">
               Free · Confidential · Available 24 hours, 7 days a week
             </p>
           </div>
@@ -61,7 +61,7 @@ export default function HelplinePage() {
       </div>
 
       {/* Info card */}
-      <div className="mb-6 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-sm">
+      <div className="mb-6 flex gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4 text-body-2">
         <Icon name="error" size={16} className="mt-0.5 shrink-0 text-amber-600" />
         <p className="text-amber-800">
           All calls are free of charge and completely confidential. Trained counsellors can assist in multiple regional languages.
@@ -70,22 +70,22 @@ export default function HelplinePage() {
 
       {/* All helplines */}
       <section className="mb-8">
-        <h2 className="mb-4 text-[10px] font-bold uppercase tracking-widest text-ink-muted">All Helpline Numbers</h2>
+        <h2 className="mb-4 text-headline-3 text-ink-muted">All Helpline Numbers</h2>
         <div className="space-y-3">
           {HELPLINE_NUMBERS.map((h) => (
             <div key={h.number} className="rounded-xl border border-line bg-white p-5 shadow-card">
               <div className="flex items-start justify-between gap-4">
                 <div>
-                  <div className="text-sm font-semibold text-ink">{h.name}</div>
+                  <div className="text-title-3 text-ink">{h.name}</div>
                   <a
                     href={`tel:${h.number.replace(/-/g, "")}`}
-                    className="mt-1 block text-xl font-bold text-navy hover:underline"
+                    className="mt-1 block text-title-1 tabular-nums text-navy hover:underline"
                   >
                     {h.number}
                   </a>
-                  <p className="mt-2 text-xs text-ink-muted">{h.description}</p>
+                  <p className="mt-2 text-body-3 text-ink-muted">{h.description}</p>
                 </div>
-                <div className="shrink-0 rounded-full bg-surface-muted px-3 py-1 text-xs font-medium text-ink-muted">
+                <div className="shrink-0 rounded-full bg-surface-muted px-3 py-1 text-label-2 text-ink-muted">
                   {h.hours}
                 </div>
               </div>
@@ -96,18 +96,18 @@ export default function HelplinePage() {
 
       {/* Find a centre */}
       <section>
-        <h2 className="mb-4 text-[10px] font-bold uppercase tracking-widest text-ink-muted">Find a Centre Near You</h2>
+        <h2 className="mb-4 text-headline-3 text-ink-muted">Find a Centre Near You</h2>
         <div className="flex items-center gap-4 rounded-xl border border-line bg-white p-5 shadow-card">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-surface-muted">
             <Icon name="location_on" size={20} className="text-navy" />
           </div>
           <div>
-            <div className="text-sm font-semibold text-ink">De-addiction Facility Locator</div>
-            <p className="text-xs text-ink-muted">Find IRCA, ODIC, and ATF centres in your district.</p>
+            <div className="text-title-3 text-ink">De-addiction Facility Locator</div>
+            <p className="text-body-3 text-ink-muted">Find IRCA, ODIC, and ATF centres in your district.</p>
           </div>
           <a
             href="/portals/nmba/facilities"
-            className="ml-auto shrink-0 rounded-lg bg-navy px-4 py-2 text-sm font-semibold text-white hover:bg-navy-800"
+            className="ml-auto shrink-0 rounded-lg bg-navy px-4 py-2 text-label-1 font-semibold text-white hover:bg-navy-800"
           >
             Find Facilities
           </a>

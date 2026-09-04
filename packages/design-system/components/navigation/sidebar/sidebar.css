@@ -77,10 +77,11 @@
 
   .ds-sidebar__group-label {
     font-family: var(--sa-font-latin);
-    font-size: 11px;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
     font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
     padding: 0 var(--sa-padding-16) var(--sa-padding-8);
   }
@@ -117,8 +118,8 @@
     color: var(--sa-text-neutral-base);
     text-decoration: none;
     font-family: var(--sa-font-latin);
-    font-size: 14px; /* Figma: font-size/body-2 */
-    line-height: 20px;
+    font-size: var(--sa-type-label-1-size); /* Figma: font-size/body-2 — same size; a nav item is a label */
+    line-height: var(--sa-type-label-1-lh);
     transition:
       background var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
       color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
@@ -172,9 +173,9 @@
     border-radius: var(--sa-shape-full);
     background: var(--sa-bg-status-info-bolder);
     color: var(--sa-on-bg-brand-primary-bolder);
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 1;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
   }
 
   /* Chevron */
@@ -249,8 +250,8 @@
     padding: var(--sa-padding-8) var(--sa-padding-12); /* 8px 12px — Figma: py-sm px-md */
     border-radius: var(--sa-shape-8); /* 8px */
     font-family: var(--sa-font-latin);
-    font-size: 14px;
-    line-height: 20px;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
     color: var(--sa-text-neutral-base);
     opacity: 0.8;
     text-decoration: none;

@@ -243,8 +243,8 @@
     color: var(--sa-text-neutral-subtle);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    font-weight: 700;
-    letter-spacing: var(--sa-type-label-tracking);
+    font-weight: 600;
+    letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
   }
 

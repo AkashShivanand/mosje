@@ -65,13 +65,13 @@ export const Tones: Story = {
   render: () => (
     <div style={{ display: "grid", gap: "24px" }}>
       <div>
-        <p style={{ marginBottom: 8, fontSize: 12 }}>default — on a light surface</p>
+        <p style={{ marginBottom: 8, fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)" }}>default — on a light surface</p>
         <Divider tone="default" />
       </div>
       <div style={{ background: "var(--sa-bg-brand-primary-bolder)", padding: "16px" }}>
-        <p style={{ marginBottom: 8, fontSize: 12, color: "#fff" }}>inverse — sections on a dark surface</p>
+        <p style={{ marginBottom: 8, fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)", color: "#fff" }}>inverse — sections on a dark surface</p>
         <Divider tone="inverse" />
-        <p style={{ margin: "16px 0 8px", fontSize: 12, color: "#fff" }}>inverse-subtle — between controls</p>
+        <p style={{ margin: "16px 0 8px", fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)", color: "#fff" }}>inverse-subtle — between controls</p>
         <Divider tone="inverse-subtle" />
       </div>
     </div>
@@ -110,11 +110,11 @@ export const ExplicitLength: Story = {
         background: "var(--sa-bg-brand-primary-bolder)", padding: "0 16px", color: "#fff",
       }}
     >
-      <span style={{ fontSize: 12 }}>Skip to Main Content</span>
+      <span style={{ fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)" }}>Skip to Main Content</span>
       <Divider orientation="vertical" tone="inverse-subtle" length={20} />
-      <span style={{ fontSize: 12 }}>A− A A+</span>
+      <span style={{ fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)" }}>A− A A+</span>
       <Divider orientation="vertical" tone="inverse-subtle" length={20} />
-      <span style={{ fontSize: 12 }}>English</span>
+      <span style={{ fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)" }}>English</span>
     </div>
   ),
 };

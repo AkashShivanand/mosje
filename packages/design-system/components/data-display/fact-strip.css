@@ -155,7 +155,6 @@
     margin-top: auto;
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
-    letter-spacing: 0.5px;
     /* #3a3d41 against the handoff's #343a40 — the same grey to within a few
        points, and 10.9:1 on white. It shared `base` with the value above it, so
        the pair had no tonal hierarchy at all: the label competed with the figure

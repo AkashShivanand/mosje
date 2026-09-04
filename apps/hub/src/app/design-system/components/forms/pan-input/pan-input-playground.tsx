@@ -42,7 +42,7 @@ export function PanInputPlayground() {
         </FormField>
       </div>
       
-      <div style={{ marginTop: "var(--sa-stack-16)", padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", fontSize: "14px", fontFamily: "monospace" }}>
+      <div style={{ marginTop: "var(--sa-stack-16)", padding: "var(--sa-padding-16)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", fontFamily: "var(--sa-font-mono)" }}>
         <strong>Internal State:</strong> &quot;{pan}&quot;
       </div>
     </div>

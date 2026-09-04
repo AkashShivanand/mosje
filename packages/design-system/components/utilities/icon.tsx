@@ -95,7 +95,7 @@ export function Icon({
       style={{
         fontSize: size,
         fontVariationSettings: `'FILL' ${fill ? 1 : 0}, 'wght' ${weight}, 'GRAD' 0, 'opsz' ${size}`,
-        lineHeight: 1,
+        lineHeight: 1, // icon glyph: the ligature sits in a box exactly its own size
         display: "inline-flex",
         alignItems: "center",
         justifyContent: "center",

@@ -29,7 +29,7 @@ export function PledgeForm({ onSuccess }: PledgeFormProps) {
 
   return (
     <form onSubmit={handleSubmit} className="mt-6 space-y-4 rounded-2xl border border-line bg-white p-6 shadow-card">
-      <h3 className="text-base font-semibold text-ink">Take the Pledge</h3>
+      <h3 className="text-title-2 text-ink">Take the Pledge</h3>
       <div className="grid gap-4 sm:grid-cols-2">
         <FormField label="Full Name" id="pledge-name" required>
           {(control) => (

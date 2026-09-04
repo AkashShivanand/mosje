@@ -51,8 +51,8 @@ export default function ActivitiesPage() {
     <PublicShell>
       <div className="mb-4 flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-ink">Activity Snapshot</h1>
-          <p className="mt-1 text-sm text-ink-muted">
+          <h1 className="text-headline-1 text-ink">Activity Snapshot</h1>
+          <p className="mt-1 text-body-2 text-ink-muted">
             Showing {filtered.length} of {ACTIVITIES_TOTAL.toLocaleString("en-IN")} activities
           </p>
         </div>

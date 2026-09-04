@@ -118,15 +118,15 @@ function SessionCardList({
   return (
     <div className="flex flex-col gap-4">
       <div>
-        <h2 id={headingId} className="text-base font-semibold text-navy">{title}</h2>
-        <p className="mt-1 text-xs text-ink-muted">{description}</p>
+        <h2 id={headingId} className="text-title-2 text-navy">{title}</h2>
+        <p className="mt-1 text-body-3 text-ink-muted">{description}</p>
       </div>
       <ol className="flex flex-col gap-3" aria-labelledby={headingId}>
         {rows.map((row, idx) => (
           <li key={idx} className="rounded-xl border border-line bg-surface-muted/50 p-4">
             <div className="mb-3 flex items-center justify-between gap-2">
-              <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-xs font-bold text-navy" aria-hidden="true">
+              <span className="inline-flex items-center gap-2 text-title-3 text-navy">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-label-2 font-bold text-navy" aria-hidden="true">
                   {row.sessionNo}
                 </span>
                 Session {row.sessionNo}
@@ -136,7 +136,7 @@ function SessionCardList({
                   type="button"
                   onClick={() => onRemove(idx)}
                   aria-label={`Remove session ${row.sessionNo}`}
-                  className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                  className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                 >
                   <Icon name="delete" size={14} aria-hidden /> Remove
                 </button>
@@ -235,11 +235,11 @@ export default function ClinicalWizardPage() {
   if (!patient) {
     return (
       <div className="p-8 text-center">
-        <h1 className="text-xl font-bold text-ink">Patient not found</h1>
-        <p className="text-sm text-ink-muted mt-2">The patient record you are looking for does not exist.</p>
+        <h1 className="text-headline-1 text-ink">Patient not found</h1>
+        <p className="text-body-2 text-ink-muted mt-2">The patient record you are looking for does not exist.</p>
         <Link
           href="/portals/nmba/treatment-centre/irca/patients"
-          className="mt-4 inline-flex items-center text-sm font-semibold text-navy hover:underline"
+          className="mt-4 inline-flex items-center text-label-1 font-semibold text-navy hover:underline"
         >
           <Icon name="arrow_back" size={16} className="mr-1.5" /> Back to Patient List
         </Link>
@@ -413,8 +413,8 @@ export default function ClinicalWizardPage() {
               <Icon name="arrow_back" size={16} />
             </Link>
             <div>
-              <h1 className="text-xl font-bold text-ink">Clinical Case File</h1>
-              <p className="text-xs text-ink-muted mt-0.5">
+              <h1 className="text-headline-1 text-ink">Clinical Case File</h1>
+              <p className="text-body-3 text-ink-muted mt-0.5">
                 Patient: <span className="font-semibold text-navy">{patient.name}</span> ({patient.registrationNumber}) · Adm: {patient.dateOfAdmission}
               </p>
             </div>
@@ -603,8 +603,8 @@ export default function ClinicalWizardPage() {
         {activeTab === 1 && (
           <div className="flex flex-col gap-6">
             <div>
-              <h2 id="dosage-log-heading" className="text-base font-semibold text-navy">Medication &amp; Dosage Log</h2>
-              <p className="text-xs text-ink-muted mt-1">
+              <h2 id="dosage-log-heading" className="text-title-2 text-navy">Medication &amp; Dosage Log</h2>
+              <p className="text-body-3 text-ink-muted mt-1">
                 Record medication changes during the treatment period — each entry gets its own card. Dates must be on or after the registration date.
               </p>
             </div>
@@ -614,8 +614,8 @@ export default function ClinicalWizardPage() {
                 <li key={idx} className="rounded-xl border border-line bg-surface-muted/50 p-4 sm:p-5">
                   {/* Card header: entry number + remove */}
                   <div className="mb-4 flex items-center justify-between gap-2">
-                    <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
-                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-xs font-bold text-navy" aria-hidden="true">
+                    <span className="inline-flex items-center gap-2 text-title-3 text-navy">
+                      <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-label-2 font-bold text-navy" aria-hidden="true">
                         {idx + 1}
                       </span>
                       Entry {idx + 1}
@@ -625,7 +625,7 @@ export default function ClinicalWizardPage() {
                         type="button"
                         onClick={() => removeDosageRow(idx)}
                         aria-label={`Remove entry ${idx + 1}`}
-                        className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                        className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                       >
                         <Icon name="delete" size={14} aria-hidden /> Remove
                       </button>
@@ -758,16 +758,16 @@ export default function ClinicalWizardPage() {
 
             <div className="flex flex-col gap-4">
               <div>
-                <h2 id="home-visits-heading" className="text-base font-semibold text-navy">Details of Home Visits</h2>
-                <p className="text-xs text-ink-muted mt-1">Log home visits conducted by staff.</p>
+                <h2 id="home-visits-heading" className="text-title-2 text-navy">Details of Home Visits</h2>
+                <p className="text-body-3 text-ink-muted mt-1">Log home visits conducted by staff.</p>
               </div>
 
               <ol className="flex flex-col gap-3" aria-labelledby="home-visits-heading">
                 {homeVisits.map((row, idx) => (
                   <li key={idx} className="rounded-xl border border-line bg-surface-muted/50 p-4">
                     <div className="mb-3 flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-xs font-bold text-navy" aria-hidden="true">
+                      <span className="inline-flex items-center gap-2 text-title-3 text-navy">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-label-2 font-bold text-navy" aria-hidden="true">
                           {idx + 1}
                         </span>
                         Visit {idx + 1}
@@ -777,7 +777,7 @@ export default function ClinicalWizardPage() {
                           type="button"
                           onClick={() => removeHomeVisitRow(idx)}
                           aria-label={`Remove visit ${idx + 1}`}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                         >
                           <Icon name="delete" size={14} aria-hidden /> Remove
                         </button>

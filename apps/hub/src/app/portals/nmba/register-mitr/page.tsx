@@ -82,8 +82,8 @@ export default function RegisterMitrPage() {
             <Icon name="volunteer_activism" size={20} />
           </div>
           <div>
-            <h1 className="text-xl font-bold text-ink">Register as Nasha Mukti Mitr</h1>
-            <p className="text-sm text-ink-muted">
+            <h1 className="text-headline-1 text-ink">Register as Nasha Mukti Mitr</h1>
+            <p className="text-body-2 text-ink-muted">
               Join as a community volunteer for a drug-free India
             </p>
           </div>
@@ -91,12 +91,12 @@ export default function RegisterMitrPage() {
 
         {/* Who is a Nasha Mukti Mitr */}
         <div className="mb-6 rounded-2xl border border-navy/20 bg-brandwash p-5">
-          <h2 className="text-sm font-semibold text-navy">What does a Nasha Mukti Mitr do?</h2>
+          <h2 className="text-title-2 text-navy">What does a Nasha Mukti Mitr do?</h2>
           <ul className="mt-3 grid gap-3 sm:grid-cols-3">
             {WHAT_MITRS_DO.map(({ icon: iconName, text }) => (
               <li key={text} className="flex items-start gap-2">
                 <Icon name={iconName} size={16} className="mt-0.5 shrink-0 text-navy" aria-hidden />
-                <span className="text-xs leading-relaxed text-ink">{text}</span>
+                <span className="text-body-3 text-ink">{text}</span>
               </li>
             ))}
           </ul>
@@ -105,10 +105,10 @@ export default function RegisterMitrPage() {
         {done ? (
           <div className="rounded-2xl border border-green-200 bg-green-50 p-8 text-center">
             <Icon name="check_circle" size={48} className="mx-auto text-green-600" aria-hidden />
-            <p className="mt-3 text-lg font-semibold text-green-800">
+            <p className="mt-3 text-title-1 text-green-800">
               You&rsquo;re registered as a Nasha Mukti Mitr!
             </p>
-            <p className="mx-auto mt-1 max-w-md text-sm text-green-700">
+            <p className="mx-auto mt-1 max-w-md text-body-2 text-green-700">
               Thank you, {form.name || "volunteer"}. Our team will reach out with volunteer
               materials and next steps. Together, towards a drug-free India.
             </p>
@@ -129,7 +129,7 @@ export default function RegisterMitrPage() {
             onSubmit={handleSubmit}
             className="space-y-5 rounded-2xl border border-line bg-white p-6 shadow-card"
           >
-            <h2 className="text-base font-semibold text-ink">Volunteer details</h2>
+            <h2 className="text-title-2 text-ink">Volunteer details</h2>
 
             <div className="grid gap-4 sm:grid-cols-2">
               <FormField label="Full Name" id="mitr-name" required>

@@ -60,16 +60,16 @@ export default function CitizenSignInPage() {
     <div className="flex min-h-screen flex-col md:flex-row">
       <a
         href="#signin-main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-navy focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-navy focus:px-4 focus:py-2 focus:text-label-1 focus:font-semibold focus:text-white"
       >
         Skip to sign-in form
       </a>
       <aside className="relative hidden flex-col justify-center bg-navy p-12 text-white md:flex md:w-1/2">
         <Image src="/portals/tg/brand/national-emblem-white.svg" alt="National Emblem" width={44} height={62} className="h-16 w-auto" />
-        <h1 className="mt-6 text-4xl font-bold tracking-tight">National Portal for Transgender Persons</h1>
-        <p className="mt-3 text-xl text-white/85">Apply for and track your Certificate of Identity</p>
+        <h1 className="mt-6 text-headline-3">National Portal for Transgender Persons</h1>
+        <p className="mt-3 text-body-1 text-white/85">Apply for and track your Certificate of Identity</p>
         <div className="my-6 h-1 w-64 rounded bg-saffron" />
-        <p className="max-w-md text-base leading-relaxed text-white/75">
+        <p className="max-w-md text-body-1 text-white/75">
           Recognised under the Transgender Persons (Protection of Rights) Act, 2019. One application —
           certificate, ID card, and access to welfare.
         </p>
@@ -77,8 +77,8 @@ export default function CitizenSignInPage() {
 
       <main id="signin-main" className="flex flex-1 items-center justify-center bg-surface-muted px-4 py-12 sm:px-6">
         <div className="w-full max-w-md">
-          <h2 className="text-2xl font-bold text-ink">Citizen Sign In</h2>
-          <p className="mt-1 mb-6 text-sm text-ink-muted">Sign in to apply for or track your certificate.</p>
+          <h2 className="text-headline-4 text-ink">Citizen Sign In</h2>
+          <p className="mt-1 mb-6 text-body-2 text-ink-muted">Sign in to apply for or track your certificate.</p>
 
           <form className="space-y-5" onSubmit={onSubmit}>
             <Field label="Email Address" required>
@@ -105,11 +105,11 @@ export default function CitizenSignInPage() {
                   onChange={(e) => setOtp(e.target.value)}
                   autoFocus
                 />
-                <span className="mt-1.5 block text-xs text-ink-hint">Dev OTP: 123456</span>
+                <span className="mt-1.5 block text-body-3 text-ink-hint">Dev OTP: 123456</span>
               </Field>
             )}
 
-            {error && <p className="text-sm font-medium text-reject-fg">{error}</p>}
+            {error && <p className="text-body-2 font-medium text-reject-fg">{error}</p>}
 
             <Button type="submit" className="w-full">
               {otpSent ? "Verify & Sign In" : "Send OTP"}
@@ -117,14 +117,14 @@ export default function CitizenSignInPage() {
             </Button>
           </form>
 
-          <div className="my-6 flex items-center gap-3 text-xs text-ink-hint">
+          <div className="my-6 flex items-center gap-3 text-body-3 text-ink-hint">
             <Divider className="flex-1" /> OR <Divider className="flex-1" />
           </div>
           <Button type="button" variant="outline" className="w-full" onClick={signIn}>
             Continue with DigiLocker
           </Button>
 
-          <p className="mt-8 text-center text-xs text-ink-hint">
+          <p className="mt-8 text-center text-body-3 text-ink-hint">
             Ministry of Social Justice &amp; Empowerment, Government of India
           </p>
         </div>

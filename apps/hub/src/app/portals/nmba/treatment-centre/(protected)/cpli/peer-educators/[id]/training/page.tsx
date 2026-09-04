@@ -100,7 +100,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-flex items-center gap-1.5 px-3 py-[7px] text-sm font-medium text-ink-muted transition-colors duration-150 hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
+          className="inline-flex items-center gap-1.5 px-3 py-[7px] text-label-1 text-ink-muted transition-colors duration-150 hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
         >
           {copied ? (
             <Icon name="check" size={14} className="text-green-600" aria-hidden />
@@ -132,7 +132,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
             role="menuitem"
             type="button"
             onClick={() => handleDownload("xls")}
-            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:outline-none"
+            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-label-1 text-ink transition-colors hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:outline-none"
           >
             <Icon name="table_chart" size={16} className="text-ink-muted" aria-hidden /> Export as Excel
           </button>
@@ -140,7 +140,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
             role="menuitem"
             type="button"
             onClick={() => handleDownload("csv")}
-            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:outline-none"
+            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-label-1 text-ink transition-colors hover:bg-surface-muted focus-visible:bg-surface-muted focus-visible:outline-none"
           >
             <Icon name="description" size={16} className="text-ink-muted" aria-hidden /> Export as CSV
           </button>
@@ -218,7 +218,7 @@ function PhotoBadge({
       {/* Count badge — overlaid on bottom-right corner, visible only for 2+ photos */}
       {photos.length > 1 && (
         <span
-          className="absolute -bottom-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-navy px-1.5 text-[10px] font-bold leading-none text-white shadow ring-2 ring-white"
+          className="absolute -bottom-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-navy px-1.5 text-label-2 font-bold text-white shadow ring-2 ring-white"
           aria-hidden
         >
           +{photos.length - 1}
@@ -266,11 +266,11 @@ function PhotoUploadField({
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-center justify-between">
-        <label htmlFor={fieldId} className="text-sm font-medium text-ink">
+        <label htmlFor={fieldId} className="text-label-1 text-ink">
           Photos <span className="text-danger-fg" aria-hidden>*</span>
           <span className="sr-only">(required)</span>
         </label>
-        <span className="text-xs text-ink-hint">JPG / PNG — up to 5 MB each</span>
+        <span className="text-body-3 text-ink-hint">JPG / PNG — up to 5 MB each</span>
       </div>
 
       {/* Drop zone / file picker */}
@@ -278,7 +278,7 @@ function PhotoUploadField({
         type="button"
         onClick={() => fileRef.current?.click()}
         aria-controls={fieldId}
-        className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed px-4 py-3 text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1 ${
+        className={`flex w-full items-center justify-center gap-2 rounded-lg border-2 border-dashed px-4 py-3 text-label-1 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1 ${
           error
             ? "border-danger-fg bg-danger-bg/30 text-danger-fg hover:bg-danger-bg/50"
             : "border-navy/25 text-navy/70 hover:border-navy/50 hover:bg-navy/5"
@@ -301,7 +301,7 @@ function PhotoUploadField({
 
       {/* Error */}
       {error && (
-        <p id={errorId} role="alert" className="text-xs font-medium text-danger-fg">
+        <p id={errorId} role="alert" className="text-label-2 text-danger-fg">
           {error}
         </p>
       )}
@@ -402,7 +402,7 @@ function TrainingFormSheet({
         </>
       }
     >
-      <p className="mb-5 text-xs text-ink-muted">
+      <p className="mb-5 text-body-3 text-ink-muted">
         Fields marked <span aria-hidden>*</span>
         <span className="sr-only">with an asterisk</span> are required.
       </p>
@@ -460,7 +460,7 @@ function TrainingFormSheet({
               value={details}
               onChange={(e) => setDetails(e.target.value)}
               placeholder="Describe what was covered and the outcomes achieved…"
-              className="w-full resize-y rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-hint focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-1 disabled:opacity-50"
+              className="w-full resize-y rounded-lg border border-line bg-white px-3 py-2 text-body-2 text-ink placeholder:text-ink-hint focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-1 disabled:opacity-50"
             />
           )}
         </FormField>
@@ -474,7 +474,7 @@ function TrainingFormSheet({
               value={remarks}
               onChange={(e) => setRemarks(e.target.value)}
               placeholder="Any additional notes or observations (optional)…"
-              className="w-full resize-y rounded-lg border border-line bg-white px-3 py-2 text-sm text-ink placeholder:text-ink-hint focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-1"
+              className="w-full resize-y rounded-lg border border-line bg-white px-3 py-2 text-body-2 text-ink placeholder:text-ink-hint focus:outline-none focus:ring-2 focus:ring-navy focus:ring-offset-1"
             />
           )}
         </FormField>
@@ -520,7 +520,7 @@ function DeleteConfirmModal({
         <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-danger-bg text-danger-fg" aria-hidden>
           <Icon name="warning" size={20} />
         </span>
-        <div className="text-sm text-ink">
+        <div className="text-body-2 text-ink">
           <p>
             You are about to remove the training session on{" "}
             <span className="font-semibold">{record ? fmtDate(record.date) : "—"}</span> at{" "}
@@ -665,12 +665,12 @@ export default function TrainingPage() {
   if (!educator) {
     return (
       <div className="flex flex-col gap-4">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-ink-muted">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-label-1 text-ink-muted">
           <Link href="/portals/nmba/treatment-centre/dashboard" className="hover:text-navy transition-colors">Home</Link>
           <Icon name="keyboard_arrow_right" size={14} className="shrink-0" aria-hidden />
           <Link href="/portals/nmba/treatment-centre/cpli/peer-educators" className="hover:text-navy transition-colors">Peer Educators</Link>
         </nav>
-        <div className="rounded-xl border border-dashed border-line bg-surface-muted p-12 text-center text-sm text-ink-muted">
+        <div className="rounded-xl border border-dashed border-line bg-surface-muted p-12 text-center text-body-2 text-ink-muted">
           Peer educator not found.
         </div>
       </div>
@@ -682,7 +682,7 @@ export default function TrainingPage() {
       <div className="flex flex-col gap-6">
 
         {/* ── Breadcrumb ── */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-ink-muted">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-label-1 text-ink-muted">
           <Link
             href="/portals/nmba/treatment-centre/dashboard"
             className="rounded transition-colors hover:text-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy"
@@ -706,15 +706,15 @@ export default function TrainingPage() {
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <div className="flex items-center gap-2.5">
-              <h1 className="text-2xl font-bold tracking-tight text-ink">Peer Educator Trainings</h1>
+              <h1 className="text-headline-1 text-ink">Peer Educator Trainings</h1>
               <span
-                className="rounded-full bg-navy/10 px-2.5 py-0.5 text-sm font-semibold text-navy"
+                className="rounded-full bg-navy/10 px-2.5 py-0.5 text-label-1 font-semibold text-navy"
                 aria-label={`${records.length} training records`}
               >
                 {records.length}
               </span>
             </div>
-            <p className="mt-1 text-sm text-ink-muted">
+            <p className="mt-1 text-body-2 text-ink-muted">
               Training sessions conducted for <span className="font-medium text-ink">{educator.name}</span>&apos;s volunteer group.
             </p>
           </div>
@@ -757,8 +757,8 @@ export default function TrainingPage() {
                 <div className="flex flex-col items-center gap-3 py-6 text-center">
                   <Icon name="photo_camera" size={32} className="text-ink-hint" aria-hidden />
                   <div>
-                    <p className="text-sm font-semibold text-ink">No training records yet</p>
-                    <p className="mt-0.5 text-xs text-ink-muted">Add the first session to track peer educator outreach progress.</p>
+                    <p className="text-title-3 text-ink">No training records yet</p>
+                    <p className="mt-0.5 text-body-3 text-ink-muted">Add the first session to track peer educator outreach progress.</p>
                   </div>
                 </div>
               )

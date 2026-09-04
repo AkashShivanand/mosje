@@ -733,6 +733,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "view_quilt"
   },
   {
+    "title": "Heading — Design System",
+    "section": "Layout",
+    "href": "/design-system/components/layout/heading",
+    "keywords": "heading — design system layout level is the outline, variant is the size  tokens wcag accessibility",
+    "description": "An h1–h6 bound to one type role. The level is the document outline; the role defaults from it.",
+    "type": "component",
+    "iconName": "view_quilt"
+  },
+  {
     "title": "Heatmap — Design System",
     "section": "Data Display",
     "href": "/design-system/components/data-display/heatmap",
@@ -1381,6 +1390,15 @@ export const SEARCH_DATA: SearchEntry[] = [
     "iconName": "navigation"
   },
   {
+    "title": "Text — Design System",
+    "section": "Layout",
+    "href": "/design-system/components/layout/text",
+    "keywords": "text — design system layout the role is the job, not the size  tokens wcag accessibility",
+    "description": "A run of copy bound to a body, label or title role. Never sets a size of its own.",
+    "type": "component",
+    "iconName": "view_quilt"
+  },
+  {
     "title": "Textarea — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/textarea",
@@ -1429,7 +1447,7 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Typography",
     "section": "Foundations",
     "href": "/design-system/foundations/typography",
-    "keywords": "typography foundations why two typefaces line height for indic scripts do &amp; don&rsquo;t the rules, and where each one comes from the alias family that lied, and why it is gone non-negotiable, because these are government services where these numbers come from  tokens wcag accessibility",
+    "keywords": "typography foundations why two typefaces line height for indic scripts do &amp; don&rsquo;t why these values the rules, and where each one comes from the alias family that lied, and why it is gone non-negotiable, because these are government services where these numbers come from  tokens wcag accessibility",
     "description": "SAMAVESH typography — one 21-role scale rendered on two surfaces (Website, Portal), fluid across every viewport, and drawn for both English and हिन्दी.",
     "type": "foundation",
     "badge": "Stable",

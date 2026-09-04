@@ -151,7 +151,7 @@ export function CommitteeForm({
 
   return (
     <form id={formId} ref={formRef} onSubmit={handleSubmit} noValidate className="flex flex-col gap-6">
-      <p className="text-sm text-ink-muted">
+      <p className="text-body-2 text-ink-muted">
         Enter the committee&rsquo;s details and upload the signed notification. Fields marked{" "}
         <span className="text-danger">*</span> are required.
       </p>
@@ -339,7 +339,7 @@ export function CommitteeForm({
       </div>
 
       <div className="border-t border-line pt-5">
-        <label htmlFor="committee-notification" className="mb-2 block text-sm font-medium text-ink">
+        <label htmlFor="committee-notification" className="mb-2 block text-label-1 text-ink">
           Committee Notification <span className="text-danger">*</span>
         </label>
         <PdfUploadField
@@ -352,7 +352,7 @@ export function CommitteeForm({
           }}
         />
         {errors.notification && (
-          <p role="alert" className="mt-1.5 text-xs text-danger">
+          <p role="alert" className="mt-1.5 text-body-3 text-danger">
             {errors.notification}
           </p>
         )}

@@ -29,13 +29,13 @@ export default function CallCenterTrackPage() {
       </Card>
 
       {result === "notfound" && (
-        <Card className="mt-6 flex max-w-xl items-center gap-3 p-6 text-sm"><Icon name="error" size={20} className="text-reject-fg" /><span className="text-ink">No case found for <span className="font-mono font-semibold">{token}</span>.</span></Card>
+        <Card className="mt-6 flex max-w-xl items-center gap-3 p-6 text-body-2"><Icon name="error" size={20} className="text-reject-fg" /><span className="text-ink">No case found for <span className="font-mono font-semibold">{token}</span>.</span></Card>
       )}
 
       {result && result !== "notfound" && (
         <Card className="mt-6 max-w-2xl p-6">
           <div className="flex flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
-            <div><p className="font-mono text-sm font-bold text-navy">{result.refNo}</p><p className="mt-1 text-sm text-ink-muted">{result.category} · {result.district}, {result.state}</p></div>
+            <div><p className="font-mono text-title-3 text-navy">{result.refNo}</p><p className="mt-1 text-body-2 text-ink-muted">{result.category} · {result.district}, {result.state}</p></div>
             <StatusPill status={result.status} />
           </div>
           <ol className="relative ml-2 mt-5 border-l border-line">
@@ -44,8 +44,8 @@ export default function CallCenterTrackPage() {
               return (
                 <li key={i} className="mb-5 ml-6 last:mb-0">
                   <span className={`absolute -left-2.5 mt-1 grid h-5 w-5 place-items-center rounded-full ${last ? "bg-navy text-white" : "bg-approve text-white"}`}>{last ? <Icon name="schedule" size={12} /> : <Icon name="check_circle" size={12} />}</span>
-                  <p className="text-sm font-semibold text-ink">{CASE_STATUS_META[t.status].label}</p>
-                  <p className="text-xs text-ink-hint">{new Date(t.at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}{t.byRole ? ` · ${t.byRole}` : ""}</p>
+                  <p className="text-title-3 text-ink">{CASE_STATUS_META[t.status].label}</p>
+                  <p className="text-body-3 text-ink-hint">{new Date(t.at).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" })}{t.byRole ? ` · ${t.byRole}` : ""}</p>
                 </li>
               );
             })}

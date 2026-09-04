@@ -18,9 +18,9 @@
       "existing": 484
     },
     "Type": {
-      "total": 103,
+      "total": 113,
       "new": 0,
-      "existing": 103
+      "existing": 113
     },
     "Radius": {
       "total": 28,
@@ -38,8 +38,8 @@
       "existing": 8
     },
     "Static": {
-      "total": 91,
-      "new": 0,
+      "total": 92,
+      "new": 1,
       "existing": 91
     },
     "Viewport": {
@@ -22404,608 +22404,44 @@
           }
         },
         {
-          "name": "ref/font/size/11",
-          "path": "font/size/11",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/11"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/11"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/11"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/11"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/11"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/11"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-size-11)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/size/12",
-          "path": "font/size/12",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/12"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/12"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/12"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/12"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/12"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/12"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-size-12)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/size/14",
-          "path": "font/size/14",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/14"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/14"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/14"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/14"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/14"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/14"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-size-14)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/size/16",
-          "path": "font/size/16",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-size-16)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/size/20",
-          "path": "font/size/20",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-size-20)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/size/22",
-          "path": "font/size/22",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/22"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/22"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/22"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/22"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/22"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/22"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-size-22)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/size/48",
-          "path": "font/size/48",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/48"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/48"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/48"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/48"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/48"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/48"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-size-48)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/lineHeight/16",
-          "path": "font/lineHeight/16",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/16"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-lineHeight-16)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/lineHeight/20",
-          "path": "font/lineHeight/20",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/20"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-lineHeight-20)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/lineHeight/24",
-          "path": "font/lineHeight/24",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/24"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/24"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/24"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/24"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/24"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/24"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-lineHeight-24)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/lineHeight/28",
-          "path": "font/lineHeight/28",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/28"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/28"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/28"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/28"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/28"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/28"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-lineHeight-28)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/lineHeight/56",
-          "path": "font/lineHeight/56",
-          "type": "FLOAT",
-          "valuesByMode": {
-            "Website · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/56"
-            },
-            "Website · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/56"
-            },
-            "Website · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/56"
-            },
-            "Portal · Desktop": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/56"
-            },
-            "Portal · Tablet": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/56"
-            },
-            "Portal · Mobile": {
-              "type": "ALIAS",
-              "collection": "Space",
-              "name": "ref/size/56"
-            }
-          },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
-          "codeSyntax": {
-            "WEB": "var(--sa-ref-font-lineHeight-56)"
-          },
-          "scopes": [],
-          "status": "existing",
-          "$extensions": {
-            "in.gov.mosje.tier": "ref",
-            "in.gov.mosje.source": "src/primitive.json"
-          }
-        },
-        {
-          "name": "ref/font/lineHeight/devanagari",
-          "path": "font/lineHeight/devanagari",
+          "name": "ref/font/lineHeight/devanagariOffset",
+          "path": "font/lineHeight/devanagariOffset",
           "type": "FLOAT",
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 1.7,
+              "value": 0.2,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 1.7,
+              "value": 0.2,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 1.7,
+              "value": 0.2,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 1.7,
+              "value": 0.2,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 1.7,
+              "value": 0.2,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 1.7,
+              "value": 0.2,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Extra leading Devanagari takes over the same role's Latin leading, as a fraction of the size: the script hangs from the शिरोरेखा and stacks vowel signs above and below, so it needs a fixed share of its size in extra vertical room at any size — not a different rhythm. lhDevanagari = lh + 0.2 × size, rounded UP to the 4px grid: body-1 16/24 → 28, headline-1 40/48 → 56, display-1 80/88 → 104. A ratio, not a length: never bind it in Figma — bind the role's lhDevanagari. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
-            "WEB": "var(--sa-ref-font-lineHeight-devanagari)"
+            "WEB": "var(--sa-ref-font-lineHeight-devanagariOffset)"
           },
           "scopes": [],
           "status": "existing",
@@ -23026,7 +22462,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 57.74,
+              "value": 58,
               "unit": null
             },
             "Website · Mobile": {
@@ -23041,7 +22477,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 47.1,
+              "value": 47,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23050,7 +22486,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The largest thing on the estate — one per hero, never for document structure. Website 40 → 80 / 48 → 88 (1.10 desktop, 1.20 phone); Portal 40 → 56 / 48 → 64. Tracking −0.015em. Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-1-size)"
           },
@@ -23075,12 +22511,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 63.51,
+              "value": 66,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 44,
+              "value": 48,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23090,7 +22526,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 55.1,
+              "value": 55,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23099,7 +22535,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-1. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-1-lh)"
           },
@@ -23124,7 +22560,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Website · Mobile": {
@@ -23139,7 +22575,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23148,7 +22584,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-1-para)"
           },
@@ -23159,6 +22595,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/display/1/lhDevanagari",
+          "path": "font/role/display/1/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 104,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 77,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 56,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 76,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 65,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 56,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for display-1: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-display-1-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -23173,7 +22657,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 51.97,
+              "value": 52,
               "unit": null
             },
             "Website · Mobile": {
@@ -23188,7 +22672,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 39.1,
+              "value": 39,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23197,7 +22681,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Campaign hero. Website 36 → 72 / 44 → 80; Portal 32 → 48 / 40 → 56. 36 is DBIM §4's desktop H1 and the reason the ramp carries it. Tracking −0.015em. Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-2-size)"
           },
@@ -23222,12 +22706,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 57.74,
+              "value": 60,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 40,
+              "value": 44,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23237,7 +22721,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 47.1,
+              "value": 47,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23246,7 +22730,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-2. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-2-lh)"
           },
@@ -23271,7 +22755,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 25.32,
+              "value": 25,
               "unit": null
             },
             "Website · Mobile": {
@@ -23286,7 +22770,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 25.32,
+              "value": 25,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23295,7 +22779,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-2-para)"
           },
@@ -23306,6 +22790,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/display/2/lhDevanagari",
+          "path": "font/role/display/2/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 96,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 72,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 52,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 68,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 57,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 48,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for display-2: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-display-2-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -23320,7 +22852,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 46.19,
+              "value": 46,
               "unit": null
             },
             "Website · Mobile": {
@@ -23335,7 +22867,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 33.32,
+              "value": 33,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23344,7 +22876,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The website home page's own hero size. Website 32 → 64 / 40 → 72; Portal 28 → 40 / 36 → 48. Tracking −0.01em. Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-3-size)"
           },
@@ -23369,12 +22901,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 51.97,
+              "value": 54,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 36,
+              "value": 40,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23384,7 +22916,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 41.32,
+              "value": 41,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23393,7 +22925,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-3. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-3-lh)"
           },
@@ -23418,7 +22950,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Website · Mobile": {
@@ -23433,7 +22965,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23442,7 +22974,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-3-para)"
           },
@@ -23453,6 +22985,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/display/3/lhDevanagari",
+          "path": "font/role/display/3/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 88,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 66,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 48,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 56,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 49,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 44,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for display-3: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-display-3-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -23467,7 +23047,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 40.42,
+              "value": 40,
               "unit": null
             },
             "Website · Mobile": {
@@ -23482,7 +23062,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23491,7 +23071,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Section hero, banner headline. Website 28 → 56 / 36 → 64; Portal 24 → 32 / 32 → 40. Tracking −0.01em. Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-4-size)"
           },
@@ -23516,12 +23096,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 46.19,
+              "value": 48,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 32,
+              "value": 36,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23531,7 +23111,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 35.55,
+              "value": 36,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23540,7 +23120,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-4. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-4-lh)"
           },
@@ -23565,7 +23145,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Website · Mobile": {
@@ -23580,7 +23160,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23589,7 +23169,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-4: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-4-para)"
           },
@@ -23600,6 +23180,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/display/4/lhDevanagari",
+          "path": "font/role/display/4/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 76,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 58,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 44,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 48,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 44,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 40,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for display-4: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-display-4-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -23614,12 +23242,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 35.76,
+              "value": 35,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 26,
+              "value": 24,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23629,16 +23257,16 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 24.66,
+              "value": 26,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 22,
+              "value": 24,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Small hero — a login panel wordmark, a campaign strip. Website 24 → 48 / 32 → 56; Portal 24 → 28 / 32 → 36. Tracking −0.005em. Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-5-size)"
           },
@@ -23663,12 +23291,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 40.42,
+              "value": 43,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 28,
+              "value": 32,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23678,16 +23306,16 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 31.55,
+              "value": 34,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 28,
+              "value": 32,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-5. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-5-lh)"
           },
@@ -23712,7 +23340,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Website · Mobile": {
@@ -23727,7 +23355,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23736,7 +23364,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-5: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-5-para)"
           },
@@ -23747,6 +23375,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/display/5/lhDevanagari",
+          "path": "font/role/display/5/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 68,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 52,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 40,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 44,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 42,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 40,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for display-5: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-display-5-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -23761,12 +23437,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 31.1,
+              "value": 30,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 24,
+              "value": 22,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23776,7 +23452,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 22,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23785,7 +23461,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The smallest display size, one step above headline-1 so a hero and a page title never share a size. Website 22 → 40 / 28 → 48 (1.20, on DBIM's floor); Portal 20 → 24 / 28 → 32. Tracking 0. Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-6-size)"
           },
@@ -23810,7 +23486,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 36.87,
+              "value": 37,
               "unit": null
             },
             "Website · Mobile": {
@@ -23825,7 +23501,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 29.77,
+              "value": 30,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23834,7 +23510,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-6. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-6-lh)"
           },
@@ -23859,7 +23535,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Website · Mobile": {
@@ -23874,7 +23550,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23883,7 +23559,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-6: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-6-para)"
           },
@@ -23894,6 +23570,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/display/6/lhDevanagari",
+          "path": "font/role/display/6/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 56,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 45,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 36,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 40,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 36,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 32,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for display-6: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-display-6-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -23908,7 +23632,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 33.32,
+              "value": 33,
               "unit": null
             },
             "Website · Mobile": {
@@ -23923,7 +23647,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23932,7 +23656,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The page h1, one per page. Website 28 → 40 / 36 → 48; Portal 24 → 32 / 32 → 40. Leading 1.20 at desktop: the tightest a structural heading is allowed. Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-1-size)"
           },
@@ -23957,12 +23681,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 39.1,
+              "value": 41,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 32,
+              "value": 36,
               "unit": null
             },
             "Portal · Desktop": {
@@ -23972,7 +23696,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 35.55,
+              "value": 36,
               "unit": null
             },
             "Portal · Mobile": {
@@ -23981,7 +23705,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-1. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-1-lh)"
           },
@@ -24006,7 +23730,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 22,
               "unit": null
             },
             "Website · Mobile": {
@@ -24021,7 +23745,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 22,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24030,7 +23754,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-1-para)"
           },
@@ -24041,6 +23765,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/headline/1/lhDevanagari",
+          "path": "font/role/headline/1/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 56,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 49,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 44,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 48,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 44,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 40,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for headline-1: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-headline-1-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -24055,7 +23827,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Website · Mobile": {
@@ -24070,7 +23842,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 23.55,
+              "value": 24,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24079,7 +23851,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Section h2. Website 24 → 32 / 32 → 40; Portal 20 → 28 / 28 → 36. Leading 1.25. Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-2-size)"
           },
@@ -24104,12 +23876,12 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 33.32,
+              "value": 36,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 28,
+              "value": 32,
               "unit": null
             },
             "Portal · Desktop": {
@@ -24119,7 +23891,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 31.55,
+              "value": 32,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24128,7 +23900,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-2. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-2-lh)"
           },
@@ -24153,7 +23925,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Website · Mobile": {
@@ -24168,7 +23940,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 19.55,
+              "value": 20,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24177,7 +23949,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-2-para)"
           },
@@ -24188,6 +23960,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/headline/2/lhDevanagari",
+          "path": "font/role/headline/2/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 48,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 44,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 40,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 44,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 37,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 32,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for headline-2: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-headline-2-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -24202,7 +24022,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 24.66,
+              "value": 25,
               "unit": null
             },
             "Website · Mobile": {
@@ -24217,7 +24037,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 20.66,
+              "value": 21,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24226,7 +24046,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Sub-section h3. Website 22 → 28 / 28 → 36; Portal 18 → 24 / 24 → 32. Was 28/32 (1.14) — tighter than the h2 above it — until the 2026-09-04 re-cut; now 1.29. Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-3-size)"
           },
@@ -24246,12 +24066,12 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 32,
+              "value": 36,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 29.77,
+              "value": 32,
               "unit": null
             },
             "Website · Mobile": {
@@ -24266,7 +24086,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 27.55,
+              "value": 28,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24275,7 +24095,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-3. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-3-lh)"
           },
@@ -24300,7 +24120,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Website · Mobile": {
@@ -24315,7 +24135,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24324,7 +24144,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-3-para)"
           },
@@ -24335,6 +24155,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/headline/3/lhDevanagari",
+          "path": "font/role/headline/3/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 44,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 40,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 36,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 40,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 33,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for headline-3: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-headline-3-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -24349,7 +24217,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 22,
               "unit": null
             },
             "Website · Mobile": {
@@ -24364,7 +24232,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24373,7 +24241,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "h4, and the SectionTitle component. Website 20 → 24 / 28 → 32; Portal 16 → 20 / 24 → 28. Leading 1.33. Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-4-size)"
           },
@@ -24393,17 +24261,17 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 28,
+              "value": 32,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 25.77,
+              "value": 30,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 24,
+              "value": 28,
               "unit": null
             },
             "Portal · Desktop": {
@@ -24413,7 +24281,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 25.77,
+              "value": 26,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24422,7 +24290,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-4. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-4-lh)"
           },
@@ -24447,7 +24315,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Website · Mobile": {
@@ -24462,7 +24330,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24471,7 +24339,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-4: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-4-para)"
           },
@@ -24482,6 +24350,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/headline/4/lhDevanagari",
+          "path": "font/role/headline/4/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 40,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 36,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 32,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 32,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 30,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for headline-4: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-headline-4-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -24496,7 +24412,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 18.89,
+              "value": 19,
               "unit": null
             },
             "Website · Mobile": {
@@ -24511,16 +24427,16 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 16.33,
+              "value": 17,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 15,
+              "value": 16,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "h5, minor heading. Website 18 → 20 / 24 → 28; Portal 16 → 18 / 24. Leading 1.40. 18 rather than DBIM's 16 so an h5 does not share the body size. Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-5-size)"
           },
@@ -24540,12 +24456,12 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 24,
+              "value": 28,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 24,
+              "value": 26,
               "unit": null
             },
             "Website · Mobile": {
@@ -24560,16 +24476,16 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 24,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-5. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-5-lh)"
           },
@@ -24594,7 +24510,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Website · Mobile": {
@@ -24609,7 +24525,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24618,7 +24534,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-5: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-5-para)"
           },
@@ -24629,6 +24545,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/headline/5/lhDevanagari",
+          "path": "font/role/headline/5/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 32,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 30,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for headline-5: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-headline-5-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -24658,16 +24622,16 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 14.89,
+              "value": 16,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 14,
+              "value": 16,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "h6, the smallest heading: body size, semibold, body leading. 16 / 24 on both surfaces (1.50). Distinguished from body-1 by weight (600 vs 400) and from title-2 by its element. Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-6-size)"
           },
@@ -24687,17 +24651,17 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             },
             "Portal · Desktop": {
@@ -24707,16 +24671,16 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 24,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-6. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-6-lh)"
           },
@@ -24741,7 +24705,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Website · Mobile": {
@@ -24756,7 +24720,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24765,7 +24729,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-6: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-6-para)"
           },
@@ -24776,6 +24740,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/headline/6/lhDevanagari",
+          "path": "font/role/headline/6/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for headline-6: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-headline-6-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -24790,7 +24802,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 19.77,
+              "value": 20,
               "unit": null
             },
             "Website · Mobile": {
@@ -24800,21 +24812,21 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 22,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 20,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 16,
+              "value": 18,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Card, panel and dialog title. 18 → 22 / 24 → 28 on both surfaces (1.27). 22 sits between headline-4 (24) and headline-5 (20) on purpose: a title is not a heading level. Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-1-size)"
           },
@@ -24839,7 +24851,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 25.77,
+              "value": 26,
               "unit": null
             },
             "Website · Mobile": {
@@ -24854,7 +24866,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 25.77,
+              "value": 26,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24863,7 +24875,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for title-1. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-1-lh)"
           },
@@ -24888,7 +24900,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Website · Mobile": {
@@ -24903,7 +24915,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 17.77,
+              "value": 18,
               "unit": null
             },
             "Portal · Mobile": {
@@ -24912,7 +24924,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for title-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-1-para)"
           },
@@ -24923,6 +24935,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/title/1/lhDevanagari",
+          "path": "font/role/title/1/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 36,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 32,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 36,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 32,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for title-1: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-title-1-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -24947,21 +25007,21 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 18,
+              "value": 16,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 16.33,
+              "value": 16,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 15,
+              "value": 16,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "List-item title, small card title, table caption. 16 / 24 (1.50) — body-1's metrics at 600, so a title and its body align line for line. Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-2-size)"
           },
@@ -25001,16 +25061,16 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 24,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for title-2. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-2-lh)"
           },
@@ -25035,7 +25095,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Website · Mobile": {
@@ -25050,7 +25110,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25059,7 +25119,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for title-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-2-para)"
           },
@@ -25070,6 +25130,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/title/2/lhDevanagari",
+          "path": "font/role/title/2/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for title-2: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-title-2-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -25094,12 +25202,12 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 16,
+              "value": 14,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 14.89,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25108,7 +25216,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Dense table header, compact list title. 14 / 20 (1.43) — body-2's metrics at 600. Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-3-size)"
           },
@@ -25143,12 +25251,12 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 24,
+              "value": 20,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 20,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25157,7 +25265,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for title-3. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-3-lh)"
           },
@@ -25182,7 +25290,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Website · Mobile": {
@@ -25197,7 +25305,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25206,7 +25314,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for title-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-3-para)"
           },
@@ -25217,6 +25325,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/title/3/lhDevanagari",
+          "path": "font/role/title/3/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for title-3: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-title-3-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -25246,16 +25402,16 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 14.89,
+              "value": 16,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 14,
+              "value": 16,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The reading size. 16 / 24 (1.50) everywhere, including phones: a citizen's paragraph is never smaller than the form field it explains. Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-1-size)"
           },
@@ -25295,16 +25451,16 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 21.77,
+              "value": 24,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 24,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for body-1. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-1-lh)"
           },
@@ -25329,7 +25485,7 @@
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Website · Mobile": {
@@ -25344,7 +25500,7 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.77,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25353,7 +25509,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for body-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-1-para)"
           },
@@ -25364,6 +25520,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/body/1/lhDevanagari",
+          "path": "font/role/body/1/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 28,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for body-1: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-body-1-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -25393,16 +25597,16 @@
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 13.44,
+              "value": 14,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 13,
+              "value": 14,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Secondary text, help text, table cells. 14 / 20 (1.43). Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-2-size)"
           },
@@ -25451,7 +25655,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for body-2. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-2-lh)"
           },
@@ -25500,7 +25704,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for body-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-2-para)"
           },
@@ -25511,6 +25715,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/body/2/lhDevanagari",
+          "path": "font/role/body/2/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for body-2: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-body-2-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -25535,12 +25787,12 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 13,
+              "value": 12,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 12.44,
+              "value": 12,
               "unit": null
             },
             "Portal · Mobile": {
@@ -25549,7 +25801,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Captions, timestamps, legal, footnotes. 12 / 16 (1.33). The floor: UX4G 3.0 §2 calls 12px the minimum usable size and nothing in SAMAVESH renders below it. Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-3-size)"
           },
@@ -25584,21 +25836,21 @@
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 16,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 16,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 20,
+              "value": 16,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for body-3. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-3-lh)"
           },
@@ -25647,7 +25899,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for body-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-3-para)"
           },
@@ -25658,6 +25910,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/body/3/lhDevanagari",
+          "path": "font/role/body/3/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for body-3: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-body-3-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -25696,7 +25996,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Form labels, button text, tabs, navigation items. 14 / 20 (1.43) — the UX4G Label/L size, one step below body-1 so a label sits under the value it names. Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-1-size)"
           },
@@ -25745,7 +26045,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for label-1. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-1-lh)"
           },
@@ -25794,7 +26094,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for label-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-1-para)"
           },
@@ -25805,6 +26105,54 @@
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/label/1/lhDevanagari",
+          "path": "font/role/label/1/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 24,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for label-1: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-label-1-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
           }
         },
         {
@@ -25843,7 +26191,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Badges, chips, small controls. 12 / 16 (1.33). The floor size at Medium. Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-2-size)"
           },
@@ -25892,7 +26240,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for label-2. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-2-lh)"
           },
@@ -25941,7 +26289,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for label-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-2-para)"
           },
@@ -25955,42 +26303,90 @@
           }
         },
         {
+          "name": "type/label/2/lhDevanagari",
+          "path": "font/role/label/2/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for label-2: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-label-2-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
+          }
+        },
+        {
           "name": "type/label/3/size",
           "path": "font/role/label/3/size",
           "type": "FLOAT",
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": 11,
+              "value": 12,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The CAPS role — overlines and eyebrows of 1–3 words, always uppercase, always with type/caps/tracking (+0.06em). 12 / 16, Medium. Moved from 11px on 2026-09-04: the estate renders nothing below 12. Uppercase anywhere else is a defect the type gate reports. Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-3-size)"
           },
@@ -26039,7 +26435,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for label-3. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-3-lh)"
           },
@@ -26088,7 +26484,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for label-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-3-para)"
           },
@@ -26102,42 +26498,90 @@
           }
         },
         {
+          "name": "type/label/3/lhDevanagari",
+          "path": "font/role/label/3/lhDevanagari",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 20,
+              "unit": null
+            }
+          },
+          "description": "Devanagari line height for label-3: the role's Latin leading plus 0.2 × its size, rounded up to the 4px grid. Derived by build/devanagari-leading.mjs, never typed. Bind a Hindi block's line height here, at the same size as its Latin role.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-label-3-lhDevanagari)"
+          },
+          "scopes": [
+            "LINE_HEIGHT"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys"
+          }
+        },
+        {
           "name": "type/display/1/tracking",
           "path": "font/tracking/display/1",
           "type": "FLOAT",
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -1.2,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.9,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.6,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": -1.12,
+              "value": -0.8,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": -0.94,
+              "value": -0.7,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": -0.8,
+              "value": -0.6,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-1 letter-spacing, −0.015em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-1-tracking)"
           },
@@ -26157,36 +26601,36 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -1.1,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.8,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.5,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": -0.96,
+              "value": -0.7,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": -0.78,
+              "value": -0.6,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": -0.64,
+              "value": -0.5,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-2 letter-spacing, −0.015em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-2-tracking)"
           },
@@ -26206,36 +26650,36 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.6,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.5,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.3,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": -0.6,
+              "value": -0.4,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": -0.5,
+              "value": -0.3,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": -0.42,
+              "value": -0.3,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-3 letter-spacing, −0.01em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-3-tracking)"
           },
@@ -26255,36 +26699,36 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.6,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.4,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.3,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": -0.32,
+              "value": -0.3,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": -0.28,
+              "value": -0.3,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": -0.24,
+              "value": -0.2,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-4 letter-spacing, −0.01em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-4-tracking)"
           },
@@ -26304,36 +26748,36 @@
           "valuesByMode": {
             "Website · Desktop": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.2,
               "unit": null
             },
             "Website · Tablet": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.2,
               "unit": null
             },
             "Website · Mobile": {
               "type": "FLOAT",
-              "value": 0,
+              "value": -0.1,
               "unit": null
             },
             "Portal · Desktop": {
               "type": "FLOAT",
-              "value": -0.28,
+              "value": -0.1,
               "unit": null
             },
             "Portal · Tablet": {
               "type": "FLOAT",
-              "value": -0.25,
+              "value": -0.1,
               "unit": null
             },
             "Portal · Mobile": {
               "type": "FLOAT",
-              "value": -0.22,
+              "value": -0.1,
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-5 letter-spacing, −0.005em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-5-tracking)"
           },
@@ -26382,7 +26826,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-6 letter-spacing, 0 of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-6-tracking)"
           },
@@ -26431,7 +26875,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Headline tier tracking: zero. Noto Sans at 16–40px is drawn with the spacing a heading needs; negative tracking here closes counters and hurts Devanagari. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-heading-tracking)"
           },
@@ -26480,7 +26924,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Title tier tracking: zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-tracking)"
           },
@@ -26529,7 +26973,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Body tracking: zero. Positive tracking on running text lowers reading speed; WCAG 1.4.12 requires the reader's own override to survive, which zero tracking makes trivial. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-tracking)"
           },
@@ -26578,9 +27022,58 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Label tracking: zero for mixed-case labels. Uppercase labels are the label-3 role and take type/caps/tracking instead. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-tracking)"
+          },
+          "scopes": [
+            "LETTER_SPACING"
+          ],
+          "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "ref",
+            "in.gov.mosje.source": "src/primitive.json"
+          }
+        },
+        {
+          "name": "type/caps/tracking",
+          "path": "font/tracking/caps",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Website · Desktop": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            },
+            "Website · Tablet": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            },
+            "Website · Mobile": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            },
+            "Portal · Desktop": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            },
+            "Portal · Tablet": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            },
+            "Portal · Mobile": {
+              "type": "FLOAT",
+              "value": 0.72,
+              "unit": null
+            }
+          },
+          "description": "Tracking for the CAPS label role (label-3, 12px, uppercase): +0.06em, which at 12px is 0.72px. The only positive tracking in the system; uppercase without it is a defect the type gate reports. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "codeSyntax": {
+            "WEB": "var(--sa-type-caps-tracking)"
           },
           "scopes": [
             "LETTER_SPACING"
@@ -27102,35 +27595,35 @@
             "Website · Desktop": {
               "type": "ALIAS",
               "collection": "Type",
-              "name": "ref/font/lineHeight/devanagari"
+              "name": "type/body/1/lhDevanagari"
             },
             "Website · Tablet": {
               "type": "ALIAS",
               "collection": "Type",
-              "name": "ref/font/lineHeight/devanagari"
+              "name": "type/body/1/lhDevanagari"
             },
             "Website · Mobile": {
               "type": "ALIAS",
               "collection": "Type",
-              "name": "ref/font/lineHeight/devanagari"
+              "name": "type/body/1/lhDevanagari"
             },
             "Portal · Desktop": {
               "type": "ALIAS",
               "collection": "Type",
-              "name": "ref/font/lineHeight/devanagari"
+              "name": "type/body/1/lhDevanagari"
             },
             "Portal · Tablet": {
               "type": "ALIAS",
               "collection": "Type",
-              "name": "ref/font/lineHeight/devanagari"
+              "name": "type/body/1/lhDevanagari"
             },
             "Portal · Mobile": {
               "type": "ALIAS",
               "collection": "Type",
-              "name": "ref/font/lineHeight/devanagari"
+              "name": "type/body/1/lhDevanagari"
             }
           },
-          "description": "Devanagari needs more leading than Latin at the same size — the matras sit above and below the base line.",
+          "description": "Body-1's Devanagari line height, for a Hindi block that has no role of its own. Every role carries its own type/<role>/lhDevanagari — the Latin leading plus a fifth of the size, on the 4px grid — and a Hindi block bound to a role takes THAT, at the same size as its Latin sibling. Until 2026-09-04 this was a unitless 1.7 applied to every Hindi block: it undid the scale (a 40px headline at 68px leading) and Figma read it as 1.7px.",
           "codeSyntax": {
             "WEB": "var(--sa-leading-devanagari)"
           },
@@ -29594,6 +30087,30 @@
             "STROKE_FLOAT"
           ],
           "status": "existing",
+          "$extensions": {
+            "in.gov.mosje.tier": "sys",
+            "in.gov.mosje.source": "src/semantic.json"
+          }
+        },
+        {
+          "name": "container/measure",
+          "path": "container/measure",
+          "type": "FLOAT",
+          "valuesByMode": {
+            "Mode 1": {
+              "type": "FLOAT",
+              "value": 36,
+              "unit": "rem"
+            }
+          },
+          "description": "The MEASURE — the widest a run of body text may be. 36rem is about 68 characters of Noto Sans at 16px, inside the 45–75 the typography page requires and DBIM §7 asks for; in rem so a reader who raises their default font size keeps the same character count, not the same pixels. Added 2026-09-04: `.ds-prose` carried a 72ch literal, `max-w-prose` had four consumers, and the container ladder kept widening to 1376px while body stayed 16px — a 130-character line on a wide monitor. Bind prose containers to `--sa-container-measure`; Tailwind exposes it as `max-w-measure`.",
+          "codeSyntax": {
+            "WEB": "var(--sa-container-measure)"
+          },
+          "scopes": [
+            "WIDTH_HEIGHT"
+          ],
+          "status": "new",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"

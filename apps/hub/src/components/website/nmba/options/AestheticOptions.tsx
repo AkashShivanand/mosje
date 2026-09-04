@@ -46,24 +46,24 @@ function TwinCardsInner({ tone }: { tone: Tone }) {
   return (
     <div className="relative">
       <div className="text-center">
-        <h3 className={cn("text-[22px] font-semibold", t.heading)}>Join the movement for a drug-free India</h3>
-        <p className={cn("mt-1 text-[14px]", t.sub)}>Take the pledge or volunteer as a Nasha Mukti Mitr.</p>
+        <h3 className={cn("text-title-1", t.heading)}>Join the movement for a drug-free India</h3>
+        <p className={cn("mt-1 text-body-2", t.sub)}>Take the pledge or volunteer as a Nasha Mukti Mitr.</p>
       </div>
       <div className="mt-5 grid gap-4 sm:grid-cols-2">
         <div className={cn("flex flex-col rounded-xl p-5 shadow-sm", t.card)}>
           <span className={cn("flex h-11 w-11 items-center justify-center rounded-lg", t.iconChip)}><Icon name="volunteer_activism" size={20} /></span>
-          <h4 className={cn("mt-3 text-[17px] font-semibold", t.title)}>Take the pledge</h4>
-          <p className={cn("mt-1 flex-1 text-[13px]", t.meta)}>{pledgedLakh} lakh+ Indians have pledged. Choose the one that applies to you.</p>
+          <h4 className={cn("mt-3 text-title-2", t.title)}>Take the pledge</h4>
+          <p className={cn("mt-1 flex-1 text-body-2", t.meta)}>{pledgedLakh} lakh+ Indians have pledged. Choose the one that applies to you.</p>
           <div className="mt-4 flex flex-wrap gap-2.5">
-            <a href={NON_USER} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[14px] font-semibold transition-colors", t.primary)}>I&rsquo;m a non-user <Icon name="arrow_forward" size={16} /></a>
-            <a href={RECOVERED} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[14px] font-semibold transition-colors", t.outline)}>I&rsquo;m a recovered user <Icon name="arrow_forward" size={16} /></a>
+            <a href={NON_USER} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-label-1 transition-colors", t.primary)}>I&rsquo;m a non-user <Icon name="arrow_forward" size={16} /></a>
+            <a href={RECOVERED} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-label-1 transition-colors", t.outline)}>I&rsquo;m a recovered user <Icon name="arrow_forward" size={16} /></a>
           </div>
         </div>
         <div className={cn("flex flex-col rounded-xl p-5 shadow-sm", t.card)}>
           <span className={cn("flex h-11 w-11 items-center justify-center rounded-lg", t.iconChip)}><Icon name="group" size={20} /></span>
-          <h4 className={cn("mt-3 text-[17px] font-semibold", t.title)}>Become a Nasha Mukti Mitr</h4>
-          <p className={cn("mt-1 flex-1 text-[13px]", t.meta)}>Volunteer to spread awareness and support drug-demand reduction in your community — no prior experience needed.</p>
-          <div className="mt-4"><a href={MITR} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-[14px] font-semibold transition-opacity", t.dark)}>Register as a volunteer <Icon name="arrow_forward" size={16} /></a></div>
+          <h4 className={cn("mt-3 text-title-2", t.title)}>Become a Nasha Mukti Mitr</h4>
+          <p className={cn("mt-1 flex-1 text-body-2", t.meta)}>Volunteer to spread awareness and support drug-demand reduction in your community — no prior experience needed.</p>
+          <div className="mt-4"><a href={MITR} className={cn("inline-flex items-center gap-1.5 rounded-lg px-4 py-2 text-label-1 transition-opacity", t.dark)}>Register as a volunteer <Icon name="arrow_forward" size={16} /></a></div>
         </div>
       </div>
     </div>

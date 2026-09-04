@@ -260,7 +260,7 @@
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
     text-transform: uppercase;
-    letter-spacing: 0.08em;
+    letter-spacing: var(--sa-type-caps-tracking);
   }
 
   .ds-auth-signing__name {

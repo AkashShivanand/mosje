@@ -55,13 +55,13 @@ export default function FundAllocationPage() {
       </div>
 
       <Card className="mt-6 p-6">
-        <h2 className="text-sm font-bold text-ink">State-wise Fund Summary</h2>
-        <p className="text-xs text-ink-hint">Allocation vs disbursement reconciliation</p>
+        <h2 className="text-title-2 text-ink">State-wise Fund Summary</h2>
+        <p className="text-body-3 text-ink-hint">Allocation vs disbursement reconciliation</p>
         {byState.length === 0 ? (
-          <p className="mt-6 rounded-lg bg-surface-muted px-4 py-8 text-center text-sm text-ink-hint">No allocations yet. Create one to begin.</p>
+          <p className="mt-6 rounded-lg bg-surface-muted px-4 py-8 text-center text-body-2 text-ink-hint">No allocations yet. Create one to begin.</p>
         ) : (
-          <table className="mt-4 w-full text-left text-sm">
-            <thead><tr className="border-b border-line text-xs uppercase tracking-wide text-ink-hint"><th className="py-2.5 font-semibold">State</th><th className="py-2.5 text-right font-semibold">Allocated</th><th className="py-2.5 text-right font-semibold">Disbursed</th><th className="py-2.5 text-right font-semibold">Utilisation</th></tr></thead>
+          <table className="mt-4 w-full text-left text-body-2">
+            <thead><tr className="border-b border-line text-label-3 uppercase text-ink-hint"><th className="py-2.5 font-semibold">State</th><th className="py-2.5 text-right font-semibold">Allocated</th><th className="py-2.5 text-right font-semibold">Disbursed</th><th className="py-2.5 text-right font-semibold">Utilisation</th></tr></thead>
             <tbody className="divide-y divide-line">
               {byState.map((r) => (
                 <tr key={r.st}>
@@ -86,7 +86,7 @@ export default function FundAllocationPage() {
         )}
       >
         {done ? (
-          <div className="py-4 text-center"><Icon name="check_circle" size={48} className="mx-auto text-approve" /><p className="mt-3 text-sm text-ink-muted">{fmtINR(Number(amount))} allocated to <span className="font-semibold text-ink">{aState}</span> for {scheme}.</p></div>
+          <div className="py-4 text-center"><Icon name="check_circle" size={48} className="mx-auto text-approve" /><p className="mt-3 text-body-2 text-ink-muted">{fmtINR(Number(amount))} allocated to <span className="font-semibold text-ink">{aState}</span> for {scheme}.</p></div>
         ) : (
           <div className="space-y-4">
             <Field label="State" required><Select options={STATES} placeholder="Select State" value={aState} onChange={(e) => setAState(e.target.value)} /></Field>

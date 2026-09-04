@@ -285,7 +285,7 @@
     color: var(--sa-text-neutral-bolder);
     font-family: var(--sa-font-latin);
     font-weight: 600;
-    line-height: 1;
+    line-height: var(--sa-type-label-1-lh);
     user-select: none;
   }
 
@@ -303,9 +303,12 @@
     display: block;
   }
 
+  /* Was `font-size: 40%` — a percentage of the INHERITED size, not of the avatar, so
+     initials in a 40px avatar rendered at about 6px. A role, with the caps tracking. */
   .ds-avatar__initials {
-    font-size: 40%;
-    letter-spacing: 0.02em;
+    font-size: var(--sa-type-label-1-size);
+    line-height: var(--sa-type-label-1-lh);
+    letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
   }
 

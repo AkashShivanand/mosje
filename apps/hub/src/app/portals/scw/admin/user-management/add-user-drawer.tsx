@@ -29,7 +29,7 @@ export function AddUserDrawer() {
           {/* Drawer */}
           <aside className="absolute right-0 top-0 flex h-full w-full max-w-[600px] flex-col bg-white shadow-2xl">
             <header className="flex items-center justify-between border-b border-line px-6 py-5">
-              <h2 className="text-lg font-bold text-ink">Add User</h2>
+              <h2 className="text-title-1 text-ink">Add User</h2>
               <button
                 aria-label="Close"
                 onClick={() => setOpen(false)}

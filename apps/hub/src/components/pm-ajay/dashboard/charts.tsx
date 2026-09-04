@@ -189,16 +189,18 @@ export function Donut({
           justifyContent: "center",
         }}
       >
-        <div style={{ font: "600 26px/1 var(--font-sans)", color: C.ink, letterSpacing: "-.5px" }}>
+        <div style={{ fontWeight: 600, fontSize: "var(--sa-type-headline-3-size)", lineHeight: "var(--sa-type-headline-3-lh)", fontVariantNumeric: "tabular-nums", color: C.ink }}>
           {center != null ? center : pct + "%"}
         </div>
         {sub && (
           <div
             style={{
-              font: "500 11px/1.2 var(--font-sans)",
+              fontWeight: 500,
+              fontSize: "var(--sa-type-label-3-size)",
+              lineHeight: "var(--sa-type-label-3-lh)",
               color: C.muted,
               textTransform: "uppercase",
-              letterSpacing: ".06em",
+              letterSpacing: "var(--sa-type-caps-tracking)",
               marginTop: "var(--sa-stack-4)",
             }}
           >
@@ -482,7 +484,7 @@ export function LineArea({
           );
         })}
         {labels.map((lab, i) => (
-          <text key={i} x={X(i)} y={h - 6} fontSize="10" fill={C.muted} textAnchor="middle" fontFamily="var(--font-sans)">
+          <text key={i} x={X(i)} y={h - 6} style={{ fontSize: "var(--sa-type-label-2-size)" }} fill={C.muted} textAnchor="middle" fontFamily="var(--font-sans)">
             {lab}
           </text>
         ))}

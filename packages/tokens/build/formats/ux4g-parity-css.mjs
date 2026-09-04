@@ -6,7 +6,9 @@ import { brandSelector } from "../brand-modes.mjs";
 //
 // WHY A SEPARATE FILE
 // ───────────────────
-// This is an OPT-IN stylesheet (`@mosje/design-system/ux4g.css`). The default bundle
+// This is a MEASUREMENT artifact, built into tools/ux4g-conformance/parity.generated.css
+// and read only by measure.mjs. It was an opt-in stylesheet until 2026-09-04; nothing in the
+// estate ever imported it, so it is no longer shipped. The default bundle
 // does not grow by a single byte. Apps that need to render UX4G-authored markup, or to
 // demonstrate conformance, import it; the other 30-odd properties pay nothing.
 //
@@ -78,8 +80,8 @@ const COLOR_RAMPS = {
 const STRUCTURE_SCOPES = [
   { test: /^--ux4g-(space|spacing|inline|stack|padding|section|gutter)-/, saPrefix: "--sa-spacing-" },
   { test: /^--ux4g-radius-/, saPrefix: "--sa-radius-" },
-  { test: /^--ux4g-(size|fs)-/, saPrefix: "--sa-font-size-" },
-  { test: /^--ux4g-(line-height|lh)-/, saPrefix: "--sa-font-lineHeight-" },
+  { test: /^--ux4g-(size|fs)-/, saPrefix: "--sa-ref-size-" },
+  { test: /^--ux4g-(line-height|lh)-/, saPrefix: "--sa-ref-size-" },
   { test: /^--ux4g-(font-weight|fw)-/, saPrefix: "--sa-font-weight-" },
 ];
 
@@ -303,7 +305,7 @@ export const ux4gParityCss = {
       `   or re-run tools/ux4g-conformance/extract-ux4g-tokens.mjs.\n\n` +
       `   UX4G 3.0 PARITY LAYER — opt-in. Import AFTER tokens.css:\n` +
       `       import "@mosje/design-system/tokens.css";\n` +
-      `       import "@mosje/design-system/ux4g.css";\n\n` +
+      `       (not shipped — a build output of @mosje/tokens for tools/ux4g-conformance/measure.mjs)\n\n` +
       `   Gives you the full --ux4g-* token surface (${stats.total} tokens, UX4G ${src.version}).\n` +
       `   Structure carries UX4G's exact values; colour maps by ROLE onto the MoSJE palette\n` +
       `   (DBIM key colour via UX4G Theme Craft). For UX4G's literal violet palette, set\n` +
@@ -321,7 +323,7 @@ export const ux4gParityCss = {
       `   property of --sa-* rungs, and a --ux4g-* name is not a rung. Nothing to allowlist.\n` +
       `   The reason is deliberate: a developer pasting UX4G markup must get UX4G's rendering.\n` +
       `   Silently re-pointing a borrowed name at our ladder is the worse failure. See spec §8.1a.\n\n` +
-      `   NOTE — UX4G sizes type in rem, SAMAVESH in px. The --ux4g-size and --ux4g-line-height\n` +
+      `   NOTE — UX4G sizes type in rem, and so does SAMAVESH since the clamp() scale moved to rem. The --ux4g-size and --ux4g-line-height\n` +
       `   tokens are therefore kept in UX4G's rem so browser default-font-size scaling keeps\n` +
       `   working; they are NOT aliased to our px tokens. Reconciling the SAMAVESH fluid scale\n` +
       `   to rem is tracked as the top follow-up in the readiness audit.\n` +

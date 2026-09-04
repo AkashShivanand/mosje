@@ -52,34 +52,34 @@ export default function LoginPage() {
   // campaign banner's height.
   return (
     <div className="flex min-h-0 flex-1 flex-col md:flex-row">
-      <a href="#login-main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-navy focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white">
+      <a href="#login-main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-lg focus:bg-navy focus:px-4 focus:py-2 focus:text-label-1 focus:font-semibold focus:text-white">
         Skip to login form
       </a>
       {/* Left hero panel */}
       <aside className="nha-login-panel relative hidden flex-col justify-center p-12 text-white md:flex md:w-1/2">
         <Image src="/portals/nhapoa/brand/samavesh-logo.svg" alt="SAMAVESH" width={40} height={40} className="h-16 w-16" />
-        <h1 className="mt-6 flex items-baseline gap-3 text-4xl font-bold tracking-tight">
-          SAMBAL <span className="text-3xl font-semibold text-white/80">संबल</span>
+        <h1 className="mt-6 flex items-baseline gap-3 text-headline-3">
+          SAMBAL <span lang="hi" className="text-headline-3 text-white/80">संबल</span>
         </h1>
-        <p className="mt-2 text-xl text-white/85">National Helpline Against Atrocities</p>
+        <p className="mt-2 text-body-1 text-white/85">National Helpline Against Atrocities</p>
         <div className="my-6 h-1 w-64 rounded bg-saffron" />
-        <p className="text-2xl font-bold leading-tight">Justice. Dignity. Protection.</p>
-        <p className="mt-5 max-w-md text-base leading-relaxed text-white/75">
+        <p className="text-headline-4">Justice. Dignity. Protection.</p>
+        <p className="mt-5 max-w-md text-body-1 text-white/75">
           Grievance redressal and relief disbursement under the Scheduled Castes and Scheduled
           Tribes (Prevention of Atrocities) Act — one accountable workflow from complaint to relief.
         </p>
         {/* bottom offset clears the fixed AppSwitcher FAB (bottom-left) */}
         <div className="absolute inset-x-12 bottom-[var(--cmp-appsw-safe-area)] border-t border-white/15 pt-6">
-          <p className="text-[11px] font-semibold uppercase tracking-wider text-white/55">Signing Into</p>
-          <p className="text-sm font-bold">SAMBAL Administration</p>
+          <p className="text-label-3 uppercase text-white/55">Signing Into</p>
+          <p className="text-title-3">SAMBAL Administration</p>
         </div>
       </aside>
 
       {/* Right form panel */}
       <main id="login-main" className="flex flex-1 items-center justify-center bg-surface-muted px-4 py-12 sm:px-6">
         <div className="w-full max-w-md">
-          <h2 className="text-2xl font-bold text-ink">Officer / Admin Login</h2>
-          <p className="mt-1 mb-6 text-sm text-ink-muted">Sign in to the SAMBAL administration portal.</p>
+          <h2 className="text-headline-3 text-ink">Officer / Admin Login</h2>
+          <p className="mt-1 mb-6 text-body-2 text-ink-muted">Sign in to the SAMBAL administration portal.</p>
 
           <form className="space-y-5" onSubmit={onSubmit}>
             <Field label="Username" required>
@@ -111,10 +111,10 @@ export default function LoginPage() {
               </div>
             </Field>
 
-            {error && <p className="text-sm font-medium text-reject-fg">{error}</p>}
+            {error && <p className="text-body-2 font-medium text-reject-fg">{error}</p>}
 
             <div className="text-right">
-              <Link href="/portals/nhapoa/forgot-password" className="text-sm font-semibold text-navy hover:underline">
+              <Link href="/portals/nhapoa/forgot-password" className="text-label-1 font-semibold text-navy hover:underline">
                 Forgot Password?
               </Link>
             </div>
@@ -125,7 +125,7 @@ export default function LoginPage() {
             </Button>
           </form>
 
-          <p className="mt-8 text-center text-xs text-ink-hint">
+          <p className="mt-8 text-center text-body-3 text-ink-hint">
             Ministry of Social Justice &amp; Empowerment, Government of India
           </p>
         </div>

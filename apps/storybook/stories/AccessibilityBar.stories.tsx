@@ -148,6 +148,7 @@ export const AccessibilityAsButton: Story = {
  */
 export const TranslatedSkipLabel: Story = {
   args: {
+    // ds-exempt(specimen): `skipLabel` is a string prop, so the story cannot attach lang="hi"; the component owns the attribute
     skipLabel: "मुख्य सामग्री पर जाएँ",
     govLink: { label: "भारत सरकार" },
     language: { label: "हिन्दी" },

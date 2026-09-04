@@ -23,7 +23,7 @@ export function TextareaPlayground() {
         
         <Checkbox label="Disabled" size="sm" checked={disabled} onCheckedChange={setDisabled} />
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
           <strong>Rows:</strong>
           <input 
             type="number" 

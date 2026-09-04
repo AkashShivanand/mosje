@@ -31,7 +31,7 @@ const panelStyle: React.CSSProperties = {
   background: "var(--sa-bg-neutral-base)",
   color: "var(--sa-text-neutral-base)",
   fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.6,
+  lineHeight: "var(--sa-type-body-1-lh)",
 };
 
 /** Live, interactive demo of the design-system Tabs / TabPanel. */

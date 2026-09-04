@@ -120,14 +120,14 @@ export function AdminShell({ children }: AdminShellProps) {
               title={compact ? label : undefined}
               aria-current={active ? "page" : undefined}
               className={cn(
-                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+                "flex items-center gap-3 rounded-lg px-3 py-2.5 text-label-1 transition-colors",
                 active
                   ? "bg-brandwash font-semibold text-navy"
                   : "text-ink-muted hover:bg-black/5"
               )}
             >
               <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
-              {!compact && <span className="leading-tight">{label}</span>}
+              {!compact && <span>{label}</span>}
             </Link>
           );
         })}
@@ -141,14 +141,14 @@ export function AdminShell({ children }: AdminShellProps) {
             title="NAPDDR — National Action Plan for Drug Demand Reduction"
             aria-expanded={napddrOpen}
             className={cn(
-              "mt-1 flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+              "mt-1 flex items-center gap-3 rounded-lg px-3 py-2.5 text-label-1 transition-colors",
               napddrActive ? "font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
             )}
           >
             <Icon name="account_balance" className={cn("h-5 w-5 shrink-0", napddrActive && "text-navy")} />
             {!compact && (
               <>
-                <span className="leading-tight">NAPDDR Three-Tier Committee</span>
+                <span>NAPDDR Three-Tier Committee</span>
                 <Icon name="keyboard_arrow_down" className={cn("ml-auto h-4 w-4 transition-transform", napddrOpen && "rotate-180")} />
               </>
             )}
@@ -164,12 +164,12 @@ export function AdminShell({ children }: AdminShellProps) {
               onClick={onNavigate}
                     aria-current={active ? "page" : undefined}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors",
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-label-1 transition-colors",
                       active ? "bg-brandwash font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
                     )}
                   >
                     <Icon name={iconName} className={cn("h-4 w-4 shrink-0", active && "text-navy")} />
-                    <span className="leading-tight">{label}</span>
+                    <span>{label}</span>
                   </Link>
                 );
               })}
@@ -181,7 +181,7 @@ export function AdminShell({ children }: AdminShellProps) {
         <>
           {!compact && (
             <p
-              className="px-3 pb-1 pt-1 text-xs font-semibold uppercase tracking-wide text-ink-hint"
+              className="px-3 pb-1 pt-1 text-label-3 uppercase text-ink-hint"
               title="National Action Plan for Drug Demand Reduction"
             >
               NAPDDR Three-Tier Committee
@@ -197,12 +197,12 @@ export function AdminShell({ children }: AdminShellProps) {
                 title={compact ? label : undefined}
                 aria-current={active ? "page" : undefined}
                 className={cn(
-                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+                  "flex items-center gap-3 rounded-lg px-3 py-2.5 text-label-1 transition-colors",
                   active ? "bg-brandwash font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
                 )}
               >
                 <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
-                {!compact && <span className="leading-tight">{label}</span>}
+                {!compact && <span>{label}</span>}
               </Link>
             );
           })}
@@ -213,7 +213,7 @@ export function AdminShell({ children }: AdminShellProps) {
       {/* Mass Pledge — 18 August 2026. Every role has something here, so
           this section is never conditional on role, only its items are. */}
       {!compact && (
-        <p className="px-3 pb-1 pt-3 text-xs font-semibold uppercase tracking-wide text-ink-hint">
+        <p className="px-3 pb-1 pt-3 text-label-3 uppercase text-ink-hint">
           Mass Pledge · 18 Aug 2026
         </p>
       )}
@@ -227,12 +227,12 @@ export function AdminShell({ children }: AdminShellProps) {
             title={compact ? label : undefined}
             aria-current={active ? "page" : undefined}
             className={cn(
-              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm transition-colors",
+              "flex items-center gap-3 rounded-lg px-3 py-2.5 text-label-1 transition-colors",
               active ? "bg-brandwash font-semibold text-navy" : "text-ink-muted hover:bg-black/5"
             )}
           >
             <Icon name={iconName} className={cn("h-5 w-5 shrink-0", active && "text-navy")} />
-            {!compact && <span className="leading-tight">{label}</span>}
+            {!compact && <span>{label}</span>}
           </Link>
         );
       })}
@@ -303,7 +303,7 @@ export function AdminShell({ children }: AdminShellProps) {
           <button
             type="button"
             onClick={() => setMobileNavOpen(true)}
-            className="mb-5 inline-flex h-11 items-center gap-2 rounded-lg border border-line bg-white px-4 text-sm font-semibold text-ink transition-colors hover:bg-black/5 lg:hidden"
+            className="mb-5 inline-flex h-11 items-center gap-2 rounded-lg border border-line bg-white px-4 text-label-1 font-semibold text-ink transition-colors hover:bg-black/5 lg:hidden"
           >
             <Icon name="menu" size={20} aria-hidden="true" />
             Menu

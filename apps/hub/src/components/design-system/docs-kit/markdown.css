@@ -20,20 +20,20 @@
 .markdown-body h4 {
   color: var(--sa-text-neutral-base);
   font-weight: 600;
-  line-height: 1.25;
   scroll-margin-top: var(--docs-anchor-offset);
 }
-.markdown-body h1 { font-size: var(--sa-type-display-1-size); font-weight: 500; line-height: 1.15; margin: 0 0 var(--sa-stack-16); }
+.markdown-body h1 { font-size: var(--sa-type-display-1-size); font-weight: 500; line-height: var(--sa-type-display-1-lh); margin: 0 0 var(--sa-stack-16); }
 .markdown-body h2 {
   font-size: var(--sa-type-headline-2-size);
+  line-height: var(--sa-type-headline-2-lh);
   margin: var(--sa-section-48) 0 var(--sa-stack-16);
   padding-bottom: var(--sa-padding-12);
   border-bottom: 1px solid var(--sa-border-neutral-subtle);
 }
-.markdown-body h3 { font-size: var(--sa-type-headline-1-size); margin: var(--sa-stack-32) 0 var(--sa-stack-12); }
-.markdown-body h4 { font-size: var(--sa-type-body-1-size); margin: var(--sa-stack-24) 0 var(--sa-stack-8); }
+.markdown-body h3 { font-size: var(--sa-type-headline-3-size); line-height: var(--sa-type-headline-3-lh); margin: var(--sa-stack-32) 0 var(--sa-stack-12); }
+.markdown-body h4 { font-size: var(--sa-type-headline-6-size); line-height: var(--sa-type-headline-6-lh); margin: var(--sa-stack-24) 0 var(--sa-stack-8); }
 
-.markdown-body p { margin: 0 0 var(--sa-stack-16); max-width: 72ch; }
+.markdown-body p { margin: 0 0 var(--sa-stack-16); max-width: var(--sa-container-measure); }
 
 .markdown-body a { color: var(--sa-text-link-brand-default); text-decoration: none; }
 .markdown-body a:hover { text-decoration: underline; }
@@ -41,7 +41,7 @@
 .markdown-body strong { font-weight: 600; color: var(--sa-text-neutral-bolder); }
 
 .markdown-body ul,
-.markdown-body ol { margin: 0 0 var(--sa-stack-16); padding-left: var(--sa-padding-24); max-width: 72ch; }
+.markdown-body ol { margin: 0 0 var(--sa-stack-16); padding-left: var(--sa-padding-24); max-width: var(--sa-container-measure); }
 .markdown-body li { margin-bottom: var(--sa-stack-8); line-height: var(--sa-type-body-1-lh); }
 .markdown-body li > ul,
 .markdown-body li > ol { margin-top: var(--sa-stack-8); }
@@ -49,7 +49,8 @@
 /* Inline code + fenced blocks */
 .markdown-body code {
   font-family: var(--sa-font-mono);
-  font-size: 0.875em;
+  font-size: var(--sa-type-body-2-size);
+  line-height: var(--sa-type-body-2-lh);
   background: var(--sa-bg-neutral-subtler);
   border: 1px solid var(--sa-border-neutral-subtle);
   border-radius: var(--sa-shape-4);
@@ -69,7 +70,7 @@
   border: none;
   padding: 0;
   font-size: var(--sa-type-body-2-size);
-  line-height: 1.6;
+  line-height: var(--sa-type-body-2-lh);
 }
 
 /* Tables (GFM) */
@@ -84,9 +85,10 @@
   padding: var(--sa-padding-8) var(--sa-padding-12);
   border-bottom: 2px solid var(--sa-border-neutral-base);
   font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--sa-type-caps-tracking);
   color: var(--sa-text-neutral-subtle);
   white-space: nowrap;
 }

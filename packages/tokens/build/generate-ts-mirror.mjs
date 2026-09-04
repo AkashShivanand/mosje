@@ -153,7 +153,12 @@ function main() {
   );
 
   const typography = Object.fromEntries(
-    TYPE_ROLES.map((r) => [camel(r), { size: take(`--sa-type-${TYPE_TOKEN[r]}-size`), leading: take(`--sa-type-${TYPE_TOKEN[r]}-lh`) }]),
+    TYPE_ROLES.map((r) => [camel(r), {
+      size: take(`--sa-type-${TYPE_TOKEN[r]}-size`),
+      leading: take(`--sa-type-${TYPE_TOKEN[r]}-lh`),
+      // A Hindi block at this role: same size, the derived Devanagari leading.
+      leadingDevanagari: take(`--sa-type-${TYPE_TOKEN[r]}-lhDevanagari`),
+    }]),
   );
 
   if (missing.length) {

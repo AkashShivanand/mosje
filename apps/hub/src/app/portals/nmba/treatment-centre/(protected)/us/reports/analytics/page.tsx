@@ -65,15 +65,15 @@ export default function USAnalyticsReportPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="rounded-xl bg-navy px-5 py-3.5 text-white">
-        <h1 className="text-lg font-bold">Analytical Reports Dashboard</h1>
-        <p className="text-xs text-white/70">Consolidated analytics across all state treatment centres and portals.</p>
+        <h1 className="text-headline-1">Analytical Reports Dashboard</h1>
+        <p className="text-body-3 text-white/70">Consolidated analytics across all state treatment centres and portals.</p>
       </div>
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
         <section aria-label="Gender Distribution" className="rounded-xl border border-line bg-white p-5 shadow-xs flex flex-col justify-between">
-          <h3 className="text-base font-semibold text-ink mb-4">Gender Distribution</h3>
+          <h2 className="text-title-2 text-ink mb-4">Gender Distribution</h2>
           <PieChart data={allGenders} title="Gender distribution" />
-          <div className="mt-4 border-t border-line pt-2 text-xs flex flex-col gap-1 text-ink-muted">
+          <div className="mt-4 border-t border-line pt-2 text-body-3 flex flex-col gap-1 text-ink-muted">
             {allGenders.map((item) => (
               <div key={item.label} className="flex justify-between">
                 <span>{item.label}</span>
@@ -84,9 +84,9 @@ export default function USAnalyticsReportPage() {
         </section>
 
         <section aria-label="Residence Distribution" className="rounded-xl border border-line bg-white p-5 shadow-xs flex flex-col justify-between">
-          <h3 className="text-base font-semibold text-ink mb-4">Residence Classification</h3>
+          <h2 className="text-title-2 text-ink mb-4">Residence Classification</h2>
           <PieChart data={allResidence} title="Residence distribution" />
-          <div className="mt-4 border-t border-line pt-2 text-xs flex flex-col gap-1 text-ink-muted">
+          <div className="mt-4 border-t border-line pt-2 text-body-3 flex flex-col gap-1 text-ink-muted">
             {allResidence.map((item) => (
               <div key={item.label} className="flex justify-between">
                 <span>{item.label}</span>
@@ -97,9 +97,9 @@ export default function USAnalyticsReportPage() {
         </section>
 
         <section aria-label="Treatment Type Distribution" className="rounded-xl border border-line bg-white p-5 shadow-xs flex flex-col justify-between">
-          <h3 className="text-base font-semibold text-ink mb-4">Treatment History Split</h3>
+          <h2 className="text-title-2 text-ink mb-4">Treatment History Split</h2>
           <PieChart data={allTreatment} title="Treatment history split" />
-          <div className="mt-4 border-t border-line pt-2 text-xs flex flex-col gap-1 text-ink-muted">
+          <div className="mt-4 border-t border-line pt-2 text-body-3 flex flex-col gap-1 text-ink-muted">
             {allTreatment.map((item) => (
               <div key={item.label} className="flex justify-between">
                 <span>{item.label}</span>
@@ -111,7 +111,7 @@ export default function USAnalyticsReportPage() {
       </div>
 
       <section aria-label="Drug Distribution" className="rounded-xl border border-line bg-white p-5 shadow-xs">
-        <h3 className="text-base font-semibold text-ink mb-4">Substance Abuse Distribution</h3>
+        <h2 className="text-title-2 text-ink mb-4">Substance Abuse Distribution</h2>
         <BarChart data={allDrugs} title="Substance Abuse Distribution" yLabel="Number of Incidents" />
       </section>
     </div>

@@ -28,8 +28,8 @@ export default function Ngo360Page() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-ink">{ngo.name}</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">{ngo.name}</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           {ngo.district}, {ngo.state} · NGO-Darpan {ngo.darpanId} · Registration {ngo.registrationNo}
         </p>
       </div>
@@ -41,14 +41,14 @@ export default function Ngo360Page() {
       </div>
 
       <section className="rounded-xl border border-line bg-surface p-5">
-        <h2 className="text-base font-semibold text-ink">Institutions</h2>
+        <h2 className="text-title-2 text-ink">Institutions</h2>
         <ul className="mt-4 divide-y divide-line">
           {ngo.institutions.map((i) => (
             <li key={i.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
-              <span className="text-sm text-ink">
+              <span className="text-body-2 text-ink">
                 <span className="font-medium">{i.id}</span> · {i.name} · {i.district}
               </span>
-              <span className="text-sm text-ink-muted">
+              <span className="text-body-2 text-ink-muted">
                 {i.nature} · {i.type} · {i.building}
               </span>
             </li>
@@ -57,16 +57,16 @@ export default function Ngo360Page() {
       </section>
 
       <section className="rounded-xl border border-line bg-surface p-5">
-        <h2 className="text-base font-semibold text-ink">Inspections</h2>
+        <h2 className="text-title-2 text-ink">Inspections</h2>
         {inspections.length === 0 ? (
-          <p className="mt-3 text-sm text-ink-muted">No inspection has been raised for this organisation.</p>
+          <p className="mt-3 text-body-2 text-ink-muted">No inspection has been raised for this organisation.</p>
         ) : (
           <ul className="mt-4 divide-y divide-line">
             {inspections.map((i) => (
               <li key={i.id} className="flex flex-wrap items-center justify-between gap-3 py-3">
-                <span className="text-sm text-ink">{i.applicationId} · {i.visitType}</span>
+                <span className="text-body-2 text-ink">{i.applicationId} · {i.visitType}</span>
                 <span className="flex items-center gap-3">
-                  <span className="text-sm text-ink-muted">
+                  <span className="text-body-2 text-ink-muted">
                     {i.scheduledFor ? formatDate(i.scheduledFor) : "Not scheduled"}
                   </span>
                   <Badge status={i.status === "Reviewed" ? "success" : "info"}>{i.status}</Badge>
@@ -79,7 +79,7 @@ export default function Ngo360Page() {
 
       <WorklistTable rows={apps} variant="explorer" caption={`Applications from ${ngo.name}`} />
 
-      <p className="text-xs text-ink-muted">
+      <p className="text-body-3 text-ink-muted">
         Last inspection: {ngo.lastInspection ? formatDate(ngo.lastInspection) : "—"} ·
         Current status of most recent application:{" "}
         {apps[0] ? statusLabel(apps[0]) : "—"}

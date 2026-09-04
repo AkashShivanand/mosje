@@ -159,8 +159,8 @@ export default async function EventDetailPage({
       description={event.about[0]}
       lastUpdated="06 Jun 2026"
       sidebar={
-        <div className="rounded-xl border border-gray-200 bg-surface-muted p-5 text-[14px]">
-          <h2 className="mb-4 text-[15px] font-semibold text-primary-dark">Event Details</h2>
+        <div className="rounded-xl border border-gray-200 bg-surface-muted p-5 text-body-2">
+          <h2 className="mb-4 text-title-1 text-primary-dark">Event Details</h2>
           <dl className="space-y-4">
             <div className="flex items-start gap-3">
               <Icon name="calendar_month" size={20} className="mt-0.5 shrink-0 text-primary" aria-hidden="true" />

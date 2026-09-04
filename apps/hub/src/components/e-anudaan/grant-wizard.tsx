@@ -230,8 +230,8 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
   return (
     <div className="mx-auto max-w-4xl space-y-5">
       <header className="space-y-1">
-        <h1 className="text-xl font-bold text-ink">{def.title}</h1>
-        <p className="text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">{def.title}</h1>
+        <p className="text-body-2 text-ink-muted">
           Step {activeIndex + 1} of {total} — {current.title}.
           {!isDocs && !isReview && " Fields marked * are mandatory."}
         </p>
@@ -240,7 +240,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
       {!draftDismissed && (
         <Alert status="info" title={`You are continuing a saved draft for FY ${values.fld_financial_year ?? "2026-27"}, last saved 21 Aug 2026.`}>
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <p className="text-sm">Its answers are already filled in below.</p>
+            <p className="text-body-2">Its answers are already filled in below.</p>
             <Button
               appearance="outlined"
               size="sm"
@@ -281,7 +281,7 @@ export function GrantWizard({ schemeCode, phase = "form" }: { schemeCode: string
               onChange={setDocs}
             />
             {invalidCount > 0 && (
-              <p className="mt-3 text-sm text-status-warning">{invalidDocsWarning(invalidCount)}</p>
+              <p className="mt-3 text-body-2 text-status-warning">{invalidDocsWarning(invalidCount)}</p>
             )}
           </>
         ) : isReview ? (
@@ -314,8 +314,8 @@ function FormStep({
       {step.sections.map((section) => (
         <section key={section.title} className="space-y-4 rounded-xl border border-line bg-surface p-5 shadow-xs">
           <div>
-            <h2 className="text-base font-bold text-ink">{section.title}</h2>
-            {section.lead && <p className="mt-1 text-sm text-ink-muted">{section.lead}</p>}
+            <h2 className="text-headline-6 text-ink">{section.title}</h2>
+            {section.lead && <p className="mt-1 text-body-2 text-ink-muted">{section.lead}</p>}
           </div>
 
           {def.costNorms && section.title === "Grant Sought" && (
@@ -387,9 +387,9 @@ function Field({
           required={field.required || undefined}
           aria-invalid={error != null || undefined}
         />
-        {field.help && <p className="mt-1 text-xs text-ink-muted">{field.help}</p>}
+        {field.help && <p className="mt-1 text-body-3 text-ink-muted">{field.help}</p>}
         {error && (
-          <p role="alert" className="mt-1 text-xs text-status-error">
+          <p role="alert" className="mt-1 text-body-3 text-status-error">
             {error}
           </p>
         )}
@@ -408,7 +408,7 @@ function Field({
         aria-required={field.required || undefined}
         aria-invalid={error != null || undefined}
       >
-        <legend className="text-sm font-semibold text-ink">
+        <legend className="text-label-1 font-semibold text-ink">
           {field.label}{" "}
           {field.required && (
             <span className="text-status-error" aria-hidden="true">
@@ -428,9 +428,9 @@ function Field({
             />
           ))}
         </div>
-        {field.help && <p className="mt-1 text-xs text-ink-muted">{field.help}</p>}
+        {field.help && <p className="mt-1 text-body-3 text-ink-muted">{field.help}</p>}
         {error && (
-          <p role="alert" className="mt-1 text-xs text-status-error">
+          <p role="alert" className="mt-1 text-body-3 text-status-error">
             {error}
           </p>
         )}
@@ -486,7 +486,7 @@ function Field({
           )
         }
       </FormField>
-      {counter && <p className="mt-1 text-xs text-ink-hint">{counter}</p>}
+      {counter && <p className="mt-1 text-body-3 text-ink-hint">{counter}</p>}
     </div>
   );
 }
@@ -518,7 +518,7 @@ function ReviewStep({
 
   return (
     <div className="space-y-5">
-      <p className="text-sm text-ink-muted">
+      <p className="text-body-2 text-ink-muted">
         Review your details. Once submitted, the application enters the Ministry review chain.
       </p>
 
@@ -554,7 +554,7 @@ function ReviewStep({
 
       <section className="rounded-xl border border-line bg-surface p-5 shadow-xs">
         <div className="flex items-center justify-between border-b border-line pb-2">
-          <h3 className="text-base font-bold text-ink">Documents</h3>
+          <h3 className="text-headline-6 text-ink">Documents</h3>
           <Button appearance="text" size="sm" onClick={() => onEdit(branchSteps.findIndex((s) => s.kind === "documents"))}>
             <Icon name="edit" size={16} aria-hidden /> Edit
           </Button>
@@ -563,7 +563,7 @@ function ReviewStep({
           {visibleDocuments(def, values).map((d) => {
             const up = docs[d.n];
             return (
-              <li key={d.n} className="flex items-center justify-between gap-3 text-sm">
+              <li key={d.n} className="flex items-center justify-between gap-3 text-body-2">
                 <span className="flex min-w-0 items-center gap-2">
                   <Icon
                     name={up ? "check_circle" : "radio_button_unchecked"}
@@ -592,7 +592,7 @@ function ReviewStep({
         {DECLARATION_TEXT}
       </DeclarationCheckbox>
 
-      {!declared && <p className="text-sm text-ink-muted">Accept the declaration above to submit.</p>}
+      {!declared && <p className="text-body-2 text-ink-muted">Accept the declaration above to submit.</p>}
     </div>
   );
 }

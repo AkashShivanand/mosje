@@ -1,8 +1,8 @@
 export function Footer() {
   return (
     <footer className="mt-3xl border-t border-stroke-200 bg-white">
-      <div className="mx-auto flex max-w-[1600px] flex-col items-start justify-between gap-sm px-md py-md text-label-3 text-ink-muted md:flex-row md:items-center md:px-lg">
-        <div className="leading-relaxed">
+      <div className="mx-auto flex max-w-[1600px] flex-col items-start justify-between gap-sm px-md py-md text-body-3 text-ink-muted md:flex-row md:items-center md:px-lg">
+        <div>
           <span className="hidden md:inline">
             © 2026 Ministry of Social Justice &amp; Empowerment, Government of India.
             All rights reserved.

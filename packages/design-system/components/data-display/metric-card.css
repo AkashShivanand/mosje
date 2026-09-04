@@ -49,7 +49,7 @@
      * Local prefix, not `--ds-`: that namespace is a deprecated GLOBAL alias
      * and a component-local variable must not sit inside it.
      */
-    --metric-card-value-line: 32px;
+    --metric-card-value-line: var(--sa-type-headline-3-lh);
     display: flex;
     flex-direction: column;
     gap: var(--sa-stack-4);
@@ -82,11 +82,12 @@
   .ds-metric-card__value {
     margin-top: var(--sa-padding-4);
     font-family: var(--sa-font-latin);
-    font-size: 24px;
+    font-size: var(--sa-type-headline-3-size);
     line-height: var(--metric-card-value-line);
+    /* 700, not 600: the figure is a KPI numeral, not a heading. */
     font-weight: 700;
+    font-variant-numeric: tabular-nums;
     color: var(--sa-text-neutral-bolder);
-    letter-spacing: -0.01em;
   }
 
   .ds-metric-card__icon {
@@ -154,8 +155,8 @@
 
   /* ── Size variants ── */
   .ds-metric-card--sm .ds-metric-card__value {
-    font-size: 20px;
-    line-height: 28px;
+    font-size: var(--sa-type-headline-4-size);
+    line-height: var(--sa-type-headline-4-lh);
   }
 
   .ds-metric-card--sm .ds-metric-card__icon {
@@ -170,9 +171,9 @@
     gap: var(--sa-stack-4);
     margin-top: var(--sa-padding-8);
     font-family: var(--sa-font-latin);
-    font-size: 12px;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     font-weight: 600;
-    line-height: 1;
   }
 
   .ds-metric-card__change--up   { color: var(--sa-text-status-success-base); }
@@ -186,15 +187,16 @@
     gap: var(--sa-stack-4);
     padding: var(--sa-padding-2) var(--sa-padding-8);
     border-radius: var(--sa-shape-full);
-    font-size: 12px;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     font-weight: 600;
-    line-height: 16px;
   }
   .ds-metric-card__pill--up   { background-color: var(--sa-bg-status-success-subtler); color: var(--sa-text-status-success-base); }
   .ds-metric-card__pill--down { background-color: var(--sa-bg-status-error-base);  color: var(--sa-text-status-error-base); }
   .ds-metric-card__suffix {
     margin-left: var(--sa-padding-8);
-    font-size: 12px;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     font-weight: 500;
     color: var(--sa-text-neutral-subtle);
   }

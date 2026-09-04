@@ -38,12 +38,12 @@ export default function CategoriesPage() {
         <SearchInput placeholder="Search by label…" value={q} onChange={(e) => setQ(e.target.value)} className="max-w-md flex-1" />
         <Checkbox label="Show deactivated" checked={showDeactivated} onChange={(e) => setShowDeactivated(e.target.checked)} />
       </div>
-      <p className="mb-3 text-xs text-ink-hint">{state.categories.filter((c) => c.active).length} active categories</p>
+      <p className="mb-3 text-body-3 text-ink-hint">{state.categories.filter((c) => c.active).length} active categories</p>
 
       <div className="overflow-x-auto rounded-2xl border border-line bg-white shadow-card">
-        <table className="w-full min-w-[720px] text-left text-sm">
+        <table className="w-full min-w-[720px] text-left text-body-2">
           <thead>
-            <tr className="border-b border-line text-xs uppercase tracking-wide text-ink-hint">
+            <tr className="border-b border-line text-label-3 uppercase text-ink-hint">
               <th className="px-5 py-3.5 font-semibold">Label</th>
               <th className="px-5 py-3.5 font-semibold">SLA (days)</th>
               <th className="px-5 py-3.5 font-semibold">Amount ceiling</th>
@@ -58,10 +58,10 @@ export default function CategoriesPage() {
                 <td className="px-5 py-4 text-ink-muted">{c.slaDays}d</td>
                 <td className="px-5 py-4 text-ink">{fmtINR(c.amountCeiling)}</td>
                 <td className="px-5 py-4">
-                  <span className={`inline-flex rounded-full px-2.5 py-0.5 text-xs font-semibold ${c.active ? "bg-approve-bg text-approve-fg" : "bg-slate-100 text-slate-500"}`}>{c.active ? "Active" : "Deactivated"}</span>
+                  <span className={`inline-flex rounded-full px-2.5 py-0.5 text-label-2 font-semibold ${c.active ? "bg-approve-bg text-approve-fg" : "bg-slate-100 text-slate-500"}`}>{c.active ? "Active" : "Deactivated"}</span>
                 </td>
                 <td className="px-5 py-4 text-right">
-                  <button type="button" onClick={() => toggleCategory(c.id)} className="rounded-lg border border-line px-3 py-1.5 text-xs font-semibold text-navy hover:bg-navy/5">{c.active ? "Deactivate" : "Reactivate"}</button>
+                  <button type="button" onClick={() => toggleCategory(c.id)} className="rounded-lg border border-line px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-navy/5">{c.active ? "Deactivate" : "Reactivate"}</button>
                 </td>
               </tr>
             ))}
@@ -82,7 +82,7 @@ export default function CategoriesPage() {
             <Field label="SLA (days)"><TextInput inputMode="numeric" value={sla} onChange={(e) => setSla(e.target.value.replace(/\D/g, ""))} /></Field>
             <Field label="Amount ceiling (₹)"><TextInput inputMode="numeric" value={ceiling} onChange={(e) => setCeiling(e.target.value.replace(/\D/g, ""))} placeholder="e.g. 425000" /></Field>
           </div>
-          <p className="rounded-lg bg-surface-muted px-3 py-2 text-xs text-ink-muted">New active categories appear immediately in the citizen Register-Grievance wizard.</p>
+          <p className="rounded-lg bg-surface-muted px-3 py-2 text-body-3 text-ink-muted">New active categories appear immediately in the citizen Register-Grievance wizard.</p>
         </div>
       </Modal>
     </div>

@@ -9,8 +9,8 @@ export default function DOClarificationsPage() {
       <PageHeader title="Clarifications" subtitle="0 clarifications · 0 citizen responses requiring your action" />
       <Card className="flex flex-col items-center justify-center px-6 py-20 text-center">
         <Icon name="feedback" size={40} className="text-ink-hint" />
-        <p className="mt-4 text-sm font-semibold text-ink">No open clarifications.</p>
-        <p className="mt-1 text-xs text-ink-hint">Raise a clarification from any case to request more information from the citizen.</p>
+        <p className="mt-4 text-title-3 text-ink">No open clarifications.</p>
+        <p className="mt-1 text-body-3 text-ink-hint">Raise a clarification from any case to request more information from the citizen.</p>
       </Card>
     </div>
   );

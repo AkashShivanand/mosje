@@ -47,7 +47,7 @@ export function PasswordStrengthMeterPlayground() {
           <PasswordStrengthMeter score={score} id={meterId} />
         </div>
       </div>
-      <p style={{ margin: 0, fontSize: "13px", color: "var(--sa-text-neutral-subtle)" }}>
+      <p style={{ margin: 0, fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--sa-text-neutral-subtle)" }}>
         <em>Note: This playground uses a crude length-based mock score. In production, always pass the output of the <code>zxcvbn</code> library.</em>
       </p>
     </div>

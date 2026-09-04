@@ -50,6 +50,9 @@ function buildCode(v: Record<string, string | boolean>, lang: "en" | "hi" = "en"
     `appearance="${v["appearance"]}"`,
     v["tone"] === "inverse" ? `tone="inverse"` : "",
     `size="${v["size"]}"`,
+    // A Hindi label is a Hindi run: the generated code marks it so the Devanagari face and
+    // the screen-reader voice both switch with it.
+    lang === "hi" ? `lang="hi"` : "",
     // The Icon is the library's Material Symbols glyph, at the 16px every button in
     // the estate uses. It is a font icon, not a drawing — one variable font, no asset.
     v["iconLeft"] ? `iconLeft={<Icon name="add" size={16} />}` : "",

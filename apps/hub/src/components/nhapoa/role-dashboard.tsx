@@ -43,8 +43,8 @@ export function RoleDashboard({ roleId }: { roleId: Exclude<RoleId, "citizen"> }
       </div>
 
       <Card className="mt-6 p-6">
-        <h2 className="text-sm font-bold text-ink">Case status breakdown</h2>
-        <ul className="mt-4 space-y-2 text-sm">
+        <h2 className="text-title-2 text-ink">Case status breakdown</h2>
+        <ul className="mt-4 space-y-2 text-body-2">
           {(Object.keys(CASE_STATUS_META) as CaseStatus[]).map((st) => (
             <li key={st} className="flex items-center justify-between border-b border-line pb-2 last:border-0">
               <span className="text-ink-muted">{CASE_STATUS_META[st].label}</span>
@@ -52,7 +52,7 @@ export function RoleDashboard({ roleId }: { roleId: Exclude<RoleId, "citizen"> }
             </li>
           ))}
         </ul>
-        <p className="mt-5 rounded-lg bg-surface-muted px-4 py-3 text-xs text-ink-muted">
+        <p className="mt-5 rounded-lg bg-surface-muted px-4 py-3 text-body-3 text-ink-muted">
           Foundation screen (NHA-1). The full {role.label} workflow screens are delivered in a
           later issue — this dashboard confirms the shared store, mock auth, and role shell are live.
         </p>

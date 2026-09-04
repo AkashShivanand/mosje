@@ -1,3 +1,4 @@
+/* ds-exempt-start(hindi-source): language names in their own script are DATA for the language picker, which renders each with its own lang attribute */
 /**
  * The languages this estate offers, and how each one is written.
  *
@@ -69,3 +70,5 @@ export function findLanguage(code: string): EstateLanguage | undefined {
 export function languageLabel(code: string): string {
   return findLanguage(code)?.native ?? "English";
 }
+
+/* ds-exempt-end */

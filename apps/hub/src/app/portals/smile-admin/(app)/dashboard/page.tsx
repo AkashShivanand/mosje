@@ -207,7 +207,7 @@ export default function DashboardPage() {
         <div className="flex items-center justify-between gap-md border-b border-stroke-100 p-lg">
           <div className="space-y-xxs">
             <CardTitle>State-wise beneficiary distribution</CardTitle>
-            <p className="text-body-3 text-ink-muted">
+            <p className="text-body-2 text-ink-muted">
               Heat map across India · click a state to drill down
             </p>
           </div>
@@ -216,7 +216,7 @@ export default function DashboardPage() {
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className={`rounded-sm px-md py-1 text-body-3 font-semibold transition-colors ${
+                className={`rounded-sm px-md py-1 text-label-1 transition-colors ${
                   tab === t.id
                     ? "bg-primary text-white shadow-xs"
                     : "text-ink-muted hover:bg-neutral-100 hover:text-ink"
@@ -236,8 +236,8 @@ export default function DashboardPage() {
             />
           </div>
           <div className="overflow-hidden rounded-md border border-stroke-200">
-            <table className="w-full text-body-3">
-              <thead className="bg-neutral-50/80 text-label-3 uppercase tracking-[0.08em] text-ink-muted">
+            <table className="w-full text-body-2">
+              <thead className="bg-neutral-50/80 text-label-3 uppercase text-ink-muted">
                 <tr>
                   <th className="px-md py-sm text-left font-semibold">#</th>
                   <th className="px-md py-sm text-left font-semibold">State</th>
@@ -270,7 +270,7 @@ export default function DashboardPage() {
         <Card>
           <CardHeader>
             <CardTitle>Survey activity</CardTitle>
-            <span className="inline-flex items-center gap-xs rounded-full bg-info-50 px-sm py-0.5 text-label-3 font-bold uppercase tracking-[0.06em] text-info-600 ring-1 ring-inset ring-info-100">
+            <span className="inline-flex items-center gap-xs rounded-full bg-info-50 px-sm py-0.5 text-label-3 uppercase text-info-600 ring-1 ring-inset ring-info-100">
               <Icon name="bar_chart" size={12} /> Identified
             </span>
           </CardHeader>

@@ -23,7 +23,7 @@ export default function AdminSlaMonitorPage() {
         <StatTile label="SLA Breached" value={breachedList.length} accent="reject" />
         <StatTile label="National Compliance" value={`${compliance}%`} />
       </div>
-      <h2 className="mb-3 text-sm font-bold text-ink">Breached Cases — Escalation Queue</h2>
+      <h2 className="mb-3 text-title-2 text-ink">Breached Cases — Escalation Queue</h2>
       <SimpleCaseTable cases={breachedList} emptyLabel="No breached cases — all within SLA." />
     </div>
   );

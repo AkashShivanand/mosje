@@ -70,13 +70,13 @@ export default function MassPledgePage() {
       {/* ── Page header ─────────────────────────────────────────────────── */}
       <header className="mb-8 flex flex-wrap items-start justify-between gap-x-6 gap-y-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-wide text-ink-hint">
+          <p className="text-label-3 uppercase text-ink-hint">
             Nasha Mukt Bharat Abhiyaan
           </p>
-          <h1 className="mt-1 text-2xl font-bold tracking-tight text-ink">
+          <h1 className="mt-1 text-headline-1 text-ink">
             National Pledge Against Drug Abuse
           </h1>
-          <p className="mt-1 text-sm text-ink-muted">{EVENT_DATE_LABEL}</p>
+          <p className="mt-1 text-body-2 text-ink-muted">{EVENT_DATE_LABEL}</p>
         </div>
 
         {isOpen ? (
@@ -94,8 +94,8 @@ export default function MassPledgePage() {
       {showForm && (
         <section className="mb-10">
           <div className="mb-4 border-l-2 border-navy pl-4">
-            <h2 className="text-lg font-semibold text-ink">Report your participation</h2>
-            <p className="mt-0.5 text-sm text-ink-muted">
+            <h2 className="text-headline-3 text-ink">Report your participation</h2>
+            <p className="mt-0.5 text-body-2 text-ink-muted">
               The form is open today only. One report per organisation.
             </p>
           </div>
@@ -129,11 +129,11 @@ export default function MassPledgePage() {
       {/* ── Reports ─────────────────────────────────────────────────────── */}
       <section>
         <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-          <h2 className="text-lg font-semibold text-ink">Reports</h2>
+          <h2 className="text-headline-3 text-ink">Reports</h2>
           {/* Summary reads as a sentence rather than a row of cards: the table
               below is the content, and stat cards here would compete with it. */}
           {visible.length > 0 && (
-            <p className="text-sm text-ink-muted">
+            <p className="text-body-2 text-ink-muted">
               <strong className="font-semibold tabular-nums text-ink">{visible.length}</strong>{" "}
               {visible.length === 1 ? "report" : "reports"}
               <span aria-hidden="true"> · </span>
@@ -152,7 +152,7 @@ export default function MassPledgePage() {
           )}
         </div>
 
-        <p className="mb-4 text-sm text-ink-muted">{scopeCaption(session.role)}</p>
+        <p className="mb-4 text-body-2 text-ink-muted">{scopeCaption(session.role)}</p>
 
         <SubmissionsTable
           submissions={visible}
@@ -167,7 +167,7 @@ export default function MassPledgePage() {
 
       {IS_DEV && (
         <div className="mt-10 border-t border-dashed border-line pt-4">
-          <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-hint">
+          <p className="mb-2 text-label-3 uppercase text-ink-hint">
             Developer control · not present in production
           </p>
           <SegmentedControl

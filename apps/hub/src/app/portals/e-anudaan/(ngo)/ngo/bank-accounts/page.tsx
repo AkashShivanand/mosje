@@ -118,8 +118,8 @@ export default function BankAccountsPage() {
     <div className="space-y-6">
       <header className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-ink">My Bank Accounts</h1>
-          <p className="mt-1 text-sm text-ink-muted">
+          <h1 className="text-headline-1 text-ink">My Bank Accounts</h1>
+          <p className="mt-1 text-body-2 text-ink-muted">
             Accounts you save here can be selected when applying.{" "}
             <strong>Each project must use a separate account.</strong>
           </p>
@@ -132,7 +132,7 @@ export default function BankAccountsPage() {
       {adding && (
         <section className="space-y-4 rounded-xl border border-line bg-surface p-5 shadow-xs">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-ink">
+            <h2 className="text-title-2 text-ink">
               {editingId ? "Edit bank account" : "Add a bank account"}
             </h2>
             <Button appearance="text" size="sm" onClick={() => setAdding(false)}>
@@ -186,7 +186,7 @@ export default function BankAccountsPage() {
               <Button type="submit">Save account</Button>
             </div>
           </form>
-          <p className="text-sm text-ink-muted">
+          <p className="text-body-2 text-ink-muted">
             Each project must have its own account — an account already used by another project or
             agency is rejected.
           </p>
@@ -195,10 +195,10 @@ export default function BankAccountsPage() {
 
       <section className="rounded-xl border border-line bg-surface p-5">
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[36rem] text-sm">
+          <table className="w-full min-w-[36rem] text-body-2">
             <caption className="sr-only">Saved bank accounts</caption>
             <thead>
-              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
+              <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
                 <th scope="col" className="pb-2 pr-3 font-medium">Bank</th>
                 <th scope="col" className="pb-2 pr-3 font-medium">Account</th>
                 <th scope="col" className="pb-2 pr-3 font-medium">IFSC</th>
@@ -239,8 +239,8 @@ export default function BankAccountsPage() {
 
       <section className="space-y-3 rounded-xl border border-line bg-surface p-5">
         <div>
-          <h2 className="text-base font-bold text-ink">Project bank accounts</h2>
-          <p className="mt-1 text-sm text-ink-muted">
+          <h2 className="text-title-2 text-ink">Project bank accounts</h2>
+          <p className="mt-1 text-body-2 text-ink-muted">
             Each project is paid into its own account, and every instalment goes there. Changing one
             needs the Ministry&apos;s approval — it is not something a renewal application can do on
             its own.
@@ -248,10 +248,10 @@ export default function BankAccountsPage() {
         </div>
 
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[32rem] text-sm">
+          <table className="w-full min-w-[32rem] text-body-2">
             <caption className="sr-only">Account each project is paid into</caption>
             <thead>
-              <tr className="border-b border-line text-left text-xs uppercase tracking-wide text-ink-muted">
+              <tr className="border-b border-line text-left text-label-3 uppercase text-ink-muted">
                 <th scope="col" className="pb-2 pr-3 font-medium">Project</th>
                 <th scope="col" className="pb-2 pr-3 font-medium">Paid into</th>
                 <th scope="col" className="pb-2 font-medium"><span className="sr-only">Actions</span></th>
@@ -263,7 +263,7 @@ export default function BankAccountsPage() {
                   <tr className="border-b border-line align-top">
                     <td className="py-2 pr-3">
                       <span className="block font-mono text-ink">{p.id}</span>
-                      <span className="block text-xs text-ink-muted">{p.label}</span>
+                      <span className="block text-body-3 text-ink-muted">{p.label}</span>
                     </td>
                     <td className="py-2 pr-3 text-ink">
                       {paidInto[p.id]

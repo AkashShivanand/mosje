@@ -15,10 +15,10 @@ export default function CallCenterFaqPage() {
         {FAQS.map((f, i) => (
           <Card key={f.q} className="overflow-hidden">
             <button type="button" onClick={() => setOpen(open === i ? null : i)} aria-expanded={open === i} aria-controls={`cc-faq-${i}`} className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left">
-              <span className="text-sm font-semibold text-ink">{f.q}</span>
+              <span className="text-title-3 text-ink">{f.q}</span>
               <Icon name="keyboard_arrow_down" aria-hidden="true" className={cn("h-4 w-4 shrink-0 text-ink-hint transition-transform", open === i && "rotate-180")} />
             </button>
-            {open === i && <p id={`cc-faq-${i}`} className="border-t border-line px-5 py-4 text-sm leading-relaxed text-ink-muted">{f.a}</p>}
+            {open === i && <p id={`cc-faq-${i}`} className="border-t border-line px-5 py-4 text-body-2 text-ink-muted">{f.a}</p>}
           </Card>
         ))}
       </div>

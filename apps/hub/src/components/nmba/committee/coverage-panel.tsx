@@ -26,8 +26,8 @@ export function CoveragePanel({
   return (
     <section className="rounded-xl border border-line bg-white p-5">
       <div className="mb-4 flex items-baseline justify-between gap-3">
-        <h2 className="text-base font-semibold text-ink">Coverage</h2>
-        <p className="text-xs text-ink-hint">Registered vs expected in your jurisdiction</p>
+        <h2 className="text-title-2 text-ink">Coverage</h2>
+        <p className="text-body-3 text-ink-hint">Registered vs expected in your jurisdiction</p>
       </div>
 
       <div className="grid grid-cols-1 gap-x-8 gap-y-4 sm:grid-cols-2">
@@ -46,8 +46,8 @@ export function CoveragePanel({
         <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 border-t border-line pt-4">
           {countOnly.map((m) => (
             <div key={m.key} className="flex items-baseline gap-2">
-              <span className="text-lg font-semibold text-navy">{m.registered}</span>
-              <span className="text-sm text-ink-muted">{m.label.toLowerCase()}</span>
+              <span className="text-headline-4 tabular-nums text-navy">{m.registered}</span>
+              <span className="text-body-2 text-ink-muted">{m.label.toLowerCase()}</span>
             </div>
           ))}
         </div>

@@ -35,7 +35,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
         </main>
       </div>
       <footer className="bg-navy-950 text-white">
-        <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-xs sm:px-6">
+        <div className="flex flex-wrap items-center justify-between gap-2 px-4 py-3 text-body-3 sm:px-6">
           <span>© 2026 Ministry of Social Justice &amp; Empowerment, Government of India · SAMBAL</span>
           <div className="flex items-center gap-3">
             <a href="#" className="hover:underline">Terms &amp; Conditions</a>

@@ -106,7 +106,7 @@ export function RecentDocuments() {
           <div className="lg:col-span-8 flex flex-col justify-between">
             <div>
               <div className="flex items-center justify-between border-b border-gray-200 pb-4">
-                <h2 className="text-[26px] sm:text-[30px] font-semibold leading-tight text-primary-dark">
+                <h2 className="text-headline-2 text-primary-dark">
                   Recent Documents
                 </h2>
                 {/* Outlined button, not a text link [WEB-G-05]. */}
@@ -128,14 +128,14 @@ export function RecentDocuments() {
                     key={doc.title}
                     className="flex flex-col rounded-xl border border-gray-200 bg-surface-muted/40 p-4 transition hover:border-primary/40 hover:shadow-sm"
                   >
-                    <h3 className="text-[15px] font-semibold leading-snug text-ink">
+                    <h3 className="text-title-2 text-ink">
                       {doc.title}
                     </h3>
-                    <p className="mt-1 text-xs text-ink-muted">{doc.date}</p>
+                    <p className="mt-1 text-body-3 text-ink-muted">{doc.date}</p>
 
                     {/* The design also carries a description here. It is not in
                         the document data — see DocumentItem.type. */}
-                    <p className="mt-3 text-xs text-ink-muted">
+                    <p className="mt-3 text-body-3 text-ink-muted">
                       Type: <span className="font-medium text-ink">{doc.type}</span>
                     </p>
 
@@ -150,14 +150,14 @@ export function RecentDocuments() {
                           "primary",
                           "outlined",
                           "sm",
-                          "text-xs px-3.5 py-1.5 whitespace-nowrap border-primary-dark text-primary-dark",
+                          "text-label-2 px-3.5 py-1.5 whitespace-nowrap border-primary-dark text-primary-dark",
                         )}
                       >
                         View Online
                       </Link>
                       <Link
                         href={doc.href}
-                        className={buttonClasses("primary", "filled", "sm", "text-xs px-3.5 py-1.5 whitespace-nowrap")}
+                        className={buttonClasses("primary", "filled", "sm", "text-label-2 px-3.5 py-1.5 whitespace-nowrap")}
                       >
                         Download
                       </Link>
@@ -172,10 +172,10 @@ export function RecentDocuments() {
           <div className="lg:col-span-4">
             <div className="flex h-full flex-col justify-between rounded-2xl bg-primary-dark p-6 text-white shadow-md">
               <div>
-                <h2 className="text-[22px] font-bold text-white">
+                <h2 className="text-title-1 text-white">
                   Explore User Personas
                 </h2>
-                <p className="mt-1.5 text-xs text-white/80">
+                <p className="mt-1.5 text-body-3 text-white/80">
                   Choose your role to discover services made for you.
                 </p>
 
@@ -197,7 +197,7 @@ export function RecentDocuments() {
 
                 <Link
                   href={currentPersona.href}
-                  className="mt-2 flex items-center justify-center gap-1.5 rounded-lg py-1 text-[22px] font-medium text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
+                  className="mt-2 flex items-center justify-center gap-1.5 rounded-lg py-1 text-title-1 text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-white"
                 >
                   {currentPersona.label}
                   <Icon name="arrow_forward" size={20} aria-hidden="true" />

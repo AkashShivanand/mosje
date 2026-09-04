@@ -32,19 +32,19 @@ export default function AnalyticsPage() {
       </div>
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="p-6">
-          <h2 className="text-sm font-bold text-ink">By Category</h2>
+          <h2 className="text-title-2 text-ink">By Category</h2>
           <div className="mt-5 space-y-3">
             {byCat.map(([cat, v]) => (
               <div key={cat}>
-                <div className="mb-1 flex justify-between text-xs"><span className="line-clamp-1 text-ink-muted">{cat}</span><span className="font-semibold text-ink">{v}</span></div>
+                <div className="mb-1 flex justify-between text-body-3"><span className="line-clamp-1 text-ink-muted">{cat}</span><span className="font-semibold text-ink">{v}</span></div>
                 <div className="h-2 w-full overflow-hidden rounded-full bg-line"><div className="h-full rounded-full bg-navy/70" style={{ width: `${(v / maxCat) * 100}%` }} /></div>
               </div>
             ))}
           </div>
         </Card>
         <Card className="p-6">
-          <h2 className="text-sm font-bold text-ink">By Status</h2>
-          <ul className="mt-4 space-y-2 text-sm">
+          <h2 className="text-title-2 text-ink">By Status</h2>
+          <ul className="mt-4 space-y-2 text-body-2">
             {statuses.map((s) => (
               <li key={s} className="flex items-center justify-between border-b border-line pb-2 last:border-0">
                 <span className="text-ink-muted">{CASE_STATUS_META[s].label}</span>

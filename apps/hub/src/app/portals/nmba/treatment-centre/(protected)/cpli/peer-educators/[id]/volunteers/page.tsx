@@ -98,7 +98,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
         <button
           type="button"
           onClick={handleCopy}
-          className="inline-flex items-center gap-1.5 px-3 py-[7px] text-sm font-medium text-ink-muted transition-colors duration-150 hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
+          className="inline-flex items-center gap-1.5 px-3 py-[7px] text-label-1 text-ink-muted transition-colors duration-150 hover:bg-surface-muted hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-navy"
         >
           {copied ? (
             <Icon name="check" size={14} className="text-green-600" aria-hidden />
@@ -134,7 +134,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
             role="menuitem"
             type="button"
             onClick={() => handleDownload("xls")}
-            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:bg-surface-muted"
+            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-label-1 text-ink transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:bg-surface-muted"
           >
             <Icon name="table_chart" size={16} className="text-ink-muted" aria-hidden /> Export as Excel
           </button>
@@ -142,7 +142,7 @@ function ExportMenu({ rows, educatorId }: { rows: Row[]; educatorId: string }) {
             role="menuitem"
             type="button"
             onClick={() => handleDownload("csv")}
-            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm text-ink transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:bg-surface-muted"
+            className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-label-1 text-ink transition-colors hover:bg-surface-muted focus-visible:outline-none focus-visible:bg-surface-muted"
           >
             <Icon name="description" size={16} className="text-ink-muted" aria-hidden /> Export as CSV
           </button>
@@ -207,7 +207,7 @@ function VolunteerFormSheet({
         </>
       }
     >
-      <p className="mb-4 text-xs text-ink-muted">
+      <p className="mb-4 text-body-3 text-ink-muted">
         Fields marked <span aria-hidden>*</span><span className="sr-only">with an asterisk</span> are required.
       </p>
       <form id={formId} onSubmit={submit} className="flex flex-col gap-4" noValidate>
@@ -269,7 +269,7 @@ function DeleteConfirmModal({
         <span className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-danger-bg text-danger-fg" aria-hidden>
           <Icon name="warning" size={20} />
         </span>
-        <div className="text-sm text-ink">
+        <div className="text-body-2 text-ink">
           <p>
             You are about to remove <span className="font-semibold">{volunteer?.name}</span> from the volunteer roster.
           </p>
@@ -363,12 +363,12 @@ export default function VolunteersPage() {
   if (!educator) {
     return (
       <div className="flex flex-col gap-4">
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-sm text-ink-muted">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1 text-label-1 text-ink-muted">
           <Link href="/portals/nmba/treatment-centre/dashboard" className="hover:text-navy transition-colors">Home</Link>
           <Icon name="keyboard_arrow_right" size={14} className="shrink-0" aria-hidden />
           <Link href="/portals/nmba/treatment-centre/cpli/peer-educators" className="hover:text-navy transition-colors">Peer Educators</Link>
         </nav>
-        <div className="rounded-lg border border-dashed border-line bg-surface-muted p-10 text-center text-sm text-ink-muted">
+        <div className="rounded-lg border border-dashed border-line bg-surface-muted p-10 text-center text-body-2 text-ink-muted">
           Peer educator not found.
         </div>
       </div>
@@ -380,7 +380,7 @@ export default function VolunteersPage() {
       <div className="flex flex-col gap-5">
 
         {/* ── Breadcrumb (Home > Peer Educators > Educator Name) ── */}
-        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-sm text-ink-muted">
+        <nav aria-label="Breadcrumb" className="flex items-center gap-1.5 text-label-1 text-ink-muted">
           <Link href="/portals/nmba/treatment-centre/dashboard" className="hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy rounded">
             Home
           </Link>
@@ -395,8 +395,8 @@ export default function VolunteersPage() {
         {/* ── Page header: title + count + CTA ── */}
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <h1 className="text-2xl font-bold tracking-tight text-ink">Peer Volunteers</h1>
-            <span className="rounded-full bg-surface-muted px-2.5 py-0.5 text-sm font-medium text-ink-muted">
+            <h1 className="text-headline-1 text-ink">Peer Volunteers</h1>
+            <span className="rounded-full bg-surface-muted px-2.5 py-0.5 text-label-1 text-ink-muted">
               {roster.length}
             </span>
           </div>

@@ -161,6 +161,8 @@
     .ds-input,
     .ds-textarea,
     .ds-select__el {
+      /* ds-exempt(layout-literal): iOS zooms the page into any input under 16px, and the
+         portal body-1 role clamps down to 14px at phone widths — so this stays a literal. */
       font-size: 16px;
     }
   }

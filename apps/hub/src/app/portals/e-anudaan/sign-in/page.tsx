@@ -116,10 +116,10 @@ export default function EAnudaanNgoSignInPage() {
       }}
     >
       <div className="mb-4">
-        <h2 className="text-xl font-bold text-ink">
+        <h1 className="text-headline-3 text-ink">
           {activeTab === "credentials" ? "Login with Credentials" : "Login with DARPAN ID"}
-        </h2>
-        <p className="mt-1 text-sm text-ink-muted">
+        </h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           {activeTab === "credentials"
             ? "Enter your issued username and password"
             : "Enter your NITI Aayog NGO DARPAN Portal ID"}
@@ -158,7 +158,7 @@ export default function EAnudaanNgoSignInPage() {
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-3">
                     <div
-                      className="flex h-10 w-full select-none items-center justify-center rounded border border-border bg-surface-muted px-3 font-mono text-xl font-bold italic tracking-widest text-ink shadow-inner"
+                      className="flex h-10 w-full select-none items-center justify-center rounded border border-border bg-surface-muted px-3 font-mono text-title-1 font-bold italic text-ink shadow-inner font-mono tracking-digits"
                       style={{
                         backgroundImage: "radial-gradient(var(--sa-border-neutral-subtle) 1px, transparent 1px)",
                         backgroundSize: "6px 6px",
@@ -213,14 +213,14 @@ export default function EAnudaanNgoSignInPage() {
               e.preventDefault();
               toast("Please contact your district nodal officer to reset credentials.", "info");
             }}
-            className="text-xs font-semibold text-primary hover:underline"
+            className="text-label-2 font-semibold text-primary hover:underline"
           >
             Forgot Password?
           </a>
         </div>
       </form>
 
-      <p className="mt-6 text-xs text-ink-muted">
+      <p className="mt-6 text-body-3 text-ink-muted">
         Demonstration portal on mock data. Open the demo console (bottom-left) for quick sign-in.
       </p>
     </PortalLoginShell>

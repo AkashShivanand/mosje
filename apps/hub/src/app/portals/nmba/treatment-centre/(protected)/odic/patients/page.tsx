@@ -82,7 +82,7 @@ export default function OdicPatientsPage() {
         <button
           type="button"
           onClick={() => setViewing(r)}
-          className="inline-flex items-center gap-1 rounded bg-navy/10 px-2 py-1 text-xs font-semibold text-navy hover:bg-navy/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy"
+          className="inline-flex items-center gap-1 rounded bg-navy/10 px-2 py-1 text-label-2 font-semibold text-navy hover:bg-navy/20 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy"
         >
           View Details
         </button>
@@ -99,7 +99,7 @@ export default function OdicPatientsPage() {
         searchKeys={["registrationNumber", "name", "gender", "occupation", "education", "state"]}
         fileName="odic-beneficiaries"
         action={
-          <Link href="/portals/nmba/treatment-centre/odic/register" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-sm font-semibold text-navy hover:bg-white/90">
+          <Link href="/portals/nmba/treatment-centre/odic/register" className="inline-flex items-center gap-1.5 rounded-lg bg-white px-3 py-1.5 text-label-1 font-semibold text-navy hover:bg-white/90">
             <Icon name="add" size={16} /> New Registration
           </Link>
         }

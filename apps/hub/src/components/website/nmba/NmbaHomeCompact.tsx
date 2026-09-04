@@ -43,10 +43,10 @@ export function NmbaHomeCompact() {
       <div className="sa-container py-12 md:py-16">
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h2 id="nmba-compact-heading" className="text-[28px] sm:text-[32px] font-semibold leading-tight text-primary-dark">
+            <h2 id="nmba-compact-heading" className="text-headline-2 text-primary-dark">
               Nasha Mukt Bharat Abhiyaan
             </h2>
-            <p className="mt-2 text-[15px] sm:text-[16px] text-ink-muted">
+            <p className="mt-2 text-body-1 text-ink-muted">
               Join the movement for a drug-free India — take the pledge or volunteer as a Nasha Mukti Mitr.
             </p>
           </div>
@@ -65,12 +65,12 @@ export function NmbaHomeCompact() {
           {/* Take the pledge */}
           <div className="flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm md:col-span-8">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-              <h3 className="text-[20px] font-semibold text-ink">Take the pledge</h3>
+              <h3 className="text-title-1 text-ink">Take the pledge</h3>
               {/* The running total the design puts here. It was an "All Pledges"
                   link, so the page never showed how many had pledged
                   [WEB-M-03]. Summed from the rows rather than written out, so
                   the headline cannot drift from the two figures under it. */}
-              <p className="text-[13px] text-ink-muted">
+              <p className="text-body-2 text-ink-muted">
                 <span className="font-bold text-primary-dark">
                   {formatIndian(
                     PLEDGE_CHANNELS.reduce((total, c) => total + c.count, 0),
@@ -90,26 +90,26 @@ export function NmbaHomeCompact() {
                   className="flex flex-col gap-3 py-4 sm:flex-row sm:items-center sm:gap-6"
                 >
                   <div className="sm:w-[38%] sm:shrink-0">
-                    <span className="block text-[26px] font-bold leading-none text-primary-dark sm:text-[30px]">
+                    <span className="block text-headline-3 tabular-nums text-primary-dark">
                       {formatIndian(channel.count)}
                     </span>
-                    <span className="mt-1 block text-[11px] font-medium uppercase tracking-wide text-ink-muted">
+                    <span className="mt-1 block text-label-3 uppercase text-ink-muted">
                       Pledges
                     </span>
                   </div>
 
                   <div className="min-w-0 flex-1">
-                    <h4 className="text-[15px] font-semibold text-ink">
+                    <h4 className="text-title-2 text-ink">
                       {channel.title}
                     </h4>
-                    <p className="mt-0.5 text-[13px] leading-snug text-ink-muted">
+                    <p className="mt-0.5 text-body-2 text-ink-muted">
                       {channel.blurb}
                     </p>
                   </div>
 
                   <a
                     href={channel.href}
-                    className="flex shrink-0 items-center gap-1 self-start text-[13px] font-semibold text-primary-dark hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:self-center"
+                    className="flex shrink-0 items-center gap-1 self-start text-label-1 text-primary-dark hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary sm:self-center"
                   >
                     Pledge <Icon name="arrow_forward" size={16} aria-hidden />
                   </a>
@@ -121,11 +121,11 @@ export function NmbaHomeCompact() {
           {/* Become a Mitr */}
           <div className="flex flex-col justify-between rounded-xl bg-gradient-to-br from-primary-dark to-primary p-6 text-white shadow-sm md:col-span-4">
             <div>
-              <span className="inline-block rounded bg-white/20 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-white">
+              <span className="inline-block rounded bg-white/20 px-3 py-1 text-label-3 uppercase text-white">
                 Nasha Mukti Mitr
               </span>
-              <h3 className="mt-4 text-[22px] font-bold text-white">Become a Nasha Mukti Mitr</h3>
-              <p className="mt-3 text-[15px] leading-relaxed text-white/90">
+              <h3 className="mt-4 text-title-1 text-white">Become a Nasha Mukti Mitr</h3>
+              <p className="mt-3 text-body-1 text-white/90">
                 Volunteer to spread awareness and support drug-demand reduction in your community — no prior experience needed. Join thousands of dedicated volunteers across the country.
               </p>
             </div>
@@ -133,7 +133,7 @@ export function NmbaHomeCompact() {
             <div className="mt-8">
               <a
                 href="/portals/nmba/register-mitr"
-                className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-[14px] font-semibold text-primary transition-colors hover:bg-white/90 shadow-xs"
+                className="inline-flex items-center gap-2 rounded-lg bg-white px-5 py-2.5 text-label-1 text-primary transition-colors hover:bg-white/90 shadow-xs"
               >
                 Register as a volunteer <Icon name="arrow_forward" size={16} />
               </a>
@@ -141,7 +141,7 @@ export function NmbaHomeCompact() {
           </div>
         </div>
 
-        <p className="mt-6 text-center text-[14px] text-ink-muted">
+        <p className="mt-6 text-center text-body-2 text-ink-muted">
           <Icon name="call" size={16} className="mr-1.5 inline align-[-3px] text-primary" aria-hidden />
           24×7 Drug De-addiction Helpline ·{" "}
           <a href={`tel:${HELPLINE}`} className="font-bold text-primary-dark hover:underline">

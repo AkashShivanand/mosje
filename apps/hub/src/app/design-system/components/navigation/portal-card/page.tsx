@@ -34,8 +34,8 @@ const h2Style: React.CSSProperties = {
 const proseStyle: React.CSSProperties = {
   color: "var(--sa-text-neutral-subtle)",
   fontSize: "var(--sa-type-body-1-size)",
-  lineHeight: 1.7,
-  maxWidth: "68ch",
+  lineHeight: "var(--sa-type-body-1-lh)",
+  maxWidth: "var(--sa-container-measure)",
 };
 
 
@@ -44,7 +44,7 @@ export default function PortalCardPage() {
     <article className="docs-article">
       <header>
         <div style={{ display: "flex", alignItems: "center", gap: "var(--sa-stack-12)", flexWrap: "wrap" }}>
-          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", fontWeight: 800, color: "var(--sa-text-neutral-base)", margin: 0 }}>
+          <h1 style={{ fontSize: "var(--sa-type-display-1-size)", lineHeight: "var(--sa-type-display-1-lh)", fontWeight: 500, color: "var(--sa-text-neutral-base)", margin: 0 }}>
             Portal Card
           </h1>
           <StatusBadge status="New" />

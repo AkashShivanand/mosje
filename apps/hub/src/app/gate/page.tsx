@@ -118,9 +118,9 @@ export default async function GatePage({
               height={45}
               className="h-11 w-auto"
             />
-            <span className="flex flex-col border-l border-white/25 pl-4 leading-none">
-              <span className="text-[15px] font-bold tracking-tight">MoSJE</span>
-              <span className="mt-1.5 text-[10.5px] font-semibold uppercase tracking-[0.16em] text-white/70">
+            <span className="flex flex-col border-l border-white/25 pl-4">
+              <span className="text-title-2">MoSJE</span>
+              <span className="mt-1.5 text-label-3 uppercase text-white/70">
                 Digital Estate
               </span>
             </span>
@@ -133,7 +133,7 @@ export default async function GatePage({
             {/* self-start is load-bearing: inside a flex column, `inline-flex`
                 blockifies and would stretch the pill to the full column. */}
             <p
-              className="gate-reveal inline-flex w-fit self-start items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-white/85 backdrop-blur"
+              className="gate-reveal inline-flex w-fit self-start items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-label-3 uppercase text-white/85 backdrop-blur"
               style={after(DELAY.pill)}
             >
               <span className="inline-block h-1.5 w-1.5 rounded-full bg-white/80" />
@@ -143,15 +143,14 @@ export default async function GatePage({
             {/* Fluid down to the smallest phone and up to a wide panel, so the
                 headline never needs a breakpoint to stay on three lines. */}
             <h1
-              className="gate-reveal mt-6 text-balance font-bold leading-[1.08] tracking-tight
-                         text-[clamp(1.75rem,1.15rem+2.4vw,2.75rem)]"
+              className="gate-reveal mt-6 text-balance text-headline-1"
               style={after(DELAY.heading)}
             >
               Ministry of Social Justice &amp; Empowerment
             </h1>
 
             <p
-              className="gate-reveal mt-4 max-w-md text-[15px] leading-relaxed text-white/75"
+              className="gate-reveal mt-4 max-w-md text-body-1 text-white/75"
               style={after(DELAY.blurb)}
             >
               A prototype of the unified digital estate, shared for review.
@@ -168,11 +167,11 @@ export default async function GatePage({
             >
               {stats.map(({ value, label, sub }) => (
                 <div key={label}>
-                  <dd className="text-3xl font-bold tracking-tight">{value}</dd>
-                  <dt className="mt-1.5 text-[13px] font-semibold text-white/90">{label}</dt>
+                  <dd className="text-headline-3 font-bold tabular-nums">{value}</dd>
+                  <dt className="mt-1.5 text-label-1 font-semibold text-white/90">{label}</dt>
                   {/* 12px at 70% keeps this above 4.5:1 on navy; 11px at
                       55% measured marginal, and this is a government page. */}
-                  <p className="mt-1 text-xs leading-snug text-white/70">{sub}</p>
+                  <p className="mt-1 text-body-3 text-white/70">{sub}</p>
                 </div>
               ))}
             </dl>
@@ -184,13 +183,13 @@ export default async function GatePage({
       <section className="flex items-center justify-center bg-surface px-6 py-14 sm:px-10 lg:px-14">
         <div className="w-full max-w-sm">
           <h2
-            className="gate-reveal text-2xl font-bold tracking-tight text-ink"
+            className="gate-reveal text-headline-4 text-ink"
             style={after(DELAY.formHeading)}
           >
             Enter the access password
           </h2>
           <p
-            className="gate-reveal mt-2 text-sm leading-relaxed text-ink-muted"
+            className="gate-reveal mt-2 text-body-2 text-ink-muted"
             style={after(DELAY.formHeading)}
           >
             Reviewers were sent this with the link. It is not a portal login —
@@ -205,7 +204,7 @@ export default async function GatePage({
           </div>
 
           <p
-            className="gate-reveal mt-10 border-t border-border pt-6 text-xs leading-relaxed text-ink-hint"
+            className="gate-reveal mt-10 border-t border-border pt-6 text-body-3 text-ink-hint"
             style={after(DELAY.footnote)}
           >
             Not for public distribution. If you need access, ask the person who

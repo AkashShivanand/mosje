@@ -79,9 +79,9 @@
   }
 
   .sa-profile-card__tag-text {
-    font-size: var(--sa-type-body-3-size);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     font-weight: 600;
-    letter-spacing: 0.05em;
     white-space: nowrap;
   }
 
@@ -100,8 +100,9 @@
   }
 
   .sa-profile-card__title {
-    font-size: var(--sa-type-body-1-size);
-    font-weight: 700;
+    font-size: var(--sa-type-title-2-size);
+    line-height: var(--sa-type-title-2-lh);
+    font-weight: 600;
     color: var(--sa-text-neutral-bolder);
   }
 

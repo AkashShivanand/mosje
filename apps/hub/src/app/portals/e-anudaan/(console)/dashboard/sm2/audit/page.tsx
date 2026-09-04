@@ -45,7 +45,7 @@ export default function AuditTrailPage() {
 
   return (
     <div className="space-y-5">
-      <h1 className="text-2xl font-bold text-ink">Audit Trail</h1>
+      <h1 className="text-headline-1 text-ink">Audit Trail</h1>
       <section className="rounded-xl border border-line bg-surface p-4 lg:p-5">
         <DataTable columns={COLUMNS as unknown as DataTableColumn<Record<string, unknown>>[]} data={rows as unknown as Record<string, unknown>[]} total={rows.length} caption="Audit trail" />
       </section>

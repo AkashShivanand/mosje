@@ -101,7 +101,7 @@ export function TCListPage<T extends Record<string, unknown>>({
 
       {/* Navy title bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-navy px-5 py-3.5 text-white">
-        <h1 className="text-lg font-bold">{title}</h1>
+        <h1 className="text-headline-1">{title}</h1>
         {action}
       </div>
 
@@ -123,7 +123,7 @@ export function TCListPage<T extends Record<string, unknown>>({
               type="button"
               onClick={handleCopy}
               aria-label={`Copy ${title} table to clipboard`}
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-label-2 font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
             >
               <Icon name="content_copy" size={14} aria-hidden /> Copy
             </button>
@@ -131,7 +131,7 @@ export function TCListPage<T extends Record<string, unknown>>({
               type="button"
               onClick={() => handleDownload("xls")}
               aria-label={`Export ${title} as an Excel spreadsheet`}
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-label-2 font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
             >
               <Icon name="table_chart" size={14} aria-hidden /> Excel
             </button>
@@ -139,7 +139,7 @@ export function TCListPage<T extends Record<string, unknown>>({
               type="button"
               onClick={() => handleDownload("csv")}
               aria-label={`Export ${title} as CSV`}
-              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
+              className="inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-label-2 font-semibold text-ink-muted transition-colors hover:bg-surface-muted"
             >
               <Icon name="description" size={14} aria-hidden /> CSV
             </button>

@@ -24,7 +24,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-navy/40 disabled:opacity-60",
+        "inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-label-1 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-navy/40 disabled:opacity-60",
         variants[variant],
         className
       )}
@@ -43,7 +43,7 @@ export function StatusPill({ status }: { status: AppStatus | string }) {
   return (
     <span
       className={cn(
-        "inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold",
+        "inline-flex items-center rounded-full px-3 py-1 text-label-2",
         map[status] ?? "bg-slate-100 text-slate-600"
       )}
     >
@@ -65,7 +65,7 @@ export function PageHeader({
 }) {
   return (
     <div className={cn("mb-6 flex items-center justify-between gap-4", className)}>
-      <h1 className="text-2xl font-bold text-ink">{title}</h1>
+      <h1 className="text-headline-1 text-ink">{title}</h1>
       {action}
     </div>
   );
@@ -100,7 +100,7 @@ export function SearchInput({
       <input
         type="text"
         placeholder={placeholder}
-        className="w-full rounded-lg border border-line bg-white py-2.5 pl-10 pr-3 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
+        className="w-full rounded-lg border border-line bg-white py-2.5 pl-10 pr-3 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
       />
     </div>
   );
@@ -126,7 +126,7 @@ export function PeriodFilter({
     <div className={cn("relative", className)}>
       <select
         defaultValue=""
-        className="w-full appearance-none rounded-lg border border-line bg-white py-2.5 pl-4 pr-9 text-sm text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
+        className="w-full appearance-none rounded-lg border border-line bg-white py-2.5 pl-4 pr-9 text-body-2 text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
       >
         <option value="">{defaultLabel}</option>
         {options.map((o) => (
@@ -153,7 +153,7 @@ export function Pagination({
   const pages = totalPages <= 6 ? Array.from({ length: totalPages }, (_, i) => i + 1) : [1, 2, 3, 4, 5];
   return (
     <div className="mt-4 flex flex-wrap items-center justify-between gap-3 px-1">
-      <nav className="flex items-center gap-1.5 text-sm">
+      <nav className="flex items-center gap-1.5 text-label-1">
         <PageBtn disabled>‹</PageBtn>
         {pages.map((p) => (
           <PageBtn key={p} active={p === 1}>
@@ -168,10 +168,10 @@ export function Pagination({
         )}
         <PageBtn>›</PageBtn>
       </nav>
-      <div className="flex items-center gap-2 text-sm text-ink-muted">
+      <div className="flex items-center gap-2 text-body-2 text-ink-muted">
         <span>Showing</span>
         <span className="relative">
-          <select className="appearance-none rounded-md border border-line bg-white py-1 pl-2.5 pr-7 text-sm">
+          <select className="appearance-none rounded-md border border-line bg-white py-1 pl-2.5 pr-7 text-body-2">
             <option>{pageSize}</option>
             <option>50</option>
             <option>100</option>
@@ -199,7 +199,7 @@ function PageBtn({
     <button
       disabled={disabled}
       className={cn(
-        "flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-sm transition-colors",
+        "flex h-8 min-w-8 items-center justify-center rounded-md border px-2 text-label-1 transition-colors",
         active
           ? "border-navy bg-navy/5 font-semibold text-navy"
           : "border-line text-ink-muted hover:bg-black/5",
@@ -223,7 +223,7 @@ export function DataTable({
 }) {
   return (
     <div className={cn("overflow-x-auto rounded-2xl border border-line bg-white shadow-card", className)}>
-      <table className="w-full min-w-[640px] text-left text-sm">
+      <table className="w-full min-w-[640px] text-left text-body-2">
         <thead>
           <tr className="border-b border-line text-ink-muted">
             {columns.map((c) => (
@@ -246,8 +246,8 @@ export function FieldGrid({ items }: { items: [string, string][] }) {
     <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2 lg:grid-cols-3">
       {items.map(([label, value], i) => (
         <div key={`${label}-${i}`}>
-          <div className="text-xs text-ink-hint">{label}</div>
-          <div className="mt-1 text-sm text-ink">{value || "-"}</div>
+          <div className="text-label-2 text-ink-hint">{label}</div>
+          <div className="mt-1 text-body-2 text-ink">{value || "-"}</div>
         </div>
       ))}
     </div>
@@ -256,7 +256,7 @@ export function FieldGrid({ items }: { items: [string, string][] }) {
 
 export function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="mb-5 text-xs font-bold uppercase tracking-wide text-ink-hint">{children}</h2>
+    <h2 className="mb-5 text-label-3 uppercase text-ink-hint">{children}</h2>
   );
 }
 
@@ -280,7 +280,7 @@ export function Stepper({
             <div className="flex w-full flex-col items-center text-center">
               <div
                 className={cn(
-                  "flex h-8 w-8 items-center justify-center rounded-full text-xs font-semibold",
+                  "flex h-8 w-8 items-center justify-center rounded-full text-label-2",
                   isDone
                     ? "bg-approve text-white"
                     : isActive
@@ -292,7 +292,7 @@ export function Stepper({
               </div>
               <span
                 className={cn(
-                  "mt-2 max-w-[7rem] text-xs leading-tight",
+                  "mt-2 max-w-[7rem] text-body-3",
                   isActive ? "font-semibold text-ink" : "text-ink-hint"
                 )}
               >
@@ -328,7 +328,7 @@ export function Field({
 }) {
   return (
     <label className={cn("block", className)}>
-      <span className="mb-1.5 block text-sm font-medium text-ink">
+      <span className="mb-1.5 block text-label-1 text-ink">
         {label}
         {required && <span className="ml-0.5 text-red-500">*</span>}
       </span>
@@ -342,7 +342,7 @@ export function TextInput(props: React.InputHTMLAttributes<HTMLInputElement>) {
     <input
       {...props}
       className={cn(
-        "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15",
+        "w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15",
         props.className
       )}
     />
@@ -362,7 +362,7 @@ export function Select({
     <div className={cn("relative", className)}>
       <select
         defaultValue=""
-        className="w-full appearance-none rounded-lg border border-line bg-white px-3.5 py-2.5 pr-9 text-sm text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
+        className="w-full appearance-none rounded-lg border border-line bg-white px-3.5 py-2.5 pr-9 text-body-2 text-ink focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
       >
         <option value="" disabled>
           {placeholder}

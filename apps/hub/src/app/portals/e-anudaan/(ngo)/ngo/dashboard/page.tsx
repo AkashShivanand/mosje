@@ -122,12 +122,12 @@ export default function NgoDashboardPage() {
       <header className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-line bg-surface p-6 shadow-xs">
         <div className="space-y-1.5">
           <div className="flex flex-wrap items-center gap-2.5">
-            <h1 className="text-2xl font-bold text-ink tracking-tight">
+            <h1 className="text-headline-1 text-ink">
               {getTimeGreeting()}, {ngoFirstName}
             </h1>
             <Badge status="success">DARPAN Verified</Badge>
           </div>
-          <p className="flex flex-wrap items-center gap-3 text-xs text-ink-muted">
+          <p className="flex flex-wrap items-center gap-3 text-body-3 text-ink-muted">
             <span className="flex items-center gap-1 font-mono font-semibold text-ink">
               <Icon name="verified_user" size={16} className="text-primary shrink-0" aria-hidden />
               DARPAN ID: {ngo?.darpanId ?? "MH/2016/100000"}
@@ -165,7 +165,7 @@ export default function NgoDashboardPage() {
           title={`${needsActionCount} Action Item${needsActionCount === 1 ? "" : "s"} Pending Review`}
         >
           <div className="flex flex-wrap items-center justify-between gap-3 pt-0.5">
-            <p className="text-xs leading-relaxed text-ink">
+            <p className="text-body-2 text-ink">
               Deficiency response requested for application{" "}
               <strong className="font-mono text-ink">{openDeficiency.id}</strong>.{" "}
               {openDeficiency.deficiencies[0]?.detail ??
@@ -224,7 +224,7 @@ export default function NgoDashboardPage() {
           className="rounded-xl border border-line bg-surface p-6 shadow-xs flex flex-col justify-between space-y-4"
         >
           <div className="flex items-center justify-between border-b border-line pb-3">
-            <h2 id="app-status-title" className="text-base font-bold text-ink">
+            <h2 id="app-status-title" className="text-title-2 text-ink">
               Application Status Breakdown
             </h2>
             <Badge status="info">Interactive Analytics</Badge>
@@ -244,8 +244,8 @@ export default function NgoDashboardPage() {
             </div>
 
             {/* Detailed Status Breakdown Matrix */}
-            <div className="sm:col-span-6 space-y-2 text-xs border-l border-line/60 pl-0 sm:pl-4">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted block pb-1 border-b border-line/40">
+            <div className="sm:col-span-6 space-y-2 text-body-2 border-l border-line/60 pl-0 sm:pl-4">
+              <span className="text-label-3 uppercase text-ink-muted block pb-1 border-b border-line/40">
                 Status Breakdown
               </span>
               {donutChartData.sort((a, b) => b.value - a.value).map((item) => {
@@ -272,7 +272,7 @@ export default function NgoDashboardPage() {
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-xs border-t border-line/60">
+          <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-body-2 border-t border-line/60">
             <span className="text-ink-muted">
               Highest Allocation:{" "}
               <strong className="text-ink">
@@ -291,7 +291,7 @@ export default function NgoDashboardPage() {
           className="rounded-xl border border-line bg-surface p-6 shadow-xs flex flex-col justify-between space-y-4"
         >
           <div className="flex items-center justify-between border-b border-line pb-3">
-            <h2 id="financial-summary-title" className="text-base font-bold text-ink">
+            <h2 id="financial-summary-title" className="text-title-2 text-ink">
               Financial Summary
             </h2>
             <Badge status="info">FY 2026-27</Badge>
@@ -300,36 +300,36 @@ export default function NgoDashboardPage() {
           <div className="grid gap-3 sm:grid-cols-2">
             {/* Total Requested */}
             <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-xs font-semibold text-ink-muted">Total Requested</span>
-              <span className="mt-1 block text-xl font-bold text-ink tracking-tight">₹{totalRequestedCr} Cr</span>
-              <span className="mt-0.5 block text-[11px] text-ink-muted">{totalAppsCount} applications total</span>
+              <span className="block text-label-3 uppercase text-ink-muted">Total Requested</span>
+              <span className="mt-1 block text-headline-2 tabular-nums text-ink">₹{totalRequestedCr} Cr</span>
+              <span className="mt-0.5 block text-body-3 text-ink-muted">{totalAppsCount} applications total</span>
             </div>
 
             {/* Total Sanctioned */}
             <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-xs font-semibold text-ink-muted">Total Sanctioned</span>
-              <span className="mt-1 block text-xl font-bold text-status-success tracking-tight">₹{totalSanctionedCr} Cr</span>
-              <span className="mt-0.5 block text-[11px] text-status-success-strong">{sanctionedCount} approved grants</span>
+              <span className="block text-label-3 uppercase text-ink-muted">Total Sanctioned</span>
+              <span className="mt-1 block text-headline-2 tabular-nums text-status-success">₹{totalSanctionedCr} Cr</span>
+              <span className="mt-0.5 block text-body-3 text-status-success-strong">{sanctionedCount} approved grants</span>
             </div>
 
             {/* In Review Amount */}
             <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-xs font-semibold text-ink-muted">Pending Review</span>
-              <span className="mt-1 block text-xl font-bold text-status-info tracking-tight">₹{inReviewAmountCr} Cr</span>
-              <span className="mt-0.5 block text-[11px] text-status-info-strong">{inReviewCount} active files in chain</span>
+              <span className="block text-label-3 uppercase text-ink-muted">Pending Review</span>
+              <span className="mt-1 block text-headline-2 tabular-nums text-status-info">₹{inReviewAmountCr} Cr</span>
+              <span className="mt-0.5 block text-body-3 text-status-info-strong">{inReviewCount} active files in chain</span>
             </div>
 
             {/* Avg Sanction */}
             <div className="rounded-lg bg-surface-muted/60 p-4 border border-line">
-              <span className="block text-xs font-semibold text-ink-muted">Avg. Grant Size</span>
-              <span className="mt-1 block text-xl font-bold text-ink tracking-tight">₹{avgSanctionLakhs} L</span>
-              <span className="mt-0.5 block text-[11px] text-ink-muted">per approved project</span>
+              <span className="block text-label-3 uppercase text-ink-muted">Avg. Grant Size</span>
+              <span className="mt-1 block text-headline-2 tabular-nums text-ink">₹{avgSanctionLakhs} L</span>
+              <span className="mt-0.5 block text-body-3 text-ink-muted">per approved project</span>
             </div>
           </div>
 
           {/* Progress Bar: Sanctioned vs Requested */}
           <div className="space-y-2 pt-2 border-t border-line">
-            <div className="flex items-center justify-between text-xs">
+            <div className="flex items-center justify-between text-body-2">
               <span className="font-semibold text-ink-muted">Sanctioned vs Requested Budget</span>
               <span className="font-bold text-status-success">{sanctionedPercent}% Sanction Ratio</span>
             </div>
@@ -338,7 +338,7 @@ export default function NgoDashboardPage() {
             </div>
           </div>
 
-          <p className="text-[11px] text-ink-muted leading-relaxed">
+          <p className="text-body-3 text-ink-muted">
             Sanctioned amount reflects approved grants across all active applications under Ministry of Social Justice &amp; Empowerment schemes.
           </p>
         </section>
@@ -354,7 +354,7 @@ export default function NgoDashboardPage() {
           <div className="flex items-center justify-between border-b border-line pb-3">
             <div className="flex items-center gap-2">
               <Icon name="domain" size={20} className="text-primary shrink-0" aria-hidden />
-              <h2 id="org-profile-title" className="text-base font-bold text-ink">
+              <h2 id="org-profile-title" className="text-title-2 text-ink">
                 Organisation Profile
               </h2>
             </div>
@@ -364,7 +364,7 @@ export default function NgoDashboardPage() {
           {/* Thirteen separate rows, exactly as the live DARPAN read-back lists them — State and
               District, Registration No. and Date, and Secretary and Treasurer are each their own
               row on the live portal rather than being paired up. */}
-          <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-xs sm:grid-cols-2">
+          <dl className="grid grid-cols-1 gap-x-6 gap-y-3 text-body-2 sm:grid-cols-2">
             {(
               [
                 ["Organisation", ngoName],
@@ -383,7 +383,7 @@ export default function NgoDashboardPage() {
               ] as const
             ).map(([label, value]) => (
               <div key={label} className="border-b border-line/40 pb-1.5">
-                <dt className="block text-[11px] text-ink-muted">{label}</dt>
+                <dt className="block text-body-3 text-ink-muted">{label}</dt>
                 <dd className="mt-0.5 block font-bold text-ink break-words">{value}</dd>
               </div>
             ))}
@@ -398,7 +398,7 @@ export default function NgoDashboardPage() {
           <div className="flex items-center justify-between border-b border-line pb-3">
             <div className="flex items-center gap-2">
               <Icon name="assignment" size={20} className="text-primary shrink-0" aria-hidden />
-              <h2 id="apps-by-scheme-title" className="text-base font-bold text-ink">
+              <h2 id="apps-by-scheme-title" className="text-title-2 text-ink">
                 Applications by Scheme
               </h2>
             </div>
@@ -406,22 +406,22 @@ export default function NgoDashboardPage() {
           </div>
 
           <div className="space-y-3">
-            <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted block">
+            <span className="text-label-3 uppercase text-ink-muted block">
               Active Grant Schemes
             </span>
             {activeSchemes.map((s) => (
               <div key={s.code} className="rounded-lg border border-line p-3 bg-surface-muted/40 space-y-2 transition hover:bg-surface-muted/70">
                 <div className="flex items-center justify-between gap-2">
                   <div>
-                    <span className="text-xs font-bold text-ink block">{s.title}</span>
-                    <span className="text-[11px] text-ink-muted block">{s.subtitle}</span>
+                    <span className="text-title-3 text-ink block">{s.title}</span>
+                    <span className="text-body-3 text-ink-muted block">{s.subtitle}</span>
                   </div>
-                  <span className="text-xs font-bold text-ink shrink-0 bg-surface px-2 py-1 rounded border border-line">
+                  <span className="text-label-2 font-bold text-ink shrink-0 bg-surface px-2 py-1 rounded border border-line">
                     {s.count} {s.count === 1 ? "app" : "apps"}
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between gap-2 pt-1 text-[11px]">
+                <div className="flex items-center justify-between gap-2 pt-1 text-body-3">
                   <Badge status="info">{s.code}</Badge>
                   <span className="text-ink-muted font-medium">
                     Requested: <strong className="text-ink">₹{s.requestedCr} Cr</strong> · Sanctioned: <strong className="text-status-success">₹{s.sanctionedCr} Cr</strong>
@@ -435,14 +435,14 @@ export default function NgoDashboardPage() {
             ))}
 
             <div className="pt-2 border-t border-line/60 space-y-2">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-ink-muted block">
+              <span className="text-label-3 uppercase text-ink-muted block">
                 Other Available Schemes (0 Applications)
               </span>
               <div className="grid grid-cols-2 gap-2">
                 {idleSchemes.map((s) => (
-                  <div key={s.code} className="rounded border border-line/60 bg-surface-muted/20 p-2 text-xs">
-                    <span className="font-bold text-ink block text-[11px]">{s.title}</span>
-                    <span className="text-[10px] text-ink-muted block truncate">{s.subtitle}</span>
+                  <div key={s.code} className="rounded border border-line/60 bg-surface-muted/20 p-2 text-body-3">
+                    <span className="text-title-3 text-ink block">{s.title}</span>
+                    <span className="text-body-3 text-ink-muted block truncate">{s.subtitle}</span>
                   </div>
                 ))}
               </div>
@@ -456,13 +456,13 @@ export default function NgoDashboardPage() {
         <div className="flex items-center justify-between border-b border-line pb-3">
           <div className="flex items-center gap-2">
             <Icon name="history" size={20} className="text-primary shrink-0" aria-hidden />
-            <h2 id="recent-apps-title" className="text-base font-bold text-ink">
+            <h2 id="recent-apps-title" className="text-title-2 text-ink">
               Recent Applications Ledger
             </h2>
           </div>
           <Link
             href="/portals/e-anudaan/ngo/my-applications"
-            className="text-xs font-bold text-primary hover:underline inline-flex items-center gap-1"
+            className="text-label-2 font-bold text-primary hover:underline inline-flex items-center gap-1"
           >
             View All Applications <Icon name="arrow_forward" size={16} aria-hidden />
           </Link>
@@ -484,25 +484,25 @@ export default function NgoDashboardPage() {
             >
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-bold text-ink">{title}</h3>
+                  <h3 className="text-title-3 text-ink">{title}</h3>
                 </div>
-                <span className="inline-block font-mono text-[11px] text-ink-muted bg-surface-muted px-2 py-0.5 rounded border border-line/60">
+                <span className="inline-block font-mono text-label-2 text-ink-muted bg-surface-muted px-2 py-0.5 rounded border border-line/60">
                   {ref}
                 </span>
               </div>
 
-              <div className="flex flex-wrap items-center gap-5 text-xs">
+              <div className="flex flex-wrap items-center gap-5 text-body-2">
                 <Badge status={statusTone(statusKey as AppStatus)}>
                   {statusLabel}
                 </Badge>
 
                 <div className="text-right">
-                  <span className="block text-[10px] text-ink-muted">Requested</span>
+                  <span className="block text-label-2 text-ink-muted">Requested</span>
                   <span className="font-bold text-ink">{requested}</span>
                 </div>
 
                 <div className="text-right">
-                  <span className="block text-[10px] text-ink-muted">Updated</span>
+                  <span className="block text-label-2 text-ink-muted">Updated</span>
                   <span className="font-medium text-ink-muted">{updated}</span>
                 </div>
 

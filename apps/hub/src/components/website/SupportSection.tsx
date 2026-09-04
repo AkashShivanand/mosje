@@ -8,11 +8,11 @@ export function SupportSection() {
         <div className="max-w-2xl">
           <h2
             id="support-heading"
-            className="text-2xl sm:text-3xl font-bold tracking-tight text-ink"
+            className="text-headline-2 text-ink"
           >
             Need Support?
           </h2>
-          <p className="mt-2 text-base text-ink-muted">
+          <p className="mt-2 text-body-1 text-ink-muted">
             Reach out to us and we will get back to you!
           </p>
         </div>
