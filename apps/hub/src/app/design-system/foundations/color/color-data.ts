@@ -10,7 +10,14 @@
 
    Regenerate: npm run build -w @mosje/tokens */
 
-export type RampStep = { step: number; token: string; blue: string; navy: string; onWhite: number | null; anchor: string | null };
+export type RampStep = { step: number; token: string; blue: string; navy: string; onWhite: number | null; onMuted: number | null; oklch: { L: number; C: number; H: number } | null; anchor: string | null };
+export type StatusPair = { label: string; use: string; fillToken: string; inkToken: string; fill: string; ink: string; ratio: number | null };
+export type StatusRow = { status: string; pairs: StatusPair[]; icon: { token: string; value: string; onWhite: number | null }; border: { token: string; value: string; onWhite: number | null; onMuted: number | null } };
+export type CvdEntry = { label: string; token: string; value: string; sim: Record<string, string> };
+export type CvdSet = { key: string; title: string; entries: CvdEntry[]; worst: Record<string, { d: number; a: string; b: string }> };
+export type ModeRole = { token: string; value: string | null; against: string; ratio: number | null; floor: number; pass: boolean | null };
+export type Mode = { id: string; kind: string; roles: ModeRole[] };
+export type RoleContrast = { token: string; role: string; value: string; onWhite: number | null; onMuted: number | null; floor: number; ground: string; aaa: boolean; pass: boolean };
 export type Ramp = { name: string; steps: RampStep[]; brandVaries: boolean };
 export type InkPair = { rung: string; bgToken: string; onToken: string; fill: string; ink: string; ratio: number | null };
 export type PairFamily = { family: string; label: string; rungs: InkPair[] };
@@ -30,6 +37,11 @@ export const META = {
     "neutralScale"
   ],
   "worstChartSeries": 4.58,
+  "modesMeasured": 10,
+  "cvdSafeSeries": 9,
+  "worstCvdSeriesPair": 8.2,
+  "rolesMeasured": 46,
+  "rolesBelowFloor": 0,
   "generatedFrom": "packages/tokens/dist/tokens.css"
 } as const;
 
@@ -107,6 +119,18 @@ export const SECTIONS: readonly Section[] = [
     "title": "What was retired, and what replaced it"
   },
   {
+    "id": "in-use",
+    "title": "Three contexts, one palette"
+  },
+  {
+    "id": "colour-vision",
+    "title": "What a colour-blind reader sees"
+  },
+  {
+    "id": "modes",
+    "title": "Ten modes, one set of measurements"
+  },
+  {
     "id": "provenance",
     "title": "Where these numbers come from"
   }
@@ -122,6 +146,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ecf4ff",
         "navy": "#f7faff",
         "onWhite": 1.11,
+        "onMuted": 1.03,
+        "oklch": {
+          "L": 96.4,
+          "C": 0.017,
+          "H": 256
+        },
         "anchor": null
       },
       {
@@ -130,6 +160,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#c0dbff",
         "navy": "#c1d7f2",
         "onWhite": 1.42,
+        "onMuted": 1.24,
+        "oklch": {
+          "L": 88.3,
+          "C": 0.058,
+          "H": 256
+        },
         "anchor": null
       },
       {
@@ -138,6 +174,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#92c2ff",
         "navy": "#93b1d6",
         "onWhite": 1.84,
+        "onMuted": 1.62,
+        "oklch": {
+          "L": 80.3,
+          "C": 0.101,
+          "H": 255
+        },
         "anchor": null
       },
       {
@@ -146,6 +188,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#62a7ff",
         "navy": "#6a8cb7",
         "onWhite": 2.47,
+        "onMuted": 2.17,
+        "oklch": {
+          "L": 72.2,
+          "C": 0.147,
+          "H": 255
+        },
         "anchor": null
       },
       {
@@ -154,6 +202,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#3b8df0",
         "navy": "#446a99",
         "onWhite": 3.36,
+        "onMuted": 2.94,
+        "oklch": {
+          "L": 64.3,
+          "C": 0.168,
+          "H": 255
+        },
         "anchor": null
       },
       {
@@ -162,6 +216,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#0373df",
         "navy": "#224c7d",
         "onWhite": 4.64,
+        "onMuted": 4.07,
+        "oklch": {
+          "L": 56.5,
+          "C": 0.186,
+          "H": 255
+        },
         "anchor": "anchor · blue"
       },
       {
@@ -170,6 +230,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#005eb9",
         "navy": "#003366",
         "onWhite": 6.36,
+        "onMuted": 5.57,
+        "oklch": {
+          "L": 49,
+          "C": 0.162,
+          "H": 255
+        },
         "anchor": "anchor · navy"
       },
       {
@@ -178,6 +244,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#004b96",
         "navy": "#002249",
         "onWhite": 8.58,
+        "onMuted": 7.52,
+        "oklch": {
+          "L": 42,
+          "C": 0.139,
+          "H": 255
+        },
         "anchor": null
       },
       {
@@ -186,6 +258,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#003975",
         "navy": "#001734",
         "onWhite": 11.4,
+        "onMuted": 9.99,
+        "oklch": {
+          "L": 35,
+          "C": 0.116,
+          "H": 255
+        },
         "anchor": null
       },
       {
@@ -194,6 +272,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#002855",
         "navy": "#000e24",
         "onWhite": 14.64,
+        "onMuted": 12.82,
+        "oklch": {
+          "L": 28.1,
+          "C": 0.092,
+          "H": 255
+        },
         "anchor": null
       },
       {
@@ -202,6 +286,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#001737",
         "navy": "#000614",
         "onWhite": 17.83,
+        "onMuted": 15.62,
+        "oklch": {
+          "L": 20.9,
+          "C": 0.07,
+          "H": 256
+        },
         "anchor": null
       }
     ],
@@ -216,6 +306,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#fff2ed",
         "navy": "#fff2ed",
         "onWhite": 1.1,
+        "onMuted": 1.04,
+        "oklch": {
+          "L": 97,
+          "C": 0.016,
+          "H": 42
+        },
         "anchor": null
       },
       {
@@ -224,6 +320,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ffd4c4",
         "navy": "#ffd4c4",
         "onWhite": 1.36,
+        "onMuted": 1.19,
+        "oklch": {
+          "L": 90.2,
+          "C": 0.053,
+          "H": 41
+        },
         "anchor": null
       },
       {
@@ -232,6 +334,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ffb498",
         "navy": "#ffb498",
         "onWhite": 1.72,
+        "onMuted": 1.5,
+        "oklch": {
+          "L": 83.4,
+          "C": 0.096,
+          "H": 41
+        },
         "anchor": null
       },
       {
@@ -240,6 +348,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ff9167",
         "navy": "#ff9167",
         "onWhite": 2.21,
+        "onMuted": 1.94,
+        "oklch": {
+          "L": 76.6,
+          "C": 0.145,
+          "H": 41
+        },
         "anchor": null
       },
       {
@@ -248,6 +362,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ff671f",
         "navy": "#ff671f",
         "onWhite": 2.91,
+        "onMuted": 2.55,
+        "oklch": {
+          "L": 69.8,
+          "C": 0.2,
+          "H": 41
+        },
         "anchor": "anchor"
       },
       {
@@ -256,6 +376,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#e1560f",
         "navy": "#e1560f",
         "onWhite": 3.79,
+        "onMuted": 3.32,
+        "oklch": {
+          "L": 62.9,
+          "C": 0.187,
+          "H": 41
+        },
         "anchor": null
       },
       {
@@ -264,6 +390,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#c34700",
         "navy": "#c34700",
         "onWhite": 4.97,
+        "onMuted": 4.36,
+        "oklch": {
+          "L": 56.2,
+          "C": 0.171,
+          "H": 42
+        },
         "anchor": null
       },
       {
@@ -272,6 +404,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#a43a00",
         "navy": "#a43a00",
         "onWhite": 6.6,
+        "onMuted": 5.78,
+        "oklch": {
+          "L": 49.4,
+          "C": 0.151,
+          "H": 41
+        },
         "anchor": null
       },
       {
@@ -280,6 +418,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#862e00",
         "navy": "#862e00",
         "onWhite": 8.73,
+        "onMuted": 7.65,
+        "oklch": {
+          "L": 42.6,
+          "C": 0.13,
+          "H": 41
+        },
         "anchor": null
       },
       {
@@ -288,6 +432,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#692200",
         "navy": "#692200",
         "onWhite": 11.48,
+        "onMuted": 10.05,
+        "oklch": {
+          "L": 35.8,
+          "C": 0.109,
+          "H": 41
+        },
         "anchor": null
       },
       {
@@ -296,6 +446,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#4d1700",
         "navy": "#4d1700",
         "onWhite": 14.6,
+        "onMuted": 12.79,
+        "oklch": {
+          "L": 28.9,
+          "C": 0.088,
+          "H": 42
+        },
         "anchor": null
       }
     ],
@@ -310,6 +466,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#e5faea",
         "navy": "#e5faea",
         "onWhite": 1.09,
+        "onMuted": 1.04,
+        "oklch": {
+          "L": 96.5,
+          "C": 0.031,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -318,6 +480,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#bde3c7",
         "navy": "#bde3c7",
         "onWhite": 1.4,
+        "onMuted": 1.23,
+        "oklch": {
+          "L": 88.1,
+          "C": 0.055,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -326,6 +494,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#99caa7",
         "navy": "#99caa7",
         "onWhite": 1.85,
+        "onMuted": 1.62,
+        "oklch": {
+          "L": 79.5,
+          "C": 0.071,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -334,6 +508,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#76b188",
         "navy": "#76b188",
         "onWhite": 2.5,
+        "onMuted": 2.19,
+        "oklch": {
+          "L": 70.8,
+          "C": 0.086,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -342,6 +522,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#55986b",
         "navy": "#55986b",
         "onWhite": 3.45,
+        "onMuted": 3.02,
+        "oklch": {
+          "L": 62.3,
+          "C": 0.097,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -350,7 +536,13 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#338051",
         "navy": "#338051",
         "onWhite": 4.83,
-        "anchor": "anchor"
+        "onMuted": 4.23,
+        "oklch": {
+          "L": 53.9,
+          "C": 0.106,
+          "H": 154
+        },
+        "anchor": null
       },
       {
         "step": 600,
@@ -358,7 +550,13 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#046a38",
         "navy": "#046a38",
         "onWhite": 6.72,
-        "anchor": null
+        "onMuted": 5.89,
+        "oklch": {
+          "L": 46.1,
+          "C": 0.116,
+          "H": 154
+        },
+        "anchor": "anchor"
       },
       {
         "step": 700,
@@ -366,6 +564,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#00532a",
         "navy": "#00532a",
         "onWhite": 9.25,
+        "onMuted": 8.1,
+        "oklch": {
+          "L": 38.8,
+          "C": 0.099,
+          "H": 154
+        },
         "anchor": null
       },
       {
@@ -374,6 +578,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#003d1e",
         "navy": "#003d1e",
         "onWhite": 12.45,
+        "onMuted": 10.91,
+        "oklch": {
+          "L": 31.6,
+          "C": 0.08,
+          "H": 154
+        },
         "anchor": null
       },
       {
@@ -382,6 +592,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#002a12",
         "navy": "#002a12",
         "onWhite": 15.67,
+        "onMuted": 13.73,
+        "oklch": {
+          "L": 25,
+          "C": 0.064,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -390,6 +606,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#001708",
         "navy": "#001708",
         "onWhite": 18.65,
+        "onMuted": 16.33,
+        "oklch": {
+          "L": 18,
+          "C": 0.045,
+          "H": 154
+        },
         "anchor": null
       }
     ],
@@ -404,6 +626,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ffffff",
         "navy": "#ffffff",
         "onWhite": 1,
+        "onMuted": 1.14,
+        "oklch": {
+          "L": 100,
+          "C": 0,
+          "H": 90
+        },
         "anchor": null
       },
       {
@@ -412,6 +640,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#eef0f3",
         "navy": "#eff0f2",
         "onWhite": 1.14,
+        "onMuted": 1,
+        "oklch": {
+          "L": 95.4,
+          "C": 0.005,
+          "H": 258
+        },
         "anchor": null
       },
       {
@@ -420,6 +654,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#dcdee1",
         "navy": "#dcdee2",
         "onWhite": 1.35,
+        "onMuted": 1.18,
+        "oklch": {
+          "L": 90,
+          "C": 0.005,
+          "H": 258
+        },
         "anchor": null
       },
       {
@@ -428,6 +668,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#c6c9cd",
         "navy": "#c6c9ce",
         "onWhite": 1.66,
+        "onMuted": 1.46,
+        "oklch": {
+          "L": 83.5,
+          "C": 0.006,
+          "H": 255
+        },
         "anchor": null
       },
       {
@@ -436,6 +682,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#adb1b7",
         "navy": "#aeb1b7",
         "onWhite": 2.15,
+        "onMuted": 1.89,
+        "oklch": {
+          "L": 75.9,
+          "C": 0.01,
+          "H": 258
+        },
         "anchor": null
       },
       {
@@ -444,6 +696,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#8e949c",
         "navy": "#8f949d",
         "onWhite": 3.06,
+        "onMuted": 2.68,
+        "oklch": {
+          "L": 66.4,
+          "C": 0.014,
+          "H": 256
+        },
         "anchor": null
       },
       {
@@ -452,6 +710,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#6f757d",
         "navy": "#70757d",
         "onWhite": 4.65,
+        "onMuted": 4.07,
+        "oklch": {
+          "L": 56,
+          "C": 0.014,
+          "H": 256
+        },
         "anchor": null
       },
       {
@@ -460,6 +724,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#54585e",
         "navy": "#55585e",
         "onWhite": 7.16,
+        "onMuted": 6.27,
+        "oklch": {
+          "L": 45.9,
+          "C": 0.011,
+          "H": 258
+        },
         "anchor": null
       },
       {
@@ -468,6 +738,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#3a3d41",
         "navy": "#3b3d41",
         "onWhite": 10.92,
+        "onMuted": 9.56,
+        "oklch": {
+          "L": 35.9,
+          "C": 0.008,
+          "H": 256
+        },
         "anchor": null
       },
       {
@@ -476,6 +752,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#1e2124",
         "navy": "#1e2024",
         "onWhite": 16.18,
+        "onMuted": 14.17,
+        "oklch": {
+          "L": 24.6,
+          "C": 0.007,
+          "H": 248
+        },
         "anchor": null
       },
       {
@@ -484,6 +766,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#0e1114",
         "navy": "#0f1012",
         "onWhite": 18.94,
+        "onMuted": 16.59,
+        "oklch": {
+          "L": 17.6,
+          "C": 0.008,
+          "H": 248
+        },
         "anchor": null
       },
       {
@@ -492,6 +780,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#030406",
         "navy": "#030406",
         "onWhite": 20.51,
+        "onMuted": 17.96,
+        "oklch": {
+          "L": 10.6,
+          "C": 0.008,
+          "H": 260
+        },
         "anchor": null
       },
       {
@@ -500,6 +794,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#000000",
         "navy": "#000000",
         "onWhite": 21,
+        "onMuted": 18.39,
+        "oklch": {
+          "L": 0,
+          "C": 0,
+          "H": 0
+        },
         "anchor": null
       }
     ],
@@ -514,6 +814,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#e5faea",
         "navy": "#e5faea",
         "onWhite": 1.09,
+        "onMuted": 1.04,
+        "oklch": {
+          "L": 96.5,
+          "C": 0.031,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -522,6 +828,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#bde3c7",
         "navy": "#bde3c7",
         "onWhite": 1.4,
+        "onMuted": 1.23,
+        "oklch": {
+          "L": 88.1,
+          "C": 0.055,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -530,6 +842,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#99caa7",
         "navy": "#99caa7",
         "onWhite": 1.85,
+        "onMuted": 1.62,
+        "oklch": {
+          "L": 79.5,
+          "C": 0.071,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -538,6 +856,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#76b188",
         "navy": "#76b188",
         "onWhite": 2.5,
+        "onMuted": 2.19,
+        "oklch": {
+          "L": 70.8,
+          "C": 0.086,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -546,6 +870,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#55986b",
         "navy": "#55986b",
         "onWhite": 3.45,
+        "onMuted": 3.02,
+        "oklch": {
+          "L": 62.3,
+          "C": 0.097,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -554,7 +884,13 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#338051",
         "navy": "#338051",
         "onWhite": 4.83,
-        "anchor": "anchor"
+        "onMuted": 4.23,
+        "oklch": {
+          "L": 53.9,
+          "C": 0.106,
+          "H": 154
+        },
+        "anchor": null
       },
       {
         "step": 600,
@@ -562,7 +898,13 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#046a38",
         "navy": "#046a38",
         "onWhite": 6.72,
-        "anchor": null
+        "onMuted": 5.89,
+        "oklch": {
+          "L": 46.1,
+          "C": 0.116,
+          "H": 154
+        },
+        "anchor": "anchor"
       },
       {
         "step": 700,
@@ -570,6 +912,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#00532a",
         "navy": "#00532a",
         "onWhite": 9.25,
+        "onMuted": 8.1,
+        "oklch": {
+          "L": 38.8,
+          "C": 0.099,
+          "H": 154
+        },
         "anchor": null
       },
       {
@@ -578,6 +926,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#003d1e",
         "navy": "#003d1e",
         "onWhite": 12.45,
+        "onMuted": 10.91,
+        "oklch": {
+          "L": 31.6,
+          "C": 0.08,
+          "H": 154
+        },
         "anchor": null
       },
       {
@@ -586,6 +940,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#002a12",
         "navy": "#002a12",
         "onWhite": 15.67,
+        "onMuted": 13.73,
+        "oklch": {
+          "L": 25,
+          "C": 0.064,
+          "H": 153
+        },
         "anchor": null
       },
       {
@@ -594,6 +954,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#001708",
         "navy": "#001708",
         "onWhite": 18.65,
+        "onMuted": 16.33,
+        "oklch": {
+          "L": 18,
+          "C": 0.045,
+          "H": 154
+        },
         "anchor": null
       }
     ],
@@ -608,6 +974,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ffe4e1",
         "navy": "#ffe4e1",
         "onWhite": 1.2,
+        "onMuted": 1.05,
+        "oklch": {
+          "L": 94,
+          "C": 0.03,
+          "H": 25
+        },
         "anchor": null
       },
       {
@@ -616,6 +988,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ffc1bc",
         "navy": "#ffc1bc",
         "onWhite": 1.54,
+        "onMuted": 1.35,
+        "oklch": {
+          "L": 86.6,
+          "C": 0.072,
+          "H": 24
+        },
         "anchor": null
       },
       {
@@ -624,6 +1002,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ff9c95",
         "navy": "#ff9c95",
         "onWhite": 2.01,
+        "onMuted": 1.76,
+        "oklch": {
+          "L": 79.2,
+          "C": 0.12,
+          "H": 24
+        },
         "anchor": null
       },
       {
@@ -632,6 +1016,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#fe716d",
         "navy": "#fe716d",
         "onWhite": 2.69,
+        "onMuted": 2.36,
+        "oklch": {
+          "L": 71.8,
+          "C": 0.173,
+          "H": 24
+        },
         "anchor": null
       },
       {
@@ -640,6 +1030,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ec4e4f",
         "navy": "#ec4e4f",
         "onWhite": 3.64,
+        "onMuted": 3.19,
+        "oklch": {
+          "L": 64.4,
+          "C": 0.194,
+          "H": 24
+        },
         "anchor": "anchor"
       },
       {
@@ -648,6 +1044,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#cb3d3f",
         "navy": "#cb3d3f",
         "onWhite": 4.91,
+        "onMuted": 4.3,
+        "oklch": {
+          "L": 56.9,
+          "C": 0.179,
+          "H": 24
+        },
         "anchor": null
       },
       {
@@ -656,6 +1058,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#aa2d30",
         "navy": "#aa2d30",
         "onWhite": 6.72,
+        "onMuted": 5.88,
+        "oklch": {
+          "L": 49.3,
+          "C": 0.161,
+          "H": 24
+        },
         "anchor": null
       },
       {
@@ -664,6 +1072,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#8b1e22",
         "navy": "#8b1e22",
         "onWhite": 9.1,
+        "onMuted": 7.97,
+        "oklch": {
+          "L": 42,
+          "C": 0.144,
+          "H": 24
+        },
         "anchor": null
       },
       {
@@ -672,6 +1086,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#6c0f15",
         "navy": "#6c0f15",
         "onWhite": 12.23,
+        "onMuted": 10.71,
+        "oklch": {
+          "L": 34.5,
+          "C": 0.126,
+          "H": 24
+        },
         "anchor": null
       },
       {
@@ -680,6 +1100,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#4e0209",
         "navy": "#4e0209",
         "onWhite": 15.71,
+        "onMuted": 13.76,
+        "oklch": {
+          "L": 26.9,
+          "C": 0.106,
+          "H": 24
+        },
         "anchor": null
       },
       {
@@ -688,6 +1114,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#300003",
         "navy": "#300003",
         "onWhite": 18.63,
+        "onMuted": 16.32,
+        "oklch": {
+          "L": 19.5,
+          "C": 0.079,
+          "H": 24
+        },
         "anchor": null
       }
     ],
@@ -702,6 +1134,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#fff1df",
         "navy": "#fff1df",
         "onWhite": 1.11,
+        "onMuted": 1.03,
+        "oklch": {
+          "L": 96.4,
+          "C": 0.028,
+          "H": 74
+        },
         "anchor": null
       },
       {
@@ -710,6 +1148,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#ffd394",
         "navy": "#ffd394",
         "onWhite": 1.4,
+        "onMuted": 1.23,
+        "oklch": {
+          "L": 89.1,
+          "C": 0.094,
+          "H": 76
+        },
         "anchor": null
       },
       {
@@ -718,6 +1162,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#f1b75e",
         "navy": "#f1b75e",
         "onWhite": 1.8,
+        "onMuted": 1.58,
+        "oklch": {
+          "L": 81.6,
+          "C": 0.126,
+          "H": 76
+        },
         "anchor": null
       },
       {
@@ -726,6 +1176,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#e09c1d",
         "navy": "#e09c1d",
         "onWhite": 2.35,
+        "onMuted": 2.06,
+        "oklch": {
+          "L": 74.1,
+          "C": 0.149,
+          "H": 76
+        },
         "anchor": "anchor"
       },
       {
@@ -734,6 +1190,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#c48608",
         "navy": "#c48608",
         "onWhite": 3.11,
+        "onMuted": 2.72,
+        "oklch": {
+          "L": 66.6,
+          "C": 0.138,
+          "H": 76
+        },
         "anchor": null
       },
       {
@@ -742,6 +1204,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#a77200",
         "navy": "#a77200",
         "onWhite": 4.16,
+        "onMuted": 3.64,
+        "oklch": {
+          "L": 59.2,
+          "C": 0.124,
+          "H": 77
+        },
         "anchor": null
       },
       {
@@ -750,6 +1218,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#8b5e00",
         "navy": "#8b5e00",
         "onWhite": 5.68,
+        "onMuted": 4.97,
+        "oklch": {
+          "L": 51.7,
+          "C": 0.108,
+          "H": 76
+        },
         "anchor": null
       },
       {
@@ -758,6 +1232,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#704b00",
         "navy": "#704b00",
         "onWhite": 7.79,
+        "onMuted": 6.82,
+        "oklch": {
+          "L": 44.3,
+          "C": 0.093,
+          "H": 76
+        },
         "anchor": null
       },
       {
@@ -766,6 +1246,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#563900",
         "navy": "#563900",
         "onWhite": 10.6,
+        "onMuted": 9.29,
+        "oklch": {
+          "L": 36.9,
+          "C": 0.077,
+          "H": 77
+        },
         "anchor": null
       },
       {
@@ -774,6 +1260,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#3e2700",
         "navy": "#3e2700",
         "onWhite": 14.05,
+        "onMuted": 12.3,
+        "oklch": {
+          "L": 29.4,
+          "C": 0.062,
+          "H": 75
+        },
         "anchor": null
       },
       {
@@ -782,6 +1274,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#271700",
         "navy": "#271700",
         "onWhite": 17.37,
+        "onMuted": 15.22,
+        "oklch": {
+          "L": 22.1,
+          "C": 0.046,
+          "H": 75
+        },
         "anchor": null
       }
     ],
@@ -796,6 +1294,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#e2f8ff",
         "navy": "#e2f8ff",
         "onWhite": 1.1,
+        "onMuted": 1.04,
+        "oklch": {
+          "L": 96.5,
+          "C": 0.025,
+          "H": 219
+        },
         "anchor": null
       },
       {
@@ -804,6 +1308,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#b4e3f2",
         "navy": "#b4e3f2",
         "onWhite": 1.38,
+        "onMuted": 1.21,
+        "oklch": {
+          "L": 88.8,
+          "C": 0.053,
+          "H": 219
+        },
         "anchor": null
       },
       {
@@ -812,6 +1322,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#8eccdf",
         "navy": "#8eccdf",
         "onWhite": 1.77,
+        "onMuted": 1.55,
+        "oklch": {
+          "L": 81,
+          "C": 0.069,
+          "H": 219
+        },
         "anchor": null
       },
       {
@@ -820,6 +1336,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#69b4cb",
         "navy": "#69b4cb",
         "onWhite": 2.34,
+        "onMuted": 2.05,
+        "oklch": {
+          "L": 73,
+          "C": 0.082,
+          "H": 220
+        },
         "anchor": null
       },
       {
@@ -828,6 +1350,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#439db7",
         "navy": "#439db7",
         "onWhite": 3.11,
+        "onMuted": 2.73,
+        "oklch": {
+          "L": 65.2,
+          "C": 0.093,
+          "H": 220
+        },
         "anchor": null
       },
       {
@@ -836,6 +1364,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#0b86a2",
         "navy": "#0b86a2",
         "onWhite": 4.25,
+        "onMuted": 3.72,
+        "oklch": {
+          "L": 57.4,
+          "C": 0.102,
+          "H": 220
+        },
         "anchor": "anchor"
       },
       {
@@ -844,6 +1378,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#006d85",
         "navy": "#006d85",
         "onWhite": 5.96,
+        "onMuted": 5.22,
+        "oklch": {
+          "L": 49.5,
+          "C": 0.09,
+          "H": 220
+        },
         "anchor": null
       },
       {
@@ -852,6 +1392,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#005568",
         "navy": "#005568",
         "onWhite": 8.4,
+        "onMuted": 7.36,
+        "oklch": {
+          "L": 41.6,
+          "C": 0.076,
+          "H": 220
+        },
         "anchor": null
       },
       {
@@ -860,6 +1406,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#003e4d",
         "navy": "#003e4d",
         "onWhite": 11.69,
+        "onMuted": 10.24,
+        "oklch": {
+          "L": 33.7,
+          "C": 0.061,
+          "H": 220
+        },
         "anchor": null
       },
       {
@@ -868,6 +1420,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#002933",
         "navy": "#002933",
         "onWhite": 15.38,
+        "onMuted": 13.48,
+        "oklch": {
+          "L": 25.9,
+          "C": 0.047,
+          "H": 219
+        },
         "anchor": null
       },
       {
@@ -876,6 +1434,12 @@ export const RAMPS: readonly Ramp[] = [
         "blue": "#00151b",
         "navy": "#00151b",
         "onWhite": 18.7,
+        "onMuted": 16.38,
+        "oklch": {
+          "L": 18.1,
+          "C": 0.032,
+          "H": 217
+        },
         "anchor": null
       }
     ],
@@ -1882,3 +2446,2207 @@ export const RETIRED = [
     "note": "Retired. It resolved to the HEADLINE-2 role, not Title 1 — the alias trap behind four production bugs."
   }
 ] as const;
+
+export const STATUS_MATRIX: readonly StatusRow[] = [
+  {
+    "status": "success",
+    "pairs": [
+      {
+        "label": "Message on the page",
+        "use": "Field message, inline note, table cell",
+        "fillToken": "bg/neutral/subtler",
+        "inkToken": "text/status/success/base",
+        "fill": "#eef0f3",
+        "ink": "#046a38",
+        "ratio": 5.89
+      },
+      {
+        "label": "Message on a card",
+        "use": "Alert body on white",
+        "fillToken": "bg/neutral/base",
+        "inkToken": "text/status/success/base",
+        "fill": "#ffffff",
+        "ink": "#046a38",
+        "ratio": 6.72
+      },
+      {
+        "label": "Base tint + base ink",
+        "use": "Alert, callout, toast ground",
+        "fillToken": "bg/status/success/base",
+        "inkToken": "text/status/success/base",
+        "fill": "#e5faea",
+        "ink": "#046a38",
+        "ratio": 6.14
+      },
+      {
+        "label": "Subtler tint + bolder ink",
+        "use": "Tonal badge, chip, docs status pill",
+        "fillToken": "bg/status/success/subtler",
+        "inkToken": "text/status/success/bolder",
+        "fill": "#bde3c7",
+        "ink": "#00532a",
+        "ratio": 6.6
+      },
+      {
+        "label": "Bold tint + measured ink",
+        "use": "Selected row, active filter",
+        "fillToken": "bg/status/success/bold",
+        "inkToken": "on/bg/status/success/bold",
+        "fill": "#76b188",
+        "ink": "#1e2124",
+        "ratio": 6.48
+      },
+      {
+        "label": "Bolder fill + measured ink",
+        "use": "Solid badge, filled banner, primary action",
+        "fillToken": "bg/status/success/bolder",
+        "inkToken": "on/bg/status/success/bolder",
+        "fill": "#046a38",
+        "ink": "#ffffff",
+        "ratio": 6.72
+      },
+      {
+        "label": "Boldest fill + measured ink",
+        "use": "Maximum emphasis",
+        "fillToken": "bg/status/success/boldest",
+        "inkToken": "on/bg/status/success/boldest",
+        "fill": "#003d1e",
+        "ink": "#ffffff",
+        "ratio": 12.45
+      }
+    ],
+    "icon": {
+      "token": "icon/status/success/base",
+      "value": "#046a38",
+      "onWhite": 6.72
+    },
+    "border": {
+      "token": "border/status/success/base",
+      "value": "#046a38",
+      "onWhite": 6.72,
+      "onMuted": 5.89
+    }
+  },
+  {
+    "status": "error",
+    "pairs": [
+      {
+        "label": "Message on the page",
+        "use": "Field message, inline note, table cell",
+        "fillToken": "bg/neutral/subtler",
+        "inkToken": "text/status/error/base",
+        "fill": "#eef0f3",
+        "ink": "#aa2d30",
+        "ratio": 5.88
+      },
+      {
+        "label": "Message on a card",
+        "use": "Alert body on white",
+        "fillToken": "bg/neutral/base",
+        "inkToken": "text/status/error/base",
+        "fill": "#ffffff",
+        "ink": "#aa2d30",
+        "ratio": 6.72
+      },
+      {
+        "label": "Base tint + base ink",
+        "use": "Alert, callout, toast ground",
+        "fillToken": "bg/status/error/base",
+        "inkToken": "text/status/error/base",
+        "fill": "#ffe4e1",
+        "ink": "#aa2d30",
+        "ratio": 5.58
+      },
+      {
+        "label": "Subtler tint + bolder ink",
+        "use": "Tonal badge, chip, docs status pill",
+        "fillToken": "bg/status/error/subtler",
+        "inkToken": "text/status/error/bolder",
+        "fill": "#ffc1bc",
+        "ink": "#8b1e22",
+        "ratio": 5.9
+      },
+      {
+        "label": "Bold tint + measured ink",
+        "use": "Selected row, active filter",
+        "fillToken": "bg/status/error/bold",
+        "inkToken": "on/bg/status/error/bold",
+        "fill": "#fe716d",
+        "ink": "#1e2124",
+        "ratio": 6.01
+      },
+      {
+        "label": "Bolder fill + measured ink",
+        "use": "Solid badge, filled banner, primary action",
+        "fillToken": "bg/status/error/bolder",
+        "inkToken": "on/bg/status/error/bolder",
+        "fill": "#aa2d30",
+        "ink": "#ffffff",
+        "ratio": 6.72
+      },
+      {
+        "label": "Boldest fill + measured ink",
+        "use": "Maximum emphasis",
+        "fillToken": "bg/status/error/boldest",
+        "inkToken": "on/bg/status/error/boldest",
+        "fill": "#6c0f15",
+        "ink": "#ffffff",
+        "ratio": 12.23
+      }
+    ],
+    "icon": {
+      "token": "icon/status/error/base",
+      "value": "#aa2d30",
+      "onWhite": 6.72
+    },
+    "border": {
+      "token": "border/status/error/base",
+      "value": "#aa2d30",
+      "onWhite": 6.72,
+      "onMuted": 5.88
+    }
+  },
+  {
+    "status": "warning",
+    "pairs": [
+      {
+        "label": "Message on the page",
+        "use": "Field message, inline note, table cell",
+        "fillToken": "bg/neutral/subtler",
+        "inkToken": "text/status/warning/base",
+        "fill": "#eef0f3",
+        "ink": "#8b5e00",
+        "ratio": 4.97
+      },
+      {
+        "label": "Message on a card",
+        "use": "Alert body on white",
+        "fillToken": "bg/neutral/base",
+        "inkToken": "text/status/warning/base",
+        "fill": "#ffffff",
+        "ink": "#8b5e00",
+        "ratio": 5.68
+      },
+      {
+        "label": "Base tint + base ink",
+        "use": "Alert, callout, toast ground",
+        "fillToken": "bg/status/warning/base",
+        "inkToken": "text/status/warning/base",
+        "fill": "#fff1df",
+        "ink": "#8b5e00",
+        "ratio": 5.11
+      },
+      {
+        "label": "Subtler tint + bolder ink",
+        "use": "Tonal badge, chip, docs status pill",
+        "fillToken": "bg/status/warning/subtler",
+        "inkToken": "text/status/warning/bolder",
+        "fill": "#ffd394",
+        "ink": "#704b00",
+        "ratio": 5.56
+      },
+      {
+        "label": "Bold tint + measured ink",
+        "use": "Solid amber chip — amber's only solid",
+        "fillToken": "bg/status/warning/bold",
+        "inkToken": "on/bg/status/warning/bold",
+        "fill": "#e09c1d",
+        "ink": "#1e2124",
+        "ratio": 6.89
+      },
+      {
+        "label": "Bolder fill + measured ink",
+        "use": "Solid badge, filled banner, primary action",
+        "fillToken": "bg/status/warning/bolder",
+        "inkToken": "on/bg/status/warning/bolder",
+        "fill": "#8b5e00",
+        "ink": "#ffffff",
+        "ratio": 5.68
+      },
+      {
+        "label": "Boldest fill + measured ink",
+        "use": "Maximum emphasis",
+        "fillToken": "bg/status/warning/boldest",
+        "inkToken": "on/bg/status/warning/boldest",
+        "fill": "#563900",
+        "ink": "#ffffff",
+        "ratio": 10.6
+      }
+    ],
+    "icon": {
+      "token": "icon/status/warning/base",
+      "value": "#8b5e00",
+      "onWhite": 5.68
+    },
+    "border": {
+      "token": "border/status/warning/base",
+      "value": "#8b5e00",
+      "onWhite": 5.68,
+      "onMuted": 4.97
+    }
+  },
+  {
+    "status": "info",
+    "pairs": [
+      {
+        "label": "Message on the page",
+        "use": "Field message, inline note, table cell",
+        "fillToken": "bg/neutral/subtler",
+        "inkToken": "text/status/info/base",
+        "fill": "#eef0f3",
+        "ink": "#006d85",
+        "ratio": 5.22
+      },
+      {
+        "label": "Message on a card",
+        "use": "Alert body on white",
+        "fillToken": "bg/neutral/base",
+        "inkToken": "text/status/info/base",
+        "fill": "#ffffff",
+        "ink": "#006d85",
+        "ratio": 5.96
+      },
+      {
+        "label": "Base tint + base ink",
+        "use": "Alert, callout, toast ground",
+        "fillToken": "bg/status/info/base",
+        "inkToken": "text/status/info/base",
+        "fill": "#e2f8ff",
+        "ink": "#006d85",
+        "ratio": 5.42
+      },
+      {
+        "label": "Subtler tint + bolder ink",
+        "use": "Tonal badge, chip, docs status pill",
+        "fillToken": "bg/status/info/subtler",
+        "inkToken": "text/status/info/bolder",
+        "fill": "#b4e3f2",
+        "ink": "#005568",
+        "ratio": 6.09
+      },
+      {
+        "label": "Bold tint + measured ink",
+        "use": "Selected row, active filter",
+        "fillToken": "bg/status/info/bold",
+        "inkToken": "on/bg/status/info/bold",
+        "fill": "#69b4cb",
+        "ink": "#1e2124",
+        "ratio": 6.93
+      },
+      {
+        "label": "Bolder fill + measured ink",
+        "use": "Solid badge, filled banner, primary action",
+        "fillToken": "bg/status/info/bolder",
+        "inkToken": "on/bg/status/info/bolder",
+        "fill": "#006d85",
+        "ink": "#ffffff",
+        "ratio": 5.96
+      },
+      {
+        "label": "Boldest fill + measured ink",
+        "use": "Maximum emphasis",
+        "fillToken": "bg/status/info/boldest",
+        "inkToken": "on/bg/status/info/boldest",
+        "fill": "#003e4d",
+        "ink": "#ffffff",
+        "ratio": 11.69
+      }
+    ],
+    "icon": {
+      "token": "icon/status/info/base",
+      "value": "#006d85",
+      "onWhite": 5.96
+    },
+    "border": {
+      "token": "border/status/info/base",
+      "value": "#006d85",
+      "onWhite": 5.96,
+      "onMuted": 5.22
+    }
+  }
+];
+
+export const CVD: readonly CvdSet[] = [
+  {
+    "key": "inks",
+    "title": "Status text and the brand ink",
+    "entries": [
+      {
+        "label": "success",
+        "token": "text/status/success/base",
+        "value": "#046a38",
+        "sim": {
+          "protanopia": "#6a6034",
+          "deuteranopia": "#5f593c",
+          "tritanopia": "#00695e"
+        }
+      },
+      {
+        "label": "error",
+        "token": "text/status/error/base",
+        "value": "#aa2d30",
+        "sim": {
+          "protanopia": "#514b2f",
+          "deuteranopia": "#70662c",
+          "tritanopia": "#bb0030"
+        }
+      },
+      {
+        "label": "warning",
+        "token": "text/status/warning/base",
+        "value": "#8b5e00",
+        "sim": {
+          "protanopia": "#6e6000",
+          "deuteranopia": "#796b06",
+          "tritanopia": "#98524f"
+        }
+      },
+      {
+        "label": "info",
+        "token": "text/status/info/base",
+        "value": "#006d85",
+        "sim": {
+          "protanopia": "#5e6a86",
+          "deuteranopia": "#4f5f85",
+          "tritanopia": "#007575"
+        }
+      },
+      {
+        "label": "brand",
+        "token": "text/brand/primary/base",
+        "value": "#005eb9",
+        "sim": {
+          "protanopia": "#2567bc",
+          "deuteranopia": "#0058b7",
+          "tritanopia": "#007482"
+        }
+      }
+    ],
+    "worst": {
+      "none": {
+        "d": 10.2,
+        "a": "info",
+        "b": "brand"
+      },
+      "protanopia": {
+        "d": 3.8,
+        "a": "success",
+        "b": "warning"
+      },
+      "deuteranopia": {
+        "d": 3.4,
+        "a": "error",
+        "b": "warning"
+      },
+      "tritanopia": {
+        "d": 2.2,
+        "a": "info",
+        "b": "brand"
+      }
+    }
+  },
+  {
+    "key": "fills",
+    "title": "Solid fills under white ink",
+    "entries": [
+      {
+        "label": "success",
+        "token": "bg/status/success/bolder",
+        "value": "#046a38",
+        "sim": {
+          "protanopia": "#6a6034",
+          "deuteranopia": "#5f593c",
+          "tritanopia": "#00695e"
+        }
+      },
+      {
+        "label": "error",
+        "token": "bg/status/error/bolder",
+        "value": "#aa2d30",
+        "sim": {
+          "protanopia": "#514b2f",
+          "deuteranopia": "#70662c",
+          "tritanopia": "#bb0030"
+        }
+      },
+      {
+        "label": "warning",
+        "token": "bg/status/warning/bolder",
+        "value": "#8b5e00",
+        "sim": {
+          "protanopia": "#6e6000",
+          "deuteranopia": "#796b06",
+          "tritanopia": "#98524f"
+        }
+      },
+      {
+        "label": "info",
+        "token": "bg/status/info/bolder",
+        "value": "#006d85",
+        "sim": {
+          "protanopia": "#5e6a86",
+          "deuteranopia": "#4f5f85",
+          "tritanopia": "#007575"
+        }
+      },
+      {
+        "label": "primary",
+        "token": "bg/brand/primary/bolder",
+        "value": "#005eb9",
+        "sim": {
+          "protanopia": "#2567bc",
+          "deuteranopia": "#0058b7",
+          "tritanopia": "#007482"
+        }
+      },
+      {
+        "label": "secondary",
+        "token": "bg/brand/secondary/bolder",
+        "value": "#c34700",
+        "sim": {
+          "protanopia": "#6c5e00",
+          "deuteranopia": "#8a7a00",
+          "tritanopia": "#d7223d"
+        }
+      }
+    ],
+    "worst": {
+      "none": {
+        "d": 8.6,
+        "a": "error",
+        "b": "secondary"
+      },
+      "protanopia": {
+        "d": 0.7,
+        "a": "warning",
+        "b": "secondary"
+      },
+      "deuteranopia": {
+        "d": 3.4,
+        "a": "error",
+        "b": "warning"
+      },
+      "tritanopia": {
+        "d": 2.2,
+        "a": "info",
+        "b": "primary"
+      }
+    }
+  },
+  {
+    "key": "tints",
+    "title": "Tonal grounds (subtler)",
+    "entries": [
+      {
+        "label": "success",
+        "token": "bg/status/success/subtler",
+        "value": "#bde3c7",
+        "sim": {
+          "protanopia": "#e3dcc6",
+          "deuteranopia": "#dcd8c8",
+          "tritanopia": "#b8e2db"
+        }
+      },
+      {
+        "label": "error",
+        "token": "bg/status/error/subtler",
+        "value": "#ffc1bc",
+        "sim": {
+          "protanopia": "#cdc9bb",
+          "deuteranopia": "#dbd5bb",
+          "tritanopia": "#ffbac0"
+        }
+      },
+      {
+        "label": "warning",
+        "token": "bg/status/warning/subtler",
+        "value": "#ffd394",
+        "sim": {
+          "protanopia": "#e4d48f",
+          "deuteranopia": "#efde96",
+          "tritanopia": "#ffc7c3"
+        }
+      },
+      {
+        "label": "info",
+        "token": "bg/status/info/subtler",
+        "value": "#b4e3f2",
+        "sim": {
+          "protanopia": "#d9e0f3",
+          "deuteranopia": "#cfd8f2",
+          "tritanopia": "#a1e8e8"
+        }
+      },
+      {
+        "label": "primary",
+        "token": "bg/brand/primary/subtler",
+        "value": "#c0dbff",
+        "sim": {
+          "protanopia": "#cfdcff",
+          "deuteranopia": "#c8d6fe",
+          "tritanopia": "#afe3e7"
+        }
+      }
+    ],
+    "worst": {
+      "none": {
+        "d": 3.5,
+        "a": "info",
+        "b": "primary"
+      },
+      "protanopia": {
+        "d": 2.6,
+        "a": "info",
+        "b": "primary"
+      },
+      "deuteranopia": {
+        "d": 1.7,
+        "a": "success",
+        "b": "error"
+      },
+      "tritanopia": {
+        "d": 1.8,
+        "a": "success",
+        "b": "primary"
+      }
+    }
+  },
+  {
+    "key": "chart",
+    "title": "Categorical series 1–9",
+    "entries": [
+      {
+        "label": "S1",
+        "token": "chart/cat/1",
+        "value": "#0373df",
+        "sim": {
+          "protanopia": "#307ee3",
+          "deuteranopia": "#006cdd",
+          "tritanopia": "#008e9e"
+        }
+      },
+      {
+        "label": "S2",
+        "token": "chart/cat/2",
+        "value": "#e7173a",
+        "sim": {
+          "protanopia": "#625a39",
+          "deuteranopia": "#938432",
+          "tritanopia": "#fe0029"
+        }
+      },
+      {
+        "label": "S3",
+        "token": "chart/cat/3",
+        "value": "#644588",
+        "sim": {
+          "protanopia": "#32538a",
+          "deuteranopia": "#3a5386",
+          "tritanopia": "#5e5160"
+        }
+      },
+      {
+        "label": "S4",
+        "token": "chart/cat/4",
+        "value": "#1a801c",
+        "sim": {
+          "protanopia": "#837306",
+          "deuteranopia": "#786c27",
+          "tritanopia": "#007c6d"
+        }
+      },
+      {
+        "label": "S5",
+        "token": "chart/cat/5",
+        "value": "#c930b4",
+        "sim": {
+          "protanopia": "#2d67b8",
+          "deuteranopia": "#677db0",
+          "tritanopia": "#d33f70"
+        }
+      },
+      {
+        "label": "S6",
+        "token": "chart/cat/6",
+        "value": "#7a3901",
+        "sim": {
+          "protanopia": "#4c4200",
+          "deuteranopia": "#5c5100",
+          "tritanopia": "#872a30"
+        }
+      },
+      {
+        "label": "S7",
+        "token": "chart/cat/7",
+        "value": "#a35b7a",
+        "sim": {
+          "protanopia": "#636a7b",
+          "deuteranopia": "#767678",
+          "tritanopia": "#ad5866"
+        }
+      },
+      {
+        "label": "S8",
+        "token": "chart/cat/8",
+        "value": "#481dc2",
+        "sim": {
+          "protanopia": "#004bc6",
+          "deuteranopia": "#0040bf",
+          "tritanopia": "#005373"
+        }
+      },
+      {
+        "label": "S9",
+        "token": "chart/cat/9",
+        "value": "#a1015b",
+        "sim": {
+          "protanopia": "#33405d",
+          "deuteranopia": "#5c5b58",
+          "tritanopia": "#af0033"
+        }
+      }
+    ],
+    "worst": {
+      "none": {
+        "d": 13.4,
+        "a": "S7",
+        "b": "S9"
+      },
+      "protanopia": {
+        "d": 8.4,
+        "a": "S5",
+        "b": "S8"
+      },
+      "deuteranopia": {
+        "d": 8.3,
+        "a": "S2",
+        "b": "S4"
+      },
+      "tritanopia": {
+        "d": 8.2,
+        "a": "S1",
+        "b": "S4"
+      }
+    }
+  },
+  {
+    "key": "diverging",
+    "title": "Diverging scale ends",
+    "entries": [
+      {
+        "label": "negative",
+        "token": "chart/div/neg",
+        "value": "#ec4e4f",
+        "sim": {
+          "protanopia": "#79714e",
+          "deuteranopia": "#a1934a",
+          "tritanopia": "#ff2350"
+        }
+      },
+      {
+        "label": "positive",
+        "token": "chart/div/pos",
+        "value": "#3b8df0",
+        "sim": {
+          "protanopia": "#5d95f4",
+          "deuteranopia": "#3d85ee",
+          "tritanopia": "#00a4b3"
+        }
+      },
+      {
+        "label": "neg strong",
+        "token": "chart/div/negStrong",
+        "value": "#6c0f15",
+        "sim": {
+          "protanopia": "#2d2814",
+          "deuteranopia": "#443c11",
+          "tritanopia": "#780013"
+        }
+      },
+      {
+        "label": "pos strong",
+        "token": "chart/div/posStrong",
+        "value": "#00356e",
+        "sim": {
+          "protanopia": "#113b70",
+          "deuteranopia": "#00326d",
+          "tritanopia": "#00434c"
+        }
+      }
+    ],
+    "worst": {
+      "none": {
+        "d": 21.4,
+        "a": "neg strong",
+        "b": "pos strong"
+      },
+      "protanopia": {
+        "d": 15.6,
+        "a": "neg strong",
+        "b": "pos strong"
+      },
+      "deuteranopia": {
+        "d": 17.5,
+        "a": "neg strong",
+        "b": "pos strong"
+      },
+      "tritanopia": {
+        "d": 20.7,
+        "a": "neg strong",
+        "b": "pos strong"
+      }
+    }
+  }
+];
+
+export const MODES: readonly Mode[] = [
+  {
+    "id": "blue",
+    "kind": "brand",
+    "roles": [
+      {
+        "token": "text/status/success/base",
+        "value": "#046a38",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.89,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/error/base",
+        "value": "#aa2d30",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.88,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/warning/base",
+        "value": "#8b5e00",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.97,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/info/base",
+        "value": "#006d85",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.22,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/brand/primary/base",
+        "value": "#005eb9",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.57,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/link/brand/default",
+        "value": "#005eb9",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.57,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "border/neutral/bolder/default",
+        "value": "#6f757d",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.07,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "focus/ring",
+        "value": "#0373df",
+        "against": "bg/neutral/base",
+        "ratio": 4.64,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "on/bg/brand/primary/bolder",
+        "value": "#ffffff",
+        "against": "bg/brand/primary/bolder",
+        "ratio": 6.36,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "on/bg/status/warning/bold",
+        "value": "#1e2124",
+        "against": "bg/status/warning/bold",
+        "ratio": 6.89,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/neutral/disabled",
+        "value": "#8e949c",
+        "against": "bg/neutral/disabled",
+        "ratio": 2.27,
+        "floor": 0,
+        "pass": null
+      }
+    ]
+  },
+  {
+    "id": "navy",
+    "kind": "brand",
+    "roles": [
+      {
+        "token": "text/status/success/base",
+        "value": "#046a38",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.9,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/error/base",
+        "value": "#aa2d30",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.89,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/warning/base",
+        "value": "#8b5e00",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.98,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/info/base",
+        "value": "#006d85",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.22,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/brand/primary/base",
+        "value": "#003366",
+        "against": "bg/neutral/subtler",
+        "ratio": 11.06,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/link/brand/default",
+        "value": "#224c7d",
+        "against": "bg/neutral/subtler",
+        "ratio": 7.68,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "border/neutral/bolder/default",
+        "value": "#70757d",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.07,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "focus/ring",
+        "value": "#0373df",
+        "against": "bg/neutral/base",
+        "ratio": 4.64,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "on/bg/brand/primary/bolder",
+        "value": "#ffffff",
+        "against": "bg/brand/primary/bolder",
+        "ratio": 12.61,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "on/bg/status/warning/bold",
+        "value": "#1e2124",
+        "against": "bg/status/warning/bold",
+        "ratio": 6.89,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/neutral/disabled",
+        "value": "#8f949d",
+        "against": "bg/neutral/disabled",
+        "ratio": 2.26,
+        "floor": 0,
+        "pass": null
+      }
+    ]
+  },
+  {
+    "id": "dbim-blue",
+    "kind": "DBIM preview",
+    "roles": [
+      {
+        "token": "text/status/success/base",
+        "value": "#066f42",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.73,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/error/base",
+        "value": "#b92435",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.72,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/warning/base",
+        "value": "#886600",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.88,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/info/base",
+        "value": "#0058d4",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.76,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/brand/primary/base",
+        "value": "#214aab",
+        "against": "bg/neutral/subtler",
+        "ratio": 7.32,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/link/brand/default",
+        "value": "#214aab",
+        "against": "bg/neutral/subtler",
+        "ratio": 7.32,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "border/neutral/bolder/default",
+        "value": "#777777",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.11,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "focus/ring",
+        "value": "#0373df",
+        "against": "bg/neutral/base",
+        "ratio": 4.64,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "on/bg/brand/primary/bolder",
+        "value": "#ffffff",
+        "against": "bg/brand/primary/bolder",
+        "ratio": 7.98,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "on/bg/status/warning/bold",
+        "value": "#1e2124",
+        "against": "bg/status/warning/bold",
+        "ratio": 7.69,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/neutral/disabled",
+        "value": "#8e8e8e",
+        "against": "bg/neutral/disabled",
+        "ratio": 2.73,
+        "floor": 0,
+        "pass": null
+      }
+    ]
+  },
+  {
+    "id": "dbim-burgundy",
+    "kind": "DBIM preview",
+    "roles": [
+      {
+        "token": "text/status/success/base",
+        "value": "#066f42",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.73,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/error/base",
+        "value": "#b92435",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.72,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/warning/base",
+        "value": "#886600",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.88,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/info/base",
+        "value": "#0058d4",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.76,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/brand/primary/base",
+        "value": "#a32966",
+        "against": "bg/neutral/subtler",
+        "ratio": 6.28,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/link/brand/default",
+        "value": "#a32966",
+        "against": "bg/neutral/subtler",
+        "ratio": 6.28,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "border/neutral/bolder/default",
+        "value": "#777777",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.11,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "focus/ring",
+        "value": "#0373df",
+        "against": "bg/neutral/base",
+        "ratio": 4.64,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "on/bg/brand/primary/bolder",
+        "value": "#ffffff",
+        "against": "bg/brand/primary/bolder",
+        "ratio": 6.85,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "on/bg/status/warning/bold",
+        "value": "#1e2124",
+        "against": "bg/status/warning/bold",
+        "ratio": 7.69,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/neutral/disabled",
+        "value": "#8e8e8e",
+        "against": "bg/neutral/disabled",
+        "ratio": 2.73,
+        "floor": 0,
+        "pass": null
+      }
+    ]
+  },
+  {
+    "id": "dbim-purple",
+    "kind": "DBIM preview",
+    "roles": [
+      {
+        "token": "text/status/success/base",
+        "value": "#066f42",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.73,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/error/base",
+        "value": "#b92435",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.72,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/warning/base",
+        "value": "#886600",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.88,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/info/base",
+        "value": "#0058d4",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.76,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/brand/primary/base",
+        "value": "#4729a3",
+        "against": "bg/neutral/subtler",
+        "ratio": 9.11,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/link/brand/default",
+        "value": "#4729a3",
+        "against": "bg/neutral/subtler",
+        "ratio": 9.11,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "border/neutral/bolder/default",
+        "value": "#777777",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.11,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "focus/ring",
+        "value": "#0373df",
+        "against": "bg/neutral/base",
+        "ratio": 4.64,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "on/bg/brand/primary/bolder",
+        "value": "#ffffff",
+        "against": "bg/brand/primary/bolder",
+        "ratio": 9.93,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "on/bg/status/warning/bold",
+        "value": "#1e2124",
+        "against": "bg/status/warning/bold",
+        "ratio": 7.69,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/neutral/disabled",
+        "value": "#8e8e8e",
+        "against": "bg/neutral/disabled",
+        "ratio": 2.73,
+        "floor": 0,
+        "pass": null
+      }
+    ]
+  },
+  {
+    "id": "dbim-green",
+    "kind": "DBIM preview",
+    "roles": [
+      {
+        "token": "text/status/success/base",
+        "value": "#066f42",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.73,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/error/base",
+        "value": "#b92435",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.72,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/warning/base",
+        "value": "#886600",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.88,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/info/base",
+        "value": "#0058d4",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.76,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/brand/primary/base",
+        "value": "#2d8686",
+        "against": "bg/neutral/subtler",
+        "ratio": 3.96,
+        "floor": 4.5,
+        "pass": false
+      },
+      {
+        "token": "text/link/brand/default",
+        "value": "#2d8686",
+        "against": "bg/neutral/subtler",
+        "ratio": 3.96,
+        "floor": 4.5,
+        "pass": false
+      },
+      {
+        "token": "border/neutral/bolder/default",
+        "value": "#777777",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.11,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "focus/ring",
+        "value": "#0373df",
+        "against": "bg/neutral/base",
+        "ratio": 4.64,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "on/bg/brand/primary/bolder",
+        "value": "#ffffff",
+        "against": "bg/brand/primary/bolder",
+        "ratio": 4.32,
+        "floor": 4.5,
+        "pass": false
+      },
+      {
+        "token": "on/bg/status/warning/bold",
+        "value": "#1e2124",
+        "against": "bg/status/warning/bold",
+        "ratio": 7.69,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/neutral/disabled",
+        "value": "#8e8e8e",
+        "against": "bg/neutral/disabled",
+        "ratio": 2.73,
+        "floor": 0,
+        "pass": null
+      }
+    ]
+  },
+  {
+    "id": "dbim-chrome-yellow",
+    "kind": "DBIM preview",
+    "roles": [
+      {
+        "token": "text/status/success/base",
+        "value": "#066f42",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.73,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/error/base",
+        "value": "#b92435",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.72,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/warning/base",
+        "value": "#886600",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.88,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/info/base",
+        "value": "#0058d4",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.76,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/brand/primary/base",
+        "value": "#916100",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.92,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/link/brand/default",
+        "value": "#916100",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.92,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "border/neutral/bolder/default",
+        "value": "#777777",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.11,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "focus/ring",
+        "value": "#0373df",
+        "against": "bg/neutral/base",
+        "ratio": 4.64,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "on/bg/brand/primary/bolder",
+        "value": "#ffffff",
+        "against": "bg/brand/primary/bolder",
+        "ratio": 5.37,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "on/bg/status/warning/bold",
+        "value": "#1e2124",
+        "against": "bg/status/warning/bold",
+        "ratio": 7.69,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/neutral/disabled",
+        "value": "#8e8e8e",
+        "against": "bg/neutral/disabled",
+        "ratio": 2.73,
+        "floor": 0,
+        "pass": null
+      }
+    ]
+  },
+  {
+    "id": "dbim-cinnamon-red",
+    "kind": "DBIM preview",
+    "roles": [
+      {
+        "token": "text/status/success/base",
+        "value": "#066f42",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.73,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/error/base",
+        "value": "#b92435",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.72,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/warning/base",
+        "value": "#886600",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.88,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/info/base",
+        "value": "#0058d4",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.76,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/brand/primary/base",
+        "value": "#a72626",
+        "against": "bg/neutral/subtler",
+        "ratio": 6.53,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/link/brand/default",
+        "value": "#a72626",
+        "against": "bg/neutral/subtler",
+        "ratio": 6.53,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "border/neutral/bolder/default",
+        "value": "#777777",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.11,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "focus/ring",
+        "value": "#0373df",
+        "against": "bg/neutral/base",
+        "ratio": 4.64,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "on/bg/brand/primary/bolder",
+        "value": "#ffffff",
+        "against": "bg/brand/primary/bolder",
+        "ratio": 7.12,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "on/bg/status/warning/bold",
+        "value": "#1e2124",
+        "against": "bg/status/warning/bold",
+        "ratio": 7.69,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/neutral/disabled",
+        "value": "#8e8e8e",
+        "against": "bg/neutral/disabled",
+        "ratio": 2.73,
+        "floor": 0,
+        "pass": null
+      }
+    ]
+  },
+  {
+    "id": "ux4g",
+    "kind": "UX4G mode",
+    "roles": [
+      {
+        "token": "text/status/success/base",
+        "value": "#046a38",
+        "against": "bg/neutral/subtler",
+        "ratio": 6.44,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/error/base",
+        "value": "#aa2d30",
+        "against": "bg/neutral/subtler",
+        "ratio": 6.43,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/warning/base",
+        "value": "#8b5e00",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.44,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/info/base",
+        "value": "#006d85",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.71,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/brand/primary/base",
+        "value": "#4a2bc2",
+        "against": "bg/neutral/subtler",
+        "ratio": 8.33,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/link/brand/default",
+        "value": "#4a2bc2",
+        "against": "bg/neutral/subtler",
+        "ratio": 8.33,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "border/neutral/bolder/default",
+        "value": "#6f757d",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.45,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "focus/ring",
+        "value": "#0373df",
+        "against": "bg/neutral/base",
+        "ratio": 4.64,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "on/bg/brand/primary/bolder",
+        "value": "#ffffff",
+        "against": "bg/brand/primary/bolder",
+        "ratio": 8.69,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "on/bg/status/warning/bold",
+        "value": "#1e2124",
+        "against": "bg/status/warning/bold",
+        "ratio": 6.89,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/neutral/disabled",
+        "value": "#8e949c",
+        "against": "bg/neutral/disabled",
+        "ratio": 2.81,
+        "floor": 0,
+        "pass": null
+      }
+    ]
+  },
+  {
+    "id": "ux4gdeep",
+    "kind": "UX4G mode",
+    "roles": [
+      {
+        "token": "text/status/success/base",
+        "value": "#046a38",
+        "against": "bg/neutral/subtler",
+        "ratio": 6.44,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/error/base",
+        "value": "#aa2d30",
+        "against": "bg/neutral/subtler",
+        "ratio": 6.43,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/warning/base",
+        "value": "#8b5e00",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.44,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/status/info/base",
+        "value": "#006d85",
+        "against": "bg/neutral/subtler",
+        "ratio": 5.71,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/brand/primary/base",
+        "value": "#3d239f",
+        "against": "bg/neutral/subtler",
+        "ratio": 10.37,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/link/brand/default",
+        "value": "#3d239f",
+        "against": "bg/neutral/subtler",
+        "ratio": 10.37,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "border/neutral/bolder/default",
+        "value": "#6f757d",
+        "against": "bg/neutral/subtler",
+        "ratio": 4.45,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "focus/ring",
+        "value": "#0373df",
+        "against": "bg/neutral/base",
+        "ratio": 4.64,
+        "floor": 3,
+        "pass": true
+      },
+      {
+        "token": "on/bg/brand/primary/bolder",
+        "value": "#ffffff",
+        "against": "bg/brand/primary/bolder",
+        "ratio": 10.83,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "on/bg/status/warning/bold",
+        "value": "#1e2124",
+        "against": "bg/status/warning/bold",
+        "ratio": 6.89,
+        "floor": 4.5,
+        "pass": true
+      },
+      {
+        "token": "text/neutral/disabled",
+        "value": "#8e949c",
+        "against": "bg/neutral/disabled",
+        "ratio": 2.81,
+        "floor": 0,
+        "pass": null
+      }
+    ]
+  }
+];
+
+export const ROLE_CONTRAST: readonly RoleContrast[] = [
+  {
+    "token": "border/brand/primary/base",
+    "role": "border",
+    "value": "#0373df",
+    "onWhite": 4.64,
+    "onMuted": 4.07,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/brand/primary/bolder",
+    "role": "border",
+    "value": "#005eb9",
+    "onWhite": 6.36,
+    "onMuted": 5.57,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/neutral/base",
+    "role": "border",
+    "value": "#c6c9cd",
+    "onWhite": 1.66,
+    "onMuted": 1.46,
+    "floor": 0,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/neutral/bolder/default",
+    "role": "border",
+    "value": "#6f757d",
+    "onWhite": 4.65,
+    "onMuted": 4.07,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/neutral/bolder/hover",
+    "role": "border",
+    "value": "#54585e",
+    "onWhite": 7.16,
+    "onMuted": 6.27,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/neutral/subtle",
+    "role": "border",
+    "value": "#dcdee1",
+    "onWhite": 1.35,
+    "onMuted": 1.18,
+    "floor": 0,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/status/error/base",
+    "role": "border",
+    "value": "#aa2d30",
+    "onWhite": 6.72,
+    "onMuted": 5.88,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/status/error/bolder",
+    "role": "border",
+    "value": "#8b1e22",
+    "onWhite": 9.1,
+    "onMuted": 7.97,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/status/info/base",
+    "role": "border",
+    "value": "#006d85",
+    "onWhite": 5.96,
+    "onMuted": 5.22,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/status/info/bolder",
+    "role": "border",
+    "value": "#005568",
+    "onWhite": 8.4,
+    "onMuted": 7.36,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/status/success/base",
+    "role": "border",
+    "value": "#046a38",
+    "onWhite": 6.72,
+    "onMuted": 5.89,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/status/success/bolder",
+    "role": "border",
+    "value": "#00532a",
+    "onWhite": 9.25,
+    "onMuted": 8.1,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/status/warning/base",
+    "role": "border",
+    "value": "#8b5e00",
+    "onWhite": 5.68,
+    "onMuted": 4.97,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "border/status/warning/bolder",
+    "role": "border",
+    "value": "#704b00",
+    "onWhite": 7.79,
+    "onMuted": 6.82,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/brand/primary/base",
+    "role": "icon",
+    "value": "#0373df",
+    "onWhite": 4.64,
+    "onMuted": 4.07,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/brand/primary/bolder",
+    "role": "icon",
+    "value": "#005eb9",
+    "onWhite": 6.36,
+    "onMuted": 5.57,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/neutral/base",
+    "role": "icon",
+    "value": "#1e2124",
+    "onWhite": 16.18,
+    "onMuted": 14.17,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/neutral/subtle",
+    "role": "icon",
+    "value": "#3a3d41",
+    "onWhite": 10.92,
+    "onMuted": 9.56,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/neutral/subtler",
+    "role": "icon",
+    "value": "#6f757d",
+    "onWhite": 4.65,
+    "onMuted": 4.07,
+    "floor": 3,
+    "ground": "white",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/status/error/base",
+    "role": "icon",
+    "value": "#aa2d30",
+    "onWhite": 6.72,
+    "onMuted": 5.88,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/status/error/bolder",
+    "role": "icon",
+    "value": "#8b1e22",
+    "onWhite": 9.1,
+    "onMuted": 7.97,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/status/info/base",
+    "role": "icon",
+    "value": "#006d85",
+    "onWhite": 5.96,
+    "onMuted": 5.22,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/status/info/bolder",
+    "role": "icon",
+    "value": "#005568",
+    "onWhite": 8.4,
+    "onMuted": 7.36,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/status/success/base",
+    "role": "icon",
+    "value": "#046a38",
+    "onWhite": 6.72,
+    "onMuted": 5.89,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/status/success/bolder",
+    "role": "icon",
+    "value": "#00532a",
+    "onWhite": 9.25,
+    "onMuted": 8.1,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/status/warning/base",
+    "role": "icon",
+    "value": "#8b5e00",
+    "onWhite": 5.68,
+    "onMuted": 4.97,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "icon/status/warning/bolder",
+    "role": "icon",
+    "value": "#704b00",
+    "onWhite": 7.79,
+    "onMuted": 6.82,
+    "floor": 3,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "text/brand/primary/base",
+    "role": "text",
+    "value": "#005eb9",
+    "onWhite": 6.36,
+    "onMuted": 5.57,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "text/brand/primary/bolder",
+    "role": "text",
+    "value": "#004b96",
+    "onWhite": 8.58,
+    "onMuted": 7.52,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/link/brand/active",
+    "role": "text",
+    "value": "#003975",
+    "onWhite": 11.4,
+    "onMuted": 9.99,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/link/brand/default",
+    "role": "text",
+    "value": "#005eb9",
+    "onWhite": 6.36,
+    "onMuted": 5.57,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "text/link/brand/hover",
+    "role": "text",
+    "value": "#004b96",
+    "onWhite": 8.58,
+    "onMuted": 7.52,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/link/neutral/default",
+    "role": "text",
+    "value": "#3a3d41",
+    "onWhite": 10.92,
+    "onMuted": 9.56,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/link/visited/default",
+    "role": "text",
+    "value": "#003975",
+    "onWhite": 11.4,
+    "onMuted": 9.99,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/neutral/base",
+    "role": "text",
+    "value": "#1e2124",
+    "onWhite": 16.18,
+    "onMuted": 14.17,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/neutral/bolder",
+    "role": "text",
+    "value": "#0e1114",
+    "onWhite": 18.94,
+    "onMuted": 16.59,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/neutral/subtle",
+    "role": "text",
+    "value": "#3a3d41",
+    "onWhite": 10.92,
+    "onMuted": 9.56,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/neutral/subtler",
+    "role": "text",
+    "value": "#6f757d",
+    "onWhite": 4.65,
+    "onMuted": 4.07,
+    "floor": 4.5,
+    "ground": "white",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "text/status/error/base",
+    "role": "text",
+    "value": "#aa2d30",
+    "onWhite": 6.72,
+    "onMuted": 5.88,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "text/status/error/bolder",
+    "role": "text",
+    "value": "#8b1e22",
+    "onWhite": 9.1,
+    "onMuted": 7.97,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/status/info/base",
+    "role": "text",
+    "value": "#006d85",
+    "onWhite": 5.96,
+    "onMuted": 5.22,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "text/status/info/bolder",
+    "role": "text",
+    "value": "#005568",
+    "onWhite": 8.4,
+    "onMuted": 7.36,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/status/success/base",
+    "role": "text",
+    "value": "#046a38",
+    "onWhite": 6.72,
+    "onMuted": 5.89,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "text/status/success/bolder",
+    "role": "text",
+    "value": "#00532a",
+    "onWhite": 9.25,
+    "onMuted": 8.1,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": true,
+    "pass": true
+  },
+  {
+    "token": "text/status/warning/base",
+    "role": "text",
+    "value": "#8b5e00",
+    "onWhite": 5.68,
+    "onMuted": 4.97,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  },
+  {
+    "token": "text/status/warning/bolder",
+    "role": "text",
+    "value": "#704b00",
+    "onWhite": 7.79,
+    "onMuted": 6.82,
+    "floor": 4.5,
+    "ground": "both",
+    "aaa": false,
+    "pass": true
+  }
+];

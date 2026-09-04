@@ -23,6 +23,8 @@
  * colours, not a conformance claim.
  */
 import { readFileSync, writeFileSync } from "node:fs";
+import { hexToOklch, deltaE, hueDelta } from "./oklch.mjs";
+import { simulateCvd, CVD_TYPES } from "./cvd.mjs";
 
 const here = (p) => new URL(p, import.meta.url).pathname;
 const css = readFileSync(here("../dist/tokens.css"), "utf8");
@@ -58,14 +60,16 @@ function ratio(a, b) {
 }
 
 const WHITE = resolve("--sa-bg-neutral-base");
+const MUTED = resolve("--sa-bg-neutral-subtler");
+const ok = (hex) => { if (!hex?.startsWith("#")) return null; const o = hexToOklch(hex); return { L: Math.round(o.L * 10) / 10, C: Math.round(o.C * 1000) / 1000, H: Math.round(o.H) }; };
 
 // ── ramps ────────────────────────────────────────────────────────────────
 const RAMP_ORDER = ["primaryScale", "secondaryScale", "accentScale", "neutralScale",
   "successScale", "dangerScale", "warningScale", "infoScale"];
 const ANCHOR = {
   primaryScale: { 500: "anchor · blue", 600: "anchor · navy" },
-  secondaryScale: { 400: "anchor" }, accentScale: { 500: "anchor" },
-  successScale: { 500: "anchor" }, dangerScale: { 400: "anchor" },
+  secondaryScale: { 400: "anchor" }, accentScale: { 600: "anchor" },
+  successScale: { 600: "anchor" }, dangerScale: { 400: "anchor" },
   warningScale: { 300: "anchor" }, infoScale: { 500: "anchor" }, neutralScale: {},
 };
 const ramps = RAMP_ORDER.map((name) => {
@@ -78,7 +82,7 @@ const ramps = RAMP_ORDER.map((name) => {
       const token = `--sa-color-${name}-${s}`;
       const blue = resolve(token);
       const navy = resolve(token, NAVY);
-      return { step: s, token, blue, navy, onWhite: ratio(blue, WHITE), anchor: ANCHOR[name][s] ?? null };
+      return { step: s, token, blue, navy, onWhite: ratio(blue, WHITE), onMuted: ratio(blue, MUTED), oklch: ok(blue), anchor: ANCHOR[name][s] ?? null };
     }),
     brandVaries: steps.some((s) => resolve(`--sa-color-${name}-${s}`) !== resolve(`--sa-color-${name}-${s}`, NAVY)),
   };
@@ -155,6 +159,96 @@ const RETIRED = [
   return { from, to, value, onWhite: value?.startsWith("#") ? ratio(value, WHITE) : null, note };
 });
 
+
+// ── the status pairing matrix — every pair a component actually uses ─────
+const STATUSES = ["success", "error", "warning", "info"];
+const statusMatrix = STATUSES.map((st) => {
+  const t = (n) => resolve(`--sa-${n}`);
+  const bg = (r) => `bg-status-${st}-${r}`, tx = (r) => `text-status-${st}-${r}`, on = (r) => `on-bg-status-${st}-${r}`;
+  const row = (label, use, fillTok, inkTok) => ({ label, use, fillToken: fillTok.replace(/-/g, "/"), inkToken: inkTok.replace(/-/g, "/"), fill: t(fillTok), ink: t(inkTok), ratio: ratio(t(inkTok), t(fillTok)) });
+  return {
+    status: st,
+    pairs: [
+      row("Message on the page", "Field message, inline note, table cell", "bg-neutral-subtler", tx("base")),
+      row("Message on a card", "Alert body on white", "bg-neutral-base", tx("base")),
+      row("Base tint + base ink", "Alert, callout, toast ground", bg("base"), tx("base")),
+      row("Subtler tint + bolder ink", "Tonal badge, chip, docs status pill", bg("subtler"), tx("bolder")),
+      row("Bold tint + measured ink", st === "warning" ? "Solid amber chip — amber's only solid" : "Selected row, active filter", bg("bold"), on("bold")),
+      row("Bolder fill + measured ink", "Solid badge, filled banner, primary action", bg("bolder"), on("bolder")),
+      row("Boldest fill + measured ink", "Maximum emphasis", bg("boldest"), on("boldest")),
+    ],
+    icon: { token: `icon/status/${st}/base`, value: t(`icon-status-${st}-base`), onWhite: ratio(t(`icon-status-${st}-base`), WHITE) },
+    border: { token: `border/status/${st}/base`, value: t(`border-status-${st}-base`), onWhite: ratio(t(`border-status-${st}-base`), WHITE), onMuted: ratio(t(`border-status-${st}-base`), MUTED) },
+  };
+});
+
+// ── colour vision — Machado 2009 at severity 1.0, the matrices Chrome and Figma use ──
+const simSet = (entries) => entries.map(([label, token]) => {
+  const v = resolve(token);
+  return { label, token: token.replace(/^--sa-/, "").replace(/-/g, "/"), value: v, sim: Object.fromEntries(CVD_TYPES.map((t) => [t, simulateCvd(v, t)])) };
+});
+const worstPairs = (set) => Object.fromEntries(["none", ...CVD_TYPES].map((t) => {
+  let w = { d: Infinity, a: "", b: "" };
+  for (let i = 0; i < set.length; i++) for (let j = i + 1; j < set.length; j++) {
+    const a = t === "none" ? set[i].value : set[i].sim[t], b = t === "none" ? set[j].value : set[j].sim[t];
+    const d = deltaE(a, b); if (d < w.d) w = { d: Math.round(d * 10) / 10, a: set[i].label, b: set[j].label };
+  }
+  return [t, w];
+}));
+const cvdSets = [
+  { key: "inks", title: "Status text and the brand ink", entries: simSet([["success", "--sa-text-status-success-base"], ["error", "--sa-text-status-error-base"], ["warning", "--sa-text-status-warning-base"], ["info", "--sa-text-status-info-base"], ["brand", "--sa-text-brand-primary-base"]]) },
+  { key: "fills", title: "Solid fills under white ink", entries: simSet([["success", "--sa-bg-status-success-bolder"], ["error", "--sa-bg-status-error-bolder"], ["warning", "--sa-bg-status-warning-bolder"], ["info", "--sa-bg-status-info-bolder"], ["primary", "--sa-bg-brand-primary-bolder"], ["secondary", "--sa-bg-brand-secondary-bolder"]]) },
+  { key: "tints", title: "Tonal grounds (subtler)", entries: simSet([["success", "--sa-bg-status-success-subtler"], ["error", "--sa-bg-status-error-subtler"], ["warning", "--sa-bg-status-warning-subtler"], ["info", "--sa-bg-status-info-subtler"], ["primary", "--sa-bg-brand-primary-subtler"]]) },
+  { key: "chart", title: "Categorical series 1–9", entries: simSet(Array.from({ length: 9 }, (_, i) => [`S${i + 1}`, `--sa-chart-cat-${i + 1}`])) },
+  { key: "diverging", title: "Diverging scale ends", entries: simSet([["negative", "--sa-chart-div-neg"], ["positive", "--sa-chart-div-pos"], ["neg strong", "--sa-chart-div-negStrong"], ["pos strong", "--sa-chart-div-posStrong"]]) },
+].map((s) => ({ ...s, worst: worstPairs(s.entries) }));
+
+// ── every mode, measured inside its own stylesheet block ─────────────────
+const ux4gCss = (() => { try { return readFileSync(here("../dist/ux4g.css"), "utf8"); } catch { return ""; } })();
+const ALL_CSS = css + "\n" + ux4gCss;
+const modeIds = [...new Set([...ALL_CSS.matchAll(/^\[data-brand="([a-z0-9-]+)"\]/gm)].map((m) => m[1]))];
+function modeDecls(id) {
+  const out = {};
+  for (const m of ALL_CSS.matchAll(/\[data-brand="([a-z0-9-]+)"\][^{]*\{([^}]*)\}/g)) {
+    if (m[1] !== id) continue;
+    for (const d of m[2].matchAll(/(--[\w-]+):\s*([^;]+);/g)) out[d[1]] = d[2].trim();
+  }
+  return out;
+}
+const MODE_ROLES = [
+  ["text/status/success/base", "--sa-text-status-success-base", "--sa-bg-neutral-subtler", 4.5],
+  ["text/status/error/base", "--sa-text-status-error-base", "--sa-bg-neutral-subtler", 4.5],
+  ["text/status/warning/base", "--sa-text-status-warning-base", "--sa-bg-neutral-subtler", 4.5],
+  ["text/status/info/base", "--sa-text-status-info-base", "--sa-bg-neutral-subtler", 4.5],
+  ["text/brand/primary/base", "--sa-text-brand-primary-base", "--sa-bg-neutral-subtler", 4.5],
+  ["text/link/brand/default", "--sa-text-link-brand-default", "--sa-bg-neutral-subtler", 4.5],
+  ["border/neutral/bolder/default", "--sa-border-neutral-bolder-default", "--sa-bg-neutral-subtler", 3],
+  ["focus/ring", "--sa-focus-ring", "--sa-bg-neutral-base", 3],
+  ["on/bg/brand/primary/bolder", "--sa-on-bg-brand-primary-bolder", "--sa-bg-brand-primary-bolder", 4.5],
+  ["on/bg/status/warning/bold", "--sa-on-bg-status-warning-bold", "--sa-bg-status-warning-bold", 4.5],
+  ["text/neutral/disabled", "--sa-text-neutral-disabled", "--sa-bg-neutral-disabled", 0],
+];
+const modes = ["blue", ...modeIds.filter((id) => id !== "blue" && id !== "dbim")].map((id) => {
+  const over = id === "blue" ? {} : modeDecls(id);
+  return {
+    id,
+    kind: id === "blue" || id === "navy" ? "brand" : id.startsWith("dbim") ? "DBIM preview" : "UX4G mode",
+    roles: MODE_ROLES.map(([token, fg, bg, floor]) => {
+      const hexOr = (name) => { const v = resolve(name, over); return v?.startsWith("#") ? v : resolve(name); };
+      const f = hexOr(fg), b = hexOr(bg);
+      const r = ratio(f, b);
+      return { token, value: f, against: bg.replace(/^--sa-/, "").replace(/-/g, "/"), ratio: r, floor, pass: floor === 0 ? null : r !== null && r >= floor };
+    }),
+  };
+});
+
+// ── every ink, icon and border role, against both grounds ────────────────
+const roleContrast = Object.keys(ROOT)
+  .filter((n) => /^--sa-(text|icon|border)-(neutral|brand|status|link)-/.test(n) && !/inverse|disabled/.test(n))
+  .map((n) => { const v = resolve(n); if (!v?.startsWith("#")) return null; const role = n.startsWith("--sa-border") ? "border" : n.startsWith("--sa-icon") ? "icon" : "text"; const divider = role === "border" && /neutral\/(subtle|base)$/.test(n.replace(/^--sa-/, "").replace(/-/g, "/")); const floor = role === "text" ? 4.5 : divider ? 0 : 3; const w = ratio(v, WHITE), m = ratio(v, MUTED); const token = n.replace(/^--sa-/, "").replace(/-/g, "/"); const whiteOnly = token === "text/neutral/subtler" || token === "icon/neutral/subtler"; const judged = whiteOnly ? w : Math.min(w, m); return { token, role, value: v, onWhite: w, onMuted: m, floor, ground: whiteOnly ? "white" : "both", aaa: role === "text" && judged >= 7, pass: judged >= floor }; })
+  .filter(Boolean)
+  .sort((a, b) => a.token.localeCompare(b.token));
+
 // ── the section list both surfaces share ─────────────────────────────────
 const SECTIONS = [
   ["hero", "At a glance"],
@@ -175,6 +269,9 @@ const SECTIONS = [
   ["accessibility", "The floors, and how they are held"],
   ["handoff", "From this variable to that line of code"],
   ["retired", "What was retired, and what replaced it"],
+  ["in-use", "Three contexts, one palette"],
+  ["colour-vision", "What a colour-blind reader sees"],
+  ["modes", "Ten modes, one set of measurements"],
   ["provenance", "Where these numbers come from"],
 ].map(([id, title]) => ({ id, title }));
 
@@ -188,6 +285,11 @@ const meta = {
   rungCaveats: ledger.length,
   brandVaryingRamps: ramps.filter((r) => r.brandVaries).map((r) => r.name),
   worstChartSeries: Math.min(...chart.categorical.map((c) => c.onPage)),
+  modesMeasured: modes.length,
+  cvdSafeSeries: 9,
+  worstCvdSeriesPair: Math.min(...CVD_TYPES.map((t) => cvdSets.find((s) => s.key === "chart").worst[t].d)),
+  rolesMeasured: roleContrast.length,
+  rolesBelowFloor: roleContrast.filter((r) => !r.pass).length,
   generatedFrom: "packages/tokens/dist/tokens.css",
 };
 
@@ -203,7 +305,14 @@ const out = `/* GENERATED by @mosje/tokens (build/generate-color-docs-data.mjs) 
 
    Regenerate: npm run build -w @mosje/tokens */
 
-export type RampStep = { step: number; token: string; blue: string; navy: string; onWhite: number | null; anchor: string | null };
+export type RampStep = { step: number; token: string; blue: string; navy: string; onWhite: number | null; onMuted: number | null; oklch: { L: number; C: number; H: number } | null; anchor: string | null };
+export type StatusPair = { label: string; use: string; fillToken: string; inkToken: string; fill: string; ink: string; ratio: number | null };
+export type StatusRow = { status: string; pairs: StatusPair[]; icon: { token: string; value: string; onWhite: number | null }; border: { token: string; value: string; onWhite: number | null; onMuted: number | null } };
+export type CvdEntry = { label: string; token: string; value: string; sim: Record<string, string> };
+export type CvdSet = { key: string; title: string; entries: CvdEntry[]; worst: Record<string, { d: number; a: string; b: string }> };
+export type ModeRole = { token: string; value: string | null; against: string; ratio: number | null; floor: number; pass: boolean | null };
+export type Mode = { id: string; kind: string; roles: ModeRole[] };
+export type RoleContrast = { token: string; role: string; value: string; onWhite: number | null; onMuted: number | null; floor: number; ground: string; aaa: boolean; pass: boolean };
 export type Ramp = { name: string; steps: RampStep[]; brandVaries: boolean };
 export type InkPair = { rung: string; bgToken: string; onToken: string; fill: string; ink: string; ratio: number | null };
 export type PairFamily = { family: string; label: string; rungs: InkPair[] };
@@ -229,6 +338,14 @@ export const LAYERS = ${JSON.stringify(layers, null, 2)} as const;
 export const SLOT_COUNTS = ${JSON.stringify(slotCounts, null, 2)} as const;
 
 export const RETIRED = ${JSON.stringify(RETIRED, null, 2)} as const;
+
+export const STATUS_MATRIX: readonly StatusRow[] = ${JSON.stringify(statusMatrix, null, 2)};
+
+export const CVD: readonly CvdSet[] = ${JSON.stringify(cvdSets, null, 2)};
+
+export const MODES: readonly Mode[] = ${JSON.stringify(modes, null, 2)};
+
+export const ROLE_CONTRAST: readonly RoleContrast[] = ${JSON.stringify(roleContrast, null, 2)};
 `;
 
 const target = here("../../../apps/hub/src/app/design-system/foundations/color/color-data.ts");

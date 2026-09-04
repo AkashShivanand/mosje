@@ -8,26 +8,117 @@
     "frameName": "Colour — Documentation"
   },
   "$refresh": "CI cannot reach Figma, so this file is refreshed by a human with library access: read the frame's top-level child names and re-record `sections` below in order. Do that in the same commit as any Figma restructure — the gate will otherwise fail on the website side, which is the wrong place to look.",
-  "$recordedAt": "2026-08-12",
+  "$recordedAt": "2026-09-04",
   "sections": [
-    { "figma": "Hero", "web": "hero", "title": "At a glance" },
-    { "figma": "01 How to read a colour token", "web": "anatomy", "title": "How to read a colour token" },
-    { "figma": "02 Three tiers, and the one you are allowed to type", "web": "tiers", "title": "Three tiers, and the one you are allowed to type" },
-    { "figma": "03 The ramps", "web": "ramps", "title": "The ramps" },
-    { "figma": "04 Six rungs, from quiet to loud", "web": "prominence", "title": "Six rungs, from quiet to loud" },
-    { "figma": "05 Never choose an ink — the system already measured one", "web": "ink-pairings", "title": "Never choose an ink — the system already measured one" },
-    { "figma": "06 Seven slots, and a slot means one thing only", "web": "slots", "title": "Seven slots, and a slot means one thing only" },
-    { "figma": "07 Four meanings, and never colour alone", "web": "status", "title": "Four meanings, and never colour alone" },
-    { "figma": "08 Interaction states, and the ring that must always be visible", "web": "states", "title": "Interaction states, and the ring that must always be visible" },
-    { "figma": "09 Depth without guessing a grey", "web": "layers", "title": "Depth without guessing a grey" },
-    { "figma": "10 A grey that belongs to the brand, and six levels of translucency", "web": "neutrals-alpha", "title": "A grey that belongs to the brand, and six levels of translucency" },
-    { "figma": "11 Two brands, and exactly what a swap changes", "web": "brands", "title": "Two brands, and exactly what a swap changes" },
-    { "figma": "12 What this palette owes to DBIM and UX4G", "web": "conformance", "title": "What this palette owes to DBIM and UX4G" },
-    { "figma": "13 Twelve series, and the rules that keep a chart readable", "web": "charts", "title": "Twelve series, and the rules that keep a chart readable" },
-    { "figma": "14 Nine mistakes this estate has actually made", "web": "do-and-dont", "title": "Nine mistakes this estate has actually made" },
-    { "figma": "15 The floors, and how they are held", "web": "accessibility", "title": "The floors, and how they are held" },
-    { "figma": "16 From this variable to that line of code", "web": "handoff", "title": "From this variable to that line of code" },
-    { "figma": "17 What was retired, and what replaced it", "web": "retired", "title": "What was retired, and what replaced it" },
-    { "figma": "Provenance", "web": "provenance", "title": "Where these numbers come from" }
+    {
+      "figma": "Hero",
+      "web": "hero",
+      "title": "At a glance"
+    },
+    {
+      "figma": "01 How to read a colour token",
+      "web": "anatomy",
+      "title": "How to read a colour token"
+    },
+    {
+      "figma": "02 Three tiers, and the one you are allowed to type",
+      "web": "tiers",
+      "title": "Three tiers, and the one you are allowed to type"
+    },
+    {
+      "figma": "03 The ramps",
+      "web": "ramps",
+      "title": "The ramps"
+    },
+    {
+      "figma": "04 Six rungs, from quiet to loud",
+      "web": "prominence",
+      "title": "Six rungs, from quiet to loud"
+    },
+    {
+      "figma": "05 Never choose an ink — the system already measured one",
+      "web": "ink-pairings",
+      "title": "Never choose an ink — the system already measured one"
+    },
+    {
+      "figma": "06 Seven slots, and a slot means one thing only",
+      "web": "slots",
+      "title": "Seven slots, and a slot means one thing only"
+    },
+    {
+      "figma": "07 Four meanings, and never colour alone",
+      "web": "status",
+      "title": "Four meanings, and never colour alone"
+    },
+    {
+      "figma": "08 Interaction states, and the ring that must always be visible",
+      "web": "states",
+      "title": "Interaction states, and the ring that must always be visible"
+    },
+    {
+      "figma": "09 Depth without guessing a grey",
+      "web": "layers",
+      "title": "Depth without guessing a grey"
+    },
+    {
+      "figma": "10 A grey that belongs to the brand, and six levels of translucency",
+      "web": "neutrals-alpha",
+      "title": "A grey that belongs to the brand, and six levels of translucency"
+    },
+    {
+      "figma": "11 Two brands, and exactly what a swap changes",
+      "web": "brands",
+      "title": "Two brands, and exactly what a swap changes"
+    },
+    {
+      "figma": "12 What this palette owes to DBIM and UX4G",
+      "web": "conformance",
+      "title": "What this palette owes to DBIM and UX4G"
+    },
+    {
+      "figma": "13 Twelve series, and the rules that keep a chart readable",
+      "web": "charts",
+      "title": "Twelve series, and the rules that keep a chart readable"
+    },
+    {
+      "figma": "14 Nine mistakes this estate has actually made",
+      "web": "do-and-dont",
+      "title": "Nine mistakes this estate has actually made"
+    },
+    {
+      "figma": "15 The floors, and how they are held",
+      "web": "accessibility",
+      "title": "The floors, and how they are held"
+    },
+    {
+      "figma": "16 From this variable to that line of code",
+      "web": "handoff",
+      "title": "From this variable to that line of code"
+    },
+    {
+      "figma": "17 What was retired, and what replaced it",
+      "web": "retired",
+      "title": "What was retired, and what replaced it"
+    },
+    {
+      "figma": "18 Three contexts, one palette",
+      "web": "in-use",
+      "title": "Three contexts, one palette"
+    },
+    {
+      "figma": "19 What a colour-blind reader sees",
+      "web": "colour-vision",
+      "title": "What a colour-blind reader sees"
+    },
+    {
+      "figma": "20 Ten modes, one set of measurements",
+      "web": "modes",
+      "title": "Ten modes, one set of measurements"
+    },
+    {
+      "figma": "Provenance",
+      "web": "provenance",
+      "title": "Where these numbers come from"
+    }
   ]
 }
