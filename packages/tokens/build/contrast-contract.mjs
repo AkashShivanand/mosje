@@ -62,6 +62,50 @@ const LADDER_WORDS = { ink: INK_LADDER, fill: FILL_LADDER };
 /** The surface a role's contrast is judged against. */
 const PAGE_SURFACE = "bg/neutral/base";
 const INVERSE_SURFACE = "bg/neutral/inverse";
+/**
+ * THE ESTATE'S PAGES ARE NOT WHITE, and judging them as though they were is how a real
+ * failure passed this gate for months.
+ *
+ * `bg/neutral/base` is the surface of a card. The `<body>` carries `bg-surface-muted`,
+ * which is `bg/neutral/subtler` (#eef0f3) — so ordinary body text sits on the muted ground
+ * far more often than on white. Measured against white alone,
+ * `text/link/brand/default` scored 4.64:1 and passed; on the ground it actually occupies it
+ * was 4.07:1, under the 4.5:1 of SC 1.4.3, on most pages of a Government of India property.
+ *
+ * A text token must therefore clear its bar on BOTH grounds, and the audit takes the worse
+ * of the two — the same way it already takes the worst brand rather than the kindest.
+ * Widening it caught exactly two more tokens, both fixed in the same change as this.
+ */
+const BODY_SURFACE = "bg/neutral/subtler";
+
+/**
+ * Tokens whose ground is a WHITE FILL, not the page — judged on `bg/neutral/base` alone.
+ *
+ * This is not an escape hatch, and it is deliberately two entries long. Widening the audit
+ * to the muted ground flagged exactly two more tokens, and neither is a defect: both are
+ * deliberate designs this repository had already written down, and failing them would have
+ * pushed someone to "fix" a token that is correct.
+ *
+ * A token earns a place here only when it sits on a white FILL rather than on the page, and
+ * the reason is recorded beside it. If a token is used on the muted ground, it does not
+ * belong here — it belongs at a darker rung, which is what happened to
+ * `text/link/brand/default` on 2026-09-04.
+ */
+const WHITE_GROUND_ONLY = new Map([
+  [
+    "text/neutral/subtler",
+    "The placeholder in an unfilled input or select. It sits INSIDE the control, whose fill " +
+      "is bg/neutral/base, so the page behind the control is never behind the text. Its own " +
+      "description names that surface and that use.",
+  ],
+  [
+    "text/brand/primary/base",
+    "The brand key colour as ink. A key colour is chosen to be recognisable, not readable, " +
+      "and generate-system-tokens.mjs says so where it is defined — which is why " +
+      "text/brand/primary/bolder exists at the 600 rung (6.36 / 5.57) and is the one to " +
+      "reach for whenever brand text lands on anything but plain white.",
+  ],
+]);
 
 /**
  * What WCAG requires of a role when the LADDER has nothing to say.
@@ -113,9 +157,37 @@ export function contractFor(path, tier, figmaType) {
   // would push a designer to "fix" a token that is correct as it is.
   if (state === "disabled" || path.includes("disabled")) return null;
 
-  const surface = path.includes("inverse") ? INVERSE_SURFACE : PAGE_SURFACE;
-  // The page surface cannot be measured against itself.
-  if (path.join("/") === surface) return null;
+  // `surface` stays a single string because callers read it; `surfaces` is what the audit
+  // measures, and for anything on a light page that is BOTH grounds the estate ships.
+  const inverse = path.includes("inverse");
+  const surface = inverse ? INVERSE_SURFACE : PAGE_SURFACE;
+  const self = path.join("/");
+
+  // ONLY `text` reads both grounds, and the restraint is the point.
+  //
+  // The defect this widening exists to catch is READING TEXT on the muted page. Re-grounding
+  // the other roles would change every number without adding safety:
+  //
+  //   · `bg/*` — a fill measured against another fill is a ladder-definition argument, not a
+  //     WCAG one, and the ledger below already records that "for quiet fills the LADDER is the
+  //     thing that is wrong, not the colours". Re-grounding them rewrites sixteen recorded
+  //     measurements to say the same thing slightly worse.
+  //   · `icon` — the ink ladder asks 4.5:1 of a `base` rung, which is stricter than the 3:1
+  //     SC 1.4.11 actually requires of a meaningful icon. `icon/brand/primary/base` measures
+  //     4.07:1 on the muted ground: clear of WCAG, short of the rung. That is the same
+  //     ladder-definition argument, and manufacturing a shortfall out of it would push someone
+  //     to "fix" a colour that meets the criterion it is judged by.
+  //
+  // So the widening is deliberately confined to the role whose bar comes from WCAG itself.
+  const bothGrounds = role === "text" && !inverse && !WHITE_GROUND_ONLY.has(self);
+  const grounds = inverse
+    ? [INVERSE_SURFACE]
+    : bothGrounds
+      ? [PAGE_SURFACE, BODY_SURFACE]
+      : [PAGE_SURFACE];
+  // A surface cannot be measured against itself.
+  const surfaces = grounds.filter((s) => s !== self);
+  if (!surfaces.length) return null;
 
   const ladder = LADDER_FOR_ROLE[role];
   const rung = prominence && LADDER_WORDS[ladder]?.has(prominence) ? prominence : null;
@@ -125,14 +197,14 @@ export function contractFor(path, tier, figmaType) {
     // 1.4.11) and a caption on ink (≥4.5:1, 1.4.3). One flat table could only be right
     // about one of them.
     const c = PROMINENCE_CONTRACT[ladder]?.[rung];
-    if (c) return { source: "ladder", ladder, rung, role, minContrast: c.minContrast, use: c.use, surface };
+    if (c) return { source: "ladder", ladder, rung, role, minContrast: c.minContrast, use: c.use, surface, surfaces };
   }
 
   // No rung the role can read — fall back to what WCAG requires of the role itself, if
   // anything. Fills and boundaries fall through to `null` and stay silent.
   const baseline = ROLE_BASELINE[role];
   if (!baseline) return null;
-  return { source: "wcag", rung: null, role, ...baseline, surface };
+  return { source: "wcag", rung: null, role, ...baseline, surface, surfaces };
 }
 
 // ---------------------------------------------------------------------------
@@ -229,21 +301,28 @@ export function auditPayload(payload) {
       const contract = contractFor(v.path.split("/"), tier, v.type);
       if (!contract) continue;
 
-      const surfaceRef = byPath.get(contract.surface);
-      if (!surfaceRef) continue;
+      const surfaceRefs = (contract.surfaces ?? [contract.surface])
+        .map((s) => byPath.get(s))
+        .filter(Boolean);
+      if (!surfaceRefs.length) continue;
 
+      // Worst of every brand AND every ground the token can sit on. Taking the kindest
+      // surface is how a 4.07:1 link reported 4.64:1 and passed.
       let worst = Infinity;
       let ok = true;
       for (const brand of brands) {
-        const fg = resolveColor(index, c.name, v.name, brand);
-        const bgc = resolveColor(index, surfaceRef.collection, surfaceRef.name, brand);
-        if (!fg || !bgc) {
-          ok = false;
-          break;
+        for (const surfaceRef of surfaceRefs) {
+          const fg = resolveColor(index, c.name, v.name, brand);
+          const bgc = resolveColor(index, surfaceRef.collection, surfaceRef.name, brand);
+          if (!fg || !bgc) {
+            ok = false;
+            break;
+          }
+          const bgHex = toHex(over(bgc, [255, 255, 255]));
+          const ratio = contrast(toHex(over(fg, parseColor(bgHex))), bgHex);
+          if (ratio < worst) worst = ratio;
         }
-        const bgHex = toHex(over(bgc, [255, 255, 255]));
-        const ratio = contrast(toHex(over(fg, parseColor(bgHex))), bgHex);
-        if (ratio < worst) worst = ratio;
+        if (!ok) break;
       }
       // Unresolvable is NOT "passing". A token whose value cannot be reached is a token
       // whose claim cannot be checked, and an unverifiable claim must not be published.
