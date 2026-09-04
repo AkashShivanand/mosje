@@ -904,5 +904,15 @@
       }
     },
     "deliberatelyOmitted": []
+  },
+  "SigningIntoBar": {
+    "nodeId": "55439:731",
+    "captured": "2026-09-04",
+    "properties": {
+      "Portal name": {
+        "type": "TEXT"
+      }
+    },
+    "deliberatelyOmitted": []
   }
 }
