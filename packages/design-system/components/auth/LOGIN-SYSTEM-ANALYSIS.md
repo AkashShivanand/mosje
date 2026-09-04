@@ -600,9 +600,12 @@ radii bound; zero raw.**
 
 ### Reuse scorecard
 
-**Reused from the DS (13):** `AccessibilityBar` · `Navbar/BrandLockup` · `Divider` ·
-`Input Field` · `Button` · `Link` · `Icon` · `IconButton` · `CloseButton` · `Chip` ·
+**Reused from the DS (12):** `AccessibilityBar` · `Navbar/BrandLockup` · `Divider` ·
+`Input Field` · `Button` · `Link` · `Icon` · `IconButton` · `Chip` ·
 **`Tabs / Tab`** · **`Tabs / Tab (Alt)`** · `Modal / Backdrop`
+
+<!-- `CloseButton` was the thirteenth until 2026-09-04, when it was migrated to
+     `IconButton` and its Figma set and page were deleted. -->
 
 **Genuinely new (15):** `OTP Input` + `/ Box` · `Select` · `Captcha Field` ·
 `PasswordStrengthMeter` · `SideSheet` · the eight `Auth / *` parts · `Auth / PortalList` ·

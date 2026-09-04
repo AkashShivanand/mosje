@@ -32,52 +32,131 @@ const FIGMA_FILE_KEY = "3FF5l0SMNIwdpZrKkeyPTm";
  * not a mapping: Figma's `Loader` on the Carousel page is a carousel-specific
  * spinner, not the `Loader` atom, and pairing them by name would publish a
  * wrong snippet.
+ *
+ * WHERE THE CONFIRMATION COMES FROM. The strongest evidence is a Code Connect
+ * template — `*.figma.ts` beside the component names a Figma node id AND the
+ * code component it renders, and a human wrote both. Twenty-six of the entries
+ * below are read straight off those templates. The rest are confirmed against
+ * the component's own source, and the comment says which. Anything that could
+ * only be settled by guessing is NOT here — it stays `figma-only` and gets
+ * raised with a human instead.
  */
 const PAIRINGS = {
+  // ── Actions ────────────────────────────────────────────────────────────────
+  // All four confirmed by Code Connect templates in components/actions/.
   Button: "Button",
-  IconButton: "Button",
-  Link: "Button",
+  IconButton: "IconButton",
+  ButtonGroup: "ButtonGroup",
+  Link: "Link",
+
+  // ── Forms ──────────────────────────────────────────────────────────────────
+  Checkbox: "Checkbox",
+  Radio: "Radio",
+  // radio.tsx: `"card" = a full selectable card (Portal DS Radio Card)` — the
+  // code names the Figma set it implements, which is as confirmed as it gets.
+  "radio-card": "Radio",
+  Toggle: "Toggle",
+  Search: "Search",
+  Select: "Select",
+  "Select / Filter": "FilterSelect",
+  Dropdown: "Select",
+  "Dropdown / MenuItem": "Select",
+  "Input Field": "Input",
+  "Input Area": "Textarea",
+  "OTP Input": "OtpInput",
+  BotCheck: "BotCheck",
+  DatePicker: "DatePicker",
+  PasswordStrengthMeter: "PasswordStrengthMeter",
+  "Character Count": "CharacterCount",
+  "Required Fields Legend": "RequiredFieldsLegend",
+
+  // ── Data display ───────────────────────────────────────────────────────────
   Badge: "Badge",
   Avatar: "Avatar",
   Card: "Card",
-  Checkbox: "Checkbox",
-  Radio: "Radio",
-  Toggle: "Toggle",
   Chip: "Chip",
   "Chip / User": "Chip",
-  Search: "Search",
+  Accordion: "Accordion",
+  "Accordion / Item": "AccordionItem",
+  Table: "DataTable",
+  "Table / Cell": "DataTable",
+  "Table / Row": "DataTable",
+  Chart: "LineChart",
+  IndiaMap: "IndiaMap",
+  Divider: "Divider",
+
+  // ── Feedback ───────────────────────────────────────────────────────────────
   Alert: "Alert",
   Ticker: "Ticker",
   EmptyState: "EmptyState",
   Tooltip: "Tooltip",
   Modal: "Modal",
   "Modal / Backdrop": "Modal",
-  Dropdown: "Select",
-  "Dropdown / MenuItem": "Select",
-  "Input Field": "Input",
-  "Input Area": "Textarea",
-  "Input Field — Label & Description": "Label",
+  SideSheet: "SideSheet",
+  Chatbot: "Chatbot",
+  "Chatbot Mascot": "ChatbotMascot",
+  Loader: "Loader", // Loader page only — the Carousel one is excluded below
+
+  // ── Navigation ─────────────────────────────────────────────────────────────
+  Breadcrumb: "Breadcrumb",
+  Pagination: "Pagination",
+  Tabs: "Tabs",
   "Tabs / Tab": "Tabs",
-  "Tabs / Tab (Alt)": "Tabs",
-  Table: "DataTable",
-  "Table / Cell": "DataTable",
-  "Table / Row": "DataTable",
+  // Their Code Connect templates render `TabsMore` and `Tab`, neither of which
+  // the barrel exports, so both resolve to the component that does.
+  "Tabs / More": "Tabs",
+  "[Deprecated] Tabs / Tab (Alt)": "Tabs",
+  "Portal Card": "PortalCard",
+  "SAMAVESH Banner": "SamaveshBanner",
   "Footer/Desktop": "Footer",
   "Footer/Mobile": "Footer",
-  "navbar/sitebar": "SiteHeader",
-  "navbar/appbar": "SiteHeader",
   "sidebar/type-1": "SidebarNav",
   "sidebar/type-1/main-item": "SidebarNav",
   "sidebar/type-1/child-item": "SidebarNav",
   "Stepper / Horizontal": "Stepper",
   "Stepper / Vertical": "Stepper",
   "Stepper / Step": "Stepper",
-  Chart: "LineChart",
-  IndiaMap: "IndiaMap",
-  AccessibilityBar: "UX4GAccessibilityWidget",
-  "AccessibilityWidget / FAB": "UX4GAccessibilityWidget",
-  "AccessibilityPanel / Item": "UX4GAccessibilityWidget",
-  Loader: "Loader", // Loader page only — the Carousel one is excluded below
+
+  // ── Navbar ─────────────────────────────────────────────────────────────────
+  // Every entry from a Code Connect template in navigation/header/.
+  // The three whole-header sets are ONE component: site-header.figma.ts spells
+  // out `Navbar/Website -> variant="website"`, `Navbar/Portal -> "portal"`,
+  // `Navbar/Compact -> "compact"`, because a Figma set cannot vary structure
+  // this much across one axis.
+  "Navbar/Website": "SiteHeader",
+  "Navbar/Portal": "SiteHeader",
+  "Navbar/Compact": "SiteHeader",
+  "Navbar/BrandLockup": "BrandLockup",
+  "Navbar/NavItem": "NavItemLink",
+  "Navbar/NavSheet": "NavSheet",
+  "Navbar/NavDropdown": "NavDropdown",
+  "Navbar/DropdownItem": "DropdownItem",
+  "Navbar/MegaMenu": "MegaMenu",
+  "Navbar/MegaMenuItem": "MegaMenuItem",
+  "Navbar/MenuToggle": "MenuToggle",
+  "Navbar/AccountMenu": "AccountMenu",
+  // Its template renders `AccountMenuItem`, which the barrel does not export.
+  "Navbar/AccountMenuItem": "AccountMenu",
+
+  // ── Auth ───────────────────────────────────────────────────────────────────
+  PortalLoginTemplate: "PortalLoginTemplate",
+  "Auth / PortalLoginShell": "PortalLoginShell",
+  "Auth / SSOButton": "SSOButton",
+  "Auth / MaskedContactRow": "MaskedContactRow",
+  "Auth / ResendTimer": "ResendTimer",
+  "Auth / AccountPrompt": "AccountPrompt",
+
+  // ── Utilities ──────────────────────────────────────────────────────────────
+  // WAS `AccessibilityBar: "UX4GAccessibilityWidget"`, and that was wrong.
+  // accessibility-bar.figma.ts maps this set to `AccessibilityBar` — the top
+  // strip with Skip to Main Content and A−/A/A+. `UX4GAccessibilityWidget` is
+  // the floating third-party panel, a different component, and its Figma sets
+  // (`AccessibilityWidget / FAB`, `AccessibilityPanel / *`) have since been
+  // deleted from the library, so it is now correctly code-only.
+  AccessibilityBar: "AccessibilityBar",
+  // The per-glyph components (`add`, `close`, `search`, …) were consolidated
+  // into ONE `Icon` set, so the code `Icon` finally has something to pair with.
+  Icon: "Icon",
 };
 
 /** Figma sets deliberately not mapped, with the reason shown in the ledger. */
@@ -96,6 +175,20 @@ const FIGMA_UNMAPPED_REASON = {
   "navbar/logo": "Brand asset — inline SVG in code, not a component",
   "Gov Dept.": "Footer sub-part",
   "Footer - Bottom Strip": "Footer sub-part",
+  "OTP Input / Box": "Internal sub-part of OTP Input — one digit box",
+  "DatePicker / Trigger": "Internal sub-part of Date Picker — the field that opens it",
+  "Stepper / Step Count": "Internal sub-part of Stepper",
+  "Stepper / Style": "Internal sub-part of Stepper",
+  "FeedbackWidget / Button": "Internal sub-part of Feedback Widget",
+  // All four are parts of the login template, realised inside
+  // PortalLoginTemplate / PortalLoginShell rather than as separate exports.
+  // portal-login-template.figma.ts names the first three by node id; the
+  // fourth is described in LOGIN-SYSTEM-ANALYSIS.md as the picker's rows.
+  "Auth / AuthFormCard": "Internal sub-part of Portal Login Template",
+  "Auth / CredentialRecovery": "Internal sub-part of Portal Login Template — the recovery steps",
+  "Auth / RecoveryFormCard": "Internal sub-part of Portal Login Template — the recovery card",
+  "Auth / OrganisationCard": "Internal sub-part of Portal Login Template — the picker's rows",
+  "Portal Hero — source photography": "Brand asset — source photography, not a component",
 };
 
 /** Code exports that are deliberately not in Figma. */
@@ -104,7 +197,6 @@ const CODE_UNMAPPED_REASON = {
   DemoFab: "Demo tooling — never product UI",
   DemoAccountsPanel: "Demo tooling — never product UI",
   AppSwitcherPanel: "Demo tooling — never product UI",
-  Icon: "Handled by the single icon mapping, not one per glyph",
   LiveRegion: "Non-visual accessibility utility",
   ColorModeProvider: "Non-visual provider",
   ToastProvider: "Non-visual provider",
