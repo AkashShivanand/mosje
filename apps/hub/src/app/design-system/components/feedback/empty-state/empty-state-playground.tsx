@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Button, EmptyState, Icon } from "@mosje/design-system";
+import { Button, EmptyState, Icon, Checkbox } from "@mosje/design-system";
 
 export function EmptyStatePlayground() {
   const [hasIcon, setHasIcon] = React.useState(true);
@@ -19,32 +19,11 @@ export function EmptyStatePlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", alignSelf: "flex-start" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={hasIcon} 
-            onChange={(e) => setHasIcon(e.target.checked)} 
-          />
-          <strong>Include icon</strong>
-        </label>
+        <Checkbox label="Include icon" size="sm" checked={hasIcon} onCheckedChange={setHasIcon} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={hasDescription} 
-            onChange={(e) => setHasDescription(e.target.checked)} 
-          />
-          <strong>Include description</strong>
-        </label>
+        <Checkbox label="Include description" size="sm" checked={hasDescription} onCheckedChange={setHasDescription} />
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={hasAction} 
-            onChange={(e) => setHasAction(e.target.checked)} 
-          />
-          <strong>Include action</strong>
-        </label>
+        <Checkbox label="Include action" size="sm" checked={hasAction} onCheckedChange={setHasAction} />
       </div>
 
       <div style={{ border: "1px dashed var(--sa-border-neutral-base)", padding: "var(--sa-padding-40)", borderRadius: "var(--sa-shape-8)" }}>

@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Toggle } from "@mosje/design-system";
+import { Toggle, Checkbox } from "@mosje/design-system";
 
 export function TogglePlayground() {
   const [checked, setChecked] = React.useState(false);
@@ -31,14 +31,7 @@ export function TogglePlayground() {
           </select>
         </label>
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={disabled} 
-            onChange={(e) => setDisabled(e.target.checked)} 
-          />
-          <strong>Disabled</strong>
-        </label>
+        <Checkbox label="Disabled" size="sm" checked={disabled} onCheckedChange={setDisabled} />
       </div>
 
       <div style={{ width: "100%", maxWidth: "320px" }}>

@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Button, Field, Fieldset, TextInput, Textarea, Select, RadioRow, Checkbox, Stepper, Card } from "@/components/nhapoa/ui";
+import { Button, Field, TextInput, Textarea, Select, Stepper, Card } from "@/components/nhapoa/ui";
+import { DeclarationCheckbox, RadioGroup } from "@mosje/design-system";
 import { GRIEVANCE_TYPES, SUBMISSION_ROLES } from "@/lib/nhapoa/citizen-data";
 import { STATES, DISTRICTS } from "@/lib/nhapoa/store/seed";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
@@ -117,12 +118,8 @@ export function GrievanceWizard({
               <h1 className="text-xl font-bold text-ink">Grievance Registration</h1>
               <p className="mt-1 text-sm text-ink-muted">Select grievance type, FIR details, and your submission role to proceed.</p>
             </div>
-            <Fieldset legend="Grievance Related To" required>
-              <div className="mt-1"><RadioRow name="type" options={GRIEVANCE_TYPES} value={d.type} onChange={(v) => set("type", v)} /></div>
-            </Fieldset>
-            <Fieldset legend="Do you have a registered FIR?" required>
-              <div className="mt-1"><RadioRow name="hasFir" options={["Yes", "No"]} value={d.hasFir} onChange={(v) => set("hasFir", v as "Yes" | "No")} /></div>
-            </Fieldset>
+            <RadioGroup legend="Grievance Related To" required name="type" orientation="horizontal" options={GRIEVANCE_TYPES.map((t) => ({ value: t, label: t }))} value={d.type || undefined} onChange={(v) => set("type", v)} />
+            <RadioGroup legend="Do you have a registered FIR?" required name="hasFir" orientation="horizontal" options={[{ value: "Yes", label: "Yes" }, { value: "No", label: "No" }]} value={d.hasFir || undefined} onChange={(v) => set("hasFir", v as "Yes" | "No")} />
             {d.hasFir === "Yes" && (
               <Field label="FIR Number">
                 <TextInput value={d.firNumber} onChange={(e) => set("firNumber", e.target.value)} placeholder="e.g. PS/2026/145" />
@@ -229,11 +226,9 @@ export function GrievanceWizard({
                 {d.documents.map((f) => <p key={f} className="rounded border border-line px-3 py-2 text-sm text-ink">{f}</p>)}
               </div>
             )}
-            <Checkbox
-              checked={d.declared}
-              onChange={(e) => set("declared", e.target.checked)}
-              label="I declare that all information provided in this submission is true and accurate to the best of my knowledge. I understand that providing false information may lead to legal action under applicable laws."
-            />
+            <DeclarationCheckbox checked={d.declared} onChange={(on) => set("declared", on)}>
+              <p>All information provided in this submission is true and accurate to the best of my knowledge. I understand that providing false information may lead to legal action under applicable laws.</p>
+            </DeclarationCheckbox>
           </div>
         )}
 

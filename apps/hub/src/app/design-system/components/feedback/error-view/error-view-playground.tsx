@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { ErrorView, type ErrorViewKind } from "@mosje/design-system";
+import { ErrorView, type ErrorViewKind, Checkbox } from "@mosje/design-system";
 
 export function ErrorViewPlayground() {
   const [kind, setKind] = React.useState<ErrorViewKind>("404");
@@ -29,25 +29,9 @@ export function ErrorViewPlayground() {
           </select>
         </div>
 
-        <label className="flex items-center gap-2 cursor-pointer text-ink">
-          <input
-            type="checkbox"
-            checked={showSearch}
-            onChange={(e) => setShowSearch(e.target.checked)}
-            className="rounded border-neutral-subtle"
-          />
-          <span>Include Search Bar</span>
-        </label>
+        <Checkbox label="Include Search Bar" size="sm" checked={showSearch} onCheckedChange={setShowSearch} />
 
-        <label className="flex items-center gap-2 cursor-pointer text-ink">
-          <input
-            type="checkbox"
-            checked={showDiagnostics}
-            onChange={(e) => setShowDiagnostics(e.target.checked)}
-            className="rounded border-neutral-subtle"
-          />
-          <span>Include Error Diagnostics</span>
-        </label>
+        <Checkbox label="Include Error Diagnostics" size="sm" checked={showDiagnostics} onCheckedChange={setShowDiagnostics} />
       </div>
 
       {/* Live Preview Container */}

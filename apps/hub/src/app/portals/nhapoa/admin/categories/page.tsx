@@ -2,7 +2,8 @@
 
 import * as React from "react";
 import { Icon, Modal } from "@mosje/design-system";
-import { PageHeader, SearchInput, Button, Field, TextInput, Checkbox } from "@/components/nhapoa/ui";
+import { PageHeader, SearchInput, Button, Field, TextInput } from "@/components/nhapoa/ui";
+import { Checkbox } from "@mosje/design-system";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
 import { fmtINR } from "@/lib/nhapoa/case-helpers";
 

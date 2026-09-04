@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { FormCard, Button } from "@mosje/design-system";
+import { FormCard, Button, Checkbox } from "@mosje/design-system";
 
 export function FormCardPlayground() {
   const [hasDescription, setHasDescription] = React.useState(true);
@@ -19,32 +19,11 @@ export function FormCardPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={hasDescription} 
-            onChange={(e) => setHasDescription(e.target.checked)} 
-          />
-          <strong>Include description</strong>
-        </label>
+        <Checkbox label="Include description" size="sm" checked={hasDescription} onCheckedChange={setHasDescription} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={isRequired} 
-            onChange={(e) => setIsRequired(e.target.checked)} 
-          />
-          <strong>Required Marker</strong>
-        </label>
+        <Checkbox label="Required Marker" size="sm" checked={isRequired} onCheckedChange={setIsRequired} />
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={hasActions} 
-            onChange={(e) => setHasActions(e.target.checked)} 
-          />
-          <strong>Include Actions</strong>
-        </label>
+        <Checkbox label="Include Actions" size="sm" checked={hasActions} onCheckedChange={setHasActions} />
       </div>
 
       <div style={{ width: "100%" }}>

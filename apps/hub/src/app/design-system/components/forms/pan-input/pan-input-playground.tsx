@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { PanInput, FormField } from "@mosje/design-system";
+import { PanInput, FormField, Checkbox } from "@mosje/design-system";
 
 export function PanInputPlayground() {
   const [pan, setPan] = React.useState("");
@@ -19,23 +19,9 @@ export function PanInputPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={invalid} 
-            onChange={(e) => setInvalid(e.target.checked)} 
-          />
-          <strong>Simulate external error</strong>
-        </label>
+        <Checkbox label="Simulate external error" size="sm" checked={invalid} onCheckedChange={setInvalid} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={disabled} 
-            onChange={(e) => setDisabled(e.target.checked)} 
-          />
-          <strong>Disabled</strong>
-        </label>
+        <Checkbox label="Disabled" size="sm" checked={disabled} onCheckedChange={setDisabled} />
       </div>
 
       <div style={{ width: "100%", maxWidth: "320px" }}>

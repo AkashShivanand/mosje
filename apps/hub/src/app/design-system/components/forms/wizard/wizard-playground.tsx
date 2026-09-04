@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Wizard, FormSection, FormField, Input } from "@mosje/design-system";
+import { Wizard, FormSection, FormField, Input, Checkbox } from "@mosje/design-system";
 
 export function WizardPlayground() {
   const [current, setCurrent] = React.useState(0);
@@ -37,14 +37,7 @@ export function WizardPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={hasError} 
-            onChange={(e) => setHasError(e.target.checked)} 
-          />
-          <strong>Simulate Error on current step</strong>
-        </label>
+        <Checkbox label="Simulate Error on current step" size="sm" checked={hasError} onCheckedChange={setHasError} />
       </div>
 
       <div style={{ width: "100%", border: "1px solid var(--sa-border-neutral-subtle)", borderRadius: "var(--sa-shape-8)", overflow: "hidden" }}>

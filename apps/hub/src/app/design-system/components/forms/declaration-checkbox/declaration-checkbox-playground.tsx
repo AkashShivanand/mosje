@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { DeclarationCheckbox } from "@mosje/design-system";
+import { DeclarationCheckbox, Checkbox } from "@mosje/design-system";
 
 export function DeclarationCheckboxPlayground() {
   const [checked, setChecked] = React.useState(false);
@@ -18,14 +18,7 @@ export function DeclarationCheckboxPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={invalid} 
-            onChange={(e) => setInvalid(e.target.checked)} 
-          />
-          <strong>Simulate Error (Form Submitted)</strong>
-        </label>
+        <Checkbox label="Simulate Error (Form Submitted)" size="sm" checked={invalid} onCheckedChange={setInvalid} />
       </div>
 
       <div style={{ width: "100%" }}>
