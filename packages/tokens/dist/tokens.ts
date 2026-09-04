@@ -607,21 +607,7 @@ export const tokens = {
       "mono": "ui-monospace, \"Cascadia Code\", \"Source Code Pro\", Menlo, monospace",
       "icon": "\"Material Symbols Rounded\", sans-serif"
     },
-    "size": {
-      "11": "0.6875rem",
-      "12": "0.75rem",
-      "14": "0.875rem",
-      "16": "1rem",
-      "20": "1.25rem",
-      "22": "1.375rem",
-      "48": "3rem"
-    },
     "lineHeight": {
-      "16": "1rem",
-      "20": "1.25rem",
-      "24": "1.5rem",
-      "28": "1.75rem",
-      "56": "3.5rem",
       "devanagari": "1.7"
     },
     "role": {
