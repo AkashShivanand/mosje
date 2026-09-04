@@ -14,7 +14,7 @@
   
   Last reviewed: 2026-09-04 · System version: v0.47.0 (EVERY TRANSLUCENT TOKEN IS A REFERENCE
   PLUS AN OPACITY REFERENCE. Figma can alias a colour and keep a separate, variable-bound
-  opacity, so the 136 rgba() literals — overlay tiers, scrim, inverse rules, inverse button
+  opacity, so the 136 rgba() literals — 48 overlay tiers, scrim, inverse rules, inverse button
   states — are now `{base}` + `{alpha.N}`; CSS resolves them as color-mix() over two custom
   properties and they follow every brand island. Navy's scrim had been the Blue neutral and
   every DBIM wash a Blue literal. The opacity scale is ONE thirteen-step ladder, 0 · 4 · 8 · 16 ·

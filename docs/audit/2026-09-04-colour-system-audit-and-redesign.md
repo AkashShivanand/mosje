@@ -574,7 +574,7 @@ was frozen at whatever brand was current when it was typed.
 
 | Family | Before | After |
 |---|---|---|
-| `color/transparent/<family>/<8–48>` (42) | rgba() literal, Navy copies hand-authored for primary and neutral only | `{color.<scale>.<rung>}` + `{alpha.N}`; Navy and every DBIM mode follow by reference |
+| `color/transparent/<family>/<8–48>` (48: eight families by six tiers) | rgba() literal, Navy copies hand-authored for primary and neutral only | `{color.<scale>.<rung>}` + `{alpha.N}`; Navy and every DBIM mode follow by reference |
 | `overlay/neutral/boldest` | rgba(30,33,36,.5) with six hand-authored DBIM copies | `{color.neutralScale.800}` at `alpha/48` |
 | `overlay/brand/hover`, `overlay/brand/active`, `border/neutral/inverse/subtle` | white rgba() | `{color.neutralScale.0}` at `alpha/8`, `/16`, `/40` |
 | `code/*` chrome (6) | white rgba() at 3/10/45/70/8/30 % | white at `alpha/4`, `/8`, `/48`, `/72`, `/8`, `/32` |

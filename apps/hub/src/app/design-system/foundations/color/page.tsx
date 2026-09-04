@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Alert, Badge, Button, Input, buttonClasses } from "@mosje/design-system";
-import { Callout, DoDont, A11yChecklist } from "@/components/design-system/docs-kit/index";
+import { Callout, DoDont, A11yChecklist, TerminalCode } from "@/components/design-system/docs-kit/index";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 import { BrandSwitcher, LivePair } from "./color-live";
 import "./color.css";
@@ -920,8 +920,7 @@ export default function ColorPage(): React.JSX.Element {
             </div>
           ))}
         </div>
-        <pre className="docs-code" aria-label="How a translucent token resolves in CSS"><code>{`--sa-color-transparent-accent-8:
-  color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-8) * 100%), transparent);`}</code></pre>
+        <TerminalCode title="tokens.css" codeText={"--sa-color-transparent-accent-8:\n  color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-8) * 100%), transparent);"} />
         <Callout type="info" title="In Figma: alias the colour, then bind the opacity">
           A translucent variable aliases its base colour and carries its own opacity, bound to the
           matching <code>alpha/*</code> number variable in the Static collection. The Plugin API
