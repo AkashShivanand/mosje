@@ -46,7 +46,7 @@
     height: var(--sa-padding-4);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-subtle);
-    transition: background-color 0.18s ease;
+    transition: background-color var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
   }
 
   @media (prefers-reduced-motion: reduce) {

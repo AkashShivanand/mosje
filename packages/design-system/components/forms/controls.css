@@ -71,15 +71,15 @@
     background-color: var(--sa-bg-neutral-base);
     color: var(--sa-on-bg-brand-primary-bolder);
     transition:
-      background-color 0.15s ease,
-      border-color 0.15s ease;
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-checkbox__mark {
     width: 14px;
     height: 14px;
     opacity: 0;
-    transition: opacity 0.12s ease;
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /* Checked OR indeterminate (aria-checked="mixed") = primary fill + visible mark */
@@ -119,7 +119,7 @@
 
   .ds-checkbox--disabled .ds-checkbox__box,
   .ds-checkbox--disabled .ds-checkbox__label {
-    opacity: 0.5;
+    opacity: var(--sa-alpha-disabled);
   }
 
   /* ============================================================================
@@ -150,8 +150,8 @@
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-neutral-base);
     transition:
-      border-color 0.15s ease,
-      background-color 0.15s ease;
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-radio__dot {
@@ -160,7 +160,7 @@
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-bg-brand-primary-bolder);
     transform: scale(0);
-    transition: transform 0.12s ease;
+    transition: transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-radio__input:checked ~ .ds-radio__circle {
@@ -196,7 +196,7 @@
 
   .ds-radio--disabled .ds-radio__circle,
   .ds-radio--disabled .ds-radio__label {
-    opacity: 0.5;
+    opacity: var(--sa-alpha-disabled);
   }
 
   /* ============================================================================
@@ -237,7 +237,7 @@
     padding: var(--_pad);
     border-radius: var(--sa-shape-full);
     background-color: var(--sa-border-neutral-base);
-    transition: background-color 0.15s ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-toggle__knob {
@@ -247,7 +247,7 @@
     background-color: var(--sa-bg-neutral-base);
     box-shadow: 0 1px 2px color-mix(in oklab, var(--sa-text-neutral-bolder) 25%, transparent);
     transform: translateX(0);
-    transition: transform 0.18s ease;
+    transition: transform var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
   }
 
   .ds-toggle__input:checked ~ .ds-toggle__track {
@@ -280,7 +280,7 @@
 
   .ds-toggle--disabled .ds-toggle__track,
   .ds-toggle--disabled .ds-toggle__label {
-    opacity: 0.5;
+    opacity: var(--sa-alpha-disabled);
   }
 
   /* ============================================================================
@@ -293,13 +293,13 @@
     gap: var(--sa-stack-12);
     padding: var(--sa-padding-16);
     background: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-12);
     cursor: pointer;
     transition:
-      border-color 0.15s ease,
-      background-color 0.15s ease,
-      box-shadow 0.15s ease;
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-radio-card:hover {

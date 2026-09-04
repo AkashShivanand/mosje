@@ -81,5 +81,70 @@ export const iconSize = {
   px64: 64,
 } as const;
 
-export const tokens = { colors, radius, fontFamily, typography, shadow, iconSize } as const;
+/** The six elevation roles, as the box-shadow strings tokens.css renders. */
+export const elevation = {
+  flat: "none",
+  card: "0 2px 3px 1px rgba(30, 33, 36, 0.12)",
+  raised: "0 4px 6px -1px rgba(30, 33, 36, 0.10), 0 2px 4px -2px rgba(30, 33, 36, 0.06)",
+  dropdown: "0 8px 12px -3px rgba(30, 33, 36, 0.09), 0 3px 5px -2px rgba(30, 33, 36, 0.05)",
+  modal: "0 12px 16px -4px rgba(30, 33, 36, 0.08), 0 4px 6px -2px rgba(30, 33, 36, 0.03)",
+  toast: "0 24px 48px -12px rgba(30, 33, 36, 0.18)",
+} as const;
+
+/** Motion by intent: duration in MILLISECONDS (a number, for Framer Motion / GSAP / setTimeout)
+    and the easing as a CSS cubic-bezier() string. Under prefers-reduced-motion the CSS custom
+    properties collapse to 0.01ms; a JS consumer must check matchMedia itself — these literals
+    do not. */
+export const motion = {
+  instant: { duration: 0, easing: "cubic-bezier(0, 0, 1, 1)" },
+  hover: { duration: 150, easing: "cubic-bezier(0, 0, 0.2, 1)" },
+  press: { duration: 150, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+  focus: { duration: 0, easing: "cubic-bezier(0, 0, 1, 1)" },
+  enter: { duration: 250, easing: "cubic-bezier(0, 0, 0.2, 1)" },
+  exit: { duration: 150, easing: "cubic-bezier(0.4, 0, 1, 1)" },
+  expand: { duration: 250, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+  collapse: { duration: 200, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+  emphasis: { duration: 400, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+  reveal: { duration: 400, easing: "cubic-bezier(0.22, 1, 0.36, 1)" },
+  page: { duration: 300, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+  loading: { spin: 1000, pulse: 700, easing: "cubic-bezier(0, 0, 1, 1)" },
+  stagger: { step: 45, max: 8 },
+} as const;
+
+/** The layering ladder. z.statutory, z.demo and z.top are RESERVED — never assign them. */
+export const z = {
+  base: 0,
+  raised: 1,
+  dropdown: 100,
+  sticky: 200,
+  fixed: 300,
+  overlay: 400,
+  modal: 500,
+  popover: 600,
+  toast: 700,
+  tooltip: 800,
+  rail: 1000,
+  launcher: 1010,
+  statutory: 999999,
+  demo: 2147483000,
+  top: 2147483001,
+} as const;
+
+/** Viewport anchors in CSS px, for matchMedia() and container queries in JS. */
+export const breakpoint = {
+  mobile: 360,
+  tablet: 768,
+  laptop: 1024,
+  desktop: 1280,
+  desktopXl: 1440,
+  desktopWide: 1920,
+} as const;
+
+/** Whole-element opacity intents, 0–1. */
+export const alpha = {
+  disabled: 0.48,
+  muted: 0.64,
+} as const;
+
+export const tokens = { colors, radius, fontFamily, typography, shadow, elevation, motion, z, breakpoint, alpha, iconSize } as const;
 export default tokens;

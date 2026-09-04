@@ -93,6 +93,6 @@
 
   .ds-skeleton-row > td {
     padding: var(--sa-padding-12) var(--sa-padding-16);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 }

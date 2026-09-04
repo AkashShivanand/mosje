@@ -1,0 +1,92 @@
+/* Spacing foundation — specimens. Each bar's height is passed through from the generated
+   row (the one data-driven inline value on the page); every other measurement here is a
+   token. The 13px / 11px "don't" card keeps its literals on the page, declared as the
+   specimen they are. */
+@layer theme, base, components, utilities;
+@layer components {
+  .sp-ladder {
+    overflow-x: auto;
+    padding: var(--sa-padding-24);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .sp-ladder__bars {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--sa-inline-12);
+  }
+  .sp-bar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    flex: 0 0 var(--sa-icon-size-24);
+  }
+  /* Height is the rung's own value, set inline from the row. */
+  .sp-bar__fill {
+    width: 100%;
+    border-radius: var(--sa-shape-2);
+    background: var(--sa-bg-brand-primary-bolder);
+  }
+  .sp-bar__value {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sp-families {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(28ch, 1fr));
+    gap: var(--sa-inline-16);
+  }
+  .sp-family {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    padding: var(--sa-padding-20);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .sp-family__name {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-brand-primary-base);
+    background: none;
+    padding: 0;
+  }
+  .sp-family__range {
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-neutral-subtle);
+    font-variant-numeric: tabular-nums;
+  }
+  .sp-family__use {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  .sp-dd {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-16);
+    padding: var(--sa-padding-16);
+    width: 100%;
+  }
+  .sp-dd__bar {
+    height: var(--sa-stack-16);
+    border-radius: var(--sa-shape-4);
+  }
+  .sp-dd__bar--do {
+    background: var(--sa-bg-brand-primary-subtle);
+  }
+  .sp-dd__bar--dont {
+    background: var(--sa-bg-neutral-subtle);
+  }
+}

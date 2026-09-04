@@ -105,7 +105,7 @@
        the clipping this size ladder used to cause. Each size names its own role
        token below; this is the fallback for anything that does not. */
     line-height: var(--sa-type-body-1-lh);
-    border: 1px solid transparent;
+    border: var(--sa-stroke-1) solid transparent;
     border-radius: var(--sa-shape-8);
     cursor: pointer;
     /*
@@ -131,11 +131,11 @@
     -webkit-appearance: none;
     appearance: none;
     transition:
-      background-color 0.15s ease,
-      border-color 0.15s ease,
-      color 0.15s ease,
-      box-shadow 0.15s ease,
-      filter 0.15s ease,
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      filter var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       transform 0.16s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
@@ -650,7 +650,7 @@
     width: 1em;
     height: 1em;
     border-radius: var(--sa-shape-full);
-    border: 2px solid color-mix(in srgb, currentColor 25%, transparent);
+    border: var(--sa-stroke-2) solid color-mix(in srgb, currentColor 25%, transparent);
     border-top-color: currentColor;
     animation: ds-btn-spin 0.7s linear infinite;
   }
@@ -683,7 +683,7 @@
      -------------------------------------------------------------------------- */
   .ds-btn:disabled,
   .ds-btn[aria-disabled="true"] {
-    opacity: 0.5;
+    opacity: var(--sa-alpha-disabled);
     cursor: not-allowed;
     filter: none;
     box-shadow: none;

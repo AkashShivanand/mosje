@@ -39,7 +39,7 @@
     display: flex;
     gap: var(--sa-inline-24);
     padding: var(--sa-padding-32);
-    border: 1px solid var(--sa-action-banner-rule);
+    border: var(--sa-stroke-1) solid var(--sa-action-banner-rule);
     border-radius: var(--sa-cmp-card-radius);
     background-color: var(--sa-action-banner-bg);
     color: var(--sa-action-banner-ink);

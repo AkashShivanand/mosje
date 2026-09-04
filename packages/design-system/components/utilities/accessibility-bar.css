@@ -201,7 +201,7 @@
     height: var(--sa-cmp-accessibilityBar-pillSize);
     font-weight: 600;
   }
-  .sa-abar__fsbtn:disabled { opacity: 0.45; cursor: default; }
+  .sa-abar__fsbtn:disabled { opacity: var(--sa-alpha-disabled); cursor: default; }
 
   /* Icon buttons (accessibility, language) */
   .sa-abar__icbtn {
@@ -354,7 +354,7 @@
   .sa-a11yc {
     margin-top: auto;
     padding: var(--sa-padding-16) var(--sa-padding-24) var(--sa-padding-24);
-    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   @media (min-width: 768px) {
@@ -400,7 +400,7 @@
     place-items: center;
     width: 44px;
     height: 44px;
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-8);
     background: transparent;
     color: var(--sa-text-neutral-base);

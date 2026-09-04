@@ -60,14 +60,14 @@
     font-weight: 500;
     color: var(--sa-text-neutral-bolder);
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-8);
     user-select: none;
     transition:
-      background-color 0.15s ease,
-      border-color 0.15s ease,
-      color 0.15s ease,
-      box-shadow 0.15s ease;
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /*
@@ -281,7 +281,7 @@
     cursor: pointer;
     -webkit-appearance: none;
     appearance: none;
-    transition: background-color 0.15s ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-chip__dismiss:hover {
@@ -297,7 +297,7 @@
      Disabled (dims; neutralises interactive feedback)
      -------------------------------------------------------------------------- */
   .ds-chip--disabled {
-    opacity: 0.5;
+    opacity: var(--sa-alpha-disabled);
     cursor: not-allowed;
     box-shadow: none;
   }

@@ -1,0 +1,47 @@
+/* Sizing foundation — specimens drawn at the token's resolved size. */
+@layer theme, base, components, utilities;
+@layer components {
+  .sz-ladder,
+  .sz-icons,
+  .sz-targets {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--sa-inline-16);
+    padding: var(--sa-padding-24);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .sz-step,
+  .sz-icon,
+  .sz-target {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .sz-step__box,
+  .sz-target__box {
+    border-radius: var(--sa-shape-4);
+    background: var(--sa-bg-brand-primary-bold);
+  }
+  .sz-target__box {
+    background: var(--sa-bg-brand-primary-subtle);
+    border: var(--sa-stroke-1) dashed var(--sa-border-brand-primary-base);
+  }
+  .sz-step__name,
+  .sz-icon code,
+  .sz-target code {
+    font-family: var(--sa-font-mono);
+    background: none;
+    padding: 0;
+    color: var(--sa-text-neutral-bolder);
+  }
+  .sz-icon__glyph {
+    color: var(--sa-icon-neutral-base);
+    font-variation-settings: "FILL" 0, "wght" 300, "GRAD" 0;
+  }
+}

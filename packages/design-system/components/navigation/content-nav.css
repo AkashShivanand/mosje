@@ -31,7 +31,7 @@
 
   .ds-content-nav {
     overflow: hidden;
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-16);
     background-color: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-card);
@@ -52,7 +52,7 @@
   }
 
   .ds-content-nav__group + .ds-content-nav__group {
-    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   /* A banded caps label that sticks to the top of the nav card until the reader
@@ -64,7 +64,7 @@
     margin: 0;
     padding: var(--sa-padding-12) var(--sa-padding-20);
     background-color: var(--sa-bg-neutral-subtler);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
     font-weight: 600;
@@ -146,7 +146,7 @@
   .ds-content-nav__sublist {
     margin: var(--sa-stack-2) 0 var(--sa-stack-4) var(--sa-padding-20);
     padding-left: var(--sa-padding-12);
-    border-left: 1px solid var(--sa-border-neutral-subtle);
+    border-left: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     display: flex;
     flex-direction: column;
   }

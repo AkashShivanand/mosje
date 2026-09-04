@@ -70,7 +70,24 @@ const px = (v) => {
  * `none` yields `[]`, which is a real and useful state: an effect style with no effects is how a
  * designer says "deliberately flat" and resets an inherited elevation.
  */
+/**
+ * Accepts either the DTCG composite form the source now carries — an array of
+ * `{ color, offsetX, offsetY, blur, spread }` layers (an empty array is `none`) — or the
+ * CSS `box-shadow` string the pipeline projects it to, so the effect-style writer and the
+ * parity test can read the source and the build output with one function.
+ */
 export function parseShadow(css) {
+  if (Array.isArray(css)) {
+    return css.map((l) => ({
+      type: "DROP_SHADOW",
+      color: parseColor(l.color),
+      offset: { x: px(l.offsetX), y: px(l.offsetY) },
+      radius: px(l.blur),
+      spread: l.spread === undefined ? 0 : px(l.spread),
+      visible: true,
+      blendMode: "NORMAL",
+    }));
+  }
   const value = String(css).trim();
   if (!value || value === "none") return [];
 

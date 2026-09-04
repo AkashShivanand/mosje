@@ -53,6 +53,15 @@ const GENERATED = [
     data: join(root, "apps/hub/src/app/design-system/foundations/typography/typography-data.ts"),
     generator: join(root, "packages/tokens/build/generate-typography-docs-data.mjs"),
   },
+  // 2026-09-04 — every OTHER foundation (spacing, sizing, shape, stroke, elevation, layering,
+  // opacity, motion, breakpoints, density, states, layout) reads one generated file. The
+  // Elevation page had been printing three of six roles with a retired ink for a month;
+  // the Motion page hard-coded the values it documented. Same gate, same reason.
+  {
+    label: "foundations",
+    data: join(root, "apps/hub/src/lib/design-system/foundations-data.generated.ts"),
+    generator: join(root, "packages/tokens/build/generate-foundation-docs-data.mjs"),
+  },
 ];
 
 for (const g of GENERATED) {

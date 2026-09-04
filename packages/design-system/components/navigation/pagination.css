@@ -43,7 +43,7 @@
     height: 40px;
     min-width: 40px;
     padding: 0 var(--sa-padding-12);
-    border: 1px solid transparent;
+    border: var(--sa-stroke-1) solid transparent;
     border-radius: var(--sa-shape-6);
     background: transparent;
     color: var(--sa-text-neutral-subtle);

@@ -46,7 +46,7 @@
     align-items: flex-end;
     gap: 2.4%;
     padding-bottom: var(--sa-padding-8);
-    border-bottom: 1px solid var(--sa-border-neutral-subtle);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .ds-skel__bar {

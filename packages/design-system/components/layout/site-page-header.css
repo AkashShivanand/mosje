@@ -129,7 +129,7 @@
    * resolve, which is the same white.
    */
   .sa-siteheader__lead {
-    border-inline-start: 4px solid var(--sa-text-neutral-inverse);
+    border-inline-start: var(--sa-stroke-4) solid var(--sa-text-neutral-inverse);
     padding-inline-start: var(--sa-padding-24);
     color: var(--sa-text-neutral-inverse);
     font-size: var(--sa-type-body-1-size);

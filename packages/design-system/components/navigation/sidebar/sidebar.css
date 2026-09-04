@@ -72,7 +72,7 @@
 
   .ds-sidebar__group + .ds-sidebar__group {
     padding-top: var(--sa-padding-12);
-    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .ds-sidebar__group-label {
@@ -121,8 +121,8 @@
     font-size: var(--sa-type-label-1-size); /* Figma: font-size/body-2 — same size; a nav item is a label */
     line-height: var(--sa-type-label-1-lh);
     transition:
-      background var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-      color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+      background var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-sidebar__main-row:focus-visible {
@@ -182,7 +182,7 @@
   .ds-sidebar__chevron {
     flex-shrink: 0;
     opacity: 0.6;
-    transition: transform var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-sidebar__chevron.is-open {
@@ -237,8 +237,8 @@
     top: calc(50% - 8px);
     width: 16px;
     height: 8px;
-    border-left: 1px solid var(--sa-color-primaryScale-50);
-    border-bottom: 1px solid var(--sa-color-primaryScale-50);
+    border-left: var(--sa-stroke-1) solid var(--sa-color-primaryScale-50);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-color-primaryScale-50);
     border-bottom-left-radius: 6px;
   }
 
@@ -256,8 +256,8 @@
     opacity: 0.8;
     text-decoration: none;
     transition:
-      background var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
-      color var(--sa-motion-exit-duration) var(--sa-motion-enter-easing),
+      background var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
       opacity var(--sa-motion-exit-duration);
   }
 
@@ -300,7 +300,7 @@
 
   .ds-sidebar__footer {
     flex-shrink: 0;
-    border-top: 1px solid var(--sa-border-neutral-subtle);
+    border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     padding-top: var(--sa-padding-12);
     margin-top: auto;
   }

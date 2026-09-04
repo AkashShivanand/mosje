@@ -1,209 +1,225 @@
 import * as React from "react";
 import type { Metadata } from "next";
-import { buttonClasses } from "@mosje/design-system";
-import { TokenTable } from "@/components/design-system/docs-kit/index";
-import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
+
+import "./density.css";
+import { Callout, FoundationDocPage } from "@/components/design-system/docs-kit/index";
+import { FOUNDATIONS } from "@/lib/design-system/foundations-data.generated";
 
 export const metadata: Metadata = {
   title: "Density",
   description:
-    "Comfortable and compact density modes — how SAMAVESH adapts control sizing for spacious public forms and data-dense portals.",
+    "Comfortable and compact — the two density modes SAMAVESH ships, the eight tokens that move between them, and the 24px target floor compact never drops below.",
 };
+
+/*
+ * DS Audit: FoundationDocPage ✅ · Callout ✅
+ * Until 2026-09-04 this page typed all sixteen values it documented ("40px → 32px") in a
+ * hand-written table. The comfortable values below are read from
+ * foundations-data.generated.ts. The generator reads :root only, so the COMPACT column is
+ * the one set of values this page still states by hand — from the `[data-density="compact"]`
+ * block in tokens.css, which is also the Compact mode of the Figma Density collection.
+ * The side-by-side demo does not read this map at all: the compact panel resolves the
+ * tokens in the browser, so what it draws is what the build ships.
+ */
+
+const rows = FOUNDATIONS.density.tokens;
+const sizing = FOUNDATIONS.sizing.tokens;
+const targetMin = sizing.find((r) => r.path === "target/min");
+const targetComfortable = sizing.find((r) => r.path === "target/comfortable");
+const COMPACT: Record<string, string> = {
+  "density/control/height": "32px",
+  "density/control/padding/x": "12px",
+  "density/control/padding/y": "6px",
+  "density/control/gap": "6px",
+  "density/row/height": "36px",
+  "density/row/padding/x": "12px",
+  "density/row/padding/y": "8px",
+  "density/section/gap": "16px",
+};
+const px = (v: string | null | undefined): number => Number((v ?? "0").replace("px", ""));
+const controlHeight = rows.find((r) => r.path === "density/control/height");
+const rowHeight = rows.find((r) => r.path === "density/row/height");
+// Target tokens are authored in rem; 16px is the root size the estate designs at.
+const remToPx = (v: string | null | undefined): number => Number((v ?? "0").replace("rem", "")) * 16;
 
 function DemoControls(): React.JSX.Element {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "var(--sa-stack-12)" }}>
-      <button
-        type="button"
-        style={{
-          height: "var(--sa-density-control-height)",
-          padding: "0 var(--sa-padding-16)",
-          background: "var(--sa-bg-brand-primary-bolder)",
-          color: "var(--sa-on-bg-brand-primary-bolder)",
-          border: "none",
-          borderRadius: "var(--sa-shape-6)",
-          fontWeight: 600,
-          fontFamily: "var(--sa-font-latin)",
-          cursor: "pointer",
-        }}
-      >
+    <div className="de-controls">
+      <button type="button" className="de-button">
         Submit
       </button>
-      <input
-        type="text"
-        readOnly
-        defaultValue="Sample input"
-        style={{
-          height: "var(--sa-density-control-height)",
-          padding: "0 var(--sa-padding-12)",
-          background: "var(--sa-bg-neutral-base)",
-          color: "var(--sa-text-neutral-base)",
-          border: "1px solid var(--sa-border-neutral-base)",
-          borderRadius: "var(--sa-shape-6)",
-          fontFamily: "var(--sa-font-latin)",
-        }}
-      />
-      <select
-        defaultValue="one"
-        style={{
-          height: "var(--sa-density-control-height)",
-          padding: "0 var(--sa-padding-12)",
-          background: "var(--sa-bg-neutral-base)",
-          color: "var(--sa-text-neutral-base)",
-          border: "1px solid var(--sa-border-neutral-base)",
-          borderRadius: "var(--sa-shape-6)",
-          fontFamily: "var(--sa-font-latin)",
-        }}
-      >
+      <input type="text" readOnly defaultValue="Sample input" className="de-input" aria-label="Sample input" />
+      <select defaultValue="one" className="de-select" aria-label="Sample select">
         <option value="one">Option one</option>
         <option value="two">Option two</option>
       </select>
+      <ul className="de-rows" aria-label="Sample rows">
+        <li className="de-row">Row one</li>
+        <li className="de-row">Row two</li>
+      </ul>
     </div>
   );
 }
 
 export default function DensityPage(): React.JSX.Element {
   return (
-    <article className="ds-prose">
-      <h1>Density</h1>
-      <p style={{ fontSize: "var(--sa-type-headline-1-size)", lineHeight: "var(--sa-type-headline-1-lh)", color: "var(--sa-color-text-muted)", marginTop: "var(--sa-stack-12)" }}>
-        Density controls how tall interactive elements are. SAMAVESH ships two
-        modes — <strong>comfortable</strong> for everyday public use and{" "}
-        <strong>compact</strong> for screens that need to show a lot of data at
-        once.
-      </p>
-      <div style={{ marginTop: "var(--sa-stack-16)" }}>
-        <a className={buttonClasses("primary", "outlined", "md")} href={figmaUrl(FIGMA_NODES.density)} target="_blank" rel="noopener noreferrer">
-          View in Figma <span aria-hidden="true">↗</span>
-        </a>
-      </div>
-
-      <section aria-labelledby="demo" style={{ marginTop: "var(--sa-stack-40)" }}>
-        <h2 id="demo">Side by side</h2>
-        <div
-          style={{
-            marginTop: "var(--sa-stack-24)",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-            gap: "var(--sa-stack-24)",
-          }}
-        >
-          <div style={{ background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", padding: "var(--sa-stack-24)" }}>
-            <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-16)" }}>
-              Comfortable <span style={{ color: "var(--sa-text-neutral-subtle)", fontWeight: 400 }}>· 40px</span>
+    <FoundationDocPage
+      name="Density"
+      status="Stable"
+      since="0.48.0"
+      summary="Density controls how tall interactive elements are and how tightly rows and sections sit. SAMAVESH ships two modes: comfortable for everyday public use and compact for screens that must show a great deal of data at once. Eight tokens move between the modes; type, icons, radius and colour do not."
+      figma={{ node: "density" }}
+      glance={[
+        { value: 2, label: "modes", note: "comfortable · compact" },
+        { value: rows.length, label: "values that vary", note: "type, icon, radius and colour do not" },
+        { value: `${controlHeight?.value} → ${COMPACT["density/control/height"]}`, label: "control height", note: "the axis a reader notices first" },
+        { value: `${remToPx(targetMin?.value)}px`, label: "target floor", note: `${targetMin?.path} · WCAG 2.5.8, never crossed` },
+        { value: `${FOUNDATIONS.density.stats.figma}/${FOUNDATIONS.density.stats.total}`, label: "in Figma", note: "Density collection, two modes" },
+      ]}
+      sections={[
+        {
+          id: "modes",
+          keyword: "MODES",
+          title: `Two Modes, and Compact Never Drops Below the ${remToPx(targetMin?.value)}px Target`,
+          description: `WCAG 2.2 asks that a target be at least 24 by 24 CSS pixels — success criterion 2.5.8, Target Size (Minimum), level AA — and the estate carries that floor as ${targetMin?.path}. A comfortable control is ${controlHeight?.value} high and a compact one ${COMPACT["density/control/height"]}, so both modes clear it, compact with less room to spare. The 44px often quoted as a minimum is 2.5.5, Target Size (Enhanced), level AAA (${targetComfortable?.path}); neither mode reaches it and this estate does not claim it.`,
+          content: (
+            <>
+              <div className="de-demo">
+                <div className="de-panel">
+                  <p className="de-panel__title">
+                    Comfortable <span className="de-panel__meta">· {controlHeight?.value}</span>
+                  </p>
+                  <DemoControls />
+                </div>
+                <div className="de-panel" data-density="compact">
+                  <p className="de-panel__title">
+                    Compact <span className="de-panel__meta">· {COMPACT["density/control/height"]}</span>
+                  </p>
+                  <DemoControls />
+                </div>
+              </div>
+              <div className="fdp__scroll">
+                <table className="de-table">
+                  <caption className="de-table__caption">The eight values, comfortable then compact. The compact column is the Compact mode of the Density collection.</caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Token</th>
+                      <th scope="col">Comfortable</th>
+                      <th scope="col">Compact</th>
+                      <th scope="col">Change</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows.map((r) => {
+                      const from = px(r.value);
+                      const to = px(COMPACT[r.path]);
+                      const pct = from ? Math.round(((from - to) / from) * 100) : 0;
+                      return (
+                        <tr key={r.path}>
+                          <td>
+                            <code>{r.css}</code>
+                          </td>
+                          <td className="de-table__num">{r.value}</td>
+                          <td className="de-table__num">{COMPACT[r.path] ?? "—"}</td>
+                          <td className="de-table__num">−{pct}%</td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+              <Callout type="info" title="Height is only one axis">
+                A control {COMPACT["density/control/height"]} high can still fail 2.5.8 on its width, and none of the density tokens
+                sets a width. That stays the component&rsquo;s own responsibility.
+              </Callout>
+            </>
+          ),
+        },
+        {
+          id: "when",
+          keyword: "WHEN",
+          title: "When Compact Is Right, and When It Is Not",
+          description:
+            "Compact is a tighter layout, not a smaller design. It earns its place where a trained reader scans many rows repeatedly; it costs its place wherever a citizen is reaching for a control on a phone.",
+          content: (
+            <div className="de-when">
+              <div className="de-when__col">
+                <h3>Use compact for</h3>
+                <ul>
+                  <li>Data-dense portals — for example the PM-AJAY MIS dashboard.</li>
+                  <li>Tables with many rows where vertical space is at a premium.</li>
+                  <li>Expert tools used repeatedly by trained staff who value scanning speed.</li>
+                </ul>
+              </div>
+              <div className="de-when__col">
+                <h3>Stay comfortable for</h3>
+                <ul>
+                  <li>Public-facing forms, where larger targets reduce errors.</li>
+                  <li>Mobile, where fingers need larger touch targets.</li>
+                  <li>Accessibility-critical flows, where the extra reach matters most.</li>
+                </ul>
+              </div>
             </div>
-            <DemoControls />
-          </div>
-          <div data-density="compact" style={{ background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", padding: "var(--sa-stack-24)" }}>
-            <div style={{ fontWeight: 600, marginBottom: "var(--sa-stack-16)" }}>
-              Compact <span style={{ color: "var(--sa-text-neutral-subtle)", fontWeight: 400 }}>· 32px</span>
-            </div>
-            <DemoControls />
-          </div>
-        </div>
-      </section>
-
-      <section aria-labelledby="when-compact" style={{ marginTop: "var(--sa-stack-40)" }}>
-        <h2 id="when-compact">When to use compact</h2>
-        <ul style={{ marginTop: "var(--sa-stack-16)" }}>
-          <li>Data-dense portals — for example the PM-AJAY MIS dashboard.</li>
-          <li>Tables with many rows where vertical space is at a premium.</li>
-          <li>Expert tools used repeatedly by trained staff who value scanning speed.</li>
-        </ul>
-      </section>
-
-      <section aria-labelledby="when-not" style={{ marginTop: "var(--sa-stack-40)" }}>
-        <h2 id="when-not">When NOT to use compact</h2>
-        <ul style={{ marginTop: "var(--sa-stack-16)" }}>
-          <li>Public-facing forms, where comfortable targets reduce errors.</li>
-          <li>Mobile, where fingers need larger touch targets.</li>
-          <li>Accessibility-critical flows, where the extra reach matters most.</li>
-        </ul>
-      </section>
-
-      <section aria-labelledby="targets" style={{ marginTop: "var(--sa-stack-40)" }}>
-        <h2 id="targets">Target size</h2>
-        <p style={{ marginTop: "var(--sa-stack-16)" }}>
-          WCAG 2.2 asks that a target be at least 24 by 24 CSS pixels — success
-          criterion 2.5.8, Target Size (Minimum), at level AA. A comfortable
-          control is 40px high and a compact one is 32px, so{" "}
-          <strong>both modes clear the minimum</strong>, compact with less room
-          to spare. The 44px figure often quoted as a minimum is 2.5.5, Target
-          Size (Enhanced), which is level AAA; neither mode reaches it and this
-          estate does not claim it.
-        </p>
-        <p style={{ marginTop: "var(--sa-stack-16)" }}>
-          Height is only one axis. A control 32px high can still fail 2.5.8 on
-          its width, and none of the density tokens sets a width — that stays
-          the component&apos;s own responsibility.
-        </p>
-      </section>
-
-      <section aria-labelledby="activate" style={{ marginTop: "var(--sa-stack-40)" }}>
-        <h2 id="activate">How to activate it</h2>
-        <p style={{ marginTop: "var(--sa-stack-16)" }}>
-          Set <code>data-density=&quot;compact&quot;</code> on any wrapper
-          element. Every SAMAVESH control inside that wrapper picks up the
-          smaller control height automatically — no per-component changes
-          needed.
-        </p>
-      </section>
-
-      <section aria-labelledby="tokens" style={{ marginTop: "var(--sa-stack-40)" }}>
-        <h2 id="tokens">Tokens</h2>
-        <p style={{ marginTop: "var(--sa-stack-16)" }}>
-          These eight values are the whole axis — each shown as{" "}
-          <strong>comfortable → compact</strong>. Anything not listed here is
-          identical in both modes, including type, icons, radius and colour, so
-          a compact screen is a tighter layout rather than a smaller design.
-        </p>
-        <div style={{ marginTop: "var(--sa-stack-16)" }}>
-          <TokenTable
-            tokens={[
-              {
-                token: "--sa-density-control-height",
-                value: "40px → 32px",
-                description: "Height of a button, an input or a select. −20%.",
-              },
-              {
-                token: "--sa-density-control-padding-x",
-                value: "16px → 12px",
-                description: "Padding inside a control, left and right. −25%.",
-              },
-              {
-                token: "--sa-density-control-padding-y",
-                value: "8px → 6px",
-                description: "Padding inside a control, top and bottom. −25%.",
-              },
-              {
-                token: "--sa-density-control-gap",
-                value: "8px → 6px",
-                description: "Gap between a control's parts — an icon and its label. −25%.",
-              },
-              {
-                token: "--sa-density-row-height",
-                value: "48px → 36px",
-                description: "Height of a table row or a list row. −25%.",
-              },
-              {
-                token: "--sa-density-row-padding-x",
-                value: "16px → 12px",
-                description: "Padding inside a row, left and right. −25%.",
-              },
-              {
-                token: "--sa-density-row-padding-y",
-                value: "12px → 8px",
-                description: "Padding inside a row, top and bottom. −33%.",
-              },
-              {
-                token: "--sa-density-section-gap",
-                value: "24px → 16px",
-                description: "Gap between sections of a form or a page. −33%.",
-              },
-            ]}
-          />
-        </div>
-      </section>
-    </article>
+          ),
+        },
+        {
+          id: "activate",
+          keyword: "ACTIVATE",
+          title: "Activate It on a Subtree With data-density",
+          description:
+            "Set data-density=\"compact\" on any wrapper element. Every SAMAVESH control inside that wrapper picks up the compact values automatically, with no per-component change — the demo above is two copies of the same markup under two wrappers.",
+          content: (
+            <>
+              <pre className="de-code">
+                <code>{`<section data-density="compact">\n  <DataTable … />\n</section>`}</code>
+              </pre>
+              <p>
+                The mode is a subtree, not a page: a dense table can sit compact inside a comfortable form. A component that binds
+                the density tokens needs nothing else; one that types a height opts out of the axis entirely, which is the defect
+                the tokens exist to prevent.
+              </p>
+            </>
+          ),
+        },
+      ]}
+      tokens={rows}
+      tokensIntro={
+        'All eight are Tier 2 with no Tier-1 ladder beneath them — a density value is a decision about a mode, not an alias of a rung. The value shown is the comfortable mode, which is what :root resolves; the compact mode is the [data-density="compact"] block in tokens.css and the second mode of the Density collection in Figma.'
+      }
+      a11y={[
+        {
+          criterion: "2.5.8 Target Size (Minimum)",
+          level: "AA",
+          description: "Every control height in either mode is at least 24 CSS pixels.",
+          status: "verified",
+          evidence: `Compact control height ${COMPACT["density/control/height"]} and compact row height ${COMPACT["density/row/height"]} (tokens.css, [data-density="compact"]) both exceed target/min (${targetMin?.css}, ${targetMin?.value}); comfortable is ${controlHeight?.value} and ${rowHeight?.value}. Height only — width is the component's, per the note above.`,
+        },
+        {
+          criterion: "2.5.5 Target Size (Enhanced)",
+          level: "AAA",
+          description: "Targets are at least 44 by 44 CSS pixels.",
+          status: "partial",
+          evidence: `Not claimed. Comfortable control height ${controlHeight?.value} sits below target/comfortable (${targetComfortable?.css}, ${targetComfortable?.value}); components that must meet it bind that token directly rather than the density axis.`,
+        },
+        {
+          criterion: "1.4.4 Resize Text",
+          level: "AA",
+          description: "A compact control still holds its label at 200% zoom without clipping.",
+        },
+      ]}
+      standards={[
+        {
+          clause: "UX4G 3.0 §6 — 44×44px targets",
+          says: "Interactive targets of 44 by 44 pixels.",
+          does: `Control heights of ${controlHeight?.value} (comfortable) and ${COMPACT["density/control/height"]} (compact). The 44px floor is carried by target/comfortable and bound by components where a citizen taps on the move.`,
+          why: "WCAG 2.2 AA (2.5.8, 24px) is the binding floor and both modes clear it. Density is a height axis for administrative screens read by trained staff at a desk; public forms stay comfortable, and a primary touch action binds target/comfortable regardless of mode. Recorded here rather than silently under-shooting the guideline.",
+        },
+      ]}
+      related={[
+        { label: "Sizing", href: "/design-system/foundations/sizing", reason: "the target/* floors the density values are measured against" },
+        { label: "Spacing", href: "/design-system/foundations/spacing", reason: "the ladder a density value must never re-point" },
+        { label: "Layout Grid", href: "/design-system/foundations/layout-grid", reason: "the container a compact table still sits inside" },
+      ]}
+    />
   );
 }

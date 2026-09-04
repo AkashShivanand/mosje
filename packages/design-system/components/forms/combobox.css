@@ -44,7 +44,7 @@
     align-items: center;
     /* 3.06:1 on white — the subtle rung is 1.66 and fails WCAG 1.4.11 for a
        control's boundary. Same correction FilterSelect and DatePicker needed. */
-    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-4);
     background: var(--sa-bg-neutral-base);
     padding-inline-end: var(--sa-padding-4);
@@ -99,7 +99,7 @@
 
   .ds-combobox__list {
     position: absolute;
-    z-index: 30;
+    z-index: var(--sa-z-dropdown);
     inset-block-start: 100%;
     inset-inline: 0;
     margin: var(--sa-stack-4) 0 0;
@@ -111,7 +111,7 @@
        the reader opened it and it closes on Escape. */
     max-block-size: 18rem;
     overflow-y: auto;
-    border: 1px solid var(--sa-border-neutral-bolder-default);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-8);
     background: var(--sa-bg-neutral-base);
     box-shadow: var(--sa-elevation-raised);

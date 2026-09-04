@@ -55,7 +55,7 @@
     gap: var(--sa-stack-4);
     padding: var(--sa-padding-20);
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-cmp-card-radius);
     box-shadow: var(--sa-elevation-raised);
   }

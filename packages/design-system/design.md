@@ -12,7 +12,19 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-04 · System version: v0.47.0 (EVERY TRANSLUCENT TOKEN IS A REFERENCE
+  Last reviewed: 2026-09-04 · System version: v0.48.0 (THE FOUNDATIONS WERE REBUILT TO A
+  BENCHMARK SHAPE. Motion is twelve intents on a value-named ten-step ladder with five
+  behaviour-named curves, and reduced motion is emitted ONCE at the token layer; layering is a
+  fifteen-rung z ladder authored in Tier 2 and code-only (the Bootstrap primitive ladder nothing
+  consumed is gone); opacity gained the two intents the DS actually uses (disabled, muted);
+  shadows are DTCG composites; every semantic group carries a $type and a description; the
+  stroke, z and motion tokens were bound across 60 DS stylesheets (126 edges, 21 layers, 145
+  transitions). Documentation: one template — FoundationDocPage — for all 19 foundation pages,
+  eight of them new (Brand, Breakpoints, Sizing, Stroke, Layering, Opacity, Interaction States,
+  Content & Localisation), every table generated, a gate (check:foundations) with no baseline.
+  Figma: every variable carries name, description, narrowest scopes, codeSyntax and
+  hiddenFromPublishing per .claude/rules/figma-variables-standard.md.)
+  Previous: v0.47.0 (EVERY TRANSLUCENT TOKEN IS A REFERENCE
   PLUS AN OPACITY REFERENCE. Figma can alias a colour and keep a separate, variable-bound
   opacity, so the 136 rgba() literals — 48 overlay tiers, scrim, inverse rules, inverse button
   states — are now `{base}` + `{alpha.N}`; CSS resolves them as color-mix() over two custom
@@ -1145,11 +1157,10 @@ graph TD
 ### A. State Definitions
 
 1. **Normal** — Default idle state using standard semantic tokens.
-2. **Hover** — `150ms` CSS transition (`var(--ds-duration-fast)`) with exponential ease-out (`var(--ds-easing-out)`). **Banned:** Linear or bouncy spring transitions.
+2. **Hover** — the `motion/hover` pair: `var(--sa-motion-hover-duration) var(--sa-motion-hover-easing)` (150ms, decelerate) on colour, border and shadow. **Banned:** Linear or bouncy spring transitions, and a bare duration without its easing.
 3. **Active** — Immediate visual feedback on press: scale `0.97` or slight background darkening. Confirms action register.
-4. **Focus** — `2px solid var(--ds-primary-ring)` with `2px` outline-offset. Contrast ratio against its surrounding background must be ≥ 4.5:1. Never suppress focus outlines.
-5. **Disabled** — Opacity `0.4`. Add `pointer-events: none`, `tabindex="-1"`, `aria-disabled="true"`. **Do not use** a neutral flat fill only — combine it with reduced opacity.
-   *(There is no `--ds-opacity-disabled` token yet — the value is currently hardcoded at call sites. An `opacity` scale lands in Phase 2 of the token-architecture spec.)*
+4. **Focus** — `outline: var(--sa-focus-width) solid var(--sa-focus-ring); outline-offset: var(--sa-focus-offset)` (2px, solid key colour, 2px offset), applied with the `motion/focus` pair — instantly. Drawn as an OUTLINE, never only a box-shadow (forced-colors mode discards shadows). Contrast against its surrounding background must be ≥ 3:1 (WCAG 2.4.11); the key colour measures 4.5:1 on white. Never suppress focus outlines.
+5. **Disabled** — `opacity: var(--sa-alpha-disabled)` (48%) on the whole control, `text/neutral/disabled` (an opaque ink) for text alone, a neutral fill never a washed intent colour, and `motion/instant` so nothing animates. Add `aria-disabled="true"` (prefer it over `disabled` where the control must stay discoverable). The reason it is disabled is said in copy beside it, never inferred from grey.
 6. **Loading/Skeleton** — While data is fetching, render `<Loader />` or a skeleton placeholder using `--ds-surface-muted` with a CSS shimmer animation. Never leave an empty container with no loading signal.
 7. **Error** — Persistent state (unlike Disabled, the user must actively correct it). Show a `var(--sa-border-status-error-base)` border + inline error message in `var(--sa-text-status-error-base)` below the control. Error text requires `role="alert"` or `aria-describedby` linkage, and the border alone must never be the only error signal (WCAG 1.4.1).
 
@@ -1588,28 +1599,87 @@ component consumed it, so `Card` was drawn at a raw `--sa-shape-8` and `MetricCa
 `--sa-shape-12` — already drifted apart. Both now bind the component token, so it is load-bearing
 rather than decorative. **Bind `var(--sa-cmp-card-radius)` on a card surface, not a shape rung.**
 
-### Elevation (Shadow) Tokens
+### Elevation Tokens — six ROLES, chosen by what the surface is
 
-A 6-level ramp — a superset of UX4G 3.0's 5-level `l0…l4`. SAMAVESH tints toward ink
-(`rgba(31,36,40,·)`) rather than UX4G's flat black: on a light government surface a tinted
-shadow reads as depth, a black one reads as dirt.
+Bind a role, never a ramp step. The Tier-1 ramp (`ref/shadow/none…xl`) is a superset of
+UX4G 3.0's five-level `l0…l4`, authored as DTCG composite shadows and tinted toward
+`neutral/800` (the body ink, retinted by the build) rather than UX4G's flat black: on a light
+government surface a tinted shadow reads as depth, a black one as dirt. Each role also names
+the layering rung it sits on. Figma carries these as effect styles, not variables.
+Documented at `/design-system/foundations/elevation`; values are generated, never typed.
 
-| Token | Usage |
-|-------|-------|
-| `--ds-shadow-none` | Flat surfaces, resetting an inherited shadow |
-| `--ds-shadow-xs` | Inputs, small cards |
-| `--ds-shadow-sm` | Raised cards, hovered list rows |
-| `--ds-shadow-md` | Popovers, tooltips, sticky headers |
-| `--ds-shadow-lg` | Dropdowns, floating panels |
-| `--ds-shadow-xl` | Modals, drawers |
-
-### Motion Tokens
-
-| Token | Value | Usage |
+| Token | Layer | Usage |
 |-------|-------|-------|
-| `--ds-duration-fast` | `150ms` | Hover state transitions |
-| `--ds-duration-base` | `250ms` | Panel open/close |
-| `--ds-duration-slow` | `400ms` | Page-level transitions |
+| `--sa-elevation-flat` | `z/base` | Deliberately no shadow — resets an inherited elevation |
+| `--sa-elevation-card` | `z/base` | A card or panel resting on the page |
+| `--sa-elevation-raised` | `z/raised` | A surface lifted on interaction — a hovered card, a parted sticky bar |
+| `--sa-elevation-dropdown` | `z/dropdown` | A menu, select or popover opened from a control |
+| `--sa-elevation-modal` | `z/modal` | A dialog or side sheet, paired with the scrim |
+| `--sa-elevation-toast` | `z/toast` | A toast — the heaviest step, because it has no scrim |
+
+### Motion Tokens — twelve INTENTS, each a duration + easing pair
+
+You never pick a duration. Bind `--sa-motion-<intent>-duration` WITH
+`--sa-motion-<intent>-easing`; a duration without its easing is half a decision. The Tier-1
+ladder beneath (`ref/motion/duration/0…700`, value-named; `ref/motion/easing/linear ·
+accelerate · decelerate · standard · emphasized`, behaviour-named per Material 3) is private.
+`tokens.css` emits ONE `@media (prefers-reduced-motion: reduce)` block collapsing every
+intent's duration to `0.01ms` — components bind the pair and need no query of their own.
+`instant` is already zero and `loading` is exempt (a stopped spinner reads as a frozen page).
+Documented at `/design-system/foundations/motion`.
+
+| Intent | Duration | Easing | Use |
+|--------|----------|--------|-----|
+| `instant` | 0ms | linear | A state that must not animate — a tick, a dot; the reduced-motion floor |
+| `hover` | 150ms | decelerate | Colour, border or shadow responding to the pointer |
+| `press` | 150ms | emphasized | Press feedback — a translate, an icon nudge |
+| `focus` | 0ms | linear | The focus ring appears instantly (WCAG 2.4.7) |
+| `enter` | 250ms | decelerate | Something arriving |
+| `exit` | 150ms | accelerate | Something leaving |
+| `expand` | 250ms | standard | A surface growing in place |
+| `collapse` | 200ms | standard | The same surface shrinking |
+| `emphasis` | 400ms | standard | A deliberate, attention-carrying move — reserve it |
+| `reveal` | 400ms | emphasized | A surface the reader opened — a drawer, a panel |
+| `page` | 300ms | standard | A whole view changing |
+| `loading` | spin 1000ms · pulse 700ms | linear | Indeterminate progress — exempt from reduced motion |
+| `stagger` | step 45ms · max 8 | — | Cascading a list in |
+
+### Layering Tokens — the z ladder, code-only
+
+The ONLY `z-index` values app code may write. Tier 2, authored literally (a primitive would
+have nothing to alias), and not exported to Figma because a canvas has no z-axis. Steps of 100
+leave room for local order; inside a component's own stacking context use `z/raised` (1) or a
+literal 2 at most. `statutory`, `demo` and `top` are RESERVED. Every elevation role names
+its rung (table above). Documented at `/design-system/foundations/layering`.
+
+| Token | Value | Use |
+|-------|-------|-----|
+| `--sa-z-base` | 0 | In flow; resets a raised context |
+| `--sa-z-raised` | 1 | One step above siblings inside the same component |
+| `--sa-z-dropdown` | 100 | Menu, listbox, date grid opened from a control |
+| `--sa-z-sticky` | 200 | Sticky header, toolbar, table head |
+| `--sa-z-fixed` | 300 | Viewport-pinned chrome |
+| `--sa-z-overlay` | 400 | The scrim behind a modal |
+| `--sa-z-modal` | 500 | Dialog or side sheet |
+| `--sa-z-popover` | 600 | A popover opened from inside a modal |
+| `--sa-z-toast` | 700 | Toasts — readable over a dialog |
+| `--sa-z-tooltip` | 800 | Tooltips |
+| `--sa-z-rail` | 1000 | The right-wall rail and its occupants |
+| `--sa-z-launcher` | 1010 | Closed corner launchers — under the statutory panel |
+| `--sa-z-statutory` | 999999 | RESERVED — the UX4G accessibility panel's own value |
+| `--sa-z-demo` | 2147483000 | RESERVED — the DemoDock |
+| `--sa-z-top` | 2147483001 | RESERVED — the one panel above the dock (the open chatbot) |
+
+### Opacity and Stroke Tokens
+
+- **Opacity:** `--sa-alpha-<0…100>`, a thirteen-step ladder (0 · 4 · 8 · 16 · 24 · 32 · 40 · 48 ·
+  64 · 72 · 80 · 88 · 100), plus two INTENTS for a layer's own opacity — `--sa-alpha-disabled`
+  (48%) and `--sa-alpha-muted` (64%). A translucent COLOUR is never an alpha alone: it is a
+  colour reference plus an alpha reference (`color/transparent/*`, `overlay/*`).
+  `/design-system/foundations/opacity`.
+- **Stroke:** `--sa-stroke-0…4`, value-named widths; `--sa-control-border-width` for every
+  form control; `--sa-focus-width` (2px) for the ring. Write `border: var(--sa-stroke-1) solid …`,
+  never `1px solid`. `/design-system/foundations/stroke`.
 
 ---
 
@@ -3051,8 +3121,8 @@ path via `findDemoAccounts`, and whether Sign in renders via `isLoginRoute`),
 estate-wide by `NEXT_PUBLIC_DEMO_TOOLS`: absent or anything but the exact
 string `"false"` means visible; `"false"` removes it entirely, which is the
 correct state for a genuinely public deployment. Open/close and swatch
-selection are animated in CSS only, using `--ds-duration-*`/`--ds-easing-*`
-tokens, and collapse to instant under `prefers-reduced-motion`. The FAB's
+selection are animated in CSS only, using the `--sa-motion-<intent>-*` pairs,
+and collapse to instant under `prefers-reduced-motion` at the token layer. The FAB's
 `FlaskIcon` is driven from `demo-dock.css` by custom property, not by React
 state — hover/focus starts the bubbles, `aria-expanded="true"` speeds them
 up and raises the liquid, so the FAB reports whether the dock is open even

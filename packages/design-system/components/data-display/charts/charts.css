@@ -122,7 +122,7 @@
   .ds-chart__pie-slice {
     stroke: var(--sa-bg-neutral-base);
     stroke-width: 2;
-    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /* ── Axis + grid + value text ────────────────────────────────────────────── */
@@ -146,7 +146,7 @@
 
   /* ── Interactive marks (bars, points, slices, regions) ───────────────────── */
   .ds-chart__mark {
-    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     cursor: default;
   }
   .ds-chart__mark:hover {
@@ -224,7 +224,7 @@
     */
     min-height: 32px;
     padding: var(--sa-padding-4) var(--sa-padding-12);
-    border: 1px solid var(--sa-border-brand-primary-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-brand-primary-base);
     border-radius: var(--sa-shape-full);
     /*
       ON IS SELECTED, NOT MERELY FILLED.
@@ -243,8 +243,8 @@
     background-color: var(--sa-bg-brand-primary-base);
     cursor: pointer;
     transition:
-      background-color 160ms ease-out,
-      border-color 160ms ease-out;
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   /*
@@ -404,7 +404,7 @@
   /* ── Tooltip ─────────────────────────────────────────────────────────────── */
   .ds-chart__tooltip {
     position: absolute;
-    z-index: 10;
+    z-index: var(--sa-z-dropdown);
     transform: translate(-50%, calc(-100% - 12px));
     padding: var(--sa-padding-8) var(--sa-padding-12);
     border-radius: var(--sa-shape-6);
@@ -450,7 +450,7 @@
   .ds-chart__region {
     stroke: var(--sa-chart-regionStroke);
     stroke-width: 0.5;
-    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
     cursor: default;
   }
   .ds-chart__region:hover {
@@ -614,7 +614,7 @@
 
   /* ── Heatmap ─────────────────────────────────────────────────────────────── */
   .ds-chart__cell {
-    transition: opacity var(--sa-motion-exit-duration) var(--sa-motion-enter-easing);
+    transition: opacity var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
   .ds-chart__cell:hover {
     opacity: 0.82;
@@ -667,7 +667,7 @@
     display: block;
     width: 100%;
     height: 100%;
-    border-bottom: 1px solid var(--sa-chart-grid);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-chart-grid);
     background-image: repeating-linear-gradient(
       to right,
       var(--sa-chart-regionEmpty) 0 8%,
@@ -683,7 +683,7 @@
     50% { opacity: 1; }
   }
   .ds-chart__retry {
-    border: 1px solid var(--sa-border-neutral-base);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-8);
     background: var(--sa-bg-neutral-base);
     color: var(--sa-text-neutral-base);
@@ -776,7 +776,7 @@
   .ds-chart__table th,
   .ds-chart__table td {
     padding: var(--sa-padding-4) var(--sa-padding-8);
-    border-block-end: 1px solid var(--sa-border-neutral-subtle);
+    border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     text-align: start;
     white-space: nowrap;
   }

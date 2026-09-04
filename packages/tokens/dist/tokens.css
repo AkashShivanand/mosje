@@ -502,23 +502,48 @@
   --sa-ref-shadow-md: 0 8px 12px -3px rgba(30, 33, 36, 0.09), 0 3px 5px -2px rgba(30, 33, 36, 0.05);
   --sa-ref-shadow-lg: 0 12px 16px -4px rgba(30, 33, 36, 0.08), 0 4px 6px -2px rgba(30, 33, 36, 0.03);
   --sa-ref-shadow-xl: 0 24px 48px -12px rgba(30, 33, 36, 0.18);
-  --sa-ref-motion-duration-fast: 150ms;
-  --sa-ref-motion-duration-base: 250ms;
-  --sa-ref-motion-duration-slow: 400ms;
-  --sa-ref-motion-easing-out: cubic-bezier(0, 0, 0.2, 1);
-  --sa-ref-motion-easing-in: cubic-bezier(0.4, 0, 1, 1);
-  --sa-ref-motion-easing-inOut: cubic-bezier(0.4, 0, 0.2, 1);
-  --sa-ref-motion-easing-outStrong: cubic-bezier(0.22, 1, 0.36, 1);
+  --sa-ref-motion-duration-0: 0ms;
+  --sa-ref-motion-duration-50: 50ms;
+  --sa-ref-motion-duration-100: 100ms;
+  --sa-ref-motion-duration-150: 150ms;
+  --sa-ref-motion-duration-200: 200ms;
+  --sa-ref-motion-duration-250: 250ms;
+  --sa-ref-motion-duration-300: 300ms;
+  --sa-ref-motion-duration-400: 400ms;
+  --sa-ref-motion-duration-500: 500ms;
+  --sa-ref-motion-duration-700: 700ms;
+  --sa-ref-motion-easing-linear: cubic-bezier(0, 0, 1, 1);
+  --sa-ref-motion-easing-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --sa-ref-motion-easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+  --sa-ref-motion-easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --sa-ref-motion-easing-emphasized: cubic-bezier(0.22, 1, 0.36, 1);
+  --sa-motion-instant-duration: 0ms;
+  --sa-motion-instant-easing: cubic-bezier(0, 0, 1, 1);
+  --sa-motion-hover-duration: 150ms;
+  --sa-motion-hover-easing: cubic-bezier(0, 0, 0.2, 1);
+  --sa-motion-press-duration: 150ms;
+  --sa-motion-press-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --sa-motion-focus-duration: 0ms;
+  --sa-motion-focus-easing: cubic-bezier(0, 0, 1, 1);
   --sa-motion-enter-duration: 250ms;
   --sa-motion-enter-easing: cubic-bezier(0, 0, 0.2, 1);
   --sa-motion-exit-duration: 150ms;
   --sa-motion-exit-easing: cubic-bezier(0.4, 0, 1, 1);
+  --sa-motion-expand-duration: 250ms;
+  --sa-motion-expand-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --sa-motion-collapse-duration: 200ms;
+  --sa-motion-collapse-easing: cubic-bezier(0.4, 0, 0.2, 1);
   --sa-motion-emphasis-duration: 400ms;
   --sa-motion-emphasis-easing: cubic-bezier(0.4, 0, 0.2, 1);
   --sa-motion-reveal-duration: 400ms;
   --sa-motion-reveal-easing: cubic-bezier(0.22, 1, 0.36, 1);
-  --sa-motion-press-duration: 150ms;
-  --sa-motion-press-easing: cubic-bezier(0.22, 1, 0.36, 1);
+  --sa-motion-page-duration: 300ms;
+  --sa-motion-page-easing: cubic-bezier(0.4, 0, 0.2, 1);
+  --sa-motion-loading-spin: 1000ms;
+  --sa-motion-loading-pulse: 700ms;
+  --sa-motion-loading-easing: cubic-bezier(0, 0, 1, 1);
+  --sa-motion-stagger-step: 45ms;
+  --sa-motion-stagger-max: 8;
   --sa-ref-border-width-none: 0px;
   --sa-ref-border-width-sm: 1px;
   --sa-ref-border-width-md: 2px;
@@ -553,14 +578,6 @@
   --sa-ref-opacity-80: 0.8;
   --sa-ref-opacity-88: 0.88;
   --sa-ref-opacity-100: 1;
-  --sa-ref-z-dropdown: 1000;
-  --sa-ref-z-sticky: 1020;
-  --sa-ref-z-fixed: 1030;
-  --sa-ref-z-offcanvas: 1040;
-  --sa-ref-z-modal-backdrop: 1050;
-  --sa-ref-z-modal-base: 1060;
-  --sa-ref-z-popover: 1070;
-  --sa-ref-z-toast: 1090;
   --sa-ref-size-8: 0.5rem;
   --sa-ref-size-10: 0.625rem;
   --sa-ref-size-11: 0.6875rem;
@@ -954,6 +971,23 @@
   --sa-alpha-80: 0.8;
   --sa-alpha-88: 0.88;
   --sa-alpha-100: 1;
+  --sa-alpha-disabled: 0.48;
+  --sa-alpha-muted: 0.64;
+  --sa-z-base: 0;
+  --sa-z-raised: 1;
+  --sa-z-dropdown: 100;
+  --sa-z-sticky: 200;
+  --sa-z-fixed: 300;
+  --sa-z-overlay: 400;
+  --sa-z-modal: 500;
+  --sa-z-popover: 600;
+  --sa-z-toast: 700;
+  --sa-z-tooltip: 800;
+  --sa-z-rail: 1000;
+  --sa-z-launcher: 1010;
+  --sa-z-statutory: 999999;
+  --sa-z-demo: 2147483000;
+  --sa-z-top: 2147483001;
   --sa-cmp-button-primary-bg: var(--sa-color-action-primary-default);
   --sa-cmp-button-primary-bgHover: var(--sa-color-action-primary-hover);
   --sa-cmp-button-primary-text: var(--sa-color-text-onPrimary);
@@ -5552,4 +5586,21 @@
   --sa-type-display-3-tracking: clamp(-0.025rem, calc(-0.0146rem - 0.013vw), -0.0175rem);
   --sa-type-display-4-tracking: clamp(-0.02rem, calc(-0.013rem - 0.009vw), -0.015rem);
   --sa-type-display-5-tracking: clamp(-0.0088rem, calc(-0.007rem - 0.002vw), -0.0075rem);
+}
+
+/* ---- prefers-reduced-motion: every motion intent collapses here; loading and instant are exempt (see legacy-ds-css.mjs) ---- */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --sa-motion-hover-duration: 0.01ms;
+    --sa-motion-press-duration: 0.01ms;
+    --sa-motion-focus-duration: 0.01ms;
+    --sa-motion-enter-duration: 0.01ms;
+    --sa-motion-exit-duration: 0.01ms;
+    --sa-motion-expand-duration: 0.01ms;
+    --sa-motion-collapse-duration: 0.01ms;
+    --sa-motion-emphasis-duration: 0.01ms;
+    --sa-motion-reveal-duration: 0.01ms;
+    --sa-motion-page-duration: 0.01ms;
+    --sa-motion-stagger-step: 0.01ms;
+  }
 }

@@ -56,13 +56,13 @@
     padding: var(--sa-padding-24) var(--sa-padding-16);
     text-align: center;
     background-color: var(--sa-bg-neutral-base);
-    border: 2px dashed var(--sa-border-neutral-base);
+    border: var(--sa-stroke-2) dashed var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-12);
     cursor: pointer;
     transition:
-      border-color 0.15s ease,
-      background-color 0.15s ease,
-      box-shadow 0.15s ease;
+      border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      box-shadow var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-gallery__dropzone:hover:not(:disabled) {
@@ -123,7 +123,7 @@
     border-radius: var(--sa-shape-8);
     overflow: hidden;
     background-color: var(--sa-bg-neutral-subtler);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
   }
 
   .ds-gallery__thumb {
@@ -172,7 +172,7 @@
     background: color-mix(in oklab, var(--sa-text-neutral-bolder) 60%, transparent);
     color: var(--sa-color-neutralScale-0);
     cursor: pointer;
-    transition: background-color 0.15s ease;
+    transition: background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-gallery__remove:hover { background: var(--sa-color-status-danger); }
@@ -206,11 +206,11 @@
     aspect-ratio: 4 / 3;
     padding: var(--sa-padding-8);
     background-color: var(--sa-bg-neutral-base);
-    border: 2px dashed var(--sa-border-neutral-base);
+    border: var(--sa-stroke-2) dashed var(--sa-border-neutral-base);
     border-radius: var(--sa-shape-8);
     color: var(--sa-text-neutral-subtle);
     cursor: pointer;
-    transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+    transition: border-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing), color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
   }
 
   .ds-gallery__add:hover:not(:disabled) {

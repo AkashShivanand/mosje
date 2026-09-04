@@ -1,0 +1,111 @@
+/* Accessibility foundation — the widget's adjustments, the POUR principles and the two
+   checklists as cards. Every value is a `--sa-*` token; the focus specimen binds the
+   focus/* tokens it documents, so the ring drawn is the ring shipped. */
+@layer theme, base, components, utilities;
+@layer components {
+  .a11y-cards {
+    --a11y-card-min: calc(var(--sa-icon-size-64) * 3);
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(var(--a11y-card-min), 100%), 1fr));
+    gap: var(--sa-inline-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .a11y-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    padding: var(--sa-padding-20);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-base);
+  }
+  .a11y-card__eyebrow {
+    margin: 0;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 600;
+    letter-spacing: var(--sa-type-caps-tracking);
+    text-transform: uppercase;
+    color: var(--sa-text-brand-primary-base);
+  }
+  .a11y-card__title {
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+  .a11y-card__body {
+    margin: 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* The widget's adjustments, as a compact two-column list on a quiet ground. */
+  .a11y-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(calc(var(--sa-icon-size-64) * 4), 100%), 1fr));
+    gap: var(--sa-stack-8) var(--sa-inline-24);
+    margin: 0;
+    padding: var(--sa-padding-24);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+    list-style: none;
+  }
+  .a11y-features li {
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .a11y-features strong {
+    color: var(--sa-text-neutral-bolder);
+  }
+
+  /* The focus ring and the two target sizes, drawn from the tokens they document. */
+  .a11y-specimens {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--sa-inline-24);
+    padding: var(--sa-padding-24);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .a11y-specimen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sa-stack-8);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    color: var(--sa-text-neutral-subtle);
+    text-align: center;
+  }
+  .a11y-specimen__box {
+    display: block;
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-bg-brand-primary-bolder);
+  }
+  .a11y-specimen__box--min {
+    width: var(--sa-target-min);
+    height: var(--sa-target-min);
+  }
+  .a11y-specimen__box--comfortable {
+    width: var(--sa-target-comfortable);
+    height: var(--sa-target-comfortable);
+  }
+  .a11y-specimen__box--spacious {
+    width: var(--sa-target-spacious);
+    height: var(--sa-target-spacious);
+  }
+  .a11y-specimen__box--focus {
+    width: var(--sa-target-comfortable);
+    height: var(--sa-target-comfortable);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+}

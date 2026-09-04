@@ -32,7 +32,7 @@
     padding: var(--sa-padding-16);
     font-family: var(--sa-font-latin);
     background-color: var(--sa-bg-neutral-subtler);
-    border: 1px solid var(--sa-border-neutral-subtle);
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-12);
   }
 
