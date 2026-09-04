@@ -24,6 +24,8 @@ export interface RoleSpec {
   para: [number, number];
   en: string;
   hi: string;
+  /** Why the value is what it is — from the token source, mirrored in the Figma variable description. */
+  why: string;
 }
 
 export const ROLES: RoleSpec[] = [
@@ -67,7 +69,8 @@ export const ROLES: RoleSpec[] = [
       32
     ],
     "en": "Digital India, Inclusive India",
-    "hi": "डिजिटल भारत, समावेशी भारत"
+    "hi": "डिजिटल भारत, समावेशी भारत",
+    "why": "The largest thing on the estate — one per hero, never for document structure. Website 40 → 80 / 48 → 88 (1.10 desktop, 1.20 phone); Portal 40 → 56 / 48 → 64. Tracking −0.015em."
   },
   {
     "role": "display-2",
@@ -109,7 +112,8 @@ export const ROLES: RoleSpec[] = [
       32
     ],
     "en": "Justice for every citizen",
-    "hi": "हर नागरिक के लिए न्याय"
+    "hi": "हर नागरिक के लिए न्याय",
+    "why": "Campaign hero. Website 36 → 72 / 44 → 80; Portal 32 → 48 / 40 → 56. 36 is DBIM §4's desktop H1 and the reason the ramp carries it. Tracking −0.015em."
   },
   {
     "role": "display-3",
@@ -151,7 +155,8 @@ export const ROLES: RoleSpec[] = [
       24
     ],
     "en": "Empowerment through schemes",
-    "hi": "योजनाओं से सशक्तिकरण"
+    "hi": "योजनाओं से सशक्तिकरण",
+    "why": "The website home page's own hero size. Website 32 → 64 / 40 → 72; Portal 28 → 40 / 36 → 48. Tracking −0.01em."
   },
   {
     "role": "display-4",
@@ -193,7 +198,8 @@ export const ROLES: RoleSpec[] = [
       24
     ],
     "en": "Dignity, access, opportunity",
-    "hi": "गरिमा, पहुँच, अवसर"
+    "hi": "गरिमा, पहुँच, अवसर",
+    "why": "Section hero, banner headline. Website 28 → 56 / 36 → 64; Portal 24 → 32 / 32 → 40. Tracking −0.01em."
   },
   {
     "role": "display-5",
@@ -235,7 +241,8 @@ export const ROLES: RoleSpec[] = [
       20
     ],
     "en": "Serving the last mile",
-    "hi": "अंतिम छोर तक सेवा"
+    "hi": "अंतिम छोर तक सेवा",
+    "why": "Small hero — a login panel wordmark, a campaign strip. Website 24 → 48 / 32 → 56; Portal 24 → 28 / 32 → 36. Tracking −0.005em."
   },
   {
     "role": "display-6",
@@ -277,7 +284,8 @@ export const ROLES: RoleSpec[] = [
       20
     ],
     "en": "A portal for every scheme",
-    "hi": "हर योजना का पोर्टल"
+    "hi": "हर योजना का पोर्टल",
+    "why": "The smallest display size, one step above headline-1 so a hero and a page title never share a size. Website 22 → 40 / 28 → 48 (1.20, on DBIM's floor); Portal 20 → 24 / 28 → 32. Tracking 0."
   },
   {
     "role": "headline-1",
@@ -319,7 +327,8 @@ export const ROLES: RoleSpec[] = [
       24
     ],
     "en": "Ministry of Social Justice & Empowerment",
-    "hi": "सामाजिक न्याय और अधिकारिता मंत्रालय"
+    "hi": "सामाजिक न्याय और अधिकारिता मंत्रालय",
+    "why": "The page h1, one per page. Website 28 → 40 / 36 → 48; Portal 24 → 32 / 32 → 40. Leading 1.20 at desktop: the tightest a structural heading is allowed."
   },
   {
     "role": "headline-2",
@@ -361,7 +370,8 @@ export const ROLES: RoleSpec[] = [
       24
     ],
     "en": "PM-AJAY Scheme Dashboard",
-    "hi": "पीएम-अजय योजना डैशबोर्ड"
+    "hi": "पीएम-अजय योजना डैशबोर्ड",
+    "why": "Section h2. Website 24 → 32 / 32 → 40; Portal 20 → 28 / 28 → 36. Leading 1.25."
   },
   {
     "role": "headline-3",
@@ -403,7 +413,8 @@ export const ROLES: RoleSpec[] = [
       20
     ],
     "en": "Scholarship applications this quarter",
-    "hi": "इस तिमाही की छात्रवृत्ति आवेदन"
+    "hi": "इस तिमाही की छात्रवृत्ति आवेदन",
+    "why": "Sub-section h3. Website 22 → 28 / 28 → 36; Portal 18 → 24 / 24 → 32. Was 28/32 (1.14) — tighter than the h2 above it — until the 2026-09-04 re-cut; now 1.29."
   },
   {
     "role": "headline-4",
@@ -445,7 +456,8 @@ export const ROLES: RoleSpec[] = [
       20
     ],
     "en": "Beneficiary verification status",
-    "hi": "लाभार्थी सत्यापन स्थिति"
+    "hi": "लाभार्थी सत्यापन स्थिति",
+    "why": "h4, and the SectionTitle component. Website 20 → 24 / 28 → 32; Portal 16 → 20 / 24 → 28. Leading 1.33."
   },
   {
     "role": "headline-5",
@@ -487,7 +499,8 @@ export const ROLES: RoleSpec[] = [
       16
     ],
     "en": "Recent grievances",
-    "hi": "हाल की शिकायतें"
+    "hi": "हाल की शिकायतें",
+    "why": "h5, minor heading. Website 18 → 20 / 24 → 28; Portal 16 → 18 / 24. Leading 1.40. 18 rather than DBIM's 16 so an h5 does not share the body size."
   },
   {
     "role": "headline-6",
@@ -529,7 +542,8 @@ export const ROLES: RoleSpec[] = [
       16
     ],
     "en": "Documents required",
-    "hi": "आवश्यक दस्तावेज़"
+    "hi": "आवश्यक दस्तावेज़",
+    "why": "h6, the smallest heading: body size, semibold, body leading. 16 / 24 on both surfaces (1.50). Distinguished from body-1 by weight (600 vs 400) and from title-2 by its element."
   },
   {
     "role": "title-1",
@@ -571,7 +585,8 @@ export const ROLES: RoleSpec[] = [
       20
     ],
     "en": "Section heading and panel title",
-    "hi": "अनुभाग शीर्षक और पैनल शीर्षक"
+    "hi": "अनुभाग शीर्षक और पैनल शीर्षक",
+    "why": "Card, panel and dialog title. 18 → 22 / 24 → 28 on both surfaces (1.27). 22 sits between headline-4 (24) and headline-5 (20) on purpose: a title is not a heading level."
   },
   {
     "role": "title-2",
@@ -613,7 +628,8 @@ export const ROLES: RoleSpec[] = [
       16
     ],
     "en": "List headers and compact titles",
-    "hi": "सूची शीर्षक और संक्षिप्त शीर्षक"
+    "hi": "सूची शीर्षक और संक्षिप्त शीर्षक",
+    "why": "List-item title, small card title, table caption. 16 / 24 (1.50) — body-1's metrics at 600, so a title and its body align line for line."
   },
   {
     "role": "title-3",
@@ -655,7 +671,8 @@ export const ROLES: RoleSpec[] = [
       16
     ],
     "en": "Sidebar and tertiary labels",
-    "hi": "साइडबार और तृतीयक लेबल"
+    "hi": "साइडबार और तृतीयक लेबल",
+    "why": "Dense table header, compact list title. 14 / 20 (1.43) — body-2's metrics at 600."
   },
   {
     "role": "body-1",
@@ -697,7 +714,8 @@ export const ROLES: RoleSpec[] = [
       16
     ],
     "en": "Submit your application along with all required documents.",
-    "hi": "सभी आवश्यक दस्तावेज़ों के साथ अपना आवेदन जमा करें।"
+    "hi": "सभी आवश्यक दस्तावेज़ों के साथ अपना आवेदन जमा करें।",
+    "why": "The reading size. 16 / 24 (1.50) everywhere, including phones: a citizen's paragraph is never smaller than the form field it explains."
   },
   {
     "role": "body-2",
@@ -739,7 +757,8 @@ export const ROLES: RoleSpec[] = [
       12
     ],
     "en": "Secondary information, helper text, and table cell content.",
-    "hi": "द्वितीयक जानकारी, सहायक पाठ और तालिका सामग्री।"
+    "hi": "द्वितीयक जानकारी, सहायक पाठ और तालिका सामग्री।",
+    "why": "Secondary text, help text, table cells. 14 / 20 (1.43)."
   },
   {
     "role": "body-3",
@@ -781,7 +800,8 @@ export const ROLES: RoleSpec[] = [
       12
     ],
     "en": "Captions, timestamps, and fine print.",
-    "hi": "कैप्शन, समय-चिह्न और बारीक अक्षर।"
+    "hi": "कैप्शन, समय-चिह्न और बारीक अक्षर।",
+    "why": "Captions, timestamps, legal, footnotes. 12 / 16 (1.33). The floor: UX4G 3.0 §2 calls 12px the minimum usable size and nothing in SAMAVESH renders below it."
   },
   {
     "role": "label-1",
@@ -823,7 +843,8 @@ export const ROLES: RoleSpec[] = [
       12
     ],
     "en": "Form label · Applicant name",
-    "hi": "फ़ॉर्म लेबल · आवेदक का नाम"
+    "hi": "फ़ॉर्म लेबल · आवेदक का नाम",
+    "why": "Form labels, button text, tabs, navigation items. 14 / 20 (1.43) — the UX4G Label/L size, one step below body-1 so a label sits under the value it names."
   },
   {
     "role": "label-2",
@@ -865,7 +886,8 @@ export const ROLES: RoleSpec[] = [
       8
     ],
     "en": "Badge · Verified",
-    "hi": "बैज · सत्यापित"
+    "hi": "बैज · सत्यापित",
+    "why": "Badges, chips, small controls. 12 / 16 (1.33). The floor size at Medium."
   },
   {
     "role": "label-3",
@@ -907,7 +929,8 @@ export const ROLES: RoleSpec[] = [
       8
     ],
     "en": "STATUS · UPLOADED",
-    "hi": "स्थिति · अपलोड"
+    "hi": "स्थिति · अपलोड",
+    "why": "The CAPS role — overlines and eyebrows of 1–3 words, always uppercase, always with type/caps/tracking (+0.06em). 12 / 16, Medium. Moved from 11px on 2026-09-04: the estate renders nothing below 12. Uppercase anywhere else is a defect the type gate reports."
   }
 ];
 
@@ -939,6 +962,15 @@ export const TIERS: { key: Tier; label: string; blurb: string }[] = [
     "blurb": "Controls, badges and captions; label-3 is the uppercase overline"
   }
 ];
+
+/** Per-tier reasoning, from font.role.<tier>.$description in primitive.json. */
+export const TIER_WHY: Record<Tier, string> = {
+  "display": "Display — hero and campaign headings, on the optical Display cut (Noto Sans Display, drawn for 40–80px so its spacing does not read loose at that size). Medium 500: a display heading carries presence by size, not weight. Website is expressive (80 → 40), Portal is restrained (56 → 24). Leading tightens as size grows, 1.20 at display-6 to 1.10 at display-1 — DBIM §4's 1.2 floor is departed from here on record (deviation register T3), because 1.2 at 80px opens a two-line hero into separate lines. Tracking is negative from one em rule per rung so the two surfaces track alike per pixel of type.",
+  "headline": "Headline — document structure, h1 to h6. SemiBold 600, never 700: bold at these sizes on Noto Sans closes the counters and 700 is reserved for inline emphasis and KPI numerals. Leading rises as size falls — 1.20 at headline-1 to 1.50 at headline-6 — so every headline sits inside DBIM §4's 1.2–1.5 band and a smaller heading is never set tighter than the larger one above it. The website ramp is one step above DBIM's 36/24/20 (deviation register T1) because a six-level outline needs the intermediate steps; the portal ramp is one step above DBIM's mobile ladder.",
+  "title": "Title — the name of a thing: a card, a panel, a dialog, a table, a list item. SemiBold 600 since 2026-09-04 (was Medium): a title and the paragraph under it are now two weight steps apart, not one, so hierarchy does not rest on a single step. Identical on both surfaces — a card reads the same wherever it sits (the productive core is shared, as Carbon's productive type set is).",
+  "body": "Body — running text. Regular 400, leading 1.5 at the reading size on both surfaces (WCAG 1.4.8 and DBIM §4 iii). Identical on the website and in portals since 2026-09-04: the old Portal ramp dropped paragraphs to 14px on phones while the inputs beside them held 16px, and carried a 13px stop the contract bans. Tracking 0: Noto Sans is drawn with the spacing body text needs. Each size has a SemiBold companion text style for emphasis — never Bold.",
+  "label": "Label — controls, badges and captions that are scanned, not read. Medium 500: one step above body so a label reads as a label beside a value without shouting. Identical on both surfaces."
+};
 
 export const SURFACES: { key: Surface; label: string; note: string; sample: string }[] = [
   {

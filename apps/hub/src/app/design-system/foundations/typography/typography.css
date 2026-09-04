@@ -207,3 +207,14 @@
   gap: var(--sa-padding-20);
   margin-top: var(--sa-padding-20);
 }
+
+/* ── Why these values ─────────────────────────────────────────────────────── */
+.ty-why { display: grid; gap: var(--sa-stack-8); padding-left: var(--sa-inline-20); margin: 0 0 var(--sa-stack-24); }
+.ty-tiers { display: grid; gap: var(--sa-stack-24); }
+.ty-tier { padding: var(--sa-padding-20); border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle); border-radius: var(--sa-shape-8); background: var(--sa-bg-neutral-base); }
+.ty-tier__name { margin: 0 0 var(--sa-stack-8); font-size: var(--sa-type-title-1-size); line-height: var(--sa-type-title-1-lh); font-weight: 600; }
+.ty-tier__why { margin: 0 0 var(--sa-stack-16); color: var(--sa-text-neutral-subtle); max-width: var(--sa-container-measure); }
+.ty-tier__roles { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: var(--sa-stack-8) var(--sa-inline-16); margin: 0; }
+.ty-tier__roles dt { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); }
+.ty-tier__roles dd { margin: 0; font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); color: var(--sa-text-neutral-subtle); }
+@media (width < 640px) { .ty-tier__roles { grid-template-columns: 1fr; } }

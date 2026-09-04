@@ -4,7 +4,7 @@ import { buttonClasses } from "@mosje/design-system";
 import { DoDont, Callout, A11yChecklist } from "@/components/design-system/docs-kit/index";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 import { TypeLab } from "./type-lab";
-import { STANDARDS } from "./typography-data";
+import { ROLES, TIERS, TIER_WHY, STANDARDS } from "./typography-data";
 import "./typography.css";
 
 /**
@@ -159,6 +159,45 @@ export default function TypographyPage(): React.JSX.Element {
             },
           ]}
         />
+      </section>
+
+      {/* ── 7b. Why these values — the reasoning, from the token source ──── */}
+      <section className="docs-section" aria-labelledby="why-these-values">
+        <span className="docs-section__label">Reasoning</span>
+        <h2 id="why-these-values" className="docs-section__heading">Why these values</h2>
+        <div className="docs-section__body">
+          <p>
+            A value with no reason is a value the next person changes. Every number on this page is carried with
+            the reason it is that number &mdash; the standard, the ratio or the measurement behind it &mdash; and the
+            same text sits in each <code>type/*</code> variable&rsquo;s description in the Figma library and in the
+            token source, so the library and the code cannot disagree about why.
+          </p>
+          <ul className="ty-why">
+            <li><strong>The ramp is 16 steps</strong> &mdash; 12 &middot; 14 &middot; 16 &middot; 18 &middot; 20 &middot; 22 &middot; 24 &middot; 28 &middot; 32 &middot; 36 &middot; 40 &middot; 48 &middot; 56 &middot; 64 &middot; 72 &middot; 80. Steps of 2 up to 24, then 4, then 8: small text needs fine steps to separate a label from a caption, display text needs coarse ones to read as different at all. 36 is there because DBIM &sect;4 names it as the desktop H1; 13 and 15 are not, because a size one pixel from its neighbour is a size nobody can defend.</li>
+            <li><strong>The floor is 12px</strong> (UX4G 3.0 &sect;2, &ldquo;minimum usable size&rdquo;). Nothing on the estate renders below it; label-3 moved up from 11 on 2026-09-04.</li>
+            <li><strong>Every line height is on the 4px grid</strong>, so stacked text lines up with the spacing ladder. Body is 1.5 on both surfaces (WCAG 1.4.8, DBIM &sect;4 iii); headline leading rises as size falls, 1.20 to 1.50, so a smaller heading is never set tighter than the one above it; display runs 1.10 to 1.20 by recorded exception, because 1.2 at 80px opens a two-line hero into separate lines.</li>
+            <li><strong>Weights:</strong> Display 500 on the Display cut, Headline and Title 600, Body 400, Label 500. Headings stop at semibold because 700 closes Noto Sans&rsquo;s counters at these sizes; 800 and 900 do not exist because they are not loaded and the browser would synthesise them.</li>
+            <li><strong>Tracking</strong> is negative on Display from one em rule per rung (&minus;0.015em at display-1 and -2, &minus;0.01em at -3 and -4, &minus;0.005em at -5), zero everywhere else, and +0.06em on the one uppercase role, label-3.</li>
+            <li><strong>Two surfaces, one core.</strong> Website and Portal differ only in Display and Headline; Title, Body and Label are identical, so a card, a form and a table read the same wherever they sit.</li>
+            <li><strong>Where a standard was departed from</strong> &mdash; headline sizes one step above DBIM&rsquo;s 36/24/20, display leading below 1.2, no 18px body &mdash; the reason is a row in the deviation register, not a memory.</li>
+          </ul>
+          <div className="ty-tiers">
+            {TIERS.map((t) => (
+              <article key={t.key} className="ty-tier">
+                <h3 className="ty-tier__name">{t.label}</h3>
+                <p className="ty-tier__why">{TIER_WHY[t.key]}</p>
+                <dl className="ty-tier__roles">
+                  {ROLES.filter((r) => r.tier === t.key).map((r) => (
+                    <React.Fragment key={r.role}>
+                      <dt><code>{r.role}</code></dt>
+                      <dd>{r.why.replace(/\s*Raw type step\..*$/, "")}</dd>
+                    </React.Fragment>
+                  ))}
+                </dl>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ── 8. Standards — UX4G's five categories, sourced ──────── */}

@@ -937,6 +937,13 @@ Desktop/Tablet/Mobile) sample the same clamp() at 1280/768/360px, rounded to who
 | label-2 | 12 | same | 16 (1.33) | 500 | Badges, chips |
 | label-3 | 12 | same | 16 (1.33) | 500 caps | Overlines, +0.06em |
 
+> **Every role carries its reasoning.** The size leaf's `$description` in `primitive.json` says why the
+> value is what it is (the ratio, the standard, the measurement) and the same text is each `type/*`
+> Figma variable's description and the docs page's "Why these values" section. The Figma library holds
+> exactly the 104 Type variables the code defines: the ten `deprecated/type/*` shadows and the retired
+> `ref/font/family/heading|body` were deleted on 2026-09-04 after a full-file consumer scan and a
+> rebinding pass, together with 28 colour, space and border orphans.
+>
 > **Rule: in code use `<Heading>` / `<Text>` or `text-<role>`; in a stylesheet bind
 > `--sa-type-<role>-size` AND `-lh` in the same rule.** The retired `--ds-*` alias layer
 > (removed 2026-08-12) is gone from code; its hazard record lives in

@@ -23050,7 +23050,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The largest thing on the estate — one per hero, never for document structure. Website 40 → 80 / 48 → 88 (1.10 desktop, 1.20 phone); Portal 40 → 56 / 48 → 64. Tracking −0.015em. Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-1-size)"
           },
@@ -23099,7 +23099,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-1. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-1-lh)"
           },
@@ -23148,7 +23148,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-1-para)"
           },
@@ -23197,7 +23197,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Campaign hero. Website 36 → 72 / 44 → 80; Portal 32 → 48 / 40 → 56. 36 is DBIM §4's desktop H1 and the reason the ramp carries it. Tracking −0.015em. Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-2-size)"
           },
@@ -23246,7 +23246,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-2. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-2-lh)"
           },
@@ -23295,7 +23295,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-2-para)"
           },
@@ -23344,7 +23344,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The website home page's own hero size. Website 32 → 64 / 40 → 72; Portal 28 → 40 / 36 → 48. Tracking −0.01em. Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-3-size)"
           },
@@ -23393,7 +23393,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-3. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-3-lh)"
           },
@@ -23442,7 +23442,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-3-para)"
           },
@@ -23491,7 +23491,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Section hero, banner headline. Website 28 → 56 / 36 → 64; Portal 24 → 32 / 32 → 40. Tracking −0.01em. Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-4-size)"
           },
@@ -23540,7 +23540,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-4. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-4-lh)"
           },
@@ -23589,7 +23589,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-4: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-4-para)"
           },
@@ -23638,7 +23638,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Small hero — a login panel wordmark, a campaign strip. Website 24 → 48 / 32 → 56; Portal 24 → 28 / 32 → 36. Tracking −0.005em. Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-5-size)"
           },
@@ -23687,7 +23687,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-5. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-5-lh)"
           },
@@ -23736,7 +23736,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-5: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-5-para)"
           },
@@ -23785,7 +23785,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The smallest display size, one step above headline-1 so a hero and a page title never share a size. Website 22 → 40 / 28 → 48 (1.20, on DBIM's floor); Portal 20 → 24 / 28 → 32. Tracking 0. Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-6-size)"
           },
@@ -23834,7 +23834,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for display-6. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-6-lh)"
           },
@@ -23883,7 +23883,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for display-6: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Display/display-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-6-para)"
           },
@@ -23932,7 +23932,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The page h1, one per page. Website 28 → 40 / 36 → 48; Portal 24 → 32 / 32 → 40. Leading 1.20 at desktop: the tightest a structural heading is allowed. Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-1-size)"
           },
@@ -23981,7 +23981,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-1. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-1-lh)"
           },
@@ -24030,7 +24030,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-1-para)"
           },
@@ -24079,7 +24079,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Section h2. Website 24 → 32 / 32 → 40; Portal 20 → 28 / 28 → 36. Leading 1.25. Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-2-size)"
           },
@@ -24128,7 +24128,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-2. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-2-lh)"
           },
@@ -24177,7 +24177,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-2-para)"
           },
@@ -24226,7 +24226,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Sub-section h3. Website 22 → 28 / 28 → 36; Portal 18 → 24 / 24 → 32. Was 28/32 (1.14) — tighter than the h2 above it — until the 2026-09-04 re-cut; now 1.29. Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-3-size)"
           },
@@ -24275,7 +24275,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-3. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-3-lh)"
           },
@@ -24324,7 +24324,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-3-para)"
           },
@@ -24373,7 +24373,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "h4, and the SectionTitle component. Website 20 → 24 / 28 → 32; Portal 16 → 20 / 24 → 28. Leading 1.33. Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-4-size)"
           },
@@ -24422,7 +24422,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-4. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-4-lh)"
           },
@@ -24471,7 +24471,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-4: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-4` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-4-para)"
           },
@@ -24520,7 +24520,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "h5, minor heading. Website 18 → 20 / 24 → 28; Portal 16 → 18 / 24. Leading 1.40. 18 rather than DBIM's 16 so an h5 does not share the body size. Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-5-size)"
           },
@@ -24569,7 +24569,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-5. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-5-lh)"
           },
@@ -24618,7 +24618,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-5: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-5` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-5-para)"
           },
@@ -24667,7 +24667,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "h6, the smallest heading: body size, semibold, body leading. 16 / 24 on both surfaces (1.50). Distinguished from body-1 by weight (600 vs 400) and from title-2 by its element. Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-6-size)"
           },
@@ -24716,7 +24716,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for headline-6. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-6-lh)"
           },
@@ -24765,7 +24765,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for headline-6: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Headline/headline-6` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-headline-6-para)"
           },
@@ -24814,7 +24814,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Card, panel and dialog title. 18 → 22 / 24 → 28 on both surfaces (1.27). 22 sits between headline-4 (24) and headline-5 (20) on purpose: a title is not a heading level. Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-1-size)"
           },
@@ -24863,7 +24863,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for title-1. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-1-lh)"
           },
@@ -24912,7 +24912,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for title-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Title/title-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-1-para)"
           },
@@ -24961,7 +24961,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "List-item title, small card title, table caption. 16 / 24 (1.50) — body-1's metrics at 600, so a title and its body align line for line. Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-2-size)"
           },
@@ -25010,7 +25010,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for title-2. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-2-lh)"
           },
@@ -25059,7 +25059,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for title-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Title/title-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-2-para)"
           },
@@ -25108,7 +25108,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Dense table header, compact list title. 14 / 20 (1.43) — body-2's metrics at 600. Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-3-size)"
           },
@@ -25157,7 +25157,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for title-3. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-3-lh)"
           },
@@ -25206,7 +25206,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for title-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Title/title-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-3-para)"
           },
@@ -25255,7 +25255,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The reading size. 16 / 24 (1.50) everywhere, including phones: a citizen's paragraph is never smaller than the form field it explains. Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-1-size)"
           },
@@ -25304,7 +25304,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for body-1. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-1-lh)"
           },
@@ -25353,7 +25353,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for body-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Body/body-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-1-para)"
           },
@@ -25402,7 +25402,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Secondary text, help text, table cells. 14 / 20 (1.43). Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-2-size)"
           },
@@ -25451,7 +25451,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for body-2. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-2-lh)"
           },
@@ -25500,7 +25500,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for body-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Body/body-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-2-para)"
           },
@@ -25549,7 +25549,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Captions, timestamps, legal, footnotes. 12 / 16 (1.33). The floor: UX4G 3.0 §2 calls 12px the minimum usable size and nothing in SAMAVESH renders below it. Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-3-size)"
           },
@@ -25598,7 +25598,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for body-3. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-3-lh)"
           },
@@ -25647,7 +25647,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for body-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Body/body-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-3-para)"
           },
@@ -25696,7 +25696,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Form labels, button text, tabs, navigation items. 14 / 20 (1.43) — the UX4G Label/L size, one step below body-1 so a label sits under the value it names. Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-1-size)"
           },
@@ -25745,7 +25745,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for label-1. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-1-lh)"
           },
@@ -25794,7 +25794,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for label-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Label/label-1` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-1-para)"
           },
@@ -25843,7 +25843,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Badges, chips, small controls. 12 / 16 (1.33). The floor size at Medium. Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-2-size)"
           },
@@ -25892,7 +25892,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for label-2. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-2-lh)"
           },
@@ -25941,7 +25941,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for label-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Label/label-2` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-2-para)"
           },
@@ -25990,7 +25990,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "The CAPS role — overlines and eyebrows of 1–3 words, always uppercase, always with type/caps/tracking (+0.06em). 12 / 16, Medium. Moved from 11px on 2026-09-04: the estate renders nothing below 12. Uppercase anywhere else is a defect the type gate reports. Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-3-size)"
           },
@@ -26039,7 +26039,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Line height for label-3. On the 4px grid; see the size for the ratio and the reason. Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-3-lh)"
           },
@@ -26088,7 +26088,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
+          "description": "Paragraph spacing for label-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading. Raw type step. Prefer the text style `Label/label-3` — it binds size, leading, tracking and paragraph spacing together and follows the Type modes.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-3-para)"
           },
@@ -26137,7 +26137,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-1 letter-spacing, −0.015em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-1-tracking)"
           },
@@ -26186,7 +26186,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-2 letter-spacing, −0.015em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-2-tracking)"
           },
@@ -26235,7 +26235,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-3 letter-spacing, −0.01em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-3-tracking)"
           },
@@ -26284,7 +26284,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-4 letter-spacing, −0.01em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-4-tracking)"
           },
@@ -26333,7 +26333,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-5 letter-spacing, −0.005em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-5-tracking)"
           },
@@ -26382,7 +26382,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Display-6 letter-spacing, 0 of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-display-6-tracking)"
           },
@@ -26431,7 +26431,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Headline tier tracking: zero. Noto Sans at 16–40px is drawn with the spacing a heading needs; negative tracking here closes counters and hurts Devanagari. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-heading-tracking)"
           },
@@ -26480,7 +26480,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Title tier tracking: zero. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-title-tracking)"
           },
@@ -26529,7 +26529,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Body tracking: zero. Positive tracking on running text lowers reading speed; WCAG 1.4.12 requires the reader's own override to survive, which zero tracking makes trivial. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-body-tracking)"
           },
@@ -26578,7 +26578,7 @@
               "unit": null
             }
           },
-          "description": "Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
+          "description": "Label tracking: zero for mixed-case labels. Uppercase labels are the label-3 role and take type/caps/tracking instead. Raw type step. Prefer a text style from the Display / Headline / Title / Body / Label ramp — these are the parts those styles are assembled from.",
           "codeSyntax": {
             "WEB": "var(--sa-type-label-tracking)"
           },

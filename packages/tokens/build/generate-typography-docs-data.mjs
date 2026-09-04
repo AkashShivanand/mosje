@@ -76,6 +76,9 @@ for (const [family, tiers] of Object.entries(prim.font.role)) {
       tracking: { website: [0, 0], portal: [0, 0] },
       para: para ? para.website : [0, 0],
       en: sample.en, hi: sample.hi,
+      // The reasoning behind the value — authored as the size leaf's $description in
+      // primitive.json, the same text each type/* Figma variable carries in its description.
+      why: String(props.size?.$description ?? ""),
     });
   }
 }
@@ -136,12 +139,17 @@ export interface RoleSpec {
   para: [number, number];
   en: string;
   hi: string;
+  /** Why the value is what it is — from the token source, mirrored in the Figma variable description. */
+  why: string;
 }
 
 export const ROLES: RoleSpec[] = ${JSON.stringify(roles, null, 2)};
 
 /* ds-exempt-end */
 export const TIERS: { key: Tier; label: string; blurb: string }[] = ${JSON.stringify(content.tiers, null, 2)};
+
+/** Per-tier reasoning, from font.role.<tier>.$description in primitive.json. */
+export const TIER_WHY: Record<Tier, string> = ${JSON.stringify(Object.fromEntries(Object.entries(prim.font.role).filter(([k, v]) => !k.startsWith("$") && typeof v === "object").map(([k, v]) => [TIER_OF[k], String(v.$description ?? "")])), null, 2)};
 
 export const SURFACES: { key: Surface; label: string; note: string; sample: string }[] = ${JSON.stringify(content.surfaces, null, 2)};
 

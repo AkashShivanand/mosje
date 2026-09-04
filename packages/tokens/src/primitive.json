@@ -821,7 +821,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "The largest thing on the estate — one per hero, never for document structure. Website 40 → 80 / 48 → 88 (1.10 desktop, 1.20 phone); Portal 40 → 56 / 48 → 64. Tracking −0.015em."
           },
           "lh": {
             "$type": "dimension",
@@ -839,7 +840,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-1. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -857,7 +859,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "2": {
@@ -877,7 +880,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Campaign hero. Website 36 → 72 / 44 → 80; Portal 32 → 48 / 40 → 56. 36 is DBIM §4's desktop H1 and the reason the ramp carries it. Tracking −0.015em."
           },
           "lh": {
             "$type": "dimension",
@@ -895,7 +899,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-2. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -913,7 +918,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "3": {
@@ -933,7 +939,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "The website home page's own hero size. Website 32 → 64 / 40 → 72; Portal 28 → 40 / 36 → 48. Tracking −0.01em."
           },
           "lh": {
             "$type": "dimension",
@@ -951,7 +958,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-3. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -969,7 +977,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "4": {
@@ -989,7 +998,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Section hero, banner headline. Website 28 → 56 / 36 → 64; Portal 24 → 32 / 32 → 40. Tracking −0.01em."
           },
           "lh": {
             "$type": "dimension",
@@ -1007,7 +1017,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-4. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1025,7 +1036,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-4: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "5": {
@@ -1045,7 +1057,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Small hero — a login panel wordmark, a campaign strip. Website 24 → 48 / 32 → 56; Portal 24 → 28 / 32 → 36. Tracking −0.005em."
           },
           "lh": {
             "$type": "dimension",
@@ -1063,7 +1076,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-5. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1081,7 +1095,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-5: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "6": {
@@ -1101,7 +1116,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "The smallest display size, one step above headline-1 so a hero and a page title never share a size. Website 22 → 40 / 28 → 48 (1.20, on DBIM's floor); Portal 20 → 24 / 28 → 32. Tracking 0."
           },
           "lh": {
             "$type": "dimension",
@@ -1119,7 +1135,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for display-6. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1137,9 +1154,11 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for display-6: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
-        }
+        },
+        "$description": "Display — hero and campaign headings, on the optical Display cut (Noto Sans Display, drawn for 40–80px so its spacing does not read loose at that size). Medium 500: a display heading carries presence by size, not weight. Website is expressive (80 → 40), Portal is restrained (56 → 24). Leading tightens as size grows, 1.20 at display-6 to 1.10 at display-1 — DBIM §4's 1.2 floor is departed from here on record (deviation register T3), because 1.2 at 80px opens a two-line hero into separate lines. Tracking is negative from one em rule per rung so the two surfaces track alike per pixel of type."
       },
       "headline": {
         "1": {
@@ -1159,7 +1178,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "The page h1, one per page. Website 28 → 40 / 36 → 48; Portal 24 → 32 / 32 → 40. Leading 1.20 at desktop: the tightest a structural heading is allowed."
           },
           "lh": {
             "$type": "dimension",
@@ -1177,7 +1197,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-1. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1195,7 +1216,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "2": {
@@ -1215,7 +1237,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Section h2. Website 24 → 32 / 32 → 40; Portal 20 → 28 / 28 → 36. Leading 1.25."
           },
           "lh": {
             "$type": "dimension",
@@ -1233,7 +1256,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-2. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1251,7 +1275,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "3": {
@@ -1271,7 +1296,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Sub-section h3. Website 22 → 28 / 28 → 36; Portal 18 → 24 / 24 → 32. Was 28/32 (1.14) — tighter than the h2 above it — until the 2026-09-04 re-cut; now 1.29."
           },
           "lh": {
             "$type": "dimension",
@@ -1289,7 +1315,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-3. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1307,7 +1334,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "4": {
@@ -1327,7 +1355,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "h4, and the SectionTitle component. Website 20 → 24 / 28 → 32; Portal 16 → 20 / 24 → 28. Leading 1.33."
           },
           "lh": {
             "$type": "dimension",
@@ -1345,7 +1374,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-4. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1363,7 +1393,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-4: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "5": {
@@ -1383,7 +1414,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "h5, minor heading. Website 18 → 20 / 24 → 28; Portal 16 → 18 / 24. Leading 1.40. 18 rather than DBIM's 16 so an h5 does not share the body size."
           },
           "lh": {
             "$type": "dimension",
@@ -1401,7 +1433,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-5. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1419,7 +1452,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-5: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "6": {
@@ -1439,7 +1473,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "h6, the smallest heading: body size, semibold, body leading. 16 / 24 on both surfaces (1.50). Distinguished from body-1 by weight (600 vs 400) and from title-2 by its element."
           },
           "lh": {
             "$type": "dimension",
@@ -1457,7 +1492,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for headline-6. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1475,9 +1511,11 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for headline-6: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
-        }
+        },
+        "$description": "Headline — document structure, h1 to h6. SemiBold 600, never 700: bold at these sizes on Noto Sans closes the counters and 700 is reserved for inline emphasis and KPI numerals. Leading rises as size falls — 1.20 at headline-1 to 1.50 at headline-6 — so every headline sits inside DBIM §4's 1.2–1.5 band and a smaller heading is never set tighter than the larger one above it. The website ramp is one step above DBIM's 36/24/20 (deviation register T1) because a six-level outline needs the intermediate steps; the portal ramp is one step above DBIM's mobile ladder."
       },
       "title": {
         "1": {
@@ -1497,7 +1535,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Card, panel and dialog title. 18 → 22 / 24 → 28 on both surfaces (1.27). 22 sits between headline-4 (24) and headline-5 (20) on purpose: a title is not a heading level."
           },
           "lh": {
             "$type": "dimension",
@@ -1515,7 +1554,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for title-1. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1533,7 +1573,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for title-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "2": {
@@ -1553,7 +1594,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "List-item title, small card title, table caption. 16 / 24 (1.50) — body-1's metrics at 600, so a title and its body align line for line."
           },
           "lh": {
             "$type": "dimension",
@@ -1571,7 +1613,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for title-2. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1589,7 +1632,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for title-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "3": {
@@ -1609,7 +1653,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Dense table header, compact list title. 14 / 20 (1.43) — body-2's metrics at 600."
           },
           "lh": {
             "$type": "dimension",
@@ -1627,7 +1672,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for title-3. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1645,9 +1691,11 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for title-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
-        }
+        },
+        "$description": "Title — the name of a thing: a card, a panel, a dialog, a table, a list item. SemiBold 600 since 2026-09-04 (was Medium): a title and the paragraph under it are now two weight steps apart, not one, so hierarchy does not rest on a single step. Identical on both surfaces — a card reads the same wherever it sits (the productive core is shared, as Carbon's productive type set is)."
       },
       "body": {
         "1": {
@@ -1667,7 +1715,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "The reading size. 16 / 24 (1.50) everywhere, including phones: a citizen's paragraph is never smaller than the form field it explains."
           },
           "lh": {
             "$type": "dimension",
@@ -1685,7 +1734,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for body-1. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1703,7 +1753,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for body-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "2": {
@@ -1723,7 +1774,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Secondary text, help text, table cells. 14 / 20 (1.43)."
           },
           "lh": {
             "$type": "dimension",
@@ -1741,7 +1793,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for body-2. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1759,7 +1812,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for body-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "3": {
@@ -1779,7 +1833,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Captions, timestamps, legal, footnotes. 12 / 16 (1.33). The floor: UX4G 3.0 §2 calls 12px the minimum usable size and nothing in SAMAVESH renders below it."
           },
           "lh": {
             "$type": "dimension",
@@ -1797,7 +1852,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for body-3. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1815,9 +1871,11 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for body-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
-        }
+        },
+        "$description": "Body — running text. Regular 400, leading 1.5 at the reading size on both surfaces (WCAG 1.4.8 and DBIM §4 iii). Identical on the website and in portals since 2026-09-04: the old Portal ramp dropped paragraphs to 14px on phones while the inputs beside them held 16px, and carried a 13px stop the contract bans. Tracking 0: Noto Sans is drawn with the spacing body text needs. Each size has a SemiBold companion text style for emphasis — never Bold."
       },
       "label": {
         "1": {
@@ -1837,7 +1895,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Form labels, button text, tabs, navigation items. 14 / 20 (1.43) — the UX4G Label/L size, one step below body-1 so a label sits under the value it names."
           },
           "lh": {
             "$type": "dimension",
@@ -1855,7 +1914,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for label-1. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1873,7 +1933,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for label-1: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "2": {
@@ -1893,7 +1954,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Badges, chips, small controls. 12 / 16 (1.33). The floor size at Medium."
           },
           "lh": {
             "$type": "dimension",
@@ -1911,7 +1973,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for label-2. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1929,7 +1992,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for label-2: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
         },
         "3": {
@@ -1949,7 +2013,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "The CAPS role — overlines and eyebrows of 1–3 words, always uppercase, always with type/caps/tracking (+0.06em). 12 / 16, Medium. Moved from 11px on 2026-09-04: the estate renders nothing below 12. Uppercase anywhere else is a defect the type gate reports."
           },
           "lh": {
             "$type": "dimension",
@@ -1967,7 +2032,8 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Line height for label-3. On the 4px grid; see the size for the ratio and the reason."
           },
           "para": {
             "$type": "dimension",
@@ -1985,9 +2051,11 @@
                   }
                 }
               }
-            }
+            },
+            "$description": "Paragraph spacing for label-3: the gap between consecutive blocks at this role, consumed by Text's `flow` and by Figma's paragraph spacing. Smaller than the line height so a paragraph break reads as a break, not a heading."
           }
-        }
+        },
+        "$description": "Label — controls, badges and captions that are scanned, not read. Medium 500: one step above body so a label reads as a label beside a value without shouting. Identical on both surfaces."
       }
     },
     "tracking": {
@@ -2009,7 +2077,8 @@
                 }
               }
             }
-          }
+          },
+          "$description": "Display-1 letter-spacing, −0.015em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         },
         "2": {
           "$type": "dimension",
@@ -2027,7 +2096,8 @@
                 }
               }
             }
-          }
+          },
+          "$description": "Display-2 letter-spacing, −0.015em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         },
         "3": {
           "$type": "dimension",
@@ -2045,7 +2115,8 @@
                 }
               }
             }
-          }
+          },
+          "$description": "Display-3 letter-spacing, −0.01em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         },
         "4": {
           "$type": "dimension",
@@ -2063,7 +2134,8 @@
                 }
               }
             }
-          }
+          },
+          "$description": "Display-4 letter-spacing, −0.01em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         },
         "5": {
           "$type": "dimension",
@@ -2081,7 +2153,8 @@
                 }
               }
             }
-          }
+          },
+          "$description": "Display-5 letter-spacing, −0.005em of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         },
         "6": {
           "$type": "dimension",
@@ -2099,7 +2172,8 @@
                 }
               }
             }
-          }
+          },
+          "$description": "Display-6 letter-spacing, 0 of the size at each bound, so the website and portal surfaces track alike per pixel of type. Large Noto Sans Display sets slightly tight; below display-6 the drawn spacing is right and tracking is zero."
         }
       },
       "heading": {
@@ -2118,7 +2192,8 @@
               }
             }
           }
-        }
+        },
+        "$description": "Headline tier tracking: zero. Noto Sans at 16–40px is drawn with the spacing a heading needs; negative tracking here closes counters and hurts Devanagari."
       },
       "title": {
         "$type": "dimension",
@@ -2136,7 +2211,8 @@
               }
             }
           }
-        }
+        },
+        "$description": "Title tier tracking: zero."
       },
       "body": {
         "$type": "dimension",
@@ -2154,7 +2230,8 @@
               }
             }
           }
-        }
+        },
+        "$description": "Body tracking: zero. Positive tracking on running text lowers reading speed; WCAG 1.4.12 requires the reader's own override to survive, which zero tracking makes trivial."
       },
       "label": {
         "$type": "dimension",
@@ -2172,7 +2249,8 @@
               }
             }
           }
-        }
+        },
+        "$description": "Label tracking: zero for mixed-case labels. Uppercase labels are the label-3 role and take type/caps/tracking instead."
       },
       "caps": {
         "$type": "dimension",

@@ -61,7 +61,8 @@ test("the fluid type scale renders identically in rem as it did in px", () => {
   const roleEntries = [];
   for (const [family, byNumber] of Object.entries(primitives.font.role)) {
     if (family.startsWith("$")) continue;
-    const numbered = Object.values(byNumber).every((v) => v && !("$value" in v));
+    // A tier carries its own `$description` since 2026-09-04; only the numbered steps decide the shape.
+    const numbered = Object.entries(byNumber).filter(([k]) => !k.startsWith("$")).map(([, v]) => v).every((v) => v && typeof v === "object" && !("$value" in v));
     if (numbered) {
       for (const [number, parts] of Object.entries(byNumber)) {
         if (number.startsWith("$")) continue;
