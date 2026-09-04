@@ -150,6 +150,16 @@ function separated(a, b) {
  * only improve. A run that beats a baseline fails too, and says so — that is the
  * prompt to tighten the number rather than bank the improvement silently.
  */
+/*
+ * 2026-09-04, the colour-system redesign's data-visualisation pass. The categorical ramp was
+ * re-cut by simulated annealing over all twelve slots at once (docs/audit/2026-09-04-colour-
+ * system-audit-and-redesign.md, the data-visualisation section), and four ratchets tightened:
+ * CVD worst pair 8.0 -> 8.2; slots outside the lightness band 4 -> 2; slots below the chroma
+ * floor 4 -> 0; ordinary-vision worst pair 11.7 -> 13.4; full-ramp CVD worst pair 1.5 -> 3.8 (the
+ * three extension slots re-picked so the tail does not give back what the head gained). The two slots still below the band
+ * are the measured price of nine colour-blind-safe slots: inside the band no nine-slot set
+ * reaches dE 8 on every pair (best found 7.5 over several thousand annealed candidates).
+ */
 const RATCHETS = {
   /**
    * Colliding pairs across the full twelve, at the estate separation rule.
@@ -165,7 +175,7 @@ const RATCHETS = {
    * which is the point: the ramp was solved to this bound, not past it. The
    * old ramp managed 5.7 across only five slots and 1.0 across twelve.
    */
-  cvdWorstDeltaEInSafeRange: 8.0,
+  cvdWorstDeltaEInSafeRange: 8.2,
 
   /**
    * Worst across all twelve. Slots 10-12 are EXTENSION colours: mutually
@@ -173,7 +183,7 @@ const RATCHETS = {
    * by a consumer that has already ignored the cap. The number is low by design
    * and is ratcheted so it cannot quietly get lower still.
    */
-  cvdWorstDeltaEFullRamp: 1.5,
+  cvdWorstDeltaEFullRamp: 3.8,
 
   /*
    * ── THREE PROPERTIES THIS GATE DID NOT MEASURE ──────────────────────────
@@ -204,10 +214,10 @@ const RATCHETS = {
    */
 
   /** OKLCH L, 0-100. Outside 43-77 a mark is too dark or too pale to sit on either ground. */
-  slotsOutsideLightnessBand: 4,
+  slotsOutsideLightnessBand: 2,
 
   /** OKLCH C. Below 0.10 a hue reads as grey, so the series loses its identity. */
-  slotsBelowChromaFloor: 4,
+  slotsBelowChromaFloor: 0,
 
   /*
    * NAMED AS DEBT, NOT AS CONFORMANCE. These three tests are ratchets over a
@@ -219,7 +229,7 @@ const RATCHETS = {
    * A test name is read far more often than its baseline.
    */
   /** Worst UNSIMULATED separation in the safe range. Floor is 15; this is the gap. */
-  normalWorstDeltaEInSafeRange: 11.7,
+  normalWorstDeltaEInSafeRange: 13.4,
 };
 
 /** OKLCH lightness band a categorical mark must sit inside, on a light ground. */

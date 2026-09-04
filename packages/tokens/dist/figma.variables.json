@@ -15483,7 +15483,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#a25a00"
+              "value": "#e7173a"
             }
           },
           "description": "Use as series 2 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
@@ -15503,7 +15503,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#007668"
+              "value": "#644588"
             }
           },
           "description": "Use as series 3 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
@@ -15523,7 +15523,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#930121"
+              "value": "#1a801c"
             }
           },
           "description": "Use as series 4 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
@@ -15543,7 +15543,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#b671a6"
+              "value": "#c930b4"
             }
           },
           "description": "Use as series 5 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
@@ -15563,7 +15563,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#323ca8"
+              "value": "#7a3901"
             }
           },
           "description": "Use as series 6 in a categorical chart. Slots 1-6 are mutually distinguishable under normal, protan, deutan and tritan vision — take them in order rather than picking favourites.",
@@ -15583,7 +15583,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#719348"
+              "value": "#a35b7a"
             }
           },
           "description": "Use as series 7 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
@@ -15603,7 +15603,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#7261a8"
+              "value": "#481dc2"
             }
           },
           "description": "Use as series 8 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
@@ -15623,7 +15623,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#5a406e"
+              "value": "#a1015b"
             }
           },
           "description": "Use as series 9 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
@@ -15643,7 +15643,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#594d00"
+              "value": "#06569b"
             }
           },
           "description": "Use as series 10 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
@@ -15663,7 +15663,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#c02865"
+              "value": "#7568bf"
             }
           },
           "description": "Use as series 11 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
@@ -15683,7 +15683,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#4c90ac"
+              "value": "#b15b4a"
             }
           },
           "description": "Use as series 12 in a categorical chart. NOT distinguishable from every other slot: only 1-6 are. Past six, carry identity with something that is not colour — direct labels, small multiples, or fold the tail into \"Other\".",
@@ -15703,7 +15703,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#e8f2fd"
+              "value": "#e8f2ff"
             }
           },
           "description": "Use as step 50 of a sequential (single-hue) scale, for data that runs low to high.",
@@ -15723,7 +15723,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#c6dcf9"
+              "value": "#bddaff"
             }
           },
           "description": "Use as step 100 of a sequential (single-hue) scale, for data that runs low to high.",
@@ -15743,7 +15743,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#94bff5"
+              "value": "#91c1ff"
             }
           },
           "description": "Use as step 200 of a sequential (single-hue) scale, for data that runs low to high.",
@@ -15763,7 +15763,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#5fa0ef"
+              "value": "#62a7ff"
             }
           },
           "description": "Use as step 300 of a sequential (single-hue) scale, for data that runs low to high.",
@@ -15783,7 +15783,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#2d84e8"
+              "value": "#3b8df0"
             }
           },
           "description": "Use as step 400 of a sequential (single-hue) scale, for data that runs low to high.",
@@ -15823,7 +15823,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#025fb8"
+              "value": "#005eb9"
             }
           },
           "description": "Use as step 600 of a sequential (single-hue) scale, for data that runs low to high.",
@@ -15843,7 +15843,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#014b92"
+              "value": "#004992"
             }
           },
           "description": "Use as step 700 of a sequential (single-hue) scale, for data that runs low to high.",
@@ -15863,7 +15863,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#01376b"
+              "value": "#00356e"
             }
           },
           "description": "Use as step 800 of a sequential (single-hue) scale, for data that runs low to high.",
@@ -15883,7 +15883,7 @@
           "valuesByMode": {
             "Default": {
               "type": "COLOR",
-              "value": "#002448"
+              "value": "#00234c"
             }
           },
           "description": "Use as step 900 of a sequential (single-hue) scale, for data that runs low to high.",
@@ -15987,8 +15987,8 @@
           "valuesByMode": {
             "Default": {
               "type": "ALIAS",
-              "collection": "Palette",
-              "name": "color/successScale/100"
+              "collection": "Color",
+              "name": "chart/seq/100"
             }
           },
           "description": "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.",
@@ -16008,8 +16008,8 @@
           "valuesByMode": {
             "Default": {
               "type": "ALIAS",
-              "collection": "Palette",
-              "name": "color/successScale/300"
+              "collection": "Color",
+              "name": "chart/seq/400"
             }
           },
           "description": "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.",
@@ -16029,8 +16029,8 @@
           "valuesByMode": {
             "Default": {
               "type": "ALIAS",
-              "collection": "Palette",
-              "name": "color/successScale/700"
+              "collection": "Color",
+              "name": "chart/seq/800"
             }
           },
           "description": "Use in a diverging scale, for data with a meaningful midpoint such as change versus a target.",
@@ -16051,7 +16051,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/successScale/500"
+              "name": "color/successScale/600"
             }
           },
           "description": "Use for a up trend indicator. Pair it with an arrow or a sign — colour alone fails WCAG 1.4.1.",
@@ -16072,7 +16072,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/dangerScale/500"
+              "name": "color/dangerScale/600"
             }
           },
           "description": "Use for a down trend indicator. Pair it with an arrow or a sign — colour alone fails WCAG 1.4.1.",

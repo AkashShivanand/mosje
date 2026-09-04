@@ -101,7 +101,7 @@ accent/success 600 is L\* 46.1 — India Green itself — and 500 is a live mid-
 |---|---|---|
 | Citizen forms and transactions | Error text brick-brown; success confirmation near-black; warning message a brown on a khaki ground | Error `#aa2d30` (6.7:1), success `#00542b` (9.1:1), warning `#8b5e00` (5.7:1) on their own `base` tints; every message keeps its icon and its word |
 | Administrative dashboards | Success/error/warning badges sage, salmon and brown; solid warning badge unreadable; info chips looked like primary actions | Four statuses read as four hues (success 154°, warning 76°, error 24°, info 220°, brand 255°); solid amber chip with dark ink at 6.9:1 |
-| Data-heavy portals | Diverging scale's negative wing tracked the coral red; `chart/trend/*` inherited the dark inks | Diverging references follow the rotated red automatically; categorical palette untouched (it was re-cut on 2026-08-28 with its own CVD guarantee and stays — see §13 for its own follow-up) |
+| Data-heavy portals | Diverging scale was red against green and vanished under deuteranopia; three series were a status colour to the eye | Diverging references follow the rotated red automatically; categorical palette, sequential ladder and diverging scale re-cut in the second pass (§14) |
 
 ---
 
@@ -444,13 +444,95 @@ its measured contrast) reach Dev Mode.
 
 ## 13. Not done here, deliberately
 
-- **Categorical chart palette** — untouched. It was re-cut on 2026-08-28 with a CVD guarantee
-  for nine slots and ratcheted tests; three members (cat/2 brown, cat/9 mauve, cat/10 olive) sit
-  at 41–54 L\* with 40–55 % chroma share and would benefit from the same lift within the
-  3:1-on-white constraint. Its own change, with its own ratchets.
+- **Categorical chart palette** — validated and re-cut in the second pass; see §14.
 - **Neutral ramp** — unchanged; the greys are correct as designed.
 - **Renaming the prominence words** (`subtler` < `subtle` reads backwards) — a 495-variable
   rename with a Figma migration; recorded in §11.6 as a semantics decision instead.
 - **Dark theme** — none exists on the estate (owned by the UX4G widget); the staged dark values
   in the source were preserved, not designed.
 - **The Figma push** — §12.
+
+---
+
+## 14. Data visualisation — the second validation pass
+
+The first pass measured the chart tokens lightly and left them out of scope. Asked whether they had
+been validated as a data-visualisation expert, a dashboard expert and a visual design lead would,
+the honest answer was no. This section is that pass. The dataviz method used is the estate's own
+gate (`test/chart-palette.test.mjs`) plus the six-check validator from the `dataviz` skill; every
+figure is measured.
+
+### 14.1 What each lens found
+
+**Data-visualisation lens**
+
+| Set | Finding | Measured |
+|---|---|---|
+| Diverging (`chart/div/*`) | **Red against green** — the classic colour-vision trap. Under deuteranopia (about 1 man in 12) the two wings were one colour, so a diverging map showed no direction to those readers. | ΔE 4.1 strong ends · 7.9 mid · 1.7 soft ends |
+| Diverging | The 2026-09-04 ramp change had also broken its lightness symmetry (the wings were engineered to L\* 64.4 both sides). | pos 70.8 vs neg 64.4 |
+| Sequential (`chart/seq/*`) | Uneven ladder: the 400→500 step was half its neighbours because 500 is pinned to gov-blue and the rest were placed by eye. Two adjacent choropleth classes were closer than any other two. The validator's ordinal floor is 6 L\* per step. | steps 6.9 / 9.4 / 9.7 / 8.3 / **5.0** / 7.3 / 7.5 / 7.9 / 7.8 |
+| Categorical (`chart/cat/*`) | Four slots below the OKLCH chroma floor (read as grey); four slots below the lightness band; slots 8 and 9 only ΔE 12.6 apart in ordinary vision (floor 15); the all-pairs colour-blind ratchet held at exactly 8.04, its own threshold. | validator: 3 of 5 checks FAIL |
+| Trend (`chart/trend/*`) | Up/down at rung 500 while every status ink had moved to 600, so an arrow and the success text beside it were two greens. | ΔE 6.4 under deuteranopia |
+
+**Dashboard lens**
+
+| Finding | Measured |
+|---|---|
+| Three series were a status colour to the eye: the brown `cat/2` sat ΔE 4 from the warning ink, the crimson `cat/4` ΔE 7 from the error ink, the teal `cat/3` ΔE 6 from the info ink and 7 from success. On an administrative dashboard where a status pill sits beside a chart, "series 2" read as "warning". | dataviz reference floor: ΔE ≥ 8 with icon + label |
+| Metric-card pills and trend arrows carry sign and glyph as well as colour — correct, and the reason a red/green trend pair is acceptable where a red/green diverging *scale* is not (a scale has no glyph). | — |
+| Grid, axis and tooltip neutrals are recessive and correct (grid 1.35:1, axis 4.65:1 on white). | — |
+
+**Visual design lead lens**
+
+| Finding |
+|---|
+| The twelve mixed muted and saturated members (chroma 0.08–0.19) at three different lightnesses, so a bar chart looked like two palettes interleaved. |
+| Three members were mud: `cat/2` brown-orange, `cat/9` plum, `cat/10` olive. |
+| The diverging scale's soft steps were nearly the neutral midpoint on the green side. |
+
+### 14.2 The tension, and the decision
+
+The estate guarantees **nine** categorical slots mutually distinguishable through protanopia,
+deuteranopia and tritanopia (all 36 pairs ΔE ≥ 8, a ratchet consumers depend on via
+`tools/chart-slot-order`). Data-visualisation practice wants every slot inside the OKLCH
+lightness band 43–77 with chroma ≥ 0.10. **These are mutually exclusive in sRGB, and it was
+measured rather than assumed:** a dichromat keeps one chromatic axis plus lightness, so nine
+mutually distinct colours need lightness coding. Simulated annealing over all twelve slots at
+once, under the full constraint set, found no nine-slot set inside the band reaching ΔE 8 on every
+pair (best 7.5 over several thousand candidates); at a floor of L\* 42 it found several.
+
+Decision: **keep the nine-slot guarantee** (a contract change is the design-system manager's
+call, not this audit's) and accept **two** slots one L\* point below the band, where the previous
+palette had four. Everything else improves. The dataviz reference's own palette keeps series in
+the same hue family as its status colours and relies on the icon-plus-label rule, so that rule is
+adopted at ΔE ≥ 8 rather than a hue ban — which is what re-admitted a red and a green series and
+restored hue diversity.
+
+### 14.3 What changed
+
+| Token | Before | After | Why |
+|---|---|---|---|
+| `chart/cat/1–12` | `#0373df, #a25a00, #007668, #930121, #b671a6, #323ca8, #719348, #7261a8, #5a406e, #594d00, #c02865, #4c90ac` | `#0373df, #e7173a, #644588, #1a801c, #c930b4, #7a3901, #a35b7a, #481dc2, #a1015b, #06569b, #7568bf, #b15b4a` | Annealed against six constraints at once (§14.4); slot 1 unchanged |
+| `chart/seq/50–900` | hand-placed, 5.0 L\* step at 400→500 | even 7.6–7.8 L\* ladder, 500 still `#0373df` | Ordinal classes must be evenly spaced; class scales start at 100 |
+| `chart/div/pos*` | success green (`green/100, 300, 700`) | sequential blue (`seq/100, 400, 800`) | Red–blue survives deuteranopia (ΔE 9.3 / 26.9 / 17.9); red–green did not (1.7 / 7.9 / 4.1). Lightness symmetric again: 87.9/86.6, 64.3/64.4, 33.6/34.5 |
+| `chart/trend/up, down` | rung 500 | rung 600 | The rung every status ink and icon now reads; one green, not two |
+| Ratchets (`chart-palette.test.mjs`) | CVD worst 8.0 · band deficit 4 · chroma deficit 4 · ordinary worst 11.7 · full-ramp CVD 1.5 | **8.2 · 2 · 0 · 13.4 · 3.8** | Tightened so none can be given back |
+
+### 14.4 Verification
+
+| Check | Result |
+|---|---|
+| All 36 pairs among slots 1–9, worst of three dichromacies | ΔE **8.22** (ratchet was 8.04) |
+| All pairs among slots 1–9, ordinary vision | ΔE ≥ **13.4** (was 11.7; floor 15 not reached — see §14.2) |
+| Adjacent slots 1–12, ordinary vision / CVD | ≥ 17.4 / ≥ 10.4 |
+| First six slots, all pairs, dataviz validator | CVD ≥ 8.5, ordinary ≥ 17.7, chroma and contrast PASS; band: one slot at 0.423 |
+| Chroma ≥ 0.10 | 12 of 12 (was 8 of 12) |
+| ≥ 3:1 on white and on the muted page | 12 of 12, worst 3.47 |
+| Distance from every status ink | ΔE ≥ 8 for 12 of 12 (was ΔE 4 / 6 / 7 on three slots) |
+| Hue spread among the first six | ≥ 30° (blue, red, purple, green, magenta, brown) |
+| Sequential steps | 7.6–7.8 L\*, monotonic |
+| `tools/chart-slot-order/check.mjs` | 18 consumers, none past slot 9 |
+| `npm test -w @mosje/tokens` | 167 pass |
+
+What remains outside the validator's band is stated in the token description itself, with the
+measurement that justifies it, so the next person does not re-run the search to rediscover it.

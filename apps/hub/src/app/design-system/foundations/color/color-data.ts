@@ -29,7 +29,7 @@ export const META = {
     "primaryScale",
     "neutralScale"
   ],
-  "worstChartSeries": 3.52,
+  "worstChartSeries": 4.58,
   "generatedFrom": "packages/tokens/dist/tokens.css"
 } as const;
 
@@ -1315,95 +1315,95 @@ export const CHART = {
     {
       "n": 2,
       "token": "chart/cat/2",
-      "value": "#a25a00",
-      "onPage": 5.25
+      "value": "#e7173a",
+      "onPage": 4.58
     },
     {
       "n": 3,
       "token": "chart/cat/3",
-      "value": "#007668",
-      "onPage": 5.54
+      "value": "#644588",
+      "onPage": 7.64
     },
     {
       "n": 4,
       "token": "chart/cat/4",
-      "value": "#930121",
-      "onPage": 9.26
+      "value": "#1a801c",
+      "onPage": 5.06
     },
     {
       "n": 5,
       "token": "chart/cat/5",
-      "value": "#b671a6",
-      "onPage": 3.56
+      "value": "#c930b4",
+      "onPage": 4.6
     },
     {
       "n": 6,
       "token": "chart/cat/6",
-      "value": "#323ca8",
-      "onPage": 8.95
+      "value": "#7a3901",
+      "onPage": 8.7
     },
     {
       "n": 7,
       "token": "chart/cat/7",
-      "value": "#719348",
-      "onPage": 3.52
+      "value": "#a35b7a",
+      "onPage": 4.84
     },
     {
       "n": 8,
       "token": "chart/cat/8",
-      "value": "#7261a8",
-      "onPage": 5.26
+      "value": "#481dc2",
+      "onPage": 9.42
     },
     {
       "n": 9,
       "token": "chart/cat/9",
-      "value": "#5a406e",
-      "onPage": 8.77
+      "value": "#a1015b",
+      "onPage": 7.86
     },
     {
       "n": 10,
       "token": "chart/cat/10",
-      "value": "#594d00",
-      "onPage": 8.45
+      "value": "#06569b",
+      "onPage": 7.47
     },
     {
       "n": 11,
       "token": "chart/cat/11",
-      "value": "#c02865",
-      "onPage": 5.63
+      "value": "#7568bf",
+      "onPage": 4.68
     },
     {
       "n": 12,
       "token": "chart/cat/12",
-      "value": "#4c90ac",
-      "onPage": 3.56
+      "value": "#b15b4a",
+      "onPage": 4.7
     }
   ],
   "sequential": [
     {
       "step": 50,
       "token": "chart/seq/50",
-      "value": "#e8f2fd"
+      "value": "#e8f2ff"
     },
     {
       "step": 100,
       "token": "chart/seq/100",
-      "value": "#c6dcf9"
+      "value": "#bddaff"
     },
     {
       "step": 200,
       "token": "chart/seq/200",
-      "value": "#94bff5"
+      "value": "#91c1ff"
     },
     {
       "step": 300,
       "token": "chart/seq/300",
-      "value": "#5fa0ef"
+      "value": "#62a7ff"
     },
     {
       "step": 400,
       "token": "chart/seq/400",
-      "value": "#2d84e8"
+      "value": "#3b8df0"
     },
     {
       "step": 500,
@@ -1413,22 +1413,22 @@ export const CHART = {
     {
       "step": 600,
       "token": "chart/seq/600",
-      "value": "#025fb8"
+      "value": "#005eb9"
     },
     {
       "step": 700,
       "token": "chart/seq/700",
-      "value": "#014b92"
+      "value": "#004992"
     },
     {
       "step": 800,
       "token": "chart/seq/800",
-      "value": "#01376b"
+      "value": "#00356e"
     },
     {
       "step": 900,
       "token": "chart/seq/900",
-      "value": "#002448"
+      "value": "#00234c"
     }
   ],
   "diverging": [
@@ -1455,29 +1455,29 @@ export const CHART = {
     {
       "key": "posSoft",
       "token": "chart/div/posSoft",
-      "value": "#bde3c7"
+      "value": "#bddaff"
     },
     {
       "key": "pos",
       "token": "chart/div/pos",
-      "value": "#76b188"
+      "value": "#3b8df0"
     },
     {
       "key": "posStrong",
       "token": "chart/div/posStrong",
-      "value": "#00532a"
+      "value": "#00356e"
     }
   ],
   "trend": [
     {
       "key": "up",
       "token": "chart/trend/up",
-      "value": "#338051"
+      "value": "#046a38"
     },
     {
       "key": "down",
       "token": "chart/trend/down",
-      "value": "#cb3d3f"
+      "value": "#aa2d30"
     },
     {
       "key": "flat",
