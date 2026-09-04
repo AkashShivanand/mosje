@@ -224,7 +224,7 @@ import { SiteFooter } from "@mosje/design-system";
 <SiteFooter
   variant="website"
   linkAs={Link}
-  emblem={<Image src={emblem} alt="" width={48} height={72} />}
+  emblem={<Image src={emblem} alt="" width={40} height={65} />}
   organisation={[
     "Government of India",
     "Ministry of Social Justice & Empowerment",

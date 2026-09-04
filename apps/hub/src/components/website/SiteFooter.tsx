@@ -233,11 +233,15 @@ export function SiteFooter({ lastUpdated }: SiteFooterProps = {}) {
         <Image
           src="/website/images/National_Emblem_logo_white.svg"
           alt="National Emblem of India"
-          width={42}
-          height={56}
-          /* 56px so the emblem's optical height matches the three-line
-             organisation block beside it. [DBIM 5.1] — correct proportion,
-             never scaled disproportionately. */
+          /* THE ASSET'S OWN 40x65, not the drawn size. Next compares the
+             rendered box against these two numbers and warns when CSS moves
+             one and not the other — 42x56 claimed a 0.75 ratio the file does
+             not have, so `w-auto` resolved to 34 and tripped it. */
+          width={40}
+          height={65}
+          /* h-14 draws it at 56px so the emblem's optical height matches the
+             three-line organisation block beside it. [DBIM 5.1] — correct
+             proportion, never scaled disproportionately. */
           className="h-14 w-auto shrink-0"
         />
       }

@@ -1,0 +1,578 @@
+<title>Who Maintains This Website</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Noto+Sans+Mono:wght@400;500;700&family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&display=swap">
+
+<style>
+
+:root{
+  --ground:#F5F7FB; --surface:#FFFFFF; --surface-2:#EEF1F7;
+  --ink:#111A2E; --body:#2C3651; --muted:#5D6884; --faint:#8B95AE;
+  --rule:#DCE1EC; --rule-strong:#C3CBDB;
+  --navy:#162F6A; --navy-soft:#E5EAF6;
+  --accent:#0373DF; --accent-soft:#E1EFFC;
+  --crit:#9E2A2B; --crit-soft:#F7E7E7;
+  --warn:#B4530C; --warn-soft:#FBEDE1;
+  --good:#166534; --good-soft:#E3F0E7;
+  --shadow:0 1px 2px rgba(17,26,46,.05), 0 8px 24px -14px rgba(17,26,46,.18);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1020; --surface:#111A2D; --surface-2:#18233A;
+    --ink:#E8ECF6; --body:#C4CDE0; --muted:#96A2BE; --faint:#74809C;
+    --rule:#243050; --rule-strong:#33415F;
+    --navy:#8CA8EC; --navy-soft:#1A2745;
+    --accent:#58A9F2; --accent-soft:#122840;
+    --crit:#E97A7E; --crit-soft:#2E1A1C;
+    --warn:#E29958; --warn-soft:#2B2016;
+    --good:#7FC69A; --good-soft:#152719;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A1020; --surface:#111A2D; --surface-2:#18233A;
+  --ink:#E8ECF6; --body:#C4CDE0; --muted:#96A2BE; --faint:#74809C;
+  --rule:#243050; --rule-strong:#33415F;
+  --navy:#8CA8EC; --navy-soft:#1A2745;
+  --accent:#58A9F2; --accent-soft:#122840;
+  --crit:#E97A7E; --crit-soft:#2E1A1C;
+  --warn:#E29958; --warn-soft:#2B2016;
+  --good:#7FC69A; --good-soft:#152719;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.8);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--ground); color:var(--body);
+  font-family:"Noto Sans","Helvetica Neue",Arial,sans-serif;
+  font-size:16px; line-height:1.62; -webkit-font-smoothing:antialiased;
+}
+a{color:var(--accent); text-decoration:none; border-bottom:1px solid color-mix(in srgb, var(--accent) 35%, transparent)}
+a:hover{border-bottom-color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--accent); outline-offset:3px; border-radius:2px}
+
+/* ---------- shell ---------- */
+.shell{max-width:1220px; margin:0 auto; padding:0 24px 96px}
+.layout{display:grid; grid-template-columns:1fr; gap:0}
+@media(min-width:1040px){
+  .layout{grid-template-columns:216px minmax(0,1fr); gap:56px; align-items:start}
+}
+.rail{display:none}
+@media(min-width:1040px){
+  .rail{display:block; position:sticky; top:32px; padding-top:8px}
+}
+.rail ol{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:2px}
+.rail a{
+  display:grid; grid-template-columns:22px 1fr; gap:8px; align-items:baseline;
+  padding:6px 8px; border:0; border-radius:5px; color:var(--muted);
+  font-size:13px; line-height:1.35;
+}
+.rail a:hover{background:var(--surface-2); color:var(--ink)}
+.rail .n{font-family:"Noto Sans Mono",monospace; font-size:11px; color:var(--faint); font-variant-numeric:tabular-nums}
+.rail h6{
+  margin:0 0 10px; padding-left:8px; font-family:"Noto Sans Mono",monospace;
+  font-size:10.5px; letter-spacing:.14em; text-transform:uppercase; color:var(--faint); font-weight:500;
+}
+
+/* ---------- masthead ---------- */
+.mast{padding:56px 0 34px; border-bottom:2px solid var(--ink)}
+.eyebrow{
+  font-family:"Noto Sans Mono",monospace; font-size:11px; letter-spacing:.16em;
+  text-transform:uppercase; color:var(--navy); font-weight:500; margin:0 0 20px;
+}
+h1{
+  font-family:"Noto Serif",Georgia,serif; font-weight:700; color:var(--ink);
+  font-size:clamp(2.3rem,6vw,3.7rem); line-height:1.06; letter-spacing:-.02em;
+  margin:0 0 18px; text-wrap:balance; max-width:16ch;
+}
+.standfirst{
+  font-family:"Noto Serif",Georgia,serif; font-size:clamp(1.05rem,2.2vw,1.28rem);
+  line-height:1.5; color:var(--body); max-width:56ch; margin:0 0 28px;
+}
+.meta{
+  display:flex; flex-wrap:wrap; gap:8px 28px; font-family:"Noto Sans Mono",monospace;
+  font-size:11.5px; color:var(--muted); letter-spacing:.02em;
+}
+.meta b{color:var(--ink); font-weight:500}
+
+/* ---------- sections ---------- */
+section{padding-top:60px; scroll-margin-top:20px}
+h2{
+  font-family:"Noto Serif",Georgia,serif; font-weight:700; color:var(--ink);
+  font-size:clamp(1.5rem,3.2vw,2rem); line-height:1.18; letter-spacing:-.015em;
+  margin:0 0 6px; text-wrap:balance;
+}
+.h2num{
+  display:block; font-family:"Noto Sans Mono",monospace; font-size:11px;
+  letter-spacing:.16em; color:var(--navy); text-transform:uppercase; margin-bottom:10px; font-weight:500;
+}
+.deck{max-width:64ch; color:var(--muted); margin:0 0 30px; font-size:15.5px}
+h3{
+  font-family:"Noto Sans",sans-serif; font-weight:600; color:var(--ink);
+  font-size:1.06rem; line-height:1.35; margin:34px 0 10px; letter-spacing:-.005em;
+}
+p{max-width:68ch; margin:0 0 16px}
+ul,ol{max-width:68ch; padding-left:20px; margin:0 0 16px}
+li{margin-bottom:7px}
+strong{color:var(--ink); font-weight:600}
+em{color:var(--body)}
+code,.mono{font-family:"Noto Sans Mono",monospace; font-size:.86em; background:var(--surface-2); padding:1px 5px; border-radius:3px; color:var(--ink)}
+
+/* ---------- tables ---------- */
+.scroller{overflow-x:auto; margin:0 0 24px; border:1px solid var(--rule); border-radius:8px; background:var(--surface); box-shadow:var(--shadow)}
+table{border-collapse:collapse; width:100%; min-width:520px; font-size:14px}
+th,td{text-align:left; padding:11px 16px; border-bottom:1px solid var(--rule); vertical-align:top}
+thead th{
+  background:var(--surface-2); color:var(--ink); font-weight:600; font-size:11.5px;
+  letter-spacing:.07em; text-transform:uppercase; white-space:nowrap;
+  border-bottom:1px solid var(--rule-strong); position:sticky; top:0;
+}
+tbody tr:last-child td{border-bottom:0}
+td.num,th.num{text-align:right; font-family:"Noto Sans Mono",monospace; font-variant-numeric:tabular-nums; white-space:nowrap}
+tr.flag td{background:var(--crit-soft)}
+tr.flag td:first-child{box-shadow:inset 3px 0 0 var(--crit)}
+.gapneg{color:var(--crit); font-weight:600}
+.gapok{color:var(--muted)}
+
+/* coverage bar */
+.bar{display:block; height:7px; border-radius:4px; background:var(--rule); overflow:hidden; min-width:104px; margin-top:5px}
+.bar span{display:block; height:100%; background:var(--accent); border-radius:4px}
+.barwrap{min-width:150px}
+.barlab{font-family:"Noto Sans Mono",monospace; font-size:10.5px; color:var(--muted); letter-spacing:.03em}
+
+/* ---------- finding blocks ---------- */
+.finding{
+  background:var(--surface); border:1px solid var(--rule); border-left:3px solid var(--crit);
+  border-radius:0 8px 8px 0; padding:20px 24px; margin:0 0 16px; box-shadow:var(--shadow);
+}
+.finding.moderate{border-left-color:var(--warn)}
+.finding h3{margin:0 0 8px; display:flex; gap:11px; align-items:baseline; flex-wrap:wrap}
+.tag{
+  font-family:"Noto Sans Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.06em;
+  color:var(--crit); background:var(--crit-soft); padding:2px 7px; border-radius:4px; flex:0 0 auto;
+}
+.finding.moderate .tag{color:var(--warn); background:var(--warn-soft)}
+.finding p:last-child,.finding ul:last-child{margin-bottom:0}
+.ev{
+  border-left:2px solid var(--rule-strong); padding-left:14px; margin:14px 0;
+  font-size:14.5px; color:var(--muted);
+}
+.ev b{color:var(--ink)}
+
+/* ---------- recommendation blocks ---------- */
+.rec{
+  background:var(--surface); border:1px solid var(--rule); border-radius:8px;
+  padding:22px 24px; margin:0 0 16px; box-shadow:var(--shadow);
+}
+.rec h3{margin:0 0 4px; font-size:1.08rem}
+.rec .rid{
+  font-family:"Noto Sans Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.06em;
+  color:var(--navy); background:var(--navy-soft); padding:2px 7px; border-radius:4px;
+}
+.closes{
+  font-family:"Noto Sans Mono",monospace; font-size:11px; color:var(--muted);
+  letter-spacing:.04em; margin:0 0 14px;
+}
+.closes b{color:var(--crit); font-weight:700}
+.rec p:last-child,.rec ul:last-child,.rec .scroller:last-child{margin-bottom:0}
+
+/* ---------- journeys ---------- */
+.journey{background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:22px 24px; margin:0 0 16px; box-shadow:var(--shadow)}
+.journey h3{margin:0 0 14px}
+.ba{display:grid; gap:18px}
+@media(min-width:760px){.ba{grid-template-columns:1fr 1fr; gap:28px}}
+.ba > div{min-width:0}
+.balab{
+  font-family:"Noto Sans Mono",monospace; font-size:10.5px; letter-spacing:.14em;
+  text-transform:uppercase; font-weight:700; margin:0 0 8px; display:block;
+}
+.before .balab{color:var(--crit)}
+.after .balab{color:var(--good)}
+.ba p{font-size:14.5px; margin-bottom:10px; max-width:none}
+.score{font-family:"Noto Sans Mono",monospace; font-size:12px; color:var(--ink); letter-spacing:.02em}
+
+/* ---------- chips ---------- */
+.chip{
+  display:inline-block; font-family:"Noto Sans Mono",monospace; font-size:10.5px;
+  letter-spacing:.06em; text-transform:uppercase; font-weight:700;
+  padding:2px 7px; border-radius:4px; white-space:nowrap;
+}
+.c-hi{color:var(--crit); background:var(--crit-soft)}
+.c-md{color:var(--warn); background:var(--warn-soft)}
+.c-lo{color:var(--good); background:var(--good-soft)}
+.c-nv{color:var(--navy); background:var(--navy-soft)}
+
+/* ---------- callout ---------- */
+.callout{
+  background:var(--navy-soft); border:1px solid color-mix(in srgb, var(--navy) 22%, transparent);
+  border-radius:8px; padding:20px 24px; margin:24px 0;
+}
+.callout p{margin-bottom:0; max-width:62ch}
+.callout .balab{color:var(--navy)}
+
+/* ---------- footer ---------- */
+footer{margin-top:76px; padding-top:26px; border-top:1px solid var(--rule); color:var(--muted); font-size:13.5px}
+footer ul{padding-left:18px}
+
+/* ---------- additions for the roles mapping ---------- */
+.figrow{display:grid; gap:14px; margin:0 0 30px}
+@media(min-width:700px){.figrow{grid-template-columns:repeat(3,1fr)}}
+.fig{background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:20px 22px; box-shadow:var(--shadow)}
+.fig.crit{border-left:3px solid var(--crit); border-radius:0 8px 8px 0}
+.fig .n{
+  display:block; font-family:"Noto Sans Mono",monospace; font-weight:700;
+  font-size:clamp(2rem,5vw,2.7rem); line-height:1; color:var(--ink);
+  font-variant-numeric:tabular-nums; letter-spacing:-.02em;
+}
+.fig.crit .n{color:var(--crit)}
+.fig .k{
+  display:block; margin-top:10px; font-family:"Noto Sans Mono",monospace; font-size:10.5px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--faint); font-weight:500;
+}
+.fig .d{display:block; margin-top:8px; font-size:13.5px; color:var(--muted); line-height:1.45}
+.rid{
+  font-family:"Noto Sans Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.06em;
+  color:var(--navy); background:var(--navy-soft); padding:2px 7px; border-radius:4px; white-space:nowrap;
+}
+.cardgrid{display:grid; gap:14px; margin:0 0 24px}
+@media(min-width:820px){.cardgrid{grid-template-columns:repeat(3,1fr)}}
+.cardgrid .rec{margin:0}
+.cardgrid .rec p{font-size:14.5px}
+td .u,code.u{word-break:break-all; font-size:.8em}
+.grpname{font-family:"Noto Sans Mono",monospace; font-size:10.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--navy); font-weight:700; white-space:normal}
+.lede{font-size:17px; max-width:64ch}
+.sig{font-family:"Noto Sans Mono",monospace; font-size:11.5px; color:var(--muted); letter-spacing:.02em}
+</style>
+
+<div class="shell">
+<div class="layout">
+
+<nav class="rail" aria-label="Contents">
+  <h6>Contents</h6>
+  <ol>
+    <li><a href="#summary"><span class="n">00</span><span>The answer</span></a></li>
+    <li><a href="#method"><span class="n">01</span><span>Method</span></a></li>
+    <li><a href="#site"><span class="n">02</span><span>What the site is made of</span></a></li>
+    <li><a href="#classes"><span class="n">03</span><span>Three classes of owner</span></a></li>
+    <li><a href="#roles"><span class="n">04</span><span>The role catalogue</span></a></li>
+    <li><a href="#twice"><span class="n">05</span><span>Maintained twice</span></a></li>
+    <li><a href="#findings"><span class="n">06</span><span>Four findings</span></a></li>
+    <li><a href="#decide"><span class="n">07</span><span>Decisions asked for</span></a></li>
+    <li><a href="#changed"><span class="n">08</span><span>What has changed</span></a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="mast">
+  <p class="eyebrow">Content governance &#183; Department of Social Justice &amp; Empowerment</p>
+  <h1>Who Maintains This Website</h1>
+  <p class="standfirst">Maintaining <code>dosje.gov.in</code> needs fourteen kinds of login across thirty-nine assignments. Twelve of those fourteen have never been given to anyone &#8212; and every defect in this report sits in one of the twelve.</p>
+  <div class="meta">
+    <span><b>Site</b> www.dosje.gov.in &#183; SAMAVESH</span>
+    <span><b>Traversed</b> 3 September 2026</span>
+    <span><b>Basis</b> 8,702 live URLs &#183; 14 content types</span>
+    <span><b>Status</b> Draft for departmental review</span>
+  </div>
+</header>
+
+<section id="summary">
+  <span class="h2num">Section 00</span>
+  <h2>The answer, in one page</h2>
+  <p class="deck">A single WordPress installation carrying 146 distinct things that somebody has to keep true.</p>
+
+  <p class="lede">Ninety pages, twenty-one organisation page-trees, ten division link groups, fourteen telephone directories, twelve record collections and nineteen home-page components. Between them they hold <strong>5,960 documents, 448 officer records, 615 events, 589 gallery items, 312 tenders, 165 vacancies and 140 schemes</strong>.</p>
+
+  <div class="figrow">
+    <div class="fig"><span class="n">14</span><span class="k">Roles needed</span><span class="d">Kinds of login required to maintain the site as it stands, across 39 assignments.</span></div>
+    <div class="fig"><span class="n">2</span><span class="k">Roles identified</span><span class="d">The model described on the review call &#8212; organisation editors, and one administrator.</span></div>
+    <div class="fig crit"><span class="n">12</span><span class="k">Roles unassigned</span><span class="d">26 of the 39 assignments have no holder. Every finding in Section 06 sits here.</span></div>
+  </div>
+
+  <div class="callout">
+    <span class="balab">One finding changes the shape of the problem</span>
+    <p>The concern raised on the review call &#8212; that the same contact has to be typed in several places &#8212; is real, but it is <strong>not a limitation of WordPress</strong>. The site already holds 448 officer records as a proper content type, and <strong>every one of them names the organisation it belongs to</strong>. The central model exists; it was never filled in. In a sample of forty records the office telephone is missing on 35%, the address on 48%, and <em>Tenure</em> and <em>Contact (Residence)</em> are empty on all forty. The hand-typed copies exist because the central record was left blank.</p>
+  </div>
+
+  <p>The most urgent item is <a href="#f1">Finding 1</a>: when an editor renames or deletes a page, this installation redirects the old address to a page belonging to <strong>a different organisation</strong>. It is reproducible today, and it is the strongest reason to settle ownership before more editors are given logins.</p>
+</section>
+
+<section id="method">
+  <span class="h2num">Section 01</span>
+  <h2>Method</h2>
+  <p class="deck">Everything below was read from the live site on 3 September 2026, not from a screen-share or from memory.</p>
+  <ol>
+    <li><strong>Live traversal.</strong> The Department&#8217;s own sitemap index &#8212; 52 sitemaps, <strong>8,702 published URLs</strong> across <strong>14 content types</strong>. The primary navigation, footer, Important Links rail and home page were parsed from the live HTML.</li>
+    <li><strong>Record-level sampling.</strong> Forty of the 448 officer records were fetched and their published fields counted, to establish whether the contact model is populated.</li>
+    <li><strong>Redirect testing.</strong> Every page held in our August copy but absent from the live sitemap was requested, and its HTTP status and redirect target recorded &#8212; with a control address to prove the mechanism.</li>
+    <li><strong>Comparison</strong> against the SAMAVESH content export of 24 August 2026, to separate what has changed on the live site from what our copy never captured. Section 08.</li>
+  </ol>
+  <p class="sig">Row-by-row inventory: <code>2026-09-07-dosje-page-ownership-inventory.csv</code> &#183; 146 rows.</p>
+</section>
+
+<section id="site">
+  <span class="h2num">Section 02</span>
+  <h2>What the site is made of</h2>
+  <p class="deck">Fourteen content types. Only one of them records who owns the record.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Content type</th><th class="num">Records</th><th>Owner recorded on the record?</th></tr></thead>
+      <tbody>
+        <tr><td>Documents</td><td class="num">5,960</td><td><span class="chip c-hi">No</span> <code>category</code> is a document type, not an owner</td></tr>
+        <tr><td>Events</td><td class="num">615</td><td>Not established</td></tr>
+        <tr><td>Gallery</td><td class="num">589</td><td>Not established</td></tr>
+        <tr class="flag"><td><strong>Officials</strong></td><td class="num">448</td><td><span class="chip c-lo">Yes</span> every record names its organisation</td></tr>
+        <tr><td>Tenders</td><td class="num">312</td><td><span class="chip c-hi">No</span> and 121 of 312 carry no category at all</td></tr>
+        <tr><td>Organisation pages</td><td class="num">239</td><td>Yes, by URL position</td></tr>
+        <tr><td>Vacancies</td><td class="num">165</td><td><span class="chip c-hi">No</span></td></tr>
+        <tr><td>Schemes &amp; Services</td><td class="num">140</td><td><span class="chip c-hi">No</span> and 22 of 140 have effectively empty bodies</td></tr>
+        <tr><td>Scheme documents</td><td class="num">100</td><td>Not established</td></tr>
+        <tr><td>Suo Moto Disclosure</td><td class="num">15</td><td>Not established</td></tr>
+        <tr><td>CPIO</td><td class="num">14</td><td>Not established</td></tr>
+        <tr><td>Bookings</td><td class="num">12</td><td>Appears to belong to DAIC alone</td></tr>
+        <tr><td>Home-page sub-pages</td><td class="num">10</td><td>&#8212;</td></tr>
+        <tr><td>Updates</td><td class="num">9</td><td>&#8212;</td></tr>
+        <tr><td>Pages</td><td class="num">90</td><td>&#8212;</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>The Department&#8217;s own grouping of its organisations</h3>
+  <p>Taken verbatim from the Associated Organisations mega-menu. This report uses the Department&#8217;s words rather than inventing new ones.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Group</th><th class="num">Count</th><th>Bodies</th></tr></thead>
+      <tbody>
+        <tr><td class="grpname">Commissions</td><td class="num">3</td><td>NCSC &#183; NCSK &#183; NCBC</td></tr>
+        <tr><td class="grpname">Corporations</td><td class="num">3</td><td>NSFDC &#183; NSKFDC &#183; NBCFDC</td></tr>
+        <tr><td class="grpname">Foundation / Autonomous Bodies</td><td class="num">5</td><td>DAF &#183; DAIC &#183; BJRNF &#183; DWBDNC &#183; NISD</td></tr>
+        <tr><td class="grpname">Scheme-specific Thematic Portals</td><td class="num">7</td><td>SCW &#183; PM-AJAY &#183; SMILE-Transgender &#183; SMILE Beggary &#183; NOS &#183; NMBA &#183; NHAA</td></tr>
+        <tr><td><strong>In the menu</strong></td><td class="num"><strong>18</strong></td><td></td></tr>
+        <tr class="flag"><td>Under <code>/organisation/</code> but <strong>not</strong> in the menu</td><td class="num">3</td><td>e-Utthaan (12 pages) &#183; e-Anudaan (4) &#183; List of Channelizing Agencies (1)</td></tr>
+        <tr><td><strong>Total organisation trees</strong></td><td class="num"><strong>21</strong></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout">
+    <span class="balab">This is the reconciliation of &#8220;twelve&#8221;</span>
+    <p>Eleven of these are institutional bodies &#8212; three Commissions, three Corporations, five Foundations and Autonomous Bodies. Adding the Ministry itself gives <strong>twelve owners of a telephone directory</strong>, which is almost certainly what the figure on the call meant. It leaves the <strong>seven thematic portals and the three unlisted trees without an owner</strong>.</p>
+  </div>
+
+  <h3>The ten divisions</h3>
+  <p>The Important Links rail publishes 36 links across ten divisions: Scheduled Caste Welfare &#183; Welfare of the Other Backward Classes &#183; Grants-in-Aid to NGOs (11 links, the largest) &#183; Budget and Account &#183; Social Defence &#183; Public Grievance &#183; Statistics Division &#183; Official Language &#183; Parliamentary Matters &#183; Plan Division.</p>
+  <p>Five have an &#8220;About the Division&#8221; landing page; one has a directory. <strong>The other five exist only as a group of links in a rail</strong> &#8212; content to maintain, with no page to hold it.</p>
+</section>
+
+<section id="classes">
+  <span class="h2num">Section 03</span>
+  <h2>The three classes of owner</h2>
+  <p class="deck">Every one of the 146 inventory rows falls into exactly one. The classes come from the site&#8217;s own structure, not from an org chart invented for this report.</p>
+
+  <div class="cardgrid">
+    <div class="rec">
+      <h3><span class="rid">Class 1</span> Organisation-owned</h3>
+      <p>An attached body&#8217;s whole page tree, its directory, its documents, tenders, RTI and contact pages.</p>
+      <p><strong>Holder:</strong> a nodal officer named by that organisation. Settled on the review call and uncontroversial.</p>
+    </div>
+    <div class="rec">
+      <h3><span class="rid">Class 2</span> Division-owned</h3>
+      <p>A Ministry division&#8217;s pages, and its group of links in the Important Links rail.</p>
+      <p><strong>Holder:</strong> the division&#8217;s own dealing hand.</p>
+    </div>
+    <div class="rec" style="border-left:3px solid var(--crit); border-radius:0 8px 8px 0">
+      <h3><span class="rid" style="color:var(--crit);background:var(--crit-soft)">Class 3</span> Common</h3>
+      <p>Home page, navigation, footer, Directory, Contact Us, the aggregate document, tender and vacancy listings, and the statutory pages.</p>
+      <p><strong>Holder: nobody, today.</strong> This is the gap.</p>
+    </div>
+  </div>
+
+  <p>The call settled the first class, and also settled the working rule for the third: <em>whoever&#8217;s page it is will maintain it.</em> That is right, and it only works if the common pages are <strong>assembled from</strong> the organisations&#8217; own records rather than typed a second time. <a href="#f2">Finding 2</a> shows the condition is not met today.</p>
+</section>
+
+<section id="roles">
+  <span class="h2num">Section 04</span>
+  <h2>The role catalogue</h2>
+  <p class="deck">Fourteen roles, thirty-nine assignments. <em>Scope</em> is what the login may create, edit and publish; anything not listed is outside it.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Role</th><th class="num">Holders</th><th>Scope</th><th>Exists today</th></tr></thead>
+      <tbody>
+        <tr><td><span class="rid">R1</span> <strong>Super-administrator</strong></td><td class="num">1</td><td>Role creation, plugins, theme, redirects &#8212; and everything below</td><td><span class="chip c-lo">Yes</span></td></tr>
+        <tr class="flag"><td><span class="rid">R2</span> Home page &amp; campaign editor</td><td class="num">1</td><td>Hero carousel, SAMAVESH banner, Latest Updates, the three statistics counters, the Offerings / Organisations / Activity Corner blocks, logo carousel, persona pages, <code>/dashboard</code>, <code>/newsletter</code></td><td><span class="chip c-hi">No</span></td></tr>
+        <tr class="flag"><td><span class="rid">R3</span> Navigation &amp; site-structure owner</td><td class="num">1</td><td>Primary menu, footer, Important Links rail, both sitemaps, URL structure and redirects</td><td><span class="chip c-hi">No</span></td></tr>
+        <tr class="flag"><td><span class="rid">R4</span> Directory &amp; officials custodian</td><td class="num">1</td><td>The 448 officer records, <code>/mosje-directory</code>, <code>/whos-who</code>, <code>/contact-us</code>, <code>/mosje-contact</code>, <code>/chairpersons-office</code></td><td><span class="chip c-hi">No</span></td></tr>
+        <tr><td><span class="rid">R5</span> Organisation editor</td><td class="num">11</td><td>One institutional body&#8217;s entire tree, its directory, documents, tenders, RTI and contact pages</td><td><span class="chip c-md">Partly</span> stated as 12</td></tr>
+        <tr class="flag"><td><span class="rid">R6</span> Scheme portal editor</td><td class="num">7</td><td>One thematic portal&#8217;s tree &#8212; SCW, PM-AJAY, SMILE &#215; 2, NOS, NMBA, NHAA</td><td><span class="chip c-hi">No</span></td></tr>
+        <tr class="flag"><td><span class="rid">R7</span> Division editor</td><td class="num">10</td><td>One division&#8217;s pages, and its group in the Important Links rail</td><td><span class="chip c-hi">No</span></td></tr>
+        <tr class="flag"><td><span class="rid">R8</span> Documents librarian</td><td class="num">1</td><td>The 5,960 documents and 100 scheme documents, their ten categories, and the aggregate listings</td><td><span class="chip c-hi">No</span></td></tr>
+        <tr class="flag"><td><span class="rid">R9</span> Recruitment publisher</td><td class="num">1</td><td>The 165 vacancies and <code>/vacancies</code></td><td><span class="chip c-hi">No</span></td></tr>
+        <tr class="flag"><td><span class="rid">R10</span> Procurement publisher</td><td class="num">1</td><td>The 312 tenders and <code>/tenders</code></td><td><span class="chip c-hi">No</span></td></tr>
+        <tr class="flag"><td><span class="rid">R11</span> Events &amp; Gallery editor</td><td class="num">1</td><td>615 events and 589 gallery items</td><td><span class="chip c-hi">No</span></td></tr>
+        <tr class="flag"><td><span class="rid">R12</span> RTI, CPIO &amp; grievance officer</td><td class="num">1</td><td><code>/rti</code>, <code>/cpio</code> (14 records), <code>/suo-moto-disclosure</code> (15 records)</td><td><span class="chip c-hi">No</span></td></tr>
+        <tr class="flag"><td><span class="rid">R13</span> Statutory &amp; policy pages owner</td><td class="num">1</td><td>Copyright, Hyperlinking, Privacy, Terms, Help, Visitor Analytics &#8212; and the Accessibility Statement, <strong>which does not exist</strong></td><td><span class="chip c-hi">No</span></td></tr>
+        <tr class="flag"><td><span class="rid">R14</span> Schemes catalogue owner</td><td class="num">1</td><td>The 140 scheme records and <code>/schemes-services</code></td><td><span class="chip c-hi">No</span></td></tr>
+        <tr><td><strong>Total</strong></td><td class="num"><strong>39</strong></td><td></td><td><strong>13 assigned</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Two rules that belong in the roles, not in habit</h3>
+  <p><strong>Nobody but R3 may change a URL.</strong> <a href="#f1">Finding 1</a> shows what happens when a page moves.</p>
+  <p><strong>R5 and R6 publish; R8, R9 and R10 curate.</strong> A document, tender or vacancy is published by the organisation that owns it and appears in the aggregate listing automatically. This was agreed on the call. It cannot be enforced today, because the records carry no owner &#8212; <a href="#f3">Finding 3</a>.</p>
+</section>
+
+<section id="twice">
+  <span class="h2num">Section 05</span>
+  <h2>Where the same content is maintained twice</h2>
+  <p class="deck">Each row was confirmed on the live site on 3 September 2026.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Content</th><th>Where it is entered</th><th>Consequence</th></tr></thead>
+      <tbody>
+        <tr class="flag"><td><strong>Directory</strong></td><td>The <strong>same URL</strong> <code>/mosje-directory</code> appears <strong>twice in the primary navigation</strong> &#8212; under <em>Department</em> and again under <em>Connect</em>. The footer calls it <em>Ministers &amp; Officials</em>. <code>/directory/</code> redirects to a <strong>document</strong>.</td><td>One page, four names. A citizen cannot tell whether they are different things.</td></tr>
+        <tr class="flag"><td><strong>Officer contact details</strong></td><td>448 officer records &#183; 14 directory pages &#183; <code>/whos-who</code> &#183; <code>/contact-us</code> &#183; <code>/mosje-contact</code> &#183; a Contact page inside each of 17 organisation trees</td><td>The case raised on the call. The central record exists but is empty &#8212; <a href="#f2">Finding 2</a>.</td></tr>
+        <tr><td>Documents</td><td>Uploaded per page. Annual reports appear on organisation pages and again under <code>/annual-reports</code>.</td><td>5,960 records, no owner, no single upload point.</td></tr>
+        <tr><td>Vacancies and tenders</td><td>Home-page tabs &#183; <code>/vacancies</code> and <code>/tenders</code> &#183; a Tenders page inside organisation trees</td><td>Three surfaces, no owner field to join them.</td></tr>
+        <tr><td>Schemes</td><td>Home-page tab &#183; <code>/schemes-services</code> &#183; a Schemes page inside organisation trees</td><td>Same.</td></tr>
+        <tr><td>Navigation</td><td>Primary menu &#183; footer four-column menu &#183; organisation left rails &#183; Important Links rail</td><td>Four namings of one page set. <em>About Ministry</em> and <em>Vision &amp; Mission</em> both point at <code>/about-us/</code>; <em>Who&#8217;s Who</em> is <em>Organisational Chart</em> in the footer.</td></tr>
+        <tr><td>Success Stories</td><td>Published under <strong>both</strong> NSFDC and NBCFDC; a third URL redirects to the NSFDC copy</td><td>Two copies, and no rule saying which is current.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p><strong>One honest exception.</strong> Where an organisation&#8217;s short description appears on both its card and its page, a second entry may be unavoidable in this build. That should be stated in the technical assessment rather than promised away.</p>
+</section>
+
+<section id="findings">
+  <span class="h2num">Section 06</span>
+  <h2>Four findings to settle before more logins are issued</h2>
+  <p class="deck">Each is reproducible on the live site as it stands today.</p>
+
+  <div class="finding" id="f1">
+    <h3><span class="tag">F1</span> A renamed page sends the citizen to a different organisation</h3>
+    <p>When a page is removed or renamed, this installation resolves the old address by matching the <strong>last part of the URL only</strong>, and lands on whichever page shares that word.</p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Old address, requested 3 September 2026</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td><code class="u">/organisation/babu-jagjivan-ram-national-foundation-jrf/contact-us/</code></td><td><span class="chip c-hi">301</span> &#8594; <strong>DWBDNC&#8217;s contact page</strong></td></tr>
+          <tr><td><code class="u">/organisation/national-backward-classes-&#8230;nbcfdc/about-us/</code></td><td><span class="chip c-hi">301</span> &#8594; <strong>DAIC&#8217;s About Us</strong></td></tr>
+          <tr><td><code class="u">/organisation/success-stories/</code></td><td><span class="chip c-md">301</span> &#8594; NSFDC&#8217;s Success Stories</td></tr>
+          <tr><td><code class="u">/organisation/babu-jagjivan-ram-national-foundation-jrf/</code></td><td><span class="chip c-hi">404</span></td></tr>
+          <tr><td><code class="u">/organisation/national-institute-of-social-defence/dams/</code></td><td><span class="chip c-hi">404</span></td></tr>
+          <tr class="flag"><td><strong>Control:</strong> <code class="u">/organisation/zzz-not-a-real-org/contact-us/</code></td><td><span class="chip c-hi">301</span> &#8594; <strong>DWBDNC&#8217;s contact page</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="ev"><b>The control proves the mechanism.</b> <em>Any</em> address ending in <code>/contact-us/</code> under <code>/organisation/</code> is sent to DWBDNC, whether or not the organisation exists. A citizen following an older link, a search result or a printed circular to BJRNF&#8217;s contact page is given <strong>DWBDNC&#8217;s telephone number and address</strong> &#8212; under a <em>permanent</em> redirect that browsers and search engines cache.</div>
+    <p>This is a governance finding as much as a technical one: the trigger is renaming or deleting a page, which is precisely the action about to be delegated to a dozen editors. <strong>R3 must own URL changes, and the redirect rule must be corrected before the roles are issued.</strong></p>
+  </div>
+
+  <div class="finding" id="f2">
+    <h3><span class="tag">F2</span> The single source of truth already exists &#8212; it was never filled in</h3>
+    <p>Each of the 448 officer records carries: Name &#183; Designation &#183; <strong>Organisation</strong> &#183; Tenure &#183; Intercom &#183; Contact (Office) &#183; Contact (Residence) &#183; Email &#183; Address.</p>
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Field</th><th class="num">Filled</th><th class="barwrap">Share of a 40-record sample</th></tr></thead>
+        <tbody>
+          <tr><td>Designation</td><td class="num">40 / 40</td><td class="barwrap"><span class="bar"><span style="width:100%"></span></span><span class="barlab">100%</span></td></tr>
+          <tr><td><strong>Organisation</strong></td><td class="num">40 / 40</td><td class="barwrap"><span class="bar"><span style="width:100%"></span></span><span class="barlab">100%</span></td></tr>
+          <tr><td>Email</td><td class="num">28 / 40</td><td class="barwrap"><span class="bar"><span style="width:70%"></span></span><span class="barlab">70%</span></td></tr>
+          <tr><td>Contact (Office)</td><td class="num">26 / 40</td><td class="barwrap"><span class="bar"><span style="width:65%"></span></span><span class="barlab">65%</span></td></tr>
+          <tr><td>Address</td><td class="num">21 / 40</td><td class="barwrap"><span class="bar"><span style="width:52%"></span></span><span class="barlab">52%</span></td></tr>
+          <tr><td>Intercom</td><td class="num">10 / 40</td><td class="barwrap"><span class="bar"><span style="width:25%"></span></span><span class="barlab">25%</span></td></tr>
+          <tr class="flag"><td>Tenure</td><td class="num gapneg">0 / 40</td><td class="barwrap"><span class="bar"><span style="width:0%"></span></span><span class="barlab">0%</span></td></tr>
+          <tr class="flag"><td>Contact (Residence)</td><td class="num gapneg">0 / 40</td><td class="barwrap"><span class="bar"><span style="width:0%"></span></span><span class="barlab">0%</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Ownership is recorded on every record. <strong>The remedy is to populate the record and read every surface from it, not to build a new system.</strong> That work belongs to R4, with each R5 and R6 supplying their own body&#8217;s data.</p>
+  </div>
+
+  <div class="finding" id="f3">
+    <h3><span class="tag">F3</span> Documents, tenders and vacancies have no owner</h3>
+    <p>A document record carries <code>slug</code>, <code>title</code>, <code>url</code>, <code>date</code> and <code>category</code>, where <code>category</code> is one of ten <em>document types</em>: Advices (981), Resources (257), Annual Reports (211), Circulars &amp; Notifications (164), Notice (127), Publications (72), Acts &amp; Rules (71), Forms &amp; Templates (37), MOU (33), POLICY (9). <strong>None of them says who owns the record.</strong></p>
+    <div class="ev">Without an owner field a role cannot be scoped to &#8220;this organisation&#8217;s documents&#8221;. Every editor sees all 5,960 or none. <b>Adding an owner field to Documents, Tenders and Vacancies is a precondition for role-based editing</b> &#8212; not an improvement to be scheduled afterwards.</div>
+  </div>
+
+  <div class="finding moderate" id="f4">
+    <h3><span class="tag">F4</span> Three defects that already have no owner, and show it</h3>
+    <ul>
+      <li><strong>There is no Accessibility Statement.</strong> <code>/accessibility/</code> returns <strong>404</strong> and the footer does not link one. GIGW 3.0 requires one on every Government of India website. It belongs to R13.</li>
+      <li><strong>Two live addresses are misspelt</strong> &#8212; <code class="u">&#8230;misutilization-of-grands</code> (for <em>Grants</em>) and <code class="u">&#8230;by-vuluntary-organisations</code> (for <em>voluntary</em>). Both are the canonical URLs; the correct spellings return 404. They belong to the Grants-in-Aid to NGOs division under R7, and correcting them needs R3, because of Finding 1.</li>
+      <li><strong>Four different links in the Statistics Division rail all read &#8220;SECC 2011&#8221;</strong> &#8212; pointing to secc.dord.gov.in, About the Division, List of Research Evaluation Studies, and the Handbook on Social Welfare Statistics. Three of the four labels are wrong. That rail belongs to R7 and R3.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="decide">
+  <span class="h2num">Section 07</span>
+  <h2>What the Department is asked to decide</h2>
+  <p class="deck">Three decisions. The rest of this report is evidence for them.</p>
+
+  <div class="rec">
+    <h3><span class="rid">D1</span> Who holds the eleven common roles?</h3>
+    <p class="closes">Covers <b>R2, R3, R4, R8&#8211;R14</b></p>
+    <p>One officer may hold several of them. What cannot happen is that they stay unassigned, because every finding in Section 06 sits in that class.</p>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">D2</span> Directory and Contact Us &#8212; central, or federated?</h3>
+    <p class="closes">Recommendation: <b>federated data, central presentation</b></p>
+    <p>Each organisation maintains its own officers in the officials records (R5 / R6). <code>/mosje-directory</code> and <code>/contact-us</code> are generated from those records by R4, and are never typed. This is what the review call already leaned to, and Finding 2 shows it is achievable with what is already built.</p>
+  </div>
+
+  <div class="rec">
+    <h3><span class="rid">D3</span> Who owns the seven thematic portals and the three unlisted trees?</h3>
+    <p class="closes">e-Utthaan &#183; e-Anudaan &#183; List of Channelizing Agencies</p>
+    <p>They are filed as organisations, they are not in the Associated Organisations menu, and no nodal officer has been named for any of them.</p>
+  </div>
+</section>
+
+<section id="changed">
+  <span class="h2num">Section 08</span>
+  <h2>What has changed since our copy of 24 August</h2>
+  <p class="deck">Ten days between our content export and this traversal. Most of the difference is our copy being incomplete, not the site having moved.</p>
+
+  <div class="scroller">
+    <table>
+      <thead><tr><th>Collection</th><th class="num">Live</th><th class="num">Our copy</th><th>Reading</th></tr></thead>
+      <tbody>
+        <tr class="flag"><td>Documents</td><td class="num">5,960</td><td class="num">1,962</td><td><strong>Our copy is incomplete, not out of date.</strong> 28 of the 30 document sitemaps have not changed since 19 June 2026, so those 4,000 records were already published when we pulled. Our crawler stopped early.</td></tr>
+        <tr><td>Organisation pages</td><td class="num">239</td><td class="num">228</td><td>28 live pages we do not hold; 17 of ours no longer published</td></tr>
+        <tr><td>Vacancies</td><td class="num">165</td><td class="num">163</td><td>One genuinely new vacancy &#8212; DAIC internship, September 2026</td></tr>
+        <tr><td>Tenders</td><td class="num">312</td><td class="num">312</td><td><span class="chip c-lo">Identical</span></td></tr>
+        <tr><td>Schemes</td><td class="num">140</td><td class="num">140</td><td><span class="chip c-lo">Identical</span></td></tr>
+        <tr class="flag"><td>Events &#183; Gallery &#183; Officials &#183; Scheme documents &#183; Suo Moto &#183; CPIO &#183; Bookings &#183; Updates</td><td class="num">2,102</td><td class="num">0</td><td>Eight content types our mirror never collected</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Real changes on the live site in those ten days</h3>
+  <ul>
+    <li><strong>BJRNF&#8217;s entire tree was renamed</strong> &#8212; <code class="u">&#8230;-jrf</code> became <code class="u">&#8230;-bjrnf</code> across all ten pages. The old landing page now returns 404, and its contact page redirects to DWBDNC (Finding 1).</li>
+    <li><strong>PM-AJAY grew from 7 pages to 22</strong>, adding Adarsh Gram reporting, village lists, a map, guidelines, PACC meeting lists and a contact page.</li>
+    <li><strong>A fourteenth directory appeared</strong> &#8212; <code>/nhaa-directory</code>.</li>
+    <li><strong>Three pages moved into an organisation</strong> &#8212; Success Stories into NBCFDC (a second copy; NSFDC also has one), Ministry and Scheme wise Financial Summary into e-Utthaan, and SCW gained a Scope page.</li>
+    <li><strong>Two pages were removed</strong> &#8212; NISD&#8217;s <code>/dams/</code>, and NCBC&#8217;s <code>/gazette-notifications/</code>, the latter now redirecting to a <code>-2</code> duplicate of itself.</li>
+    <li><strong>Pages our clone carries that the live site does not</strong> &#8212; <code>/accessibility/</code>, <code>/search/</code>, <code>/de-addiction-centres/</code>, and the persona and policy pages at the root rather than under <code>/home-page/</code>. Our clone also uses the <em>corrected</em> spellings of the two misspelt URLs, so those two addresses do not match the live site.</li>
+  </ul>
+
+  <div class="callout">
+    <span class="balab">Two consequences for our own work</span>
+    <p>The mirror must be re-pulled with all thirty document sitemaps and the eight uncaptured content types. And our clone&#8217;s corrected URLs should be recorded as a deliberate divergence, so that nobody copies them back into the live site and creates a 404.</p>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Sources.</strong> Live traversal of <code>www.dosje.gov.in</code>, 3 September 2026 &#8212; sitemap index (52 sitemaps, 8,702 URLs), home page, <code>/contact-us/</code>, <code>/daf-directory/</code>, one organisation contact page, and a 40-record sample of <code>/official/</code>. Redirect and status testing of 13 addresses including one control. SAMAVESH content export, manifest generated 24 August 2026. Review call of 3 September 2026. GIGW 3.0.</p>
+  <p class="sig">Workstream A &#183; Roles and Responsibility Mapping &#183; Draft for departmental review &#183; Companion inventory: 2026-09-07-dosje-page-ownership-inventory.csv (146 rows)</p>
+</footer>
+
+</main>
+</div>
+</div>

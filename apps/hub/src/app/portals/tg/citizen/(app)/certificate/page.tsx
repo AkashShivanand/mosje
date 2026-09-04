@@ -66,7 +66,7 @@ export default function CertificatePage() {
       {/* Certificate card */}
       <Card className="h-fit overflow-hidden">
         <div className="bg-navy px-5 py-4 text-center text-white">
-          <Image src="/portals/tg/brand/national-emblem-white.svg" alt="" width={44} height={62} className="mx-auto h-10 w-auto" />
+          <Image src="/portals/tg/brand/national-emblem-white.svg" alt="" width={40} height={65} className="mx-auto h-10 w-auto" />
           <div className="mt-2 text-xs text-white/80">Government of India</div>
           <div className="text-sm font-semibold">Ministry of Social Justice &amp; Empowerment</div>
         </div>
