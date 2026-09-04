@@ -732,7 +732,7 @@
   "SelectionCard": {
     "nodeId": "55530:2932",
     "captured": "2026-09-04",
-    "note": "20 variants = Control 2 x Checked 2 x State 5. Renamed in place from radio-card (4 variants: State x Selected) on 2026-09-04; Subtitle became Description, Show Caption became Show Description, Caption was removed, Invalid was added. One set serves Checkbox variant=card and Radio variant=card, so the template lives beside radio.tsx and names both.",
+    "note": "40 variants = Layout 2 x Control 2 x Checked 2 x State 5. Layout=Detailed (icon tile, title, description, Meta, control trailing) is the designer's reference layout restored on 2026-09-04; Compact is the short-list tile. Meta and Show Meta added the same day. Renamed in place from radio-card; one set serves Checkbox variant=card and Radio variant=card.",
     "properties": {
       "Icon": {
         "type": "INSTANCE_SWAP"
@@ -743,6 +743,9 @@
       "Description": {
         "type": "TEXT"
       },
+      "Meta": {
+        "type": "TEXT"
+      },
       "Invalid": {
         "type": "BOOLEAN"
       },
@@ -751,6 +754,16 @@
       },
       "Show Description": {
         "type": "BOOLEAN"
+      },
+      "Show Meta": {
+        "type": "BOOLEAN"
+      },
+      "Layout": {
+        "type": "VARIANT",
+        "variantOptions": [
+          "Compact",
+          "Detailed"
+        ]
       },
       "Control": {
         "type": "VARIANT",

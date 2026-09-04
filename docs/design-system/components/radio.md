@@ -17,6 +17,13 @@ Source: `packages/design-system/components/forms/radio.tsx` (shared markup in
 | Group | `fieldset.ds-control-group[role=radiogroup]` + `legend` + hint + options + error | `control-group.css` |
 | Reveal | `div.ds-control-group__reveal[hidden]` | `--sa-stack-8`, `--sa-inline-16` inset, `--sa-stroke-2` rail |
 
+## Card layouts
+
+`variant="card"` has two layouts, as the Figma `Layout` axis: `compact` (control first, 24px glyph,
+one-line description, padding 16) and `detailed` (64px icon tile on `bg/brand/primary/base`, brand
+bolder when selected; title `type/title-1`; description `type/body-2`; `meta` line `type/label-2`;
+control trailing; padding 24). Figma led here: the detailed tile is the designer's reference.
+
 ## Sizes
 
 Same ladder as Checkbox: circle 16 / 20 / 24, dot 8 / 10 / 12, hit area 24 / 44 / 48.

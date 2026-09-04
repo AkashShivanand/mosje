@@ -118,6 +118,24 @@ export const CheckboxCards: Story = {
   },
 };
 
+/**
+ * `cardLayout="detailed"` — the scheme tile: a tinted 64px icon tile, a title, a fuller
+ * description and a `meta` fact to choose by, with the control trailing on the right. This
+ * is the Figma `Layout=Detailed` variant; use it for schemes and service pathways, and the
+ * compact card for a short list whose names say enough.
+ */
+export const DetailedCards: Story = {
+  render: function Render() {
+    const [scheme, setScheme] = React.useState("napddr");
+    return (
+      <div style={{ display: "grid", gap: 16, maxWidth: 760 }}>
+        <Radio variant="card" cardLayout="detailed" icon={<Icon name="workspace_premium" size={40} />} name="scheme-detailed" value="napddr" checked={scheme === "napddr"} onChange={() => setScheme("napddr")} label="NAPDDR - National Action Plan for Drug Demand Reduction" description="Prevention, treatment, rehabilitation, social-reintegration and aftercare for persons affected by substance abuse across vulnerable districts." meta="Target: Persons affected by substance abuse" />
+        <Radio variant="card" cardLayout="detailed" icon={<Icon name="workspace_premium" size={40} />} name="scheme-detailed" value="avyay" checked={scheme === "avyay"} onChange={() => setScheme("avyay")} label="AVYAY - Atal Vayo Abhyuday Yojana" description="An umbrella scheme covering Integrated Programme for Senior Citizens (IPSrC), maintenance of Old Age Homes / Continuous Care Homes, Rashtriya Vayoshri Yojana, and Silver Economy support." meta="Target: Senior citizens" />
+      </div>
+    );
+  },
+};
+
 export const Radios: Story = {
   render: function Render() {
     const [value, setValue] = React.useState("sc");

@@ -15,6 +15,16 @@ const control = instance.getEnum("Control", {
   Checkbox: "Checkbox",
 });
 
+/**
+ * Figma `Layout` → `cardLayout`. Detailed is the scheme tile — icon tile, title, description,
+ * meta, control trailing — and is the reference the code follows; Compact is the short-list
+ * tile. Both exhaustively mapped.
+ */
+const cardLayout = instance.getEnum("Layout", {
+  Compact: "compact",
+  Detailed: "detailed",
+});
+
 const checked = instance.getEnum("Checked", { Off: false, On: true });
 
 /** Presentation variant — only `Disabled` is a prop. See checkbox.figma.ts. */
@@ -33,6 +43,8 @@ const showIcon = instance.getBoolean("Show Icon");
 const icon = instance.getInstanceSwap("Icon");
 const iconCode = icon && icon.type === "INSTANCE" ? icon.executeTemplate().example : undefined;
 const invalid = instance.getBoolean("Invalid");
+const meta = instance.getString("Meta");
+const showMeta = instance.getBoolean("Show Meta");
 
 /*
  * The nested Radio / Checkbox instance is exposed for its Size and the description toggle
@@ -46,8 +58,10 @@ export default {
       ? figma.code`
     <Checkbox
       variant="card"
+      ${cardLayout !== "compact" ? figma.code`cardLayout="${cardLayout}"` : ""}
       label="${title}"
       ${showDescription ? figma.code`description="${description}"` : ""}
+      ${showMeta ? figma.code`meta="${meta}"` : ""}
       ${showIcon && iconCode ? figma.code`icon={${iconCode}}` : ""}
       ${checked ? "defaultChecked" : ""}
       ${invalid ? "invalid" : ""}
@@ -57,10 +71,12 @@ export default {
       : figma.code`
     <Radio
       variant="card"
+      ${cardLayout !== "compact" ? figma.code`cardLayout="${cardLayout}"` : ""}
       name="group-name"
       value="option-value"
       label="${title}"
       ${showDescription ? figma.code`description="${description}"` : ""}
+      ${showMeta ? figma.code`meta="${meta}"` : ""}
       ${showIcon && iconCode ? figma.code`icon={${iconCode}}` : ""}
       ${checked ? "defaultChecked" : ""}
       ${invalid ? "invalid" : ""}

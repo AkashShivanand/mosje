@@ -17,5 +17,13 @@ export type SelectionLabelPlacement = "end" | "start";
 /** `card` renders the option as a selectable tile; the whole tile is the target. */
 export type SelectionVariant = "default" | "card";
 
+/**
+ * The two card layouts, as the Figma `Layout` axis. `compact`: control first, a 24px glyph,
+ * one line of description — for a short list whose names say enough. `detailed`: a 64px
+ * icon tile, a title, a fuller description and a meta line, with the control trailing —
+ * for a scheme or a service pathway the reader chooses between.
+ */
+export type SelectionCardLayout = "compact" | "detailed";
+
 /** The three states a checkbox can be in. `indeterminate` is a "select all" parent's mixed state. */
 export type CheckboxState = "checked" | "unchecked" | "indeterminate";
