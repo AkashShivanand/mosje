@@ -58,14 +58,26 @@
   .ds-input-shell {
     display: block;
     width: 100%;
-    min-height: 44px; /* see the size-scale note above */
+    min-height: var(--sa-target-comfortable); /* 44px — see the size-scale note above */
     padding: var(--sa-padding-12) var(--sa-padding-12);
     font-family: var(--sa-font-latin);
     font-size: var(--sa-type-body-1-size);
     line-height: var(--sa-type-body-1-lh);
     color: var(--sa-text-neutral-base);
     background-color: var(--sa-bg-neutral-base);
-    border: 1px solid var(--sa-border-neutral-base);
+    /* BOLDER, not base, and this is a conformance fix rather than a taste one.
+       `border/neutral/base` is #c6c9cd, which measures 1.66:1 against the field's
+       own white fill and 1.46:1 against the estate's muted page ground. WCAG 2.2
+       SC 1.4.11 asks 3:1 of the boundary that identifies a control, and for a
+       text field that boundary is the only thing that identifies it.
+       `border/neutral/bolder/default` is #8e949c at 3.06:1.
+
+       It is also what the DESIGN already said. All three field masters in Figma
+       draw this border at #8e949c — Select through the semantic token, Input
+       Field and Input Area through the Tier-1 primitive behind it — so the code
+       was the half that had drifted, and it had drifted in the direction that
+       fails. */
+    border: var(--sa-control-border-width) solid var(--sa-border-neutral-bolder-default);
     border-radius: var(--sa-shape-8);
     transition:
       border-color 0.15s ease,
@@ -309,13 +321,17 @@
     line-height: var(--sa-type-body-2-lh);
     font-weight: 500;
     border-radius: var(--sa-shape-full);
-    border-color: var(--sa-border-neutral-subtle);
+    /* The filter pill was the faintest control in the estate at 1.35:1. A
+       "hairline" is a look, not a licence — it is still the boundary that says
+       where the control is. Now the same 3:1 border as every other field, and
+       its hover state below moves to the brand colour so hover still reads. */
+    border-color: var(--sa-border-neutral-bolder-default);
     color: var(--sa-text-neutral-bolder);
     text-overflow: ellipsis;
   }
 
   .ds-select--filter .ds-select__el:hover:not(:disabled) {
-    border-color: var(--sa-border-neutral-bolder-default);
+    border-color: var(--sa-border-brand-primary-base);
   }
 
   .ds-select--filter .ds-select__chevron {
