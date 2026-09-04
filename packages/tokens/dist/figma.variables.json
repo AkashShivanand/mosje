@@ -39,8 +39,8 @@
     },
     "Static": {
       "total": 86,
-      "new": 1,
-      "existing": 85
+      "new": 0,
+      "existing": 86
     },
     "Viewport": {
       "total": 2,
@@ -31519,7 +31519,7 @@
             "WIDTH_HEIGHT"
           ],
           "hiddenFromPublishing": false,
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys",
             "in.gov.mosje.source": "src/semantic.json"
