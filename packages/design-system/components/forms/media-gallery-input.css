@@ -70,9 +70,9 @@
   }
 
   .ds-gallery__dropzone:focus-visible {
-    outline: none;
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-gallery__dropzone.is-dragover {
@@ -177,8 +177,8 @@
 
   .ds-gallery__remove:hover { background: var(--sa-color-status-danger); }
   .ds-gallery__remove:focus-visible {
-    outline: 2px solid var(--sa-color-neutralScale-0);
-    outline-offset: 1px;
+    outline: var(--sa-focus-width) solid var(--sa-color-neutralScale-0);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-gallery__name {
@@ -225,9 +225,9 @@
   }
 
   .ds-gallery__add:focus-visible {
-    outline: none;
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-gallery__add:disabled {

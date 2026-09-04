@@ -702,8 +702,8 @@
      from one disappears for exactly the readers that mode exists to serve. */
   @media (forced-colors: active) {
     .ds-chart__retry:focus-visible {
-      outline: 2px solid Highlight;
-      outline-offset: 2px;
+      outline: var(--sa-focus-width) solid Highlight;
+      outline-offset: var(--sa-focus-offset);
     }
   }
   @media (prefers-reduced-motion: reduce) {

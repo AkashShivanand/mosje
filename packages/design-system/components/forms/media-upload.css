@@ -73,9 +73,9 @@
   }
 
   .ds-media-upload__dropzone:focus-visible {
-    outline: none;
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-media-upload__dropzone.is-dragover {
@@ -190,8 +190,8 @@
   }
 
   .ds-media-upload__action:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-media-upload__action--danger {

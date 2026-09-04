@@ -182,9 +182,9 @@
 }
 
 .ds-demo-accounts__hit:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px var(--sa-focus-ring);
-}
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
 
 /* Everything visible sits above the hit area so the copy buttons stay
    clickable and the text stays selectable. */

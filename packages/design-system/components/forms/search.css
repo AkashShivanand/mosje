@@ -75,7 +75,8 @@
   /* Focus ring lives on the wrapper, driven by the inner input's focus. */
   .ds-search:focus-within {
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-search__icon {
@@ -152,8 +153,8 @@
   }
 
   .ds-search__clear:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* Disabled */
@@ -190,8 +191,8 @@
   }
 
   .ds-search__icon--action:focus-visible {
-    outline: 2px solid var(--sa-border-brand-primary-base);
-    outline-offset: -2px;
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
   }
 
   /* ============================================================================

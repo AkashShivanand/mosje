@@ -130,8 +130,8 @@
   }
 
   .ds-chip:focus-visible {
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* --------------------------------------------------------------------------
@@ -289,8 +289,8 @@
   }
 
   .ds-chip__dismiss:focus-visible {
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* --------------------------------------------------------------------------

@@ -143,8 +143,8 @@
      BOTH the card it surrounds and the page behind it, and it is the one part of
      this component a keyboard user depends on finding. */
   .ds-portal-card:focus-visible {
-    outline: 2px solid var(--sa-color-secondaryScale-600);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-color-secondaryScale-600);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /*

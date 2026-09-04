@@ -99,8 +99,8 @@
   }
 
   .ds-checkbox__input:focus-visible ~ .ds-checkbox__box {
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-checkbox__label {
@@ -176,8 +176,8 @@
   }
 
   .ds-radio__input:focus-visible ~ .ds-radio__circle {
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-radio__label {
@@ -260,8 +260,8 @@
   }
 
   .ds-toggle__input:focus-visible ~ .ds-toggle__track {
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-toggle__label {
@@ -315,7 +315,8 @@
 
   .ds-radio-card:focus-within {
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-radio-card__body {

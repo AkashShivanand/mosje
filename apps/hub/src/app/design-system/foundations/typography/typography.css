@@ -27,7 +27,7 @@
   box-shadow: 0 0 0 1px var(--sa-color-action-primary-default) inset; }
 .ty-seg[data-active][data-surface-key="portal"] { border-color: var(--sa-color-text-default); background: var(--sa-bg-neutral-subtler);
   box-shadow: 0 0 0 1px var(--sa-color-text-default) inset; }
-.ty-seg:focus-visible { outline: 2px solid var(--sa-border-brand-primary-base); outline-offset: var(--sa-focus-offset); }
+.ty-seg:focus-visible { outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base); outline-offset: var(--sa-focus-offset); }
 
 /* ── copy token chip ────────────────────────────────────────── */
 .ty-copy {
@@ -42,7 +42,7 @@
 .ty-copy:hover .ty-copy__icon { opacity: 1; }
 .ty-copy[data-done] { color: var(--sa-text-status-success-base); }
 .ty-copy[data-done] .ty-copy__icon { opacity: 1; color: var(--sa-text-status-success-base); }
-.ty-copy:focus-visible { outline: 2px solid var(--sa-border-brand-primary-base); outline-offset: 1px; }
+.ty-copy:focus-visible { outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base); outline-offset: var(--sa-focus-offset); }
 
 /* ── live ramp ──────────────────────────────────────────────── */
 .ty-ramp { border: 1px solid var(--sa-border-neutral-subtle); border-radius: var(--sa-shape-12); overflow: hidden;
@@ -111,7 +111,7 @@
   padding: var(--sa-padding-8) var(--sa-padding-12); font-size: var(--sa-type-label-1-size); font-weight: 600; color: var(--sa-text-neutral-subtle); }
 .ty-tab:hover { color: var(--sa-text-neutral-base); background: var(--sa-bg-neutral-subtler); }
 .ty-tab[data-active] { color: var(--sa-text-brand-primary-base); background: var(--sa-bg-brand-primary-subtler); }
-.ty-tab:focus-visible { outline: 2px solid var(--sa-border-brand-primary-base); outline-offset: 1px; }
+.ty-tab:focus-visible { outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base); outline-offset: var(--sa-focus-offset); }
 .ty-table-scroll { overflow-x: auto; border: 1px solid var(--sa-border-neutral-subtle); border-radius: var(--sa-shape-8); }
 .ty-table { width: 100%; border-collapse: collapse; min-width: 460px; }
 .ty-table th { text-align: left; font-size: var(--sa-type-label-3-size); text-transform: uppercase; letter-spacing: .07em;

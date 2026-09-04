@@ -338,9 +338,8 @@
      Figma renders from the fill silhouette, so a ring built that way is invisible
      on Underline and Rail, which have no fill at all. */
   .ds-tabs__tab:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 var(--sa-focus-offset) var(--ds-tabs-focus-gap),
-      0 0 0 calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-tabs--track-enclosed {
@@ -571,9 +570,8 @@
 
   /* Same two-layer ring as a tab, over the surface the trigger sits on. */
   .ds-tabs__more:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 var(--sa-focus-offset) var(--ds-tabs-focus-gap),
-      0 0 0 calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* The bar sits outside `.ds-tabs`, so it does not inherit the track's own
@@ -636,8 +634,8 @@
   }
 
   .ds-tabs__menu-item:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 var(--sa-focus-width) var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-width) var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* Consistent with a disabled TAB: dimmed and inert, but still announced, so a

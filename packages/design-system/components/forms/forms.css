@@ -187,8 +187,8 @@
   .ds-textarea:focus-visible,
   .ds-select__el:focus-visible,
   .ds-input-shell:focus-within {
-    outline: 3px solid var(--sa-color-action-primary-default);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-color-action-primary-default);
+    outline-offset: var(--sa-focus-offset);
     border-color: var(--sa-border-brand-primary-base);
   }
 
@@ -521,8 +521,8 @@
   }
 
   .ds-field__help-toggle:focus-visible {
-    outline: 3px solid var(--sa-color-action-primary-default);
-    outline-offset: 2px;
+    outline: var(--sa-focus-width) solid var(--sa-color-action-primary-default);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-field__help {

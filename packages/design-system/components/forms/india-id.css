@@ -78,8 +78,8 @@
 
   .ds-otp__box:focus-visible {
     border-color: var(--sa-border-brand-primary-base);
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
-    outline: none;
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   .ds-otp__box:disabled {
@@ -94,7 +94,8 @@
   }
 
   .ds-otp--invalid .ds-otp__box:focus-visible {
-    box-shadow: 0 0 0 3px var(--sa-color-status-danger);
+    outline: var(--sa-focus-width) solid var(--sa-color-status-danger);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* Six 44px boxes plus gaps overflow a 320px viewport. Let them shrink rather than push the

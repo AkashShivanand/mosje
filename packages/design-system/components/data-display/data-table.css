@@ -237,7 +237,7 @@
   .ds-table__page-nav:focus-visible,
   .ds-table__page:focus-visible,
   .ds-table__pagesize-btn:focus-visible {
-    outline: 2px solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring, var(--sa-border-brand-primary-base));
     outline-offset: var(--sa-focus-offset);
   }
 }
@@ -283,7 +283,7 @@
   /* `box-shadow` is not painted in forced-colors mode; an outline is. */
   @media (forced-colors: active) {
     .ds-table__sort:focus-visible {
-      outline: 2px solid Highlight;
+      outline: var(--sa-focus-width) solid Highlight;
     }
   }
 

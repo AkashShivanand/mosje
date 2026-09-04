@@ -72,8 +72,8 @@
   }
 
   .sa-accordion-item__trigger:focus-visible {
-    outline: 2px solid var(--sa-color-action-primary-default);
-    outline-offset: -2px;
+    outline: var(--sa-focus-width) solid var(--sa-color-action-primary-default);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
   }
 
   .sa-accordion-item__title {

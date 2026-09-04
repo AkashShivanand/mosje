@@ -152,8 +152,8 @@
     color: var(--sa-text-neutral-base);
   }
   .ds-alert__close:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 3px var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
   }
 
   /* ============================================================================
