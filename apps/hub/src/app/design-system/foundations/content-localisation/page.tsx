@@ -63,7 +63,7 @@ export default function ContentLocalisationPage(): React.JSX.Element {
           "No Figma page. The library holds no copy guidance and no Hindi text styles; the typography audit of 2026-09-04 lists Devanagari-specific sizes and Hindi text styles as open design work. This page is the contract until they exist.",
       }}
       glance={[
-        { value: LANGUAGES.length, label: "languages listed", note: "apps/hub/src/lib/bhashini/languages.ts" },
+        { value: LANGUAGES.length, label: "languages listed", note: "the picker's own list, read from code" },
         { value: LIVE.length, label: "translate in prototype", note: LIVE.map((l) => l.english).join(" and ") },
         { value: 1, label: "surface mounts the runtime", note: "the website layout; no portal can import it" },
         { value: 2, label: "Devanagari tokens", note: "the face, and a 1.7 leading" },

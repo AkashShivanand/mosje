@@ -52,6 +52,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: var(--sa-inline-16);
+    align-items: start;
   }
   .br-swap__col {
     padding: var(--sa-padding-16);
