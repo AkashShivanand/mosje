@@ -33,7 +33,9 @@ jobs:
           cache-dependency-path: "package-lock.json"
 
       # `npm ci` at the root installs every workspace from the single lockfile.
-      - run: npm ci
+      - name: Install (workspace)
+        id: install
+        run: npm ci
 
       # The design system ships TS/TSX source that the hub transpiles, and the
       # hub's Tailwind build reads the generated token CSS — so build tokens first.
@@ -49,26 +51,6 @@ jobs:
       - run: npm run lint:css
 
       - run: npm run check
-
-      # Twenty-two gates enforce radius tokens and icon pixel sizes; until this
-      # step none enforced that the software is not exploitable. Eight runtime
-      # advisories accumulated silently, one of them critical. High and above
-      # fails; moderate is reported and does not block.
-      #
-      # Wrapped since 2026-09-04 because `npm audit` exits 1 for two very different
-      # things. That day the registry's audit endpoint returned 503 for half an hour;
-      # npm retried for SEVEN MINUTES and exited 1 with "audit endpoint returned an
-      # error" — the same code it uses for "a critical advisory was found". Two PRs went
-      # red for a reason belonging to neither of them, and because this step failed, the
-      # three after it (hub build, Playwright, axe) were SKIPPED — so the accessibility
-      # gate quietly did not run.
-      #
-      # The wrapper forgives ONLY a registry failure, and says SKIPPED rather than passed
-      # when it does. A report that comes back is always obeyed, and a failure it cannot
-      # explain exits 2 rather than passing. `|| true` would have fixed the outage and
-      # swallowed every real advisory with it.
-      - name: Audit production dependencies
-        run: npm run check:audit
 
       # The build is the gate that lint and typecheck cannot be: it is the only
       # step that proves every dependency actually resolves. The consolidation
@@ -92,3 +74,37 @@ jobs:
         run: npx playwright install --with-deps chromium
       - name: Accessibility (axe)
         run: npx playwright test e2e/a11y --reporter=line
+
+      # ── Supply chain ─────────────────────────────────────────────────────
+      # Twenty-two gates enforce radius tokens and icon pixel sizes; until this
+      # step none enforced that the software is not exploitable. Eight runtime
+      # advisories accumulated silently, one of them critical. High and above
+      # fails; moderate is reported and does not block.
+      #
+      # IT RUNS LAST, AND THAT ORDERING IS THE POINT. Until 2026-09-04 it sat
+      # above the build. A job stops at its first failing step, so when npm's
+      # audit endpoint returned 503 on PR #281 the build and the accessibility
+      # suite were both SKIPPED, and the PR reported a red
+      # "hub lint + typecheck + build" whose build had never run — on an
+      # accessibility change. The step that proves the least about this commit
+      # must not decide whether the steps that prove the most get to speak.
+      #
+      # `!cancelled()` closes the mirror image of that bug: a failing build must
+      # not hide a supply-chain advisory either. It is `!cancelled()` rather than
+      # `always()` because the concurrency block above cancels a superseded PR
+      # run, and `always()` would spend two more minutes auditing a run whose
+      # answer nobody is waiting for. It is gated on the install, because
+      # auditing a tree with no node_modules reports nothing useful.
+      #
+      # THE DECISION LIVES IN A SCRIPT, NOT IN THIS FILE. `npm audit` exits 1
+      # both for "an advisory at or above --audit-level" and for "I could not
+      # reach the registry", and those deserve opposite responses. Telling them
+      # apart needs retries, JSON parsing and three distinct outcomes — more than
+      # belongs in a workflow, where the only way to exercise a branch is to push
+      # a commit and wait for a runner. `scripts/audit-production.mjs` holds it,
+      # and its paths are driven against a stubbed npm so the ones the live
+      # registry cannot produce — a critical advisory, an unrecognised failure —
+      # are actually tested rather than reasoned about.
+      - name: Audit production dependencies
+        if: ${{ !cancelled() && steps.install.outcome == 'success' }}
+        run: npm run check:audit
