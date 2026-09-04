@@ -72,9 +72,13 @@ what moved. Refresh the collection's name array. Where the two halves legitimate
 differ (library-only variables authored ahead of code, a normaliser difference), say so
 in `knownDifference.<Collection>` — the test reads it.
 
-Delete a variable only after a full-file binding scan (`figma-ghost-audit.mjs`, one page
-per call). Until then, rename it under `_deprecated/` with a retirement description and
-`hiddenFromPublishing: true` — this is what was done with `ref/z/*`.
+Delete a variable only after a full-file binding scan: one `use_figma` call per page (83
+pages), each walking every node's `boundVariables` and every text range's, plus one call
+for aliases and local styles. Until the scan has run, rename it under `_deprecated/` or
+`_legacy/` with a retirement description and `hiddenFromPublishing: true`. On 2026-09-04
+the scan cleared 49 such variables (the Bootstrap z rungs and the mistyped motion
+copies) and they were removed the same day; the record's `$lastChange` carries the
+evidence.
 
 ## 4. Adding or changing a foundation page
 

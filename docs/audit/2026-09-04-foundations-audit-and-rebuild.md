@@ -81,8 +81,8 @@ them (`1var(…)`); restored from git and recorded here.
 
 ### 4.3 Figma
 
-- **Motion** 17 → 42 active variables, every duration a native **TIMING** (milliseconds) and every curve a native **EASING** (cubic-bezier control points) — the types Figma Motion binds directly. The first push had shipped them as FLOAT/STRING on the authority of a stale typings file; a live `createVariable` probe proved TIMING and EASING creatable, so the 41 mistyped variables were renamed `_legacy/motion/*` and hidden (the type is immutable) and recreated correctly. Active read `4ff49255:42`, byte-equal to the payload.
-- **Static** 92 → 94: `alpha/disabled`, `alpha/muted` (OPACITY scope; `COLOR_OPACITY` is UI-only and is noted in each description); eight `ref/z/*` renamed to `_deprecated/z/*` with a retirement description, pending a full-file binding scan before deletion; descriptions re-asserted on 24 primitives.
+- **Motion** 17 → 42 active variables, every duration a native **TIMING** (milliseconds) and every curve a native **EASING** (cubic-bezier control points) — the types Figma Motion binds directly. The first push had shipped them as FLOAT/STRING on the authority of a stale typings file; a live `createVariable` probe proved TIMING and EASING creatable, so the 41 mistyped variables were recreated with the correct type (the type is immutable) and the copies deleted after a full-file binding scan — 83 pages, ~100,000 nodes and text ranges, every alias and local style — found zero consumers. Read `4ff49255:42`, byte-equal to the payload.
+- **Static** 92 → 86: `alpha/disabled`, `alpha/muted` (OPACITY scope; `COLOR_OPACITY` is UI-only and is noted in each description); the eight `ref/z/*` Bootstrap rungs deleted after the same binding scan cleared them; descriptions re-asserted on 24 primitives. Byte-equal to the payload (`dc3e7298:86`).
 - **Type**: the library already held the parent branch's 113-variable re-cut; the reconciliation record now says so instead of failing.
 - **The standard** every future push follows: `.claude/rules/figma-variables-standard.md` — the six API-creatable types (COLOR · FLOAT · STRING · BOOLEAN · TIMING · EASING) and what each binds to, the value shapes TIMING and EASING take, the rule that a typings file is a claim and a probe is evidence, modes only on collections whose variables all vary on the axis, and the five fields (name = path, description, narrowest scopes, `codeSyntax.WEB`, `hiddenFromPublishing` by tier).
 
@@ -138,7 +138,6 @@ them (`1var(…)`); restored from git and recorded here.
 
 | Item | Why it is not in this change |
 |---|---|
-| Delete `_deprecated/z/*` and `_legacy/motion/*` from Figma | Needs a full-file binding scan (68 pages, one per call) before a delete is licensed (`figma-variables-standard.md` §6). Renamed and hidden meanwhile. |
 | `COLOR_OPACITY` scope on `alpha/disabled` and `alpha/muted` | UI-only; the Plugin API rejects it. One tick each in the variables panel. |
 | Per-foundation source files | See §5. |
 | Portal-owned CSS (`smile-admin`, `pm-ajay`, `eutthan-admin`) z-index literals | Portal stylesheets are owned by their redesign work (`ds-linkage` config); the ladder is documented for them to adopt. |
