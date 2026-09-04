@@ -677,3 +677,25 @@ leaves as the UI set it because the API rejects COLOR_OPACITY on write.
 
 The 136 alias-plus-opacity bindings that remain a UI step are listed, with base and alpha
 per variable, in `docs/design-system/figma-alpha-bindings.md`.
+
+### The chart-palette gate, re-baselined to the re-cut palette
+
+`tools/chart-palette/check.mjs` reached this branch with the merge from main, carrying a
+baseline measured on the palette BEFORE §14 re-cut it. Against the re-cut palette it reported
+sixteen differences: nine improvements (adjacent tritan 3.03 → 10.76, all-pairs deutan
+1.52 → 4.43, all-pairs tritan 3.03 → 4.24, adjacent normal 12.63 → 14.44, adjacent deutan
+10.74 → 12.42; out-of-band slots 4 → 1; below-chroma slots 4 → 0) and three lower worst-cases:
+
+| Measure | Was | Now | Pair | Judgement |
+|---|---|---|---|---|
+| adjacent / protan | 10.15 | 9.26 | cat-10 ↔ cat-11 | still above the 8 floor; the worst pair moved from 2↔3 into the extension slots |
+| all pairs / normal | 11.72 | 7.38 | cat-7 ↔ cat-12 | already below the 15 floor before; cat-12 is an extension slot — §14 records that an all-pairs floor across twelve slots is infeasible with the nine-series safe range holding ≥ 8 under every CVD |
+| all pairs / protan | 4.35 | 3.79 | cat-3 ↔ cat-10 | already far below 8 before; cat-10 is an extension slot |
+
+`--sa-chart-cat-8` now sits just outside the lightness band (L* 42.3 against 45): one of the
+two slots §14 accepted at L* 42.2–42.3 because the categorical search found no feasible
+twelve inside the band with the CVD floors held. The baseline was re-taken on the re-cut
+palette so the gains are locked in; the three worst-cases above are the documented cost of
+the nine-series guarantee, not an oversight, and the branch's own `chart-palette.test.mjs`
+ratchets pin the safe-range figures (CVD ≥ 8.2, normal ≥ 13.4) that this gate's all-pairs
+scope does not distinguish.
