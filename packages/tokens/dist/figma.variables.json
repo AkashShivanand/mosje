@@ -19,8 +19,8 @@
     },
     "Type": {
       "total": 113,
-      "new": 23,
-      "existing": 90
+      "new": 0,
+      "existing": 113
     },
     "Radius": {
       "total": 28,
@@ -22444,7 +22444,7 @@
             "WEB": "var(--sa-ref-font-lineHeight-devanagariOffset)"
           },
           "scopes": [],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
@@ -22640,7 +22640,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -22835,7 +22835,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -23030,7 +23030,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -23225,7 +23225,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -23420,7 +23420,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -23615,7 +23615,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -23810,7 +23810,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -24005,7 +24005,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -24200,7 +24200,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -24395,7 +24395,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -24590,7 +24590,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -24785,7 +24785,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -24980,7 +24980,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -25175,7 +25175,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -25370,7 +25370,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -25565,7 +25565,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -25760,7 +25760,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -25955,7 +25955,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -26150,7 +26150,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -26345,7 +26345,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -26540,7 +26540,7 @@
           "scopes": [
             "LINE_HEIGHT"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "sys"
           }
@@ -27078,7 +27078,7 @@
           "scopes": [
             "LETTER_SPACING"
           ],
-          "status": "new",
+          "status": "existing",
           "$extensions": {
             "in.gov.mosje.tier": "ref",
             "in.gov.mosje.source": "src/primitive.json"
