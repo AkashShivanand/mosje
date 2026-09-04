@@ -1765,7 +1765,7 @@ one. Each segment still meets 24×24 on its own, which the size ladder guarantee
 **Purpose**: The binding wrapper that associates label, help, control, hint, status message and
 character count, and owns every accessibility decision the field stack makes.  
 **Rules**:
-- Every `<Input>`, `<Select>`, `<Textarea>`, `<Checkbox>`, `<Radio>`, `<Toggle>` **must** be wrapped in `<FormField>`.
+- Every `<Input>`, `<Select>`, `<Textarea>` **must** be wrapped in `<FormField>`. `<Checkbox>`, `<Radio>` and `<Toggle>` carry their own label and description wiring and are NOT wrapped; a set goes in `<RadioGroup>` / `<CheckboxGroup>`.
 - FormField auto-generates `htmlFor` / `aria-describedby` linkage. Do not bypass it.
 - Layout order is **label → help → control → hint → message → count** (the hint renders *below*
   the control so inputs stay aligned across grid rows, which is also where UX4G's Input master
@@ -1986,9 +1986,24 @@ Docs: `/design-system/components/sla-progress`.
 #### Textarea
 **Purpose**: Multi-line text entry. Auto-resizes up to a max-height.
 
-#### Checkbox / Radio / Toggle
-**Purpose**: Boolean and group selection controls.  
-**Rule**: Always wrap in `<FormField>` with a descriptive label. `Toggle` is for immediate-effect settings (e.g. notifications on/off), not for form submission.
+#### Checkbox / Radio
+**Purpose**: The selection controls. `Checkbox` — any number from a set, or one option on/off; `Radio` — exactly one of a mutually exclusive set. Both are a real native `<input>` sized to the touch target beside a drawn box or circle; nothing about keyboard, focus or grouping is re-implemented.
+**Shared props**: `label`, `hideLabel`, `description` (via `aria-describedby`, never in the name), `invalid`, `readOnly`, `required`, `size` (`sm` 16 · `md` 20 · `lg` 24 — hit area 24 · 44 · 48), `labelPlacement` (`end` | `start`), `variant` (`default` | `card`), `icon` (card), `checked` / `defaultChecked`, `onChange`, `onCheckedChange`. Checkbox adds `indeterminate` and `error`; Radio adds `name` and `value` (required).
+**Groups**: `RadioGroup` / `CheckboxGroup` — `legend` (REQUIRED; `hideLegend` to hide it), `options[{ value, label, description, disabled, icon, reveal, exclusive }]`, `hint`, `error`, `invalid`, `required`, `disabled` (native fieldset), `readOnly`, `size`, `labelPlacement`, `variant`, `orientation`, `value` / `defaultValue`, `onChange`. `CheckboxGroup` adds `name` (posted on every box), `selectAll` and `exclusiveDivider`. `RadioGroup` is `role="radiogroup"` so `aria-required` / `aria-invalid` are permitted on it; a checkbox group is role `group`, so each box carries its own `aria-invalid`.
+**Tokens**: `--sa-control-selection-size-*`, `-glyph-*`, `-dot-*`, `-border-width` (2px), `-radius` (4px), `-gap`; targets from `--sa-target-min|comfortable|spacious`; motion from `--sa-motion-press-*` / `--sa-motion-exit-*`.
+**Rules**:
+- **Never pre-check a consent, declaration or opt-in** (`defaultChecked`/`checked` true). UX4G §7 prohibits it; a citizen who did not act did not agree. The Figma masters default to Off for the same reason.
+- **A set answering ONE question goes in a group.** The singles label themselves; only the group's `<fieldset>`/`<legend>` names the question (WCAG 1.3.1, 3.3.2). Do not hand-roll the fieldset, and do not add `tabIndex` to a radio.
+- **`description` is a description.** It is linked through `aria-describedby` and sits outside the `<label>`. Do not put a paragraph in `label`.
+- **`readOnly` is not `disabled`.** Read-only keeps the tab stop and the submitted value; disabled removes both and tells the reader they did something wrong.
+- **No `aria-checked` on a native checkbox** — the DOM `indeterminate` property is what exposes the mixed state. Style off `data-state`.
+- **Radio has no `error` prop.** The error belongs to the question, i.e. the group. Radios are laid out vertically; up to six options are radios rather than a dropdown (DBIM B.xi).
+- **A "none of the above" is an `exclusive` option**, after an "or" divider — not an empty selection the reader has to infer.
+- Do not wrap these in `<FormField>`: they carry their own label, description and error wiring.
+
+#### Toggle
+**Purpose**: An on/off setting that applies immediately (`role="switch"`). Not for form submission — if flipping it needs a Save button, it is a Checkbox.
+**Props**: `checked` + `onChange` (controlled), `label`, `size` (`default` | `small`).
 
 #### Chip
 **Purpose**: Compact filter badge. Used for multi-select filter groups.

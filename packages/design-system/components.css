@@ -15,10 +15,10 @@
 @import "./components/actions/button.css";
 @import "./components/actions/icon-button.css";
 @import "./components/forms/auth-fields.css";
+@import "./components/forms/checkbox.css";
 @import "./components/forms/chip.css";
 @import "./components/forms/combobox.css";
 @import "./components/forms/control-group.css";
-@import "./components/forms/controls.css";
 @import "./components/forms/date-picker.css";
 @import "./components/forms/declaration-checkbox.css";
 @import "./components/forms/error-summary.css";
@@ -31,7 +31,10 @@
 @import "./components/forms/media-gallery-input.css";
 @import "./components/forms/media-upload.css";
 @import "./components/forms/password-input.css";
+@import "./components/forms/radio.css";
 @import "./components/forms/search.css";
+@import "./components/forms/selection-control.css";
+@import "./components/forms/toggle.css";
 @import "./components/forms/wizard.css";
 @import "./components/navigation/app-switcher-panel.css";
 @import "./components/navigation/breadcrumb.css";

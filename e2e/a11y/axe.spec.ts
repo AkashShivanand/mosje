@@ -104,6 +104,7 @@ const DECLARED: { selector: string; why: string }[] = [
 const ROUTES: { name: string; path: string }[] = [
   { name: "design system landing", path: "/design-system" },
   { name: "a component page", path: "/design-system/components/forms/checkbox" },
+  { name: "the radio and its group", path: "/design-system/components/forms/radio" },
   { name: "a chart page", path: "/design-system/components/data-display/bar-chart" },
   { name: "the bullet chart", path: "/design-system/components/data-display/bullet-chart" },
   { name: "small multiples", path: "/design-system/components/data-display/small-multiples" },

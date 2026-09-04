@@ -1,120 +1,115 @@
 "use client";
 
 import * as React from "react";
-import { cn } from "../../utils/cn";
-import "./controls.css";
+
+import { useControllableState } from "../../utils/use-controllable-state";
+import { SelectionControl, readOnlyHandlers, type SelectionCommonProps } from "./selection-control";
+import "./radio.css";
 
 export interface RadioProps
-  extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type" | "size"> {
-  /** Controlled checked state. */
-  checked: boolean;
-  /** Radio group name — required to bind options into one group. */
+  extends
+    SelectionCommonProps,
+    Omit<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      "type" | "size" | "checked" | "defaultChecked" | "onChange" | "readOnly" | "required" | "value"
+    > {
+  /** Controlled state. Omit it to let the browser own the group's selection. */
+  checked?: boolean;
+  defaultChecked?: boolean;
+  /** Binds the options into one native group. Required: without it there is no group. */
   name: string;
   /** This option's value. */
   value: string;
-  /** Optional text label rendered beside the circle (associated via htmlFor/id). */
-  label?: React.ReactNode;
-  /**
-   * Visual variant. "default" = inline circle + label.
-   * "card" = a full selectable card (Portal DS Radio Card) with optional description.
-   * @default "default"
-   */
-  variant?: "default" | "card";
-  /** Secondary text shown under the label in the "card" variant. */
-  description?: React.ReactNode;
-  /** Change handler — receives the native input event. */
-  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  /** Native change event, kept for every existing call site. */
+  onChange?: React.ChangeEventHandler<HTMLInputElement>;
+  /** Fires with `true` when this option becomes the selection. */
+  onCheckedChange?: (checked: boolean) => void;
 }
 
 /**
- * MoSJE / UX4G Radio atom.
+ * SAMAVESH Radio — one option of a mutually exclusive set.
  *
- * A real `<input type="radio">` (visually hidden) paired with a styled circle,
- * keeping native keyboard/group semantics. Checked = primary ring + dot.
+ * A real `<input type="radio">`, so the browser supplies the group semantics: one tab stop
+ * for the set, arrow keys between options, and `name` deciding who belongs together.
+ *
+ * Rules:
+ * 1. Wrap a set in `RadioGroup`. A bare set has no accessible name for the QUESTION.
+ * 2. There is no `error` on a single radio — the error belongs to the question, i.e. the
+ *    group. `invalid` exists so the group can paint every circle.
+ * 3. `description` is linked through `aria-describedby` in both variants; it is never part
+ *    of the option's name.
+ * 4. Do not add `tabIndex`. The roving tabindex is the browser's, and re-implementing it is
+ *    how a group ends up with four tab stops.
  */
-export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
-  function Radio(
-    {
-      checked,
-      disabled = false,
-      label,
-      variant = "default",
-      description,
-      name,
-      value,
-      id,
-      className,
-      onChange,
-      ...rest
-    },
-    ref,
-  ) {
-    const reactId = React.useId();
-    const inputId = id ?? reactId;
-
-    if (variant === "card") {
-      return (
-        <label
-          htmlFor={inputId}
-          className={cn(
-            "ds-radio-card",
-            checked && "ds-radio-card--selected",
-            disabled && "ds-radio-card--disabled",
-            className,
-          )}
-        >
-          <span className="ds-radio__control">
-            <input
-              ref={ref}
-              id={inputId}
-              type="radio"
-              className="ds-radio__input"
-              name={name}
-              value={value}
-              checked={checked}
-              disabled={disabled}
-              onChange={onChange}
-              {...rest}
-            />
-            <span className="ds-radio__circle" aria-hidden="true">
-              <span className="ds-radio__dot" />
-            </span>
-          </span>
-          <span className="ds-radio-card__body">
-            {label != null && <span className="ds-radio-card__title">{label}</span>}
-            {description != null && (
-              <span className="ds-radio-card__desc">{description}</span>
-            )}
-          </span>
-        </label>
-      );
-    }
-
-    return (
-      <span className={cn("ds-radio", disabled && "ds-radio--disabled", className)}>
-        <span className="ds-radio__control">
-          <input
-            ref={ref}
-            id={inputId}
-            type="radio"
-            className="ds-radio__input"
-            name={name}
-            value={value}
-            checked={checked}
-            disabled={disabled}
-            onChange={onChange}
-            {...rest}
-          />
-          <span className="ds-radio__circle" aria-hidden="true">
-            <span className="ds-radio__dot" />
-          </span>
-        </span>
-        {label != null && (
-          <label htmlFor={inputId} className="ds-radio__label">
-            {label}
-          </label>
-        )}
-      </span>
-    );
+export const Radio = React.forwardRef<HTMLInputElement, RadioProps>(function Radio(
+  {
+    checked,
+    defaultChecked = false,
+    disabled = false,
+    readOnly = false,
+    required = false,
+    invalid,
+    label,
+    hideLabel,
+    description,
+    size,
+    labelPlacement,
+    variant,
+    icon,
+    name,
+    value,
+    id,
+    className,
+    onChange,
+    onCheckedChange,
+    onClick,
+    onKeyDown,
+    ...rest
   },
-);
+  ref,
+) {
+  const [isChecked, setChecked] = useControllableState<boolean>(checked, defaultChecked);
+  const reactId = React.useId();
+  const inputId = id ?? reactId;
+
+  const handleChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+    if (readOnly) return;
+    onChange?.(event);
+    setChecked(event.target.checked);
+    onCheckedChange?.(event.target.checked);
+  };
+
+  return (
+    <SelectionControl
+      kind="radio"
+      inputId={inputId}
+      state={isChecked ? "checked" : "unchecked"}
+      disabled={disabled}
+      readOnly={readOnly}
+      required={required}
+      invalid={invalid}
+      size={size}
+      labelPlacement={labelPlacement}
+      variant={variant}
+      icon={icon}
+      label={label}
+      hideLabel={hideLabel}
+      description={description}
+      className={className}
+      inputRef={ref}
+      visual={
+        <span className="ds-radio__circle">
+          <span className="ds-radio__dot" />
+        </span>
+      }
+      inputProps={{
+        ...rest,
+        name,
+        value,
+        checked: isChecked,
+        onChange: handleChange,
+        ...readOnlyHandlers(readOnly, onClick, onKeyDown),
+      }}
+    />
+  );
+});

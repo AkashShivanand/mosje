@@ -841,6 +841,206 @@
           "hint": "The page claimed Code Connect needed a Developer seat this estate did not have. @figma/code-connect v2 is installed and the templates resolve; only publishing needs the token."
         }
       ]
+    },
+    {
+      "node": "57046:986",
+      "where": "Checkbox — Documentation › hero › 45 variants",
+      "figma": "45",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "45"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"15:664\"[\\s\\S]*?\"Size\"[\\s\\S]*?\"Small\",\\s*\"Medium\",\\s*\"Large\"[\\s\\S]*?\"Checked\"[\\s\\S]*?\"Off\",\\s*\"On\",\\s*\"Indeterminate\"[\\s\\S]*?\"State\"[\\s\\S]*?\"Enabled\",\\s*\"Hover\",\\s*\"Focused\",\\s*\"Pressed\",\\s*\"Disabled\"",
+          "hint": "45 = Size 3 x Checked 3 x State 5; the fixture records every axis. If an axis grows or shrinks, this number is wrong."
+        }
+      ]
+    },
+    {
+      "node": "57046:1001",
+      "where": "Checkbox — Documentation › hero › 12 tokens",
+      "figma": "12",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "12"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/tokens.css",
+          "pattern": "--sa-control-selection-size-sm:[\\s\\S]*?--sa-control-selection-size-md:[\\s\\S]*?--sa-control-selection-size-lg:[\\s\\S]*?--sa-control-selection-glyph-sm:[\\s\\S]*?--sa-control-selection-glyph-md:[\\s\\S]*?--sa-control-selection-glyph-lg:[\\s\\S]*?--sa-control-selection-dot-sm:[\\s\\S]*?--sa-control-selection-dot-md:[\\s\\S]*?--sa-control-selection-dot-lg:[\\s\\S]*?--sa-control-selection-border-width:[\\s\\S]*?--sa-control-selection-radius:[\\s\\S]*?--sa-control-selection-gap:",
+          "hint": "All twelve control/selection/* declarations, in ladder order: size, glyph and dot at sm/md/lg, then border/width, radius and gap. A thirteenth would make the hero's 12 a lie; this pattern only proves the twelve exist, so count when adding one."
+        }
+      ]
+    },
+    {
+      "node": "57046:1006",
+      "where": "Checkbox — Documentation › hero › 2px edge",
+      "figma": "2",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "2"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-control-selection-border-width",
+          "hint": "2px, up from a raw 1.5px; aliases border.width.md."
+        }
+      ]
+    },
+    {
+      "node": "57046:1011",
+      "where": "Checkbox — Documentation › hero › 0 raw values",
+      "figma": "0",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "0"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/selection-css.test.ts",
+          "pattern": "has no raw px outside comments",
+          "hint": "The stylesheet test fails the build on any raw px or duration in the selection stylesheets."
+        }
+      ]
+    },
+    {
+      "node": "57046:1428",
+      "where": "Checkbox — Documentation › 05 Accessibility › 2.5.8 Target size",
+      "figma": "The hit area is 24 at sm, 44 at md, 48 at lg, measured in the browser. The default meets the AA minimum without its label and UX4G's 44×44 touch recommendation.",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-target-min"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-target-comfortable"
+        },
+        {
+          "kind": "token",
+          "token": "--sa-target-spacious"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/selection-control.css",
+          "pattern": "--_target: var\\(--sa-target-comfortable\\)",
+          "hint": "md rows take target/comfortable (44); sm target/min (24); lg target/spacious (48)."
+        }
+      ]
+    },
+    {
+      "node": "57046:1431",
+      "where": "Checkbox — Documentation › 05 Accessibility › 1.4.11 Contrast and focus",
+      "figma": "A 2px edge in border/neutral/base, 7.16:1 on white. The focus ring is a solid outline in focus/ring, painted in Highlight under forced colours, where the checked fill is also painted. selection-css.test.ts.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/tokens/dist/figma.variables.json",
+          "pattern": "Contrast 7\\.16:1 vs bg/neutral/base",
+          "hint": "The ratio is measured at build time into border/neutral/base's Figma description; if the rung moves, the measured ratio moves and this claim fails."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/checkbox.css",
+          "pattern": "background-color: Highlight",
+          "hint": "The checked fill is painted in the system colour under forced colours."
+        }
+      ]
+    },
+    {
+      "node": "57048:1136",
+      "where": "Radio — Documentation › hero › 30 variants",
+      "figma": "30",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "30"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"18:791\"[\\s\\S]*?\"Size\"[\\s\\S]*?\"Small\",\\s*\"Medium\",\\s*\"Large\"[\\s\\S]*?\"Checked\"[\\s\\S]*?\"Off\",\\s*\"On\"\\s*\\][\\s\\S]*?\"State\"[\\s\\S]*?\"Enabled\",\\s*\"Hover\",\\s*\"Focused\",\\s*\"Pressed\",\\s*\"Disabled\"",
+          "hint": "30 = Size 3 x Checked 2 x State 5."
+        }
+      ]
+    },
+    {
+      "node": "57048:1141",
+      "where": "Radio — Documentation › hero › 20 card variants",
+      "figma": "20",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "20"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"55530:2932\"[\\s\\S]*?\"Control\"[\\s\\S]*?\"Radio\",\\s*\"Checkbox\"[\\s\\S]*?\"Checked\"[\\s\\S]*?\"Off\",\\s*\"On\"[\\s\\S]*?\"State\"[\\s\\S]*?\"Enabled\",\\s*\"Hover\",\\s*\"Focused\",\\s*\"Pressed\",\\s*\"Disabled\"",
+          "hint": "20 = Control 2 x Checked 2 x State 5."
+        }
+      ]
+    },
+    {
+      "node": "57048:1146",
+      "where": "Radio — Documentation › hero › 4 group variants",
+      "figma": "4",
+      "expect": [
+        {
+          "kind": "text",
+          "value": "4"
+        },
+        {
+          "kind": "source",
+          "file": "tools/code-connect-parity/figma-properties.json",
+          "pattern": "\"nodeId\": \"57035:929\"[\\s\\S]*?\"Orientation\"[\\s\\S]*?\"Vertical\",\\s*\"Horizontal\"[\\s\\S]*?\"Layout\"[\\s\\S]*?\"Default\",\\s*\"Card\"",
+          "hint": "4 = Orientation 2 x Layout 2."
+        }
+      ]
+    },
+    {
+      "node": "57048:1505",
+      "where": "Radio — Documentation › 05 Accessibility › 2.5.8 Target size",
+      "figma": "The hit area is 24 at sm, 44 at md, 48 at lg; the card stretches the input to the tile's edges. The default meets the AA minimum without its label.",
+      "expect": [
+        {
+          "kind": "token",
+          "token": "--sa-target-comfortable"
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/selection-control.css",
+          "pattern": "\\.ds-selection--card \\.ds-selection__input \\{[^}]*inset: 0",
+          "flags": "s",
+          "hint": "On the card the input stretches to the tile's edges."
+        }
+      ]
+    },
+    {
+      "node": "57048:1508",
+      "where": "Radio — Documentation › 05 Accessibility › 1.4.11 Contrast and focus",
+      "figma": "A 2px edge in border/neutral/base, 7.16:1 on white; the dot is bg/brand/primary/bolder. The focus ring is a solid outline in focus/ring; under forced colours the selected edge and dot are painted in Highlight.",
+      "expect": [
+        {
+          "kind": "source",
+          "file": "packages/tokens/dist/figma.variables.json",
+          "pattern": "Contrast 7\\.16:1 vs bg/neutral/base",
+          "hint": "The ratio is measured at build time into border/neutral/base's Figma description; if the rung moves, the measured ratio moves and this claim fails."
+        },
+        {
+          "kind": "source",
+          "file": "packages/design-system/components/forms/radio.css",
+          "pattern": "\\.ds-radio__dot \\{\\s*background-color: Highlight",
+          "flags": "s",
+          "hint": "The dot is painted in the system colour under forced colours."
+        }
+      ]
     }
   ],
   "tokenTables": [

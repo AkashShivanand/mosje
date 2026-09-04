@@ -345,8 +345,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Checkbox — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/checkbox",
-    "keywords": "checkbox — design system forms & inputs example keyboard  tokens wcag accessibility",
-    "description": "A checkbox selects one or more items from a set, or turns a single option on or off. Supports the mixed state a “select all” control needs.",
+    "keywords": "checkbox — design system forms & inputs anatomy sizes states do and don&apos;t example card variant keyboard  tokens wcag accessibility",
+    "description": "A checkbox selects one or more items from a set, or turns a single option on or off. Three sizes, an error state, a description, read-only, a card variant, and a group with select-all and an exclusive option.",
     "type": "component",
     "iconName": "edit_note"
   },
@@ -1111,8 +1111,8 @@ export const SEARCH_DATA: SearchEntry[] = [
     "title": "Radio — Design System",
     "section": "Forms & Inputs",
     "href": "/design-system/components/forms/radio",
-    "keywords": "radio — design system forms & inputs radio cards example keyboard  tokens wcag accessibility",
-    "description": "A radio button for choosing exactly one option from a mutually exclusive set, in an inline variant and a full selectable card variant.",
+    "keywords": "radio — design system forms & inputs anatomy radio cards do and don&apos;t a single option keyboard  tokens wcag accessibility",
+    "description": "A radio button for choosing exactly one option from a mutually exclusive set. Three sizes, a description, read-only, a card variant, and a group that names the question, carries the error and reveals a follow-up.",
     "type": "component",
     "iconName": "edit_note"
   },

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import * as React from "react";
 
-import { CheckboxGroup, RadioGroup, type RadioGroupProps } from "@mosje/design-system";
+import { CheckboxGroup, Icon, Input, RadioGroup, type RadioGroupProps } from "@mosje/design-system";
 
 /**
  * @covers RadioGroup, CheckboxGroup
@@ -26,10 +26,24 @@ import { CheckboxGroup, RadioGroup, type RadioGroupProps } from "@mosje/design-s
  * component was built to stop.
  *
  * `orientation="horizontal"` wraps rather than scrolling, and `variant="card"`
- * renders each option as a selectable card with an optional `description`.
- * `hint` and `error` are linked through `aria-describedby`; the error is
- * announced after the options, because a message announced before the controls
- * describes a failure the reader has not reached yet.
+ * renders each option as a selectable card with an optional `description` and
+ * `icon` — on BOTH groups now. `hint` and `error` are linked through
+ * `aria-describedby`; the error is announced after the options, because a message
+ * announced before the controls describes a failure the reader has not reached yet.
+ *
+ * `value` is optional: omit it (and use `defaultValue`) for an uncontrolled group a plain
+ * form can post — `CheckboxGroup` takes a `name` for exactly that. `RadioGroup` never
+ * invents a selection; DBIM's "pre-selected default" is the form's decision, made with
+ * `defaultValue`. `disabled` is a native `<fieldset disabled>`; `readOnly`, `size` and
+ * `labelPlacement` pass through to every option. `hideLegend` hides the question
+ * without removing it.
+ *
+ * Per option: `reveal` shows content beneath the option only while it is selected (a
+ * follow-up field — GOV.UK's conditional reveal), always in the DOM and hidden with
+ * `hidden`. `exclusive` (CheckboxGroup) is "none of the above": it clears the others
+ * and is cleared by them, and sits after an "or" divider (`exclusiveDivider`).
+ * `selectAll` adds the parent box a long list needs — checked when every enabled
+ * option is, indeterminate when only some are.
  *
  * `id` is generated when omitted and is worth passing only when something
  * outside the group has to point at it — an `ErrorSummary` entry whose
@@ -58,7 +72,7 @@ const CATEGORIES = [
 ];
 
 export const Radios: Story = {
-  args: { legend: "Category of the Applicant", name: "category", options: CATEGORIES, value: "sc", onChange: () => {} },
+  args: { legend: "Category of the Applicant", name: "category", options: CATEGORIES },
   render: function RadiosStory(args) {
     const [v, setV] = React.useState("sc");
     return <RadioGroup {...args} value={v} onChange={setV} />;
@@ -66,7 +80,7 @@ export const Radios: Story = {
 };
 
 export const WithHintAndError: Story = {
-  args: { legend: "Category of the Applicant", name: "cat2", options: CATEGORIES, value: "", onChange: () => {} },
+  args: { legend: "Category of the Applicant", name: "cat2", options: CATEGORIES },
   render: function ErrStory(args) {
     const [v, setV] = React.useState("");
     return (
@@ -84,7 +98,7 @@ export const WithHintAndError: Story = {
 
 /** Cards carry a second line, for options that need explaining. */
 export const AsCards: Story = {
-  args: { legend: "How Should the Grant Be Released?", name: "mode", options: [], value: "", onChange: () => {} },
+  args: { legend: "How Should the Grant Be Released?", name: "mode", options: [] },
   render: function CardStory(args) {
     const [v, setV] = React.useState("dbt");
     return (
@@ -94,8 +108,8 @@ export const AsCards: Story = {
         value={v}
         onChange={setV}
         options={[
-          { value: "dbt", label: "Direct Benefit Transfer", description: "Credited to the Aadhaar-seeded bank account on record." },
-          { value: "cheque", label: "Account Payee Cheque", description: "Issued to the applicant's registered address." },
+          { value: "dbt", label: "Direct Benefit Transfer", icon: <Icon name="account_balance" />, description: "Credited to the Aadhaar-seeded bank account on record." },
+          { value: "cheque", label: "Account Payee Cheque", icon: <Icon name="payments" />, description: "Issued to the applicant's registered address." },
         ]}
       />
     );
@@ -104,14 +118,16 @@ export const AsCards: Story = {
 
 /** Any number, including none. The value is emitted in OPTION order, not click order. */
 export const Checkboxes: Story = {
-  args: { legend: "", name: "", options: [], value: "", onChange: () => {} },
+  args: { legend: "", name: "", options: [] },
   render: function CheckStory() {
     const [v, setV] = React.useState<string[]>(["hostel"]);
     return (
       <CheckboxGroup
         legend="Assistance Applied For"
+        name="claims"
         value={v}
         onChange={setV}
+        selectAll="Select all schemes"
         hint="Select every scheme the applicant is claiming under."
         options={[
           { value: "hostel", label: "Hostel Accommodation" },
@@ -126,7 +142,7 @@ export const Checkboxes: Story = {
 
 /** Wraps rather than scrolling sideways — the page body never scrolls horizontally. */
 export const Horizontal: Story = {
-  args: { legend: "Does the Household Hold a Ration Card?", name: "ration", options: [], value: "", onChange: () => {} },
+  args: { legend: "Does the Household Hold a Ration Card?", name: "ration", options: [] },
   render: function HStory(args) {
     const [v, setV] = React.useState("yes");
     return (
@@ -143,4 +159,83 @@ export const Horizontal: Story = {
       />
     );
   },
+};
+
+/**
+ * `reveal` — a follow-up beneath the option that needs one, shown only while it is
+ * selected. The panel is always in the DOM (hidden with `hidden`), so `aria-controls`
+ * on the option always resolves.
+ */
+export const ConditionalReveal: Story = {
+  args: { legend: "How Should We Contact You?", name: "contact", options: [] },
+  render: function RevealStory(args) {
+    const [v, setV] = React.useState("email");
+    return (
+      <RadioGroup
+        {...args}
+        value={v}
+        onChange={setV}
+        options={[
+          { value: "email", label: "Email", reveal: <Input aria-label="Email address" placeholder="name@example.gov.in" /> },
+          { value: "sms", label: "SMS", reveal: <Input aria-label="Mobile number" inputMode="numeric" placeholder="10-digit mobile number" /> },
+          { value: "post", label: "Post" },
+        ]}
+      />
+    );
+  },
+};
+
+/**
+ * `exclusive` — "none of the above", after an "or" divider. Selecting it clears the
+ * others; selecting any other clears it. The value is still emitted in option order.
+ */
+export const ExclusiveOption: Story = {
+  args: { legend: "", name: "", options: [] },
+  render: function ExclusiveStory() {
+    const [v, setV] = React.useState<string[]>([]);
+    return (
+      <CheckboxGroup
+        legend="Documents Enclosed"
+        name="documents"
+        value={v}
+        onChange={setV}
+        options={[
+          { value: "caste", label: "Caste certificate" },
+          { value: "income", label: "Income certificate" },
+          { value: "aadhaar", label: "Aadhaar card" },
+          { value: "none", label: "None of these", exclusive: true },
+        ]}
+      />
+    );
+  },
+};
+
+/** `disabled` is a native `<fieldset disabled>`; `readOnly` keeps every option in the tab order. */
+export const DisabledAndReadOnly: Story = {
+  args: { legend: "", name: "", options: [] },
+  render: () => (
+    <div style={{ display: "grid", gap: 24 }}>
+      <RadioGroup legend="Category of the Applicant" name="cat-d" options={CATEGORIES} defaultValue="sc" disabled />
+      <RadioGroup legend="Category of the Applicant" name="cat-r" options={CATEGORIES} defaultValue="st" readOnly hint="Recorded from the caste certificate; cannot be changed here." />
+    </div>
+  ),
+};
+
+/** Uncontrolled: no `value`, a `defaultValue`, and a `name` a plain form can post. */
+export const Uncontrolled: Story = {
+  args: { legend: "", name: "", options: [] },
+  render: () => (
+    <form>
+      <CheckboxGroup
+        legend="Assistance Applied For"
+        name="claims"
+        defaultValue={["hostel"]}
+        size="lg"
+        options={[
+          { value: "hostel", label: "Hostel Accommodation" },
+          { value: "scholarship", label: "Post-Matric Scholarship" },
+        ]}
+      />
+    </form>
+  ),
 };

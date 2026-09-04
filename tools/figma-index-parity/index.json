@@ -64,7 +64,7 @@
     "Select",
     "OTP Input",
     "Bot Check",
-    "Radio Buttons",
+    "Radio",
     "Range Slider",
     "Search",
     "Toggle",
@@ -230,12 +230,12 @@
         },
         {
           "name": "Checkbox",
-          "status": "Published",
+          "status": "Ready",
           "linked": true
         },
         {
-          "name": "Radio Buttons",
-          "status": "Published",
+          "name": "Radio",
+          "status": "Ready",
           "linked": true
         },
         {
