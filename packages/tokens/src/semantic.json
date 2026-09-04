@@ -2980,6 +2980,80 @@
         "$type": "dimension",
         "$value": "{border.width.sm}"
       }
+    },
+    "selection": {
+      "$description": "The selection controls — Checkbox and Radio. One family for the box, the circle, the glyph inside it, the edge around it, the corner and the gap to the label, so the two components cannot drift from each other. The row's HIT AREA is not here: it is target/min, target/comfortable and target/spacious, chosen per size, and the visually hidden native input is what fills it.",
+      "size": {
+        "$description": "The visible box or circle. sm 16 for dense tables and filter rails, md 20 as the default beside 14–16px body text, lg 24 where the box has to meet WCAG 2.2 SC 2.5.8 on its own — the card variant and touch-first screens. Replaced a single hardcoded 18px that sat on no scale.",
+        "sm": {
+          "$type": "dimension",
+          "$value": "{size.16}",
+          "$description": "16px box. Dense tables and filter rails, inside a 24px target/min hit area with target/spacing between neighbours."
+        },
+        "md": {
+          "$type": "dimension",
+          "$value": "{size.20}",
+          "$description": "20px box, the default. Sits beside 14 to 16px body text inside a 44px target/comfortable hit area."
+        },
+        "lg": {
+          "$type": "dimension",
+          "$value": "{size.24}",
+          "$description": "24px box. Touch-first screens and the card variant; the box alone meets WCAG 2.2 SC 2.5.8."
+        }
+      },
+      "glyph": {
+        "$description": "The check mark or the indeterminate dash inside the box: the box less one border on each side. sm 12, md 16, lg 20 — the same steps as icon/size, so the glyph can be a library icon instance in Figma.",
+        "sm": {
+          "$type": "dimension",
+          "$value": "{size.12}",
+          "$description": "12px check or dash inside the 16px box."
+        },
+        "md": {
+          "$type": "dimension",
+          "$value": "{size.16}",
+          "$description": "16px check or dash inside the 20px box. The same step as icon/size/16, so the glyph can be a library icon instance."
+        },
+        "lg": {
+          "$type": "dimension",
+          "$value": "{size.20}",
+          "$description": "20px check or dash inside the 24px box."
+        }
+      },
+      "dot": {
+        "$description": "The filled dot inside a selected radio: half the circle, the ratio Material and Carbon both publish. sm 8, md 10, lg 12.",
+        "sm": {
+          "$type": "dimension",
+          "$value": "{size.8}",
+          "$description": "8px dot inside the 16px circle."
+        },
+        "md": {
+          "$type": "dimension",
+          "$value": "10px",
+          "$description": "A literal rather than an alias because no ref/size step is 10, and inventing one would add a scale step used by a single dot. Half of size/20, which is the md circle."
+        },
+        "lg": {
+          "$type": "dimension",
+          "$value": "{size.12}",
+          "$description": "12px dot inside the 24px circle."
+        }
+      },
+      "border": {
+        "width": {
+          "$type": "dimension",
+          "$value": "{border.width.md}",
+          "$description": "2px, up from a raw 1.5px. A 1.5px edge anti-aliases to a lighter, thinner line at 1x pixel density, and that rendered edge is the surface WCAG 2.2 SC 1.4.11 measures a control's boundary against. 2px is what GOV.UK, USWDS, Polaris and Material draw, and it equals stroke/2 and focus/width. control/border/width stays 1px for text fields, whose edge is a frame rather than the control itself."
+        }
+      },
+      "radius": {
+        "$type": "dimension",
+        "$value": "{shape.4}",
+        "$description": "The checkbox corner. shape/4, not the 8px control/radius a text field uses: at 20px a box with an 8px corner reads as a circle, and a circle is the radio."
+      },
+      "gap": {
+        "$type": "dimension",
+        "$value": "{space.8}",
+        "$description": "Between the control and its label. Was stack/8, a vertical token bound to a horizontal gap."
+      }
     }
   },
   "shape": {

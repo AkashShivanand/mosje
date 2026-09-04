@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Alert, Button, Checkbox, FormField, Icon, Input, Radio, Select, Textarea, type SelectOption, type StepperStep } from "@mosje/design-system";
+import { Alert, Button, Checkbox, FormField, Icon, Input, RadioGroup, Select, Textarea, type SelectOption, type StepperStep } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
 import { FormSection, FormCard } from "@/components/nmba/treatment-centre/tc-form";
@@ -595,24 +595,26 @@ export function OdicBeneficiaryForm({
                       <FormField label="Reason of Substance Abuse" required error={errors.has(`row${i}.reason`) ? "Required." : undefined}>
                         {(c) => <Select {...c} value={row.reason} onChange={(e) => updateDrugRow(i, { reason: e.target.value })} placeholder="Select Reason" options={INITIATION_REASONS} />}
                       </FormField>
-                      <fieldset className="m-0 flex flex-col gap-1.5 border-0 p-0">
-                        <legend className="p-0 text-label-1 text-ink">Use in Last 3 Month <span className="ds-field__required" aria-hidden="true">*</span></legend>
-                        <div className="flex gap-4 pt-1.5">
-                          {YES_NO.map((o) => (
-                            <Radio key={o.value} name={`used3m-${row._key}`} value={o.value} checked={row.usedLast3Months === o.value} onChange={() => updateDrugRow(i, { usedLast3Months: o.value as "Yes" | "No" })} label={o.label} />
-                          ))}
-                        </div>
-                        {errors.has(`row${i}.use3m`) && <p className="text-label-2 text-danger-fg">Required.</p>}
-                      </fieldset>
-                      <fieldset className="m-0 flex flex-col gap-1.5 border-0 p-0">
-                        <legend className="p-0 text-label-1 text-ink">Daily / Near Daily Use <span className="ds-field__required" aria-hidden="true">*</span></legend>
-                        <div className="flex gap-4 pt-1.5">
-                          {YES_NO.map((o) => (
-                            <Radio key={o.value} name={`daily-${row._key}`} value={o.value} checked={row.dailyUse === o.value} onChange={() => updateDrugRow(i, { dailyUse: o.value as "Yes" | "No" })} label={o.label} />
-                          ))}
-                        </div>
-                        {errors.has(`row${i}.daily`) && <p className="text-label-2 text-danger-fg">Required.</p>}
-                      </fieldset>
+                      <RadioGroup
+                        legend="Use in Last 3 Month"
+                        name={`used3m-${row._key}`}
+                        required
+                        orientation="horizontal"
+                        options={YES_NO}
+                        value={row.usedLast3Months || undefined}
+                        onChange={(v) => updateDrugRow(i, { usedLast3Months: v as "Yes" | "No" })}
+                        error={errors.has(`row${i}.use3m`) ? "Select Yes or No." : undefined}
+                      />
+                      <RadioGroup
+                        legend="Daily / Near Daily Use"
+                        name={`daily-${row._key}`}
+                        required
+                        orientation="horizontal"
+                        options={YES_NO}
+                        value={row.dailyUse || undefined}
+                        onChange={(v) => updateDrugRow(i, { dailyUse: v as "Yes" | "No" })}
+                        error={errors.has(`row${i}.daily`) ? "Select Yes or No." : undefined}
+                      />
                       <FormField label="Duration of regular use (months)" required error={errors.has(`row${i}.duration`) ? "Required." : undefined}>
                         {(c) => <Input {...c} type="number" min={0} value={row.durationMonths} onChange={(e) => updateDrugRow(i, { durationMonths: e.target.value })} placeholder="Months" />}
                       </FormField>

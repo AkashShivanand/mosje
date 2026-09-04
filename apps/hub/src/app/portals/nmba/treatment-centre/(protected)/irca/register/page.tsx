@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { Alert, Button, Checkbox, FormField, Icon, Input, MediaUpload, Radio, Select, Textarea, type SelectOption, type StepperStep } from "@mosje/design-system";
+import { Alert, Button, Checkbox, FormField, Icon, Input, MediaUpload, RadioGroup, Select, Textarea, type SelectOption, type StepperStep } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { useTCSession } from "@/lib/nmba/treatment-centre/session-context";
 import { useTCStore } from "@/lib/nmba/treatment-centre/store";
@@ -786,29 +786,27 @@ export default function IrcaRegisterPage() {
                         )}
                       </FormField>
 
-                      <fieldset className="m-0 flex flex-col gap-1.5 border-0 p-0">
-                        <legend className="p-0 text-label-1 text-ink">
-                          Use in Last 3 Months <span className="ds-field__required" aria-hidden="true">*</span>
-                        </legend>
-                        <div className="flex gap-4 pt-1.5">
-                          {YES_NO.map((o) => (
-                            <Radio key={o.value} name={`used3m-${row._key}`} value={o.value} checked={row.usedLast3Months === o.value} onChange={() => updateDrugRow(i, { usedLast3Months: o.value as "Yes" | "No" })} label={o.label} />
-                          ))}
-                        </div>
-                        {errors.has(`row${i}.use3m`) && <p className="text-label-2 text-danger-fg">Required.</p>}
-                      </fieldset>
+                      <RadioGroup
+                        legend="Use in Last 3 Months"
+                        name={`used3m-${row._key}`}
+                        required
+                        orientation="horizontal"
+                        options={YES_NO}
+                        value={row.usedLast3Months || undefined}
+                        onChange={(v) => updateDrugRow(i, { usedLast3Months: v as "Yes" | "No" })}
+                        error={errors.has(`row${i}.use3m`) ? "Select Yes or No." : undefined}
+                      />
 
-                      <fieldset className="m-0 flex flex-col gap-1.5 border-0 p-0">
-                        <legend className="p-0 text-label-1 text-ink">
-                          Daily / Near-daily Use <span className="ds-field__required" aria-hidden="true">*</span>
-                        </legend>
-                        <div className="flex gap-4 pt-1.5">
-                          {YES_NO.map((o) => (
-                            <Radio key={o.value} name={`daily-${row._key}`} value={o.value} checked={row.dailyUse === o.value} onChange={() => updateDrugRow(i, { dailyUse: o.value as "Yes" | "No" })} label={o.label} />
-                          ))}
-                        </div>
-                        {errors.has(`row${i}.daily`) && <p className="text-label-2 text-danger-fg">Required.</p>}
-                      </fieldset>
+                      <RadioGroup
+                        legend="Daily / Near-daily Use"
+                        name={`daily-${row._key}`}
+                        required
+                        orientation="horizontal"
+                        options={YES_NO}
+                        value={row.dailyUse || undefined}
+                        onChange={(v) => updateDrugRow(i, { dailyUse: v as "Yes" | "No" })}
+                        error={errors.has(`row${i}.daily`) ? "Select Yes or No." : undefined}
+                      />
 
                       <FormField label="Duration of Regular Use (months)" required error={errors.has(`row${i}.duration`) ? "Required." : undefined}>
                         {(c) => (
@@ -977,24 +975,10 @@ export default function IrcaRegisterPage() {
                           <tr key={rowDef.key} className="align-top">
                             <th scope="row" className="px-2 py-2 text-left font-medium text-ink">{rowDef.label}</th>
                             <td className="px-2 py-2">
-                              <fieldset className="m-0 border-0 p-0">
-                                <legend className="sr-only">{`${rowDef.label} — ever`}</legend>
-                                <div className="flex gap-3">
-                                  {YES_NO.map((o) => (
-                                    <Radio key={o.value} name={`${everKey}`} value={o.value} checked={f[everKey] === o.value} onChange={() => set(everKey)(o.value)} label={o.label} />
-                                  ))}
-                                </div>
-                              </fieldset>
+                              <RadioGroup legend={`${rowDef.label} — ever`} hideLegend name={everKey} orientation="horizontal" options={YES_NO} value={f[everKey] || undefined} onChange={(v) => set(everKey)(v)} />
                             </td>
                             <td className="px-2 py-2">
-                              <fieldset className="m-0 border-0 p-0">
-                                <legend className="sr-only">{`${rowDef.label} — last one month`}</legend>
-                                <div className="flex gap-3">
-                                  {YES_NO.map((o) => (
-                                    <Radio key={o.value} name={`${lastKey}`} value={o.value} checked={f[lastKey] === o.value} onChange={() => set(lastKey)(o.value)} label={o.label} />
-                                  ))}
-                                </div>
-                              </fieldset>
+                              <RadioGroup legend={`${rowDef.label} — last one month`} hideLegend name={lastKey} orientation="horizontal" options={YES_NO} value={f[lastKey] || undefined} onChange={(v) => set(lastKey)(v)} />
                             </td>
                           </tr>
                         );

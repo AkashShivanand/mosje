@@ -984,7 +984,8 @@
     "shape/4",
     "shape/2",
     "cmp/button/radius",
-    "cmp/card/radius"
+    "cmp/card/radius",
+    "control/selection/radius"
   ],
   "Motion": [
     "motion/emphasis/duration",
@@ -1581,39 +1582,67 @@
     "alpha/72",
     "alpha/80",
     "alpha/88",
-    "alpha/100"
+    "alpha/100",
+    "control/selection/size/sm",
+    "control/selection/size/md",
+    "control/selection/size/lg",
+    "control/selection/glyph/sm",
+    "control/selection/glyph/md",
+    "control/selection/glyph/lg",
+    "control/selection/dot/sm",
+    "control/selection/dot/md",
+    "control/selection/dot/lg",
+    "control/selection/border/width",
+    "control/selection/gap"
   ],
   "Viewport": [
     "container/page",
     "grid/margin/page"
   ],
   "$orphans": {
-    "note": "Variables that exist in the LIVE library but that the build payload does not define. Pre-existing drift, NOT created by a sync. Left in place deliberately: this is a PUBLISHED library, so a consumer binding cannot be enumerated from inside it and a delete is therefore unverifiable. Retire them only with evidence of zero consumers, and by RENAME to deprecated/* rather than deletion. They are also the ONLY 36 variables without codeSyntax, and one of them (border/neutral/inverse) still publishes the dead name var(--color-border-neutral-inverse) — deliberately not corrected, because the sync only touches what the source owns. UPDATED 2026-09-04: the 24 Palette, 12 Type, 2 Space and 1 Color orphans listed here since 2026-08-11 were deleted after a full-file consumer scan and a rebinding pass; see $valueChecksums.$lastChange. What remains is deliberate (viewport widths) or authored ahead of code (control/selection/*).",
-    "Palette": [],
-    "Type": [],
-    "Space": [
-      "ref/viewport/mobile",
-      "ref/viewport/tablet",
-      "ref/viewport/desktop",
-      "ref/viewport/desktop-xl"
+    "note": "Variables that exist in the LIVE library but that the build payload does not define. Pre-existing drift, NOT created by a sync. Left in place deliberately: this is a PUBLISHED library, so a consumer binding cannot be enumerated from inside it and a delete is therefore unverifiable. Retire them only with evidence of zero consumers, and by RENAME to deprecated/* rather than deletion. They are also the ONLY 36 variables without codeSyntax, and one of them (border/neutral/inverse) still publishes the dead name var(--color-border-neutral-inverse) — deliberately not corrected, because the sync only touches what the source owns.",
+    "Palette": [
+      "border/neutral/inverse",
+      "ref/color/badge/beta",
+      "ref/color/danger/source",
+      "ref/color/info/source",
+      "ref/color/ink/dark",
+      "ref/color/ink/error",
+      "ref/color/ink/hint",
+      "ref/color/ink/light",
+      "ref/color/ink/primary",
+      "ref/color/ink/secondary",
+      "ref/color/ink/success",
+      "ref/color/ink/warning",
+      "ref/color/neutral/source",
+      "ref/color/primary/source",
+      "ref/color/secondary/source",
+      "ref/color/stroke/100",
+      "ref/color/stroke/200",
+      "ref/color/stroke/300",
+      "ref/color/stroke/400",
+      "ref/color/stroke/50",
+      "ref/color/stroke/500",
+      "ref/color/stroke/600",
+      "ref/color/success/source",
+      "ref/color/warning/source"
     ],
-    "Color": [],
-    "Static": [
-      "control/selection/size/sm",
-      "control/selection/size/md",
-      "control/selection/size/lg",
-      "control/selection/glyph/sm",
-      "control/selection/glyph/md",
-      "control/selection/glyph/lg",
-      "control/selection/dot/sm",
-      "control/selection/dot/md",
-      "control/selection/dot/lg",
-      "control/selection/border/width",
-      "control/selection/gap"
+    "Type": [
+      "deprecated/type/body1/leading",
+      "deprecated/type/body1/size",
+      "deprecated/type/body2/leading",
+      "deprecated/type/body2/size",
+      "deprecated/type/display/leading",
+      "deprecated/type/display/size",
+      "deprecated/type/headline/leading",
+      "deprecated/type/headline/size",
+      "deprecated/type/title1/leading",
+      "deprecated/type/title1/size",
+      "ref/font/family/body",
+      "ref/font/family/heading",
+      "ref/font/weight/displayMedium"
     ],
-    "Radius": [
-      "control/selection/radius"
-    ]
+    "total": 37
   },
   "$incidents": [
     {
@@ -1671,22 +1700,11 @@
   "$valueChecksums": {
     "note": "Per-collection checksum over `name|mode|value`, computed by build/figma-value-parity.mjs. The rest of this file records NAMES, and every check built on it compares names — which is why the library could hold 13 component tokens bound to the wrong palette rung, a reverted webfont, and 54 fluid-type variables carrying the old tablet curve, all under the correct names, with nothing noticing. `payload` is what the build produces; `figmaObserved` is a verified read of the library. They are expected to be EQUAL, and figma-value-parity.test.mjs fails when the payload moves without this record being refreshed.",
     "recordedAt": "2026-09-04",
-    "$lastChange": "2026-09-04 (eighth read) — DEVANAGARI LEADING PER ROLE. 21 type/<tier>/<n>/lhDevanagari added (pixel values per mode, LINE_HEIGHT scope, derived by build/devanagari-leading.mjs as Latin lh + 0.2 × size rounded up to the 4px grid); ref/font/lineHeight/devanagari renamed to devanagariOffset (0.2, no scope) — same variable, same id; leading/devanagari re-aliased to type/body/1/lhDevanagari. The Type name list is re-captured from the payload (113), which also drops 24 names the record still carried for variables already deleted on the seventh read. Payload and a live plugin read both bf306572:678 — equal. Previously: 2026-09-04 (seventh read) — FLAT TYPE RAMP RETIRED. ref/font/size/11…48 and ref/font/lineHeight/16…56 (12 variables) deleted after a full-file scan found their only consumers were eight Footer text nodes, which were moved onto Body/body-3 and Body/body-1 first. Type is 92 variables, byte-equal to the payload (baf34d47:552). 2026-09-04 (sixth read) — LIBRARY-ONLY VARIABLES DELETED. Every page, style and alias was scanned (82 pages, 59,027 nodes, 13,310 text ranges) for the 44 variables the build does not define; 17 still had consumers and their 312 nodes were rebound to value-matched semantic tokens (brand-blue fills → cmp/button/primary/bg, brand-ink text → text/brand/primary/base, slate strokes → border/neutral/*, ref/font/family/heading → font/latin); then 40 were removed. The four ref/viewport/* widths stay — 14 documentation frames are drawn at them. Palette and Type are now BYTE-EQUAL to the payload (b65ee461:276, 916df867:624). Space differs only by the 4 viewport widths. Static and Radius gained control/selection/* variables authored in Figma by another session the same day, ahead of code — recorded, not deleted. Previous: 2026-09-04 (fifth push, continued) — container/measure (36rem → 576 in Figma, WIDTH_HEIGHT) created in Static: 80 → 81, read back a643b9d:81, equal to the payload. 2026-09-04 (fifth push) — TYPE SCALE RE-CUT. All 74 type/* variables (73 existing + the new type/caps/tracking, LETTER_SPACING) re-pushed across the six Surface × Breakpoint modes: 168 values changed, 276 unchanged; Tablet samples are now whole pixels (display-1 58, not 57.74). Title/title-1..3 text styles moved Medium → SemiBold (bound font/weight/semibold); Label/label-3 is 12px UPPER with letterSpacing bound to type/caps/tracking. Read back in-file with the same djb2 over name|mode|value: Type 72760ec7:696 (116 variables × 6). Previous: 2026-09-04 (fourth read) — BINDINGS VERIFIED. Figma stores alias-plus-opacity as VARIABLE_EXPRESSION COMPOSE_COLOR(base, alpha) and the API writes that shape; all 136 translucent variables hold it. Read back: Palette 3e9cf2bd:326, Color a700e8b6:494. The value halves now agree except for the library-only orphans. Previous: 2026-09-04 (third push) — SCOPES AND PLACEMENT. Every variable's scope is now stated in the payload (scopesFor) and was pushed: 123 changed, 41 library-only primitives cleared; ref/* offered nowhere, no ALL_SCOPES left; alpha/* kept the UI-set COLOR_OPACITY. cmp/button/radius and cmp/card/radius moved from Color to Radius (Radius 25 -> 27, Color 496 -> 494). Read back: Radius 4f538c37:27, Color e35dd2cf:494, Palette d8fa4666:328. Previous: 2026-09-04 (second push of the day) — TRANSLUCENCY AS ALIAS + OPACITY. Static pushed and read back (f1d3fc1:80): the opacity scale is one thirteen-step ladder, ref/opacity/* re-expressed as percentages (Figma reads an opacity-bound number as 0–100; a probe proved it) with 13 alpha/* aliases; 28 retired steps removed. Palette and Color: every translucent variable now holds its brand-correct composited fallback and states its intended alias-with-opacity binding in its description; the read-back checksums (4d565e66:328, 5bbf1dbe:496) are the library after that push. The payload halves carry the INTENDED value — alias + opacity — which the Plugin API (apiVersion 1.0.0) cannot write, so Palette and Color disagree ON PURPOSE and knownDifference says why. Previous: 2026-09-04 — colour-system redesign PUSHED to the library and read back. Palette 8fc80366:328 and Color 55f27257:496 are what the library holds after the push; the payload halves were recorded from the build. Previous: COLOUR-SYSTEM REDESIGN, 2026-09-04 (branch ds/colour-system-redesign). Palette and Color changed value in CODE and the library has NOT been pushed: figmaObserved is left exactly as last read, so the two halves of this record now disagree ON PURPOSE and knownDifference says why. What moved: the tint ",
+    "$lastChange": "2026-09-04 (eighth read) — DEVANAGARI LEADING PER ROLE. 21 type/<tier>/<n>/lhDevanagari added (pixel values per mode, LINE_HEIGHT scope, derived by build/devanagari-leading.mjs as Latin lh + 0.2 × size rounded up to the 4px grid); ref/font/lineHeight/devanagari renamed to devanagariOffset (0.2, no scope) — same variable, same id; leading/devanagari re-aliased to type/body/1/lhDevanagari. The Type name list is re-captured from the payload (113), which also drops 24 names the record still carried for variables already deleted on the seventh read. Payload and a live plugin read both bf306572:678 — equal. MERGED over main's selection-control record on 2026-09-04 and every collection re-read live after the merge: Type bf306572:678, Radius 977219b7:28, Static bcba925d:92 (the selection variables are now defined by code, so the Static and Radius differences are closed), Motion, Density and Viewport equal to the payload; Space 3464adcb:146 against a 142-entry payload (the four ref/viewport/* widths, as before); Palette and Color carried from the previous verified read, unchanged by the merge. Previously: 2026-09-04 (fifth push) — SELECTION CONTROLS. Twelve control/selection/* variables created for the Checkbox and Radio rebuild: size, glyph and dot at sm/md/lg, border/width, gap (Static, 80 -> 91 defined by code) and radius (Radius, 27 -> 28), each an alias to the existing ref/size, ref/space, ref/border/width or shape primitive with the payload's scope, WEB codeSyntax and description; dot/md is the one literal (10). Read back: Radius 977219b7:28 equals the payload; Static bcba925d:92 is the payload's 2c244581:91 plus one library-only variable (container/measure) recorded under knownDifference. Previous: 2026-09-04 (fourth read) — BINDINGS VERIFIED. Figma stores alias-plus-opacity as VARIABLE_EXPRESSION COMPOSE_COLOR(base, alpha) and the API writes that shape; all 136 translucent variables hold it. Read back: Palette 3e9cf2bd:326, Color a700e8b6:494. The value halves now agree except for the library-only orphans. Previous: 2026-09-04 (third push) — SCOPES AND PLACEMENT. Every variable's scope is now stated in the payload (scopesFor) and was pushed: 123 changed, 41 library-only primitives cleared; ref/* offered nowhere, no ALL_SCOPES left; alpha/* kept the UI-set COLOR_OPACITY. cmp/button/radius and cmp/card/radius moved from Color to Radius (Radius 25 -> 27, Color 496 -> 494). Read back: Radius 4f538c37:27, Color e35dd2cf:494, Palette d8fa4666:328. Previous: 2026-09-04 (second push of the day) — TRANSLUCENCY AS ALIAS + OPACITY. Static pushed and read back (f1d3fc1:80): the opacity scale is one thirteen-step ladder, ref/opacity/* re-expressed as percentages (Figma reads an opacity-bound number as 0–100; a probe proved it) with 13 alpha/* aliases; 28 retired steps removed. Palette and Color: every translucent variable now holds its brand-correct composited fallback and states its intended alias-with-opacity binding in its description; the read-back checksums (4d565e66:328, 5bbf1dbe:496) are the library after that push. The payload halves carry the INTENDED value — alias + opacity — which the Plugin API (apiVersion 1.0.0) cannot write, so Palette and Color disagree ON PURPOSE and knownDifference says why. Previous: 2026-09-04 — colour-system redesign PUSHED to the library and read back. Palette 8fc80366:328 and Color 55f27257:496 are what the library holds after the push; the payload halves were recorded from the build. Previous: COLOUR-SYSTEM REDESIGN, 2026-09-04 (branch ds/colour-system-redesign). Palette and Color changed value in CODE and the library has NOT been pushed: figmaObserved is left exactly as last read, so the two halves of this record now disagree ON PURPOSE and knownDifference says why. What moved: the tint ",
     "payload": {
       "Space": "23c0c381:142",
       "Palette": "b65ee461:276",
       "Color": "4a7dd173:493",
-      "Type": "bf306572:678",
-      "Radius": "4f538c37:27",
-      "Motion": "775c9461:17",
-      "Density": "b2baae79:16",
-      "Static": "a643b9d:81",
-      "Viewport": "2f223056:12"
-    },
-    "figmaObserved": {
-      "Space": "3464adcb:146",
-      "Palette": "b65ee461:276",
-      "Color": "23944429:493",
       "Type": "bf306572:678",
       "Radius": "977219b7:28",
       "Motion": "775c9461:17",
@@ -1694,13 +1712,22 @@
       "Static": "bcba925d:92",
       "Viewport": "2f223056:12"
     },
+    "figmaObserved": {
+      "Space": "3464adcb:146",
+      "Palette": "b65ee461:276",
+      "Type": "bf306572:678",
+      "Radius": "977219b7:28",
+      "Motion": "775c9461:17",
+      "Density": "b2baae79:16",
+      "Color": "23944429:493",
+      "Static": "bcba925d:92",
+      "Viewport": "2f223056:12"
+    },
     "knownDifference": {
       "$note": "Re-verified 2026-08-19 (second read of the day) against a LIVE read, after the three orphaned cmp/accessibilityBar/divider* variables were deleted from the library. The read method was validated earlier the same day by reproducing the previous record byte-for-byte in all eight collections before any write was made. Space 145 -> 143 and Color 484 -> 483 are exactly those three deletions and nothing else; every other collection's checksum is unchanged, which is the evidence the deletion was surgical. A re-read confirms ZERO DANGLING ALIASES — no surviving variable points at a removed id. Earlier the same day overlay/brand/hover was corrected 12% -> 8% in the library to match the designer's published value and the code, and border/neutral/inverse/{default,subtle} gained their generated WEB codeSyntax. payload-only is EMPTY in every collection, verified by set difference.",
       "Space": "payload 142 entries vs library 146 (146 variables): the 4 library-only ref/viewport/* design-frame widths (mobile 360, tablet 768, desktop 1280, desktop-xl 1440) — canvas sizes a designer draws at, bound as width on 14 documentation frames (Accessibility Bar, Navbar, Portal Login Template), never projected from code. The two _deprecated/layout/container/* were deleted 2026-09-04 after a zero-consumer scan. payload-only is EMPTY.",
-      "Static": "payload 81 entries vs library 92: eleven control/selection/* variables (size/glyph/dot sm|md|lg, border/width, gap) authored in Figma on 2026-09-04 by the selection-control work, ahead of code. Per design-system.md, reconcile by upsert-by-name from a code definition — never delete, never duplicate. payload-only is EMPTY.",
-      "Radius": "payload 27 entries vs library 28: control/selection/radius, authored in Figma on 2026-09-04 ahead of code (see Static). payload-only is EMPTY.",
-      "Color": "payload 493 entries vs library 493 — the same 493 names (border/brand/primary/hover, the one library-only variable, was deleted 2026-09-04 after a zero-consumer scan). The checksums differ only in how the in-file read normalises the 136 COMPOSE_COLOR expressions (argument objects rather than the resolver's alias-with-opacity string); their values were verified equal on 2026-09-04 (fourth read) by resolving each on a probe node in both brands. Re-recording with the build's normaliser is the next read's job.",
-      "$equal": "Palette (b65ee461:276) and Type (baf34d47:552, 92 variables) are byte-identical between payload and library. Motion (775c9461:17), Density (b2baae79:16) and Viewport (2f223056:12) are identical as before."
+      "Color": "payload 493 entries vs library 494. The one library-only variable (border/brand/primary/hover) is unchanged from the previous record. Every translucent variable — the scrim, the two brand washes, the inverse rule and all 90 cmp/action inverse and resting fills — now reads back as the COMPOSE_COLOR expression the payload states; 104 bound by hand, 32 written through the API once the shape was known. payload-only is EMPTY.",
+      "$equal": "Motion (775c9461:17), Density (b2baae79:16), Viewport (2f223056:12), Radius (977219b7:28, re-read 2026-09-04 after control/selection/radius joined it), Static (bcba925d:92, re-read 2026-09-04 after the eleven control/selection/* variables were defined by code — the 81-vs-92 gap is closed), Palette (b65ee461:276, re-read 2026-09-04 after the 25 library-only Tier-1 orphans were deleted) and Type (bf306572:678, re-read 2026-09-04 after the flat ramp and deprecated/type/* were deleted and the 21 lhDevanagari variables were added) are byte-identical between payload and library. What remains different: Space (four ref/viewport/* design-frame widths) and Color (one library-only border/brand/primary/hover plus the COMPOSE_COLOR normalisation)."
     }
   },
   "$contrastNotes": {

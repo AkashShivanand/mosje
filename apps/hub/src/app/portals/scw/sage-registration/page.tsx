@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { UserShell } from "@/components/scw/user-shell";
 import { Button, Card } from "@/components/scw/ui";
+import { Checkbox } from "@mosje/design-system";
 
 const ESSENTIAL_CRITERIA = [
   "Being incorporated or registered in India for less than ten years from its date of incorporation.",
@@ -60,16 +61,12 @@ export default function SageRegistrationLandingPage() {
           </div>
         </div>
 
-        {/* Confirmation checkbox */}
-        <label className="mt-6 flex items-start gap-3 text-body-2 text-ink">
-          <input
-            type="checkbox"
-            className="mt-0.5 h-4 w-4 shrink-0 rounded border-line text-navy focus:ring-navy/30"
-          />
-          <span>
-            I confirm that my organization meets the SAGE eligibility criteria mentioned above.
-          </span>
-        </label>
+        <Checkbox
+          className="mt-6"
+          name="eligibility"
+          required
+          label="I confirm that my organization meets the SAGE eligibility criteria mentioned above."
+        />
 
         {/* Footer */}
         <div className="mt-8 flex justify-end gap-3">

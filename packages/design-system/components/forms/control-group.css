@@ -51,6 +51,55 @@
     column-gap: var(--sa-inline-16);
   }
 
+  /* An invalid group draws the GOV.UK error bar down the options, so the reader can see
+     WHICH question failed before reading the message under it. */
+  .ds-control-group.is-invalid .ds-control-group__options {
+    border-inline-start: var(--sa-stroke-2) solid var(--sa-border-status-error-bolder);
+    padding-inline-start: var(--sa-inline-12);
+  }
+
+  .ds-control-group__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-8);
+    min-inline-size: 0;
+  }
+
+  /* The follow-up beneath a selected option: inset to the label's start, on a rail. */
+  .ds-control-group__reveal {
+    margin-inline-start: var(--sa-inline-8);
+    padding-inline-start: var(--sa-inline-16);
+    border-inline-start: var(--sa-stroke-2) solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-control-group__reveal[hidden] {
+    display: none;
+  }
+
+  /* "or" — the divider before the exclusive option. */
+  .ds-control-group__divider {
+    display: flex;
+    align-items: center;
+    gap: var(--sa-inline-12);
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .ds-control-group__divider::before,
+  .ds-control-group__divider::after {
+    content: "";
+    flex: 1 1 0;
+    border-block-start: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  .ds-control-group__select-all {
+    padding-block-end: var(--sa-stack-8);
+    border-block-end: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
   .ds-control-group__error {
     margin: var(--sa-stack-8) 0 0;
     color: var(--sa-text-status-error-bolder);

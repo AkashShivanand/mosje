@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { PasswordInput, FormField } from "@mosje/design-system";
+import { PasswordInput, FormField, Checkbox } from "@mosje/design-system";
 
 export function PasswordInputPlayground() {
   const [hideToggle, setHideToggle] = React.useState(false);
@@ -18,23 +18,9 @@ export function PasswordInputPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={hideToggle} 
-            onChange={(e) => setHideToggle(e.target.checked)} 
-          />
-          <strong>Hide Reveal Toggle</strong>
-        </label>
+        <Checkbox label="Hide Reveal Toggle" size="sm" checked={hideToggle} onCheckedChange={setHideToggle} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={disabled} 
-            onChange={(e) => setDisabled(e.target.checked)} 
-          />
-          <strong>Disabled</strong>
-        </label>
+        <Checkbox label="Disabled" size="sm" checked={disabled} onCheckedChange={setDisabled} />
       </div>
 
       <div style={{ width: "100%", maxWidth: "400px" }}>

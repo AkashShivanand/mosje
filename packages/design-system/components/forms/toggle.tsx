@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { cn } from "../../utils/cn";
-import "./controls.css";
+import "./toggle.css";
 
 export type ToggleSize = "default" | "small";
 

@@ -924,6 +924,18 @@
   --sa-elevation-toast: 0 24px 48px -12px rgba(30, 33, 36, 0.18);
   --sa-control-radius: 8px;
   --sa-control-border-width: 1px;
+  --sa-control-selection-size-sm: 1rem;
+  --sa-control-selection-size-md: 1.25rem;
+  --sa-control-selection-size-lg: 1.5rem;
+  --sa-control-selection-glyph-sm: 0.75rem;
+  --sa-control-selection-glyph-md: 1rem;
+  --sa-control-selection-glyph-lg: 1.25rem;
+  --sa-control-selection-dot-sm: 0.5rem;
+  --sa-control-selection-dot-md: 10px;
+  --sa-control-selection-dot-lg: 0.75rem;
+  --sa-control-selection-border-width: 2px;
+  --sa-control-selection-radius: 4px;
+  --sa-control-selection-gap: 8px;
   --sa-shape-0: 0px;
   --sa-shape-2: 2px;
   --sa-shape-4: 4px;

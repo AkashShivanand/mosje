@@ -6,10 +6,8 @@ import {
   Card,
   Button,
   Field,
-  Fieldset,
   TextInput,
   Select,
-  RadioRow,
   Stepper,
   SectionTitle,
   cnField,
@@ -25,7 +23,7 @@ import {
   ID_PROOF_TYPES,
 } from "@/lib/tg/states";
 import type { ApplicantDetails, ApplicationType, AppDocument } from "@/lib/tg/store/types";
-import { Icon } from "@mosje/design-system";
+import { Icon, RadioGroup } from "@mosje/design-system";
 
 type Phase = "type" | "method" | "manual" | "form" | "done";
 
@@ -249,9 +247,7 @@ export default function ApplyPage() {
               <Field label="Pincode" required><TextInput inputMode="numeric" maxLength={6} value={form.pincode} onChange={(e) => set("pincode", e.target.value)} placeholder="6-digit Pincode" /></Field>
               <Field label="Full Address" required><TextInput value={form.address} onChange={(e) => set("address", e.target.value)} placeholder="House, Street, Locality" /></Field>
             </div>
-            <Fieldset legend="Is your correspondence address the same as your permanent address?" className="mt-4">
-              <RadioRow name="sameAddress" options={["Yes", "No"]} value={sameAddress} onChange={setSameAddress} />
-            </Fieldset>
+            <RadioGroup className="mt-4" legend="Is your correspondence address the same as your permanent address?" name="sameAddress" orientation="horizontal" options={[{ value: "Yes", label: "Yes" }, { value: "No", label: "No" }]} value={sameAddress} onChange={(v) => setSameAddress(v as "Yes" | "No")} />
           </section>
 
           <div className="flex items-center justify-between border-t border-line pt-5">

@@ -1438,6 +1438,28 @@
     "radius": "8px",
     "border": {
       "width": "1px"
+    },
+    "selection": {
+      "size": {
+        "sm": "1rem",
+        "md": "1.25rem",
+        "lg": "1.5rem"
+      },
+      "glyph": {
+        "sm": "0.75rem",
+        "md": "1rem",
+        "lg": "1.25rem"
+      },
+      "dot": {
+        "sm": "0.5rem",
+        "md": "10px",
+        "lg": "0.75rem"
+      },
+      "border": {
+        "width": "2px"
+      },
+      "radius": "4px",
+      "gap": "8px"
     }
   },
   "shape": {

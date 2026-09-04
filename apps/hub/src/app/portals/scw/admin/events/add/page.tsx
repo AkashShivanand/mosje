@@ -1,9 +1,13 @@
+"use client";
+
+import * as React from "react";
 import Link from "next/link";
 import { Button, Card, Field, Select, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
-import { Icon } from "@mosje/design-system";
+import { DeclarationCheckbox, Icon } from "@mosje/design-system";
 
 export default function AddEventPage() {
+  const [declared, setDeclared] = React.useState(false);
   return (
     <div>
       <div className="mb-6 flex items-center gap-3">
@@ -73,16 +77,9 @@ export default function AddEventPage() {
             </Field>
           </div>
 
-          <label className="flex items-start gap-3 text-body-2 text-ink">
-            <input
-              type="checkbox"
-              className="mt-0.5 h-4 w-4 rounded border-line text-navy focus:ring-navy/30"
-            />
-            <span>
-              I hereby declare that the information given above is correct and true to
-              the best of my knowledge.
-            </span>
-          </label>
+          <DeclarationCheckbox checked={declared} onChange={setDeclared}>
+            <p>The information given above is correct and true to the best of my knowledge.</p>
+          </DeclarationCheckbox>
 
           <div className="flex items-center justify-end gap-3 border-t border-line pt-6">
             <Button type="button" variant="ghost">

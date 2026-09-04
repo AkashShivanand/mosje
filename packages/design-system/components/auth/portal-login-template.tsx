@@ -440,7 +440,7 @@ export function PortalLoginTemplate({
                 options={authOptions.map((o) => ({
                   value: o.mode,
                   label: o.label,
-                  hint: o.description,
+                  description: o.description,
                 }))}
               />
             )}
