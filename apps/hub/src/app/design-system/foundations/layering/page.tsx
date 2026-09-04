@@ -30,7 +30,7 @@ export default function LayeringPage(): React.JSX.Element {
     <FoundationDocPage
       name="Layering"
       status="New"
-      since="0.48.0"
+      since="0.49.0"
       summary="Layering is the order in which surfaces stack when they overlap. SAMAVESH names fifteen rungs, in steps of a hundred, so that a menu is always above the page, a modal above its scrim, a toast above a modal, and nothing the Department draws ever sits on the statutory accessibility control. These are the only z-index values app code may write."
       figma={{
         absent:

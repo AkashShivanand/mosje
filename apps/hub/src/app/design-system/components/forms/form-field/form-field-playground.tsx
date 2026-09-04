@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { FormField, Input } from "@mosje/design-system";
+import { FormField, Input, Checkbox } from "@mosje/design-system";
 
 export function FormFieldPlayground() {
   const [required, setRequired] = React.useState(true);
@@ -19,32 +19,11 @@ export function FormFieldPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", alignSelf: "flex-start" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={required} 
-            onChange={(e) => setRequired(e.target.checked)} 
-          />
-          <strong>Required</strong>
-        </label>
+        <Checkbox label="Required" size="sm" checked={required} onCheckedChange={setRequired} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={hasHint} 
-            onChange={(e) => setHasHint(e.target.checked)} 
-          />
-          <strong>Show Hint</strong>
-        </label>
+        <Checkbox label="Show Hint" size="sm" checked={hasHint} onCheckedChange={setHasHint} />
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={hasError} 
-            onChange={(e) => setHasError(e.target.checked)} 
-          />
-          <strong>Show Error</strong>
-        </label>
+        <Checkbox label="Show Error" size="sm" checked={hasError} onCheckedChange={setHasError} />
       </div>
 
       <div style={{ maxWidth: "400px", width: "100%" }}>

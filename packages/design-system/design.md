@@ -12,7 +12,7 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-04 · System version: v0.48.0 (THE FOUNDATIONS WERE REBUILT TO A
+  Last reviewed: 2026-09-04 · System version: v0.49.0 (THE FOUNDATIONS WERE REBUILT TO A
   BENCHMARK SHAPE. Motion is twelve intents on a value-named ten-step ladder with five
   behaviour-named curves, and reduced motion is emitted ONCE at the token layer; layering is a
   fifteen-rung z ladder authored in Tier 2 and code-only (the Bootstrap primitive ladder nothing
@@ -24,7 +24,31 @@
   Content & Localisation), every table generated, a gate (check:foundations) with no baseline.
   Figma: every variable carries name, description, narrowest scopes, codeSyntax and
   hiddenFromPublishing per .claude/rules/figma-variables-standard.md.)
-  Previous: v0.47.0 (EVERY TRANSLUCENT TOKEN IS A REFERENCE
+
+  Last reviewed: 2026-09-04 · System version: v0.48.0 (THREE TYPE SCALES WERE IN PRODUCTION —
+  the token scale, a static px scale in globals.css and stock Tailwind, invisible to the gate;
+  the scale is re-cut, Tailwind is bound to the 21 roles and nothing else, Heading and Text
+  are the primitives, nothing renders below 12px, and the deviations from DBIM/UX4G are
+  recorded — see the changelog.) v0.41.0 (TYPOGRAPHY WAS THE LAST TOKEN
+  FAMILY WITH NO GATE, AND IT COST 562 LITERAL FONT SIZES — 224 of them off the 15-step
+  ramp, 13px alone 71 times, plus 100 raw letter-spacings against 10 tracking tokens, a
+  second hand-maintained type scale in globals.css, and a component shipping
+  `var(--sa-type-body-4-size)`, a token that has never existed and that CSS drops in
+  silence. `npm run check:type-linkage` is a per-file ratchet over size, leading
+  (including UNITLESS ratios, which no px-grep can see), tracking and family; new debt
+  fails the build and debt that shrinks without a re-baseline fails too, so the backlog
+  only goes down. It shares one parser with ds-linkage via tools/ds-linkage/regions.mjs
+  rather than growing a second copy. Alongside: ds-linkage went from 6 scopes to all 23
+  and the estate was cleared 867 → 0, on 693 token bindings and 76 role-named palette
+  entries, with each portal's own palette declared under a new `portal-palette`
+  exemption and registered as divergence 9. Two precision bugs in ds-linkage itself were
+  fixed — it mis-attributed the property of every bare numeric, which had been hiding 96
+  real findings including 12 in these docs, and its --json truncated when piped. And
+  Figma parity became a MEASUREMENT: all 115 Type variables were read live and diffed
+  against the emitted clamps at 360/768/1280px on both surfaces, 438 of 438 name-by-mode
+  pairs identical.)
+
+  Last reviewed: 2026-09-04 · System version: v0.47.0 (EVERY TRANSLUCENT TOKEN IS A REFERENCE
   PLUS AN OPACITY REFERENCE. Figma can alias a colour and keep a separate, variable-bound
   opacity, so the 136 rgba() literals — 48 overlay tiers, scrim, inverse rules, inverse button
   states — are now `{base}` + `{alpha.N}`; CSS resolves them as color-mix() over two custom
@@ -113,29 +137,6 @@
   PM-AJAY's rail is 304px and "India › Andaman and Nicobar Islands" does not fit it,
   and `wrap={false}` keeps a fixed-width rail on one line so its height does not
   change as the reader drills.)
-
-  Last reviewed: 2026-09-04 · System version: v0.42.0 (THREE TYPE SCALES WERE IN PRODUCTION —
-  the token scale, a static px scale in globals.css and stock Tailwind, invisible to the gate;
-  the scale is re-cut, Tailwind is bound to the 21 roles and nothing else, Heading and Text
-  are the primitives, nothing renders below 12px, and the deviations from DBIM/UX4G are
-  recorded — see the changelog.) v0.41.0 (TYPOGRAPHY WAS THE LAST TOKEN
-  FAMILY WITH NO GATE, AND IT COST 562 LITERAL FONT SIZES — 224 of them off the 15-step
-  ramp, 13px alone 71 times, plus 100 raw letter-spacings against 10 tracking tokens, a
-  second hand-maintained type scale in globals.css, and a component shipping
-  `var(--sa-type-body-4-size)`, a token that has never existed and that CSS drops in
-  silence. `npm run check:type-linkage` is a per-file ratchet over size, leading
-  (including UNITLESS ratios, which no px-grep can see), tracking and family; new debt
-  fails the build and debt that shrinks without a re-baseline fails too, so the backlog
-  only goes down. It shares one parser with ds-linkage via tools/ds-linkage/regions.mjs
-  rather than growing a second copy. Alongside: ds-linkage went from 6 scopes to all 23
-  and the estate was cleared 867 → 0, on 693 token bindings and 76 role-named palette
-  entries, with each portal's own palette declared under a new `portal-palette`
-  exemption and registered as divergence 9. Two precision bugs in ds-linkage itself were
-  fixed — it mis-attributed the property of every bare numeric, which had been hiding 96
-  real findings including 12 in these docs, and its --json truncated when piped. And
-  Figma parity became a MEASUREMENT: all 115 Type variables were read live and diffed
-  against the emitted clamps at 360/768/1280px on both surfaces, 438 of 438 name-by-mode
-  pairs identical.)
 
   Last reviewed: 2026-08-31 · System version: v0.40.0 (A BRUTAL AUDIT OF THE SAMAVESH
   PATTERN FOUND TWO LIVE ACCESSIBILITY FAILURES, ONE OF THEM SELF-INFLICTED. Escape
@@ -965,6 +966,14 @@ Desktop/Tablet/Mobile) sample the same clamp() at 1280/768/360px, rounded to who
 
 - Wrap inline Hindi text: `<span lang="hi">समावेश</span>` — always set the `lang` attribute.
 - Apply Devanagari font: `font-family: var(--sa-font-devanagari)` on the `lang="hi"` element.
+- **Leading is per role, never a flat ratio.** Every role carries `--sa-type-<role>-lhDevanagari`
+  (Figma `type/<tier>/<n>/lhDevanagari`): the Latin leading plus a fifth of the size, rounded
+  UP to the 4px grid, derived by the token build from `ref/font/lineHeight/devanagariOffset`
+  (0.2). Body-1 is 16/24 Latin and 16/28 Hindi; headline-1 40/48 and 40/56; display-1 80/88 and
+  80/104. `<Text lang="hi">` and `<Heading lang="hi">` take it for you; an INLINE Hindi run keeps
+  the surrounding line's leading. `--sa-leading-devanagari` is body-1's, for a block with no
+  role. The unitless 1.7 this replaced (2026-09-04) applied to every role, so a 40px Hindi
+  headline sat at 68px, and Figma read it as 1.7px — it could never be bound.
 - **Never use italic on Devanagari** — the script has no italic tradition; slanting degrades legibility.
 - Page `lang` attribute must be `lang="en"` with `lang="hi"` on individual Hindi strings (not the reverse).
 - Hindi text with no explicit size set will inherit from the English scale — this is intentional.
@@ -1854,7 +1863,7 @@ one. Each segment still meets 24×24 on its own, which the size ladder guarantee
 **Purpose**: The binding wrapper that associates label, help, control, hint, status message and
 character count, and owns every accessibility decision the field stack makes.  
 **Rules**:
-- Every `<Input>`, `<Select>`, `<Textarea>`, `<Checkbox>`, `<Radio>`, `<Toggle>` **must** be wrapped in `<FormField>`.
+- Every `<Input>`, `<Select>`, `<Textarea>` **must** be wrapped in `<FormField>`. `<Checkbox>`, `<Radio>` and `<Toggle>` carry their own label and description wiring and are NOT wrapped; a set goes in `<RadioGroup>` / `<CheckboxGroup>`.
 - FormField auto-generates `htmlFor` / `aria-describedby` linkage. Do not bypass it.
 - Layout order is **label → help → control → hint → message → count** (the hint renders *below*
   the control so inputs stay aligned across grid rows, which is also where UX4G's Input master
@@ -2075,9 +2084,24 @@ Docs: `/design-system/components/sla-progress`.
 #### Textarea
 **Purpose**: Multi-line text entry. Auto-resizes up to a max-height.
 
-#### Checkbox / Radio / Toggle
-**Purpose**: Boolean and group selection controls.  
-**Rule**: Always wrap in `<FormField>` with a descriptive label. `Toggle` is for immediate-effect settings (e.g. notifications on/off), not for form submission.
+#### Checkbox / Radio
+**Purpose**: The selection controls. `Checkbox` — any number from a set, or one option on/off; `Radio` — exactly one of a mutually exclusive set. Both are a real native `<input>` sized to the touch target beside a drawn box or circle; nothing about keyboard, focus or grouping is re-implemented.
+**Shared props**: `label`, `hideLabel`, `description` (via `aria-describedby`, never in the name), `invalid`, `readOnly`, `required`, `size` (`sm` 16 · `md` 20 · `lg` 24 — hit area 24 · 44 · 48), `labelPlacement` (`end` | `start`), `variant` (`default` | `card`), `icon` (card), `checked` / `defaultChecked`, `onChange`, `onCheckedChange`. Checkbox adds `indeterminate` and `error`; Radio adds `name` and `value` (required).
+**Groups**: `RadioGroup` / `CheckboxGroup` — `legend` (REQUIRED; `hideLegend` to hide it), `options[{ value, label, description, disabled, icon, reveal, exclusive }]`, `hint`, `error`, `invalid`, `required`, `disabled` (native fieldset), `readOnly`, `size`, `labelPlacement`, `variant`, `orientation`, `value` / `defaultValue`, `onChange`. `CheckboxGroup` adds `name` (posted on every box), `selectAll` and `exclusiveDivider`. `RadioGroup` is `role="radiogroup"` so `aria-required` / `aria-invalid` are permitted on it; a checkbox group is role `group`, so each box carries its own `aria-invalid`.
+**Tokens**: `--sa-control-selection-size-*`, `-glyph-*`, `-dot-*`, `-border-width` (2px), `-radius` (4px), `-gap`; targets from `--sa-target-min|comfortable|spacious`; motion from `--sa-motion-press-*` / `--sa-motion-exit-*`.
+**Rules**:
+- **Never pre-check a consent, declaration or opt-in** (`defaultChecked`/`checked` true). UX4G §7 prohibits it; a citizen who did not act did not agree. The Figma masters default to Off for the same reason.
+- **A set answering ONE question goes in a group.** The singles label themselves; only the group's `<fieldset>`/`<legend>` names the question (WCAG 1.3.1, 3.3.2). Do not hand-roll the fieldset, and do not add `tabIndex` to a radio.
+- **`description` is a description.** It is linked through `aria-describedby` and sits outside the `<label>`. Do not put a paragraph in `label`.
+- **`readOnly` is not `disabled`.** Read-only keeps the tab stop and the submitted value; disabled removes both and tells the reader they did something wrong.
+- **No `aria-checked` on a native checkbox** — the DOM `indeterminate` property is what exposes the mixed state. Style off `data-state`.
+- **Radio has no `error` prop.** The error belongs to the question, i.e. the group. Radios are laid out vertically; up to six options are radios rather than a dropdown (DBIM B.xi).
+- **A "none of the above" is an `exclusive` option**, after an "or" divider — not an empty selection the reader has to infer.
+- Do not wrap these in `<FormField>`: they carry their own label, description and error wiring.
+
+#### Toggle
+**Purpose**: An on/off setting that applies immediately (`role="switch"`). Not for form submission — if flipping it needs a Save button, it is a Checkbox.
+**Props**: `checked` + `onChange` (controlled), `label`, `size` (`default` | `small`).
 
 #### Chip
 **Purpose**: Compact filter badge. Used for multi-select filter groups.

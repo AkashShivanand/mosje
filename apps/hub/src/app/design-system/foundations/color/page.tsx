@@ -925,7 +925,7 @@ export default function ColorPage(): React.JSX.Element {
     <FoundationDocPage
       name="Color"
       status="Stable"
-      since="0.48.0"
+      since="0.49.0"
       summary={`Eight ramps, two brands, ${META.inkPairs} ink pairings and ${META.rolesMeasured} text, icon and border roles — every one measured against the ground it actually sits on, in the worst of ${META.modesMeasured} modes, and re-measured through three colour-vision deficiencies. The number is published into the description of the variable you are about to use.`}
       figma={{ node: "color" }}
       glance={[

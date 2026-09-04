@@ -607,122 +607,143 @@
       "icon": "\"Material Symbols Rounded\", sans-serif"
     },
     "lineHeight": {
-      "devanagari": "1.7"
+      "devanagariOffset": "0.2"
     },
     "role": {
       "display": {
         "1": {
           "size": "80px",
           "lh": "88px",
-          "para": "32px"
+          "para": "32px",
+          "lhDevanagari": "104px"
         },
         "2": {
           "size": "72px",
           "lh": "80px",
-          "para": "32px"
+          "para": "32px",
+          "lhDevanagari": "96px"
         },
         "3": {
           "size": "64px",
           "lh": "72px",
-          "para": "24px"
+          "para": "24px",
+          "lhDevanagari": "88px"
         },
         "4": {
           "size": "56px",
           "lh": "64px",
-          "para": "24px"
+          "para": "24px",
+          "lhDevanagari": "76px"
         },
         "5": {
           "size": "48px",
           "lh": "56px",
-          "para": "20px"
+          "para": "20px",
+          "lhDevanagari": "68px"
         },
         "6": {
           "size": "40px",
           "lh": "48px",
-          "para": "20px"
+          "para": "20px",
+          "lhDevanagari": "56px"
         }
       },
       "headline": {
         "1": {
           "size": "40px",
           "lh": "48px",
-          "para": "24px"
+          "para": "24px",
+          "lhDevanagari": "56px"
         },
         "2": {
           "size": "32px",
           "lh": "40px",
-          "para": "24px"
+          "para": "24px",
+          "lhDevanagari": "48px"
         },
         "3": {
           "size": "28px",
           "lh": "36px",
-          "para": "20px"
+          "para": "20px",
+          "lhDevanagari": "44px"
         },
         "4": {
           "size": "24px",
           "lh": "32px",
-          "para": "20px"
+          "para": "20px",
+          "lhDevanagari": "40px"
         },
         "5": {
           "size": "20px",
           "lh": "28px",
-          "para": "16px"
+          "para": "16px",
+          "lhDevanagari": "32px"
         },
         "6": {
           "size": "16px",
           "lh": "24px",
-          "para": "16px"
+          "para": "16px",
+          "lhDevanagari": "28px"
         }
       },
       "title": {
         "1": {
           "size": "22px",
           "lh": "28px",
-          "para": "20px"
+          "para": "20px",
+          "lhDevanagari": "36px"
         },
         "2": {
           "size": "16px",
           "lh": "24px",
-          "para": "16px"
+          "para": "16px",
+          "lhDevanagari": "28px"
         },
         "3": {
           "size": "14px",
           "lh": "20px",
-          "para": "16px"
+          "para": "16px",
+          "lhDevanagari": "24px"
         }
       },
       "body": {
         "1": {
           "size": "16px",
           "lh": "24px",
-          "para": "16px"
+          "para": "16px",
+          "lhDevanagari": "28px"
         },
         "2": {
           "size": "14px",
           "lh": "20px",
-          "para": "12px"
+          "para": "12px",
+          "lhDevanagari": "24px"
         },
         "3": {
           "size": "12px",
           "lh": "16px",
-          "para": "12px"
+          "para": "12px",
+          "lhDevanagari": "20px"
         }
       },
       "label": {
         "1": {
           "size": "14px",
           "lh": "20px",
-          "para": "12px"
+          "para": "12px",
+          "lhDevanagari": "24px"
         },
         "2": {
           "size": "12px",
           "lh": "16px",
-          "para": "8px"
+          "para": "8px",
+          "lhDevanagari": "20px"
         },
         "3": {
           "size": "12px",
           "lh": "16px",
-          "para": "8px"
+          "para": "8px",
+          "lhDevanagari": "20px"
         }
       }
     },
@@ -975,7 +996,7 @@
     }
   },
   "leading": {
-    "devanagari": "1.7"
+    "devanagari": "28px"
   },
   "bg": {
     "neutral": {
@@ -1446,6 +1467,28 @@
     "radius": "8px",
     "border": {
       "width": "1px"
+    },
+    "selection": {
+      "size": {
+        "sm": "1rem",
+        "md": "1.25rem",
+        "lg": "1.5rem"
+      },
+      "glyph": {
+        "sm": "0.75rem",
+        "md": "1rem",
+        "lg": "1.25rem"
+      },
+      "dot": {
+        "sm": "0.5rem",
+        "md": "10px",
+        "lg": "0.75rem"
+      },
+      "border": {
+        "width": "2px"
+      },
+      "radius": "4px",
+      "gap": "8px"
     }
   },
   "shape": {

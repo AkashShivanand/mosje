@@ -66,7 +66,7 @@ export default function DensityPage(): React.JSX.Element {
     <FoundationDocPage
       name="Density"
       status="Stable"
-      since="0.48.0"
+      since="0.49.0"
       summary="Density controls how tall interactive elements are and how tightly rows and sections sit. SAMAVESH ships two modes: comfortable for everyday public use and compact for screens that must show a great deal of data at once. Eight tokens move between the modes; type, icons, radius and colour do not."
       figma={{ node: "density" }}
       glance={[

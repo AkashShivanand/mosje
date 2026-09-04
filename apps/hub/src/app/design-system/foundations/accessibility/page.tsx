@@ -103,7 +103,7 @@ export default function AccessibilityPage(): React.JSX.Element {
     <FoundationDocPage
       name="Accessibility"
       status="Stable"
-      since="0.48.0"
+      since="0.49.0"
       summary="These are government services. Every citizen must be able to use them, whatever their ability, device or connection — so accessibility is a release requirement here, not a later pass. The baseline is WCAG 2.1 AA and GIGW, which is the legal floor for an Indian government website; one official widget delivers the citizen's own adjustments on every property."
       figma={{ node: "accessibility" }}
       glance={[

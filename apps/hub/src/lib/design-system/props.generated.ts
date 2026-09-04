@@ -2147,23 +2147,11 @@ export const GENERATED_PROPS = {
         "name": "legend",
         "type": "React.ReactNode",
         "required": true,
-        "description": "The group's own question, rendered as a `<legend>`. This is the whole reason the component exists — see the note below. It is required, and it is not decorative."
-      },
-      {
-        "name": "onChange",
-        "type": "(value: string[]) => void",
-        "required": true,
-        "description": ""
+        "description": "The group's own question, rendered as a `<legend>`. Required, and not decorative — see the note on `GroupShell`."
       },
       {
         "name": "options",
         "type": "ControlGroupOption[]",
-        "required": true,
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string[]",
         "required": true,
         "description": ""
       },
@@ -2174,10 +2162,35 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "defaultValue",
+        "type": "string[]",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": "Native `<fieldset disabled>` — every option, no per-option plumbing."
+      },
+      {
         "name": "error",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Error message; sets the group's invalid state and is announced."
+        "description": "Error message; sets the invalid state and is announced after the options."
+      },
+      {
+        "name": "exclusiveDivider",
+        "type": "React.ReactNode",
+        "required": false,
+        "default": "\"or\"",
+        "description": "Text of the divider before the exclusive option."
+      },
+      {
+        "name": "hideLegend",
+        "type": "boolean",
+        "required": false,
+        "description": "Visually hides the legend. It is still a legend, and still the group's name."
       },
       {
         "name": "hint",
@@ -2195,7 +2208,26 @@ export const GENERATED_PROPS = {
         "name": "invalid",
         "type": "boolean",
         "required": false,
-        "description": "Sets the invalid state without a message, so spreading `FormField`'s render-prop object onto a group degrades rather than breaks. Prefer `error`."
+        "description": "Invalid state without a message, so `FormField`'s render-prop object degrades rather than breaks. Prefer `error`."
+      },
+      {
+        "name": "labelPlacement",
+        "type": "SelectionLabelPlacement = \"end\" | \"start\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": ""
+      },
+      {
+        "name": "name",
+        "type": "string",
+        "required": false,
+        "description": "Posted on every box, so a plain `<form>` submit carries the selection. Also prefixes the option ids."
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string[]) => void",
+        "required": false,
+        "description": ""
       },
       {
         "name": "orientation",
@@ -2205,14 +2237,39 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
         "name": "required",
         "type": "boolean",
         "required": false,
         "description": ""
       },
       {
+        "name": "selectAll",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Label of a \"select all\" parent rendered above the options — checked when every enabled option is, indeterminate when only some are."
+      },
+      {
+        "name": "size",
+        "type": "SelectionSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string[]",
+        "required": false,
+        "description": ""
+      },
+      {
         "name": "variant",
-        "type": "\"default\" | \"card\"",
+        "type": "SelectionVariant = \"default\" | \"card\"",
         "required": false,
         "default": "\"default\"",
         "description": "`card` renders each option as a selectable card."
@@ -2226,27 +2283,105 @@ export const GENERATED_PROPS = {
       {
         "name": "checked",
         "type": "boolean",
-        "required": true,
-        "description": "Controlled checked state."
+        "required": false,
+        "description": "Controlled state. Omit it to let the control hold its own, seeded by `defaultChecked`."
       },
       {
-        "name": "onChange",
-        "type": "React.ChangeEventHandler<HTMLInputElement>",
-        "required": true,
-        "description": "Change handler — receives the native input event."
+        "name": "defaultChecked",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Initial state for the uncontrolled form. Never `true` for a consent or declaration — UX4G §7 prohibits pre-checked consent boxes, and DBIM B.xii expects an explicit act."
+      },
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Secondary line, linked through `aria-describedby`."
+      },
+      {
+        "name": "error",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Error message. Rendered after the control with `role=\"alert\"`, sets `aria-invalid`, and joins `aria-describedby`. Write it as [Problem] + [Solution] (UX4G §7)."
+      },
+      {
+        "name": "hideLabel",
+        "type": "boolean",
+        "required": false,
+        "description": "Keeps `label` as the accessible name but removes it from view."
+      },
+      {
+        "name": "icon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Leading glyph, card variant only. Pass an `<Icon>`."
       },
       {
         "name": "indeterminate",
         "type": "boolean",
         "required": false,
         "default": "false",
-        "description": "Render the indeterminate (mixed) state."
+        "description": "The mixed state a \"select all\" parent shows when only some children are selected. Orthogonal to `checked`: the DOM property is set, the box draws a dash, and a click still yields `checked = true`, as the native control does."
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Invalid styling without a message — for a group that owns the message."
       },
       {
         "name": "label",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Optional text label rendered beside the box (associated via htmlFor/id)."
+        "description": ""
+      },
+      {
+        "name": "labelPlacement",
+        "type": "SelectionLabelPlacement = \"end\" | \"start\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "React.ChangeEventHandler<HTMLInputElement>",
+        "required": false,
+        "description": "Native change event, kept for every existing call site."
+      },
+      {
+        "name": "onCheckedChange",
+        "type": "(checked: boolean) => void",
+        "required": false,
+        "description": "The next checked value, after `onChange`. The convenience most callers actually want."
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Announced as read-only and kept in the tab order, but cannot be changed. NOT `disabled`: a disabled control leaves the tab order and the submitted form, and tells the reader they did something wrong."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "size",
+        "type": "SelectionSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "SelectionVariant = \"default\" | \"card\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": ""
       }
     ]
   },
@@ -6544,7 +6679,7 @@ export const GENERATED_PROPS = {
         "name": "legend",
         "type": "React.ReactNode",
         "required": true,
-        "description": "The group's own question, rendered as a `<legend>`. This is the whole reason the component exists — see the note below. It is required, and it is not decorative."
+        "description": "The group's own question, rendered as a `<legend>`. Required, and not decorative — see the note on `GroupShell`."
       },
       {
         "name": "name",
@@ -6553,20 +6688,8 @@ export const GENERATED_PROPS = {
         "description": "Binds the options into one group. Required by the native control."
       },
       {
-        "name": "onChange",
-        "type": "(value: string) => void",
-        "required": true,
-        "description": ""
-      },
-      {
         "name": "options",
         "type": "ControlGroupOption[]",
-        "required": true,
-        "description": ""
-      },
-      {
-        "name": "value",
-        "type": "string",
         "required": true,
         "description": ""
       },
@@ -6577,10 +6700,28 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "defaultValue",
+        "type": "string",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "disabled",
+        "type": "boolean",
+        "required": false,
+        "description": "Native `<fieldset disabled>` — every option, no per-option plumbing."
+      },
+      {
         "name": "error",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Error message; sets the group's invalid state and is announced."
+        "description": "Error message; sets the invalid state and is announced after the options."
+      },
+      {
+        "name": "hideLegend",
+        "type": "boolean",
+        "required": false,
+        "description": "Visually hides the legend. It is still a legend, and still the group's name."
       },
       {
         "name": "hint",
@@ -6598,7 +6739,20 @@ export const GENERATED_PROPS = {
         "name": "invalid",
         "type": "boolean",
         "required": false,
-        "description": "Sets the invalid state without a message, so spreading `FormField`'s render-prop object onto a group degrades rather than breaks. Prefer `error`."
+        "description": "Invalid state without a message, so `FormField`'s render-prop object degrades rather than breaks. Prefer `error`."
+      },
+      {
+        "name": "labelPlacement",
+        "type": "SelectionLabelPlacement = \"end\" | \"start\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "(value: string) => void",
+        "required": false,
+        "description": ""
       },
       {
         "name": "orientation",
@@ -6608,14 +6762,33 @@ export const GENERATED_PROPS = {
         "description": ""
       },
       {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
         "name": "required",
         "type": "boolean",
         "required": false,
         "description": ""
       },
       {
+        "name": "size",
+        "type": "SelectionSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "value",
+        "type": "string",
+        "required": false,
+        "description": "`undefined` means nothing selected. The group never invents a default; see the docs."
+      },
+      {
         "name": "variant",
-        "type": "\"default\" | \"card\"",
+        "type": "SelectionVariant = \"default\" | \"card\"",
         "required": false,
         "default": "\"default\"",
         "description": "`card` renders each option as a selectable card."
@@ -6627,22 +6800,10 @@ export const GENERATED_PROPS = {
     "inheritsNative": true,
     "props": [
       {
-        "name": "checked",
-        "type": "boolean",
-        "required": true,
-        "description": "Controlled checked state."
-      },
-      {
         "name": "name",
         "type": "string",
         "required": true,
-        "description": "Radio group name — required to bind options into one group."
-      },
-      {
-        "name": "onChange",
-        "type": "React.ChangeEventHandler<HTMLInputElement>",
-        "required": true,
-        "description": "Change handler — receives the native input event."
+        "description": "Binds the options into one native group. Required: without it there is no group."
       },
       {
         "name": "value",
@@ -6651,23 +6812,94 @@ export const GENERATED_PROPS = {
         "description": "This option's value."
       },
       {
+        "name": "checked",
+        "type": "boolean",
+        "required": false,
+        "description": "Controlled state. Omit it to let the browser own the group's selection."
+      },
+      {
+        "name": "defaultChecked",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
         "name": "description",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Secondary text shown under the label in the \"card\" variant."
+        "description": "Secondary line, linked through `aria-describedby`."
+      },
+      {
+        "name": "hideLabel",
+        "type": "boolean",
+        "required": false,
+        "description": "Keeps `label` as the accessible name but removes it from view."
+      },
+      {
+        "name": "icon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Leading glyph, card variant only. Pass an `<Icon>`."
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Invalid styling without a message — for a group that owns the message."
       },
       {
         "name": "label",
         "type": "React.ReactNode",
         "required": false,
-        "description": "Optional text label rendered beside the circle (associated via htmlFor/id)."
+        "description": ""
+      },
+      {
+        "name": "labelPlacement",
+        "type": "SelectionLabelPlacement = \"end\" | \"start\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": ""
+      },
+      {
+        "name": "onChange",
+        "type": "React.ChangeEventHandler<HTMLInputElement>",
+        "required": false,
+        "description": "Native change event, kept for every existing call site."
+      },
+      {
+        "name": "onCheckedChange",
+        "type": "(checked: boolean) => void",
+        "required": false,
+        "description": "Fires with `true` when this option becomes the selection."
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Announced as read-only and kept in the tab order, but cannot be changed. NOT `disabled`: a disabled control leaves the tab order and the submitted form, and tells the reader they did something wrong."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": ""
+      },
+      {
+        "name": "size",
+        "type": "SelectionSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
       },
       {
         "name": "variant",
-        "type": "\"default\" | \"card\"",
+        "type": "SelectionVariant = \"default\" | \"card\"",
         "required": false,
         "default": "\"default\"",
-        "description": "Visual variant. \"default\" = inline circle + label. \"card\" = a full selectable card (Portal DS Radio Card) with optional description."
+        "description": ""
       }
     ]
   },
@@ -7169,6 +7401,75 @@ export const GENERATED_PROPS = {
         "type": "FieldStatus = \"error\" | \"warning\" | \"success\"",
         "required": false,
         "description": "The condition the field is in. Takes precedence over `invalid`."
+      }
+    ]
+  },
+  "SelectionCommonProps": {
+    "source": "packages/design-system/components/forms/selection-control.tsx",
+    "inheritsNative": false,
+    "props": [
+      {
+        "name": "description",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Secondary line, linked through `aria-describedby`."
+      },
+      {
+        "name": "hideLabel",
+        "type": "boolean",
+        "required": false,
+        "description": "Keeps `label` as the accessible name but removes it from view."
+      },
+      {
+        "name": "icon",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": "Leading glyph, card variant only. Pass an `<Icon>`."
+      },
+      {
+        "name": "invalid",
+        "type": "boolean",
+        "required": false,
+        "description": "Invalid styling without a message — for a group that owns the message."
+      },
+      {
+        "name": "label",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "labelPlacement",
+        "type": "SelectionLabelPlacement = \"end\" | \"start\"",
+        "required": false,
+        "default": "\"end\"",
+        "description": ""
+      },
+      {
+        "name": "readOnly",
+        "type": "boolean",
+        "required": false,
+        "description": "Announced as read-only and kept in the tab order, but cannot be changed. NOT `disabled`: a disabled control leaves the tab order and the submitted form, and tells the reader they did something wrong."
+      },
+      {
+        "name": "required",
+        "type": "boolean",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "size",
+        "type": "SelectionSize = \"sm\" | \"md\" | \"lg\"",
+        "required": false,
+        "default": "\"md\"",
+        "description": ""
+      },
+      {
+        "name": "variant",
+        "type": "SelectionVariant = \"default\" | \"card\"",
+        "required": false,
+        "default": "\"default\"",
+        "description": ""
       }
     ]
   },

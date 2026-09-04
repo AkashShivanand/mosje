@@ -131,7 +131,7 @@ export default function IconographyPage(): React.JSX.Element {
     <FoundationDocPage
       name="Iconography"
       status="Beta"
-      since="0.48.0"
+      since="0.49.0"
       summary="Material Symbols Rounded, at weight 300. One component holds every glyph, so there is no icon library to maintain: an instance becomes any icon in the catalogue by typing its name, on a seven-step size scale that carries DBIM's four sizes and the three that interface work needs."
       figma={{ node: "iconography" }}
       glance={[

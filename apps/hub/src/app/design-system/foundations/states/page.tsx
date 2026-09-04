@@ -38,7 +38,7 @@ export default function StatesPage(): React.JSX.Element {
     <FoundationDocPage
       name="Interaction States"
       status="New"
-      since="0.48.0"
+      since="0.49.0"
       summary="A state is what a control is doing right now. SAMAVESH names seven, and each one has a defined answer in colour, motion, opacity and the focus ring, so a citizen learns the estate's behaviour once. Focus is the state the law makes non-optional; disabled is the only state allowed to fall below AA."
       figma={{ node: "color" }}
       glance={[

@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { Checkbox } from "@mosje/design-system";
 
 export interface ControlDef {
   name: string;
@@ -21,13 +22,16 @@ export function PlaygroundControls({ controls, values, onChange }: PlaygroundCon
     <div className="playground-controls">
       {controls.map((ctrl) => (
         <div key={ctrl.name} className="pg-control">
-          <label className="pg-control__label" htmlFor={`ctrl-${ctrl.name}`}>{ctrl.label}</label>
+          {ctrl.type !== "boolean" && (
+            <label className="pg-control__label" htmlFor={`ctrl-${ctrl.name}`}>{ctrl.label}</label>
+          )}
           {ctrl.type === "boolean" ? (
-            <input
+            <Checkbox
               id={`ctrl-${ctrl.name}`}
-              type="checkbox"
+              label={ctrl.label}
+              size="sm"
               checked={!!values[ctrl.name]}
-              onChange={(e) => onChange(ctrl.name, e.target.checked)}
+              onCheckedChange={(next) => onChange(ctrl.name, next)}
             />
           ) : ctrl.type === "select" ? (
             <select

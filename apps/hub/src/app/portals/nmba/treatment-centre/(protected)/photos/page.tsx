@@ -349,15 +349,9 @@ function GalleryCard({
 
         {/* Selection checkbox */}
         {selectMode && (
-          <label className="absolute left-2 top-2 z-10 flex cursor-pointer items-center justify-center rounded-md bg-white/90 p-0.5 shadow">
-            <input
-              type="checkbox"
-              checked={selected}
-              onChange={onToggleSelect}
-              className="h-4 w-4 accent-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
-              aria-label={`Select ${photo.caption}`}
-            />
-          </label>
+          <span className="absolute left-2 top-2 z-10 flex items-center justify-center rounded-md bg-white/90 p-0.5 shadow">
+            <Checkbox size="sm" hideLabel label={`Select ${photo.caption}`} checked={selected} onChange={onToggleSelect} />
+          </span>
         )}
 
         {/* Type + featured chips */}
@@ -417,13 +411,7 @@ function GalleryRow({
       }`}
     >
       {selectMode && (
-        <input
-          type="checkbox"
-          checked={selected}
-          onChange={onToggleSelect}
-          className="ml-1 h-4 w-4 shrink-0 accent-navy focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-navy focus-visible:ring-offset-1"
-          aria-label={`Select ${photo.caption}`}
-        />
+        <Checkbox className="ml-1 shrink-0" size="sm" hideLabel label={`Select ${photo.caption}`} checked={selected} onChange={onToggleSelect} />
       )}
       <button
         type="button"

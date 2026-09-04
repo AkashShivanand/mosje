@@ -63,7 +63,7 @@ export default function LayoutGridPage(): React.JSX.Element {
     <FoundationDocPage
       name="Layout Grid"
       status="New"
-      since="0.48.0"
+      since="0.49.0"
       summary="One centred column, capped in three steps, with a side margin that steps with the cap rather than with the viewport. Everything on a SAMAVESH page sits inside it, and the class that applies it is .sa-container — content width is never a restated number."
       // The Figma page is "Layout Grid" (2140:295915). FIGMA_NODES registers it under the key
       // `spacing`, because that page has carried both the Space collection and the grid since

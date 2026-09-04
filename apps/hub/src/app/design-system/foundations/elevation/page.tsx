@@ -36,7 +36,7 @@ export default function ElevationPage(): React.JSX.Element {
     <FoundationDocPage
       name="Elevation"
       status="Stable"
-      since="0.48.0"
+      since="0.49.0"
       summary="Elevation tells a reader what sits on top of what. SAMAVESH names six shadow roles by what the surface is, not by how deep the shadow looks, and tints every shadow toward the body ink so depth reads as depth rather than dirt on a light government page."
       figma={{ node: "elevation" }}
       glance={[

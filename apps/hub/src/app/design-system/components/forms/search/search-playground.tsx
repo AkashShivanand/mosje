@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Search } from "@mosje/design-system";
+import { Search, Checkbox } from "@mosje/design-system";
 
 export function SearchPlayground() {
   const [value, setValue] = React.useState("");
@@ -34,32 +34,11 @@ export function SearchPlayground() {
           </select>
         </label>
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={disabled} 
-            onChange={(e) => setDisabled(e.target.checked)} 
-          />
-          <strong>Disabled</strong>
-        </label>
+        <Checkbox label="Disabled" size="sm" checked={disabled} onCheckedChange={setDisabled} />
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={withClear} 
-            onChange={(e) => setWithClear(e.target.checked)} 
-          />
-          <strong>Has Clear Button</strong>
-        </label>
+        <Checkbox label="Has Clear Button" size="sm" checked={withClear} onCheckedChange={setWithClear} />
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={withSubmit} 
-            onChange={(e) => setWithSubmit(e.target.checked)} 
-          />
-          <strong>Has Submit Handler</strong>
-        </label>
+        <Checkbox label="Has Submit Handler" size="sm" checked={withSubmit} onCheckedChange={setWithSubmit} />
       </div>
 
       <div style={{ width: "100%", maxWidth: "480px" }}>

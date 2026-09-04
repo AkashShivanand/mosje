@@ -31,7 +31,7 @@ export default function SizingPage(): React.JSX.Element {
     <FoundationDocPage
       name="Sizing"
       status="New"
-      since="0.48.0"
+      since="0.49.0"
       summary="Sizing is the width and height of a thing rather than the space around it. SAMAVESH keeps one dimension ladder in rem — so a raised browser font size scales an icon with its label — and two role families on top of it: icon sizes, and pointer targets named for the standard each one meets."
       figma={{ node: "iconography" }}
       glance={[

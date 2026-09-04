@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Chatbot, type ChatbotReply } from "@mosje/design-system";
+import { Chatbot, type ChatbotReply, Checkbox } from "@mosje/design-system";
 
 /**
  * The scripted answers the demo replies with. Kept beside the playground rather
@@ -40,13 +40,6 @@ export function ChatbotPlayground(): React.JSX.Element {
   const [composer, setComposer] = React.useState(true);
   const [subtitle, setSubtitle] = React.useState(true);
 
-  const controlStyle: React.CSSProperties = {
-    display: "flex",
-    gap: "var(--sa-inline-8)",
-    alignItems: "center",
-    fontSize: "var(--sa-type-body-2-size)",
-  };
-
   return (
     <div
       style={{
@@ -59,22 +52,8 @@ export function ChatbotPlayground(): React.JSX.Element {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-24)", flexWrap: "wrap" }}>
-        <label style={controlStyle}>
-          <input
-            type="checkbox"
-            checked={composer}
-            onChange={(e) => setComposer(e.target.checked)}
-          />
-          <strong>Composer</strong>
-        </label>
-        <label style={controlStyle}>
-          <input
-            type="checkbox"
-            checked={subtitle}
-            onChange={(e) => setSubtitle(e.target.checked)}
-          />
-          <strong>Devanagari subtitle</strong>
-        </label>
+        <Checkbox label="Composer" size="sm" checked={composer} onCheckedChange={setComposer} />
+        <Checkbox label="Devanagari subtitle" size="sm" checked={subtitle} onCheckedChange={setSubtitle} />
       </div>
 
       <div style={{ display: "flex", justifyContent: "center" }}>

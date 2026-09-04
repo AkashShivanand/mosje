@@ -51,7 +51,7 @@ export default function MotionPage(): React.JSX.Element {
     <FoundationDocPage
       name="Motion"
       status="Stable"
-      since="0.48.0"
+      since="0.49.0"
       summary="Motion in SAMAVESH is quick, quiet and purposeful. It guides attention and softens change on a government service, and it steps aside the moment a reader asks it to. You never pick a duration: you name what is happening, and the pair brings its duration and easing together."
       figma={{ node: "motion" }}
       glance={[

@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Chip, Icon } from "@mosje/design-system";
+import { Chip, Icon, Checkbox } from "@mosje/design-system";
 
 export function ChipPlayground() {
   const [selected, setSelected] = React.useState(false);
@@ -22,50 +22,15 @@ export function ChipPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={interactive} 
-            onChange={(e) => setInteractive(e.target.checked)} 
-          />
-          <strong>Interactive (Toggleable)</strong>
-        </label>
+        <Checkbox label="Interactive (Toggleable)" size="sm" checked={interactive} onCheckedChange={setInteractive} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={disabled} 
-            onChange={(e) => setDisabled(e.target.checked)} 
-          />
-          <strong>Disabled</strong>
-        </label>
+        <Checkbox label="Disabled" size="sm" checked={disabled} onCheckedChange={setDisabled} />
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={hasLeadingIcon} 
-            onChange={(e) => setHasLeadingIcon(e.target.checked)} 
-          />
-          <strong>Leading Icon</strong>
-        </label>
+        <Checkbox label="Leading Icon" size="sm" checked={hasLeadingIcon} onCheckedChange={setHasLeadingIcon} />
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={hasDismiss} 
-            onChange={(e) => setHasDismiss(e.target.checked)} 
-          />
-          <strong>Dismissible</strong>
-        </label>
+        <Checkbox label="Dismissible" size="sm" checked={hasDismiss} onCheckedChange={setHasDismiss} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={hasTrailingDropdown} 
-            onChange={(e) => setHasTrailingDropdown(e.target.checked)} 
-          />
-          <strong>Dropdown Chevron</strong>
-        </label>
+        <Checkbox label="Dropdown Chevron" size="sm" checked={hasTrailingDropdown} onCheckedChange={setHasTrailingDropdown} />
       </div>
 
       <div style={{ display: "flex", gap: "var(--sa-inline-12)", flexWrap: "wrap" }}>

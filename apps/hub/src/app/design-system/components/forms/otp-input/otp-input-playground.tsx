@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { OtpInput } from "@mosje/design-system";
+import { OtpInput, Checkbox } from "@mosje/design-system";
 
 export function OtpInputPlayground() {
   const [value, setValue] = React.useState("");
@@ -35,23 +35,9 @@ export function OtpInputPlayground() {
           </select>
         </label>
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={invalid} 
-            onChange={(e) => setInvalid(e.target.checked)} 
-          />
-          <strong>Invalid State</strong>
-        </label>
+        <Checkbox label="Invalid State" size="sm" checked={invalid} onCheckedChange={setInvalid} />
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={disabled} 
-            onChange={(e) => setDisabled(e.target.checked)} 
-          />
-          <strong>Disabled</strong>
-        </label>
+        <Checkbox label="Disabled" size="sm" checked={disabled} onCheckedChange={setDisabled} />
       </div>
 
       <div style={{ width: "100%", maxWidth: "400px" }}>

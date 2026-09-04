@@ -51,15 +51,15 @@ export const fontFamily = {
 
 /** Named type styles. Fluid: `size`/`leading` are clamp() or rem strings, not px numbers. */
 export const typography = {
-  display: { size: "clamp(2.5rem, calc(1.5217rem + 4.348vw), 5rem)", leading: "clamp(3rem, calc(2.0217rem + 4.348vw), 5.5rem)" },
-  title1: { size: "clamp(1.5rem, calc(1.3043rem + 0.87vw), 2rem)", leading: "clamp(2rem, calc(1.8043rem + 0.87vw), 2.5rem)" },
-  headline: { size: "clamp(1.75rem, calc(1.4565rem + 1.304vw), 2.5rem)", leading: "clamp(2.25rem, calc(1.9565rem + 1.304vw), 3rem)" },
-  title2: { size: "clamp(1.125rem, calc(1.0272rem + 0.435vw), 1.375rem)", leading: "clamp(1.5rem, calc(1.4022rem + 0.435vw), 1.75rem)" },
-  body1: { size: "1rem", leading: "1.5rem" },
-  body2: { size: "0.875rem", leading: "1.25rem" },
-  body3: { size: "0.75rem", leading: "1rem" },
-  label1: { size: "0.875rem", leading: "1.25rem" },
-  label3: { size: "0.75rem", leading: "1rem" },
+  display: { size: "clamp(2.5rem, calc(1.5217rem + 4.348vw), 5rem)", leading: "clamp(3rem, calc(2.0217rem + 4.348vw), 5.5rem)", leadingDevanagari: "clamp(3.5rem, calc(2.3261rem + 5.217vw), 6.5rem)" },
+  title1: { size: "clamp(1.5rem, calc(1.3043rem + 0.87vw), 2rem)", leading: "clamp(2rem, calc(1.8043rem + 0.87vw), 2.5rem)", leadingDevanagari: "clamp(2.5rem, calc(2.3043rem + 0.87vw), 3rem)" },
+  headline: { size: "clamp(1.75rem, calc(1.4565rem + 1.304vw), 2.5rem)", leading: "clamp(2.25rem, calc(1.9565rem + 1.304vw), 3rem)", leadingDevanagari: "clamp(2.75rem, calc(2.4565rem + 1.304vw), 3.5rem)" },
+  title2: { size: "clamp(1.125rem, calc(1.0272rem + 0.435vw), 1.375rem)", leading: "clamp(1.5rem, calc(1.4022rem + 0.435vw), 1.75rem)", leadingDevanagari: "clamp(1.75rem, calc(1.5543rem + 0.87vw), 2.25rem)" },
+  body1: { size: "1rem", leading: "1.5rem", leadingDevanagari: "1.75rem" },
+  body2: { size: "0.875rem", leading: "1.25rem", leadingDevanagari: "1.5rem" },
+  body3: { size: "0.75rem", leading: "1rem", leadingDevanagari: "1.25rem" },
+  label1: { size: "0.875rem", leading: "1.25rem", leadingDevanagari: "1.5rem" },
+  label3: { size: "0.75rem", leading: "1rem", leadingDevanagari: "1.25rem" },
 } as const;
 
 export const shadow = {

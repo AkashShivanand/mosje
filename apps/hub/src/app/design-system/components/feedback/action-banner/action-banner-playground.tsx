@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { ActionBanner, Button } from "@mosje/design-system";
+import { ActionBanner, Button, Checkbox } from "@mosje/design-system";
 
 export function ActionBannerPlayground() {
   const [hasDescription, setHasDescription] = React.useState(true);
@@ -17,14 +17,7 @@ export function ActionBannerPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", marginBottom: "var(--sa-stack-16)" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
-          <input 
-            type="checkbox" 
-            checked={hasDescription} 
-            onChange={(e) => setHasDescription(e.target.checked)} 
-          />
-          <strong>Include description</strong>
-        </label>
+        <Checkbox label="Include description" size="sm" checked={hasDescription} onCheckedChange={setHasDescription} />
       </div>
 
       <ActionBanner 

@@ -27,7 +27,7 @@ export default function StrokePage(): React.JSX.Element {
     <FoundationDocPage
       name="Stroke"
       status="New"
-      since="0.48.0"
+      since="0.49.0"
       summary="A stroke is the width of an edge — a border, a rule, a focus ring. SAMAVESH keeps five value-named widths and two roles, and the hairline does almost all of the work: a thicker edge is a deliberate emphasis, and colour usually carries emphasis better than width."
       figma={{ node: "shape" }}
       glance={[

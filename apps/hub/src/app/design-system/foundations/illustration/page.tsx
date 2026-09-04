@@ -56,7 +56,7 @@ export default function IllustrationPage(): React.JSX.Element {
     <FoundationDocPage
       name="Illustration"
       status="New"
-      since="0.48.0"
+      since="0.49.0"
       summary="One drawn language for the estate. Every illustration is authored in a single 64 × 48 coordinate space, stands on the same floor, and takes its colour from four tokenised ink layers — so a drawing is correct at every size and follows the brand it is rendered under. No drawing depicts a person, because the Department's subject is a process and an entitlement."
       figma={{
         absent:

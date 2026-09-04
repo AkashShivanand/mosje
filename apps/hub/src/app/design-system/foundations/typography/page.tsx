@@ -46,7 +46,7 @@ export default function TypographyPage(): React.JSX.Element {
     <FoundationDocPage
       name="Typography"
       status="Stable"
-      since="0.48.0"
+      since="0.49.0"
       summary="Every MoSJE property serves citizens in English and हिन्दी, so type is never an afterthought. SAMAVESH pairs two Noto typefaces and a single 21-role scale that renders on two surfaces — an expressive Website and a dense Portal — flowing fluidly from phone to desktop, on a strict 4px rhythm."
       figma={{ node: "typography" }}
       glance={[
@@ -94,13 +94,13 @@ export default function TypographyPage(): React.JSX.Element {
           keyword: "INDIC",
           title: "Devanagari Needs More Room Between Lines",
           description:
-            "Devanagari characters extend further than Latin letters — they need more breathing room between lines. Set Hindi too tight and headline strokes crowd the vowel marks of the next line, which slows reading. SAMAVESH targets a line height of about 1.7 for body Devanagari, versus the ~1.5 that works for Latin. The two columns below use the same font size — only the line height changes.",
+            "Devanagari hangs from a headline stroke and stacks vowel signs above and below it, so it needs more room between lines than Latin at the same size. Set Hindi too tight and the marks of one line crowd the next, which slows reading. Every role therefore carries a second line height for Hindi: the role's Latin leading plus a fifth of its size, rounded up to the 4px grid — body-1 is 16/24 in English and 16/28 in Hindi; headline-1 is 40/48 and 40/56. The offset is fixed, so a Hindi heading keeps the shape of a heading instead of taking a paragraph's leading. The two columns below use the same font size — only the line height changes.",
           content: (
             <>
               <div className="ty-indic-compare">
                 {[
-                  { tone: "danger", label: "✕ Line height 1.5 — too tight", lh: 1.5 },
-                  { tone: "success", label: "✓ Line height 1.7 — correct", lh: 1.7 },
+                  { tone: "danger", label: "✕ Latin leading (16/24) — too tight", lh: "var(--sa-type-body-1-lh)" },
+                  { tone: "success", label: "✓ Devanagari leading (16/28) — correct", lh: "var(--sa-type-body-1-lhDevanagari)" },
                 ].map((c) => (
                   <div key={c.label} className="ty-indic-card" data-tone={c.tone}>
                     <div className="ty-indic-card__head">{c.label}</div>
@@ -111,9 +111,11 @@ export default function TypographyPage(): React.JSX.Element {
                   </div>
                 ))}
               </div>
-              <Callout type="tip" title="Rule of thumb">
-                When a block can hold Hindi, give it the Indic line height. The <code>--sa-type-body-*-lh</code> tokens
-                already bake this in — use them and you get the right spacing for free.
+              <Callout type="tip" title="Bind the role's Hindi leading, never a ratio">
+                A Hindi block is <code>&lt;Text lang=&quot;hi&quot;&gt;</code> or <code>&lt;Heading lang=&quot;hi&quot;&gt;</code>: the
+                primitive switches the face and takes the role&rsquo;s <code>--sa-type-&lt;role&gt;-lhDevanagari</code>. An inline
+                Hindi word inside an English line keeps the line&rsquo;s own leading. In Figma, bind a Hindi text node&rsquo;s line
+                height to <code>type/&lt;role&gt;/lhDevanagari</code> at the same size as its Latin role.
               </Callout>
             </>
           ),

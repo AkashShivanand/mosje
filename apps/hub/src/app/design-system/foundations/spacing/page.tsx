@@ -44,7 +44,7 @@ export default function SpacingPage(): React.JSX.Element {
     <FoundationDocPage
       name="Spacing"
       status="Stable"
-      since="0.48.0"
+      since="0.49.0"
       summary="A consistent spacing rhythm is what makes an interface read as calm and trustworthy. SAMAVESH uses one shared ladder so every gap, inset and margin lines up across 13 websites and 20 portals. The rung is named for its pixel value, so padding/16 is sixteen pixels and there is nothing to look up."
       figma={{ node: "spacing" }}
       glance={[

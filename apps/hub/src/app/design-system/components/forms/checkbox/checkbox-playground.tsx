@@ -1,34 +1,108 @@
 "use client";
 import * as React from "react";
-import { Checkbox } from "@mosje/design-system";
+import { Checkbox, CheckboxGroup, Icon } from "@mosje/design-system";
 
-export function CheckboxPlayground() {
-  const [c1, setC1] = React.useState(true);
-  const [c2, setC2] = React.useState(false);
-  const [c3, setC3] = React.useState(false);
+const panel: React.CSSProperties = {
+  padding: "var(--sa-padding-32)",
+  background: "var(--sa-bg-neutral-subtler)",
+  borderRadius: "var(--sa-shape-8)",
+  display: "grid",
+  gap: "var(--sa-stack-32)",
+  maxWidth: 640,
+  margin: "0 auto",
+};
+const stack: React.CSSProperties = { display: "grid", gap: "var(--sa-stack-12)" };
+const eyebrow: React.CSSProperties = {
+  margin: 0,
+  fontSize: "var(--sa-type-label-3-size)",
+  lineHeight: "var(--sa-type-label-3-lh)",
+  letterSpacing: "var(--sa-type-label-tracking)",
+  textTransform: "uppercase",
+  color: "var(--sa-text-neutral-subtle)",
+};
 
-  const allChecked = c1 && c2 && c3;
-  const isIndeterminate = (c1 || c2 || c3) && !allChecked;
-
-  const handleParentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const checked = e.target.checked;
-    setC1(checked);
-    setC2(checked);
-    setC3(checked);
-  };
+/** Every state the control can be in, running — never a screenshot. */
+export function CheckboxPlayground(): React.JSX.Element {
+  const [agreed, setAgreed] = React.useState(false);
+  const [claims, setClaims] = React.useState<string[]>(["hostel"]);
+  const [docs, setDocs] = React.useState<string[]>([]);
 
   return (
-    <div style={{ padding: "var(--sa-padding-40)", background: "var(--sa-bg-neutral-subtler)", borderRadius: "var(--sa-shape-8)", display: "flex", flexDirection: "column", gap: "var(--sa-stack-16)", maxWidth: "400px", margin: "0 auto" }}>
-      <Checkbox 
-        label="Select all notifications" 
-        checked={allChecked} 
-        indeterminate={isIndeterminate}
-        onChange={handleParentChange} 
-      />
-      <div style={{ paddingLeft: "var(--sa-padding-24)", display: "flex", flexDirection: "column", gap: "var(--sa-stack-12)" }}>
-        <Checkbox label="Email alerts" checked={c1} onChange={(e) => setC1(e.target.checked)} />
-        <Checkbox label="SMS alerts" checked={c2} onChange={(e) => setC2(e.target.checked)} />
-        <Checkbox label="In-app alerts" checked={c3} onChange={(e) => setC3(e.target.checked)} />
+    <div style={panel}>
+      <div style={stack}>
+        <p style={eyebrow}>Sizes — the box is 16 · 20 · 24; the hit area is 24 · 44 · 48</p>
+        <Checkbox size="sm" defaultChecked label="Small" />
+        <Checkbox size="md" defaultChecked label="Medium (default)" />
+        <Checkbox size="lg" defaultChecked label="Large" />
+      </div>
+
+      <div style={stack}>
+        <p style={eyebrow}>States</p>
+        <Checkbox
+          label="I have read the scheme guidelines"
+          description="The guidelines open in a new tab and take about ten minutes to read."
+          checked={agreed}
+          onCheckedChange={setAgreed}
+          error={agreed ? undefined : "Confirm you have read the guidelines to continue"}
+        />
+        <Checkbox label="Aadhaar is seeded to the bank account" required />
+        <Checkbox label="Verified by the district officer" readOnly defaultChecked />
+        <Checkbox label="Verified by the district officer" disabled />
+        <Checkbox label="Send updates by SMS" labelPlacement="start" defaultChecked />
+        <Checkbox indeterminate label="Some districts selected" />
+      </div>
+
+      <div style={stack}>
+        <p style={eyebrow}>Card variant</p>
+        <Checkbox
+          variant="card"
+          icon={<Icon name="apartment" />}
+          label="Hostel Accommodation"
+          description="Babu Jagjivan Ram Chhatrawas Yojana. Apply through the institution, not directly."
+          defaultChecked
+        />
+        <Checkbox
+          variant="card"
+          icon={<Icon name="school" />}
+          label="Post-Matric Scholarship"
+          description="Class XI upwards, including degree and professional courses."
+        />
+      </div>
+
+      <div style={stack}>
+        <p style={eyebrow}>Group with select all</p>
+        <CheckboxGroup
+          legend="Assistance Applied For"
+          name="claims"
+          selectAll="Select all schemes"
+          hint="Select every scheme the applicant is claiming under."
+          value={claims}
+          onChange={setClaims}
+          options={[
+            { value: "hostel", label: "Hostel Accommodation" },
+            { value: "scholarship", label: "Post-Matric Scholarship" },
+            { value: "device", label: "Assistive Device" },
+            { value: "skill", label: "Skill Development Training", disabled: true },
+          ]}
+        />
+      </div>
+
+      <div style={stack}>
+        <p style={eyebrow}>Group with an exclusive option</p>
+        <CheckboxGroup
+          legend="Documents Enclosed"
+          name="documents"
+          required
+          value={docs}
+          onChange={setDocs}
+          error={docs.length ? undefined : "Select the documents enclosed, or None of These"}
+          options={[
+            { value: "caste", label: "Caste certificate" },
+            { value: "income", label: "Income certificate" },
+            { value: "aadhaar", label: "Aadhaar card" },
+            { value: "none", label: "None of these", exclusive: true },
+          ]}
+        />
       </div>
     </div>
   );

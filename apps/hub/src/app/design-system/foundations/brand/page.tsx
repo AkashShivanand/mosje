@@ -129,7 +129,7 @@ export default function BrandPage(): React.JSX.Element {
     <FoundationDocPage
       name="Brand & White-Labelling"
       status="New"
-      since="0.48.0"
+      since="0.49.0"
       summary="A brand pack is the only thing a new government body supplies to run SAMAVESH under its own identity: one file of colour primitives whose paths never change and whose values do. Everything else — the semantic token contract, every component, pattern, page template and accessibility behaviour — is the universal core and is inherited unchanged. A pack that cannot meet WCAG AA on the load-bearing pairings does not build."
       figma={{ node: "brand" }}
       glance={[

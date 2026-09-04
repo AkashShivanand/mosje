@@ -46,9 +46,10 @@ export default function PermissionsPage() {
                   </div>
                   {/* Read-only: this page displays which permissions a role
                       holds, it does not grant them. Editing happens on
-                      /roles/[roleId]/edit, so the box is disabled and the
-                      handler can never fire. */}
-                  <Checkbox checked={p.granted} disabled readOnly onChange={() => {}} />
+                      /roles/[roleId]/edit. readOnly keeps the box in the tab
+                      order and announced; the label names it for assistive
+                      technology (WCAG 4.1.2) without repeating the visible one. */}
+                  <Checkbox checked={p.granted} readOnly hideLabel label={`${p.label} granted`} />
                 </div>
               ))}
             </CardBody>

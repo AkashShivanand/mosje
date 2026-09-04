@@ -28,7 +28,7 @@ export default function OpacityPage(): React.JSX.Element {
     <FoundationDocPage
       name="Opacity"
       status="New"
-      since="0.48.0"
+      since="0.49.0"
       summary="Opacity in SAMAVESH is one ladder of thirteen steps and two intents that name the only whole-element opacities the estate uses. A translucent colour is never an opacity on its own: it is a colour reference plus an alpha reference, so the brand can move under it and Figma can bind both halves."
       figma={{ node: "color" }}
       glance={[

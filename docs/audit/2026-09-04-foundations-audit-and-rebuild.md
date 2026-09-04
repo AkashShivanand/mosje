@@ -93,7 +93,7 @@ them (`1var(…)`); restored from git and recorded here.
 - **Nav in dependency order** (`INFORMATION-ARCHITECTURE.md` §1), `llms.txt` and search derive from it.
 - **Gate:** `npm run check:foundations` — template props matched on usage, plus a literal scan (ms, hex, hand-typed inline style); no baseline; inside `npm run check`.
 - **Rule:** `.claude/rules/foundation-documentation-standard.md`.
-- `design.md` v0.48.0: elevation, motion, layering, opacity and stroke sections rewritten to `--sa-*`; state definitions updated. Changelog v0.100.0.
+- `design.md` v0.49.0: elevation, motion, layering, opacity and stroke sections rewritten to `--sa-*`; state definitions updated. Changelog v0.101.0.
 
 ## 5. Naming and organisation — what changed and what deliberately did not
 

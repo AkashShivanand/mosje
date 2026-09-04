@@ -35,7 +35,7 @@ export default function ShapePage(): React.JSX.Element {
     <FoundationDocPage
       name="Shape"
       status="Stable"
-      since="0.48.0"
+      since="0.49.0"
       summary="Every corner in the system comes from one ladder. A rung is named for its pixel value, so shape/8 is eight pixels and there is nothing to look up. What a rung is for is carried by its description and by the role tokens that resolve to it, which is what a component binds."
       figma={{ node: "shape" }}
       glance={[

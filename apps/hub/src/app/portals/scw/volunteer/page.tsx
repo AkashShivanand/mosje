@@ -6,6 +6,7 @@ import { Button, Card, Field, Select, TextInput } from "@/components/scw/ui";
 import { INDIAN_STATES } from "@/lib/scw/states";
 import { VOLUNTEER_INTERESTS } from "@/lib/scw/mock-data";
 import { cn } from "@/lib/scw/utils";
+import { Checkbox, CheckboxGroup, RadioGroup } from "@mosje/design-system";
 
 const GENDERS = ["Male", "Female", "Transgender"] as const;
 type VolunteerKind = "individual" | "organisation";
@@ -21,29 +22,18 @@ export default function VolunteerRegistrationPage() {
           Tell us about yourself and how you would like to contribute.
         </p>
 
-        {/* Individual / Organisation radio toggle */}
-        <div className="mt-6 flex flex-wrap gap-6">
-          {(
-            [
-              ["individual", "Individual"],
-              ["organisation", "Organisation"],
-            ] as const
-          ).map(([value, label]) => (
-            <label
-              key={value}
-              className="inline-flex cursor-pointer items-center gap-2.5"
-            >
-              <input
-                type="radio"
-                name="volunteer-kind"
-                checked={kind === value}
-                onChange={() => setKind(value)}
-                className="h-4 w-4 accent-navy"
-              />
-              <span className="text-label-1 text-ink">{label}</span>
-            </label>
-          ))}
-        </div>
+        <RadioGroup
+          className="mt-6"
+          legend="Registering As"
+          name="volunteer-kind"
+          orientation="horizontal"
+          options={[
+            { value: "individual", label: "Individual" },
+            { value: "organisation", label: "Organisation" },
+          ]}
+          value={kind}
+          onChange={(v) => setKind(v as VolunteerKind)}
+        />
 
         <form className="mt-8 space-y-6">
           {/* Row 1 */}
@@ -100,39 +90,20 @@ export default function VolunteerRegistrationPage() {
             </Field>
           </div>
 
-          {/* Areas of interest */}
-          <div>
-            <p className="mb-3 text-label-1 text-ink">
-              Areas of Interest / Skills (Select all that apply)
-              <span className="ml-0.5 text-red-500">*</span>
-            </p>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
-              {VOLUNTEER_INTERESTS.map((interest) => (
-                <label
-                  key={interest}
-                  className="inline-flex cursor-pointer items-center gap-2.5"
-                >
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 rounded accent-navy"
-                  />
-                  <span className="text-body-2 text-ink">{interest}</span>
-                </label>
-              ))}
-            </div>
-          </div>
+          <CheckboxGroup
+            legend="Areas of Interest / Skills"
+            hint="Select all that apply."
+            name="interests"
+            required
+            orientation="horizontal"
+            options={VOLUNTEER_INTERESTS.map((interest) => ({ value: interest, label: interest }))}
+          />
 
-          {/* Consent */}
-          <label className="flex cursor-pointer items-start gap-2.5">
-            <input
-              type="checkbox"
-              className="mt-0.5 h-4 w-4 rounded accent-navy"
-            />
-            <span className="text-body-2 text-ink-muted">
-              I consent to share my profile details with registered Old Age
-              Homes and MoSJE coordinators for volunteer matching purposes.
-            </span>
-          </label>
+          <Checkbox
+            name="consent"
+            required
+            label="I consent to share my profile details with registered Old Age Homes and MoSJE coordinators for volunteer matching purposes."
+          />
 
           {/* Footer actions */}
           <div className={cn("flex items-center justify-end gap-3 pt-2")}>

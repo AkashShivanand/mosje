@@ -86,9 +86,9 @@ export const FIGMA_NODES = {
   requiredFieldsLegend: "56792:50506", // the Required Fields Legend set, authored 2026-09-03
   card: "2141:296707",
   badges: "2141:296703",
-  checkbox: "2141:296710",
+  checkbox: "15:664", // the Checkbox set. The entry pointed at the PAGE (2141:296710) until 2026-09-04
   chips: "2141:296709",
-  radio: "2141:323876",
+  radio: "18:791", // the Radio set. The entry pointed at the PAGE (2141:323876) until 2026-09-04
   search: "2141:323878",
   toggle: "2141:323883",
   dropdown: "2141:296718", // Select
