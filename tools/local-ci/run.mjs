@@ -52,6 +52,8 @@ const LIST = flag("list");
 const FAST = flag("fast");
 const KEEP_GOING = flag("keep-going");
 const CLEAN = flag("clean");
+/** Set by the parent when this process IS the run inside the clean checkout. */
+const IN_CLEAN = process.env.MOSJE_LOCAL_CI_CLEAN === "1";
 const ONLY = value("only");
 const SKIP = value("skip");
 const WHICH = value("workflow") || "all";
@@ -146,7 +148,15 @@ if (CLEAN) {
   // dependencies, and that tree is the only one guaranteed to have them.
   const pass = argv.filter((a) => a !== "--clean");
   console.log(`▶ handing over to the clean checkout${pass.length ? ` (${pass.join(" ")})` : ""}\n`);
-  const child = spawnSync("node", ["tools/local-ci/run.mjs", ...pass], { cwd: cleanDir, stdio: "inherit" });
+  const child = spawnSync("node", ["tools/local-ci/run.mjs", ...pass], {
+    cwd: cleanDir,
+    stdio: "inherit",
+    // Without this the child prints "these gates ran against the node_modules already
+    // here", which is exactly what it did NOT do — and the parent then contradicts it two
+    // lines later. A runner whose whole premise is honest reporting cannot print a false
+    // caveat and correct it afterwards.
+    env: { ...process.env, MOSJE_LOCAL_CI_CLEAN: "1" },
+  });
   console.log(
     "\n─".repeat(1) + "─".repeat(71) +
     "\nThat run used a CLEAN checkout of HEAD, installed from package-lock.json." +
@@ -290,8 +300,10 @@ const slowest = [...pass].sort((a, b) => b.ms - a.ms).slice(0, 3);
 if (slowest.length) console.log(`\nSlowest: ${slowest.map((s) => `${s.name} ${dur(s.ms)}`).join(" · ")}`);
 
 console.log(
-  `\nWhat this run did NOT prove${CLEAN ? " (--clean covered 1 and 2)" : ""}:\n` +
-    (CLEAN ? "" : "  1. A clean install — these gates ran against the node_modules already here,\n     not a fresh `npm ci` from the lockfile. Use --clean.\n") +
+  `\nWhat this run did NOT prove:\n` +
+    (IN_CLEAN
+      ? "  1. — a clean install IS what this run used: a fresh checkout of HEAD installed\n     from package-lock.json.\n"
+      : "  1. A clean install — these gates ran against the node_modules already here,\n     not a fresh `npm ci` from the lockfile. Use --clean.\n") +
     "  2. Linux. The case audit above covers the one class this platform hides, but not\n" +
     "     the rest: line endings, a native module that builds differently, a path length,\n" +
     "     a locale-dependent sort. Only a Linux run proves those.\n" +
