@@ -24,7 +24,7 @@ export const META = {
   "inkPairs": 46,
   "worstInkPair": 4.97,
   "belowAA": 0,
-  "rungCaveats": 15,
+  "rungCaveats": 0,
   "brandVaryingRamps": [
     "primaryScale",
     "neutralScale"
@@ -307,81 +307,81 @@ export const RAMPS: readonly Ramp[] = [
       {
         "step": 50,
         "token": "--sa-color-accentScale-50",
-        "blue": "#e3f8e8",
-        "navy": "#e3f8e8",
-        "onWhite": 1.11,
+        "blue": "#e5faea",
+        "navy": "#e5faea",
+        "onWhite": 1.09,
         "anchor": null
       },
       {
         "step": 100,
         "token": "--sa-color-accentScale-100",
-        "blue": "#b3dcbe",
-        "navy": "#b3dcbe",
-        "onWhite": 1.51,
+        "blue": "#bde3c7",
+        "navy": "#bde3c7",
+        "onWhite": 1.4,
         "anchor": null
       },
       {
         "step": 200,
         "token": "--sa-color-accentScale-200",
-        "blue": "#87bd97",
-        "navy": "#87bd97",
-        "onWhite": 2.15,
+        "blue": "#99caa7",
+        "navy": "#99caa7",
+        "onWhite": 1.85,
         "anchor": null
       },
       {
         "step": 300,
         "token": "--sa-color-accentScale-300",
-        "blue": "#5d9e73",
-        "navy": "#5d9e73",
-        "onWhite": 3.18,
+        "blue": "#76b188",
+        "navy": "#76b188",
+        "onWhite": 2.5,
         "anchor": null
       },
       {
         "step": 400,
         "token": "--sa-color-accentScale-400",
-        "blue": "#368253",
-        "navy": "#368253",
-        "onWhite": 4.69,
+        "blue": "#55986b",
+        "navy": "#55986b",
+        "onWhite": 3.45,
         "anchor": null
       },
       {
         "step": 500,
         "token": "--sa-color-accentScale-500",
-        "blue": "#046a38",
-        "navy": "#046a38",
-        "onWhite": 6.72,
+        "blue": "#338051",
+        "navy": "#338051",
+        "onWhite": 4.83,
         "anchor": "anchor"
       },
       {
         "step": 600,
         "token": "--sa-color-accentScale-600",
-        "blue": "#00542b",
-        "navy": "#00542b",
-        "onWhite": 9.12,
+        "blue": "#046a38",
+        "navy": "#046a38",
+        "onWhite": 6.72,
         "anchor": null
       },
       {
         "step": 700,
         "token": "--sa-color-accentScale-700",
-        "blue": "#004220",
-        "navy": "#004220",
-        "onWhite": 11.67,
+        "blue": "#00532a",
+        "navy": "#00532a",
+        "onWhite": 9.25,
         "anchor": null
       },
       {
         "step": 800,
         "token": "--sa-color-accentScale-800",
-        "blue": "#003318",
-        "navy": "#003318",
-        "onWhite": 14.13,
+        "blue": "#003d1e",
+        "navy": "#003d1e",
+        "onWhite": 12.45,
         "anchor": null
       },
       {
         "step": 900,
         "token": "--sa-color-accentScale-900",
-        "blue": "#002510",
-        "navy": "#002510",
-        "onWhite": 16.51,
+        "blue": "#002a12",
+        "navy": "#002a12",
+        "onWhite": 15.67,
         "anchor": null
       },
       {
@@ -511,81 +511,81 @@ export const RAMPS: readonly Ramp[] = [
       {
         "step": 50,
         "token": "--sa-color-successScale-50",
-        "blue": "#e3f8e8",
-        "navy": "#e3f8e8",
-        "onWhite": 1.11,
+        "blue": "#e5faea",
+        "navy": "#e5faea",
+        "onWhite": 1.09,
         "anchor": null
       },
       {
         "step": 100,
         "token": "--sa-color-successScale-100",
-        "blue": "#b3dcbe",
-        "navy": "#b3dcbe",
-        "onWhite": 1.51,
+        "blue": "#bde3c7",
+        "navy": "#bde3c7",
+        "onWhite": 1.4,
         "anchor": null
       },
       {
         "step": 200,
         "token": "--sa-color-successScale-200",
-        "blue": "#87bd97",
-        "navy": "#87bd97",
-        "onWhite": 2.15,
+        "blue": "#99caa7",
+        "navy": "#99caa7",
+        "onWhite": 1.85,
         "anchor": null
       },
       {
         "step": 300,
         "token": "--sa-color-successScale-300",
-        "blue": "#5d9e73",
-        "navy": "#5d9e73",
-        "onWhite": 3.18,
+        "blue": "#76b188",
+        "navy": "#76b188",
+        "onWhite": 2.5,
         "anchor": null
       },
       {
         "step": 400,
         "token": "--sa-color-successScale-400",
-        "blue": "#368253",
-        "navy": "#368253",
-        "onWhite": 4.69,
+        "blue": "#55986b",
+        "navy": "#55986b",
+        "onWhite": 3.45,
         "anchor": null
       },
       {
         "step": 500,
         "token": "--sa-color-successScale-500",
-        "blue": "#046a38",
-        "navy": "#046a38",
-        "onWhite": 6.72,
+        "blue": "#338051",
+        "navy": "#338051",
+        "onWhite": 4.83,
         "anchor": "anchor"
       },
       {
         "step": 600,
         "token": "--sa-color-successScale-600",
-        "blue": "#00542b",
-        "navy": "#00542b",
-        "onWhite": 9.12,
+        "blue": "#046a38",
+        "navy": "#046a38",
+        "onWhite": 6.72,
         "anchor": null
       },
       {
         "step": 700,
         "token": "--sa-color-successScale-700",
-        "blue": "#004220",
-        "navy": "#004220",
-        "onWhite": 11.67,
+        "blue": "#00532a",
+        "navy": "#00532a",
+        "onWhite": 9.25,
         "anchor": null
       },
       {
         "step": 800,
         "token": "--sa-color-successScale-800",
-        "blue": "#003318",
-        "navy": "#003318",
-        "onWhite": 14.13,
+        "blue": "#003d1e",
+        "navy": "#003d1e",
+        "onWhite": 12.45,
         "anchor": null
       },
       {
         "step": 900,
         "token": "--sa-color-successScale-900",
-        "blue": "#002510",
-        "navy": "#002510",
-        "onWhite": 16.51,
+        "blue": "#002a12",
+        "navy": "#002a12",
+        "onWhite": 15.67,
         "anchor": null
       },
       {
@@ -1038,49 +1038,49 @@ export const INK_PAIRS: readonly PairFamily[] = [
         "rung": "subtler",
         "bgToken": "bg/brand/accent/subtler",
         "onToken": "on/bg/brand/accent/subtler",
-        "fill": "#b3dcbe",
+        "fill": "#bde3c7",
         "ink": "#1e2124",
-        "ratio": 10.71
+        "ratio": 11.54
       },
       {
         "rung": "subtle",
         "bgToken": "bg/brand/accent/subtle",
         "onToken": "on/bg/brand/accent/subtle",
-        "fill": "#87bd97",
+        "fill": "#99caa7",
         "ink": "#1e2124",
-        "ratio": 7.51
+        "ratio": 8.75
       },
       {
         "rung": "base",
         "bgToken": "bg/brand/accent/base",
         "onToken": "on/bg/brand/accent/base",
-        "fill": "#e3f8e8",
+        "fill": "#e5faea",
         "ink": "#1e2124",
-        "ratio": 14.53
+        "ratio": 14.78
       },
       {
         "rung": "bold",
         "bgToken": "bg/brand/accent/bold",
         "onToken": "on/bg/brand/accent/bold",
-        "fill": "#5d9e73",
+        "fill": "#76b188",
         "ink": "#1e2124",
-        "ratio": 5.09
+        "ratio": 6.48
       },
       {
         "rung": "bolder",
         "bgToken": "bg/brand/accent/bolder",
         "onToken": "on/bg/brand/accent/bolder",
-        "fill": "#00542b",
+        "fill": "#046a38",
         "ink": "#ffffff",
-        "ratio": 9.12
+        "ratio": 6.72
       },
       {
         "rung": "boldest",
         "bgToken": "bg/brand/accent/boldest",
         "onToken": "on/bg/brand/accent/boldest",
-        "fill": "#003318",
+        "fill": "#003d1e",
         "ink": "#ffffff",
-        "ratio": 14.13
+        "ratio": 12.45
       }
     ]
   },
@@ -1092,49 +1092,49 @@ export const INK_PAIRS: readonly PairFamily[] = [
         "rung": "subtler",
         "bgToken": "bg/status/success/subtler",
         "onToken": "on/bg/status/success/subtler",
-        "fill": "#b3dcbe",
+        "fill": "#bde3c7",
         "ink": "#1e2124",
-        "ratio": 10.71
+        "ratio": 11.54
       },
       {
         "rung": "subtle",
         "bgToken": "bg/status/success/subtle",
         "onToken": "on/bg/status/success/subtle",
-        "fill": "#87bd97",
+        "fill": "#99caa7",
         "ink": "#1e2124",
-        "ratio": 7.51
+        "ratio": 8.75
       },
       {
         "rung": "base",
         "bgToken": "bg/status/success/base",
         "onToken": "on/bg/status/success/base",
-        "fill": "#e3f8e8",
+        "fill": "#e5faea",
         "ink": "#1e2124",
-        "ratio": 14.53
+        "ratio": 14.78
       },
       {
         "rung": "bold",
         "bgToken": "bg/status/success/bold",
         "onToken": "on/bg/status/success/bold",
-        "fill": "#5d9e73",
+        "fill": "#76b188",
         "ink": "#1e2124",
-        "ratio": 5.09
+        "ratio": 6.48
       },
       {
         "rung": "bolder",
         "bgToken": "bg/status/success/bolder",
         "onToken": "on/bg/status/success/bolder",
-        "fill": "#00542b",
+        "fill": "#046a38",
         "ink": "#ffffff",
-        "ratio": 9.12
+        "ratio": 6.72
       },
       {
         "rung": "boldest",
         "bgToken": "bg/status/success/boldest",
         "onToken": "on/bg/status/success/boldest",
-        "fill": "#003318",
+        "fill": "#003d1e",
         "ink": "#ffffff",
-        "ratio": 14.13
+        "ratio": 12.45
       }
     ]
   },
@@ -1302,98 +1302,7 @@ export const INK_PAIRS: readonly PairFamily[] = [
   }
 ];
 
-export const RUNG_LEDGER: readonly LedgerEntry[] = [
-  {
-    "token": "bg/brand/accent/subtle",
-    "measured": 2.15,
-    "implied": 3,
-    "rung": "subtle"
-  },
-  {
-    "token": "bg/brand/primary/bold",
-    "measured": 2.47,
-    "implied": 3,
-    "rung": "bold"
-  },
-  {
-    "token": "bg/brand/primary/subtle",
-    "measured": 1.84,
-    "implied": 3,
-    "rung": "subtle"
-  },
-  {
-    "token": "bg/brand/secondary/bold",
-    "measured": 2.21,
-    "implied": 3,
-    "rung": "bold"
-  },
-  {
-    "token": "bg/brand/secondary/subtle",
-    "measured": 1.72,
-    "implied": 3,
-    "rung": "subtle"
-  },
-  {
-    "token": "bg/neutral/bold",
-    "measured": 1.66,
-    "implied": 3,
-    "rung": "bold"
-  },
-  {
-    "token": "bg/neutral/subtle",
-    "measured": 1.35,
-    "implied": 3,
-    "rung": "subtle"
-  },
-  {
-    "token": "bg/status/error/bold",
-    "measured": 2.69,
-    "implied": 3,
-    "rung": "bold"
-  },
-  {
-    "token": "bg/status/error/subtle",
-    "measured": 2.01,
-    "implied": 3,
-    "rung": "subtle"
-  },
-  {
-    "token": "bg/status/info/bold",
-    "measured": 2.34,
-    "implied": 3,
-    "rung": "bold"
-  },
-  {
-    "token": "bg/status/info/subtle",
-    "measured": 1.77,
-    "implied": 3,
-    "rung": "subtle"
-  },
-  {
-    "token": "bg/status/success/subtle",
-    "measured": 2.15,
-    "implied": 3,
-    "rung": "subtle"
-  },
-  {
-    "token": "bg/status/warning/bold",
-    "measured": 2.35,
-    "implied": 3,
-    "rung": "bold"
-  },
-  {
-    "token": "bg/status/warning/subtle",
-    "measured": 1.8,
-    "implied": 3,
-    "rung": "subtle"
-  },
-  {
-    "token": "border/neutral/subtle",
-    "measured": 1.35,
-    "implied": 3,
-    "rung": "subtle"
-  }
-];
+export const RUNG_LEDGER: readonly LedgerEntry[] = [];
 
 export const CHART = {
   "categorical": [
@@ -1546,24 +1455,24 @@ export const CHART = {
     {
       "key": "posSoft",
       "token": "chart/div/posSoft",
-      "value": "#b3dcbe"
+      "value": "#bde3c7"
     },
     {
       "key": "pos",
       "token": "chart/div/pos",
-      "value": "#5d9e73"
+      "value": "#76b188"
     },
     {
       "key": "posStrong",
       "token": "chart/div/posStrong",
-      "value": "#004220"
+      "value": "#00532a"
     }
   ],
   "trend": [
     {
       "key": "up",
       "token": "chart/trend/up",
-      "value": "#046a38"
+      "value": "#338051"
     },
     {
       "key": "down",

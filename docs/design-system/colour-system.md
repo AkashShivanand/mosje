@@ -45,8 +45,8 @@ Eleven steps on every chromatic ramp (50–950, matching UX4G 3.0); thirteen on 
 |---|---|---|---|---|---|---|
 | `primaryScale` | brand | 11 | 6.9–8.2 | yes | 2° | The only ramp a brand swap repaints. |
 | `secondaryScale` | brand | 11 | 6.7–6.9 | yes | 1° | India Saffron #FF671F from the SAMAVESH logo. Brand-invariant. |
-| `accentScale` | brand | 11 | 5.0–10.7 | yes | 1° | India Green #046A38 from the SAMAVESH logo. Brand-invariant, and the same green as success. |
-| `successScale` | functional | 11 | 5.0–10.7 | yes | 1° | Deliberately identical to accentScale. |
+| `accentScale` | brand | 11 | 6.6–8.6 | yes | 1° | India Green #046A38 from the SAMAVESH logo. Brand-invariant, and the same green as success. |
+| `successScale` | functional | 11 | 6.6–8.6 | yes | 1° | Deliberately identical to accentScale. |
 | `dangerScale` | functional | 11 | 7.3–7.6 | yes | 1° | Anchor #ec5042 at rung 400 — the rung its L\* 64 says, which is what took `bolder` from 4.40:1 to AA. |
 | `warningScale` | functional | 11 | 7.4–7.5 | yes | 3° | Anchor at rung 300, rotated to hue 76: the ramp used to carry two hues, and 66 collided with saffron. |
 | `infoScale` | functional | 11 | 7.7–8.0 | yes | 3° | Anchor #1a73e8 at rung 500. Sits ~3 degrees from primary; see the separation table. |
@@ -90,8 +90,8 @@ hue alone is too weak (blue and navy are 9° apart and separated by lightness) a
 | primary · info | 8° | 2.1 | `dbim-blue` | **indistinguishable** |
 | secondary · error | 21° | 2.6 | `dbim-blue` | **indistinguishable** |
 | primary · secondary | 24° | 2.8 | `dbim-cinnamon-red` | **indistinguishable** |
-| secondary · warning | 35° | 6.0 | `blue` | separated |
-| accent · info | 66° | 6.9 | `blue` | separated |
+| accent · info | 66° | 5.9 | `blue` | separated |
+| success · info | 66° | 5.9 | `blue` | separated |
 
 Only the closest eight are listed; every other pair clears comfortably. Whether a row is a
 DECISION or a DEFECT is recorded in `test/hue-separation.test.mjs`, which is the gate that

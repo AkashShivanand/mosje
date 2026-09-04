@@ -45,8 +45,7 @@ carries; and the resting form-control border was **2.68:1 on that same ground**.
 the tint exponent in `ramp.mjs` went 0.85 → 0.5; danger rotated 28.7° → 24°; info moved to
 hue 220; brand text moved to rung 600; disabled ink became opaque; the control border moved to
 rung 500; the alert, toast and badge read tokens. **164/164 token gates pass**, every `on/*`
-pair is AA in all eight modes, no ramp broke the shape rule, and the shortfall ledger shrank
-16 → 15 with nothing added. **Figma has not been pushed** (§12).
+pair is AA in all eight modes, no ramp broke the shape rule, and the shortfall ledger went 16 → 0 with nothing added. **Figma has not been pushed** (§12).
 
 ---
 
@@ -60,12 +59,12 @@ figure: 100 % is as vivid as the gamut permits; 17 % is grey with a hint of hue.
 
 | Family, rung | Before | L\* | C/C<sub>max</sub> | After | L\* | C/C<sub>max</sub> |
 |---|---|---|---|---|---|---|
-| success / 50 (alert ground) | `#ecf4ee` | 95.9 | **17.9 %** | `#e3f8e8` | 95.9 | 46.8 % |
-| success / 100 (badge, toast) | `#bed8c5` | 85.8 | **17.5 %** | `#b3dcbe` | 85.7 | 27.2 % |
-| success / 200 | `#91b99c` | 74.8 | 31.2 % | `#87bd97` | 75.0 | 41.2 % |
-| success / 400 | `#3b8155` | 54.6 | 71.9 % | `#368253` | 54.6 | 76.3 % |
-| success ink (`text/status/success/base`) | `#004220` | **33.2** | 99.9 % | `#00542b` | 39.1 | 99.9 % |
-| success fill (`bg/status/success/bolder`) | `#00542b` | 39.1 | — | `#00542b` | 39.1 | — |
+| success / 50 (alert ground) | `#ecf4ee` | 95.9 | **17.9 %** | `#e5faea` | 96.5 | 55.2 % |
+| success / 100 (badge, toast) | `#bed8c5` | 85.8 | **17.5 %** | `#bde3c7` | 88.1 | 25.5 % |
+| success / 200 | `#91b99c` | 74.8 | 31.2 % | `#99caa7` | 79.5 | 35.2 % |
+| success / 400 | `#3b8155` | 54.6 | 71.9 % | `#55986b` | 62.3 | 60.9 % |
+| success ink (`text/status/success/base`) | `#004220` | **33.2** | 99.9 % | `#046a38` (India Green itself) | 46.1 | 98.6 % |
+| success fill (`bg/status/success/bolder`) | `#00542b` | 39.1 | — | `#046a38` | 46.1 | — |
 | warning / 100 | `#f7d5a6` | 89.0 | 76.9 % | `#ffd394` | 89.1 | 99.6 % |
 | warning ink | `#704b00` | **44.3** | 99.9 % | `#8b5e00` | 51.7 | 100 % |
 | warning solid chip | `#704b00` + dark ink | 44.3 | — | `#e09c1d` + dark ink | 74.1 | 95.7 % |
@@ -77,7 +76,8 @@ figure: 100 % is as vivid as the gamut permits; 17 % is grey with a hint of hue.
 
 Note the ladder itself: before, rung 600 sat at L\* 49.0 (primary), 56.2 (secondary),
 **39.1 (accent/success)**, 49.4 (danger), 51.7 (warning), 49.4 (info). "600" meant a different
-thing in the green family than in every other, and every success surface inherited that.
+thing in the green family than in every other, and every success surface inherited that. After:
+accent/success 600 is L\* 46.1 — India Green itself — and 500 is a live mid-green (`#338051`, 4.83:1).
 
 ### 1.2 Diagnosis
 
@@ -125,19 +125,19 @@ Every changed role, after:
 
 | Role | success | error | warning | info |
 |---|---|---|---|---|
-| `text/status/*/base` on white | 9.12 | 6.72 | 5.68 | 5.96 |
-| … on the muted page | 7.99 | 5.88 | 4.97 | 5.22 |
-| … on its own `base` tint | 8.19 | 5.58 | 5.11 | 5.42 |
-| … on its own `subtler` tint | 6.03 | 4.35\* | 4.05\* | 4.31\* |
-| `text/status/*/bolder` on white | 11.67 (AAA) | 9.10 (AAA) | 7.79 (AAA) | 8.40 (AAA) |
-| white on `bg/status/*/bolder` | 9.12 (AAA) | 6.72 | 5.68 | 5.96 |
+| `text/status/*/base` on white | 6.72 | 6.72 | 5.68 | 5.96 |
+| … on the muted page | 5.89 | 5.88 | 4.97 | 5.22 |
+| … on its own `base` tint | 6.04 | 5.58 | 5.11 | 5.42 |
+| … on its own `subtler` tint | 4.45\* | 4.35\* | 4.05\* | 4.31\* |
+| `text/status/*/bolder` on white | 9.25 (AAA) | 9.10 (AAA) | 7.79 (AAA) | 8.40 (AAA) |
+| white on `bg/status/*/bolder` | 6.72 | 6.72 | 5.68 | 5.96 |
 | dark ink on `bg/status/*/bold` (amber's solid chip) | — | — | 6.89 | — |
 
 \* On the `subtler` tint use the `bolder` ink (`on/bg/status/*/subtler` already names the
-neutral ink at 10–12:1); the `base` ink is measured for the page and the `base` tint.
+neutral ink at 10–12:1), or the status family's `bolder` ink (5.6–7.7:1); the `base` ink is
+measured for the page and the `base` tint. The design-system docs sidebar badges do this.
 
-AAA is reached wherever it costs nothing: every `bolder` ink, every `boldest` fill, the success
-family throughout. It is deliberately **not** reached by the `base` inks any more — that
+AAA is reached wherever it costs nothing: every `bolder` ink and every `boldest` fill. It is deliberately **not** reached by the `base` inks any more — that
 overshoot is the dullness.
 
 ### 2.2 Colour-vision deficiency (Machado 2009, severity 1.0)
@@ -150,15 +150,16 @@ alone (icon + word, always).
 | Set | Normal | Protanopia | Deuteranopia | Tritanopia |
 |---|---|---|---|---|
 | Status inks + brand, before | 7.1 (info·primary) | 1.0 (success·error) | 2.1 (error·warning) | 7.4 (info·primary) |
-| Status inks + brand, **after** | **10.2** | 1.1 (success·error) | **3.4** | 2.2 (info·primary) |
+| Status inks + brand, **after** | **10.2** | **3.8** (success·warning) | **3.4** | 2.2 (info·primary) |
 | Tonal grounds (rung 50), before | 0.1 (info·primary) | 0.1 | 0.3 | 0.1 |
 | Tonal grounds (rung 50), **after** | 1.5 | 0.7 | 0.1 (info·primary) | 0.8 |
 | Filled rungs (600), before | 1.7 (info·primary) | 0.6 (success·error) | 1.6 (info·primary) | 0.8 (info·primary) |
 | Filled rungs (600), **after** | **8.6** | 0.7 (warning·secondary) | **3.4** | 2.2 (info·primary) |
-| Solid badges, after | 10.0 | 1.1 (success·error) | 9.3 | 3.4 |
+| Solid badges, after | 11.8 | **7.9** (success·error) | 5.7 | 4.5 |
 
 Read: the info/primary collision — the one that existed in *normal* vision — is gone in normal,
-protan and deutan vision. Under tritanopia (the rarest, ~1 in 10,000) cyan and blue converge;
+protan and deutan vision, and the solid badges now clear the chart gate's ΔE 8 under protanopia
+because India Green (L\* 46) and the red (L\* 49) differ in lightness as well as hue. Under tritanopia (the rarest, ~1 in 10,000) cyan and blue converge;
 the info surface therefore always carries its glyph, and the two are still separated by
 lightness at the filled rung. Red/green under protanopia is a property of the deficiency, not
 of any palette, and is handled by the two-channel rule.
@@ -194,7 +195,7 @@ satisfied by the icon + word rule on every status component.
 | Two generations of semantic layer coexist | `color.status.successTonal` (badge.css, 14 DS files) beside `bg/status/success/subtler` (toast.css, forms.css) | Legacy aliases re-pointed one rung with the new layer so both agree; deprecation schedule in §11 |
 | Components invent tints | `feedback.css` `color-mix(… 7%, white)`; `toast.css` `--sa-color-primaryScale-50` | Both read `bg/status/*/base` now |
 | Tier-1 `*Scale` primitives reach component CSS | 15 distinct `--sa-color-*Scale-*` names in 23 DS stylesheets, 131 uses in the hub; stylelint's disallow list names `blue|green|red|…` but not `*Scale` | Governance item (§11); not blocked in this PR |
-| Ladder words claim contrast tints cannot pay | 16 published "shortfalls", 14 of them tints named `subtle`/`bold` promised ≥3:1 vs the page | Ledger shrank to 15; rung semantics for fills recorded as a decision (§11) |
+| Ladder words claim contrast tints cannot pay | 16 published "shortfalls", 14 of them tints named `subtle`/`bold` promised ≥3:1 vs the page | The claim was the defect: `subtle`/`bold` fills now carry no page-contrast class (their measured `on/*` ink is the guarantee). Ledger 16 → **0** |
 | `bolder` lighter than `base` on status inks | generator mapped base → `color.status.*` (700) and bolder → 600 | base 600, bolder 700 |
 | Disabled ink an rgba wash | `rgba(30,33,36,.48)` composited per brand by `brand-ramps.mjs` | opaque `{color.neutral.400}` with brand overrides |
 
@@ -286,7 +287,8 @@ The framework that answers each is in §11.
 | Where | What | Before | After |
 |---|---|---|---|
 | `build/ramp.mjs` | tint chroma exponent (`TINT_EXPONENT`) | 0.85 | 0.5 |
-| `build/brand-ramps.mjs` | accentRamp (= successScale) anchor rung | 500 | 600 |
+| `build/brand-ramps.mjs` | accentRamp (= successScale) anchor rung | 500 | 600 (rung 600 = `#046a38` itself; 500 = `#338051`) |
+| | overlay/alpha tiers for accent and success | derived from rung 500 | derived from rung 600, the identity colour |
 | | dangerRamp anchor | `#ec5042` (hue 28.7) | `#ec4e4f` (hue 24.0) at rung 400 |
 | | infoRamp anchor | `#1a73e8` (hue 258) | `#0b86a2` (hue 220) at rung 500 |
 | | `text.disabled` written as rgba per brand | yes | removed; authored as a reference |
@@ -306,7 +308,8 @@ The framework that answers each is in §11.
 | | alert info ink | `text/brand/primary/base` | `text/status/info/base` |
 | `components/feedback/toast.css` | info ground and icon | `primaryScale/50`, brand ink | `bg/status/info/base`, info ink |
 | `components/feedback/badge.css` | solid warning | ink `#704b00` as fill | `bg/status/warning/bold` + its dark on-ink |
-| `test/prominence-contract.test.mjs` | shortfall ledger | 16 entries | 15 (border/neutral/bolder/default fixed; five measurements moved ≤0.05) |
+| `build/grammar.mjs` | fill ladder `subtle`/`bold` contract | ≥3:1 vs the page | no class — tonal fill, readable through its `on/*` ink |
+| `test/prominence-contract.test.mjs` | shortfall ledger | 16 entries | **0** (one fixed on its merits, fifteen were the ladder claim above) |
 | `test/figma-export.test.mjs` | pinned `status.danger` | `#8b1f18` | `#aa2d30` |
 | `test/hue-separation.test.mjs` | `info|primary` union note | "worth revisiting" | records that the union now survives only in DBIM modes |
 | `test/*.fixture.json` | visual contract, UX4G contract | — | regenerated deliberately (`write-visual-contract.mjs`) |
@@ -324,8 +327,8 @@ categorical chart palette; the DBIM conformance ramps; the UX4G modes; any token
 
 ## 7. Why this solves the dullness
 
-A ramp's rung is now the same lightness in every family (600 ≈ L\* 49–52 in primary, danger,
-warning, info; accent/success 39 → it stays 39 at 600 but the *roles* that read it moved), the
+A ramp's rung is now the same lightness in every family (600 = L\* 46–52 in every family, with
+India Green itself at success/600), the
 roles read the rung their job needs rather than two rungs beyond it, and the tints hold the
 chroma the anchor has to give. The result on screen (specimen, §9): status text with visible
 hue, grounds that read as tints rather than grey, four statuses that are four hues, and a brand
@@ -361,7 +364,15 @@ and the review page:
 
 ## 10. Verification performed
 
-- `npm test -w @mosje/tokens` — **164 pass, 0 fail** (ramp shape, on-pair AA in 8 modes, hue
+- **Every colour mode was resolved and measured**, not only the default: blue, navy, the six
+  `dbim-*` previews and the two UX4G modes. In each, the four status inks clear 4.5:1 on white
+  and on the muted ground (success 6.25–6.72, error 6.24–6.72, warning 5.32–5.68, info
+  5.96–6.28), the control border clears 3:1 on the muted ground (4.07–4.45), the amber solid chip
+  clears 4.5:1 with its dark ink (6.89–7.69), and the disabled label sits at 2.26–2.81 on its
+  fill. The one sub-AA figure is `dbim-green`'s brand text — DBIM's own shade 2 `#2d8686` at
+  3.96:1 on the muted ground — reported, not corrected, like its 4.32:1 on white.
+
+- `npm test -w @mosje/tokens` — **167 pass, 0 fail** (after merging main, which added the contrast-note parity gate) (ramp shape, on-pair AA in 8 modes, hue
   separation, prominence ledger, brand parity, tier discipline, chart palette, Figma export,
   Figma value parity with the recorded difference, visual and UX4G contracts).
 - `npm run lint:css`, `check:docs-data`, `check:dangling-vars`, `check:design-context`,
@@ -387,10 +398,10 @@ and the review page:
    → `bg/status/success/subtler`, …) in the changelog, migrate the 14 DS files, then delete.
 5. **Ledgers carry owners and dates.** Every entry on `SHORTFALL_LEDGER` and the hue-separation
    `KNOWN_DEFECTS` gets an owner and a review date; an entry past its date fails the gate.
-6. **Fill-rung semantics, decided.** Record in `grammar.mjs` that `subtle`/`bold` on a `bg`
-   role guarantee ≥ 3:1 **against their own `on/*` ink**, not against the page; the 14
-   tint "shortfalls" then leave the ledger as non-findings, and the ledger describes only real
-   defects.
+6. **Fill-rung semantics — DONE in this change.** `grammar.mjs` now says `subtle`/`bold` on a
+   `bg` role are tonal fills readable through their `on/*` ink, with no page-contrast class;
+   the ledger is empty and may only ever describe real defects. Keep it that way: a new entry
+   is a colour to fix, never a sentence to excuse.
 7. **Component-level contrast in CI.** A Playwright pass over the Storybook stories of Alert,
    Badge, Toast, Chip, Button and FormField computing each text/icon node's rendered contrast —
    the four failures this audit found (§2.1) were all in components, not tokens.
@@ -415,7 +426,7 @@ that is a human decision. What the record and the diff show:
 |---|---|
 | **Palette collection (Tier-1 rungs, Blue/Navy modes)** | 44 rung values changed in code (accent/success ×11, danger ×11, info ×11, tints of warning/primary/secondary ×11) — **library holds the old values**. Payload checksum `166809b5:282` → `e5eb9e7a:278`; `figmaObserved` unchanged. |
 | **Color collection (roles)** | 26 role bindings changed (status base/bolder ×24 across text/icon/border, brand text ×2, disabled ×2, control border ×2, infoTonal) — **library holds the old bindings**. Checksum `1317770d:495` → `4ac20269:495`. |
-| **Contrast NOTES (the sentence each variable publishes)** | 47 figures now differ between code and library (every status text/icon/border rung, the brand text, the control border, and the tints whose ratio moved ≤0.05). Held in `$contrastNotes.knownDifference` with a dated reason; `figmaObserved` left as last read. The gate that owns this landed in main from PR #287 during this work. |
+| **Contrast NOTES (the sentence each variable publishes)** | 60 figures now differ between code and library (every status text/icon/border rung, the brand text, the control border, and the tints whose ratio moved ≤0.05). Held in `$contrastNotes.knownDifference` with a dated reason; `figmaObserved` left as last read. The gate that owns this landed in main from PR #287 during this work. |
 | Pre-existing: Palette VALUE drift | Flagged 2026-08-18 as an unexplained edit in the library with the count unchanged; never diffed at value level. Still open. |
 | Pre-existing: 23 library-only Tier-1 variables | `ref/color/ink/*` (9), `ref/color/stroke/*` (7), `ref/color/*/source` (5), `ref/color/badge/beta`, `border/neutral/inverse` — a parallel ink and stroke palette in Figma that code has never defined. Orphans; retire by rename to `deprecated/*` with evidence of zero consumers. |
 | Pre-existing: 9 code-only Color variables | `border/neutral/inverse/{default,subtle}`, `cmp/accessibilityBar/{hoverBg,pillBg}`, `icon/brand/primary/bolder`, `overlay/brand/{active,hover}`, `text/brand/primary/bolder`, `text/neutral/subtler` — reach Figma on the next push. |

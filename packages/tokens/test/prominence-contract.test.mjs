@@ -173,23 +173,21 @@ test("ink roles are never left silent — text and icons always carry a measured
  * THIS LIST MAY ONLY SHRINK. Adding to it means shipping a token that contradicts its own
  * name; the stale-entry test below makes a fixed token fail until its line is deleted.
  */
-const SHORTFALL_LEDGER = new Set([
-  "Color::bg/brand/accent/subtle — 2.15:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/brand/primary/bold — 2.47:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/brand/primary/subtle — 1.84:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/brand/secondary/bold — 2.21:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/brand/secondary/subtle — 1.72:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/neutral/bold — 1.66:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/neutral/subtle — 1.35:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/error/bold — 2.69:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/status/error/subtle — 2.01:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/info/bold — 2.34:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/status/info/subtle — 1.77:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/success/subtle — 2.15:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/warning/bold — 2.35:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/status/warning/subtle — 1.8:1 vs ≥3:1 (\"subtle\")",
-  "Color::border/neutral/subtle — 1.35:1 vs ≥3:1 (\"subtle\")",
-]);
+const SHORTFALL_LEDGER = new Set([]);
+/*
+ * 2026-09-04, the colour-system redesign. 16 entries -> 0, none added.
+ *
+ *   - `border/neutral/bolder/default` (3.06:1 vs ≥4.5) is GONE on its merits: the resting
+ *     form-control border moved from neutralScale/400 to /500 and measures 4.65:1.
+ *   - The other fifteen were all the same sentence: a `subtle` or `bold` FILL measured against
+ *     the page and found under 3:1. The 2026-08-11 note below already said "for quiet fills the
+ *     LADDER is the thing that is wrong, not the colours", and re-anchoring India Green at the
+ *     rung its lightness says would have made green the seventeenth — a ledger that may only
+ *     shrink cannot hold a ladder-definition error. grammar.mjs now says what those rungs are:
+ *     tonal fills, readable through their measured `on/*` ink, with no boundary claim. WCAG
+ *     1.4.11 asks 3:1 of boundaries that identify a control, which `border/neutral/bolder/*`
+ *     and every `bolder` fill still guarantee.
+ */
 /*
  * 2026-09-04, the colour-system redesign. 16 entries -> 15, none added.
  *

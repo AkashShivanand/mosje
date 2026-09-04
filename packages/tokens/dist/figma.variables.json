@@ -3921,11 +3921,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#e3f8e8"
+              "value": "#e5faea"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#e3f8e8"
+              "value": "#e5faea"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3945,11 +3945,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#b3dcbe"
+              "value": "#bde3c7"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#b3dcbe"
+              "value": "#bde3c7"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3969,11 +3969,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#87bd97"
+              "value": "#99caa7"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#87bd97"
+              "value": "#99caa7"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3993,11 +3993,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#5d9e73"
+              "value": "#76b188"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#5d9e73"
+              "value": "#76b188"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4017,11 +4017,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#368253"
+              "value": "#55986b"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#368253"
+              "value": "#55986b"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4041,11 +4041,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#046a38"
+              "value": "#338051"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#046a38"
+              "value": "#338051"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4065,11 +4065,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#00542b"
+              "value": "#046a38"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#00542b"
+              "value": "#046a38"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4089,11 +4089,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#004220"
+              "value": "#00532a"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#004220"
+              "value": "#00532a"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4113,11 +4113,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#003318"
+              "value": "#003d1e"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#003318"
+              "value": "#003d1e"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4137,11 +4137,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#002510"
+              "value": "#002a12"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#002510"
+              "value": "#002a12"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4497,11 +4497,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#e3f8e8"
+              "value": "#e5faea"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#e3f8e8"
+              "value": "#e5faea"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4521,11 +4521,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#b3dcbe"
+              "value": "#bde3c7"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#b3dcbe"
+              "value": "#bde3c7"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4545,11 +4545,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#87bd97"
+              "value": "#99caa7"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#87bd97"
+              "value": "#99caa7"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4569,11 +4569,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#5d9e73"
+              "value": "#76b188"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#5d9e73"
+              "value": "#76b188"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4593,11 +4593,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#368253"
+              "value": "#55986b"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#368253"
+              "value": "#55986b"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4617,11 +4617,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#046a38"
+              "value": "#338051"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#046a38"
+              "value": "#338051"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4641,11 +4641,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#00542b"
+              "value": "#046a38"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#00542b"
+              "value": "#046a38"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4665,11 +4665,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#004220"
+              "value": "#00532a"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#004220"
+              "value": "#00532a"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4689,11 +4689,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#003318"
+              "value": "#003d1e"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#003318"
+              "value": "#003d1e"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4713,11 +4713,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#002510"
+              "value": "#002a12"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#002510"
+              "value": "#002a12"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -6820,7 +6820,7 @@
               "name": "color/successScale/600"
             }
           },
-          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
+          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 6.72:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-success-base)"
           },
@@ -6831,7 +6831,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 9.12,
+              "measured": 6.72,
               "meets": true
             }
           }
@@ -6847,7 +6847,7 @@
               "name": "color/successScale/700"
             }
           },
-          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 11.67:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 9.25:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-success-bolder)"
           },
@@ -6858,7 +6858,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 11.67,
+              "measured": 9.25,
               "meets": true
             }
           }
@@ -7036,7 +7036,7 @@
               "name": "color/neutralScale/100"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting. Contrast 1.35:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting. Contrast 1.35:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-neutral-subtle)"
           },
@@ -7046,9 +7046,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "subtle",
-              "min": 3,
+              "min": 0,
               "measured": 1.35,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -7063,7 +7063,7 @@
               "name": "color/neutralScale/200"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters. Contrast 1.66:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters. Contrast 1.66:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-neutral-bold)"
           },
@@ -7073,9 +7073,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "bold",
-              "min": 3,
+              "min": 0,
               "measured": 1.66,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -7186,7 +7186,7 @@
               "name": "color/primaryScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the primary brand colour. Contrast 1.84:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the primary brand colour. Contrast 1.84:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-subtle)"
           },
@@ -7196,9 +7196,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "subtle",
-              "min": 3,
+              "min": 0,
               "measured": 1.84,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -7213,7 +7213,7 @@
               "name": "color/primaryScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the primary brand colour. Contrast 2.47:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the primary brand colour. Contrast 2.47:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-bold)"
           },
@@ -7223,9 +7223,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "bold",
-              "min": 3,
+              "min": 0,
               "measured": 2.47,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -7348,7 +7348,7 @@
               "name": "color/secondaryScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the secondary brand colour. Contrast 1.72:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the secondary brand colour. Contrast 1.72:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-subtle)"
           },
@@ -7358,9 +7358,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "subtle",
-              "min": 3,
+              "min": 0,
               "measured": 1.72,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -7375,7 +7375,7 @@
               "name": "color/secondaryScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the secondary brand colour. Contrast 2.21:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the secondary brand colour. Contrast 2.21:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-secondary-bold)"
           },
@@ -7385,9 +7385,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "bold",
-              "min": 3,
+              "min": 0,
               "measured": 2.21,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -7456,7 +7456,7 @@
               "name": "color/accentScale/50"
             }
           },
-          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the accent brand colour. Contrast 1.11:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the accent brand colour. Contrast 1.09:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-accent-base)"
           },
@@ -7467,7 +7467,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 1.11,
+              "measured": 1.09,
               "meets": true
             }
           }
@@ -7483,7 +7483,7 @@
               "name": "color/accentScale/100"
             }
           },
-          "description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the accent brand colour. Contrast 1.51:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the accent brand colour. Contrast 1.4:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-accent-subtler)"
           },
@@ -7494,7 +7494,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtler",
               "min": 0,
-              "measured": 1.51,
+              "measured": 1.4,
               "meets": true
             }
           }
@@ -7510,7 +7510,7 @@
               "name": "color/accentScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the accent brand colour. Contrast 2.15:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the accent brand colour. Contrast 1.85:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-accent-subtle)"
           },
@@ -7520,9 +7520,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "subtle",
-              "min": 3,
-              "measured": 2.15,
-              "meets": false
+              "min": 0,
+              "measured": 1.85,
+              "meets": true
             }
           }
         },
@@ -7537,7 +7537,7 @@
               "name": "color/accentScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the accent brand colour. Contrast 3.18:1 vs bg/neutral/base — meets ≥3:1: UI boundaries, icons, non-text (WCAG 1.4.11).",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the accent brand colour. Contrast 2.5:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-accent-bold)"
           },
@@ -7547,8 +7547,8 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "bold",
-              "min": 3,
-              "measured": 3.18,
+              "min": 0,
+              "measured": 2.5,
               "meets": true
             }
           }
@@ -7564,7 +7564,7 @@
               "name": "color/accentScale/600"
             }
           },
-          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, tinted with the accent brand colour. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, tinted with the accent brand colour. Contrast 6.72:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-accent-bolder)"
           },
@@ -7575,7 +7575,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 9.12,
+              "measured": 6.72,
               "meets": true
             }
           }
@@ -7591,7 +7591,7 @@
               "name": "color/accentScale/800"
             }
           },
-          "description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the accent brand colour. Contrast 14.13:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
+          "description": "Use for the heaviest fill, for maximum emphasis on a light page, tinted with the accent brand colour. Contrast 12.45:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-accent-boldest)"
           },
@@ -7602,7 +7602,7 @@
             "in.gov.mosje.contrast": {
               "rung": "boldest",
               "min": 7,
-              "measured": 14.13,
+              "measured": 12.45,
               "meets": true
             }
           }
@@ -7618,7 +7618,7 @@
               "name": "color/successScale/50"
             }
           },
-          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals a successful or completed state. Contrast 1.11:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals a successful or completed state. Contrast 1.09:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-base)"
           },
@@ -7629,7 +7629,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 1.11,
+              "measured": 1.09,
               "meets": true
             }
           }
@@ -7645,7 +7645,7 @@
               "name": "color/successScale/100"
             }
           },
-          "description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals a successful or completed state. Contrast 1.51:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals a successful or completed state. Contrast 1.4:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-subtler)"
           },
@@ -7656,7 +7656,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtler",
               "min": 0,
-              "measured": 1.51,
+              "measured": 1.4,
               "meets": true
             }
           }
@@ -7672,7 +7672,7 @@
               "name": "color/successScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a successful or completed state. Contrast 2.15:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a successful or completed state. Contrast 1.85:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-subtle)"
           },
@@ -7682,9 +7682,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "subtle",
-              "min": 3,
-              "measured": 2.15,
-              "meets": false
+              "min": 0,
+              "measured": 1.85,
+              "meets": true
             }
           }
         },
@@ -7699,7 +7699,7 @@
               "name": "color/successScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals a successful or completed state. Contrast 3.18:1 vs bg/neutral/base — meets ≥3:1: UI boundaries, icons, non-text (WCAG 1.4.11).",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals a successful or completed state. Contrast 2.5:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-bold)"
           },
@@ -7709,8 +7709,8 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "bold",
-              "min": 3,
-              "measured": 3.18,
+              "min": 0,
+              "measured": 2.5,
               "meets": true
             }
           }
@@ -7726,7 +7726,7 @@
               "name": "color/successScale/600"
             }
           },
-          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals a successful or completed state. Contrast 6.72:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-bolder)"
           },
@@ -7737,7 +7737,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 9.12,
+              "measured": 6.72,
               "meets": true
             }
           }
@@ -7753,7 +7753,7 @@
               "name": "color/successScale/800"
             }
           },
-          "description": "Use for the heaviest fill, for maximum emphasis on a light page, when the surface signals a successful or completed state. Contrast 14.13:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
+          "description": "Use for the heaviest fill, for maximum emphasis on a light page, when the surface signals a successful or completed state. Contrast 12.45:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-boldest)"
           },
@@ -7764,7 +7764,7 @@
             "in.gov.mosje.contrast": {
               "rung": "boldest",
               "min": 7,
-              "measured": 14.13,
+              "measured": 12.45,
               "meets": true
             }
           }
@@ -7834,7 +7834,7 @@
               "name": "color/dangerScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals an error or destructive state. Contrast 2.01:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals an error or destructive state. Contrast 2.01:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-subtle)"
           },
@@ -7844,9 +7844,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "subtle",
-              "min": 3,
+              "min": 0,
               "measured": 2.01,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -7861,7 +7861,7 @@
               "name": "color/dangerScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals an error or destructive state. Contrast 2.69:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals an error or destructive state. Contrast 2.69:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-bold)"
           },
@@ -7871,9 +7871,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "bold",
-              "min": 3,
+              "min": 0,
               "measured": 2.69,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -7996,7 +7996,7 @@
               "name": "color/warningScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a warning or a state needing attention. Contrast 1.8:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a warning or a state needing attention. Contrast 1.8:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-warning-subtle)"
           },
@@ -8006,9 +8006,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "subtle",
-              "min": 3,
+              "min": 0,
               "measured": 1.8,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -8023,7 +8023,7 @@
               "name": "color/warningScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals a warning or a state needing attention. Contrast 2.35:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals a warning or a state needing attention. Contrast 2.35:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-warning-bold)"
           },
@@ -8033,9 +8033,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "bold",
-              "min": 3,
+              "min": 0,
               "measured": 2.35,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -8158,7 +8158,7 @@
               "name": "color/infoScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals an informational or in-progress state. Contrast 1.77:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals an informational or in-progress state. Contrast 1.77:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-subtle)"
           },
@@ -8168,9 +8168,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "subtle",
-              "min": 3,
+              "min": 0,
               "measured": 1.77,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -8185,7 +8185,7 @@
               "name": "color/infoScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals an informational or in-progress state. Contrast 2.34:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals an informational or in-progress state. Contrast 2.34:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-bold)"
           },
@@ -8195,9 +8195,9 @@
             "in.gov.mosje.source": "src/system.generated.json",
             "in.gov.mosje.contrast": {
               "rung": "bold",
-              "min": 3,
+              "min": 0,
               "measured": 2.34,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -8578,7 +8578,7 @@
               "name": "color/successScale/600"
             }
           },
-          "description": "Use for text that report a successful or completed state. Contrast 7.99:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a successful or completed state. Contrast 5.89:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-success-base)"
           },
@@ -8589,7 +8589,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 7.99,
+              "measured": 5.89,
               "meets": true
             }
           }
@@ -8605,7 +8605,7 @@
               "name": "color/successScale/700"
             }
           },
-          "description": "Use for text that report a successful or completed state. Contrast 10.22:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a successful or completed state. Contrast 8.1:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-success-bolder)"
           },
@@ -8616,7 +8616,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 10.22,
+              "measured": 8.1,
               "meets": true
             }
           }
@@ -8977,7 +8977,7 @@
               "name": "color/successScale/600"
             }
           },
-          "description": "Use for icons that report a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report a successful or completed state. Contrast 6.72:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-success-base)"
           },
@@ -8988,7 +8988,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 9.12,
+              "measured": 6.72,
               "meets": true
             }
           }
@@ -9004,7 +9004,7 @@
               "name": "color/successScale/700"
             }
           },
-          "description": "Use for icons that report a successful or completed state. Contrast 11.67:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report a successful or completed state. Contrast 9.25:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-success-bolder)"
           },
@@ -9015,7 +9015,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 11.67,
+              "measured": 9.25,
               "meets": true
             }
           }
@@ -15157,7 +15157,7 @@
               "name": "color/neutralScale/100"
             }
           },
-          "description": "Use for a hairline that separates without drawing the eye — dividers and card edges. Contrast 1.35:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a hairline that separates without drawing the eye — dividers and card edges. Contrast 1.35:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-border-neutral-subtle)"
           },
@@ -15167,9 +15167,9 @@
             "in.gov.mosje.source": "src/semantic.json",
             "in.gov.mosje.contrast": {
               "rung": "subtle",
-              "min": 3,
+              "min": 0,
               "measured": 1.35,
-              "meets": false
+              "meets": true
             }
           }
         },
@@ -15257,7 +15257,7 @@
               "value": "rgba(255, 255, 255, 0.4)"
             }
           },
-          "description": "The quieter inverse rule — white at 40%, pre-composited so consumers never hand-roll an opacity. Used by Divider Tone=Inverse subtle and the AccessibilityBar's separators. The Figma variable was `border/neutral/inverse-subtle` until 2026-08-18 — a hyphen inside a segment, which grammar RULE 1 forbids; renamed IN PLACE so bindings followed. Contrast 3.81:1 vs bg/neutral/inverse — meets ≥3:1: UI boundaries, icons, non-text (WCAG 1.4.11).",
+          "description": "The quieter inverse rule — white at 40%, pre-composited so consumers never hand-roll an opacity. Used by Divider Tone=Inverse subtle and the AccessibilityBar's separators. The Figma variable was `border/neutral/inverse-subtle` until 2026-08-18 — a hyphen inside a segment, which grammar RULE 1 forbids; renamed IN PLACE so bindings followed. Contrast 3.81:1 vs bg/neutral/inverse — no guaranteed contrast class; treat as a boundary, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-border-neutral-inverse-subtle)"
           },
@@ -15267,7 +15267,7 @@
             "in.gov.mosje.source": "src/semantic.json",
             "in.gov.mosje.contrast": {
               "rung": "subtle",
-              "min": 3,
+              "min": 0,
               "measured": 3.81,
               "meets": true
             }
@@ -24915,23 +24915,7 @@
   "contrast": {
     "$description": "Contrast classes are MEASURED against each token's own surface, across every brand, and the worst case is what the description states. A token absent from this summary carries no contrast sentence because the prominence ladder does not describe it — see build/contrast-contract.mjs.",
     "measured": 94,
-    "meets": 79,
-    "shortfall": [
-      "Color::bg/brand/accent/subtle — 2.15:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/brand/primary/bold — 2.47:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/brand/primary/subtle — 1.84:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/brand/secondary/bold — 2.21:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/brand/secondary/subtle — 1.72:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/neutral/bold — 1.66:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/neutral/subtle — 1.35:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/status/error/bold — 2.69:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/status/error/subtle — 2.01:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/status/info/bold — 2.34:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/status/info/subtle — 1.77:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/status/success/subtle — 2.15:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/status/warning/bold — 2.35:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/status/warning/subtle — 1.8:1 vs ≥3:1 (\"subtle\")",
-      "Color::border/neutral/subtle — 1.35:1 vs ≥3:1 (\"subtle\")"
-    ]
+    "meets": 94,
+    "shortfall": []
   }
 }

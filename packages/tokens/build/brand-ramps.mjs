@@ -141,10 +141,23 @@ export const ANCHORS = {
   },
   accentRamp: {
     anchor: "#046A38",
-    lightest: 96,
+    anchorStep: 600,
+    lightest: 96.5,
     darkest: 18,
-    note: "India Green from the SAMAVESH logo. Brand-INVARIANT. Deliberately the SAME green as the success status: two greens nine degrees apart is a defect whichever token owns it, and a citizen seeing the ministry's own green on a success state is better brand than a leftover Material green.",
+    note:
+      "India Green #046A38 from the SAMAVESH logo. Brand-INVARIANT. Deliberately the SAME green " +
+      "as the success status: two greens nine degrees apart is a defect whichever token owns it, " +
+      "and a citizen seeing the ministry's own green on a success state is better brand than a " +
+      "leftover Material green. ANCHORED AT 600, NOT 500, since 2026-09-04 — the rule every other " +
+      "anchor already follows: #046A38 is L* 46, which is where rung 600 sits on every other ramp " +
+      "(primary 49, danger 49, info 49). Pinned at 500 it dragged the whole ladder down a rung, so " +
+      "success/600 — the fill under white text everywhere — was L* 39 and 9.1:1, two rungs darker " +
+      "than the AA it needed, and success/700, the message ink, was a near-black L* 33 at 11.7:1. " +
+      "That over-darkness is what read as dull: a dark colour has little chroma to give. At 600 the " +
+      "ladder is uniform with its siblings, 500 is a live mid-green (L* 54, 4.8:1), and the tints " +
+      "hold real chroma. The anchor hex is unchanged.",
   },
+
 
   /* ---------------------------------------------------------------- functional ramps
    *
@@ -529,9 +542,11 @@ export function buildAlphaTiers(ramps, primitive) {
   const BASE = {
     primary: { blue: ramps["primaryRamp.blue"][500], navy: ramps["primaryRamp.navy"][600] },
     secondary: { blue: ramps.secondaryRamp[400], navy: ramps.secondaryRamp[400] },
-    accent: { blue: ramps.accentRamp[500], navy: ramps.accentRamp[500] },
+    // Rung 600 since 2026-09-04: that is where India Green itself sits now, and an overlay tier
+    // is derived from the family's identity colour, not from whichever rung happens to be 500.
+    accent: { blue: ramps.accentRamp[600], navy: ramps.accentRamp[600] },
     neutral: { blue: hex("neutral", 800), navy: hex("neutralDark", 800) },
-    success: { blue: hex("green", 500), navy: hex("green", 500) },
+    success: { blue: hex("green", 600), navy: hex("green", 600) },
     danger: { blue: hex("red", 500), navy: hex("red", 500) },
     warning: { blue: hex("amber", 500), navy: hex("amber", 500) },
     white: { blue: "#ffffff", navy: "#ffffff" },

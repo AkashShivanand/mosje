@@ -20,7 +20,8 @@
   called "success". Every status `bolder` ink was LIGHTER than its `base`. Info was the brand
   blue (dE 0.5). The alert painted its grounds with four hand-mixed percentages and its warning
   glyph with a 1.44:1 badge yellow; the solid warning badge was dark text on a brown, 2.08:1.
-  Status inks now sit at 600 and bolder at 700; India Green anchors at 600; the tint exponent
+  Status inks now sit at 600 and bolder at 700; India Green anchors at 600 and IS the success
+  ink and fill; the tint exponent
   is 0.5; danger rotated to hue 24; info is cyan-teal at 220; brand text is rung 600 (it was
   4.07:1 on the page ground); disabled ink is opaque; the resting control border is 4.65:1.
   Figma has NOT been pushed — `reference/figma-live.json` records code ahead of the library.
@@ -762,7 +763,7 @@ that changes a colour is `data-brand`, so the two value columns below are Blue a
 | `--sa-bg-neutral-base` | `#FFFFFF` | same | Page and card backgrounds | Text or icon fills |
 | `--sa-bg-neutral-subtler` | `#EEF0F3` | `#EFF0F2` | Inputs, code blocks, quiet panels | Anything needing a measured contrast — it is a surface, not a fill with a guarantee |
 | `--sa-text-status-error-base` | `#AA2D30` | same | Error text and icons on white, destructive labels — rung 600, 6.72:1 | Decorative fills (use `bg/status/error/subtler`) |
-| `--sa-text-status-success-base` | `#00542B` | same | Success states, validation confirmation — rung 600, 9.12:1 | Primary brand actions |
+| `--sa-text-status-success-base` | `#046A38` | same | Success states, validation confirmation — rung 600, which is India Green itself, 6.72:1 | Primary brand actions |
 | `--sa-on-bg-brand-primary-bolder` | `#FFFFFF` | same | Text/icons on a solid primary fill | Any other background |
 
 > **Ink and fill are different tokens even when they resolve to the same rung.** Since 2026-09-04
@@ -773,7 +774,7 @@ that changes a colour is `data-brand`, so the two value columns below are Blue a
 > the ink token to paint a button is still the mistake the split exists to prevent.
 >
 > **Status roles read the same ladder in every family.** `text|icon|border/status/*/base` is rung
-> 600 (5.7–9.1:1 on white) and `bolder` is rung 700 (7.8–11.7:1). Until 2026-09-04 base was 700
+> 600 (5.7–6.7:1 on white) and `bolder` is rung 700 (7.8–9.3:1). Until 2026-09-04 base was 700
 > and bolder was 600 — the louder name was the lighter colour. Amber is the one family whose SOLID
 > chip takes the `bold` rung (300, `#E09C1D`) with its measured dark ink (6.9:1) instead of
 > `bolder` under white: warningScale/600 is a brown, and USWDS treats amber the same way.
