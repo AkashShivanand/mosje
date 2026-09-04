@@ -67,6 +67,7 @@ These run for everyone. Run them before you claim work is done.
 
 | Command | What it gates |
 |---|---|
+| `npm run ci` | **Everything the two GitHub workflows run**, derived from those files, plus a macOS-only case audit. Run it before opening or merging a PR — CI has twice failed to be the safety net it was assumed to be. → `.claude/rules/local-ci.md` |
 | `npm run check` | 11 chained gates: hub typecheck, dangling vars, docs links, Figma docs, docs data, DS linkage, icon scale, space/radius linkage, Code Connect, chrome |
 | `npm run lint` | Hub lint |
 | `npm run lint:css` | **Blocks hardcoded colours** — the token mandate, enforced |
@@ -165,6 +166,7 @@ Open the file when you touch its area. Plain markdown; any tool can read them.
 | Rule | When it applies |
 |---|---|
 | `.claude/rules/branch-continuity.md` | **Every session, before the first edit** |
+| `.claude/rules/local-ci.md` | Running the estate's CI locally · adding or changing a CI gate |
 | `.claude/rules/accessibility-entry-point.md` | The accessibility bar / UX4G widget |
 | `.claude/rules/standards-precedence.md` | Any conflict between quality and a standard |
 | `.claude/rules/guidelines.md` | GIGW 3.0 · DBIM 3.0 · UX4G — the government standards |
