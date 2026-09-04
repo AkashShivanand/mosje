@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { Button, Icon } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import type { Crumb } from "@/components/website/layout/Breadcrumb";
 
@@ -197,23 +197,27 @@ export function DocumentCatalog({
                   </div>
 
                   <div className="flex items-center gap-2 self-end sm:self-center shrink-0">
-                    <a
+                    <Button
                       href={doc.sourceUrl ?? "#"}
-                      target="_blank"
-                      rel="noreferrer"
-                      className={buttonClasses("primary", "outlined", "sm", "text-xs px-4 py-1.5 whitespace-nowrap")}
+                      external
+                      variant="primary"
+                      appearance="outlined"
+                      size="sm"
+                      className="text-xs px-4 py-1.5 whitespace-nowrap"
                     >
                       View Online
-                    </a>
-                    <a
+                    </Button>
+                    <Button
                       href={doc.sourceUrl ?? "#"}
                       target="_blank"
-                      rel="noreferrer"
                       download
-                      className={buttonClasses("primary", "filled", "sm", "text-xs px-4 py-1.5 whitespace-nowrap")}
+                      variant="primary"
+                      appearance="filled"
+                      size="sm"
+                      className="text-xs px-4 py-1.5 whitespace-nowrap"
                     >
                       Download PDF
-                    </a>
+                    </Button>
                   </div>
                 </div>
               ))

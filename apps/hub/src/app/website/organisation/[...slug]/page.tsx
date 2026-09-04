@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import NextLink from "next/link";
+import { Button, Icon, Link } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import { OrganisationDetail } from "@/components/website/templates/OrganisationDetail";
 import { AdarshGramDashboard } from "@/components/website/AdarshGramDashboard";
@@ -321,14 +321,16 @@ export default async function OrganisationDetailPage({
         })}
       </div>
     ) : (org.website ?? rootOrg?.website) ? (
-      <a
+      <Button
         href={org.website ?? rootOrg?.website}
-        target="_blank"
-        rel="noreferrer"
-        className={buttonClasses("primary", "filled", "sm", "text-xs px-4 py-2 flex items-center gap-1.5")}
+        external
+        variant="primary"
+        appearance="filled"
+        size="sm"
+        className="text-xs px-4 py-2"
       >
-        Visit Official Portal <Icon name="open_in_new" size={16} />
-      </a>
+        Visit Official Portal
+      </Button>
     ) : undefined,
   };
 
@@ -381,12 +383,12 @@ export default async function OrganisationDetailPage({
                   <ul className="sd-aside__links">
                     {siblingComponents.map((c) => (
                       <li key={c.slug}>
-                        <Link href={`/website/organisation/${c.slug}`} className="sd-aside__link">
+                        <NextLink href={`/website/organisation/${c.slug}`} className="sd-aside__link">
                           <span className="sd-aside__link-text">{c.title}</span>
                           <span className="sd-aside__link-arrow" aria-hidden>
                             <Icon name="arrow_forward" size={16} />
                           </span>
-                        </Link>
+                        </NextLink>
                       </li>
                     ))}
                   </ul>
@@ -422,9 +424,9 @@ export default async function OrganisationDetailPage({
               <div className="bg-white p-8 md:p-12 rounded-2xl shadow-sm border border-neutral-subtle">
                 <p className="orgd__empty">
                   This page is being prepared. In the meantime the source page is available on{" "}
-                  <a href={org.sourceUrl} target="_blank" rel="noreferrer noopener">
+                  <Link href={org.sourceUrl} external>
                     dosje.gov.in
-                  </a>
+                  </Link>
                   .
                 </p>
               </div>

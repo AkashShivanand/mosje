@@ -322,6 +322,35 @@ test.describe("Button — the link form", () => {
     await expect(link).toHaveAttribute("target", "_blank");
     await expect(link).toHaveAttribute("rel", "noopener noreferrer");
   });
+
+  /**
+   * GIGW 3.0 requires telling the reader when a link opens a new window. Before
+   * `external`, every one of the twenty-two external links on the website said nothing
+   * — no glyph and no announcement — because the requirement had no component behind it
+   * and each call site was left to remember it. None did.
+   *
+   * The warning is asserted INSIDE the anchor, not merely present on the page: rendered
+   * outside it, it would be a separate node the reader may never reach, and would pass a
+   * DOM-presence check while failing the person it exists for.
+   */
+  test("external announces the new tab to both audiences", async ({ page }) => {
+    await openTab(page, "Accessibility");
+    const link = page.getByTestId("btn-external-shorthand");
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute("target", "_blank");
+    await expect(link).toHaveAttribute("rel", "noopener noreferrer");
+
+    // The people who cannot see the glyph — carried by the anchor's own text.
+    await expect(link).toContainText("(opens in a new tab)");
+
+    // …and hidden visually rather than merely made small.
+    const warning = link.locator(".ds-sr-only");
+    const box = await warning.boundingBox();
+    expect(box?.width ?? 99).toBeLessThanOrEqual(1);
+
+    // The people who can: a trailing glyph is drawn without the caller asking for one.
+    await expect(link.locator(".ds-btn__icon--end")).toBeVisible();
+  });
 });
 
 test.describe("Button — a disabled control that stays findable", () => {

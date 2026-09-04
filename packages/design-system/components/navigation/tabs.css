@@ -332,13 +332,18 @@
     color: var(--sa-icon-neutral-disabled);
   }
 
-  /* Focus. Two layers: `focus/offset` (2) of the surface colour, then
-     `focus/width` (2) of the ring — a 4px outset with a 2px transparent-reading
-     gap. The ring is a SHADOW and not a drawn frame on purpose: a drop shadow in
-     Figma renders from the fill silhouette, so a ring built that way is invisible
-     on Underline and Rail, which have no fill at all. */
+  /* Focus. `focus/offset` (2) of gap, then `focus/width` (2) of ring — a 4px outset
+     with a 2px transparent-reading gap. It WAS a two-layer box-shadow, for a reason
+     that no longer applies: a Figma drop shadow renders from the fill silhouette, so
+     a shadow ring is invisible on Underline and Rail, which have no fill.
+     `outline` has neither problem and, unlike a shadow, is painted in forced-colors.
+     The conversion (PR #276) carried the shadow's SPREAD into the shorthand as a
+     fourth value — `outline` takes three — and CSS discards an invalid shorthand
+     whole, so this rule painted NOTHING between 4 September and its repair. The gap
+     is `outline-offset`'s job and never belongs in the shorthand;
+     `tools/focus-ring/check.mjs` now fails a shorthand with a fourth value. */
   .ds-tabs__tab:focus-visible {
-    outline: var(--sa-focus-width) solid calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
 
@@ -570,7 +575,7 @@
 
   /* Same two-layer ring as a tab, over the surface the trigger sits on. */
   .ds-tabs__more:focus-visible {
-    outline: var(--sa-focus-width) solid calc(var(--sa-focus-offset) + var(--sa-focus-width)) var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
 
@@ -634,7 +639,7 @@
   }
 
   .ds-tabs__menu-item:focus-visible {
-    outline: var(--sa-focus-width) solid var(--sa-focus-width) var(--sa-focus-ring);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
     outline-offset: var(--sa-focus-offset);
   }
 

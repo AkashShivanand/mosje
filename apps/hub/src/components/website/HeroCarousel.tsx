@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
-import { Icon } from "@mosje/design-system";
+import { Icon, Link } from "@mosje/design-system";
 import { CarouselIndicators } from "./CarouselIndicators";
 
 export function HeroCarousel() {
@@ -47,15 +47,15 @@ export function HeroCarousel() {
                   TIME : 11 AM
                 </div>
 
-                <a
+                <Link
                   href="https://pmindia.gov.in"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-lg bg-[var(--nmba-red-cta)] px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-[var(--nmba-red-cta-hover)]"
+                  external
+                  variant="standalone"
+                  className="rounded-lg bg-[var(--nmba-red-cta)] px-5 py-2 text-xs sm:text-sm font-bold text-white shadow-sm transition hover:bg-[var(--nmba-red-cta-hover)]"
+                  iconLeft={<Icon name="play_arrow" size={20} />}
                 >
-                  <Icon name="play_arrow" size={20} />
                   WATCH LIVE
-                </a>
+                </Link>
               </div>
             </div>
 

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import NextLink from "next/link";
 import {
   BrandGlyph,
   DocumentLibrary,
@@ -7,6 +7,7 @@ import {
   FactStrip,
   Icon,
   IndiaMap,
+  Link,
   SectionTitle,
   buttonClasses,
 } from "@mosje/design-system";
@@ -269,12 +270,12 @@ export function OrganisationDetail({
       <>
         <SectionTitle as={2} title={detail?.aboutHeading ?? "About"} headingId="about-heading">
           {effectiveAboutAction != null && (
-            <Link
+            <NextLink
               href={effectiveAboutAction.href}
               className={buttonClasses("primary", "outlined", "sm")}
             >
               {effectiveAboutAction.label}
-            </Link>
+            </NextLink>
           )}
         </SectionTitle>
         {detail?.aboutHtml != null ? (
@@ -285,9 +286,9 @@ export function OrganisationDetail({
         ) : org.sections.length === 0 ? (
           <p className="orgd__empty">
             This page is being prepared. In the meantime the source page is available on{" "}
-            <a href={org.sourceUrl} target="_blank" rel="noreferrer noopener">
+            <Link href={org.sourceUrl} external>
               dosje.gov.in
-            </a>
+            </Link>
             .
           </p>
         ) : (
@@ -311,10 +312,10 @@ export function OrganisationDetail({
                 <h3 className="orgd__card-title">{h.title}</h3>
                 <p className="orgd__card-desc">{h.description}</p>
                 {h.href != null && (
-                  <Link href={h.href} className="orgd__card-cta">
+                  <NextLink href={h.href} className="orgd__card-cta">
                     {h.ctaLabel ?? "Learn more"}
                     <Icon name="arrow_forward" size={16} />
-                  </Link>
+                  </NextLink>
                 )}
               </li>
             ))}
@@ -337,9 +338,9 @@ export function OrganisationDetail({
             headingId="leadership-heading"
           >
             {l.action != null && (
-              <Link href={l.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+              <NextLink href={l.action.href} className={buttonClasses("primary", "outlined", "sm")}>
                 {l.action.label}
-              </Link>
+              </NextLink>
             )}
           </SectionTitle>
           <ul className="orgd__leaders">
@@ -386,9 +387,9 @@ export function OrganisationDetail({
             headingId="major-activities-heading"
           >
             {ma.action != null && (
-              <Link href={ma.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+              <NextLink href={ma.action.href} className={buttonClasses("primary", "outlined", "sm")}>
                 {ma.action.label}
-              </Link>
+              </NextLink>
             )}
           </SectionTitle>
           <ul className="orgd__activities">
@@ -399,13 +400,13 @@ export function OrganisationDetail({
                 </div>
                 <h3 className="orgd__activity-title">{act.title}</h3>
                 {act.href && (
-                  <Link
+                  <NextLink
                     href={act.href}
                     className={buttonClasses("primary", "outlined", "sm", "orgd__activity-cta")}
                   >
                     {act.actionLabel ?? "View Details"}
                     <Icon name="arrow_forward" size={16} />
-                  </Link>
+                  </NextLink>
                 )}
               </li>
             ))}
@@ -428,9 +429,9 @@ export function OrganisationDetail({
             headingId="initiatives-heading"
           >
             {init.action != null && (
-              <Link href={init.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+              <NextLink href={init.action.href} className={buttonClasses("primary", "outlined", "sm")}>
                 {init.action.label}
-              </Link>
+              </NextLink>
             )}
           </SectionTitle>
           <ul className="orgd__initiatives">
@@ -461,13 +462,13 @@ export function OrganisationDetail({
                   </span>
                   <h3 className="orgd__initiative-title">{it.title}</h3>
                   <p className="orgd__initiative-desc">{it.description}</p>
-                  <Link
+                  <NextLink
                     href={it.href ?? orgHref(it.slug ?? "")}
                     className={buttonClasses("primary", "outlined", "sm", "mt-auto self-start flex items-center gap-1.5")}
                   >
                     {it.actionLabel ?? "Know More"}
                     <Icon name="arrow_forward" size={16} />
-                  </Link>
+                  </NextLink>
                 </div>
               </li>
             ))}
@@ -489,18 +490,18 @@ export function OrganisationDetail({
             headingId="components-heading"
           >
             {detail.components.action != null && (
-              <Link
+              <NextLink
                 href={detail.components.action.href}
                 className={buttonClasses("primary", "outlined", "sm")}
               >
                 {detail.components.action.label}
-              </Link>
+              </NextLink>
             )}
           </SectionTitle>
           <ul className="orgd__cards">
             {detail.components.items.map((c) => (
               <li key={c.slug}>
-                <Link href={orgHref(c.slug)} className="orgd__card">
+                <NextLink href={orgHref(c.slug)} className="orgd__card">
                   <span className="orgd__card-icon" aria-hidden="true">
                     <Icon name={c.icon} size={32} />
                   </span>
@@ -510,7 +511,7 @@ export function OrganisationDetail({
                     Read more
                     <Icon name="arrow_forward" size={16} />
                   </span>
-                </Link>
+                </NextLink>
               </li>
             ))}
           </ul>
@@ -549,15 +550,15 @@ export function OrganisationDetail({
             headingId="resources-bookshelf-heading"
           >
             {rb.action != null && (
-              <Link href={rb.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+              <NextLink href={rb.action.href} className={buttonClasses("primary", "outlined", "sm")}>
                 {rb.action.label}
-              </Link>
+              </NextLink>
             )}
           </SectionTitle>
           <ul className="orgd__bookshelf">
             {rb.items.map((book) => (
               <li key={book.title} className="orgd__book-card">
-                <Link href={book.href ?? "#"} className="orgd__book-link">
+                <NextLink href={book.href ?? "#"} className="orgd__book-link">
                   <div className="orgd__book-cover">
                     <Image
                       src={book.image}
@@ -567,7 +568,7 @@ export function OrganisationDetail({
                     />
                   </div>
                   <h3 className="orgd__book-title">{book.title}</h3>
-                </Link>
+                </NextLink>
               </li>
             ))}
           </ul>
@@ -635,7 +636,7 @@ export function OrganisationDetail({
             items={libraryItems}
             groupOrder={LIBRARY_GROUP_ORDER}
             viewAllSlot={
-              <Link
+              <NextLink
                 href={
                   lib?.groups?.[0]?.viewAllHref ??
                   detail?.circulars?.viewAllHref ??
@@ -644,7 +645,7 @@ export function OrganisationDetail({
                 className={buttonClasses("primary", "outlined", "sm")}
               >
                 View all documents
-              </Link>
+              </NextLink>
             }
           />
         </>
@@ -672,7 +673,7 @@ export function OrganisationDetail({
                   const isExternal =
                     p.external || p.href.startsWith("http://") || p.href.startsWith("https://");
                   return (
-                    <Link
+                    <NextLink
                       key={p.href}
                       href={p.href}
                       className="orgd__pill"
@@ -681,7 +682,7 @@ export function OrganisationDetail({
                     >
                       <span>{p.label}</span>
                       <Icon name={isExternal ? "open_in_new" : "arrow_forward"} size={16} />
-                    </Link>
+                    </NextLink>
                   );
                 })}
               </div>
@@ -707,7 +708,7 @@ export function OrganisationDetail({
             {fl.items.map((p) => {
               const isExternal = p.external || p.href.startsWith("http://") || p.href.startsWith("https://");
               return (
-                <Link
+                <NextLink
                   key={p.href}
                   href={p.href}
                   className="orgd__pill"
@@ -716,7 +717,7 @@ export function OrganisationDetail({
                 >
                   <span>{p.label}</span>
                   <Icon name={isExternal ? "open_in_new" : "arrow_forward"} size={16} />
-                </Link>
+                </NextLink>
               );
             })}
           </div>
@@ -731,12 +732,12 @@ export function OrganisationDetail({
       body: (
         <>
           <SectionTitle as={2} title={detail.gallery.heading} headingId="gallery-heading">
-            <Link
+            <NextLink
               href={detail.gallery.viewAllHref ?? "/website/gallery"}
               className={buttonClasses("primary", "outlined", "sm")}
             >
               View all photos
-            </Link>
+            </NextLink>
           </SectionTitle>
           {/* Segmented Media Tabs (Figma 5326:27984) */}
           <div className="flex items-center gap-2 mb-6 flex-wrap">
@@ -793,9 +794,9 @@ export function OrganisationDetail({
             headingId="state-offices-heading"
           >
             {som.action != null && (
-              <Link href={som.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+              <NextLink href={som.action.href} className={buttonClasses("primary", "outlined", "sm")}>
                 {som.action.label}
-              </Link>
+              </NextLink>
             )}
           </SectionTitle>
           <div className="orgd__state-map-layout">
@@ -837,9 +838,9 @@ export function OrganisationDetail({
             headingId="activity-corner-heading"
           >
             {ac.action != null && (
-              <Link href={ac.action.href} className={buttonClasses("primary", "outlined", "sm")}>
+              <NextLink href={ac.action.href} className={buttonClasses("primary", "outlined", "sm")}>
                 {ac.action.label}
-              </Link>
+              </NextLink>
             )}
           </SectionTitle>
           <ul className="orgd__updates-grid">
@@ -853,10 +854,10 @@ export function OrganisationDetail({
                   <h3 className="orgd__update-title">{item.title}</h3>
                   <p className="orgd__update-desc">{item.description}</p>
                   {item.href && (
-                    <Link href={item.href} className="orgd__update-link">
+                    <NextLink href={item.href} className="orgd__update-link">
                       <span>Read More</span>
                       <Icon name="arrow_forward" size={16} />
-                    </Link>
+                    </NextLink>
                   )}
                 </div>
               </li>
@@ -881,17 +882,16 @@ export function OrganisationDetail({
           {sf.handles && sf.handles.length > 0 && (
             <div className="flex items-center gap-3 mb-6 flex-wrap">
               {sf.handles.map((h) => (
-                <a
+                <Link
                   key={h.url}
                   href={h.url}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-neutral-subtle bg-surface hover:bg-surface-muted text-[13px] font-medium text-ink transition-colors"
+                  external
+                  variant="standalone"
+                  className="px-3.5 py-1.5 rounded-full border border-neutral-subtle bg-surface hover:bg-surface-muted text-[13px] font-medium text-ink transition-colors"
+                  iconLeft={<BrandGlyph name={h.platform} size={16} />}
                 >
-                  <BrandGlyph name={h.platform} size={16} />
-                  <span>{h.handle}</span>
-                  <Icon name="open_in_new" size={16} className="text-neutral-subtle" />
-                </a>
+                  {h.handle}
+                </Link>
               ))}
             </div>
           )}
@@ -951,9 +951,9 @@ export function OrganisationDetail({
       body: (
         <>
           <SectionTitle as={2} title={contact.heading} headingId="contact-heading">
-            <Link href={contactAction.href} className={buttonClasses("primary", "outlined", "sm")}>
+            <NextLink href={contactAction.href} className={buttonClasses("primary", "outlined", "sm")}>
               {contactAction.label}
-            </Link>
+            </NextLink>
           </SectionTitle>
           <div className="orgd__contact">
             <div className="orgd__contact-grid">

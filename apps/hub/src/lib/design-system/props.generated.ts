@@ -1321,6 +1321,13 @@ export const GENERATED_PROPS = {
         "description": "Link form only — download the target rather than navigating to it."
       },
       {
+        "name": "external",
+        "type": "boolean",
+        "required": false,
+        "default": "false",
+        "description": "Link form only — the CTA leaves this site, so it opens in a new tab. Sets `target=\"_blank\"`, takes the `rel` default below, draws a trailing open-in-new glyph unless `iconRight` says otherwise, AND appends a visually hidden \"(opens in a new tab)\" to the accessible name — the same contract `Link` carries, because it is the same obligation. GIGW 3.0 requires telling the reader when a link opens a new window. The glyph tells the people who can see and the hidden text tells the people who cannot; shipping one without the other serves half the audience. All twenty-two external links on the website had NEITHER before this, which is what a requirement with no component behind it is worth. Ignored without `href` — a `<button>` does not navigate, so it cannot open a tab."
+      },
+      {
         "name": "fullWidth",
         "type": "boolean",
         "required": false,
@@ -4250,6 +4257,12 @@ export const GENERATED_PROPS = {
         "type": "string | boolean",
         "required": false,
         "description": "Link form only — download the target rather than navigating to it."
+      },
+      {
+        "name": "external",
+        "type": "boolean",
+        "required": false,
+        "description": "Link form only — the CTA leaves this site, so it opens in a new tab. Sets `target=\"_blank\"`, takes the `rel` default below, draws a trailing open-in-new glyph unless `iconRight` says otherwise, AND appends a visually hidden \"(opens in a new tab)\" to the accessible name — the same contract `Link` carries, because it is the same obligation. GIGW 3.0 requires telling the reader when a link opens a new window. The glyph tells the people who can see and the hidden text tells the people who cannot; shipping one without the other serves half the audience. All twenty-two external links on the website had NEITHER before this, which is what a requirement with no component behind it is worth. Ignored without `href` — a `<button>` does not navigate, so it cannot open a tab."
       },
       {
         "name": "href",

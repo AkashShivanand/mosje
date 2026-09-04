@@ -161,6 +161,24 @@ export const AsALink: Story = {
 };
 
 /**
+ * `external` says the CTA leaves this site. It sets `target="_blank"` with the
+ * `rel` that must accompany it, draws the open-in-new glyph, and appends a
+ * visually hidden "(opens in a new tab)" to the accessible name.
+ *
+ * Both halves are the point: GIGW 3.0 requires announcing a new window, and a
+ * glyph alone tells only the people who can see it. A trailing icon you pass
+ * yourself wins over the glyph; the hidden warning is added regardless. It is
+ * ignored without `href`, because a `<button>` cannot open a tab.
+ */
+export const AnExternalLink: Story = {
+  args: {
+    href: "https://www.india.gov.in",
+    external: true,
+    children: "Open the National Portal",
+  },
+};
+
+/**
  * `inverse` and `inverseOutlined` exist for a button sitting directly on a
  * solid brand surface, where the normal appearances disappear into it.
  */
