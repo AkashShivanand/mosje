@@ -50,6 +50,7 @@
 @import "./components/layout/layout.css";
 @import "./components/layout/section.css";
 @import "./components/layout/site-page-header.css";
+@import "./components/layout/text.css";
 @import "./components/data-display/accordion.css";
 @import "./components/data-display/approval-timeline.css";
 @import "./components/data-display/card.css";
