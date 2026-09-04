@@ -633,3 +633,47 @@ from adopting the list verbatim, on the ground that a scale is what the system u
   multi-select), then on each translucent variable alias the base and set the alias's opacity
   to the alpha variable named in its description. `figma-value-parity` records the payload's
   alias-with-opacity intent against the library's literal as a known difference until then.
+
+### Scopes, and what sits where — the library tidied to the agreed rule
+
+The rule agreed for the library: a designer is offered the Tier-2 alias and only the alias.
+Audit before the push: 109 `ref/*` primitives carried scopes (every `ref/space/*` offered as a
+gap and a size, every `ref/radius/*` as a radius, 23 orphaned `ref/color/*` as fills), twelve
+motion tokens and `grid/columns` carried ALL_SCOPES and so appeared in every number picker,
+and two numbers — `cmp/button/radius`, `cmp/card/radius` — sat in the Color collection.
+
+What the exporter now states, and the push wrote (123 variables changed, 41 library-only
+primitives cleared, 887 already correct):
+
+| Head | Scope |
+|---|---|
+| every `ref/*`, every `deprecated/*` | none — visible in the panel, offered in no picker |
+| `bg/*`, `layer/*`, `overlay/*`, component fills | FRAME_FILL, SHAPE_FILL |
+| `text/*`, component text | TEXT_FILL |
+| `icon/*`, `on/*` | SHAPE_FILL, TEXT_FILL |
+| `border/*`, component borders | STROKE_COLOR (+ SHAPE_FILL for a divider drawn as a rectangle) |
+| `focus/ring` | STROKE_COLOR, EFFECT_COLOR |
+| `color/*Scale/*`, `color/transparent/*` | ALL_FILLS, STROKE_COLOR, EFFECT_COLOR |
+| `chart/*` | FRAME_FILL, SHAPE_FILL, STROKE_COLOR |
+| `inline`, `stack`, `padding`, `section` | GAP |
+| `size`, `icon/size`, `container`, `layout`, `target` | WIDTH_HEIGHT |
+| `shape/*`, `control/radius`, `cmp/*/radius` | CORNER_RADIUS |
+| `stroke/*`, `control/border/width`, `focus/width`, `focus/offset` | STROKE_FLOAT |
+| `type/*/size` · `lh` · `tracking` · `para` | FONT_SIZE · LINE_HEIGHT · LETTER_SPACING · PARAGRAPH_SPACING |
+| `font/*` families · `font/weight/*` | FONT_FAMILY · FONT_STYLE |
+| `alpha/*` | OPACITY + COLOR_OPACITY — set in the UI; the API reads it but cannot write it |
+| `motion/*`, `ref/z/*`, `ref/breakpoint/*`, `grid/columns` | none — nothing in Figma binds these |
+
+The two radii were moved to the Radius collection by creating them there, sweeping all 82
+pages (59,027 nodes) for consumers, rebinding the 72 bindings found — the organisation-mark
+components and their instances — verifying zero remained, and deleting the originals. Figma
+cannot move a variable between collections; a sweep and a rebind is the same thing done
+honestly. The exporter now routes any component radius to Radius, so the placement cannot
+recur. No number remains in either colour collection.
+
+The scope is part of the payload (`scopes` on every variable, from `scopesFor` in the
+exporter), so the next push re-asserts it; the one exception is `alpha/*`, which the push
+leaves as the UI set it because the API rejects COLOR_OPACITY on write.
+
+The 136 alias-plus-opacity bindings that remain a UI step are listed, with base and alpha
+per variable, in `docs/design-system/figma-alpha-bindings.md`.

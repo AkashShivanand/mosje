@@ -283,9 +283,12 @@ function collectionFor(path, tier, type) {
   // --sa-cmp-accessibilityBar-* into tokens.css — never reached the library at all, and a
   // designer hand-made ten variables to fill the gap because there was nothing to bind.
   if (tier === "cmp") {
-    // LEGACY PLACEMENT, load-bearing: these two dimensions already live in the Color
-    // collection. Figma cannot move them, so they must keep routing there.
-    if (rest[0] === "radius" && (head === "button" || head === "card")) return "Color";
+    // A component radius is a radius. `cmp/button/radius` and `cmp/card/radius` sat in the
+    // Color collection until 2026-09-04 because "Figma cannot move them" — it cannot, but a
+    // page sweep can rebind their 52 consumers, and did, so they now live with every other
+    // corner radius. A number in a colour collection is exactly the disorganisation a
+    // designer notices first.
+    if (rest[0] === "radius") return "Radius";
     if (type === "color") return "Color";
     if (type === "dimension" || type === "number") return "Space";
     throw new Error(
@@ -713,6 +716,80 @@ function applyContractNotes(payload) {
 }
 
 /** The custom property this token actually ships as (font/role feeds --sa-type-*). */
+/**
+ * WHICH PICKERS OFFER A VARIABLE. The agreed rule: a designer is offered the Tier-2 alias and
+ * only the alias. Every Tier-1 `ref/*` primitive is therefore unscoped — it stays in the
+ * variables panel for maintainers and appears in no property picker — and each alias is
+ * scoped to the one or two properties it is FOR, never ALL_SCOPES. The library had drifted
+ * from this in 109 places (ref/space/* offered as gaps, ref/radius/* as radii, ref/color/*
+ * orphans as fills, twelve motion tokens in every picker); the payload now states the scope
+ * and the push writes it.
+ *
+ * `alpha/*` carries COLOR_OPACITY — Figma's "Color variable opacity" scope, the one that
+ * lets a number drive a colour alias's opacity. The Plugin API this estate pushes through
+ * (apiVersion 1.0.0) can READ that value but rejects it on write, so the push keeps whatever
+ * the UI set on those thirteen variables and reports the skip.
+ */
+export function scopesFor(path, tier, type, figmaName) {
+  // Keyed on the LIBRARY name, not the source path: `font/role/display/1/size` is Tier-1 in
+  // the source but publishes as the Tier-2 `type/display/1/size`, and a component token's
+  // path has no `cmp/` head while its name does. The name is what the designer sees.
+  const seg = figmaName.split("/");
+  const [head, ...rest] = seg;
+  const tail = seg[seg.length - 1];
+  if (head === "ref") return [];
+  if (/^_?deprecated$/.test(head)) return [];
+  if (type === "COLOR") {
+    if (head === "text") return ["TEXT_FILL"];
+    if (head === "icon" || head === "on") return ["SHAPE_FILL", "TEXT_FILL"];
+    if (head === "border") return ["STROKE_COLOR", "SHAPE_FILL"];
+    if (head === "focus") return ["STROKE_COLOR", "EFFECT_COLOR"];
+    if (head === "chart") return ["FRAME_FILL", "SHAPE_FILL", "STROKE_COLOR"];
+    if (head === "brand") return ["FRAME_FILL", "SHAPE_FILL", "TEXT_FILL"];
+    if (head === "color") {
+      // The Tier-2 scales and overlay tiers are the bindable palette; a Palette-collection
+      // companion of a role token (color/text/disabled) keeps its role's scope.
+      if (rest[0] === "text") return ["TEXT_FILL"];
+      return ["ALL_FILLS", "STROKE_COLOR", "EFFECT_COLOR"];
+    }
+    if (head === "cmp") {
+      if (/text|label|ink/i.test(tail)) return ["TEXT_FILL"];
+      if (/border|stroke|outline/i.test(tail)) return ["STROKE_COLOR"];
+      return ["FRAME_FILL", "SHAPE_FILL"];
+    }
+    return ["FRAME_FILL", "SHAPE_FILL"]; // bg, layer, overlay
+  }
+  if (head === "font") {
+    if (rest[0] === "weight") return type === "STRING" ? ["FONT_STYLE"] : ["FONT_WEIGHT"];
+    return ["FONT_FAMILY"];
+  }
+  if (type === "STRING") return [];
+  // FLOAT
+  if (head === "alpha") return ["OPACITY", "COLOR_OPACITY"];
+  if (head === "shape" || tail === "radius") return ["CORNER_RADIUS"];
+  if (head === "stroke" || (head === "control" && rest[0] === "border") || head === "focus") return ["STROKE_FLOAT"];
+  if (head === "blur") return ["EFFECT_FLOAT"];
+  if (head === "type" || head === "leading") {
+    if (tail === "size") return ["FONT_SIZE"];
+    if (tail === "lh" || head === "leading") return ["LINE_HEIGHT"];
+    if (tail === "tracking") return ["LETTER_SPACING"];
+    if (tail === "para") return ["PARAGRAPH_SPACING"];
+    return [];
+  }
+  if (["inline", "stack", "padding", "section"].includes(head)) return ["GAP"];
+  if (head === "target") return rest[0] === "spacing" ? ["GAP"] : ["WIDTH_HEIGHT"];
+  if (head === "grid") return rest[0] === "columns" ? [] : ["GAP", "WIDTH_HEIGHT"];
+  if (["size", "icon", "container", "layout", "control"].includes(head)) return ["WIDTH_HEIGHT"];
+  if (head === "density") return ["GAP", "WIDTH_HEIGHT"];
+  if (head === "cmp") {
+    if (/gap|padding|spacing/i.test(tail)) return ["GAP"];
+    if (/stroke|border/i.test(tail)) return ["STROKE_FLOAT"];
+    return ["WIDTH_HEIGHT"];
+  }
+  // motion, z, breakpoint: nothing in Figma binds these — visible in the panel, offered nowhere.
+  return [];
+}
+
 function emittedCssName(token, tier) {
   const [head, kind, ...rest] = token.path;
   if (head === "font" && kind === "role") return `--sa-type-${rest.join("-")}`;
@@ -914,6 +991,7 @@ export function buildPayload(dictionary) {
       valuesByMode,
       ...(description ? { description } : {}),
       codeSyntax: { WEB: `var(${emittedCssName(token, tier)})` },
+      scopes: scopesFor(token.path, tier, type, target.name),
       status: live?.[target.collection]?.includes(target.name) ? "existing" : "new",
       $extensions: { "in.gov.mosje.tier": tier, "in.gov.mosje.source": token.filePath },
     });

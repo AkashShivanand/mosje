@@ -21,6 +21,8 @@
   24 · 32 · 40 · 48 · 64 · 72 · 80 · 88 · 100, bound as `alpha/*`; Figma reads an opacity-bound
   number as a percentage, so `ref/opacity/*` is projected ×100. The Plugin API cannot write an
   alias's opacity or the "Color variable opacity" scope — both are recorded as UI steps.
+  Library scopes follow the agreed rule: Tier-1 `ref/*` is offered in no picker, each alias is
+  scoped to the property it is for, and the exporter states the scope in the payload.
   Audit §16.)
 
   Last reviewed: 2026-09-04 · System version: v0.46.0 (THE COLOUR SYSTEM WAS DULL BECAUSE IT
