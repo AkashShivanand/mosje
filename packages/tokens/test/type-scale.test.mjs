@@ -140,3 +140,75 @@ test("display tracking is negative on both surfaces and caps tracking is the onl
   assert.ok(px(t.caps.$extensions.mosje.type.website.max) > 0, "caps tracking must be positive");
   for (const k of ["heading", "title", "body", "label"]) assert.equal(px(t[k].$value), 0, `${k} tracking is not zero`);
 });
+
+/* ───────────────────────── Devanagari leading — derived, per role ───────────────────────── */
+
+import { devanagariLeading } from "../build/devanagari-leading.mjs";
+
+/**
+ * Until 2026-09-04 Hindi had ONE line height, a unitless 1.7 on every role, which undid the
+ * scale (a 40px headline at 68px leading) and which Figma read as 1.7px. It is now derived per
+ * role — Latin leading + offset × size, rounded UP to the 4px grid — by the build, from
+ * `font.lineHeight.devanagariOffset`. These assert the rule's outcomes and that the build
+ * actually emitted them; the rule itself lives in one function both sides import.
+ */
+const OFFSET = Number(prim.font.lineHeight.devanagariOffset.$value);
+const built = JSON.parse(readFileSync(root + "dist/figma.tokens.json", "utf8"));
+const css = readFileSync(root + "dist/tokens.css", "utf8");
+
+test("the Devanagari offset is a fraction of the size, and only that", () => {
+  assert.ok(OFFSET > 0 && OFFSET < 1, `offset ${OFFSET} is not a fraction`);
+  assert.equal(prim.font.lineHeight.devanagariOffset.$type ?? prim.font.lineHeight.$type, "number");
+  // Nothing else may be authored under font.lineHeight — leading belongs to a role.
+  const keys = Object.keys(prim.font.lineHeight).filter((k) => !k.startsWith("$"));
+  assert.deepEqual(keys, ["devanagariOffset"]);
+});
+
+test("no role authors its own lhDevanagari — it is derived", () => {
+  for (const r of roles) assert.equal(r.node.lhDevanagari, undefined, `${r.tier}-${r.n} authors lhDevanagari`);
+});
+
+test("every role's Devanagari leading is on the 4px grid, above its Latin leading, and inside 1.25–1.80", () => {
+  for (const r of roles) for (const s of ["website", "portal"]) {
+    const [smin, smax] = bounds(r.node.size, s);
+    const [lmin, lmax] = bounds(r.node.lh, s);
+    for (const [size, lh] of [[smin, lmin], [smax, lmax]]) {
+      const hi = devanagariLeading(size, lh, OFFSET);
+      assert.equal(hi % 4, 0, `${r.tier}-${r.n} ${s} Devanagari ${hi} is off the 4px grid`);
+      assert.ok(hi > lh, `${r.tier}-${r.n} ${s} Devanagari ${hi} is not above Latin ${lh}`);
+      const ratio = hi / size;
+      assert.ok(ratio >= 1.25 && ratio <= 1.8, `${r.tier}-${r.n} ${s} Devanagari ${size}/${hi} = ${ratio.toFixed(2)} is outside 1.25–1.80`);
+    }
+  }
+});
+
+test("Devanagari leading keeps the scale's rhythm — a smaller role never sits tighter than the larger one above it", () => {
+  for (const tier of ["display", "headline", "title", "body", "label"]) {
+    const steps = roles.filter((r) => r.tier === tier).sort((a, b) => a.n - b.n);
+    for (const s of ["website", "portal"]) {
+      let prev = 0;
+      for (const r of steps) {
+        const [size] = bounds(r.node.size, s), [lh] = bounds(r.node.lh, s);
+        const ratio = devanagariLeading(size, lh, OFFSET) / size;
+        assert.ok(ratio + 0.1 >= prev, `${tier}-${r.n} ${s} Devanagari ratio ${ratio.toFixed(2)} dips below ${prev.toFixed(2)}`);
+        prev = ratio;
+      }
+    }
+  }
+});
+
+test("the build emitted lhDevanagari for all 21 roles, at the rule's value, and the semantic alias reads body-1", () => {
+  let count = 0;
+  for (const r of roles) {
+    const leaf = built.font.role[r.tier][String(r.n)].lhDevanagari;
+    assert.ok(leaf, `${r.tier}-${r.n} has no built lhDevanagari`);
+    const expected = devanagariLeading(r.node.size.$value, r.node.lh.$value, OFFSET);
+    assert.equal(px(leaf), expected, `${r.tier}-${r.n} built ${leaf}, rule says ${expected}px`);
+    assert.match(css, new RegExp(`--sa-type-${r.tier}-${r.n}-lhDevanagari:`), `${r.tier}-${r.n} lhDevanagari missing from tokens.css`);
+    count += 1;
+  }
+  assert.equal(count, 21);
+  assert.equal(px(built.leading.devanagari), px(built.font.role.body["1"].lhDevanagari));
+  // Body-1's Devanagari leading is where the retired flat 1.7 was aiming: 16 / 28.
+  assert.equal(px(built.font.role.body["1"].lhDevanagari), 28);
+});

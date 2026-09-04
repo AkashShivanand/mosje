@@ -20,6 +20,8 @@ export interface RoleSpec {
   weightVal: number;
   size: Record<Surface, [number, number]>;
   lh: Record<Surface, [number, number]>;
+  /** A Hindi block at this role: same size, Latin leading + 0.2 × size, rounded up to the 4px grid. */
+  lhDevanagari: Record<Surface, [number, number]>;
   tracking: Record<Surface, [number, number]>;
   para: [number, number];
   en: string;
@@ -52,6 +54,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         48,
         64
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        56,
+        104
+      ],
+      "portal": [
+        56,
+        76
       ]
     },
     "tracking": {
@@ -97,6 +109,16 @@ export const ROLES: RoleSpec[] = [
         56
       ]
     },
+    "lhDevanagari": {
+      "website": [
+        52,
+        96
+      ],
+      "portal": [
+        48,
+        68
+      ]
+    },
     "tracking": {
       "website": [
         -0.54,
@@ -138,6 +160,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         36,
         48
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        48,
+        88
+      ],
+      "portal": [
+        44,
+        56
       ]
     },
     "tracking": {
@@ -183,6 +215,16 @@ export const ROLES: RoleSpec[] = [
         40
       ]
     },
+    "lhDevanagari": {
+      "website": [
+        44,
+        76
+      ],
+      "portal": [
+        40,
+        48
+      ]
+    },
     "tracking": {
       "website": [
         -0.28,
@@ -224,6 +266,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         32,
         36
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        40,
+        68
+      ],
+      "portal": [
+        40,
+        44
       ]
     },
     "tracking": {
@@ -269,6 +321,16 @@ export const ROLES: RoleSpec[] = [
         32
       ]
     },
+    "lhDevanagari": {
+      "website": [
+        36,
+        56
+      ],
+      "portal": [
+        32,
+        40
+      ]
+    },
     "tracking": {
       "website": [
         0,
@@ -310,6 +372,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         32,
         40
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        44,
+        56
+      ],
+      "portal": [
+        40,
+        48
       ]
     },
     "tracking": {
@@ -355,6 +427,16 @@ export const ROLES: RoleSpec[] = [
         36
       ]
     },
+    "lhDevanagari": {
+      "website": [
+        40,
+        48
+      ],
+      "portal": [
+        32,
+        44
+      ]
+    },
     "tracking": {
       "website": [
         0,
@@ -396,6 +478,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         24,
         32
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        36,
+        44
+      ],
+      "portal": [
+        28,
+        40
       ]
     },
     "tracking": {
@@ -441,6 +533,16 @@ export const ROLES: RoleSpec[] = [
         28
       ]
     },
+    "lhDevanagari": {
+      "website": [
+        32,
+        40
+      ],
+      "portal": [
+        28,
+        32
+      ]
+    },
     "tracking": {
       "website": [
         0,
@@ -482,6 +584,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         24,
         24
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        28,
+        32
+      ],
+      "portal": [
+        28,
+        28
       ]
     },
     "tracking": {
@@ -527,6 +639,16 @@ export const ROLES: RoleSpec[] = [
         24
       ]
     },
+    "lhDevanagari": {
+      "website": [
+        28,
+        28
+      ],
+      "portal": [
+        28,
+        28
+      ]
+    },
     "tracking": {
       "website": [
         0,
@@ -568,6 +690,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         24,
         28
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        28,
+        36
+      ],
+      "portal": [
+        28,
+        36
       ]
     },
     "tracking": {
@@ -613,6 +745,16 @@ export const ROLES: RoleSpec[] = [
         24
       ]
     },
+    "lhDevanagari": {
+      "website": [
+        28,
+        28
+      ],
+      "portal": [
+        28,
+        28
+      ]
+    },
     "tracking": {
       "website": [
         0,
@@ -654,6 +796,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         20,
         20
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        24,
+        24
+      ],
+      "portal": [
+        24,
+        24
       ]
     },
     "tracking": {
@@ -699,6 +851,16 @@ export const ROLES: RoleSpec[] = [
         24
       ]
     },
+    "lhDevanagari": {
+      "website": [
+        28,
+        28
+      ],
+      "portal": [
+        28,
+        28
+      ]
+    },
     "tracking": {
       "website": [
         0,
@@ -740,6 +902,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         20,
         20
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        24,
+        24
+      ],
+      "portal": [
+        24,
+        24
       ]
     },
     "tracking": {
@@ -785,6 +957,16 @@ export const ROLES: RoleSpec[] = [
         16
       ]
     },
+    "lhDevanagari": {
+      "website": [
+        20,
+        20
+      ],
+      "portal": [
+        20,
+        20
+      ]
+    },
     "tracking": {
       "website": [
         0,
@@ -826,6 +1008,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         20,
         20
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        24,
+        24
+      ],
+      "portal": [
+        24,
+        24
       ]
     },
     "tracking": {
@@ -871,6 +1063,16 @@ export const ROLES: RoleSpec[] = [
         16
       ]
     },
+    "lhDevanagari": {
+      "website": [
+        20,
+        20
+      ],
+      "portal": [
+        20,
+        20
+      ]
+    },
     "tracking": {
       "website": [
         0,
@@ -912,6 +1114,16 @@ export const ROLES: RoleSpec[] = [
       "portal": [
         16,
         16
+      ]
+    },
+    "lhDevanagari": {
+      "website": [
+        20,
+        20
+      ],
+      "portal": [
+        20,
+        20
       ]
     },
     "tracking": {
@@ -1045,7 +1257,7 @@ export const STANDARDS: StandardsGroup[] = [
     "title": "Spacing",
     "rules": [
       {
-        "rule": "Latin body sits at 1.5–1.7 line height; Devanagari body targets ~1.7 at the same point size.",
+        "rule": "Latin body sits at 1.5 line height; a Hindi block at any role takes the role's Latin leading plus a fifth of its size, rounded up to the 4px grid (body-1 16/28, headline-1 40/56) — the same size, more room, the same rhythm.",
         "src": "SAMAVESH · DBIM 4.3.1"
       },
       {

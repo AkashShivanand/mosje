@@ -30,8 +30,9 @@ Everything else is craft. These four are gates.
    together. Tailwind's `text-sm`…`text-6xl`, `leading-*`, `tracking-*` (except
    `tracking-caps` / `tracking-digits`) and thin/light/extrabold/black weights produce no
    CSS on this estate. Nothing renders below 12px; uppercase is the `label-3` role only;
-   every Devanagari run carries `lang="hi"`. `npm run check:type-linkage` fails on any
-   of these, with a baseline of zero.
+   every Devanagari run carries `lang="hi"`, and a Hindi BLOCK takes its role's
+   `--sa-type-<role>-lhDevanagari` (via `<Text lang="hi">` / `<Heading lang="hi">`), never a
+   flat ratio. `npm run check:type-linkage` fails on any of these, with a baseline of zero.
 
 ## Branch procedure — run this before your first edit
 

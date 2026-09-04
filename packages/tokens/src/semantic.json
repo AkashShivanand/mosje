@@ -1546,9 +1546,9 @@
   },
   "leading": {
     "devanagari": {
-      "$type": "number",
-      "$value": "{font.lineHeight.devanagari}",
-      "$description": "Devanagari needs more leading than Latin at the same size — the matras sit above and below the base line."
+      "$type": "dimension",
+      "$value": "{font.role.body.1.lhDevanagari}",
+      "$description": "Body-1's Devanagari line height, for a Hindi block that has no role of its own. Every role carries its own type/<role>/lhDevanagari — the Latin leading plus a fifth of the size, on the 4px grid — and a Hindi block bound to a role takes THAT, at the same size as its Latin sibling. Until 2026-09-04 this was a unitless 1.7 applied to every Hindi block: it undid the scale (a 40px headline at 68px leading) and Figma read it as 1.7px."
     }
   },
   "bg": {

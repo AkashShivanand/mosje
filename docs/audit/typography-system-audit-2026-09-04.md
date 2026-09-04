@@ -466,7 +466,8 @@ Every critical issue and every recommendation above was acted on in `ds/typograp
 | M6 | `-para` consumed by `Text flow`. |
 | M7, M9, M10, M16, M19 | Storybook story rewritten (21 roles, two surfaces); `design.md` §D–E rewritten and versioned; stale comments and prose corrected. |
 | M8 | The six docs-surface literals bound; the docs base `h1–h4` bound. |
-| M11, M15 | `--sa-container-measure` (36rem) with `max-w-measure`, `Text measure`, `.ds-prose`; inline Hindi takes the face only, a Hindi block takes the Devanagari leading. |
+| M11 | `--sa-container-measure` (36rem) with `max-w-measure`, `Text measure`, `.ds-prose`. |
+| M15 | Devanagari leading is per role: `font.role.<tier>.<n>.lhDevanagari` is DERIVED by `build/devanagari-leading.mjs` as the Latin leading + 0.2 × size, rounded up to the 4px grid (body-1 16/28, headline-1 40/56, display-1 80/104), reaching CSS as `--sa-type-<role>-lhDevanagari` and Figma as a bindable pixel `type/<tier>/<n>/lhDevanagari` per mode. The flat 1.7 is gone; `leading/devanagari` is body-1's alias. Inline Hindi takes the face only. `type-scale.test.mjs` asserts the grid, the band and the rhythm. |
 | M12 | `h1–h3 { text-wrap: balance }` and `p, li, dd, figcaption { text-wrap: pretty }` in the hub base layer and in the primitives. |
 | M14 | Portal body-1 is 16px on phones; the input floor and the copy agree. |
 | M17, M18 | Charts, metric card and app switcher on roles; the icon font's `font-display: block` kept. |
