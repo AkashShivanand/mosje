@@ -34,6 +34,23 @@
  * they survive — although their author COLOUR does not, which is why the house fix names
  * `Highlight` explicitly rather than a token.
  *
+ * SECOND CHECK, ADDED 2026-09-04: THE OUTLINE HAS TO BE VALID. The exemption above
+ * assumed an `outline` declaration paints something. Three did not. The shadow → outline
+ * conversion of PR #276 carried the old box-shadow SPREAD into the shorthand and shipped
+ *
+ *     outline: var(--sa-focus-width) solid calc(...) var(--sa-focus-ring);
+ *
+ * — four values in a shorthand that takes three. CSS drops the whole declaration in
+ * silence, so `.ds-tabs__tab`, `.ds-tabs__more` and `.ds-tabs__menu-item` had NO focus
+ * ring outside forced-colors at all. Every gate stayed green: stylelint accepts it, the
+ * forced-colors rescue below it was correct and separate, and the shadow check above
+ * skipped the rule for drawing "a real outline".
+ *
+ * Found by rendering the components under Playwright's `forcedColors: 'active'` and
+ * reading the COMPUTED outline back — the malformed rule computed to
+ * `outline-style: none`. Reasoning about the source would not have found it; the source
+ * looks reasonable.
+ *
  * THE FIX, WHEN THIS FIRES: add a block beside the ring. `Highlight` is the system's own
  * focus colour, so the ring follows the theme the reader chose:
  *
@@ -68,7 +85,14 @@ function cssFiles(dir, out = []) {
   return out;
 }
 
-const stripComments = (s) => s.replace(/\/\*[\s\S]*?\*\//g, " ");
+/**
+ * Blank a comment out but KEEP its newlines, so every line number this tool reports is
+ * the line number in the file. Collapsing comments to a space shifted them — a defect
+ * found on 2026-09-04 when the tabs.css findings printed :259 for a rule on line 341,
+ * which is a report nobody can act on.
+ */
+const stripComments = (s) =>
+  s.replace(/\/\*[\s\S]*?\*\//g, (c) => " ".repeat(1) + "\n".repeat((c.match(/\n/g) || []).length));
 const normalise = (s) => s.replace(/\s+/g, " ").trim();
 
 /**
@@ -124,7 +148,33 @@ function shadowRingSelectors(src) {
   return found;
 }
 
+/**
+ * `outline` is `<width> || <style> || <color>` — at most three top-level values. A fourth
+ * makes the declaration invalid and CSS discards it entirely, painting nothing.
+ */
+function malformedOutlines(src) {
+  const out = [];
+  const re = /outline\s*:\s*([^;{}]+);/g;
+  let m;
+  while ((m = re.exec(src))) {
+    const parts = [];
+    let depth = 0, cur = "";
+    for (const ch of m[1]) {
+      if (ch === "(") depth++;
+      else if (ch === ")") depth--;
+      if (/\s/.test(ch) && depth === 0) { if (cur) { parts.push(cur); cur = ""; } }
+      else cur += ch;
+    }
+    if (cur) parts.push(cur);
+    if (parts.length > 3) {
+      out.push({ line: src.slice(0, m.index).split("\n").length, value: `outline: ${m[1].replace(/\s+/g, " ").trim()};`, count: parts.length });
+    }
+  }
+  return out;
+}
+
 const failures = [];
+const invalid = [];
 let scanned = 0;
 let rings = 0;
 
@@ -134,6 +184,7 @@ for (const scope of SCOPES) {
   for (const file of files) {
     scanned++;
     const src = stripComments(readFileSync(file, "utf8"));
+    for (const bad of malformedOutlines(src)) invalid.push({ file: relative(ROOT, file), ...bad });
     const ring = shadowRingSelectors(src);
     if (!ring.length) continue;
     rings += ring.length;
@@ -151,13 +202,26 @@ for (const scope of SCOPES) {
   }
 }
 
-if (!failures.length) {
+if (invalid.length) {
+  console.error(
+    `\n✖ ${invalid.length} \`outline\` shorthand(s) carry more than three values.\n` +
+      `   CSS discards an invalid shorthand in SILENCE, so these rules paint no ring at all\n` +
+      `   (WCAG 2.2 · 2.4.7 Focus Visible). \`outline\` takes <width> <style> <color> — a\n` +
+      `   fourth value is usually a box-shadow spread that survived a conversion; the gap\n` +
+      `   belongs in \`outline-offset\`.\n`,
+  );
+  for (const i of invalid) console.error(`   ${i.file}:${i.line}  [${i.count} values]\n     ${i.value}`);
+  console.error("");
+}
+
+if (!failures.length && !invalid.length) {
   console.log(
     `✓ focus rings: ${rings} shadow-drawn ring(s) across ${scanned} stylesheet(s), ` +
-      `every one rescued for forced-colors.`,
+      `every one rescued for forced-colors; every outline shorthand valid.`,
   );
   process.exit(0);
 }
+if (!failures.length) process.exit(1);
 
 console.error(
   `\n✖ ${failures.length} focus ring(s) drawn with box-shadow and NOT rescued for forced-colors.\n` +
