@@ -920,7 +920,9 @@ export default function ColorPage(): React.JSX.Element {
             </div>
           ))}
         </div>
-        <TerminalCode title="tokens.css" codeText={"--sa-color-transparent-accent-8:\n  color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-8) * 100%), transparent);"} />
+        <TerminalCode title="tokens.css" codeText={"--sa-color-transparent-accent-8:\n  color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-8) * 100%), transparent);"}>
+          {"--sa-color-transparent-accent-8:\n  color-mix(in srgb, var(--sa-color-accentScale-600) calc(var(--sa-alpha-8) * 100%), transparent);"}
+        </TerminalCode>
         <Callout type="info" title="In Figma: alias the colour, then bind the opacity">
           A translucent variable aliases its base colour and carries its own opacity, bound to the
           matching <code>alpha/*</code> number variable in the Static collection. The Plugin API
