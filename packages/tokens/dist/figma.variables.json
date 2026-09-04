@@ -330,6 +330,7 @@
     "color/action/primary/tonal (legacy semantic path, mirrored by the canonical grammar namespace)",
     "color/text/default (legacy semantic path, mirrored by the canonical grammar namespace)",
     "color/text/muted (legacy semantic path, mirrored by the canonical grammar namespace)",
+    "color/text/disabled (legacy semantic path, mirrored by the canonical grammar namespace)",
     "color/text/onPrimary (legacy semantic path, mirrored by the canonical grammar namespace)",
     "color/text/info (legacy semantic path, mirrored by the canonical grammar namespace)",
     "color/border/controlHover (legacy semantic path, mirrored by the canonical grammar namespace)",
@@ -3396,7 +3397,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#f8fafd"
+              "value": "#f7faff"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3420,7 +3421,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#c9d6e5"
+              "value": "#c1d7f2"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3440,11 +3441,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#95c2fb"
+              "value": "#92c2ff"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#9cb0ca"
+              "value": "#93b1d6"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3464,11 +3465,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#6ca8f3"
+              "value": "#62a7ff"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#708caf"
+              "value": "#6a8cb7"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3488,11 +3489,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#428dea"
+              "value": "#3b8df0"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#486a94"
+              "value": "#446a99"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3516,7 +3517,7 @@
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#244c7b"
+              "value": "#224c7d"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3920,11 +3921,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#ecf4ee"
+              "value": "#e3f8e8"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#ecf4ee"
+              "value": "#e3f8e8"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3944,11 +3945,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#bed8c5"
+              "value": "#b3dcbe"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#bed8c5"
+              "value": "#b3dcbe"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3968,11 +3969,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#91b99c"
+              "value": "#87bd97"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#91b99c"
+              "value": "#87bd97"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -3992,11 +3993,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#659c77"
+              "value": "#5d9e73"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#659c77"
+              "value": "#5d9e73"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4016,11 +4017,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#3b8155"
+              "value": "#368253"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#3b8155"
+              "value": "#368253"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4496,11 +4497,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#ecf4ee"
+              "value": "#e3f8e8"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#ecf4ee"
+              "value": "#e3f8e8"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4520,11 +4521,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#bed8c5"
+              "value": "#b3dcbe"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#bed8c5"
+              "value": "#b3dcbe"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4544,11 +4545,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#91b99c"
+              "value": "#87bd97"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#91b99c"
+              "value": "#87bd97"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4568,11 +4569,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#659c77"
+              "value": "#5d9e73"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#659c77"
+              "value": "#5d9e73"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4592,11 +4593,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#3b8155"
+              "value": "#368253"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#3b8155"
+              "value": "#368253"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4760,11 +4761,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#ffe4e0"
+              "value": "#ffe4e1"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#ffe4e0"
+              "value": "#ffe4e1"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4784,11 +4785,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#ffc2b8"
+              "value": "#ffc1bc"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#ffc2b8"
+              "value": "#ffc1bc"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4808,11 +4809,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#ff9d8f"
+              "value": "#ff9c95"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#ff9d8f"
+              "value": "#ff9c95"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4832,11 +4833,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#f87868"
+              "value": "#fe716d"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#f87868"
+              "value": "#fe716d"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4856,11 +4857,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#ec5042"
+              "value": "#ec4e4f"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#ec5042"
+              "value": "#ec4e4f"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4880,11 +4881,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#cb3f33"
+              "value": "#cb3d3f"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#cb3f33"
+              "value": "#cb3d3f"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4904,11 +4905,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#aa2f25"
+              "value": "#aa2d30"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#aa2f25"
+              "value": "#aa2d30"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4928,11 +4929,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#8b1f18"
+              "value": "#8b1e22"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#8b1f18"
+              "value": "#8b1e22"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4952,11 +4953,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#6c100c"
+              "value": "#6c0f15"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#6c100c"
+              "value": "#6c0f15"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -4976,11 +4977,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#4e0303"
+              "value": "#4e0209"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#4e0303"
+              "value": "#4e0209"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5000,11 +5001,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#300000"
+              "value": "#300003"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#300000"
+              "value": "#300003"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5024,11 +5025,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#fef1e0"
+              "value": "#fff1df"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#fef1e0"
+              "value": "#fff1df"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5048,11 +5049,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#f7d5a6"
+              "value": "#ffd394"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#f7d5a6"
+              "value": "#ffd394"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5072,11 +5073,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#ecb96c"
+              "value": "#f1b75e"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#ecb96c"
+              "value": "#f1b75e"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5288,11 +5289,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#edf4ff"
+              "value": "#e2f8ff"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#edf4ff"
+              "value": "#e2f8ff"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5312,11 +5313,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#c3dcff"
+              "value": "#b4e3f2"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#c3dcff"
+              "value": "#b4e3f2"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5336,11 +5337,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#99c3ff"
+              "value": "#8eccdf"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#99c3ff"
+              "value": "#8eccdf"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5360,11 +5361,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#72a9fa"
+              "value": "#69b4cb"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#72a9fa"
+              "value": "#69b4cb"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5384,11 +5385,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#4a8ff2"
+              "value": "#439db7"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#4a8ff2"
+              "value": "#439db7"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5408,11 +5409,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#1a73e8"
+              "value": "#0b86a2"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#1a73e8"
+              "value": "#0b86a2"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5432,11 +5433,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#0a5cc3"
+              "value": "#006d85"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#0a5cc3"
+              "value": "#006d85"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5456,11 +5457,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#00479d"
+              "value": "#005568"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#00479d"
+              "value": "#005568"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5480,11 +5481,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#003376"
+              "value": "#003e4d"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#003376"
+              "value": "#003e4d"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5504,11 +5505,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#002150"
+              "value": "#002933"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#002150"
+              "value": "#002933"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -5528,11 +5529,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "#00102e"
+              "value": "#00151b"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "#00102e"
+              "value": "#00151b"
             }
           },
           "description": "Brand-aware palette step. Prefer a semantic token (`bg/*`, `text/*`, `border/*`) — those carry the contrast guarantee.",
@@ -6272,11 +6273,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.08)"
+              "value": "rgba(203, 61, 63, 0.08)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.08)"
+              "value": "rgba(203, 61, 63, 0.08)"
             }
           },
           "description": "Use for a translucent danger wash at 8% — for overlays and hover states, not as a text colour.",
@@ -6296,11 +6297,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.16)"
+              "value": "rgba(203, 61, 63, 0.16)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.16)"
+              "value": "rgba(203, 61, 63, 0.16)"
             }
           },
           "description": "Use for a translucent danger wash at 16% — for overlays and hover states, not as a text colour.",
@@ -6320,11 +6321,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.24)"
+              "value": "rgba(203, 61, 63, 0.24)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.24)"
+              "value": "rgba(203, 61, 63, 0.24)"
             }
           },
           "description": "Use for a translucent danger wash at 24% — for overlays and hover states, not as a text colour.",
@@ -6344,11 +6345,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.32)"
+              "value": "rgba(203, 61, 63, 0.32)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.32)"
+              "value": "rgba(203, 61, 63, 0.32)"
             }
           },
           "description": "Use for a translucent danger wash at 32% — for overlays and hover states, not as a text colour.",
@@ -6368,11 +6369,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.40)"
+              "value": "rgba(203, 61, 63, 0.40)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.40)"
+              "value": "rgba(203, 61, 63, 0.40)"
             }
           },
           "description": "Use for a translucent danger wash at 40% — for overlays and hover states, not as a text colour.",
@@ -6392,11 +6393,11 @@
           "valuesByMode": {
             "Blue": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.48)"
+              "value": "rgba(203, 61, 63, 0.48)"
             },
             "Navy": {
               "type": "COLOR",
-              "value": "rgba(203, 63, 51, 0.48)"
+              "value": "rgba(203, 61, 63, 0.48)"
             }
           },
           "description": "Use for a translucent danger wash at 48% — for overlays and hover states, not as a text colour.",
@@ -6698,27 +6699,6 @@
           }
         },
         {
-          "name": "color/text/disabled",
-          "path": "color/text/disabled",
-          "role": "brand-source",
-          "type": "COLOR",
-          "status": "existing",
-          "valuesByMode": {
-            "Blue": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.48)"
-            },
-            "Navy": {
-              "type": "COLOR",
-              "value": "rgba(30, 32, 36, 0.48)"
-            }
-          },
-          "description": "Brand-aware source for Theme::color/text/disabled. Generated because that token’s light value is a literal that differs between Blue and Navy; without it the Navy brand is lost.",
-          "codeSyntax": {
-            "WEB": "var(--sa-color-text-disabled)"
-          }
-        },
-        {
           "name": "focus/ring",
           "path": "focus/ring",
           "role": "brand-source",
@@ -6738,27 +6718,6 @@
           "codeSyntax": {
             "WEB": "var(--sa-focus-ring)"
           }
-        },
-        {
-          "name": "overlay/neutral/boldest",
-          "path": "overlay/neutral/boldest",
-          "role": "brand-source",
-          "type": "COLOR",
-          "status": "existing",
-          "valuesByMode": {
-            "Blue": {
-              "type": "COLOR",
-              "value": "rgba(30, 33, 36, 0.5)"
-            },
-            "Navy": {
-              "type": "COLOR",
-              "value": "rgba(30, 32, 36, 0.5)"
-            }
-          },
-          "description": "Brand-aware source for Theme::overlay/neutral/boldest. Generated because that token’s light value is a literal that differs between Blue and Navy; without it the Navy brand is lost.",
-          "codeSyntax": {
-            "WEB": "var(--sa-overlay-neutral-boldest)"
-          }
         }
       ]
     },
@@ -6777,10 +6736,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/neutralScale/500"
+              "name": "color/neutralScale/600"
             }
           },
-          "description": "Use for the visible edge of an interactive control, such as an input or a checkbox. Contrast 4.65:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for the visible edge of an interactive control, such as an input or a checkbox. Contrast 7.16:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-border-neutral-bolder-hover)"
           },
@@ -6791,7 +6750,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 4.65,
+              "measured": 7.16,
               "meets": true
             }
           }
@@ -6858,10 +6817,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/successScale/700"
+              "name": "color/successScale/600"
             }
           },
-          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 11.67:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
+          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-success-base)"
           },
@@ -6872,7 +6831,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 11.67,
+              "measured": 9.12,
               "meets": true
             }
           }
@@ -6885,10 +6844,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/successScale/600"
+              "name": "color/successScale/700"
             }
           },
-          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for the outline of a control or callout reporting a successful or completed state. Contrast 11.67:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-success-bolder)"
           },
@@ -6899,7 +6858,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 9.12,
+              "measured": 11.67,
               "meets": true
             }
           }
@@ -6912,10 +6871,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/dangerScale/700"
+              "name": "color/dangerScale/600"
             }
           },
-          "description": "Use for the outline of a control or callout reporting an error or destructive state. Contrast 9.1:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
+          "description": "Use for the outline of a control or callout reporting an error or destructive state. Contrast 6.72:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-error-base)"
           },
@@ -6926,7 +6885,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 9.1,
+              "measured": 6.72,
               "meets": true
             }
           }
@@ -6939,10 +6898,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/dangerScale/600"
+              "name": "color/dangerScale/700"
             }
           },
-          "description": "Use for the outline of a control or callout reporting an error or destructive state. Contrast 6.68:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for the outline of a control or callout reporting an error or destructive state. Contrast 9.1:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-error-bolder)"
           },
@@ -6953,7 +6912,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.68,
+              "measured": 9.1,
               "meets": true
             }
           }
@@ -6966,10 +6925,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/warningScale/700"
+              "name": "color/warningScale/600"
             }
           },
-          "description": "Use for the outline of a control or callout reporting a warning or a state needing attention. Contrast 7.79:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
+          "description": "Use for the outline of a control or callout reporting a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-warning-base)"
           },
@@ -6980,7 +6939,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 7.79,
+              "measured": 5.68,
               "meets": true
             }
           }
@@ -6993,10 +6952,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/warningScale/600"
+              "name": "color/warningScale/700"
             }
           },
-          "description": "Use for the outline of a control or callout reporting a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for the outline of a control or callout reporting a warning or a state needing attention. Contrast 7.79:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-warning-bolder)"
           },
@@ -7007,7 +6966,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 5.68,
+              "measured": 7.79,
               "meets": true
             }
           }
@@ -7023,7 +6982,7 @@
               "name": "color/infoScale/600"
             }
           },
-          "description": "Use for the outline of a control or callout reporting an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
+          "description": "Use for the outline of a control or callout reporting an informational or in-progress state. Contrast 5.96:1 vs bg/neutral/base — no guaranteed contrast class; treat as a boundary, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-info-base)"
           },
@@ -7034,7 +6993,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 6.3,
+              "measured": 5.96,
               "meets": true
             }
           }
@@ -7047,10 +7006,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/infoScale/600"
+              "name": "color/infoScale/700"
             }
           },
-          "description": "Use for the outline of a control or callout reporting an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for the outline of a control or callout reporting an informational or in-progress state. Contrast 8.4:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-border-status-info-bolder)"
           },
@@ -7061,7 +7020,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.3,
+              "measured": 8.4,
               "meets": true
             }
           }
@@ -7149,7 +7108,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/neutralScale/200"
+              "name": "color/neutralScale/100"
             }
           },
           "description": "Use when a control is disabled — it is deliberately low-contrast and exempt from the text contrast rules.",
@@ -7254,7 +7213,7 @@
               "name": "color/primaryScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the primary brand colour. Contrast 2.46:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the primary brand colour. Contrast 2.47:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-primary-bold)"
           },
@@ -7265,7 +7224,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bold",
               "min": 3,
-              "measured": 2.46,
+              "measured": 2.47,
               "meets": false
             }
           }
@@ -7497,7 +7456,7 @@
               "name": "color/accentScale/50"
             }
           },
-          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the accent brand colour. Contrast 1.12:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, tinted with the accent brand colour. Contrast 1.11:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-accent-base)"
           },
@@ -7508,7 +7467,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 1.12,
+              "measured": 1.11,
               "meets": true
             }
           }
@@ -7524,7 +7483,7 @@
               "name": "color/accentScale/100"
             }
           },
-          "description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the accent brand colour. Contrast 1.52:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for a barely-there tint, for hovered rows and zebra striping, tinted with the accent brand colour. Contrast 1.51:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-accent-subtler)"
           },
@@ -7535,7 +7494,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtler",
               "min": 0,
-              "measured": 1.52,
+              "measured": 1.51,
               "meets": true
             }
           }
@@ -7551,7 +7510,7 @@
               "name": "color/accentScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the accent brand colour. Contrast 2.18:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, tinted with the accent brand colour. Contrast 2.15:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-accent-subtle)"
           },
@@ -7562,7 +7521,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtle",
               "min": 3,
-              "measured": 2.18,
+              "measured": 2.15,
               "meets": false
             }
           }
@@ -7578,7 +7537,7 @@
               "name": "color/accentScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the accent brand colour. Contrast 3.19:1 vs bg/neutral/base — meets ≥3:1: UI boundaries, icons, non-text (WCAG 1.4.11).",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, tinted with the accent brand colour. Contrast 3.18:1 vs bg/neutral/base — meets ≥3:1: UI boundaries, icons, non-text (WCAG 1.4.11).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-brand-accent-bold)"
           },
@@ -7589,7 +7548,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bold",
               "min": 3,
-              "measured": 3.19,
+              "measured": 3.18,
               "meets": true
             }
           }
@@ -7659,7 +7618,7 @@
               "name": "color/successScale/50"
             }
           },
-          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals a successful or completed state. Contrast 1.12:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals a successful or completed state. Contrast 1.11:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-base)"
           },
@@ -7670,7 +7629,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 1.12,
+              "measured": 1.11,
               "meets": true
             }
           }
@@ -7686,7 +7645,7 @@
               "name": "color/successScale/100"
             }
           },
-          "description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals a successful or completed state. Contrast 1.52:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals a successful or completed state. Contrast 1.51:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-subtler)"
           },
@@ -7697,7 +7656,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtler",
               "min": 0,
-              "measured": 1.52,
+              "measured": 1.51,
               "meets": true
             }
           }
@@ -7713,7 +7672,7 @@
               "name": "color/successScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a successful or completed state. Contrast 2.18:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a successful or completed state. Contrast 2.15:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-subtle)"
           },
@@ -7724,7 +7683,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtle",
               "min": 3,
-              "measured": 2.18,
+              "measured": 2.15,
               "meets": false
             }
           }
@@ -7740,7 +7699,7 @@
               "name": "color/successScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals a successful or completed state. Contrast 3.19:1 vs bg/neutral/base — meets ≥3:1: UI boundaries, icons, non-text (WCAG 1.4.11).",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals a successful or completed state. Contrast 3.18:1 vs bg/neutral/base — meets ≥3:1: UI boundaries, icons, non-text (WCAG 1.4.11).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-success-bold)"
           },
@@ -7751,7 +7710,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bold",
               "min": 3,
-              "measured": 3.19,
+              "measured": 3.18,
               "meets": true
             }
           }
@@ -7821,7 +7780,7 @@
               "name": "color/dangerScale/50"
             }
           },
-          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals an error or destructive state. Contrast 1.21:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals an error or destructive state. Contrast 1.2:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-base)"
           },
@@ -7832,7 +7791,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 1.21,
+              "measured": 1.2,
               "meets": true
             }
           }
@@ -7902,7 +7861,7 @@
               "name": "color/dangerScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals an error or destructive state. Contrast 2.67:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals an error or destructive state. Contrast 2.69:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-bold)"
           },
@@ -7913,7 +7872,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bold",
               "min": 3,
-              "measured": 2.67,
+              "measured": 2.69,
               "meets": false
             }
           }
@@ -7929,7 +7888,7 @@
               "name": "color/dangerScale/600"
             }
           },
-          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals an error or destructive state. Contrast 6.68:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals an error or destructive state. Contrast 6.72:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-error-bolder)"
           },
@@ -7940,7 +7899,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.68,
+              "measured": 6.72,
               "meets": true
             }
           }
@@ -8037,7 +7996,7 @@
               "name": "color/warningScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a warning or a state needing attention. Contrast 1.79:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals a warning or a state needing attention. Contrast 1.8:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-warning-subtle)"
           },
@@ -8048,7 +8007,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtle",
               "min": 3,
-              "measured": 1.79,
+              "measured": 1.8,
               "meets": false
             }
           }
@@ -8145,7 +8104,7 @@
               "name": "color/infoScale/50"
             }
           },
-          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals an informational or in-progress state. Contrast 1.11:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for the ordinary, quietest fill — page and card surfaces that must not compete with their content, when the surface signals an informational or in-progress state. Contrast 1.1:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-base)"
           },
@@ -8156,7 +8115,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 0,
-              "measured": 1.11,
+              "measured": 1.1,
               "meets": true
             }
           }
@@ -8172,7 +8131,7 @@
               "name": "color/infoScale/100"
             }
           },
-          "description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals an informational or in-progress state. Contrast 1.4:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
+          "description": "Use for a barely-there tint, for hovered rows and zebra striping, when the surface signals an informational or in-progress state. Contrast 1.38:1 vs bg/neutral/base — no guaranteed contrast class; treat as a fill, not as text.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-subtler)"
           },
@@ -8183,7 +8142,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtler",
               "min": 0,
-              "measured": 1.4,
+              "measured": 1.38,
               "meets": true
             }
           }
@@ -8199,7 +8158,7 @@
               "name": "color/infoScale/200"
             }
           },
-          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals an informational or in-progress state. Contrast 1.81:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
+          "description": "Use for a quiet tonal fill — chips, badges and callouts that should read as a block without shouting, when the surface signals an informational or in-progress state. Contrast 1.77:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “subtle” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-subtle)"
           },
@@ -8210,7 +8169,7 @@
             "in.gov.mosje.contrast": {
               "rung": "subtle",
               "min": 3,
-              "measured": 1.81,
+              "measured": 1.77,
               "meets": false
             }
           }
@@ -8226,7 +8185,7 @@
               "name": "color/infoScale/300"
             }
           },
-          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals an informational or in-progress state. Contrast 2.39:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
+          "description": "Use for a tonal fill with more presence, for selected rows and active filters, when the surface signals an informational or in-progress state. Contrast 2.34:1 vs bg/neutral/base — BELOW the ≥3:1 implied by the “bold” rung.",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-bold)"
           },
@@ -8237,7 +8196,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bold",
               "min": 3,
-              "measured": 2.39,
+              "measured": 2.34,
               "meets": false
             }
           }
@@ -8253,7 +8212,7 @@
               "name": "color/infoScale/600"
             }
           },
-          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
+          "description": "Use for a solid fill that carries white text — primary buttons and filled banners, when the surface signals an informational or in-progress state. Contrast 5.96:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-bolder)"
           },
@@ -8264,7 +8223,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.3,
+              "measured": 5.96,
               "meets": true
             }
           }
@@ -8280,7 +8239,7 @@
               "name": "color/infoScale/800"
             }
           },
-          "description": "Use for the heaviest fill, for maximum emphasis on a light page, when the surface signals an informational or in-progress state. Contrast 12.1:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
+          "description": "Use for the heaviest fill, for maximum emphasis on a light page, when the surface signals an informational or in-progress state. Contrast 11.69:1 vs bg/neutral/base — meets ≥7:1: text-safe (WCAG 1.4.6 AAA).",
           "codeSyntax": {
             "WEB": "var(--sa-bg-status-info-boldest)"
           },
@@ -8291,7 +8250,7 @@
             "in.gov.mosje.contrast": {
               "rung": "boldest",
               "min": 7,
-              "measured": 12.1,
+              "measured": 11.69,
               "meets": true
             }
           }
@@ -8358,7 +8317,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a control’s content is disabled — it is deliberately low-contrast and exempt from the text contrast rules.",
@@ -8487,7 +8446,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a control’s content is disabled — it is deliberately low-contrast and exempt from the text contrast rules.",
@@ -8562,10 +8521,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/500"
+              "name": "color/primaryScale/600"
             }
           },
-          "description": "Use for text in the primary brand colour — not for long-form reading. Contrast 4.64:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text in the primary brand colour — not for long-form reading. Contrast 6.36:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-brand-primary-base)"
           },
@@ -8576,7 +8535,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 4.64,
+              "measured": 6.36,
               "meets": true
             }
           }
@@ -8589,10 +8548,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/primaryScale/600"
+              "name": "color/primaryScale/700"
             }
           },
-          "description": "Use for text in the primary brand colour — not for long-form reading. Contrast 5.57:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text in the primary brand colour — not for long-form reading. Contrast 7.52:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-brand-primary-bolder)"
           },
@@ -8603,7 +8562,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 5.57,
+              "measured": 7.52,
               "meets": true
             }
           }
@@ -8616,10 +8575,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/successScale/700"
+              "name": "color/successScale/600"
             }
           },
-          "description": "Use for text that report a successful or completed state. Contrast 10.22:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a successful or completed state. Contrast 7.99:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-success-base)"
           },
@@ -8630,7 +8589,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 10.22,
+              "measured": 7.99,
               "meets": true
             }
           }
@@ -8643,10 +8602,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/successScale/600"
+              "name": "color/successScale/700"
             }
           },
-          "description": "Use for text that report a successful or completed state. Contrast 7.99:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a successful or completed state. Contrast 10.22:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-success-bolder)"
           },
@@ -8657,7 +8616,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 7.99,
+              "measured": 10.22,
               "meets": true
             }
           }
@@ -8670,10 +8629,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/dangerScale/700"
+              "name": "color/dangerScale/600"
             }
           },
-          "description": "Use for text that report an error or destructive state. Contrast 7.97:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text that report an error or destructive state. Contrast 5.88:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-error-base)"
           },
@@ -8684,7 +8643,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 7.97,
+              "measured": 5.88,
               "meets": true
             }
           }
@@ -8697,10 +8656,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/dangerScale/600"
+              "name": "color/dangerScale/700"
             }
           },
-          "description": "Use for text that report an error or destructive state. Contrast 5.85:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text that report an error or destructive state. Contrast 7.97:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-error-bolder)"
           },
@@ -8711,7 +8670,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 5.85,
+              "measured": 7.97,
               "meets": true
             }
           }
@@ -8724,10 +8683,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/warningScale/700"
+              "name": "color/warningScale/600"
             }
           },
-          "description": "Use for text that report a warning or a state needing attention. Contrast 6.82:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a warning or a state needing attention. Contrast 4.97:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-warning-base)"
           },
@@ -8738,7 +8697,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 6.82,
+              "measured": 4.97,
               "meets": true
             }
           }
@@ -8751,10 +8710,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/warningScale/600"
+              "name": "color/warningScale/700"
             }
           },
-          "description": "Use for text that report a warning or a state needing attention. Contrast 4.97:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text that report a warning or a state needing attention. Contrast 6.82:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-warning-bolder)"
           },
@@ -8765,7 +8724,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 4.97,
+              "measured": 6.82,
               "meets": true
             }
           }
@@ -8781,7 +8740,7 @@
               "name": "color/infoScale/600"
             }
           },
-          "description": "Use for text that report an informational or in-progress state. Contrast 5.52:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for text that report an informational or in-progress state. Contrast 5.22:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-info-base)"
           },
@@ -8792,7 +8751,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 5.52,
+              "measured": 5.22,
               "meets": true
             }
           }
@@ -8805,10 +8764,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/infoScale/600"
+              "name": "color/infoScale/700"
             }
           },
-          "description": "Use for text that report an informational or in-progress state. Contrast 5.52:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for text that report an informational or in-progress state. Contrast 7.36:1 vs bg/neutral/base and bg/neutral/subtler — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-text-status-info-bolder)"
           },
@@ -8819,7 +8778,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 5.52,
+              "measured": 7.36,
               "meets": true
             }
           }
@@ -8886,7 +8845,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a control’s content is disabled — it is deliberately low-contrast and exempt from the text contrast rules.",
@@ -9015,10 +8974,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/successScale/700"
+              "name": "color/successScale/600"
             }
           },
-          "description": "Use for icons that report a successful or completed state. Contrast 11.67:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-success-base)"
           },
@@ -9029,7 +8988,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 11.67,
+              "measured": 9.12,
               "meets": true
             }
           }
@@ -9042,10 +9001,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/successScale/600"
+              "name": "color/successScale/700"
             }
           },
-          "description": "Use for icons that report a successful or completed state. Contrast 9.12:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report a successful or completed state. Contrast 11.67:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-success-bolder)"
           },
@@ -9056,7 +9015,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 9.12,
+              "measured": 11.67,
               "meets": true
             }
           }
@@ -9069,10 +9028,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/dangerScale/700"
+              "name": "color/dangerScale/600"
             }
           },
-          "description": "Use for icons that report an error or destructive state. Contrast 9.1:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report an error or destructive state. Contrast 6.72:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-error-base)"
           },
@@ -9083,7 +9042,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 9.1,
+              "measured": 6.72,
               "meets": true
             }
           }
@@ -9096,10 +9055,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/dangerScale/600"
+              "name": "color/dangerScale/700"
             }
           },
-          "description": "Use for icons that report an error or destructive state. Contrast 6.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report an error or destructive state. Contrast 9.1:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-error-bolder)"
           },
@@ -9110,7 +9069,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.68,
+              "measured": 9.1,
               "meets": true
             }
           }
@@ -9123,10 +9082,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/warningScale/700"
+              "name": "color/warningScale/600"
             }
           },
-          "description": "Use for icons that report a warning or a state needing attention. Contrast 7.79:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-warning-base)"
           },
@@ -9137,7 +9096,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 7.79,
+              "measured": 5.68,
               "meets": true
             }
           }
@@ -9150,10 +9109,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/warningScale/600"
+              "name": "color/warningScale/700"
             }
           },
-          "description": "Use for icons that report a warning or a state needing attention. Contrast 5.68:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report a warning or a state needing attention. Contrast 7.79:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-warning-bolder)"
           },
@@ -9164,7 +9123,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 5.68,
+              "measured": 7.79,
               "meets": true
             }
           }
@@ -9180,7 +9139,7 @@
               "name": "color/infoScale/600"
             }
           },
-          "description": "Use for icons that report an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report an informational or in-progress state. Contrast 5.96:1 vs bg/neutral/base — meets ≥4.5:1: body and heading text (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-info-base)"
           },
@@ -9191,7 +9150,7 @@
             "in.gov.mosje.contrast": {
               "rung": "base",
               "min": 4.5,
-              "measured": 6.3,
+              "measured": 5.96,
               "meets": true
             }
           }
@@ -9204,10 +9163,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/infoScale/600"
+              "name": "color/infoScale/700"
             }
           },
-          "description": "Use for icons that report an informational or in-progress state. Contrast 6.3:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
+          "description": "Use for icons that report an informational or in-progress state. Contrast 8.4:1 vs bg/neutral/base — meets ≥4.5:1: max-contrast headings (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-icon-status-info-bolder)"
           },
@@ -9218,7 +9177,7 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 6.3,
+              "measured": 8.4,
               "meets": true
             }
           }
@@ -9441,7 +9400,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a primary-brand primary button’s action is not available — the label.",
@@ -9936,7 +9895,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a primary-brand secondary button’s action is not available — the label.",
@@ -10429,7 +10388,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a primary-brand tertiary button’s action is not available — the label.",
@@ -10680,7 +10639,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a primary-brand tonal button’s action is not available — the label.",
@@ -10932,7 +10891,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a confirming primary button’s action is not available — the label.",
@@ -11427,7 +11386,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a confirming secondary button’s action is not available — the label.",
@@ -11920,7 +11879,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a confirming tertiary button’s action is not available — the label.",
@@ -12171,7 +12130,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a confirming tonal button’s action is not available — the label.",
@@ -12423,7 +12382,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a destructive primary button’s action is not available — the label.",
@@ -12918,7 +12877,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a destructive secondary button’s action is not available — the label.",
@@ -13411,7 +13370,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a destructive tertiary button’s action is not available — the label.",
@@ -13662,7 +13621,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a destructive tonal button’s action is not available — the label.",
@@ -13914,7 +13873,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a neutral primary button’s action is not available — the label.",
@@ -14409,7 +14368,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a neutral secondary button’s action is not available — the label.",
@@ -14902,7 +14861,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a neutral tertiary button’s action is not available — the label.",
@@ -15153,7 +15112,7 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/text/disabled"
+              "name": "color/neutralScale/400"
             }
           },
           "description": "Use when a neutral tonal button’s action is not available — the label.",
@@ -15249,10 +15208,10 @@
             "Default": {
               "type": "ALIAS",
               "collection": "Palette",
-              "name": "color/neutralScale/400"
+              "name": "color/neutralScale/500"
             }
           },
-          "description": "Use for the visible edge of an interactive control, such as an input or a checkbox. Contrast 3.06:1 vs bg/neutral/base — BELOW the ≥4.5:1 implied by the “bolder” rung.",
+          "description": "Form control border, resting. Rung 500 since 2026-09-04: rung 400 (#8e949c) was 3.06:1 on white — a hairline pass of 1.4.11 — and 2.68:1 on bg/neutral/subtler, the ground most forms actually sit on, which is a FAIL. 500 measures 4.65:1 on white and 4.07:1 on the muted ground. Hover steps to 600. Contrast 4.65:1 vs bg/neutral/base — meets ≥4.5:1: text-safe (WCAG 1.4.3 AA).",
           "codeSyntax": {
             "WEB": "var(--sa-border-neutral-bolder-default)"
           },
@@ -15263,8 +15222,8 @@
             "in.gov.mosje.contrast": {
               "rung": "bolder",
               "min": 4.5,
-              "measured": 3.06,
-              "meets": false
+              "measured": 4.65,
+              "meets": true
             }
           }
         },
@@ -15443,9 +15402,8 @@
           "type": "COLOR",
           "valuesByMode": {
             "Default": {
-              "type": "ALIAS",
-              "collection": "Palette",
-              "name": "overlay/neutral/boldest"
+              "type": "COLOR",
+              "value": "rgba(30, 33, 36, 0.5)"
             }
           },
           "description": "The scrim behind a modal — neutral 800 at 50%. The NAVY line below is structural, not stylistic: Figma cannot express \"alias plus alpha\", so a translucent token can only be a LITERAL, and a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed. Without it, Navy inherited the BLUE neutral (#1E2124 instead of #1E2024) and the scrim was quietly the wrong brand — invisible in review, wrong in every Navy screenshot. Authoring the second value is what makes the exporter generate a brand-aware companion in Palette (which does carry the brand modes) and alias this token to it. Every other rgba() in this file is exposed to the same trap.",
@@ -24957,23 +24915,22 @@
   "contrast": {
     "$description": "Contrast classes are MEASURED against each token's own surface, across every brand, and the worst case is what the description states. A token absent from this summary carries no contrast sentence because the prominence ladder does not describe it — see build/contrast-contract.mjs.",
     "measured": 94,
-    "meets": 78,
+    "meets": 79,
     "shortfall": [
-      "Color::bg/brand/accent/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/brand/primary/bold — 2.46:1 vs ≥3:1 (\"bold\")",
+      "Color::bg/brand/accent/subtle — 2.15:1 vs ≥3:1 (\"subtle\")",
+      "Color::bg/brand/primary/bold — 2.47:1 vs ≥3:1 (\"bold\")",
       "Color::bg/brand/primary/subtle — 1.84:1 vs ≥3:1 (\"subtle\")",
       "Color::bg/brand/secondary/bold — 2.21:1 vs ≥3:1 (\"bold\")",
       "Color::bg/brand/secondary/subtle — 1.72:1 vs ≥3:1 (\"subtle\")",
       "Color::bg/neutral/bold — 1.66:1 vs ≥3:1 (\"bold\")",
       "Color::bg/neutral/subtle — 1.35:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/status/error/bold — 2.67:1 vs ≥3:1 (\"bold\")",
+      "Color::bg/status/error/bold — 2.69:1 vs ≥3:1 (\"bold\")",
       "Color::bg/status/error/subtle — 2.01:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/status/info/bold — 2.39:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/status/info/subtle — 1.81:1 vs ≥3:1 (\"subtle\")",
-      "Color::bg/status/success/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
+      "Color::bg/status/info/bold — 2.34:1 vs ≥3:1 (\"bold\")",
+      "Color::bg/status/info/subtle — 1.77:1 vs ≥3:1 (\"subtle\")",
+      "Color::bg/status/success/subtle — 2.15:1 vs ≥3:1 (\"subtle\")",
       "Color::bg/status/warning/bold — 2.35:1 vs ≥3:1 (\"bold\")",
-      "Color::bg/status/warning/subtle — 1.79:1 vs ≥3:1 (\"subtle\")",
-      "Color::border/neutral/bolder/default — 3.06:1 vs ≥4.5:1 (\"bolder\")",
+      "Color::bg/status/warning/subtle — 1.8:1 vs ≥3:1 (\"subtle\")",
       "Color::border/neutral/subtle — 1.35:1 vs ≥3:1 (\"subtle\")"
     ]
   }

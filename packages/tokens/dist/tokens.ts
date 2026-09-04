@@ -44,9 +44,9 @@ export const tokens = {
       "blue": {
         "50": "#ecf4ff",
         "100": "#c0dbff",
-        "200": "#95c2fb",
-        "300": "#6ca8f3",
-        "400": "#428dea",
+        "200": "#92c2ff",
+        "300": "#62a7ff",
+        "400": "#3b8df0",
         "500": "#0373df",
         "600": "#005eb9",
         "700": "#004b96",
@@ -55,12 +55,12 @@ export const tokens = {
         "950": "#001737"
       },
       "navy": {
-        "50": "#f8fafd",
-        "100": "#c9d6e5",
-        "200": "#9cb0ca",
-        "300": "#708caf",
-        "400": "#486a94",
-        "500": "#244c7b",
+        "50": "#f7faff",
+        "100": "#c1d7f2",
+        "200": "#93b1d6",
+        "300": "#6a8cb7",
+        "400": "#446a99",
+        "500": "#224c7d",
         "600": "#003366",
         "700": "#002249",
         "800": "#001734",
@@ -83,11 +83,11 @@ export const tokens = {
     },
     "accentRamp": {
       "blue": {
-        "50": "#ecf4ee",
-        "100": "#bed8c5",
-        "200": "#91b99c",
-        "300": "#659c77",
-        "400": "#3b8155",
+        "50": "#e3f8e8",
+        "100": "#b3dcbe",
+        "200": "#87bd97",
+        "300": "#5d9e73",
+        "400": "#368253",
         "500": "#046a38",
         "600": "#00542b",
         "700": "#004220",
@@ -96,11 +96,11 @@ export const tokens = {
         "950": "#001708"
       },
       "navy": {
-        "50": "#ecf4ee",
-        "100": "#bed8c5",
-        "200": "#91b99c",
-        "300": "#659c77",
-        "400": "#3b8155",
+        "50": "#e3f8e8",
+        "100": "#b3dcbe",
+        "200": "#87bd97",
+        "300": "#5d9e73",
+        "400": "#368253",
         "500": "#046a38",
         "600": "#00542b",
         "700": "#004220",
@@ -110,11 +110,11 @@ export const tokens = {
       }
     },
     "green": {
-      "50": "#ecf4ee",
-      "100": "#bed8c5",
-      "200": "#91b99c",
-      "300": "#659c77",
-      "400": "#3b8155",
+      "50": "#e3f8e8",
+      "100": "#b3dcbe",
+      "200": "#87bd97",
+      "300": "#5d9e73",
+      "400": "#368253",
       "500": "#046a38",
       "600": "#00542b",
       "700": "#004220",
@@ -123,22 +123,22 @@ export const tokens = {
       "950": "#001708"
     },
     "red": {
-      "50": "#ffe4e0",
-      "100": "#ffc2b8",
-      "200": "#ff9d8f",
-      "300": "#f87868",
-      "400": "#ec5042",
-      "500": "#cb3f33",
-      "600": "#aa2f25",
-      "700": "#8b1f18",
-      "800": "#6c100c",
-      "900": "#4e0303",
-      "950": "#300000"
+      "50": "#ffe4e1",
+      "100": "#ffc1bc",
+      "200": "#ff9c95",
+      "300": "#fe716d",
+      "400": "#ec4e4f",
+      "500": "#cb3d3f",
+      "600": "#aa2d30",
+      "700": "#8b1e22",
+      "800": "#6c0f15",
+      "900": "#4e0209",
+      "950": "#300003"
     },
     "amber": {
-      "50": "#fef1e0",
-      "100": "#f7d5a6",
-      "200": "#ecb96c",
+      "50": "#fff1df",
+      "100": "#ffd394",
+      "200": "#f1b75e",
       "300": "#e09c1d",
       "400": "#c48608",
       "500": "#a77200",
@@ -149,17 +149,17 @@ export const tokens = {
       "950": "#271700"
     },
     "info": {
-      "50": "#edf4ff",
-      "100": "#c3dcff",
-      "200": "#99c3ff",
-      "300": "#72a9fa",
-      "400": "#4a8ff2",
-      "500": "#1a73e8",
-      "600": "#0a5cc3",
-      "700": "#00479d",
-      "800": "#003376",
-      "900": "#002150",
-      "950": "#00102e"
+      "50": "#e2f8ff",
+      "100": "#b4e3f2",
+      "200": "#8eccdf",
+      "300": "#69b4cb",
+      "400": "#439db7",
+      "500": "#0b86a2",
+      "600": "#006d85",
+      "700": "#005568",
+      "800": "#003e4d",
+      "900": "#002933",
+      "950": "#00151b"
     },
     "neutral": {
       "0": "#ffffff",
@@ -192,11 +192,11 @@ export const tokens = {
       "1000": "#000000"
     },
     "greenDbim": {
-      "50": "#eaf5ee",
-      "100": "#c2dfcc",
-      "200": "#9bc9ac",
-      "300": "#74b28d",
-      "400": "#4c9c70",
+      "50": "#dffae8",
+      "100": "#b4e4c6",
+      "200": "#8fcda7",
+      "300": "#6ab589",
+      "400": "#469d6e",
       "500": "#198754",
       "600": "#066f42",
       "700": "#005833",
@@ -220,9 +220,9 @@ export const tokens = {
     "redDbim": {
       "50": "#ffedec",
       "100": "#ffcbc9",
-      "200": "#fea7a5",
-      "300": "#f68685",
-      "400": "#ea6165",
+      "200": "#ffa7a5",
+      "300": "#ff7e7f",
+      "400": "#ef5c61",
       "500": "#dc3545",
       "600": "#b92435",
       "700": "#961326",
@@ -349,9 +349,9 @@ export const tokens = {
     "primaryScale": {
       "50": "#ecf4ff",
       "100": "#c0dbff",
-      "200": "#95c2fb",
-      "300": "#6ca8f3",
-      "400": "#428dea",
+      "200": "#92c2ff",
+      "300": "#62a7ff",
+      "400": "#3b8df0",
       "500": "#0373df",
       "600": "#005eb9",
       "700": "#004b96",
@@ -373,11 +373,11 @@ export const tokens = {
       "950": "#4d1700"
     },
     "accentScale": {
-      "50": "#ecf4ee",
-      "100": "#bed8c5",
-      "200": "#91b99c",
-      "300": "#659c77",
-      "400": "#3b8155",
+      "50": "#e3f8e8",
+      "100": "#b3dcbe",
+      "200": "#87bd97",
+      "300": "#5d9e73",
+      "400": "#368253",
       "500": "#046a38",
       "600": "#00542b",
       "700": "#004220",
@@ -401,11 +401,11 @@ export const tokens = {
       "1000": "#000000"
     },
     "successScale": {
-      "50": "#ecf4ee",
-      "100": "#bed8c5",
-      "200": "#91b99c",
-      "300": "#659c77",
-      "400": "#3b8155",
+      "50": "#e3f8e8",
+      "100": "#b3dcbe",
+      "200": "#87bd97",
+      "300": "#5d9e73",
+      "400": "#368253",
       "500": "#046a38",
       "600": "#00542b",
       "700": "#004220",
@@ -414,22 +414,22 @@ export const tokens = {
       "950": "#001708"
     },
     "dangerScale": {
-      "50": "#ffe4e0",
-      "100": "#ffc2b8",
-      "200": "#ff9d8f",
-      "300": "#f87868",
-      "400": "#ec5042",
-      "500": "#cb3f33",
-      "600": "#aa2f25",
-      "700": "#8b1f18",
-      "800": "#6c100c",
-      "900": "#4e0303",
-      "950": "#300000"
+      "50": "#ffe4e1",
+      "100": "#ffc1bc",
+      "200": "#ff9c95",
+      "300": "#fe716d",
+      "400": "#ec4e4f",
+      "500": "#cb3d3f",
+      "600": "#aa2d30",
+      "700": "#8b1e22",
+      "800": "#6c0f15",
+      "900": "#4e0209",
+      "950": "#300003"
     },
     "warningScale": {
-      "50": "#fef1e0",
-      "100": "#f7d5a6",
-      "200": "#ecb96c",
+      "50": "#fff1df",
+      "100": "#ffd394",
+      "200": "#f1b75e",
       "300": "#e09c1d",
       "400": "#c48608",
       "500": "#a77200",
@@ -440,17 +440,17 @@ export const tokens = {
       "950": "#271700"
     },
     "infoScale": {
-      "50": "#edf4ff",
-      "100": "#c3dcff",
-      "200": "#99c3ff",
-      "300": "#72a9fa",
-      "400": "#4a8ff2",
-      "500": "#1a73e8",
-      "600": "#0a5cc3",
-      "700": "#00479d",
-      "800": "#003376",
-      "900": "#002150",
-      "950": "#00102e"
+      "50": "#e2f8ff",
+      "100": "#b4e3f2",
+      "200": "#8eccdf",
+      "300": "#69b4cb",
+      "400": "#439db7",
+      "500": "#0b86a2",
+      "600": "#006d85",
+      "700": "#005568",
+      "800": "#003e4d",
+      "900": "#002933",
+      "950": "#00151b"
     },
     "transparent": {
       "primary": {
@@ -494,12 +494,12 @@ export const tokens = {
         "48": "rgba(4, 106, 56, 0.48)"
       },
       "danger": {
-        "8": "rgba(203, 63, 51, 0.08)",
-        "16": "rgba(203, 63, 51, 0.16)",
-        "24": "rgba(203, 63, 51, 0.24)",
-        "32": "rgba(203, 63, 51, 0.32)",
-        "40": "rgba(203, 63, 51, 0.4)",
-        "48": "rgba(203, 63, 51, 0.48)"
+        "8": "rgba(203, 61, 63, 0.08)",
+        "16": "rgba(203, 61, 63, 0.16)",
+        "24": "rgba(203, 61, 63, 0.24)",
+        "32": "rgba(203, 61, 63, 0.32)",
+        "40": "rgba(203, 61, 63, 0.4)",
+        "48": "rgba(203, 61, 63, 0.48)"
       },
       "warning": {
         "8": "rgba(167, 114, 0, 0.08)",
@@ -521,25 +521,25 @@ export const tokens = {
     "text": {
       "default": "#1e2124",
       "muted": "#3a3d41",
-      "disabled": "rgba(30, 33, 36, 0.48)",
+      "disabled": "#8e949c",
       "onPrimary": "#ffffff",
-      "info": "#0a5cc3"
+      "info": "#006d85"
     },
     "border": {
-      "controlHover": "#6f757d"
+      "controlHover": "#54585e"
     },
     "status": {
-      "success": "#004220",
-      "successStrong": "#003318",
-      "successTonal": "#bed8c5",
-      "warning": "#704b00",
-      "warningTonal": "#fef1e0",
-      "danger": "#8b1f18",
-      "dangerStrong": "#6c100c",
-      "dangerTonal": "#ffe4e0",
-      "info": "#0a5cc3",
-      "infoStrong": "#00479d",
-      "infoTonal": "#c3dcff"
+      "success": "#00542b",
+      "successStrong": "#004220",
+      "successTonal": "#b3dcbe",
+      "warning": "#8b5e00",
+      "warningTonal": "#fff1df",
+      "danger": "#aa2d30",
+      "dangerStrong": "#8b1e22",
+      "dangerTonal": "#ffe4e1",
+      "info": "#006d85",
+      "infoStrong": "#005568",
+      "infoTonal": "#e2f8ff"
     },
     "a11y": {
       "hc": {
@@ -822,8 +822,8 @@ export const tokens = {
       "subtle": "#dcdee1",
       "base": "#c6c9cd",
       "bolder": {
-        "default": "#8e949c",
-        "hover": "#6f757d"
+        "default": "#6f757d",
+        "hover": "#54585e"
       },
       "inverse": {
         "default": "#ffffff",
@@ -838,20 +838,20 @@ export const tokens = {
     },
     "status": {
       "success": {
-        "base": "#004220",
-        "bolder": "#00542b"
+        "base": "#00542b",
+        "bolder": "#004220"
       },
       "error": {
-        "base": "#8b1f18",
-        "bolder": "#aa2f25"
+        "base": "#aa2d30",
+        "bolder": "#8b1e22"
       },
       "warning": {
-        "base": "#704b00",
-        "bolder": "#8b5e00"
+        "base": "#8b5e00",
+        "bolder": "#704b00"
       },
       "info": {
-        "base": "#0a5cc3",
-        "bolder": "#0a5cc3"
+        "base": "#006d85",
+        "bolder": "#005568"
       }
     }
   },
@@ -970,14 +970,14 @@ export const tokens = {
       "subtle": "#dcdee1",
       "bold": "#c6c9cd",
       "inverse": "#0e1114",
-      "disabled": "#c6c9cd"
+      "disabled": "#dcdee1"
     },
     "brand": {
       "primary": {
         "base": "#ecf4ff",
         "subtler": "#c0dbff",
-        "subtle": "#95c2fb",
-        "bold": "#6ca8f3",
+        "subtle": "#92c2ff",
+        "bold": "#62a7ff",
         "bolder": "#005eb9",
         "boldest": "#003975"
       },
@@ -990,46 +990,46 @@ export const tokens = {
         "boldest": "#862e00"
       },
       "accent": {
-        "base": "#ecf4ee",
-        "subtler": "#bed8c5",
-        "subtle": "#91b99c",
-        "bold": "#659c77",
+        "base": "#e3f8e8",
+        "subtler": "#b3dcbe",
+        "subtle": "#87bd97",
+        "bold": "#5d9e73",
         "bolder": "#00542b",
         "boldest": "#003318"
       }
     },
     "status": {
       "success": {
-        "base": "#ecf4ee",
-        "subtler": "#bed8c5",
-        "subtle": "#91b99c",
-        "bold": "#659c77",
+        "base": "#e3f8e8",
+        "subtler": "#b3dcbe",
+        "subtle": "#87bd97",
+        "bold": "#5d9e73",
         "bolder": "#00542b",
         "boldest": "#003318"
       },
       "error": {
-        "base": "#ffe4e0",
-        "subtler": "#ffc2b8",
-        "subtle": "#ff9d8f",
-        "bold": "#f87868",
-        "bolder": "#aa2f25",
-        "boldest": "#6c100c"
+        "base": "#ffe4e1",
+        "subtler": "#ffc1bc",
+        "subtle": "#ff9c95",
+        "bold": "#fe716d",
+        "bolder": "#aa2d30",
+        "boldest": "#6c0f15"
       },
       "warning": {
-        "base": "#fef1e0",
-        "subtler": "#f7d5a6",
-        "subtle": "#ecb96c",
+        "base": "#fff1df",
+        "subtler": "#ffd394",
+        "subtle": "#f1b75e",
         "bold": "#e09c1d",
         "bolder": "#8b5e00",
         "boldest": "#563900"
       },
       "info": {
-        "base": "#edf4ff",
-        "subtler": "#c3dcff",
-        "subtle": "#99c3ff",
-        "bold": "#72a9fa",
-        "bolder": "#0a5cc3",
-        "boldest": "#003376"
+        "base": "#e2f8ff",
+        "subtler": "#b4e3f2",
+        "subtle": "#8eccdf",
+        "bold": "#69b4cb",
+        "bolder": "#006d85",
+        "boldest": "#003e4d"
       }
     }
   },
@@ -1038,7 +1038,7 @@ export const tokens = {
       "bolder": "#0e1114",
       "base": "#1e2124",
       "subtle": "#3a3d41",
-      "disabled": "rgba(30, 33, 36, 0.48)",
+      "disabled": "#8e949c",
       "inverse": "#ffffff",
       "subtler": "#6f757d"
     },
@@ -1047,7 +1047,7 @@ export const tokens = {
         "default": "#005eb9",
         "hover": "#004b96",
         "active": "#003975",
-        "disabled": "rgba(30, 33, 36, 0.48)"
+        "disabled": "#8e949c"
       },
       "visited": {
         "default": "#003975"
@@ -1058,26 +1058,26 @@ export const tokens = {
     },
     "brand": {
       "primary": {
-        "base": "#0373df",
-        "bolder": "#005eb9"
+        "base": "#005eb9",
+        "bolder": "#004b96"
       }
     },
     "status": {
       "success": {
-        "base": "#004220",
-        "bolder": "#00542b"
+        "base": "#00542b",
+        "bolder": "#004220"
       },
       "error": {
-        "base": "#8b1f18",
-        "bolder": "#aa2f25"
+        "base": "#aa2d30",
+        "bolder": "#8b1e22"
       },
       "warning": {
-        "base": "#704b00",
-        "bolder": "#8b5e00"
+        "base": "#8b5e00",
+        "bolder": "#704b00"
       },
       "info": {
-        "base": "#0a5cc3",
-        "bolder": "#0a5cc3"
+        "base": "#006d85",
+        "bolder": "#005568"
       }
     }
   },
@@ -1191,17 +1191,17 @@ export const tokens = {
       "900": "#002448"
     },
     "div": {
-      "negStrong": "#6c100c",
-      "neg": "#ec5042",
-      "negSoft": "#ffc2b8",
+      "negStrong": "#6c0f15",
+      "neg": "#ec4e4f",
+      "negSoft": "#ffc1bc",
       "mid": "#dcdee1",
-      "posSoft": "#bed8c5",
-      "pos": "#659c77",
+      "posSoft": "#b3dcbe",
+      "pos": "#5d9e73",
       "posStrong": "#004220"
     },
     "trend": {
       "up": "#046a38",
-      "down": "#cb3f33",
+      "down": "#cb3d3f",
       "flat": "#6f757d"
     },
     "grid": "#dcdee1",
@@ -1321,7 +1321,7 @@ export const tokens = {
     "neutral": {
       "base": "#1e2124",
       "subtle": "#3a3d41",
-      "disabled": "rgba(30, 33, 36, 0.48)",
+      "disabled": "#8e949c",
       "inverse": "#ffffff",
       "subtler": "#6f757d"
     },
@@ -1333,20 +1333,20 @@ export const tokens = {
     },
     "status": {
       "success": {
-        "base": "#004220",
-        "bolder": "#00542b"
+        "base": "#00542b",
+        "bolder": "#004220"
       },
       "error": {
-        "base": "#8b1f18",
-        "bolder": "#aa2f25"
+        "base": "#aa2d30",
+        "bolder": "#8b1e22"
       },
       "warning": {
-        "base": "#704b00",
-        "bolder": "#8b5e00"
+        "base": "#8b5e00",
+        "bolder": "#704b00"
       },
       "info": {
-        "base": "#0a5cc3",
-        "bolder": "#0a5cc3"
+        "base": "#006d85",
+        "bolder": "#005568"
       }
     }
   },
@@ -1508,7 +1508,7 @@ export const tokens = {
         },
         "disabled": {
           "bg": "#c6c9cd",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
@@ -1538,12 +1538,12 @@ export const tokens = {
         "default": {
           "bg": "rgba(0, 0, 0, 0)",
           "text": "#004b96",
-          "border": "#6ca8f3"
+          "border": "#62a7ff"
         },
         "hover": {
           "bg": "#ecf4ff",
           "text": "#004b96",
-          "border": "#428dea"
+          "border": "#3b8df0"
         },
         "active": {
           "bg": "#c0dbff",
@@ -1552,7 +1552,7 @@ export const tokens = {
         },
         "disabled": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
@@ -1596,7 +1596,7 @@ export const tokens = {
         },
         "disabled": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "rgba(0, 0, 0, 0)"
         }
       },
@@ -1612,13 +1612,13 @@ export const tokens = {
           "border": "#c0dbff"
         },
         "active": {
-          "bg": "#95c2fb",
+          "bg": "#92c2ff",
           "text": "#002855",
-          "border": "#95c2fb"
+          "border": "#92c2ff"
         },
         "disabled": {
           "bg": "#c6c9cd",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         }
       }
@@ -1642,7 +1642,7 @@ export const tokens = {
         },
         "disabled": {
           "bg": "#c6c9cd",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
@@ -1672,33 +1672,33 @@ export const tokens = {
         "default": {
           "bg": "rgba(0, 0, 0, 0)",
           "text": "#004220",
-          "border": "#659c77"
+          "border": "#5d9e73"
         },
         "hover": {
-          "bg": "#ecf4ee",
+          "bg": "#e3f8e8",
           "text": "#004220",
-          "border": "#3b8155"
+          "border": "#368253"
         },
         "active": {
-          "bg": "#bed8c5",
+          "bg": "#b3dcbe",
           "text": "#003318",
           "border": "#046a38"
         },
         "disabled": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
           "default": {
             "bg": "rgba(0, 0, 0, 0)",
             "text": "#ffffff",
-            "border": "#bed8c5"
+            "border": "#b3dcbe"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.1)",
             "text": "#ffffff",
-            "border": "#ecf4ee"
+            "border": "#e3f8e8"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.16)",
@@ -1719,40 +1719,40 @@ export const tokens = {
           "border": "rgba(0, 0, 0, 0)"
         },
         "hover": {
-          "bg": "#ecf4ee",
+          "bg": "#e3f8e8",
           "text": "#004220",
           "border": "rgba(0, 0, 0, 0)"
         },
         "active": {
-          "bg": "#bed8c5",
+          "bg": "#b3dcbe",
           "text": "#003318",
           "border": "rgba(0, 0, 0, 0)"
         },
         "disabled": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "rgba(0, 0, 0, 0)"
         }
       },
       "tonal": {
         "default": {
-          "bg": "#bed8c5",
+          "bg": "#b3dcbe",
           "text": "#003318",
-          "border": "#bed8c5"
+          "border": "#b3dcbe"
         },
         "hover": {
-          "bg": "#91b99c",
+          "bg": "#87bd97",
           "text": "#003318",
-          "border": "#91b99c"
+          "border": "#87bd97"
         },
         "active": {
-          "bg": "#659c77",
+          "bg": "#5d9e73",
           "text": "#002510",
-          "border": "#659c77"
+          "border": "#5d9e73"
         },
         "disabled": {
           "bg": "#c6c9cd",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         }
       }
@@ -1760,39 +1760,39 @@ export const tokens = {
     "destructive": {
       "primary": {
         "default": {
-          "bg": "#aa2f25",
+          "bg": "#aa2d30",
           "text": "#ffffff",
-          "border": "#aa2f25"
+          "border": "#aa2d30"
         },
         "hover": {
-          "bg": "#8b1f18",
+          "bg": "#8b1e22",
           "text": "#ffffff",
-          "border": "#8b1f18"
+          "border": "#8b1e22"
         },
         "active": {
-          "bg": "#6c100c",
+          "bg": "#6c0f15",
           "text": "#ffffff",
-          "border": "#6c100c"
+          "border": "#6c0f15"
         },
         "disabled": {
           "bg": "#c6c9cd",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
           "default": {
             "bg": "#ffffff",
-            "text": "#8b1f18",
+            "text": "#8b1e22",
             "border": "#ffffff"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.92)",
-            "text": "#6c100c",
+            "text": "#6c0f15",
             "border": "rgba(255, 255, 255, 0.92)"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.84)",
-            "text": "#4e0303",
+            "text": "#4e0209",
             "border": "rgba(255, 255, 255, 0.84)"
           },
           "disabled": {
@@ -1805,34 +1805,34 @@ export const tokens = {
       "secondary": {
         "default": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "#8b1f18",
-          "border": "#f87868"
+          "text": "#8b1e22",
+          "border": "#fe716d"
         },
         "hover": {
-          "bg": "#ffe4e0",
-          "text": "#8b1f18",
-          "border": "#ec5042"
+          "bg": "#ffe4e1",
+          "text": "#8b1e22",
+          "border": "#ec4e4f"
         },
         "active": {
-          "bg": "#ffc2b8",
-          "text": "#6c100c",
-          "border": "#cb3f33"
+          "bg": "#ffc1bc",
+          "text": "#6c0f15",
+          "border": "#cb3d3f"
         },
         "disabled": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
           "default": {
             "bg": "rgba(0, 0, 0, 0)",
             "text": "#ffffff",
-            "border": "#ffc2b8"
+            "border": "#ffc1bc"
           },
           "hover": {
             "bg": "rgba(255, 255, 255, 0.1)",
             "text": "#ffffff",
-            "border": "#ffe4e0"
+            "border": "#ffe4e1"
           },
           "active": {
             "bg": "rgba(255, 255, 255, 0.16)",
@@ -1849,44 +1849,44 @@ export const tokens = {
       "tertiary": {
         "default": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "#8b1f18",
+          "text": "#8b1e22",
           "border": "rgba(0, 0, 0, 0)"
         },
         "hover": {
-          "bg": "#ffe4e0",
-          "text": "#8b1f18",
+          "bg": "#ffe4e1",
+          "text": "#8b1e22",
           "border": "rgba(0, 0, 0, 0)"
         },
         "active": {
-          "bg": "#ffc2b8",
-          "text": "#6c100c",
+          "bg": "#ffc1bc",
+          "text": "#6c0f15",
           "border": "rgba(0, 0, 0, 0)"
         },
         "disabled": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "rgba(0, 0, 0, 0)"
         }
       },
       "tonal": {
         "default": {
-          "bg": "#ffc2b8",
-          "text": "#6c100c",
-          "border": "#ffc2b8"
+          "bg": "#ffc1bc",
+          "text": "#6c0f15",
+          "border": "#ffc1bc"
         },
         "hover": {
-          "bg": "#ff9d8f",
-          "text": "#6c100c",
-          "border": "#ff9d8f"
+          "bg": "#ff9c95",
+          "text": "#6c0f15",
+          "border": "#ff9c95"
         },
         "active": {
-          "bg": "#f87868",
-          "text": "#4e0303",
-          "border": "#f87868"
+          "bg": "#fe716d",
+          "text": "#4e0209",
+          "border": "#fe716d"
         },
         "disabled": {
           "bg": "#c6c9cd",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         }
       }
@@ -1910,7 +1910,7 @@ export const tokens = {
         },
         "disabled": {
           "bg": "#c6c9cd",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
@@ -1954,7 +1954,7 @@ export const tokens = {
         },
         "disabled": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         },
         "inverse": {
@@ -1998,7 +1998,7 @@ export const tokens = {
         },
         "disabled": {
           "bg": "rgba(0, 0, 0, 0)",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "rgba(0, 0, 0, 0)"
         }
       },
@@ -2020,7 +2020,7 @@ export const tokens = {
         },
         "disabled": {
           "bg": "#c6c9cd",
-          "text": "rgba(30, 33, 36, 0.48)",
+          "text": "#8e949c",
           "border": "#c6c9cd"
         }
       }

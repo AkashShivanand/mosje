@@ -24,7 +24,7 @@ export const META = {
   "inkPairs": 46,
   "worstInkPair": 4.97,
   "belowAA": 0,
-  "rungCaveats": 16,
+  "rungCaveats": 15,
   "brandVaryingRamps": [
     "primaryScale",
     "neutralScale"
@@ -120,7 +120,7 @@ export const RAMPS: readonly Ramp[] = [
         "step": 50,
         "token": "--sa-color-primaryScale-50",
         "blue": "#ecf4ff",
-        "navy": "#f8fafd",
+        "navy": "#f7faff",
         "onWhite": 1.11,
         "anchor": null
       },
@@ -128,39 +128,39 @@ export const RAMPS: readonly Ramp[] = [
         "step": 100,
         "token": "--sa-color-primaryScale-100",
         "blue": "#c0dbff",
-        "navy": "#c9d6e5",
+        "navy": "#c1d7f2",
         "onWhite": 1.42,
         "anchor": null
       },
       {
         "step": 200,
         "token": "--sa-color-primaryScale-200",
-        "blue": "#95c2fb",
-        "navy": "#9cb0ca",
+        "blue": "#92c2ff",
+        "navy": "#93b1d6",
         "onWhite": 1.84,
         "anchor": null
       },
       {
         "step": 300,
         "token": "--sa-color-primaryScale-300",
-        "blue": "#6ca8f3",
-        "navy": "#708caf",
-        "onWhite": 2.46,
+        "blue": "#62a7ff",
+        "navy": "#6a8cb7",
+        "onWhite": 2.47,
         "anchor": null
       },
       {
         "step": 400,
         "token": "--sa-color-primaryScale-400",
-        "blue": "#428dea",
-        "navy": "#486a94",
-        "onWhite": 3.37,
+        "blue": "#3b8df0",
+        "navy": "#446a99",
+        "onWhite": 3.36,
         "anchor": null
       },
       {
         "step": 500,
         "token": "--sa-color-primaryScale-500",
         "blue": "#0373df",
-        "navy": "#244c7b",
+        "navy": "#224c7d",
         "onWhite": 4.64,
         "anchor": "anchor · blue"
       },
@@ -307,41 +307,41 @@ export const RAMPS: readonly Ramp[] = [
       {
         "step": 50,
         "token": "--sa-color-accentScale-50",
-        "blue": "#ecf4ee",
-        "navy": "#ecf4ee",
-        "onWhite": 1.12,
+        "blue": "#e3f8e8",
+        "navy": "#e3f8e8",
+        "onWhite": 1.11,
         "anchor": null
       },
       {
         "step": 100,
         "token": "--sa-color-accentScale-100",
-        "blue": "#bed8c5",
-        "navy": "#bed8c5",
-        "onWhite": 1.52,
+        "blue": "#b3dcbe",
+        "navy": "#b3dcbe",
+        "onWhite": 1.51,
         "anchor": null
       },
       {
         "step": 200,
         "token": "--sa-color-accentScale-200",
-        "blue": "#91b99c",
-        "navy": "#91b99c",
-        "onWhite": 2.18,
+        "blue": "#87bd97",
+        "navy": "#87bd97",
+        "onWhite": 2.15,
         "anchor": null
       },
       {
         "step": 300,
         "token": "--sa-color-accentScale-300",
-        "blue": "#659c77",
-        "navy": "#659c77",
-        "onWhite": 3.19,
+        "blue": "#5d9e73",
+        "navy": "#5d9e73",
+        "onWhite": 3.18,
         "anchor": null
       },
       {
         "step": 400,
         "token": "--sa-color-accentScale-400",
-        "blue": "#3b8155",
-        "navy": "#3b8155",
-        "onWhite": 4.71,
+        "blue": "#368253",
+        "navy": "#368253",
+        "onWhite": 4.69,
         "anchor": null
       },
       {
@@ -511,41 +511,41 @@ export const RAMPS: readonly Ramp[] = [
       {
         "step": 50,
         "token": "--sa-color-successScale-50",
-        "blue": "#ecf4ee",
-        "navy": "#ecf4ee",
-        "onWhite": 1.12,
+        "blue": "#e3f8e8",
+        "navy": "#e3f8e8",
+        "onWhite": 1.11,
         "anchor": null
       },
       {
         "step": 100,
         "token": "--sa-color-successScale-100",
-        "blue": "#bed8c5",
-        "navy": "#bed8c5",
-        "onWhite": 1.52,
+        "blue": "#b3dcbe",
+        "navy": "#b3dcbe",
+        "onWhite": 1.51,
         "anchor": null
       },
       {
         "step": 200,
         "token": "--sa-color-successScale-200",
-        "blue": "#91b99c",
-        "navy": "#91b99c",
-        "onWhite": 2.18,
+        "blue": "#87bd97",
+        "navy": "#87bd97",
+        "onWhite": 2.15,
         "anchor": null
       },
       {
         "step": 300,
         "token": "--sa-color-successScale-300",
-        "blue": "#659c77",
-        "navy": "#659c77",
-        "onWhite": 3.19,
+        "blue": "#5d9e73",
+        "navy": "#5d9e73",
+        "onWhite": 3.18,
         "anchor": null
       },
       {
         "step": 400,
         "token": "--sa-color-successScale-400",
-        "blue": "#3b8155",
-        "navy": "#3b8155",
-        "onWhite": 4.71,
+        "blue": "#368253",
+        "navy": "#368253",
+        "onWhite": 4.69,
         "anchor": null
       },
       {
@@ -605,89 +605,89 @@ export const RAMPS: readonly Ramp[] = [
       {
         "step": 50,
         "token": "--sa-color-dangerScale-50",
-        "blue": "#ffe4e0",
-        "navy": "#ffe4e0",
-        "onWhite": 1.21,
+        "blue": "#ffe4e1",
+        "navy": "#ffe4e1",
+        "onWhite": 1.2,
         "anchor": null
       },
       {
         "step": 100,
         "token": "--sa-color-dangerScale-100",
-        "blue": "#ffc2b8",
-        "navy": "#ffc2b8",
+        "blue": "#ffc1bc",
+        "navy": "#ffc1bc",
         "onWhite": 1.54,
         "anchor": null
       },
       {
         "step": 200,
         "token": "--sa-color-dangerScale-200",
-        "blue": "#ff9d8f",
-        "navy": "#ff9d8f",
+        "blue": "#ff9c95",
+        "navy": "#ff9c95",
         "onWhite": 2.01,
         "anchor": null
       },
       {
         "step": 300,
         "token": "--sa-color-dangerScale-300",
-        "blue": "#f87868",
-        "navy": "#f87868",
-        "onWhite": 2.67,
+        "blue": "#fe716d",
+        "navy": "#fe716d",
+        "onWhite": 2.69,
         "anchor": null
       },
       {
         "step": 400,
         "token": "--sa-color-dangerScale-400",
-        "blue": "#ec5042",
-        "navy": "#ec5042",
-        "onWhite": 3.63,
+        "blue": "#ec4e4f",
+        "navy": "#ec4e4f",
+        "onWhite": 3.64,
         "anchor": "anchor"
       },
       {
         "step": 500,
         "token": "--sa-color-dangerScale-500",
-        "blue": "#cb3f33",
-        "navy": "#cb3f33",
-        "onWhite": 4.89,
+        "blue": "#cb3d3f",
+        "navy": "#cb3d3f",
+        "onWhite": 4.91,
         "anchor": null
       },
       {
         "step": 600,
         "token": "--sa-color-dangerScale-600",
-        "blue": "#aa2f25",
-        "navy": "#aa2f25",
-        "onWhite": 6.68,
+        "blue": "#aa2d30",
+        "navy": "#aa2d30",
+        "onWhite": 6.72,
         "anchor": null
       },
       {
         "step": 700,
         "token": "--sa-color-dangerScale-700",
-        "blue": "#8b1f18",
-        "navy": "#8b1f18",
+        "blue": "#8b1e22",
+        "navy": "#8b1e22",
         "onWhite": 9.1,
         "anchor": null
       },
       {
         "step": 800,
         "token": "--sa-color-dangerScale-800",
-        "blue": "#6c100c",
-        "navy": "#6c100c",
+        "blue": "#6c0f15",
+        "navy": "#6c0f15",
         "onWhite": 12.23,
         "anchor": null
       },
       {
         "step": 900,
         "token": "--sa-color-dangerScale-900",
-        "blue": "#4e0303",
-        "navy": "#4e0303",
-        "onWhite": 15.69,
+        "blue": "#4e0209",
+        "navy": "#4e0209",
+        "onWhite": 15.71,
         "anchor": null
       },
       {
         "step": 950,
         "token": "--sa-color-dangerScale-950",
-        "blue": "#300000",
-        "navy": "#300000",
-        "onWhite": 18.66,
+        "blue": "#300003",
+        "navy": "#300003",
+        "onWhite": 18.63,
         "anchor": null
       }
     ],
@@ -699,25 +699,25 @@ export const RAMPS: readonly Ramp[] = [
       {
         "step": 50,
         "token": "--sa-color-warningScale-50",
-        "blue": "#fef1e0",
-        "navy": "#fef1e0",
+        "blue": "#fff1df",
+        "navy": "#fff1df",
         "onWhite": 1.11,
         "anchor": null
       },
       {
         "step": 100,
         "token": "--sa-color-warningScale-100",
-        "blue": "#f7d5a6",
-        "navy": "#f7d5a6",
+        "blue": "#ffd394",
+        "navy": "#ffd394",
         "onWhite": 1.4,
         "anchor": null
       },
       {
         "step": 200,
         "token": "--sa-color-warningScale-200",
-        "blue": "#ecb96c",
-        "navy": "#ecb96c",
-        "onWhite": 1.79,
+        "blue": "#f1b75e",
+        "navy": "#f1b75e",
+        "onWhite": 1.8,
         "anchor": null
       },
       {
@@ -793,89 +793,89 @@ export const RAMPS: readonly Ramp[] = [
       {
         "step": 50,
         "token": "--sa-color-infoScale-50",
-        "blue": "#edf4ff",
-        "navy": "#edf4ff",
-        "onWhite": 1.11,
+        "blue": "#e2f8ff",
+        "navy": "#e2f8ff",
+        "onWhite": 1.1,
         "anchor": null
       },
       {
         "step": 100,
         "token": "--sa-color-infoScale-100",
-        "blue": "#c3dcff",
-        "navy": "#c3dcff",
-        "onWhite": 1.4,
+        "blue": "#b4e3f2",
+        "navy": "#b4e3f2",
+        "onWhite": 1.38,
         "anchor": null
       },
       {
         "step": 200,
         "token": "--sa-color-infoScale-200",
-        "blue": "#99c3ff",
-        "navy": "#99c3ff",
-        "onWhite": 1.81,
+        "blue": "#8eccdf",
+        "navy": "#8eccdf",
+        "onWhite": 1.77,
         "anchor": null
       },
       {
         "step": 300,
         "token": "--sa-color-infoScale-300",
-        "blue": "#72a9fa",
-        "navy": "#72a9fa",
-        "onWhite": 2.39,
+        "blue": "#69b4cb",
+        "navy": "#69b4cb",
+        "onWhite": 2.34,
         "anchor": null
       },
       {
         "step": 400,
         "token": "--sa-color-infoScale-400",
-        "blue": "#4a8ff2",
-        "navy": "#4a8ff2",
-        "onWhite": 3.23,
+        "blue": "#439db7",
+        "navy": "#439db7",
+        "onWhite": 3.11,
         "anchor": null
       },
       {
         "step": 500,
         "token": "--sa-color-infoScale-500",
-        "blue": "#1a73e8",
-        "navy": "#1a73e8",
-        "onWhite": 4.51,
+        "blue": "#0b86a2",
+        "navy": "#0b86a2",
+        "onWhite": 4.25,
         "anchor": "anchor"
       },
       {
         "step": 600,
         "token": "--sa-color-infoScale-600",
-        "blue": "#0a5cc3",
-        "navy": "#0a5cc3",
-        "onWhite": 6.3,
+        "blue": "#006d85",
+        "navy": "#006d85",
+        "onWhite": 5.96,
         "anchor": null
       },
       {
         "step": 700,
         "token": "--sa-color-infoScale-700",
-        "blue": "#00479d",
-        "navy": "#00479d",
-        "onWhite": 8.79,
+        "blue": "#005568",
+        "navy": "#005568",
+        "onWhite": 8.4,
         "anchor": null
       },
       {
         "step": 800,
         "token": "--sa-color-infoScale-800",
-        "blue": "#003376",
-        "navy": "#003376",
-        "onWhite": 12.1,
+        "blue": "#003e4d",
+        "navy": "#003e4d",
+        "onWhite": 11.69,
         "anchor": null
       },
       {
         "step": 900,
         "token": "--sa-color-infoScale-900",
-        "blue": "#002150",
-        "navy": "#002150",
-        "onWhite": 15.75,
+        "blue": "#002933",
+        "navy": "#002933",
+        "onWhite": 15.38,
         "anchor": null
       },
       {
         "step": 950,
         "token": "--sa-color-infoScale-950",
-        "blue": "#00102e",
-        "navy": "#00102e",
-        "onWhite": 18.86,
+        "blue": "#00151b",
+        "navy": "#00151b",
+        "onWhite": 18.7,
         "anchor": null
       }
     ],
@@ -938,7 +938,7 @@ export const INK_PAIRS: readonly PairFamily[] = [
         "rung": "subtle",
         "bgToken": "bg/brand/primary/subtle",
         "onToken": "on/bg/brand/primary/subtle",
-        "fill": "#95c2fb",
+        "fill": "#92c2ff",
         "ink": "#1e2124",
         "ratio": 8.77
       },
@@ -954,9 +954,9 @@ export const INK_PAIRS: readonly PairFamily[] = [
         "rung": "bold",
         "bgToken": "bg/brand/primary/bold",
         "onToken": "on/bg/brand/primary/bold",
-        "fill": "#6ca8f3",
+        "fill": "#62a7ff",
         "ink": "#1e2124",
-        "ratio": 6.57
+        "ratio": 6.54
       },
       {
         "rung": "bolder",
@@ -1038,33 +1038,33 @@ export const INK_PAIRS: readonly PairFamily[] = [
         "rung": "subtler",
         "bgToken": "bg/brand/accent/subtler",
         "onToken": "on/bg/brand/accent/subtler",
-        "fill": "#bed8c5",
+        "fill": "#b3dcbe",
         "ink": "#1e2124",
-        "ratio": 10.64
+        "ratio": 10.71
       },
       {
         "rung": "subtle",
         "bgToken": "bg/brand/accent/subtle",
         "onToken": "on/bg/brand/accent/subtle",
-        "fill": "#91b99c",
+        "fill": "#87bd97",
         "ink": "#1e2124",
-        "ratio": 7.41
+        "ratio": 7.51
       },
       {
         "rung": "base",
         "bgToken": "bg/brand/accent/base",
         "onToken": "on/bg/brand/accent/base",
-        "fill": "#ecf4ee",
+        "fill": "#e3f8e8",
         "ink": "#1e2124",
-        "ratio": 14.44
+        "ratio": 14.53
       },
       {
         "rung": "bold",
         "bgToken": "bg/brand/accent/bold",
         "onToken": "on/bg/brand/accent/bold",
-        "fill": "#659c77",
+        "fill": "#5d9e73",
         "ink": "#1e2124",
-        "ratio": 5.06
+        "ratio": 5.09
       },
       {
         "rung": "bolder",
@@ -1092,33 +1092,33 @@ export const INK_PAIRS: readonly PairFamily[] = [
         "rung": "subtler",
         "bgToken": "bg/status/success/subtler",
         "onToken": "on/bg/status/success/subtler",
-        "fill": "#bed8c5",
+        "fill": "#b3dcbe",
         "ink": "#1e2124",
-        "ratio": 10.64
+        "ratio": 10.71
       },
       {
         "rung": "subtle",
         "bgToken": "bg/status/success/subtle",
         "onToken": "on/bg/status/success/subtle",
-        "fill": "#91b99c",
+        "fill": "#87bd97",
         "ink": "#1e2124",
-        "ratio": 7.41
+        "ratio": 7.51
       },
       {
         "rung": "base",
         "bgToken": "bg/status/success/base",
         "onToken": "on/bg/status/success/base",
-        "fill": "#ecf4ee",
+        "fill": "#e3f8e8",
         "ink": "#1e2124",
-        "ratio": 14.44
+        "ratio": 14.53
       },
       {
         "rung": "bold",
         "bgToken": "bg/status/success/bold",
         "onToken": "on/bg/status/success/bold",
-        "fill": "#659c77",
+        "fill": "#5d9e73",
         "ink": "#1e2124",
-        "ratio": 5.06
+        "ratio": 5.09
       },
       {
         "rung": "bolder",
@@ -1146,47 +1146,47 @@ export const INK_PAIRS: readonly PairFamily[] = [
         "rung": "subtler",
         "bgToken": "bg/status/error/subtler",
         "onToken": "on/bg/status/error/subtler",
-        "fill": "#ffc2b8",
+        "fill": "#ffc1bc",
         "ink": "#1e2124",
-        "ratio": 10.52
+        "ratio": 10.48
       },
       {
         "rung": "subtle",
         "bgToken": "bg/status/error/subtle",
         "onToken": "on/bg/status/error/subtle",
-        "fill": "#ff9d8f",
+        "fill": "#ff9c95",
         "ink": "#1e2124",
-        "ratio": 8.07
+        "ratio": 8.04
       },
       {
         "rung": "base",
         "bgToken": "bg/status/error/base",
         "onToken": "on/bg/status/error/base",
-        "fill": "#ffe4e0",
+        "fill": "#ffe4e1",
         "ink": "#1e2124",
-        "ratio": 13.42
+        "ratio": 13.43
       },
       {
         "rung": "bold",
         "bgToken": "bg/status/error/bold",
         "onToken": "on/bg/status/error/bold",
-        "fill": "#f87868",
+        "fill": "#fe716d",
         "ink": "#1e2124",
-        "ratio": 6.07
+        "ratio": 6.01
       },
       {
         "rung": "bolder",
         "bgToken": "bg/status/error/bolder",
         "onToken": "on/bg/status/error/bolder",
-        "fill": "#aa2f25",
+        "fill": "#aa2d30",
         "ink": "#ffffff",
-        "ratio": 6.68
+        "ratio": 6.72
       },
       {
         "rung": "boldest",
         "bgToken": "bg/status/error/boldest",
         "onToken": "on/bg/status/error/boldest",
-        "fill": "#6c100c",
+        "fill": "#6c0f15",
         "ink": "#ffffff",
         "ratio": 12.23
       }
@@ -1200,25 +1200,25 @@ export const INK_PAIRS: readonly PairFamily[] = [
         "rung": "subtler",
         "bgToken": "bg/status/warning/subtler",
         "onToken": "on/bg/status/warning/subtler",
-        "fill": "#f7d5a6",
+        "fill": "#ffd394",
         "ink": "#1e2124",
-        "ratio": 11.57
+        "ratio": 11.55
       },
       {
         "rung": "subtle",
         "bgToken": "bg/status/warning/subtle",
         "onToken": "on/bg/status/warning/subtle",
-        "fill": "#ecb96c",
+        "fill": "#f1b75e",
         "ink": "#1e2124",
-        "ratio": 9.03
+        "ratio": 8.99
       },
       {
         "rung": "base",
         "bgToken": "bg/status/warning/base",
         "onToken": "on/bg/status/warning/base",
-        "fill": "#fef1e0",
+        "fill": "#fff1df",
         "ink": "#1e2124",
-        "ratio": 14.54
+        "ratio": 14.56
       },
       {
         "rung": "bold",
@@ -1254,49 +1254,49 @@ export const INK_PAIRS: readonly PairFamily[] = [
         "rung": "subtler",
         "bgToken": "bg/status/info/subtler",
         "onToken": "on/bg/status/info/subtler",
-        "fill": "#c3dcff",
+        "fill": "#b4e3f2",
         "ink": "#1e2124",
-        "ratio": 11.56
+        "ratio": 11.72
       },
       {
         "rung": "subtle",
         "bgToken": "bg/status/info/subtle",
         "onToken": "on/bg/status/info/subtle",
-        "fill": "#99c3ff",
+        "fill": "#8eccdf",
         "ink": "#1e2124",
-        "ratio": 8.94
+        "ratio": 9.13
       },
       {
         "rung": "base",
         "bgToken": "bg/status/info/base",
         "onToken": "on/bg/status/info/base",
-        "fill": "#edf4ff",
+        "fill": "#e2f8ff",
         "ink": "#1e2124",
-        "ratio": 14.62
+        "ratio": 14.72
       },
       {
         "rung": "bold",
         "bgToken": "bg/status/info/bold",
         "onToken": "on/bg/status/info/bold",
-        "fill": "#72a9fa",
+        "fill": "#69b4cb",
         "ink": "#1e2124",
-        "ratio": 6.76
+        "ratio": 6.93
       },
       {
         "rung": "bolder",
         "bgToken": "bg/status/info/bolder",
         "onToken": "on/bg/status/info/bolder",
-        "fill": "#0a5cc3",
+        "fill": "#006d85",
         "ink": "#ffffff",
-        "ratio": 6.3
+        "ratio": 5.96
       },
       {
         "rung": "boldest",
         "bgToken": "bg/status/info/boldest",
         "onToken": "on/bg/status/info/boldest",
-        "fill": "#003376",
+        "fill": "#003e4d",
         "ink": "#ffffff",
-        "ratio": 12.1
+        "ratio": 11.69
       }
     ]
   }
@@ -1305,13 +1305,13 @@ export const INK_PAIRS: readonly PairFamily[] = [
 export const RUNG_LEDGER: readonly LedgerEntry[] = [
   {
     "token": "bg/brand/accent/subtle",
-    "measured": 2.18,
+    "measured": 2.15,
     "implied": 3,
     "rung": "subtle"
   },
   {
     "token": "bg/brand/primary/bold",
-    "measured": 2.46,
+    "measured": 2.47,
     "implied": 3,
     "rung": "bold"
   },
@@ -1347,7 +1347,7 @@ export const RUNG_LEDGER: readonly LedgerEntry[] = [
   },
   {
     "token": "bg/status/error/bold",
-    "measured": 2.67,
+    "measured": 2.69,
     "implied": 3,
     "rung": "bold"
   },
@@ -1359,19 +1359,19 @@ export const RUNG_LEDGER: readonly LedgerEntry[] = [
   },
   {
     "token": "bg/status/info/bold",
-    "measured": 2.39,
+    "measured": 2.34,
     "implied": 3,
     "rung": "bold"
   },
   {
     "token": "bg/status/info/subtle",
-    "measured": 1.81,
+    "measured": 1.77,
     "implied": 3,
     "rung": "subtle"
   },
   {
     "token": "bg/status/success/subtle",
-    "measured": 2.18,
+    "measured": 2.15,
     "implied": 3,
     "rung": "subtle"
   },
@@ -1383,15 +1383,9 @@ export const RUNG_LEDGER: readonly LedgerEntry[] = [
   },
   {
     "token": "bg/status/warning/subtle",
-    "measured": 1.79,
+    "measured": 1.8,
     "implied": 3,
     "rung": "subtle"
-  },
-  {
-    "token": "border/neutral/bolder/default",
-    "measured": 3.06,
-    "implied": 4.5,
-    "rung": "bolder"
   },
   {
     "token": "border/neutral/subtle",
@@ -1532,17 +1526,17 @@ export const CHART = {
     {
       "key": "negStrong",
       "token": "chart/div/negStrong",
-      "value": "#6c100c"
+      "value": "#6c0f15"
     },
     {
       "key": "neg",
       "token": "chart/div/neg",
-      "value": "#ec5042"
+      "value": "#ec4e4f"
     },
     {
       "key": "negSoft",
       "token": "chart/div/negSoft",
-      "value": "#ffc2b8"
+      "value": "#ffc1bc"
     },
     {
       "key": "mid",
@@ -1552,12 +1546,12 @@ export const CHART = {
     {
       "key": "posSoft",
       "token": "chart/div/posSoft",
-      "value": "#bed8c5"
+      "value": "#b3dcbe"
     },
     {
       "key": "pos",
       "token": "chart/div/pos",
-      "value": "#659c77"
+      "value": "#5d9e73"
     },
     {
       "key": "posStrong",
@@ -1574,7 +1568,7 @@ export const CHART = {
     {
       "key": "down",
       "token": "chart/trend/down",
-      "value": "#cb3f33"
+      "value": "#cb3d3f"
     },
     {
       "key": "flat",
@@ -1798,32 +1792,32 @@ export const ALPHA = [
       {
         "step": 8,
         "token": "color/transparent/danger/8",
-        "value": "rgba(203, 63, 51, 0.08)"
+        "value": "rgba(203, 61, 63, 0.08)"
       },
       {
         "step": 16,
         "token": "color/transparent/danger/16",
-        "value": "rgba(203, 63, 51, 0.16)"
+        "value": "rgba(203, 61, 63, 0.16)"
       },
       {
         "step": 24,
         "token": "color/transparent/danger/24",
-        "value": "rgba(203, 63, 51, 0.24)"
+        "value": "rgba(203, 61, 63, 0.24)"
       },
       {
         "step": 32,
         "token": "color/transparent/danger/32",
-        "value": "rgba(203, 63, 51, 0.32)"
+        "value": "rgba(203, 61, 63, 0.32)"
       },
       {
         "step": 40,
         "token": "color/transparent/danger/40",
-        "value": "rgba(203, 63, 51, 0.4)"
+        "value": "rgba(203, 61, 63, 0.4)"
       },
       {
         "step": 48,
         "token": "color/transparent/danger/48",
-        "value": "rgba(203, 63, 51, 0.48)"
+        "value": "rgba(203, 61, 63, 0.48)"
       }
     ]
   },
@@ -1960,8 +1954,8 @@ export const RETIRED = [
   {
     "from": "--ds-danger",
     "to": "--sa-color-status-danger",
-    "value": "#8b1f18",
-    "onWhite": 9.1,
+    "value": "#aa2d30",
+    "onWhite": 6.72,
     "note": "Retired. It was dangerScale/700, not the 500 its bare name suggested."
   },
   {

@@ -174,23 +174,34 @@ test("ink roles are never left silent — text and icons always carry a measured
  * name; the stale-entry test below makes a fixed token fail until its line is deleted.
  */
 const SHORTFALL_LEDGER = new Set([
-  "Color::bg/brand/accent/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/brand/primary/bold — 2.46:1 vs ≥3:1 (\"bold\")",
+  "Color::bg/brand/accent/subtle — 2.15:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/brand/primary/bold — 2.47:1 vs ≥3:1 (\"bold\")",
   "Color::bg/brand/primary/subtle — 1.84:1 vs ≥3:1 (\"subtle\")",
   "Color::bg/brand/secondary/bold — 2.21:1 vs ≥3:1 (\"bold\")",
   "Color::bg/brand/secondary/subtle — 1.72:1 vs ≥3:1 (\"subtle\")",
   "Color::bg/neutral/bold — 1.66:1 vs ≥3:1 (\"bold\")",
   "Color::bg/neutral/subtle — 1.35:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/error/bold — 2.67:1 vs ≥3:1 (\"bold\")",
+  "Color::bg/status/error/bold — 2.69:1 vs ≥3:1 (\"bold\")",
   "Color::bg/status/error/subtle — 2.01:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/info/bold — 2.39:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/status/info/subtle — 1.81:1 vs ≥3:1 (\"subtle\")",
-  "Color::bg/status/success/subtle — 2.18:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/status/info/bold — 2.34:1 vs ≥3:1 (\"bold\")",
+  "Color::bg/status/info/subtle — 1.77:1 vs ≥3:1 (\"subtle\")",
+  "Color::bg/status/success/subtle — 2.15:1 vs ≥3:1 (\"subtle\")",
   "Color::bg/status/warning/bold — 2.35:1 vs ≥3:1 (\"bold\")",
-  "Color::bg/status/warning/subtle — 1.79:1 vs ≥3:1 (\"subtle\")",
-  "Color::border/neutral/bolder/default — 3.06:1 vs ≥4.5:1 (\"bolder\")",
+  "Color::bg/status/warning/subtle — 1.8:1 vs ≥3:1 (\"subtle\")",
   "Color::border/neutral/subtle — 1.35:1 vs ≥3:1 (\"subtle\")",
 ]);
+/*
+ * 2026-09-04, the colour-system redesign. 16 entries -> 15, none added.
+ *
+ *   - `border/neutral/bolder/default` (3.06:1 vs ≥4.5) is GONE: the resting form-control border
+ *     moved from neutralScale/400 to /500 and measures 4.65:1. It was also the one entry that
+ *     was a real WCAG 1.4.11 shortfall on the muted page ground (2.68:1), which the contract
+ *     does not measure for borders.
+ *   - Five `Background/*` measurements moved by ≤0.05 because the tints under them hold more
+ *     chroma now (the tint exponent in ramp.mjs, 0.85 -> 0.5); the info family moved most
+ *     (2.39 -> 2.34, 1.81 -> 1.77) because it changed hue. None reaches its threshold; the
+ *     ladder-definition argument above is unchanged.
+ */
 
 /*
  * 2026-08-11, the functional and neutral ramp rebuild. 18 entries -> 16, none added.

@@ -60,31 +60,34 @@
   }
 
   /* Status → colour mapping (info→primary, success→success, warning→warning, error→danger) */
+  /* Backgrounds are the status family's own `base` tint. Until 2026-09-04 they were four
+     hand-mixed percentages of the INK colour over white (6%, 7%, 14%, 6%) — so the success
+     alert was a grey with a green stripe, the warning alert was khaki (14% of a brown), and
+     none of the four matched the toast beside it, which reads the same token this now does. */
   .ds-alert--info {
-    --_color: var(--sa-text-brand-primary-base);
-    background-color: color-mix(in srgb, var(--sa-color-action-primary-default) 6%, var(--sa-bg-neutral-base));
+    --_color: var(--sa-text-status-info-base);
+    background-color: var(--sa-bg-status-info-base);
   }
   .ds-alert--success {
     --_color: var(--sa-text-status-success-base);
-    background-color: color-mix(in srgb, var(--sa-color-status-success) 7%, var(--sa-bg-neutral-base));
+    background-color: var(--sa-bg-status-success-base);
   }
   .ds-alert--warning {
     --_color: var(--sa-text-status-warning-base);
-    background-color: color-mix(in srgb, var(--sa-color-status-warning) 14%, var(--sa-bg-neutral-base));
+    background-color: var(--sa-bg-status-warning-base);
   }
   .ds-alert--error {
     --_color: var(--sa-text-status-error-base);
-    background-color: color-mix(in srgb, var(--sa-color-status-danger) 6%, var(--sa-bg-neutral-base));
+    background-color: var(--sa-bg-status-error-base);
   }
 
   .ds-alert__icon {
     display: inline-flex;
     flex: 0 0 auto;
     color: var(--_color);
-    /* warning amber needs ink, not the pale yellow itself, for the glyph */
-  }
-  .ds-alert--warning .ds-alert__icon {
-    color: var(--sa-color-brand-yellow);
+    /* The warning glyph used to be painted --sa-color-brand-yellow (#FFD323): 1.44:1 on white,
+       a BETA-badge colour that is neither a status nor a brand token. It takes the warning ink
+       like every other variant now (2026-09-04). */
   }
 
   .ds-alert__content {
