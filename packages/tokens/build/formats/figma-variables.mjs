@@ -482,11 +482,20 @@ const FIGMA_OPACITY_SCALE = 100;
  *     opacity: { type: "ALIAS", collection: "Static", name: "alpha/8" },
  *     fallback: { type: "COLOR", value: "rgba(4, 106, 56, 0.08)" } }
  *
- * `fallback` is the composited literal, for a writer that cannot express the binding: the
- * Plugin API this estate pushes through (apiVersion 1.0.0, 2026-09-04) rejects every shape of
- * opacity on a VariableAlias, so the push script writes the fallback and the binding is made
- * in the Figma UI. `figma-value-parity` compares the INTENDED value, so the library reads as a
- * known difference until it is.
+ * HOW FIGMA STORES IT, learned 2026-09-04 from a read-back after the bindings were made in
+ * the UI: not as an alias with an opacity field but as a VARIABLE EXPRESSION —
+ *
+ *   { type: "VARIABLE_EXPRESSION", expressionFunction: "COMPOSE_COLOR",
+ *     expressionArguments: [ { type: "VARIABLE_ALIAS", id: <base> }, { type: "VARIABLE_ALIAS", id: <alpha> } ] }
+ *
+ * — and `setValueForMode` ACCEPTS that shape (probed on a temporary variable), so a push can
+ * write the binding itself; the 32 alpha/0 resting fills were written that way. Every earlier
+ * attempt had put the opacity ON the alias object, which is what the help page implies and
+ * what the API rejects. A read-back normalises an expression as `->base@->alpha/N`, which is
+ * exactly what normValue produces for this payload shape, so the two halves of
+ * figma-value-parity agree once the library holds the expressions.
+ *
+ * `fallback` is the composited literal, kept for any writer that cannot express the binding.
  */
 function applyAlpha(valuesByMode, alphaRef, nameByPath, resolvedByPath, tokenByPath) {
   const alphaKey = alphaRef.trim().slice(1, -1);
