@@ -694,7 +694,7 @@
     {
       "node": "55402:1870",
       "where": "PortalLoginTemplate — Documentation › 06 Behaviour › PIN entry",
-      "figma": "The PIN field takes digits only and renders masked. Its reveal control is PasswordInput's, not a hand-rolled one — the template drew its own Show/Hide button until 2026-09-03. Recovery is Forgot PIN rather than the password link, because a portal that signs in on a PIN has no password to reset.",
+      "figma": "The PIN field takes digits only and renders masked. Its reveal control is PasswordInput's, not a hand-rolled one — the template drew its own Show/Hide button until 2026-09-03. Recovery is Forgot PIN rather than a password link, because a portal that signs in on a PIN has no password to reset.",
       "expect": [
         {
           "kind": "source",
