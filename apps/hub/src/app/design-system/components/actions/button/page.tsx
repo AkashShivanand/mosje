@@ -818,6 +818,31 @@ import { buttonClasses } from "@mosje/design-system";
                 Open the National Portal
               </Button>
             </p>
+            <p>
+              <code>external</code> is the shorthand, and it does more than set the target.
+              GIGW 3.0 requires telling the reader when a link opens a new window, so it
+              draws the open-in-new glyph for the people who can see it{" "}
+              <em>and</em> appends a visually hidden &ldquo;(opens in a new tab)&rdquo; to
+              the accessible name for the people who cannot. Shipping one without the other
+              serves half the audience. It is ignored without <code>href</code> &mdash; a{" "}
+              <code>&lt;button&gt;</code> does not navigate, so it cannot open a tab.
+            </p>
+            <p>
+              <Button
+                variant="primary"
+                appearance="filled"
+                href="https://www.india.gov.in"
+                external
+                data-testid="btn-external-shorthand"
+              >
+                Open the National Portal
+              </Button>
+            </p>
+            <p>
+              A trailing icon you pass yourself wins over the glyph: choosing one is a
+              deliberate statement about what the control means, and the component has no
+              business overruling it. The hidden warning is added either way.
+            </p>
           </section>
 
           <section className="cdp__section" aria-labelledby="cdp-evidence">

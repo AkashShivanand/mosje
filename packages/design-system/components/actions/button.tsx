@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "../../utils/cn";
+import { Icon } from "../utilities/icon";
 import "./button.css";
 
 /**
@@ -80,6 +81,23 @@ export interface ButtonProps
   /** Link form only — download the target rather than navigating to it. */
   download?: string | boolean;
   /**
+   * Link form only — the CTA leaves this site, so it opens in a new tab.
+   *
+   * Sets `target="_blank"`, takes the `rel` default below, draws a trailing
+   * open-in-new glyph unless `iconRight` says otherwise, AND appends a visually
+   * hidden "(opens in a new tab)" to the accessible name — the same contract
+   * `Link` carries, because it is the same obligation.
+   *
+   * GIGW 3.0 requires telling the reader when a link opens a new window. The glyph
+   * tells the people who can see and the hidden text tells the people who cannot;
+   * shipping one without the other serves half the audience. All twenty-two
+   * external links on the website had NEITHER before this, which is what a
+   * requirement with no component behind it is worth.
+   *
+   * Ignored without `href` — a `<button>` does not navigate, so it cannot open a tab.
+   */
+  external?: boolean;
+  /**
    * Busy state. Sets `aria-busy` and disables the control, so a form cannot be
    * submitted twice while the first submission is in flight.
    *
@@ -150,6 +168,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       target,
       rel: relProp,
       download,
+      external = false,
       disabled,
       loading = false,
       fullWidth = false,
@@ -192,6 +211,20 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       nowrap && "ds-btn--nowrap",
       className,
     );
+    /*
+     * `external` IS A LINK-FORM CONTRACT, SO IT IS GATED ON `href`.
+     *
+     * A `<button>` does not navigate and cannot open a tab, so drawing a new-tab glyph
+     * on one — or telling a screen reader it opens a tab — would be a lie. Everything
+     * below reads `isExternalLink`, never `external` on its own.
+     */
+    const isExternalLink = external && href != null;
+    /* The caller's own trailing icon wins: passing one is a deliberate choice about
+       what this control means, and silently replacing it would be the component
+       overruling the person using it. */
+    const resolvedIconRight =
+      iconRight ?? (isExternalLink ? <Icon name="open_in_new" size={16} aria-hidden /> : undefined);
+
     const content = (
       <>
         {/*
@@ -223,11 +256,17 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
           </span>
         )}
         {children}
-        {iconRight != null && (
+        {resolvedIconRight != null && (
           <span className="ds-btn__icon ds-btn__icon--end" aria-hidden="true">
-            {iconRight}
+            {resolvedIconRight}
           </span>
         )}
+        {/*
+          Part of the ACCESSIBLE NAME, not an aside. It sits inside the anchor so a
+          screen reader reads "View Online (opens in a new tab)" as one name; outside
+          it, the warning would be a separate node the reader may never reach.
+        */}
+        {isExternalLink && <span className="ds-sr-only"> (opens in a new tab)</span>}
       </>
     );
 
@@ -268,12 +307,13 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
        * meant it, and silently overriding a security-relevant attribute they set on
        * purpose is worse than the default this replaces.
        */
-      const rel = relProp ?? (target === "_blank" ? "noopener noreferrer" : undefined);
+      const resolvedTarget = target ?? (external ? "_blank" : undefined);
+      const rel = relProp ?? (resolvedTarget === "_blank" ? "noopener noreferrer" : undefined);
       return (
         <a
           className={classes}
           {...anchorRest}
-          {...(target != null ? { target } : {})}
+          {...(resolvedTarget != null ? { target: resolvedTarget } : {})}
           {...(rel != null ? { rel } : {})}
           {...(download != null ? { download } : {})}
           {...(loading ? { "aria-busy": "true" as const } : {})}

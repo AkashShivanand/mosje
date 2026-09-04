@@ -4,7 +4,7 @@ import * as React from "react";
 import { cn } from "@/lib/website/utils";
 import { CENTRE_TYPE_META, CENTRE_TYPE_ORDER, type CentreType, type DeAddictionCentre } from "@/content/website/deaddiction-centres";
 import { CentreMapDynamic, centreKey, filterCentres } from "./locator-shared";
-import { Icon, Search } from "@mosje/design-system";
+import { Icon, Link, Search } from "@mosje/design-system";
 
 export function LocatorMapFirst() {
   const [query, setQuery] = React.useState("");
@@ -86,10 +86,10 @@ export function LocatorMapFirst() {
           <p className="mt-2 text-[14px] font-semibold leading-snug text-ink">{selected.name}</p>
           <p className="mt-1 text-[12px] text-ink-muted">{selected.address}</p>
           <p className="mt-1 text-[12px] font-medium text-ink">{selected.district}, {selected.state}</p>
-          <a href={`https://www.google.com/maps/search/?api=1&query=${selected.lat},${selected.lng}`} target="_blank" rel="noreferrer"
-            className="mt-2 inline-flex items-center gap-1.5 text-[12px] font-semibold text-primary hover:text-primary-dark">
-            <Icon name="navigation" size={14} /> Get directions
-          </a>
+          <Link href={`https://www.google.com/maps/search/?api=1&query=${selected.lat},${selected.lng}`} external variant="standalone"
+            className="mt-2 text-[12px] font-semibold" iconLeft={<Icon name="navigation" size={14} />}>
+            Get directions
+          </Link>
         </div>
       )}
     </div>

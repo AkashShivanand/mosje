@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { Icon, buttonClasses } from "@mosje/design-system";
+import { Button, Icon, Link } from "@mosje/design-system";
 import { PageLayout } from "@/components/website/layout/PageLayout";
 import { getSchemes, getScheme, withAssetBasePath, getContentSyncedDate } from "@/lib/website/content";
 import { socialCard } from "@/lib/seo/social";
@@ -48,24 +48,29 @@ export default async function SchemeDetailPage({
       actions={
         <div className="flex items-center gap-2">
           {scheme.website && (
-            <a
+            <Button
               href={scheme.website}
-              target="_blank"
-              rel="noreferrer"
-              className={buttonClasses("primary", "filled", "sm", "text-xs px-4 py-2 flex items-center gap-1.5")}
+              external
+              variant="primary"
+              appearance="filled"
+              size="sm"
+              className="text-xs px-4 py-2"
             >
-              Apply Online <Icon name="open_in_new" size={16} />
-            </a>
+              Apply Online
+            </Button>
           )}
           {scheme.sourceUrl && (
-            <a
+            <Button
               href={scheme.sourceUrl}
-              target="_blank"
-              rel="noreferrer"
-              className={buttonClasses("primary", "outlined", "sm", "text-xs px-3.5 py-2 flex items-center gap-1")}
+              external
+              variant="primary"
+              appearance="outlined"
+              size="sm"
+              className="text-xs px-3.5 py-2"
+              iconRight={<Icon name="arrow_outward" size={16} />}
             >
-              Portal <Icon name="arrow_outward" size={16} />
-            </a>
+              Portal
+            </Button>
           )}
         </div>
       }
@@ -79,14 +84,15 @@ export default async function SchemeDetailPage({
                 <p className="text-ink-muted">
                   Full details and application procedures for this scheme are available on the official Ministry portal.
                 </p>
-                <a
+                <Link
                   href={scheme.sourceUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary underline"
+                  external
+                  variant="standalone"
+                  size="sm"
+                  className="mt-4 font-semibold"
                 >
-                  View on dosje.gov.in <Icon name="open_in_new" size={16} />
-                </a>
+                  View on dosje.gov.in
+                </Link>
               </div>
             ) : (
               scheme.sections.map((s, i) => (
@@ -131,29 +137,23 @@ export default async function SchemeDetailPage({
                   <div>
                     <dt className="font-bold text-ink">Application Portal</dt>
                     <dd className="mt-0.5">
-                      <a
+                      <Link
                         href={scheme.website}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-primary font-semibold hover:underline flex items-center gap-1"
+                        external
+                        variant="standalone"
+                        className="font-semibold"
                       >
                         {scheme.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                        <Icon name="open_in_new" size={16} />
-                      </a>
+                      </Link>
                     </dd>
                   </div>
                 )}
                 <div>
                   <dt className="font-bold text-ink">Official Source</dt>
                   <dd className="mt-0.5">
-                    <a
-                      href={scheme.sourceUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="text-primary hover:underline flex items-center gap-1"
-                    >
-                      dosje.gov.in <Icon name="open_in_new" size={16} />
-                    </a>
+                    <Link href={scheme.sourceUrl} external variant="standalone">
+                      dosje.gov.in
+                    </Link>
                   </dd>
                 </div>
               </dl>

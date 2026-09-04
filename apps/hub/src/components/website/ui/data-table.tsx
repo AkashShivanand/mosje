@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Icon, Search } from "@mosje/design-system";
+import { Icon, Link, Search } from "@mosje/design-system";
 
 export interface DataTableColumn {
   key: string;
@@ -25,15 +25,15 @@ function Cell({ col, row }: { col: DataTableColumn; row: Record<string, unknown>
   if (col.type === "link") {
     const href = String(row[col.hrefKey ?? "href"] ?? "#");
     return (
-      <a
+      <Link
         href={href}
-        target="_blank"
-        rel="noreferrer"
-        className="inline-flex items-center gap-1.5 font-medium text-primary hover:underline"
+        external
+        variant="standalone"
+        className="font-medium"
+        iconLeft={<Icon name="download" size={16} />}
       >
-        <Icon name="download" size={16} />
         {col.linkLabel ?? "View / Download"}
-      </a>
+      </Link>
     );
   }
   return <>{String(row[col.key] ?? "")}</>;
