@@ -22,8 +22,7 @@ import {
   Select,
   Tabs,
   Textarea,
-  useToast,
-} from "@mosje/design-system";
+  useToast, Checkbox } from "@mosje/design-system";
 import { useEAnudaan } from "@/lib/e-anudaan/store/store";
 import { ngoApplications } from "@/lib/e-anudaan/selectors";
 import {
@@ -237,11 +236,12 @@ function WeekGrid({
                     <td className="py-2 pr-3 text-ink">{p.name}</td>
                     {WEEK_DAYS.map((d) => (
                       <td key={d} className="py-2 pr-3">
-                        <input
-                          type="checkbox"
-                          aria-label={`${p.name} present on ${d}`}
+                        <Checkbox
+                          size="sm"
+                          hideLabel
+                          label={`${p.name} present on ${d}`}
                           checked={marks[key(p.id, d)] ?? false}
-                          onChange={(e) => setMarks({ ...marks, [key(p.id, d)]: e.target.checked })}
+                          onCheckedChange={(on) => setMarks({ ...marks, [key(p.id, d)]: on })}
                         />
                       </td>
                     ))}

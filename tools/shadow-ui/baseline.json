@@ -11,7 +11,6 @@
   "apps/hub/src/components/nhapoa/ui.tsx": [
     "Button",
     "Card",
-    "Checkbox",
     "DataTable",
     "EmptyState",
     "PageHeader",
@@ -52,7 +51,6 @@
   "apps/hub/src/components/tg/ui.tsx": [
     "Button",
     "Card",
-    "Checkbox",
     "EmptyState",
     "PageHeader",
     "SectionTitle",

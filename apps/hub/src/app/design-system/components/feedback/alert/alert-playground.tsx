@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Alert } from "@mosje/design-system";
+import { Alert, Checkbox } from "@mosje/design-system";
 
 export function AlertPlayground() {
   const [status, setStatus] = React.useState<"info" | "success" | "warning" | "error">("info");
@@ -32,14 +32,7 @@ export function AlertPlayground() {
           </select>
         </label>
 
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={dismissible} 
-            onChange={(e) => setDismissible(e.target.checked)} 
-          />
-          <strong>Dismissible</strong>
-        </label>
+        <Checkbox label="Dismissible" size="sm" checked={dismissible} onCheckedChange={setDismissible} />
       </div>
 
       <Alert 

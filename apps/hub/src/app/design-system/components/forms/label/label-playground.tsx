@@ -1,6 +1,6 @@
 "use client";
 import * as React from "react";
-import { Label, Input } from "@mosje/design-system";
+import { Label, Input, Checkbox } from "@mosje/design-system";
 
 export function LabelPlayground() {
   const [required, setRequired] = React.useState(true);
@@ -18,23 +18,9 @@ export function LabelPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", alignSelf: "flex-start" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={required} 
-            onChange={(e) => setRequired(e.target.checked)} 
-          />
-          <strong>Required Marker</strong>
-        </label>
+        <Checkbox label="Required Marker" size="sm" checked={required} onCheckedChange={setRequired} />
         
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
-          <input 
-            type="checkbox" 
-            checked={hasHint} 
-            onChange={(e) => setHasHint(e.target.checked)} 
-          />
-          <strong>Show Hint</strong>
-        </label>
+        <Checkbox label="Show Hint" size="sm" checked={hasHint} onCheckedChange={setHasHint} />
       </div>
 
       <div style={{ maxWidth: "400px", width: "100%", display: "flex", flexDirection: "column", gap: "var(--sa-stack-8)" }}>

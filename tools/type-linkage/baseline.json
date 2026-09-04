@@ -37,7 +37,7 @@
   ],
   "totals": {
     "size-off-ramp": 184,
-    "size": 374,
+    "size": 327,
     "leading": 127,
     "tracking": 20,
     "family": 19
@@ -50,23 +50,9 @@
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/feedback/action-banner/action-banner-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 1,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/feedback/alert/alert-playground.tsx": {
       "size-off-ramp": 0,
-      "size": 2,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/feedback/empty-state/empty-state-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 3,
+      "size": 1,
       "leading": 0,
       "tracking": 0,
       "family": 0
@@ -87,108 +73,38 @@
     },
     "apps/hub/src/app/design-system/components/feedback/tooltip/tooltip-playground.tsx": {
       "size-off-ramp": 0,
-      "size": 3,
+      "size": 2,
       "leading": 0,
       "tracking": 0,
       "family": 0
     },
     "apps/hub/src/app/design-system/components/forms/aadhaar-input/aadhaar-input-playground.tsx": {
       "size-off-ramp": 0,
-      "size": 4,
+      "size": 1,
       "leading": 0,
       "tracking": 0,
       "family": 1
     },
-    "apps/hub/src/app/design-system/components/forms/captcha-field/captcha-field-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 2,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/chip/chip-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 5,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/declaration-checkbox/declaration-checkbox-playground.tsx": {
+    "apps/hub/src/app/design-system/components/forms/form-section/form-section-playground.tsx": {
       "size-off-ramp": 0,
       "size": 1,
       "leading": 0,
       "tracking": 0,
       "family": 0
     },
-    "apps/hub/src/app/design-system/components/forms/form-card/form-card-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 3,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/form-field/form-field-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 3,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/form-section/form-section-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 2,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/geo-photo-input/geo-photo-input-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 2,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/label/label-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 2,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/media-gallery-input/media-gallery-input-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 2,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/media-upload/media-upload-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 2,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
     "apps/hub/src/app/design-system/components/forms/otp-input/otp-input-playground.tsx": {
       "size-off-ramp": 1,
-      "size": 4,
+      "size": 2,
       "leading": 0,
       "tracking": 0,
       "family": 0
     },
     "apps/hub/src/app/design-system/components/forms/pan-input/pan-input-playground.tsx": {
       "size-off-ramp": 0,
-      "size": 3,
+      "size": 1,
       "leading": 0,
       "tracking": 0,
       "family": 1
-    },
-    "apps/hub/src/app/design-system/components/forms/password-input/password-input-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 2,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
     },
     "apps/hub/src/app/design-system/components/forms/password-strength-meter/password-strength-meter-playground.tsx": {
       "size-off-ramp": 1,
@@ -199,33 +115,19 @@
     },
     "apps/hub/src/app/design-system/components/forms/search/search-playground.tsx": {
       "size-off-ramp": 0,
-      "size": 4,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/select/select-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 2,
+      "size": 1,
       "leading": 0,
       "tracking": 0,
       "family": 0
     },
     "apps/hub/src/app/design-system/components/forms/textarea/textarea-playground.tsx": {
       "size-off-ramp": 0,
-      "size": 3,
+      "size": 1,
       "leading": 0,
       "tracking": 0,
       "family": 0
     },
     "apps/hub/src/app/design-system/components/forms/toggle/toggle-playground.tsx": {
-      "size-off-ramp": 0,
-      "size": 2,
-      "leading": 0,
-      "tracking": 0,
-      "family": 0
-    },
-    "apps/hub/src/app/design-system/components/forms/wizard/wizard-playground.tsx": {
       "size-off-ramp": 0,
       "size": 1,
       "leading": 0,
