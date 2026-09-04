@@ -146,6 +146,11 @@ shape as the Code Connect dry run, and **skips with a notice** rather than faili
 is absent — a gate that fails on every fork PR for the wrong reason is one people learn to
 ignore.
 
+**Exit 1 and exit 2 mean different things, and CI treats them differently.** Exit 1 is
+drift: the Index no longer describes the library, and the PR fails. Exit 2 is the tool or
+the network — a Figma outage, a rate limit, a revoked token — which has nothing to do with
+the change under review, so CI warns and moves on. The offline half still gates every PR.
+
 ### What it catches, and what it cannot
 
 It was verified by breaking it, not by watching it pass: a card removed, a card renamed to
