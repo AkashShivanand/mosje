@@ -25,7 +25,6 @@ import { contrast, PAIRINGS } from "./lib/contrast.mjs";
 
 const root = new URL("..", import.meta.url).pathname;
 const tokensCss = readFileSync(root + "dist/tokens.css", "utf8");
-const ux4gCss = readFileSync(root + "dist/ux4g.css", "utf8");
 
 /** Declarations of a selector block (or of `:root` when selector is null). */
 function blockOf(css, selector) {
@@ -38,7 +37,7 @@ function blockOf(css, selector) {
   );
 }
 
-const ROOT = new Map([...blockOf(tokensCss, null), ...blockOf(ux4gCss, null)]);
+const ROOT = new Map(blockOf(tokensCss, null));
 
 /**
  * Resolve as a browser would inside `overrides`: a declaration in the block shadows :root,
@@ -79,8 +78,6 @@ test("every BRAND meets WCAG AA on the load-bearing pairings", () => {
   const modes = [
     ["blue (default)", new Map()],
     ["navy", blockOf(tokensCss, '[data-color-mode="blue-dark"]')],
-    ["ux4g", blockOf(ux4gCss, '[data-color-mode="ux4g-light"]')],
-    ["ux4gdeep", blockOf(ux4gCss, '[data-color-mode="ux4g-dark"]')],
   ];
 
   const failures = [];

@@ -511,9 +511,10 @@ Every family carries that ladder, so no measurement is unexpressible. Two rules 
 above, and the fact that a T-shirt ramp has no slot between adjacent rungs — every insertion
 renames everything above it, which happened twice in a single day before the change.
 
-**UX4G conformance is unaffected** and must stay that way: the `--ux4g-*` parity layer is emitted
-independently and never reads these names. Renaming on our side is invisible to
-`ux4g-parity.test.mjs`; if that ever stops being true, the parity layer has been wired wrong.
+**UX4G conformance is unaffected**: the `--ux4g-*` mapping is emitted independently and never reads
+these names. Since 2026-09-04 that mapping is a build artifact of `tools/ux4g-conformance/`
+(`parity.generated.css`, gitignored), read only by `measure.mjs` — it is no longer shipped in
+`@mosje/design-system`, because nothing in the estate ever imported it.
 
 #### The boundary rule that keeps a value-name honest
 

@@ -160,7 +160,6 @@ const sd = new StyleDictionary({
       files: [
         { destination: "tokens.css", format: "css/legacy-ds" },
         { destination: "tokens-tailwind.css", format: "css/tailwind-v4" },
-        { destination: "ux4g.css", format: "css/ux4g-parity" },
       ],
     },
     ts: {
@@ -189,8 +188,16 @@ const sd = new StyleDictionary({
       buildPath: "../design-system/",
       files: [
         { destination: "tokens.css", format: "css/legacy-ds" },
-        { destination: "ux4g.css", format: "css/ux4g-parity" },
       ],
+    },
+    // The `--ux4g-*` parity mapping is a MEASUREMENT artifact for tools/ux4g-conformance, not a
+    // shipped stylesheet: nothing in the estate ever imported `@mosje/design-system/ux4g.css`,
+    // so since 2026-09-04 it is built into the tool's own folder (gitignored) and read only by
+    // measure.mjs. Removing the shipped copy is what let the flat `font.size.*` ramp go.
+    ux4gConformance: {
+      transforms: TRANSFORMS,
+      buildPath: "../../tools/ux4g-conformance/",
+      files: [{ destination: "parity.generated.css", format: "css/ux4g-parity" }],
     },
     // Generate the portal Tailwind v3 preset straight into @mosje/config, so portals keep
     // importing "@mosje/config/tailwind-preset" with no extra package resolution.
