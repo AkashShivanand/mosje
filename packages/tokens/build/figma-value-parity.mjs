@@ -49,6 +49,8 @@ function parseColour(raw) {
  * payload and `24` in the library. Comparing those raw would report every rem token as drifted.
  */
 export function normValue(val) {
+  // A live read-back normalises Figma's COMPOSE_COLOR expression (base alias, alpha alias)
+  // to exactly this string — "->base@->alpha/N" — which is how the checksums can agree.
   // An alias that carries its own opacity is a different value from the bare alias: the
   // checksum has to move when the binding is made in Figma, or the parity gate could not tell
   // "alias at 8%" from "alias at 100%".
