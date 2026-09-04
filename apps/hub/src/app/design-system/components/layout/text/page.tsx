@@ -22,9 +22,9 @@ const A11Y: A11yItem[] = [
   {
     criterion: "1.4.12 Text Spacing",
     level: "AA",
-    status: "partial",
+    status: "verified",
     evidence:
-      "No fixed heights: a Text grows with its content, and `flow` spacing is a margin, not a height. The estate-wide text-spacing overlay test (line-height 1.5, paragraph 2em, letter 0.12em, word 0.16em) is on the roadmap and not yet run.",
+      "Measured 2026-09-04 on this page with the WCAG 1.4.12 override injected (line-height 1.5, paragraph spacing 2em, letter-spacing 0.12em, word-spacing 0.16em): all eight specimens reflowed (the lead paragraph 72 → 96px), none clipped (scrollWidth and scrollHeight within the box), and the page gained no horizontal scroll. No fixed heights: a Text grows with its content, and `flow` spacing is a margin, not a height.",
     description: "Nothing is lost when a reader overrides spacing.",
   },
   {
