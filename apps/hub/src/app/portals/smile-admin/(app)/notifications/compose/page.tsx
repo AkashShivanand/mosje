@@ -57,7 +57,7 @@ export default function ComposePage() {
                 ["email", "Email"],
                 ["app",   "In-app push"],
               ] as [string, string][]).map(([k, label]) => (
-                <label key={k} className="flex items-center gap-sm text-body-3">
+                <label key={k} className="flex items-center gap-sm text-body-2">
                   <Checkbox
                     checked={form.channels[k as "sms" | "email" | "app"]}
                     onChange={(e) => setForm({ ...form, channels: { ...form.channels, [k]: e.target.checked === true } })}
@@ -66,7 +66,7 @@ export default function ComposePage() {
                 </label>
               ))}
             </div>
-            <div className="rounded-md bg-info-50 p-md text-body-3 text-info-600">
+            <div className="rounded-md bg-info-50 p-md text-body-2 text-info-600">
               <Icon name="notifications" size={14} className="mr-xs inline" /> Estimated reach: ~12,420 recipients
             </div>
             <Button type="submit" className="w-full"><Icon name="send" size={16} /> Send broadcast</Button>

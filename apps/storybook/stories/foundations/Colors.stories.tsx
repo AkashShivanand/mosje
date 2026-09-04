@@ -29,13 +29,12 @@ type Story = StoryObj;
 
 /* ------------------------------------------------------------------ shared bits */
 
-const mono = "ui-monospace, SFMono-Regular, Menlo, monospace";
 
 function Section({ title, blurb, children }: { title: string; blurb: string; children: React.ReactNode }) {
   return (
     <section style={{ marginBottom: 44 }}>
-      <h3 style={{ margin: "0 0 4px", fontSize: 16, fontWeight: 650 }}>{title}</h3>
-      <p style={{ margin: "0 0 16px", fontSize: 13.5, maxWidth: "70ch", color: "var(--sa-text-neutral-subtle)" }}>
+      <h3 style={{ margin: "0 0 4px", fontSize: "var(--sa-type-title-2-size)", lineHeight: "var(--sa-type-title-2-lh)", fontWeight: 600 }}>{title}</h3>
+      <p style={{ margin: "0 0 16px", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", maxWidth: "70ch", color: "var(--sa-text-neutral-subtle)" }}>
         {blurb}
       </p>
       {children}
@@ -50,9 +49,9 @@ function Ramp({ scale, note }: { scale: string; note?: string }) {
   return (
     <div style={{ marginBottom: 18 }}>
       <div style={{ display: "flex", gap: 12, alignItems: "baseline", marginBottom: 6 }}>
-        <code style={{ fontFamily: mono, fontSize: 12.5, fontWeight: 600 }}>color/{scale}</code>
+        <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)", fontWeight: 600 }}>color/{scale}</code>
         {note ? (
-          <span style={{ fontFamily: mono, fontSize: 11, color: "var(--sa-text-neutral-subtle)" }}>{note}</span>
+          <span style={{ fontFamily: "var(--sa-font-mono)", fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)", color: "var(--sa-text-neutral-subtle)" }}>{note}</span>
         ) : null}
       </div>
       <div style={{ display: "flex", gap: 2 }}>
@@ -68,8 +67,9 @@ function Ramp({ scale, note }: { scale: string; note?: string }) {
             />
             <div
               style={{
-                fontFamily: mono,
-                fontSize: 9.5,
+                fontFamily: "var(--sa-font-mono)",
+                fontSize: "var(--sa-type-label-2-size)",
+                lineHeight: "var(--sa-type-label-2-lh)",
                 textAlign: "center",
                 marginTop: 4,
                 color: "var(--sa-text-neutral-subtle)",
@@ -132,8 +132,9 @@ export const Ramps: Story = {
               />
               <div
                 style={{
-                  fontFamily: mono,
-                  fontSize: 9.5,
+                  fontFamily: "var(--sa-font-mono)",
+                  fontSize: "var(--sa-type-label-2-size)",
+                  lineHeight: "var(--sa-type-label-2-lh)",
                   textAlign: "center",
                   marginTop: 4,
                   color: "var(--sa-text-neutral-subtle)",
@@ -185,11 +186,11 @@ export const BrandAxis: Story = {
                 }}
               />
               <div>
-                <div style={{ fontWeight: 600, fontSize: 14 }}>{r.label}</div>
-                <code style={{ fontFamily: mono, fontSize: 11.5, color: "var(--sa-text-neutral-subtle)" }}>
+                <div style={{ fontWeight: 600, fontSize: "var(--sa-type-title-3-size)", lineHeight: "var(--sa-type-title-3-lh)" }}>{r.label}</div>
+                <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)", color: "var(--sa-text-neutral-subtle)" }}>
                   --sa-{r.token}
                 </code>
-                <div style={{ fontSize: 12, marginTop: 2, color: "var(--sa-text-neutral-subtle)" }}>
+                <div style={{ fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)", marginTop: 2, color: "var(--sa-text-neutral-subtle)" }}>
                   {r.note}
                 </div>
               </div>
@@ -255,7 +256,7 @@ export const Semantic: Story = {
                 >
                   <div style={{ height: 64, background: `var(--sa-${t})` }} />
                   <div style={{ padding: "8px 11px" }}>
-                    <code style={{ fontFamily: mono, fontSize: 11.5 }}>--sa-{t}</code>
+                    <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)" }}>--sa-{t}</code>
                   </div>
                 </div>
               ))}
@@ -304,8 +305,8 @@ export const OnPairs: Story = {
                 minHeight: 84,
               }}
             >
-              <div style={{ fontWeight: 650, fontSize: 14, marginBottom: 4 }}>Readable on its own fill</div>
-              <code style={{ fontFamily: mono, fontSize: 11 }}>--sa-{f}</code>
+              <div style={{ fontWeight: 600, fontSize: "var(--sa-type-title-3-size)", lineHeight: "var(--sa-type-title-3-lh)", marginBottom: 4 }}>Readable on its own fill</div>
+              <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)" }}>--sa-{f}</code>
             </div>
           ))}
         </div>
@@ -334,7 +335,7 @@ export const AlphaTiers: Story = {
         <div style={{ display: "grid", gap: 10 }}>
           {FAMILIES.map((fam) => (
             <div key={fam} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-              <code style={{ fontFamily: mono, fontSize: 11.5, width: 92, flex: "none" }}>{fam}</code>
+              <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)", width: 92, flex: "none" }}>{fam}</code>
               <div
                 style={{
                   display: "flex",

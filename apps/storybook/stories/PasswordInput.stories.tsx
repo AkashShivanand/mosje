@@ -63,5 +63,6 @@ export const WithoutToggle: Story = { args: { hideToggle: true } };
  * "छिपाएँ" — rather than the current state.
  */
 export const TranslatedRevealLabels: Story = {
+  // ds-exempt(specimen): `showLabel`/`hideLabel` are string props, so the story cannot attach lang="hi"; the component owns the attribute
   args: { showLabel: "पासवर्ड दिखाएँ", hideLabel: "पासवर्ड छिपाएँ" },
 };

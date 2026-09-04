@@ -13,7 +13,7 @@
   font-size: var(--sa-type-display-6-size);
   font-weight: 600;
   color: var(--sa-color-primaryScale-600);
-  line-height: 1.1;
+  line-height: var(--sa-type-display-6-lh);
 }
 .color-stat__label {
   font-size: var(--sa-type-title-3-size);
@@ -99,7 +99,9 @@
 .color-anatomy__part-label {
   display: block;
   font-size: var(--sa-type-label-3-size);
-  letter-spacing: 0.06em;
+  line-height: var(--sa-type-label-3-lh);
+  letter-spacing: var(--sa-type-caps-tracking);
+  text-transform: uppercase;
   color: var(--sa-text-neutral-subtle);
 }
 .color-anatomy__part code {
@@ -238,7 +240,8 @@
 .color-section__num {
   display: block;
   font-size: var(--sa-type-label-3-size);
-  letter-spacing: 0.08em;
+  line-height: var(--sa-type-label-3-lh);
+  letter-spacing: var(--sa-type-caps-tracking);
   font-weight: 600;
   color: var(--sa-text-brand-primary-base);
   margin-bottom: var(--sa-stack-4);

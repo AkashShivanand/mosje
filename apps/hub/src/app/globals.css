@@ -58,13 +58,18 @@
    ══════════════════════════════════════════════════════════════════════════ */
 
 @theme inline {
-  --font-sans: var(--font-noto-sans), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-noto-sans), var(--font-noto-devanagari), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
   /* scw/nhapoa/smile-admin CSS style <body> with `var(--font-noto)` — the name
      their standalone next/font loader used. The hub root layout exposes Noto
      Sans as --font-noto-sans, so alias it or those rules fall back to system-ui. */
-  --font-noto: var(--font-noto-sans);
+  --font-noto: var(--font-noto-sans), var(--font-noto-devanagari);
   --font-heading: var(--font-noto), system-ui, sans-serif;
-  --font-devanagari: var(--font-noto-sans), "Noto Sans Devanagari", ui-sans-serif, sans-serif;
+  --font-devanagari: var(--font-noto-devanagari), var(--font-noto-sans), "Noto Sans Devanagari", ui-sans-serif, sans-serif;
+  /* The optical Display cut, for the six display roles: `text-display-N font-display`.
+     A `--text-*` theme entry cannot carry a family, so the pairing is two classes. */
+  --font-display: var(--sa-font-display);
+  /* `max-w-measure` — the widest a run of body text may be (≈68 characters). */
+  --container-measure: var(--sa-container-measure);
 
   /* ── Text ───────────────────────────────────────────────────────────── */
   /* ink / ink-muted: portals pin slate-900/slate-600; hub keeps the DS ramp. */
@@ -309,53 +314,116 @@
      The raw --foreground* vars still exist in smile-admin.css and website.css,
      where plain CSS rules (not utilities) read them. */
 
-  /* ── smile-admin type scale ─────────────────────────────────────────── */
-  --text-display-1: 44px;
-  --text-display-1--line-height: 52px;
-  --text-display-1--letter-spacing: -0.02em;
-  --text-display-2: 36px;
-  --text-display-2--line-height: 44px;
-  --text-display-2--letter-spacing: -0.02em;
-  --text-display-5: 28px;
-  --text-display-5--line-height: 36px;
-  --text-display-5--letter-spacing: -0.01em;
-  --text-headline-1: 32px;
-  --text-headline-1--line-height: 40px;
-  --text-headline-1--letter-spacing: -0.01em;
-  --text-headline-2: 28px;
-  --text-headline-2--line-height: 36px;
-  --text-headline-2--letter-spacing: -0.01em;
-  --text-headline-3: 24px;
-  --text-headline-3--line-height: 32px;
-  --text-headline-3--letter-spacing: -0.005em;
-  --text-headline-4: 20px;
-  --text-headline-4--line-height: 28px;
-  --text-headline-5: 18px;
-  --text-headline-5--line-height: 26px;
-  --text-headline-6: 16px;
-  --text-headline-6--line-height: 24px;
-  --text-title-1: 20px;
-  --text-title-1--line-height: 28px;
-  --text-title-2: 18px;
-  --text-title-2--line-height: 24px;
-  --text-body-1: 16px;
-  --text-body-1--line-height: 24px;
-  --text-body-2: 14px;
-  --text-body-2--line-height: 20px;
-  --text-body-3: 13px;
-  --text-body-3--line-height: 20px;
-  --text-label-1: 14px;
-  --text-label-1--line-height: 20px;
-  --text-label-2: 12px;
-  --text-label-2--line-height: 16px;
-  --text-label-3: 11px;
-  --text-label-3--line-height: 16px;
-  --text-num-xl: 32px;
-  --text-num-xl--line-height: 36px;
-  --text-num-xl--letter-spacing: -0.02em;
-  --text-num-lg: 24px;
-  --text-num-lg--line-height: 28px;
-  --text-num-lg--letter-spacing: -0.01em;
+  /* ── Type: Tailwind can produce ONLY the 21 SAMAVESH roles ─────────────────
+     Three type scales were in production until 2026-09-04: the token scale, a
+     static px "smile-admin" scale that used to sit here (display-1 44px against
+     a token of 80/56, body-3 at 13px — a size the contract bans), and stock
+     Tailwind's text-xs…text-6xl, which nothing had ever re-bound. The stock
+     namespace is cleared, so `text-sm` no longer compiles, and each role utility
+     inlines the token's fluid, surface-aware size, leading, tracking AND weight —
+     `text-headline-2` is 32px semibold on the website and 28px semibold in a
+     portal, from one class. Leading and tracking utilities are cleared for the
+     same reason: a line height comes with its role, never from `leading-tight`.
+     `tracking-caps` is the one tracking utility, for the uppercase label role.
+     Weights keep their four Tailwind names bound to the loaded cuts; thin, light,
+     extrabold and black are gone — 800/900 were browser-synthesised bold. */
+  --text-*: initial;
+  --leading-*: initial;
+  --tracking-*: initial;
+  --font-weight-*: initial;
+  --font-weight-normal: var(--sa-font-weight-regular);
+  --font-weight-medium: var(--sa-font-weight-medium);
+  --font-weight-semibold: var(--sa-font-weight-semibold);
+  --font-weight-bold: var(--sa-font-weight-bold);
+  --tracking-caps: var(--sa-type-caps-tracking);
+  /* `tracking-digits` — the one other tracking: a one-time code or captcha typed into a
+     field, where the spacing IS the affordance (each digit reads as its own box). Not a
+     text role, so not a token; a fixed em so it follows the field's own size. */
+  --tracking-digits: 0.4em;
+  --text-display-1: var(--sa-type-display-1-size);
+  --text-display-1--line-height: var(--sa-type-display-1-lh);
+  --text-display-1--letter-spacing: var(--sa-type-display-1-tracking);
+  --text-display-1--font-weight: var(--sa-font-weight-displayMedium);
+  --text-display-2: var(--sa-type-display-2-size);
+  --text-display-2--line-height: var(--sa-type-display-2-lh);
+  --text-display-2--letter-spacing: var(--sa-type-display-2-tracking);
+  --text-display-2--font-weight: var(--sa-font-weight-displayMedium);
+  --text-display-3: var(--sa-type-display-3-size);
+  --text-display-3--line-height: var(--sa-type-display-3-lh);
+  --text-display-3--letter-spacing: var(--sa-type-display-3-tracking);
+  --text-display-3--font-weight: var(--sa-font-weight-displayMedium);
+  --text-display-4: var(--sa-type-display-4-size);
+  --text-display-4--line-height: var(--sa-type-display-4-lh);
+  --text-display-4--letter-spacing: var(--sa-type-display-4-tracking);
+  --text-display-4--font-weight: var(--sa-font-weight-displayMedium);
+  --text-display-5: var(--sa-type-display-5-size);
+  --text-display-5--line-height: var(--sa-type-display-5-lh);
+  --text-display-5--letter-spacing: var(--sa-type-display-5-tracking);
+  --text-display-5--font-weight: var(--sa-font-weight-displayMedium);
+  --text-display-6: var(--sa-type-display-6-size);
+  --text-display-6--line-height: var(--sa-type-display-6-lh);
+  --text-display-6--letter-spacing: var(--sa-type-display-6-tracking);
+  --text-display-6--font-weight: var(--sa-font-weight-displayMedium);
+  --text-headline-1: var(--sa-type-headline-1-size);
+  --text-headline-1--line-height: var(--sa-type-headline-1-lh);
+  --text-headline-1--letter-spacing: var(--sa-type-heading-tracking);
+  --text-headline-1--font-weight: var(--sa-font-weight-semibold);
+  --text-headline-2: var(--sa-type-headline-2-size);
+  --text-headline-2--line-height: var(--sa-type-headline-2-lh);
+  --text-headline-2--letter-spacing: var(--sa-type-heading-tracking);
+  --text-headline-2--font-weight: var(--sa-font-weight-semibold);
+  --text-headline-3: var(--sa-type-headline-3-size);
+  --text-headline-3--line-height: var(--sa-type-headline-3-lh);
+  --text-headline-3--letter-spacing: var(--sa-type-heading-tracking);
+  --text-headline-3--font-weight: var(--sa-font-weight-semibold);
+  --text-headline-4: var(--sa-type-headline-4-size);
+  --text-headline-4--line-height: var(--sa-type-headline-4-lh);
+  --text-headline-4--letter-spacing: var(--sa-type-heading-tracking);
+  --text-headline-4--font-weight: var(--sa-font-weight-semibold);
+  --text-headline-5: var(--sa-type-headline-5-size);
+  --text-headline-5--line-height: var(--sa-type-headline-5-lh);
+  --text-headline-5--letter-spacing: var(--sa-type-heading-tracking);
+  --text-headline-5--font-weight: var(--sa-font-weight-semibold);
+  --text-headline-6: var(--sa-type-headline-6-size);
+  --text-headline-6--line-height: var(--sa-type-headline-6-lh);
+  --text-headline-6--letter-spacing: var(--sa-type-heading-tracking);
+  --text-headline-6--font-weight: var(--sa-font-weight-semibold);
+  --text-title-1: var(--sa-type-title-1-size);
+  --text-title-1--line-height: var(--sa-type-title-1-lh);
+  --text-title-1--letter-spacing: var(--sa-type-title-tracking);
+  --text-title-1--font-weight: var(--sa-font-weight-semibold);
+  --text-title-2: var(--sa-type-title-2-size);
+  --text-title-2--line-height: var(--sa-type-title-2-lh);
+  --text-title-2--letter-spacing: var(--sa-type-title-tracking);
+  --text-title-2--font-weight: var(--sa-font-weight-semibold);
+  --text-title-3: var(--sa-type-title-3-size);
+  --text-title-3--line-height: var(--sa-type-title-3-lh);
+  --text-title-3--letter-spacing: var(--sa-type-title-tracking);
+  --text-title-3--font-weight: var(--sa-font-weight-semibold);
+  --text-body-1: var(--sa-type-body-1-size);
+  --text-body-1--line-height: var(--sa-type-body-1-lh);
+  --text-body-1--letter-spacing: var(--sa-type-body-tracking);
+  --text-body-1--font-weight: var(--sa-font-weight-regular);
+  --text-body-2: var(--sa-type-body-2-size);
+  --text-body-2--line-height: var(--sa-type-body-2-lh);
+  --text-body-2--letter-spacing: var(--sa-type-body-tracking);
+  --text-body-2--font-weight: var(--sa-font-weight-regular);
+  --text-body-3: var(--sa-type-body-3-size);
+  --text-body-3--line-height: var(--sa-type-body-3-lh);
+  --text-body-3--letter-spacing: var(--sa-type-body-tracking);
+  --text-body-3--font-weight: var(--sa-font-weight-regular);
+  --text-label-1: var(--sa-type-label-1-size);
+  --text-label-1--line-height: var(--sa-type-label-1-lh);
+  --text-label-1--letter-spacing: var(--sa-type-label-tracking);
+  --text-label-1--font-weight: var(--sa-font-weight-medium);
+  --text-label-2: var(--sa-type-label-2-size);
+  --text-label-2--line-height: var(--sa-type-label-2-lh);
+  --text-label-2--letter-spacing: var(--sa-type-label-tracking);
+  --text-label-2--font-weight: var(--sa-font-weight-medium);
+  --text-label-3: var(--sa-type-label-3-size);
+  --text-label-3--line-height: var(--sa-type-label-3-lh);
+  --text-label-3--letter-spacing: var(--sa-type-caps-tracking);
+  --text-label-3--font-weight: var(--sa-font-weight-medium);
 
   /* ── Radius / shadow names the stock theme lacks ────────────────────── */
   --radius-xxs: 2px;               /* smile-admin `rounded-xxs` */
@@ -441,21 +509,22 @@
    only webfont was Noto Sans with `subsets: ["latin"]` — no Devanagari glyphs —
    so every `var(--sa-font-devanagari)` rendered in whatever the device had.
 
-   Both now point at the SAME loaded family: Noto Sans is a superfamily whose
-   `devanagari` subset covers the script, so one webfont serves both and the
-   browser fetches the Devanagari file only for pages that contain the glyphs.
+   Noto Sans is a superfamily whose `devanagari` subset covers the script, loaded by
+   a SECOND next/font loader (`--font-noto-devanagari`, `preload: false` — see
+   layout.tsx for why) and placed behind the Latin face in every stack, so a Hindi
+   glyph falls through to it and an English page never downloads it.
 
    Prepending the loaded variable keeps the published stack intact as fallback
    while making the token resolve to the font the page actually downloads. This
    belongs in the app, not the token package: only the app knows what it loads. */
 :root {
-  --sa-ref-font-family-latin: var(--font-noto-sans), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
-  --sa-ref-font-family-devanagari: var(--font-noto-sans), "Noto Sans Devanagari", ui-sans-serif, sans-serif;
+  --sa-ref-font-family-latin: var(--font-noto-sans), var(--font-noto-devanagari), "Noto Sans", ui-sans-serif, system-ui, sans-serif;
+  --sa-ref-font-family-devanagari: var(--font-noto-devanagari), var(--font-noto-sans), "Noto Sans Devanagari", ui-sans-serif, sans-serif;
   /* Display cut first, text cut behind it. The Display cut is Latin-only, so a Devanagari
      heading finds no glyphs in it and falls through to Noto Sans — which is the correct
      outcome, and the reason the fallback is the loaded variable rather than a bare name. */
   --sa-ref-font-family-display:
-    var(--font-noto-display), var(--font-noto-sans), "Noto Sans Display", "Noto Sans",
+    var(--font-noto-display), var(--font-noto-sans), var(--font-noto-devanagari), "Noto Sans Display", "Noto Sans",
     ui-sans-serif, system-ui, sans-serif;
 
   /* The Tier-2 role token has to be bridged SEPARATELY. It is emitted as a literal copy of
@@ -469,12 +538,22 @@
      "Noto Sans" too — next/font's family is hashed, so a bare name never matches the loaded
      face — and lands on a system fallback, which is the bug this whole change exists to fix. */
   --sa-font-devanagari:
-    var(--font-noto-sans), "Noto Sans Devanagari", "Noto Sans", ui-sans-serif, sans-serif;
+    var(--font-noto-devanagari), var(--font-noto-sans), "Noto Sans Devanagari", "Noto Sans", ui-sans-serif, sans-serif;
 }
 
 @layer base {
   html {
     color-scheme: light;
+  }
+  /* Headings balance, paragraphs avoid orphans — the rule design.md has stated since
+     v0.25.0 and that lived in five component stylesheets and nowhere global. In `base`
+     so a component or utility can still override it; a no-op in browsers without
+     `text-wrap`, which simply keep wrapping greedily. */
+  h1, h2, h3 {
+    text-wrap: balance;
+  }
+  p, li, dd, figcaption {
+    text-wrap: pretty;
   }
   /* Smooth scrolling is opt-in on motion preference. Declaring it unconditionally
      on <html> hijacks every in-page jump for users who asked the OS to reduce

@@ -85,8 +85,8 @@ export default function AdminLoginPage() {
         tabs={TABS}
         onFooterLinkClick={() => toast("This page is coming soon.", "info")}
       >
-        <h2 className="mb-1 text-xl font-bold text-ink">Log in to your account</h2>
-        <p className="mb-6 text-sm text-ink-muted">
+        <h1 className="mb-1 text-headline-3 text-ink">Log in to your account</h1>
+        <p className="mb-6 text-body-2 text-ink-muted">
           Enter your registered mobile number and password
         </p>
 
@@ -111,13 +111,13 @@ export default function AdminLoginPage() {
 
           <div>
             <div className="mb-1.5 flex items-center justify-between">
-              <label htmlFor="password" className="text-sm font-medium text-ink">
+              <label htmlFor="password" className="text-label-1 text-ink">
                 Password
               </label>
               <button
                 type="button"
                 onClick={() => toast("This page is coming soon.", "info")}
-                className="text-xs text-navy hover:underline"
+                className="text-label-2 text-navy hover:underline"
               >
                 Forgot password?
               </button>
@@ -160,7 +160,7 @@ export default function AdminLoginPage() {
           </Button>
         </form>
 
-        <p className="mt-6 text-center text-xs text-ink-hint">
+        <p className="mt-6 text-center text-body-3 text-ink-hint">
           For access issues, contact your State Nodal Officer or the NMBA helpdesk.
         </p>
       </PortalLoginShell>

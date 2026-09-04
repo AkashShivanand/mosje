@@ -17,8 +17,8 @@ export default function VolunteerRegistrationPage() {
   return (
     <UserShell>
       <Card className="mx-auto max-w-4xl p-6 sm:p-8">
-        <h1 className="text-2xl font-bold text-ink">Join as a Volunteer</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Join as a Volunteer</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Tell us about yourself and how you would like to contribute.
         </p>
 
@@ -67,7 +67,7 @@ export default function VolunteerRegistrationPage() {
             <textarea
               rows={3}
               placeholder="Enter your full address"
-              className="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-sm text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
+              className="w-full rounded-lg border border-line bg-white px-3.5 py-2.5 text-body-2 text-ink placeholder:text-ink-hint focus:border-navy/40 focus:outline-none focus:ring-2 focus:ring-navy/15"
             />
           </Field>
 
@@ -75,7 +75,7 @@ export default function VolunteerRegistrationPage() {
           <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <Field label="Mobile Number" required>
               <div className="flex">
-                <span className="inline-flex items-center rounded-l-lg border border-r-0 border-line bg-slate-50 px-3.5 text-sm font-medium text-ink-muted">
+                <span className="inline-flex items-center rounded-l-lg border border-r-0 border-line bg-slate-50 px-3.5 text-label-1 text-ink-muted">
                   +91
                 </span>
                 <TextInput

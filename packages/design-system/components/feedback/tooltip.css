@@ -38,8 +38,8 @@
     background-color: var(--sa-color-action-primary-hover);
     color: var(--sa-on-bg-brand-primary-bolder);
     font-family: var(--sa-font-latin);
-    font-size: var(--sa-type-label-3-size);
-    line-height: var(--sa-type-label-3-lh);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     font-weight: 500;
     text-align: left;
     box-shadow: var(--sa-elevation-dropdown);

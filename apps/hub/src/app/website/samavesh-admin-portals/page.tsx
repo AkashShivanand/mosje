@@ -72,20 +72,20 @@ export default function AdminPortalsPage() {
                 <span className="flex h-12 w-12 items-center justify-center rounded-lg bg-surface-muted text-primary">
                   <Icon name={iconName} aria-hidden="true" />
                 </span>
-                <h2 className="mt-4 text-base font-semibold text-primary-dark">
+                <h2 className="mt-4 text-title-2 text-primary-dark">
                   {name}
                 </h2>
-                <p className="mt-1.5 flex-1 text-sm leading-relaxed text-ink-muted">
+                <p className="mt-1.5 flex-1 text-body-2 text-ink-muted">
                   {description}
                 </p>
                 <a
                   href={href}
-                  className="mt-4 inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary-dark"
+                  className="mt-4 inline-flex items-center gap-1.5 text-label-1 text-primary hover:text-primary-dark"
                 >
                   Open Console
                   <Icon name="arrow_outward" size={16} aria-hidden="true" />
                 </a>
-                <p className="mt-2 inline-flex items-center gap-1 text-xs text-gray-500">
+                <p className="mt-2 inline-flex items-center gap-1 text-body-3 text-gray-500">
                   <Icon name="lock" size={12} aria-hidden="true" />
                   Authorised access
                 </p>

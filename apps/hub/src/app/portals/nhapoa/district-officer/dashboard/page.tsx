@@ -37,15 +37,15 @@ export default function DODashboard() {
 
       <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card className="p-6">
-          <h2 className="text-sm font-bold text-ink">Case Status Breakdown</h2>
-          <p className="text-xs text-ink-hint">All {queue.length} assigned cases by status</p>
+          <h2 className="text-title-2 text-ink">Case Status Breakdown</h2>
+          <p className="text-body-3 text-ink-hint">All {queue.length} assigned cases by status</p>
           <div className="mt-6 flex h-48 items-end justify-around gap-3">
             {BREAKDOWN.map((s) => (
               <div key={s} className="flex flex-1 flex-col items-center gap-2">
                 <div className="flex w-full flex-1 items-end">
                   <div className="w-full rounded-t bg-navy/70" style={{ height: `${((counts[s] ?? 0) / max) * 100}%`, minHeight: (counts[s] ?? 0) ? "6px" : "0" }} />
                 </div>
-                <span className="text-center text-[10px] leading-tight text-ink-hint">{CASE_STATUS_META[s].label}</span>
+                <span className="text-center text-body-3 text-ink-hint">{CASE_STATUS_META[s].label}</span>
               </div>
             ))}
           </div>
@@ -54,18 +54,18 @@ export default function DODashboard() {
         <Card className="p-6">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-sm font-bold text-ink">Priority Actions</h2>
-              <p className="text-xs text-ink-hint">Requires your immediate attention</p>
+              <h2 className="text-title-2 text-ink">Priority Actions</h2>
+              <p className="text-body-3 text-ink-hint">Requires your immediate attention</p>
             </div>
-            <Link href="/portals/nhapoa/district-officer/cases" className="inline-flex items-center gap-1 text-xs font-semibold text-navy hover:underline">View all <Icon name="arrow_forward" size={14} /></Link>
+            <Link href="/portals/nhapoa/district-officer/cases" className="inline-flex items-center gap-1 text-label-2 font-semibold text-navy hover:underline">View all <Icon name="arrow_forward" size={14} /></Link>
           </div>
           <ul className="mt-4 divide-y divide-line">
-            {priority.length === 0 && <li className="py-6 text-center text-sm text-ink-hint">No priority cases right now.</li>}
+            {priority.length === 0 && <li className="py-6 text-center text-body-2 text-ink-hint">No priority cases right now.</li>}
             {priority.map((c) => (
               <li key={c.id} className="flex items-center justify-between gap-3 py-3">
                 <Link href={`/portals/nhapoa/district-officer/cases/${c.id}`} className="min-w-0">
-                  <p className="truncate font-mono text-xs font-semibold text-navy hover:underline">{c.refNo}</p>
-                  <p className="truncate text-xs text-ink-muted">{c.type} · {c.category}</p>
+                  <p className="truncate font-mono text-body-3 font-semibold text-navy hover:underline">{c.refNo}</p>
+                  <p className="truncate text-body-3 text-ink-muted">{c.type} · {c.category}</p>
                 </Link>
                 <StatusPill status={c.status} />
               </li>

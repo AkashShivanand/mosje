@@ -8,7 +8,7 @@ export default function OurServicesPage() {
   return (
     <UserShell>
       <PageHeader title="Our Services" />
-      <p className="-mt-4 mb-6 text-sm text-ink-muted">
+      <p className="-mt-4 mb-6 text-body-2 text-ink-muted">
         Browse public welfare programs, residential facilities, and caregiving services available in
         your region.
       </p>
@@ -38,12 +38,12 @@ export default function OurServicesPage() {
           >
             {/* Legend */}
             <div className="absolute bottom-4 left-4 rounded-xl bg-white/95 p-4 shadow-card backdrop-blur">
-              <p className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-hint">
+              <p className="mb-2 text-label-3 uppercase text-ink-hint">
                 Legend
               </p>
               <ul className="space-y-2">
                 {FACILITY_LEGEND.map((item) => (
-                  <li key={item.label} className="flex items-center gap-2 text-sm text-ink">
+                  <li key={item.label} className="flex items-center gap-2 text-body-2 text-ink">
                     <span
                       className="h-3 w-3 shrink-0 rounded-full"
                       style={{ backgroundColor: item.color }}
@@ -59,7 +59,7 @@ export default function OurServicesPage() {
 
         {/* Facilities list */}
         <div className="flex max-h-[540px] flex-col">
-          <h2 className="mb-3 text-sm font-bold text-ink">Facilities (732)</h2>
+          <h2 className="mb-3 text-title-2 text-ink">Facilities (732)</h2>
           <div className="space-y-4 overflow-y-auto pr-1">
             {FACILITIES.map((facility) => {
               const isHome = facility.category === "Senior Citizen Homes";
@@ -68,7 +68,7 @@ export default function OurServicesPage() {
                   <div className="flex items-start justify-between gap-3">
                     <span
                       className={cn(
-                        "inline-flex items-center rounded-full px-2.5 py-1 text-xs font-semibold",
+                        "inline-flex items-center rounded-full px-2.5 py-1 text-label-2",
                         isHome
                           ? "bg-approve-bg text-approve-fg"
                           : "bg-slate-100 text-slate-600"
@@ -76,12 +76,12 @@ export default function OurServicesPage() {
                     >
                       {facility.category}
                     </span>
-                    <span className="shrink-0 text-xs font-semibold text-ink-muted">
+                    <span className="shrink-0 text-label-2 text-ink-muted">
                       {facility.distance}
                     </span>
                   </div>
-                  <h3 className="mt-3 font-bold text-ink">{facility.name}</h3>
-                  <p className="mt-2 flex items-start gap-1.5 text-sm text-ink-muted">
+                  <h3 className="mt-3 text-title-2 text-ink">{facility.name}</h3>
+                  <p className="mt-2 flex items-start gap-1.5 text-body-2 text-ink-muted">
                     <Icon name="location_on" size={16} className="mt-0.5 shrink-0 text-ink-hint" />
                     <span>{facility.address}</span>
                   </p>

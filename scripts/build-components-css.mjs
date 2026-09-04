@@ -33,9 +33,8 @@ const OUT = join(PKG, "components.css");
  * `tokens.css` is the contract this file's header tells you to load first, and
  * importing it here would make the barrel double-declare every custom property.
  * `icons.css` carries an `@font-face` and is loaded once per app by name.
- * `ux4g.css` is the third-party parity layer, opted into deliberately.
  */
-const EXCLUDE = new Set(["tokens.css", "icons.css", "ux4g.css", "components.css"]);
+const EXCLUDE = new Set(["tokens.css", "icons.css", "components.css"]);
 
 /** Category order — the order a reader meets these in the documentation nav. */
 const ORDER = [

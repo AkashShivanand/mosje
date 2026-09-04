@@ -80,10 +80,10 @@
     background-color: var(--sa-bg-neutral-subtler);
     border: 1px solid var(--sa-border-neutral-subtle);
     color: var(--sa-text-neutral-bolder);
-    font-size: 11px;
-    line-height: 1.4;
-    font-weight: 700;
-    letter-spacing: 0.06em;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 600;
+    letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
   }
 
@@ -91,12 +91,11 @@
 
   .ds-error-view__title {
     margin: var(--sa-stack-12) 0 var(--sa-stack-8);
-    font-size: clamp(24px, 4vw, 34px);
-    line-height: 1.25;
-    font-weight: 700;
+    font-size: var(--sa-type-headline-2-size);
+    line-height: var(--sa-type-headline-2-lh);
+    font-weight: 600;
     color: var(--sa-text-neutral-bolder);
     text-wrap: balance;
-    letter-spacing: -0.02em;
   }
 
   .ds-error-view__desc {
@@ -172,12 +171,12 @@
 
   .ds-error-view__wayfinding-title {
     margin: 0 0 var(--sa-stack-20);
-    font-size: 12px;
-    line-height: 1;
-    font-weight: 700;
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 600;
     color: var(--sa-text-neutral-subtle);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: var(--sa-type-caps-tracking);
     text-align: center;
   }
 
@@ -284,9 +283,9 @@
   .ds-error-view__details-content {
     padding: var(--sa-padding-16);
     border-top: 1px solid var(--sa-border-neutral-subtle);
-    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    font-size: 12px;
-    line-height: 1.5;
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     color: var(--sa-text-neutral-bolder);
     background-color: var(--sa-bg-neutral-base);
     overflow-x: auto;

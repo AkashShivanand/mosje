@@ -29,7 +29,6 @@ const meta: Meta = { title: "Foundations/Layout" };
 export default meta;
 type Story = StoryObj;
 
-const mono = "ui-monospace, SFMono-Regular, Menlo, monospace";
 
 interface Rung {
   mode: string;
@@ -115,8 +114,9 @@ export const Ladder: Story = {
                   style={{
                     padding: "9px 16px 9px 0",
                     borderBottom: "1px solid var(--sa-border-neutral-subtle, #EDF2F7)",
-                    fontFamily: mono,
-                    fontSize: 13,
+                    fontFamily: "var(--sa-font-mono)",
+                    fontSize: "var(--sa-type-body-2-size)",
+                    lineHeight: "var(--sa-type-body-2-lh)",
                   }}
                 >
                   {r.mode}
@@ -143,8 +143,9 @@ export const Ladder: Story = {
 const cell: React.CSSProperties = {
   padding: "9px 16px 9px 0",
   borderBottom: "1px solid var(--sa-border-neutral-subtle, #EDF2F7)",
-  fontFamily: mono,
-  fontSize: 13,
+  fontFamily: "var(--sa-font-mono)",
+  fontSize: "var(--sa-type-body-2-size)",
+  lineHeight: "var(--sa-type-body-2-lh)",
 };
 
 /**
@@ -171,7 +172,10 @@ export const ToScale: Story = {
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      font: `500 11px/1 ${mono}`,
+                      fontFamily: "var(--sa-font-mono)",
+                      fontSize: "var(--sa-type-label-2-size)",
+                      lineHeight: "var(--sa-type-label-2-lh)",
+                      fontWeight: 500,
                       color: "var(--sa-text-neutral-subtle, #5A6B7C)",
                       marginBottom: 5,
                     }}

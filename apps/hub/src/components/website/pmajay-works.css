@@ -696,8 +696,9 @@
     margin-bottom: var(--sa-stack-4);
     border-bottom: 1px solid var(--sa-border-neutral-subtle);
     font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--sa-type-caps-tracking);
     color: var(--sa-text-neutral-subtle);
   }
 

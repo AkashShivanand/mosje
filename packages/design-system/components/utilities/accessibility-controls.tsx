@@ -108,7 +108,7 @@ export interface AccessibilityControlsProps {
   /** Override the accessibility control's action. */
   onAccessibility?: () => void;
   /** Language selector. Pass `false` to hide. @default { label: "English" } */
-  language?: { label?: string; onClick?: () => void } | false;
+  language?: { label?: string; lang?: string; onClick?: () => void } | false;
   className?: string;
 }
 
@@ -222,7 +222,7 @@ export function AccessibilityControls({
           <button type="button" className="sa-a11yc__action" onClick={language.onClick}>
             <Icon name="translate_indic" size={24} aria-hidden />
             <span>Language</span>
-            {language.label && <span className="sa-a11yc__value">{language.label}</span>}
+            {language.label && <span className="sa-a11yc__value" lang={language.lang}>{language.label}</span>}
           </button>
         )}
       </section>
@@ -302,7 +302,7 @@ export function AccessibilityControls({
               the row uses between that unit and the caret. */}
           <span className="sa-abar__langlabel">
             <Icon name="translate_indic" size={ICON_SIZE} aria-hidden />
-            {language.label && <span>{language.label}</span>}
+            {language.label && <span lang={language.lang}>{language.label}</span>}
           </span>
           <Icon name="arrow_drop_down" size={ICON_SIZE} aria-hidden />
         </button>

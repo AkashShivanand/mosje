@@ -36,8 +36,8 @@ const TABS = [
 function Row({ label, value }: { label: string; value: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-0.5 py-2">
-      <dt className="text-xs font-medium uppercase tracking-wide text-ink-hint">{label}</dt>
-      <dd className="text-sm text-ink">{value || "—"}</dd>
+      <dt className="text-label-3 uppercase text-ink-hint">{label}</dt>
+      <dd className="text-body-2 text-ink">{value || "—"}</dd>
     </div>
   );
 }
@@ -57,8 +57,8 @@ export default function ApplicationDetailPage() {
   if (!app) {
     return (
       <Card className="p-10 text-center">
-        <p className="text-sm font-semibold text-ink">Application {id} not found.</p>
-        <Link href="/portals/tg/admin/dashboard" className="mt-3 inline-block text-sm font-semibold text-navy hover:underline">
+        <p className="text-body-2 font-semibold text-ink">Application {id} not found.</p>
+        <Link href="/portals/tg/admin/dashboard" className="mt-3 inline-block text-label-1 font-semibold text-navy hover:underline">
           ← Back to Dashboard
         </Link>
       </Card>
@@ -85,17 +85,17 @@ export default function ApplicationDetailPage() {
 
   return (
     <div className="mx-auto max-w-5xl">
-      <Link href="/portals/tg/admin/dashboard" className="mb-4 inline-flex items-center gap-1.5 text-sm font-semibold text-ink-muted hover:text-navy">
+      <Link href="/portals/tg/admin/dashboard" className="mb-4 inline-flex items-center gap-1.5 text-label-1 font-semibold text-ink-muted hover:text-navy">
         <Icon name="arrow_back" size={16} /> Back to Dashboard
       </Link>
 
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="font-mono text-2xl font-bold text-ink">{app.id}</h1>
+            <h1 className="font-mono text-headline-1 text-ink">{app.id}</h1>
             <StatusPill status={app.stage} />
           </div>
-          <p className="mt-1 text-sm text-ink-muted">
+          <p className="mt-1 text-body-2 text-ink-muted">
             Submitted on {submitted} • {app.type} Certificate • <SlaBadge daysLeft={app.slaDaysLeft} />
           </p>
         </div>
@@ -112,7 +112,7 @@ export default function ApplicationDetailPage() {
           </div>
         )}
         {!canAct && ["SUBMITTED", "MAKER_REVIEW", "CHECKER_REVIEW", "DM_REVIEW"].includes(app.stage) && (
-          <p className="rounded-lg border border-line bg-white px-3 py-2 text-xs font-medium text-ink-muted">
+          <p className="rounded-lg border border-line bg-white px-3 py-2 text-body-3 font-medium text-ink-muted">
             View only — this application is at the <StatusPill status={app.stage} /> stage, outside your queue.
           </p>
         )}
@@ -120,17 +120,17 @@ export default function ApplicationDetailPage() {
 
       {/* System validation */}
       <Card className="mb-6 p-5">
-        <h2 className="mb-3 text-xs font-bold uppercase tracking-wide text-ink-hint">System Validation</h2>
+        <h2 className="mb-3 text-label-3 uppercase text-ink-hint">System Validation</h2>
         <div className="grid gap-3 sm:grid-cols-2">
-          <div className="flex items-center gap-2 rounded-lg border border-approve/30 bg-approve-bg/40 px-3 py-2 text-sm">
+          <div className="flex items-center gap-2 rounded-lg border border-approve/30 bg-approve-bg/40 px-3 py-2 text-body-2">
             <Icon name="check_circle" size={16} className="text-approve-fg" />
             <span className="font-medium text-ink">Data Validation</span>
-            <span className="ml-auto text-xs text-ink-muted">All mandatory fields present</span>
+            <span className="ml-auto text-body-3 text-ink-muted">All mandatory fields present</span>
           </div>
-          <div className="flex items-center gap-2 rounded-lg border border-approve/30 bg-approve-bg/40 px-3 py-2 text-sm">
+          <div className="flex items-center gap-2 rounded-lg border border-approve/30 bg-approve-bg/40 px-3 py-2 text-body-2">
             <Icon name="check_circle" size={16} className="text-approve-fg" />
             <span className="font-medium text-ink">Document Verification</span>
-            <span className="ml-auto text-xs text-ink-muted">{app.documents.length} documents uploaded</span>
+            <span className="ml-auto text-body-3 text-ink-muted">{app.documents.length} documents uploaded</span>
           </div>
         </div>
       </Card>
@@ -157,7 +157,7 @@ export default function ApplicationDetailPage() {
               document.getElementById(`tab-${next.id}`)?.focus();
             }}
             className={cn(
-              "border-b-2 px-4 py-2.5 text-sm font-semibold transition-colors",
+              "border-b-2 px-4 py-2.5 text-label-1 font-semibold transition-colors",
               tab === t.id ? "border-navy text-navy" : "border-transparent text-ink-muted hover:text-navy",
             )}
           >
@@ -170,7 +170,7 @@ export default function ApplicationDetailPage() {
       {tab === "details" ? (
         <div role="tabpanel" id="panel-details" aria-labelledby="tab-details" className="grid gap-6 md:grid-cols-2">
           <Card className="p-5">
-            <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-hint">Self-Perceived Identity</h3>
+            <h3 className="mb-2 text-label-3 uppercase text-ink-hint">Self-Perceived Identity</h3>
             <dl className="divide-y divide-line">
               <Row label="Full Legal Name" value={a.fullLegalName} />
               <Row label="Chosen Name" value={a.chosenName} />
@@ -183,7 +183,7 @@ export default function ApplicationDetailPage() {
           </Card>
           <div className="space-y-6">
             <Card className="p-5">
-              <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-hint">Address & Contact</h3>
+              <h3 className="mb-2 text-label-3 uppercase text-ink-hint">Address & Contact</h3>
               <dl className="divide-y divide-line">
                 <Row label="Mobile Number" value={a.mobile} />
                 <Row label="Email Address" value={a.email} />
@@ -194,7 +194,7 @@ export default function ApplicationDetailPage() {
               </dl>
             </Card>
             <Card className="p-5">
-              <h3 className="mb-2 text-xs font-bold uppercase tracking-wide text-ink-hint">Education Details</h3>
+              <h3 className="mb-2 text-label-3 uppercase text-ink-hint">Education Details</h3>
               <dl className="divide-y divide-line">
                 <Row label="Educational Qualification" value={a.education} />
                 <Row label="Caste Category" value={a.caste} />
@@ -210,10 +210,10 @@ export default function ApplicationDetailPage() {
             <div key={d.filename} className="flex items-center gap-3 px-5 py-3.5">
               <Icon name="description" size={20} className="shrink-0 text-navy" />
               <div className="min-w-0">
-                <div className="truncate text-sm font-medium text-ink">{d.type}</div>
-                <div className="text-xs text-ink-hint">{d.filename} • {d.sizeKb} KB</div>
+                <div className="truncate text-body-2 font-medium text-ink">{d.type}</div>
+                <div className="text-body-3 text-ink-hint">{d.filename} • {d.sizeKb} KB</div>
               </div>
-              <button type="button" className="ml-auto inline-flex items-center gap-1 text-sm font-semibold text-navy hover:underline">
+              <button type="button" className="ml-auto inline-flex items-center gap-1 text-label-1 font-semibold text-navy hover:underline">
                 <Icon name="download" size={16} /> View
               </button>
             </div>
@@ -224,10 +224,10 @@ export default function ApplicationDetailPage() {
 
       {/* Timeline */}
       <Card className="mt-6 p-5">
-        <h3 className="mb-3 text-xs font-bold uppercase tracking-wide text-ink-hint">Review Trail</h3>
+        <h3 className="mb-3 text-label-3 uppercase text-ink-hint">Review Trail</h3>
         <ol className="space-y-3">
           {app.timeline.map((t, i) => (
-            <li key={i} className="flex items-start gap-3 text-sm">
+            <li key={i} className="flex items-start gap-3 text-body-2">
               <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-navy" />
               <div>
                 <span className="font-semibold text-ink"><StatusPill status={t.stage} /></span>
@@ -253,7 +253,7 @@ export default function ApplicationDetailPage() {
           </>
         }
       >
-        <p className="text-sm text-ink-muted">
+        <p className="text-body-2 text-ink-muted">
           {app.stage === "DM_REVIEW"
             ? "Approve and digitally sign this application. A Certificate of Identity will be issued to the applicant."
             : "Approve this application and forward it to the next reviewer."}
@@ -275,7 +275,7 @@ export default function ApplicationDetailPage() {
           </>
         }
       >
-        <p className="text-sm text-ink-muted">The application returns to the applicant for correction and resubmission.</p>
+        <p className="text-body-2 text-ink-muted">The application returns to the applicant for correction and resubmission.</p>
         <label className="mt-4 block">
           <span className={cnField}>Reason for correction</span>
           <Textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} placeholder="What needs to be corrected?" />
@@ -293,7 +293,7 @@ export default function ApplicationDetailPage() {
           </>
         }
       >
-        <p className="text-sm text-ink-muted">This permanently rejects the application. The applicant will be notified.</p>
+        <p className="text-body-2 text-ink-muted">This permanently rejects the application. The applicant will be notified.</p>
         <label className="mt-4 block">
           <span className={cnField}>Reason for rejection</span>
           <Textarea rows={3} value={note} onChange={(e) => setNote(e.target.value)} placeholder="Reason (required for the applicant's record)…" />

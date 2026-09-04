@@ -31,7 +31,7 @@ export default function PaymentStatusPage() {
   return (
     <div className="mx-auto max-w-3xl space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-bold text-ink">Payment status — {app.id}</h1>
+        <h1 className="text-headline-1 text-ink">Payment status — {app.id}</h1>
         <Badge status={statusTone(app.status)}>{statusLabel(app)}</Badge>
       </div>
 
@@ -40,11 +40,11 @@ export default function PaymentStatusPage() {
       </Alert>
 
       <section className="rounded-xl border border-line bg-surface p-5">
-        <h2 className="text-base font-semibold text-ink">Disbursement</h2>
+        <h2 className="text-title-2 text-ink">Disbursement</h2>
         <ol className="mt-4 space-y-3">
           {steps.map((s) => (
             <li key={s.label} className="flex items-center justify-between border-b border-line pb-2">
-              <span className="text-sm text-ink">{s.label}</span>
+              <span className="text-body-2 text-ink">{s.label}</span>
               <Badge status={s.done ? "success" : "neutral"}>{s.done ? "Done" : "Pending"}</Badge>
             </li>
           ))}
@@ -52,7 +52,7 @@ export default function PaymentStatusPage() {
       </section>
 
       <section className="rounded-xl border border-line bg-surface p-5">
-        <h2 className="text-base font-semibold text-ink">Sanction</h2>
+        <h2 className="text-title-2 text-ink">Sanction</h2>
         {app.sanction ? (
           <dl className="mt-4 grid gap-x-8 gap-y-2 sm:grid-cols-2">
             {([
@@ -64,13 +64,13 @@ export default function PaymentStatusPage() {
               ["Released", app.status === "Released" ? formatGrant(app.sanction.total) : "₹0"],
             ] as [string, string][]).map(([k, v]) => (
               <div key={k} className="flex items-baseline justify-between gap-4 border-b border-line pb-2">
-                <dt className="text-sm text-ink-muted">{k}</dt>
-                <dd className="text-sm font-semibold text-ink">{v}</dd>
+                <dt className="text-body-2 text-ink-muted">{k}</dt>
+                <dd className="text-body-2 font-semibold text-ink">{v}</dd>
               </div>
             ))}
           </dl>
         ) : (
-          <p className="mt-3 text-sm text-ink-muted">This application has not been sanctioned yet.</p>
+          <p className="mt-3 text-body-2 text-ink-muted">This application has not been sanctioned yet.</p>
         )}
       </section>
     </div>

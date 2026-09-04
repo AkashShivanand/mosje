@@ -187,8 +187,8 @@
     right: 0;
     bottom: 0;
     padding: var(--sa-padding-8) var(--sa-padding-8) var(--sa-padding-4);
-    font-size: 10px;
-    line-height: 1.3;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
     color: var(--sa-color-neutralScale-0);
     background: linear-gradient(to top, color-mix(in oklab, var(--sa-text-neutral-bolder) 78%, transparent), transparent);
     white-space: nowrap;

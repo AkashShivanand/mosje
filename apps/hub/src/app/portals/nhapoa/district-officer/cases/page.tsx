@@ -50,7 +50,7 @@ export default function DOCasesPage() {
             type="button"
             onClick={() => setTab(t.key)}
             className={cn(
-              "rounded-lg border px-4 py-2 text-sm font-semibold transition-colors",
+              "rounded-lg border px-4 py-2 text-label-1 font-semibold transition-colors",
               tab === t.key ? "border-navy bg-navy text-white" : "border-line text-ink-muted hover:bg-black/5",
             )}
           >

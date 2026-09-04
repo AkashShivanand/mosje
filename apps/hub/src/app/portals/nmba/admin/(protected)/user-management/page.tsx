@@ -27,7 +27,7 @@ function AddUserModal({ open, onClose }: { open: boolean; onClose: () => void })
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" role="dialog" aria-modal="true" aria-labelledby="add-user-title">
       <div className="w-full max-w-md rounded-2xl bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
-          <h2 id="add-user-title" className="text-base font-bold text-ink">Add User</h2>
+          <h2 id="add-user-title" className="text-title-2 text-ink">Add User</h2>
           <button onClick={onClose} aria-label="Close" className="rounded p-1 text-ink-hint hover:bg-black/5">
             <Icon name="close" size={16} />
           </button>
@@ -73,7 +73,7 @@ const columns = [
     key: "role" as const,
     header: "Role",
     render: (row: AdminUser) => (
-      <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
+      <span className={`rounded-full px-2 py-0.5 text-label-2 font-semibold ${
         row.role === "Admin" ? "bg-navy/10 text-navy"
           : row.role === "State Nodal Officer" ? "bg-approve/10 text-approve"
           : "bg-await/10 text-await"
@@ -110,8 +110,8 @@ export default function UserManagementPage() {
     <AdminShell>
       <div className="mb-6 flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-ink">User Management</h1>
-          <p className="mt-1 text-sm text-ink-muted">{USERS_TOTAL.toLocaleString("en-IN")} registered users</p>
+          <h1 className="text-headline-1 text-ink">User Management</h1>
+          <p className="mt-1 text-body-2 text-ink-muted">{USERS_TOTAL.toLocaleString("en-IN")} registered users</p>
         </div>
         <Button onClick={() => setModalOpen(true)} iconLeft={<Icon name="add" size={16} />}>
           Add User

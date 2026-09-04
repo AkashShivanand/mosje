@@ -61,7 +61,7 @@ export default function AdminDashboard() {
   return (
     <AdminShell>
       <div className="mb-6 flex items-center justify-between gap-4">
-        <h1 className="text-xl font-bold text-ink">State/UT/District Dashboard</h1>
+        <h1 className="text-headline-1 text-ink">State/UT/District Dashboard</h1>
         <Button onClick={() => setModalOpen(true)} iconLeft={<Icon name="add" size={16} />}>
           Add Event
         </Button>
@@ -78,9 +78,9 @@ export default function AdminDashboard() {
 
       <section aria-labelledby="activity-table-heading">
         <div className="mb-3 flex flex-wrap items-center gap-3">
-          <h2 id="activity-table-heading" className="text-base font-semibold text-ink">
+          <h2 id="activity-table-heading" className="text-headline-3 text-ink">
             Activity Log
-            <span className="ml-2 text-sm font-normal text-ink-muted">
+            <span className="ml-2 text-body-2 text-ink-muted">
               ({ACTIVITIES_TOTAL.toLocaleString("en-IN")} total)
             </span>
           </h2>

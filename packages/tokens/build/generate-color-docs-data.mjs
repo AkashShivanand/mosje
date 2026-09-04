@@ -236,8 +236,8 @@ const cvdSets = [
 ].map((s) => ({ ...s, worst: worstPairs(s.entries) }));
 
 // ── every mode, measured inside its own stylesheet block ─────────────────
-const ux4gCss = (() => { try { return readFileSync(here("../dist/ux4g.css"), "utf8"); } catch { return ""; } })();
-const ALL_CSS = css + "\n" + ux4gCss;
+// The UX4G palette modes left the shipped CSS on 2026-09-04 (the parity sheet is a tool artifact now).
+const ALL_CSS = css;
 const modeIds = [...new Set([...ALL_CSS.matchAll(/^\[data-brand="([a-z0-9-]+)"\]/gm)].map((m) => m[1]))];
 function modeDecls(id) {
   const out = {};

@@ -578,8 +578,8 @@ export default function IrcaRegisterPage() {
       noValidate
     >
       <div className="flex flex-col gap-1">
-        <h1 className="text-xl font-bold text-ink">Patient Registration &amp; Details Submission</h1>
-        <p className="text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Patient Registration &amp; Details Submission</h1>
+        <p className="text-body-2 text-ink-muted">
           Register a new IRCA patient. Fields marked <span aria-hidden="true">*</span>
           <span className="sr-only">with an asterisk</span> are required. After registering, complete the
           clinical record (history, dosage, counselling, discharge) from the patient list.
@@ -598,7 +598,7 @@ export default function IrcaRegisterPage() {
       )}
 
       {step < STEPS.length - 1 && remainingThisStep > 0 && !submitError && (
-        <p className="text-xs text-ink-muted">
+        <p className="text-body-3 text-ink-muted">
           <span className="font-semibold text-ink">{remainingThisStep}</span> required field
           {remainingThisStep > 1 ? "s" : ""} remaining on this step.
         </p>
@@ -750,8 +750,8 @@ export default function IrcaRegisterPage() {
                   <li key={row._key} className="rounded-xl border border-line bg-surface-muted/50 p-4 sm:p-5">
                     {/* Card header: drug number + remove */}
                     <div className="mb-4 flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-xs font-bold text-navy" aria-hidden="true">
+                      <span className="inline-flex items-center gap-2 text-title-3 text-navy">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-label-2 font-bold text-navy" aria-hidden="true">
                           {i + 1}
                         </span>
                         Drug {i + 1}
@@ -761,7 +761,7 @@ export default function IrcaRegisterPage() {
                           type="button"
                           onClick={() => setDrugRows((prev) => prev.filter((_, idx) => idx !== i))}
                           aria-label={`Remove drug ${i + 1}`}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                         >
                           <Icon name="delete" size={14} aria-hidden /> Remove
                         </button>
@@ -920,7 +920,7 @@ export default function IrcaRegisterPage() {
                   {(c) => <Input {...c} type="number" min={0} value={f.avgExpenditure} onChange={(e) => set("avgExpenditure")(e.target.value)} placeholder="₹ per day" invalid={errors.has("avgExpenditure")} />}
                 </FormField>
                 <div className="flex flex-col gap-1.5">
-                  <span id="money-source-label" className="text-sm font-medium text-ink">
+                  <span id="money-source-label" className="text-label-1 text-ink">
                     Source of Money for Drug Use <span className="ds-field__required">*</span>
                     <span className="ml-1 font-normal text-ink-muted">(select all that apply)</span>
                   </span>
@@ -946,7 +946,7 @@ export default function IrcaRegisterPage() {
                     ))}
                   </div>
                   {errors.has("moneySource") && (
-                    <p className="text-xs font-medium text-danger-fg">Select at least one source.</p>
+                    <p className="text-label-2 text-danger-fg">Select at least one source.</p>
                   )}
                 </div>
                 <FormField label="Ever apprehended by police for drug-related offense" required error={err("everApprehended")}>
@@ -956,12 +956,12 @@ export default function IrcaRegisterPage() {
 
               {/* Criminal / legal history — flows after "Ever apprehended", as on the legacy form. */}
               <div className="mt-6 border-t border-line pt-5">
-                <h3 id="legal-history-heading" className="text-sm font-semibold text-navy">Criminal / Legal History</h3>
-                <p className="mb-3 mt-1 text-xs text-ink-muted">If apprehended, record the reason — both ever and in the last month. Optional.</p>
+                <h3 id="legal-history-heading" className="text-title-3 text-navy">Criminal / Legal History</h3>
+                <p className="mb-3 mt-1 text-body-3 text-ink-muted">If apprehended, record the reason — both ever and in the last month. Optional.</p>
                 <div className="overflow-x-auto">
-                  <table className="min-w-full text-sm" aria-labelledby="legal-history-heading">
+                  <table className="min-w-full text-body-2" aria-labelledby="legal-history-heading">
                     <thead>
-                      <tr className="text-left text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                      <tr className="text-left text-label-3 uppercase text-ink-muted">
                         <th scope="col" className="px-2 py-2">Reason</th>
                         <th scope="col" className="px-2 py-2">Ever</th>
                         <th scope="col" className="px-2 py-2">Last One Month</th>
@@ -1018,7 +1018,7 @@ export default function IrcaRegisterPage() {
         {step === 4 && (
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-3">
-              <p className="text-sm text-ink-muted">
+              <p className="text-body-2 text-ink-muted">
                 Review the details below, then submit. Use the quick links or{" "}
                 <span className="font-semibold text-ink">Back</span> to make changes.
               </p>
@@ -1033,7 +1033,7 @@ export default function IrcaRegisterPage() {
                     key={j.to}
                     type="button"
                     onClick={() => jumpTo(j.to)}
-                    className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-semibold text-navy hover:bg-black/5"
+                    className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-black/5"
                   >
                     <Icon name="edit" size={12} aria-hidden /> {j.label}
                   </button>

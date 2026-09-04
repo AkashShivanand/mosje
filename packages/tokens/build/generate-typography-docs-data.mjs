@@ -19,9 +19,13 @@
  * Regenerate: npm run build -w @mosje/tokens
  */
 import { readFileSync, writeFileSync } from "node:fs";
+import { devanagariLeading } from "./devanagari-leading.mjs";
 
 const here = (p) => new URL(p, import.meta.url).pathname;
 const prim = JSON.parse(readFileSync(here("../src/primitive.json"), "utf8"));
+// Devanagari leading is DERIVED (build/devanagari-leading.mjs), so it is not in the source;
+// the page computes it with the same function the build does, from the same offset.
+const DEVANAGARI_OFFSET = Number(prim.font.lineHeight.devanagariOffset.$value);
 const CONTENT_PATH = here("../../../apps/hub/src/app/design-system/foundations/typography/typography-content.json");
 const content = JSON.parse(readFileSync(CONTENT_PATH, "utf8"));
 for (const key of ["tierWeights", "tiers", "surfaces", "samples", "standards"]) {
@@ -64,6 +68,9 @@ for (const [family, tiers] of Object.entries(prim.font.role)) {
     const size = bounds(props.size, `${role}.size`);
     const lh = bounds(props.lh, `${role}.lh`);
     const para = bounds(props.para, `${role}.para`);
+    const lhDevanagari = Object.fromEntries(["website", "portal"].map((surf) => [
+      surf, [0, 1].map((i) => devanagariLeading(size[surf][i], lh[surf][i], DEVANAGARI_OFFSET)),
+    ]));
     const weight = content.tierWeights[tier];
     if (!weight) throw new Error(`generate-typography-docs-data: no tier weight for "${tier}"`);
     const sample = content.samples[role];
@@ -71,11 +78,14 @@ for (const [family, tiers] of Object.entries(prim.font.role)) {
     roles.push({
       role, tier,
       weight: weight.name, weightVal: weight.value,
-      size, lh,
+      size, lh, lhDevanagari,
       // tracking is authored per DISPLAY role only, on the portal surface; the rest are 0
       tracking: { website: [0, 0], portal: [0, 0] },
       para: para ? para.website : [0, 0],
       en: sample.en, hi: sample.hi,
+      // The reasoning behind the value — authored as the size leaf's $description in
+      // primitive.json, the same text each type/* Figma variable carries in its description.
+      why: String(props.size?.$description ?? ""),
     });
   }
 }
@@ -132,15 +142,23 @@ export interface RoleSpec {
   weightVal: number;
   size: Record<Surface, [number, number]>;
   lh: Record<Surface, [number, number]>;
+  /** A Hindi block at this role: same size, Latin leading + 0.2 × size, rounded up to the 4px grid. */
+  lhDevanagari: Record<Surface, [number, number]>;
   tracking: Record<Surface, [number, number]>;
   para: [number, number];
   en: string;
   hi: string;
+  /** Why the value is what it is — from the token source, mirrored in the Figma variable description. */
+  why: string;
 }
 
 export const ROLES: RoleSpec[] = ${JSON.stringify(roles, null, 2)};
 
+/* ds-exempt-end */
 export const TIERS: { key: Tier; label: string; blurb: string }[] = ${JSON.stringify(content.tiers, null, 2)};
+
+/** Per-tier reasoning, from font.role.<tier>.$description in primitive.json. */
+export const TIER_WHY: Record<Tier, string> = ${JSON.stringify(Object.fromEntries(Object.entries(prim.font.role).filter(([k, v]) => !k.startsWith("$") && typeof v === "object").map(([k, v]) => [TIER_OF[k], String(v.$description ?? "")])), null, 2)};
 
 export const SURFACES: { key: Surface; label: string; note: string; sample: string }[] = ${JSON.stringify(content.surfaces, null, 2)};
 

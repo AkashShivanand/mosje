@@ -65,12 +65,12 @@ export default function SchemesPage() {
               <CardBody className="space-y-md p-lg">
                 <div className="flex items-start justify-between gap-md">
                   <div className="min-w-0 space-y-1">
-                    <div className="text-label-3 font-semibold uppercase tracking-[0.1em] text-ink-hint">
+                    <div className="text-label-3 uppercase text-ink-hint">
                       {s.type}
                     </div>
                     <Link
                       href={`/portals/smile-admin/beggary-schemes/${s.id}`}
-                      className="block truncate text-title-2 font-semibold text-ink hover:text-primary"
+                      className="block truncate text-title-2 text-ink hover:text-primary"
                     >
                       {s.name}
                     </Link>
@@ -80,9 +80,9 @@ export default function SchemesPage() {
                   </Badge>
                 </div>
 
-                <div className="grid grid-cols-3 gap-md rounded-md border border-stroke-100 bg-neutral-50/60 p-md text-body-3">
+                <div className="grid grid-cols-3 gap-md rounded-md border border-stroke-100 bg-neutral-50/60 p-md text-body-2">
                   <div className="space-y-1">
-                    <div className="text-label-3 uppercase tracking-[0.08em] text-ink-muted">
+                    <div className="text-label-3 uppercase text-ink-muted">
                       Budget
                     </div>
                     <div className="font-mono font-semibold text-ink">
@@ -90,7 +90,7 @@ export default function SchemesPage() {
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <div className="text-label-3 uppercase tracking-[0.08em] text-ink-muted">
+                    <div className="text-label-3 uppercase text-ink-muted">
                       Utilised
                     </div>
                     <div className="font-mono font-semibold text-ink">
@@ -98,7 +98,7 @@ export default function SchemesPage() {
                     </div>
                   </div>
                   <div className="space-y-1">
-                    <div className="text-label-3 uppercase tracking-[0.08em] text-ink-muted">
+                    <div className="text-label-3 uppercase text-ink-muted">
                       Beneficiaries
                     </div>
                     <div className="font-mono font-semibold text-ink">

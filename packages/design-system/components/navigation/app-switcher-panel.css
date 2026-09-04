@@ -61,25 +61,27 @@
     border-radius: var(--sa-shape-6);
     background-color: var(--sa-bg-brand-primary-subtler);
     color: var(--sa-text-brand-primary-base);
-    font-size: 11px;
-    font-weight: 800;
+    /* A text monogram, not an icon glyph: it takes a type role. */
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
   .ds-appsw__current-label {
-    font-size: var(--sa-type-label-3-size);
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     color: var(--sa-text-neutral-subtle);
-    line-height: 1;
     margin-bottom: var(--sa-padding-2);
   }
 
   .ds-appsw__current-name {
     font-size: var(--sa-type-body-2-size);
-    font-weight: 700;
+    line-height: var(--sa-type-body-2-lh);
+    font-weight: 600;
     color: var(--sa-text-neutral-base);
-    line-height: 1;
   }
 
   /* Search bar */
@@ -132,7 +134,8 @@
 
   .ds-appsw__search-kbd {
     font-family: var(--sa-font-latin);
-    font-size: 10px;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     color: var(--sa-text-neutral-subtle);
     background-color: var(--sa-border-neutral-subtle);
     border-radius: var(--sa-shape-4);
@@ -168,8 +171,9 @@
     gap: var(--sa-stack-8);
     padding: var(--sa-padding-8) var(--sa-padding-16) var(--sa-padding-4);
     font-size: var(--sa-type-label-3-size);
-    font-weight: 700;
-    letter-spacing: 0.08em;
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: 600;
+    letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     color: var(--sa-text-neutral-subtle);
     background-color: var(--sa-bg-neutral-base);
@@ -218,8 +222,9 @@
     border-radius: var(--sa-shape-6);
     background-color: var(--sa-bg-brand-primary-subtler);
     color: var(--sa-text-brand-primary-base);
-    font-size: 11px;
-    font-weight: 800;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -256,7 +261,8 @@
      with it — the name is the thing you are scanning for. */
   .ds-appsw__item-external {
     margin-inline-start: 5px;
-    font-size: 0.85em;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
     font-weight: 500;
     color: var(--sa-text-neutral-subtle);
   }
@@ -277,8 +283,9 @@
   /* Badges */
   .ds-appsw__badge {
     flex: 0 0 auto;
-    font-size: 9px;
-    font-weight: 700;
+    font-size: var(--sa-type-label-2-size);
+    line-height: var(--sa-type-label-2-lh);
+    font-weight: 600;
     border-radius: var(--sa-shape-6);
     padding: var(--sa-padding-2) var(--sa-padding-4);
   }

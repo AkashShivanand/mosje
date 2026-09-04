@@ -142,6 +142,7 @@ export default function RequiredFieldsLegendPage(): React.JSX.Element {
             here — then every form beneath that provider gets the same wording, and the marks are
             translated with it.
           </p>
+          {/* ds-exempt-start(code-sample): the sample shows the Hindi legend string a provider would carry; the string is code, and the rendered form beneath a provider marks its own language */}
           <CodeBlock>{`<FieldPolicyProvider
   copy={{
     necessityLegend: {
@@ -149,6 +150,7 @@ export default function RequiredFieldsLegendPage(): React.JSX.Element {
     },
   }}
 >`}</CodeBlock>
+          {/* ds-exempt-end */}
         </section>
       }
       accessibility={

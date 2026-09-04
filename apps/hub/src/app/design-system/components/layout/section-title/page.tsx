@@ -66,6 +66,7 @@ export default function SectionTitlePage(): React.JSX.Element {
           <h2 id="cdp-example" className="cdp__h2">
             Use It Instead of a Hand-Rolled Heading
           </h2>
+          {/* ds-exempt-start(specimen): the "don't" half of the pair shows the hand-rolled heading the component replaces — binding it would delete what is being demonstrated */}
           <CodeBlock>{`// DO
 <SectionTitle
   title="Grants Released to States"
@@ -77,6 +78,7 @@ export default function SectionTitlePage(): React.JSX.Element {
 <div className="flex justify-between">
   <h2 className="text-2xl font-bold">Grants Released to States</h2>
 </div>`}</CodeBlock>
+          {/* ds-exempt-end */}
           <p>
             The “don&rsquo;t” is not hypothetical. A reach section shipped with an <code>h2</code> at
             26.3px/700 over a 16px lead, beside six sibling sections at 18.6px/600 over 12px

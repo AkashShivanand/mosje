@@ -25,10 +25,10 @@ export function SiteFooter() {
       <div className="sa-container py-8">
         <div className="flex flex-col gap-6 sm:flex-row sm:items-start sm:justify-between">
           <div className="max-w-md">
-            <p className="text-sm font-semibold text-ink">
+            <p className="text-title-3 text-ink">
               Ministry of Social Justice &amp; Empowerment
             </p>
-            <p className="mt-1 text-sm text-ink-muted">
+            <p className="mt-1 text-body-2 text-ink-muted">
               Government of India — unified digital estate. Built on the SAMAVESH
               design system to DBIM, GIGW &amp; WCAG&nbsp;2.1&nbsp;AA standards.
             </p>
@@ -38,14 +38,14 @@ export function SiteFooter() {
               <a
                 key={href}
                 href={href}
-                className="text-sm text-ink-muted transition-colors hover:text-primary hover:underline"
+                className="text-body-2 text-ink-muted transition-colors hover:text-primary hover:underline"
               >
                 {label}
               </a>
             ))}
           </nav>
         </div>
-        <div className="mt-8 flex flex-col gap-2 border-t border-border pt-5 text-xs text-ink-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="mt-8 flex flex-col gap-2 border-t border-border pt-5 text-body-3 text-ink-muted sm:flex-row sm:items-center sm:justify-between">
           <span>© {year} Government of India. All rights reserved.</span>
           <span>Accessible · Bilingual-ready · Open standards</span>
         </div>

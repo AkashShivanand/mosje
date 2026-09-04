@@ -24,7 +24,7 @@ export default function ImmediateReviewPage() {
                 </div>
                 <div className="space-y-xs">
                   <div className="flex flex-wrap items-center gap-sm">
-                    <span className="text-title-2 font-semibold text-ink">{item.type}</span>
+                    <span className="text-title-2 text-ink">{item.type}</span>
                     <Badge status={statusTone(item.severity)}>{item.severity} severity</Badge>
                   </div>
                   <p className="text-body-2 text-ink">{item.description}</p>

@@ -342,8 +342,8 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
       noValidate
     >
       <div>
-        <h1 className="text-xl font-bold text-ink">Outreach Patient Registration</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Outreach Patient Registration</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Fields marked <span aria-hidden="true">*</span>
           <span className="sr-only">with an asterisk</span> are required.
         </p>
@@ -418,8 +418,8 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
                 {drugRows.map((row, i) => (
                   <li key={row._key} className="rounded-xl border border-line bg-surface-muted/50 p-4 sm:p-5">
                     <div className="mb-4 flex items-center justify-between gap-2">
-                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-navy">
-                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-xs font-bold text-navy" aria-hidden="true">{i + 1}</span>
+                      <span className="inline-flex items-center gap-2 text-title-3 text-navy">
+                        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-navy/10 text-label-2 font-bold text-navy" aria-hidden="true">{i + 1}</span>
                         Substance {i + 1}
                       </span>
                       {drugRows.length > 1 && (
@@ -427,7 +427,7 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
                           type="button"
                           onClick={() => setDrugRows((prev) => prev.filter((_, idx) => idx !== i))}
                           aria-label={`Remove substance ${i + 1}`}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-xs font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
+                          className="inline-flex h-9 items-center gap-1.5 rounded-lg px-2.5 text-label-2 font-semibold text-danger-fg hover:bg-danger-fg/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-danger-fg"
                         >
                           <Icon name="delete" size={14} aria-hidden /> Remove
                         </button>
@@ -551,7 +551,7 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
         {step === 3 && (
           <div className="flex flex-col gap-5">
             <div className="flex flex-col gap-3">
-              <p className="text-sm text-ink-muted">
+              <p className="text-body-2 text-ink-muted">
                 Review the details below, then submit. Use the quick links or{" "}
                 <span className="font-semibold text-ink">Back</span> to make changes.
               </p>
@@ -565,7 +565,7 @@ export function OutreachPatientForm({ redirectTo }: { redirectTo: string }) {
                     key={j.to}
                     type="button"
                     onClick={() => jumpTo(j.to)}
-                    className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-semibold text-navy hover:bg-black/5"
+                    className="inline-flex items-center gap-1 rounded-lg border border-line bg-white px-3 py-1.5 text-label-2 font-semibold text-navy hover:bg-black/5"
                   >
                     <Icon name="edit" size={12} aria-hidden /> {j.label}
                   </button>

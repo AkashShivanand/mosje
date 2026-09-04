@@ -366,7 +366,7 @@ export const SingleRole: Story = {
       ...eAnudaan,
       roles: [eAnudaan.roles[0]!],
       extraContent: (
-        <p style={{ fontSize: 12 }}>
+        <p style={{ fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)" }}>
           Demonstration portal on mock data. Open the demo console (bottom-left)
           to fill an officer role.
         </p>

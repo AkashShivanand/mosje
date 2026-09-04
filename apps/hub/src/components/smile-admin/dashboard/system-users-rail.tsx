@@ -20,9 +20,9 @@ export function SystemUsersRail({ items }: { items: SystemUserStat[] }) {
           <span className="grid h-7 w-7 place-items-center rounded-sm bg-primary text-white">
             <Icon name="groups" size={16} />
           </span>
-          <div className="leading-tight">
+          <div>
             <div className="text-label-2 font-semibold text-ink">System Users</div>
-            <div className="text-label-3 text-ink-hint">
+            <div className="text-body-3 text-ink-hint">
               {formatNumber(total)} total · live
             </div>
           </div>
@@ -53,7 +53,7 @@ export function SystemUsersRail({ items }: { items: SystemUserStat[] }) {
                   </div>
                 </div>
               </div>
-              <span className="shrink-0 text-title-2 font-bold tabular-nums text-ink">
+              <span className="shrink-0 text-title-2 tabular-nums text-ink">
                 {formatNumber(s.value)}
               </span>
             </li>

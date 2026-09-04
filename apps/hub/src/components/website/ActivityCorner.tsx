@@ -63,7 +63,7 @@ export function ActivityCorner() {
         {/* Heading sits on its own line; the design puts the tab row BELOW it
             rather than beside it [WEB-T-03]. It carries no subtitle — the one
             that used to be here described Our Organisations [WEB-T-04]. */}
-        <h2 className="text-[28px] sm:text-[32px] font-semibold leading-tight text-primary-dark">
+        <h2 className="text-headline-2 text-primary-dark">
           Activity Corner
         </h2>
 
@@ -80,7 +80,7 @@ export function ActivityCorner() {
                 aria-selected={activeTab === "events"}
                 onClick={() => setActiveTab("events")}
                 className={cn(
-                  "rounded-md px-4 py-1.5 text-xs font-semibold transition",
+                  "rounded-md px-4 py-1.5 text-label-1 transition",
                   activeTab === "events"
                     ? "bg-primary text-white shadow-xs"
                     : "text-ink-muted hover:text-ink"
@@ -95,7 +95,7 @@ export function ActivityCorner() {
                 aria-selected={activeTab === "press"}
                 onClick={() => setActiveTab("press")}
                 className={cn(
-                  "rounded-md px-4 py-1.5 text-xs font-semibold transition",
+                  "rounded-md px-4 py-1.5 text-label-1 transition",
                   activeTab === "press"
                     ? "bg-primary text-white shadow-xs"
                     : "text-ink-muted hover:text-ink"
@@ -110,7 +110,7 @@ export function ActivityCorner() {
                 aria-selected={activeTab === "gallery"}
                 onClick={() => setActiveTab("gallery")}
                 className={cn(
-                  "rounded-md px-4 py-1.5 text-xs font-semibold transition",
+                  "rounded-md px-4 py-1.5 text-label-1 transition",
                   activeTab === "gallery"
                     ? "bg-primary text-white shadow-xs"
                     : "text-ink-muted hover:text-ink"
@@ -142,26 +142,26 @@ export function ActivityCorner() {
               className="flex flex-row items-start gap-4 rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition hover:border-primary/40 hover:shadow-md"
             >
               <div className="flex h-16 w-16 shrink-0 flex-col items-center justify-center rounded-lg border border-gray-200 bg-surface-muted">
-                <span className="text-[22px] font-extrabold leading-none text-ink">
+                <span className="text-title-1 font-bold tabular-nums text-ink">
                   {event.day}
                 </span>
-                <span className="mt-0.5 text-[9px] font-bold uppercase tracking-wider text-ink-muted">
+                <span className="mt-0.5 text-label-3 uppercase text-ink-muted">
                   {event.monthYear}
                 </span>
               </div>
 
               <div className="flex min-w-0 flex-1 flex-col">
-                <h3 className="text-[15px] font-semibold leading-snug text-ink">
+                <h3 className="text-title-2 text-ink">
                   {event.title}
                 </h3>
                 {event.desc && (
-                  <p className="mt-1.5 text-xs leading-snug text-ink-muted line-clamp-3">
+                  <p className="mt-1.5 text-body-3 text-ink-muted line-clamp-3">
                     {event.desc}
                   </p>
                 )}
                 <Link
                   href={event.href}
-                  className="mt-auto flex items-center justify-end gap-1 pt-3 text-xs font-semibold text-primary-dark hover:underline"
+                  className="mt-auto flex items-center justify-end gap-1 pt-3 text-label-2 text-primary-dark hover:underline"
                 >
                   Read More <Icon name="arrow_forward" size={16} aria-hidden />
                 </Link>

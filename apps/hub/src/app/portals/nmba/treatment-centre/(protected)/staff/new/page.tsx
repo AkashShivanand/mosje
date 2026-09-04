@@ -65,8 +65,8 @@ export default function NewStaffPage() {
   return (
     <div className="flex flex-col gap-6 max-w-2xl mx-auto py-4">
       <div>
-        <h1 className="text-xl font-bold text-ink">Add Staff</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Add Staff</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Add a staff member employed at this treatment centre.
         </p>
       </div>

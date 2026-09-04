@@ -23,7 +23,7 @@ function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => voi
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" role="dialog" aria-modal="true" aria-labelledby="add-doc-title">
       <div className="w-full max-w-sm rounded-2xl bg-white shadow-2xl">
         <div className="flex items-center justify-between border-b border-line px-6 py-4">
-          <h2 id="add-doc-title" className="text-base font-bold text-ink">Add Document</h2>
+          <h2 id="add-doc-title" className="text-title-2 text-ink">Add Document</h2>
           <button onClick={onClose} aria-label="Close" className="rounded p-1 text-ink-hint hover:bg-black/5"><Icon name="close" size={16} /></button>
         </div>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 p-6">
@@ -33,12 +33,12 @@ function AddDocumentModal({ open, onClose }: { open: boolean; onClose: () => voi
             )}
           </FormField>
           <div>
-            <label htmlFor="doc-file" className="mb-1 block text-sm font-medium text-ink">File Upload</label>
+            <label htmlFor="doc-file" className="mb-1 block text-label-1 text-ink">File Upload</label>
             <input
               id="doc-file"
               type="file"
               accept=".pdf,.doc,.docx,.xls,.xlsx"
-              className="block w-full text-sm text-ink-muted file:mr-4 file:rounded-lg file:border-0 file:bg-brandwash file:px-3 file:py-1.5 file:text-xs file:font-semibold file:text-navy hover:file:bg-navy/10"
+              className="block w-full text-body-2 text-ink-muted file:mr-4 file:rounded-lg file:border-0 file:bg-brandwash file:px-3 file:py-1.5 file:text-label-2 file:font-semibold file:text-navy hover:file:bg-navy/10"
               aria-label="Upload document file"
             />
           </div>
@@ -68,8 +68,8 @@ export default function ImportantDocumentsPage() {
     <AdminShell>
       <div className="mb-6 flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-xl font-bold text-ink">Important Documents</h1>
-          <p className="mt-1 text-sm text-ink-muted">{docs.length} documents</p>
+          <h1 className="text-headline-1 text-ink">Important Documents</h1>
+          <p className="mt-1 text-body-2 text-ink-muted">{docs.length} documents</p>
         </div>
         <Button onClick={() => setModalOpen(true)} iconLeft={<Icon name="add" size={16} />}>
           Add Document
@@ -77,8 +77,8 @@ export default function ImportantDocumentsPage() {
       </div>
 
       <div className="rounded-xl border border-line bg-white shadow-card overflow-hidden">
-        <table className="min-w-full text-sm" aria-label="Important documents">
-          <thead className="bg-surface-muted text-left text-xs font-semibold uppercase tracking-wider text-ink-muted">
+        <table className="min-w-full text-body-2" aria-label="Important documents">
+          <thead className="bg-surface-muted text-left text-label-3 uppercase text-ink-muted">
             <tr>
               <th scope="col" className="px-4 py-3">Document Name</th>
               <th scope="col" className="px-4 py-3">Uploaded On</th>

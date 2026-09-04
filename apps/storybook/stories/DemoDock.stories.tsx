@@ -235,7 +235,7 @@ export const WithExtraTabs: Story = {
         id: "data",
         label: "Data",
         content: (
-          <p style={{ margin: 0, fontSize: "0.8125rem", lineHeight: 1.5 }}>
+          <p style={{ margin: 0, fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)" }}>
             Switch this dashboard between live figures and the seeded prototype set.
           </p>
         ),

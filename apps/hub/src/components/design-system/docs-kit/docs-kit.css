@@ -33,9 +33,9 @@
   line-height: var(--sa-type-body-2-lh);
 }
 .props-table tr:last-child td { border-bottom: none; }
-.props-table__name { font-weight: 600; color: var(--sa-text-brand-primary-bolder); font-family: var(--sa-font-mono); font-size: 0.9em; }
-.props-table__type { font-family: var(--sa-font-mono); font-size: 0.85em; color: var(--sa-text-neutral-subtle); background: var(--sa-bg-neutral-subtler); padding: var(--sa-padding-2) var(--sa-padding-4); border-radius: var(--sa-shape-4); border: 1px solid var(--sa-border-neutral-subtle); }
-.props-table__required { display: inline-block; margin-left: var(--sa-stack-8); font-size: 0.75em; padding: var(--sa-padding-2) var(--sa-padding-4); border-radius: var(--sa-shape-4); background: color-mix(in oklab, var(--sa-color-status-danger) 10%, transparent); color: var(--sa-text-status-error-base); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+.props-table__name { font-weight: 600; color: var(--sa-text-brand-primary-bolder); font-family: var(--sa-font-mono); font-size: var(--sa-type-body-2-size); line-height: var(--sa-type-body-2-lh); }
+.props-table__type { font-family: var(--sa-font-mono); font-size: var(--sa-type-body-3-size); line-height: var(--sa-type-body-3-lh); color: var(--sa-text-neutral-subtle); background: var(--sa-bg-neutral-subtler); padding: var(--sa-padding-2) var(--sa-padding-4); border-radius: var(--sa-shape-4); border: 1px solid var(--sa-border-neutral-subtle); }
+.props-table__required { display: inline-block; margin-left: var(--sa-stack-8); font-size: var(--sa-type-label-3-size); line-height: var(--sa-type-label-3-lh); padding: var(--sa-padding-2) var(--sa-padding-4); border-radius: var(--sa-shape-4); background: color-mix(in oklab, var(--sa-color-status-danger) 10%, transparent); color: var(--sa-text-status-error-base); font-weight: 600; text-transform: uppercase; letter-spacing: var(--sa-type-caps-tracking); }
 
 /* ── Do/Don't ── */
 .do-dont { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sa-padding-20); margin-top: var(--sa-padding-20); }
@@ -93,9 +93,10 @@
   padding: var(--sa-padding-8) var(--sa-padding-12);
   border-bottom: 2px solid var(--sa-border-neutral-base);
   font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: var(--sa-type-caps-tracking);
   color: var(--sa-text-neutral-subtle);
 }
 .token-table td { padding: var(--sa-padding-12); border-bottom: 1px solid var(--sa-border-neutral-subtle); vertical-align: middle; }
@@ -340,8 +341,9 @@
    DOWN the row headings to find their case, and only then across. */
 .matrix-table thead th {
   font-size: var(--sa-type-label-3-size);
+  line-height: var(--sa-type-label-3-lh);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: var(--sa-type-caps-tracking);
   color: var(--sa-text-brand-primary-bolder);
   background: var(--sa-bg-neutral-subtler);
 }
@@ -386,7 +388,7 @@
 .cdp__title {
   font-size: var(--sa-type-display-1-size);
   line-height: var(--sa-type-display-1-lh);
-  font-weight: 800;
+  font-weight: 600;
   color: var(--sa-text-neutral-bolder);
   margin: 0;
 }
@@ -645,7 +647,7 @@
   font-weight: 700;
   color: var(--sa-text-status-warning-base);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: var(--sa-type-caps-tracking);
 }
 .props-table__deprecated-note {
   display: block;

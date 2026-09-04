@@ -33,11 +33,11 @@ export function StatPill({
       >
         <Icon name={iconName} size={20} />
       </div>
-      <div className="min-w-0 leading-tight">
-        <div className="text-label-3 font-semibold uppercase tracking-[0.08em] text-ink-muted">
+      <div className="min-w-0">
+        <div className="text-label-3 uppercase text-ink-muted">
           {label}
         </div>
-        <div className="text-title-1 font-bold tabular-nums text-ink">
+        <div className="text-title-1 tabular-nums text-ink">
           {formatNumber(value)}
         </div>
       </div>

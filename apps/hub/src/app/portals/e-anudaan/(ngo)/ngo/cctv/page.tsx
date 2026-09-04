@@ -39,8 +39,8 @@ export default function CctvSetupPage() {
   return (
     <div className="mx-auto max-w-2xl space-y-5">
       <header>
-        <h1 className="text-2xl font-bold text-ink">CCTV Setup</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">CCTV Setup</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Configure your centre&apos;s CCTV so inspecting officers can view a live feed during an
           e-inspection. <strong>You do this once.</strong>
         </p>
@@ -91,11 +91,11 @@ export default function CctvSetupPage() {
 
         {outcome.kind === "saved" && (
           <Alert status="success" title="CCTV registered">
-            <p className="text-sm">
+            <p className="text-body-2">
               Enter this activation code in the recorder software on your centre&apos;s CCTV PC.
             </p>
-            <p className="mt-2 font-mono text-lg font-bold tracking-widest text-ink">{outcome.code}</p>
-            <p className="mt-1 text-xs text-ink-muted">
+            <p className="mt-2 font-mono text-title-1 font-bold text-ink tracking-digits">{outcome.code}</p>
+            <p className="mt-1 text-body-3 text-ink-muted">
               {cameras} camera{cameras === "1" ? "" : "s"} registered
               {contact ? ` · contact ${contact}` : ""}
               {mobile ? ` · ${mobile}` : ""}

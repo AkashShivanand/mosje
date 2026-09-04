@@ -27,12 +27,12 @@ export function PledgeSplit() {
               <span className="flex h-11 w-11 items-center justify-center rounded-lg" style={{ background: `${c.accent}1a`, color: c.accent }}>
                 <Icon name={iconName} size={20} />
               </span>
-              <span className="mt-4 text-[19px] font-semibold text-ink">{c.title}</span>
-              <span className="mt-1 flex-1 text-[14px] text-ink-muted">{c.blurb}</span>
-              <span className="mt-4 text-[13px] text-ink-muted">
-                <span className="text-[22px] font-bold" style={{ color: c.accent }}>{c.count}</span> pledged
+              <span className="mt-4 text-title-1 text-ink">{c.title}</span>
+              <span className="mt-1 flex-1 text-body-2 text-ink-muted">{c.blurb}</span>
+              <span className="mt-4 text-body-2 text-ink-muted">
+                <span className="text-title-1 font-bold tabular-nums" style={{ color: c.accent }}>{c.count}</span> pledged
               </span>
-              <span className="mt-3 inline-flex items-center gap-1.5 text-[14px] font-semibold" style={{ color: c.accent }}>
+              <span className="mt-3 inline-flex items-center gap-1.5 text-label-1" style={{ color: c.accent }}>
                 Take the pledge <Icon name="arrow_forward" size={16} className="transition-transform group-hover:translate-x-1" />
               </span>
             </span>
@@ -54,15 +54,15 @@ export function PledgeToggle() {
       <div className="flex rounded-lg bg-surface-muted p-1">
         {(["non", "rec"] as const).map((t) => (
           <button key={t} type="button" onClick={() => setTab(t)} aria-pressed={tab === t}
-            className={`flex-1 rounded-md px-3 py-2 text-[14px] font-semibold transition-colors ${tab === t ? "bg-white text-primary-dark shadow-sm" : "text-ink-muted hover:text-ink"}`}>
+            className={`flex-1 rounded-md px-3 py-2 text-label-1 transition-colors ${tab === t ? "bg-white text-primary-dark shadow-sm" : "text-ink-muted hover:text-ink"}`}>
             {t === "non" ? "Non-user" : "Recovered user"}
           </button>
         ))}
       </div>
-      <p className="mt-5 text-[18px] font-semibold text-ink">{data.title}</p>
-      <p className="mt-2 text-[15px] leading-relaxed text-ink-muted">{data.blurb}</p>
-      <p className="mt-4 text-[13px] text-ink-muted"><span className="font-bold text-primary-dark">{data.count}</span> people have taken this pledge</p>
-      <a href={data.href} className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-[15px] font-semibold text-white transition-colors hover:bg-primary-dark">
+      <p className="mt-5 text-title-1 text-ink">{data.title}</p>
+      <p className="mt-2 text-body-1 text-ink-muted">{data.blurb}</p>
+      <p className="mt-4 text-body-2 text-ink-muted"><span className="font-bold text-primary-dark">{data.count}</span> people have taken this pledge</p>
+      <a href={data.href} className="mt-4 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-2.5 text-label-1 text-white transition-colors hover:bg-primary-dark">
         Take the pledge <Icon name="arrow_forward" size={16} />
       </a>
     </div>
@@ -75,16 +75,16 @@ export function PledgeBanner() {
     <div className="overflow-hidden rounded-2xl bg-primary-dark px-6 py-7 sm:px-8">
       <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h3 className="text-[20px] font-semibold text-white">Take the pledge for a drug-free India</h3>
-          <p className="mt-1 text-[14px] text-white/70">
+          <h3 className="text-title-1 text-white">Take the pledge for a drug-free India</h3>
+          <p className="mt-1 text-body-2 text-white/70">
             <span className="font-bold text-white">{combinedTotal}</span> Indians have already pledged. Choose your path:
           </p>
         </div>
         <div className="flex shrink-0 flex-wrap gap-2.5">
-          <a href={NON_USER} className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-[14px] font-semibold text-primary-dark transition hover:bg-yellow">
+          <a href={NON_USER} className="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-2.5 text-label-1 text-primary-dark transition hover:bg-yellow">
             <Icon name="group" size={16} /> Non-user
           </a>
-          <a href={RECOVERED} className="inline-flex items-center gap-2 rounded-lg border border-white/40 bg-white/10 px-4 py-2.5 text-[14px] font-semibold text-white transition hover:bg-white/20">
+          <a href={RECOVERED} className="inline-flex items-center gap-2 rounded-lg border border-white/40 bg-white/10 px-4 py-2.5 text-label-1 text-white transition hover:bg-white/20">
             <Icon name="refresh" size={16} /> Recovered user
           </a>
         </div>

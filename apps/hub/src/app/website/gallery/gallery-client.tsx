@@ -70,7 +70,7 @@ export function GalleryClient() {
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
-                  <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-[13px] font-medium text-white">
+                  <span className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-body-2 font-medium text-white">
                     {image.caption}
                   </span>
                 </button>
@@ -110,7 +110,7 @@ export function GalleryClient() {
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
-            <p className="mt-3 text-center text-[14px] font-medium text-white">{active.caption}</p>
+            <p className="mt-3 text-center text-body-2 font-medium text-white">{active.caption}</p>
           </div>
         </div>
       )}

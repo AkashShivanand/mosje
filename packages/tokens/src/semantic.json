@@ -1546,9 +1546,9 @@
   },
   "leading": {
     "devanagari": {
-      "$type": "number",
-      "$value": "{font.lineHeight.devanagari}",
-      "$description": "Devanagari needs more leading than Latin at the same size — the matras sit above and below the base line."
+      "$type": "dimension",
+      "$value": "{font.role.body.1.lhDevanagari}",
+      "$description": "Body-1's Devanagari line height, for a Hindi block that has no role of its own. Every role carries its own type/<role>/lhDevanagari — the Latin leading plus a fifth of the size, on the 4px grid — and a Hindi block bound to a role takes THAT, at the same size as its Latin sibling. Until 2026-09-04 this was a unitless 1.7 applied to every Hindi block: it undid the scale (a 40px headline at 68px leading) and Figma read it as 1.7px."
     }
   },
   "bg": {
@@ -2679,6 +2679,10 @@
   "container": {
     "$description": "Page container max-widths. `sm`–`xl` carry UX4G 3.0's Bootstrap container ladder verbatim. `content` and `contentXl` are the estate's own page container — the pair a page skeleton actually binds. A container is a CAP, never a width: `grid/margin/*` is a floor that wins on narrower viewports, so the effective column is min(container, viewport - 2 x margin).",
     "$type": "dimension",
+    "measure": {
+      "$value": "36rem",
+      "$description": "The MEASURE — the widest a run of body text may be. 36rem is about 68 characters of Noto Sans at 16px, inside the 45–75 the typography page requires and DBIM §7 asks for; in rem so a reader who raises their default font size keeps the same character count, not the same pixels. Added 2026-09-04: `.ds-prose` carried a 72ch literal, `max-w-prose` had four consumers, and the container ladder kept widening to 1376px while body stayed 16px — a 130-character line on a wide monitor. Bind prose containers to `--sa-container-measure`; Tailwind exposes it as `max-w-measure`."
+    },
     "sm": {
       "$value": "540px"
     },

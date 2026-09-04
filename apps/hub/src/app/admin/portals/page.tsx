@@ -127,7 +127,7 @@ export default async function AdminPortalsPage({
 
       <main className="mx-auto w-full max-w-5xl px-6 py-12">
         <nav aria-label="Breadcrumb" className="mb-6">
-          <ol className="flex items-center gap-2 text-sm text-ink-muted">
+          <ol className="flex items-center gap-2 text-body-2 text-ink-muted">
             <li>
               <Link href="/admin" className="hover:text-primary hover:underline">
                 Settings
@@ -140,8 +140,8 @@ export default async function AdminPortalsPage({
           </ol>
         </nav>
 
-        <h1 className="text-2xl font-bold tracking-tight text-ink">Estate registry</h1>
-        <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Estate registry</h1>
+        <p className="mt-1.5 max-w-measure text-body-2 text-ink-muted">
           What the estate advertises and links to, where the chat assistant
           appears, and whether the demo dock is shown. Changes apply to the
           deployed prototype at once — there is no separate publish step. Hiding

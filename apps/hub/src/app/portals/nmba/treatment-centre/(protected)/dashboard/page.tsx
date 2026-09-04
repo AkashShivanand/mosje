@@ -248,8 +248,8 @@ export default function TreatmentCentreDashboard() {
       {/* Page head — title + centre + period filter */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-[28px] font-semibold leading-9 text-ink-strong">Dashboard</h1>
-          <p className="mt-1 text-base text-ink-muted">{session.centerName}</p>
+          <h1 className="text-headline-1 text-ink-strong">Dashboard</h1>
+          <p className="mt-1 text-body-1 text-ink-muted">{session.centerName}</p>
         </div>
         <label className="sr-only" htmlFor="dashboard-month">Reporting period</label>
         <Select
@@ -279,7 +279,7 @@ export default function TreatmentCentreDashboard() {
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
         <section aria-labelledby={pieHeadingId} className="rounded-xl border border-line bg-white p-5">
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
-            <h2 id={pieHeadingId} className="text-base font-semibold text-ink">Analytical Report</h2>
+            <h2 id={pieHeadingId} className="text-title-2 text-ink">Analytical Report</h2>
             <div className="flex items-center gap-2">
               <Select
                 aria-label="Analytical report filter"
@@ -299,7 +299,7 @@ export default function TreatmentCentreDashboard() {
 
         <section aria-labelledby={barHeadingId} className="rounded-xl border border-line bg-white p-5">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <h2 id={barHeadingId} className="text-base font-semibold text-ink">Drug Distribution</h2>
+            <h2 id={barHeadingId} className="text-title-2 text-ink">Drug Distribution</h2>
             <CardMenuButton />
           </div>
           <BarChart
@@ -313,7 +313,7 @@ export default function TreatmentCentreDashboard() {
 
         <section aria-labelledby={stateHeadingId} className="rounded-xl border border-line bg-white p-5 lg:col-span-2">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <h2 id={stateHeadingId} className="text-base font-semibold text-ink">State Wise Report</h2>
+            <h2 id={stateHeadingId} className="text-title-2 text-ink">State Wise Report</h2>
             <CardMenuButton />
           </div>
           <BarChart
@@ -326,7 +326,7 @@ export default function TreatmentCentreDashboard() {
 
         <section aria-labelledby={ageHeadingId} className="rounded-xl border border-line bg-white p-5 lg:col-span-2">
           <div className="mb-4 flex items-center justify-between gap-3">
-            <h2 id={ageHeadingId} className="text-base font-semibold text-ink">Age Wise Report</h2>
+            <h2 id={ageHeadingId} className="text-title-2 text-ink">Age Wise Report</h2>
             <CardMenuButton />
           </div>
           <BarChart

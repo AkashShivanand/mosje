@@ -6,6 +6,7 @@ import { AnnouncementBanner } from "@/components/nhapoa/announcement-banner";
 export const metadata: Metadata = {
   title: "SAMBAL · National Helpline Against Atrocities | SAMAVESH · MoSJE",
   description:
+    // ds-exempt(hindi-source): a <meta> description cannot carry lang; the rendered header marks संबल with lang="hi"
     "SAMBAL (संबल) — the National Helpline Against Atrocities (formerly NHAA). Grievance redressal, rescue and relief under the PoA Act. SAMAVESH, Ministry of Social Justice & Empowerment, Government of India.",
   applicationName: "SAMBAL · Samavesh",
   icons: [

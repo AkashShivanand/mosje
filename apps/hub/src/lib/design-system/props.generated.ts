@@ -121,7 +121,7 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "language",
-        "type": "{ label?: string; onClick?: () => void } | false",
+        "type": "{ label?: string; /** BCP-47 tag of the LABEL's own language (e.g. \"hi\" for हिंदी) so a screen reader voices it correctly. */ lang?: string; onClick?: () => void } | false",
         "required": false,
         "default": "{ label: \"English\" }",
         "description": "Language selector. Pass `false` to hide."
@@ -207,7 +207,7 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "language",
-        "type": "{ label?: string; onClick?: () => void } | false",
+        "type": "{ label?: string; lang?: string; onClick?: () => void } | false",
         "required": false,
         "default": "{ label: \"English\" }",
         "description": "Language selector. Pass `false` to hide."
@@ -4304,6 +4304,43 @@ export const GENERATED_PROPS = {
       }
     ]
   },
+  "HeadingProps": {
+    "source": "packages/design-system/components/layout/text.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": true,
+        "description": ""
+      },
+      {
+        "name": "level",
+        "type": "HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6",
+        "required": true,
+        "description": "The heading ELEMENT (h1–h6) — the document outline, never a size. Required."
+      },
+      {
+        "name": "measure",
+        "type": "boolean",
+        "required": false,
+        "description": "Cap the line length at the measure (≈68 characters)."
+      },
+      {
+        "name": "tone",
+        "type": "TextTone = \"base\" | \"subtle\" | \"inverse\" | \"brand\" | \"inherit\"",
+        "required": false,
+        "default": "\"base\"",
+        "description": "Ink."
+      },
+      {
+        "name": "variant",
+        "type": "DisplayRole | HeadlineRole | TitleRole",
+        "required": false,
+        "description": "The type role. Defaults from `level` (h1 → headline-1 … h6 → headline-6)."
+      }
+    ]
+  },
   "HeatmapProps": {
     "source": "packages/design-system/components/data-display/charts/heatmap.tsx",
     "inheritsNative": false,
@@ -5897,7 +5934,7 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "language",
-        "type": "{ label?: string; onClick?: () => void } | false",
+        "type": "{ label?: string; /** BCP-47 tag of the LABEL's own language (e.g. \"hi\" for हिंदी) so a screen reader voices it correctly. */ lang?: string; onClick?: () => void } | false",
         "required": false,
         "description": ""
       },
@@ -7907,7 +7944,7 @@ export const GENERATED_PROPS = {
       },
       {
         "name": "language",
-        "type": "{ label?: string; onClick?: () => void }",
+        "type": "{ label?: string; lang?: string; onClick?: () => void }",
         "required": false,
         "default": "{ label: \"English\" }",
         "description": "Language selector."
@@ -8533,6 +8570,63 @@ export const GENERATED_PROPS = {
         "required": false,
         "default": "\"enclosed\"",
         "description": "Open list or filled track."
+      }
+    ]
+  },
+  "TextProps": {
+    "source": "packages/design-system/components/layout/text.tsx",
+    "inheritsNative": true,
+    "props": [
+      {
+        "name": "as",
+        "type": "TextElement = \"p\" | \"span\" | \"div\" | \"small\" | \"strong\" | \"em\" | \"li\" | \"dd\" | \"dt\" | \"figcaption\" | \"label\" | \"legend\" | \"caption\" | \"time\"",
+        "required": false,
+        "default": "\"p\"",
+        "description": "The element."
+      },
+      {
+        "name": "children",
+        "type": "React.ReactNode",
+        "required": false,
+        "description": ""
+      },
+      {
+        "name": "flow",
+        "type": "boolean",
+        "required": false,
+        "description": "Paragraph rhythm: consecutive `flow` Text blocks are separated by the role's paragraph-spacing token. Opt in, so a Text inside a flex or grid gap does not double up."
+      },
+      {
+        "name": "lang",
+        "type": "string",
+        "required": false,
+        "description": "Passed straight to the element. Set `\"hi\"` on every Devanagari run — it switches the face and the leading."
+      },
+      {
+        "name": "measure",
+        "type": "boolean",
+        "required": false,
+        "description": "Cap the line length at the measure (≈68 characters)."
+      },
+      {
+        "name": "numeric",
+        "type": "boolean",
+        "required": false,
+        "description": "Tabular numerals, for figures that line up in a column."
+      },
+      {
+        "name": "tone",
+        "type": "TextTone = \"base\" | \"subtle\" | \"inverse\" | \"brand\" | \"inherit\"",
+        "required": false,
+        "default": "\"base\"",
+        "description": "Ink."
+      },
+      {
+        "name": "variant",
+        "type": "BodyRole | LabelRole | TitleRole",
+        "required": false,
+        "default": "\"body-1\"",
+        "description": "The type role."
       }
     ]
   },

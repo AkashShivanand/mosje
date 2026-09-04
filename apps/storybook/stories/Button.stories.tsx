@@ -222,10 +222,10 @@ export const KnownDefects: Story = {
   render: () => (
     <div style={{ display: "grid", gap: 32, maxWidth: 720 }}>
       <section>
-        <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
+        <h3 style={{ margin: "0 0 4px", fontSize: "var(--sa-type-title-3-size)", lineHeight: "var(--sa-type-title-3-lh)" }}>
           FIXED 2026-08-27 · <code>disabled</code> on a link-button
         </h3>
-        <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
+        <p style={{ margin: "0 0 12px", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--sa-color-text-muted)" }}>
           Kept rendered rather than deleted, because the fix is only convincing beside
           the thing it fixes. The link-button now drops `href` entirely and carries
           `aria-disabled` + `role="link"` — so it is not focusable and not activatable,
@@ -242,25 +242,26 @@ export const KnownDefects: Story = {
       </section>
 
       <section>
-        <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
+        <h3 style={{ margin: "0 0 4px", fontSize: "var(--sa-type-title-3-size)", lineHeight: "var(--sa-type-title-3-lh)" }}>
           FIXED 2026-08-27 · text scaled to 200% (WCAG 1.4.4)
         </h3>
-        <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
+        <p style={{ margin: "0 0 12px", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--sa-color-text-muted)" }}>
           Sizes now set `min-height` plus vertical padding, so the box grows with the
           text. The right-hand button is at 200%; its label used to be clipped, 41px of
           content inside a 38px client box.
         </p>
         <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
           <Button>Apply now</Button>
+          {/* ds-exempt(specimen): the point of this row is a label at 200% text size, which is not a role */}
           <Button style={{ fontSize: 32 }}>Apply now</Button>
         </div>
       </section>
 
       <section>
-        <h3 style={{ margin: "0 0 4px", fontSize: 14 }}>
+        <h3 style={{ margin: "0 0 4px", fontSize: "var(--sa-type-title-3-size)", lineHeight: "var(--sa-type-title-3-lh)" }}>
           RETIRED 2026-08-27 · Tonal had no perceivable edge (WCAG 1.4.11 needs 3:1)
         </h3>
-        <p style={{ margin: "0 0 12px", fontSize: 13, color: "var(--sa-color-text-muted)" }}>
+        <p style={{ margin: "0 0 12px", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--sa-color-text-muted)" }}>
           Boundary against the page was 1.21 to 1.52 across the four variants — you could
           not tell where the control was except by reading it. It could not be fixed by
           darkening the border without simply becoming `outlined`, and it had two

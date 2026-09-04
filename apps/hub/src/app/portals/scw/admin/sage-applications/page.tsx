@@ -43,7 +43,7 @@ export default function SageApplicationsPage() {
             <td className="px-6 py-4">
               <Link
                 href={`/portals/scw/admin/sage-applications/${a.id}`}
-                className="text-sm font-medium text-navy hover:underline"
+                className="text-label-1 text-navy hover:underline"
               >
                 {a.status === "Approved" ? "View Details" : "Review"}
               </Link>

@@ -89,22 +89,22 @@ export default function LoginPage() {
       {/* Mobile brand */}
       <div className="flex items-center gap-md lg:hidden">
         <div className="grid h-11 w-11 place-items-center rounded-md bg-primary text-white">
-          <span className="text-label-3 font-bold tracking-[0.16em]">MoSJE</span>
+          <span className="text-label-2 font-bold">MoSJE</span>
         </div>
-        <div className="leading-tight">
-          <div className="text-title-2 font-bold text-ink">SMILE Admin</div>
-          <div className="text-label-3 text-ink-muted">
+        <div>
+          <div className="text-title-2 text-ink">SMILE Admin</div>
+          <div className="text-body-3 text-ink-muted">
             Ministry of Social Justice &amp; Empowerment
           </div>
         </div>
       </div>
 
       <header className="space-y-xs">
-        <div className="inline-flex items-center gap-xs rounded-full border border-primary-100 bg-primary-50 px-sm py-0.5 text-label-3 font-semibold uppercase tracking-[0.1em] text-primary">
+        <div className="inline-flex items-center gap-xs rounded-full border border-primary-100 bg-primary-50 px-sm py-0.5 text-label-3 uppercase text-primary">
           <Icon name="verified_user" size={12} aria-hidden />
           Secure sign in
         </div>
-        <h1 className="text-headline-2 font-bold tracking-tight text-ink">
+        <h1 className="text-headline-3 text-ink">
           Welcome back
         </h1>
         <p className="text-body-2 text-ink-muted">
@@ -147,7 +147,7 @@ export default function LoginPage() {
               // inline-flex + a 24px minimum makes this a real target: WCAG 2.2 AA
               // 2.5.8 wants 24x24, and a block-level standalone link at 95x16 is not
               // covered by the inline exception (it is not inside a sentence).
-              className="inline-flex min-h-[24px] items-center text-label-3 font-semibold text-info-600 hover:underline"
+              className="inline-flex min-h-[24px] items-center text-label-1 text-info-600 hover:underline"
             >
               Forgot password?
             </Link>
@@ -181,7 +181,7 @@ export default function LoginPage() {
           />
         </div>
 
-        <label className="flex items-center gap-sm text-body-3 text-ink-muted">
+        <label className="flex items-center gap-sm text-body-2 text-ink-muted">
           <Checkbox
             checked={remember}
             onChange={(e) => setRemember(e.target.checked === true)}
@@ -193,7 +193,7 @@ export default function LoginPage() {
           <div
             role="alert"
             aria-live="assertive"
-            className="rounded-md border border-danger-300 bg-danger-50 px-md py-sm text-body-3 text-danger-600"
+            className="rounded-md border border-danger-300 bg-danger-50 px-md py-sm text-body-2 text-danger-600"
           >
             {error}
           </div>
@@ -222,7 +222,7 @@ export default function LoginPage() {
           <div className="w-full border-t border-stroke-200" />
         </div>
         <div className="relative flex justify-center">
-          <span className="bg-white px-sm text-label-3 font-semibold uppercase tracking-[0.12em] text-ink-hint">
+          <span className="bg-white px-sm text-label-3 uppercase text-ink-hint">
             Quick test accounts · Password@123
           </span>
         </div>
@@ -239,14 +239,14 @@ export default function LoginPage() {
               mobileRef.current?.focus();
             }}
             aria-label={`Use ${q.label} test account, mobile ${q.mobile}`}
-            className="group flex items-center justify-between gap-sm rounded-md border border-stroke-200 bg-white px-sm py-1.5 text-body-3 transition-all hover:-translate-y-px hover:border-primary/60 hover:bg-primary-50/40 hover:shadow-xs"
+            className="group flex items-center justify-between gap-sm rounded-md border border-stroke-200 bg-white px-sm py-1.5 text-label-1 transition-all hover:-translate-y-px hover:border-primary/60 hover:bg-primary-50/40 hover:shadow-xs"
           >
             <span className="truncate font-semibold text-ink group-hover:text-primary">
               {q.label}
             </span>
             <span
               aria-hidden
-              className="shrink-0 font-mono text-label-3 text-ink-hint"
+              className="shrink-0 font-mono text-body-2 text-ink-hint"
             >
               {q.mobile}
             </span>
@@ -254,7 +254,7 @@ export default function LoginPage() {
         ))}
       </div>
 
-      <div className="flex flex-wrap items-center justify-between gap-sm border-t border-stroke-100 pt-md text-label-3 text-ink-hint">
+      <div className="flex flex-wrap items-center justify-between gap-sm border-t border-stroke-100 pt-md text-body-3 text-ink-hint">
         <span>256-bit TLS</span>
         <span>GIGW 3.0</span>
         <span>v1.0.0 · Build 2026.05.15b</span>

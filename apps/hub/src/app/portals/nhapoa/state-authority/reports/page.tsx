@@ -19,9 +19,9 @@ export default function SAReportsPage() {
         <StatTile label="Sent Back" value={count("SENT_BACK")} accent="reject" />
       </div>
       <Card className="p-6">
-        <div className="mb-4 flex items-center gap-2 text-sm font-bold text-ink"><Icon name="assessment" size={16} className="text-navy" /> Decisions by status</div>
-        <table className="w-full text-left text-sm">
-          <thead><tr className="border-b border-line text-xs uppercase tracking-wide text-ink-hint"><th className="py-2.5 font-semibold">Status</th><th className="py-2.5 text-right font-semibold">Cases</th></tr></thead>
+        <div className="mb-4 flex items-center gap-2 text-title-2 text-ink"><Icon name="assessment" size={16} className="text-navy" /> Decisions by status</div>
+        <table className="w-full text-left text-body-2">
+          <thead><tr className="border-b border-line text-label-3 uppercase text-ink-hint"><th className="py-2.5 font-semibold">Status</th><th className="py-2.5 text-right font-semibold">Cases</th></tr></thead>
           <tbody className="divide-y divide-line">
             {ROWS.map((s) => <tr key={s}><td className="py-2.5 text-ink-muted">{CASE_STATUS_META[s].label}</td><td className="py-2.5 text-right font-semibold text-ink">{count(s)}</td></tr>)}
           </tbody>

@@ -230,7 +230,7 @@ export default function ContributingPage(): React.JSX.Element {
                   borderRadius: "var(--sa-shape-6)",
                   background: "var(--sa-color-status-success)",
                   color: "var(--sa-on-bg-status-success-bolder)",
-                  fontSize: 14,
+                  fontSize: "var(--sa-icon-size-16)",
                   fontWeight: 700,
                 }}
               >

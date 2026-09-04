@@ -4,7 +4,7 @@ import { buttonClasses } from "@mosje/design-system";
 import { DoDont, Callout, A11yChecklist } from "@/components/design-system/docs-kit/index";
 import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
 import { TypeLab } from "./type-lab";
-import { STANDARDS } from "./typography-data";
+import { ROLES, TIERS, TIER_WHY, STANDARDS } from "./typography-data";
 import "./typography.css";
 
 /**
@@ -93,16 +93,19 @@ export default function TypographyPage(): React.JSX.Element {
         <h2 id="indic-line-height" className="docs-section__heading">Line height for Indic scripts</h2>
         <div className="docs-section__body">
           <p>
-            Devanagari characters extend further than Latin letters — they need more breathing room between lines.
-            Set Hindi too tight and headline strokes crowd the vowel marks of the next line, which slows reading.
-            SAMAVESH targets a line height of about <strong>1.7</strong> for body Devanagari, versus the ~1.5 that
-            works for Latin. The two columns below use the <em>same</em> font size — only the line height changes.
+            Devanagari hangs from a headline stroke and stacks vowel signs above and below it, so it needs more
+            room between lines than Latin at the same size. Set Hindi too tight and the marks of one line crowd
+            the next, which slows reading. Every role therefore carries a second line height for Hindi: the
+            role&rsquo;s Latin leading plus a fifth of its size, rounded up to the 4px grid — body-1 is 16/24 in
+            English and 16/28 in Hindi; headline-1 is 40/48 and 40/56. The offset is fixed, so a Hindi heading
+            keeps the shape of a heading instead of taking a paragraph&rsquo;s leading. The two columns below use
+            the <em>same</em> font size — only the line height changes.
           </p>
         </div>
         <div className="ty-indic-compare">
           {[
-            { ok: false, label: "✕ Line height 1.5 — too tight", lh: 1.5, color: "danger" },
-            { ok: true, label: "✓ Line height 1.7 — correct", lh: 1.7, color: "success" },
+            { ok: false, label: "✕ Latin leading (16/24) — too tight", lh: "var(--sa-type-body-1-lh)", color: "danger" },
+            { ok: true, label: "✓ Devanagari leading (16/28) — correct", lh: "var(--sa-type-body-1-lhDevanagari)", color: "success" },
           ].map((c) => (
             <div key={c.label} style={{ border: `1px solid var(--sa-color-status-${c.color})`, borderRadius: "var(--sa-shape-8)", overflow: "hidden" }}>
               <div style={{ padding: "var(--sa-padding-12) var(--sa-padding-16)", background: `var(--sa-color-status-${c.color}Tonal)`, color: `var(--sa-color-status-${c.color})`, fontSize: "var(--sa-type-body-2-size)", fontWeight: 700, borderBottom: `1px solid var(--sa-color-status-${c.color})` }}>
@@ -116,8 +119,10 @@ export default function TypographyPage(): React.JSX.Element {
           ))}
         </div>
         <Callout type="tip" title="Rule of thumb">
-          When a block can hold Hindi, give it the Indic line height. The <code>--sa-type-body-*-lh</code> tokens
-          already bake this in — use them and you get the right spacing for free.
+          A Hindi block is <code>&lt;Text lang=&quot;hi&quot;&gt;</code> or <code>&lt;Heading lang=&quot;hi&quot;&gt;</code>: the
+          primitive switches the face and takes the role&rsquo;s <code>--sa-type-&lt;role&gt;-lhDevanagari</code>. An inline
+          Hindi word inside an English line keeps the line&rsquo;s own leading. In Figma, bind a Hindi text node&rsquo;s line
+          height to <code>type/&lt;role&gt;/lhDevanagari</code> at the same size as its Latin role.
         </Callout>
       </section>
 
@@ -150,8 +155,8 @@ export default function TypographyPage(): React.JSX.Element {
               preview: (
                 <code style={{ fontFamily: "var(--sa-font-mono)", fontSize: "var(--sa-type-body-3-size)", color: "var(--sa-color-text-default)", textAlign: "left", whiteSpace: "pre" }}>
 {`.lead {
-  font-size: 16px;
-  line-height: 1.4;
+  font-size: var(--sa-type-body-1-size);
+  line-height: var(--sa-type-body-1-lh);
   /* breaks on mobile + portal */
 }`}
                 </code>
@@ -159,6 +164,45 @@ export default function TypographyPage(): React.JSX.Element {
             },
           ]}
         />
+      </section>
+
+      {/* ── 7b. Why these values — the reasoning, from the token source ──── */}
+      <section className="docs-section" aria-labelledby="why-these-values">
+        <span className="docs-section__label">Reasoning</span>
+        <h2 id="why-these-values" className="docs-section__heading">Why these values</h2>
+        <div className="docs-section__body">
+          <p>
+            A value with no reason is a value the next person changes. Every number on this page is carried with
+            the reason it is that number &mdash; the standard, the ratio or the measurement behind it &mdash; and the
+            same text sits in each <code>type/*</code> variable&rsquo;s description in the Figma library and in the
+            token source, so the library and the code cannot disagree about why.
+          </p>
+          <ul className="ty-why">
+            <li><strong>The ramp is 16 steps</strong> &mdash; 12 &middot; 14 &middot; 16 &middot; 18 &middot; 20 &middot; 22 &middot; 24 &middot; 28 &middot; 32 &middot; 36 &middot; 40 &middot; 48 &middot; 56 &middot; 64 &middot; 72 &middot; 80. Steps of 2 up to 24, then 4, then 8: small text needs fine steps to separate a label from a caption, display text needs coarse ones to read as different at all. 36 is there because DBIM &sect;4 names it as the desktop H1; 13 and 15 are not, because a size one pixel from its neighbour is a size nobody can defend.</li>
+            <li><strong>The floor is 12px</strong> (UX4G 3.0 &sect;2, &ldquo;minimum usable size&rdquo;). Nothing on the estate renders below it; label-3 moved up from 11 on 2026-09-04.</li>
+            <li><strong>Every line height is on the 4px grid</strong>, so stacked text lines up with the spacing ladder. Body is 1.5 on both surfaces (WCAG 1.4.8, DBIM &sect;4 iii); headline leading rises as size falls, 1.20 to 1.50, so a smaller heading is never set tighter than the one above it; display runs 1.10 to 1.20 by recorded exception, because 1.2 at 80px opens a two-line hero into separate lines.</li>
+            <li><strong>Weights:</strong> Display 500 on the Display cut, Headline and Title 600, Body 400, Label 500. Headings stop at semibold because 700 closes Noto Sans&rsquo;s counters at these sizes; 800 and 900 do not exist because they are not loaded and the browser would synthesise them.</li>
+            <li><strong>Tracking</strong> is negative on Display from one em rule per rung (&minus;0.015em at display-1 and -2, &minus;0.01em at -3 and -4, &minus;0.005em at -5), zero everywhere else, and +0.06em on the one uppercase role, label-3.</li>
+            <li><strong>Two surfaces, one core.</strong> Website and Portal differ only in Display and Headline; Title, Body and Label are identical, so a card, a form and a table read the same wherever they sit.</li>
+            <li><strong>Where a standard was departed from</strong> &mdash; headline sizes one step above DBIM&rsquo;s 36/24/20, display leading below 1.2, no 18px body &mdash; the reason is a row in the deviation register, not a memory.</li>
+          </ul>
+          <div className="ty-tiers">
+            {TIERS.map((t) => (
+              <article key={t.key} className="ty-tier">
+                <h3 className="ty-tier__name">{t.label}</h3>
+                <p className="ty-tier__why">{TIER_WHY[t.key]}</p>
+                <dl className="ty-tier__roles">
+                  {ROLES.filter((r) => r.tier === t.key).map((r) => (
+                    <React.Fragment key={r.role}>
+                      <dt><code>{r.role}</code></dt>
+                      <dd>{r.why.replace(/\s*Raw type step\..*$/, "")}</dd>
+                    </React.Fragment>
+                  ))}
+                </dl>
+              </article>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* ── 8. Standards — UX4G's five categories, sourced ──────── */}
@@ -242,7 +286,7 @@ export default function TypographyPage(): React.JSX.Element {
           items={[
             { criterion: "Resize text — 200% zoom with no loss of content or function", level: "AA", description: "Fluid clamp() already holds sizes steady above 1280px, so browser zoom is the case that actually needs testing." },
             { criterion: "Reflow — usable at a 320px equivalent without two-dimensional scrolling", level: "AA", description: "The 360px anchor is the min of every role; below it, values hold flat rather than shrinking further." },
-            { criterion: "Contrast (minimum) — 4.5:1 for body, 3:1 for large text", level: "AA", description: "label-3 at 11px is the smallest permitted text. At that size treat 4.5:1 as a floor and prefer 7:1." },
+            { criterion: "Contrast (minimum) — 4.5:1 for body, 3:1 for large text", level: "AA", description: "label-3 at 12px is the smallest permitted text. At that size treat 4.5:1 as a floor and prefer 7:1." },
             { criterion: "Text spacing — survives increased line height and letter spacing", level: "AA", description: "Roles ship their own -lh and -tracking, so user stylesheets layer on top without clipping." },
             { criterion: "Info and relationships — hierarchy comes from heading order, not size", level: "A", description: "Anything communicated by making text bigger must also exist in words, structure or state. Screen readers do not announce font size." },
             { criterion: "Language of parts — lang=\"hi\" on every Devanagari string", level: "AA", description: "Screen readers switch voice on it, and the Devanagari face is applied from it." },

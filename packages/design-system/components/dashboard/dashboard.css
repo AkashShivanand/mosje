@@ -318,9 +318,10 @@
     padding: var(--sa-padding-6) var(--sa-padding-8);
     font-size: var(--sa-type-label-3-size);
     line-height: var(--sa-type-label-3-lh);
-    letter-spacing: var(--sa-type-label-tracking);
+    letter-spacing: var(--sa-type-caps-tracking);
     text-transform: uppercase;
     font-weight: 600;
+    /* `subtler` is 4.65:1 only on white; the menu ground is bg/neutral/base, which is white. */
     color: var(--sa-text-neutral-subtler);
   }
 

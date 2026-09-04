@@ -5,10 +5,10 @@ import { Icon } from "@mosje/design-system";
 export default function MinistriesDashboard() {
   return (
     <AdminShell>
-      <h1 className="mb-2 text-xl font-bold text-ink">
+      <h1 className="mb-2 text-headline-1 text-ink">
         Ministries / Departments and Spiritual Organisations
       </h1>
-      <p className="mb-6 text-sm text-ink-muted">
+      <p className="mb-6 text-body-2 text-ink-muted">
         Who have signed MoU with the Ministry of Social Justice
       </p>
 

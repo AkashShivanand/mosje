@@ -36,7 +36,7 @@ export default function ActivitiesPage() {
     <div className="flex flex-col gap-4">
       <div className="flex flex-wrap items-end gap-3 rounded-xl border border-line bg-white p-4">
         <div className="flex flex-col gap-1.5">
-          <label htmlFor="activity-category-filter" className="text-xs font-semibold text-ink-muted">
+          <label htmlFor="activity-category-filter" className="text-label-2 font-semibold text-ink-muted">
             Filter by Activity Category
           </label>
           <Select
@@ -50,7 +50,7 @@ export default function ActivitiesPage() {
           <button
             type="button"
             onClick={() => setCategory("")}
-            className="rounded-lg border border-line bg-white px-3 py-1.5 text-xs font-semibold text-ink-muted hover:bg-surface-muted"
+            className="rounded-lg border border-line bg-white px-3 py-1.5 text-label-2 font-semibold text-ink-muted hover:bg-surface-muted"
           >
             Reset
           </button>

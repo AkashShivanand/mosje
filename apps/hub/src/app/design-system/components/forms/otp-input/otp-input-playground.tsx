@@ -20,7 +20,7 @@ export function OtpInputPlayground() {
       }}
     >
       <div style={{ display: "flex", gap: "var(--sa-inline-16)", flexWrap: "wrap", alignSelf: "flex-start" }}>
-        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "14px" }}>
+        <label style={{ display: "flex", gap: "var(--sa-stack-8)", alignItems: "center", fontSize: "var(--sa-type-label-1-size)", lineHeight: "var(--sa-type-label-1-lh)" }}>
           <strong>Length:</strong>
           <select 
             value={length} 
@@ -41,7 +41,7 @@ export function OtpInputPlayground() {
       </div>
 
       <div style={{ width: "100%", maxWidth: "400px" }}>
-        <p style={{ margin: "0 0 var(--sa-stack-8) 0", fontSize: "14px", fontWeight: 600 }}>Enter OTP</p>
+        <p style={{ margin: "0 0 var(--sa-stack-8) 0", fontSize: "var(--sa-type-title-3-size)", lineHeight: "var(--sa-type-title-3-lh)", fontWeight: 600 }}>Enter OTP</p>
         <OtpInput 
           value={value}
           onValueChange={setValue}
@@ -51,7 +51,7 @@ export function OtpInputPlayground() {
           label="One-time password"
           onComplete={(code) => alert(`Completed! Code: ${code}`)}
         />
-        <p style={{ margin: "var(--sa-stack-8) 0 0 0", fontSize: "13px", color: "var(--sa-text-neutral-subtle)" }}>
+        <p style={{ margin: "var(--sa-stack-8) 0 0 0", fontSize: "var(--sa-type-body-2-size)", lineHeight: "var(--sa-type-body-2-lh)", color: "var(--sa-text-neutral-subtle)" }}>
           Try pasting a number like &quot;123456&quot; or using the arrow keys to navigate.
         </p>
       </div>

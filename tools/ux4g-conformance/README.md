@@ -47,7 +47,7 @@ node tools/ux4g-conformance/extract-ux4g-tokens.mjs --version 1.1.0
 Colour is excluded from the value check **by design**. It maps by *role* onto the ministry's
 key colour, as DBIM requires and as UX4G's own Theme Craft is built to allow, so comparing
 hex values there would measure the wrong thing. To see UX4G's literal palette, set
-`data-color-mode="ux4g-light"` with `@mosje/design-system/ux4g.css` loaded.
+the retired `ux4g-light` mode — removed on 2026-09-04 with the shipped parity sheet; the mapping now lives only in `parity.generated.css`, a build output of `@mosje/tokens` read by `measure.mjs`.
 
 ## Keeping it honest
 

@@ -128,7 +128,13 @@ function breakpoints(tokens) {
 function fluidAt(min, max, viewport, wmin, wmax) {
   if (min === max) return min;
   const t = (viewport - wmin) / (wmax - wmin);
-  return Math.round((min + (max - min) * Math.min(1, Math.max(0, t))) * 100) / 100;
+  const sampled = min + (max - min) * Math.min(1, Math.max(0, t));
+  // A Tablet sample is a DESIGN value, not a measurement: it lands in a text style a
+  // designer lays out with. Until 2026-09-04 it was kept to two decimals — display-1 at
+  // 57.74px, its leading 63.51 — which is a size no one would ever author and which put
+  // the Tablet mode off the grid the documentation promises. Whole pixels; tracking
+  // (sub-pixel by nature) keeps one decimal.
+  return Math.abs(sampled) < 4 ? Math.round(sampled * 10) / 10 : Math.round(sampled);
 }
 
 const TITLE_EXCEPTIONS = { bg: "Background", hc: "HC", ux4g: "UX4G" };
@@ -784,7 +790,10 @@ export function scopesFor(path, tier, type, figmaName) {
   if (head === "blur") return ["EFFECT_FLOAT"];
   if (head === "type" || head === "leading") {
     if (tail === "size") return ["FONT_SIZE"];
-    if (tail === "lh" || head === "leading") return ["LINE_HEIGHT"];
+    // `lhDevanagari` is the Hindi block's line height at the same size — a pixel value like
+    // `lh`, so it binds. (The OFFSET it is derived from is a ratio and lives under ref/font,
+    // scoped to nothing, precisely so it cannot be bound as 0.2px.)
+    if (tail === "lh" || tail === "lhDevanagari" || head === "leading") return ["LINE_HEIGHT"];
     if (tail === "tracking") return ["LETTER_SPACING"];
     if (tail === "para") return ["PARAGRAPH_SPACING"];
     return [];

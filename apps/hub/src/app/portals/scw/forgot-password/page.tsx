@@ -25,8 +25,8 @@ export default function ForgotPasswordPage() {
         {submitted ? (
           <div className="text-center">
             <Icon name="check_circle" size={48} className="mx-auto text-approve" />
-            <h1 className="mt-4 text-xl font-bold text-ink">Reset link sent</h1>
-            <p className="mt-2 text-sm text-ink-muted">
+            <h1 className="mt-4 text-headline-3 text-ink">Reset link sent</h1>
+            <p className="mt-2 text-body-2 text-ink-muted">
               If{" "}
               <span className="font-semibold text-ink">
                 {mobile || "that mobile number"}
@@ -35,15 +35,15 @@ export default function ForgotPasswordPage() {
             </p>
             <Link
               href="/portals/scw/login"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:underline"
+              className="mt-6 inline-flex items-center gap-2 text-label-1 text-navy hover:underline"
             >
               <Icon name="arrow_back" size={16} /> Back to login
             </Link>
           </div>
         ) : (
           <>
-            <h1 className="text-xl font-bold text-ink">Forgot Password</h1>
-            <p className="mt-1 mb-6 text-sm text-ink-muted">
+            <h1 className="text-headline-3 text-ink">Forgot Password</h1>
+            <p className="mt-1 mb-6 text-body-2 text-ink-muted">
               Enter your registered mobile number and we&apos;ll send a reset link.
             </p>
             <form
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
             </form>
             <Link
               href="/portals/scw/login"
-              className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:underline"
+              className="mt-6 inline-flex items-center gap-2 text-label-1 text-navy hover:underline"
             >
               <Icon name="arrow_back" size={16} /> Back to login
             </Link>

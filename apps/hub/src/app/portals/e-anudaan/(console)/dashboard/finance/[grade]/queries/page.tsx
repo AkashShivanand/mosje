@@ -17,8 +17,8 @@ export default function FinanceQueriesPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="text-2xl font-bold text-ink">Finance Queries</h1>
-        <p className="mt-1 text-sm text-ink-muted">Files returned to a previous grade for clarification.</p>
+        <h1 className="text-headline-1 text-ink">Finance Queries</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">Files returned to a previous grade for clarification.</p>
       </div>
       <WorklistTable
         rows={rows}

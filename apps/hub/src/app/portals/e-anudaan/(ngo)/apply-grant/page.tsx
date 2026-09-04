@@ -21,8 +21,8 @@ export default function SelectSchemePage() {
             second sentence is here because the choice is consequential and looks as if it is
             not: each scheme runs a different form, of a different length, with its own
             checklist. */}
-        <h1 className="text-2xl font-bold text-ink">Apply for a Grant</h1>
-        <p className="mt-1 text-sm text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Apply for a Grant</h1>
+        <p className="mt-1 text-body-2 text-ink-muted">
           Choose the scheme you are applying under. Each has its own application form and document
           checklist.
         </p>
@@ -41,8 +41,8 @@ export default function SelectSchemePage() {
             }`}
           >
             <span className="block font-semibold text-ink">{s.name}</span>
-            <span className="mt-1 block text-sm text-ink-muted">{s.description}</span>
-            <span className="mt-2 block text-xs text-ink-hint">Target: {s.target}</span>
+            <span className="mt-1 block text-body-2 text-ink-muted">{s.description}</span>
+            <span className="mt-2 block text-body-3 text-ink-hint">Target: {s.target}</span>
           </button>
         ))}
       </div>

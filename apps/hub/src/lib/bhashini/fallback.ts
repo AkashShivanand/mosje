@@ -1,3 +1,4 @@
+/* ds-exempt-start(hindi-source): translation fallback strings are DATA; the language dialog and Bhashini surfaces mark rendered Hindi with lang */
 /**
  * The offline fallback — chrome strings in Hindi, bundled.
  *
@@ -83,3 +84,5 @@ export function fallbackFor(source: string, target: string): string | undefined 
   if (target === "hi") return FALLBACK_HI[source];
   return undefined;
 }
+
+/* ds-exempt-end */

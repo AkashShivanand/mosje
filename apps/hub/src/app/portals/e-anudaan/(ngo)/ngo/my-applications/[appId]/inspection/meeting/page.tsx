@@ -20,7 +20,7 @@ export default function InspectionMeetingPage() {
 
   return (
     <div className="mx-auto max-w-2xl space-y-5">
-      <h1 className="text-2xl font-bold text-ink">Online Inspection Meeting</h1>
+      <h1 className="text-headline-1 text-ink">Online Inspection Meeting</h1>
 
       <Alert status="info" title="Inferred screen">
         The live portal renders only a heading here — the applicant half of the BharatVC
@@ -35,22 +35,22 @@ export default function InspectionMeetingPage() {
       ) : (
         <section className="space-y-4 rounded-xl border border-line bg-surface p-5">
           <div className="flex flex-wrap items-center justify-between gap-3">
-            <span className="text-sm text-ink">{app?.projectLabel}</span>
+            <span className="text-body-2 text-ink">{app?.projectLabel}</span>
             <Badge status={inspection.status === "Reviewed" ? "success" : "info"}>{inspection.status}</Badge>
           </div>
           <dl className="grid gap-x-8 gap-y-2 sm:grid-cols-2">
             <div className="flex items-baseline justify-between gap-4 border-b border-line pb-2">
-              <dt className="text-sm text-ink-muted">Visit type</dt>
-              <dd className="text-sm font-semibold text-ink">{inspection.visitType}</dd>
+              <dt className="text-body-2 text-ink-muted">Visit type</dt>
+              <dd className="text-body-2 font-semibold text-ink">{inspection.visitType}</dd>
             </div>
             <div className="flex items-baseline justify-between gap-4 border-b border-line pb-2">
-              <dt className="text-sm text-ink-muted">Scheduled for</dt>
-              <dd className="text-sm font-semibold text-ink">
+              <dt className="text-body-2 text-ink-muted">Scheduled for</dt>
+              <dd className="text-body-2 font-semibold text-ink">
                 {inspection.scheduledFor ? formatDate(inspection.scheduledFor) : "Not scheduled"}
               </dd>
             </div>
           </dl>
-          <p className="text-sm text-ink-muted">
+          <p className="text-body-2 text-ink-muted">
             Ensure your CCTV is configured before the session so the inspecting officer can view
             the premises.
           </p>

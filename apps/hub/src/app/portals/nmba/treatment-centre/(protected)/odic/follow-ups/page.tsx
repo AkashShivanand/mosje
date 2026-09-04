@@ -102,11 +102,11 @@ export default function OdicFollowUpsPage() {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex items-center justify-between gap-4 rounded-xl bg-navy px-5 py-3.5 text-white">
-        <h1 className="text-lg font-bold">Follow-up ODIC</h1>
+        <h1 className="text-headline-1">Follow-up ODIC</h1>
       </div>
 
       <div className="rounded-xl border border-line bg-white p-5">
-        <h2 className="mb-4 text-base font-semibold text-navy">Follow-up (OPD Basic)</h2>
+        <h2 className="mb-4 text-title-2 text-navy">Follow-up (OPD Basic)</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-5" noValidate>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <FormField label="Registration Number of the Patient" required error={err("registrationNumber")}>
@@ -134,10 +134,10 @@ export default function OdicFollowUpsPage() {
           </div>
 
           <div className="rounded-xl border border-line bg-surface-muted/40 p-4">
-            <h3 className="mb-3 text-sm font-semibold text-navy">Intervention Provided</h3>
+            <h3 className="mb-3 text-title-3 text-navy">Intervention Provided</h3>
             <div className="flex flex-col gap-4">
               <div className="flex flex-col gap-1.5">
-                <span id="fu-intervention-label" className="text-sm font-medium text-ink">
+                <span id="fu-intervention-label" className="text-label-1 text-ink">
                   Intervention Provided during the Visit <span className="ds-field__required">*</span>
                 </span>
                 <div
@@ -157,7 +157,7 @@ export default function OdicFollowUpsPage() {
                     />
                   ))}
                 </div>
-                {errors.has("interventionTypes") && <p className="text-xs font-medium text-danger-fg">Select at least one intervention.</p>}
+                {errors.has("interventionTypes") && <p className="text-label-2 text-danger-fg">Select at least one intervention.</p>}
               </div>
 
               <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -199,7 +199,7 @@ export default function OdicFollowUpsPage() {
       </div>
 
       <div className="rounded-xl border border-line bg-white p-5">
-        <h2 className="mb-4 text-base font-semibold text-navy">Follow-up ODIC List</h2>
+        <h2 className="mb-4 text-title-2 text-navy">Follow-up ODIC List</h2>
         <DataTable columns={columns} data={rows} total={rows.length} />
       </div>
     </div>

@@ -19,9 +19,7 @@ if (targets.size === 0) {
     "Regenerating a fixture DISCARDS the baseline it was proving against — for the visual\n" +
       "contract that also makes every declared RENAME stale, which is the whole audit trail.\n" +
       "So name the target explicitly:\n" +
-      "  node test/lib/write-visual-contract.mjs --visual\n" +
-      "  node test/lib/write-visual-contract.mjs --ux4g\n" +
-      "  node test/lib/write-visual-contract.mjs --visual --ux4g",
+      "  node test/lib/write-visual-contract.mjs --visual",
   );
   process.exit(1);
 }

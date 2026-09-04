@@ -138,7 +138,7 @@ function formFromEvent(ev: SaptahEvent): FormState {
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div className="mb-1 mt-3 flex items-center gap-3 first:mt-0">
-      <span className="text-[11px] font-bold uppercase tracking-wider text-navy">{children}</span>
+      <span className="text-label-3 uppercase text-navy">{children}</span>
       <Divider className="flex-1" />
     </div>
   );
@@ -423,7 +423,7 @@ function ActivitySheet({
         </div>
 
         {showSplitHint && (
-          <p className="-mt-1 text-xs text-amber-700">
+          <p className="-mt-1 text-body-3 text-amber-700">
             Males + Females ({splitNum.toLocaleString("en-IN")}) doesn&apos;t match Total
             ({totalNum.toLocaleString("en-IN")}). You can still save.
           </p>
@@ -444,8 +444,8 @@ function ActivitySheet({
 
         <div className="flex items-center justify-between gap-3 rounded-lg border border-line bg-surface-muted px-4 py-3">
           <div className="min-w-0">
-            <span className="block text-[11px] font-semibold uppercase tracking-wide text-ink-muted">Current Location</span>
-            <span className="font-mono text-sm text-navy">
+            <span className="block text-label-3 uppercase text-ink-muted">Current Location</span>
+            <span className="font-mono text-body-2 text-navy">
               {coords ? `${coords.lat}°, ${coords.lng}°` : "Not captured"}
             </span>
           </div>
@@ -526,7 +526,7 @@ function MediaBadge({ media, onOpen }: { media?: SaptahMedia[]; onOpen: (index: 
       {/* Count badge — bottom-right corner, shown only for 2+ items */}
       {media.length > 1 && (
         <span
-          className="absolute -bottom-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-navy px-1.5 text-[10px] font-bold leading-none text-white shadow ring-2 ring-white"
+          className="absolute -bottom-1.5 -right-1.5 flex h-5 min-w-[20px] items-center justify-center rounded-full bg-navy px-1.5 text-label-2 font-bold text-white shadow ring-2 ring-white"
           aria-hidden
         >
           +{media.length - 1}
@@ -649,7 +649,7 @@ export default function SaptahPage() {
           <button
             type="button"
             onClick={openAdd}
-            className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-sm font-semibold text-navy hover:bg-slate-100"
+            className="inline-flex items-center rounded-lg bg-white px-4 py-2 text-label-1 font-semibold text-navy hover:bg-slate-100"
           >
             + Add New Activity
           </button>
@@ -682,7 +682,7 @@ export default function SaptahPage() {
           </>
         }
       >
-        <p className="text-sm text-ink">
+        <p className="text-body-2 text-ink">
           Delete the <strong>{deleteTarget?.activity}</strong> activity recorded on{" "}
           <strong>{fmtDate(deleteTarget?.date)}</strong>? This action cannot be undone.
         </p>

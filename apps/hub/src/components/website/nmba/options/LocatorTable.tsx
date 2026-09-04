@@ -41,7 +41,7 @@ export function LocatorTable() {
         <div className="mt-3 flex flex-wrap gap-1.5">
           {(["", ...CENTRE_TYPE_ORDER] as const).map((t) => (
             <button key={t || "all"} type="button" onClick={() => { setType(t as CentreType | ""); setPage(0); }}
-              className={cn("rounded-full px-3 py-1 text-[12px] font-medium transition-colors",
+              className={cn("rounded-full px-3 py-1 text-label-2 transition-colors",
                 type === t ? "bg-primary text-white" : "bg-surface-muted text-ink-muted hover:text-primary-dark")}>
               {t === "" ? `All ${filtered.length}` : `${t} ${CENTRE_TYPE_META[t].count}`}
             </button>
@@ -55,8 +55,8 @@ export function LocatorTable() {
 
       <div className="mt-4 overflow-hidden rounded-xl border border-gray-200 bg-white shadow-sm">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-[13px]">
-            <thead className="border-b border-gray-200 bg-surface-muted/50 text-[12px] uppercase tracking-wide text-ink-muted">
+          <table className="w-full text-left text-body-2">
+            <thead className="border-b border-gray-200 bg-surface-muted/50 text-label-3 uppercase text-ink-muted">
               <tr>
                 <th className="px-4 py-2.5 font-semibold">Centre</th>
                 <th className="px-4 py-2.5 font-semibold">Type</th>
@@ -80,8 +80,8 @@ export function LocatorTable() {
                     <td className="px-4 py-2.5 text-ink-muted">{c.state}</td>
                     <td className="whitespace-nowrap px-4 py-2.5 text-right">
                       <span className="inline-flex items-center gap-2">
-                        <button type="button" onClick={(e) => { e.stopPropagation(); setSelected(c); }} className="inline-flex items-center gap-1 text-[12px] font-semibold text-primary hover:text-primary-dark"><Icon name="location_on" size={14} /> Map</button>
-                        <Link href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} external variant="standalone" onClick={(e) => e.stopPropagation()} className="text-[12px] font-semibold" iconLeft={<Icon name="navigation" size={14} />}>Directions</Link>
+                        <button type="button" onClick={(e) => { e.stopPropagation(); setSelected(c); }} className="inline-flex items-center gap-1 text-label-2 text-primary hover:text-primary-dark"><Icon name="location_on" size={14} /> Map</button>
+                        <Link href={`https://www.google.com/maps/search/?api=1&query=${c.lat},${c.lng}`} external variant="standalone" onClick={(e) => e.stopPropagation()} className="text-label-2" iconLeft={<Icon name="navigation" size={14} />}>Directions</Link>
                       </span>
                     </td>
                   </tr>
@@ -91,7 +91,7 @@ export function LocatorTable() {
             </tbody>
           </table>
         </div>
-        <div className="flex items-center justify-between border-t border-gray-100 px-4 py-2.5 text-[12px] text-ink-muted">
+        <div className="flex items-center justify-between border-t border-gray-100 px-4 py-2.5 text-body-3 text-ink-muted">
           <span>{filtered.length} centres · page {page + 1} of {pages}</span>
           <span className="flex gap-1.5">
             <button type="button" disabled={page === 0} onClick={() => setPage((p) => p - 1)} className="rounded-md border border-gray-200 px-2.5 py-1 font-medium text-ink disabled:opacity-40">Prev</button>

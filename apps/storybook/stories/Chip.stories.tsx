@@ -175,7 +175,7 @@ export const CountsAndDensity: Story = {
     return (
       <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
         <div>
-          <p style={{ margin: "0 0 8px", fontSize: 12, opacity: 0.7 }}>
+          <p style={{ margin: "0 0 8px", fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)", opacity: 0.7 }}>
             size=&quot;md&quot; (default) — a filter row with room to breathe
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
@@ -193,7 +193,7 @@ export const CountsAndDensity: Story = {
           </div>
         </div>
         <div>
-          <p style={{ margin: "0 0 8px", fontSize: 12, opacity: 0.7 }}>
+          <p style={{ margin: "0 0 8px", fontSize: "var(--sa-type-body-3-size)", lineHeight: "var(--sa-type-body-3-lh)", opacity: 0.7 }}>
             size=&quot;sm&quot; — the same row sharing a line with a legend and a search field
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>

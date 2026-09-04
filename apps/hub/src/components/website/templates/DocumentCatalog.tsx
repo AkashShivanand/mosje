@@ -87,14 +87,14 @@ export function DocumentCatalog({
                   setCurrentPage(1);
                 }}
                 placeholder="Search documents by title or keyword…"
-                className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-4 text-sm focus:border-primary focus:outline-none"
+                className="w-full rounded-lg border border-gray-300 bg-white py-2 pl-10 pr-4 text-body-2 focus:border-primary focus:outline-none"
               />
             </div>
 
             <div className="flex flex-wrap items-center gap-3">
               {categories.length > 0 && (
                 <div className="flex items-center gap-2">
-                  <label htmlFor="category-select" className="text-xs font-semibold text-ink-muted">
+                  <label htmlFor="category-select" className="text-label-2 text-ink-muted">
                     Category:
                   </label>
                   <select
@@ -104,7 +104,7 @@ export function DocumentCatalog({
                       setSelectedCategory(e.target.value);
                       setCurrentPage(1);
                     }}
-                    className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium focus:border-primary focus:outline-none"
+                    className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-label-2 focus:border-primary focus:outline-none"
                   >
                     <option value="All">All Categories</option>
                     {categories.map((c) => (
@@ -117,7 +117,7 @@ export function DocumentCatalog({
               )}
 
               <div className="flex items-center gap-2">
-                <label htmlFor="sort-select" className="text-xs font-semibold text-ink-muted">
+                <label htmlFor="sort-select" className="text-label-2 text-ink-muted">
                   Sort:
                 </label>
                 <select
@@ -126,7 +126,7 @@ export function DocumentCatalog({
                   onChange={(e) =>
                     setSortOrder(e.target.value as "newest" | "oldest")
                   }
-                  className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-xs font-medium focus:border-primary focus:outline-none"
+                  className="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-label-2 focus:border-primary focus:outline-none"
                 >
                   <option value="newest">Newest First</option>
                   <option value="oldest">Oldest First</option>
@@ -136,7 +136,7 @@ export function DocumentCatalog({
           </div>
 
           {/* Results Summary */}
-          <div className="mt-4 flex items-center justify-between text-xs text-ink-muted px-1">
+          <div className="mt-4 flex items-center justify-between text-body-3 text-ink-muted px-1">
             <span>
               Showing <strong>{filtered.length}</strong> documents
             </span>
@@ -150,8 +150,8 @@ export function DocumentCatalog({
             {paginated.length === 0 ? (
               <div className="p-12 text-center text-ink-muted">
                 <Icon name="folder_off" size={40} className="mx-auto mb-2 text-gray-300" />
-                <p className="text-[16px] font-semibold text-ink">No documents found</p>
-                <p className="mt-1 text-xs">Try adjusting your search terms or filters.</p>
+                <p className="text-title-2 text-ink">No documents found</p>
+                <p className="mt-1 text-body-3">Try adjusting your search terms or filters.</p>
               </div>
             ) : (
               paginated.map((doc, idx) => (
@@ -166,20 +166,20 @@ export function DocumentCatalog({
                     <div className="min-w-0 flex-1">
                       <div className="flex flex-wrap items-center gap-2 mb-1">
                         {doc.category && (
-                          <span className="rounded bg-gray-100 px-2 py-0.5 text-[10px] font-bold text-gray-700 uppercase tracking-wider">
+                          <span className="rounded bg-gray-100 px-2 py-0.5 text-label-3 uppercase text-gray-700">
                             {doc.category}
                           </span>
                         )}
                         {doc.language && (
-                          <span className="rounded bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-primary">
+                          <span className="rounded bg-blue-50 px-2 py-0.5 text-label-2 text-primary">
                             {doc.language}
                           </span>
                         )}
                       </div>
-                      <h3 className="text-[15px] font-semibold leading-snug text-ink">
+                      <h3 className="text-title-2 text-ink">
                         {doc.title}
                       </h3>
-                      <div className="mt-1.5 flex flex-wrap items-center gap-3 text-xs text-ink-muted">
+                      <div className="mt-1.5 flex flex-wrap items-center gap-3 text-body-3 text-ink-muted">
                         {doc.date && (
                           <span className="flex items-center gap-1">
                             <Icon name="event" size={16} className="text-gray-400" />
@@ -203,7 +203,7 @@ export function DocumentCatalog({
                       variant="primary"
                       appearance="outlined"
                       size="sm"
-                      className="text-xs px-4 py-1.5 whitespace-nowrap"
+                      className="text-label-2 px-4 py-1.5 whitespace-nowrap"
                     >
                       View Online
                     </Button>
@@ -214,7 +214,7 @@ export function DocumentCatalog({
                       variant="primary"
                       appearance="filled"
                       size="sm"
-                      className="text-xs px-4 py-1.5 whitespace-nowrap"
+                      className="text-label-2 px-4 py-1.5 whitespace-nowrap"
                     >
                       Download PDF
                     </Button>
@@ -231,7 +231,7 @@ export function DocumentCatalog({
                 type="button"
                 disabled={currentPage === 1}
                 onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-ink disabled:opacity-40 hover:bg-gray-50"
+                className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-label-2 text-ink disabled:opacity-40 hover:bg-gray-50"
               >
                 <Icon name="chevron_left" size={16} /> Previous
               </button>
@@ -245,7 +245,7 @@ export function DocumentCatalog({
                       key={pNum}
                       type="button"
                       onClick={() => setCurrentPage(pNum)}
-                      className={`h-8 w-8 rounded-lg text-xs font-semibold transition ${
+                      className={`h-8 w-8 rounded-lg text-label-2 transition ${
                         isActive
                           ? "bg-primary text-white"
                           : "border border-gray-200 bg-white text-ink hover:bg-gray-50"
@@ -261,7 +261,7 @@ export function DocumentCatalog({
                 type="button"
                 disabled={currentPage === totalPages}
                 onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-                className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-xs font-semibold text-ink disabled:opacity-40 hover:bg-gray-50"
+                className="inline-flex items-center gap-1 rounded-lg border border-gray-200 bg-white px-3 py-1.5 text-label-2 text-ink disabled:opacity-40 hover:bg-gray-50"
               >
                 Next <Icon name="chevron_right" size={16} />
               </button>

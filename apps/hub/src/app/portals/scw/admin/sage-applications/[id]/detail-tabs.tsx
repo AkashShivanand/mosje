@@ -31,7 +31,7 @@ export function DetailTabs({ detail }: { detail: SageDetail }) {
             type="button"
             onClick={() => setActive(tab)}
             className={cn(
-              "-mb-px border-b-2 px-1 py-3 text-sm font-medium transition-colors",
+              "-mb-px border-b-2 px-1 py-3 text-label-1 transition-colors",
               active === tab
                 ? "border-navy text-navy"
                 : "border-transparent text-ink-muted hover:text-ink"
@@ -57,19 +57,19 @@ export function DetailTabs({ detail }: { detail: SageDetail }) {
       )}
 
       {active === "Team & Founders" && (
-        <div className="py-16 text-center text-sm text-ink-hint">No team data.</div>
+        <div className="py-16 text-center text-body-2 text-ink-hint">No team data.</div>
       )}
 
       {active === "Financial & Investors" && (
         <div className="space-y-10">
           <div>
             <SectionTitle>FINANCIAL INFORMATION</SectionTitle>
-            <div className="text-sm text-ink-hint">No financial information.</div>
+            <div className="text-body-2 text-ink-hint">No financial information.</div>
           </div>
           <div>
             <SectionTitle>INVESTORS</SectionTitle>
             <div className="overflow-x-auto rounded-xl border border-line">
-              <table className="w-full min-w-[640px] text-left text-sm">
+              <table className="w-full min-w-[640px] text-left text-body-2">
                 <thead>
                   <tr className="border-b border-line text-ink-muted">
                     <th className="px-6 py-3 font-semibold">Investor Name</th>
@@ -95,7 +95,7 @@ export function DetailTabs({ detail }: { detail: SageDetail }) {
         <div>
           <SectionTitle>AWARDS &amp; RECOGNITIONS</SectionTitle>
           <div className="overflow-x-auto rounded-xl border border-line">
-            <table className="w-full min-w-[480px] text-left text-sm">
+            <table className="w-full min-w-[480px] text-left text-body-2">
               <thead>
                 <tr className="border-b border-line text-ink-muted">
                   <th className="px-6 py-3 font-semibold">Award Name</th>

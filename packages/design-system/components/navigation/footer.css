@@ -44,7 +44,7 @@
   .ds-footer__copy {
     margin: 0;
     font-size: var(--sa-type-body-3-size);
-    line-height: 1.5;
+    line-height: var(--sa-type-body-3-lh);
     color: color-mix(in srgb, var(--sa-on-bg-brand-primary-bolder) 82%, transparent);
   }
 

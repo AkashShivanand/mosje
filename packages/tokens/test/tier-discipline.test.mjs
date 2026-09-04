@@ -15,14 +15,12 @@ import { parse, fromCssName, tierOfFile, toCssName } from "../build/grammar.mjs"
 const root = new URL("..", import.meta.url).pathname;
 const repo = new URL("../../../", import.meta.url).pathname;
 const css = readFileSync(root + "dist/tokens.css", "utf8");
-const ux4g = readFileSync(root + "dist/ux4g.css", "utf8");
-
-const declared = new Set([...`${css}\n${ux4g}`.matchAll(/^\s*(--[A-Za-z0-9-]+)\s*:/gm)].map((m) => m[1]));
+const declared = new Set([...css.matchAll(/^\s*(--[A-Za-z0-9-]+)\s*:/gm)].map((m) => m[1]));
 
 test("no var() in the generated CSS points at a name nothing declares", () => {
   // The tier rename broke 44 references the first time it ran. This is the guard that
   // turns that from a silent visual regression into a failing build.
-  const used = new Set([...`${css}\n${ux4g}`.matchAll(/var\((--sa-[A-Za-z0-9-]+)/g)].map((m) => m[1]));
+  const used = new Set([...css.matchAll(/var\((--sa-[A-Za-z0-9-]+)/g)].map((m) => m[1]));
   const dangling = [...used].filter((n) => !declared.has(n)).sort();
   assert.deepEqual(dangling, [], `dangling --sa-* references:\n  ${dangling.join("\n  ")}`);
 });
@@ -68,8 +66,7 @@ test("app code never references a Tier-1 reference token", () => {
     .filter(
       (f) =>
         !f.startsWith("packages/tokens/") &&
-        f !== "packages/design-system/tokens.css" &&
-        f !== "packages/design-system/ux4g.css",
+        f !== "packages/design-system/tokens.css",
     );
 
   const offenders = [];
@@ -204,26 +201,9 @@ test("the breakpoint anchors are read from the token, never restated as literals
   assert.deepEqual(offenders, [], offenders.join("\n  "));
 });
 
-test("a font size step resolves to the size scale, not to its own literal", async () => {
-  // UX4G's `fs-16 -> size-16` relationship, adopted. Without it the same px value has two
-  // definitions and they drift — which is exactly how `--sa-type-display-size` (fixed) ended
-  // up shadowing `--sa-type-display-1-size` (fluid).
-  const { index } = await import("../build/token-index.mjs");
-  const { readFileSync } = await import("node:fs");
-  const src = JSON.parse(readFileSync(root + "src/primitive.json", "utf8"));
-  const bad = [];
-  for (const [step, node] of Object.entries(src.font.size)) {
-    if (step.startsWith("$")) continue;
-    const v = node.$value;
-    if (typeof v !== "string" || !v.startsWith("{size.")) bad.push(`font/size/${step} = ${v}`);
-  }
-  assert.deepEqual(
-    bad,
-    [],
-    `${bad.length} font size step(s) carry their own literal instead of aliasing size/*:\n  ${bad.join("\n  ")}`,
-  );
-  assert.ok(index, "token index import kept for parity with the rest of this file");
-});
+// The "a font size step resolves to the size scale" test was retired with the flat
+// `font.size.*` ramp on 2026-09-04: the roles ARE the sizes now, and type-scale.test.mjs
+// asserts every one of them is on the ramp.
 
 // ---------------------------------------------------------------------------
 // The six gaps closed on 2026-08-10 stay closed.

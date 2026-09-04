@@ -186,13 +186,13 @@ export default function AboutPage() {
         <section className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-7 space-y-6">
             <div>
-              <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
+              <h2 className="text-headline-2 text-neutral-900">
                 Overview
               </h2>
               <div className="mt-2 h-1 w-16 bg-primary rounded-full" />
             </div>
 
-            <p className="text-base text-neutral-700 leading-relaxed">
+            <p className="text-body-1 text-neutral-700">
               The Department of Social Justice &amp; Empowerment is entrusted with the empowerment
               of the disadvantaged and marginalized sections of society. The core target groups
               of the Ministry are:
@@ -202,7 +202,7 @@ export default function AboutPage() {
               {TARGET_GROUPS.map((group) => (
                 <div
                   key={group}
-                  className="flex items-center gap-2.5 p-2.5 rounded-lg bg-neutral-50 border border-neutral-200 text-sm font-medium text-neutral-800"
+                  className="flex items-center gap-2.5 p-2.5 rounded-lg bg-neutral-50 border border-neutral-200 text-label-1 text-neutral-800"
                 >
                   <span className="h-2 w-2 rounded-full bg-primary" />
                   {group}
@@ -210,7 +210,7 @@ export default function AboutPage() {
               ))}
             </div>
 
-            <p className="text-sm text-neutral-600 leading-relaxed">
+            <p className="text-body-2 text-neutral-600">
               The Ministry has been implementing various schemes for social, educational, and
               economic development of the target groups. The Department prioritizes affirmative action,
               skill enhancement, financial inclusion, and social defence across all Indian States &amp; UTs.
@@ -239,10 +239,10 @@ export default function AboutPage() {
         {/* Section 2: Our History Timeline */}
         <section className="space-y-8">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
+            <h2 className="text-headline-2 text-neutral-900">
               Our History
             </h2>
-            <p className="mt-1 text-sm text-neutral-500">
+            <p className="mt-1 text-body-2 text-neutral-500">
               Evolution of the Department over time.
             </p>
             <div className="mt-2 h-1 w-16 bg-primary rounded-full" />
@@ -262,17 +262,17 @@ export default function AboutPage() {
             numbered its sections 1, 2, 4: this one was dropped in the rewrite. */}
         <section className="space-y-8">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
+            <h2 className="text-headline-2 text-neutral-900">
               Subjects Allocated
             </h2>
-            <p className="mt-1 text-sm text-neutral-500">
+            <p className="mt-1 text-body-2 text-neutral-500">
               The subjects allocated to the Department under the Government of India
               (Allocation of Business) Rules.
             </p>
             <div className="mt-2 h-1 w-16 bg-primary rounded-full" />
           </div>
 
-          <div className="rounded-r-xl border-l-4 border-primary bg-primary/5 p-5 text-sm leading-relaxed text-ink">
+          <div className="rounded-r-xl border-l-4 border-primary bg-primary/5 p-5 text-body-2 text-ink">
             <span className="font-bold text-ink">Note: </span>
             The Department of Social Justice and Empowerment shall be the nodal Department for
             the overall policy, planning and coordination of programmes for the development of
@@ -285,10 +285,10 @@ export default function AboutPage() {
 
           <ol className="space-y-3">
             {SUBJECTS_ALLOCATED_LIST.map((subject, index) => (
-              <li key={index} className="flex items-start gap-3 text-sm sm:text-base leading-relaxed text-ink-muted">
+              <li key={index} className="flex items-start gap-3 text-body-1 text-ink-muted">
                 <span
                   aria-hidden="true"
-                  className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary-700"
+                  className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary/10 text-label-2 text-primary-700"
                 >
                   {index + 1}
                 </span>
@@ -301,10 +301,10 @@ export default function AboutPage() {
         {/* Section 4: Organisational Set-Up */}
         <section className="space-y-8">
           <div>
-            <h2 className="text-2xl sm:text-3xl font-bold text-neutral-900 tracking-tight">
+            <h2 className="text-headline-2 text-neutral-900">
               Organisational Set-Up
             </h2>
-            <p className="mt-1 text-sm text-neutral-500">
+            <p className="mt-1 text-body-2 text-neutral-500">
               Political leadership and senior administrative bureaus of the Department.
             </p>
             <div className="mt-2 h-1 w-16 bg-primary rounded-full" />
@@ -333,15 +333,15 @@ export default function AboutPage() {
 
           {/* Bureau Accordions */}
           <div className="space-y-3 pt-4">
-            <h3 className="text-lg font-bold text-neutral-900">
+            <h3 className="text-headline-4 text-neutral-900">
               Senior Administration &amp; Bureaus
             </h3>
             <Accordion>
               {BUREAUS.map((bureau) => (
                 <AccordionItem key={bureau.title} title={bureau.title}>
-                  <ul className="space-y-3 pl-4 list-disc text-sm text-neutral-700 marker:text-primary">
+                  <ul className="space-y-3 pl-4 list-disc text-body-2 text-neutral-700 marker:text-primary">
                     {bureau.items.map((item, i) => (
-                      <li key={i} className="pl-2 leading-relaxed">
+                      <li key={i} className="pl-2">
                         {item}
                       </li>
                     ))}

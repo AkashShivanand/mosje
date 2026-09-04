@@ -48,8 +48,8 @@ export default async function AdminPage({
       />
 
       <main className="mx-auto w-full max-w-3xl px-6 py-12">
-        <h1 className="text-2xl font-bold tracking-tight text-ink">Settings</h1>
-        <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+        <h1 className="text-headline-1 text-ink">Settings</h1>
+        <p className="mt-1.5 text-body-2 text-ink-muted">
           Changes apply to the deployed prototype at once — there is no separate
           publish step.
         </p>
@@ -61,14 +61,14 @@ export default async function AdminPage({
           <div>
             <h2
               id="review-password-heading"
-              className="text-base font-semibold tracking-tight text-ink"
+              className="text-headline-6 text-ink"
             >
               Review password
             </h2>
-            <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+            <p className="mt-1.5 text-body-2 text-ink-muted">
               The shared password reviewers enter to reach the prototype.
             </p>
-            <p className="mt-3 text-xs leading-relaxed text-ink-hint">
+            <p className="mt-3 text-body-3 text-ink-hint">
               Changing it signs everyone out, including you on other devices.
             </p>
           </div>
@@ -89,21 +89,21 @@ export default async function AdminPage({
           <div>
             <h2
               id="registry-heading"
-              className="text-base font-semibold tracking-tight text-ink"
+              className="text-headline-6 text-ink"
             >
               Estate registry
             </h2>
-            <p className="mt-1.5 text-sm leading-relaxed text-ink-muted">
+            <p className="mt-1.5 text-body-2 text-ink-muted">
               Which portals and destinations the estate shows, in what order,
               under what name — and where the chat assistant appears.
             </p>
-            <p className="mt-3 text-xs leading-relaxed text-ink-hint">
+            <p className="mt-3 text-body-3 text-ink-hint">
               Hiding an entry also blocks its URL for everyone but you.
             </p>
           </div>
 
           <div className="rounded-xl border border-border bg-surface p-6 shadow-xs">
-            <p className="text-sm leading-relaxed text-ink-muted">
+            <p className="text-body-2 text-ink-muted">
               Set each entry to live, planned or hidden, reorder it within its
               category, override the name or description the estate shows, and
               switch the assistant on for that surface. One row per surface, so
@@ -117,7 +117,7 @@ export default async function AdminPage({
           </div>
         </section>
 
-        <p className="mt-12 border-t border-border pt-6 text-xs leading-relaxed text-ink-hint">
+        <p className="mt-12 border-t border-border pt-6 text-body-3 text-ink-hint">
           If the settings store is unreachable the gate falls back to the
           SITE_PASSWORD environment variable, so the estate stays reachable even
           when this page cannot save.{" "}

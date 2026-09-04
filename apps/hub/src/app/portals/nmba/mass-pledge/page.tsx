@@ -59,43 +59,43 @@ export default function PublicMassPledgeCounterPage() {
         )}
 
         <header className="mb-10">
-          <p className="text-xs font-semibold uppercase tracking-wide text-ink-hint">
+          <p className="text-label-3 uppercase text-ink-hint">
             Nasha Mukt Bharat Abhiyaan
           </p>
-          <h1 className="mt-1 text-3xl font-bold tracking-tight text-ink sm:text-4xl">
+          <h1 className="mt-1 text-headline-1 text-ink">
             National Pledge Against Drug Abuse
           </h1>
-          <p className="mt-2 text-base text-ink-muted">{EVENT_DATE_LABEL}</p>
+          <p className="mt-2 text-body-1 text-ink-muted">{EVENT_DATE_LABEL}</p>
         </header>
 
         {/* The verified figure is the page. Everything else is deliberately
             quieter so this is the one thing a visitor reads first. */}
         <section className="mb-8 border-t-2 border-navy pt-8">
           <p
-            className="text-6xl font-bold leading-none tabular-nums tracking-tight text-navy sm:text-7xl"
+            className="text-display-3 font-display tabular-nums text-navy"
             aria-live="polite"
           >
             {fmt(verifiedTotal)}
           </p>
-          <p className="mt-3 max-w-prose text-base text-ink">
+          <p className="mt-3 max-w-measure text-body-1 text-ink">
             participants reported by State, District and Block administrations across{" "}
             {statesCovered} State{statesCovered === 1 ? "" : "s"} and Union Territor
             {statesCovered === 1 ? "y" : "ies"}
           </p>
-          <p className="mt-3 inline-flex items-center gap-1.5 text-sm text-ink-muted">
+          <p className="mt-3 inline-flex items-center gap-1.5 text-body-2 text-ink-muted">
             <Icon name="verified_user" size={16} className="text-approve" aria-hidden="true" />
             Verified through the State/UT approval chain
           </p>
         </section>
 
         <section className="mb-10 border-t border-line pt-6">
-          <h2 className="text-sm font-semibold text-ink">
+          <h2 className="text-title-2 text-ink">
             Additionally reported by participating organisations
           </h2>
-          <p className="mt-2 text-3xl font-bold tabular-nums text-ink">
+          <p className="mt-2 text-headline-2 tabular-nums text-ink">
             {fmt(selfDeclaredTotal)}
           </p>
-          <p className="mt-2 max-w-prose text-sm text-ink-muted">
+          <p className="mt-2 max-w-measure text-body-2 text-ink-muted">
             Reported directly by Line Ministries, Spiritual Organisations, Higher Education
             Institutions and Grant-in-Aid organisations. These figures have not passed through the
             State approval chain and are shown separately for that reason.
@@ -104,7 +104,7 @@ export default function PublicMassPledgeCounterPage() {
 
         {gallery.length > 0 && (
           <section className="mb-6">
-            <h2 className="mb-3 text-base font-semibold text-ink">From the day</h2>
+            <h2 className="mb-3 text-title-2 text-ink">From the day</h2>
             <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.map((photo) => (
                 <li key={photo.id} className="overflow-hidden rounded-lg border border-line">
@@ -120,7 +120,7 @@ export default function PublicMassPledgeCounterPage() {
           </section>
         )}
 
-        <p className="text-xs text-ink-hint">
+        <p className="text-body-3 text-ink-hint">
           Figures reflect reports approved through the State/UT approval chain. Reports still under
           review are not included.
           {lastUpdated && (
