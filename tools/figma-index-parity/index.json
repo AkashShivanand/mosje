@@ -3,7 +3,7 @@
   "indexPage": "56757:725",
   "indexFrame": "56757:726",
   "capturedOn": "2026-09-04",
-  "statLine": "66 pages · 192 components · counted 4 September 2026",
+  "statLine": "67 pages · 192 components · counted 4 September 2026",
   "statuses": [
     "Ready",
     "Published",
@@ -65,6 +65,7 @@
     "OTP Input",
     "Bot Check",
     "Radio",
+    "Selection Card",
     "Range Slider",
     "Search",
     "Toggle",
@@ -211,7 +212,7 @@
     },
     {
       "name": "Forms & Inputs",
-      "stated": 13,
+      "stated": 14,
       "cards": [
         {
           "name": "Input Field",
@@ -235,6 +236,11 @@
         },
         {
           "name": "Radio",
+          "status": "Ready",
+          "linked": true
+        },
+        {
+          "name": "Selection Card",
           "status": "Ready",
           "linked": true
         },
