@@ -99,7 +99,7 @@ export default function SpacingPage(): React.JSX.Element {
                     // the "don't" half of a do/don't pair showing what falls off the 8px grid.
                     // Binding them to tokens would delete the thing being demonstrated.
                     preview: (
-                      <div style={{ display: "flex", flexDirection: "column", gap: "13px", padding: "11px" }}>
+                      <div style={{ /* ds-exempt(specimen): 13px and 11px are the point of the example — binding them would delete the thing being demonstrated */ display: "flex", flexDirection: "column", gap: "13px", padding: "11px" }}>
                         <div className="sp-dd__bar sp-dd__bar--dont" />
                         <div className="sp-dd__bar sp-dd__bar--dont" />
                         <code>gap: 13px</code>

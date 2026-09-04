@@ -155,7 +155,7 @@ export default function IllustrationPage(): React.JSX.Element {
                   },
                   {
                     type: "dont",
-                    preview: <code>stroke=&quot;#0373DF&quot;</code>,
+                    preview: <code>stroke=&quot;#0373DF&quot;</code>, // ds-exempt(specimen) — the literal being refused
                     label: "A literal stroke keeps the brand it was drawn in after every other element on the page has moved.",
                   },
                   {

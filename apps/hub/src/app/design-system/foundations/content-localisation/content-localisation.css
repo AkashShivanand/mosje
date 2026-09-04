@@ -1,0 +1,126 @@
+/* Content & Localisation foundation — the register, the script rule and the
+   language list, drawn. Every value is a token. The Hindi specimens bind the
+   two Devanagari tokens through the same `lang` mechanism the estate uses. */
+@layer theme, base, components, utilities;
+@layer components {
+  /* ── 02 Restraint: what a sentence is, and where it goes ───────────── */
+  .cl-ban {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+  }
+  .cl-ban__row {
+    display: grid;
+    grid-template-columns: minmax(0, 18ch) 1fr minmax(0, 22ch);
+    gap: var(--sa-inline-16);
+    align-items: baseline;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-layer-1);
+    border: var(--sa-stroke-1) solid var(--sa-layer-border-1);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  .cl-ban__class {
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+  .cl-ban__example {
+    color: var(--sa-text-neutral-subtle);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+  .cl-ban__home {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-brand-primary-base);
+    overflow-wrap: anywhere;
+  }
+
+  /* ── 04 Script: the two specimens ──────────────────────────────────── */
+  .cl-script {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--sa-inline-16);
+  }
+  .cl-script__card {
+    padding: var(--sa-padding-16);
+    border-radius: var(--sa-shape-12);
+    background: var(--sa-bg-neutral-subtler);
+  }
+  .cl-script__label {
+    margin: 0 0 var(--sa-stack-8);
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-brand-primary-base);
+  }
+  /* Specimen: a Hindi BLOCK takes the Devanagari face and the Devanagari leading.
+     The specimen binds exactly what text.css binds for `.ds-type:lang(hi)`. */
+  .cl-script__block {
+    margin: 0;
+    font-size: var(--sa-type-body-1-size);
+    line-height: var(--sa-type-body-1-lh);
+    color: var(--sa-color-text-default);
+  }
+  .cl-script__block:lang(hi) {
+    font-family: var(--sa-font-devanagari);
+    line-height: var(--sa-leading-devanagari);
+  }
+  /* Specimen: an INLINE Hindi run inside a Latin block takes the face only, so the
+     English line box around it stands — measured at 82px inside a 48px h1 when the
+     leading was applied too (text.css). */
+  .cl-script__block [lang="hi"] {
+    font-family: var(--sa-font-devanagari);
+  }
+  .cl-script__note {
+    margin: var(--sa-stack-8) 0 0;
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  /* ── 05 Languages: the estate's list ───────────────────────────────── */
+  .cl-langs {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: var(--sa-inline-8);
+  }
+  .cl-lang {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    padding: var(--sa-padding-12);
+    border-radius: var(--sa-shape-8);
+    background: var(--sa-layer-1);
+    border: var(--sa-stroke-1) solid var(--sa-layer-border-1);
+    font-size: var(--sa-type-body-2-size);
+    line-height: var(--sa-type-body-2-lh);
+  }
+  .cl-lang--live {
+    background: var(--sa-bg-brand-primary-subtler);
+    border-color: var(--sa-border-brand-primary-base);
+  }
+  .cl-lang__native {
+    font-weight: 600;
+    color: var(--sa-text-neutral-bolder);
+  }
+  .cl-lang__meta {
+    font-family: var(--sa-font-mono);
+    font-size: var(--sa-type-body-3-size);
+    color: var(--sa-text-neutral-subtle);
+  }
+
+  @media (max-width: 767px) {
+    .cl-ban__row {
+      grid-template-columns: 1fr;
+      gap: var(--sa-stack-4);
+    }
+  }
+}

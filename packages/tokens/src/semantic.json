@@ -1348,7 +1348,8 @@
       "yellow": {
         "$value": "{color.yellow.500}"
       }
-    }
+    },
+    "$description": "Tier 2 colour, two generations side by side: the canonical grammar namespace (bg/*, text/*, border/*, icon/*, on/*, layer/*) is authored in system.generated.json from the ramps; this group holds the brand-varying scales (primaryScale…infoScale — Tier 1 in disguise, never bound in app code), the alias-plus-alpha transparent tiers (color/transparent/<family>/<alpha>), the action/status/brand/text legacy roles the --ds-* era named, and the a11y staging values. New work binds the grammar namespace; the legacy roles are kept for the components that still read them and are listed for sunset in the colour audit."
   },
   "density": {
     "$description": "Density token set: control height per density mode.",

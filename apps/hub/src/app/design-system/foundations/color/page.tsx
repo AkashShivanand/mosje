@@ -1,7 +1,7 @@
+import * as React from "react";
 import type { Metadata } from "next";
-import { Alert, Badge, Button, Input, buttonClasses } from "@mosje/design-system";
-import { Callout, DoDont, A11yChecklist, TerminalCode } from "@/components/design-system/docs-kit/index";
-import { figmaUrl, FIGMA_NODES } from "@/lib/design-system/figma";
+import { Alert, Badge, Button, Input } from "@mosje/design-system";
+import { Callout, DoDont, FoundationDocPage, TerminalCode, type FoundationSection } from "@/components/design-system/docs-kit/index";
 import { BrandSwitcher, LivePair } from "./color-live";
 import "./color.css";
 import {
@@ -9,33 +9,63 @@ import {
   STATUS_MATRIX, CVD, MODES, ROLE_CONTRAST, ALPHA_SCALE, TRANSLUCENT,
 } from "./color-data";
 
-export const metadata: Metadata = { title: "Color — Foundations" };
-
-/**
- * DS Audit: Callout ✅ existing · DoDont ✅ existing · A11yChecklist ✅ existing · Alert ✅ ·
- * Badge ✅ · Button ✅ · Input ✅ (rendered as real specimens in section 18) ·
- * BrandSwitcher/LivePair ➕ page-local client islands.
- *
- * EVERY value on this page comes from ./color-data.ts, which is generated from
- * packages/tokens/dist/tokens.css. Nothing here is typed by hand. The section order and titles
- * mirror the Figma frame (FIGMA_NODES.color) and are gated by scripts/check-color-docs.mjs.
- */
-
-const title = (id: string): string => SECTIONS.find((s) => s.id === id)?.title ?? id;
-const num = (id: string): string => {
-  const i = SECTIONS.findIndex((s) => s.id === id);
-  return i > 0 && i < SECTIONS.length - 1 ? String(i).padStart(2, "0") : "";
+export const metadata: Metadata = {
+  title: "Color — Foundations",
+  description:
+    "Eight ramps, two brands, every ink pairing measured against the ground it sits on, in the worst of eight modes, and re-measured through three colour-vision deficiencies.",
 };
 
-function Section({ id, children }: { id: string; children: React.ReactNode }): React.JSX.Element {
-  return (
-    <section className="docs-section color-section" aria-labelledby={id} id={`s-${id}`}>
-      {num(id) ? <span className="color-section__num" aria-hidden="true">{num(id)}</span> : null}
-      <h2 id={id} className="docs-section__heading">{title(id)}</h2>
-      {children}
-    </section>
-  );
+/**
+ * DS Audit: FoundationDocPage ✅ · Callout ✅ · DoDont ✅ · TerminalCode ✅ · Alert ✅ · Badge ✅ ·
+ * Button ✅ · Input ✅ (rendered as real specimens in section 18) · BrandSwitcher/LivePair ➕
+ * page-local client islands.
+ *
+ * EVERY value on this page comes from ./color-data.ts, which is generated from
+ * packages/tokens/dist/tokens.css. Nothing here is typed by hand.
+ *
+ * THE SECTION LIST IS NOT AUTHORED HERE. `sections` below is SECTIONS from color-data.ts, mapped
+ * — the same list the Figma frame (FIGMA_NODES.color) carries, gated by scripts/check-docs-data.mjs
+ * so section 12 on both surfaces is about the same thing. Only the keyword eyebrow and the body
+ * are added per section. The Figma frame numbers 01–21 and leaves its Hero and Provenance
+ * unnumbered, so those two are the only entries not rendered as numbered sections: the hero's
+ * counted stats are the template's "at a glance" strip and its brand switcher opens section 01;
+ * provenance sits on the Tokens tab, where a reader asking where the numbers come from looks.
+ */
+
+/**
+ * The body of one section, keyed by the id `scripts/check-docs-data.mjs` §3 reads out of this
+ * file (`<Section id="…"`) to prove every section the two surfaces share is actually rendered.
+ * Numbering, the heading and the on-page nav come from FoundationDocPage; this wrapper adds
+ * nothing visual, so a body renders as a plain fragment.
+ */
+function Section({ children }: { id: string; children: React.ReactNode }): React.JSX.Element {
+  return <>{children}</>;
 }
+
+/** The `NN / KEYWORD` eyebrow each section carries — one uppercase word, mirroring the Figma frame. */
+const KEYWORD: Record<string, string> = {
+  anatomy: "ANATOMY",
+  tiers: "TIERS",
+  ramps: "RAMPS",
+  prominence: "PROMINENCE",
+  "ink-pairings": "INK PAIRINGS",
+  slots: "SLOTS",
+  status: "STATUS",
+  states: "STATES",
+  layers: "LAYERS",
+  "neutrals-alpha": "NEUTRALS",
+  brands: "BRANDS",
+  conformance: "CONFORMANCE",
+  charts: "CHARTS",
+  "do-and-dont": "GUIDANCE",
+  accessibility: "FLOORS",
+  handoff: "HANDOFF",
+  retired: "RETIRED",
+  "in-use": "IN USE",
+  "colour-vision": "VISION",
+  modes: "MODES",
+  alpha: "ALPHA",
+};
 
 /** A contrast figure with the class it earns, so a reader never has to know the thresholds. */
 function Pass({ ratio, floor, text = true }: { ratio: number | null; floor?: number; text?: boolean }): React.JSX.Element {
@@ -62,77 +92,51 @@ export default function ColorPage(): React.JSX.Element {
   const primaryBolder = allPairs.find((p) => p.bgToken === "bg/brand/primary/bolder");
   const chartCvd = CVD.find((c) => c.key === "chart");
   const modeFails = MODES.flatMap((m) => m.roles.filter((r) => r.pass === false).map((r) => ({ mode: m.id, ...r })));
-  const toc = SECTIONS.filter((s) => s.id !== "hero");
 
-  return (
-    <>
-      <header className="docs-page-header">
-        <div className="docs-page-header__text">
-          <h1 className="docs-page-header__title">Color</h1>
-          <p className="docs-page-header__desc">
-            Eight ramps, two brands, {META.inkPairs} ink pairings and {META.rolesMeasured} text,
-            icon and border roles — every one measured against the ground it actually sits on, in
-            the worst of {META.modesMeasured} modes, and re-measured through three colour-vision
-            deficiencies. The number is published into the description of the variable you are
-            about to use.
-          </p>
-          <div className="docs-page-header__actions">
-            <a
-              className={buttonClasses("primary", "outlined", "md")}
-              href={figmaUrl(FIGMA_NODES.color)}
-              target="_blank"
-              rel="noreferrer noopener"
-            >
-              Open the colour library in Figma <span aria-hidden="true">↗</span>
-            </a>
-          </div>
-        </div>
-      </header>
+  /* ── the hero: its stats are the glance strip; the switcher opens the Overview ─────── */
+  const hero = (
+    <Section id="hero">
+      <BrandSwitcher />
+    </Section>
+  );
 
-      <nav className="color-toc" aria-label="On this page">
-        <ol className="color-toc__list">
-          {toc.map((s, i) => (
-            <li key={s.id}>
-              <a className="color-toc__link" href={`#${s.id}`}>
-                <span className="color-toc__num" aria-hidden="true">{i + 1 < SECTIONS.length - 1 ? String(i + 1).padStart(2, "0") : "·"}</span>
-                {s.title}
-              </a>
-            </li>
-          ))}
-        </ol>
-      </nav>
+  /** One-paragraph ledes that carry no markup, rendered by the template as the section description. */
+  const DESCRIPTION: Record<string, string> = {
+    anatomy:
+      "Every semantic colour name answers three questions in order: what are you colouring, what does it mean, and how loud should it be. Learn the grammar once and you can construct the token you need instead of hunting for it.",
+    ramps:
+      "Every ramp is generated from an anchor, not hand-picked: each step 4–16 L* from the last, monotonic, hue held within about 6°, chroma on a single arc peaking at the anchor. Rung 600 sits at the same lightness in every family, so a rung means the same thing whichever ramp it comes from. Each cell shows the step, its hex, its OKLCH lightness, and its contrast against the page.",
+    prominence:
+      "SAMAVESH uses UX4G’s prominence vocabulary, so a designer moving between the two systems finds the same ladder. On a fill the rung says how much presence it has; on ink it says how loud the text is. The two ladders share words and differ in what they promise.",
+    slots:
+      "The first segment of a token name says what part of the interface it colours. Slots do not overlap — that disjointness is asserted by a test, so a border token can never quietly become a fill.",
+    status:
+      "Status colour tells someone what happened. It must never be the only thing that does — WCAG 1.4.1 requires the meaning to survive without colour, and roughly one in twelve men has a colour-vision deficiency. Each family below is the set of pairings a component actually uses, rendered live with the ratio each one measures.",
+    states:
+      "Every interaction state has its own token. Hover and active are not opacity tricks — they are separate values, so they stay correct in every brand and under the accessibility widget’s high-contrast mode.",
+    layers:
+      "Stacked surfaces come from a four-step layer ladder, each with a matching border token. Raise a layer when content is genuinely nested; draw a border when it is merely adjacent. The two together are why components stop reaching for a one-off grey.",
+    "neutrals-alpha":
+      "The neutral ramp is deliberately tinted: its hue is locked to the brand’s own primary, with chroma on a single arc that falls to zero at both ends. That is why 0 is exactly white and 1000 exactly black — the two achromatic values in the whole system.",
+    brands: `Brand is the only colour axis in SAMAVESH. A swap repaints ${META.brandVaryingRamps.join(" and ")} — and, verified against the built stylesheet, nothing else. Use the switcher at the top of this page to see it.`,
+    conformance:
+      "SAMAVESH is not a palette invented in a vacuum. It answers to DBIM, which requires a departmental palette built from the ministry’s key colour, and it holds a parity contract with UX4G 3.0, the Government of India’s own design system.",
+    charts: `Charts are where colour carries the most meaning and fails the most people. Every categorical series clears WCAG 1.4.11’s 3:1 against the page — the worst measures ${META.worstChartSeries}:1 — and all 36 pairs among slots 1–9 measure ΔE ≥ ${META.worstCvdSeriesPair} under every colour-vision deficiency. Contrast is not distinguishability, and neither is a substitute for a label.`,
+    "do-and-dont":
+      "Every pair below comes from something that went wrong in a real MoSJE surface, or from a rule a build gate now enforces. Consequences make rules stick.",
+    handoff:
+      "The Figma variable name and the CSS custom property are the same name, projected. That is not a convention anyone maintains — it is what makes the round-trip reversible.",
+    "colour-vision":
+      "About one man in twelve has a red–green deficiency. Every status ink, every filled rung and every chart series is measured through Machado’s simulations of protanopia, deuteranopia and tritanopia — the matrices Chrome DevTools and Figma use — and what those readers get is shown beside the normal-vision value. Where two colours converge, the design carries the meaning in an icon, a word or a lightness step, never in hue alone.",
+    modes:
+      "Blue and Navy are the estate’s brands; six DBIM previews and two UX4G modes exist so conformance can be shown rather than argued. Every role below was resolved inside each mode’s own stylesheet block and measured against the ground it sits on.",
+  };
 
-      {/* ── At a glance ───────────────────────────────────────── */}
-      <Section id="hero">
-        <div className="color-stats">
-          {[
-            [String(META.ramps), "ramps", "Seven chromatic at 11 steps, one neutral at 13. Each generated from an anchor."],
-            [String(META.brands), "brands", "Blue and Navy. Brand is the only colour axis."],
-            [String(META.inkPairs), "ink pairs", `Every fill has a measured foreground. Worst ${META.worstInkPair}:1.`],
-            [String(META.belowAA), "AA shortfalls", "Across every on/* pair, in both estate brands."],
-            [String(META.rolesMeasured), "roles measured", META.rolesBelowFloor === 0 ? "Text, icon and border tokens, on white and on the page ground. Every one clears its floor." : `Text, icon and border tokens against both grounds. ${META.rolesBelowFloor} below a floor.`],
-            [String(META.cvdSafeSeries), "safe series", `Chart slots distinguishable through every colour-vision deficiency — all 36 pairs ≥ ΔE ${META.worstCvdSeriesPair}.`],
-            [String(META.modesMeasured), "modes measured", "Two brands, six DBIM previews, two UX4G modes."],
-            [String(META.rungCaveats), "rung caveats", "No fill measures below the class its name states."],
-          ].map(([n, label, note]) => (
-            <div key={label} className="color-stat">
-              <div className="color-stat__n">
-                {n} <span className="color-stat__label">{label}</span>
-              </div>
-              <p className="color-stat__note">{note}</p>
-            </div>
-          ))}
-        </div>
-        <BrandSwitcher />
-      </Section>
-
-      {/* ── Anatomy ───────────────────────────────────────────── */}
+  /** Every numbered section's body, keyed by the id the gate reads. */
+  const BODY: Record<string, React.ReactNode> = {
+    anatomy: (
       <Section id="anatomy">
-        <p className="docs-lede">
-          Every semantic colour name answers three questions in order: what are you colouring,
-          what does it mean, and how loud should it be. Learn the grammar once and you can
-          construct the token you need instead of hunting for it.
-        </p>
+        {hero}
         <div className="color-anatomy">
           <code className="color-anatomy__name">
             <span data-part="slot">bg</span>/<span data-part="family">status/error</span>/
@@ -158,8 +162,9 @@ export default function ColorPage(): React.JSX.Element {
           measured for it. Bind the fill and the ink in the same edit; they are one decision.
         </Callout>
       </Section>
+    ),
 
-      {/* ── Tiers ─────────────────────────────────────────────── */}
+    tiers: (
       <Section id="tiers">
         <div className="color-tiers">
           {[
@@ -174,47 +179,43 @@ export default function ColorPage(): React.JSX.Element {
             </div>
           ))}
         </div>
-        <p className="docs-note">
+        <p className="color-note">
           A token&rsquo;s tier comes from the file it is authored in, and{" "}
           <code>ref</code>/<code>cmp</code> are reserved first segments. That is what keeps the
           projection reversible for the Figma round-trip — the same name identifies the same
           token in both places, which is why Tier 2 carries no marker and is the shortest to type.
         </p>
       </Section>
+    ),
 
-      {/* ── Ramps ─────────────────────────────────────────────── */}
+    ramps: (
       <Section id="ramps">
-        <p className="docs-lede">
-          Every ramp is generated from an anchor, not hand-picked: each step 4–16 L* from the
-          last, monotonic, hue held within about 6°, chroma on a single arc peaking at the anchor.
-          Rung 600 sits at the same lightness in every family, so a rung means the same thing
-          whichever ramp it comes from. Each cell shows the step, its hex, its OKLCH lightness,
-          and its contrast against the page.
-        </p>
-        {RAMPS.map((ramp) => (
-          <div key={ramp.name} className="color-ramp">
-            <div className="color-ramp__head">
-              <h3 className="color-ramp__name">{ramp.name}</h3>
-              <span className="color-ramp__meta">
-                {ramp.steps.length} steps ·{" "}
-                {ramp.brandVaries ? "repainted by a brand swap" : "brand-invariant"}
-              </span>
+        <div className="color-ramps">
+          {RAMPS.map((ramp) => (
+            <div key={ramp.name} className="color-ramp">
+              <div className="color-ramp__head">
+                <h3 className="color-ramp__name">{ramp.name}</h3>
+                <span className="color-ramp__meta">
+                  {ramp.steps.length} steps ·{" "}
+                  {ramp.brandVaries ? "repainted by a brand swap" : "brand-invariant"}
+                </span>
+              </div>
+              <div className="color-ramp__strip">
+                {ramp.steps.map((s) => (
+                  <div key={s.step} className="color-ramp__cell">
+                    <div className="color-ramp__swatch" style={{ background: `var(${s.token})` }}
+                         data-anchor={s.anchor ? "true" : undefined} aria-hidden="true" />
+                    <span className="color-ramp__step">{s.step}</span>
+                    <span className="color-ramp__hex">{s.blue}</span>
+                    <span className="color-ramp__l">L* {s.oklch?.L}</span>
+                    <span className="color-ramp__ratio">{s.onWhite?.toFixed(2)}:1</span>
+                    {s.anchor ? <span className="color-ramp__anchor">{s.anchor}</span> : null}
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="color-ramp__strip">
-              {ramp.steps.map((s) => (
-                <div key={s.step} className="color-ramp__cell">
-                  <div className="color-ramp__swatch" style={{ background: `var(${s.token})` }}
-                       data-anchor={s.anchor ? "true" : undefined} aria-hidden="true" />
-                  <span className="color-ramp__step">{s.step}</span>
-                  <span className="color-ramp__hex">{s.blue}</span>
-                  <span className="color-ramp__l">L* {s.oklch?.L}</span>
-                  <span className="color-ramp__ratio">{s.onWhite?.toFixed(2)}:1</span>
-                  {s.anchor ? <span className="color-ramp__anchor">{s.anchor}</span> : null}
-                </div>
-              ))}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
         <Callout type="info" title="Where an anchor sits is decided by lightness, not convention">
           <code>{navyAnchor?.navy}</code> is a shade, so it sits at rung {navyAnchor?.step};{" "}
           <code>{saffronAnchor?.blue}</code> is light, so it sits at {saffronAnchor?.step};{" "}
@@ -224,14 +225,10 @@ export default function ColorPage(): React.JSX.Element {
           dark for dark ink and too light for white, and neither reaches 4.5:1.
         </Callout>
       </Section>
+    ),
 
-      {/* ── Prominence ────────────────────────────────────────── */}
+    prominence: (
       <Section id="prominence">
-        <p className="docs-lede">
-          SAMAVESH uses UX4G&rsquo;s prominence vocabulary, so a designer moving between the two
-          systems finds the same ladder. On a fill the rung says how much presence it has; on ink
-          it says how loud the text is. The two ladders share words and differ in what they promise.
-        </p>
         <div className="color-ladders">
           <table className="token-table">
             <caption className="color-ladders__cap">Fills — <code>bg/*</code>, <code>border/*</code></caption>
@@ -256,47 +253,46 @@ export default function ColorPage(): React.JSX.Element {
             </tbody>
           </table>
         </div>
-        <p className="docs-note">
+        <p className="color-note">
           Held by <code>prominence-contract.test.mjs</code>: every fill and ink token carries the
           measured class in its Figma description, and the shortfall ledger — tokens whose rung
           overstates their contrast — is empty and may only ever shrink.
         </p>
       </Section>
+    ),
 
-      {/* ── Ink pairings ──────────────────────────────────────── */}
+    "ink-pairings": (
       <Section id="ink-pairings">
-        <p className="docs-lede">
+        <p className="color-lede">
           For every fill there is exactly one foreground token, chosen by measuring the
           candidates against that fill in the worst brand. Bind text to the <code>on/*</code>{" "}
           token that matches the fill you used and the pairing cannot fail. Each chip below
           renders its real pair, and the ratio is <strong>measured in your browser</strong> — not
           printed from a table. Switch brands above and watch them move.
         </p>
-        {INK_PAIRS.map((fam) => (
-          <div key={fam.family} className="color-pairs">
-            <h3 className="color-pairs__label">{fam.label}</h3>
-            <div className="color-pairs__row">
-              {fam.rungs.map((p) => (
-                <LivePair key={p.rung} bgToken={p.bgToken} onToken={p.onToken}
-                          rung={p.rung} expected={p.ratio} />
-              ))}
+        <div className="color-pairs-set">
+          {INK_PAIRS.map((fam) => (
+            <div key={fam.family} className="color-pairs">
+              <h3 className="color-pairs__label">{fam.label}</h3>
+              <div className="color-pairs__row">
+                {fam.rungs.map((p) => (
+                  <LivePair key={p.rung} bgToken={p.bgToken} onToken={p.onToken}
+                            rung={p.rung} expected={p.ratio} />
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
-        <p className="docs-note">
+          ))}
+        </div>
+        <p className="color-note">
           {allPairs.length} pairs, and the worst measures {META.worstInkPair}:1 — above the 4.5:1
           AA floor for text, in both estate brands, with margin. <code>on-pair-contrast.test.mjs</code>{" "}
           fails the build if any pair drops below, and its exemption list may only ever shrink.
         </p>
       </Section>
+    ),
 
-      {/* ── Slots ─────────────────────────────────────────────── */}
+    slots: (
       <Section id="slots">
-        <p className="docs-lede">
-          The first segment of a token name says what part of the interface it colours. Slots do
-          not overlap — that disjointness is asserted by a test, so a border token can never
-          quietly become a fill.
-        </p>
         <div className="color-slots">
           {[
             ["bg", "Filled surfaces: buttons, chips, banners, selected rows, page and card backgrounds."],
@@ -319,15 +315,10 @@ export default function ColorPage(): React.JSX.Element {
           ))}
         </div>
       </Section>
+    ),
 
-      {/* ── Status ────────────────────────────────────────────── */}
+    status: (
       <Section id="status">
-        <p className="docs-lede">
-          Status colour tells someone what happened. It must never be the only thing that does
-          — WCAG 1.4.1 requires the meaning to survive without colour, and roughly one in twelve
-          men has a colour-vision deficiency. Each family below is the set of pairings a
-          component actually uses, rendered live with the ratio each one measures.
-        </p>
         <div className="color-matrix">
           {STATUS_MATRIX.map((row) => (
             <article key={row.status} className="color-matrix__family" style={{ ["--_ink" as string]: cssVar(`text/status/${row.status}/base`), ["--_fill" as string]: cssVar(`bg/status/${row.status}/bolder`) }}>
@@ -367,14 +358,10 @@ export default function ColorPage(): React.JSX.Element {
           appear together, separate them by shape, position and copy.
         </Callout>
       </Section>
+    ),
 
-      {/* ── States ────────────────────────────────────────────── */}
+    states: (
       <Section id="states">
-        <p className="docs-lede">
-          Every interaction state has its own token. Hover and active are not opacity tricks —
-          they are separate values, so they stay correct in every brand and under the
-          accessibility widget&rsquo;s high-contrast mode.
-        </p>
         <div className="color-states">
           {["default", "hover", "active", "visited", "disabled"].map((state) => (
             <div key={state} className="color-state">
@@ -404,14 +391,10 @@ export default function ColorPage(): React.JSX.Element {
           asks 3:1 of it against the page.
         </Callout>
       </Section>
+    ),
 
-      {/* ── Layers ────────────────────────────────────────────── */}
+    layers: (
       <Section id="layers">
-        <p className="docs-lede">
-          Stacked surfaces come from a four-step layer ladder, each with a matching border token.
-          Raise a layer when content is genuinely nested; draw a border when it is merely
-          adjacent. The two together are why components stop reaching for a one-off grey.
-        </p>
         <div className="color-layers">
           {LAYERS.map((l) => (
             <div key={l.depth} className="color-layer"
@@ -422,47 +405,37 @@ export default function ColorPage(): React.JSX.Element {
           ))}
         </div>
       </Section>
+    ),
 
-      {/* ── Neutrals & alpha ──────────────────────────────────── */}
+    "neutrals-alpha": (
       <Section id="neutrals-alpha">
-        <p className="docs-lede">
-          The neutral ramp is deliberately tinted: its hue is locked to the brand&rsquo;s own
-          primary, with chroma on a single arc that falls to zero at both ends. That is why 0 is
-          exactly white and 1000 exactly black — the two achromatic values in the whole system.
-        </p>
-        {ALPHA.filter((a) => ["neutral", "primary", "white"].includes(a.family)).map((a) => (
-          <div key={a.family} className="color-alpha"
-               style={{ background: a.family === "white" ? "var(--sa-bg-brand-primary-bolder)" : "var(--sa-bg-neutral-subtle)" }}>
-            <code className="color-alpha__label"
-                  style={{ color: a.family === "white" ? "var(--sa-on-bg-brand-primary-bolder)" : "var(--sa-text-neutral-subtle)" }}>
-              transparent/{a.family}
-            </code>
-            {a.steps.map((s) => (
-              <div key={s.step} className="color-alpha__chip"
-                   style={{ background: `var(--sa-color-transparent-${a.family}-${s.step})` }}
-                   title={`${s.token} — ${s.value}`} />
-            ))}
-          </div>
-        ))}
+        <div className="color-alpha-group">
+          {ALPHA.filter((a) => ["neutral", "primary", "white"].includes(a.family)).map((a) => (
+            <div key={a.family} className="color-alpha" data-family={a.family}>
+              <code className="color-alpha__label">transparent/{a.family}</code>
+              {a.steps.map((s) => (
+                <div key={s.step} className="color-alpha__chip"
+                     style={{ background: `var(--sa-color-transparent-${a.family}-${s.step})` }}
+                     title={`${s.token} — ${s.value}`} />
+              ))}
+            </div>
+          ))}
+        </div>
         <Callout type="warning" title="A translucent fill has no contrast of its own">
           Its measured ratio depends on whatever sits behind it, so an alpha token can pass on
           white and fail on a tonal chip. Use them for scrims and hover washes — never for the
           fill behind text you need to guarantee, and never for a focus ring.
         </Callout>
-        <p className="docs-note">
+        <p className="color-note">
           In practice the two brands&rsquo; greys differ by at most one unit per channel at 8-bit
           precision. The re-lock is a systemic guarantee that the grey follows the brand, not a
           visible change — do not promise a stakeholder they will see it.
         </p>
       </Section>
+    ),
 
-      {/* ── Brands ────────────────────────────────────────────── */}
+    brands: (
       <Section id="brands">
-        <p className="docs-lede">
-          Brand is the only colour axis in SAMAVESH. A swap repaints{" "}
-          {META.brandVaryingRamps.join(" and ")} — and, verified against the built stylesheet,
-          nothing else. Use the switcher at the top of this page to see it.
-        </p>
         <DoDont
           cards={[
             { type: "do", label: "Let secondary and accent stay put — both are SAMAVESH logo colours, so they are constants of the identity rather than variants of it.", preview: null },
@@ -472,14 +445,10 @@ export default function ColorPage(): React.JSX.Element {
           ]}
         />
       </Section>
+    ),
 
-      {/* ── Conformance ───────────────────────────────────────── */}
+    conformance: (
       <Section id="conformance">
-        <p className="docs-lede">
-          SAMAVESH is not a palette invented in a vacuum. It answers to DBIM, which requires a
-          departmental palette built from the ministry&rsquo;s key colour, and it holds a parity
-          contract with UX4G 3.0, the Government of India&rsquo;s own design system.
-        </p>
         <div className="color-origin">
           {[
             ["Primary", "--sa-color-primaryScale-500", "DBIM requires a departmental palette built from the ministry's own key colour. The primary is given, not chosen."],
@@ -508,16 +477,10 @@ export default function ColorPage(): React.JSX.Element {
           it would mean shipping a colour DBIM never issued.
         </Callout>
       </Section>
+    ),
 
-      {/* ── Charts ────────────────────────────────────────────── */}
+    charts: (
       <Section id="charts">
-        <p className="docs-lede">
-          Charts are where colour carries the most meaning and fails the most people. Every
-          categorical series clears WCAG 1.4.11&rsquo;s 3:1 against the page — the worst measures{" "}
-          {META.worstChartSeries}:1 — and all 36 pairs among slots 1–9 measure ΔE ≥ {META.worstCvdSeriesPair} under
-          every colour-vision deficiency. Contrast is not distinguishability, and neither is a
-          substitute for a label.
-        </p>
         <div className="color-chart-cats">
           {CHART.categorical.map((c) => (
             <div key={c.n} className="color-chart-cat" data-guaranteed={c.n <= META.cvdSafeSeries ? "true" : undefined}>
@@ -553,13 +516,10 @@ export default function ColorPage(): React.JSX.Element {
           ]}
         />
       </Section>
+    ),
 
-      {/* ── Do / Don't ────────────────────────────────────────── */}
+    "do-and-dont": (
       <Section id="do-and-dont">
-        <p className="docs-lede">
-          Every pair below comes from something that went wrong in a real MoSJE surface, or from
-          a rule a build gate now enforces. Consequences make rules stick.
-        </p>
         <DoDont
           cards={[
             { type: "do", label: "Bind the ink to the on/* token for the fill you used — the pairing was already measured in the worst brand.", preview: null },
@@ -579,28 +539,20 @@ export default function ColorPage(): React.JSX.Element {
           ]}
         />
       </Section>
+    ),
 
-      {/* ── Accessibility ─────────────────────────────────────── */}
+    accessibility: (
       <Section id="accessibility">
-        <p className="docs-lede">
+        <p className="color-lede">
           GIGW 3.0 binds this estate to WCAG 2.1 AA and IS 17802. For colour that means four
           criteria, and every one of them is checked by arithmetic at build time rather than by
-          review. Below them, every text, icon and border role with the figure it measures on
-          white and on the muted page ground the estate&rsquo;s <code>&lt;body&gt;</code> carries.
+          review. The criteria are listed on the Accessibility tab; below, every text, icon and
+          border role with the figure it measures on white and on the muted page ground the
+          estate&rsquo;s <code>&lt;body&gt;</code> carries.
         </p>
-        <A11yChecklist
-          items={[
-            { criterion: "1.4.1 Use of colour", level: "A", description: "Colour is never the only carrier of meaning. Pair it with an icon, a label, a pattern or a position." },
-            { criterion: "1.4.3 Contrast (minimum)", level: "AA", description: `4.5:1 for body text, 3:1 for large text. Every on/* pair clears the first; the worst measures ${META.worstInkPair}:1.` },
-            { criterion: "1.4.11 Non-text contrast", level: "AA", description: "3:1 for borders, icons, focus rings, chart series and any control boundary someone must find." },
-            { criterion: "1.4.12 Text spacing", level: "AA", description: "Colour choices must survive 200% zoom and user stylesheets." },
-            { criterion: "Dark & high contrast", level: "GIGW", description: "Owned entirely by the UX4G accessibility widget, not by a token axis. Do not build a second mechanism." },
-            { criterion: "forced-colors: active", level: "GIGW", description: "Windows High Contrast replaces the palette wholesale — keep meaning in markup and icons." },
-          ]}
-        />
         <div className="color-roles">
           <table className="token-table">
-            <caption className="visually-hidden">Every text, icon and border role, measured on both grounds</caption>
+            <caption className="ds-sr-only">Every text, icon and border role, measured on both grounds</caption>
             <thead>
               <tr><th scope="col">Token</th><th scope="col">Role</th><th scope="col">On white</th><th scope="col">On the page ground</th><th scope="col">Class</th></tr>
             </thead>
@@ -625,15 +577,12 @@ export default function ColorPage(): React.JSX.Element {
           numbers as evidence in an audit, never as the audit.
         </Callout>
       </Section>
+    ),
 
-      {/* ── Handoff ───────────────────────────────────────────── */}
+    handoff: (
       <Section id="handoff">
-        <p className="docs-lede">
-          The Figma variable name and the CSS custom property are the same name, projected. That
-          is not a convention anyone maintains — it is what makes the round-trip reversible.
-        </p>
         <table className="token-table">
-          <caption className="visually-hidden">From Figma variable to CSS to component</caption>
+          <caption className="ds-sr-only">From Figma variable to CSS to component</caption>
           <thead>
             <tr><th scope="col">Where</th><th scope="col">What you write</th><th scope="col">Note</th></tr>
           </thead>
@@ -646,17 +595,19 @@ export default function ColorPage(): React.JSX.Element {
           </tbody>
         </table>
       </Section>
+    ),
 
-      {/* ── Retired ───────────────────────────────────────────── */}
+    retired: (
       <Section id="retired">
-        <p className="docs-lede">
+        <p className="color-lede">
           The legacy <code>--ds-*</code> vocabulary is retired: every name is deleted from every
           generated artifact, and every call site reads the canonical <code>--sa-*</code> token it
           already resolved to. This section is the record of what went, so older code stays
           readable — not guidance.
         </p>
+        <div className="fdp__scroll">
         <table className="token-table">
-          <caption className="visually-hidden">Retired token names and their replacements</caption>
+          <caption className="ds-sr-only">Retired token names and their replacements</caption>
           <thead>
             <tr><th scope="col">Retired</th><th scope="col">Use instead</th><th scope="col">Value</th><th scope="col">Why it is worth recording</th></tr>
           </thead>
@@ -671,11 +622,13 @@ export default function ColorPage(): React.JSX.Element {
             ))}
           </tbody>
         </table>
+        </div>
       </Section>
+    ),
 
-      {/* ── In use ────────────────────────────────────────────── */}
+    "in-use": (
       <Section id="in-use">
-        <p className="docs-lede">
+        <p className="color-lede">
           The same tokens serve a citizen filling in a scheme application, an officer reading a
           dashboard, and an analyst comparing districts. What changes between them is prominence,
           not colour. Everything below is a real component from <code>@mosje/design-system</code>{" "}
@@ -692,12 +645,12 @@ export default function ColorPage(): React.JSX.Element {
             <div className="color-example__stage">
               <label className="color-example__label" htmlFor="ex-aadhaar">Aadhaar number</label>
               <Input id="ex-aadhaar" status="error" defaultValue="1234 5678 9012" readOnly aria-describedby="ex-aadhaar-msg" />
-              <p id="ex-aadhaar-msg" className="color-example__msg" style={{ color: cssVar("text/status/error/base") }}>
+              <p id="ex-aadhaar-msg" className="color-example__msg color-example__msg--error">
                 <span aria-hidden="true">✕ </span>Aadhaar number does not match the bank account holder name.
               </p>
               <label className="color-example__label" htmlFor="ex-ifsc">IFSC code</label>
               <Input id="ex-ifsc" status="success" defaultValue="SBIN0001234" readOnly aria-describedby="ex-ifsc-msg" />
-              <p id="ex-ifsc-msg" className="color-example__msg" style={{ color: cssVar("text/status/success/base") }}>
+              <p id="ex-ifsc-msg" className="color-example__msg color-example__msg--success">
                 <span aria-hidden="true">✓ </span>State Bank of India, Connaught Place branch.
               </p>
               <div className="color-example__actions">
@@ -767,16 +720,10 @@ export default function ColorPage(): React.JSX.Element {
           </article>
         </div>
       </Section>
+    ),
 
-      {/* ── Colour vision ─────────────────────────────────────── */}
+    "colour-vision": (
       <Section id="colour-vision">
-        <p className="docs-lede">
-          About one man in twelve has a red–green deficiency. Every status ink, every filled rung
-          and every chart series is measured through Machado&rsquo;s simulations of protanopia,
-          deuteranopia and tritanopia — the matrices Chrome DevTools and Figma use — and what those
-          readers get is shown beside the normal-vision value. Where two colours converge, the
-          design carries the meaning in an icon, a word or a lightness step, never in hue alone.
-        </p>
         <div className="color-cvd">
           {CVD.map((set) => (
             <article key={set.key} className="color-cvd__set">
@@ -828,14 +775,10 @@ export default function ColorPage(): React.JSX.Element {
           diverging scale is red-to-blue, and every status ships with its glyph and its word.
         </Callout>
       </Section>
+    ),
 
-      {/* ── Modes ─────────────────────────────────────────────── */}
+    modes: (
       <Section id="modes">
-        <p className="docs-lede">
-          Blue and Navy are the estate&rsquo;s brands; six DBIM previews and two UX4G modes exist
-          so conformance can be shown rather than argued. Every role below was resolved inside
-          each mode&rsquo;s own stylesheet block and measured against the ground it sits on.
-        </p>
         <div className="color-modes">
           <table className="token-table color-modes__table" aria-label="Load-bearing roles measured in every colour mode">
             <thead>
@@ -864,7 +807,7 @@ export default function ColorPage(): React.JSX.Element {
             </tbody>
           </table>
         </div>
-        <p className="docs-note">
+        <p className="color-note">
           {modeFails.length === 0
             ? "Every load-bearing role clears its floor in every mode."
             : `${modeFails.length} figure${modeFails.length === 1 ? "" : "s"} sit below a floor, all in ${[...new Set(modeFails.map((f) => f.mode))].join(", ")}: DBIM's own published shade 2 as brand text and as the primary fill under white. Reported rather than corrected, because correcting it would ship a colour DBIM never issued.`}{" "}
@@ -872,34 +815,35 @@ export default function ColorPage(): React.JSX.Element {
           estate brands to AA on every load-bearing pairing.
         </p>
       </Section>
+    ),
 
-      {/* ── Provenance ────────────────────────────────────────── */}
-      {/* ── Alpha: every translucent token is a reference plus an opacity reference ── */}
+    alpha: (
       <Section id="alpha">
-        <p className="docs-lede">
+        <p className="color-lede">
           Every translucent colour in the system — the overlay tiers, the modal scrim, the inverse
           rules and every inverse button state, {META.translucentTokens} tokens in all — is a colour
           variable plus an opacity variable. Nothing is a pre-mixed <code>rgba()</code>, so a wash
           follows its base colour through Blue, Navy and every DBIM mode by construction, and a
           retired colour cannot survive inside a literal.
         </p>
-        <div className="color-alpha color-alpha--scale" style={{ background: "var(--sa-bg-brand-primary-bolder)" }}>
-          <code className="color-alpha__label" style={{ color: "var(--sa-on-bg-brand-primary-bolder)" }}>alpha/*</code>
+        <div className="color-alpha color-alpha--scale">
+          <code className="color-alpha__label">alpha/*</code>
           {ALPHA_SCALE.map((s) => (
-            <div key={s.step} className="color-alpha__chip color-alpha__chip--labelled"
+            <div key={s.css} className="color-alpha__chip color-alpha__chip--labelled"
                  style={{ background: `color-mix(in srgb, var(--sa-color-neutralScale-0) calc(var(${s.css}) * 100%), transparent)` }}
                  title={`${s.figma} — ${s.value}`}>
-              <span className="color-alpha__step" style={{ color: s.step >= 48 ? "var(--sa-text-neutral-base)" : "var(--sa-on-bg-brand-primary-bolder)" }}>{s.step}</span>
+              <span className="color-alpha__step" data-ink={(s.step ?? 0) >= 48 ? "dark" : "light"}>{s.step}</span>
             </div>
           ))}
         </div>
+        <div className="fdp__scroll">
         <table className="token-table" aria-label="The alpha ladder and what each step is for">
           <thead>
             <tr><th scope="col">Step</th><th scope="col">Value</th><th scope="col">Used for</th></tr>
           </thead>
           <tbody>
             {ALPHA_SCALE.map((s) => (
-              <tr key={s.step}>
+              <tr key={s.css}>
                 <th scope="row"><code>{s.figma}</code></th>
                 <td><code>{s.value}</code></td>
                 <td>{s.use}</td>
@@ -907,6 +851,7 @@ export default function ColorPage(): React.JSX.Element {
             ))}
           </tbody>
         </table>
+        </div>
         <div className="color-examples">
           {TRANSLUCENT.map((g) => (
             <div key={g.group} className="color-example">
@@ -932,34 +877,109 @@ export default function ColorPage(): React.JSX.Element {
           API also cannot set.
         </Callout>
       </Section>
+    ),
+  };
 
-      <Section id="provenance">
-        <p className="docs-lede">
-          Every value on this page is read from <code>packages/tokens/dist/tokens.css</code> at
-          build time and every swatch is painted through its token, so this page cannot state a
-          colour the build does not produce. Its counterpart in Figma is variable-bound for the
-          same reason. Both surfaces are pinned to one source.
-        </p>
-        <table className="token-table">
-          <caption className="visually-hidden">Where the numbers on this page come from</caption>
-          <thead>
-            <tr><th scope="col">Source</th><th scope="col">What it gives</th></tr>
-          </thead>
-          <tbody>
-            <tr><th scope="row"><code>packages/tokens/src/*.json</code></th><td>DTCG source — eight ramps, the slot grammar, the alpha families, the chart sets.</td></tr>
-            <tr><th scope="row"><code>packages/tokens/build/ramp.mjs</code>, <code>brand-ramps.mjs</code></th><td>The anchors and the rule every ramp is generated from.</td></tr>
-            <tr><th scope="row"><code>packages/tokens/build/cvd.mjs</code>, <code>oklch.mjs</code></th><td>The colour-vision simulation and the perceptual distances.</td></tr>
-            <tr><th scope="row"><code>packages/tokens/dist/tokens.css</code></th><td>Every hex and every ratio on this page, in every mode.</td></tr>
-            <tr><th scope="row"><code>docs/design-system/colour-system.md</code></th><td>Ramp shape, per-mode accessibility and the hue-separation ledger. Generated.</td></tr>
-            <tr><th scope="row"><code>packages/tokens/test/</code></th><td>on-pair-contrast · prominence-contract · hue-separation · brand-contrast · mode-contrast · chart-palette · figma-value-parity · figma-contrast-parity.</td></tr>
-            <tr><th scope="row"><code>scripts/check-color-docs.mjs</code></th><td>Fails the build if this page&rsquo;s data or section list drifts from the source.</td></tr>
-          </tbody>
-        </table>
-        <p className="docs-note">
-          Contrast figures are computed with the WCAG 2.x formula and state a fact about two
-          colours. They are not a conformance certificate.
-        </p>
-      </Section>
-    </>
+  /* ── provenance: the unnumbered closing section of the Figma frame, on the Tokens tab ──── */
+  const provenance = (
+    <Section id="provenance">
+      <h3>Where these numbers come from</h3>
+      <p className="color-lede">
+        Every value on this page is read from <code>packages/tokens/dist/tokens.css</code> at
+        build time and every swatch is painted through its token, so this page cannot state a
+        colour the build does not produce. Its counterpart in Figma is variable-bound for the
+        same reason. Both surfaces are pinned to one source.
+      </p>
+      <table className="token-table">
+        <caption className="ds-sr-only">Where the numbers on this page come from</caption>
+        <thead>
+          <tr><th scope="col">Source</th><th scope="col">What it gives</th></tr>
+        </thead>
+        <tbody>
+          <tr><th scope="row"><code>packages/tokens/src/*.json</code></th><td>DTCG source — eight ramps, the slot grammar, the alpha families, the chart sets.</td></tr>
+          <tr><th scope="row"><code>packages/tokens/build/ramp.mjs</code>, <code>brand-ramps.mjs</code></th><td>The anchors and the rule every ramp is generated from.</td></tr>
+          <tr><th scope="row"><code>packages/tokens/build/cvd.mjs</code>, <code>oklch.mjs</code></th><td>The colour-vision simulation and the perceptual distances.</td></tr>
+          <tr><th scope="row"><code>packages/tokens/dist/tokens.css</code></th><td>Every hex and every ratio on this page, in every mode.</td></tr>
+          <tr><th scope="row"><code>docs/design-system/colour-system.md</code></th><td>Ramp shape, per-mode accessibility and the hue-separation ledger. Generated.</td></tr>
+          <tr><th scope="row"><code>packages/tokens/test/</code></th><td>on-pair-contrast · prominence-contract · hue-separation · brand-contrast · mode-contrast · chart-palette · figma-value-parity · figma-contrast-parity.</td></tr>
+          <tr><th scope="row"><code>scripts/check-docs-data.mjs</code></th><td>Fails the build if this page&rsquo;s data or section list drifts from the source.</td></tr>
+        </tbody>
+      </table>
+      <p className="color-note">
+        Contrast figures are computed with the WCAG 2.x formula and state a fact about two
+        colours. They are not a conformance certificate.
+      </p>
+    </Section>
+  );
+
+  /* The numbered sections, in the order and with the titles the two surfaces share. */
+  const sections: FoundationSection[] = SECTIONS.filter((s) => s.id !== "hero" && s.id !== "provenance").map((s) => ({
+    id: s.id,
+    keyword: KEYWORD[s.id] ?? s.id.toUpperCase(),
+    title: s.title,
+    description: DESCRIPTION[s.id],
+    content: BODY[s.id] ?? null,
+  }));
+
+  return (
+    <FoundationDocPage
+      name="Color"
+      status="Stable"
+      since="0.48.0"
+      summary={`Eight ramps, two brands, ${META.inkPairs} ink pairings and ${META.rolesMeasured} text, icon and border roles — every one measured against the ground it actually sits on, in the worst of ${META.modesMeasured} modes, and re-measured through three colour-vision deficiencies. The number is published into the description of the variable you are about to use.`}
+      figma={{ node: "color" }}
+      glance={[
+        { value: META.ramps, label: "ramps", note: "Seven chromatic at 11 steps, one neutral at 13. Each generated from an anchor." },
+        { value: META.brands, label: "brands", note: "Blue and Navy. Brand is the only colour axis." },
+        { value: META.inkPairs, label: "ink pairs", note: `Every fill has a measured foreground. Worst ${META.worstInkPair}:1.` },
+        { value: META.belowAA, label: "AA shortfalls", note: `Across every on/* pair, in both estate brands; ${META.rungCaveats} rung caveats — no fill measures below the class its name states.` },
+        {
+          value: META.rolesMeasured,
+          label: "roles measured",
+          note: META.rolesBelowFloor === 0
+            ? "Text, icon and border tokens, on white and on the page ground. Every one clears its floor."
+            : `Text, icon and border tokens against both grounds. ${META.rolesBelowFloor} below a floor.`,
+        },
+        { value: META.cvdSafeSeries, label: "safe series", note: `Chart slots distinguishable through every colour-vision deficiency — all 36 pairs ≥ ΔE ${META.worstCvdSeriesPair}.` },
+      ]}
+      sections={sections}
+      tokens={[]}
+      tokensIntro="The colour contract is not a token table: it is eight ramps, forty-six ink pairings, a status matrix, a chart palette and a mode ledger, and every one of those is generated into color-data.ts from packages/tokens/dist/tokens.css and rendered, painted through its token, on the Overview tab. Sections 16 and 17 there carry the handoff — the name you write in Figma, in CSS and in TypeScript — and the record of what was retired. Below is where every number on this page comes from."
+      tokensExtra={provenance}
+      a11y={[
+        { criterion: "1.4.1 Use of colour", level: "A", description: "Colour is never the only carrier of meaning. Pair it with an icon, a label, a pattern or a position." },
+        { criterion: "1.4.3 Contrast (minimum)", level: "AA", description: `4.5:1 for body text, 3:1 for large text. Every on/* pair clears the first; the worst measures ${META.worstInkPair}:1.` },
+        { criterion: "1.4.11 Non-text contrast", level: "AA", description: "3:1 for borders, icons, focus rings, chart series and any control boundary someone must find." },
+        { criterion: "1.4.12 Text spacing", level: "AA", description: "Colour choices must survive 200% zoom and user stylesheets." },
+        { criterion: "Dark & high contrast", level: "GIGW", description: "Owned entirely by the UX4G accessibility widget, not by a token axis. Do not build a second mechanism." },
+        { criterion: "forced-colors: active", level: "GIGW", description: "Windows High Contrast replaces the palette wholesale — keep meaning in markup and icons." },
+      ]}
+      standards={[
+        {
+          clause: "UX4G 3.0 — Theme Craft, colour",
+          says: "A violet primary palette, the 50–950 ramp and the slot / prominence grammar.",
+          does: "Adopts the grammar, the six-rung ladder and the 50–950 ramp shape by value; maps colour by role, so the primary is the ministry's key colour and the neutral ramp is tinted to it.",
+          why: "DBIM requires a departmental palette built from the ministry's own key colour, and UX4G ships Theme Craft precisely so an organisation can substitute its own. Structure is UX4G's; colour is the department's.",
+        },
+        {
+          clause: "DBIM 3.0 — primary palettes, Green group",
+          says: "Five published shades per group, shade 2 as the working colour.",
+          does: "All six DBIM primary groups are transcribed verbatim as code-only previews. In the Green group, shade 2 measures 4.32:1 as a bolder fill and 3.96:1 as brand text — below AA.",
+          why: "Reported rather than corrected: correcting it would ship a colour DBIM never issued. The previews exist so conformance can be shown, never as shipping brands, and they stay out of the Figma library.",
+        },
+        {
+          clause: "UX4G 3.0 — opacity scale",
+          says: "Fourteen opacity steps.",
+          does: `One ladder of thirteen steps derived from what the system binds — 0 · 4 · 8 to 48 in six tiers · 64 · 72 · 80 · 88 · 100 — plus the disabled and muted roles, ${ALPHA_SCALE.length} variables in all.`,
+          why: "Six UX4G steps had no consumer in any tier or stylesheet and eight served one token each; a scale is what the system uses. Recorded in the colour audit of 2026-09-04 §16.",
+        },
+      ]}
+      related={[
+        { label: "Typography", href: "/design-system/foundations/typography", reason: "the text roles every ink pairing is measured for" },
+        { label: "Opacity", href: "/design-system/foundations/opacity", reason: "the alpha ladder every translucent colour references" },
+        { label: "Elevation", href: "/design-system/foundations/elevation", reason: "shadows tinted toward the neutral ramp's body ink" },
+        { label: "Accessibility", href: "/design-system/foundations/accessibility", reason: "the floors these ratios are measured against, and what they do not certify" },
+      ]}
+    />
   );
 }

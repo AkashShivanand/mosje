@@ -55,7 +55,7 @@ export default function MotionPage(): React.JSX.Element {
       summary="Motion in SAMAVESH is quick, quiet and purposeful. It guides attention and softens change on a government service, and it steps aside the moment a reader asks it to. You never pick a duration: you name what is happening, and the pair brings its duration and easing together."
       figma={{ node: "motion" }}
       glance={[
-        { value: intents.length, label: "intents", note: "each a duration + easing pair" },
+        { value: intents.length + 1, label: "intents", note: "eleven pairs plus loading" },
         { value: durations.length, label: "duration steps", note: `${durations[0]?.value} to ${maxMs}ms, value-named` },
         { value: easings.length, label: "easing curves", note: "named by behaviour, Material 3 vocabulary" },
         { value: REDUCED_MOTION_COLLAPSES.length, label: "collapse under reduced motion", note: "emitted once, in tokens.css" },
@@ -192,7 +192,7 @@ export default function MotionPage(): React.JSX.Element {
               <DoDont
                 cards={[
                   { type: "do", preview: <code>transition: opacity var(--sa-motion-enter-duration) var(--sa-motion-enter-easing)</code>, label: "Bind the pair for what is happening." },
-                  { type: "dont", preview: <code>transition: opacity 150ms ease</code>, label: /* ds-exempt(specimen) */ "A literal duration cannot follow the ladder, the brand, or the reader's reduced-motion preference." },
+                  { type: "dont", preview: <code>transition: opacity 150ms ease</code>, label: /* ds-exempt(specimen): the "don't" half of the pair — the literal duration is what is being refused */ "A literal duration cannot follow the ladder, the brand, or the reader's reduced-motion preference." },
                   { type: "dont", preview: <code>var(--sa-motion-exit-duration) var(--sa-motion-enter-easing)</code>, label: "Half of one pair and half of another is not an intent. If you want a fast decelerate, that is hover." },
                 ]}
               />

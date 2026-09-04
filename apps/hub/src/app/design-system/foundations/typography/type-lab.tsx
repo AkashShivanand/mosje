@@ -225,7 +225,11 @@ function RefTable({ prop }: { prop: Prop }): React.JSX.Element {
   );
 }
 
-function TokenReference(): React.JSX.Element {
+/**
+ * The token reference, exported on its own so the page can put it on the Tokens tab: it carries
+ * no surface state, so nothing is lost by taking it out of the lab.
+ */
+export function TokenReference(): React.JSX.Element {
   const [tab, setTab] = React.useState<Prop>("size");
   return (
     <div className="ty-ref">
@@ -269,42 +273,36 @@ function Compare(): React.JSX.Element {
 }
 
 /* ── the interactive core (placed once in the page) ───────────── */
+/**
+ * Three blocks under ONE section of the FoundationDocPage — the surface toggle is shared by the
+ * live ramp and the fluid preview, so they cannot be split across sections. Headings are h3
+ * because the template's section heading is the h2.
+ */
 export function TypeLab(): React.JSX.Element {
   const [surface, setSurface] = React.useState<Surface>("website");
   return (
     <>
-      <section className="docs-section" aria-labelledby="the-scale">
-        <span className="docs-section__label">Interactive</span>
-        <h2 id="the-scale" className="docs-section__heading">The type scale, live</h2>
+      <div className="ty-lab__block" aria-labelledby="the-scale">
+        <h3 id="the-scale" className="ty-lab__h3">The type scale, live</h3>
         <p className="ty-lead">One role vocabulary, two surfaces. Toggle to render every role at its real token
           value — the specimens below use the actual <code>--sa-type-*</code> variables, so what you see is what ships.</p>
         <SurfaceToggle surface={surface} onChange={setSurface} />
         <Ramp surface={surface} />
-      </section>
+      </div>
 
-      <section className="docs-section" aria-labelledby="fluid">
-        <span className="docs-section__label">Interactive</span>
-        <h2 id="fluid" className="docs-section__heading">Fluid, not stepped</h2>
+      <div className="ty-lab__block" aria-labelledby="fluid">
+        <h3 id="fluid" className="ty-lab__h3">Fluid, not stepped</h3>
         <p className="ty-lead">Type scales continuously between a 360px and a 1280px viewport — no breakpoint
           &ldquo;snap.&rdquo; Drag to shrink the frame and watch the same tokens interpolate.</p>
         <FluidPreview surface={surface} />
-      </section>
+      </div>
 
-      <section className="docs-section" aria-labelledby="two-surfaces">
-        <span className="docs-section__label">Two surfaces</span>
-        <h2 id="two-surfaces" className="docs-section__heading">Website vs Portal, same names</h2>
+      <div className="ty-lab__block" aria-labelledby="two-surfaces">
+        <h3 id="two-surfaces" className="ty-lab__h3">Website vs Portal, same names</h3>
         <p className="ty-lead">The public website gets the expressive scale; portals get a denser one. Same token
           names — a portal shell opts in with <code>data-surface=&quot;portal&quot;</code> on <code>&lt;html&gt;</code>.</p>
         <Compare />
-      </section>
-
-      <section className="docs-section" aria-labelledby="tokens">
-        <span className="docs-section__label">Reference</span>
-        <h2 id="tokens" className="docs-section__heading">Every token</h2>
-        <p className="ty-lead">All 21 roles × four fluid properties, plus weights and families — both surfaces,
-          click any token to copy.</p>
-        <TokenReference />
-      </section>
+      </div>
     </>
   );
 }
