@@ -64,7 +64,7 @@ export default function BarChartPage(): React.JSX.Element {
       name="Bar Chart"
       status="Beta"
       summary="Compares one figure across a set of named categories — states, districts, scheme components — as vertical columns or horizontal bars. It takes a single series or several, grouped or stacked."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<BarChartSpecimen />}
       propsFrom="BarChartProps"
       a11y={A11Y}

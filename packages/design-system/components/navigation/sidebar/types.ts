@@ -123,6 +123,14 @@ export interface SidebarNavProps {
   /** Optional content pinned to the foot (mirrors Figma `Show Footer`). */
   footer?: React.ReactNode;
   /**
+   * Optional content pinned to the head, rendered only below the laptop anchor
+   * (1024) — where the rail is a drawer. A portal's search lives here on a phone:
+   * the masthead shows no search button when it has a sidebar toggle, so the
+   * drawer is the one place to look. From 1024 up the masthead's own field is on
+   * the row and this slot is not drawn.
+   */
+  header?: React.ReactNode;
+  /**
    * Accessible name of the navigation landmark.
    * @default `${identity.name} navigation`, or "Portal navigation" without an identity
    */

@@ -12,10 +12,28 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
-  Last reviewed: 2026-09-05 · System version: v0.53.0 (EVERY PORTAL RAIL NAMES ITS PORTAL. All
+  Last reviewed: 2026-09-05 · System version: v0.55.0 (EVERY PORTAL RAIL NAMES ITS PORTAL. All
   shells pass SidebarNav an identity — name, the department's full name, the registry mark, the
   portal's home — as the Figma master defaults to; the rail's own collapse control is off wherever
   the masthead toggles it; check:sidebar-adoption requires the identity. The rail pins itself under the masthead at --sa-header-stuck and carries no ground of its own, as the handoff draws it.)
+
+  Last reviewed: 2026-09-05 · System version: v0.54.0 (THE FOLLOW-UPS THE AUDIT LEFT OPEN
+  ARE CLOSED — the withheld-figure contract reaches line, pie, donut and heatmap; the Figma
+  Metric Card gains Size and an Icon swap, Chart Card its Restricted and Offline states, Map
+  of India its Bubble and Point kinds with bound state fills, a documentation frame and a
+  record; Legend and Tooltip have Code Connect templates; the UX4G Chart.js set is deleted
+  (zero instances in the library or the handoff file). See the changelog.) v0.53.0 (THE PORTAL DASHBOARDS DRAW FOUR
+  THINGS THE CHART LAYER DID NOT HAVE — read across sixteen handoff screens on ten portal
+  pages: a ranked bar list (now `RankedBarList` + `InlineBar`), a metric against its
+  target and with its status (`MetricCard` gains `progress`, `status`, `tone`, `detail`,
+  `aside`, `provenance`; `Progress` gains `target` and `tone`), a highlighted current
+  period and a reference line on `BarChart`, and provenance that travels with the data
+  (`DataProvenance`, `ProvenanceLine`). The spec's withheld-figure contract is built —
+  `ChartWithheld` on datum and series, hatched, spoken, excluded from totals — and its
+  accessibility contract is now a keyboard model: one Tab stop per chart, arrows between
+  marks, Escape closes the tooltip, and a print stylesheet on every chart. In Figma the
+  Charts & Graphs page is rebuilt in the house style with bound masters and a component
+  record; the UX4G Chart.js import is renamed legacy. See the changelog.)
 
   Last reviewed: 2026-09-05 · System version: v0.52.0 (EVERY PORTAL RAIL IS SidebarNav. Six
   shells that drew their own rail — NMBA admin, public and treatment centre, Eutthan, PM-AJAY,
@@ -445,7 +463,7 @@
 
   **Every control in the condensed bar is 40px** (2026-09-05): the sidebar toggle, the sheet trigger, the search button, the account avatar (`AccountMenu avatarSize={40}`) and whatever the consumer passes as `actions` — the slot holds links and buttons at 40, so pass `Button size="default"`. The home link is a 40×40 target around the 20px emblem, emblem on the left edge; it was the bare 20×32 glyph, under WCAG 2.5.8. **The identity in the bar is `BrandLockup` compact** — emblem 32, Government of India · Ministry on one muted 12px row, the Department at 14 beneath (DBIM 5.2 makes none of the three optional) — wherever the inline nav is not on the row: every portal, and the website below 1024 or once its nav has moved to the sheet. Emblem-only where the nav needs the width and below 768. Figma: `Navbar/BrandLockup` `Size=Condensed`.
 
-  **The phone row, on a portal (2026-09-05):** one control per side — the 48px sidebar toggle leads, a 40px avatar trails — and nothing else is laid out. BETA is off below 768. Search waits behind a 40px button in the row and opens on its own row on tap (Escape closes), because a 56px field under a two-line lockup pushed a portal's page start past 300px; the website keeps its full-width field, since search is that site's navigation fallback. **The accessibility bar below 768** keeps the mark and two 44px icon controls, accessibility and language; the font stepper moves to the sheet and the widget, and the skip link shows on the first Tab press.
+  **The phone row, on a portal (2026-09-05):** one control per side — the 48px sidebar toggle leads, a 40px avatar trails — and nothing else is laid out. BETA stays and moves onto the first line beside Government of India, so the stack is three rows; the two small lines go to subtle ink at regular weight so the department is the only bold black line. A portal that has both a sidebar toggle and a `nav` shows one menu control on a phone: the sidebar toggle; the sheet is desktop-only there. The bar's flag defaults to the hub-root asset, so no shell ships a government bar without the national mark. On a portal without a sidebar, search waits behind a 40px button in the row and opens on its own row on tap (Escape closes), because a 56px field under a two-line lockup pushed a portal's page start past 300px; on a portal with a sidebar the button is not drawn and search lives at the head of the drawer (`SidebarNav header`), so a phone shows one door to each room; the website keeps its full-width field, since search is that site's navigation fallback. **The accessibility bar below 768** keeps the mark and two 44px icon controls, accessibility and language; the font stepper moves to the sheet and the widget, and the skip link shows on the first Tab press.
 
   System version: v0.16.1 (THE CHART PALETTE NOW SAYS WHICH OF ITS
   VALUES ARE COPIES AND WHICH ARE CHOICES, per group, because the difference was not guessable
@@ -1545,6 +1563,58 @@ this is a real text input whose focus never leaves, so a screen reader announces
 editable and reads the remaining match count after each keystroke. It refuses
 unmatched text on blur — a box reading "Bankuraa" over a form value of "" is how a
 district goes missing between the screen and the database.
+
+**A ranking or a breakdown with the figure printed per row: use `<RankedBarList>`.**
+"Top States by Pledges", "SLA Compliance by District", "Category Distribution",
+"District-wise Fund Utilisation" — the most-drawn chart across sixteen portal dashboard
+handoffs (2026-09-05) and, until then, the one the layer did not have, so portals reached
+for a `BarChart` with the axis it does not need or hand-rolled a div. It is a label, a
+figure and a thin bar per row: the figure is the reading, the bar is the aid, and the
+ordered list is the accessible form — the bar is `aria-hidden` because the text beside it
+already says the number. Pin `max={100}` for a percentage or the highest row draws at full
+width and reads as "complete". A tone is set only through `tone` or a `toneFor` rule the
+scheme has actually stated, and the caption names the threshold: green means on track on
+this estate, and the first row in a ranking is not "good". It PAGES with `pageSize` and
+never scrolls inside its card. `<InlineBar>` is the same bar alone for a `DataTable` cell
+beside a printed figure; give it a `label` only where the figure is not already printed.
+
+**One number, five readings: `<MetricCard>` carries all five.** Bare value; value with
+a change against a named `changeLabel`; value with its trend (a `Sparkline` in `aside`,
+decorative because the figure carries the meaning); value against a target (`progress`
+with a `max` and a `target` — a bar, not a second number, because the reader's question
+is how far there is to go); and value with a status (`status` for the words, `tone` for
+the colour — the chip is what lets the tint be a tint). `detail` prints the numerator and
+denominator behind a rate. A `tone` is a claim: set it only against a rule the scheme has
+stated — the queue's "due soon" and "overdue" tiles — never on the first card in a row.
+`<Progress>` takes the same `target`, `targetLabel` and `tone`, and `compact` drops its
+label row where the surface already prints the label.
+
+**Provenance travels with the data.** `DataProvenance` — source, as-of date, status — is
+a field on the data, not a caption someone types, and `<ChartCard provenance>` and
+`<MetricCard provenance>` print it as one muted `<ProvenanceLine>` and drop it whenever
+the card has nothing to show. It is the one line of self-description
+`ui-restraint-and-copy.md` permits; feed diagnostics still go to the audit doc.
+
+**A withheld figure is not a zero.** `ChartDatum.withheld` and `ChartSeries.withheld`
+carry "suppressed" or "not reported" with a reason. `BarChart` draws a hatched stub, never
+a bar; `LineChart` breaks the line and marks the gap with a hollow dashed ring at the
+baseline; `PieChart` and `DonutChart` leave the category out of the total, keep it in the
+legend and the table with its reason, and say the shares are of the published total;
+`Heatmap` takes a `ChartWithheld` in place of a number and hatches the cell. In every one
+the tooltip and the screen-reader table print `withheldLabel()` and the value is excluded
+from every domain and stack. `RankedBarList` sorts a withheld row last and hatches its
+track. Health and census data arrive this way routinely, and the workaround a
+contract without it produces is a literal "—" in the data that breaks every scale.
+
+**Every chart is one Tab stop.** `ChartFrame` roves: Tab enters at the first (or last
+visited) mark, the arrow keys move between marks, Home and End jump to the ends, and
+Escape dismisses the tooltip without moving focus (`onDismiss`, which every chart with a
+tooltip passes). A thirty-bar chart used to be thirty Tab stops. `BarChart` also takes
+`highlightIndex` — the current period keeps its colour and the rest drop to
+`chart/seq/300`, with "current" spoken in the summary — and `target`, a dashed reference
+line that joins the axis domain so it is never drawn off the plot. Every chart, card and
+metric tile has a print stylesheet: tooltips and toggles go, the screen-reader table
+becomes the printed table with a repeating header, and a card never splits across a page.
 
 **Reporting a figure against its target: use `<BulletChart>`.** Sanctioned against
 released, released against utilised, places created against places filled — this is

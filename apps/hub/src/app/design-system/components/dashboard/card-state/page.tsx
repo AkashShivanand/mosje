@@ -34,7 +34,7 @@ export default function Page(): React.JSX.Element {
       name="Card State"
       status="Stable"
       summary="What a card shows when it has no figures to show. The three kinds are deliberately distinct: a valid selection that genuinely holds nothing, a filter that matched nothing, and a figure the source does not publish yet."
-      figma={{ absent: "A card state; not a separate Figma node." }}
+      figma={{ node: "chartsChartCard" }}
       specimen={<Specimen />}
       propsFrom="CardStateProps"
       a11y={A11Y}

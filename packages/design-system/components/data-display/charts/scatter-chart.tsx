@@ -91,6 +91,7 @@ export function ScatterChart({
       className={className}
       canvasRef={canvasRef}
       overlay={<ChartTooltip tip={tip} />}
+      onDismiss={hide}
       legend={series.length > 1 ? <Legend items={series.map((s, i) => ({ label: s.name, color: colors[i] ?? categoricalColor(i) }))} /> : undefined}
       table={{
         columns: ["Series", xLabel ?? "X", yLabel ?? "Y", "Label"],

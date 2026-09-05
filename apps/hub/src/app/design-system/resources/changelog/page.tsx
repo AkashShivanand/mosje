@@ -32,7 +32,7 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.114.0",
+    version: "v0.116.0",
     date: "2026-09-05",
     current: true,
     changes: [
@@ -41,9 +41,32 @@ const RELEASES: Release[] = [
     ],
   },
   {
+    version: "v0.115.0",
+    date: "2026-09-05",
+    changes: [
+      { kind: "Added", text: "THE WITHHELD-FIGURE CONTRACT REACHES EVERY CHART FAMILY. `LineChart` breaks the line at a withheld index and marks the gap with a hollow dashed ring at the baseline; `PieChart` and `DonutChart` leave a withheld category out of the total, keep it in the legend and the table with its reason, and say in the summary that the shares are of the published total; `Heatmap` takes a `ChartWithheld` in place of a number (`HeatmapCell`) and hatches the cell, leaving it out of the ramp's domain. In all of them the tooltip and the screen-reader table print `withheldLabel()`" },
+      { kind: "Changed", text: "THE FIGMA MASTERS CLOSE THE GAPS THE COMPONENT RECORD NAMED. Metric Card gains Size = Medium | Small (the smaller figure style, a 32 badge, a 20 icon) and `Show icon` + `Icon` — an instance swap of the library Icon — thirty variants, none overflowing its bounds. Chart Card draws Restricted and Offline, so all eight CardState kinds are in the set. Map of India gains Kind = Bubble and Kind = Point, every state fill is now bound (chart/seq/* on the choropleth, chart/regionEmpty elsewhere, chart/regionStroke on every stroke), and the page carries a `— Documentation` frame with six counted stats and a `— Component record`" },
+      { kind: "Removed", text: "THE UX4G CHART.JS SET IS GONE. A scan of the library and of all twelve handoff pages found zero instances of `Chart (legacy UX4G Chart.js — retire)` or its 96 variants, so the legacy section — the set, three old frames and seventeen loose labels — was deleted rather than kept" },
+      { kind: "Added", text: "Code Connect for `Legend` (Swatch → the items' `swatch`) and `ChartTooltip`, and the Chart Card and Metric Card templates follow their new axes; six fixtures gate them" },
+    ],
+  },
+  {
+    version: "v0.114.0",
+    date: "2026-09-05",
+    changes: [
+      { kind: "Added", text: "`RankedBarList` AND `InlineBar` — THE MOST-DRAWN CHART IN THE PORTAL HANDOFFS, AND THE ONE THE LAYER DID NOT HAVE. Sixteen dashboard, report and monitoring screens across ten portal pages were read on 2026-09-05; “Top States by Pledges”, “SLA Compliance by District”, “Category Distribution” and “District-wise Fund Utilisation” are all one component: a label, a figure and a thin bar per row, drawn against a shared ceiling. The figure is the reading and the bar is the aid, so the bar is aria-hidden and the ordered list is the accessible form. It pages with `pageSize` and never scrolls inside its card; a tone is set only through a stated threshold and the caption names it; a withheld row sorts last and hatches its track. `InlineBar` is the same bar alone for a Data Table cell" },
+      { kind: "Added", text: "`MetricCard` CARRIES ALL FIVE READINGS OF ONE NUMBER the visualisation specification names. `progress` draws the figure against its `max` and `target` as a bar with a tick and a scale row (“0% … Target 85%”); `status` is a chip that carries the words and `tone` the colour — border, ground, label and figure take the status ink, as the queue’s “due soon” and “overdue” tiles do; `detail` prints the numerator and denominator behind a rate; `aside` holds a Sparkline beside the label; `provenance` prints where the figure came from. Every one of them is dropped, with the change indicator, whenever there is no figure. `Progress` takes the same `target`, `targetLabel` and `tone`, plus `compact` for a surface that already prints the label; the target is spoken in aria-valuetext" },
+      { kind: "Added", text: "PROVENANCE TRAVELS WITH THE DATA. `DataProvenance` — source, as-of date, final · provisional · revised — is a field, and `ChartCard` and `MetricCard` print it as one muted `ProvenanceLine` beneath the body. It is dropped with the footer whenever the card has nothing to show, because a source line under “This could not be loaded” describes figures that are not there" },
+      { kind: "Added", text: "A WITHHELD FIGURE IS NOT A ZERO. `ChartDatum.withheld` and `ChartSeries.withheld` carry “suppressed” or “not reported” with a reason — the shape health and census data actually arrive in. `BarChart` draws a hatched stub in the axis ink rather than a bar, prints `withheldLabel()` in the tooltip and the screen-reader table, and excludes the cell from every domain and stack. The specification wrote this contract on 2026-08-27; it is built now, in the largest chart first, per its own migration order" },
+      { kind: "Added", text: "`BarChart` TAKES `highlightIndex` AND `target`. The current period keeps its colour and every other bar drops to `chart/seq/300`, with “current” spoken in the summary sentence so the emphasis does not rest on colour; a target is a dashed reference line in the axis ink that joins the axis domain, so it is never drawn off the plot" },
+      { kind: "Changed", text: "EVERY CHART IS ONE TAB STOP. `ChartFrame` demotes all but one mark to tabindex -1 after each render and promotes whichever the reader moves to: Tab enters at the first or last-visited mark, the arrow keys move between marks, Home and End jump to the ends, and Escape dismisses the tooltip without moving focus through the new `onDismiss`, which all nine charts with a tooltip now pass. A thirty-bar chart used to be thirty Tab stops — the pages said so, and now they do not have to" },
+      { kind: "Added", text: "A PRINT STYLESHEET ON EVERY CHART, CARD AND METRIC TILE. Tooltips, table toggles and retry controls go; the screen-reader table becomes the printed table with its header repeating across pages; marks keep their ink through print-color-adjust; a card never splits across a page; skeletons stop. Government charts get printed and PDF’d, and the specification’s §07 asked for exactly this" },
+      { kind: "Changed", text: "THE FIGMA “CHARTS & GRAPHS” PAGE WAS A CHART.JS KIT, NOT A SAMAVESH PAGE. Its one component set held 96 static pictures at five sizes — Polar Area, Radar, Bubble, Gradient, “Chart Events”, “Chart Ref” — with an unnamed “Property 1”, no variable bindings, no data states and no documentation frame; Map of India’s set carried “Default | Variant2”. The page is rebuilt in the house style: a `Charts & Graphs — Documentation` frame with six counted stats, numbered sections holding `Metric Card` (Reading × Tone, fifteen variants), `Chart Card` (six states), `Ranked Bar Row`, `Chart` (the foundational types at one size), `Legend` and `Tooltip`, every fill, stroke, radius, padding and text bound to the same `chart/*`, status and space variables the code reads, and a `— Component record` naming what remains. The Chart.js set is renamed `Chart (legacy UX4G Chart.js — retire)` and kept only so existing instances do not break. Twenty-one chart and dashboard pages that said “Not yet published in the Figma library” now link to it" },
+    ],
+  },
+  {
     version: "v0.113.0",
     date: "2026-09-05",
-    current: false,
     changes: [
       { kind: "Changed", text: "EVERY PORTAL RAIL IS `SidebarNav`. Six shells drew their own — NMBA's admin, public and treatment-centre shells, Eutthan, PM-AJAY's dashboard and SMILE's mobile drawer — each with a private list of links, its own active state, hover, indent and collapse control, and each already drifted from the others and from Figma. All six now render the design system's rail from the same nav data they had; the mobile drawers host the same component inside `SideSheet`. Given up: PM-AJAY's per-item sub-labels and the treatment centre's icons below level 1, neither of which the rail draws. `npm run check:sidebar-adoption` fails any portal file that renders a navigating `<aside>` or a `<nav>` named \"navigation\" without it." },
       { kind: "Added", text: "A GROUP MAY HAVE NO PAGE OF ITS OWN. `href` is optional on a level-1 item and a level-2 entry that has `children`: the row only opens and closes, it is highlighted when a page inside it is current, and in the collapsed rail its flyout lists the pages (for a level-2 group without a page, beneath its name — the one case the flyout goes a level deeper). This is what NMBA's committee group and the treatment-centre registers needed; giving such a group its first child's href lit two rows for one page." },

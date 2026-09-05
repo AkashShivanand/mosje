@@ -104,13 +104,29 @@ export interface ChartFrameProps extends ChartStateProps {
    * announced nothing at all.
    *
    * `role="group"` keeps the accessible name from `<title>`/`<desc>` and lets
-   * the marks' own labels through. It is not a full traversal model — arrow-key
-   * roving across marks is still to build, and the pages say so — but a named
-   * stop is strictly better than a nameless one.
+   * the marks' own labels through.
+   *
+   * It also switches on the frame's KEYBOARD MODEL. The marks form one roving
+   * tab stop: Tab enters the chart at the first (or last-visited) mark, the
+   * arrow keys move between marks, Home and End jump to the ends, and Escape
+   * dismisses the tooltip without moving focus (see `onDismiss`). Before this
+   * a thirty-bar chart was thirty Tab stops, which is not a traversal model
+   * but a wall.
    */
   marksAreFocusable?: boolean;
+  /**
+   * Called on Escape while a mark has focus. Charts pass their tooltip
+   * controller's `hide`, so a keyboard reader can close the tooltip and stay
+   * where they are — `onBlur` alone would make them leave the chart to do it.
+   */
+  onDismiss?: () => void;
   /** SVG content. */
   children: React.ReactNode;
+}
+
+/** Every focusable mark inside a chart's SVG, in document order. */
+function marksIn(svg: SVGSVGElement): SVGElement[] {
+  return Array.from(svg.querySelectorAll<SVGElement>("[tabindex]"));
 }
 
 /**
@@ -233,6 +249,7 @@ export function ChartFrame({
   className,
   svgClassName,
   marksAreFocusable = false,
+  onDismiss,
   state,
   onRetry,
   filterLabel,
@@ -247,6 +264,55 @@ export function ChartFrame({
   const [tableOpen, setTableOpen] = React.useState(false);
   const labelledBy = summary ? `${titleId} ${descId}` : titleId;
   const aspect = aspectFromViewBox(viewBox);
+
+  /*
+   * ONE TAB STOP, NOT ONE PER MARK. The charts write `tabIndex={0}` on every
+   * mark, which is right for discoverability and wrong for traversal; the frame
+   * demotes all but one to -1 after each render and promotes whichever mark
+   * the reader moves to. React never rewrites the attribute because the prop
+   * it rendered has not changed, so the roving state survives re-renders.
+   */
+  const ownSvgRef = React.useRef<SVGSVGElement | null>(null);
+  const setSvgRef = React.useCallback(
+    (el: SVGSVGElement | null) => {
+      ownSvgRef.current = el;
+      if (typeof svgRef === "function") svgRef(el);
+      else if (svgRef) (svgRef as React.MutableRefObject<SVGSVGElement | null>).current = el;
+    },
+    [svgRef],
+  );
+  React.useEffect(() => {
+    if (!marksAreFocusable) return;
+    const svg = ownSvgRef.current;
+    if (!svg) return;
+    const marks = marksIn(svg);
+    if (marks.length === 0) return;
+    const active = marks.indexOf(document.activeElement as SVGElement);
+    const keep = active >= 0 ? active : 0;
+    marks.forEach((m, i) => m.setAttribute("tabindex", i === keep ? "0" : "-1"));
+  });
+  const onKeyDown = (e: React.KeyboardEvent<SVGSVGElement>) => {
+    if (!marksAreFocusable) return;
+    if (e.key === "Escape") {
+      if (onDismiss) {
+        e.preventDefault();
+        onDismiss();
+      }
+      return;
+    }
+    const marks = marksIn(e.currentTarget);
+    const idx = marks.indexOf(document.activeElement as SVGElement);
+    if (idx < 0) return;
+    let next: number;
+    if (e.key === "ArrowRight" || e.key === "ArrowDown") next = (idx + 1) % marks.length;
+    else if (e.key === "ArrowLeft" || e.key === "ArrowUp") next = (idx - 1 + marks.length) % marks.length;
+    else if (e.key === "Home") next = 0;
+    else if (e.key === "End") next = marks.length - 1;
+    else return;
+    e.preventDefault();
+    marks.forEach((m, i) => m.setAttribute("tabindex", i === next ? "0" : "-1"));
+    marks[next]?.focus();
+  };
 
   if (state) {
     return (
@@ -266,12 +332,13 @@ export function ChartFrame({
     <figure className={cn("ds-chart", className)}>
       <div className="ds-chart__canvas" ref={canvasRef}>
         <svg
-          ref={svgRef}
+          ref={setSvgRef}
           viewBox={viewBox}
           className={cn("ds-chart__svg", svgClassName)}
           role={marksAreFocusable ? "group" : "img"}
           preserveAspectRatio="xMidYMid meet"
           aria-labelledby={labelledBy}
+          onKeyDown={marksAreFocusable ? onKeyDown : undefined}
         >
           {/* Emitted only when asked for: a chart with no textured series should
               not carry six unused <pattern> definitions. */}

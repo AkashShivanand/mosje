@@ -62,7 +62,7 @@ export default function LineChartPage(): React.JSX.Element {
       name="Line Chart"
       status="Beta"
       summary="Plots a figure against an ordered axis so the reader sees its direction — month by month, quarter by quarter. It takes one series or several against a shared set of labels."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<LineChartSpecimen />}
       propsFrom="LineChartProps"
       a11y={A11Y}

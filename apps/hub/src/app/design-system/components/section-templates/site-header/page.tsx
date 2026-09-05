@@ -396,7 +396,7 @@ export default function SiteHeaderPage(): React.JSX.Element {
                 ["1024 and up", "The navigation row is shown, with dropdowns and mega-menus"],
                 ["Below 1024", "The navigation row collapses; a trigger in the brand row opens NavSheet"],
                 ["Below 900", "The search field hides; the condensed bar keeps a search icon"],
-                ["Below 768", "Co-branding marks hide; the BETA badge hides; the account name and email hide and the avatar steps to 40; on a portal the search field waits behind a 40px button in the row and opens on its own row on tap"],
+                ["Below 768", "Co-branding marks hide; BETA moves onto the Government of India line; the account name, email and caret hide and the avatar steps to 40; on a portal every control on the row is 40; with a sidebar toggle the sheet trigger is not rendered and search lives at the head of the drawer (SidebarNav header); without one the search field waits behind a 40px button that opens it on its own row"],
                 ["Below 768, accessibility bar", "Font size leaves for the sheet and the widget; accessibility and language stay as 44px icon controls; the skip link shows on the first Tab press"],
                 [
                   "Below the tablet anchor",

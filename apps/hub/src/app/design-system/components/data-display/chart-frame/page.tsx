@@ -86,7 +86,7 @@ export default function ChartFramePage(): React.JSX.Element {
       name="Chart Frame"
       status="Beta"
       summary="The shell every chart in the catalogue renders through. It owns the accessible SVG wrapper, the screen-reader data table, the caption, the legend slot and the five states a chart can be in."
-      figma={{ absent: "Not published in the Figma library, and it will not be: the frame is structure rather than surface — it draws no marks of its own." }}
+      figma={{ node: "chartsDoc" }}
       specimen={<ChartFrameSpecimen />}
       propsFrom="ChartFrameProps"
       props={STATE_API}

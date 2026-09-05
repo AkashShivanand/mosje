@@ -112,7 +112,7 @@ export default function LegendPage(): React.JSX.Element {
       name="Legend"
       status="Beta"
       summary="The key beside a chart. Passing onToggle changes what it is: from a list naming the series to a set of controls that decide which series are drawn."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsLegend" }}
       specimen={<LegendSpecimen />}
       propsFrom="LegendProps"
       props={ITEM}

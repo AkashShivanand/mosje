@@ -26,7 +26,7 @@ export default function Page(): React.JSX.Element {
       name="India Bubble Map"
       status="Beta"
       summary="One circle per state, with AREA proportional to the value. Use it when the figure is a count rather than a rate — a choropleth gives each state the ink of its land area, so Rajasthan shouts and Delhi disappears whatever the figures say."
-      figma={{ absent: "Chart catalogue is authored in code first." }}
+      figma={{ node: "mapOfIndiaDoc" }}
       specimen={<Specimen />}
       propsFrom="IndiaBubbleMapProps"
       a11y={A11Y}

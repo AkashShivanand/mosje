@@ -59,10 +59,7 @@ export default function ChartCardPage(): React.JSX.Element {
       name="Chart Card"
       status="Beta"
       summary="The titled container a dashboard chart sits in. It owns the header, the grid span, the download control and every state the chart can be in, so a portal composes a dashboard rather than rebuilding one."
-      figma={{
-        absent:
-          "Not yet published in the Figma library. The card's states are specified in .claude/rules/data-state-completeness.md until a master exists.",
-      }}
+      figma={{ node: "chartsChartCard" }}
       specimen={
         <DashboardGrid>
           <ChartCard
@@ -159,6 +156,26 @@ export default function ChartCardPage(): React.JSX.Element {
               and gauge, <code>rows</code> for ranked lists and funnels, <code>region</code> for
               maps, <code>figures</code> for reference grids. The bar heights are fixed rather than
               random, because a skeleton that reshuffles reads as data arriving and being withdrawn.
+            </p>
+          </section>
+          <section className="cdp__section" aria-labelledby="cdp-provenance">
+            <h2 id="cdp-provenance" className="cdp__h2">
+              Provenance Travels With the Data
+            </h2>
+            <p>
+              A government figure without its source and date is unusable in a deck, so the source
+              is a field on the data — <code>DataProvenance</code>: source, as-of date, and whether
+              the figures are final, provisional or revised — rather than a caption someone types.
+              Pass it as <code>provenance</code> and the card prints one muted{" "}
+              <code>ProvenanceLine</code> beneath its body: &ldquo;Source: PM-AJAY MIS · As of 27 Aug
+              2026 · Provisional&rdquo;.
+            </p>
+            <p>
+              It is dropped with the footer whenever the card has nothing to show. A source line
+              under &ldquo;This could not be loaded&rdquo; describes figures that are not there. It
+              is also the one line of self-description a card is permitted; feed diagnostics — how
+              many rows lacked coordinates, which were repaired — belong in the audit document, not
+              under a chart.
             </p>
           </section>
           <section className="cdp__section" aria-labelledby="cdp-footer">

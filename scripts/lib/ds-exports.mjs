@@ -151,6 +151,14 @@ export const DOCUMENTED_BY = {
   ReviewSection: "Wizard", ReviewItem: "Wizard",
   SkeletonText: "Skeleton", SkeletonRow: "Skeleton",
   ChartTooltip: "Legend",
+  // The ranked list's bar alone, for a table cell. Its page shows it inside a
+  // DataTable column and its story renders it in a table; on its own it is a
+  // 6px track with nothing to say.
+  InlineBar: "RankedBarList",
+  // Source · as of · status. Rendered by ChartCard and MetricCard through their
+  // `provenance` prop; the Chart Card page carries the section on when a card
+  // prints one and when it must not.
+  ProvenanceLine: "ChartCard",
   AccordionItem: "Accordion", VerticalTimelineItem: "VerticalTimeline",
   // The GROUPED form of each selection control. A reader asking "how do I
   // group radios" goes to the Radio page, not to a separate route — the

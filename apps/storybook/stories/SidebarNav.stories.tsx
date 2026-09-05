@@ -32,6 +32,10 @@ import { Button, OrgLogo, SidebarNav } from "@mosje/design-system";
  * sign the information architecture needs the work, not the component.
  *
  * Lifecycle: **Stable**.
+  *
+ * `header` pins content to the head of the rail and is drawn only below 1024, where
+ * the rail is a drawer. A portal puts its phone search here: the masthead shows no
+ * search button when it has a sidebar toggle, so the drawer is the one place to look.
  */
 const GROUPS = [
   {

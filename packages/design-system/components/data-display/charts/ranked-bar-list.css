@@ -1,0 +1,173 @@
+/* Declare the order before using it — see any sibling stylesheet for why. */
+@layer theme, base, components, utilities;
+
+@layer components {
+  /* ============================================================================
+     MoSJE / SAMAVESH — RankedBarList and InlineBar
+     A label, a figure and a thin bar per row. The figure is the reading; the
+     bar is the aid. Tones map to STATUS inks, never to the categorical ramp.
+     ============================================================================ */
+
+  .ds-ranked {
+    margin: 0;
+    font-family: var(--sa-font-latin);
+  }
+
+  .ds-ranked__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-12);
+  }
+
+  .ds-ranked__row {
+    display: flex;
+    flex-direction: column;
+    gap: var(--sa-stack-4);
+    /* The row's ink, resolved once and read by the fill below. Neutral is the
+       primary series colour — a ranking with no threshold is not a status. */
+    --ranked-ink: var(--sa-chart-cat-1);
+  }
+  .ds-ranked__row--info    { --ranked-ink: var(--sa-text-status-info-base); }
+  .ds-ranked__row--success { --ranked-ink: var(--sa-text-status-success-base); }
+  .ds-ranked__row--warning { --ranked-ink: var(--sa-text-status-warning-base); }
+  .ds-ranked__row--danger  { --ranked-ink: var(--sa-text-status-error-base); }
+
+  .ds-ranked__head {
+    display: flex;
+    align-items: baseline;
+    gap: var(--sa-stack-8);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+  }
+
+  .ds-ranked__rank {
+    flex: 0 0 auto;
+    align-self: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 var(--sa-padding-4);
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-bg-brand-primary-subtler);
+    color: var(--sa-text-brand-primary-base);
+    font-size: var(--sa-type-label-3-size);
+    line-height: var(--sa-type-label-3-lh);
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .ds-ranked__label {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--sa-text-neutral-base);
+    font-weight: var(--sa-font-weight-medium);
+  }
+  a.ds-ranked__label {
+    color: var(--sa-text-brand-primary-base);
+    text-decoration: none;
+  }
+  a.ds-ranked__label:hover {
+    text-decoration: underline;
+  }
+  a.ds-ranked__label:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+    border-radius: var(--sa-shape-4);
+  }
+
+  .ds-ranked__value {
+    flex: 0 0 auto;
+    color: var(--sa-text-neutral-bolder);
+    font-weight: var(--sa-font-weight-semibold);
+    font-variant-numeric: tabular-nums;
+  }
+  .ds-ranked__detail {
+    margin-left: var(--sa-padding-4);
+    color: var(--sa-text-neutral-subtle);
+    font-weight: var(--sa-font-weight-regular);
+  }
+
+  .ds-ranked__track {
+    width: 100%;
+    height: 6px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-chart-grid);
+    overflow: hidden;
+  }
+  .ds-ranked__fill {
+    height: 100%;
+    border-radius: inherit;
+    background-color: var(--ranked-ink);
+    transition: width var(--sa-motion-enter-duration) var(--sa-motion-enter-easing);
+  }
+  /* A withheld row keeps its track so the list does not develop a hole, and
+     hatches it so it cannot be read as a measured nought. */
+  .ds-ranked__track--withheld {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      var(--sa-chart-axis) 0 2px,
+      transparent 2px 6px
+    );
+    background-color: transparent;
+  }
+
+  .ds-ranked__caption {
+    margin-top: var(--sa-padding-12);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .ds-ranked__pages {
+    margin-top: var(--sa-padding-12);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ds-ranked__fill { transition: none; }
+  }
+
+  /* ── InlineBar — the same track in a table cell ─────────────────────────── */
+  .ds-inline-bar {
+    --ranked-ink: var(--sa-chart-cat-1);
+    display: inline-block;
+    vertical-align: middle;
+    width: 100%;
+    min-width: 64px;
+    height: 6px;
+    border-radius: var(--sa-shape-full);
+    background-color: var(--sa-chart-grid);
+    overflow: hidden;
+  }
+  .ds-inline-bar--info    { --ranked-ink: var(--sa-text-status-info-base); }
+  .ds-inline-bar--success { --ranked-ink: var(--sa-text-status-success-base); }
+  .ds-inline-bar--warning { --ranked-ink: var(--sa-text-status-warning-base); }
+  .ds-inline-bar--danger  { --ranked-ink: var(--sa-text-status-error-base); }
+  .ds-inline-bar__fill {
+    display: block;
+    height: 100%;
+    border-radius: inherit;
+    background-color: var(--ranked-ink);
+  }
+
+  @media (forced-colors: active) {
+    .ds-ranked__fill,
+    .ds-inline-bar__fill { background-color: CanvasText; }
+    .ds-ranked__track,
+    .ds-inline-bar { border: 1px solid CanvasText; }
+  }
+
+  /* Print: the figure is already text; the bars survive as ink. */
+  @media print {
+    .ds-ranked__fill,
+    /* stylelint-disable-next-line scale-unlimited/declaration-strict-value -- `exact` is a keyword, not a colour */
+    .ds-inline-bar__fill { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+    .ds-ranked__pages { display: none; }
+  }
+}

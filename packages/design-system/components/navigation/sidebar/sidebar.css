@@ -430,6 +430,21 @@
 
   /* ── Footer and control ────────────────────────────────────────────────────── */
 
+  /* The head slot — a portal's phone search. Drawn only where the rail is a
+     drawer; from the laptop anchor up the masthead's field is on the row and a
+     second field here would be a second door to the same room. */
+  .ds-sidebar__header {
+    display: none;
+    padding: var(--sa-padding-12) var(--sa-padding-16);
+    border-bottom: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+  }
+
+  @media (max-width: 1023px) {
+    .ds-sidebar__header {
+      display: block;
+    }
+  }
+
   .ds-sidebar__footer {
     flex-shrink: 0;
     border-top: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);

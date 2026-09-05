@@ -55,7 +55,7 @@ export default function PieChartPage(): React.JSX.Element {
       name="Pie Chart"
       status="Beta"
       summary="Divides one whole into slices, with a legend naming each. It answers “roughly what share” for a small number of parts, and nothing more precise than that."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<PieChartSpecimen />}
       propsFrom="PieChartProps"
       a11y={A11Y}

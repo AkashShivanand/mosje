@@ -107,7 +107,7 @@ export default function AxisPage(): React.JSX.Element {
       name="Axis"
       status="Beta"
       summary="The scale layer every chart draws through: the gridlines and tick labels, and the number formatters that decide how a figure reads on a Government of India page."
-      figma={{ absent: "Not yet published in the Figma library. The axis is a drawing primitive inside the chart layer rather than a component with a design counterpart." }}
+      figma={{ node: "chartsDoc" }}
       specimen={<AxisSpecimen />}
       props={API}
       a11y={A11Y}

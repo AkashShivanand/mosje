@@ -110,6 +110,42 @@
     font-size: var(--sa-type-body-3-size);
     color: var(--sa-text-neutral-subtle);
   }
+  .ds-chart-card__provenance {
+    padding: var(--sa-padding-8) var(--sa-padding-20) var(--sa-padding-12);
+  }
+
+  /* ── ProvenanceLine — source · as of · status, one muted line ───────────── */
+  .ds-provenance {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--sa-stack-4) var(--sa-stack-8);
+    margin: 0;
+    font-family: var(--sa-font-latin);
+    font-size: var(--sa-type-body-3-size);
+    line-height: var(--sa-type-body-3-lh);
+    color: var(--sa-text-neutral-subtle);
+  }
+  .ds-provenance__sep {
+    color: var(--sa-text-neutral-subtler);
+  }
+  .ds-provenance__status {
+    font-weight: var(--sa-font-weight-semibold);
+  }
+  .ds-provenance__status--provisional { color: var(--sa-text-status-warning-base); }
+  .ds-provenance__status--revised     { color: var(--sa-text-status-info-base); }
+
+  /* ── Print — government charts get printed and PDF'd ─────────────────────
+     Shadows go, cards do not split across pages, and the skeleton stops. */
+  @media print {
+    .ds-chart-card {
+      box-shadow: none;
+      break-inside: avoid;
+    }
+    .ds-chart-card__actions,
+    .ds-filter-bar { display: none; }
+    .ds-dash-grid > * { break-inside: avoid; }
+  }
   /* Loading placeholders live in card-skeleton.css, and the empty / error /
      restricted / offline family in card-state.css. Both are their own
      components now — `CardSkeleton` and `CardState` — because six dashboards

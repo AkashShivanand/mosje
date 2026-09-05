@@ -62,7 +62,7 @@ export default function AreaChartPage(): React.JSX.Element {
       name="Area Chart"
       status="Beta"
       summary="A line with the space beneath it filled, for a reading whose accumulated size is the point — funds disbursed to date, places filled against a sanctioned total."
-      figma={{ absent: "Not yet published in the Figma library. The chart catalogue is authored in code first; a Figma counterpart has not been drawn." }}
+      figma={{ node: "chartsChart" }}
       specimen={<AreaChartSpecimen />}
       propsFrom="AreaChartProps"
       a11y={A11Y}

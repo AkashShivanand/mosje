@@ -36,6 +36,22 @@ export const FIGMA_NODES = {
   density: "4170:695", // "Density" (authored from @mosje/tokens)
 
   // ── Components ──
+  /* "Charts & Graphs" — the data-visualisation page, rebuilt 2026-09-05 in the
+     house style. `chartsDoc` is its `— Documentation` frame; the masters
+     (Metric Card, Chart Card, Ranked Bar Row, Chart, Legend, Tooltip) sit in
+     numbered sections beneath it, and the UX4G Chart.js import that used to be
+     the whole page is kept as a renamed legacy set until its instances are
+     migrated. `mapOfIndia` is the sibling page the choropleth lives on. */
+  charts: "2840:10801",
+  chartsDoc: "57411:15871",
+  chartsMetricCard: "57414:15871", // `Metric Card` set — Reading 5 × Tone 3
+  chartsChartCard: "57418:15985", // `Chart Card` set — State 6
+  chartsChart: "57417:15992", // `Chart` set — Type 15, the foundational chart types at 480×280
+  chartsRankedList: "57420:15961", // `Ranked Bar List` — five `Ranked Bar Row` (57420:15960) instances
+  chartsLegend: "57420:16040", // `Legend` set — Swatch 3
+  chartsTooltip: "57420:16041",
+  mapOfIndia: "6803:290942", // the page
+  mapOfIndiaDoc: "57437:750", // "Map of India — Documentation", authored 2026-09-05; the `IndiaMap` set (6803:291103) beneath it carries Kind = Choropleth | Choropleth · hover | Bubble | Point
   buttons: "2141:296705",
   /* "Button Group" — authored 2026-09-03, page inserted between Buttons and Close
      Button. The component had existed in code with no Figma counterpart at all, so a

@@ -97,6 +97,21 @@ export const StatusColours: Story = {
   ),
 };
 
+/**
+ * A figure against a TARGET rather than against 100%. The tick is the target,
+ * the scale row names it, and the tone is set only because the scheme states
+ * the threshold — 90% is the SLA compliance target.
+ */
+export const AgainstATarget: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: 16 }}>
+      <Progress label="SLA compliance — national average" value={76} target={90} tone="warning" />
+      <Progress label="SLA compliance — Tamil Nadu" value={91} target={90} tone="success" />
+      <Progress label="Fund utilisation" value={22} target={100} targetLabel="₹28 Cr budget" tone="info" compact />
+    </div>
+  ),
+};
+
 /** The extremes, and the guard: a zero `max` renders 0% rather than dividing by zero. */
 export const Extremes: Story = {
   render: () => (
