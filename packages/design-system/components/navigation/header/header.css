@@ -326,6 +326,74 @@
     .ds-hdr-brand__in {
       gap: var(--sa-stack-16);
     }
+
+    /* THE PHONE ROW HAS ONE CONTROL PER SIDE, AND THEY ARE NOT EQUALS. The
+       leading 48px toggle is where you go; the trailing avatar is who you are.
+       At 48 the avatar made two equal squares fight for the eye; at 40 the toggle
+       reads as the control and the avatar as the badge. `Avatar` sizes itself
+       from `--sa-cmp-avatar-size-lg` on its own element, so the token is re-pointed
+       here rather than the width overridden. Figma: Portal Mobile, Avatar
+       Size=Large - 40px. */
+    .ds-hdr-brand__in .ds-hdr-account__avatar {
+      --sa-cmp-avatar-size-lg: var(--sa-cmp-avatar-size-md);
+    }
+
+    /* BETA costs a whole line on a phone. At 412px the department already wraps
+       to two lines; the badge added 20px above them, and it tells a phone reader
+       nothing a desktop reader does not already know. Off below 768, on the
+       resting row only — the sheet's own lockup keeps it. Figma: Show beta off
+       on both Mobile masters. */
+    .ds-hdr-brand__in .ds-hdr-lockup .ds-hdr-badge {
+      display: none;
+    }
+
+    /* The portal's field waits behind the button until tapped. */
+    .ds-hdr[data-variant="portal"] .ds-hdr-searchfield:not(.is-open) {
+      display: none;
+    }
+
+    /* THE IDENTITY NEVER BECOMES A COLUMN. With a zero basis the lockup takes
+       whatever the controls leave, and a portal that carries a sidebar toggle,
+       a search button, an account and a sheet trigger on one 380px row left it
+       120px — one word per line, twelve lines tall. Below this width the
+       trailing controls wrap to a second line instead, which is the lesser evil:
+       a second row of controls is still a masthead; a twelve-line lockup is not. */
+    .ds-hdr-brand__lockup {
+      min-width: 180px;
+    }
+
+    /* Two classes, deliberately: the base rule below sets `display: none` and is
+       later in the file, so a one-class rule here would lose to it. */
+    .ds-hdr-brand__in .ds-hdr-brand__searchbtn {
+      display: inline-grid;
+    }
+  }
+
+  /* The portal's phone search button: the condensed bar's 40px outlined control,
+     in the resting row, shown only below 768 (the rule above turns it on). */
+  .ds-hdr-brand__searchbtn {
+    display: none;
+    place-items: center;
+    height: 40px;
+    width: 40px;
+    flex: 0 0 auto;
+    border: var(--sa-stroke-1) solid var(--sa-border-neutral-subtle);
+    border-radius: var(--sa-shape-8);
+    background: transparent;
+    color: var(--sa-icon-neutral-base, var(--sa-text-neutral-base));
+    cursor: pointer;
+    transition:
+      background-color var(--sa-motion-hover-duration) var(--sa-motion-hover-easing),
+      transform var(--sa-motion-hover-duration) var(--sa-motion-hover-easing);
+  }
+
+  .ds-hdr-brand__searchbtn:focus-visible {
+    outline: var(--sa-focus-width) solid var(--sa-border-brand-primary-base);
+    outline-offset: calc(var(--sa-focus-offset) * -1);
+  }
+
+  .ds-hdr-brand__searchbtn:active {
+    transform: scale(0.96);
   }
 
   /* Trailing zone */

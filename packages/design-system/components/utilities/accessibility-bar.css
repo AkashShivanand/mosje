@@ -100,16 +100,58 @@
 
      `device="auto"` (the default) resolves the same breakpoint in CSS; an explicit
      `device-mobile` pins it regardless of viewport, for specimens and visual tests. */
+  /* THE PHONE BAR: the mark on the left, two icon controls on the right.
+     Until 2026-09-05 the whole right-hand cluster vanished below 768 and the one
+     thing left beside the mark was the skip link — a keyboard bypass, shown to a
+     touch reader as the bar's most prominent text while doing nothing for them —
+     and language, which a reader needs BEFORE they can read the menu, sat two taps
+     away inside the sheet. Now: accessibility and language stay, icon-only, at a
+     44px target; the font stepper goes to the sheet and the widget, where it has
+     room; the skip link stays in the DOM and shows on the first Tab press, exactly
+     as it behaves on desktop for a keyboard reader. Figma: Device=Mobile. */
   .sa-abar.device-mobile .sa-abar__fs,
-  .sa-abar.device-mobile .sa-abar__icbtn,
-  .sa-abar.device-mobile .sa-abar__sep {
+  .sa-abar.device-mobile .sa-abar__sep,
+  .sa-abar.device-mobile .sa-abar__langlabel > span,
+  .sa-abar.device-mobile .sa-abar__icbtn.has-text > .sa-abar__langlabel ~ * {
     display: none;
+  }
+  /* 44 inside a 46 bar: the target overhangs the bar's 2px padding on both sides
+     (negative block margin) so the bar keeps `layout/bar/height` instead of
+     growing to 48 to fit it. The hit area is real; only the layout box shrinks. */
+  .sa-abar.device-mobile .sa-abar__icbtn {
+    min-width: var(--sa-target-comfortable);
+    min-height: var(--sa-target-comfortable);
+    margin-block: calc(-1 * var(--sa-padding-2));
+    padding: 0;
+  }
+  .sa-abar.device-mobile .sa-abar__skip:not(:focus-visible) {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
   }
   @media (max-width: 767px) {
     .sa-abar.device-auto .sa-abar__fs,
-    .sa-abar.device-auto .sa-abar__icbtn,
-    .sa-abar.device-auto .sa-abar__sep {
+    .sa-abar.device-auto .sa-abar__sep,
+    .sa-abar.device-auto .sa-abar__langlabel > span,
+    .sa-abar.device-auto .sa-abar__icbtn.has-text > .sa-abar__langlabel ~ * {
       display: none;
+    }
+    .sa-abar.device-auto .sa-abar__icbtn {
+      min-width: var(--sa-target-comfortable);
+      min-height: var(--sa-target-comfortable);
+      margin-block: calc(-1 * var(--sa-padding-2));
+      padding: 0;
+    }
+    .sa-abar.device-auto .sa-abar__skip:not(:focus-visible) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
     }
   }
 

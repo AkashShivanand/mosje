@@ -249,6 +249,9 @@ export function SiteHeader({
   const [morphing, setMorphing] = React.useState(false);
   /** The condensed bar's search, expanded in place over the nav. */
   const [condSearchOpen, setCondSearchOpen] = React.useState(false);
+  /** The portal's phone search, disclosed under the brand row on tap. */
+  const [mobileSearchOpen, setMobileSearchOpen] = React.useState(false);
+  const mobileSearchRef = React.useRef<HTMLInputElement>(null);
   /** The condensed nav has run out of room; fall back to the sheet. */
   const [navOverflows, setNavOverflows] = React.useState(false);
   const headerRef = React.useRef<HTMLElement>(null);
@@ -600,6 +603,10 @@ export function SiteHeader({
     if (condSearchOpen) condSearchRef.current?.focus({ preventScroll: true });
   }, [condSearchOpen]);
 
+  React.useEffect(() => {
+    if (mobileSearchOpen) mobileSearchRef.current?.focus({ preventScroll: true });
+  }, [mobileSearchOpen]);
+
   /**
    * When the nav stops fitting the condensed bar, hand it to the sheet.
    *
@@ -725,11 +732,15 @@ export function SiteHeader({
     /* A `search` LANDMARK, which the masthead's own field never was — it rendered
        as a bare `<div class="ds-search">`, so landmark navigation could not reach
        the primary search box on any page in the estate. [GIGW 3.0 §9] */
-    <search className="ds-hdr-searchfield">
+    <search className={cn("ds-hdr-searchfield", isPortal && mobileSearchOpen && "is-open")}>
       <Search
+        ref={isPortal ? mobileSearchRef : undefined}
         className="ds-hdr-searchfield__field"
         size="lg"
         value={query}
+        onKeyDown={(e) => {
+          if (e.key === "Escape" && isPortal) setMobileSearchOpen(false);
+        }}
         onChange={(e) => {
           setQuery(e.target.value);
           search.onQueryChange?.(e.target.value);
@@ -906,6 +917,26 @@ export function SiteHeader({
               )}
 
               {isCompact && navRow}
+
+              {/* THE PORTAL'S PHONE SEARCH IS DISCLOSED, NOT LAID OUT. On the website
+                  the field takes a full row under the lockup because search is that
+                  site's navigation fallback. A portal navigates by its sidebar, and
+                  a 56px field under a two-line lockup pushed the page start past
+                  300px on a phone. Below 768 the field waits behind a 40px button in
+                  the row — the same control the condensed bar uses — and opens on
+                  its own row on tap; Escape closes it. Nothing renders here from 768
+                  up, where the field is on the row as before. */}
+              {isPortal && search && (
+                <button
+                  type="button"
+                  className="ds-hdr-brand__searchbtn"
+                  aria-label={mobileSearchOpen ? "Close search" : (search.placeholder ?? "Search")}
+                  aria-expanded={mobileSearchOpen}
+                  onClick={() => setMobileSearchOpen((o) => !o)}
+                >
+                  <Icon name={mobileSearchOpen ? "close" : "search"} size={24} />
+                </button>
+              )}
 
               {account && <AccountMenu account={account} items={accountMenu} />}
 
