@@ -17,6 +17,9 @@
 //             neither renders a plain link. A `type` prop could contradict the data.
 //   State  -> deliberatelyOmitted. Hover / Focused / Disabled are CSS states, not
 //             props — a caller cannot set "hovered".
+//   Density -> deliberatelyOmitted. Default is the 52px row item with the 4px
+//             underbar; Condensed is the 36px pill inside the condensed bar. The
+//             `.ds-hdr-nav.is-cond` ancestor decides it, never the item.
 import figma from "figma";
 
 const instance = figma.selectedInstance;

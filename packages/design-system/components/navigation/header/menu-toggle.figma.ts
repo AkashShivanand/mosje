@@ -13,6 +13,10 @@
 //
 // PROPERTY COVERAGE
 //   Sidebar -> expanded   (Expanded ⇒ true ⇒ menu_open · Collapsed ⇒ false ⇒ menu)
+//   Size    -> deliberatelyOmitted. Large (48) in the resting brand row, Default (40)
+//              in the condensed bar — decided by WHERE the control sits, in CSS
+//              (`.ds-hdr-cond__toggle`), never by a prop. Added to the master
+//              2026-09-05 so the condensed bar could be drawn at the code's size.
 import figma from "figma";
 
 const instance = figma.selectedInstance;
