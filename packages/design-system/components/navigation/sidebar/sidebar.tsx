@@ -180,8 +180,13 @@ function Flyout({
     if (!anchor) return;
     const r = anchor.getBoundingClientRect();
     setPos({ top: r.top, left: r.right });
-    ref.current?.querySelector<HTMLElement>("a:not([aria-disabled])")?.focus();
   }, [anchor]);
+
+  // Focus only once the panel is positioned: until `pos` lands it is
+  // visibility:hidden, and a hidden element refuses focus.
+  React.useEffect(() => {
+    if (pos) ref.current?.querySelector<HTMLElement>("a:not([aria-disabled])")?.focus();
+  }, [pos]);
 
   React.useEffect(() => {
     const onDown = (e: MouseEvent) => {
