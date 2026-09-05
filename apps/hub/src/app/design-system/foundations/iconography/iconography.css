@@ -234,3 +234,9 @@
     color: var(--sa-text-brand-primary-base);
   }
 }
+
+/* ── The FILL axis, bound ── */
+@layer components {
+  .ico-fill--outline { font-variation-settings: "FILL" var(--sa-icon-fill-outline); }
+  .ico-fill--filled { font-variation-settings: "FILL" var(--sa-icon-fill-filled); }
+}

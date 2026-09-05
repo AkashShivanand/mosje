@@ -30,7 +30,7 @@
     width: 100%;
     /* 40px, the dashboard filter height — and comfortably past the 24×24 floor
        of WCAG 2.2 AA 2.5.8. */
-    min-height: 40px;
+    min-height: var(--sa-control-height-md);
     padding: var(--sa-padding-8) var(--sa-padding-12);
     /*
      * 3.06:1 against the page. `border-neutral-base` measures 1.66 and is right

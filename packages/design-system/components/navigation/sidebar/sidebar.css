@@ -141,7 +141,7 @@
      live portal rather than against the documentation, which never renders an
      ACTIVE row. `bolder` is 5.74:1 on the same ground. */
   .ds-sidebar__main-row.is-active {
-    background: var(--sa-color-primaryScale-50);
+    background: var(--sa-bg-neutral-selected);
     color: var(--sa-text-brand-primary-bolder);
   }
 
@@ -221,7 +221,7 @@
     top: 0;
     width: 1px;
     height: 100%;
-    background: var(--sa-color-primaryScale-50);
+    background: var(--sa-bg-neutral-selected);
   }
 
   /* Last child: line stops at the corner elbow */
@@ -275,7 +275,7 @@
 
   /* Same ground, same measurement, same fix as the main row above. */
   .ds-sidebar__child-label.is-active {
-    background: var(--sa-color-primaryScale-50);
+    background: var(--sa-bg-neutral-selected);
     color: var(--sa-text-brand-primary-bolder);
     opacity: 1;
   }

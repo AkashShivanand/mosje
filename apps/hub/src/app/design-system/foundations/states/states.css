@@ -88,3 +88,30 @@
     outline-offset: var(--sa-focus-offset);
   }
 }
+
+/* ── State layers, the inset well and the two-tone ring — specimens bound to their tokens ── */
+@layer components {
+  .st-layer { position: relative; isolation: isolate; }
+  .st-layer::after { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; }
+  .st-layer--hover::after { background: var(--sa-overlay-neutral-hover); }
+  .st-layer--active::after { background: var(--sa-overlay-neutral-active); }
+  .st-layer--focus::after { background: var(--sa-overlay-neutral-focus); }
+  .st-layer--drag::after { background: var(--sa-overlay-neutral-drag); box-shadow: var(--sa-elevation-raised); }
+  .st-surface--hover { background: var(--sa-bg-neutral-hover); color: var(--sa-on-bg-neutral-hover); }
+  .st-surface--active { background: var(--sa-bg-neutral-active); color: var(--sa-on-bg-neutral-active); }
+  .st-surface--selected { background: var(--sa-bg-neutral-selected); border-color: var(--sa-border-neutral-selected); color: var(--sa-on-bg-neutral-selected); }
+  .st-surface--readonly { background: var(--sa-bg-neutral-readonly); color: var(--sa-on-bg-neutral-readonly); }
+  .st-surface--loading { background: var(--sa-bg-neutral-loading); color: var(--sa-on-bg-neutral-loading); }
+  .st-well { box-shadow: var(--sa-elevation-inset); }
+  .st-ring--two-tone:focus-visible {
+    box-shadow: 0 0 0 var(--sa-focus-offset) var(--sa-focus-ringInner);
+    outline: var(--sa-focus-width) solid var(--sa-focus-ring);
+    outline-offset: var(--sa-focus-offset);
+  }
+}
+
+/* ── The brand state layers, on a brand surface — the counterpart of the neutral pair above ── */
+@layer components {
+  .st-layer--brand-hover::after { background: var(--sa-overlay-brand-hover); }
+  .st-layer--brand-active::after { background: var(--sa-overlay-brand-active); }
+}

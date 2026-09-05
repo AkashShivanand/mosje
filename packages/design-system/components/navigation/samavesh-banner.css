@@ -232,7 +232,7 @@
   /* Bar height and badge diameter are component geometry, not spacing steps. */
   :root[data-sa-header-condensed] .ds-samavesh-banner--sticky.ds-samavesh-banner--open
     .ds-samavesh-banner__container {
-    min-height: 48px;
+    min-height: var(--sa-control-height-lg);
   }
 
   :root[data-sa-header-condensed] .ds-samavesh-banner--sticky.ds-samavesh-banner--open

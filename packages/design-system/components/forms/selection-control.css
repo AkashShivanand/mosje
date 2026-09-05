@@ -216,7 +216,7 @@
   }
 
   .ds-selection--card:hover:not([data-disabled], [data-readonly]) {
-    border-color: var(--sa-border-brand-primary-base);
+    border-color: var(--sa-border-neutral-selected);
     background: var(--sa-bg-neutral-subtler);
   }
 

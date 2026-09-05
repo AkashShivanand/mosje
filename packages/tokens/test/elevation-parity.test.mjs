@@ -25,7 +25,7 @@ const live = JSON.parse(readFileSync(root + "reference/figma-live.json", "utf8")
 
 /** The same formatting the recorder uses — one implementation, so a format change cannot alias a value change. */
 const fmt = (e) =>
-  `${e.offset.x}/${e.offset.y}/${e.radius}/${e.spread} rgba(${
+  `${e.type === "INNER_SHADOW" ? "inset " : ""}${e.offset.x}/${e.offset.y}/${e.radius}/${e.spread} rgba(${
     [e.color.r, e.color.g, e.color.b].map((v) => Math.round(v * 255)).join(",")},${+e.color.a.toFixed(4)})`;
 
 test("the ELEVATION map and the token source name the same steps", () => {

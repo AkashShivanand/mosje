@@ -146,7 +146,7 @@
     cursor: pointer;
   }
 
-  .ds-datepicker__navbtn:hover { background: var(--sa-bg-neutral-subtler); }
+  .ds-datepicker__navbtn:hover { background: var(--sa-bg-neutral-hover); }
 
   .ds-datepicker__month {
     color: var(--sa-text-neutral-bolder);

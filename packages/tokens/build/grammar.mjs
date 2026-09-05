@@ -171,6 +171,14 @@ export const STATE = new Set([
   "visited",
   "selected",
   "disabled",
+  // `drag` joined 2026-09-05 with the neutral state layers (overlay/neutral/drag): a surface
+  // being moved is a state the reader put it in, like selected, and Material 3 names it too.
+  "drag",
+  // `readonly` (a field whose value is the point and stays copyable) and `loading` (a
+  // skeleton standing in for content) joined the same day: both are states a surface can be in
+  // that hover/active/disabled do not describe, and both had a fill with no name.
+  "readonly",
+  "loading",
 ]);
 
 /** Non-colour Tier-2 groups. */
@@ -188,6 +196,9 @@ export const GROUP = new Set([
   // keeps that unambiguous by position, not by exception: a colour role always takes a FAMILY
   // in position 2, so `icon/neutral/base` reads as a role and `icon/size/md` reads as a group.
   "icon", "control", "container",
+  // `aspect` — media well ratios (square, video, photo, portrait), added 2026-09-05. A number
+  // CSS aspect-ratio takes as is; Figma has no property to bind, so the export carries no scope.
+  "aspect",
   // `grid` is the LAYOUT grid — columns, gutter, page margin. Note the estate already had a
   // `chart/grid` (a gridline colour); they are different objects and RULE 2 keeps them apart by
   // position, since a colour role takes a family in position 2.
@@ -254,7 +265,9 @@ export const GROUP = new Set([
 // inverse state layers. They are Tier 3 rather than Tier 2 because they are not shared scale
 // steps: a 46px bar and a 33px flag chip exist only on this component, and a white-@40%
 // divider only means anything on this bar's brand fill.
-export const COMPONENT = new Set(["action", "control", "spinner", "button", "card", "badge", "accessibilityBar", "divider"]);
+export const COMPONENT = new Set(["action", "control", "spinner", "button", "card", "badge", "accessibilityBar", "divider",
+  // 2026-09-05: the per-component shape roles and the avatar sizes the benchmark systems carry.
+  "avatar", "chip", "dialog", "tooltip"]);
 export const INTENT = new Set(["brand", "success", "destructive", "neutral", "light"]);
 export const ACTION_VARIANT = new Set(["primary", "secondary", "tertiary", "tonal"]);
 /**

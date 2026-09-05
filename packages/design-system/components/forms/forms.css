@@ -220,7 +220,7 @@
   .ds-input[readonly],
   .ds-textarea[readonly],
   .ds-input-shell[data-readonly] {
-    background-color: var(--sa-bg-neutral-subtler);
+    background-color: var(--sa-bg-neutral-readonly);
     border-color: var(--sa-border-neutral-subtle);
     cursor: default;
   }

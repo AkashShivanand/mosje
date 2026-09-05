@@ -252,6 +252,9 @@ function collectionFor(path, tier, type) {
   if (head === "container") return "Static";
   if (head === "focus" && (rest[0] === "width" || rest[0] === "offset")) return "Static";
   if (head === "icon" && rest[0] === "size") return "Space";
+  // `aspect/*` and `icon/fill/*` are numbers no canvas property can bind (Figma has no
+  // aspect-ratio and no font-variation axis on a variable). Static, scope-less, described.
+  if (head === "aspect" || (head === "icon" && rest[0] === "fill")) return "Static";
   // `control/radius` and `control/selection/radius` are corners; everything else under
   // `control` — border weights, the selection box, glyph, dot and gap — is a Static measurement.
   if (head === "control") return path[path.length - 1] === "radius" ? "Radius" : "Static";
@@ -828,6 +831,7 @@ export function scopesFor(path, tier, type, figmaName) {
   // Timing and Easing are bound by Figma Motion by TYPE; they take no property scope.
   if (type === "TIMING" || type === "EASING") return [];
   // FLOAT
+  if (head === "aspect" || (head === "icon" && rest[0] === "fill")) return [];
   if (head === "alpha") return ["OPACITY", "COLOR_OPACITY"];
   if (head === "shape" || tail === "radius") return ["CORNER_RADIUS"];
   if (head === "stroke" || (head === "control" && rest.includes("border")) || head === "focus") return ["STROKE_FLOAT"];

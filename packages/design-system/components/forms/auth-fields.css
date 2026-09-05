@@ -132,7 +132,7 @@
     cursor: pointer;
   }
 
-  .ds-captcha__refresh:hover { background-color: var(--sa-bg-neutral-subtler); }
+  .ds-captcha__refresh:hover { background-color: var(--sa-bg-neutral-hover); }
 
   .ds-captcha__refresh:focus-visible {
     outline: var(--sa-focus-width) solid var(--sa-focus-ring);

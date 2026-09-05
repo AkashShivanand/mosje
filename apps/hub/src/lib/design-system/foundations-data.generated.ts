@@ -29,7 +29,7 @@ export interface FoundationFamily {
   stats: { total: number; ref: number; sys: number; cmp: number; figma: number; codeOnly: number; described: number };
 }
 
-export type FoundationKey = "spacing" | "sizing" | "shape" | "stroke" | "elevation" | "layering" | "opacity" | "motion" | "breakpoints" | "density" | "states" | "layout";
+export type FoundationKey = "spacing" | "sizing" | "shape" | "stroke" | "elevation" | "layering" | "opacity" | "motion" | "breakpoints" | "density" | "states" | "brand" | "layout";
 
 export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
   "spacing": {
@@ -1225,6 +1225,28 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "description": "64px — the mark in an empty state or illustration tile."
       },
       {
+        "path": "icon/fill/outline",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-icon-fill-outline",
+        "value": "0",
+        "raw": "0",
+        "figma": "Static · icon/fill/outline",
+        "excluded": null,
+        "description": "FILL 0 — the outlined default."
+      },
+      {
+        "path": "icon/fill/filled",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-icon-fill-filled",
+        "value": "1",
+        "raw": "1",
+        "figma": "Static · icon/fill/filled",
+        "excluded": null,
+        "description": "FILL 1 — the filled form of the same glyph, for a selected or active state."
+      },
+      {
         "path": "target/min",
         "tier": "sys",
         "type": "dimension",
@@ -1267,16 +1289,93 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "figma": "Space · target/spacing",
         "excluded": null,
         "description": "Minimum gap BETWEEN adjacent targets — Material 3's 8dp separation. It is also what makes WCAG 2.5.8's spacing exception reachable: separation, not size, is what stops a 24px target being mis-tapped."
+      },
+      {
+        "path": "control/height/sm",
+        "tier": "sys",
+        "type": "dimension",
+        "css": "--sa-control-height-sm",
+        "value": "2rem",
+        "raw": "{size.32}",
+        "figma": "Static · control/height/sm",
+        "excluded": null,
+        "description": "32px — compact controls, filter chips, table toolbars. Below WCAG 2.5.8's 24px floor only if the target has no spacing exception; give it target/spacing between neighbours."
+      },
+      {
+        "path": "control/height/md",
+        "tier": "sys",
+        "type": "dimension",
+        "css": "--sa-control-height-md",
+        "value": "2.5rem",
+        "raw": "{size.40}",
+        "figma": "Static · control/height/md",
+        "excluded": null,
+        "description": "40px — the default control height, and what density/control/height resolves to in Comfortable."
+      },
+      {
+        "path": "control/height/lg",
+        "tier": "sys",
+        "type": "dimension",
+        "css": "--sa-control-height-lg",
+        "value": "3rem",
+        "raw": "{size.48}",
+        "figma": "Static · control/height/lg",
+        "excluded": null,
+        "description": "48px — touch-first controls and primary actions on a phone; clears WCAG 2.5.5 (44px) and Material's 48dp on its own."
+      },
+      {
+        "path": "aspect/square",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-aspect-square",
+        "value": "1",
+        "raw": "1",
+        "figma": "Static · aspect/square",
+        "excluded": null,
+        "description": "1:1 — avatars, icon buttons, thumbnail tiles."
+      },
+      {
+        "path": "aspect/video",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-aspect-video",
+        "value": "1.777778",
+        "raw": "1.777778",
+        "figma": "Static · aspect/video",
+        "excluded": null,
+        "description": "16:9 — embedded video and hero media."
+      },
+      {
+        "path": "aspect/photo",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-aspect-photo",
+        "value": "1.333333",
+        "raw": "1.333333",
+        "figma": "Static · aspect/photo",
+        "excluded": null,
+        "description": "4:3 — the photo well in the geo-tagged photo and media-gallery inputs, the ratio a phone camera writes."
+      },
+      {
+        "path": "aspect/portrait",
+        "tier": "sys",
+        "type": "number",
+        "css": "--sa-aspect-portrait",
+        "value": "0.75",
+        "raw": "0.75",
+        "figma": "Static · aspect/portrait",
+        "excluded": null,
+        "description": "3:4 — a portrait photograph or an identity-document image."
       }
     ],
     "stats": {
-      "total": 33,
+      "total": 42,
       "ref": 22,
-      "sys": 11,
+      "sys": 20,
       "cmp": 0,
-      "figma": 33,
+      "figma": 42,
       "codeOnly": 0,
-      "described": 33
+      "described": 42
     }
   },
   "shape": {
@@ -1770,6 +1869,17 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "description": "One wide layer at 18% — a toast. Heavier than lg on purpose: it arrives unannounced and has to be found without a scrim. Colour is neutral/800 (the body ink) at the stated alpha, retinted by build/brand-ramps.mjs; geometry is authored here."
       },
       {
+        "path": "shadow/inset",
+        "tier": "ref",
+        "type": "shadow",
+        "css": "--sa-ref-shadow-inset",
+        "value": "inset 0 1px 2px 0 rgba(30, 33, 36, 0.08)",
+        "raw": "[{\"color\":\"rgba(30, 33, 36, 0.08)\",\"offsetX\":\"0px\",\"offsetY\":\"1px\",\"blur\":\"2px\",\"spread\":\"0px\",\"inset\":true}]",
+        "figma": null,
+        "excluded": "Figma models shadows as EFFECT STYLES, not variables — exported separately",
+        "description": "The one INSET shadow — a shallow well, 1px down and 2px of blur at 8% ink, drawn inside the surface. For a pressed well, an inset track, a field that reads as a recess. Retinted per brand like every other shadow layer."
+      },
+      {
         "path": "elevation/flat",
         "tier": "sys",
         "type": "shadow",
@@ -1834,16 +1944,27 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "figma": null,
         "excluded": "Figma models shadows as EFFECT STYLES, not variables — exported separately",
         "description": "Use for a toast. Pick by WHAT THE SURFACE IS, not by how deep the shadow looks — that is what keeps two dropdowns from disagreeing."
+      },
+      {
+        "path": "elevation/inset",
+        "tier": "sys",
+        "type": "shadow",
+        "css": "--sa-elevation-inset",
+        "value": "inset 0 1px 2px 0 rgba(30, 33, 36, 0.08)",
+        "raw": "{shadow.inset}",
+        "figma": null,
+        "excluded": "Figma models shadows as EFFECT STYLES, not variables — exported separately",
+        "description": "Use for a surface that sits BELOW the page — a pressed well, a slider track, a recessed input. The only inset step; every other elevation lifts. Figma models it as the INNER_SHADOW effect style elevation/inset."
       }
     ],
     "stats": {
-      "total": 12,
-      "ref": 6,
-      "sys": 6,
+      "total": 14,
+      "ref": 7,
+      "sys": 7,
       "cmp": 0,
       "figma": 0,
-      "codeOnly": 12,
-      "described": 12
+      "codeOnly": 14,
+      "described": 14
     }
   },
   "layering": {
@@ -3289,6 +3410,72 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
   "states": {
     "tokens": [
       {
+        "path": "bg/neutral/hover",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-bg-neutral-hover",
+        "value": "#eef0f3",
+        "raw": "{color.neutralScale.50}",
+        "figma": "Color · bg/neutral/hover",
+        "excluded": null,
+        "description": "The neutral hover wash — a row, a menu item, a plain icon button responding to the pointer. Same rung as bg/neutral/subtler by design: hover on a neutral surface is one step of tint, not a new colour. Bind this, not subtler, so a hover can be retuned without moving every quiet surface."
+      },
+      {
+        "path": "bg/neutral/active",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-bg-neutral-active",
+        "value": "#dcdee1",
+        "raw": "{color.neutralScale.100}",
+        "figma": "Color · bg/neutral/active",
+        "excluded": null,
+        "description": "The neutral pressed wash — one step past hover, held while the pointer is down or the row is being acted on. Pairs with bg/neutral/hover the way overlay/brand/active pairs with overlay/brand/hover."
+      },
+      {
+        "path": "bg/neutral/selected",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-bg-neutral-selected",
+        "value": "#ecf4ff",
+        "raw": "{color.primaryScale.50}",
+        "figma": "Color · bg/neutral/selected",
+        "excluded": null,
+        "description": "The selected row, item or navigation entry — the brand's lightest tint, so selection reads as ‘chosen’ rather than ‘hovered’ even on a neutral list. The sidebar's current page and a data table's chosen row bind it. Selected is a STATE the reader set; hover is one the pointer set."
+      },
+      {
+        "path": "bg/neutral/readonly",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-bg-neutral-readonly",
+        "value": "#eef0f3",
+        "raw": "{color.neutralScale.50}",
+        "figma": "Color · bg/neutral/readonly",
+        "excluded": null,
+        "description": "A read-only field's ground: quieter than an editable field, and NOT the disabled fill — the value is the point and stays readable and selectable. forms.css binds it on [readonly] inputs."
+      },
+      {
+        "path": "bg/neutral/loading",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-bg-neutral-loading",
+        "value": "#eef0f3",
+        "raw": "{color.neutralScale.50}",
+        "figma": "Color · bg/neutral/loading",
+        "excluded": null,
+        "description": "The resting fill of a loading skeleton, under the shimmer — a surface in its LOADING state. Its own role so a skeleton can be retuned without touching the surfaces it stands in for; motion/loading/pulse carries the shimmer's timing."
+      },
+      {
+        "path": "border/neutral/selected",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-border-neutral-selected",
+        "value": "#0373df",
+        "raw": "{color.primaryScale.500}",
+        "figma": "Color · border/neutral/selected",
+        "excluded": null,
+        "description": "The edge of a selected control — a checked selection card, a chosen chip, a current tab's rail. Brand 500, the same rung as focus/ring, so ‘selected’ and ‘focused’ share a colour and differ by geometry (a ring stands off the control; this edge is the control's own)."
+      },
+      {
         "path": "focus/ring",
         "tier": "sys",
         "type": "color",
@@ -3322,6 +3509,17 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "description": "The gap between the control's edge and the ring — `space/2`, so the ring never covers the control's own border and the two stay distinguishable."
       },
       {
+        "path": "focus/ringInner",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-focus-ringInner",
+        "value": "#ffffff",
+        "raw": "{color.neutralScale.0}",
+        "figma": "Color · focus/ringInner",
+        "excluded": null,
+        "description": "The inner ring of a two-tone focus indicator — white, laid between the control and focus/ring so the ring stays visible on a brand or dark surface where blue-on-blue would vanish (WCAG 2.4.13 asks for 3:1 against adjacent colours). In CSS: box-shadow 0 0 0 focus/offset focus/ringInner, then the outline; in Figma the focus/ring effect style binds its inner spread to it."
+      },
+      {
         "path": "overlay/neutral/boldest",
         "tier": "sys",
         "type": "color",
@@ -3331,6 +3529,50 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "figma": "Color · overlay/neutral/boldest",
         "excluded": null,
         "description": "The scrim behind a modal — the brand's neutral 800 at alpha/48, as a REFERENCE plus an OPACITY reference. Until 2026-09-04 this was an rgba() literal with six hand-authored DBIM copies, because a literal in the single-mode Color collection is frozen at whatever brand was current when it was typed — and Navy once inherited the Blue neutral (#1E2124 for #1E2024) without anyone seeing it. Figma can now alias a colour and keep a separate opacity, so the copies are gone: the scrim follows neutralScale/800 through Blue, Navy and every DBIM mode by construction."
+      },
+      {
+        "path": "overlay/neutral/hover",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-overlay-neutral-hover",
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-4) * 100%), transparent)",
+        "raw": "{color.neutralScale.800}",
+        "figma": "Color · overlay/neutral/hover",
+        "excluded": null,
+        "description": "State layer for hover on a NEUTRAL surface — ink at 4%, laid over whatever the surface is. Material 3's hover layer; the brand counterpart is overlay/brand/hover. Use where a surface must keep its own colour under the interaction (an image tile, a coloured card) and bg/neutral/hover would replace it."
+      },
+      {
+        "path": "overlay/neutral/active",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-overlay-neutral-active",
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent)",
+        "raw": "{color.neutralScale.800}",
+        "figma": "Color · overlay/neutral/active",
+        "excluded": null,
+        "description": "State layer for pressed on a neutral surface — ink at 8%. One step past hover, like every pressed state in the system."
+      },
+      {
+        "path": "overlay/neutral/focus",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-overlay-neutral-focus",
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-16) * 100%), transparent)",
+        "raw": "{color.neutralScale.800}",
+        "figma": "Color · overlay/neutral/focus",
+        "excluded": null,
+        "description": "State layer for a focused surface that has no ring of its own — a focused list row, a focused card — ink at 16%. The ring (focus/ring) remains the primary focus indicator; this is the tint beneath it, never a replacement."
+      },
+      {
+        "path": "overlay/neutral/drag",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-overlay-neutral-drag",
+        "value": "color-mix(in srgb, var(--sa-color-neutralScale-800) calc(var(--sa-alpha-8) * 100%), transparent)",
+        "raw": "{color.neutralScale.800}",
+        "figma": "Color · overlay/neutral/drag",
+        "excluded": null,
+        "description": "State layer for a surface being dragged — ink at 8%, with elevation/raised. A dragged row is lifted and tinted so it reads as detached from the list beneath it."
       },
       {
         "path": "overlay/brand/hover",
@@ -3375,16 +3617,139 @@ export const FOUNDATIONS: Record<FoundationKey, FoundationFamily> = {
         "figma": "Static · alpha/muted",
         "excluded": null,
         "description": "An enabled but de-emphasised element — an inactive tab's icon, a secondary illustration, a placeholder mark. Still readable: 64% of the body ink on white measures above 4.5:1."
+      },
+      {
+        "path": "border/neutral/bolder/hover",
+        "tier": "sys",
+        "type": "",
+        "css": "--sa-border-neutral-bolder-hover",
+        "value": "#54585e",
+        "raw": "{color.border.controlHover}",
+        "figma": "Color · border/neutral/bolder/hover",
+        "excluded": null,
+        "description": "Use for the visible edge of an interactive control, such as an input or a checkbox."
       }
     ],
     "stats": {
-      "total": 8,
+      "total": 20,
       "ref": 0,
-      "sys": 8,
+      "sys": 20,
       "cmp": 0,
-      "figma": 8,
+      "figma": 20,
       "codeOnly": 0,
-      "described": 8
+      "described": 20
+    }
+  },
+  "brand": {
+    "tokens": [
+      {
+        "path": "brand/samavesh/ink",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-ink",
+        "value": "#1f2428",
+        "raw": "#1f2428",
+        "figma": "Static · brand/samavesh/ink",
+        "excluded": null,
+        "description": "The wordmark's own ink. NOT `text/neutral/base` (#1E2124) — close enough to pass a glance, far enough to be a defect."
+      },
+      {
+        "path": "brand/samavesh/blue",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-blue",
+        "value": "#06038d",
+        "raw": "#06038d",
+        "figma": "Static · brand/samavesh/blue",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/green",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-green",
+        "value": "#046a38",
+        "raw": "#046a38",
+        "figma": "Static · brand/samavesh/green",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/orange",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-orange",
+        "value": "#ff671f",
+        "raw": "#ff671f",
+        "figma": "Static · brand/samavesh/orange",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/saffron",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-saffron",
+        "value": "#ed8a1d",
+        "raw": "#ed8a1d",
+        "figma": "Static · brand/samavesh/saffron",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/navy",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-navy",
+        "value": "#003366",
+        "raw": "#003366",
+        "figma": "Static · brand/samavesh/navy",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/white",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-white",
+        "value": "#ffffff",
+        "raw": "#ffffff",
+        "figma": "Static · brand/samavesh/white",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/samavesh/black",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-samavesh-black",
+        "value": "#000000",
+        "raw": "#000000",
+        "figma": "Static · brand/samavesh/black",
+        "excluded": null,
+        "description": "A MARK colour — the SAMAVESH mark's own palette. Use it inside that mark and nowhere else: it never re-themes, so anything else painted with it quietly stops following the brand. For interface colour reach for a role (`bg/*`, `text/*`, `border/*`, `icon/*`)."
+      },
+      {
+        "path": "brand/digilocker/purple",
+        "tier": "sys",
+        "type": "color",
+        "css": "--sa-brand-digilocker-purple",
+        "value": "#5330e6",
+        "raw": "#5330e6",
+        "figma": "Static · brand/digilocker/purple",
+        "excluded": null,
+        "description": "DigiLocker's own purple, for the DigiLocker lockup only. A partner's colour is theirs, so it is a constant here and never a role."
+      }
+    ],
+    "stats": {
+      "total": 9,
+      "ref": 0,
+      "sys": 9,
+      "cmp": 0,
+      "figma": 9,
+      "codeOnly": 0,
+      "described": 9
     }
   },
   "layout": {

@@ -438,7 +438,7 @@
      At 100%: sm 20+8+2=30 -> 32 · md 24+12+2=38 -> 40 · lg 24+16+2=42 -> 48.
      Every rung is a real token; the ladder is value-named so nothing is invented. */
   .ds-btn--sm {
-    min-height: 32px;
+    min-height: var(--sa-control-height-sm);
     padding: var(--sa-padding-4) var(--sa-padding-16);
     font-size: var(--sa-type-label-1-size);
     line-height: var(--sa-type-label-1-lh);

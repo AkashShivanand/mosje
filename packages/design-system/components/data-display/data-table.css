@@ -157,7 +157,7 @@
   }
 
   .ds-table__pagesize-btn:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+    background-color: var(--sa-bg-neutral-hover);
   }
 
   .ds-table__pagesize-btn.is-active {
@@ -191,7 +191,7 @@
 
   .ds-table__page-nav:hover:not(:disabled),
   .ds-table__page:hover {
-    background-color: var(--sa-bg-neutral-subtler);
+    background-color: var(--sa-bg-neutral-hover);
   }
 
   .ds-table__page-nav:disabled {

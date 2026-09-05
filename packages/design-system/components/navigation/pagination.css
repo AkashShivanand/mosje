@@ -40,7 +40,7 @@
     /* 40px clears WCAG 2.2 AA target size (24x24 minimum, 2.5.8) with room to
        spare, and matches UX4G's 44px touch recommendation once the 4px gap
        between adjacent targets is counted. */
-    height: 40px;
+    height: var(--sa-control-height-md);
     min-width: 40px;
     padding: 0 var(--sa-padding-12);
     border: var(--sa-stroke-1) solid transparent;

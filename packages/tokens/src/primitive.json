@@ -2341,6 +2341,19 @@
         }
       ],
       "$description": "One wide layer at 18% — a toast. Heavier than lg on purpose: it arrives unannounced and has to be found without a scrim. Colour is neutral/800 (the body ink) at the stated alpha, retinted by build/brand-ramps.mjs; geometry is authored here."
+    },
+    "inset": {
+      "$value": [
+        {
+          "color": "rgba(30, 33, 36, 0.08)",
+          "offsetX": "0px",
+          "offsetY": "1px",
+          "blur": "2px",
+          "spread": "0px",
+          "inset": true
+        }
+      ],
+      "$description": "The one INSET shadow — a shallow well, 1px down and 2px of blur at 8% ink, drawn inside the surface. For a pressed well, an inset track, a field that reads as a recess. Retinted per brand like every other shadow layer."
     }
   },
   "motion": {
