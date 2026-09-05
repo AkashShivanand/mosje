@@ -320,11 +320,49 @@
       line-height: var(--sa-type-title-3-lh);
     }
 
-    /* Gap 16 not 24 here: on a 375px screen the row's inset was costing the
-       identity almost 30px of the width it needed to stop wrapping. The side
-       padding needs no override — grid/margin/page is already 16 below 768. */
+    /* Gap 12 here, not 24: on a 375px screen the row's inset was costing the
+       identity almost 30px of the width it needed to stop wrapping, and with
+       three 40px controls on a portal row every 4px of gap is 12px the identity
+       does not get. The side padding needs no override — grid/margin/page is
+       already 16 below 768. */
     .ds-hdr-brand__in {
-      gap: var(--sa-stack-16);
+      gap: var(--sa-stack-12);
+    }
+
+    /* EVERY CONTROL ON THE PHONE ROW IS 40. The sidebar toggle was the one 48 on
+       a row of 40s (search button, avatar), so it read as heavier than the
+       identity beside it. 40 with the IconButton's 24px glyph is the condensed
+       bar's control, and the same control at rest and on scroll is one less
+       thing that moves. Figma: MenuToggle Size=Default on Portal Mobile. */
+    .ds-hdr-brand__toggle {
+      height: 40px;
+      width: 40px;
+      padding: var(--sa-padding-4);
+    }
+
+    /* The account caret is a desktop affordance: on a phone the avatar is the
+       whole control (name and email are already hidden), and a 16px chevron
+       beside a 40px circle costs 24px of the identity's width to say "tap me"
+       about the one element that obviously is. `Icon` sets `display` inline, so
+       a class cannot switch it off; taking it out of flow at zero size does the
+       same job and its gap goes with it. */
+    .ds-hdr-brand__in .ds-hdr-account__caret {
+      position: absolute;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      opacity: 0;
+    }
+
+    /* TWO STEPS, NOT ONE, between the small lines and the department. At 12px
+       medium against 14px semibold the eye read the stack as one block. Colour
+       and weight take the small lines down a further step — subtle ink, regular —
+       so the department is the only line in the stack that is bold and black.
+       text/neutral/subtle is 7.0:1 on white. Figma: BrandLockup Device=Mobile. */
+    .ds-hdr-brand__in .ds-hdr-lockup__org,
+    .ds-hdr-brand__in .ds-hdr-lockup__ministry {
+      color: var(--sa-text-neutral-subtle);
+      font-weight: var(--sa-font-weight-regular);
     }
 
     /* THE PHONE ROW HAS ONE CONTROL PER SIDE, AND THEY ARE NOT EQUALS. The
@@ -338,13 +376,32 @@
       --sa-cmp-avatar-size-lg: var(--sa-cmp-avatar-size-md);
     }
 
-    /* BETA costs a whole line on a phone. At 412px the department already wraps
-       to two lines; the badge added 20px above them, and it tells a phone reader
-       nothing a desktop reader does not already know. Off below 768, on the
-       resting row only — the sheet's own lockup keeps it. Figma: Show beta off
-       on both Mobile masters. */
+    /* BETA STAYS, AND STOPS COSTING A LINE. It is part of the default state and
+       is not removed on a phone; it moves onto the first line, beside "Government
+       of India", so the stack is three rows instead of four. The lines box
+       becomes a two-column grid for this: the badge in column one, the first
+       line in column two, the other two lines spanning both. Without a badge the
+       first line spans too, so no empty column indents it. Figma: BrandLockup
+       Device=Mobile, the `Government` row. */
+    .ds-hdr-brand__in .ds-hdr-lockup .ds-hdr-lockup__lines:not(.is-hidden-mobile) {
+      display: grid;
+      grid-template-columns: max-content minmax(0, 1fr);
+      column-gap: var(--sa-inline-8);
+      align-items: center;
+    }
+
     .ds-hdr-brand__in .ds-hdr-lockup .ds-hdr-badge {
-      display: none;
+      grid-column: 1;
+    }
+
+    .ds-hdr-brand__in .ds-hdr-lockup .ds-hdr-lockup__org {
+      grid-column: 2;
+    }
+
+    .ds-hdr-brand__in .ds-hdr-lockup .ds-hdr-lockup__lines:not(:has(.ds-hdr-badge)) .ds-hdr-lockup__org,
+    .ds-hdr-brand__in .ds-hdr-lockup .ds-hdr-lockup__ministry,
+    .ds-hdr-brand__in .ds-hdr-lockup .ds-hdr-lockup__dept {
+      grid-column: 1 / -1;
     }
 
     /* The portal's field waits behind the button until tapped. */
@@ -359,7 +416,23 @@
        trailing controls wrap to a second line instead, which is the lesser evil:
        a second row of controls is still a masthead; a twelve-line lockup is not. */
     .ds-hdr-brand__lockup {
-      min-width: 180px;
+      min-width: 168px;
+    }
+
+    /* THE ROW'S BUDGET IS 346px AT 412 (380 minus the 16px margins minus 12 + 12
+       of row padding is not it — the padding is block; the margins are what
+       remain), and a portal row spends it as: toggle 40 · gap 12 · identity ·
+       gap 12 · trailing. The trailing group used the desktop 24px gap and the
+       account trigger its desktop 4/12 padding — 48px that an avatar-only
+       control on a phone does not need. At 12 and 4/4 the group is 100 wide and
+       the identity keeps 182 on one line; before this the whole group dropped
+       to a second row under the toggle. */
+    .ds-hdr-brand__trailing {
+      gap: var(--sa-stack-12);
+    }
+
+    .ds-hdr-brand__in .ds-hdr-account.is-button {
+      padding: var(--sa-padding-4);
     }
 
     /* Two classes, deliberately: the base rule below sets `display: none` and is
