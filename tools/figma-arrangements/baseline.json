@@ -3,14 +3,10 @@
   "file": "3FF5l0SMNIwdpZrKkeyPTm",
   "capturedOn": "2026-09-05",
   "missing": [
-    "Accessibility Bar",
-    "Chatbot",
-    "Divider",
     "Modal",
     "Navbar",
     "Portal Login Template",
     "SAMAVESH Banner",
-    "Tables",
-    "Ticker"
+    "Tables"
   ]
 }

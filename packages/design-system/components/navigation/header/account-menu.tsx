@@ -11,6 +11,14 @@ export interface AccountMenuProps {
   account: HeaderAccount;
   /** Dropdown items. When empty, the account renders as a static (Figma) block. */
   items?: AccountMenuItem[];
+  /**
+   * Avatar size. 48 in the resting brand row; `SiteHeader` passes 40 inside the
+   * condensed bar, whose every control is 40 — at 48 the avatar, not the bar's
+   * min-height, decided the height, and a phone measured 64 against a designed 56.
+   * Figma: Navbar/Portal On Scroll carries Avatar Size=Large - 40px.
+   * @default 48
+   */
+  avatarSize?: 40 | 48;
   className?: string;
 }
 
@@ -65,6 +73,7 @@ function initials(name: string): string | undefined {
 export function AccountMenu({
   account,
   items = [],
+  avatarSize = 48,
   className,
 }: AccountMenuProps): React.JSX.Element {
   const interactive = items.length > 0;
@@ -152,7 +161,7 @@ export function AccountMenu({
   const avatar = (
     <Avatar
       className="ds-hdr-account__avatar"
-      size={48}
+      size={avatarSize}
       shape="circular"
       src={account.avatarSrc}
       alt=""

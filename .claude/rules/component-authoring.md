@@ -106,6 +106,11 @@ enough" is not the bar; "would this survive review in Carbon/Polaris" is.
   unless a documented decision says otherwise.
 - Prefer a **content-container / max-width** mechanism over per-breakpoint hardcoded
   padding when it yields the same visual with less duplication.
+- **Name the surface before sizing the column.** The website is contained — `.sa-container`,
+  cap and margin together; a portal is fluid — no cap, `--sa-grid-margin-page` on each side.
+  Figma draws both on a 1440 frame (`Navbar/Website` rows cap at `container/page`,
+  `Navbar/Portal` rows fill; both pad with `grid/margin/page`, variants pinned to a Viewport
+  mode). A `padding/16|24|32` rung standing in for the margin is a literal, whatever it equals.
 
 ## 6. Accessibility is a build gate (WCAG 2.1 AA + GIGW)
 
