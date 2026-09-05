@@ -87,7 +87,7 @@ function Ramp({ surface }: { surface: Surface }): React.JSX.Element {
                 lang="hi"
                 style={{
                   fontSize: `var(--sa-type-${r.role}-size)`,
-                  lineHeight: "var(--sa-leading-devanagari)",
+                  lineHeight: `var(--sa-type-${r.role}-lhDevanagari)`,
                   fontWeight: r.weightVal,
                 }}
               >

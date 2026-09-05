@@ -197,7 +197,7 @@
       "title": "Spacing",
       "rules": [
         {
-          "rule": "Latin body sits at 1.5–1.7 line height; Devanagari body targets ~1.7 at the same point size.",
+          "rule": "Latin body sits at 1.5 line height; a Hindi block at any role takes the role's Latin leading plus a fifth of its size, rounded up to the 4px grid (body-1 16/28, headline-1 40/56) — the same size, more room, the same rhythm.",
           "src": "SAMAVESH · DBIM 4.3.1"
         },
         {

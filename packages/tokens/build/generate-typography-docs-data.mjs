@@ -19,9 +19,13 @@
  * Regenerate: npm run build -w @mosje/tokens
  */
 import { readFileSync, writeFileSync } from "node:fs";
+import { devanagariLeading } from "./devanagari-leading.mjs";
 
 const here = (p) => new URL(p, import.meta.url).pathname;
 const prim = JSON.parse(readFileSync(here("../src/primitive.json"), "utf8"));
+// Devanagari leading is DERIVED (build/devanagari-leading.mjs), so it is not in the source;
+// the page computes it with the same function the build does, from the same offset.
+const DEVANAGARI_OFFSET = Number(prim.font.lineHeight.devanagariOffset.$value);
 const CONTENT_PATH = here("../../../apps/hub/src/app/design-system/foundations/typography/typography-content.json");
 const content = JSON.parse(readFileSync(CONTENT_PATH, "utf8"));
 for (const key of ["tierWeights", "tiers", "surfaces", "samples", "standards"]) {
@@ -64,6 +68,9 @@ for (const [family, tiers] of Object.entries(prim.font.role)) {
     const size = bounds(props.size, `${role}.size`);
     const lh = bounds(props.lh, `${role}.lh`);
     const para = bounds(props.para, `${role}.para`);
+    const lhDevanagari = Object.fromEntries(["website", "portal"].map((surf) => [
+      surf, [0, 1].map((i) => devanagariLeading(size[surf][i], lh[surf][i], DEVANAGARI_OFFSET)),
+    ]));
     const weight = content.tierWeights[tier];
     if (!weight) throw new Error(`generate-typography-docs-data: no tier weight for "${tier}"`);
     const sample = content.samples[role];
@@ -71,7 +78,7 @@ for (const [family, tiers] of Object.entries(prim.font.role)) {
     roles.push({
       role, tier,
       weight: weight.name, weightVal: weight.value,
-      size, lh,
+      size, lh, lhDevanagari,
       // tracking is authored per DISPLAY role only, on the portal surface; the rest are 0
       tracking: { website: [0, 0], portal: [0, 0] },
       para: para ? para.website : [0, 0],
@@ -135,6 +142,8 @@ export interface RoleSpec {
   weightVal: number;
   size: Record<Surface, [number, number]>;
   lh: Record<Surface, [number, number]>;
+  /** A Hindi block at this role: same size, Latin leading + 0.2 × size, rounded up to the 4px grid. */
+  lhDevanagari: Record<Surface, [number, number]>;
   tracking: Record<Surface, [number, number]>;
   para: [number, number];
   en: string;

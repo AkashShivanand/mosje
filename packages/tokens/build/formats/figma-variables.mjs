@@ -786,7 +786,10 @@ export function scopesFor(path, tier, type, figmaName) {
   if (head === "blur") return ["EFFECT_FLOAT"];
   if (head === "type" || head === "leading") {
     if (tail === "size") return ["FONT_SIZE"];
-    if (tail === "lh" || head === "leading") return ["LINE_HEIGHT"];
+    // `lhDevanagari` is the Hindi block's line height at the same size — a pixel value like
+    // `lh`, so it binds. (The OFFSET it is derived from is a ratio and lives under ref/font,
+    // scoped to nothing, precisely so it cannot be bound as 0.2px.)
+    if (tail === "lh" || tail === "lhDevanagari" || head === "leading") return ["LINE_HEIGHT"];
     if (tail === "tracking") return ["LETTER_SPACING"];
     if (tail === "para") return ["PARAGRAPH_SPACING"];
     return [];

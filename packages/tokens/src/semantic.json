@@ -1449,7 +1449,8 @@
           }
         }
       }
-    }
+    },
+    "$type": "dimension"
   },
   "font": {
     "$description": "Tier-2 font roles. Apps must reach for these, never for the Tier-1 --sa-ref-font-family-* primitives: a component bound to a primitive cannot be re-fonted by a brand pack. Added when the tier lint caught the design-system typography page referencing the Devanagari primitive directly.",
@@ -1546,10 +1547,12 @@
   },
   "leading": {
     "devanagari": {
-      "$type": "number",
-      "$value": "{font.lineHeight.devanagari}",
-      "$description": "Devanagari needs more leading than Latin at the same size — the matras sit above and below the base line."
-    }
+      "$type": "dimension",
+      "$value": "{font.role.body.1.lhDevanagari}",
+      "$description": "Body-1's Devanagari line height, for a Hindi block that has no role of its own. Every role carries its own type/<role>/lhDevanagari — the Latin leading plus a fifth of the size, on the 4px grid — and a Hindi block bound to a role takes THAT, at the same size as its Latin sibling. Until 2026-09-04 this was a unitless 1.7 applied to every Hindi block: it undid the scale (a 40px headline at 68px leading) and Figma read it as 1.7px."
+    },
+    "$description": "Line-height rules that are not a role — today only the Devanagari leading, derived per role by the build.",
+    "$type": "number"
   },
   "bg": {
     "neutral": {
@@ -1583,7 +1586,9 @@
           }
         }
       }
-    }
+    },
+    "$description": "Background fills by family and prominence. base is the page; subtler/subtle are tints; bold/bolder/boldest are solid fills that carry the on/* ink.",
+    "$type": "color"
   },
   "text": {
     "neutral": {
@@ -1620,7 +1625,9 @@
           }
         }
       }
-    }
+    },
+    "$description": "Text inks by family and prominence. base is body copy; subtle is captions; subtler is non-essential; bolder/boldest are headings that must hit AA/AAA.",
+    "$type": "color"
   },
   "border": {
     "neutral": {
@@ -1687,7 +1694,9 @@
           }
         }
       }
-    }
+    },
+    "$description": "Edge colours by family and prominence, plus the resting/hover control border.",
+    "$type": "color"
   },
   "focus": {
     "ring": {
@@ -1699,14 +1708,18 @@
           }
         }
       },
-      "$description": "The keyboard focus ring. SOLID since 2026-09-04: it was rgba(3,115,223,.48), which flattens on white to #86bcf0 — 2.01:1 against the 3:1 that WCAG 2.2 1.4.11 asks of a focus indicator — and 53 outline rules across chips, search, controls and the auth stack still read it after forms.css alone was corrected on 2026-09-03. It now aliases the brand key colour, which is 4.64:1 on white and 4.07:1 on the muted page in Blue, and follows Navy and the DBIM modes through the alias. Paint it as `outline: var(--sa-focus-width) solid var(--sa-focus-ring)` with `outline-offset: var(--sa-focus-offset)`, never as a box-shadow — a shadow is not painted in Windows High Contrast Mode."
+      "$description": "The keyboard focus ring. SOLID since 2026-09-04: it was rgba(3,115,223,.48), which flattens on white to #86bcf0 — 2.01:1 against the 3:1 that WCAG 2.2 1.4.11 asks of a focus indicator — and 53 outline rules across chips, search, controls and the auth stack still read it after forms.css alone was corrected on 2026-09-03. It now aliases the brand key colour, which is 4.64:1 on white and 4.07:1 on the muted page in Blue, and follows Navy and the DBIM modes through the alias. Paint it as `outline: var(--sa-focus-width) solid var(--sa-focus-ring)` with `outline-offset: var(--sa-focus-offset)`, never as a box-shadow — a shadow is not painted in Windows High Contrast Mode.",
+      "$type": "color"
     },
     "width": {
-      "$value": "{border.width.md}"
+      "$value": "{border.width.md}",
+      "$type": "dimension"
     },
     "offset": {
-      "$value": "{space.2}"
-    }
+      "$value": "{space.2}",
+      "$type": "dimension"
+    },
+    "$description": "The keyboard focus ring — colour, width and offset. WCAG 2.4.7's one non-optional affordance; a group, not a state, because it has three properties and one job."
   },
   "overlay": {
     "neutral": {
@@ -1753,7 +1766,9 @@
           }
         }
       }
-    }
+    },
+    "$description": "Scrims and washes: the modal scrim (neutral/boldest) and the hover/active washes on brand-coloured surfaces. Each is a colour reference plus an alpha reference.",
+    "$type": "color"
   },
   "inline": {
     "0": {
@@ -2924,47 +2939,154 @@
     }
   },
   "motion": {
-    "$description": "Motion by INTENT, pairing a duration with the easing that belongs to it. Entering decelerates and may take its time; leaving accelerates and gets out of the way. Binding a bare duration loses that pairing.",
-    "enter": {
+    "$description": "Motion by INTENT. You never pick a duration: you name what is happening, and the pair brings its duration and its easing together — a duration without its easing is half a decision. Twelve intents cover the estate (the previous five left components pairing an exit duration with an enter easing seven times because there was no hover intent). Every intent except instant and loading collapses to 0.01ms under prefers-reduced-motion; the build emits that block, so a component that binds a pair honours the preference without writing its own media query.",
+    "instant": {
+      "$description": "No animation at all: a checkbox tick, a radio dot, a state that must be true the moment it is set. Also what every other intent becomes under reduced motion. Bind it rather than omitting a transition so the choice is visible.",
       "duration": {
-        "$value": "{motion.duration.base}"
+        "$type": "duration",
+        "$value": "{motion.duration.0}"
       },
       "easing": {
-        "$value": "{motion.easing.out}"
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.linear}"
       }
     },
-    "exit": {
+    "hover": {
+      "$description": "A colour, border or shadow responding to the pointer — the most common transition in the estate and the one it had no name for. Fast enough to feel attached to the cursor.",
       "duration": {
-        "$value": "{motion.duration.fast}"
+        "$type": "duration",
+        "$value": "{motion.duration.150}"
       },
       "easing": {
-        "$value": "{motion.easing.in}"
-      }
-    },
-    "emphasis": {
-      "duration": {
-        "$value": "{motion.duration.slow}"
-      },
-      "easing": {
-        "$value": "{motion.easing.inOut}"
-      }
-    },
-    "reveal": {
-      "$description": "A surface the reader deliberately opened - a drawer, a disclosure panel. Slower than a plain enter because it is a large area and the reader is watching it, and on the strong curve so it decelerates into place instead of easing in at a constant rate.",
-      "duration": {
-        "$value": "{motion.duration.slow}"
-      },
-      "easing": {
-        "$value": "{motion.easing.outStrong}"
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.decelerate}"
       }
     },
     "press": {
-      "$description": "Feedback for a press, a hover lift, or an icon nudge. Short enough to feel like a response rather than an animation: past about 200ms a press stops confirming the interface heard you and starts looking like a delay.",
+      "$description": "Feedback for a press: the button's translate, an icon nudge, a card's lift. Emphasized so the settle reads as physical.",
       "duration": {
-        "$value": "{motion.duration.fast}"
+        "$type": "duration",
+        "$value": "{motion.duration.150}"
       },
       "easing": {
-        "$value": "{motion.easing.outStrong}"
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.emphasized}"
+      }
+    },
+    "focus": {
+      "$description": "The focus ring appears instantly. WCAG 2.4.7 wants it visible the moment focus lands; a ring that fades in is a ring a keyboard user can miss. Bind this on outline and box-shadow in :focus-visible.",
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.0}"
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.linear}"
+      }
+    },
+    "enter": {
+      "$description": "Something arriving — a menu, a toast, a panel's content. Arrives fast, settles gently.",
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.250}"
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.decelerate}"
+      }
+    },
+    "exit": {
+      "$description": "Something leaving. Faster than entering, because the reader has finished with it and is already looking elsewhere.",
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.150}"
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.accelerate}"
+      }
+    },
+    "expand": {
+      "$description": "A surface growing in place — an accordion opening, a drawer widening, a row revealing detail. The reader watches both ends, so it eases at both ends.",
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.250}"
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.standard}"
+      }
+    },
+    "collapse": {
+      "$description": "The same surface shrinking. Slightly faster than expand, for the same reason exit is faster than enter.",
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.200}"
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.standard}"
+      }
+    },
+    "emphasis": {
+      "$description": "A deliberate, attention-carrying move: a count rolling up, a chart mark drawing in. Reserve it — if everything is emphasised, nothing is.",
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.400}"
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.standard}"
+      }
+    },
+    "reveal": {
+      "$description": "A surface the reader deliberately opened — a side sheet, a disclosure panel, the SAMAVESH banner. Arrives under its own momentum.",
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.400}"
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.emphasized}"
+      }
+    },
+    "page": {
+      "$description": "A whole view changing: route transitions, a skeleton giving way to content, a step in a wizard. The longest move a citizen should ever wait on.",
+      "duration": {
+        "$type": "duration",
+        "$value": "{motion.duration.300}"
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.standard}"
+      }
+    },
+    "loading": {
+      "$description": "Indeterminate progress. These do NOT collapse under reduced motion — a spinner that stops is a page that looks frozen — so the build leaves them out of the reduced-motion block; components slow them instead (button.css uses 1.6s).",
+      "spin": {
+        "$type": "duration",
+        "$value": "1000ms",
+        "$description": "One revolution of a spinner. Linear, always."
+      },
+      "pulse": {
+        "$type": "duration",
+        "$value": "{motion.duration.700}",
+        "$description": "One breath of a skeleton shimmer, ease-in-out. Half a cycle each way."
+      },
+      "easing": {
+        "$type": "cubicBezier",
+        "$value": "{motion.easing.linear}"
+      }
+    },
+    "stagger": {
+      "$description": "Cascading a list in. step is the delay between neighbours; max is the number of steps before the rest arrive together, so a long list does not keep the reader waiting. Under about 30ms the cascade does not read; over about 80ms the tail arrives after the reader has started looking for it (measured on the SAMAVESH banner, 2026-08).",
+      "step": {
+        "$type": "duration",
+        "$value": "45ms"
+      },
+      "max": {
+        "$type": "number",
+        "$value": 8
       }
     }
   },
@@ -3087,6 +3209,78 @@
       "$value": "{opacity.100}"
     },
     "$description": "Tier-2 opacity. Each step aliases the Tier-1 `opacity/*` scale, the way `shape` wraps `radius` and `stroke` wraps `border/width`, so a designer binds `alpha/8` and never a `ref/*` primitive. Since 2026-09-04 every translucent colour token in the system (thirteen steps: 0 · 4 · 8 · 16 · 24 · 32 · 40 · 48 · 64 · 72 · 80 · 88 · 100) is a colour reference PLUS one of these — `color/transparent/accent/8` is `color/accentScale/600` at `alpha/8`, not a frozen rgba() — which is what lets a wash follow its base colour through a brand change, and what Figma's alias-with-opacity binding needs on the other side. In CSS the same token resolves as `color-mix(in srgb, var(base) calc(var(--sa-alpha-N) * 100%), transparent)`.",
-    "$type": "number"
+    "$type": "number",
+    "disabled": {
+      "$value": "{alpha.48}",
+      "$description": "A disabled control's whole-element opacity — 48% keeps the label's shape legible while making the state unmistakable. Prefer the opaque disabled ink (text/neutral/disabled) for text alone; use this only where a whole control dims (button.css, the accessibility bar's font-size buttons)."
+    },
+    "muted": {
+      "$value": "{alpha.64}",
+      "$description": "An enabled but de-emphasised element — an inactive tab's icon, a secondary illustration, a placeholder mark. Still readable: 64% of the body ink on white measures above 4.5:1."
+    }
+  },
+  "z": {
+    "$type": "number",
+    "$description": "The layering ladder — the ONLY z-index values app code may write. Steps of 100 leave room for a local order inside a layer; anything a component stacks inside its own context (a caret over its own field) uses raised (1) and a literal 2 at most, never a ladder value. The four values above tooltip are the estate's fixed chrome and are named so nothing else can claim them: rail and launcher are the two floating rails (floating-element-placement.md), statutory is the UX4G accessibility panel's own 999999 — third-party, not ours to change — and demo/top are the DemoDock and the one panel allowed above it. Code-only: Figma has no z-axis property, so this group is deliberately not exported.",
+    "base": {
+      "$value": 0,
+      "$description": "In flow. Bind it to reset a stacking context something else raised."
+    },
+    "raised": {
+      "$value": 1,
+      "$description": "One step above its siblings inside the same component — a floating label over its field, a selected tab over its rail. Local order, not a layer."
+    },
+    "dropdown": {
+      "$value": 100,
+      "$description": "A menu, listbox or date grid opened from a control. Above page content, below anything sticky."
+    },
+    "sticky": {
+      "$value": 200,
+      "$description": "A header, toolbar or table head that stays put while content scrolls under it."
+    },
+    "fixed": {
+      "$value": 300,
+      "$description": "Chrome pinned to the viewport — the masthead, a bottom bar."
+    },
+    "overlay": {
+      "$value": 400,
+      "$description": "The scrim behind a modal or side sheet. Pair with overlay/neutral/boldest."
+    },
+    "modal": {
+      "$value": 500,
+      "$description": "A dialog or side sheet that owns the screen. Sits on its own scrim."
+    },
+    "popover": {
+      "$value": 600,
+      "$description": "A popover, combobox list or date picker opened from INSIDE a modal — it must clear the dialog it was opened from."
+    },
+    "toast": {
+      "$value": 700,
+      "$description": "Toasts and notifications. Above modals: a save confirmation must be readable even while a dialog is open."
+    },
+    "tooltip": {
+      "$value": 800,
+      "$description": "Tooltips. Transient, pointer-anchored, above everything the reader can interact with."
+    },
+    "rail": {
+      "$value": 1000,
+      "$description": "The right-wall rail and its occupants (Important Links, DemoDock trigger). Fixed chrome that must beat product overlays."
+    },
+    "launcher": {
+      "$value": 1010,
+      "$description": "Closed launchers in the bottom-right corner rail — the chatbot button. Above the wall rail, and deliberately UNDER the statutory panel: a chat launcher has no business sitting on an accessibility control."
+    },
+    "statutory": {
+      "$value": 999999,
+      "$description": "The UX4G accessibility panel's own z-index. Third-party markup; recorded here so no SAMAVESH layer is ever placed at or above it by accident."
+    },
+    "demo": {
+      "$value": 2147483000,
+      "$description": "Demo scaffolding — the DemoDock. The reason this number is grotesque: it must beat the statutory panel while the estate is a prototype. Retire with the dock."
+    },
+    "top": {
+      "$value": 2147483001,
+      "$description": "The one layer above the dock: a panel the citizen deliberately summoned (the open chatbot). Nothing decorative may cover it."
+    }
   }
 }
