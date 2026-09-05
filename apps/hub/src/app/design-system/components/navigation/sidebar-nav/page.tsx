@@ -96,7 +96,7 @@ const A11Y: A11yItem[] = [
     criterion: "2.5.8 Target Size (Minimum)",
     level: "AA",
     status: "verified",
-    evidence: "Level-1 rows are target/spacious (48); level-2 and level-3 rows and the collapse control are target/comfortable (44) or larger; rows are stack/4 apart.",
+    evidence: "Level-1 rows are target/spacious (48); level-2 and level-3 rows are target/comfortable (44); the optional collapse control is a 40px IconButton in a 48px row; rows are stack/4 apart.",
     description: "Every target clears the 24px floor with room; the estate's 44px preference holds at every level.",
   },
   {
@@ -128,6 +128,8 @@ export default function Page(): React.JSX.Element {
         avoid: [
           "A content page's section index — that is ContentNav, which needs no icons and no client bundle.",
           "A fourth level. If a role needs one, the information architecture needs the work, not the component.",
+          "More than seven children in a group. Five is the design limit; past seven, development warns — split the group or move the list onto the section's own page.",
+          "`showCollapseControl` in a shell whose masthead already has the toggle. Two controls for one action; the masthead's is the default.",
           "Omitting `pathname`: without it nothing is marked current.",
           "Hard-coding the rail's width or height in a shell. It binds layout/sidebar/width; the height is the shell's, via AppShell.",
         ],

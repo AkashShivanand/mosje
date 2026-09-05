@@ -16,8 +16,10 @@ import { Button, SidebarNav } from "@mosje/design-system";
  * serialisable data and the estate keeps exactly one icon system. Every item
  * needs one — in collapsed mode the icon is all that is left.
  *
- * Collapsing is controlled: `collapsed` plus `onCollapsedChange`. Passing
- * `showCollapseControl` without the handler renders nothing. In the collapsed
+ * Collapsing is controlled: `collapsed` plus `onCollapsedChange`. The portal
+ * masthead's toggle is the default control; `showCollapseControl` adds the
+ * rail's own at the top for a shell without one, and renders nothing without
+ * the handler. In the collapsed
  * rail a group opens a flyout, a leaf shows a tooltip, and a badge becomes a dot.
  *
  * Three levels. An item with `children` becomes a disclosure group of level-2
@@ -116,7 +118,7 @@ export const Collapsed: Story = {
   args: { collapsed: true },
 };
 
-/** Controlled collapse, with the foot control the handler is required for. */
+/** Controlled collapse with the rail's own control at the top — only for a shell whose masthead has no toggle; the handler is required. */
 export const WithCollapseControl: Story = {
   render: function Render(args) {
     const [collapsed, setCollapsed] = React.useState(false);

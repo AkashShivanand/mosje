@@ -24,7 +24,7 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 | Level-2 entry | `Sidebar/Item · Level 2` — Placement (Inline/Flyout) × Type × Open × State, Focused, Label, Show Child 2–4 | `items[].children[]` |
 | Level-3 leaf | `Sidebar/Item · Level 3` — State, Focused, Label | `children[].children[]` |
 | Group label | `Sidebar/GroupLabel` — Mode × Show Divider, Label | `groups[].label` → `role="group" aria-labelledby` |
-| Collapse control | `Sidebar/CollapseControl` — Mode, nested IconButton exposed | rendered when `showCollapseControl && onCollapsedChange` |
+| Collapse control | `Sidebar/CollapseControl` — Mode, nested IconButton exposed; shown by `Show Control` (off by default) at the top | rendered at the top when `showCollapseControl && onCollapsedChange` |
 | Flyout | `Sidebar/Flyout` — Title, Item 1–5 (Level 2, Placement=Flyout) | rendered for a collapsed group on click |
 
 ## Token map
@@ -33,11 +33,11 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 |---|---|
 | Rail width | `layout/sidebar/width` 300 · `layout/sidebar/collapsedWidth` 88 (added 2026-09-05) |
 | Flyout width | `layout/sidebar/flyoutWidth` 240 (added 2026-09-05) |
-| Rail padding · region gap · item gap | `padding/16` · `stack/12` · `stack/4` |
+| Rail padding · region gap · item gap | `padding/16` · `stack/12` · `stack/4`; control row `padding/4` (48) |
 | Level-1 row | `padding/12` × `padding/16`, gap `inline/8`, radius `shape/16`, min-height `target/spacious` (48) |
 | Level-2 / 3 row | `padding/12` × `padding/8`, radius `shape/8`, min-height `target/comfortable` (44) |
 | Indent | level 2 `inline/40` · level 3 `inline/56` · flyout `inline/0` |
-| Connector | elbow `shape/6`, `stroke/1`, tail `cmp/divider/width`, all in `bg/brand/primary/subtler`; trunk at 27px (icon centre) for level 2, 47px (level-2 label) for level 3 |
+| Connector | trunk 16px left of the pill (24 for level 2, 40 for level 3), 16px arm, elbow `shape/6`, `stroke/1`, tail `cmp/divider/width`, all in `bg/brand/primary/subtler` |
 | Type | level 1 `Label/label-1` · levels 2–3 `Body/body-2` · group label `Label/label-3` · flyout title `Title/title-3` |
 | Rest | `text/neutral/base`, `icon/neutral/base` (stroke glyph), chevron `icon/neutral/subtle` |
 | Hover | `bg/neutral/subtler` |
@@ -78,12 +78,20 @@ and collapsed (`layout/sidebar/collapsedWidth`, 88). Below the tablet breakpoint
 7. **Collapsed groups open a flyout that lists one level.** Atlassian and Material's expanded
    rail both stop at one level in a flyout; a second flyout beside a 88px rail is unreachable
    on touch.
-8. **The collapse control is a visible 40px IconButton at the foot**, replacing a hover-only
-   16px strip with a `col-resize` cursor that toggled instead of resizing. Glyphs match
-   `Navbar/MenuToggle` (`left_panel_close` / `left_panel_open`).
+8. **The rail's own collapse control is optional, off by default, and sits at the top.** The
+   masthead's `Navbar/MenuToggle` already drives the same state; two controls for one action is
+   what a system exists to remove. Where a shell has no masthead toggle, `Show Control` turns on
+   a visible 40px IconButton in a 48px row above the first item — never at the foot, which is
+   below the fold on a laptop. It replaced a hover-only 16px strip with a `col-resize` cursor
+   that toggled instead of resizing. Glyphs match `Navbar/MenuToggle`.
 9. **A badge count becomes a dot when collapsed** rather than disappearing.
 10. **Level-2 and level-3 rows are 44px** (`target/comfortable`), matching Figma; code had
     drifted to 40.
+12. **Five children per group is the design limit, seven the ceiling.** Material caps a rail at
+    seven; every group in the handoff has five or fewer. Figma exposes five (`Show Child 2–5`),
+    with the overflow route of placing further Level 2 instances after the group in the Menu
+    slot. Code never truncates — a role's data must not break navigation — but
+    `warnOversizedGroups` reports any group past seven in development and is unit-tested.
 11. **The current page's icon is filled.** Code passes `fill` to `Icon` (the Material Symbols
     FILL axis). In Figma the nested glyph carries the library text style `Icon/24/Filled` on
     every Active variant and `Icon/24/Outline` elsewhere — the two styles the Iconography page

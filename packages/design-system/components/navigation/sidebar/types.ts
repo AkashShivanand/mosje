@@ -43,7 +43,11 @@ export interface SidebarNavItem {
    * signal survives the collapse.
    */
   badge?: number | string;
-  /** When set, the item becomes a collapsible group with these level-2 children. */
+  /**
+   * When set, the item becomes a collapsible group with these level-2 children.
+   * Five is the design limit and seven the ceiling; past seven, development
+   * warns — split the group or move the list onto the section's own page.
+   */
   children?: SidebarNavChild[];
   disabled?: boolean;
 }
@@ -72,8 +76,10 @@ export interface SidebarNavProps {
   collapsed?: boolean;
   onCollapsedChange?: (collapsed: boolean) => void;
   /**
-   * Show the collapse control at the foot of the rail (mirrors the Figma
-   * `Show Control` property). Requires `onCollapsedChange`.
+   * Show the rail's own collapse control — a 48px row at the TOP of the rail
+   * (mirrors the Figma `Show Control` property, off by default). The portal
+   * masthead's toggle drives the same state, so pass this only in a shell
+   * without that toggle. Requires `onCollapsedChange`.
    */
   showCollapseControl?: boolean;
   /** Optional content pinned above the control (mirrors Figma `Show Footer`). */

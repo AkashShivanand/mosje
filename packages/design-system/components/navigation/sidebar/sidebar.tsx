@@ -409,6 +409,37 @@ function MainItem({
   );
 }
 
+// ── Group size: five is the design limit, seven the ceiling ──────────────────
+
+/** Groups already reported, so a re-render does not repeat the warning. */
+const warned = new Set<string>();
+
+/**
+ * A group past seven children is two groups, or a list that belongs on the
+ * section's own page. Material caps a rail at seven; every group in the portal
+ * handoff has five or fewer. The rail still renders it — a role's data must
+ * never break navigation — but development says where the real fix is.
+ */
+export function warnOversizedGroups(groups: SidebarNavGroup[]): string[] {
+  const offenders: string[] = [];
+  for (const g of groups) {
+    for (const item of g.items) {
+      if ((item.children?.length ?? 0) > 7) offenders.push(item.label);
+      for (const c of item.children ?? []) if ((c.children?.length ?? 0) > 7) offenders.push(c.label);
+    }
+  }
+  if (process.env.NODE_ENV !== "production") {
+    for (const label of offenders) {
+      if (warned.has(label)) continue;
+      warned.add(label);
+      console.warn(
+        `SidebarNav: "${label}" has more than seven children. Five is the design limit and seven the ceiling — split the group or move the list onto the section's own page.`,
+      );
+    }
+  }
+  return offenders;
+}
+
 // ── Public: SidebarNav ───────────────────────────────────────────────────────
 
 /**
@@ -427,6 +458,10 @@ function MainItem({
  * - In the collapsed rail a group opens a flyout listing its level-2 pages;
  *   a leaf shows its label as a tooltip; a badge count becomes a dot.
  * - Group labels are the accessible name of their `role="group"`, in both modes.
+ * - The rail's own collapse control is optional and sits at the TOP; the portal
+ *   masthead's toggle drives the same state and is the default control.
+ * - Five children per group is the design limit and seven the ceiling; past
+ *   seven, development warns and the rail still renders.
  *
  * @example
  * ```tsx
@@ -451,6 +486,7 @@ export function SidebarNav({
   className,
   id,
 }: SidebarNavProps): React.JSX.Element {
+  warnOversizedGroups(groups);
   const [openFlyout, setOpenFlyout] = React.useState<string | null>(null);
   const closeFlyout = React.useCallback(() => setOpenFlyout(null), []);
   // A flyout belongs to the collapsed rail; expanding closes it.
@@ -464,6 +500,22 @@ export function SidebarNav({
       id={id}
       className={cn("ds-sidebar", collapsed ? "is-collapsed" : "is-expanded", className)}
     >
+      {showCollapseControl && onCollapsedChange && (
+        <div className="ds-sidebar__control">
+          <IconButton
+            icon={<Icon name={collapsed ? "left_panel_open" : "left_panel_close"} size={24} />}
+            aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
+            aria-expanded={!collapsed}
+            aria-controls={id}
+            variant="neutral"
+            appearance="text"
+            size="md"
+            tooltip
+            tooltipSide="right"
+            onClick={() => onCollapsedChange(!collapsed)}
+          />
+        </div>
+      )}
       <nav className="ds-sidebar__nav" aria-label={label}>
         {groups.map((group, gi) => {
           const labelId = group.label ? `${baseId}-g${gi}` : undefined;
@@ -504,22 +556,6 @@ export function SidebarNav({
 
       {footer && <div className="ds-sidebar__footer">{footer}</div>}
 
-      {showCollapseControl && onCollapsedChange && (
-        <div className="ds-sidebar__control">
-          <IconButton
-            icon={<Icon name={collapsed ? "left_panel_open" : "left_panel_close"} size={24} />}
-            aria-label={collapsed ? "Expand navigation" : "Collapse navigation"}
-            aria-expanded={!collapsed}
-            aria-controls={id}
-            variant="neutral"
-            appearance="text"
-            size="md"
-            tooltip
-            tooltipSide="right"
-            onClick={() => onCollapsedChange(!collapsed)}
-          />
-        </div>
-      )}
     </aside>
   );
 }

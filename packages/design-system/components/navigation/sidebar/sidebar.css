@@ -27,7 +27,7 @@
        rail padding          padding/16 · item gap stack/4 · region gap stack/12
        level-1 row           padding/12 × padding/16 · shape/16 · min target/spacious (48)
        level-2 / 3 row       padding/12 × padding/8 · shape/8 · min target/comfortable (44)
-       level-2 / 3 indent    inline/40 · inline/56, elbow connector shape/6 in bg/brand/primary/subtler
+       level-2 / 3 indent    inline/40 · inline/56; elbow trunk 16px left of the pill, 16px arm, shape/6, bg/brand/primary/subtler
        flyout                layout/sidebar/flyoutWidth (240) · shape/12 · elevation/dropdown
      Colour: rest text|icon/neutral/base; hover bg/neutral/subtler; current bg/brand/primary/base
      with text|icon/brand/primary/BOLDER — 7.75:1 in Blue mode, 15.15:1 in Navy (measured from
@@ -223,9 +223,9 @@
   .ds-sidebar__sub::before {
     content: "";
     position: absolute;
-    left: 27px; /* icon centre: padding/16 + icon/size/24 ÷ 2, less the line's own width */
+    left: 24px; /* 16px left of the level-2 pill at inline/40 — the handoff's geometry */
     top: calc(-1 * (var(--sa-stack-4) + var(--sa-stack-4)));
-    width: 12px; /* to the pill's edge at inline/40, less the line */
+    width: 16px; /* the arm, to the pill's edge */
     height: calc(22px + var(--sa-stack-4) + var(--sa-stack-4));
     border-left: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-subtler);
     border-bottom: var(--sa-stroke-1) solid var(--sa-bg-brand-primary-subtler);
@@ -233,22 +233,21 @@
   }
 
   .ds-sidebar__sub--l3::before {
-    left: 47px; /* level-2 label start (48), less the line */
-    width: 8px; /* to the level-3 pill at inline/56 */
+    left: 40px; /* 16px left of the level-3 pill at inline/56 */
   }
 
   /* Tail: row centre → next sibling, across the gap. Absent on the last entry. */
   .ds-sidebar__sub::after {
     content: "";
     position: absolute;
-    left: 27px;
+    left: 24px;
     top: 22px;
     bottom: calc(-1 * var(--sa-stack-4));
     width: var(--sa-cmp-divider-width);
     background: var(--sa-bg-brand-primary-subtler);
   }
 
-  .ds-sidebar__sub--l3::after { left: 47px; }
+  .ds-sidebar__sub--l3::after { left: 40px; }
 
   .ds-sidebar__sub:last-child::after { content: none; }
 
@@ -346,14 +345,15 @@
     margin-top: auto;
   }
 
-  .ds-sidebar__footer + .ds-sidebar__control { margin-top: 0; }
-
+  /* The rail's own collapse control — shown only where the masthead has no
+     toggle — sits at the TOP, a 48px row above the first item: right-aligned
+     when expanded, centred when collapsed. Never at the foot, which is below
+     the fold on a laptop. */
   .ds-sidebar__control {
     flex-shrink: 0;
-    margin-top: auto;
     display: flex;
     justify-content: flex-end;
-    padding: var(--sa-padding-8);
+    padding: var(--sa-padding-4);
   }
 
   .ds-sidebar.is-collapsed .ds-sidebar__control { justify-content: center; }
