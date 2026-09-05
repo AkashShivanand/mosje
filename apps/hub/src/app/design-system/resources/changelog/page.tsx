@@ -32,9 +32,17 @@ interface Release {
 
 const RELEASES: Release[] = [
   {
-    version: "v0.113.0",
+    version: "v0.114.0",
     date: "2026-09-05",
     current: true,
+    changes: [
+      { kind: "Changed", text: "EVERY PORTAL RAIL NAMES ITS PORTAL. The Figma `Sidebar` opens with the PortalIdentity block by default and carries no control of its own because the masthead toggle drives it; the code rails had shipped without an identity, and four of them (e-Anudaan's two shells, NHAPOA admin, TG admin) drew the rail's own collapse control under a masthead that already had one — the difference a reviewer saw on e-Anudaan's My Action Queue. Every shell now passes `identity` (name, the department's full name, the registry mark, the portal's home), the duplicate controls are gone, SMILE's drawer lost its second brand header in favour of the rail's, and `check:sidebar-adoption` fails a rendered SidebarNav without an identity." },
+    ],
+  },
+  {
+    version: "v0.113.0",
+    date: "2026-09-05",
+    current: false,
     changes: [
       { kind: "Changed", text: "EVERY PORTAL RAIL IS `SidebarNav`. Six shells drew their own — NMBA's admin, public and treatment-centre shells, Eutthan, PM-AJAY's dashboard and SMILE's mobile drawer — each with a private list of links, its own active state, hover, indent and collapse control, and each already drifted from the others and from Figma. All six now render the design system's rail from the same nav data they had; the mobile drawers host the same component inside `SideSheet`. Given up: PM-AJAY's per-item sub-labels and the treatment centre's icons below level 1, neither of which the rail draws. `npm run check:sidebar-adoption` fails any portal file that renders a navigating `<aside>` or a `<nav>` named \"navigation\" without it." },
       { kind: "Added", text: "A GROUP MAY HAVE NO PAGE OF ITS OWN. `href` is optional on a level-1 item and a level-2 entry that has `children`: the row only opens and closes, it is highlighted when a page inside it is current, and in the collapsed rail its flyout lists the pages (for a level-2 group without a page, beneath its name — the one case the flyout goes a level deeper). This is what NMBA's committee group and the treatment-centre registers needed; giving such a group its first child's href lit two rows for one page." },

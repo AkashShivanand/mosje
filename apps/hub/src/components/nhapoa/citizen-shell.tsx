@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
-import { SidebarNav, Divider } from "@mosje/design-system";
+import { SidebarNav, Divider, OrgLogo } from "@mosje/design-system";
 import { NhapoaHeader } from "./gov-chrome";
 
 const CITIZEN_NAV = [
@@ -23,6 +23,7 @@ export function CitizenShell({ children }: { children: React.ReactNode }) {
       <NhapoaHeader />
       <div className="flex flex-1">
         <SidebarNav
+          identity={{ name: "SAMBAL", expansion: "National Helpline Against Atrocities", mark: <OrgLogo path="/portals/nhapoa" />, href: "/portals/nhapoa" }}
           groups={[{ items: CITIZEN_NAV }]}
           pathname={pathname}
           collapsed={collapsed}

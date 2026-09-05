@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname } from "next/navigation";
-import { SidebarNav } from "@mosje/design-system";
+import { SidebarNav, OrgLogo } from "@mosje/design-system";
 
 export interface NavItem {
   label: string;
@@ -27,12 +27,13 @@ export const USER_NAV: NavItem[] = [
 ];
 
 /** Portal-local Sidebar — wraps DS SidebarNav with SCW-specific nav arrays. */
-export function Sidebar({ items }: { items: NavItem[] }) {
+export function Sidebar({ items, home = "/portals/scw" }: { items: NavItem[]; home?: string }) {
   const pathname = usePathname();
   const [collapsed, setCollapsed] = React.useState(false);
 
   return (
     <SidebarNav
+      identity={{ name: "SCW", expansion: "Senior Citizens Welfare", mark: <OrgLogo path="/portals/scw" />, href: home }}
       groups={[{ items }]}
       pathname={pathname}
       collapsed={collapsed}

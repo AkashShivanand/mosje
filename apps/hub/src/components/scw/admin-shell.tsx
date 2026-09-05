@@ -16,7 +16,7 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
         }
       />
       <div className="flex">
-        <Sidebar items={ADMIN_NAV} />
+        <Sidebar items={ADMIN_NAV} home="/portals/scw/admin/dashboard" />
         <main id="main" className="min-w-0 flex-1 px-6 py-7 lg:px-10">
           {children}
         </main>

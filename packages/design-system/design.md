@@ -12,6 +12,11 @@
 
   This file is rendered live at /design-system/resources/design-context.
   
+  Last reviewed: 2026-09-05 · System version: v0.53.0 (EVERY PORTAL RAIL NAMES ITS PORTAL. All
+  shells pass SidebarNav an identity — name, the department's full name, the registry mark, the
+  portal's home — as the Figma master defaults to; the rail's own collapse control is off wherever
+  the masthead toggles it; check:sidebar-adoption requires the identity.)
+
   Last reviewed: 2026-09-05 · System version: v0.52.0 (EVERY PORTAL RAIL IS SidebarNav. Six
   shells that drew their own rail — NMBA admin, public and treatment centre, Eutthan, PM-AJAY,
   SMILE's mobile drawer — render the design system's, from the nav data they already had; a

@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SidebarNav } from "@mosje/design-system";
+import { SidebarNav, OrgLogo } from "@mosje/design-system";
 import { NhapoaHeader } from "./gov-chrome";
 import { UserMenu } from "./user-menu";
 import { useNhapoa } from "@/lib/nhapoa/store/store";
@@ -52,11 +52,11 @@ export function AdminShell({
       />
       <div className="flex">
         <SidebarNav
+          identity={{ name: "SAMBAL", expansion: "National Helpline Against Atrocities", mark: <OrgLogo path="/portals/nhapoa" />, href: "/portals/nhapoa" }}
           groups={[{ items: role.nav }]}
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
-          showCollapseControl
           className="sticky top-0 hidden h-[calc(100vh-5.75rem)] shrink-0 md:flex md:flex-col"
         />
         <main id="main" className="min-w-0 flex-1 px-6 py-7 lg:px-10">

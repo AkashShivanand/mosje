@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { SidebarNav, Icon, type AccountMenuItem } from "@mosje/design-system";
+import { SidebarNav, Icon, type AccountMenuItem, OrgLogo } from "@mosje/design-system";
 import { TgHeader } from "./gov-chrome";
 import { useTg } from "@/lib/tg/store/store";
 import { ROLES } from "@/lib/tg/roles";
@@ -52,11 +52,11 @@ export function AdminShell({ children }: { children: React.ReactNode }) {
       />
       <div className="flex">
         <SidebarNav
+          identity={{ name: "TG Portal", expansion: "National Portal for Transgender Persons", mark: <OrgLogo path="/portals/tg" />, href: "/portals/tg/admin" }}
           groups={[{ items: role.nav }]}
           pathname={pathname}
           collapsed={collapsed}
           onCollapsedChange={setCollapsed}
-          showCollapseControl
           className="sticky top-0 hidden h-[calc(100vh-5.75rem)] shrink-0 md:flex md:flex-col"
         />
         <main id="main" className="min-w-0 flex-1 bg-surface-muted px-6 py-7 lg:px-10">

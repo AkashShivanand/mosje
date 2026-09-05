@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { Icon, SidebarNav, SideSheet, SiteHeader, SAMAVESH_COBRAND, type SidebarNavGroup, type SidebarNavItem } from "@mosje/design-system";
+import { Icon, SidebarNav, SideSheet, SiteHeader, SAMAVESH_COBRAND, type SidebarNavGroup, type SidebarNavItem, OrgLogo } from "@mosje/design-system";
 import { useToast } from "@/components/nmba/toast";
 import { usePortalSession } from "@/lib/nmba/committee/session-context";
 import { PORTAL_SESSION_COOKIE, roleLabel } from "@/lib/nmba/committee/session";
@@ -164,6 +164,7 @@ export function AdminShell({ children }: AdminShellProps) {
         {/* Sidebar — persistent from lg up. Below that it would eat most of a
             phone screen, so it moves into a drawer instead. */}
         <SidebarNav
+          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba/admin/dashboard" }}
           groups={groups}
           pathname={pathname}
           collapsed={collapsed}
@@ -195,7 +196,7 @@ export function AdminShell({ children }: AdminShellProps) {
         side="left"
         size="sm"
       >
-        <SidebarNav groups={groups} pathname={pathname} label="Portal navigation" className="w-auto" />
+        <SidebarNav identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba/admin/dashboard" }} groups={groups} pathname={pathname} label="Portal navigation" className="w-auto" />
       </SideSheet>
 
       {/* AppSwitcher FAB is rendered once globally in the root layout. */}

@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SiteHeader, SidebarNav, Icon, buttonClasses } from "@mosje/design-system";
+import { SiteHeader, SidebarNav, Icon, buttonClasses, OrgLogo } from "@mosje/design-system";
 
 const BASE = "/portals/nmba";
 
@@ -69,6 +69,7 @@ export function PublicShell({ children }: { children: React.ReactNode }) {
 
       <div className="flex flex-1">
         <SidebarNav
+          identity={{ name: "NMBA", expansion: "Nasha Mukt Bharat Abhiyaan", mark: <OrgLogo path="/portals/nmba" />, href: "/portals/nmba" }}
           groups={[{ items: NAV_ITEMS }]}
           pathname={pathname}
           collapsed={collapsed}

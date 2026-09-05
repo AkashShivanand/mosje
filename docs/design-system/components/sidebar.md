@@ -172,3 +172,12 @@ items, 20 child items). They are to be migrated screen by screen, one at a time,
     fails a portal file that renders a navigating `<aside>` or a `<nav>` named "navigation"
     without it; an allowlist names the files that are neither, with a reason each. Given up in
     the migration: PM-AJAY's per-item sub-labels and the treatment centre's icons below level 1.
+
+18. **Every shell passes an identity, and the rail's control is off wherever the masthead
+    toggles.** On 2026-09-05 a reviewer put e-Anudaan's rail beside the Figma master and saw
+    two differences: no identity block, and a second collapse control under a masthead that
+    already had one. Both were usage, not the component — the Figma `Sidebar` shows
+    PortalIdentity by default and leaves the control to the masthead. Every shell now passes
+    `identity` (name, the department's full name from the portal's own metadata title, the
+    registry mark, the portal's home), four shells dropped `showCollapseControl`, and
+    `check:sidebar-adoption` fails a rendered SidebarNav without an identity.

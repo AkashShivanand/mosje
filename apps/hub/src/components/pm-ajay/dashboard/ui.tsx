@@ -83,7 +83,7 @@ import {
   type CSSProperties,
   type ReactNode,
 } from "react";
-import { Badge, SidebarNav, type BadgeStatus, type SidebarNavGroup } from "@mosje/design-system";
+import { Badge, SidebarNav, type BadgeStatus, type SidebarNavGroup, OrgLogo } from "@mosje/design-system";
 import { Sparkline } from "./charts";
 import { useAuth } from "@/store/pm-ajay/auth-context";
 import {
@@ -400,6 +400,7 @@ export function Sidebar({ view }: { view: ViewId }) {
   ];
   return (
     <SidebarNav
+      identity={{ name: "PM-AJAY", expansion: "Pradhan Mantri Anusuchit Jaati Abhyuday Yojana", mark: <OrgLogo path="/portals/pm-ajay" />, href: BASE }}
       groups={groups}
       pathname={`#${view}`}
       label="Dashboards"
