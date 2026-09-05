@@ -3,8 +3,15 @@
 /**
  * PortalLoginShell — shared full-page login layout for all MoSJE portals.
  *
- * Layout: utility bar (full-width) → brand header (full-width) →
- *   two columns: left hero (SAMAVESH branding, 58%) + right panel (tabs + form, 42%).
+ * Layout: the SAMAVESH Navbar in its Portal variant (accessibility bar + masthead,
+ *   no nav row, no search, no account) → two columns: left hero (LoginHero, 922 of
+ *   1440) + right panel (tabs + form).
+ *
+ *   The navbar is ONE component, `SiteHeader`, as the Figma shell nests ONE
+ *   `Navbar/Portal` instance (2026-09-05). It used to be an AccessibilityBar and a
+ *   hand-built brand row — a second masthead inside the design system, free to
+ *   drift from the real one, and it had: a different emblem size, its own
+ *   cobranding markup, its own border.
  *
  * What changes per portal:
  *   - `emblemSrc`, `digitalIndiaSrc`, `samaveshLogoSrc` — asset paths from the portal's /public
@@ -21,9 +28,7 @@
  */
 
 import * as React from "react";
-import { Divider } from "../layout/divider";
-import { AccessibilityBar } from "../utilities/accessibility-bar";
-import { BrandLockup } from "../navigation/header/brand-lockup";
+import { SiteHeader } from "../navigation/header/site-header";
 import { Button } from "../actions/button";
 import { OrgLogo } from "../brand/org-logo";
 import { Icon } from "../utilities/icon";
@@ -103,54 +108,28 @@ export function PortalLoginShell({
   // reader's choice now applies estate-wide and survives navigation.
   return (
     <div className="flex min-h-screen flex-col">
-      {/* ── Utility bar ──────────────────────────────────────────────────────
-         The shared DS AccessibilityBar. This shell used to carry its OWN: two
-         skip links to the same target, a bespoke A-/A/A+ stepper wired to local
-         state that nothing else read, and ◑ ♿ 🌐 ▾ as literal emoji rather than
-         Material Symbols. It was a second accessibility bar living inside the
-         design system, free to drift from the real one — and it had. The bar also
-         renders the skip link, so the duplicate pair is gone with it. */}
-      <AccessibilityBar
-        layout="wide"
+      {/* ── Navbar — the Portal variant of the SAMAVESH Navbar ─────────────────
+         Figma: `Navbar/Portal` with Menu, Search, Login Signup and Profile all off;
+         accessibility bar + masthead, 146px at desktop. Cobranding is the Digital
+         India mark and the SAMAVESH mark, as the master draws them. */}
+      <SiteHeader
+        variant="portal"
         govLink={{ href: "https://india.gov.in/", label: "Government of India" }}
         skipTo="#login-form"
-        showSkip
-        fontSize
-        accessibility
         language={{ label: "English" }}
+        emblemSrc={emblemSrc}
+        brandLines={{
+          org: "Government of India",
+          ministry: "Ministry of Social Justice & Empowerment",
+          department: "Department of Social Justice & Empowerment",
+        }}
+        beta
+        homeHref="/"
+        cobranding={[
+          { src: digitalIndiaSrc, alt: "Digital India" },
+          { src: samaveshLogoSrc, alt: "SAMAVESH" },
+        ]}
       />
-
-      {/* ── Brand header ────────────────────────────────────────────────────── */}
-      <div style={{ background: "var(--sa-bg-neutral-base)", borderBottom: "1px solid var(--sa-border-neutral-subtle)" }}>
-        <div className="sa-container flex items-center justify-between py-3">
-          {/* Identity from the DS lockup — the emblem, the line order and the
-              BETA badge are estate policy, not this shell's to retype. */}
-          <BrandLockup
-            emblemSrc={emblemSrc}
-            lines={{
-              org: "Government of India",
-              ministry: "Ministry of Social Justice & Empowerment",
-              department: "Department of Social Justice & Empowerment",
-            }}
-            href="/"
-            beta
-            compact
-          />
-
-          {/* Right: Digital India + SAMAVESH */}
-          <div className="hidden items-center gap-4 md:flex">
-            <img src={digitalIndiaSrc} alt="Digital India" className="h-10 w-auto opacity-90" />
-            <Divider orientation="vertical" tone="default" length={32} />
-            <div className="flex items-center gap-2.5">
-              <img src={samaveshLogoSrc} alt="SAMAVESH" className="h-10 w-10" />
-              <div>
-                <p className="text-label-2 font-semibold" style={{ color: "var(--sa-color-primaryScale-800)" }}>SAMAVESH</p>
-                <p lang="hi" className="text-label-2" style={{ color: "var(--sa-text-neutral-subtle)" }}>समावेश</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* ── Two-column body ──────────────────────────────────────────────────── */}
       <div className="flex flex-1">
